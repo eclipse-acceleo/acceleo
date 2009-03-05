@@ -72,7 +72,8 @@ public interface AudioVisualItem extends CirculatingItem {
 	int getMinutesLength();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem#getMinutesLength
+	 * Sets the value of the '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem#getMinutesLength
 	 * <em>Minutes Length</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

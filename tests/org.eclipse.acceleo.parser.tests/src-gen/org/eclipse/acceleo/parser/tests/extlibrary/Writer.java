@@ -45,8 +45,8 @@ public interface Writer extends Person {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getName <em>Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getName <em>Name</em>}
+	 * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.
@@ -58,8 +58,8 @@ public interface Writer extends Person {
 	/**
 	 * Returns the value of the '<em><b>Books</b></em>' reference list. The list contents are of type
 	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book}. It is bidirectional and its opposite is '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor <em>Author</em>}'. <!-- begin-user-doc
-	 * -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor <em>Author</em>}'. <!--
+	 * begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Books</em>' reference list isn't clear, there really should be more of a
 	 * description here...

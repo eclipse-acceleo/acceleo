@@ -19,6 +19,11 @@ import java.util.List;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.acceleo.parser.AcceleoParser;
+import org.eclipse.acceleo.parser.AcceleoParserProblem;
+import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
@@ -26,11 +31,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
-import org.eclipse.acceleo.parser.AcceleoParser;
-import org.eclipse.acceleo.parser.AcceleoParserProblem;
-import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.osgi.framework.Bundle;
 
 public class AcceleoParserTests extends TestCase {
@@ -78,8 +78,8 @@ public class AcceleoParserTests extends TestCase {
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = ModelUtils.createResource(URI.createURI("http://acceleo.eclipse.org/default.emtl"),
-				resourceSet);
+		Resource resource = ModelUtils.createResource(URI
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
 		List<URI> dependencies = new ArrayList<URI>();
 		dependencies.add(createFileURI("/data/template/mtlParserEcoreCommon.emtl"));
 		parser.parse(source, resource, dependencies);
@@ -94,8 +94,8 @@ public class AcceleoParserTests extends TestCase {
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = ModelUtils.createResource(URI.createURI("http://acceleo.eclipse.org/default.emtl"),
-				resourceSet);
+		Resource resource = ModelUtils.createResource(URI
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
 		parser.parse(source, resource, new ArrayList<URI>());
 		assertNotNull(source.getAST());
 		if (source.getProblems().getList().size() > 0) {
@@ -150,8 +150,8 @@ public class AcceleoParserTests extends TestCase {
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = ModelUtils.createResource(URI.createURI("http://acceleo.eclipse.org/default.emtl"),
-				resourceSet);
+		Resource resource = ModelUtils.createResource(URI
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
 		List<URI> dependencies = new ArrayList<URI>();
 		parser.parse(source, resource, dependencies);
 		assertNotNull(source.getAST());

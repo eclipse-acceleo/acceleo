@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.Employee;
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.parser.tests.extlibrary.Employee;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Employee</b></em>'. <!-- end-user-doc

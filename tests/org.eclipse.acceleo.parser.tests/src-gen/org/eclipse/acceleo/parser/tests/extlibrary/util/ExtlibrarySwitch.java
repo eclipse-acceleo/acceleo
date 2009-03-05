@@ -12,8 +12,6 @@ package org.eclipse.acceleo.parser.tests.extlibrary.util;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.acceleo.parser.tests.extlibrary.Addressable;
 import org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem;
 import org.eclipse.acceleo.parser.tests.extlibrary.Book;
@@ -29,6 +27,8 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
 import org.eclipse.acceleo.parser.tests.extlibrary.Person;
 import org.eclipse.acceleo.parser.tests.extlibrary.VideoCassette;
 import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call

@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
+import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
-import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Periodical</b></em>'. <!--
@@ -23,8 +23,8 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.PeriodicalImpl#getTitle <em>Title</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.PeriodicalImpl#getIssuesPerYear <em>Issues Per Year
- * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.PeriodicalImpl#getIssuesPerYear <em>Issues Per
+ * Year </em>}</li>
  * </ul>
  * </p>
  * 

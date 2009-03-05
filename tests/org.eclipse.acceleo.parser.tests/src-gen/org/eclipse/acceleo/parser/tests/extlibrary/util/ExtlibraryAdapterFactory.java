@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.util;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.acceleo.parser.tests.extlibrary.Addressable;
 import org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem;
 import org.eclipse.acceleo.parser.tests.extlibrary.Book;
@@ -29,6 +25,10 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
 import org.eclipse.acceleo.parser.tests.extlibrary.Person;
 import org.eclipse.acceleo.parser.tests.extlibrary.VideoCassette;
 import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter
@@ -186,10 +186,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library
-	 * <em>Library</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library <em>Library</em>}'. <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases; it's useful to ignore a
+	 * case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library
@@ -200,10 +200,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Writer
-	 * <em>Writer</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer <em>Writer</em>}'. <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases; it's useful to ignore a
+	 * case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Writer
@@ -228,10 +228,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Lendable
-	 * <em>Lendable</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Lendable <em>Lendable</em>}'. <!-- begin-user-doc
+	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
+	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Lendable
@@ -257,9 +257,9 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical <em>Periodical</em>}'. <!-- begin-user-doc
-	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
-	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical <em>Periodical</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Periodical
@@ -285,9 +285,9 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.BookOnTape <em>Book On Tape</em>}'. <!-- begin-user-doc
-	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
-	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.BookOnTape <em>Book On Tape</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.BookOnTape
@@ -312,10 +312,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Borrower
-	 * <em>Borrower</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Borrower <em>Borrower</em>}'. <!-- begin-user-doc
+	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
+	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Borrower
@@ -326,10 +326,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Person
-	 * <em>Person</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Person <em>Person</em>}'. <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases; it's useful to ignore a
+	 * case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Person
@@ -340,10 +340,10 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Employee
-	 * <em>Employee</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Employee <em>Employee</em>}'. <!-- begin-user-doc
+	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
+	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Employee
@@ -355,9 +355,9 @@ public class ExtlibraryAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Addressable <em>Addressable</em>}'. <!-- begin-user-doc
-	 * --> This default implementation returns null so that we can easily ignore cases; it's useful to ignore
-	 * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Addressable <em>Addressable</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Addressable

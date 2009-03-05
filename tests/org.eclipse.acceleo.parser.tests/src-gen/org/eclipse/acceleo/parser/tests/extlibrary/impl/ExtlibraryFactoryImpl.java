@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EFactoryImpl;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.acceleo.parser.tests.extlibrary.Book;
 import org.eclipse.acceleo.parser.tests.extlibrary.BookCategory;
 import org.eclipse.acceleo.parser.tests.extlibrary.BookOnTape;
@@ -27,6 +21,12 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Library;
 import org.eclipse.acceleo.parser.tests.extlibrary.Person;
 import org.eclipse.acceleo.parser.tests.extlibrary.VideoCassette;
 import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->

@@ -17,7 +17,8 @@ package org.eclipse.acceleo.parser.tests.extlibrary;
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getTitle <em>Title</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getIssuesPerYear <em>Issues Per Year</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getIssuesPerYear <em>Issues Per Year
+ * </em>}</li>
  * </ul>
  * </p>
  * 

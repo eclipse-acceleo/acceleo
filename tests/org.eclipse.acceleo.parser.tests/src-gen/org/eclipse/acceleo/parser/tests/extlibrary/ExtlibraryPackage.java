@@ -58,11 +58,12 @@ public interface ExtlibraryPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	ExtlibraryPackage eINSTANCE = org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl.init();
+	ExtlibraryPackage eINSTANCE = org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl
+			.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.ItemImpl <em>Item</em>}
-	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.ItemImpl
+	 * <em>Item</em>} ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ItemImpl
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getItem()
@@ -89,8 +90,9 @@ public interface ExtlibraryPackage extends EPackage {
 	int ITEM_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl
-	 * <em>Circulating Item</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl <em>Circulating Item</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getCirculatingItem()
@@ -135,8 +137,8 @@ public interface ExtlibraryPackage extends EPackage {
 	int CIRCULATING_ITEM_FEATURE_COUNT = ITEM_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BookImpl <em>Book</em>}
-	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BookImpl
+	 * <em>Book</em>} ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.BookImpl
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getBook()
@@ -460,8 +462,8 @@ public interface ExtlibraryPackage extends EPackage {
 	int WRITER_FEATURE_COUNT = PERSON_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Lendable <em>Lendable</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Lendable
+	 * <em>Lendable</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Lendable
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getLendable()
@@ -542,8 +544,9 @@ public interface ExtlibraryPackage extends EPackage {
 	int PERIODICAL_FEATURE_COUNT = ITEM_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl
-	 * <em>Audio Visual Item</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl <em>Audio Visual Item</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getAudioVisualItem()
@@ -905,8 +908,8 @@ public interface ExtlibraryPackage extends EPackage {
 	int BOOK_CATEGORY = 14;
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book <em>Book</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book
+	 * <em>Book</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Book</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Book
@@ -916,8 +919,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getTitle <em>Title</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getTitle <em>Title</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Title</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Book#getTitle()
@@ -928,8 +931,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getPages <em>Pages</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getPages <em>Pages</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Pages</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Book#getPages()
@@ -952,8 +955,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor <em>Author</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor <em>Author</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Author</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor()
@@ -974,8 +977,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getName <em>Name</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getName <em>Name</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library#getName()
@@ -1022,8 +1025,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getStock <em>Stock</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getStock <em>Stock</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Stock</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library#getStock()
@@ -1034,8 +1037,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference list '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getBooks <em>Books</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getBooks <em>Books</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Books</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library#getBooks()
@@ -1058,8 +1061,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the container reference '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getParentBranch <em>Parent Branch</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getParentBranch <em>Parent Branch</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the container reference '<em>Parent Branch</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library#getParentBranch()
@@ -1070,8 +1073,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getPeople <em>People</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getPeople <em>People</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute list '<em>People</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Library#getPeople()
@@ -1092,8 +1095,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getName <em>Name</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getName <em>Name</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Writer#getName()
@@ -1104,8 +1107,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference list '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getBooks <em>Books</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getBooks <em>Books</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Books</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Writer#getBooks()
@@ -1115,8 +1118,8 @@ public interface ExtlibraryPackage extends EPackage {
 	EReference getWriter_Books();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Item <em>Item</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.tests.extlibrary.Item
+	 * <em>Item</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Item</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Item
@@ -1204,8 +1207,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getIssuesPerYear <em>Issues Per Year</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getIssuesPerYear
+	 * <em>Issues Per Year</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Issues Per Year</em>'.
 	 * @see org.eclipse.acceleo.parser.tests.extlibrary.Periodical#getIssuesPerYear()
@@ -1491,8 +1494,9 @@ public interface ExtlibraryPackage extends EPackage {
 		EReference BOOK__AUTHOR = eINSTANCE.getBook_Author();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl
-		 * <em>Library</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl <em>Library</em>}' class. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getLibrary()
@@ -1573,8 +1577,9 @@ public interface ExtlibraryPackage extends EPackage {
 		EAttribute LIBRARY__PEOPLE = eINSTANCE.getLibrary_People();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.WriterImpl
-		 * <em>Writer</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.WriterImpl <em>Writer</em>}' class. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.WriterImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getWriter()
@@ -1644,8 +1649,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl <em>Circulating Item</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl
+		 * <em>Circulating Item</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.CirculatingItemImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getCirculatingItem()
@@ -1682,8 +1687,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl <em>Audio Visual Item</em>}
-		 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl
+		 * <em>Audio Visual Item</em>} ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getAudioVisualItem()
@@ -1717,8 +1722,8 @@ public interface ExtlibraryPackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BookOnTapeImpl <em>Book On Tape</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BookOnTapeImpl <em>Book On Tape</em>}'
+		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.BookOnTapeImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getBookOnTape()
@@ -1762,8 +1767,9 @@ public interface ExtlibraryPackage extends EPackage {
 		EReference VIDEO_CASSETTE__CAST = eINSTANCE.getVideoCassette_Cast();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BorrowerImpl
-		 * <em>Borrower</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.BorrowerImpl <em>Borrower</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.BorrowerImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getBorrower()
@@ -1780,8 +1786,9 @@ public interface ExtlibraryPackage extends EPackage {
 		EReference BORROWER__BORROWED = eINSTANCE.getBorrower_Borrowed();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.PersonImpl
-		 * <em>Person</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.PersonImpl <em>Person</em>}' class. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.PersonImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getPerson()
@@ -1806,8 +1813,9 @@ public interface ExtlibraryPackage extends EPackage {
 		EAttribute PERSON__LAST_NAME = eINSTANCE.getPerson_LastName();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.EmployeeImpl
-		 * <em>Employee</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.tests.extlibrary.impl.EmployeeImpl <em>Employee</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.EmployeeImpl
 		 * @see org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryPackageImpl#getEmployee()

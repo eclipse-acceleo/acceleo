@@ -12,15 +12,15 @@ package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.Borrower;
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
+import org.eclipse.acceleo.parser.tests.extlibrary.Lendable;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.parser.tests.extlibrary.Borrower;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
-import org.eclipse.acceleo.parser.tests.extlibrary.Lendable;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Borrower</b></em>'. <!-- end-user-doc

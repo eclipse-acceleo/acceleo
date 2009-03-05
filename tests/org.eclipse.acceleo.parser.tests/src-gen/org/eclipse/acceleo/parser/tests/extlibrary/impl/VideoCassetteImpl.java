@@ -12,12 +12,12 @@ package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
 import org.eclipse.acceleo.parser.tests.extlibrary.Person;
 import org.eclipse.acceleo.parser.tests.extlibrary.VideoCassette;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Video Cassette</b></em>'. <!--

@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.acceleo.parser.tests.extlibrary.Addressable;
 import org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem;
 import org.eclipse.acceleo.parser.tests.extlibrary.Book;
@@ -33,6 +27,12 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Periodical;
 import org.eclipse.acceleo.parser.tests.extlibrary.Person;
 import org.eclipse.acceleo.parser.tests.extlibrary.VideoCassette;
 import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->

@@ -25,7 +25,8 @@ public interface ExtlibraryFactory extends EFactory {
 	 * 
 	 * @generated
 	 */
-	ExtlibraryFactory eINSTANCE = org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryFactoryImpl.init();
+	ExtlibraryFactory eINSTANCE = org.eclipse.acceleo.parser.tests.extlibrary.impl.ExtlibraryFactoryImpl
+			.init();
 
 	/**
 	 * Returns a new object of class '<em>Book</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

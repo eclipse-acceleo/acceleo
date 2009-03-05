@@ -44,8 +44,8 @@ public interface Book extends CirculatingItem {
 	String getTitle();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getTitle <em>Title</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getTitle <em>Title</em>}
+	 * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Title</em>' attribute.
@@ -72,8 +72,8 @@ public interface Book extends CirculatingItem {
 	int getPages();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getPages <em>Pages</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getPages <em>Pages</em>}
+	 * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Pages</em>' attribute.
@@ -141,8 +141,8 @@ public interface Book extends CirculatingItem {
 
 	/**
 	 * Returns the value of the '<em><b>Author</b></em>' reference. It is bidirectional and its opposite is '
-	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getBooks <em>Books</em>}'. <!-- begin-user-doc
-	 * -->
+	 * {@link org.eclipse.acceleo.parser.tests.extlibrary.Writer#getBooks <em>Books</em>}'. <!--
+	 * begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Author</em>' reference isn't clear, there really should be more of a
 	 * description here...
@@ -159,8 +159,8 @@ public interface Book extends CirculatingItem {
 	Writer getAuthor();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor <em>Author</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Book#getAuthor
+	 * <em>Author</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Author</em>' reference.

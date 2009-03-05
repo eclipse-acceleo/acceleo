@@ -53,8 +53,8 @@ public interface Library extends Addressable {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getName <em>Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getName
+	 * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.
@@ -148,9 +148,9 @@ public interface Library extends Addressable {
 
 	/**
 	 * Returns the value of the '<em><b>Branches</b></em>' containment reference list. The list contents are
-	 * of type {@link org.eclipse.acceleo.parser.tests.extlibrary.Library}. It is bidirectional and its opposite
-	 * is '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getParentBranch <em>Parent Branch</em>}'.
-	 * <!-- begin-user-doc -->
+	 * of type {@link org.eclipse.acceleo.parser.tests.extlibrary.Library}. It is bidirectional and its
+	 * opposite is '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getParentBranch
+	 * <em>Parent Branch</em>}'. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Branches</em>' containment reference list isn't clear, there really should
 	 * be more of a description here...
@@ -167,8 +167,8 @@ public interface Library extends Addressable {
 
 	/**
 	 * Returns the value of the '<em><b>Parent Branch</b></em>' container reference. It is bidirectional and
-	 * its opposite is '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getBranches <em>Branches</em>}
-	 * '. <!-- begin-user-doc -->
+	 * its opposite is '{@link org.eclipse.acceleo.parser.tests.extlibrary.Library#getBranches
+	 * <em>Branches</em>} '. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parent Branch</em>' container reference isn't clear, there really should be
 	 * more of a description here...

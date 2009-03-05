@@ -12,20 +12,20 @@ package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
 import java.util.Date;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
+import org.eclipse.acceleo.parser.tests.extlibrary.Item;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
-import org.eclipse.acceleo.parser.tests.extlibrary.Item;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Item</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.ItemImpl#getPublicationDate <em>Publication Date
- * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.ItemImpl#getPublicationDate <em>Publication
+ * Date </em>}</li>
  * </ul>
  * </p>
  * 

@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.Book;
+import org.eclipse.acceleo.parser.tests.extlibrary.BookCategory;
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
+import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.parser.tests.extlibrary.Book;
-import org.eclipse.acceleo.parser.tests.extlibrary.BookCategory;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
-import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Book</b></em>'. <!-- end-user-doc -->

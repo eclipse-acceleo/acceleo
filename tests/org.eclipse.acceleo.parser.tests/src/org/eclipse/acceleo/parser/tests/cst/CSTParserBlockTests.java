@@ -12,6 +12,9 @@ package org.eclipse.acceleo.parser.tests.cst;
 
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.internal.parser.cst.CSTParser;
+import org.eclipse.acceleo.internal.parser.cst.CSTParserBlock;
+import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ForBlock;
@@ -20,9 +23,6 @@ import org.eclipse.acceleo.parser.cst.LetBlock;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TraceBlock;
-import org.eclipse.acceleo.internal.parser.cst.CSTParser;
-import org.eclipse.acceleo.internal.parser.cst.CSTParserBlock;
-import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 
 public class CSTParserBlockTests extends TestCase {
 

@@ -12,6 +12,13 @@ package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.Book;
+import org.eclipse.acceleo.parser.tests.extlibrary.Borrower;
+import org.eclipse.acceleo.parser.tests.extlibrary.Employee;
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
+import org.eclipse.acceleo.parser.tests.extlibrary.Item;
+import org.eclipse.acceleo.parser.tests.extlibrary.Library;
+import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -26,13 +33,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.parser.tests.extlibrary.Book;
-import org.eclipse.acceleo.parser.tests.extlibrary.Borrower;
-import org.eclipse.acceleo.parser.tests.extlibrary.Employee;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
-import org.eclipse.acceleo.parser.tests.extlibrary.Item;
-import org.eclipse.acceleo.parser.tests.extlibrary.Library;
-import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Library</b></em>'. <!-- end-user-doc
@@ -48,8 +48,8 @@ import org.eclipse.acceleo.parser.tests.extlibrary.Writer;
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getStock <em>Stock</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getBooks <em>Books</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getBranches <em>Branches</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getParentBranch <em>Parent Branch</em>}
- * </li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getParentBranch <em>Parent Branch
+ * </em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.LibraryImpl#getPeople <em>People</em>}</li>
  * </ul>
  * </p>

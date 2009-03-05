@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.extlibrary.impl;
 
+import org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem;
+import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.parser.tests.extlibrary.AudioVisualItem;
-import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Audio Visual Item</b></em>'. <!--
@@ -23,9 +23,10 @@ import org.eclipse.acceleo.parser.tests.extlibrary.ExtlibraryPackage;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl#getTitle <em>Title</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl#getMinutesLength <em>Minutes
- * Length</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl#isDamaged <em>Damaged</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl#getMinutesLength <em>
+ * Minutes Length</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.tests.extlibrary.impl.AudioVisualItemImpl#isDamaged <em>Damaged</em>}
+ * </li>
  * </ul>
  * </p>
  * 
