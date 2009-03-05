@@ -23,8 +23,8 @@ import org.eclipse.debug.core.model.IDebugElement;
 import org.eclipse.debug.core.model.IDebugTarget;
 
 /**
- * An Acceleo debug model element. Common abstract class for the debug target, the process, the stack frame, the
- * thread...
+ * An Acceleo debug model element. Common abstract class for the debug target, the process, the stack frame,
+ * the thread...
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

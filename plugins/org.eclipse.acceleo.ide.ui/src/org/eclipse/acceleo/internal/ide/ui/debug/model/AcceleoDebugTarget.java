@@ -27,9 +27,9 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
 
 /**
- * This is a debuggable execution context for an Acceleo Application. A debug target may represent a debuggable
- * process or a virtual machine. A debug target is the root of the debug element hierarchy. A debug target
- * contains threads. Minimally, a debug target supports the following:
+ * This is a debuggable execution context for an Acceleo Application. A debug target may represent a
+ * debuggable process or a virtual machine. A debug target is the root of the debug element hierarchy. A debug
+ * target contains threads. Minimally, a debug target supports the following:
  * <ul>
  * <li>terminate
  * <li>suspend/resume

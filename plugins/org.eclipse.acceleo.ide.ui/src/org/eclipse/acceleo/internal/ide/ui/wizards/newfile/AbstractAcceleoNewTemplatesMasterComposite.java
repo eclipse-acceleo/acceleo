@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 /**
- * The master composite of the 'AcceleoNewTemplatesWizard' wizard. This composite contains the useful widgets to
- * create and delete the templates. The way to manage the selection of one template in the tree viewer must be
- * subclassed.
+ * The master composite of the 'AcceleoNewTemplatesWizard' wizard. This composite contains the useful widgets
+ * to create and delete the templates. The way to manage the selection of one template in the tree viewer must
+ * be subclassed.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

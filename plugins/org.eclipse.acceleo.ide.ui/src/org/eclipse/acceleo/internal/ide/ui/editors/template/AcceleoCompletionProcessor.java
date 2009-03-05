@@ -308,8 +308,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						if (!duplicated.contains(replacementString)) {
 							duplicated.add(replacementString);
 							proposals.add(new CompletionProposal(replacementString, offset - start.length(),
-									start.length(), replacementString.length(), AcceleoUIActivator.getDefault()
-											.getImage("icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
+									start.length(), replacementString.length(), AcceleoUIActivator
+											.getDefault().getImage(
+													"icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
 									replacementString, null, next.getDescription()));
 						}
 						break;
@@ -361,21 +362,26 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		Image image;
 		if (nextOperationChoice instanceof AcceleoCompletionChoice) {
 			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template) {
-				image = AcceleoUIActivator.getDefault().getImage("icons/template-editor/completion/Template.gif"); //$NON-NLS-1$
+				image = AcceleoUIActivator.getDefault().getImage(
+						"icons/template-editor/completion/Template.gif"); //$NON-NLS-1$
 			} else if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Query) {
-				image = AcceleoUIActivator.getDefault().getImage("icons/template-editor/completion/Query.gif"); //$NON-NLS-1$
-			} else if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Macro) {
-				image = AcceleoUIActivator.getDefault().getImage("icons/template-editor/completion/Macro.gif"); //$NON-NLS-1$
-			} else {
 				image = AcceleoUIActivator.getDefault()
-						.getImage("icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
+						.getImage("icons/template-editor/completion/Query.gif"); //$NON-NLS-1$
+			} else if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Macro) {
+				image = AcceleoUIActivator.getDefault()
+						.getImage("icons/template-editor/completion/Macro.gif"); //$NON-NLS-1$
+			} else {
+				image = AcceleoUIActivator.getDefault().getImage(
+						"icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
 			}
 		} else {
-			image = AcceleoUIActivator.getDefault().getImage("icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
+			image = AcceleoUIActivator.getDefault()
+					.getImage("icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
 		}
 		if (nextOperationChoice.getElement() instanceof EOperation) {
 			EOperation eOperation = (EOperation)nextOperationChoice.getElement();
-			String replacementStringWithArgsBefore = eOperation.getName() + IAcceleoConstants.PARENTHESIS_BEGIN;
+			String replacementStringWithArgsBefore = eOperation.getName()
+					+ IAcceleoConstants.PARENTHESIS_BEGIN;
 			String replacementStringWithArgsAfter = ""; //$NON-NLS-1$
 			Iterator<EParameter> eParametersIt = eOperation.getEParameters().iterator();
 			while (eParametersIt.hasNext()) {
@@ -529,8 +535,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					EClassifier eClassifier = eClassifierIt.next();
 					if (eClassifier.getName().toLowerCase().startsWith(start.toLowerCase())) {
 						proposals.add(new CompletionProposal(eClassifier.getName(), offset - start.length(),
-								start.length(), eClassifier.getName().length(), AcceleoUIActivator.getDefault()
-										.getImage("icons/template-editor/completion/Type.gif"), eClassifier //$NON-NLS-1$
+								start.length(), eClassifier.getName().length(),
+								AcceleoUIActivator.getDefault().getImage(
+										"icons/template-editor/completion/Type.gif"), eClassifier //$NON-NLS-1$
 										.getName(), null, eClassifier.getName()));
 					}
 				}
@@ -572,8 +579,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				String replacementStringAfter = "') /]\n" + tabBuffer.toString(); //$NON-NLS-1$
 				String replacementString = replacementStringBefore + replacementStringAfter;
 				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
-						.length(), replacementStringBefore.length(), AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Pattern.gif"), //$NON-NLS-1$
+						.length(), replacementStringBefore.length(), AcceleoUIActivator.getDefault()
+						.getImage("icons/template-editor/completion/Pattern.gif"), //$NON-NLS-1$
 						'[' + IAcceleoConstants.MODULE + ']', null, replacementString));
 			}
 		}
@@ -696,12 +703,12 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			if (!(cstNode instanceof ModelExpression)
 					&& (IAcceleoConstants.TAG_MAIN.startsWith(start.toLowerCase()) || ('[' + IAcceleoConstants.TAG_MAIN)
 							.startsWith(start.toLowerCase()))) {
-				String replacementStringBefore = '[' + IAcceleoConstants.COMMENT + ' ' + IAcceleoConstants.TAG_MAIN
-						+ ' ' + "/]\n" + tab; //$NON-NLS-1$
+				String replacementStringBefore = '[' + IAcceleoConstants.COMMENT + ' '
+						+ IAcceleoConstants.TAG_MAIN + ' ' + "/]\n" + tab; //$NON-NLS-1$
 				String replacementString = replacementStringBefore;
 				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
-						.length(), replacementStringBefore.length(), patternImage, IAcceleoConstants.TAG_MAIN,
-						null, replacementString));
+						.length(), replacementStringBefore.length(), patternImage,
+						IAcceleoConstants.TAG_MAIN, null, replacementString));
 			}
 		}
 	}
@@ -727,8 +734,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '\t' + '\n' + tab + '[' + '/' + IAcceleoConstants.TEMPLATE + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.TEMPLATE + ']', null,
-					tab + replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.TEMPLATE + ']',
+					null, tab + replacementString));
 		}
 		if (IAcceleoConstants.QUERY.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.QUERY).startsWith(start.toLowerCase())) {
@@ -737,8 +744,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ " = /]\n"; //$NON-NLS-1$
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.QUERY + ']', null,
-					tab + replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.QUERY + ']',
+					null, tab + replacementString));
 		}
 		if (IAcceleoConstants.MACRO.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.MACRO).startsWith(start.toLowerCase())) {
@@ -748,8 +755,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.MACRO + ']', null,
-					tab + replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.MACRO + ']',
+					null, tab + replacementString));
 		}
 	}
 
@@ -818,8 +825,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.FOR + ']', null, tab
-							+ replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.FOR + ']', null,
+					tab + replacementString));
 		}
 		if (IAcceleoConstants.IF.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.IF).startsWith(start.toLowerCase())) {
@@ -828,9 +835,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '/' + IAcceleoConstants.IF + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.IF + ']', null, tab
-							.toString()
-							+ replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.IF + ']', null,
+					tab.toString() + replacementString));
 		}
 		if (IAcceleoConstants.FILE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.FILE).startsWith(start.toLowerCase())) {
@@ -844,9 +850,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '\n' + tab + '[' + '/' + IAcceleoConstants.LET + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.LET + ']', null, tab
-							.toString()
-							+ replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.LET + ']', null,
+					tab.toString() + replacementString));
 		}
 		if (IAcceleoConstants.TRACE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.TRACE).startsWith(start.toLowerCase())) {
@@ -855,8 +860,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '/' + IAcceleoConstants.TRACE + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.TRACE + ']', null,
-					tab + replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.TRACE + ']',
+					null, tab + replacementString));
 		}
 		if (IAcceleoConstants.PROTECTED_AREA.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.PROTECTED_AREA).startsWith(start.toLowerCase())) {
@@ -865,8 +870,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					+ '/' + IAcceleoConstants.PROTECTED_AREA + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.PROTECTED_AREA + ']',
-					null, tab + replacementString));
+					replacementStringBefore.length(), patternImage,
+					'[' + IAcceleoConstants.PROTECTED_AREA + ']', null, tab + replacementString));
 		}
 		if (IAcceleoConstants.SUPER.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.SUPER).startsWith(start.toLowerCase())) {
@@ -874,8 +879,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementStringAfter = "/]"; //$NON-NLS-1$
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.SUPER + ']', null,
-					replacementString));
+					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.SUPER + ']',
+					null, replacementString));
 		}
 		if (IAcceleoConstants.DEFAULT_BEGIN.startsWith(start.toLowerCase())) {
 			String replacementString = "[ '[' /] "; //$NON-NLS-1$
@@ -907,8 +912,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String tab, Image patternImage, boolean withMainTag) {
 		String mainTagText;
 		if (withMainTag) {
-			mainTagText = '[' + IAcceleoConstants.COMMENT + ' ' + IAcceleoConstants.TAG_MAIN + ' ' + '/' + ']' + '\n'
-					+ tab;
+			mainTagText = '[' + IAcceleoConstants.COMMENT + ' ' + IAcceleoConstants.TAG_MAIN + ' ' + '/'
+					+ ']' + '\n' + tab;
 		} else {
 			mainTagText = ""; //$NON-NLS-1$
 		}
@@ -959,7 +964,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			if (cstNode instanceof org.eclipse.acceleo.parser.cst.Module) {
 				if (isHeaderAfterParenthesis(bHeaderText)
 						&& ((org.eclipse.acceleo.parser.cst.Module)cstNode).getExtends().size() == 0) {
-					computeKeywordProposal(proposals, start, IAcceleoConstants.EXTENDS + ' ', "", keywordImage); //$NON-NLS-1$
+					computeKeywordProposal(proposals, start, IAcceleoConstants.EXTENDS + ' ',
+							"", keywordImage); //$NON-NLS-1$
 				}
 			}
 			if (cstNode instanceof org.eclipse.acceleo.parser.cst.ModelExpression
@@ -1012,7 +1018,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			if (((org.eclipse.acceleo.parser.cst.Template)cstNode).getGuard() == null
 					&& pInit.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.GUARD + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 			if (((org.eclipse.acceleo.parser.cst.Template)cstNode).getInit() == null
 					&& "{".startsWith(start.toLowerCase())) { //$NON-NLS-1$
@@ -1066,25 +1073,29 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String start, String bHeaderText, Image keywordImage) {
 		if (isHeaderAfterParenthesis(bHeaderText) || bHeaderText.indexOf(IAcceleoConstants.SUPER) > -1) {
 			StringBuffer bHeaderBuffer = new StringBuffer(bHeaderText);
-			Sequence pSeparator = new Sequence(IAcceleoConstants.SEPARATOR, IAcceleoConstants.PARENTHESIS_BEGIN);
+			Sequence pSeparator = new Sequence(IAcceleoConstants.SEPARATOR,
+					IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pAfter = new Sequence(IAcceleoConstants.AFTER, IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pGuard = new Sequence(IAcceleoConstants.GUARD, IAcceleoConstants.PARENTHESIS_BEGIN);
 			if (((org.eclipse.acceleo.parser.cst.ModelExpression)cstNode).getBefore() == null) {
 				if (pSeparator.search(bHeaderBuffer).b() == -1 && pAfter.search(bHeaderBuffer).b() == -1
 						&& pGuard.search(bHeaderBuffer).b() == -1) {
 					computeKeywordProposal(proposals, start, IAcceleoConstants.BEFORE + ' '
-							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+							keywordImage);
 				}
 			}
 			if (((org.eclipse.acceleo.parser.cst.ModelExpression)cstNode).getEach() == null
 					&& pAfter.search(bHeaderBuffer).b() == -1 && pGuard.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.SEPARATOR + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 			if (((org.eclipse.acceleo.parser.cst.ModelExpression)cstNode).getAfter() == null
 					&& pGuard.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.AFTER + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 		}
 	}
@@ -1105,7 +1116,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String bHeaderText, Image keywordImage) {
 		if (isHeaderAfterParenthesis(bHeaderText)) {
 			StringBuffer bHeaderBuffer = new StringBuffer(bHeaderText);
-			Sequence pSeparator = new Sequence(IAcceleoConstants.SEPARATOR, IAcceleoConstants.PARENTHESIS_BEGIN);
+			Sequence pSeparator = new Sequence(IAcceleoConstants.SEPARATOR,
+					IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pAfter = new Sequence(IAcceleoConstants.AFTER, IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pGuard = new Sequence(IAcceleoConstants.GUARD, IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pInit = new Sequence(IAcceleoConstants.BRACKETS_BEGIN);
@@ -1113,24 +1125,28 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (pSeparator.search(bHeaderBuffer).b() == -1 && pAfter.search(bHeaderBuffer).b() == -1
 						&& pGuard.search(bHeaderBuffer).b() == -1 && pInit.search(bHeaderBuffer).b() == -1) {
 					computeKeywordProposal(proposals, start, IAcceleoConstants.BEFORE + ' '
-							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+							keywordImage);
 				}
 			}
 			if (((org.eclipse.acceleo.parser.cst.ForBlock)cstNode).getEach() == null
 					&& pAfter.search(bHeaderBuffer).b() == -1 && pGuard.search(bHeaderBuffer).b() == -1
 					&& pInit.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.SEPARATOR + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 			if (((org.eclipse.acceleo.parser.cst.ForBlock)cstNode).getAfter() == null
 					&& pGuard.search(bHeaderBuffer).b() == -1 && pInit.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.AFTER + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 			if (((org.eclipse.acceleo.parser.cst.ForBlock)cstNode).getGuard() == null
 					&& pInit.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.GUARD + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END, keywordImage);
+						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+						keywordImage);
 			}
 			if (((org.eclipse.acceleo.parser.cst.ForBlock)cstNode).getInit() == null && "{".startsWith(start)) { //$NON-NLS-1$
 				String replacementStringBefore = "{ "; //$NON-NLS-1$
@@ -1157,8 +1173,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		buffer.append(aText);
 		buffer.append(tag);
 		Sequence literalEscape = new Sequence(IAcceleoConstants.LITERAL_ESCAPE);
-		SequenceBlock pLiteral = new SequenceBlock(new Sequence(IAcceleoConstants.LITERAL_BEGIN), new Sequence(
-				IAcceleoConstants.LITERAL_END), literalEscape, false, null);
+		SequenceBlock pLiteral = new SequenceBlock(new Sequence(IAcceleoConstants.LITERAL_BEGIN),
+				new Sequence(IAcceleoConstants.LITERAL_END), literalEscape, false, null);
 		SequenceBlock pParenthesis = new SequenceBlock(new Sequence(IAcceleoConstants.PARENTHESIS_BEGIN),
 				new Sequence(IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral});
 		Sequence pHeaderEnd = new Sequence(IAcceleoConstants.DEFAULT_END);

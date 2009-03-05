@@ -127,8 +127,8 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		private final ITextEditor sourceEditor;
 
 		/**
-		 * Instantiates an Acceleo hyperlink given the editor it appears on, the text region it spans to, and the
-		 * link's target.
+		 * Instantiates an Acceleo hyperlink given the editor it appears on, the text region it spans to, and
+		 * the link's target.
 		 * 
 		 * @param editor
 		 *            Editor on which this hyperlink is shown.

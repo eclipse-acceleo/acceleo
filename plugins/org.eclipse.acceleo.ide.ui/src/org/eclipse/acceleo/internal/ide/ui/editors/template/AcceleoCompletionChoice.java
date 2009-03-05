@@ -15,8 +15,8 @@ import org.eclipse.ocl.helper.Choice;
 import org.eclipse.ocl.helper.ChoiceKind;
 
 /**
- * Description of an Acceleo syntax completion choice. An Acceleo choice is based on an OCL choice. The choice also
- * can provide the actual Acceleo model element that it represents.
+ * Description of an Acceleo syntax completion choice. An Acceleo choice is based on an OCL choice. The choice
+ * also can provide the actual Acceleo model element that it represents.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

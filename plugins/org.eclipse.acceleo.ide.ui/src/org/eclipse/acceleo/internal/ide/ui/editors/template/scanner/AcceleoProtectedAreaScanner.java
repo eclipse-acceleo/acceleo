@@ -41,8 +41,8 @@ public class AcceleoProtectedAreaScanner extends AbstractAcceleoScanner {
 				new TextAttribute(manager.getColor(IAcceleoColorConstants.LITERAL), null, SWT.BOLD)));
 		rules[1] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.PROTECTED_AREA), null, SWT.BOLD)));
+		setDefaultReturnToken(new Token(new TextAttribute(manager
+				.getColor(IAcceleoColorConstants.PROTECTED_AREA), null, SWT.BOLD)));
 	}
 
 	/**

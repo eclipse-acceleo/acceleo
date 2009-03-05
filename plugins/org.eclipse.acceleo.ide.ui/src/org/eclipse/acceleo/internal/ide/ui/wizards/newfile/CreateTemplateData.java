@@ -353,7 +353,8 @@ public class CreateTemplateData {
 	 */
 	public IAcceleoExampleStrategy getExampleStrategy() {
 		if (templateExampleStrategy == null || templateExampleStrategy.length() == 0) {
-			templateExampleStrategy = AcceleoUIMessages.getString("AcceleoCopyExampleContentStrategy.Description"); //$NON-NLS-1$
+			templateExampleStrategy = AcceleoUIMessages
+					.getString("AcceleoCopyExampleContentStrategy.Description"); //$NON-NLS-1$
 		}
 		for (IAcceleoExampleStrategy strategy : AcceleoExampleStrategyUtils.getExampleStrategies()) {
 			if (templateExampleStrategy.equals(strategy.getDescription())) {

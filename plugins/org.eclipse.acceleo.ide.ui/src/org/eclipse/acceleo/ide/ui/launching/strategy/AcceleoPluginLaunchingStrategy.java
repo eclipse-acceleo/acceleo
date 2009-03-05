@@ -18,8 +18,8 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * Default Acceleo Plug-in launching strategy. It is used to launch an Acceleo application in the current Eclipse
- * thread.
+ * Default Acceleo Plug-in launching strategy. It is used to launch an Acceleo application in the current
+ * Eclipse thread.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

@@ -87,8 +87,9 @@ public final class AcceleoExampleStrategyUtils {
 								AcceleoUIActivator.getDefault().getLog().log(status);
 							}
 						} else {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK,
-									AcceleoUIMessages.getString("AcceleoNewTemplatesWizard.MissingStrategyClass", //$NON-NLS-1$
+							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+									IStatus.OK, AcceleoUIMessages.getString(
+											"AcceleoNewTemplatesWizard.MissingStrategyClass", //$NON-NLS-1$
 											IAcceleoExampleStrategy.EXAMPLE_STRATEGY_EXTENSION_ID), null);
 							AcceleoUIActivator.getDefault().getLog().log(status);
 						}

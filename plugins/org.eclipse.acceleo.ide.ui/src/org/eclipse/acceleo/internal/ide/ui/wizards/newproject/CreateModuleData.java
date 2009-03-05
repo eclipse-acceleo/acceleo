@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * The class used to configure all the JET generations of the 'AcceleoNewProjectWizard' wizard. The purpose of the
- * wizard is to create a new Acceleo module (i.e an eclipse plug-in).
+ * The class used to configure all the JET generations of the 'AcceleoNewProjectWizard' wizard. The purpose of
+ * the wizard is to create a new Acceleo module (i.e an eclipse plug-in).
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

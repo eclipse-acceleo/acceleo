@@ -121,8 +121,8 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 						reportError(fileAcceleo, 0, 0, 0, AcceleoUIMessages.getString(
 								"CreateRunnableAcceleoOperation.MissingExport", packageName)); //$NON-NLS-1$
 					}
-					URI moduleURI = URI.createPlatformResourceURI(acceleoProject.getOutputFilePath(fileAcceleo)
-							.toString(), true);
+					URI moduleURI = URI.createPlatformResourceURI(acceleoProject.getOutputFilePath(
+							fileAcceleo).toString(), true);
 					ResourceSet resourceSet = new ResourceSetImpl();
 					try {
 						registerPackages(resourceSet);
@@ -142,15 +142,16 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 								}
 							}
 						}
-						String classShortName = new Path(Character.toUpperCase(fileAcceleo.getName().charAt(0))
+						String classShortName = new Path(Character.toUpperCase(fileAcceleo.getName()
+								.charAt(0))
 								+ fileAcceleo.getName().substring(1)).removeFileExtension().lastSegment();
 						List<String> mainTemplateNames = new ArrayList<String>();
 						computesMainTemplateNames(mainTemplateNames, module);
 						if (mainTemplateNames.size() > 0) {
-							CreateRunnableAcceleoContent arg = new CreateRunnableAcceleoContent(fileAcceleo.getProject()
-									.getName(), packageName, classShortName, new Path(fileAcceleo.getName())
-									.removeFileExtension().lastSegment(), mainTemplateNames, packages,
-									resolvedClasspath);
+							CreateRunnableAcceleoContent arg = new CreateRunnableAcceleoContent(fileAcceleo
+									.getProject().getName(), packageName, classShortName, new Path(
+									fileAcceleo.getName()).removeFileExtension().lastSegment(),
+									mainTemplateNames, packages, resolvedClasspath);
 							CreateRunnableJavaWriter javaWriter = new CreateRunnableJavaWriter();
 							String javaText = javaWriter.generate(arg);
 							IFile javaFile = fileAcceleo.getParent().getFile(

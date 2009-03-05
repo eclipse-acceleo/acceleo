@@ -220,7 +220,8 @@ public final class OpenDeclarationUtils {
 			if (newFileURI != null) {
 				IEditorDescriptor editorDescriptor;
 				String lastSegment = newFileURI.lastSegment();
-				if (lastSegment.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION) || lastSegment.endsWith(".ecore")) { //$NON-NLS-1$
+				if (lastSegment.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)
+						|| lastSegment.endsWith(".ecore")) { //$NON-NLS-1$
 					editorDescriptor = getXMIEditor();
 				} else {
 					editorDescriptor = workbench.getEditorRegistry().getDefaultEditor(lastSegment);

@@ -44,9 +44,9 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.osgi.framework.Bundle;
 
 /**
- * To launch an Acceleo application in a Java standalone way, or in a full Eclipse way. This last way is currently
- * required for debugging an Acceleo file. You can also debug an Acceleo application by launching it in a Java
- * standalone way, but you will debug the Acceleo Java sources...
+ * To launch an Acceleo application in a Java standalone way, or in a full Eclipse way. This last way is
+ * currently required for debugging an Acceleo file. You can also debug an Acceleo application by launching it
+ * in a Java standalone way, but you will debug the Acceleo Java sources...
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -200,16 +200,16 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 							Class<IAcceleoLaunchingStrategy> c = bundle.loadClass(strategyClass);
 							return c.newInstance();
 						} catch (ClassNotFoundException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK,
-									e.getMessage(), e);
+							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+									IStatus.OK, e.getMessage(), e);
 							AcceleoUIActivator.getDefault().getLog().log(status);
 						} catch (InstantiationException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK,
-									e.getMessage(), e);
+							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+									IStatus.OK, e.getMessage(), e);
 							AcceleoUIActivator.getDefault().getLog().log(status);
 						} catch (IllegalAccessException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK,
-									e.getMessage(), e);
+							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+									IStatus.OK, e.getMessage(), e);
 							AcceleoUIActivator.getDefault().getLog().log(status);
 						}
 					}
@@ -280,8 +280,8 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 	}
 
 	/**
-	 * Returns the Acceleo application arguments (properties) specified by the given launch configuration, or an
-	 * empty list if none.
+	 * Returns the Acceleo application arguments (properties) specified by the given launch configuration, or
+	 * an empty list if none.
 	 * 
 	 * @param configuration
 	 *            launch configuration

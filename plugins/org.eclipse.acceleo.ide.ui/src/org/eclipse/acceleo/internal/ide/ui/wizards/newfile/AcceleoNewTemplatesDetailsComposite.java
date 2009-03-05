@@ -56,8 +56,8 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 
 /**
- * The details composite of the 'AcceleoNewTemplatesWizard' wizard. This composite contains the useful widgets to
- * manage one template settings.
+ * The details composite of the 'AcceleoNewTemplatesWizard' wizard. This composite contains the useful widgets
+ * to manage one template settings.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -245,7 +245,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		new Label(templateGroup, SWT.NONE);
 		advancedButton = new Button(templateGroup, SWT.PUSH);
 		advancedButton.setFont(templateGroup.getFont());
-		advancedButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage" + ".AdvanceShowedButton")); //$NON-NLS-1$ //$NON-NLS-2$
+		advancedButton.setText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage" + ".AdvanceShowedButton")); //$NON-NLS-1$ //$NON-NLS-2$
 		GridData data = setButtonLayoutData(advancedButton);
 		data.horizontalAlignment = GridData.BEGINNING;
 		data.horizontalSpan = 3;
@@ -296,7 +297,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		createTemplateStatusWidgets(additionalOption);
 		templateGroup.layout();
 		exampleContainer.setVisible(false);
-		advancedButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.AdvanceShowedButton")); //$NON-NLS-1$
+		advancedButton.setText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.AdvanceShowedButton")); //$NON-NLS-1$
 	}
 
 	/**
@@ -308,10 +310,12 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private void handleAdvancedButtonSelect(Composite templateGroup) {
 		if (exampleContainer.isVisible()) {
 			exampleContainer.setVisible(false);
-			advancedButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.AdvanceShowedButton")); //$NON-NLS-1$
+			advancedButton.setText(AcceleoUIMessages
+					.getString("AcceleoNewTemplateWizardPage.AdvanceShowedButton")); //$NON-NLS-1$
 		} else {
 			exampleContainer.setVisible(true);
-			advancedButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.AdvanceHiddenButton")); //$NON-NLS-1$
+			advancedButton.setText(AcceleoUIMessages
+					.getString("AcceleoNewTemplateWizardPage.AdvanceHiddenButton")); //$NON-NLS-1$
 		}
 	}
 
@@ -356,8 +360,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		initializeFileTemplate.setLayoutData(gridData);
 		initializeFileTemplate.setLayout(layout);
 		exampleFileLabel = new Label(initializeFileTemplate, SWT.NULL);
-		exampleFileLabel
-				.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.TemplateOutputFile") + ':'); //$NON-NLS-1$
+		exampleFileLabel.setText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.TemplateOutputFile") + ':'); //$NON-NLS-1$
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.RIGHT;
 		final int widthHintExampleFileLabel = 35;
@@ -536,7 +540,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			}
 		});
 		templateHasMainButtonState = new Button(statusContainer, SWT.CHECK);
-		templateHasMainButtonState.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.AcceleoHasMain")); //$NON-NLS-1$
+		templateHasMainButtonState.setText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.AcceleoHasMain")); //$NON-NLS-1$
 		templateHasMainButtonState.setSelection(true);
 		templateHasMainButtonState.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -716,8 +721,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private void updateStrategies() {
 		if (templateExampleStrategy != null) {
 			List<String> descriptions = new ArrayList<String>();
-			for (Iterator<IAcceleoExampleStrategy> iterator = AcceleoExampleStrategyUtils.getExampleStrategies()
-					.iterator(); iterator.hasNext();) {
+			for (Iterator<IAcceleoExampleStrategy> iterator = AcceleoExampleStrategyUtils
+					.getExampleStrategies().iterator(); iterator.hasNext();) {
 				descriptions.add(iterator.next().getDescription());
 			}
 			templateExampleStrategy.setItems(descriptions.toArray(new String[descriptions.size()]));

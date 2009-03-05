@@ -169,8 +169,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				filesWithMainTag.add(workspaceFile);
 			}
 		}
-		CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(acceleoProject,
-				filesWithMainTag);
+		CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
+				acceleoProject, filesWithMainTag);
 		createRunnableAcceleoOperation.run(monitor);
 	}
 

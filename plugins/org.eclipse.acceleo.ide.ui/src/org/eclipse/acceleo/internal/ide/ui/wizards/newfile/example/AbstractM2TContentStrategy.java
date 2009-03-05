@@ -20,8 +20,8 @@ import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 
 /**
- * To initialize automatically an Acceleo template file from another M2T template file, by copying and modifying
- * the text of the example into the new template.
+ * To initialize automatically an Acceleo template file from another M2T template file, by copying and
+ * modifying the text of the example into the new template.
  * 
  * @see IAcceleoExampleStrategy
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>

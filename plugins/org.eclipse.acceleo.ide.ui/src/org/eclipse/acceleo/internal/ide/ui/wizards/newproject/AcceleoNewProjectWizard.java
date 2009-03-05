@@ -87,7 +87,8 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 				.getString("AcceleoNewProjectWizard.Page.Name")); //$NON-NLS-1$
 		newProjectPage.setInitialProjectName(MODULE_NAME_PREFIX + "sample"); //$NON-NLS-1$
 		newProjectPage.setTitle(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Title")); //$NON-NLS-1$
-		newProjectPage.setDescription(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Page.Description")); //$NON-NLS-1$
+		newProjectPage
+				.setDescription(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Page.Description")); //$NON-NLS-1$
 		newProjectPage.setImageDescriptor(AcceleoUIActivator.getImageDescriptor("icons/AcceleoWizard.gif")); //$NON-NLS-1$
 		addPage(newProjectPage);
 		super.addPages();
@@ -129,8 +130,8 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 			ResourcesPlugin.getWorkspace().run(create, null);
 			return true;
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 			return false;
 		}
@@ -214,12 +215,12 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 				file.setContents(javaStream, true, false, monitor);
 			}
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		} catch (UnsupportedEncodingException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		}
 	}
@@ -245,8 +246,8 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 			project.getFile(new Path("META-INF/MANIFEST.MF")).appendContents(appendStream, true, false, //$NON-NLS-1$
 					monitor);
 		} catch (UnsupportedEncodingException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		}
 	}

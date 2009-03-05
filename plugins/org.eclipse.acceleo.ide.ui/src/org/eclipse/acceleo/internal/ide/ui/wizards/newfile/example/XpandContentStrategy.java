@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 
 /**
- * To initialize automatically an Acceleo template file from an Xpand template file, by copying and modifying the
- * text of the example into the new template.
+ * To initialize automatically an Acceleo template file from an Xpand template file, by copying and modifying
+ * the text of the example into the new template.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

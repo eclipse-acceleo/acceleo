@@ -221,7 +221,8 @@ public class AcceleoNewTemplatesWizardController {
 			updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.InvalidFileName")); //$NON-NLS-1$
 		} else if (ResourcesPlugin.getWorkspace().getRoot().exists(
 				containerPath.append(fileName).addFileExtension(IAcceleoConstants.MTL_FILE_EXTENSION))) {
-			updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.ExistingFile", fileName)); //$NON-NLS-1$
+			updateStatus(AcceleoUIMessages.getString(
+					"AcceleoNewTemplateWizardPage.Error.ExistingFile", fileName)); //$NON-NLS-1$
 		} else {
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(containerPath.append(fileName));
 			if (file.getProject().isAccessible()
@@ -233,7 +234,8 @@ public class AcceleoNewTemplatesWizardController {
 				} else if (EPackage.Registry.INSTANCE.getEPackage(viewDetailsComposite.getMetamodelURI()) == null) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.InvalidURI")); //$NON-NLS-1$
 				} else if (viewDetailsComposite.getMetamodelType().length() == 0) {
-					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.MissingType")); //$NON-NLS-1$
+					updateStatus(AcceleoUIMessages
+							.getString("AcceleoNewTemplateWizardPage.Error.MissingType")); //$NON-NLS-1$
 				} else {
 					updateStatus(null);
 				}

@@ -36,21 +36,23 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * All the keywords sequences of the concrete syntax.
 	 */
 	private static final String[] KEYWORDS = {IAcceleoConstants.MODULE, IAcceleoConstants.COMMENT,
-			IAcceleoConstants.IMPORT, IAcceleoConstants.EXTENDS, IAcceleoConstants.OVERRIDES, IAcceleoConstants.TEMPLATE,
-			IAcceleoConstants.VISIBILITY_KIND_PUBLIC, IAcceleoConstants.VISIBILITY_KIND_PROTECTED,
-			IAcceleoConstants.VISIBILITY_KIND_PRIVATE, IAcceleoConstants.QUERY, IAcceleoConstants.FOR,
-			IAcceleoConstants.BEFORE, IAcceleoConstants.AFTER, IAcceleoConstants.SEPARATOR, IAcceleoConstants.GUARD,
+			IAcceleoConstants.IMPORT, IAcceleoConstants.EXTENDS, IAcceleoConstants.OVERRIDES,
+			IAcceleoConstants.TEMPLATE, IAcceleoConstants.VISIBILITY_KIND_PUBLIC,
+			IAcceleoConstants.VISIBILITY_KIND_PROTECTED, IAcceleoConstants.VISIBILITY_KIND_PRIVATE,
+			IAcceleoConstants.QUERY, IAcceleoConstants.FOR, IAcceleoConstants.BEFORE,
+			IAcceleoConstants.AFTER, IAcceleoConstants.SEPARATOR, IAcceleoConstants.GUARD,
 			IAcceleoConstants.IF, IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE, IAcceleoConstants.LET,
-			IAcceleoConstants.ELSE_LET, IAcceleoConstants.TRACE, IAcceleoConstants.MACRO, IAcceleoConstants.FILE,
-			IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.SELF, IAcceleoConstants.SUPER,};
+			IAcceleoConstants.ELSE_LET, IAcceleoConstants.TRACE, IAcceleoConstants.MACRO,
+			IAcceleoConstants.FILE, IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.SELF,
+			IAcceleoConstants.SUPER,};
 
 	/**
 	 * All the delimiters sequences of the concrete syntax. <code>[, ], [/, /]</code>
 	 */
 	private static final String[] DELIMITERS = {
 			IAcceleoConstants.DEFAULT_BEGIN + IAcceleoConstants.DEFAULT_END_BODY_CHAR,
-			IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END, IAcceleoConstants.DEFAULT_BEGIN,
-			IAcceleoConstants.DEFAULT_END,};
+			IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END,
+			IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END,};
 
 	/**
 	 * Constructor.
@@ -103,10 +105,12 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.FOR,
 				IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
 				backGroundColor, style))));
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.LET},
-				new Token(new TextAttribute(foreGroundColor, backGroundColor, style))));
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE_LET},
-				new Token(new TextAttribute(foreGroundColor, backGroundColor, style))));
+		rules.add(new FirstVariableRule(
+				new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.LET}, new Token(
+						new TextAttribute(foreGroundColor, backGroundColor, style))));
+		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
+				IAcceleoConstants.ELSE_LET, }, new Token(new TextAttribute(foreGroundColor, backGroundColor,
+				style))));
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		return rules.toArray(new IRule[rules.size()]);
 	}

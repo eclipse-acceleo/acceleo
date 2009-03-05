@@ -211,7 +211,8 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 		}
 		newProjectPage.setInitialProjectName(initialProjectName);
 		newProjectPage.setTitle(AcceleoUIMessages.getString("AcceleoNewProjectUIWizard.Title")); //$NON-NLS-1$
-		newProjectPage.setDescription(AcceleoUIMessages.getString("AcceleoNewProjectUIWizard.Module.Description")); //$NON-NLS-1$
+		newProjectPage.setDescription(AcceleoUIMessages
+				.getString("AcceleoNewProjectUIWizard.Module.Description")); //$NON-NLS-1$
 		newProjectPage.setImageDescriptor(wizardImage);
 		addPage(newProjectPage);
 		projectReferencesPage = new WizardNewProjectReferencePage(AcceleoUIMessages
@@ -317,8 +318,8 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 			ResourcesPlugin.getWorkspace().run(create, null);
 			return true;
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 			return false;
 		}
@@ -386,7 +387,8 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 	 */
 	private void createDefaultImage(IProject project, IProgressMonitor monitor) {
 		try {
-			URL imageURL = Platform.getBundle(AcceleoUIActivator.PLUGIN_ID).getEntry("icons/AcceleoEditor.gif"); //$NON-NLS-1$
+			URL imageURL = Platform.getBundle(AcceleoUIActivator.PLUGIN_ID).getEntry(
+					"icons/AcceleoEditor.gif"); //$NON-NLS-1$
 			imageURL = FileLocator.toFileURL(imageURL);
 			File imageFile = new File(imageURL.getFile());
 			IFolder icons = project.getFolder(new Path("icons")); //$NON-NLS-1$
@@ -398,12 +400,12 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 				icons.refreshLocal(1, monitor);
 			}
 		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		}
 	}
@@ -481,12 +483,12 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 				}
 			}
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		} catch (UnsupportedEncodingException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 		}
 	}

@@ -620,7 +620,8 @@ public class AcceleoSourceContent {
 					value = 1;
 				} else if (arg0.getKind() == ChoiceKind.PROPERTY && arg1.getKind() == ChoiceKind.PROPERTY) {
 					value = arg0.getName().compareTo(arg1.getName());
-				} else if (arg0 instanceof AcceleoCompletionChoice && !(arg1 instanceof AcceleoCompletionChoice)) {
+				} else if (arg0 instanceof AcceleoCompletionChoice
+						&& !(arg1 instanceof AcceleoCompletionChoice)) {
 					value = -1;
 				} else if (arg0.getKind() == ChoiceKind.PROPERTY) {
 					value = -1;
@@ -635,9 +636,11 @@ public class AcceleoSourceContent {
 			Choice choice = choicesIt.next();
 			if (choice.getElement() instanceof EOperation) {
 				EOperation eOperation = (EOperation)choice.getElement();
-				org.eclipse.acceleo.model.mtl.ModuleElement eModuleElement = oclParser.getModuleElement(eOperation);
+				org.eclipse.acceleo.model.mtl.ModuleElement eModuleElement = oclParser
+						.getModuleElement(eOperation);
 				if (eModuleElement != null) {
-					AcceleoCompletionChoice acceleoChoice = new AcceleoCompletionChoice(choice, eModuleElement);
+					AcceleoCompletionChoice acceleoChoice = new AcceleoCompletionChoice(choice,
+							eModuleElement);
 					choice = acceleoChoice;
 				}
 			}
@@ -735,7 +738,8 @@ public class AcceleoSourceContent {
 			while (values.hasNext()) {
 				ModuleImportsValue moduleImportsValue = values.next();
 				if (moduleImportsValue != null && oName.equals(moduleImportsValue.getName())) {
-					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource().getResourceSet(), oURI);
+					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource()
+							.getResourceSet(), oURI);
 					if (otherModule != null && oName.equals(otherModule.getName())
 							&& !vAST.getImports().contains(otherModule)) {
 						vAST.getImports().add(otherModule);
@@ -763,7 +767,8 @@ public class AcceleoSourceContent {
 			while (values.hasNext()) {
 				ModuleExtendsValue moduleExtendsValue = values.next();
 				if (moduleExtendsValue != null && oName.equals(moduleExtendsValue.getName())) {
-					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource().getResourceSet(), oURI);
+					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource()
+							.getResourceSet(), oURI);
 					if (otherModule != null && oName.equals(otherModule.getName())
 							&& !vAST.getExtends().contains(otherModule)) {
 						vAST.getExtends().add(otherModule);

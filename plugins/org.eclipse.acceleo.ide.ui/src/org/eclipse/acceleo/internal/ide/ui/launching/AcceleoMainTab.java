@@ -139,8 +139,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		super.createControl(parent);
 		Composite mainComposite = (Composite)getControl();
 		new Label(mainComposite, SWT.NONE);
-		Composite compAcceleo = createComposite(mainComposite, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0, 0);
-		Composite compModelTarget = createComposite(compAcceleo, parent.getFont(), 1, 1, GridData.FILL_BOTH, 0, 0);
+		Composite compAcceleo = createComposite(mainComposite, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0,
+				0);
+		Composite compModelTarget = createComposite(compAcceleo, parent.getFont(), 1, 1, GridData.FILL_BOTH,
+				0, 0);
 		createAcceleoModelEditor(compModelTarget);
 		createAcceleoTargetEditor(compModelTarget);
 		createAcceleoArgumentsEditor(compAcceleo);
@@ -512,8 +514,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	protected void updateAcceleoLaunchingStrategyFromConfig(ILaunchConfiguration config) {
 		String id = ""; //$NON-NLS-1$
 		try {
-			id = config
-					.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
+			id = config.getAttribute(
+					IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
@@ -547,8 +549,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 					result = false;
 				}
 			} else {
-				setErrorMessage(AcceleoUIMessages
-						.getString("AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
+				setErrorMessage(AcceleoUIMessages.getString(
+						"AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
 				result = false;
 			}
 		}
@@ -576,7 +578,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		super.performApply(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, modelText.getText().trim());
-		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, targetText.getText().trim());
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, targetText.getText()
+				.trim());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, argumentsText.getText());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION,
 				launchingStrategyCombo.getText());

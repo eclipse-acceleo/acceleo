@@ -45,10 +45,10 @@ import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.osgi.framework.Bundle;
 
 /**
- * A Acceleo project represents a view of a project resource in terms of Acceleo elements. Each Acceleo project has a
- * classpath, defining which folders contain source code and where templates are located. Each Acceleo project
- * also has an output location. The extension of a template is '.acceleo' and the extension of an output file is
- * '.emtl'.
+ * A Acceleo project represents a view of a project resource in terms of Acceleo elements. Each Acceleo
+ * project has a classpath, defining which folders contain source code and where templates are located. Each
+ * Acceleo project also has an output location. The extension of a template is '.acceleo' and the extension of
+ * an output file is '.emtl'.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -160,7 +160,8 @@ public class AcceleoProject {
 				for (int i = 0; i < children.length; ++i) {
 					IResource resource = children[i];
 					if (resource instanceof IFile
-							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource).getFileExtension())) {
+							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource)
+									.getFileExtension())) {
 						filesInput.add((IFile)resource);
 					} else if (resource instanceof IContainer) {
 						computeInputFiles(filesInput, (IContainer)resource);
@@ -172,7 +173,8 @@ public class AcceleoProject {
 
 	/**
 	 * Gets the output file path (EMTL) for the given Acceleo file. For example : <br>
-	 * '/MyProject/src/org/eclipse/acceleo/file.acceleo' becomes '/MyProject/bin/org/eclipse/acceleo/file.emtl' </br>
+	 * '/MyProject/src/org/eclipse/acceleo/file.acceleo' becomes
+	 * '/MyProject/bin/org/eclipse/acceleo/file.emtl' </br>
 	 * 
 	 * @param fileAcceleo
 	 *            is the Acceleo file
@@ -197,7 +199,8 @@ public class AcceleoProject {
 
 	/**
 	 * Gets the input file path (Acceleo) for the given EMTL file path. For example : <br>
-	 * '/MyProject/bin/org/eclipse/acceleo/file.emtl' becomes '/MyProject/src-gen/org/eclipse/acceleo/file.acceleo' </br>
+	 * '/MyProject/bin/org/eclipse/acceleo/file.emtl' becomes
+	 * '/MyProject/src-gen/org/eclipse/acceleo/file.acceleo' </br>
 	 * 
 	 * @param fileEMTL
 	 *            is the EMTL file path
@@ -207,8 +210,8 @@ public class AcceleoProject {
 		IFolder folder = getOutputFolder(project);
 		if (folder != null && folder.getFullPath().isPrefixOf(fileEMTL)) {
 			IPath relativePath = fileEMTL.removeFileExtension().addFileExtension(
-					IAcceleoConstants.MTL_FILE_EXTENSION)
-					.removeFirstSegments(folder.getFullPath().segmentCount());
+					IAcceleoConstants.MTL_FILE_EXTENSION).removeFirstSegments(
+					folder.getFullPath().segmentCount());
 			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
 				IPath sourcePath = itSourceFolders.next().append(relativePath);
 				if (ResourcesPlugin.getWorkspace().getRoot().exists(sourcePath)) {
@@ -394,7 +397,8 @@ public class AcceleoProject {
 	 */
 	@SuppressWarnings("unchecked")
 	private void computeAccessibleOutputFilesWithBundle(List<URI> outputURIs, Bundle bundle) {
-		Enumeration<URL> entries = bundle.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
+		Enumeration<URL> entries = bundle
+				.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
 		if (entries != null) {
 			while (entries.hasMoreElements()) {
 				URL entry = entries.nextElement();
@@ -457,7 +461,8 @@ public class AcceleoProject {
 	 * @param current
 	 *            is the current Acceleo project
 	 */
-	private void computeAccessibleAcceleoProjects(List<AcceleoProject> accessibleAcceleoProjects, AcceleoProject current) {
+	private void computeAccessibleAcceleoProjects(List<AcceleoProject> accessibleAcceleoProjects,
+			AcceleoProject current) {
 		if (!accessibleAcceleoProjects.contains(current)) {
 			accessibleAcceleoProjects.add(current);
 			IPluginModelBase plugin = PluginRegistry.findModel(current.project);

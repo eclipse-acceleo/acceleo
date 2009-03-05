@@ -200,8 +200,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	}
 
 	/**
-	 * Gets the Acceleo files of the given project and its dependencies. It also loads the corresponding AST model
-	 * of each Acceleo file in the given resource set.
+	 * Gets the Acceleo files of the given project and its dependencies. It also loads the corresponding AST
+	 * model of each Acceleo file in the given resource set.
 	 * 
 	 * @param project
 	 *            is the project that contains the Acceleo Application to launch
@@ -211,8 +211,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private Map<File, Module> getInputOutputAcceleoFiles(IProject project, ResourceSet oResourceSet) {
 		Map<File, Module> result = new HashMap<File, Module>();
-		Iterator<AcceleoProject> acceleoProjects = new AcceleoProject(project).getRecursivelyAccessibleAcceleoProjects()
-				.iterator();
+		Iterator<AcceleoProject> acceleoProjects = new AcceleoProject(project)
+				.getRecursivelyAccessibleAcceleoProjects().iterator();
 		while (acceleoProjects.hasNext()) {
 			AcceleoProject acceleoProject = acceleoProjects.next();
 			try {
@@ -229,7 +229,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 							}
 						} catch (IOException e1) {
 							AcceleoUIActivator.getDefault().getLog().log(
-									new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e1.getMessage(), e1));
+									new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e1.getMessage(),
+											e1));
 						}
 					}
 				}

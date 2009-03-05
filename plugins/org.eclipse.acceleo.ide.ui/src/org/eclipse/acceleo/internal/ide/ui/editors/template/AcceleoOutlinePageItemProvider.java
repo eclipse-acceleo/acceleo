@@ -197,8 +197,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		text.append("template "); //$NON-NLS-1$
 		text.append(eTemplate.getName());
 		text.append("("); //$NON-NLS-1$
-		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eTemplate.getParameter().iterator(); eParameters
-				.hasNext();) {
+		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eTemplate.getParameter()
+				.iterator(); eParameters.hasNext();) {
 			org.eclipse.acceleo.parser.cst.Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
 				text.append(eVariable.getType());

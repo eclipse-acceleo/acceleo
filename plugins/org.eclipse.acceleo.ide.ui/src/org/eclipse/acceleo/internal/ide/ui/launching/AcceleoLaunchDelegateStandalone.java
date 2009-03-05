@@ -61,8 +61,10 @@ public class AcceleoLaunchDelegateStandalone extends org.eclipse.jdt.launching.J
 								Thread.sleep(100);
 							}
 						} catch (InterruptedException e) {
-							AcceleoUIActivator.getDefault().getLog().log(
-									new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+							AcceleoUIActivator.getDefault().getLog()
+									.log(
+											new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+													.getMessage(), e));
 						}
 						if (container.getProject() != null) {
 							container.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);

@@ -58,7 +58,8 @@ public class ReferenceLabelProvider extends LabelProvider {
 				result = AcceleoUIActivator.getDefault().getImage(
 						"/icons/template-editor/" + ((EObject)entry.getMatch()).eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				result = AcceleoUIActivator.getDefault().getImage("/icons/template-editor/ModelExpression.gif"); //$NON-NLS-1$
+				result = AcceleoUIActivator.getDefault().getImage(
+						"/icons/template-editor/ModelExpression.gif"); //$NON-NLS-1$
 			}
 		} else {
 			result = AcceleoUIActivator.getDefault().getImage("/icons/template-editor/ModelExpression.gif"); //$NON-NLS-1$

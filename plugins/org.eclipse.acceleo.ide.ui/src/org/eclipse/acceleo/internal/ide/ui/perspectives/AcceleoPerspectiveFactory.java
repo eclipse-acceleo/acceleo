@@ -20,7 +20,8 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.progress.IProgressConstants;
 
 /**
- * The Acceleo perspective factory generates the initial Acceleo page layout and visible action set for the page.
+ * The Acceleo perspective factory generates the initial Acceleo page layout and visible action set for the
+ * page.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -82,7 +83,8 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		// actions - creation wizard
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"); //$NON-NLS-1$
-		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"); //$NON-NLS-1$
+		layout
+				.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewClassCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$

@@ -46,9 +46,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 /**
- * This is a 'new' wizard for Acceleo templates. Its role is to create a new Acceleo file resource in the provided
- * container. If the container resource (a folder or a project) is selected in the workspace when the wizard
- * is opened, it will accept it as the target container. The wizard creates one file with the extension "mtl".
+ * This is a 'new' wizard for Acceleo templates. Its role is to create a new Acceleo file resource in the
+ * provided container. If the container resource (a folder or a project) is selected in the workspace when the
+ * wizard is opened, it will accept it as the target container. The wizard creates one file with the extension
+ * "mtl".
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -101,7 +102,8 @@ public class AcceleoNewTemplatesWizard extends Wizard implements INewWizard {
 					if (event.getCurrentPage() instanceof WizardPage
 							&& event.getTargetPage() instanceof AcceleoNewTemplatesWizardPage) {
 						WizardPage current = (WizardPage)event.getCurrentPage();
-						AcceleoNewTemplatesWizardPage target = (AcceleoNewTemplatesWizardPage)event.getTargetPage();
+						AcceleoNewTemplatesWizardPage target = (AcceleoNewTemplatesWizardPage)event
+								.getTargetPage();
 						target.handleNewTemplatePageChanging(current);
 					}
 				}
@@ -192,8 +194,8 @@ public class AcceleoNewTemplatesWizard extends Wizard implements INewWizard {
 			ResourcesPlugin.getWorkspace().run(create, null);
 			return true;
 		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e.getMessage(),
-					e);
+			IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, IStatus.OK, e
+					.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
 			return false;
 		}
@@ -236,7 +238,8 @@ public class AcceleoNewTemplatesWizard extends Wizard implements INewWizard {
 						file.setContents(javaStream, true, false, monitor);
 					}
 					monitor.worked(1);
-					monitor.setTaskName(AcceleoUIMessages.getString("AcceleoNewTemplatesWizard.Task.OpenTemplate")); //$NON-NLS-1$
+					monitor.setTaskName(AcceleoUIMessages
+							.getString("AcceleoNewTemplatesWizard.Task.OpenTemplate")); //$NON-NLS-1$
 					getShell().getDisplay().asyncExec(new Runnable() {
 						public void run() {
 							IWorkbenchPage aPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow()

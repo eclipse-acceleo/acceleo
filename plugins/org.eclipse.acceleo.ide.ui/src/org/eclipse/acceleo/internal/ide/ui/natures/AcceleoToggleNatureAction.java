@@ -111,8 +111,10 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 						try {
 							file.deleteMarkers(AcceleoMarker.PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
 						} catch (CoreException e) {
-							AcceleoUIActivator.getDefault().getLog().log(
-									new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+							AcceleoUIActivator.getDefault().getLog()
+									.log(
+											new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+													.getMessage(), e));
 						}
 					}
 					return;
@@ -147,7 +149,8 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 				for (int i = 0; i < children.length; ++i) {
 					IResource resource = children[i];
 					if (resource instanceof IFile
-							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource).getFileExtension())) {
+							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource)
+									.getFileExtension())) {
 						files.add((IFile)resource);
 					} else if (resource instanceof IContainer) {
 						members(files, (IContainer)resource);

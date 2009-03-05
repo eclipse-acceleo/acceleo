@@ -74,8 +74,9 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	/**
 	 * All legal content types.
 	 */
-	public static final String[] LEGAL_CONTENT_TYPES = new String[] {ACCELEO_COMMENT, ACCELEO_BEHAVIORAL_FEATURE,
-			ACCELEO_PROTECTED_AREA, ACCELEO_IF, ACCELEO_LET, ACCELEO_FOR, ACCELEO_BLOCK,};
+	public static final String[] LEGAL_CONTENT_TYPES = new String[] {ACCELEO_COMMENT,
+			ACCELEO_BEHAVIORAL_FEATURE, ACCELEO_PROTECTED_AREA, ACCELEO_IF, ACCELEO_LET, ACCELEO_FOR,
+			ACCELEO_BLOCK,};
 
 	/**
 	 * Constructor.
@@ -83,8 +84,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	public AcceleoPartitionScanner() {
 		List<IRule> rules = new ArrayList<IRule>();
 		SequenceBlockRule literal = new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN),
-				new KeywordRule(IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE),
-				new Token(IDocument.DEFAULT_CONTENT_TYPE));
+				new KeywordRule(IAcceleoConstants.LITERAL_END), new KeywordRule(
+						IAcceleoConstants.LITERAL_ESCAPE), new Token(IDocument.DEFAULT_CONTENT_TYPE));
 		computeCommentRules(rules);
 		computeBehavioralFeatureRules(rules, literal);
 		computeProtectedAreaRules(rules, literal);
@@ -105,7 +106,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 		SequenceRule beginComment = new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.COMMENT, IAcceleoConstants.DEFAULT_END,});
 		SequenceRule endComment = new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.COMMENT, IAcceleoConstants.DEFAULT_END,});
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.COMMENT,
+				IAcceleoConstants.DEFAULT_END,});
 		rules.add(new SequenceBlockRule(beginComment, endComment, new SequenceBlockRule[] {}, new Token(
 				ACCELEO_COMMENT)));
 		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.COMMENT), new KeywordRule(
@@ -125,20 +127,20 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
 				ACCELEO_BEHAVIORAL_FEATURE)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.TEMPLATE, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.TEMPLATE,
+				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
 		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.QUERY), new KeywordRule(
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
 				ACCELEO_BEHAVIORAL_FEATURE)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.QUERY, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.QUERY,
+				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
 		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.MACRO), new KeywordRule(
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
 				ACCELEO_BEHAVIORAL_FEATURE)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.MACRO, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.MACRO,
+				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
 	}
 
 	/**
@@ -150,15 +152,13 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	 *            is the 'literal' rule
 	 */
 	private void computeProtectedAreaRules(List<IRule> rules, SequenceBlockRule literal) {
-		rules
-				.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.PROTECTED_AREA), new KeywordRule(
-						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
+		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.PROTECTED_AREA), new KeywordRule(
+				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
+				ACCELEO_PROTECTED_AREA)));
+		rules.add(new SequenceBlockRule(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.PROTECTED_AREA,}),
+				new KeywordRule(IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(
 						ACCELEO_PROTECTED_AREA)));
-		rules
-				.add(new SequenceBlockRule(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-						IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.PROTECTED_AREA,}),
-						new KeywordRule(IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal},
-						new Token(ACCELEO_PROTECTED_AREA)));
 	}
 
 	/**
@@ -176,9 +176,9 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(ACCELEO_IF)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE,
 				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_IF)));
-		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.IF, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_IF)));
+		rules.add(new SequenceRule(
+				new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END_BODY_CHAR,
+						IAcceleoConstants.IF, IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_IF)));
 	}
 
 	/**
@@ -197,8 +197,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE,
 				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_LET)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.LET, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_LET)));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.LET,
+				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_LET)));
 	}
 
 	/**
@@ -213,8 +213,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.FOR), new KeywordRule(
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal}, new Token(ACCELEO_FOR)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.FOR, IAcceleoConstants.DEFAULT_END,},
-				new Token(ACCELEO_FOR)));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.FOR,
+				IAcceleoConstants.DEFAULT_END,}, new Token(ACCELEO_FOR)));
 	}
 
 	/**

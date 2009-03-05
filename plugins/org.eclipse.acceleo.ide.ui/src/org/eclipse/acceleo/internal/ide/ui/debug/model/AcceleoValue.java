@@ -195,7 +195,8 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 			}
 			if ((featureValue instanceof Collection && ((Collection<?>)featureValue).size() > 0)
 					|| (!(featureValue instanceof Collection) && featureValue != null)) {
-				variables.add(new AcceleoVariable(getDebugTarget(), featureName, featureValue, referenceType));
+				variables
+						.add(new AcceleoVariable(getDebugTarget(), featureName, featureValue, referenceType));
 			}
 		}
 		return variables.toArray(new IVariable[variables.size()]);

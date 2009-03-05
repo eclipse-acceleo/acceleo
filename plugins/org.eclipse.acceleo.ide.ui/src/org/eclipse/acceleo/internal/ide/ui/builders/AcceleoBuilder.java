@@ -171,7 +171,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				otherTemplates.remove(otherTemplateToBuild);
 				if (!deltaFiles.contains(otherTemplateToBuild)) {
 					deltaFiles.add(otherTemplateToBuild);
-					String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
+					String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN,
+							IAcceleoConstants.IMPORT,
 							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(),};
 					Sequence importSequence = new Sequence(tokens);
 					importSequencesToSearch.add(importSequence);
@@ -302,7 +303,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				for (int i = 0; i < children.length; ++i) {
 					IResource resource = children[i];
 					if (resource instanceof IFile
-							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource).getFileExtension())) {
+							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource)
+									.getFileExtension())) {
 						filesOutput.add((IFile)resource);
 					} else if (resource instanceof IContainer
 							&& (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath()))) {

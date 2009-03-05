@@ -74,8 +74,8 @@ public final class AcceleoNewTemplatesGlobalController {
 		 * @param showTemplates
 		 *            indicates if the templates are shown on the left of the composite
 		 */
-		public AcceleoNewTemplatesMasterComposite(Composite parent, AcceleoNewTemplatesGlobalController controller,
-				boolean showTemplates) {
+		public AcceleoNewTemplatesMasterComposite(Composite parent,
+				AcceleoNewTemplatesGlobalController controller, boolean showTemplates) {
 			super(parent, controller, showTemplates);
 		}
 

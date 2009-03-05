@@ -453,8 +453,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	}
 
 	/**
-	 * Updates the folding structure of the template. This will be called from the Acceleo template reconciler in
-	 * order to allow the folding of blocks to the user.
+	 * Updates the folding structure of the template. This will be called from the Acceleo template reconciler
+	 * in order to allow the folding of blocks to the user.
 	 * 
 	 * @param addedAnnotations
 	 *            These annotations have been added since the last reconciling operation.

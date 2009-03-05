@@ -42,6 +42,7 @@ public interface IAcceleoLaunchConfigurationConstants {
 	/**
 	 * Launch configuration attribute key. This is the value of the launching strategy.
 	 */
-	String ATTR_LAUNCHING_STRATEGY_DESCRIPTION = AcceleoUIActivator.PLUGIN_ID + ".LAUNCHING_STRATEGY_DESCRIPTION"; //$NON-NLS-1$
+	String ATTR_LAUNCHING_STRATEGY_DESCRIPTION = AcceleoUIActivator.PLUGIN_ID
+			+ ".LAUNCHING_STRATEGY_DESCRIPTION"; //$NON-NLS-1$
 
 }

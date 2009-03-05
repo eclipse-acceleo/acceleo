@@ -228,7 +228,8 @@ public class AcceleoNewUIConfigurationPage extends WizardPage {
 		} else if (getModelNameFilter().length() == 0) {
 			updateStatus(AcceleoUIMessages.getString("AcceleoNewUIConfigurationPage.Error.MissingModelName")); //$NON-NLS-1$
 		} else if (getTargetFolderAccess().length() == 0) {
-			updateStatus(AcceleoUIMessages.getString("AcceleoNewUIConfigurationPage.Error.MissingTargetFolder")); //$NON-NLS-1$
+			updateStatus(AcceleoUIMessages
+					.getString("AcceleoNewUIConfigurationPage.Error.MissingTargetFolder")); //$NON-NLS-1$
 		} else {
 			updateStatus(null);
 		}

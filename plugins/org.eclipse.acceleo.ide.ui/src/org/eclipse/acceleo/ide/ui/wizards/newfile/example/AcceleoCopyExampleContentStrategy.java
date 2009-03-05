@@ -15,8 +15,9 @@ import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 
 /**
- * Default implementation of the "org.eclipse.acceleo.ide.ui.example" extension point. It is used to initialize
- * automatically a template file from an example, by copying the text of the example into the new template.
+ * Default implementation of the "org.eclipse.acceleo.ide.ui.example" extension point. It is used to
+ * initialize automatically a template file from an example, by copying the text of the example into the new
+ * template.
  * 
  * @see IAcceleoExampleStrategy
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>

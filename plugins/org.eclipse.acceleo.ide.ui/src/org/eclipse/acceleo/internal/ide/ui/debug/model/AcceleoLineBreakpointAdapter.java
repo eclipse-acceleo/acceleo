@@ -69,8 +69,8 @@ public class AcceleoLineBreakpointAdapter implements IToggleBreakpointsTarget {
 			// create line breakpoint (line numbers start at 0)
 			ASTNode astNode = getBreakpointASTNodeAt(acceleoEditor.getContent(), offset);
 			if (astNode != null) {
-				AcceleoLineBreakpoint lineBreakpoint = new AcceleoLineBreakpoint(astNode, resource, lineNumber + 1,
-						offset, length);
+				AcceleoLineBreakpoint lineBreakpoint = new AcceleoLineBreakpoint(astNode, resource,
+						lineNumber + 1, offset, length);
 				DebugPlugin.getDefault().getBreakpointManager().addBreakpoint(lineBreakpoint);
 			}
 		}
@@ -123,13 +123,13 @@ public class AcceleoLineBreakpointAdapter implements IToggleBreakpointsTarget {
 	}
 
 	/**
-	 * Returns the editor being used to edit a Acceleo file, associated with the given part, or <code>null</code>
-	 * if none.
+	 * Returns the editor being used to edit a Acceleo file, associated with the given part, or
+	 * <code>null</code> if none.
 	 * 
 	 * @param part
 	 *            workbench part
-	 * @return the editor being used to edit a Acceleo file, associated with the given part, or <code>null</code>
-	 *         if none
+	 * @return the editor being used to edit a Acceleo file, associated with the given part, or
+	 *         <code>null</code> if none
 	 */
 	private ITextEditor getEditor(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {

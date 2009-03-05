@@ -53,8 +53,8 @@ public class AcceleoRunToLineAdapter implements IRunToLineTarget {
 		if (lineNumber > 0 && textEditor instanceof AcceleoEditor && target instanceof IAdaptable) {
 			IDebugTarget debugTarget = (IDebugTarget)((IAdaptable)target).getAdapter(IDebugTarget.class);
 			if (debugTarget != null) {
-				ASTNode astNode = AcceleoLineBreakpointAdapter.getBreakpointASTNodeAt(((AcceleoEditor)textEditor)
-						.getContent(), offset);
+				ASTNode astNode = AcceleoLineBreakpointAdapter.getBreakpointASTNodeAt(
+						((AcceleoEditor)textEditor).getContent(), offset);
 				if (astNode != null) {
 					IFile resource = (IFile)textEditor.getEditorInput().getAdapter(IResource.class);
 					IBreakpoint breakpoint = new AcceleoRunToLineBreakpoint(astNode, resource, lineNumber,

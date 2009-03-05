@@ -14,9 +14,9 @@ import org.eclipse.core.resources.IFile;
 
 /**
  * An internal extension point is defined to specify multiple example strategies. It is used to initialize
- * automatically a template file from an example in the "New>Acceleo>Acceleo Templates" wizard. The extension point
- * "org.eclipse.acceleo.ide.ui.example" requires a fully qualified name of a Java class implementing this
- * interface.
+ * automatically a template file from an example in the "New>Acceleo>Acceleo Templates" wizard. The extension
+ * point "org.eclipse.acceleo.ide.ui.example" requires a fully qualified name of a Java class implementing
+ * this interface.
  * 
  * @see AcceleoCopyExampleContentStrategy
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>

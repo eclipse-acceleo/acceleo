@@ -28,8 +28,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.dialogs.WizardNewProjectReferencePage;
 
 /**
- * The class used to configure all the JET generations of the 'AcceleoNewProjectUIWizard' wizard. The purpose of
- * the wizard is to create a new UI launcher (i.e an eclipse plug-in) for one or several Acceleo modules.
+ * The class used to configure all the JET generations of the 'AcceleoNewProjectUIWizard' wizard. The purpose
+ * of the wizard is to create a new UI launcher (i.e an eclipse plug-in) for one or several Acceleo modules.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -122,8 +122,8 @@ public class CreateModuleUIData {
 	}
 
 	/**
-	 * Initializes the API which runs the code generation by visiting each Acceleo file of the given project. It
-	 * adds a new entry point for the code generation if a java file is attached to the Acceleo file.
+	 * Initializes the API which runs the code generation by visiting each Acceleo file of the given project.
+	 * It adds a new entry point for the code generation if a java file is attached to the Acceleo file.
 	 * 
 	 * @param acceleoProject
 	 *            is the Acceleo project

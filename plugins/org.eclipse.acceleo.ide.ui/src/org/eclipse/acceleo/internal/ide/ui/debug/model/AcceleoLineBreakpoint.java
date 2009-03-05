@@ -54,8 +54,8 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 
 	/**
 	 * Constructs a line breakpoint on the given resource at the given line number. The line number is 1-based
-	 * (i.e. the first line of a file is line number 1). The Acceleo VM uses 0-based line numbers, so this line
-	 * number translation is done at breakpoint install time.
+	 * (i.e. the first line of a file is line number 1). The Acceleo VM uses 0-based line numbers, so this
+	 * line number translation is done at breakpoint install time.
 	 * 
 	 * @param astNode
 	 *            is the AST node to associate with the breakpoint.

@@ -19,8 +19,8 @@ import org.eclipse.debug.core.sourcelookup.ISourceLookupParticipant;
 import org.eclipse.jdt.launching.sourcelookup.containers.JavaProjectSourceContainer;
 
 /**
- * Acceleo source lookup director. Directs source lookup among a collection of source lookup participants, and a
- * common collection of source containers.
+ * Acceleo source lookup director. Directs source lookup among a collection of source lookup participants, and
+ * a common collection of source containers.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
