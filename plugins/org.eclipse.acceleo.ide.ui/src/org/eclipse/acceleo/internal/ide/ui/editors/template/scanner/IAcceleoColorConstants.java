@@ -67,7 +67,7 @@ public interface IAcceleoColorConstants {
 	/**
 	 * First variable background color.
 	 */
-	RGB FIRST_VARIABLE = new RGB(239, 239, 239);
+	RGB FIRST_VARIABLE = new RGB(242, 242, 242);
 
 	/**
 	 * Default color.

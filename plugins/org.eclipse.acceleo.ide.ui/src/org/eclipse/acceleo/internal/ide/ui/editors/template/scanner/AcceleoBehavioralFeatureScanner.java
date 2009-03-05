@@ -47,9 +47,14 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 		computeFirstVariableRule(rules, IAcceleoConstants.QUERY, manager);
 		computeFirstVariableRule(rules, IAcceleoConstants.MACRO, manager);
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.MACRO, manager));
 		setRules(rules.toArray(new IRule[rules.size()]));
 		setDefaultReturnToken(new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE), null, SWT.BOLD)));
+				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE))));
 	}
 
 	/**
@@ -68,10 +73,38 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 		final String unknown = "*"; //$NON-NLS-1$
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
 				unknown, IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
-				backGroundColor, SWT.BOLD))));
+				backGroundColor, SWT.NONE))));
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
 				IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
-				backGroundColor, SWT.BOLD))));
+				backGroundColor, SWT.NONE))));
+	}
+
+	/**
+	 * Creates a rule for the given keyword.
+	 * 
+	 * @param keyword
+	 *            is the keyword
+	 * @param manager
+	 *            is the color manager
+	 * @return the new keyword rule
+	 */
+	private IRule computeKeywordRule(String keyword, ColorManager manager) {
+		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE), null, SWT.BOLD)));
+	}
+
+	/**
+	 * Creates a rule for the given delimiter.
+	 * 
+	 * @param delimiter
+	 *            is the delimiter text
+	 * @param manager
+	 *            is the color manager
+	 * @return the new delimiter rule
+	 */
+	private IRule computeDelimiterRule(String delimiter, ColorManager manager) {
+		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(manager
+				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE), null, SWT.BOLD)));
 	}
 
 	/**
