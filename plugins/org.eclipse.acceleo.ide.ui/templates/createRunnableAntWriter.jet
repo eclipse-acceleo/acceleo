@@ -1,0 +1,31 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.builders.runner"
+ class = "CreateRunnableAntWriter"
+ imports = ""
+%>
+<%
+ CreateRunnableAcceleoContent content = (CreateRunnableAcceleoContent) argument;
+%>
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="<%=content.getModuleFileShortName()%>" name="<%=content.getProjectName()%>">
+    <property name="ECLIPSE_HOME" value="../../"/>
+    <property name="ECLIPSE_WORKSPACE" value="../"/>
+    <path id="<%=content.getProjectName()%>.libraryclasspath">
+    	<pathelement location="../<%=content.getProjectName()%>/bin"/>
+    	<%for (int i = 0; i < content.getResolvedClasspath().size(); i++) { %>
+    	<pathelement location="<%=content.getResolvedClasspath().get(i)%>"/><%}%>
+    </path>
+    <path id="<%=content.getProjectName()%>.classpath">
+        <path refid="<%=content.getProjectName()%>.libraryclasspath"/>
+    </path>
+
+	<target name="<%=content.getModuleFileShortName()%>">
+
+		<java classname="<%=content.getBasePackage()%>.<%=content.getClassShortName()%>" classpathref="<%=content.getProjectName()%>.classpath">
+			<arg value="${model}"/>
+			<arg value="${target}"/>
+		</java>
+
+	</target>
+
+</project>

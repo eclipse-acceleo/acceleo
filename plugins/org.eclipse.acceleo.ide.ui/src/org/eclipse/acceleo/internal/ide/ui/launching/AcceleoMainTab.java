@@ -1,0 +1,638 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.internal.ide.ui.launching;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
+
+/**
+ * The Acceleo main tab of the launch configuration. It displays and edits project and main type name launch
+ * configuration attributes. It provides a way to define the model path and the target folder.
+ * 
+ * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ */
+public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab {
+
+	/**
+	 * The launch configuration tab that displays program arguments.
+	 */
+	AcceleoJavaArgumentsTab javaArgumentsTab;
+
+	/**
+	 * The model path text widget, relative to the workspace.
+	 */
+	private Text modelText;
+
+	/**
+	 * The model button, to browse the workspace to select the model.
+	 */
+	private Button modelButton;
+
+	/**
+	 * The target folder path text widget, relative to the workspace.
+	 */
+	private Text targetText;
+
+	/**
+	 * The target button, to browse the workspace to select the target folder.
+	 */
+	private Button targetButton;
+
+	/**
+	 * The arguments text widget.
+	 */
+	private Text argumentsText;
+
+	/**
+	 * Available launching strategies in the current Eclipse instance. An internal extension point is defined
+	 * to specify multiple launching strategies.
+	 */
+	private Combo launchingStrategyCombo;
+
+	/**
+	 * The descriptions of all the launching strategies existing in the current Eclipse instance. An internal
+	 * extension point is defined to specify multiple launching strategies. It is used to define a specific
+	 * way of launching an Acceleo generation.
+	 */
+	private List<String> launchingStrategies;
+
+	/**
+	 * The invisible main type shell. It is used to mask some widgets of the superclass.
+	 */
+	private Shell mainTypeShell;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param javaArgumentsTab
+	 *            is the launch configuration tab that displays program arguments
+	 */
+	public AcceleoMainTab(AcceleoJavaArgumentsTab javaArgumentsTab) {
+		super();
+		this.javaArgumentsTab = javaArgumentsTab;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#dispose()
+	 */
+	public void dispose() {
+		super.dispose();
+		if (mainTypeShell != null && !mainTypeShell.isDisposed()) {
+			mainTypeShell.dispose();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		Composite mainComposite = (Composite)getControl();
+		new Label(mainComposite, SWT.NONE);
+		Composite compAcceleo = createComposite(mainComposite, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0, 0);
+		Composite compModelTarget = createComposite(compAcceleo, parent.getFont(), 1, 1, GridData.FILL_BOTH, 0, 0);
+		createAcceleoModelEditor(compModelTarget);
+		createAcceleoTargetEditor(compModelTarget);
+		createAcceleoArgumentsEditor(compAcceleo);
+		new Label(mainComposite, SWT.NONE);
+		createAcceleoLaunchingStrategyEditor(mainComposite);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#createMainTypeExtensions(org.eclipse.swt.widgets.Composite)
+	 */
+	protected void createMainTypeExtensions(Composite parent) {
+		if (mainTypeShell == null) {
+			mainTypeShell = new Shell();
+		}
+		Composite notVisibleComposite = new Composite(mainTypeShell, SWT.NONE);
+		super.createMainTypeExtensions(notVisibleComposite);
+		notVisibleComposite.setVisible(false);
+	}
+
+	/**
+	 * Creates the widgets for specifying the model path.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoModelEditor(Composite parent) {
+		Font font = parent.getFont();
+		Group mainGroup = createGroup(parent, AcceleoUIMessages.getString("AcceleoMainTab.ModelPath"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_HORIZONTAL);
+		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		modelText = createSingleText(comp, 1);
+		modelText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		modelButton = createPushButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Browse"), null); //$NON-NLS-1$
+		modelButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				handleBrowseModelButton();
+			}
+		});
+	}
+
+	/**
+	 * Show a dialog that lists all the models.
+	 */
+	private void handleBrowseModelButton() {
+		FilteredResourcesSelectionDialog dialog = new FilteredResourcesSelectionDialog(getShell(), false,
+				ResourcesPlugin.getWorkspace().getRoot(), IResource.FILE);
+		dialog.setTitle(AcceleoUIMessages.getString("AcceleoMainTab.SelectModel")); //$NON-NLS-1$
+		String path = modelText.getText();
+		if (path != null && path.length() > 0 && new Path(path).lastSegment().length() > 0) {
+			dialog.setInitialPattern(new Path(path).lastSegment());
+		} else {
+			dialog.setInitialPattern("*.xmi"); //$NON-NLS-1$
+		}
+		dialog.open();
+		if (dialog.getResult() != null && dialog.getResult().length > 0
+				&& dialog.getResult()[0] instanceof IFile) {
+			modelText.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
+		}
+	}
+
+	/**
+	 * Creates the widgets for specifying the target folder.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoTargetEditor(Composite parent) {
+		Font font = parent.getFont();
+		Group mainGroup = createGroup(parent, AcceleoUIMessages.getString("AcceleoMainTab.TargetPath"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_HORIZONTAL);
+		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		targetText = createSingleText(comp, 1);
+		targetText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		targetButton = createPushButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Browse"), null); //$NON-NLS-1$
+		targetButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				handleBrowseTargetButton();
+			}
+		});
+	}
+
+	/**
+	 * Show a dialog that lists all the models.
+	 */
+	private void handleBrowseTargetButton() {
+		IResource initial;
+		if (targetText.getText() != null && targetText.getText().length() > 0) {
+			initial = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(targetText.getText()));
+			if (initial instanceof IFile) {
+				initial = initial.getParent();
+			}
+		} else {
+			initial = null;
+		}
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(), ResourcesPlugin
+				.getWorkspace().getRoot(), true, AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.ContainerSelection")); //$NON-NLS-1$
+		if (initial != null) {
+			dialog.setInitialSelections(new Object[] {initial});
+		}
+		dialog.showClosedProjects(false);
+		if (dialog.open() == Window.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				targetText.setText(((Path)result[0]).toString());
+			}
+		}
+	}
+
+	/**
+	 * Creates the widgets for specifying the arguments.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoArgumentsEditor(Composite parent) {
+		Font font = parent.getFont();
+		Group mainGroup = createGroup(parent, AcceleoUIMessages.getString("AcceleoMainTab.Arguments"), 2, 1, //$NON-NLS-1$
+				GridData.VERTICAL_ALIGN_BEGINNING);
+		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		argumentsText = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		final int heightHint = 70;
+		gd.heightHint = heightHint;
+		gd.widthHint = 100;
+		gd.horizontalSpan = 2;
+		argumentsText.setLayoutData(gd);
+		argumentsText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+	}
+
+	/**
+	 * Creates the widgets for specifying the launching strategy.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoLaunchingStrategyEditor(Composite parent) {
+		Font font = parent.getFont();
+		Composite comp = createComposite(parent, font, 2, 2, GridData.VERTICAL_ALIGN_END, 0, 0);
+		Label label = new Label(comp, SWT.NONE);
+		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.LaunchingStrategy")); //$NON-NLS-1$
+		launchingStrategyCombo = new Combo(comp, SWT.READ_ONLY);
+		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		gridData.horizontalSpan = 1;
+		launchingStrategyCombo.setLayoutData(gridData);
+		launchingStrategyCombo.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// nothing to do here
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		updateStrategies();
+		if (launchingStrategyCombo.getItemCount() > 0) {
+			launchingStrategyCombo.select(0);
+		}
+	}
+
+	/**
+	 * Refreshes the available example strategies in the current Eclipse instance.
+	 */
+	private void updateStrategies() {
+		if (launchingStrategyCombo != null) {
+			List<String> descriptions = new ArrayList<String>();
+			Iterator<String> strategies = getLaunchingStrategies().iterator();
+			while (strategies.hasNext()) {
+				descriptions.add(strategies.next());
+			}
+			launchingStrategyCombo.setItems(descriptions.toArray(new String[descriptions.size()]));
+			final int visibleItemCount = 15;
+			if (descriptions.size() < visibleItemCount) {
+				launchingStrategyCombo.setVisibleItemCount(descriptions.size());
+			} else {
+				launchingStrategyCombo.setVisibleItemCount(visibleItemCount);
+			}
+		}
+	}
+
+	/**
+	 * Creates a Group widget.
+	 * 
+	 * @param parent
+	 *            the parent composite to add this group to
+	 * @param text
+	 *            the text for the heading of the group
+	 * @param columns
+	 *            the number of columns within the group
+	 * @param hspan
+	 *            the horizontal span the group should take up on the parent
+	 * @param fill
+	 *            the style for how this composite should fill into its parent Can be one of
+	 *            <code>GridData.FILL_HORIZONAL</code>, <code>GridData.FILL_BOTH</code> or
+	 *            <code>GridData.FILL_VERTICAL</code>
+	 * @return the new group
+	 */
+	private Group createGroup(Composite parent, String text, int columns, int hspan, int fill) {
+		Group g = new Group(parent, SWT.NONE);
+		g.setLayout(new GridLayout(columns, false));
+		g.setText(text);
+		g.setFont(parent.getFont());
+		GridData gd = new GridData(fill);
+		gd.horizontalSpan = hspan;
+		g.setLayoutData(gd);
+		return g;
+	}
+
+	/**
+	 * Creates a Composite widget.
+	 * 
+	 * @param parent
+	 *            the parent composite to add this composite to
+	 * @param font
+	 *            is the font
+	 * @param columns
+	 *            the number of columns within the composite
+	 * @param hspan
+	 *            the horizontal span the composite should take up on the parent
+	 * @param fill
+	 *            the style for how this composite should fill into its parent Can be one of
+	 *            <code>GridData.FILL_HORIZONAL</code>, <code>GridData.FILL_BOTH</code> or
+	 *            <code>GridData.FILL_VERTICAL</code>
+	 * @param marginwidth
+	 *            the width of the margin to place around the composite (default is 5, specified by
+	 *            GridLayout)
+	 * @param marginheight
+	 *            the height of the margin to place around the composite (default is 5, specified by
+	 *            GridLayout)
+	 * @return the new group
+	 */
+	private Composite createComposite(Composite parent, Font font, int columns, int hspan, int fill,
+			int marginwidth, int marginheight) {
+		Composite g = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout(columns, false);
+		layout.marginWidth = marginwidth;
+		layout.marginHeight = marginheight;
+		g.setLayout(layout);
+		g.setFont(font);
+		GridData gd = new GridData(fill);
+		gd.horizontalSpan = hspan;
+		g.setLayoutData(gd);
+		return g;
+	}
+
+	/**
+	 * Creates a new text widget.
+	 * 
+	 * @param parent
+	 *            the parent composite to add this text widget to
+	 * @param hspan
+	 *            the horizontal span to take up on the parent composite
+	 * @return the new text widget
+	 */
+	private Text createSingleText(Composite parent, int hspan) {
+		Text t = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		t.setFont(parent.getFont());
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = hspan;
+		t.setLayoutData(gd);
+		return t;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getName()
+	 */
+	public String getName() {
+		return "Acceleo"; //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getId()
+	 */
+	public String getId() {
+		return "org.eclipse.acceleo.ide.ui.launching.acceleoMainTab"; //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
+	 */
+	public void initializeFrom(ILaunchConfiguration config) {
+		super.initializeFrom(config);
+		updateAcceleoModelFromConfig(config);
+		updateAcceleoTargetFromConfig(config);
+		updateAcceleoArgumentsFromConfig(config);
+		updateAcceleoLaunchingStrategyFromConfig(config);
+	}
+
+	/**
+	 * Loads the model path from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the model path
+	 */
+	protected void updateAcceleoModelFromConfig(ILaunchConfiguration config) {
+		String model = ""; //$NON-NLS-1$
+		try {
+			model = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		modelText.setText(model);
+	}
+
+	/**
+	 * Loads the target path from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the target path
+	 */
+	protected void updateAcceleoTargetFromConfig(ILaunchConfiguration config) {
+		String target = ""; //$NON-NLS-1$
+		try {
+			target = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		targetText.setText(target);
+	}
+
+	/**
+	 * Loads the arguments from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the arguments
+	 */
+	protected void updateAcceleoArgumentsFromConfig(ILaunchConfiguration config) {
+		String args = ""; //$NON-NLS-1$
+		try {
+			args = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		argumentsText.setText(args);
+	}
+
+	/**
+	 * Loads the launching strategy from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the launching strategy
+	 */
+	protected void updateAcceleoLaunchingStrategyFromConfig(ILaunchConfiguration config) {
+		String id = ""; //$NON-NLS-1$
+		try {
+			id = config
+					.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		int item = getLaunchingStrategies().indexOf(id);
+		if (item == -1) {
+			item = 0;
+		}
+		if (launchingStrategyCombo.getItemCount() > item) {
+			launchingStrategyCombo.select(item);
+		} else if (launchingStrategyCombo.getItemCount() > 0) {
+			launchingStrategyCombo.select(0);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
+	 */
+	public boolean isValid(ILaunchConfiguration config) {
+		boolean result = super.isValid(config);
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		if (result) {
+			String model = modelText.getText().trim();
+			IStatus status = workspace.validatePath(model, IResource.FILE);
+			if (status.isOK()) {
+				IFile file = workspace.getRoot().getFile(new Path(model));
+				if (!file.exists()) {
+					setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingModel", //$NON-NLS-1$
+							new Object[] {model}));
+					result = false;
+				}
+			} else {
+				setErrorMessage(AcceleoUIMessages
+						.getString("AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
+				result = false;
+			}
+		}
+		if (result) {
+			String target = targetText.getText().trim();
+			IStatus status = workspace.validatePath(target, IResource.FOLDER | IResource.PROJECT);
+			if (!status.isOK()) {
+				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.InvalidTarget", //$NON-NLS-1$
+						new Object[] {target}));
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	 */
+	public void performApply(ILaunchConfigurationWorkingCopy config) {
+		if (javaArgumentsTab != null) {
+			javaArgumentsTab.updateArguments(config, modelText.getText().trim(), targetText.getText().trim(),
+					argumentsText.getText());
+		}
+		super.performApply(config);
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, modelText.getText().trim());
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, targetText.getText().trim());
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, argumentsText.getText());
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION,
+				launchingStrategyCombo.getText());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+	 */
+	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
+		super.setDefaults(config);
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, ""); //$NON-NLS-1$
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, ""); //$NON-NLS-1$
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getImage()
+	 */
+	public Image getImage() {
+		return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_main.gif"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Gets all the launching strategies existing in the current Eclipse instance. The identifier of the
+	 * internal extension point specifying the implementation to use for launching strategy. It is used to
+	 * define a specific way of launching an Acceleo generation.
+	 * 
+	 * @return all the launching strategies descriptions
+	 */
+	private List<String> getLaunchingStrategies() {
+		if (launchingStrategies == null) {
+			launchingStrategies = new ArrayList<String>();
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			IExtensionPoint extensionPoint = registry
+					.getExtensionPoint(IAcceleoLaunchingStrategy.LAUNCHING_STRATEGY_EXTENSION_ID);
+			if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
+				IExtension[] extensions = extensionPoint.getExtensions();
+				for (int i = 0; i < extensions.length; i++) {
+					IExtension extension = extensions[i];
+					IConfigurationElement[] members = extension.getConfigurationElements();
+					for (int j = 0; j < members.length; j++) {
+						IConfigurationElement member = members[j];
+						String description = member.getAttribute("description"); //$NON-NLS-1$
+						if (description != null && description.length() > 0) {
+							launchingStrategies.add(description);
+						}
+					}
+				}
+			}
+		}
+		return launchingStrategies;
+	}
+
+}

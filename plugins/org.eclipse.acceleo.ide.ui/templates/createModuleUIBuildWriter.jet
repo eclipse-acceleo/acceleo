@@ -1,0 +1,12 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.wizards.newproject"
+ class = "CreateModuleUIBuildWriter"
+ imports = ""
+%>
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\
+               .,\
+               plugin.xml,\
+               icons/
+

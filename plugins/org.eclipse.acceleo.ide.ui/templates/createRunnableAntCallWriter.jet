@@ -1,0 +1,24 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.builders.runner"
+ class = "CreateRunnableAntCallWriter"
+ imports = ""
+%>
+<%
+ CreateRunnableAcceleoContent content = (CreateRunnableAcceleoContent) argument;
+%>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Rename this file, put it in the target project and call it with "External Tools > Run As > Ant Build" -->
+<!-- You have to change the MODEL and the TARGET values -->
+
+<project basedir="." default="<%=content.getModuleFileShortName()%>Sample" name="<%=content.getProjectName()%>Sample">
+	<import file="../<%=content.getProjectName()%>/tasks/<%=content.getModuleFileShortName()%>.xml"/>
+	<property name="MODEL" value="${basedir}/model/file.xmi"/>
+	<property name="TARGET" value="${basedir}/src-gen"/>
+	<target name="<%=content.getModuleFileShortName()%>Sample" description="Generate files in '${TARGET}'">
+		<antcall target="<%=content.getModuleFileShortName()%>" >
+			<param name="model" value="${MODEL}"/>
+			<param name="target" value="${TARGET}"/>
+		</antcall>
+	</target>
+</project>

@@ -1,0 +1,11 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.wizards.newproject"
+ class = "CreateModuleUISettingsWriter"
+ imports = ""
+%>
+eclipse.preferences.version=1
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
+org.eclipse.jdt.core.compiler.compliance=1.5
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
+org.eclipse.jdt.core.compiler.source=1.5

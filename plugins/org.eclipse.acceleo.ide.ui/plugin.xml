@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<!--
+Copyright (c) 2008, 2009 Obeo.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+Contributors:
+    Obeo - initial API and implementation
+-->
+
+<plugin>
+
+   <extension-point id="example" name="org.eclipse.acceleo.ide.ui.example" schema="schema/example.exsd"/>
+
+   <extension point="org.eclipse.acceleo.ide.ui.example">
+      <strategy
+            class="org.eclipse.acceleo.ide.ui.wizards.newfile.example.AcceleoCopyExampleContentStrategy"/>
+   </extension>
+   
+   <extension point="org.eclipse.acceleo.ide.ui.example">
+      <strategy
+            class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.MTContentStrategy"/>
+   </extension>
+
+   <extension point="org.eclipse.acceleo.ide.ui.example">
+      <strategy
+            class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.XpandContentStrategy"/>
+   </extension>
+  
+   <extension-point id="launching" name="org.eclipse.acceleo.ide.ui.launching" schema="schema/launching.exsd"/>
+
+   <!-- The description attribute mustn't be modified -->
+   <extension point="org.eclipse.acceleo.ide.ui.launching">
+      <strategy
+            description="Acceleo Plug-in Application"
+            class="org.eclipse.acceleo.ide.ui.launching.strategy.AcceleoPluginLaunchingStrategy"/>
+   </extension>
+   <extension point="org.eclipse.acceleo.ide.ui.launching">
+      <strategy
+            description="Java Application"
+            class="org.eclipse.acceleo.internal.ide.ui.launching.strategy.AcceleoJavaLaunchingStrategy"/>
+   </extension>
+
+   <extension point="org.eclipse.core.resources.builders" id="acceleoBuilder" name="Acceleo Builder">
+      <builder hasNature="true">
+         <run class="org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilder" /> 
+      </builder>
+   </extension>
+   
+   <extension point="org.eclipse.core.resources.natures" id="acceleoNature" name="Acceleo Nature">
+      <runtime>
+         <run class="org.eclipse.acceleo.ide.ui.natures.AcceleoNature" /> 
+      </runtime>
+      <builder id="org.eclipse.acceleo.ide.ui.acceleoBuilder"/>
+   </extension>
+
+   <extension id="problem" point="org.eclipse.core.resources.markers" name="Acceleo Problem">
+      <super type="org.eclipse.core.resources.problemmarker" /> 
+      <persistent value="true" />
+   </extension>
+
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
+      <image 
+         id="org.eclipse.acceleo.ide.ui.acceleoNatureImage"
+         natureId="org.eclipse.acceleo.ide.ui.acceleoNature"
+         icon="icons/AcceleoNature.gif">
+      </image>
+   </extension>
+
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="org.eclipse.acceleo.ide.ui.popupMenus.contribution.IProject">
+         <menu id="org.eclipse.acceleo.ide.ui.menu" label="Acceleo" path="additionsAcceleo">
+               <groupMarker name="acceleo"/> 
+         </menu>
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.natures.AcceleoToggleNatureAction"
+               enablesFor="+"
+               id="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureAction"
+               icon = "icons/AcceleoNature.gif"
+               label="Remove Acceleo Nature"
+               menubarPath="org.eclipse.acceleo.ide.ui.menu/acceleo"/>
+         <filter
+               name="nature"
+               value="org.eclipse.acceleo.ide.ui.acceleoNature"/>
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.popupMenus.AcceleoNewProjectUIWizardAction"
+               enablesFor="1"
+               id="org.eclipse.acceleo.ide.ui.popupMenus.AcceleoNewProjectUIWizardAction"
+               icon = "icons/AcceleoNewProject.gif"
+               label="Create Acceleo Module UI Project"
+               menubarPath="org.eclipse.acceleo.ide.ui.menu/acceleo"/>
+         <filter
+               name="nature"
+               value="org.eclipse.acceleo.ide.ui.acceleoNature"/>
+      </objectContribution>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor"
+            icon="icons/AcceleoEditor.gif"
+            contributorClass="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditorActionContributor"
+            name="Acceleo Template Editor"
+            extensions="mtl"
+            id="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="Acceleo Editor Actions"
+            description="Acceleo Editor Actions"
+            visible="false"
+            id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.OpenDeclarationAction"
+           definitionId="org.eclipse.acceleo.ide.ui.open.declaration"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.open.declaration"
+           label="Open Declaration"
+           retarget="false"
+           tooltip="Open Declaration">
+        </action>
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchAction"
+           definitionId="org.eclipse.acceleo.ide.ui.search.references"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.search.references"
+           label="%acceleoEditorActionReferencesSearch.Label"
+           retarget="false"
+           tooltip="%acceleoEditorActionReferencesSearch.Tooltip">
+        </action>
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.CommentAction"
+           definitionId="org.eclipse.acceleo.ide.ui.comment"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.comment"
+           label="Comment"
+           retarget="false"
+           tooltip="Comment">
+        </action>
+      </actionSet>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+          <command
+                categoryId="org.eclipse.ui.category.navigate"
+                description="Open Declaration"
+                id="org.eclipse.acceleo.ide.ui.open.declaration"
+                name="Open Declaration">
+         </command>
+          <command
+                categoryId="org.eclipse.ui.category.navigate"
+                description="%acceleoEditorCommandsReferencesSearch.Description"
+                id="org.eclipse.acceleo.ide.ui.search.references"
+                name="%acceleoEditorCommandsReferencesSearch.Name">
+         </command>
+          <command
+                categoryId="org.eclipse.ui.category.navigate"
+                description="Comment"
+                id="org.eclipse.acceleo.ide.ui.comment"
+                name="Comment">
+      </command>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="Acceleo Editor"
+            description="Acceleo editing template context"
+            parentId="org.eclipse.ui.textEditorScope"
+            id="org.eclipse.acceleo.ide.ui.editors.template.editor">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+               <key
+                     commandId="org.eclipse.acceleo.ide.ui.open.declaration"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="F3"/>
+               <key
+                     commandId="org.eclipse.acceleo.ide.ui.search.references"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="M1+M2+G"/>
+			   <key
+                     commandId="org.eclipse.acceleo.ide.ui.comment"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="M1+M2+C"/>       
+			   <key
+                     commandId="org.eclipse.acceleo.ide.ui.comment"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="M1+/"/>                                   
+   </extension>
+
+    <extension
+          point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <actionSet
+               id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.debug.ui.DebugPerspective">
+         <actionSet
+               id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
+         <actionSet
+               id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
+         </actionSet>
+         <view
+               id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.TaskList">
+         </view>
+      </perspectiveExtension>
+    </extension>
+    <extension
+          point="org.eclipse.ui.newWizards">
+       <category
+             id="org.eclipse.acceleo.ide.ui"
+             name="%acceleo">
+       </category>
+       <wizard
+             category="org.eclipse.acceleo.ide.ui"
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
+             icon="icons/AcceleoEditor.gif"
+             id="org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
+             name="Acceleo Template"
+             finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
+          <description>
+             %AcceleoTemplateDescription
+          </description>
+       </wizard>
+       <wizard
+             category="org.eclipse.acceleo.ide.ui"
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
+             icon="icons/AcceleoNewProject.gif"
+             id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
+             name="Acceleo Module Project"
+             finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
+             project="true">
+          <description>
+             %AcceleoModuleDescription
+          </description>
+       </wizard>
+       <wizard
+             category="org.eclipse.acceleo.ide.ui"
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
+             icon="icons/AcceleoNewProject.gif"
+             id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
+             name="Acceleo Module UI Project"
+             finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
+             project="true">
+          <description>
+             %AcceleoUIModuleDescription
+          </description>
+       </wizard>
+    </extension>
+
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective
+          name="Acceleo"
+          icon="/icons/AcceleoPerspective.gif"
+          class="org.eclipse.acceleo.internal.ide.ui.perspectives.AcceleoPerspectiveFactory"
+          id="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
+      </perspective>
+   </extension>
+
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            sourceLocatorId="org.eclipse.acceleo.ide.ui.launching.AcceleoSourceLookupDirector"
+            name="%acceleoLaunchConfigurationName"
+            sourcePathComputerId="org.eclipse.acceleo.ide.ui.launching.AcceleoSourcePathComputer"
+            delegate="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoLaunchDelegate"
+            modes="run, debug"
+            id="org.eclipse.acceleo.ide.ui.launching.launchConfigurationType">
+      </launchConfigurationType>
+   </extension>
+
+   <extension point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            name="%acceleoSourceLocatorName"
+            class="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoSourceLookupDirector"
+            id="org.eclipse.acceleo.ide.ui.launching.AcceleoSourceLookupDirector">
+      </sourceLocator>
+   </extension>
+
+   <extension point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            class="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoSourcePathComputer"
+            id="org.eclipse.acceleo.ide.ui.launching.AcceleoSourcePathComputer">
+      </sourcePathComputer>
+   </extension>
+   
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/AcceleoLaunch.gif"
+            configTypeID="org.eclipse.acceleo.ide.ui.launching.launchConfigurationType"
+            id="org.eclipse.acceleo.ide.ui.launching.launchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.acceleo.ide.ui.launching.launchConfigurationType"
+            description="%acceleoLaunchConfigurationGroupName"
+            class="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoApplicationTabGroup"
+            id="org.eclipse.acceleo.ide.ui.launching.AcceleoApplicationTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="%acceleoShortcutLaunchLabel"
+            icon="icons/AcceleoLaunch.gif"
+            class="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoApplicationLaunchShortcut"
+            modes="run, debug"
+            id="org.eclipse.acceleo.ide.ui.launching.AcceleoApplicationLaunchShortcut">
+         <contextualLaunch>
+            <enablement>
+               <with variable="selection">
+                  <count value="1"/>
+                  <iterate>
+                   <or>
+                     <test property="org.eclipse.debug.ui.matchesPattern" value="*.mtl"/>
+                     <and>
+                      <test property="org.eclipse.jdt.launching.isContainer"/>
+                      <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.acceleo.ide.ui.acceleoNature"/>
+                     </and>
+                     <and>
+                      <adapt type="org.eclipse.jdt.core.IJavaElement">
+                  	    <test property="org.eclipse.jdt.core.isInJavaProject"/>
+                      </adapt>
+               	      <or>
+               	        <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.acceleo.ide.ui.acceleoNature"/>
+               	        <test property="org.eclipse.jdt.launching.hasMain"/>
+               	        <test property="org.eclipse.jdt.launching.isContainer"/>
+               	        <test property="org.eclipse.jdt.launching.isPackageFragment"/>
+               	        <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+               	      </or>
+                     </and>
+                   </or>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoModelPresentation"
+            id="org.eclipse.acceleo.ide.ui.debug.model.AcceleoModelPresentation">
+      </debugModelPresentation>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            markerType="org.eclipse.acceleo.ide.ui.debug.markerType.lineBreakpoint"
+            class="org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoLineBreakpoint"
+            id="org.eclipse.acceleo.ide.ui.debug.model.AcceleoLineBreakpoint"
+            name="%breakpointName">
+      </breakpoint>
+   </extension>
+   
+   <extension
+         id="org.eclipse.acceleo.ide.ui.debug.markerType.lineBreakpoint"
+         name="%breakpointMarkerName"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker"/>
+      <persistent value="true"/>
+      <attribute name="astFragment"/>
+   </extension>
+ 
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            class="org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoBreakpointAdapterFactory"
+            adaptableType="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor">
+			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+			<adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
+      </factory>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor"
+            id="acceleo.rulerActions">
+         <action
+               label="Toggle Acceleo Breakpoint"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               style="push"
+               actionID="RulerDoubleClick"
+               id="org.eclipse.acceleo.ide.ui.debug.actions.doubleClickBreakpointAction"/>
+         <action
+               label="Filter Acceleo Breakpoint"
+               class="org.eclipse.acceleo.internal.ide.ui.debug.actions.RulerSelectModelActionDelegate"
+               style="push"
+               actionID="RulerClick"
+               id="org.eclipse.acceleo.ide.ui.debug.actions.clickBreakpointAction"/>
+      </editorContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%contextName"
+            description="%contextDescription"
+            id="org.eclipse.acceleo.ide.ui.debug"
+            parentId="org.eclipse.debug.ui.debugging">
+      </context>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.debugModelContextBindings">
+      <modelContextBinding
+            debugModelId="org.eclipse.acceleo.ide.ui.debug.model"
+            contextId="org.eclipse.acceleo.ide.ui.debug">
+      </modelContextBinding>
+   </extension>
+   
+   <extension point="org.eclipse.core.runtime.contentTypes">
+	  <content-type id="emtl" name="Acceleo AST File" 
+		 base-type="org.eclipse.jdt.core.javaClass"
+		 priority="high"
+		 file-extensions="emtl"/>
+   </extension>
+
+    <extension
+          point="org.eclipse.search.searchResultViewPages">
+       <viewPage
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchViewPage"
+             id="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.ReferencesSearchViewPage"
+             searchResultClass="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchResult">
+       </viewPage>
+    </extension>
+    
+    <extension
+          point="org.eclipse.ui.views">
+       <category
+             id="org.eclipse.acceleo.ide.ui"
+             name="Acceleo">
+       </category>
+       <view
+             category="org.eclipse.acceleo.ide.ui"
+             class="org.eclipse.acceleo.internal.ide.ui.views.result.AcceleoResultView"
+             icon="icons/AcceleoResultView.gif"
+             id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
+             name="Acceleo Result">
+       </view>
+    </extension>
+
+	<extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+       <hyperlinkDetector
+             activate="true"
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoElementHyperlinkDetector"
+             id="org.eclipse.acceleo.ide.ui.openDeclarationHyperlink"
+             name="Acceleo Open Declaration"
+             targetId="org.eclipse.acceleo.ide.ui.AcceleoTemplateSource">
+       </hyperlinkDetector>
+    </extension>
+    
+    <extension
+          point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+       <target
+             id="org.eclipse.acceleo.ide.ui.AcceleoTemplateSource"
+             name="Acceleo Editor">
+          <context
+                type="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor">
+          </context>
+       </target>
+    </extension>
+</plugin>

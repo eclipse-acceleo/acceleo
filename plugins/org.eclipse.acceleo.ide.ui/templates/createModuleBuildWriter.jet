@@ -1,0 +1,10 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.wizards.newproject"
+ class = "CreateModuleBuildWriter"
+ imports = ""
+%>
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\
+               .
+
