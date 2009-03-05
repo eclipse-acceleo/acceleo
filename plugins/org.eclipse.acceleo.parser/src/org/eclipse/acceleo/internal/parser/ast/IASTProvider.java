@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.internal.parser.ast;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
+/**
+ * An AST provider. You can create an AST model with the method 'createAST'. An AST is created in a single
+ * resource. All the dependencies of this resource should be searched in the other resources of the same
+ * 'ResourceSet'. You should resolve the links between the different AST models of the current 'ResourceSet'
+ * with the method 'resolveAST'.
+ * 
+ * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ */
+public interface IASTProvider {
+
+	/**
+	 * Gets the AST model. It is created when you call the 'createAST' function.
+	 * 
+	 * @return the AST model
+	 */
+	org.eclipse.acceleo.model.mtl.Module getAST();
+
+	/**
+	 * Creates the CST model. This function must be called before 'createAST'
+	 */
+	void createCST();
+
+	/**
+	 * Creates the AST model. This function must be called before 'resolveAST' and after 'createCST'
+	 * 
+	 * @param resource
+	 *            where the AST will be stored
+	 */
+	void createAST(Resource resource);
+
+	/**
+	 * Resolution step of the AST creation: OCL and invocations. This function must be called after
+	 * 'createAST'.
+	 */
+	void resolveAST();
+
+}
