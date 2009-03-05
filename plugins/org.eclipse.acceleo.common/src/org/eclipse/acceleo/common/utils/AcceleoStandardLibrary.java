@@ -36,7 +36,8 @@ public final class AcceleoStandardLibrary {
 	 * <b>toString( Integer i ) : String</b><br/> Converts the integer i to a string.
 	 * </p>
 	 * <p>
-	 * <b>Note</b> that this has been replaced by the {@link AcceleoNonStandardLibrary#OPERATION_OCLANY_TOSTRING}.
+	 * <b>Note</b> that this has been replaced by the
+	 * {@link AcceleoNonStandardLibrary#OPERATION_OCLANY_TOSTRING}.
 	 * </p>
 	 */
 	public static final String OPERATION_INTEGER_TOSTRING = "toString"; //$NON-NLS-1$
@@ -47,7 +48,8 @@ public final class AcceleoStandardLibrary {
 	 * <b>toString( Real r ) : String</b><br/> Converts the real r to a string.
 	 * </p>
 	 * <p>
-	 * <b>Note</b> that this has been replaced by the {@link AcceleoNonStandardLibrary#OPERATION_OCLANY_TOSTRING}.
+	 * <b>Note</b> that this has been replaced by the
+	 * {@link AcceleoNonStandardLibrary#OPERATION_OCLANY_TOSTRING}.
 	 * </p>
 	 */
 	public static final String OPERATION_REAL_TOSTRING = "toString"; //$NON-NLS-1$
@@ -189,7 +191,8 @@ public final class AcceleoStandardLibrary {
 			integerType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_INTEGER_NAME);
 			realType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_REAL_NAME);
 		} catch (IOException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("AcceleoStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
+			AcceleoCommonPlugin.log(
+					AcceleoCommonMessages.getString("AcceleoStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
 		}
 	}
 

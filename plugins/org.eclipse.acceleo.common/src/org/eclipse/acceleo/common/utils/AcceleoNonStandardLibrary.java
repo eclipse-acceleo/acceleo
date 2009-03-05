@@ -176,7 +176,8 @@ public final class AcceleoNonStandardLibrary {
 			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
 			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
 		} catch (IOException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("AcceleoNonStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
+			AcceleoCommonPlugin.log(
+					AcceleoCommonMessages.getString("AcceleoNonStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
 		}
 	}
 

@@ -74,7 +74,8 @@ public class AcceleoCommonPlugin extends Plugin {
 	 */
 	public static void log(Exception e, boolean blocker) {
 		if (e == null) {
-			throw new NullPointerException(AcceleoCommonMessages.getString("AcceleoCommonPlugin.LogNullException")); //$NON-NLS-1$
+			throw new NullPointerException(AcceleoCommonMessages
+					.getString("AcceleoCommonPlugin.LogNullException")); //$NON-NLS-1$
 		}
 
 		if (getDefault() == null) {
@@ -111,7 +112,8 @@ public class AcceleoCommonPlugin extends Plugin {
 		// Eclipse platform displays NullPointer on standard error instead of throwing it.
 		// We'll handle this by throwing it ourselves.
 		if (status == null) {
-			throw new NullPointerException(AcceleoCommonMessages.getString("AcceleoCommonPlugin.LogNullStatus")); //$NON-NLS-1$
+			throw new NullPointerException(AcceleoCommonMessages
+					.getString("AcceleoCommonPlugin.LogNullStatus")); //$NON-NLS-1$
 		}
 
 		if (getDefault() != null) {
@@ -222,7 +224,8 @@ public class AcceleoCommonPlugin extends Plugin {
 			for (IExtension extension : extensions) {
 				for (IConfigurationElement service : extension.getConfigurationElements()) {
 					try {
-						AcceleoServicesEclipseUtil.addService(service.createExecutableExtension(CLASS_TAG_NAME));
+						AcceleoServicesEclipseUtil.addService(service
+								.createExecutableExtension(CLASS_TAG_NAME));
 					} catch (CoreException e) {
 						log(e, false);
 					}

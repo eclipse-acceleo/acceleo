@@ -38,8 +38,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.PackageAdmin;
 
 /**
- * Eclipse-specific utilities for Acceleo services. It will be initialized with all services that could be parsed
- * from the extension point if Eclipse is running and won't be used when outside of Eclipse.
+ * Eclipse-specific utilities for Acceleo services. It will be initialized with all services that could be
+ * parsed from the extension point if Eclipse is running and won't be used when outside of Eclipse.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
@@ -236,9 +236,12 @@ public final class AcceleoServicesEclipseUtil {
 						jobManager.removeJobChangeListener(listener);
 					}
 				} catch (BundleException e) {
-					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-							"AcceleoServicesEclipseUtil.installationFailure", candidate.getBundleDescription() //$NON-NLS-1$
-									.getName(), e.getMessage()), false);
+					AcceleoCommonPlugin
+							.log(
+									AcceleoCommonMessages
+											.getString(
+													"AcceleoServicesEclipseUtil.installationFailure", candidate.getBundleDescription() //$NON-NLS-1$
+															.getName(), e.getMessage()), false);
 					AcceleoCommonPlugin.log(e, false);
 				} catch (MalformedURLException e) {
 					AcceleoCommonPlugin.log(e, false);
