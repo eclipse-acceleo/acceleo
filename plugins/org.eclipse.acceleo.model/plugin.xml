@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+Copyright (c) 2008, 2009 Obeo.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+Contributors:
+    Obeo - initial API and implementation
+-->
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.eclipse.org/acceleo/mtl/0.8.0/" 
+       class = "org.eclipse.acceleo.model.mtl.MtlPackage"
+       genModel = "model/mtl.genmodel" /> 
+  </extension>
+
+  <extension point="org.eclipse.emf.ecore.extension_parser">
+    <parser 
+       type="emtl" 
+       class="org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl" />
+  </extension>
+
+  <extension
+        point="org.eclipse.emf.ecore.uri_mapping">
+     <mapping
+           source="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlstdlib.ecore"
+           target="platform:/plugin/org.eclipse.acceleo.model/model/mtlstdlib.ecore">
+     </mapping>
+  </extension>
+  
+  <extension
+        point="org.eclipse.emf.ecore.uri_mapping">
+     <mapping
+           source="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore"
+           target="platform:/plugin/org.eclipse.acceleo.model/model/mtlnonstdlib.ecore">
+     </mapping>
+  </extension>
+</plugin>

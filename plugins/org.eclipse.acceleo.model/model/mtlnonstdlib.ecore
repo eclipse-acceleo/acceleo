@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore" name="mtlnonstdlib"
+    nsURI="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore" nsPrefix="mtlnonstdlib">
+  <eClassifiers xsi:type="ecore:EClass" name="String">
+    <eOperations name="replace" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="replacement" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="replaceAll" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="replacement" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="substituteAll" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="replacement" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="startsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="endsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="trim" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="tokenize" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="delimiters" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OclAny">
+    <eOperations name="eAllContents" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="eAllContents" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+    </eOperations>
+    <eOperations name="ancestors" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="siblings" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    <eOperations name="toString" eType="#//String">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="eInverse" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+  </eClassifiers>
+</ecore:EPackage>
