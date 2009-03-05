@@ -29,15 +29,16 @@ public class Ecore2PythonPlugin extends Plugin {
 	 * The shared instance.
 	 */
 	private static Ecore2PythonPlugin plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
 	public Ecore2PythonPlugin() {
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
@@ -45,8 +46,9 @@ public class Ecore2PythonPlugin extends Plugin {
 		plugin = this;
 	}
 
-	/**{@inheritDoc}
-	 *
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
@@ -56,7 +58,7 @@ public class Ecore2PythonPlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance.
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static Ecore2PythonPlugin getDefault() {
