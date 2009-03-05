@@ -13,7 +13,7 @@
  *
  * </copyright>
  *
- * $Id: AbstractExampleWizard.java,v 1.1 2009/03/05 16:41:27 jmusset Exp $
+ * $Id: AbstractExampleWizard.java,v 1.2 2009/03/05 17:14:12 jmusset Exp $
  */
 
 package org.eclipse.acceleo.examples.internal.wizard;
@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.eclipse.acceleo.examples.internal.AcceleoExamplesMessages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -39,7 +40,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.acceleo.examples.internal.AcceleoExamplesMessages;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
@@ -97,7 +97,8 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 						throws CoreException, InvocationTargetException, InterruptedException {
 							m
 									.beginTask(
-											AcceleoExamplesMessages.getString("AbstractExampleWizard.Task.Unzip"), projectDescriptors.size()); //$NON-NLS-1$
+											AcceleoExamplesMessages
+													.getString("AbstractExampleWizard.Task.Unzip"), projectDescriptors.size()); //$NON-NLS-1$
 
 							for (final ProjectDescriptor project : projectDescriptors) {
 								unzipProject(project, m);

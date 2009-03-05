@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.examples.internal.AcceleoExamplesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.acceleo.examples.internal.AcceleoExamplesPlugin;
 
 /**
  * This will allow the user to unzip the ecore2python example module.
@@ -53,7 +53,8 @@ public class Ecore2PythonExampleWizard extends AbstractExampleWizard {
 			AcceleoExamplesPlugin.getDefault().getLog().log(((CoreException)e).getStatus());
 		} else {
 			AcceleoExamplesPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, AcceleoExamplesPlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(), e));
+					new Status(IStatus.ERROR, AcceleoExamplesPlugin.PLUGIN_ID, IStatus.ERROR, e.getMessage(),
+							e));
 		}
 	}
 }
