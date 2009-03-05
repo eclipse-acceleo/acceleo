@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acceleo Uml2java Module Example
+Bundle-SymbolicName: org.eclipse.acceleo.module.example.uml2java
+Bundle-Version: 0.8.0.qualifier
+Bundle-Activator: org.eclipse.acceleo.module.example.uml2java.Uml2JavaPlugin
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.core.runtime, 
+ org.eclipse.uml2.uml,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.model,
+ org.eclipse.acceleo.engine
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.acceleo.module.example.uml2java
