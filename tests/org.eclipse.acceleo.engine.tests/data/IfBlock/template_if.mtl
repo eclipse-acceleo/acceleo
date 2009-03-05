@@ -1,0 +1,57 @@
+[module template_if('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment If test /]
+[template public testingIf(p : EPackage) {name : String = '';}]
+	[file ('testIf', false)]
+		[for (c : EClass | p.eClassifiers)]
+			[if (c.name = 'ClasseA')]Class name [c.name/] = ClasseA.[/if]
+		[/for]
+	[/file]
+[/template]
+
+[comment Else test /]
+[template public testingElse(p : EPackage) {name : String = '';}]
+	[file ('testElse', false)]
+		[for (c : EClass | p.eClassifiers)]
+			[if (c.name = 'NotMatched')]Must not be displayed.[else]Class name is [c.name/].[/if]
+		[/for]
+	[/file]
+[/template]
+
+[comment Elseif test /]
+[template public testingElseif(p : EPackage) {name : String = '';}]
+	[file ('testElseif', false)]
+		[for (c : EClass | p.eClassifiers)]
+			[if (c.name = 'ClasseA')]Class name is ClasseA.
+			[elseif (c.name = 'ClasseB')]Class name is ClasseB.
+			[/if]
+		[/for]
+	[/file]
+[/template]
+
+[comment Complete If test /]
+[template public testingCompleteIf(p : EPackage) {name : String = '';}]
+	[file ('testCompleteIf', false)]
+		[for (c : EClass | p.eClassifiers)]
+			[if (c.name = 'ClasseA')]Class name is ClasseA.
+			[elseif (c.name = 'ClasseB')]Class name is ClasseB.
+			[else]Class name is different from ClasseA and ClasseB.
+			[/if]
+		[/for]
+	[/file]
+[/template]
+
+[comment Nested If /]
+[template public testingNestedIf(p : EPackage) {name : String = '';}]
+	[file ('testNestedIf', false)]
+		[for (c : EClass | p.eClassifiers)]
+			[if (c.name = 'ClasseA')]Class name is A.
+				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+			[elseif (c.name = 'ClasseB')]Class name is B.
+				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+			[else]Class name is different.
+				[if (c.abstract)]Class is abstract[else]Class is not abstract.[/if]
+			[/if]
+		[/for]
+	[/file]
+[/template]

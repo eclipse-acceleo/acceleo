@@ -1,0 +1,19 @@
+[module template_generic_engine('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public public_template(p : EPackage, s : String)]
+	[file ('test_generic_engine', false)]
+		constant output
+	[/file]
+[/template]
+
+[template public public_template_false_guard(p : EPackage, s : String) ? (false)]
+	[file ('test_generic_engine', false)]
+		shouldn't be generated
+	[/file]
+[/template]
+
+[template private private_template(p : EPackage, s : String)]
+	[file ('test_generic_engine', false)]
+		shouldn't be generated
+	[/file]
+[/template]

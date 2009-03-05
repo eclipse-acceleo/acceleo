@@ -1,0 +1,52 @@
+[module protected_areas(http://www.eclipse.org/emf/2002/Ecore)/]
+[template public test_protected_area(c:EClassifier)]
+	[file('protected_areas', false)]
+		[local_template_protected_area(c)/]
+	[/file]
+	[file('protected_areas', false)]
+		[local_template_protected_area(c)/]
+	[/file]
+[/template]
+
+[template public test_removed_protected_area(c:EClassifier)]
+    [file('removed_protected_areas', false)]
+		[local_template_protected_area(c)/]
+	[/file]
+	[file('removed_protected_areas', false)]
+		[local_template_removed_protected_area(c)/]
+	[/file]
+[/template]
+
+[template public test_lost_protected_area(c:EClassifier)]
+    [file('lost_protected_areas', false)]
+		[local_template_protected_area(c)/]
+	[/file]
+	[file('lost_protected_areas', false)]
+		[local_template_lost_protected_area(c)/]
+	[/file]
+[/template]
+
+[comment template definitions/]
+[template public local_template_protected_area(c:EClassifier)]
+    // [protected('user code 1 '.concat(c.name))]
+	    first protected area
+	// [/protected]
+	// [protected('user code 2 '.concat(c.name))]
+	    second protected area
+	// [/protected]
+[/template]
+
+[template public local_template_removed_protected_area(c:EClassifier)]
+	// [protected('user code 2 '.concat(c.name))]
+	    second protected area
+	// [/protected]
+[/template]
+
+[template public local_template_lost_protected_area(c:EClassifier)]
+	// [protected('user code 2 '.concat(c.name))]
+	    second protected area
+	// [/protected]
+	// [protected('user code 3 '.concat(c.name))]
+	    third protected area
+	// [/protected]
+[/template]

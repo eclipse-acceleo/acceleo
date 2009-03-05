@@ -1,0 +1,12 @@
+[module extended(http://www.eclipse.org/emf/2002/Ecore)/]
+[template public namesake_3(c:EClassifier)]
+	extended.namesake_3 called on [c.eClass().name/] [c.name/]
+[/template]
+
+[template public namesake_extend(c:EClassifier)]
+	extended.namesake_extend called on [c.eClass().name/] [c.name/]
+[/template]
+
+[template public namesake_external(c:EClassifier)]
+	extended.namesake_external called on [c.eClass().name/] [c.name/]
+[/template]
