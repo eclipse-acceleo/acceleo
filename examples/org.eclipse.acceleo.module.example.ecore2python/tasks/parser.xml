@@ -20,6 +20,8 @@
     	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_1.2.0.v200806091438.jar"/>
     	<pathelement location="${ECLIPSE_HOME}/plugins/net.sourceforge.lpg.lpgjavaruntime_1.1.0.v200803061910.jar"/>
     	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.ecore_1.2.0.v200805130238.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/workspace/org.eclipse.acceleo.model/bin"/>
+    	<pathelement location="${ECLIPSE_HOME}/workspace/org.eclipse.acceleo.engine/bin"/>
     </path>
     <path id="org.eclipse.acceleo.module.example.ecore2python.classpath">
         <path refid="org.eclipse.acceleo.module.example.ecore2python.libraryclasspath"/>
