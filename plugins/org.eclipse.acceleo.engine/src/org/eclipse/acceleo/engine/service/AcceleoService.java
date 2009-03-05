@@ -1,0 +1,489 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.engine.service;
+
+import java.io.File;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
+import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * This class provides utility methods to launch the generation of an Acceleo template.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
+public final class AcceleoService {
+	/** The engine we'll use for all generations through this service. */
+	private static final IAcceleoEngine GENERATION_ENGINE = new AcceleoGenericEngine();
+
+	/** This message will be set for all NPE thrown because of null arguments for this utility's methods. */
+	private static final String TEMPLATE_CALL_NPE = AcceleoEngineMessages.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
+
+	/**
+	 * Utility classes don't need to (and shouldn't) be instantiated.
+	 */
+	private AcceleoService() {
+		// prevents instantiation
+	}
+
+	/**
+	 * Registers a listener to be notified for any text generation that will take place in this engine
+	 * evaluation process. This will have to be removed manually through
+	 * {@link #removeListener(AcceleoTextGenerationListener)}.
+	 * 
+	 * @param listener
+	 *            The new listener that is to be registered for notification.
+	 */
+	public static void addListener(AcceleoTextGenerationListener listener) {
+		GENERATION_ENGINE.addListener(listener);
+	}
+
+	/**
+	 * This can be used to launch the generation of multiple Acceleo templates given their names and their
+	 * containing modules.
+	 * <p>
+	 * Keep in mind that this can only be used with single-argument templates. Any attempt to call to a
+	 * template with more than one argument through this method will throw {@link AcceleoEvaluationException}s.
+	 * </p>
+	 * <p>
+	 * The input model will be iterated over for objects matching the templates' parameter types.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param templates
+	 *            This map will be used to locate templates of the given names in the associated module.
+	 * @param model
+	 *            Input model for this generation.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. Cannot be <code>null</code> except if
+	 *            <code>preview</code> is <code>true</code> in which case no files will be generated.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerate(Map<Module, Set<String>> templates, EObject model,
+			File generationRoot, boolean preview) {
+		if (templates == null || model == null || (!preview && generationRoot == null)) {
+			throw new NullPointerException(TEMPLATE_CALL_NPE);
+		}
+		Map<EClassifier, Set<Template>> templateTypes = new HashMap<EClassifier, Set<Template>>();
+		for (Map.Entry<Module, Set<String>> entry : templates.entrySet()) {
+			for (String templateName : entry.getValue()) {
+				Template template = findTemplate(entry.getKey(), templateName, 1);
+				EClassifier templateType = template.getParameter().get(0).getType();
+				if (templateTypes.containsKey(templateType)) {
+					templateTypes.get(templateType).add(template);
+				} else {
+					Set<Template> temp = new HashSet<Template>();
+					temp.add(template);
+					templateTypes.put(templateType, temp);
+				}
+			}
+		}
+
+		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+
+		// Calls all templates with each of their potential arguments
+		final List<Object> arguments = new ArrayList<Object>();
+		// The input model itself is a potential argument
+		arguments.add(model);
+		for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
+			if (entry.getKey().isInstance(model)) {
+				for (Template template : entry.getValue()) {
+					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+				}
+			}
+		}
+		final TreeIterator<EObject> targetElements = model.eAllContents();
+		while (targetElements.hasNext()) {
+			final EObject potentialTarget = targetElements.next();
+			for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
+				if (entry.getKey().isInstance(potentialTarget)) {
+					arguments.clear();
+					arguments.add(potentialTarget);
+					for (Template template : entry.getValue()) {
+						previewResult
+								.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+					}
+				}
+			}
+		}
+
+		return previewResult;
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template given its name and containing module.
+	 * <p>
+	 * This is a convenience method that can only be used with single argument templates. The input model will
+	 * be iterated over for objects matching the template's parameter type.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerate(Module module, String templateName, EObject model,
+			File generationRoot, boolean preview) {
+		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview);
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template given its name and containing module.
+	 * <p>
+	 * This is a convenience method that can be used with multiple argument templates. The input model will be
+	 * iterated over for objects matching the template's <b>first</b> parameter type. The template will then
+	 * be called with these objects as first arguments, and the given list of <code>arguments</code> for the
+	 * remaining template parameters.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param arguments
+	 *            Arguments of the template call, excluding the very first one (<code>model</code> object).
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerate(Module module, String templateName, EObject model,
+			List<? extends Object> arguments, File generationRoot, boolean preview) {
+		if (model == null || arguments == null || (!preview && generationRoot == null)) {
+			throw new NullPointerException(TEMPLATE_CALL_NPE);
+		}
+		final Template template = findTemplate(module, templateName, arguments.size() + 1);
+		if (template.getVisibility() != VisibilityKind.PUBLIC) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
+		}
+
+		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+
+		// Calls the template with each potential arguments
+		final EClassifier argumentType = template.getParameter().get(0).getType();
+		// The input model itself is a potential argument
+		if (argumentType.isInstance(model)) {
+			final List<Object> actualArguments = new ArrayList<Object>();
+			actualArguments.add(model);
+			actualArguments.addAll(arguments);
+			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview));
+		}
+		final TreeIterator<EObject> targetElements = model.eAllContents();
+		while (targetElements.hasNext()) {
+			final EObject potentialTarget = targetElements.next();
+			if (argumentType.isInstance(potentialTarget)) {
+				final List<Object> actualArguments = new ArrayList<Object>();
+				actualArguments.add(potentialTarget);
+				actualArguments.addAll(arguments);
+				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview));
+			}
+		}
+
+		return previewResult;
+	}
+
+	/**
+	 * Launches the generation of a single-argument Acceleo template for all matching EObjects in the given model.
+	 * <p>
+	 * This is a convenience method that can only be used with single argument templates. Any attempt at
+	 * calling other templates through this method will throw {@link AcceleoEvaluationException}s. The input model
+	 * will be iterated over for objects matching the template's parameter type.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param template
+	 *            The template that is to be generated
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerate(Template template, EObject model, File generationRoot,
+			boolean preview) {
+		if (template == null || model == null || (!preview && generationRoot == null)) {
+			throw new NullPointerException(TEMPLATE_CALL_NPE);
+		}
+		if (template.getVisibility() != VisibilityKind.PUBLIC) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
+		}
+		if (template.getParameter().size() != 1) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoEngine.VoidArguments")); //$NON-NLS-1$
+		}
+
+		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+
+		// Calls the template with each potential arguments
+		final EClassifier argumentType = template.getParameter().get(0).getType();
+		final List<Object> arguments = new ArrayList<Object>();
+		// The input model itself is a potential argument
+		if (argumentType.isInstance(model)) {
+			arguments.add(model);
+			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+		}
+		final TreeIterator<EObject> targetElements = model.eAllContents();
+		while (targetElements.hasNext()) {
+			final EObject potentialTarget = targetElements.next();
+			if (argumentType.isInstance(potentialTarget)) {
+				arguments.clear();
+				arguments.add(potentialTarget);
+				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+			}
+		}
+
+		return previewResult;
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template with the given arguments.
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param arguments
+	 *            Arguments that must be passed on to the template for evaluation.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerateTemplate(Module module, String templateName,
+			List<? extends Object> arguments, File generationRoot, boolean preview) {
+		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
+				preview);
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template with the given arguments.
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param template
+	 *            The template that is to be generated
+	 * @param arguments
+	 *            Arguments that must be passed on to the template for evaluation.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param preview
+	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
+	 *            generated content will be returned.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public static Map<String, StringWriter> doGenerateTemplate(Template template,
+			List<? extends Object> arguments, File generationRoot, boolean preview) {
+		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview);
+	}
+
+	/**
+	 * Removes a listener from the notification loops.
+	 * 
+	 * @param listener
+	 *            The listener that is to be removed from this engine's notification loops.
+	 */
+	public static void removeListener(AcceleoTextGenerationListener listener) {
+		GENERATION_ENGINE.removeListener(listener);
+	}
+
+	/**
+	 * This will iterate through the module's elements to find public templates named <tt>templateName</tt>
+	 * with the given count of arguments and return the first found.
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the sought template.
+	 * @param argumentCount
+	 *            Number of arguments of the sought template.
+	 * @return The first public template of this name contained by <tt>module</tt>. Will fail in
+	 *         {@link AcceleoEvaluationException} if none can be found.
+	 */
+	private static Template findTemplate(Module module, String templateName, int argumentCount) {
+		for (ModuleElement element : module.getOwnedModuleElement()) {
+			if (element instanceof Template) {
+				Template template = (Template)element;
+				if (template.getVisibility() == VisibilityKind.PUBLIC
+						&& templateName.equals(template.getName())
+						&& template.getParameter().size() == argumentCount) {
+					return template;
+				}
+			}
+		}
+		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoService.UndefinedTemplate", //$NON-NLS-1$
+				templateName, module.getName()));
+	}
+
+	/**
+	 * This will iterate through the module's elements to find public templates which argument types
+	 * correspond to the given list of argument values.
+	 * 
+	 * @param module
+	 *            The module in which we seek the template.
+	 * @param templateName
+	 *            Name of the sought template.
+	 * @param arguments
+	 *            Values of the argument we wish to pass on to the template.
+	 * @return The first public template of this name with matching arguments contained by <tt>module</tt>.
+	 *         Will fail in {@link AcceleoEvaluationException} if none can be found.
+	 */
+	private static Template findTemplate(Module module, String templateName, List<? extends Object> arguments) {
+		for (ModuleElement element : module.getOwnedModuleElement()) {
+			if (element instanceof Template) {
+				Template template = (Template)element;
+				if (template.getVisibility() == VisibilityKind.PUBLIC
+						&& templateName.equals(template.getName())
+						&& template.getParameter().size() == arguments.size()) {
+					boolean parameterMatch = true;
+					for (int i = 0; i < template.getParameter().size(); i++) {
+						if (!template.getParameter().get(i).getType().isInstance(arguments.get(i))) {
+							parameterMatch = false;
+						}
+					}
+					if (parameterMatch) {
+						return template;
+					}
+				}
+			}
+		}
+		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoService.UndefinedTemplate", //$NON-NLS-1$
+				templateName, module.getName()));
+	}
+}
