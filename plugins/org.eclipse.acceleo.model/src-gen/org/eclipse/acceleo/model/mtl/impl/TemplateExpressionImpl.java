@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.TemplateExpression;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.ocl.ecore.impl.OCLExpressionImpl;
 
 /**

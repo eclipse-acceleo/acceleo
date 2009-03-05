@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
@@ -38,6 +32,12 @@ import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.utilities.UtilitiesPackage;
 
@@ -231,9 +231,8 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * @generated
 	 */
 	public static MtlPackage init() {
-		if (isInited) {
+		if (isInited)
 			return (MtlPackage)EPackage.Registry.INSTANCE.getEPackage(MtlPackage.eNS_URI);
-		}
 
 		// Obtain or create and register package
 		MtlPackageImpl theMtlPackage = (MtlPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof MtlPackageImpl ? EPackage.Registry.INSTANCE
@@ -865,9 +864,8 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) {
+		if (isCreated)
 			return;
-		}
 		isCreated = true;
 
 		// Create classes and their features
@@ -971,9 +969,8 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) {
+		if (isInitialized)
 			return;
-		}
 		isInitialized = true;
 
 		// Initialize package

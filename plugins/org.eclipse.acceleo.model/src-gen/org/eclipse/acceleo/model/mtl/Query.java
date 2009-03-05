@@ -16,12 +16,13 @@ import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Query</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Query</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.Query#getParameter <em>Parameter</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Query#getParameter <em>Parameter </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}</li>
  * </ul>
  * </p>
@@ -64,8 +65,8 @@ public interface Query extends ModuleElement {
 	OCLExpression getExpression();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Expression</em>' containment reference.
@@ -91,8 +92,8 @@ public interface Query extends ModuleElement {
 	EClassifier getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Type</em>' reference.

@@ -15,11 +15,12 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Macro</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Macro</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.Macro#getParameter <em>Parameter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Macro#getParameter <em>Parameter </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}</li>
  * </ul>
  * </p>
@@ -62,8 +63,8 @@ public interface Macro extends Block, ModuleElement {
 	EClassifier getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Type</em>' reference.

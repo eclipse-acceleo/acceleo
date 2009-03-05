@@ -12,6 +12,10 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -20,10 +24,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.TypedModel;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Module</b></em>'. <!-- end-user-doc
@@ -31,10 +31,12 @@ import org.eclipse.acceleo.model.mtl.TypedModel;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getInput <em>Input</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getExtends <em>Extends</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getImports <em>Imports</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getOwnedModuleElement <em>Owned Module Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getInput <em> Input</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getExtends <em> Extends</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getImports <em> Imports</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.spec.ModuleImpl#getOwnedModuleElement <em>Owned Module
+ * Element</em>}</li>
  * </ul>
  * </p>
  * 

@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EFactoryImpl;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
@@ -39,6 +33,12 @@ import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.acceleo.model.mtl.impl.spec.QueryInvocationSpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.TemplateInvocationSpec;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EFactoryImpl;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -334,10 +334,9 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 */
 	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
 		VisibilityKind result = VisibilityKind.get(initialValue);
-		if (result == null) {
+		if (result == null)
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
 		return result;
 	}
 
@@ -357,10 +356,9 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 */
 	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
 		OpenModeKind result = OpenModeKind.get(initialValue);
-		if (result == null) {
+		if (result == null)
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
 		return result;
 	}
 

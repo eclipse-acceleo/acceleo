@@ -12,6 +12,9 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.IfBlock;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,9 +23,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.Block;
-import org.eclipse.acceleo.model.mtl.IfBlock;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -32,7 +32,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getIfExpr <em>If Expr</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElse <em>Else</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElse <em>Else </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElseIf <em>Else If</em>}</li>
  * </ul>
  * </p>
@@ -109,11 +109,10 @@ public class IfBlockImpl extends BlockImpl implements IfBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.IF_BLOCK__IF_EXPR, oldIfExpr, newIfExpr);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -126,22 +125,18 @@ public class IfBlockImpl extends BlockImpl implements IfBlock {
 	public void setIfExpr(OCLExpression newIfExpr) {
 		if (newIfExpr != ifExpr) {
 			NotificationChain msgs = null;
-			if (ifExpr != null) {
+			if (ifExpr != null)
 				msgs = ((InternalEObject)ifExpr).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.IF_BLOCK__IF_EXPR, null, msgs);
-			}
-			if (newIfExpr != null) {
+			if (newIfExpr != null)
 				msgs = ((InternalEObject)newIfExpr).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.IF_BLOCK__IF_EXPR, null, msgs);
-			}
 			msgs = basicSetIfExpr(newIfExpr, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.IF_BLOCK__IF_EXPR, newIfExpr,
 					newIfExpr));
-		}
 	}
 
 	/**
@@ -164,11 +159,10 @@ public class IfBlockImpl extends BlockImpl implements IfBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.IF_BLOCK__ELSE, oldElse, newElse);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -181,21 +175,17 @@ public class IfBlockImpl extends BlockImpl implements IfBlock {
 	public void setElse(Block newElse) {
 		if (newElse != else_) {
 			NotificationChain msgs = null;
-			if (else_ != null) {
+			if (else_ != null)
 				msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.IF_BLOCK__ELSE, null, msgs);
-			}
-			if (newElse != null) {
+			if (newElse != null)
 				msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.IF_BLOCK__ELSE, null, msgs);
-			}
 			msgs = basicSetElse(newElse, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.IF_BLOCK__ELSE, newElse, newElse));
-		}
 	}
 
 	/**

@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>If Block</b></em>'. <!-- end-user-doc
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>If Block</b></em>'. <!-- end-user-doc
  * -->
  * <p>
  * The following features are supported:
@@ -47,8 +47,8 @@ public interface IfBlock extends Block {
 	OCLExpression getIfExpr();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.IfBlock#getIfExpr <em>If Expr</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.IfBlock#getIfExpr <em>If Expr</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>If Expr</em>' containment reference.
@@ -74,8 +74,8 @@ public interface IfBlock extends Block {
 	Block getElse();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.IfBlock#getElse <em>Else</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.IfBlock#getElse <em>Else</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Else</em>' containment reference.

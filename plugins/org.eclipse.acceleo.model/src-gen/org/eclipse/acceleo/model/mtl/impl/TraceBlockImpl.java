@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -81,11 +81,10 @@ public class TraceBlockImpl extends BlockImpl implements TraceBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.TRACE_BLOCK__MODEL_ELEMENT, oldModelElement, newModelElement);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -98,22 +97,18 @@ public class TraceBlockImpl extends BlockImpl implements TraceBlock {
 	public void setModelElement(OCLExpression newModelElement) {
 		if (newModelElement != modelElement) {
 			NotificationChain msgs = null;
-			if (modelElement != null) {
+			if (modelElement != null)
 				msgs = ((InternalEObject)modelElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.TRACE_BLOCK__MODEL_ELEMENT, null, msgs);
-			}
-			if (newModelElement != null) {
+			if (newModelElement != null)
 				msgs = ((InternalEObject)newModelElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.TRACE_BLOCK__MODEL_ELEMENT, null, msgs);
-			}
 			msgs = basicSetModelElement(newModelElement, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TRACE_BLOCK__MODEL_ELEMENT,
 					newModelElement, newModelElement));
-		}
 	}
 
 	/**

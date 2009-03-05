@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Open Mode Kind</b></em>
- * ', and utility methods for working with them. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '
+ * <em><b>Open Mode Kind</b></em> ', and utility methods for working with them. <!-- end-user-doc -->
  * 
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getOpenModeKind()
  * @model

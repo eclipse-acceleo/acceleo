@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENamedElementImpl;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ocl.utilities.UtilitiesPackage;
 
@@ -26,9 +26,12 @@ import org.eclipse.ocl.utilities.UtilitiesPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getStartPosition <em>Start Position</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getEndPosition <em>End Position</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getStartPosition <em>Start Position</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getEndPosition <em>End Position</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getVisibility <em>Visibility</em>}</li>
  * </ul>
  * </p>
  * 
@@ -56,7 +59,7 @@ public abstract class ModuleElementImpl extends ENamedElementImpl implements Mod
 	protected int startPosition = START_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute. <!--
+	 * The default value of the '{@link #getEndPosition() <em>End Position</em>} ' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getEndPosition()
@@ -131,10 +134,9 @@ public abstract class ModuleElementImpl extends ENamedElementImpl implements Mod
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MODULE_ELEMENT__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -163,10 +165,9 @@ public abstract class ModuleElementImpl extends ENamedElementImpl implements Mod
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MODULE_ELEMENT__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -177,10 +178,9 @@ public abstract class ModuleElementImpl extends ENamedElementImpl implements Mod
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MODULE_ELEMENT__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -308,9 +308,8 @@ public abstract class ModuleElementImpl extends ENamedElementImpl implements Mod
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

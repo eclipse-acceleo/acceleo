@@ -12,6 +12,10 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Macro;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,10 +25,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.Macro;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
@@ -117,10 +117,9 @@ public class MacroImpl extends BlockImpl implements Macro {
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MACRO__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -147,10 +146,9 @@ public class MacroImpl extends BlockImpl implements Macro {
 			InternalEObject oldType = (InternalEObject)type;
 			type = (EClassifier)eResolveProxy(oldType);
 			if (type != oldType) {
-				if (eNotificationRequired()) {
+				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MtlPackage.MACRO__TYPE,
 							oldType, type));
-				}
 			}
 		}
 		return type;
@@ -174,9 +172,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 	public void setType(EClassifier newType) {
 		EClassifier oldType = type;
 		type = newType;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MACRO__TYPE, oldType, type));
-		}
 	}
 
 	/**
@@ -206,9 +203,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 			case MtlPackage.MACRO__PARAMETER:
 				return getParameter();
 			case MtlPackage.MACRO__TYPE:
-				if (resolve) {
+				if (resolve)
 					return getType();
-				}
 				return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -319,9 +315,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (visibility: "); //$NON-NLS-1$

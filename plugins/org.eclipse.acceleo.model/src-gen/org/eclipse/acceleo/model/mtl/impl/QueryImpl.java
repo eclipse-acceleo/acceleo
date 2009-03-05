@@ -12,6 +12,8 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,20 +23,18 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Query</b></em>'. <!-- end-user-doc
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Query</b></em>'. <!-- end-user-doc
  * -->
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getParameter <em>Parameter</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getExpression <em>Expression</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getParameter <em> Parameter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getExpression <em> Expression</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl#getType <em>Type </em>}</li>
  * </ul>
  * </p>
  * 
@@ -123,11 +123,10 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.QUERY__EXPRESSION, oldExpression, newExpression);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -140,22 +139,18 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public void setExpression(OCLExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
-			if (expression != null) {
+			if (expression != null)
 				msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.QUERY__EXPRESSION, null, msgs);
-			}
-			if (newExpression != null) {
+			if (newExpression != null)
 				msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.QUERY__EXPRESSION, null, msgs);
-			}
 			msgs = basicSetExpression(newExpression, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.QUERY__EXPRESSION,
 					newExpression, newExpression));
-		}
 	}
 
 	/**
@@ -168,10 +163,9 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			InternalEObject oldType = (InternalEObject)type;
 			type = (EClassifier)eResolveProxy(oldType);
 			if (type != oldType) {
-				if (eNotificationRequired()) {
+				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MtlPackage.QUERY__TYPE,
 							oldType, type));
-				}
 			}
 		}
 		return type;
@@ -194,9 +188,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public void setType(EClassifier newType) {
 		EClassifier oldType = type;
 		type = newType;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.QUERY__TYPE, oldType, type));
-		}
 	}
 
 	/**
@@ -228,9 +221,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 			case MtlPackage.QUERY__EXPRESSION:
 				return getExpression();
 			case MtlPackage.QUERY__TYPE:
-				if (resolve) {
+				if (resolve)
 					return getType();
-				}
 				return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);

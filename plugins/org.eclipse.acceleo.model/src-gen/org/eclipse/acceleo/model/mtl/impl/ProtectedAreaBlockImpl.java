@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -25,7 +25,8 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl#getMarker <em>Marker</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl#getMarker <em>Marker</em>}</li>
  * </ul>
  * </p>
  * 
@@ -81,11 +82,10 @@ public class ProtectedAreaBlockImpl extends BlockImpl implements ProtectedAreaBl
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.PROTECTED_AREA_BLOCK__MARKER, oldMarker, newMarker);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -98,22 +98,18 @@ public class ProtectedAreaBlockImpl extends BlockImpl implements ProtectedAreaBl
 	public void setMarker(OCLExpression newMarker) {
 		if (newMarker != marker) {
 			NotificationChain msgs = null;
-			if (marker != null) {
+			if (marker != null)
 				msgs = ((InternalEObject)marker).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.PROTECTED_AREA_BLOCK__MARKER, null, msgs);
-			}
-			if (newMarker != null) {
+			if (newMarker != null)
 				msgs = ((InternalEObject)newMarker).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.PROTECTED_AREA_BLOCK__MARKER, null, msgs);
-			}
 			msgs = basicSetMarker(newMarker, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.PROTECTED_AREA_BLOCK__MARKER,
 					newMarker, newMarker));
-		}
 	}
 
 	/**

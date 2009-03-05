@@ -12,6 +12,9 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Macro;
+import org.eclipse.acceleo.model.mtl.MacroInvocation;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,9 +23,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.Macro;
-import org.eclipse.acceleo.model.mtl.MacroInvocation;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -31,8 +31,10 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl#getDefinition <em>Definition</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl#getArgument <em>Argument</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl#getDefinition <em>Definition</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl#getArgument <em>Argument</em>}</li>
  * </ul>
  * </p>
  * 
@@ -88,10 +90,9 @@ public class MacroInvocationImpl extends TemplateExpressionImpl implements Macro
 			InternalEObject oldDefinition = (InternalEObject)definition;
 			definition = (Macro)eResolveProxy(oldDefinition);
 			if (definition != oldDefinition) {
-				if (eNotificationRequired()) {
+				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
 							MtlPackage.MACRO_INVOCATION__DEFINITION, oldDefinition, definition));
-				}
 			}
 		}
 		return definition;
@@ -114,10 +115,9 @@ public class MacroInvocationImpl extends TemplateExpressionImpl implements Macro
 	public void setDefinition(Macro newDefinition) {
 		Macro oldDefinition = definition;
 		definition = newDefinition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MACRO_INVOCATION__DEFINITION,
 					oldDefinition, definition));
-		}
 	}
 
 	/**
@@ -156,9 +156,8 @@ public class MacroInvocationImpl extends TemplateExpressionImpl implements Macro
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case MtlPackage.MACRO_INVOCATION__DEFINITION:
-				if (resolve) {
+				if (resolve)
 					return getDefinition();
-				}
 				return basicGetDefinition();
 			case MtlPackage.MACRO_INVOCATION__ARGUMENT:
 				return getArgument();

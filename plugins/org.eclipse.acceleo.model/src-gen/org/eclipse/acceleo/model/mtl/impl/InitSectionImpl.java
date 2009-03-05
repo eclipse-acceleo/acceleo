@@ -12,6 +12,8 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.InitSection;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,17 +23,16 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.InitSection;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Init Section</b></em>'. <!--
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Init Section</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getStartPosition <em>Start Position</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getStartPosition <em>Start Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getEndPosition <em>End Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getVariable <em>Variable</em>}</li>
  * </ul>
@@ -61,7 +62,7 @@ public class InitSectionImpl extends EObjectImpl implements InitSection {
 	protected int startPosition = START_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute. <!--
+	 * The default value of the '{@link #getEndPosition() <em>End Position</em>} ' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getEndPosition()
@@ -148,10 +149,9 @@ public class InitSectionImpl extends EObjectImpl implements InitSection {
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.INIT_SECTION__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -162,10 +162,9 @@ public class InitSectionImpl extends EObjectImpl implements InitSection {
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.INIT_SECTION__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -269,9 +268,8 @@ public class InitSectionImpl extends EObjectImpl implements InitSection {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

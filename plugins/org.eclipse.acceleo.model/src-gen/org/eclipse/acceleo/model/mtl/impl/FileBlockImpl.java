@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl;
 
+import org.eclipse.acceleo.model.mtl.FileBlock;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.acceleo.model.mtl.FileBlock;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -26,9 +26,9 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getOpenMode <em>Open Mode</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getFileUrl <em>File Url</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getOpenMode <em> Open Mode</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getFileUrl <em> File Url</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getUniqId <em> Uniq Id</em>}</li>
  * </ul>
  * </p>
  * 
@@ -111,10 +111,9 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	public void setOpenMode(OpenModeKind newOpenMode) {
 		OpenModeKind oldOpenMode = openMode;
 		openMode = newOpenMode == null ? OPEN_MODE_EDEFAULT : newOpenMode;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.FILE_BLOCK__OPEN_MODE,
 					oldOpenMode, openMode));
-		}
 	}
 
 	/**
@@ -137,11 +136,10 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.FILE_BLOCK__FILE_URL, oldFileUrl, newFileUrl);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -154,22 +152,18 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	public void setFileUrl(OCLExpression newFileUrl) {
 		if (newFileUrl != fileUrl) {
 			NotificationChain msgs = null;
-			if (fileUrl != null) {
+			if (fileUrl != null)
 				msgs = ((InternalEObject)fileUrl).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.FILE_BLOCK__FILE_URL, null, msgs);
-			}
-			if (newFileUrl != null) {
+			if (newFileUrl != null)
 				msgs = ((InternalEObject)newFileUrl).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.FILE_BLOCK__FILE_URL, null, msgs);
-			}
 			msgs = basicSetFileUrl(newFileUrl, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.FILE_BLOCK__FILE_URL,
 					newFileUrl, newFileUrl));
-		}
 	}
 
 	/**
@@ -192,11 +186,10 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.FILE_BLOCK__UNIQ_ID, oldUniqId, newUniqId);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -209,22 +202,18 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	public void setUniqId(OCLExpression newUniqId) {
 		if (newUniqId != uniqId) {
 			NotificationChain msgs = null;
-			if (uniqId != null) {
+			if (uniqId != null)
 				msgs = ((InternalEObject)uniqId).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.FILE_BLOCK__UNIQ_ID, null, msgs);
-			}
-			if (newUniqId != null) {
+			if (newUniqId != null)
 				msgs = ((InternalEObject)newUniqId).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.FILE_BLOCK__UNIQ_ID, null, msgs);
-			}
 			msgs = basicSetUniqId(newUniqId, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.FILE_BLOCK__UNIQ_ID, newUniqId,
 					newUniqId));
-		}
 	}
 
 	/**
@@ -328,9 +317,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (openMode: "); //$NON-NLS-1$

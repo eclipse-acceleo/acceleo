@@ -14,17 +14,17 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Template Invocation</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Template Invocation</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition <em>Definition</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em>Argument</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em>Before</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em> Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em> Before</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em> After</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super </em>}</li>
  * </ul>
  * </p>
  * 
@@ -50,8 +50,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	Template getDefinition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition <em>Definition</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition
+	 * <em>Definition</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Definition</em>' reference.
@@ -93,8 +93,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getBefore();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em>Before</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore
+	 * <em>Before</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Before</em>' containment reference.
@@ -120,8 +120,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getAfter();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter
+	 * <em>After</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>After</em>' containment reference.
@@ -147,8 +147,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getEach();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Each</em>' containment reference.
@@ -175,8 +175,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	boolean isSuper();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}
+	 * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Super</em>' attribute.

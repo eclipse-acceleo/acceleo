@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Module</b></em>'. <!-- end-user-doc
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Module</b></em>'. <!-- end-user-doc
  * -->
  * <p>
  * The following features are supported:
@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EPackage;
  * <li>{@link org.eclipse.acceleo.model.mtl.Module#getInput <em>Input</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.Module#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.Module#getImports <em>Imports</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.Module#getOwnedModuleElement <em>Owned Module Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Module#getOwnedModuleElement <em> Owned Module Element</em>}</li>
  * </ul>
  * </p>
  * 

@@ -15,13 +15,13 @@ import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Template</b></em>'. <!-- end-user-doc
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Template</b></em>'. <!-- end-user-doc
  * -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.Template#getOverrides <em>Overrides</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.Template#getParameter <em>Parameter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Template#getOverrides <em>Overrides </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.Template#getParameter <em>Parameter </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}</li>
  * </ul>
  * </p>
@@ -80,8 +80,8 @@ public interface Template extends Block, ModuleElement {
 	OCLExpression getGuard();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Guard</em>' containment reference.
@@ -108,8 +108,8 @@ public interface Template extends Block, ModuleElement {
 	boolean isMain();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Template#isMain <em>Main</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Template#isMain <em>Main</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Main</em>' attribute.

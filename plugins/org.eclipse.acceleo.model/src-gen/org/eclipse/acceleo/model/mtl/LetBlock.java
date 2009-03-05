@@ -14,12 +14,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Let Block</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Let Block</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.LetBlock#getElseLet <em>Else Let</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.LetBlock#getElseLet <em>Else Let </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.LetBlock#getElse <em>Else</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable <em>Let Variable</em>}</li>
  * </ul>
@@ -63,8 +63,8 @@ public interface LetBlock extends Block {
 	Block getElse();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.LetBlock#getElse <em>Else</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.LetBlock#getElse <em>Else</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Else</em>' containment reference.
@@ -90,8 +90,8 @@ public interface LetBlock extends Block {
 	Variable getLetVariable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable <em>Let Variable</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable
+	 * <em>Let Variable</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Let Variable</em>' containment reference.

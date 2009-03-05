@@ -63,8 +63,8 @@ public interface MtlPackage extends EPackage {
 	MtlPackage eINSTANCE = org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleImpl <em>Module</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.ModuleImpl <em>Module</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModule()
@@ -189,8 +189,8 @@ public interface MtlPackage extends EPackage {
 	int MODULE_FEATURE_COUNT = EcorePackage.EPACKAGE_FEATURE_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl <em>Module Element</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
+	 * <em>Module Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleElement()
@@ -252,7 +252,7 @@ public interface MtlPackage extends EPackage {
 	int MODULE_ELEMENT_FEATURE_COUNT = EcorePackage.ENAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
 	 * <em>Template Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
@@ -376,8 +376,8 @@ public interface MtlPackage extends EPackage {
 	int TEMPLATE_EXPRESSION_FEATURE_COUNT = org.eclipse.ocl.ecore.EcorePackage.OCL_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.BlockImpl <em>Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.BlockImpl <em>Block</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.BlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getBlock()
@@ -518,8 +518,8 @@ public interface MtlPackage extends EPackage {
 	int BLOCK_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl <em>Init Section</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl
+	 * <em>Init Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.InitSectionImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getInitSection()
@@ -564,8 +564,8 @@ public interface MtlPackage extends EPackage {
 	int INIT_SECTION_FEATURE_COUNT = UtilitiesPackage.AST_NODE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl <em>Template</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl <em>Template</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.TemplateImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTemplate()
@@ -750,7 +750,7 @@ public interface MtlPackage extends EPackage {
 	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 5;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
 	 * <em>Template Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
@@ -927,8 +927,8 @@ public interface MtlPackage extends EPackage {
 	int TEMPLATE_INVOCATION_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 6;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl <em>Query</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.QueryImpl <em>Query</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.QueryImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getQuery()
@@ -1016,8 +1016,8 @@ public interface MtlPackage extends EPackage {
 	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl <em>Query Invocation</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
+	 * <em>Query Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getQueryInvocation()
@@ -1158,7 +1158,7 @@ public interface MtlPackage extends EPackage {
 	int QUERY_INVOCATION_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
 	 * <em>Protected Area Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
@@ -1309,8 +1309,8 @@ public interface MtlPackage extends EPackage {
 	int PROTECTED_AREA_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl <em>For Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl <em>For Block</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.ForBlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getForBlock()
@@ -1505,8 +1505,8 @@ public interface MtlPackage extends EPackage {
 	int FOR_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 6;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl <em>If Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl <em>If Block</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.IfBlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getIfBlock()
@@ -1674,8 +1674,8 @@ public interface MtlPackage extends EPackage {
 	int IF_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl <em>Let Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl <em>Let Block</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.LetBlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getLetBlock()
@@ -1843,8 +1843,8 @@ public interface MtlPackage extends EPackage {
 	int LET_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl <em>File Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl
+	 * <em>File Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.FileBlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getFileBlock()
@@ -2012,8 +2012,8 @@ public interface MtlPackage extends EPackage {
 	int FILE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl <em>Trace Block</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl
+	 * <em>Trace Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTraceBlock()
@@ -2163,8 +2163,8 @@ public interface MtlPackage extends EPackage {
 	int TRACE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.MacroImpl <em>Macro</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.MacroImpl <em>Macro</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.MacroImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getMacro()
@@ -2331,8 +2331,8 @@ public interface MtlPackage extends EPackage {
 	int MACRO_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl <em>Macro Invocation</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
+	 * <em>Macro Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getMacroInvocation()
@@ -2473,8 +2473,8 @@ public interface MtlPackage extends EPackage {
 	int MACRO_INVOCATION_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl <em>Typed Model</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl
+	 * <em>Typed Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.impl.TypedModelImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTypedModel()
@@ -2501,8 +2501,8 @@ public interface MtlPackage extends EPackage {
 	int TYPED_MODEL_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.VisibilityKind <em>Visibility Kind</em>}' enum. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.VisibilityKind
+	 * <em>Visibility Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.VisibilityKind
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getVisibilityKind()
@@ -2511,8 +2511,8 @@ public interface MtlPackage extends EPackage {
 	int VISIBILITY_KIND = 18;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.OpenModeKind <em>Open Mode Kind</em>}' enum. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the ' {@link org.eclipse.acceleo.model.mtl.OpenModeKind <em>Open Mode Kind</em>}
+	 * ' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.model.mtl.OpenModeKind
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getOpenModeKind()
@@ -2521,8 +2521,8 @@ public interface MtlPackage extends EPackage {
 	int OPEN_MODE_KIND = 19;
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Module <em>Module</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Module <em>Module</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Module</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Module
@@ -2531,10 +2531,11 @@ public interface MtlPackage extends EPackage {
 	EClass getModule();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.Module#getInput
-	 * <em>Input</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Module#getInput <em>Input</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Input</em>'.
+	 * @return the meta object for the containment reference list ' <em>Input</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Module#getInput()
 	 * @see #getModule()
 	 * @generated
@@ -2542,8 +2543,9 @@ public interface MtlPackage extends EPackage {
 	EReference getModule_Input();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.model.mtl.Module#getExtends
-	 * <em>Extends</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Module#getExtends <em>Extends</em>} '. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Extends</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Module#getExtends()
@@ -2553,8 +2555,9 @@ public interface MtlPackage extends EPackage {
 	EReference getModule_Extends();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.model.mtl.Module#getImports
-	 * <em>Imports</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Module#getImports <em>Imports</em>} '. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Imports</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Module#getImports()
@@ -2568,7 +2571,7 @@ public interface MtlPackage extends EPackage {
 	 * {@link org.eclipse.acceleo.model.mtl.Module#getOwnedModuleElement <em>Owned Module Element</em>}'. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Owned Module Element</em>'.
+	 * @return the meta object for the containment reference list ' <em>Owned Module Element</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Module#getOwnedModuleElement()
 	 * @see #getModule()
 	 * @generated
@@ -2576,8 +2579,8 @@ public interface MtlPackage extends EPackage {
 	EReference getModule_OwnedModuleElement();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ModuleElement <em>Module Element</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.ModuleElement
+	 * <em>Module Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Module Element</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleElement
@@ -2586,8 +2589,9 @@ public interface MtlPackage extends EPackage {
 	EClass getModuleElement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility
-	 * <em>Visibility</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em>Visibility</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Visibility</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility()
@@ -2597,7 +2601,7 @@ public interface MtlPackage extends EPackage {
 	EAttribute getModuleElement_Visibility();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.TemplateExpression
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.TemplateExpression
 	 * <em>Template Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Template Expression</em>'.
@@ -2607,8 +2611,8 @@ public interface MtlPackage extends EPackage {
 	EClass getTemplateExpression();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Block <em>Block</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Block <em>Block</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Block
@@ -2617,8 +2621,9 @@ public interface MtlPackage extends EPackage {
 	EClass getBlock();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.Block#getInit
-	 * <em>Init</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Block#getInit <em>Init</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Init</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Block#getInit()
@@ -2628,10 +2633,11 @@ public interface MtlPackage extends EPackage {
 	EReference getBlock_Init();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.Block#getBody
-	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Block#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Body</em>'.
+	 * @return the meta object for the containment reference list '<em>Body</em> '.
 	 * @see org.eclipse.acceleo.model.mtl.Block#getBody()
 	 * @see #getBlock()
 	 * @generated
@@ -2639,8 +2645,8 @@ public interface MtlPackage extends EPackage {
 	EReference getBlock_Body();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.InitSection <em>Init Section</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.InitSection
+	 * <em>Init Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Init Section</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.InitSection
@@ -2650,10 +2656,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Variable</em>'.
+	 * @return the meta object for the containment reference list ' <em>Variable</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.InitSection#getVariable()
 	 * @see #getInitSection()
 	 * @generated
@@ -2661,8 +2667,8 @@ public interface MtlPackage extends EPackage {
 	EReference getInitSection_Variable();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Template <em>Template</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Template <em>Template</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Template</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Template
@@ -2671,8 +2677,9 @@ public interface MtlPackage extends EPackage {
 	EClass getTemplate();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.model.mtl.Template#getOverrides
-	 * <em>Overrides</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Template#getOverrides <em>Overrides</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Overrides</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Template#getOverrides()
@@ -2683,10 +2690,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.model.mtl.Template#getParameter <em>Parameter</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.Template#getParameter <em>Parameter</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
+	 * @return the meta object for the containment reference list ' <em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Template#getParameter()
 	 * @see #getTemplate()
 	 * @generated
@@ -2694,8 +2701,9 @@ public interface MtlPackage extends EPackage {
 	EReference getTemplate_Parameter();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.Template#getGuard
-	 * <em>Guard</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Guard</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Template#getGuard()
@@ -2705,8 +2713,8 @@ public interface MtlPackage extends EPackage {
 	EReference getTemplate_Guard();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.model.mtl.Template#isMain <em>Main</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute ' {@link org.eclipse.acceleo.model.mtl.Template#isMain
+	 * <em>Main</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Main</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Template#isMain()
@@ -2716,7 +2724,7 @@ public interface MtlPackage extends EPackage {
 	EAttribute getTemplate_Main();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation
 	 * <em>Template Invocation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Template Invocation</em>'.
@@ -2726,8 +2734,9 @@ public interface MtlPackage extends EPackage {
 	EClass getTemplateInvocation();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition
-	 * <em>Definition</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference '
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition <em>Definition</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Definition</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition()
@@ -2738,10 +2747,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em>Argument</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em>Argument</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Argument</em>'.
+	 * @return the meta object for the containment reference list ' <em>Argument</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument()
 	 * @see #getTemplateInvocation()
 	 * @generated
@@ -2750,8 +2759,8 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em>Before</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em>Before</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Before</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore()
@@ -2762,8 +2771,8 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>After</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter()
@@ -2774,8 +2783,8 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Each</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach()
@@ -2785,8 +2794,9 @@ public interface MtlPackage extends EPackage {
 	EReference getTemplateInvocation_Each();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper
-	 * <em>Super</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Super</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper()
@@ -2796,8 +2806,8 @@ public interface MtlPackage extends EPackage {
 	EAttribute getTemplateInvocation_Super();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Query <em>Query</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Query <em>Query</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Query</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Query
@@ -2806,10 +2816,11 @@ public interface MtlPackage extends EPackage {
 	EClass getQuery();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.Query#getParameter
-	 * <em>Parameter</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Query#getParameter <em>Parameter</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
+	 * @return the meta object for the containment reference list ' <em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Query#getParameter()
 	 * @see #getQuery()
 	 * @generated
@@ -2817,10 +2828,11 @@ public interface MtlPackage extends EPackage {
 	EReference getQuery_Parameter();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.Query#getExpression
-	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>Expression</em>'.
+	 * @return the meta object for the containment reference ' <em>Expression</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Query#getExpression()
 	 * @see #getQuery()
 	 * @generated
@@ -2828,8 +2840,8 @@ public interface MtlPackage extends EPackage {
 	EReference getQuery_Expression();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference ' {@link org.eclipse.acceleo.model.mtl.Query#getType
+	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Query#getType()
@@ -2839,8 +2851,8 @@ public interface MtlPackage extends EPackage {
 	EReference getQuery_Type();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.QueryInvocation <em>Query Invocation</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.QueryInvocation
+	 * <em>Query Invocation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Query Invocation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.QueryInvocation
@@ -2849,8 +2861,9 @@ public interface MtlPackage extends EPackage {
 	EClass getQueryInvocation();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.model.mtl.QueryInvocation#getDefinition
-	 * <em>Definition</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference '
+	 * {@link org.eclipse.acceleo.model.mtl.QueryInvocation#getDefinition <em>Definition</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Definition</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.QueryInvocation#getDefinition()
@@ -2861,10 +2874,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.model.mtl.QueryInvocation#getArgument <em>Argument</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.QueryInvocation#getArgument <em>Argument</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Argument</em>'.
+	 * @return the meta object for the containment reference list ' <em>Argument</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.QueryInvocation#getArgument()
 	 * @see #getQueryInvocation()
 	 * @generated
@@ -2872,7 +2885,7 @@ public interface MtlPackage extends EPackage {
 	EReference getQueryInvocation_Argument();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock
 	 * <em>Protected Area Block</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Protected Area Block</em>'.
@@ -2883,8 +2896,8 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em>Marker</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em>Marker</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Marker</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker()
@@ -2894,8 +2907,8 @@ public interface MtlPackage extends EPackage {
 	EReference getProtectedAreaBlock_Marker();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ForBlock <em>For Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.ForBlock <em>For Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>For Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock
@@ -2904,10 +2917,11 @@ public interface MtlPackage extends EPackage {
 	EClass getForBlock();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable
-	 * <em>Loop Variable</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable <em>Loop Variable</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>Loop Variable</em>'.
+	 * @return the meta object for the containment reference ' <em>Loop Variable</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable()
 	 * @see #getForBlock()
 	 * @generated
@@ -2915,10 +2929,11 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_LoopVariable();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet
-	 * <em>Iter Set</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>Iter Set</em>'.
+	 * @return the meta object for the containment reference '<em>Iter Set</em> '.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getIterSet()
 	 * @see #getForBlock()
 	 * @generated
@@ -2926,8 +2941,9 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_IterSet();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore
-	 * <em>Before</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>} '. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Before</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getBefore()
@@ -2937,8 +2953,9 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_Before();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getEach
-	 * <em>Each</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Each</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getEach()
@@ -2948,8 +2965,9 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_Each();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter
-	 * <em>After</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>After</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getAfter()
@@ -2959,8 +2977,9 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_After();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard
-	 * <em>Guard</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard <em>Guard</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Guard</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ForBlock#getGuard()
@@ -2970,8 +2989,8 @@ public interface MtlPackage extends EPackage {
 	EReference getForBlock_Guard();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.IfBlock <em>If Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.IfBlock <em>If Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>If Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.IfBlock
@@ -2980,8 +2999,9 @@ public interface MtlPackage extends EPackage {
 	EClass getIfBlock();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.IfBlock#getIfExpr
-	 * <em>If Expr</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.IfBlock#getIfExpr <em>If Expr</em>} '. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>If Expr</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.IfBlock#getIfExpr()
@@ -2991,8 +3011,9 @@ public interface MtlPackage extends EPackage {
 	EReference getIfBlock_IfExpr();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.IfBlock#getElse
-	 * <em>Else</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.IfBlock#getElse <em>Else</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Else</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.IfBlock#getElse()
@@ -3002,10 +3023,11 @@ public interface MtlPackage extends EPackage {
 	EReference getIfBlock_Else();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.IfBlock#getElseIf
-	 * <em>Else If</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.IfBlock#getElseIf <em>Else If</em>} '. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Else If</em>'.
+	 * @return the meta object for the containment reference list ' <em>Else If</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.IfBlock#getElseIf()
 	 * @see #getIfBlock()
 	 * @generated
@@ -3013,8 +3035,8 @@ public interface MtlPackage extends EPackage {
 	EReference getIfBlock_ElseIf();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.LetBlock <em>Let Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.LetBlock <em>Let Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Let Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.LetBlock
@@ -3023,10 +3045,11 @@ public interface MtlPackage extends EPackage {
 	EClass getLetBlock();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.LetBlock#getElseLet
-	 * <em>Else Let</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.LetBlock#getElseLet <em>Else Let</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Else Let</em>'.
+	 * @return the meta object for the containment reference list ' <em>Else Let</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.LetBlock#getElseLet()
 	 * @see #getLetBlock()
 	 * @generated
@@ -3034,8 +3057,9 @@ public interface MtlPackage extends EPackage {
 	EReference getLetBlock_ElseLet();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.LetBlock#getElse
-	 * <em>Else</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.LetBlock#getElse <em>Else</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Else</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.LetBlock#getElse()
@@ -3045,10 +3069,11 @@ public interface MtlPackage extends EPackage {
 	EReference getLetBlock_Else();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable
-	 * <em>Let Variable</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable <em>Let Variable</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>Let Variable</em>'.
+	 * @return the meta object for the containment reference ' <em>Let Variable</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.LetBlock#getLetVariable()
 	 * @see #getLetBlock()
 	 * @generated
@@ -3056,8 +3081,8 @@ public interface MtlPackage extends EPackage {
 	EReference getLetBlock_LetVariable();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.FileBlock <em>File Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.FileBlock <em>File Block</em>}
+	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>File Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.FileBlock
@@ -3066,7 +3091,7 @@ public interface MtlPackage extends EPackage {
 	EClass getFileBlock();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode
+	 * Returns the meta object for the attribute ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode
 	 * <em>Open Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Open Mode</em>'.
@@ -3077,10 +3102,11 @@ public interface MtlPackage extends EPackage {
 	EAttribute getFileBlock_OpenMode();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl
-	 * <em>File Url</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>File Url</em>'.
+	 * @return the meta object for the containment reference '<em>File Url</em> '.
 	 * @see org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl()
 	 * @see #getFileBlock()
 	 * @generated
@@ -3088,8 +3114,9 @@ public interface MtlPackage extends EPackage {
 	EReference getFileBlock_FileUrl();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId
-	 * <em>Uniq Id</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Uniq Id</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.FileBlock#getUniqId()
@@ -3099,8 +3126,8 @@ public interface MtlPackage extends EPackage {
 	EReference getFileBlock_UniqId();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.TraceBlock <em>Trace Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.TraceBlock
+	 * <em>Trace Block</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Trace Block</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TraceBlock
@@ -3110,10 +3137,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.model.mtl.TraceBlock#getModelElement <em>Model Element</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.TraceBlock#getModelElement <em>Model Element</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference '<em>Model Element</em>'.
+	 * @return the meta object for the containment reference ' <em>Model Element</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TraceBlock#getModelElement()
 	 * @see #getTraceBlock()
 	 * @generated
@@ -3121,8 +3148,8 @@ public interface MtlPackage extends EPackage {
 	EReference getTraceBlock_ModelElement();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Macro <em>Macro</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Macro <em>Macro</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Macro</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Macro
@@ -3131,10 +3158,11 @@ public interface MtlPackage extends EPackage {
 	EClass getMacro();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.model.mtl.Macro#getParameter
-	 * <em>Parameter</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.Macro#getParameter <em>Parameter</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
+	 * @return the meta object for the containment reference list ' <em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Macro#getParameter()
 	 * @see #getMacro()
 	 * @generated
@@ -3142,8 +3170,8 @@ public interface MtlPackage extends EPackage {
 	EReference getMacro_Parameter();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference ' {@link org.eclipse.acceleo.model.mtl.Macro#getType
+	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Macro#getType()
@@ -3153,8 +3181,8 @@ public interface MtlPackage extends EPackage {
 	EReference getMacro_Type();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.MacroInvocation <em>Macro Invocation</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.MacroInvocation
+	 * <em>Macro Invocation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Macro Invocation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.MacroInvocation
@@ -3163,8 +3191,9 @@ public interface MtlPackage extends EPackage {
 	EClass getMacroInvocation();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition
-	 * <em>Definition</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference '
+	 * {@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em>Definition</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference '<em>Definition</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition()
@@ -3175,10 +3204,10 @@ public interface MtlPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em>Argument</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em>Argument</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Argument</em>'.
+	 * @return the meta object for the containment reference list ' <em>Argument</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument()
 	 * @see #getMacroInvocation()
 	 * @generated
@@ -3186,8 +3215,8 @@ public interface MtlPackage extends EPackage {
 	EReference getMacroInvocation_Argument();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.TypedModel <em>Typed Model</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.TypedModel
+	 * <em>Typed Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Typed Model</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.TypedModel
@@ -3196,10 +3225,11 @@ public interface MtlPackage extends EPackage {
 	EClass getTypedModel();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom
-	 * <em>Takes Types From</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom <em>Takes Types From</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the reference list '<em>Takes Types From</em>'.
+	 * @return the meta object for the reference list '<em>Takes Types From</em> '.
 	 * @see org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom()
 	 * @see #getTypedModel()
 	 * @generated
@@ -3207,8 +3237,8 @@ public interface MtlPackage extends EPackage {
 	EReference getTypedModel_TakesTypesFrom();
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.acceleo.model.mtl.VisibilityKind <em>Visibility Kind</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for enum ' {@link org.eclipse.acceleo.model.mtl.VisibilityKind
+	 * <em>Visibility Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Visibility Kind</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.VisibilityKind
@@ -3217,8 +3247,8 @@ public interface MtlPackage extends EPackage {
 	EEnum getVisibilityKind();
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.acceleo.model.mtl.OpenModeKind <em>Open Mode Kind</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for enum ' {@link org.eclipse.acceleo.model.mtl.OpenModeKind
+	 * <em>Open Mode Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Open Mode Kind</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.OpenModeKind
@@ -3249,8 +3279,8 @@ public interface MtlPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleImpl <em>Module</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.ModuleImpl
+		 * <em>Module</em>} ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModule()
@@ -3283,7 +3313,7 @@ public interface MtlPackage extends EPackage {
 		EReference MODULE__IMPORTS = eINSTANCE.getModule_Imports();
 
 		/**
-		 * The meta object literal for the '<em><b>Owned Module Element</b></em>' containment reference list
+		 * The meta object literal for the '<em><b>Owned Module Element</b></em> ' containment reference list
 		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
@@ -3291,7 +3321,7 @@ public interface MtlPackage extends EPackage {
 		EReference MODULE__OWNED_MODULE_ELEMENT = eINSTANCE.getModule_OwnedModuleElement();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
 		 * <em>Module Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
@@ -3309,7 +3339,7 @@ public interface MtlPackage extends EPackage {
 		EAttribute MODULE_ELEMENT__VISIBILITY = eINSTANCE.getModuleElement_Visibility();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
 		 * <em>Template Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.TemplateExpressionImpl
@@ -3319,8 +3349,8 @@ public interface MtlPackage extends EPackage {
 		EClass TEMPLATE_EXPRESSION = eINSTANCE.getTemplateExpression();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.BlockImpl <em>Block</em>}' class. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.BlockImpl
+		 * <em>Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.BlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getBlock()
@@ -3345,8 +3375,8 @@ public interface MtlPackage extends EPackage {
 		EReference BLOCK__BODY = eINSTANCE.getBlock_Body();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl <em>Init Section</em>}
-		 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl
+		 * <em>Init Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.InitSectionImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getInitSection()
@@ -3363,8 +3393,8 @@ public interface MtlPackage extends EPackage {
 		EReference INIT_SECTION__VARIABLE = eINSTANCE.getInitSection_Variable();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl <em>Template</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl
+		 * <em>Template</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.TemplateImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTemplate()
@@ -3405,7 +3435,7 @@ public interface MtlPackage extends EPackage {
 		EAttribute TEMPLATE__MAIN = eINSTANCE.getTemplate_Main();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
 		 * <em>Template Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
@@ -3463,8 +3493,8 @@ public interface MtlPackage extends EPackage {
 		EAttribute TEMPLATE_INVOCATION__SUPER = eINSTANCE.getTemplateInvocation_Super();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.QueryImpl <em>Query</em>}' class. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.QueryImpl
+		 * <em>Query</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.QueryImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getQuery()
@@ -3497,7 +3527,7 @@ public interface MtlPackage extends EPackage {
 		EReference QUERY__TYPE = eINSTANCE.getQuery_Type();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
 		 * <em>Query Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
@@ -3523,7 +3553,7 @@ public interface MtlPackage extends EPackage {
 		EReference QUERY_INVOCATION__ARGUMENT = eINSTANCE.getQueryInvocation_Argument();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
 		 * <em>Protected Area Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl
@@ -3541,8 +3571,8 @@ public interface MtlPackage extends EPackage {
 		EReference PROTECTED_AREA_BLOCK__MARKER = eINSTANCE.getProtectedAreaBlock_Marker();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl <em>For Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl
+		 * <em>For Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.ForBlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getForBlock()
@@ -3599,8 +3629,8 @@ public interface MtlPackage extends EPackage {
 		EReference FOR_BLOCK__GUARD = eINSTANCE.getForBlock_Guard();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl <em>If Block</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl
+		 * <em>If Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.IfBlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getIfBlock()
@@ -3633,8 +3663,8 @@ public interface MtlPackage extends EPackage {
 		EReference IF_BLOCK__ELSE_IF = eINSTANCE.getIfBlock_ElseIf();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl <em>Let Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl
+		 * <em>Let Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.LetBlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getLetBlock()
@@ -3667,8 +3697,8 @@ public interface MtlPackage extends EPackage {
 		EReference LET_BLOCK__LET_VARIABLE = eINSTANCE.getLetBlock_LetVariable();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl <em>File Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl
+		 * <em>File Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.FileBlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getFileBlock()
@@ -3701,8 +3731,8 @@ public interface MtlPackage extends EPackage {
 		EReference FILE_BLOCK__UNIQ_ID = eINSTANCE.getFileBlock_UniqId();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl <em>Trace Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl
+		 * <em>Trace Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.TraceBlockImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTraceBlock()
@@ -3719,8 +3749,8 @@ public interface MtlPackage extends EPackage {
 		EReference TRACE_BLOCK__MODEL_ELEMENT = eINSTANCE.getTraceBlock_ModelElement();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.MacroImpl <em>Macro</em>}' class. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.MacroImpl
+		 * <em>Macro</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.MacroImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getMacro()
@@ -3745,7 +3775,7 @@ public interface MtlPackage extends EPackage {
 		EReference MACRO__TYPE = eINSTANCE.getMacro_Type();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
 		 * <em>Macro Invocation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
@@ -3771,8 +3801,8 @@ public interface MtlPackage extends EPackage {
 		EReference MACRO_INVOCATION__ARGUMENT = eINSTANCE.getMacroInvocation_Argument();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl <em>Typed Model</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl
+		 * <em>Typed Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.impl.TypedModelImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getTypedModel()
@@ -3789,8 +3819,8 @@ public interface MtlPackage extends EPackage {
 		EReference TYPED_MODEL__TAKES_TYPES_FROM = eINSTANCE.getTypedModel_TakesTypesFrom();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.VisibilityKind <em>Visibility Kind</em>}'
-		 * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.VisibilityKind
+		 * <em>Visibility Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.VisibilityKind
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getVisibilityKind()
@@ -3799,8 +3829,8 @@ public interface MtlPackage extends EPackage {
 		EEnum VISIBILITY_KIND = eINSTANCE.getVisibilityKind();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.OpenModeKind <em>Open Mode Kind</em>}'
-		 * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the ' {@link org.eclipse.acceleo.model.mtl.OpenModeKind
+		 * <em>Open Mode Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.model.mtl.OpenModeKind
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getOpenModeKind()

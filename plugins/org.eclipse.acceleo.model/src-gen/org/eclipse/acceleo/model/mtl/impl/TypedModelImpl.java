@@ -12,13 +12,13 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.TypedModel;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Typed Model</b></em>'. <!--
@@ -26,7 +26,8 @@ import org.eclipse.acceleo.model.mtl.TypedModel;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl#getTakesTypesFrom <em>Takes Types From</em>}</li>
+ * <li>
+ * {@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl#getTakesTypesFrom <em>Takes Types From</em>}</li>
  * </ul>
  * </p>
  * 

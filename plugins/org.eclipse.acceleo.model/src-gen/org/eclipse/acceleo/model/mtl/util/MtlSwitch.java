@@ -12,12 +12,6 @@ package org.eclipse.acceleo.model.mtl.util;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EModelElement;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
@@ -37,6 +31,12 @@ import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.ETypedElement;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ocl.utilities.TypedElement;
@@ -109,556 +109,401 @@ public class MtlSwitch<T> {
 			case MtlPackage.MODULE: {
 				Module module = (Module)theEObject;
 				T result = caseModule(module);
-				if (result == null) {
+				if (result == null)
 					result = caseEPackage(module);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(module);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(module);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.MODULE_ELEMENT: {
 				ModuleElement moduleElement = (ModuleElement)theEObject;
 				T result = caseModuleElement(moduleElement);
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(moduleElement);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(moduleElement);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(moduleElement);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.TEMPLATE_EXPRESSION: {
 				TemplateExpression templateExpression = (TemplateExpression)theEObject;
 				T result = caseTemplateExpression(templateExpression);
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(templateExpression);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.BLOCK: {
 				Block block = (Block)theEObject;
 				T result = caseBlock(block);
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(block);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.INIT_SECTION: {
 				InitSection initSection = (InitSection)theEObject;
 				T result = caseInitSection(initSection);
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(initSection);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.TEMPLATE: {
 				Template template = (Template)theEObject;
 				T result = caseTemplate(template);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseModuleElement(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(template);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.TEMPLATE_INVOCATION: {
 				TemplateInvocation templateInvocation = (TemplateInvocation)theEObject;
 				T result = caseTemplateInvocation(templateInvocation);
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(templateInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.QUERY: {
 				Query query = (Query)theEObject;
 				T result = caseQuery(query);
-				if (result == null) {
+				if (result == null)
 					result = caseModuleElement(query);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(query);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(query);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(query);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.QUERY_INVOCATION: {
 				QueryInvocation queryInvocation = (QueryInvocation)theEObject;
 				T result = caseQueryInvocation(queryInvocation);
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(queryInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.PROTECTED_AREA_BLOCK: {
 				ProtectedAreaBlock protectedAreaBlock = (ProtectedAreaBlock)theEObject;
 				T result = caseProtectedAreaBlock(protectedAreaBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(protectedAreaBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.FOR_BLOCK: {
 				ForBlock forBlock = (ForBlock)theEObject;
 				T result = caseForBlock(forBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(forBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.IF_BLOCK: {
 				IfBlock ifBlock = (IfBlock)theEObject;
 				T result = caseIfBlock(ifBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(ifBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.LET_BLOCK: {
 				LetBlock letBlock = (LetBlock)theEObject;
 				T result = caseLetBlock(letBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(letBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.FILE_BLOCK: {
 				FileBlock fileBlock = (FileBlock)theEObject;
 				T result = caseFileBlock(fileBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(fileBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.TRACE_BLOCK: {
 				TraceBlock traceBlock = (TraceBlock)theEObject;
 				T result = caseTraceBlock(traceBlock);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(traceBlock);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.MACRO: {
 				Macro macro = (Macro)theEObject;
 				T result = caseMacro(macro);
-				if (result == null) {
+				if (result == null)
 					result = caseBlock(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseModuleElement(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(macro);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.MACRO_INVOCATION: {
 				MacroInvocation macroInvocation = (MacroInvocation)theEObject;
 				T result = caseMacroInvocation(macroInvocation);
-				if (result == null) {
+				if (result == null)
 					result = caseTemplateExpression(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression_1(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseASTNode(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseETypedElement(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseOCLExpression(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseENamedElement(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseTypedElement(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseVisitable(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = caseEModelElement(macroInvocation);
-				}
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			case MtlPackage.TYPED_MODEL: {
 				TypedModel typedModel = (TypedModel)theEObject;
 				T result = caseTypedModel(typedModel);
-				if (result == null) {
+				if (result == null)
 					result = defaultCase(theEObject);
-				}
 				return result;
 			}
 			default:
@@ -667,13 +512,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of ' <em>Module</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
+	 * @return the result of interpreting the object as an instance of ' <em>Module</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -712,13 +557,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Block</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of ' <em>Block</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Block</em>'.
+	 * @return the result of interpreting the object as an instance of ' <em>Block</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -772,13 +617,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of ' <em>Query</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Query</em>'.
+	 * @return the result of interpreting the object as an instance of ' <em>Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -892,13 +737,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Macro</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of ' <em>Macro</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Macro</em>'.
+	 * @return the result of interpreting the object as an instance of ' <em>Macro</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */

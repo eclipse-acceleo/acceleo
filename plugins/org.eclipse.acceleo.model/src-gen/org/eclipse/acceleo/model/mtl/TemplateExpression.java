@@ -14,7 +14,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Template Expression</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Template Expression</b></em>'. <!--
  * end-user-doc -->
  * 
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getTemplateExpression()

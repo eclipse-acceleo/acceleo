@@ -14,13 +14,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Macro Invocation</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Macro Invocation</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em>Definition</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em>Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em> Definition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em> Argument</em>}</li>
  * </ul>
  * </p>
  * 
@@ -46,8 +46,8 @@ public interface MacroInvocation extends TemplateExpression {
 	Macro getDefinition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em>Definition</em>}'
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition
+	 * <em>Definition</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Definition</em>' reference.

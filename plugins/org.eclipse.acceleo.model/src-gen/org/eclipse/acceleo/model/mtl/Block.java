@@ -14,7 +14,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Block</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Block</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are supported:
  * <ul>
@@ -45,8 +46,8 @@ public interface Block extends TemplateExpression {
 	InitSection getInit();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Block#getInit <em>Init</em>}' containment reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Block#getInit <em>Init</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Init</em>' containment reference.

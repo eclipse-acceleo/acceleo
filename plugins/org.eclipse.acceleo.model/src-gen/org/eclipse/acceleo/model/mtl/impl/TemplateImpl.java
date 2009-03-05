@@ -12,6 +12,10 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -21,10 +25,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.Variable;
 
@@ -34,11 +34,11 @@ import org.eclipse.ocl.ecore.Variable;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getOverrides <em>Overrides</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em>Parameter</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isMain <em>Main</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getVisibility <em> Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getOverrides <em> Overrides</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em> Parameter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isMain <em>Main </em>}</li>
  * </ul>
  * </p>
  * 
@@ -151,10 +151,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -203,11 +202,10 @@ public class TemplateImpl extends BlockImpl implements Template {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.TEMPLATE__GUARD, oldGuard, newGuard);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -220,22 +218,18 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setGuard(OCLExpression newGuard) {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
-			if (guard != null) {
+			if (guard != null)
 				msgs = ((InternalEObject)guard).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.TEMPLATE__GUARD, null, msgs);
-			}
-			if (newGuard != null) {
+			if (newGuard != null)
 				msgs = ((InternalEObject)newGuard).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.TEMPLATE__GUARD, null, msgs);
-			}
 			msgs = basicSetGuard(newGuard, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__GUARD, newGuard,
 					newGuard));
-		}
 	}
 
 	/**
@@ -255,9 +249,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setMain(boolean newMain) {
 		boolean oldMain = main;
 		main = newMain;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__MAIN, oldMain, main));
-		}
 	}
 
 	/**

@@ -15,12 +15,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Typed Model</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Typed Model</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom <em>Takes Types From</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom <em> Takes Types From</em>}</li>
  * </ul>
  * </p>
  * 

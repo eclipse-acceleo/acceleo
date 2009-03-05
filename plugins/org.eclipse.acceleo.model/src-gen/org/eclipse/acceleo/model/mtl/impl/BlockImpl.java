@@ -12,6 +12,9 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.InitSection;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,9 +23,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.acceleo.model.mtl.Block;
-import org.eclipse.acceleo.model.mtl.InitSection;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
@@ -31,8 +31,8 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.BlockImpl#getInit <em>Init</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.BlockImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.BlockImpl#getInit <em>Init </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.spec.BlockImpl#getBody <em>Body </em>}</li>
  * </ul>
  * </p>
  * 
@@ -98,11 +98,10 @@ public class BlockImpl extends TemplateExpressionImpl implements Block {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					MtlPackage.BLOCK__INIT, oldInit, newInit);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -115,21 +114,17 @@ public class BlockImpl extends TemplateExpressionImpl implements Block {
 	public void setInit(InitSection newInit) {
 		if (newInit != init) {
 			NotificationChain msgs = null;
-			if (init != null) {
+			if (init != null)
 				msgs = ((InternalEObject)init).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.BLOCK__INIT, null, msgs);
-			}
-			if (newInit != null) {
+			if (newInit != null)
 				msgs = ((InternalEObject)newInit).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- MtlPackage.BLOCK__INIT, null, msgs);
-			}
 			msgs = basicSetInit(newInit, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.BLOCK__INIT, newInit, newInit));
-		}
 	}
 
 	/**

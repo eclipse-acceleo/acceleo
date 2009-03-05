@@ -13,12 +13,12 @@ package org.eclipse.acceleo.model.mtl;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Protected Area Block</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Protected Area Block</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em>Marker</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em> Marker</em>}</li>
  * </ul>
  * </p>
  * 
@@ -44,8 +44,8 @@ public interface ProtectedAreaBlock extends Block {
 	OCLExpression getMarker();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em>Marker</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker
+	 * <em>Marker</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Marker</em>' containment reference.

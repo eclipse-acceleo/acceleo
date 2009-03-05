@@ -15,12 +15,12 @@ import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Init Section</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Init Section</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable </em>}</li>
  * </ul>
  * </p>
  * 

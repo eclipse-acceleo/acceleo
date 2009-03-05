@@ -14,12 +14,12 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Module Element</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>Module Element</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em> Visibility</em>}</li>
  * </ul>
  * </p>
  * 
@@ -47,8 +47,8 @@ public interface ModuleElement extends ENamedElement, ASTNode {
 	VisibilityKind getVisibility();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em>Visibility</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility
+	 * <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Visibility</em>' attribute.

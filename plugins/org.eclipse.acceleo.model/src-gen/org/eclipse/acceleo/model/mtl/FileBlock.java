@@ -13,14 +13,14 @@ package org.eclipse.acceleo.model.mtl;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>File Block</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>File Block</b></em>'. <!--
  * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id </em>}</li>
  * </ul>
  * </p>
  * 
@@ -48,8 +48,8 @@ public interface FileBlock extends Block {
 	OpenModeKind getOpenMode();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Open Mode</em>' attribute.
@@ -76,8 +76,8 @@ public interface FileBlock extends Block {
 	OCLExpression getFileUrl();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>File Url</em>' containment reference.
@@ -103,8 +103,8 @@ public interface FileBlock extends Block {
 	OCLExpression getUniqId();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Uniq Id</em>' containment reference.

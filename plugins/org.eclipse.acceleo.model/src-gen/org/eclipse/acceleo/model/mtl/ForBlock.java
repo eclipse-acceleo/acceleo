@@ -14,13 +14,13 @@ import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>For Block</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> A representation of the model object ' <em><b>For Block</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable <em>Loop Variable</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set </em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}</li>
@@ -50,8 +50,8 @@ public interface ForBlock extends Block {
 	Variable getLoopVariable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable <em>Loop Variable</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable
+	 * <em>Loop Variable</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Loop Variable</em>' containment reference.
@@ -77,8 +77,8 @@ public interface ForBlock extends Block {
 	OCLExpression getIterSet();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Iter Set</em>' containment reference.
@@ -104,8 +104,8 @@ public interface ForBlock extends Block {
 	OCLExpression getBefore();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Before</em>' containment reference.
@@ -131,8 +131,8 @@ public interface ForBlock extends Block {
 	OCLExpression getEach();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Each</em>' containment reference.
@@ -158,8 +158,8 @@ public interface ForBlock extends Block {
 	OCLExpression getAfter();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>After</em>' containment reference.
@@ -185,8 +185,8 @@ public interface ForBlock extends Block {
 	OCLExpression getGuard();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard <em>Guard</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard <em>Guard</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Guard</em>' containment reference.
