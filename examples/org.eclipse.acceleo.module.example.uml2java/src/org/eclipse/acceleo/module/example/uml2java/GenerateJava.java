@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.service.AcceleoService;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -28,9 +31,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 
@@ -53,7 +53,7 @@ public class GenerateJava {
 	 * 
 	 * @generated
 	 */
-	public static final String[] TEMPLATE_NAMES = { "generateClass", "generateInterface", };
+	public static final String[] TEMPLATE_NAMES = {"generateClass", "generateInterface",};
 
 	/**
 	 * The root element of the module.
@@ -89,20 +89,20 @@ public class GenerateJava {
 	 * @generated
 	 */
 	public GenerateJava(URI modelURI, File targetFolder, List<? extends Object> arguments) throws IOException {
-    ResourceSet resourceSet = new ResourceSetImpl();
-    registerResourceFactories(resourceSet);
-    registerPackages(resourceSet);
-    URL templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
-    if (templateURL == null) {
-      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-    } else {
-      URI templateURI = createTemplateURI(templateURL.getPath());
-      module = (Module)load(templateURI, resourceSet);
-      model = load(modelURI, resourceSet);
-      this.targetFolder = targetFolder;
-      this.arguments = arguments;
-    }
-  }
+		ResourceSet resourceSet = new ResourceSetImpl();
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
+		URL templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
+		if (templateURL == null) {
+			throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
+		} else {
+			URI templateURI = createTemplateURI(templateURL.getPath());
+			module = (Module)load(templateURI, resourceSet);
+			model = load(modelURI, resourceSet);
+			this.targetFolder = targetFolder;
+			this.arguments = arguments;
+		}
+	}
 
 	/**
 	 * Constructor.
@@ -119,20 +119,20 @@ public class GenerateJava {
 	 */
 	public GenerateJava(EObject model, File targetFolder, List<? extends Object> arguments)
 			throws IOException {
-    ResourceSet resourceSet = model.eResource().getResourceSet();
-    registerResourceFactories(resourceSet);
-    registerPackages(resourceSet);
-    URL templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
-    if (templateURL == null) {
-      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-    } else {
-      URI templateURI = createTemplateURI(templateURL.getPath());
-      module = (Module)load(templateURI, resourceSet);
-      this.model = model;
-      this.targetFolder = targetFolder;
-      this.arguments = arguments;
-    }
-  }
+		ResourceSet resourceSet = model.eResource().getResourceSet();
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
+		URL templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
+		if (templateURL == null) {
+			throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
+		} else {
+			URI templateURI = createTemplateURI(templateURL.getPath());
+			module = (Module)load(templateURI, resourceSet);
+			this.model = model;
+			this.targetFolder = targetFolder;
+			this.arguments = arguments;
+		}
+	}
 
 	/**
 	 * Creates the template URI.
@@ -143,8 +143,8 @@ public class GenerateJava {
 	 * @generated
 	 */
 	protected URI createTemplateURI(String entry) {
-    return URI.createFileURI(URI.decode(entry));
-  }
+		return URI.createFileURI(URI.decode(entry));
+	}
 
 	/**
 	 * Gets the model.
@@ -163,12 +163,17 @@ public class GenerateJava {
 	 * @generated
 	 */
 	private void registerPackages(ResourceSet resourceSet) {
-    resourceSet.getPackageRegistry().put(org.eclipse.uml2.uml.UMLPackage.eINSTANCE.getNsURI(), org.eclipse.uml2.uml.UMLPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", getOCLStdLibPackage());
-  }
+		resourceSet.getPackageRegistry().put(org.eclipse.uml2.uml.UMLPackage.eINSTANCE.getNsURI(),
+				org.eclipse.uml2.uml.UMLPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
+				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(
+				org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(),
+				org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore",
+				getOCLStdLibPackage());
+	}
 
 	/**
 	 * Returns the package containing the OCL standard library.
@@ -177,10 +182,10 @@ public class GenerateJava {
 	 * @generated
 	 */
 	private EPackage getOCLStdLibPackage() {
-    EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
-    EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
-    return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
-  }
+		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+		return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
+	}
 
 	/**
 	 * Updates the registry used for looking up resources factory in the given resource set.
@@ -190,10 +195,13 @@ public class GenerateJava {
 	 * @generated
 	 */
 	private void registerResourceFactories(ResourceSet resourceSet) {
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl", new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-  }
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore",
+				new EcoreResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl",
+				new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
+				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+	}
 
 	/**
 	 * The main method.
@@ -203,23 +211,23 @@ public class GenerateJava {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-    try {
-      if (args.length < 2) {
-        System.out.println("Arguments not valid : {model, folder}.");
-      } else {
-        URI modelURI = URI.createFileURI(args[0]);
-        File folder = new File(args[1]);
-        List<String> arguments = new ArrayList<String>();
-        for (int i = 2; i < args.length; i++) {
-          arguments.add(args[i]);
-        }
-        GenerateJava generator = new GenerateJava(modelURI, folder, arguments);
-        generator.doGenerate();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+		try {
+			if (args.length < 2) {
+				System.out.println("Arguments not valid : {model, folder}.");
+			} else {
+				URI modelURI = URI.createFileURI(args[0]);
+				File folder = new File(args[1]);
+				List<String> arguments = new ArrayList<String>();
+				for (int i = 2; i < args.length; i++) {
+					arguments.add(args[i]);
+				}
+				GenerateJava generator = new GenerateJava(modelURI, folder, arguments);
+				generator.doGenerate();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Launches the generation.
@@ -229,13 +237,13 @@ public class GenerateJava {
 	 * @generated
 	 */
 	public void doGenerate() throws IOException {
-    if (!targetFolder.exists()) {
-      targetFolder.mkdirs();
-    }
-    for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false);
-    }
-  }
+		if (!targetFolder.exists()) {
+			targetFolder.mkdirs();
+		}
+		for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
+			AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false);
+		}
+	}
 
 	/**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
@@ -254,16 +262,16 @@ public class GenerateJava {
 	 * @generated
 	 */
 	private EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-    EObject result = null;
-    final Resource modelResource = createResource(modelURI, resourceSet);
-    final Map<String, String> options = new HashMap<String, String>();
-    options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
-    modelResource.load(options);
-    if (modelResource.getContents().size() > 0) {
-      result = modelResource.getContents().get(0);
-    }
-    return result;
-  }
+		EObject result = null;
+		final Resource modelResource = createResource(modelURI, resourceSet);
+		final Map<String, String> options = new HashMap<String, String>();
+		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
+		modelResource.load(options);
+		if (modelResource.getContents().size() > 0) {
+			result = modelResource.getContents().get(0);
+		}
+		return result;
+	}
 
 	/**
 	 * This will create a {@link Resource} given the model extension it is intended for and a ResourceSet.
@@ -276,20 +284,20 @@ public class GenerateJava {
 	 * @generated
 	 */
 	private Resource createResource(URI modelURI, ResourceSet resourceSet) {
-    String fileExtension = modelURI.fileExtension();
-    if (fileExtension == null || fileExtension.length() == 0) {
-      fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-    }
-    final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-    final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
-    if (resourceFactory != null) {
-      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-          resourceFactory);
-    } else {
-      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-          new XMIResourceFactoryImpl());
-    }
-    return resourceSet.createResource(modelURI);
-  }
+		String fileExtension = modelURI.fileExtension();
+		if (fileExtension == null || fileExtension.length() == 0) {
+			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
+		}
+		final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
+		final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
+		if (resourceFactory != null) {
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+					resourceFactory);
+		} else {
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+					new XMIResourceFactoryImpl());
+		}
+		return resourceSet.createResource(modelURI);
+	}
 
 }
