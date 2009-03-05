@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.team.cvs.core.cvsnature">
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo-feature,org.eclipse.acceleo-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.common,org.eclipse.acceleo.common"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/doc/org.eclipse.acceleo.doc,org.eclipse.acceleo.doc"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.doc-feature,org.eclipse.acceleo.doc-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.engine,org.eclipse.acceleo.engine"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/tests/org.eclipse.acceleo.engine.tests,org.eclipse.acceleo.engine.tests"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/examples/org.eclipse.acceleo.examples,org.eclipse.acceleo.examples"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.examples-feature,org.eclipse.acceleo.examples-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.ide-feature,org.eclipse.acceleo.ide-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/tests/org.eclipse.acceleo.ide.ui.tests,org.eclipse.acceleo.ide.ui.tests"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.model,org.eclipse.acceleo.model"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/examples/org.eclipse.acceleo.module.example.ecore2python,org.eclipse.acceleo.module.example.ecore2python"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/examples/org.eclipse.acceleo.module.example.ecore2python.ui,org.eclipse.acceleo.module.example.ecore2python.ui"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/examples/org.eclipse.acceleo.module.example.uml2java,org.eclipse.acceleo.module.example.uml2java"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/examples/org.eclipse.acceleo.module.example.uml2java.ui,org.eclipse.acceleo.module.example.uml2java.ui"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.parser,org.eclipse.acceleo.parser"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/tests/org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.parser.tests"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo.releng,org.eclipse.acceleo.releng"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.runtime-feature,org.eclipse.acceleo.runtime-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.sdk-feature,org.eclipse.acceleo.sdk-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/tests/org.eclipse.acceleo.tests,org.eclipse.acceleo.tests"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.tests-feature,org.eclipse.acceleo.tests-feature"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/plugins/org.eclipse.acceleo.ui.capabilities,org.eclipse.acceleo.ui.capabilities"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/modeling,org.eclipse.m2t/org.eclipse.acceleo/features/org.eclipse.acceleo.ui.capabilities-feature,org.eclipse.acceleo.ui.capabilities-feature"/>
+</provider>
+</psf>
