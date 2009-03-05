@@ -18,15 +18,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.common.util.URI;
 
 /**
  * This will be used to test the behavior of the generic Acceleo engine.
@@ -59,8 +59,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	/** This initializer allows us to initialize all required input. */
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true);
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true);
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model.");
@@ -265,8 +265,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				generationRoot, false);
+		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
+				validArguments, generationRoot, false);
 
 		assertTrue("Preview map should have been empty", preview.isEmpty());
 		try {
@@ -295,8 +295,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePublicTemplateValidArgsNullRootPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsNullRootPreview"));
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				null, true);
+		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
+				validArguments, null, true);
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());
@@ -323,8 +323,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePublicTemplateValidArgsPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsPreview"));
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				generationRoot, true);
+		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
+				validArguments, generationRoot, true);
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());

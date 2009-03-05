@@ -15,26 +15,27 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * This will test the behavior of the Acceleo engine when resolving &quot;simple&quot; name conflicts in template
- * calls. These are considered simple conflicts since no overriding or changes in parameter count is present.
+ * This will test the behavior of the Acceleo engine when resolving &quot;simple&quot; name conflicts in
+ * template calls. These are considered simple conflicts since no overriding or changes in parameter count is
+ * present.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true); //$NON-NLS-1$
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true); //$NON-NLS-1$
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$
@@ -63,8 +64,8 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its extended module. We expect it to select the one present on the current module.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its extended module. We expect it to select the one present on the current module.
 	 */
 	public void testNameResolutionConflictOnExtended() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExtendConflict")); //$NON-NLS-1$
@@ -87,8 +88,8 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its imported module. We expect it to select the one present on the current module.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its imported module. We expect it to select the one present on the current module.
 	 */
 	public void testNameResolutionConflictOnImported() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeImportConflict")); //$NON-NLS-1$
@@ -111,9 +112,9 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template not present ont the
-	 * current module but with namesakes on its extended and imported modules. We expect it to select the one
-	 * present on the extended module.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template not present ont
+	 * the current module but with namesakes on its extended and imported modules. We expect it to select the
+	 * one present on the extended module.
 	 */
 	public void testNameResolutionExternalConflict() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExternalConflict")); //$NON-NLS-1$
@@ -146,7 +147,8 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_distinct_param_name", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module,
+				"test_namesake_distinct_param_name", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -161,8 +163,8 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * each three possible places : extended, current and imported module. We expect it to select the one
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on each three possible places : extended, current and imported module. We expect it to select the one
 	 * present on the current module.
 	 */
 	public void testNameResolutionPriority() throws IOException {

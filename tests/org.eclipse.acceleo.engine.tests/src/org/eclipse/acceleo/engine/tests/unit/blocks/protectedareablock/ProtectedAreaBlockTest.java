@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * Class to test Protected Area block.
@@ -166,8 +166,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		final List<EObject> templateArgs = new ArrayList<EObject>(1);
 		templateArgs.add(target);
 
-		AcceleoService
-				.doGenerateTemplate(module, "test_lost_protected_area", templateArgs, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerateTemplate(module,
+				"test_lost_protected_area", templateArgs, generationRoot, false); //$NON-NLS-1$
 
 		try {
 			AcceleoEvaluationContext.awaitCompletion();

@@ -37,22 +37,30 @@ public class MessagesTest extends TestCase {
 			"Arguments of a generation cannot be null.",};
 
 	/** These will be used when testing message retrieval with invalid keys. */
-	private final String[] invalidKeys = {"invalidKey", "AcceleoEvaluationContext.CleanUpError1", "", "\u00ec",};
+	private final String[] invalidKeys = {"invalidKey", "AcceleoEvaluationContext.CleanUpError1", "",
+			"\u00ec",};
 
 	/** Contains possible parameters for the messages. */
 	private final Object[] messageParameters = {null, "", "Foehn", -1, new Long(10), '\u0043', new HashSet(),
 			"0x6c9a.^\\/",};
 
-	/** These two are valid, parameterisable keys. See org.eclipse.acceleo.engine.acceleoenginemessages.properties. */
+	/**
+	 * These two are valid, parameterisable keys. See
+	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties.
+	 */
 	private final String[] parameterisableKeys = {"AcceleoEvaluationEnvironment.UndefinedOperation",
 			"AcceleoEvaluationContext.LostContent", "AcceleoService.UndefinedTemplate",};
 
-	/** These are valid, un-parameterisable keys. See org.eclipse.acceleo.engine.acceleoenginemessages.properties. */
+	/**
+	 * These are valid, un-parameterisable keys. See
+	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties.
+	 */
 	private final String[] validKeys = {"usercode.start", "AcceleoEvaluationVisitor.NullForIteration",
 			"AcceleoEngine.IllegalTemplateInvocation", "AcceleoService.NullArguments",};
 
 	/**
-	 * Tests {@link AcceleoEngineMessages#getString(String, Object...)} with an invalid key. Expects the String
+	 * Tests {@link AcceleoEngineMessages#getString(String, Object...)} with an invalid key. Expects the
+	 * String
 	 * 
 	 * <pre>
 	 * &quot;!&quot; + key + &quot;!&quot;
@@ -121,7 +129,8 @@ public class MessagesTest extends TestCase {
 					}
 					Locale.setDefault(Locale.ENGLISH);
 					assertEquals("Unexpected formatted String returned by getString(String, Object...).",
-							expectedResult, AcceleoEngineMessages.getString(parameterisableKeys[k], parameters));
+							expectedResult, AcceleoEngineMessages.getString(parameterisableKeys[k],
+									parameters));
 					if (previousLocale != null) {
 						Locale.setDefault(previousLocale);
 					} else {
@@ -148,8 +157,8 @@ public class MessagesTest extends TestCase {
 	}
 
 	/**
-	 * Tests {@link AcceleoEngineMessages#getString(String, Object...)} with valid keys and <code>null</code> as
-	 * formatting parameter. Expects the result to be the same as the
+	 * Tests {@link AcceleoEngineMessages#getString(String, Object...)} with valid keys and <code>null</code>
+	 * as formatting parameter. Expects the result to be the same as the
 	 * {@link AcceleoEngineMessages#getString(String)}.
 	 */
 	public void testFormattedGetStringValidKeyNullParameter() {
@@ -190,8 +199,8 @@ public class MessagesTest extends TestCase {
 	}
 
 	/**
-	 * Tests {@link AcceleoEngineMessages#getString(String)} with valid keys. Expects the String associated to the
-	 * key in the properties file to be returned.
+	 * Tests {@link AcceleoEngineMessages#getString(String)} with valid keys. Expects the String associated to
+	 * the key in the properties file to be returned.
 	 */
 	public void testUnFormattedGetStringValidKey() {
 		for (int i = 0; i < validKeys.length; i++) {

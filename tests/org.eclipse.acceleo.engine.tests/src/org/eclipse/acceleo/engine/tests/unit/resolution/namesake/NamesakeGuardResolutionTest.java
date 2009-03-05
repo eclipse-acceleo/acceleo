@@ -15,14 +15,14 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving name conflicts in guarded template calls.
@@ -32,8 +32,8 @@ import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true); //$NON-NLS-1$
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true); //$NON-NLS-1$
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$
@@ -62,9 +62,9 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. No template is more specific than the other as far as
-	 * parameters are concerned, but only the imported template has its guard evaluated to true. We then
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. No template is more specific than the other as far
+	 * as parameters are concerned, but only the imported template has its guard evaluated to true. We then
 	 * expect the engine to use the imported template.
 	 */
 	public void testNamesakeGuard() throws IOException {
@@ -88,10 +88,10 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. The extended template is less specific than the local
-	 * and imported ones, yet the local one has its guard evaluated to false. We then expect the engine to use
-	 * the imported template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. The extended template is less specific than the
+	 * local and imported ones, yet the local one has its guard evaluated to false. We then expect the engine
+	 * to use the imported template.
 	 */
 	public void testNamesakeGuardImportSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeGuardImportSpecific")); //$NON-NLS-1$
@@ -115,10 +115,10 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. The imported template is less specific than the local
-	 * and extended ones, yet both have their guards evaluated to false. We then expect the engine to use the
-	 * imported template even though less specific.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. The imported template is less specific than the
+	 * local and extended ones, yet both have their guards evaluated to false. We then expect the engine to
+	 * use the imported template even though less specific.
 	 */
 	public void testNamesakeGuardedSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeGuardedSpecific")); //$NON-NLS-1$
@@ -126,7 +126,8 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService
+				.doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

@@ -16,14 +16,14 @@ import java.io.PrintStream;
 
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
-import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 
 /**
  * Tests for the engine plug-in activator. Will mainly test behavior of utility methods it declares.
@@ -52,10 +52,11 @@ public class AcceleoEnginePluginTest extends TestCase {
 	private File temporaryLog;
 
 	/**
-	 * Tests the behavior of {@link AcceleoEnginePlugin#log(Exception, boolean)} passing an arbitrary exception
-	 * other than {@link NullPointerException} and {@link CoreException} to be logged. Expects the exception
-	 * to be logged with the specified severity. The error message should be the one specified in
-	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties with key &quot;AcceleoEnginePlugin.JavaException&quot;.
+	 * Tests the behavior of {@link AcceleoEnginePlugin#log(Exception, boolean)} passing an arbitrary
+	 * exception other than {@link NullPointerException} and {@link CoreException} to be logged. Expects the
+	 * exception to be logged with the specified severity. The error message should be the one specified in
+	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties with key
+	 * &quot;AcceleoEnginePlugin.JavaException&quot;.
 	 */
 	public void testLogExceptionArbitraryException() {
 		boolean blocker = false;
@@ -66,7 +67,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 			AcceleoEnginePlugin.log(new IllegalArgumentException(message), blocker);
 			System.setErr(systemErr);
 
-			final String expectedMessage = AcceleoEngineMessages.getString("AcceleoEnginePlugin.JavaException");
+			final String expectedMessage = AcceleoEngineMessages
+					.getString("AcceleoEnginePlugin.JavaException");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -85,8 +87,9 @@ public class AcceleoEnginePluginTest extends TestCase {
 	}
 
 	/**
-	 * Tests the behavior of {@link AcceleoEnginePlugin#log(Exception, boolean)} passing a {@link CoreException}
-	 * to be logged. Expects the exception to be logged with the specified error message and severity.
+	 * Tests the behavior of {@link AcceleoEnginePlugin#log(Exception, boolean)} passing a
+	 * {@link CoreException} to be logged. Expects the exception to be logged with the specified error message
+	 * and severity.
 	 */
 	public void testLogExceptionCoreException() {
 		for (int severity : ERROR_SEVERITIES) {
@@ -138,7 +141,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 			AcceleoEnginePlugin.log(new NullPointerException(message), blocker);
 			System.setErr(systemErr);
 
-			final String expectedMessage = AcceleoEngineMessages.getString("AcceleoEnginePlugin.ElementNotFound");
+			final String expectedMessage = AcceleoEngineMessages
+					.getString("AcceleoEnginePlugin.ElementNotFound");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -171,7 +175,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 			AcceleoEnginePlugin.log((String)null, blocker);
 			System.setErr(systemErr);
 
-			final String expectedMessage = AcceleoEngineMessages.getString("AcceleoEnginePlugin.UnexpectedException");
+			final String expectedMessage = AcceleoEngineMessages
+					.getString("AcceleoEnginePlugin.UnexpectedException");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -190,8 +195,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 	}
 
 	/**
-	 * Tests the behavior of {@link AcceleoEnginePlugin#log(String, boolean)} with a valid message to be logged.
-	 * Expects a new entry to be logged with the given severity and message.
+	 * Tests the behavior of {@link AcceleoEnginePlugin#log(String, boolean)} with a valid message to be
+	 * logged. Expects a new entry to be logged with the given severity and message.
 	 */
 	public void testLogMessageValidMessage() {
 		boolean blocker = false;
@@ -219,8 +224,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 	}
 
 	/**
-	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with <code>null</code> as the status to be
-	 * logged. Expects a {@link NullPointerException} to be thrown with the given status' error message.
+	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with <code>null</code> as the status to
+	 * be logged. Expects a {@link NullPointerException} to be thrown with the given status' error message.
 	 */
 	public void testLogStatusNullStatus() {
 		try {
@@ -232,8 +237,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 	}
 
 	/**
-	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with a valid status to be logged. Expects
-	 * the status to be logged with the specified severity, error message and source plugin.
+	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with a valid status to be logged.
+	 * Expects the status to be logged with the specified severity, error message and source plugin.
 	 */
 	public void testLogStatusValidStatus() {
 		for (int severity : ERROR_SEVERITIES) {
@@ -249,8 +254,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 						.getMessage());
 				assertEquals("Unexpected severity of the logged exception.", severity, loggedStatus
 						.getSeverity());
-				assertEquals("Exception logged with unexpected plug-in ID.", AcceleoEngineTestPlugin.PLUGIN_ID,
-						loggedStatus.getPlugin());
+				assertEquals("Exception logged with unexpected plug-in ID.",
+						AcceleoEngineTestPlugin.PLUGIN_ID, loggedStatus.getPlugin());
 			}
 		}
 	}

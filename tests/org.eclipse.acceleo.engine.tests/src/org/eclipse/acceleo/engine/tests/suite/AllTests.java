@@ -68,7 +68,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(AcceleoGenericEngineTest.class);
 
 		// Listeners
-		//FIXME LGO suite.addTestSuite(AcceleoListenersTest.class);
+		// FIXME LGO suite.addTestSuite(AcceleoListenersTest.class);
 
 		// Namesakes
 		suite.addTestSuite(SimpleNamesakeResolutionTest.class);

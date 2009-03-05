@@ -15,26 +15,27 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * This will test the behavior of the Acceleo engine when resolving name conflicts in template calls. Templates
- * will narrow the parameter type : some have parameter types "EClassifier" while namesakes have "EClass".
+ * This will test the behavior of the Acceleo engine when resolving name conflicts in template calls.
+ * Templates will narrow the parameter type : some have parameter types "EClassifier" while namesakes have
+ * "EClass".
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true); //$NON-NLS-1$
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true); //$NON-NLS-1$
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$
@@ -63,9 +64,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. We expect it to select the most specific one which is
-	 * here on the extended template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. We expect it to select the most specific one which
+	 * is here on the extended template.
 	 */
 	public void testNamesakeResolutionExtendMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExtendMostSpecific")); //$NON-NLS-1$
@@ -73,7 +74,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_3_extend_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module,
+				"test_namesake_3_extend_specific", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -140,9 +142,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. We expect it to select the most specific one which is
-	 * here on the imported template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. We expect it to select the most specific one which
+	 * is here on the imported template.
 	 */
 	public void testNamesakeResolutionImportMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeImportMostSpecific")); //$NON-NLS-1$
@@ -150,7 +152,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_3_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module,
+				"test_namesake_3_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -165,9 +168,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * both its extended module and its imported module. We expect it to select the most specific one which is
-	 * here on the local template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on both its extended module and its imported module. We expect it to select the most specific one which
+	 * is here on the local template.
 	 */
 	public void testNamesakeResolutionLocalMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeLocalMostSpecific")); //$NON-NLS-1$
@@ -175,7 +178,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_3_local_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService
+				.doGenerate(module, "test_namesake_3_local_specific", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -190,8 +194,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its extended module. We expect it to select the most specific one which is here on the extended
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its extended module. We expect it to select the most specific one which is here on the extended
 	 * template.
 	 */
 	public void testNamesakeResolutionOnExtendExtendSpecific() throws IOException {
@@ -216,8 +220,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its extended module. We expect it to select the most specific one which is here on the local template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its extended module. We expect it to select the most specific one which is here on the local
+	 * template.
 	 */
 	public void testNamesakeResolutionOnExtendLocalSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnExtendLocalSpecific")); //$NON-NLS-1$
@@ -241,8 +246,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its imported module. We expect it to select the most specific one which is here on the imported
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its imported module. We expect it to select the most specific one which is here on the imported
 	 * template.
 	 */
 	public void testNamesakeResolutionOnImportImportSpecific() throws IOException {
@@ -267,8 +272,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes on
-	 * its imported module. We expect it to select the most specific one which is here on the local template.
+	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
+	 * on its imported module. We expect it to select the most specific one which is here on the local
+	 * template.
 	 */
 	public void testNamesakeResolutionOnImportLocalSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnImportLocalSpecific")); //$NON-NLS-1$

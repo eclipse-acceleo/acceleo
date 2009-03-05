@@ -21,6 +21,11 @@ import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.parser.AcceleoParser;
+import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -29,11 +34,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
-import org.eclipse.acceleo.parser.AcceleoParser;
-import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.osgi.framework.Bundle;
 
 /**
@@ -94,8 +94,8 @@ public abstract class AbstractAcceleoTest extends TestCase {
 
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ DEFAULT_MODEL_LOCATION, true);
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + DEFAULT_MODEL_LOCATION, true);
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$

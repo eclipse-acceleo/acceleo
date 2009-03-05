@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
+import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -30,11 +35,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
-import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.ocl.ecore.OCL;
 
 /**
@@ -65,7 +65,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME, copyOperations);
 
-		List<EOperation> oclAnyOperations = lib.getExistingOperations(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME);
+		List<EOperation> oclAnyOperations = lib
+				.getExistingOperations(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME);
 		copyOperations = new ArrayList<EOperation>(oclAnyOperations.size());
 		for (EOperation operation : oclAnyOperations) {
 			copyOperations.add((EOperation)EcoreUtil.copy(operation));

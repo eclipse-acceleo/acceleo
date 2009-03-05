@@ -16,17 +16,18 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
- * This test allows us to check the behavior of the listeners that can be set up on the Acceleo generation engine.
+ * This test allows us to check the behavior of the listeners that can be set up on the Acceleo generation
+ * engine.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
@@ -126,8 +127,8 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This implementation of an AcceleoTextGenerationListener allows us to check that the accurate info is set on
-	 * the generation events.
+	 * This implementation of an AcceleoTextGenerationListener allows us to check that the accurate info is
+	 * set on the generation events.
 	 */
 	private class AcceleoGenerationEventTestListener implements AcceleoTextGenerationListener {
 		/** The generated text itself. */
@@ -179,8 +180,8 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This implementation of an AcceleoTextGenerationListener allows us to count the number of times the engine
-	 * generated text.
+	 * This implementation of an AcceleoTextGenerationListener allows us to count the number of times the
+	 * engine generated text.
 	 */
 	private class AcceleoGenerationCountListener implements AcceleoTextGenerationListener {
 		/** This will be incremented for each call to {@link #textGenerated(AcceleoTextGenerationEvent)}. */

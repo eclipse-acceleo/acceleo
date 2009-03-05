@@ -15,26 +15,26 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * This will test the behavior of the Acceleo engine on all aspects of the "template" Acceleo block. This includes
- * template invocation specific features such as "before" and "after".
+ * This will test the behavior of the Acceleo engine on all aspects of the "template" Acceleo block. This
+ * includes template invocation specific features such as "before" and "after".
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class TemplateTest extends AbstractAcceleoTest {
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true); //$NON-NLS-1$
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true); //$NON-NLS-1$
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$

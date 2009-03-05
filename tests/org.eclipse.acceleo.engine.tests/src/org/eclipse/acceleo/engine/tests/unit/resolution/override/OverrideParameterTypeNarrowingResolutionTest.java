@@ -15,14 +15,14 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving overriding template calls. Overriding
@@ -33,8 +33,8 @@ import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	{
 		try {
-			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
-					+ "data/abstractClass.ecore", true); //$NON-NLS-1$
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
+					+ '/' + "data/abstractClass.ecore", true); //$NON-NLS-1$
 			inputModel = ModelUtils.load(inputModelURI, resourceSet);
 		} catch (IOException e) {
 			fail("Error loading the input model."); //$NON-NLS-1$
@@ -72,7 +72,8 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_resolution_override_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module,
+				"test_resolution_override_specific", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -96,7 +97,8 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService
+				.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -120,7 +122,8 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_resolution_external_override", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module,
+				"test_resolution_external_override", inputModel, generationRoot, false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

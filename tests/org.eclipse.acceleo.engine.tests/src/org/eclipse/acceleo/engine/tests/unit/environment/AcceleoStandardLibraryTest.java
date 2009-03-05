@@ -16,17 +16,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
-import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.ocl.ecore.OCL;
 
 /**
@@ -49,14 +49,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	{
 		AcceleoStandardLibrary lib = new AcceleoStandardLibrary();
 
-		List<EOperation> intOperations = lib.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME);
+		List<EOperation> intOperations = lib
+				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME);
 		List<EOperation> copyOperations = new ArrayList<EOperation>(intOperations.size());
 		for (EOperation operation : intOperations) {
 			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME, copyOperations);
 
-		List<EOperation> realOperations = lib.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME);
+		List<EOperation> realOperations = lib
+				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME);
 		copyOperations = new ArrayList<EOperation>(realOperations.size());
 		for (EOperation operation : realOperations) {
 			copyOperations.add((EOperation)EcoreUtil.copy(operation));
