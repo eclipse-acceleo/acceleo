@@ -1,0 +1,13 @@
+- Module elements order : Query Section -> Template Section -> Macro Section
+- String and Real libraries
+- FileBlock : "stdout" output
+- Create features : Standalone, UI, SDK...
+- JUnit tests for completion
+- None regression tests by generating the AST
+- ASTNode positions of the OCL plugin are transient
+- Log a new bug to delete bad folders on the CVS
+- Creates a new component in the M2T bugzilla
+- Bad icon for a 'Template' completion proposal
+- Template Editor Commands : Comment, Open Declaration, Show references
+- Dynamic syntax errors
+- Wizard "New Acceleo Template"
