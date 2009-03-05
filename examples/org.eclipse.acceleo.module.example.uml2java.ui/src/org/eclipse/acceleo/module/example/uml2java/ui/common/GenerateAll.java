@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.Bundle;
 
-
 /**
  * Main entry point of the 'Uml To Java' generation module.
  * 
@@ -75,18 +74,19 @@ public class GenerateAll {
 		if (!targetFolder.exists()) {
 			targetFolder.mkdirs();
 		}
-		
-		final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.uml2java", new Path("/org/eclipse/acceleo/module/example/uml2java/generateJava.emtl"));
-		org.eclipse.acceleo.module.example.uml2java.GenerateJava gen0 = new org.eclipse.acceleo.module.example.uml2java.GenerateJava(modelURI, targetFolder, arguments) {
+
+		final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.uml2java", new Path(
+				"/org/eclipse/acceleo/module/example/uml2java/generateJava.emtl"));
+		org.eclipse.acceleo.module.example.uml2java.GenerateJava gen0 = new org.eclipse.acceleo.module.example.uml2java.GenerateJava(
+				modelURI, targetFolder, arguments) {
 			protected URI createTemplateURI(String entry) {
 				return template0;
 			}
 		};
 		gen0.doGenerate();
-			
-		
+
 	}
-	
+
 	/**
 	 * Finds the template in the plug-in. Returns the template plug-in URI.
 	 * 
@@ -129,7 +129,8 @@ public class GenerateAll {
 		}
 		URI result;
 		if (url != null) {
-			result = URI.createPlatformPluginURI(new Path(bundleID).append(new Path(url.getPath())).toString(), false);
+			result = URI.createPlatformPluginURI(new Path(bundleID).append(new Path(url.getPath()))
+					.toString(), false);
 		} else {
 			result = URI.createPlatformResourceURI(new Path(bundleID).append(relativePath).toString(), false);
 		}
