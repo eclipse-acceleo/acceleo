@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Rename this file, put it in the target project and call it with "External Tools > Run As > Ant Build" -->
+<!-- You have to change the MODEL and the TARGET values -->
+
+<project basedir="." default="initSample" name="org.eclipse.acceleo.module.example.ecore2pythonSample">
+	<import file="../org.eclipse.acceleo.module.example.ecore2python/tasks/init.xml"/>
+	<property name="MODEL" value="${basedir}/model/file.xmi"/>
+	<property name="TARGET" value="${basedir}/src-gen"/>
+	<target name="initSample" description="Generate files in '${TARGET}'">
+		<antcall target="init" >
+			<param name="model" value="${MODEL}"/>
+			<param name="target" value="${TARGET}"/>
+		</antcall>
+	</target>
+</project>

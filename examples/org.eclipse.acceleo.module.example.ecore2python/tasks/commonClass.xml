@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="commonClass" name="org.eclipse.acceleo.module.example.ecore2python">
+    <property name="ECLIPSE_HOME" value="../../"/>
+    <property name="ECLIPSE_WORKSPACE" value="../"/>
+    <path id="org.eclipse.acceleo.module.example.ecore2python.libraryclasspath">
+    	<pathelement location="../org.eclipse.acceleo.module.example.ecore2python/bin"/>
+    	
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.osgi_3.4.0.v20080529-1200.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.jobs_3.4.0.v20080512.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.200.v20070717/runtime_registry_compatibility.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.registry_3.4.0.v20080516-0950.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.preferences_3.2.200.v20080421-2006.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.core.contenttype_3.3.0.v20080414.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.equinox.app_1.1.0.v20080421-2006.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore_2.4.0.v200806091234.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.common_2.4.0.v200806091234.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.emf.ecore.xmi_2.4.0.v200806091234.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl_1.2.0.v200806091438.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/net.sourceforge.lpg.lpgjavaruntime_1.1.0.v200803061910.jar"/>
+    	<pathelement location="${ECLIPSE_HOME}/plugins/org.eclipse.ocl.ecore_1.2.0.v200805130238.jar"/>
+    </path>
+    <path id="org.eclipse.acceleo.module.example.ecore2python.classpath">
+        <path refid="org.eclipse.acceleo.module.example.ecore2python.libraryclasspath"/>
+    </path>
+
+	<target name="commonClass">
+
+		<java classname="org.eclipse.acceleo.module.ecore2python.CommonClass" classpathref="org.eclipse.acceleo.module.example.ecore2python.classpath">
+			<arg value="${model}"/>
+			<arg value="${target}"/>
+		</java>
+
+	</target>
+
+</project>
