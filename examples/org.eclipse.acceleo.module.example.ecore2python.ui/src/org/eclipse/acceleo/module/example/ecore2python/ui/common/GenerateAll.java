@@ -23,7 +23,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.osgi.framework.Bundle;
 
-
 /**
  * Main entry point of the 'Ecore To Python' generation module.
  * 
@@ -76,44 +75,51 @@ public class GenerateAll {
 		if (!targetFolder.exists()) {
 			targetFolder.mkdirs();
 		}
-		
-		final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path("/org/eclipse/acceleo/module/ecore2python/commonClass.emtl"));
-		org.eclipse.acceleo.module.ecore2python.CommonClass gen0 = new org.eclipse.acceleo.module.ecore2python.CommonClass(modelURI, targetFolder, arguments) {
+
+		final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path(
+				"/org/eclipse/acceleo/module/ecore2python/commonClass.emtl"));
+		org.eclipse.acceleo.module.ecore2python.CommonClass gen0 = new org.eclipse.acceleo.module.ecore2python.CommonClass(
+				modelURI, targetFolder, arguments) {
 			protected URI createTemplateURI(String entry) {
 				return template0;
 			}
 		};
 		gen0.doGenerate();
-			
+
 		EObject model = gen0.getModel();
 		if (model != null) {
-				
-			final URI template1 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path("/org/eclipse/acceleo/module/ecore2python/factory.emtl"));
-			org.eclipse.acceleo.module.ecore2python.Factory gen1 = new org.eclipse.acceleo.module.ecore2python.Factory(model, targetFolder, arguments) {
+
+			final URI template1 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path(
+					"/org/eclipse/acceleo/module/ecore2python/factory.emtl"));
+			org.eclipse.acceleo.module.ecore2python.Factory gen1 = new org.eclipse.acceleo.module.ecore2python.Factory(
+					model, targetFolder, arguments) {
 				protected URI createTemplateURI(String entry) {
 					return template1;
 				}
 			};
 			gen1.doGenerate();
-			final URI template2 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path("/org/eclipse/acceleo/module/ecore2python/init.emtl"));
-			org.eclipse.acceleo.module.ecore2python.Init gen2 = new org.eclipse.acceleo.module.ecore2python.Init(model, targetFolder, arguments) {
+			final URI template2 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path(
+					"/org/eclipse/acceleo/module/ecore2python/init.emtl"));
+			org.eclipse.acceleo.module.ecore2python.Init gen2 = new org.eclipse.acceleo.module.ecore2python.Init(
+					model, targetFolder, arguments) {
 				protected URI createTemplateURI(String entry) {
 					return template2;
 				}
 			};
 			gen2.doGenerate();
-			final URI template3 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path("/org/eclipse/acceleo/module/ecore2python/parser.emtl"));
-			org.eclipse.acceleo.module.ecore2python.Parser gen3 = new org.eclipse.acceleo.module.ecore2python.Parser(model, targetFolder, arguments) {
+			final URI template3 = getTemplateURI("org.eclipse.acceleo.module.example.ecore2python", new Path(
+					"/org/eclipse/acceleo/module/ecore2python/parser.emtl"));
+			org.eclipse.acceleo.module.ecore2python.Parser gen3 = new org.eclipse.acceleo.module.ecore2python.Parser(
+					model, targetFolder, arguments) {
 				protected URI createTemplateURI(String entry) {
 					return template3;
 				}
 			};
 			gen3.doGenerate();
 		}
-			
-		
+
 	}
-	
+
 	/**
 	 * Finds the template in the plug-in. Returns the template plug-in URI.
 	 * 
@@ -156,7 +162,8 @@ public class GenerateAll {
 		}
 		URI result;
 		if (url != null) {
-			result = URI.createPlatformPluginURI(new Path(bundleID).append(new Path(url.getPath())).toString(), false);
+			result = URI.createPlatformPluginURI(new Path(bundleID).append(new Path(url.getPath()))
+					.toString(), false);
 		} else {
 			result = URI.createPlatformResourceURI(new Path(bundleID).append(relativePath).toString(), false);
 		}
