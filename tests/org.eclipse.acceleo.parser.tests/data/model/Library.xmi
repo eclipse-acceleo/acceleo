@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<extlib:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extlib="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0" xsi:schemaLocation="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0" name="MyLibrary">
+  <books xsi:type="extlib:Book" title="Brida" author="//@writers.0"/>
+  <books xsi:type="extlib:Book" title="The Hollow" author="//@writers.1"/>
+  <writers firstName="Paulo" lastName="Coelho" books="//@books.0"/>
+  <writers firstName="Norah" lastName="Roberts" books="//@books.1"/>
+</extlib:Library>

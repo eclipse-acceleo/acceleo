@@ -1,0 +1,32 @@
+[module mtlIndentStrategy(http://www.eclipse.org/emf/2002/Ecore) /]
+
+[template public indent(p:EPackage)]
+
+[indent2()/]
+	[for (c:EClassifier | p.eClassifiers)]
+		[c.name/]
+	[/for]
+	[for (c:EClassifier | p.eClassifiers)]
+		[c.name/]
+	[/for]
+
+[/template]
+
+[template public indent2(p:EPackage) ]
+	[p.name/]
+	[if (p.name <> '')]
+		[p.name/]
+	[else]
+		[if (p.name <> '')]
+			[p.name/]
+		[else]
+			[p.name/]
+		[/if]
+	[/if]
+
+	[protected (p.name)]
+		[p.name/]
+	[/protected]
+
+[/template]
+
