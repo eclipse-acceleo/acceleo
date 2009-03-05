@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Acceleo Tutorial</title>
+<meta name="authors" content="Laurent Goubet" />
+<style type="text/css">
+
+/*
+Author: Peter Parente
+Date: 2008/01/22
+Version: 1.0
+Copyright: This stylesheet has been placed in the public domain - free to edit and use for all uses.
+*/
+
+body {
+  font: 100% sans-serif;
+  background: #ffffff;
+  color: black;
+  margin: 2em;
+  padding: 0em 2em;
+}
+
+p.topic-title {
+  font-weight: bold;
+}
+
+table.docinfo {
+  text-align: left;
+  margin: 2em 0em;
+}
+
+a[href] {
+  color: #436976;
+  background-color: transparent;
+}
+
+a.toc-backref {
+  text-decoration: none;
+}
+
+h1 a[href] {
+  color: #003a6b;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a.strong {
+  font-weight: bold;
+}
+
+img {
+  margin: 0;
+  border: 0;
+}
+
+p {
+  margin: 0.5em 0 1em 0;
+  line-height: 1.5em;
+}
+
+p a:visited {
+  color: purple;
+  background-color: transparent;
+}
+
+p a:active {
+  color: red;
+  background-color: transparent;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+p img {
+  border: 0;
+  margin: 0;
+}
+
+p.rubric {
+  font-weight: bold;
+  font-style: italic;
+}
+
+h1.title {
+  color: #003a6b;
+  font-size: 250%;
+  margin-bottom: 0em;
+}
+
+h2.subtitle {
+  color: #003a6b;
+  border-bottom: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #555;
+  background-color: transparent;
+  margin: 0em;
+  padding-top: 0.5em;
+}
+
+h1 {
+  font-size: 160%;
+  margin-bottom: 0.5em;
+  border-bottom: 2px solid #aaa;
+}
+
+h2 {
+  font-size: 140%;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #aaa;
+}
+
+h3 {
+  font-size: 130%;
+  margin-bottom: 0.5em;
+}
+
+h4 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+h5 {
+  font-size: 105%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+h6 {
+  font-size: 100%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+dt {
+  font-style: italic;
+}
+
+dd {
+  margin-bottom: 1.5em;
+}
+
+div.admonition, div.note, div.tip, div.caution, div.important {
+  margin: 2em 2em;
+  padding: 0em 1em;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-bottom: 2px solid #555;
+  border-right: 2px solid #555;
+}
+
+div.important {
+  background: transparent url('../images/important.png') 10px 2px no-repeat;
+}
+
+div.caution {
+  background: transparent url('../images/caution.png') 10px 2px no-repeat;
+}
+
+div.note {
+  background: transparent url('../images/note.png') 10px 2px no-repeat;
+}
+
+div.tip {
+  background: transparent url('../images/tip.png') 10px 2px no-repeat;
+}
+
+div.admonition-example {
+  background: transparent url('../images/tip.png') 10px 2px no-repeat;
+}
+
+div.admonition-critical-example {
+  background: transparent url('../images/important.png') 10px 2px no-repeat;
+}
+
+p.admonition-title {
+  font-weight: bold;
+  border-bottom: 1px solid #aaa;
+  padding-left: 30px;
+}
+
+table.docutils {
+  text-align: left;
+  border: 1px solid gray;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0em;
+}
+
+table.docutils caption {
+  font-style: italic;
+}
+
+table.docutils td, table.docutils th {
+  padding: 0.25em 0.5em;
+}
+
+table.docutils th {
+  background-color: #dddddd;
+}
+
+div.sidebar {
+  width: 33%;
+  float: right;
+  margin: 0em 2em;
+  padding: 0em 1em;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-bottom: 2px solid #555;
+  border-right: 2px solid #555;
+}
+
+p.sidebar-title {
+  margin-bottom: 0em;
+  color: #003a6b;
+  border-bottom: 1px solid #aaa;
+  font-weight: bold;
+}
+
+p.sidebar-subtitle {
+  margin-top: 0em;
+  font-style: italic;
+  color: #003a6b;
+}
+
+</style>
+</head>
+<body>
+<div class="document" id="acceleo-tutorial">
+<h1 class="title">Acceleo Tutorial</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Goubet</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2008, Obeo™.</p>
+<div class="section" id="new-acceleo-ui-project">
+<h1>New Acceleo UI project</h1>
+<p>Once your templates are ready, you may want to have some wizards to launch the generation from eclipse.
+You can use the ant tasks or the java code, but you can also use the <em>New Acceleo UI project</em> wizard.
+This wizard will create a new eclipse ui project which will allow the user to launch the generation via an eclipse action.
+The example below shows the default result of this plugin, a new <em>generate java</em> action on the <em>.uml</em> files.</p>
+<img alt="../images/new_acceleo_module_ui_project_result.png" src="../images/new_acceleo_module_ui_project_result.png" />
+<p>First, right click on the Acceleo generator project then <em>New-&gt;Acceleo Module UI Project</em>.</p>
+<img alt="../images/new_acceleo_module_ui_project.png" src="../images/new_acceleo_module_ui_project.png" />
+<p>Choose a correct plugin name for the project, then click next.</p>
+<img alt="../images/new_acceleo_module_ui_project_1.png" src="../images/new_acceleo_module_ui_project_1.png" />
+<p>Choose the generator project as referenced project, then click next.</p>
+<img alt="../images/new_acceleo_module_ui_project_2.png" src="../images/new_acceleo_module_ui_project_2.png" />
+<p>Lastly, modify the model filename filter, and the java code for the target folder.</p>
+<img alt="../images/new_acceleo_module_ui_project_3.png" src="../images/new_acceleo_module_ui_project_3.png" />
+<p>The wizard will create a new plugin with all the necessary code to have a new action for the selected model file that will generate code inside the specified folder.</p>
+</div>
+</div>
+</body>
+</html>

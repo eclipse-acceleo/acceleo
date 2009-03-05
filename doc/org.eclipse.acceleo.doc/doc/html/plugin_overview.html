@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Acceleo Plug-ins Features Overview</title>
+<meta name="authors" content="Laurent Goubet" />
+<style type="text/css">
+
+/*
+Author: Peter Parente
+Date: 2008/01/22
+Version: 1.0
+Copyright: This stylesheet has been placed in the public domain - free to edit and use for all uses.
+*/
+
+body {
+  font: 100% sans-serif;
+  background: #ffffff;
+  color: black;
+  margin: 2em;
+  padding: 0em 2em;
+}
+
+p.topic-title {
+  font-weight: bold;
+}
+
+table.docinfo {
+  text-align: left;
+  margin: 2em 0em;
+}
+
+a[href] {
+  color: #436976;
+  background-color: transparent;
+}
+
+a.toc-backref {
+  text-decoration: none;
+}
+
+h1 a[href] {
+  color: #003a6b;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a.strong {
+  font-weight: bold;
+}
+
+img {
+  margin: 0;
+  border: 0;
+}
+
+p {
+  margin: 0.5em 0 1em 0;
+  line-height: 1.5em;
+}
+
+p a:visited {
+  color: purple;
+  background-color: transparent;
+}
+
+p a:active {
+  color: red;
+  background-color: transparent;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+p img {
+  border: 0;
+  margin: 0;
+}
+
+p.rubric {
+  font-weight: bold;
+  font-style: italic;
+}
+
+h1.title {
+  color: #003a6b;
+  font-size: 250%;
+  margin-bottom: 0em;
+}
+
+h2.subtitle {
+  color: #003a6b;
+  border-bottom: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #555;
+  background-color: transparent;
+  margin: 0em;
+  padding-top: 0.5em;
+}
+
+h1 {
+  font-size: 160%;
+  margin-bottom: 0.5em;
+  border-bottom: 2px solid #aaa;
+}
+
+h2 {
+  font-size: 140%;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #aaa;
+}
+
+h3 {
+  font-size: 130%;
+  margin-bottom: 0.5em;
+}
+
+h4 {
+  font-size: 110%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+h5 {
+  font-size: 105%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+h6 {
+  font-size: 100%;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+dt {
+  font-style: italic;
+}
+
+dd {
+  margin-bottom: 1.5em;
+}
+
+div.admonition, div.note, div.tip, div.caution, div.important {
+  margin: 2em 2em;
+  padding: 0em 1em;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-bottom: 2px solid #555;
+  border-right: 2px solid #555;
+}
+
+div.important {
+  background: transparent url('../images/important.png') 10px 2px no-repeat;
+}
+
+div.caution {
+  background: transparent url('../images/caution.png') 10px 2px no-repeat;
+}
+
+div.note {
+  background: transparent url('../images/note.png') 10px 2px no-repeat;
+}
+
+div.tip {
+  background: transparent url('../images/tip.png') 10px 2px no-repeat;
+}
+
+div.admonition-example {
+  background: transparent url('../images/tip.png') 10px 2px no-repeat;
+}
+
+div.admonition-critical-example {
+  background: transparent url('../images/important.png') 10px 2px no-repeat;
+}
+
+p.admonition-title {
+  font-weight: bold;
+  border-bottom: 1px solid #aaa;
+  padding-left: 30px;
+}
+
+table.docutils {
+  text-align: left;
+  border: 1px solid gray;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0em;
+}
+
+table.docutils caption {
+  font-style: italic;
+}
+
+table.docutils td, table.docutils th {
+  padding: 0.25em 0.5em;
+}
+
+table.docutils th {
+  background-color: #dddddd;
+}
+
+div.sidebar {
+  width: 33%;
+  float: right;
+  margin: 0em 2em;
+  padding: 0em 1em;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-bottom: 2px solid #555;
+  border-right: 2px solid #555;
+}
+
+p.sidebar-title {
+  margin-bottom: 0em;
+  color: #003a6b;
+  border-bottom: 1px solid #aaa;
+  font-weight: bold;
+}
+
+p.sidebar-subtitle {
+  margin-top: 0em;
+  font-style: italic;
+  color: #003a6b;
+}
+
+</style>
+</head>
+<body>
+<div class="document" id="acceleo-plug-ins-features-overview">
+<h1 class="title">Acceleo Plug-ins Features Overview</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Goubet</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:Laurent.Goubet&#64;obeo.fr">Laurent.Goubet&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2008, 2009, Obeo™.</p>
+<div class="section" id="introduction">
+<h1>Introduction</h1>
+<p>This document provides an overview of the user-visible features of the
+Acceleo plug-ins which make it easy to develop and run Acceleo modules inside
+Eclipse. It assumes some familiarity with the language itself,
+although you do not need to be an expert to start using the plug-ins:
+using the provided example projects and the powerful completion
+feature of the Acceleo editor, it is very easy to get started once you
+understand the basic principles.</p>
+<p>Concerning the language, almost all of the OMG specification keywords are supported
+(those marked with an asterisk are not fully supported yet):</p>
+<pre class="literal-block">
+module, import, extends, template, query, public, private, protected, guard, init,
+overrides, each, before, after, for, if, elseif, else, let, elselet, trace*, macro*,
+file, mode, text_explicit*, code_explicit*, super, stdout
+</pre>
+<p>For all the details about these keywords and the MOF Model to Text Language in
+general, you can consult <a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">the official MTL Specification</a> available at the OMG website.</p>
+</div>
+<div class="section" id="requirements">
+<h1>Requirements</h1>
+<p>Acceleo depends on:</p>
+<ol class="arabic simple">
+<li>EMF runtime ( 2.4.X )</li>
+<li>OCL runtime ( 1.2.X )</li>
+</ol>
+</div>
+<div class="section" id="acceleo-modules-and-projects">
+<h1>Acceleo Modules and Projects</h1>
+<p>The Acceleo plugins come with a perspective called Acceleo. To open this
+perspective, select <em>Window -&gt; Open perspective -&gt; Others</em>, then click
+on <em>Acceleo</em>.</p>
+<blockquote>
+<img alt="../images/acceleo_perspective.png" src="../images/acceleo_perspective.png" />
+</blockquote>
+<p>To create a new Acceleo Module project, open the <em>New project</em> Eclipse
+wizard, and in the <em>Model to Text Transformation</em> category select <em>Acceleo
+Module Project</em>. On the next page, enter the project name. Then go to the
+next page to create one or several initial template files:</p>
+<blockquote>
+<img alt="../images/acceleo_new_template_wizard.png" src="../images/acceleo_new_template_wizard.png" />
+</blockquote>
+<p>You can specify the location and name of the new <em>.mtl</em> file to create.
+You can also initialize the contents of the template with either a fixed
+example file (<em>Copy example content</em>), or an existing Acceleo or Xpand
+template (respectively <em>Migrate .mt content</em> and <em>Migrate .xpt content</em>).</p>
+<p>The metamodel information are also required. The wizard allows you to specify the input
+metamodel of your template, either from the list of registered
+metamodels or directly by URI. You can also specify the input
+type of the template.</p>
+<p>When you have filled in all required information, you can
+click <em>Finish</em> to create the project in the workspace.</p>
+<p>Note that Acceleo Module projects are also Eclipse Plug-in projects. Acceleo
+modules themselves are stored inside the project's source folder,
+following the same conventions as Java files: a module whose qualified
+name is <em>com::example::acceleo::myModule</em> must be stored in the file
+<em>com/example/acceleo/myModule.mtl</em> in one of the project's source folders.</p>
+<blockquote>
+<img alt="../images/acceleo_project-structure.png" src="../images/acceleo_project-structure.png" />
+</blockquote>
+</div>
+<div class="section" id="acceleo-template-editor-features">
+<h1>Acceleo Template Editor Features</h1>
+<p>The Acceleo template editor is associated with Acceleo source files (<em>.mtl</em>
+files) and provides all the features of a modern programming editor to
+make you more productive when developing modules:</p>
+<ul>
+<li><p class="first">Syntax highlighting</p>
+</li>
+<li><p class="first">Smart completion</p>
+</li>
+<li><p class="first">Navigation to definitions and references</p>
+</li>
+<li><p class="first">Error highlighting</p>
+</li>
+<li><p class="first">Dynamic outline</p>
+</li>
+<li><p class="first">Code folding</p>
+<img alt="../images/acceleo_editor_overview.png" src="../images/acceleo_editor_overview.png" />
+</li>
+</ul>
+<p>Some of these features are described in details below.</p>
+<div class="section" id="smart-completion-on-acceleo-syntax-constructs">
+<h2>Smart Completion on Acceleo Syntax Constructs</h2>
+<p>The Acceleo editor provides smart completion on all the available Acceleo
+language constructs. It is activated by default using the <em>Ctrl+Space</em>
+key combination.</p>
+<p>The completion mechanism is smart enough to only present you the
+syntactically correct choices in the context where it is invoked. For
+example, when invoked at the top-level of a file (outside any
+template), only the top-level Acceleo constructs are shown:</p>
+<blockquote>
+<img alt="../images/acceleo_completion-top-level.png" src="../images/acceleo_completion-top-level.png" />
+</blockquote>
+<p>The context is also used to sort the proposed choices. For example,
+inside an <em>[if]</em> block, the <em>[elsif]</em> and <em>[else]</em> choices appear at
+the top of the completion proposals:</p>
+<blockquote>
+<img alt="../images/acceleo_completion-if.png" src="../images/acceleo_completion-if.png" />
+</blockquote>
+<p>Note that although the choices are presented as keywords inside
+brackets (e.g. <em>[for]</em>, <em>[file]</em>, etc.), you do not have to type the
+opening bracket but can simply type the first letters&nbsp;:</p>
+<blockquote>
+<img alt="../images/acceleo_completion-for.png" src="../images/acceleo_completion-for.png" />
+</blockquote>
+</div>
+<div class="section" id="smart-completion-on-scripts-and-meta-model-elements">
+<h2>Smart Completion on Scripts and Meta-model Elements</h2>
+<p>Smart completion also works inside Acceleo expressions, where it can be
+invoked using <em>Ctrl+Space</em>. It is also auto-activated after a small
+delay in some circumstances, like after a dot (<em>.</em>).</p>
+<p>Inside expressions, completion choices include elements of the
+meta-models compatible with the context and visible Acceleo elements
+(variables, templates and queries, modules) alike.</p>
+<p>In the example below, the <em>p</em> variable is a UML property, so
+completion on the partial expression <em>p.n</em> proposes both features and
+operations of the UML2 <em>Property</em> class which start with <em>n</em>:</p>
+<blockquote>
+<img alt="../images/acceleo_completion-mm.png" src="../images/acceleo_completion-mm.png" />
+</blockquote>
+<p>Starting from an empty expression, the completion proposes all the
+visible Acceleo variables and templates which can be invoked in addition
+to features and operations of the current elements (the latter are not
+visible on the screenshot):</p>
+<blockquote>
+<img alt="../images/acceleo_completion.png" src="../images/acceleo_completion.png" />
+</blockquote>
+</div>
+<div class="section" id="open-declaration">
+<h2>Open Declaration</h2>
+<p>The Acceleo editor also support the &quot;Open Declaration&quot; feature (<em>F3</em> by
+default), which allows easy navigation from any element to its
+definition. This works for almost any kind of element you can find in
+Acceleo modules: variables, modules, templates and queries, types,
+features and operations of meta-model elements, even the meta-model
+themselves from their URI.</p>
+</div>
+<div class="section" id="search-references">
+<h2>Search References</h2>
+<p>The &quot;Search references&quot; feature can be seen as the reverse of &quot;Open
+Declaration&quot;: instead of navigating from one specific usage of an
+element to its definition, it searches for all the usages of a
+particular element. This feature is invoked by default using the
+<em>Ctrl+Shift+g</em> key combination. It can be used either from the
+definition of an element (a variable, template, query, etc.) or any
+particular usage of it.</p>
+<p>In the example below, the cursor was on the definition of the
+iteration variable <em>p</em> in a <em>for</em> loop. Invoking &quot;Search references&quot;
+by pressing <em>Ctrl+Shift+g</em> opened the Eclipse search view with all the
+references to this variable inside the current module, and potential
+matches in other modules in the same project:</p>
+<blockquote>
+<img alt="../images/acceleo_search-references-1.png" src="../images/acceleo_search-references-1.png" />
+</blockquote>
+<p>As for &quot;Open Declaration&quot;, the &quot;Search References&quot; feature works for
+all kinds of elements: Acceleo variables, templates, queries and modules,
+meta-model types, features and operations.</p>
+</div>
+</div>
+<div class="section" id="running-and-debugging-acceleo-modules">
+<h1>Running and debugging Acceleo modules</h1>
+<p>Acceleo modules can be run and debugged very easily using the standard
+Eclipse mechanisms.</p>
+<p>Inside your Acceleo modules, you can annotate some of your templates using
+a special comment <em>[comment &#64;main /]</em>. This identifies these templates
+as entry points for the generation. When a module contains at least
+one such entry point, the Acceleo project builder automatically creates a
+Java class which can be used to launch the generation.</p>
+<p>That Java class contains a <em>main()</em> method which can be used to invoke
+a generation from that module. It can be called by itself as a normal
+Java program (including outside of Eclipse), or using the more
+convenient <em>Acceleo Application</em> launcher. That program requires two input
+arguments:</p>
+<ol class="arabic simple">
+<li>the input model (for example a <em>.uml</em> file)</li>
+<li>the target folder</li>
+</ol>
+<div class="section" id="launching-a-module">
+<h2>Launching a Module</h2>
+<p>To launch a generation using an Acceleo module, open the Eclipse <em>Run
+configurations</em> dialog, and create a new configuration of type <em>Acceleo
+Application</em>.</p>
+<blockquote>
+<img alt="../images/acceleo_launch-configuration.png" src="../images/acceleo_launch-configuration.png" />
+</blockquote>
+<p>You can also right-click on a <em>.mtl</em> file and select <em>Run as &gt; Acceleo
+Application</em> to open the same dialog with some of the information
+already configured to run this template.</p>
+<p>The mandatory parameters are:</p>
+<dl class="docutils">
+<dt>Project</dt>
+<dd>the project containing the module to use</dd>
+<dt>Main class</dt>
+<dd>the Java class generated from your module (if it contains entry points)</dd>
+<dt>Model</dt>
+<dd>the input model for the generation</dd>
+<dt>Target</dt>
+<dd>the target folder in which to put the generated files</dd>
+<dt>Properties</dt>
+<dd>if the templates which serve as entry points to the generation
+expect arguments, you can specify them in this text area, one per
+line.</dd>
+<dt>Runner</dt>
+<dd>you have the choice between <em>Acceleo Plug-in Application</em> (the default)
+and <em>Java Application</em>. Using the <em>Java Application</em> runner is
+strictly equivalent to invoking the generated Java class with the
+input model file and target folder as parameters. This is useful to
+check that your generator runs correctly in <em>standalone mode</em>
+(outside of Eclipse), but in this mode it is not possible to debug
+the Acceleo templates as such. On the other hand, because the <em>Acceleo
+Plug-in Application</em> runner is aware that it is executing an Acceleo
+generation, it gives you access to the Acceleo template debugger
+described in the next section.</dd>
+</dl>
+<p>Once you have specified all the required information, the
+configuration can be invoked like any Eclipse launch configuration.</p>
+</div>
+<div class="section" id="debugging-your-modules">
+<h2>Debugging your Modules</h2>
+<p>The Acceleo plug-ins also include a debugger for you Acceleo modules. The
+debugger allows you to set breakpoints inside your Acceleo templates and
+thus follow their execution step by step.</p>
+<p>To debug an Acceleo module, follow the sames steps as described above to
+create a launch configuration, but use the <em>Debug as</em> menu instead of
+<em>Run as</em>. Once you have a launch configuration, it can be invoked
+either as a normal launch or as a debug launch.</p>
+<p>To put a breakpoint in a template, simply double-click inside the left
+margin of the Acceleo editor on the target line. Note that you can only
+put breakpoints on lines which contain Acceleo expressions, not on lines
+which have only fixed text output.</p>
+<p>The Acceleo debugger has some support for conditional breakpoints: once
+you have set a breakpoint, simply click on it in the left margin. A
+dialog box appears where you can enter a name pattern:</p>
+<blockquote>
+<img alt="../images/acceleo_breakpoint_condition.png" src="../images/acceleo_breakpoint_condition.png" />
+</blockquote>
+<p>Once you have set a name pattern, the breakpoint will only be
+triggered when on elements which names match the pattern (note that
+currently breakpoint conditions are only taken into account for the
+next debug session).</p>
+<p>When you launch a debug session on your module, if you have
+breakpoints and they are enabled, the generation will pause when they
+are hit. If you then switch to the <em>Debug</em> perspective, you should see
+the familiar debug views:</p>
+<blockquote>
+<img alt="../images/acceleo_debugger.png" src="../images/acceleo_debugger.png" />
+</blockquote>
+<p>In the <em>Debug</em> view itself (top left), you can see the current
+template call stack. If you select a frame, the Acceleo editor (below)
+will open on the corresponding file and line. The <em>Variables</em> view
+(top right) allows you to inspect the current object for the
+expression being executed.</p>
+<p>As in Java, you can use the <em>Step Into</em>, <em>Step Over</em> and <em>Step Return</em>
+actions to execute the template step by step, <em>Resume</em> the execution
+until the end or another breakpoint is hit, or simply <em>Stop</em> the
+session.</p>
+</div>
+</div>
+</div>
+</body>
+</html>
