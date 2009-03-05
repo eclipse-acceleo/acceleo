@@ -1,0 +1,27 @@
+[module mtlCompletionProcessor(http://www.eclipse.org/emf/2002/Ecore) /]
+ 
+[import mtlCompletionProcessorCommon /]
+ 
+[template public classToJava(p:EPackage) ]
+	
+	[if (true)]
+	
+	[else]
+	
+	[/if]
+	
+	[for (c:EClassifier | p.eClassifiers) {count : Integer = 0; }]
+		[ /]
+	[/for]
+	
+	[for (c:EClassifier | p.eClassifiers) separator(',')]
+	
+	[/for]
+	
+	[p.name.toLowerFi() /]
+	
+	[let p:Property][p/]
+	
+	[/let]
+
+[/template]
