@@ -29,7 +29,6 @@ import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.OCL.Query;
 import org.eclipse.ocl.ecore.Variable;
 
-
 /**
  * This class can be used to launch the generation of an Acceleo template.
  * 
@@ -40,7 +39,8 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
 	 */
-	private final List<AcceleoTextGenerationListener> listeners = new ArrayList<AcceleoTextGenerationListener>(3);
+	private final List<AcceleoTextGenerationListener> listeners = new ArrayList<AcceleoTextGenerationListener>(
+			3);
 
 	/** Holds a reference to the ocl instance. */
 	private OCL ocl;
@@ -57,8 +57,8 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template, java.util.List,
-	 *      java.io.File, boolean)
+	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template,
+	 *      java.util.List, java.io.File, boolean)
 	 */
 	public Map<String, StringWriter> evaluate(Template template, List<? extends Object> arguments,
 			File generationRoot, boolean preview) {
@@ -70,7 +70,8 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
 		}
 		if (template.getParameter().size() != arguments.size()) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoEngine.IllegalArguments")); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalArguments")); //$NON-NLS-1$
 		}
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual

@@ -340,9 +340,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 
 		if (isUndefined(iteration)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationVisitor.NullForIteration", forBlock.getStartPosition(), ((Module)EcoreUtil //$NON-NLS-1$
-							.getRootContainer(forBlock)).getName()));
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+					AcceleoEngineMessages
+							.getString(
+									"AcceleoEvaluationVisitor.NullForIteration", forBlock.getStartPosition(), ((Module)EcoreUtil //$NON-NLS-1$
+											.getRootContainer(forBlock)).getName()));
 			exception.fillInStackTrace();
 			throw exception;
 		}
@@ -366,9 +368,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					guardValue = visitExpression((OCLExpression)forBlock.getGuard());
 				}
 				if (isUndefined(guardValue)) {
-					final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
-							.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock.getStartPosition(),
-									((Module)EcoreUtil.getRootContainer(forBlock)).getName()));
+					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+							AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
+									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(forBlock))
+									.getName()));
 					exception.fillInStackTrace();
 					throw exception;
 				}
@@ -400,9 +403,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				guardValue = visitExpression((OCLExpression)forBlock.getGuard());
 			}
 			if (isUndefined(guardValue)) {
-				final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock.getStartPosition(),
-								((Module)EcoreUtil.getRootContainer(forBlock)).getName()));
+				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+						AcceleoEngineMessages
+								.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock.getStartPosition(),
+										((Module)EcoreUtil.getRootContainer(forBlock)).getName()));
 				exception.fillInStackTrace();
 				throw exception;
 			}
@@ -562,12 +566,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (areaContent != null) {
 			context.append(areaContent, protectedArea, lastEObjectSelfValue);
 		} else {
-			context
-					.append(
-							AcceleoEngineMessages.getString("usercode.start"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
+			context.append(
+					AcceleoEngineMessages.getString("usercode.start"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
 			context.append(' ' + marker, protectedArea, lastEObjectSelfValue);
 			visitAcceleoBlock(protectedArea);
-			context.append(AcceleoEngineMessages.getString("usercode.end"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
+			context.append(
+					AcceleoEngineMessages.getString("usercode.end"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
 		}
 	}
 
@@ -586,8 +590,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		for (int i = 0; i < query.getParameter().size(); i++) {
 			final Object argValue = visitExpression((OCLExpression)invocation.getArgument().get(i));
 			if (isUndefined(argValue)) {
-				final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString("AcceleoEvaluationVisitor.UndefinedArgument", invocation.getStartPosition(), //$NON-NLS-1$
+				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+						AcceleoEngineMessages.getString(
+								"AcceleoEvaluationVisitor.UndefinedArgument", invocation.getStartPosition(), //$NON-NLS-1$
 								((Module)EcoreUtil.getRootContainer(invocation)).getName()));
 				exception.fillInStackTrace();
 				throw exception;
@@ -651,8 +656,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public String visitAcceleoTemplate(Template template) {
 		context.openNested();
 		/*
-		 * Variables have been positionned by either the AcceleoEngine (first template) or this visitor (template
-		 * invocation).
+		 * Variables have been positionned by either the AcceleoEngine (first template) or this visitor
+		 * (template invocation).
 		 */
 		for (final OCLExpression nested : template.getBody()) {
 			visitExpression(nested);
@@ -709,10 +714,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (OCLExpression expression : invocation.getArgument()) {
 				final Object argValue = visitExpression(expression);
 				if (isUndefined(argValue)) {
-					final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
-							.getString("AcceleoEvaluationVisitor.UndefinedArgument", invocation //$NON-NLS-1$
-									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(invocation))
-									.getName()));
+					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+							AcceleoEngineMessages.getString(
+									"AcceleoEvaluationVisitor.UndefinedArgument", invocation //$NON-NLS-1$
+											.getStartPosition(), ((Module)EcoreUtil
+											.getRootContainer(invocation)).getName()));
 					exception.fillInStackTrace();
 					throw exception;
 				}
@@ -837,10 +843,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
-	 * Handles the evaluation of an Acceleo {@link InitSection}. This will simply add all the declared variables
-	 * to the evaluation environment. Evaluation of all blocks should use this in order to save the variables
-	 * state <u>before</u> evaluation and be able to restore it afterwards through {@link #restoreVariables()}
-	 * .
+	 * Handles the evaluation of an Acceleo {@link InitSection}. This will simply add all the declared
+	 * variables to the evaluation environment. Evaluation of all blocks should use this in order to save the
+	 * variables state <u>before</u> evaluation and be able to restore it afterwards through
+	 * {@link #restoreVariables()} .
 	 * 
 	 * @param init
 	 *            The init section containing the variables to process.

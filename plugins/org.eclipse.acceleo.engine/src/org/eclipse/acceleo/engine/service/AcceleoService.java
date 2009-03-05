@@ -42,7 +42,8 @@ public final class AcceleoService {
 	private static final IAcceleoEngine GENERATION_ENGINE = new AcceleoGenericEngine();
 
 	/** This message will be set for all NPE thrown because of null arguments for this utility's methods. */
-	private static final String TEMPLATE_CALL_NPE = AcceleoEngineMessages.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
+	private static final String TEMPLATE_CALL_NPE = AcceleoEngineMessages
+			.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -68,7 +69,8 @@ public final class AcceleoService {
 	 * containing modules.
 	 * <p>
 	 * Keep in mind that this can only be used with single-argument templates. Any attempt to call to a
-	 * template with more than one argument through this method will throw {@link AcceleoEvaluationException}s.
+	 * template with more than one argument through this method will throw {@link AcceleoEvaluationException}
+	 * s.
 	 * </p>
 	 * <p>
 	 * The input model will be iterated over for objects matching the templates' parameter types.
@@ -270,11 +272,12 @@ public final class AcceleoService {
 	}
 
 	/**
-	 * Launches the generation of a single-argument Acceleo template for all matching EObjects in the given model.
+	 * Launches the generation of a single-argument Acceleo template for all matching EObjects in the given
+	 * model.
 	 * <p>
 	 * This is a convenience method that can only be used with single argument templates. Any attempt at
-	 * calling other templates through this method will throw {@link AcceleoEvaluationException}s. The input model
-	 * will be iterated over for objects matching the template's parameter type.
+	 * calling other templates through this method will throw {@link AcceleoEvaluationException}s. The input
+	 * model will be iterated over for objects matching the template's parameter type.
 	 * </p>
 	 * <p>
 	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
@@ -314,7 +317,8 @@ public final class AcceleoService {
 					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
 		}
 		if (template.getParameter().size() != 1) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoEngine.VoidArguments")); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.VoidArguments")); //$NON-NLS-1$
 		}
 
 		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
@@ -447,7 +451,8 @@ public final class AcceleoService {
 				}
 			}
 		}
-		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoService.UndefinedTemplate", //$NON-NLS-1$
+		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+				"AcceleoService.UndefinedTemplate", //$NON-NLS-1$
 				templateName, module.getName()));
 	}
 
@@ -483,7 +488,8 @@ public final class AcceleoService {
 				}
 			}
 		}
-		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString("AcceleoService.UndefinedTemplate", //$NON-NLS-1$
+		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+				"AcceleoService.UndefinedTemplate", //$NON-NLS-1$
 				templateName, module.getName()));
 	}
 }

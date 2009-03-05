@@ -46,8 +46,8 @@ import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
 
 /**
- * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and resolve
- * the right template for each call (guards, overrides, namesakes, ...).
+ * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and
+ * resolve the right template for each call (guards, overrides, namesakes, ...).
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
@@ -104,8 +104,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
-	 * The environment will delegate operation calls to this method if it needs to evaluate non-standard Acceleo
-	 * operations.
+	 * The environment will delegate operation calls to this method if it needs to evaluate non-standard
+	 * Acceleo operations.
 	 * 
 	 * @param operation
 	 *            Operation which is to be evaluated.
@@ -177,9 +177,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		} else {
 			sourceLabel = source.getClass().getName();
 		}
-		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
-				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
-				sourceLabel));
+		throw new UnsupportedOperationException(
+				AcceleoEngineMessages
+						.getString(
+								"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
+								sourceLabel));
 	}
 
 	/**
@@ -293,9 +295,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		} else {
 			sourceLabel = source.getClass().getName();
 		}
-		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
-				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
-				sourceLabel));
+		throw new UnsupportedOperationException(
+				AcceleoEngineMessages
+						.getString(
+								"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
+								sourceLabel));
 	}
 
 	/**
