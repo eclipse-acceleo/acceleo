@@ -270,9 +270,8 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * @generated
 	 */
 	public static CstPackage init() {
-		if (isInited) {
+		if (isInited)
 			return (CstPackage)EPackage.Registry.INSTANCE.getEPackage(CstPackage.eNS_URI);
-		}
 
 		// Obtain or create and register package
 		CstPackageImpl theCstPackage = (CstPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(eNS_URI) instanceof CstPackageImpl ? EPackage.Registry.INSTANCE
@@ -985,9 +984,8 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) {
+		if (isCreated)
 			return;
-		}
 		isCreated = true;
 
 		// Create classes and their features
@@ -1105,9 +1103,8 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) {
+		if (isInitialized)
 			return;
-		}
 		isInitialized = true;
 
 		// Initialize package

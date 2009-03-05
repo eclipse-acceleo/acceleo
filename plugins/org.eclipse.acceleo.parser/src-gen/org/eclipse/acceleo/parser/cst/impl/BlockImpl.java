@@ -98,11 +98,10 @@ public class BlockImpl extends TemplateExpressionImpl implements Block {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.BLOCK__INIT, oldInit, newInit);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -115,21 +114,17 @@ public class BlockImpl extends TemplateExpressionImpl implements Block {
 	public void setInit(InitSection newInit) {
 		if (newInit != init) {
 			NotificationChain msgs = null;
-			if (init != null) {
+			if (init != null)
 				msgs = ((InternalEObject)init).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.BLOCK__INIT, null, msgs);
-			}
-			if (newInit != null) {
+			if (newInit != null)
 				msgs = ((InternalEObject)newInit).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.BLOCK__INIT, null, msgs);
-			}
 			msgs = basicSetInit(newInit, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.BLOCK__INIT, newInit, newInit));
-		}
 	}
 
 	/**

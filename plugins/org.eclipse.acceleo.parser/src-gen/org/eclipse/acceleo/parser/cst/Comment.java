@@ -42,8 +42,8 @@ public interface Comment extends ModuleElement, TemplateExpression {
 	String getBody();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Comment#getBody <em>Body</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Comment#getBody <em>Body</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Body</em>' attribute.

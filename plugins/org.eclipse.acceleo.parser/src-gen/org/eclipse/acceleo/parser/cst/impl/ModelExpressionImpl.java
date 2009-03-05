@@ -120,10 +120,9 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 	public void setBody(String newBody) {
 		String oldBody = body;
 		body = newBody;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODEL_EXPRESSION__BODY, oldBody,
 					body));
-		}
 	}
 
 	/**
@@ -146,11 +145,10 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.MODEL_EXPRESSION__BEFORE, oldBefore, newBefore);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -163,22 +161,18 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 	public void setBefore(ModelExpression newBefore) {
 		if (newBefore != before) {
 			NotificationChain msgs = null;
-			if (before != null) {
+			if (before != null)
 				msgs = ((InternalEObject)before).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__BEFORE, null, msgs);
-			}
-			if (newBefore != null) {
+			if (newBefore != null)
 				msgs = ((InternalEObject)newBefore).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__BEFORE, null, msgs);
-			}
 			msgs = basicSetBefore(newBefore, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODEL_EXPRESSION__BEFORE,
 					newBefore, newBefore));
-		}
 	}
 
 	/**
@@ -201,11 +195,10 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.MODEL_EXPRESSION__EACH, oldEach, newEach);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -218,22 +211,18 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 	public void setEach(ModelExpression newEach) {
 		if (newEach != each) {
 			NotificationChain msgs = null;
-			if (each != null) {
+			if (each != null)
 				msgs = ((InternalEObject)each).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__EACH, null, msgs);
-			}
-			if (newEach != null) {
+			if (newEach != null)
 				msgs = ((InternalEObject)newEach).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__EACH, null, msgs);
-			}
 			msgs = basicSetEach(newEach, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODEL_EXPRESSION__EACH, newEach,
 					newEach));
-		}
 	}
 
 	/**
@@ -256,11 +245,10 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.MODEL_EXPRESSION__AFTER, oldAfter, newAfter);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -273,22 +261,18 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 	public void setAfter(ModelExpression newAfter) {
 		if (newAfter != after) {
 			NotificationChain msgs = null;
-			if (after != null) {
+			if (after != null)
 				msgs = ((InternalEObject)after).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__AFTER, null, msgs);
-			}
-			if (newAfter != null) {
+			if (newAfter != null)
 				msgs = ((InternalEObject)newAfter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.MODEL_EXPRESSION__AFTER, null, msgs);
-			}
 			msgs = basicSetAfter(newAfter, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODEL_EXPRESSION__AFTER,
 					newAfter, newAfter));
-		}
 	}
 
 	/**
@@ -404,9 +388,8 @@ public class ModelExpressionImpl extends TemplateExpressionImpl implements Model
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (body: "); //$NON-NLS-1$

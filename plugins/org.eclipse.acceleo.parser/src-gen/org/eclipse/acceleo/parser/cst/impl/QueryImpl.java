@@ -127,9 +127,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public void setType(String newType) {
 		String oldType = type;
 		type = newType;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.QUERY__TYPE, oldType, type));
-		}
 	}
 
 	/**
@@ -152,11 +151,10 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.QUERY__EXPRESSION, oldExpression, newExpression);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -169,22 +167,18 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public void setExpression(ModelExpression newExpression) {
 		if (newExpression != expression) {
 			NotificationChain msgs = null;
-			if (expression != null) {
+			if (expression != null)
 				msgs = ((InternalEObject)expression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.QUERY__EXPRESSION, null, msgs);
-			}
-			if (newExpression != null) {
+			if (newExpression != null)
 				msgs = ((InternalEObject)newExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.QUERY__EXPRESSION, null, msgs);
-			}
 			msgs = basicSetExpression(newExpression, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.QUERY__EXPRESSION,
 					newExpression, newExpression));
-		}
 	}
 
 	/**
@@ -290,9 +284,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (type: "); //$NON-NLS-1$

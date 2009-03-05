@@ -27,8 +27,8 @@ public final class ParserUtils {
 	}
 
 	/**
-	 * Creates a Acceleo block analyzer. It uses the Acceleo delimiters '[' and ']'. <li>header only : [name ...
-	 * header ... /]</li> <li>header + body : [name ... header ... ] ... body ... [/name]</li>
+	 * Creates a Acceleo block analyzer. It uses the Acceleo delimiters '[' and ']'. <li>header only : [name
+	 * ... header ... /]</li> <li>header + body : [name ... header ... ] ... body ... [/name]</li>
 	 * 
 	 * @param headerOnly
 	 *            indicates if it parses the header only, the body is ignored
@@ -46,13 +46,14 @@ public final class ParserUtils {
 			boolean recursiveBody, SequenceBlock[] inhibsHeader, SequenceBlock[] inhibsBody) {
 		Sequence beginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, name);
 		Sequence endHeaderOnly = new Sequence(IAcceleoConstants.DEFAULT_END);
-		Sequence endHeaderBody = new Sequence(IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.DEFAULT_END);
+		Sequence endHeaderBody = new Sequence(IAcceleoConstants.DEFAULT_END_BODY_CHAR,
+				IAcceleoConstants.DEFAULT_END);
 		Sequence endBody;
 		if (headerOnly) {
 			endBody = null;
 		} else {
-			endBody = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END_BODY_CHAR, name,
-					IAcceleoConstants.DEFAULT_END);
+			endBody = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END_BODY_CHAR,
+					name, IAcceleoConstants.DEFAULT_END);
 		}
 		return new SequenceBlock(beginHeader, endHeaderOnly, endHeaderBody, inhibsHeader, endBody, null,
 				inhibsBody);

@@ -150,10 +150,9 @@ public abstract class ModuleElementImpl extends EObjectImpl implements ModuleEle
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE_ELEMENT__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -173,10 +172,9 @@ public abstract class ModuleElementImpl extends EObjectImpl implements ModuleEle
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE_ELEMENT__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -196,10 +194,9 @@ public abstract class ModuleElementImpl extends EObjectImpl implements ModuleEle
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE_ELEMENT__NAME, oldName,
 					name));
-		}
 	}
 
 	/**
@@ -219,10 +216,9 @@ public abstract class ModuleElementImpl extends EObjectImpl implements ModuleEle
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE_ELEMENT__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -320,9 +316,8 @@ public abstract class ModuleElementImpl extends EObjectImpl implements ModuleEle
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

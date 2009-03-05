@@ -85,9 +85,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	public void setBody(String newBody) {
 		String oldBody = body;
 		body = newBody;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.COMMENT__BODY, oldBody, body));
-		}
 	}
 
 	/**
@@ -155,9 +154,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (body: "); //$NON-NLS-1$

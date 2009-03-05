@@ -32,12 +32,14 @@ public interface IAcceleoParserProblemsConstants {
 	/**
 	 * Syntax problem message : Text not valid.
 	 */
-	String SYNTAX_TEXT_NOT_VALID = AcceleoParserMessages.getString("IAcceleoParserProblemsConstants.InvalidText"); //$NON-NLS-1$
+	String SYNTAX_TEXT_NOT_VALID = AcceleoParserMessages
+			.getString("IAcceleoParserProblemsConstants.InvalidText"); //$NON-NLS-1$
 
 	/**
 	 * Syntax problem message : Type not valid.
 	 */
-	String SYNTAX_TYPE_NOT_VALID = AcceleoParserMessages.getString("IAcceleoParserProblemsConstants.InvalidType") + ':'; //$NON-NLS-1$
+	String SYNTAX_TYPE_NOT_VALID = AcceleoParserMessages
+			.getString("IAcceleoParserProblemsConstants.InvalidType") + ':'; //$NON-NLS-1$
 
 	/**
 	 * Syntax problem message : Name not valid.

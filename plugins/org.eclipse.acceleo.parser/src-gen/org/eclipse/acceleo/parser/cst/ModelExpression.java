@@ -45,8 +45,8 @@ public interface ModelExpression extends TemplateExpression {
 	String getBody();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getBody <em>Body</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getBody <em>Body</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Body</em>' attribute.
@@ -72,8 +72,8 @@ public interface ModelExpression extends TemplateExpression {
 	ModelExpression getBefore();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getBefore <em>Before</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getBefore <em>Before</em>}
+	 * ' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Before</em>' containment reference.
@@ -99,8 +99,8 @@ public interface ModelExpression extends TemplateExpression {
 	ModelExpression getEach();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getEach <em>Each</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getEach <em>Each</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Each</em>' containment reference.
@@ -126,8 +126,8 @@ public interface ModelExpression extends TemplateExpression {
 	ModelExpression getAfter();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getAfter <em>After</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getAfter <em>After</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>After</em>' containment reference.

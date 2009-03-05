@@ -214,7 +214,8 @@ public class Sequence implements ISequence {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.utils.ISequence#search(java.lang.StringBuffer, int, int,
-	 *      org.eclipse.acceleo.parser.cst.utils.Sequence, org.eclipse.acceleo.parser.cst.utils.SequenceBlock[])
+	 *      org.eclipse.acceleo.parser.cst.utils.Sequence,
+	 *      org.eclipse.acceleo.parser.cst.utils.SequenceBlock[])
 	 */
 	public Region search(final StringBuffer buffer, int posBegin, int posEnd, Sequence spec,
 			SequenceBlock[] inhibs) {

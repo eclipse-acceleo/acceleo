@@ -151,9 +151,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TEMPLATE__NAME, oldName, name));
-		}
 	}
 
 	/**
@@ -173,10 +172,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TEMPLATE__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -225,11 +223,10 @@ public class TemplateImpl extends BlockImpl implements Template {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.TEMPLATE__GUARD, oldGuard, newGuard);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -242,22 +239,18 @@ public class TemplateImpl extends BlockImpl implements Template {
 	public void setGuard(ModelExpression newGuard) {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
-			if (guard != null) {
+			if (guard != null)
 				msgs = ((InternalEObject)guard).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.TEMPLATE__GUARD, null, msgs);
-			}
-			if (newGuard != null) {
+			if (newGuard != null)
 				msgs = ((InternalEObject)newGuard).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.TEMPLATE__GUARD, null, msgs);
-			}
 			msgs = basicSetGuard(newGuard, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TEMPLATE__GUARD, newGuard,
 					newGuard));
-		}
 	}
 
 	/**
@@ -426,9 +419,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: "); //$NON-NLS-1$

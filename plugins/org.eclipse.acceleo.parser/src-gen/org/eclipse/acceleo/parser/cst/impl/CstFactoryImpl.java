@@ -384,10 +384,9 @@ public class CstFactoryImpl extends EFactoryImpl implements CstFactory {
 	 */
 	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
 		VisibilityKind result = VisibilityKind.get(initialValue);
-		if (result == null) {
+		if (result == null)
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
 		return result;
 	}
 
@@ -407,10 +406,9 @@ public class CstFactoryImpl extends EFactoryImpl implements CstFactory {
 	 */
 	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
 		OpenModeKind result = OpenModeKind.get(initialValue);
-		if (result == null) {
+		if (result == null)
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
 		return result;
 	}
 

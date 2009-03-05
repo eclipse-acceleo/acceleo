@@ -42,8 +42,8 @@ public interface ModuleImportsValue extends CSTNode {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleImportsValue#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleImportsValue#getName <em>Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.

@@ -42,8 +42,8 @@ public interface ModuleExtendsValue extends CSTNode {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleExtendsValue#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleExtendsValue#getName <em>Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.

@@ -62,8 +62,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				.getExistingOperations(getOCLStandardLibrary().getString()));
 		addHelperOperations(getOCLStandardLibrary().getInteger(), getAcceleoStandardLibrary()
 				.getExistingOperations(getOCLStandardLibrary().getInteger()));
-		addHelperOperations(getOCLStandardLibrary().getReal(), getAcceleoStandardLibrary().getExistingOperations(
-				getOCLStandardLibrary().getReal()));
+		addHelperOperations(getOCLStandardLibrary().getReal(), getAcceleoStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getReal()));
 
 		// TODO we should provide a way to desactivate non-standard library
 		// Add non-standard Acceleo operations

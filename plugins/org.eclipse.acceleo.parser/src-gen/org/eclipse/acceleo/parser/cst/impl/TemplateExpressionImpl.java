@@ -23,8 +23,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateExpressionImpl#getStartPosition <em>Start Position</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateExpressionImpl#getEndPosition <em>End Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateExpressionImpl#getStartPosition <em>Start Position
+ * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateExpressionImpl#getEndPosition <em>End Position</em>}
+ * </li>
  * </ul>
  * </p>
  * 
@@ -107,10 +109,9 @@ public class TemplateExpressionImpl extends EObjectImpl implements TemplateExpre
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					CstPackage.TEMPLATE_EXPRESSION__START_POSITION, oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -130,10 +131,9 @@ public class TemplateExpressionImpl extends EObjectImpl implements TemplateExpre
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					CstPackage.TEMPLATE_EXPRESSION__END_POSITION, oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -211,9 +211,8 @@ public class TemplateExpressionImpl extends EObjectImpl implements TemplateExpre
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

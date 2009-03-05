@@ -42,8 +42,8 @@ public interface TextExpression extends TemplateExpression {
 	String getValue();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.TextExpression#getValue <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.TextExpression#getValue <em>Value</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Value</em>' attribute.

@@ -81,11 +81,10 @@ public class ProtectedAreaBlockImpl extends BlockImpl implements ProtectedAreaBl
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.PROTECTED_AREA_BLOCK__MARKER, oldMarker, newMarker);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -98,22 +97,18 @@ public class ProtectedAreaBlockImpl extends BlockImpl implements ProtectedAreaBl
 	public void setMarker(ModelExpression newMarker) {
 		if (newMarker != marker) {
 			NotificationChain msgs = null;
-			if (marker != null) {
+			if (marker != null)
 				msgs = ((InternalEObject)marker).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.PROTECTED_AREA_BLOCK__MARKER, null, msgs);
-			}
-			if (newMarker != null) {
+			if (newMarker != null)
 				msgs = ((InternalEObject)newMarker).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.PROTECTED_AREA_BLOCK__MARKER, null, msgs);
-			}
 			msgs = basicSetMarker(newMarker, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.PROTECTED_AREA_BLOCK__MARKER,
 					newMarker, newMarker));
-		}
 	}
 
 	/**

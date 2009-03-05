@@ -45,8 +45,8 @@ public interface CSTNode extends EObject {
 	int getStartPosition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.CSTNode#getStartPosition <em>Start Position</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.CSTNode#getStartPosition
+	 * <em>Start Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Start Position</em>' attribute.
@@ -72,8 +72,8 @@ public interface CSTNode extends EObject {
 	int getEndPosition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.CSTNode#getEndPosition <em>End Position</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.CSTNode#getEndPosition
+	 * <em>End Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>End Position</em>' attribute.

@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
 /**
- * The main class of the Acceleo Parser. Creates an AST from a list of Acceleo files, using a CST step. You just have
- * to launch the 'parse' method...
+ * The main class of the Acceleo Parser. Creates an AST from a list of Acceleo files, using a CST step. You
+ * just have to launch the 'parse' method...
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */

@@ -36,7 +36,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl#getInput <em>Input</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl#getOwnedModuleElement <em>Owned Module Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl#getOwnedModuleElement <em>Owned Module Element
+ * </em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl#getExtends <em>Extends</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl#getImports <em>Imports</em>}</li>
  * </ul>
@@ -161,10 +162,9 @@ public class ModuleImpl extends EPackageImpl implements Module {
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -184,10 +184,9 @@ public class ModuleImpl extends EPackageImpl implements Module {
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -421,9 +420,8 @@ public class ModuleImpl extends EPackageImpl implements Module {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

@@ -96,7 +96,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Module' of the input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Module' of the
+	 * input model.
 	 * 
 	 * @param iModule
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Module'
@@ -113,7 +114,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			Iterator<ModuleImportsValue> iImportsIt = iModule.getImports().iterator();
 			while (iImportsIt.hasNext()) {
 				ModuleImportsValue ioNext = iImportsIt.next();
-				org.eclipse.acceleo.model.mtl.Module oImportedModule = getModuleNamed(oModule.eResource(), ioNext.getName());
+				org.eclipse.acceleo.model.mtl.Module oImportedModule = getModuleNamed(oModule.eResource(),
+						ioNext.getName());
 				if (oImportedModule == null) {
 					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 							.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
@@ -124,7 +126,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
 			while (iExtendsIt.hasNext()) {
 				ModuleExtendsValue ioNext = iExtendsIt.next();
-				org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModuleNamed(oModule.eResource(), ioNext.getName());
+				org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModuleNamed(oModule.eResource(),
+						ioNext.getName());
 				if (oExtendedModule == null) {
 					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 							.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
@@ -162,8 +165,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			Resource otherResource = itOtherResources.next();
 			if (otherResource.getContents().size() > 0
 					&& otherResource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
-				org.eclipse.acceleo.model.mtl.Module otherModule = (org.eclipse.acceleo.model.mtl.Module)otherResource.getContents().get(
-						0);
+				org.eclipse.acceleo.model.mtl.Module otherModule = (org.eclipse.acceleo.model.mtl.Module)otherResource
+						.getContents().get(0);
 				if (name.equals(otherModule.getName())) {
 					return otherModule;
 				}
@@ -192,7 +195,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To register the packages in the list of the metamodels considered during the OCL parsing. The step
-	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the input model.
+	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the input
+	 * model.
 	 * 
 	 * @param iTypedModel
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TypedModel'
@@ -210,7 +214,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To remove the packages in the list of the metamodels considered during the OCL parsing. The step
-	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the input model.
+	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the input
+	 * model.
 	 * 
 	 * @param iTypedModel
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TypedModel'
@@ -227,8 +232,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Template' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Template' of the
+	 * input model.
 	 * 
 	 * @param iTemplate
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Template'
@@ -237,7 +242,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Template oTemplate = factory.getOrCreateTemplate(iTemplate);
 		if (iTemplate != null && oTemplate != null) {
 			List<EClassifier> paramTypes = new ArrayList<EClassifier>();
-			Iterator<org.eclipse.acceleo.parser.cst.Variable> iParameterIt = iTemplate.getParameter().iterator();
+			Iterator<org.eclipse.acceleo.parser.cst.Variable> iParameterIt = iTemplate.getParameter()
+					.iterator();
 			org.eclipse.ocl.ecore.Variable oFirst = null;
 			while (iParameterIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.Variable iNext = iParameterIt.next();
@@ -253,8 +259,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			Iterator<TemplateOverridesValue> iOverridesIt = iTemplate.getOverrides().iterator();
 			while (iOverridesIt.hasNext()) {
 				TemplateOverridesValue ioNext = iOverridesIt.next();
-				List<org.eclipse.acceleo.model.mtl.Template> oOverrides = getExtendedTemplatesNamed(getModule(oTemplate),
-						ioNext.getName(), paramTypes);
+				List<org.eclipse.acceleo.model.mtl.Template> oOverrides = getExtendedTemplatesNamed(
+						getModule(oTemplate), ioNext.getName(), paramTypes);
 				if (oOverrides.size() == 0) {
 					log(
 							AcceleoCommonMessages.getString(
@@ -309,8 +315,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            are the types of the parameters, the candidate must have the same parameters
 	 * @return the templates, it is more often one template
 	 */
-	private List<org.eclipse.acceleo.model.mtl.Template> getExtendedTemplatesNamed(org.eclipse.acceleo.model.mtl.Module oModule,
-			String name, List<EClassifier> paramTypes) {
+	private List<org.eclipse.acceleo.model.mtl.Template> getExtendedTemplatesNamed(
+			org.eclipse.acceleo.model.mtl.Module oModule, String name, List<EClassifier> paramTypes) {
 		List<org.eclipse.acceleo.model.mtl.Template> result = new ArrayList<org.eclipse.acceleo.model.mtl.Template>();
 		result.addAll(getProtectedTemplatesNamed(oModule, name, paramTypes));
 		List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
@@ -334,8 +340,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            are the types of the parameters, the candidate must have the same parameters
 	 * @return the templates, it is more often one template
 	 */
-	private List<org.eclipse.acceleo.model.mtl.Template> getProtectedTemplatesNamed(org.eclipse.acceleo.model.mtl.Module oModule,
-			String name, List<EClassifier> paramTypes) {
+	private List<org.eclipse.acceleo.model.mtl.Template> getProtectedTemplatesNamed(
+			org.eclipse.acceleo.model.mtl.Module oModule, String name, List<EClassifier> paramTypes) {
 		List<org.eclipse.acceleo.model.mtl.Template> result = new ArrayList<org.eclipse.acceleo.model.mtl.Template>();
 		Iterator<EObject> itObjects = oModule.eAllContents();
 		while (itObjects.hasNext()) {
@@ -378,7 +384,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param oModule
 	 *            is the current module
 	 */
-	private void computeAllExtends(List<org.eclipse.acceleo.model.mtl.Module> allExtends, org.eclipse.acceleo.model.mtl.Module oModule) {
+	private void computeAllExtends(List<org.eclipse.acceleo.model.mtl.Module> allExtends,
+			org.eclipse.acceleo.model.mtl.Module oModule) {
 		List<org.eclipse.acceleo.model.mtl.Module> toBrowse = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 		Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = oModule.getExtends().iterator();
 		while (itOtherModules.hasNext()) {
@@ -397,7 +404,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To register the variable in the list of the variables considered during the OCL parsing. The step
-	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the input model.
+	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the input
+	 * model.
 	 * 
 	 * @param iVariable
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Variable'
@@ -420,8 +428,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					isValid = Character.isJavaIdentifierPart(c);
 				}
 				if (!isValid) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(), iVariable
-							.getStartPosition(), iVariable.getEndPosition());
+					log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(),
+							iVariable.getStartPosition(), iVariable.getEndPosition());
 				}
 			}
 			if (oVariable.getType() == null || oVariable.getType() == factory.getOCL().getInvalidType()) {
@@ -433,7 +441,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To remove the variable in the list of the variables considered during the OCL parsing. The step
-	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the input model.
+	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the input
+	 * model.
 	 * 
 	 * @param iVariable
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Variable'
@@ -446,8 +455,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.ModelExpression' of the
-	 * input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.ModelExpression'
+	 * of the input model.
 	 * 
 	 * @param iModelExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ModelExpression'
@@ -477,8 +486,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setBefore(oBefore);
 					transformStepResolve(iBefore);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.BEFORE), iBefore
-							.getStartPosition(), iBefore.getEndPosition());
+					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.BEFORE),
+							iBefore.getStartPosition(), iBefore.getEndPosition());
 				}
 			}
 			org.eclipse.acceleo.parser.cst.ModelExpression iEach = iModelExpression.getEach();
@@ -488,8 +497,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setEach(oEach);
 					transformStepResolve(iEach);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.SEPARATOR), iEach
-							.getStartPosition(), iEach.getEndPosition());
+					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.SEPARATOR),
+							iEach.getStartPosition(), iEach.getEndPosition());
 				}
 			}
 			org.eclipse.acceleo.parser.cst.ModelExpression iAfter = iModelExpression.getAfter();
@@ -499,8 +508,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setAfter(oAfter);
 					transformStepResolve(iAfter);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.AFTER), iAfter
-							.getStartPosition(), iAfter.getEndPosition());
+					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.AFTER),
+							iAfter.getStartPosition(), iAfter.getEndPosition());
 				}
 			}
 		}
@@ -516,7 +525,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            is the output template invocation
 	 */
 	private void transformStepResolveSuperTemplateInvocation(
-			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression, TemplateInvocation oTemplateInvocation) {
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression,
+			TemplateInvocation oTemplateInvocation) {
 		if (oTemplateInvocation.isSuper() && oTemplateInvocation.getDefinition() == null) {
 			org.eclipse.acceleo.model.mtl.Template oTemplate = getTemplate(oTemplateInvocation);
 			if (oTemplate != null && oTemplate.getOverrides().size() == 0) {
@@ -550,8 +560,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TextExpression' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TextExpression'
+	 * of the input model.
 	 * 
 	 * @param iTextExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TextExpression'
@@ -560,7 +570,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Block' of the input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Block' of the
+	 * input model.
 	 * 
 	 * @param iBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Block'
@@ -579,8 +590,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To register the variables of the init section in the list of the variables considered during the OCL
-	 * parsing. The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.InitSection' of the
-	 * input model.
+	 * parsing. The step 'StepResolve' of the transformation for each
+	 * 'org.eclipse.acceleo.parser.cst.InitSection' of the input model.
 	 * 
 	 * @param iInitSection
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.InitSection'
@@ -588,7 +599,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private void transformStepResolveAddVariables(org.eclipse.acceleo.parser.cst.InitSection iInitSection) {
 		org.eclipse.acceleo.model.mtl.InitSection oInitSection = factory.getOrCreateInitSection(iInitSection);
 		if (iInitSection != null && oInitSection != null) {
-			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable().iterator();
+			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable()
+					.iterator();
 			while (iVariableIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.Variable iNext = iVariableIt.next();
 				transformStepResolveAddVariable(iNext);
@@ -599,7 +611,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/**
 	 * To remove the variables in the list of the variables considered during the OCL parsing. The step
-	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.InitSection' of the input model.
+	 * 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.InitSection' of the input
+	 * model.
 	 * 
 	 * @param iInitSection
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.InitSection'
@@ -607,7 +620,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private void transformStepResolveRemoveVariables(org.eclipse.acceleo.parser.cst.InitSection iInitSection) {
 		org.eclipse.acceleo.model.mtl.InitSection oInitSection = factory.getOrCreateInitSection(iInitSection);
 		if (iInitSection != null && oInitSection != null) {
-			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable().iterator();
+			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable()
+					.iterator();
 			while (iVariableIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.Variable iNext = iVariableIt.next();
 				transformStepResolveRemoveVariable(iNext);
@@ -617,8 +631,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock' of the
-	 * input model.
+	 * The step 'StepResolve' of the transformation for each
+	 * 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock' of the input model.
 	 * 
 	 * @param iProtectedAreaBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock'
@@ -644,8 +658,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.ForBlock' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.ForBlock' of the
+	 * input model.
 	 * 
 	 * @param iForBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ForBlock'
@@ -716,7 +730,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.IfBlock' of the input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.IfBlock' of the
+	 * input model.
 	 * 
 	 * @param iIfBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.IfBlock'
@@ -769,8 +784,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.LetBlock' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.LetBlock' of the
+	 * input model.
 	 * 
 	 * @param iLetBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.LetBlock'
@@ -834,8 +849,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.FileBlock' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.FileBlock' of the
+	 * input model.
 	 * 
 	 * @param iFileBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.FileBlock'
@@ -867,8 +882,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TraceBlock' of the input
-	 * model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.TraceBlock' of
+	 * the input model.
 	 * 
 	 * @param iTraceBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TraceBlock'
@@ -894,7 +909,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Macro' of the input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Macro' of the
+	 * input model.
 	 * 
 	 * @param iMacro
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Macro'
@@ -941,7 +957,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Query' of the input model.
+	 * The step 'StepResolve' of the transformation for each 'org.eclipse.acceleo.parser.cst.Query' of the
+	 * input model.
 	 * 
 	 * @param iQuery
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Query'
@@ -1024,7 +1041,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param oBlock
 	 *            is the output block
 	 */
-	private void transformStepResolveBody(org.eclipse.acceleo.parser.cst.Block iBlock, org.eclipse.acceleo.model.mtl.Block oBlock) {
+	private void transformStepResolveBody(org.eclipse.acceleo.parser.cst.Block iBlock,
+			org.eclipse.acceleo.model.mtl.Block oBlock) {
 		if (!isCanceled) {
 			Iterator<org.eclipse.acceleo.parser.cst.TemplateExpression> iBodyIt = iBlock.getBody().iterator();
 			while (iBodyIt.hasNext()) {

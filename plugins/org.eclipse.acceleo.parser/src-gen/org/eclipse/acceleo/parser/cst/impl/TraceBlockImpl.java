@@ -81,11 +81,10 @@ public class TraceBlockImpl extends BlockImpl implements TraceBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.TRACE_BLOCK__MODEL_ELEMENT, oldModelElement, newModelElement);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -98,22 +97,18 @@ public class TraceBlockImpl extends BlockImpl implements TraceBlock {
 	public void setModelElement(ModelExpression newModelElement) {
 		if (newModelElement != modelElement) {
 			NotificationChain msgs = null;
-			if (modelElement != null) {
+			if (modelElement != null)
 				msgs = ((InternalEObject)modelElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.TRACE_BLOCK__MODEL_ELEMENT, null, msgs);
-			}
-			if (newModelElement != null) {
+			if (newModelElement != null)
 				msgs = ((InternalEObject)newModelElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.TRACE_BLOCK__MODEL_ELEMENT, null, msgs);
-			}
 			msgs = basicSetModelElement(newModelElement, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TRACE_BLOCK__MODEL_ELEMENT,
 					newModelElement, newModelElement));
-		}
 	}
 
 	/**

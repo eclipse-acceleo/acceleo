@@ -113,7 +113,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Module' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Module' of the input
+	 * model.
 	 * 
 	 * @param iModule
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Module'
@@ -139,7 +140,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TypedModel' of the
+	 * input model.
 	 * 
 	 * @param iTypedModel
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TypedModel'
@@ -156,7 +158,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Template' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Template' of the
+	 * input model.
 	 * 
 	 * @param iTemplate
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Template'
@@ -165,8 +168,8 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Template oTemplate = factory.getOrCreateTemplate(iTemplate);
 		if (iTemplate != null && oTemplate != null) {
 			org.eclipse.acceleo.parser.cst.VisibilityKind iVisibility = iTemplate.getVisibility();
-			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind.get(iVisibility
-					.getValue());
+			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind
+					.get(iVisibility.getValue());
 			oTemplate.setVisibility(oVisibility);
 			transformStepCopyPositions(iTemplate, oTemplate);
 			String ioName = iTemplate.getName();
@@ -182,7 +185,8 @@ public class CST2ASTConverter {
 			transformStepCopy(iGuard);
 
 			transformStepCopyBody(iTemplate, oTemplate);
-			Iterator<org.eclipse.acceleo.parser.cst.Variable> iParameterIt = iTemplate.getParameter().iterator();
+			Iterator<org.eclipse.acceleo.parser.cst.Variable> iParameterIt = iTemplate.getParameter()
+					.iterator();
 			while (iParameterIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.Variable iNext = iParameterIt.next();
 				org.eclipse.ocl.ecore.Variable oNext = factory.getOrCreateVariable(iNext);
@@ -207,7 +211,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Variable' of the
+	 * input model.
 	 * 
 	 * @param iVariable
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Variable'
@@ -227,8 +232,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ModelExpression' of the input
-	 * model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ModelExpression' of
+	 * the input model.
 	 * 
 	 * @param iModelExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ModelExpression'
@@ -238,8 +243,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TextExpression' of the input
-	 * model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TextExpression' of
+	 * the input model.
 	 * 
 	 * @param iTextExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TextExpression'
@@ -364,7 +369,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Block' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Block' of the input
+	 * model.
 	 * 
 	 * @param iBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Block'
@@ -385,8 +391,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.InitSection' of the input
-	 * model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.InitSection' of the
+	 * input model.
 	 * 
 	 * @param iInitSection
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.InitSection'
@@ -395,7 +401,8 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.InitSection oInitSection = factory.getOrCreateInitSection(iInitSection);
 		if (iInitSection != null && oInitSection != null) {
 			transformStepCopyPositions(iInitSection, oInitSection);
-			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable().iterator();
+			Iterator<org.eclipse.acceleo.parser.cst.Variable> iVariableIt = iInitSection.getVariable()
+					.iterator();
 			while (iVariableIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.Variable iNext = iVariableIt.next();
 				org.eclipse.ocl.ecore.Variable oNext = factory.getOrCreateVariable(iNext);
@@ -409,8 +416,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock' of the
-	 * input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock'
+	 * of the input model.
 	 * 
 	 * @param iProtectedAreaBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ProtectedAreaBlock'
@@ -435,7 +442,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ForBlock' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.ForBlock' of the
+	 * input model.
 	 * 
 	 * @param iForBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ForBlock'
@@ -478,7 +486,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.IfBlock' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.IfBlock' of the
+	 * input model.
 	 * 
 	 * @param iIfBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.IfBlock'
@@ -537,7 +546,8 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.Macro) {
-				org.eclipse.acceleo.model.mtl.Macro oElse = factory.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
+				org.eclipse.acceleo.model.mtl.Macro oElse = factory
+						.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
 				if (oElse != null) {
 					oIfBlock.setElse(oElse);
 				}
@@ -576,7 +586,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.LetBlock' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.LetBlock' of the
+	 * input model.
 	 * 
 	 * @param iLetBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.LetBlock'
@@ -635,7 +646,8 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.Macro) {
-				org.eclipse.acceleo.model.mtl.Macro oElse = factory.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
+				org.eclipse.acceleo.model.mtl.Macro oElse = factory
+						.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
 				if (oElse != null) {
 					oLetBlock.setElse(oElse);
 				}
@@ -679,7 +691,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.FileBlock' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.FileBlock' of the
+	 * input model.
 	 * 
 	 * @param iFileBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.FileBlock'
@@ -688,7 +701,8 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.FileBlock oFileBlock = factory.getOrCreateFileBlock(iFileBlock);
 		if (iFileBlock != null && oFileBlock != null) {
 			org.eclipse.acceleo.parser.cst.OpenModeKind iOpenMode = iFileBlock.getOpenMode();
-			org.eclipse.acceleo.model.mtl.OpenModeKind oOpenMode = org.eclipse.acceleo.model.mtl.OpenModeKind.get(iOpenMode.getValue());
+			org.eclipse.acceleo.model.mtl.OpenModeKind oOpenMode = org.eclipse.acceleo.model.mtl.OpenModeKind
+					.get(iOpenMode.getValue());
 			oFileBlock.setOpenMode(oOpenMode);
 			transformStepCopyPositions(iFileBlock, oFileBlock);
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iFileBlock.getInit();
@@ -709,7 +723,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TraceBlock' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.TraceBlock' of the
+	 * input model.
 	 * 
 	 * @param iTraceBlock
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TraceBlock'
@@ -733,7 +748,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Macro' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Macro' of the input
+	 * model.
 	 * 
 	 * @param iMacro
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Macro'
@@ -742,8 +758,8 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Macro oMacro = factory.getOrCreateMacro(iMacro);
 		if (iMacro != null && oMacro != null) {
 			org.eclipse.acceleo.parser.cst.VisibilityKind iVisibility = iMacro.getVisibility();
-			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind.get(iVisibility
-					.getValue());
+			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind
+					.get(iVisibility.getValue());
 			oMacro.setVisibility(oVisibility);
 			transformStepCopyPositions(iMacro, oMacro);
 			String ioName = iMacro.getName();
@@ -776,7 +792,8 @@ public class CST2ASTConverter {
 	}
 
 	/**
-	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Query' of the input model.
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Query' of the input
+	 * model.
 	 * 
 	 * @param iQuery
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Query'
@@ -785,8 +802,8 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Query oQuery = factory.getOrCreateQuery(iQuery);
 		if (iQuery != null && oQuery != null) {
 			org.eclipse.acceleo.parser.cst.VisibilityKind iVisibility = iQuery.getVisibility();
-			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind.get(iVisibility
-					.getValue());
+			org.eclipse.acceleo.model.mtl.VisibilityKind oVisibility = org.eclipse.acceleo.model.mtl.VisibilityKind
+					.get(iVisibility.getValue());
 			oQuery.setVisibility(oVisibility);
 			transformStepCopyPositions(iQuery, oQuery);
 			String ioName = iQuery.getName();
@@ -837,13 +854,15 @@ public class CST2ASTConverter {
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iNext);
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
-					org.eclipse.acceleo.model.mtl.Macro oNext = factory.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
+					org.eclipse.acceleo.model.mtl.Macro oNext = factory
+							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
 					if (oNext != null) {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Macro)iNext);
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Query) {
-					org.eclipse.acceleo.model.mtl.Query oNext = factory.getOrCreateQuery((org.eclipse.acceleo.parser.cst.Query)iNext);
+					org.eclipse.acceleo.model.mtl.Query oNext = factory
+							.getOrCreateQuery((org.eclipse.acceleo.parser.cst.Query)iNext);
 					if (oNext != null) {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
@@ -861,7 +880,8 @@ public class CST2ASTConverter {
 	 * @param oBlock
 	 *            is the output block
 	 */
-	private void transformStepCopyBody(org.eclipse.acceleo.parser.cst.Block iBlock, org.eclipse.acceleo.model.mtl.Block oBlock) {
+	private void transformStepCopyBody(org.eclipse.acceleo.parser.cst.Block iBlock,
+			org.eclipse.acceleo.model.mtl.Block oBlock) {
 		if (!isCanceled) {
 			Iterator<org.eclipse.acceleo.parser.cst.TemplateExpression> iBodyIt = iBlock.getBody().iterator();
 			while (iBodyIt.hasNext()) {
@@ -923,13 +943,15 @@ public class CST2ASTConverter {
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.TraceBlock)iNext);
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
-					org.eclipse.acceleo.model.mtl.Macro oNext = factory.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
+					org.eclipse.acceleo.model.mtl.Macro oNext = factory
+							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
 					if (oNext != null) {
 						oBlock.getBody().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Macro)iNext);
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Block) {
-					org.eclipse.acceleo.model.mtl.Block oNext = factory.getOrCreateBlock((org.eclipse.acceleo.parser.cst.Block)iNext);
+					org.eclipse.acceleo.model.mtl.Block oNext = factory
+							.getOrCreateBlock((org.eclipse.acceleo.parser.cst.Block)iNext);
 					if (oNext != null) {
 						oBlock.getBody().add(oNext);
 					}

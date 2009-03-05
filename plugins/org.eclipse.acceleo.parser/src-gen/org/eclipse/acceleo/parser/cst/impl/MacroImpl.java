@@ -147,9 +147,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MACRO__NAME, oldName, name));
-		}
 	}
 
 	/**
@@ -169,10 +168,9 @@ public class MacroImpl extends BlockImpl implements Macro {
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
 		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MACRO__VISIBILITY,
 					oldVisibility, visibility));
-		}
 	}
 
 	/**
@@ -205,9 +203,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 	public void setType(String newType) {
 		String oldType = type;
 		type = newType;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MACRO__TYPE, oldType, type));
-		}
 	}
 
 	/**
@@ -361,9 +358,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: "); //$NON-NLS-1$

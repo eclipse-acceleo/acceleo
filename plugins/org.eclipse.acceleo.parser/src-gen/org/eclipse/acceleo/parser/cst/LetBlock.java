@@ -62,8 +62,8 @@ public interface LetBlock extends Block {
 	Block getElse();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.LetBlock#getElse <em>Else</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.LetBlock#getElse <em>Else</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Else</em>' containment reference.
@@ -89,8 +89,8 @@ public interface LetBlock extends Block {
 	Variable getLetVariable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.LetBlock#getLetVariable <em>Let Variable</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.LetBlock#getLetVariable
+	 * <em>Let Variable</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Let Variable</em>' containment reference.

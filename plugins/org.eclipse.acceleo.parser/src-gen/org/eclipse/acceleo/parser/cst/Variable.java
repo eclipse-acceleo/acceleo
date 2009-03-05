@@ -43,8 +43,8 @@ public interface Variable extends CSTNode {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getName <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getName <em>Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.
@@ -70,8 +70,8 @@ public interface Variable extends CSTNode {
 	String getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getType <em>Type</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getType <em>Type</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Type</em>' attribute.
@@ -98,8 +98,8 @@ public interface Variable extends CSTNode {
 	ModelExpression getInitExpression();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getInitExpression <em>Init Expression</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Variable#getInitExpression
+	 * <em>Init Expression</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Init Expression</em>' containment reference.

@@ -162,10 +162,9 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.VARIABLE__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -185,10 +184,9 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.VARIABLE__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -208,9 +206,8 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.VARIABLE__NAME, oldName, name));
-		}
 	}
 
 	/**
@@ -230,9 +227,8 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	public void setType(String newType) {
 		String oldType = type;
 		type = newType;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.VARIABLE__TYPE, oldType, type));
-		}
 	}
 
 	/**
@@ -255,11 +251,10 @@ public class VariableImpl extends EObjectImpl implements Variable {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.VARIABLE__INIT_EXPRESSION, oldInitExpression, newInitExpression);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -272,22 +267,18 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	public void setInitExpression(ModelExpression newInitExpression) {
 		if (newInitExpression != initExpression) {
 			NotificationChain msgs = null;
-			if (initExpression != null) {
+			if (initExpression != null)
 				msgs = ((InternalEObject)initExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.VARIABLE__INIT_EXPRESSION, null, msgs);
-			}
-			if (newInitExpression != null) {
+			if (newInitExpression != null)
 				msgs = ((InternalEObject)newInitExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.VARIABLE__INIT_EXPRESSION, null, msgs);
-			}
 			msgs = basicSetInitExpression(newInitExpression, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.VARIABLE__INIT_EXPRESSION,
 					newInitExpression, newInitExpression));
-		}
 	}
 
 	/**
@@ -409,9 +400,8 @@ public class VariableImpl extends EObjectImpl implements Variable {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

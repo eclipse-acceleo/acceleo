@@ -122,11 +122,10 @@ public class LetBlockImpl extends BlockImpl implements LetBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.LET_BLOCK__ELSE, oldElse, newElse);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -139,22 +138,18 @@ public class LetBlockImpl extends BlockImpl implements LetBlock {
 	public void setElse(Block newElse) {
 		if (newElse != else_) {
 			NotificationChain msgs = null;
-			if (else_ != null) {
+			if (else_ != null)
 				msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.LET_BLOCK__ELSE, null, msgs);
-			}
-			if (newElse != null) {
+			if (newElse != null)
 				msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.LET_BLOCK__ELSE, null, msgs);
-			}
 			msgs = basicSetElse(newElse, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.LET_BLOCK__ELSE, newElse,
 					newElse));
-		}
 	}
 
 	/**
@@ -177,11 +172,10 @@ public class LetBlockImpl extends BlockImpl implements LetBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.LET_BLOCK__LET_VARIABLE, oldLetVariable, newLetVariable);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -194,22 +188,18 @@ public class LetBlockImpl extends BlockImpl implements LetBlock {
 	public void setLetVariable(Variable newLetVariable) {
 		if (newLetVariable != letVariable) {
 			NotificationChain msgs = null;
-			if (letVariable != null) {
+			if (letVariable != null)
 				msgs = ((InternalEObject)letVariable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.LET_BLOCK__LET_VARIABLE, null, msgs);
-			}
-			if (newLetVariable != null) {
+			if (newLetVariable != null)
 				msgs = ((InternalEObject)newLetVariable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.LET_BLOCK__LET_VARIABLE, null, msgs);
-			}
 			msgs = basicSetLetVariable(newLetVariable, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.LET_BLOCK__LET_VARIABLE,
 					newLetVariable, newLetVariable));
-		}
 	}
 
 	/**

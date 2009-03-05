@@ -60,8 +60,8 @@ public interface Macro extends Block, ModuleElement {
 	String getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Macro#getType <em>Type</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Macro#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Type</em>' attribute.

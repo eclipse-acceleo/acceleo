@@ -44,8 +44,8 @@ public interface Block extends TemplateExpression {
 	InitSection getInit();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Block#getInit <em>Init</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Block#getInit <em>Init</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Init</em>' containment reference.

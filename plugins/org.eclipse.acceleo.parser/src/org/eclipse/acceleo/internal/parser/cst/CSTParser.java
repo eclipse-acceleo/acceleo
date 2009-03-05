@@ -47,8 +47,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * The main class of the CST creator. Creates a CST model from a Acceleo file. You just have to launch the 'parse'
- * method...
+ * The main class of the CST creator. Creates a CST model from a Acceleo file. You just have to launch the
+ * 'parse' method...
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -148,7 +148,8 @@ public class CSTParser {
 		Sequence literalEscape = new Sequence(IAcceleoConstants.LITERAL_ESCAPE);
 		pLiteral = new SequenceBlock(new Sequence(IAcceleoConstants.LITERAL_BEGIN), new Sequence(
 				IAcceleoConstants.LITERAL_END), literalEscape, false, null);
-		pComment = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.COMMENT, false, null, null);
+		pComment = ParserUtils
+				.createAcceleoSequenceBlock(false, IAcceleoConstants.COMMENT, false, null, null);
 		pParenthesis = new SequenceBlock(new Sequence(IAcceleoConstants.PARENTHESIS_BEGIN), new Sequence(
 				IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral});
 		pBrackets = new SequenceBlock(new Sequence(IAcceleoConstants.BRACKETS_BEGIN), new Sequence(
@@ -163,10 +164,10 @@ public class CSTParser {
 				new SequenceBlock[] {pLiteral}, null);
 		pTemplate = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TEMPLATE, false,
 				new SequenceBlock[] {pLiteral, pParenthesis}, new SequenceBlock[] {pComment});
-		pMacro = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.MACRO, true, new SequenceBlock[] {
-				pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
-		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, false, new SequenceBlock[] {
-				pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
+		pMacro = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.MACRO, true,
+				new SequenceBlock[] {pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
+		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, false,
+				new SequenceBlock[] {pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
 		pBlock = new CSTParserBlock(this);
 	}
 
@@ -261,7 +262,8 @@ public class CSTParser {
 			String name = source.getBuffer().substring(posBegin, posEnd).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, posEnd); //$NON-NLS-1$
+				log(
+						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, posEnd); //$NON-NLS-1$
 			}
 		} else {
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
@@ -277,7 +279,8 @@ public class CSTParser {
 			String name = source.getBuffer().substring(posBegin, bH.b()).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
+				log(
+						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -370,8 +373,8 @@ public class CSTParser {
 	 * @return the ending index of the clause, or the beginning index if it doesn't exist
 	 */
 	private int parseModuleHeaderExtends(int posBegin, int posEnd, Module eModule) {
-		int bExtend = ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd, IAcceleoConstants.EXTENDS,
-				true);
+		int bExtend = ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd,
+				IAcceleoConstants.EXTENDS, true);
 		if (bExtend != posBegin) {
 			while (bExtend != posEnd) {
 				Region comma = pComma.search(source.getBuffer(), bExtend, posEnd, null,
@@ -473,8 +476,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pComment.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.COMMENT), beginHeader.b(),
-					beginHeader.e());
+			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.COMMENT), beginHeader
+					.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pComment.getEndHeaderBody()) {
@@ -486,8 +489,8 @@ public class CSTParser {
 			} else {
 				Region eB = pComment.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.COMMENT), beginHeader.b(),
-							beginHeader.e());
+					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.COMMENT), beginHeader
+							.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					Comment eComment = CstFactory.eINSTANCE.createComment();
@@ -516,8 +519,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pImport.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT), beginHeader.b(),
-					beginHeader.e());
+			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT), beginHeader
+					.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			ModuleImportsValue eModuleImportsValue = CstFactory.eINSTANCE.createModuleImportsValue();
@@ -544,8 +547,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pTemplate.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.TEMPLATE), beginHeader.b(),
-					beginHeader.e());
+			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.TEMPLATE), beginHeader
+					.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pTemplate.getEndHeaderBody()) {
@@ -557,8 +560,8 @@ public class CSTParser {
 			} else {
 				Region eB = pTemplate.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.TEMPLATE), beginHeader.b(),
-							beginHeader.e());
+					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.TEMPLATE),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -588,8 +591,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pMacro.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.MACRO), beginHeader.b(),
-					beginHeader.e());
+			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.MACRO), beginHeader
+					.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pMacro.getEndHeaderBody()) {
@@ -601,8 +604,8 @@ public class CSTParser {
 			} else {
 				Region eB = pMacro.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.MACRO), beginHeader.b(),
-							beginHeader.e());
+					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.MACRO), beginHeader
+							.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -632,8 +635,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pQuery.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.QUERY), beginHeader.b(),
-					beginHeader.e());
+			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.QUERY), beginHeader
+					.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pQuery.getEndHeaderBody()) {
@@ -789,8 +792,8 @@ public class CSTParser {
 	 */
 	private int parseTemplateHeaderGuard(int posBegin, int posEnd, int headerPosEnd, Template eTemplate) {
 		int currentPos = posBegin;
-		int bGuard = ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd, IAcceleoConstants.GUARD,
-				false);
+		int bGuard = ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
+				IAcceleoConstants.GUARD, false);
 		if (bGuard != currentPos) {
 			currentPos = bGuard;
 			if (ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
@@ -879,9 +882,8 @@ public class CSTParser {
 				boolean semicolonFound = shiftInitSectionBodyCreatesVariables(bHBrackets.e(), eHBrackets.b(),
 						eInitSection);
 				if (!semicolonFound) {
-					log(
-							AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
-									IAcceleoConstants.SEMICOLON_SEPARATOR), bHBrackets.e(), eHBrackets.b());
+					log(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
+							IAcceleoConstants.SEMICOLON_SEPARATOR), bHBrackets.e(), eHBrackets.b());
 				}
 				posResult = eHBrackets.e();
 			}
@@ -963,7 +965,8 @@ public class CSTParser {
 		Variable eVariable;
 		int bDot = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR);
 		if (bDot == -1) {
-			log(AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
+			log(
+					AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
 					posEnd);
 			eVariable = null;
 		} else {
@@ -975,8 +978,8 @@ public class CSTParser {
 			int bInit = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_INIT_SEPARATOR, bDot
 					+ IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length());
 			if (bInit != -1) {
-				type = variableBuffer.substring(bDot + IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length(),
-						bInit);
+				type = variableBuffer.substring(bDot
+						+ IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length(), bInit);
 				String initExpression = variableBuffer.substring(bInit
 						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length());
 				ModelExpression eInitExpression = CstFactory.eINSTANCE.createModelExpression();
@@ -1073,8 +1076,8 @@ public class CSTParser {
 					String initExpression = bodyText.substring(bInit
 							+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length());
 					ModelExpression eExpression = CstFactory.eINSTANCE.createModelExpression();
-					setPositions(eExpression, eDot + bInit + IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(),
-							posEnd);
+					setPositions(eExpression, eDot + bInit
+							+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(), posEnd);
 					eQuery.setExpression(eExpression);
 					eExpression.setBody(initExpression);
 					pBlock.parseExpressionHeader(eDot + bInit

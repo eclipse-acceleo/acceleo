@@ -42,8 +42,8 @@ public interface TraceBlock extends Block {
 	ModelExpression getModelElement();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.TraceBlock#getModelElement <em>Model Element</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.TraceBlock#getModelElement
+	 * <em>Model Element</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Model Element</em>' containment reference.

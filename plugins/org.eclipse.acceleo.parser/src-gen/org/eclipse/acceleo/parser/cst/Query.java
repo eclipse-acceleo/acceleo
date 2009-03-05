@@ -61,8 +61,8 @@ public interface Query extends ModuleElement {
 	String getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Query#getType <em>Type</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Query#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Type</em>' attribute.
@@ -88,8 +88,8 @@ public interface Query extends ModuleElement {
 	ModelExpression getExpression();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Query#getExpression <em>Expression</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Query#getExpression <em>Expression</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Expression</em>' containment reference.

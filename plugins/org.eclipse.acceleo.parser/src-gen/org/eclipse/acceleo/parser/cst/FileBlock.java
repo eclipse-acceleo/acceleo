@@ -46,8 +46,8 @@ public interface FileBlock extends Block {
 	OpenModeKind getOpenMode();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getOpenMode <em>Open Mode</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getOpenMode <em>Open Mode</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Open Mode</em>' attribute.
@@ -74,8 +74,8 @@ public interface FileBlock extends Block {
 	ModelExpression getFileUrl();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl <em>File Url</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl <em>File Url</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>File Url</em>' containment reference.
@@ -101,8 +101,8 @@ public interface FileBlock extends Block {
 	ModelExpression getUniqId();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getUniqId <em>Uniq Id</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getUniqId <em>Uniq Id</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Uniq Id</em>' containment reference.

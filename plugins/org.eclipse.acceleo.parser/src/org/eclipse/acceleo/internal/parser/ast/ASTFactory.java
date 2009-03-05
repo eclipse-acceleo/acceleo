@@ -167,7 +167,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Module'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.Module'
 	 */
-	protected org.eclipse.acceleo.model.mtl.Module getOrCreateModule(org.eclipse.acceleo.parser.cst.Module iModule) {
+	protected org.eclipse.acceleo.model.mtl.Module getOrCreateModule(
+			org.eclipse.acceleo.parser.cst.Module iModule) {
 		if (iModule != null) {
 			org.eclipse.acceleo.model.mtl.Module oModule = ioModule.get(iModule);
 			if (oModule == null) {
@@ -187,7 +188,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TypedModel'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.TypedModel'
 	 */
-	protected org.eclipse.acceleo.model.mtl.TypedModel getOrCreateTypedModel(org.eclipse.acceleo.parser.cst.TypedModel iTypedModel) {
+	protected org.eclipse.acceleo.model.mtl.TypedModel getOrCreateTypedModel(
+			org.eclipse.acceleo.parser.cst.TypedModel iTypedModel) {
 		if (iTypedModel != null) {
 			org.eclipse.acceleo.model.mtl.TypedModel oTypedModel = ioTypedModel.get(iTypedModel);
 			if (oTypedModel == null) {
@@ -207,7 +209,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Template'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.Template'
 	 */
-	protected org.eclipse.acceleo.model.mtl.Template getOrCreateTemplate(org.eclipse.acceleo.parser.cst.Template iTemplate) {
+	protected org.eclipse.acceleo.model.mtl.Template getOrCreateTemplate(
+			org.eclipse.acceleo.parser.cst.Template iTemplate) {
 		if (iTemplate != null) {
 			org.eclipse.acceleo.model.mtl.Template oTemplate = ioTemplate.get(iTemplate);
 			if (oTemplate == null) {
@@ -227,7 +230,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Variable'
 	 * @return the output object of type 'org.eclipse.ocl.ecore.Variable'
 	 */
-	protected org.eclipse.ocl.ecore.Variable getOrCreateVariable(org.eclipse.acceleo.parser.cst.Variable iVariable) {
+	protected org.eclipse.ocl.ecore.Variable getOrCreateVariable(
+			org.eclipse.acceleo.parser.cst.Variable iVariable) {
 		if (iVariable != null) {
 			org.eclipse.ocl.ecore.Variable oVariable = ioVariable.get(iVariable);
 			if (oVariable == null) {
@@ -255,7 +259,8 @@ public class ASTFactory {
 			org.eclipse.acceleo.model.mtl.TemplateExpression oTemplateExpression = ioTemplateExpression
 					.get(iTemplateExpression);
 			if (oTemplateExpression == null) {
-				oTemplateExpression = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE.createTemplateExpression();
+				oTemplateExpression = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE
+						.createTemplateExpression();
 				ioTemplateExpression.put(iTemplateExpression, oTemplateExpression);
 			}
 			return oTemplateExpression;
@@ -359,7 +364,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.InitSection'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.InitSection'
 	 */
-	protected org.eclipse.acceleo.model.mtl.InitSection getOrCreateInitSection(org.eclipse.acceleo.parser.cst.InitSection iInitSection) {
+	protected org.eclipse.acceleo.model.mtl.InitSection getOrCreateInitSection(
+			org.eclipse.acceleo.parser.cst.InitSection iInitSection) {
 		if (iInitSection != null) {
 			org.eclipse.acceleo.model.mtl.InitSection oInitSection = ioInitSection.get(iInitSection);
 			if (oInitSection == null) {
@@ -385,7 +391,8 @@ public class ASTFactory {
 			org.eclipse.acceleo.model.mtl.ProtectedAreaBlock oProtectedAreaBlock = ioProtectedAreaBlock
 					.get(iProtectedAreaBlock);
 			if (oProtectedAreaBlock == null) {
-				oProtectedAreaBlock = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE.createProtectedAreaBlock();
+				oProtectedAreaBlock = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE
+						.createProtectedAreaBlock();
 				ioProtectedAreaBlock.put(iProtectedAreaBlock, oProtectedAreaBlock);
 			}
 			return oProtectedAreaBlock;
@@ -401,7 +408,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ForBlock'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.ForBlock'
 	 */
-	protected org.eclipse.acceleo.model.mtl.ForBlock getOrCreateForBlock(org.eclipse.acceleo.parser.cst.ForBlock iForBlock) {
+	protected org.eclipse.acceleo.model.mtl.ForBlock getOrCreateForBlock(
+			org.eclipse.acceleo.parser.cst.ForBlock iForBlock) {
 		if (iForBlock != null) {
 			org.eclipse.acceleo.model.mtl.ForBlock oForBlock = ioForBlock.get(iForBlock);
 			if (oForBlock == null) {
@@ -421,7 +429,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.IfBlock'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.IfBlock'
 	 */
-	protected org.eclipse.acceleo.model.mtl.IfBlock getOrCreateIfBlock(org.eclipse.acceleo.parser.cst.IfBlock iIfBlock) {
+	protected org.eclipse.acceleo.model.mtl.IfBlock getOrCreateIfBlock(
+			org.eclipse.acceleo.parser.cst.IfBlock iIfBlock) {
 		if (iIfBlock != null) {
 			org.eclipse.acceleo.model.mtl.IfBlock oIfBlock = ioIfBlock.get(iIfBlock);
 			if (oIfBlock == null) {
@@ -441,7 +450,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.LetBlock'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.LetBlock'
 	 */
-	protected org.eclipse.acceleo.model.mtl.LetBlock getOrCreateLetBlock(org.eclipse.acceleo.parser.cst.LetBlock iLetBlock) {
+	protected org.eclipse.acceleo.model.mtl.LetBlock getOrCreateLetBlock(
+			org.eclipse.acceleo.parser.cst.LetBlock iLetBlock) {
 		if (iLetBlock != null) {
 			org.eclipse.acceleo.model.mtl.LetBlock oLetBlock = ioLetBlock.get(iLetBlock);
 			if (oLetBlock == null) {
@@ -461,7 +471,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.FileBlock'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.FileBlock'
 	 */
-	protected org.eclipse.acceleo.model.mtl.FileBlock getOrCreateFileBlock(org.eclipse.acceleo.parser.cst.FileBlock iFileBlock) {
+	protected org.eclipse.acceleo.model.mtl.FileBlock getOrCreateFileBlock(
+			org.eclipse.acceleo.parser.cst.FileBlock iFileBlock) {
 		if (iFileBlock != null) {
 			org.eclipse.acceleo.model.mtl.FileBlock oFileBlock = ioFileBlock.get(iFileBlock);
 			if (oFileBlock == null) {
@@ -481,7 +492,8 @@ public class ASTFactory {
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TraceBlock'
 	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.TraceBlock'
 	 */
-	protected org.eclipse.acceleo.model.mtl.TraceBlock getOrCreateTraceBlock(org.eclipse.acceleo.parser.cst.TraceBlock iTraceBlock) {
+	protected org.eclipse.acceleo.model.mtl.TraceBlock getOrCreateTraceBlock(
+			org.eclipse.acceleo.parser.cst.TraceBlock iTraceBlock) {
 		if (iTraceBlock != null) {
 			org.eclipse.acceleo.model.mtl.TraceBlock oTraceBlock = ioTraceBlock.get(iTraceBlock);
 			if (oTraceBlock == null) {

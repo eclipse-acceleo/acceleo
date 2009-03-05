@@ -47,8 +47,8 @@ public interface ForBlock extends Block {
 	Variable getLoopVariable();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getLoopVariable <em>Loop Variable</em>}'
-	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getLoopVariable
+	 * <em>Loop Variable</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Loop Variable</em>' containment reference.
@@ -74,8 +74,8 @@ public interface ForBlock extends Block {
 	ModelExpression getIterSet();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getIterSet <em>Iter Set</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getIterSet <em>Iter Set</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Iter Set</em>' containment reference.
@@ -101,8 +101,8 @@ public interface ForBlock extends Block {
 	ModelExpression getBefore();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getBefore <em>Before</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getBefore <em>Before</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Before</em>' containment reference.
@@ -128,8 +128,8 @@ public interface ForBlock extends Block {
 	ModelExpression getEach();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getEach <em>Each</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getEach <em>Each</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Each</em>' containment reference.
@@ -155,8 +155,8 @@ public interface ForBlock extends Block {
 	ModelExpression getAfter();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getAfter <em>After</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getAfter <em>After</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>After</em>' containment reference.
@@ -182,8 +182,8 @@ public interface ForBlock extends Block {
 	ModelExpression getGuard();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getGuard <em>Guard</em>}' containment
-	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ForBlock#getGuard <em>Guard</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Guard</em>' containment reference.

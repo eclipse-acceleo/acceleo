@@ -181,7 +181,8 @@ public class OCLParser {
 	}
 
 	/**
-	 * Resolves the type of the variable using the current OCL environment, and the "Acceleo.type" EAnnotation.
+	 * Resolves the type of the variable using the current OCL environment, and the "Acceleo.type"
+	 * EAnnotation.
 	 * 
 	 * @param newVariable
 	 *            We have to resolve the type of this variable.
@@ -211,8 +212,8 @@ public class OCLParser {
 	public EClassifier addRecursivelyVariablesToScopeAndGetContextClassifierAt(
 			org.eclipse.acceleo.model.mtl.Module oModule, int offset) {
 		Variable eContext = null;
-		Iterator<org.eclipse.acceleo.model.mtl.ModuleElement> ownedModuleElementIt = oModule.getOwnedModuleElement()
-				.iterator();
+		Iterator<org.eclipse.acceleo.model.mtl.ModuleElement> ownedModuleElementIt = oModule
+				.getOwnedModuleElement().iterator();
 		while (ownedModuleElementIt.hasNext()) {
 			org.eclipse.acceleo.model.mtl.ModuleElement oModuleElement = ownedModuleElementIt.next();
 			if (offset > oModuleElement.getStartPosition() && offset < oModuleElement.getEndPosition()) {
@@ -236,7 +237,8 @@ public class OCLParser {
 					addVariablesToScope(oMacro.getParameter());
 				}
 				if (oModuleElement instanceof org.eclipse.acceleo.model.mtl.Block) {
-					Variable oContext = addVariablesToScope((org.eclipse.acceleo.model.mtl.Block)oModuleElement, offset);
+					Variable oContext = addVariablesToScope(
+							(org.eclipse.acceleo.model.mtl.Block)oModuleElement, offset);
 					if (oContext != null) {
 						eContext = oContext;
 					}
@@ -294,7 +296,8 @@ public class OCLParser {
 			while (eContentsIt.hasNext()) {
 				EObject eContent = eContentsIt.next();
 				if (eContent instanceof org.eclipse.acceleo.model.mtl.Block) {
-					Variable oContext = addVariablesToScope((org.eclipse.acceleo.model.mtl.Block)eContent, offset);
+					Variable oContext = addVariablesToScope((org.eclipse.acceleo.model.mtl.Block)eContent,
+							offset);
 					if (oContext != null) {
 						eContext = oContext;
 						break;
@@ -358,7 +361,8 @@ public class OCLParser {
 	 * @param oModule
 	 *            is the current module
 	 */
-	private void computeAllExtends(List<org.eclipse.acceleo.model.mtl.Module> allExtends, org.eclipse.acceleo.model.mtl.Module oModule) {
+	private void computeAllExtends(List<org.eclipse.acceleo.model.mtl.Module> allExtends,
+			org.eclipse.acceleo.model.mtl.Module oModule) {
 		List<org.eclipse.acceleo.model.mtl.Module> toBrowse = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 		Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = oModule.getExtends().iterator();
 		while (itOtherModules.hasNext()) {
@@ -857,8 +861,8 @@ public class OCLParser {
 		if (eCall.getSource() != null) {
 			if (eCall.getSource() instanceof VariableExp
 					&& ((VariableExp)eCall.getSource()).getReferredVariable() != null) {
-				result = !IAcceleoConstants.SELF.equals(((VariableExp)eCall.getSource()).getReferredVariable()
-						.getName());
+				result = !IAcceleoConstants.SELF.equals(((VariableExp)eCall.getSource())
+						.getReferredVariable().getName());
 			} else {
 				result = true;
 			}

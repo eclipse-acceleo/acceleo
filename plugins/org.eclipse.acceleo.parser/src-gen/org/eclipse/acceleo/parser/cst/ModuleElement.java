@@ -43,8 +43,8 @@ public interface ModuleElement extends CSTNode {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleElement#getName <em>Name</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleElement#getName <em>Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Name</em>' attribute.
@@ -72,8 +72,8 @@ public interface ModuleElement extends CSTNode {
 	VisibilityKind getVisibility();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleElement#getVisibility <em>Visibility</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.ModuleElement#getVisibility
+	 * <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Visibility</em>' attribute.

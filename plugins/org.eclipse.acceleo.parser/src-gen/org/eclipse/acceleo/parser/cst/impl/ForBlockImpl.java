@@ -137,11 +137,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__LOOP_VARIABLE, oldLoopVariable, newLoopVariable);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -154,22 +153,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setLoopVariable(Variable newLoopVariable) {
 		if (newLoopVariable != loopVariable) {
 			NotificationChain msgs = null;
-			if (loopVariable != null) {
+			if (loopVariable != null)
 				msgs = ((InternalEObject)loopVariable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__LOOP_VARIABLE, null, msgs);
-			}
-			if (newLoopVariable != null) {
+			if (newLoopVariable != null)
 				msgs = ((InternalEObject)newLoopVariable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__LOOP_VARIABLE, null, msgs);
-			}
 			msgs = basicSetLoopVariable(newLoopVariable, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__LOOP_VARIABLE,
 					newLoopVariable, newLoopVariable));
-		}
 	}
 
 	/**
@@ -192,11 +187,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__ITER_SET, oldIterSet, newIterSet);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -209,22 +203,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setIterSet(ModelExpression newIterSet) {
 		if (newIterSet != iterSet) {
 			NotificationChain msgs = null;
-			if (iterSet != null) {
+			if (iterSet != null)
 				msgs = ((InternalEObject)iterSet).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__ITER_SET, null, msgs);
-			}
-			if (newIterSet != null) {
+			if (newIterSet != null)
 				msgs = ((InternalEObject)newIterSet).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__ITER_SET, null, msgs);
-			}
 			msgs = basicSetIterSet(newIterSet, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__ITER_SET, newIterSet,
 					newIterSet));
-		}
 	}
 
 	/**
@@ -247,11 +237,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__BEFORE, oldBefore, newBefore);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -264,22 +253,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setBefore(ModelExpression newBefore) {
 		if (newBefore != before) {
 			NotificationChain msgs = null;
-			if (before != null) {
+			if (before != null)
 				msgs = ((InternalEObject)before).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__BEFORE, null, msgs);
-			}
-			if (newBefore != null) {
+			if (newBefore != null)
 				msgs = ((InternalEObject)newBefore).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__BEFORE, null, msgs);
-			}
 			msgs = basicSetBefore(newBefore, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__BEFORE, newBefore,
 					newBefore));
-		}
 	}
 
 	/**
@@ -302,11 +287,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__EACH, oldEach, newEach);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -319,22 +303,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setEach(ModelExpression newEach) {
 		if (newEach != each) {
 			NotificationChain msgs = null;
-			if (each != null) {
+			if (each != null)
 				msgs = ((InternalEObject)each).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__EACH, null, msgs);
-			}
-			if (newEach != null) {
+			if (newEach != null)
 				msgs = ((InternalEObject)newEach).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__EACH, null, msgs);
-			}
 			msgs = basicSetEach(newEach, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__EACH, newEach,
 					newEach));
-		}
 	}
 
 	/**
@@ -357,11 +337,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__AFTER, oldAfter, newAfter);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -374,22 +353,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setAfter(ModelExpression newAfter) {
 		if (newAfter != after) {
 			NotificationChain msgs = null;
-			if (after != null) {
+			if (after != null)
 				msgs = ((InternalEObject)after).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__AFTER, null, msgs);
-			}
-			if (newAfter != null) {
+			if (newAfter != null)
 				msgs = ((InternalEObject)newAfter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__AFTER, null, msgs);
-			}
 			msgs = basicSetAfter(newAfter, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__AFTER, newAfter,
 					newAfter));
-		}
 	}
 
 	/**
@@ -412,11 +387,10 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
 					CstPackage.FOR_BLOCK__GUARD, oldGuard, newGuard);
-			if (msgs == null) {
+			if (msgs == null)
 				msgs = notification;
-			} else {
+			else
 				msgs.add(notification);
-			}
 		}
 		return msgs;
 	}
@@ -429,22 +403,18 @@ public class ForBlockImpl extends BlockImpl implements ForBlock {
 	public void setGuard(ModelExpression newGuard) {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
-			if (guard != null) {
+			if (guard != null)
 				msgs = ((InternalEObject)guard).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__GUARD, null, msgs);
-			}
-			if (newGuard != null) {
+			if (newGuard != null)
 				msgs = ((InternalEObject)newGuard).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
 						- CstPackage.FOR_BLOCK__GUARD, null, msgs);
-			}
 			msgs = basicSetGuard(newGuard, msgs);
-			if (msgs != null) {
+			if (msgs != null)
 				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FOR_BLOCK__GUARD, newGuard,
 					newGuard));
-		}
 	}
 
 	/**

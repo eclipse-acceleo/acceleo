@@ -123,10 +123,9 @@ public class TypedModelImpl extends EObjectImpl implements TypedModel {
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TYPED_MODEL__START_POSITION,
 					oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -146,10 +145,9 @@ public class TypedModelImpl extends EObjectImpl implements TypedModel {
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TYPED_MODEL__END_POSITION,
 					oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -252,9 +250,8 @@ public class TypedModelImpl extends EObjectImpl implements TypedModel {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$

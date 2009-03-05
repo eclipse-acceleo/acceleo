@@ -62,8 +62,8 @@ public interface CstPackage extends EPackage {
 	CstPackage eINSTANCE = org.eclipse.acceleo.parser.cst.impl.CstPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.CSTNode
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getCSTNode()
@@ -99,8 +99,8 @@ public interface CstPackage extends EPackage {
 	int CST_NODE_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl <em>Module</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl <em>Module</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.ModuleImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getModule()
@@ -333,8 +333,8 @@ public interface CstPackage extends EPackage {
 	int MODULE_IMPORTS_VALUE_FEATURE_COUNT = CST_NODE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TypedModelImpl <em>Typed Model</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TypedModelImpl
+	 * <em>Typed Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.TypedModelImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getTypedModel()
@@ -379,8 +379,8 @@ public interface CstPackage extends EPackage {
 	int TYPED_MODEL_FEATURE_COUNT = CST_NODE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl <em>Module Element</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl
+	 * <em>Module Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getModuleElement()
@@ -433,8 +433,8 @@ public interface CstPackage extends EPackage {
 	int MODULE_ELEMENT_FEATURE_COUNT = CST_NODE_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.CommentImpl <em>Comment</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.CommentImpl <em>Comment</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.CommentImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getComment()
@@ -532,8 +532,8 @@ public interface CstPackage extends EPackage {
 	int TEMPLATE_EXPRESSION_FEATURE_COUNT = CST_NODE_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.BlockImpl <em>Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.BlockImpl <em>Block</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.BlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getBlock()
@@ -587,8 +587,8 @@ public interface CstPackage extends EPackage {
 	int BLOCK_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateImpl <em>Template</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateImpl <em>Template</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.TemplateImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getTemplate()
@@ -731,8 +731,8 @@ public interface CstPackage extends EPackage {
 	int TEMPLATE_OVERRIDES_VALUE_FEATURE_COUNT = CST_NODE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.VariableImpl <em>Variable</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.VariableImpl <em>Variable</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.VariableImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getVariable()
@@ -910,8 +910,8 @@ public interface CstPackage extends EPackage {
 	int TEXT_EXPRESSION_FEATURE_COUNT = TEMPLATE_EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.InitSectionImpl <em>Init Section</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.InitSectionImpl
+	 * <em>Init Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.InitSectionImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getInitSection()
@@ -1020,8 +1020,8 @@ public interface CstPackage extends EPackage {
 	int PROTECTED_AREA_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ForBlockImpl <em>For Block</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ForBlockImpl <em>For Block</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.ForBlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getForBlock()
@@ -1129,8 +1129,8 @@ public interface CstPackage extends EPackage {
 	int FOR_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 6;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.IfBlockImpl <em>If Block</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.IfBlockImpl <em>If Block</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.IfBlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getIfBlock()
@@ -1211,8 +1211,8 @@ public interface CstPackage extends EPackage {
 	int IF_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.LetBlockImpl <em>Let Block</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.LetBlockImpl <em>Let Block</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.LetBlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getLetBlock()
@@ -1293,8 +1293,8 @@ public interface CstPackage extends EPackage {
 	int LET_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl <em>File Block</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl
+	 * <em>File Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.FileBlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getFileBlock()
@@ -1375,8 +1375,8 @@ public interface CstPackage extends EPackage {
 	int FILE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TraceBlockImpl <em>Trace Block</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TraceBlockImpl
+	 * <em>Trace Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.TraceBlockImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getTraceBlock()
@@ -1439,8 +1439,8 @@ public interface CstPackage extends EPackage {
 	int TRACE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.MacroImpl <em>Macro</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.MacroImpl <em>Macro</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.MacroImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getMacro()
@@ -1528,8 +1528,8 @@ public interface CstPackage extends EPackage {
 	int MACRO_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.QueryImpl <em>Query</em>}' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.QueryImpl <em>Query</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.impl.QueryImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getQuery()
@@ -1608,8 +1608,8 @@ public interface CstPackage extends EPackage {
 	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.VisibilityKind <em>Visibility Kind</em>}' enum.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.VisibilityKind
+	 * <em>Visibility Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.VisibilityKind
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getVisibilityKind()
@@ -1618,8 +1618,8 @@ public interface CstPackage extends EPackage {
 	int VISIBILITY_KIND = 23;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.OpenModeKind <em>Open Mode Kind</em>}' enum.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.OpenModeKind <em>Open Mode Kind</em>}
+	 * ' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.parser.cst.OpenModeKind
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getOpenModeKind()
@@ -1628,8 +1628,8 @@ public interface CstPackage extends EPackage {
 	int OPEN_MODE_KIND = 24;
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>CST Node</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.CSTNode
@@ -1638,8 +1638,9 @@ public interface CstPackage extends EPackage {
 	EClass getCSTNode();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.CSTNode#getStartPosition
-	 * <em>Start Position</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.CSTNode#getStartPosition <em>Start Position</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Start Position</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.CSTNode#getStartPosition()
@@ -1649,8 +1650,9 @@ public interface CstPackage extends EPackage {
 	EAttribute getCSTNode_StartPosition();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.CSTNode#getEndPosition
-	 * <em>End Position</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.CSTNode#getEndPosition <em>End Position</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>End Position</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.CSTNode#getEndPosition()
@@ -1670,8 +1672,9 @@ public interface CstPackage extends EPackage {
 	EClass getModule();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.parser.cst.Module#getInput
-	 * <em>Input</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.parser.cst.Module#getInput <em>Input</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Input</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Module#getInput()
@@ -1682,8 +1685,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Module#getOwnedModuleElement <em>Owned Module Element</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Module#getOwnedModuleElement <em>Owned Module Element</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Owned Module Element</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Module#getOwnedModuleElement()
@@ -1694,8 +1697,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Module#getExtends <em>Extends</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Module#getExtends <em>Extends</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Extends</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Module#getExtends()
@@ -1706,8 +1709,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Module#getImports <em>Imports</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Module#getImports <em>Imports</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Imports</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Module#getImports()
@@ -1727,8 +1730,9 @@ public interface CstPackage extends EPackage {
 	EClass getModuleExtendsValue();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.ModuleExtendsValue#getName
-	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.ModuleExtendsValue#getName <em>Name</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModuleExtendsValue#getName()
@@ -1748,8 +1752,9 @@ public interface CstPackage extends EPackage {
 	EClass getModuleImportsValue();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.ModuleImportsValue#getName
-	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.ModuleImportsValue#getName <em>Name</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModuleImportsValue#getName()
@@ -1759,8 +1764,8 @@ public interface CstPackage extends EPackage {
 	EAttribute getModuleImportsValue_Name();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TypedModel <em>Typed Model</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TypedModel
+	 * <em>Typed Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Typed Model</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TypedModel
@@ -1781,8 +1786,8 @@ public interface CstPackage extends EPackage {
 	EReference getTypedModel_TakesTypesFrom();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.ModuleElement <em>Module Element</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.ModuleElement
+	 * <em>Module Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Module Element</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModuleElement
@@ -1802,8 +1807,9 @@ public interface CstPackage extends EPackage {
 	EAttribute getModuleElement_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.ModuleElement#getVisibility
-	 * <em>Visibility</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.ModuleElement#getVisibility <em>Visibility</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Visibility</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModuleElement#getVisibility()
@@ -1813,8 +1819,8 @@ public interface CstPackage extends EPackage {
 	EAttribute getModuleElement_Visibility();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Comment <em>Comment</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Comment <em>Comment</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Comment</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Comment
@@ -1823,8 +1829,8 @@ public interface CstPackage extends EPackage {
 	EClass getComment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Comment#getBody <em>Body</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Comment#getBody
+	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Comment#getBody()
@@ -1834,8 +1840,8 @@ public interface CstPackage extends EPackage {
 	EAttribute getComment_Body();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Template <em>Template</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Template <em>Template</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Template</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Template
@@ -1845,8 +1851,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Template#getOverrides <em>Overrides</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Template#getOverrides <em>Overrides</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Overrides</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Template#getOverrides()
@@ -1857,8 +1863,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Template#getParameter <em>Parameter</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Template#getParameter <em>Parameter</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Template#getParameter()
@@ -1868,8 +1874,9 @@ public interface CstPackage extends EPackage {
 	EReference getTemplate_Parameter();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.Template#getGuard
-	 * <em>Guard</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.Template#getGuard <em>Guard</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Guard</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Template#getGuard()
@@ -1889,8 +1896,9 @@ public interface CstPackage extends EPackage {
 	EClass getTemplateOverridesValue();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.TemplateOverridesValue#getName
-	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.TemplateOverridesValue#getName <em>Name</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TemplateOverridesValue#getName()
@@ -1900,8 +1908,8 @@ public interface CstPackage extends EPackage {
 	EAttribute getTemplateOverridesValue_Name();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Variable <em>Variable</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Variable <em>Variable</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Variable</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Variable
@@ -1910,8 +1918,8 @@ public interface CstPackage extends EPackage {
 	EClass getVariable();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Variable#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Variable#getName
+	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Variable#getName()
@@ -1921,8 +1929,8 @@ public interface CstPackage extends EPackage {
 	EAttribute getVariable_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Variable#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Variable#getType
+	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Variable#getType()
@@ -1933,8 +1941,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.Variable#getInitExpression <em>Init Expression</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Variable#getInitExpression <em>Init Expression</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Init Expression</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Variable#getInitExpression()
@@ -1964,8 +1972,9 @@ public interface CstPackage extends EPackage {
 	EClass getModelExpression();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.ModelExpression#getBody
-	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getBody <em>Body</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModelExpression#getBody()
@@ -1976,8 +1985,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getBefore <em>Before</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getBefore <em>Before</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Before</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModelExpression#getBefore()
@@ -1988,8 +1997,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getEach <em>Each</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getEach <em>Each</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Each</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModelExpression#getEach()
@@ -2000,8 +2009,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getAfter <em>After</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.ModelExpression#getAfter <em>After</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>After</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ModelExpression#getAfter()
@@ -2011,8 +2020,8 @@ public interface CstPackage extends EPackage {
 	EReference getModelExpression_After();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TextExpression <em>Text Expression</em>}
-	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TextExpression
+	 * <em>Text Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Text Expression</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TextExpression
@@ -2021,8 +2030,9 @@ public interface CstPackage extends EPackage {
 	EClass getTextExpression();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.TextExpression#getValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.parser.cst.TextExpression#getValue <em>Value</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TextExpression#getValue()
@@ -2042,8 +2052,9 @@ public interface CstPackage extends EPackage {
 	EClass getBlock();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.Block#getInit
-	 * <em>Init</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.Block#getInit <em>Init</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Init</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Block#getInit()
@@ -2053,8 +2064,9 @@ public interface CstPackage extends EPackage {
 	EReference getBlock_Init();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.parser.cst.Block#getBody
-	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.parser.cst.Block#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Block#getBody()
@@ -2064,8 +2076,8 @@ public interface CstPackage extends EPackage {
 	EReference getBlock_Body();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.InitSection <em>Init Section</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.InitSection
+	 * <em>Init Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Init Section</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.InitSection
@@ -2075,8 +2087,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.InitSection#getVariable <em>Variable</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.InitSection#getVariable <em>Variable</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Variable</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.InitSection#getVariable()
@@ -2097,8 +2109,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.ProtectedAreaBlock#getMarker <em>Marker</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.ProtectedAreaBlock#getMarker <em>Marker</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Marker</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ProtectedAreaBlock#getMarker()
@@ -2108,8 +2120,8 @@ public interface CstPackage extends EPackage {
 	EReference getProtectedAreaBlock_Marker();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.ForBlock <em>For Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.ForBlock <em>For Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>For Block</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock
@@ -2119,8 +2131,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getLoopVariable <em>Loop Variable</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getLoopVariable <em>Loop Variable</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Loop Variable</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getLoopVariable()
@@ -2130,8 +2142,9 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_LoopVariable();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.ForBlock#getIterSet
-	 * <em>Iter Set</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getIterSet <em>Iter Set</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Iter Set</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getIterSet()
@@ -2141,8 +2154,9 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_IterSet();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.ForBlock#getBefore
-	 * <em>Before</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getBefore <em>Before</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Before</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getBefore()
@@ -2152,8 +2166,9 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_Before();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.ForBlock#getEach
-	 * <em>Each</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getEach <em>Each</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Each</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getEach()
@@ -2163,8 +2178,9 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_Each();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.ForBlock#getAfter
-	 * <em>After</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getAfter <em>After</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>After</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getAfter()
@@ -2174,8 +2190,9 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_After();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.ForBlock#getGuard
-	 * <em>Guard</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.ForBlock#getGuard <em>Guard</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Guard</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.ForBlock#getGuard()
@@ -2185,8 +2202,8 @@ public interface CstPackage extends EPackage {
 	EReference getForBlock_Guard();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.IfBlock <em>If Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.IfBlock <em>If Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>If Block</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.IfBlock
@@ -2195,8 +2212,9 @@ public interface CstPackage extends EPackage {
 	EClass getIfBlock();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.IfBlock#getIfExpr
-	 * <em>If Expr</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.IfBlock#getIfExpr <em>If Expr</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>If Expr</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.IfBlock#getIfExpr()
@@ -2206,8 +2224,9 @@ public interface CstPackage extends EPackage {
 	EReference getIfBlock_IfExpr();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.IfBlock#getElse
-	 * <em>Else</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.IfBlock#getElse <em>Else</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Else</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.IfBlock#getElse()
@@ -2218,8 +2237,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.IfBlock#getElseIf <em>Else If</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.IfBlock#getElseIf <em>Else If</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Else If</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.IfBlock#getElseIf()
@@ -2229,8 +2248,8 @@ public interface CstPackage extends EPackage {
 	EReference getIfBlock_ElseIf();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.LetBlock <em>Let Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.LetBlock <em>Let Block</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Let Block</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.LetBlock
@@ -2240,8 +2259,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.LetBlock#getElseLet <em>Else Let</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.LetBlock#getElseLet <em>Else Let</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Else Let</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.LetBlock#getElseLet()
@@ -2251,8 +2270,9 @@ public interface CstPackage extends EPackage {
 	EReference getLetBlock_ElseLet();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.LetBlock#getElse
-	 * <em>Else</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.LetBlock#getElse <em>Else</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Else</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.LetBlock#getElse()
@@ -2263,8 +2283,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.LetBlock#getLetVariable <em>Let Variable</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.LetBlock#getLetVariable <em>Let Variable</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Let Variable</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.LetBlock#getLetVariable()
@@ -2274,8 +2294,8 @@ public interface CstPackage extends EPackage {
 	EReference getLetBlock_LetVariable();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.FileBlock <em>File Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.FileBlock <em>File Block</em>}
+	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>File Block</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.FileBlock
@@ -2295,8 +2315,9 @@ public interface CstPackage extends EPackage {
 	EAttribute getFileBlock_OpenMode();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl
-	 * <em>File Url</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl <em>File Url</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>File Url</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl()
@@ -2306,8 +2327,9 @@ public interface CstPackage extends EPackage {
 	EReference getFileBlock_FileUrl();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.FileBlock#getUniqId
-	 * <em>Uniq Id</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.FileBlock#getUniqId <em>Uniq Id</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Uniq Id</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.FileBlock#getUniqId()
@@ -2317,8 +2339,8 @@ public interface CstPackage extends EPackage {
 	EReference getFileBlock_UniqId();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TraceBlock <em>Trace Block</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TraceBlock
+	 * <em>Trace Block</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Trace Block</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TraceBlock
@@ -2328,8 +2350,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.parser.cst.TraceBlock#getModelElement <em>Model Element</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.TraceBlock#getModelElement <em>Model Element</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Model Element</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.TraceBlock#getModelElement()
@@ -2350,8 +2372,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Macro#getParameter <em>Parameter</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Macro#getParameter <em>Parameter</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Macro#getParameter()
@@ -2361,8 +2383,8 @@ public interface CstPackage extends EPackage {
 	EReference getMacro_Parameter();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Macro#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Macro#getType
+	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Macro#getType()
@@ -2383,8 +2405,8 @@ public interface CstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.parser.cst.Query#getParameter <em>Parameter</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * {@link org.eclipse.acceleo.parser.cst.Query#getParameter <em>Parameter</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Query#getParameter()
@@ -2394,8 +2416,8 @@ public interface CstPackage extends EPackage {
 	EReference getQuery_Parameter();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Query#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.parser.cst.Query#getType
+	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Query#getType()
@@ -2405,8 +2427,9 @@ public interface CstPackage extends EPackage {
 	EAttribute getQuery_Type();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.parser.cst.Query#getExpression
-	 * <em>Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.Query#getExpression <em>Expression</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Query#getExpression()
@@ -2416,8 +2439,8 @@ public interface CstPackage extends EPackage {
 	EReference getQuery_Expression();
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.acceleo.parser.cst.VisibilityKind <em>Visibility Kind</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for enum '{@link org.eclipse.acceleo.parser.cst.VisibilityKind
+	 * <em>Visibility Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Visibility Kind</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.VisibilityKind
@@ -2426,8 +2449,8 @@ public interface CstPackage extends EPackage {
 	EEnum getVisibilityKind();
 
 	/**
-	 * Returns the meta object for enum '{@link org.eclipse.acceleo.parser.cst.OpenModeKind <em>Open Mode Kind</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for enum '{@link org.eclipse.acceleo.parser.cst.OpenModeKind
+	 * <em>Open Mode Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for enum '<em>Open Mode Kind</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.OpenModeKind
@@ -2458,8 +2481,8 @@ public interface CstPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}' class. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}'
+		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.CSTNode
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getCSTNode()
@@ -2484,8 +2507,8 @@ public interface CstPackage extends EPackage {
 		EAttribute CST_NODE__END_POSITION = eINSTANCE.getCSTNode_EndPosition();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl <em>Module</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleImpl
+		 * <em>Module</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.ModuleImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getModule()
@@ -2606,8 +2629,8 @@ public interface CstPackage extends EPackage {
 		EAttribute MODULE_ELEMENT__VISIBILITY = eINSTANCE.getModuleElement_Visibility();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.CommentImpl <em>Comment</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.CommentImpl
+		 * <em>Comment</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.CommentImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getComment()
@@ -2624,8 +2647,8 @@ public interface CstPackage extends EPackage {
 		EAttribute COMMENT__BODY = eINSTANCE.getComment_Body();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateImpl <em>Template</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateImpl
+		 * <em>Template</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.TemplateImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getTemplate()
@@ -2658,7 +2681,8 @@ public interface CstPackage extends EPackage {
 		EReference TEMPLATE__GUARD = eINSTANCE.getTemplate_Guard();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl
 		 * <em>Template Overrides Value</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl
@@ -2676,8 +2700,8 @@ public interface CstPackage extends EPackage {
 		EAttribute TEMPLATE_OVERRIDES_VALUE__NAME = eINSTANCE.getTemplateOverridesValue_Name();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.VariableImpl <em>Variable</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.VariableImpl
+		 * <em>Variable</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.VariableImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getVariable()
@@ -2780,8 +2804,8 @@ public interface CstPackage extends EPackage {
 		EAttribute TEXT_EXPRESSION__VALUE = eINSTANCE.getTextExpression_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.BlockImpl <em>Block</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.BlockImpl
+		 * <em>Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.BlockImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getBlock()
@@ -2842,8 +2866,8 @@ public interface CstPackage extends EPackage {
 		EReference PROTECTED_AREA_BLOCK__MARKER = eINSTANCE.getProtectedAreaBlock_Marker();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.ForBlockImpl <em>For Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.ForBlockImpl
+		 * <em>For Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.ForBlockImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getForBlock()
@@ -2900,8 +2924,8 @@ public interface CstPackage extends EPackage {
 		EReference FOR_BLOCK__GUARD = eINSTANCE.getForBlock_Guard();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.IfBlockImpl <em>If Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.IfBlockImpl
+		 * <em>If Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.IfBlockImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getIfBlock()
@@ -2934,8 +2958,8 @@ public interface CstPackage extends EPackage {
 		EReference IF_BLOCK__ELSE_IF = eINSTANCE.getIfBlock_ElseIf();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.LetBlockImpl <em>Let Block</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.LetBlockImpl
+		 * <em>Let Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.LetBlockImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getLetBlock()
@@ -2968,8 +2992,8 @@ public interface CstPackage extends EPackage {
 		EReference LET_BLOCK__LET_VARIABLE = eINSTANCE.getLetBlock_LetVariable();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl <em>File Block</em>}
-		 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl
+		 * <em>File Block</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.FileBlockImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getFileBlock()
@@ -3020,8 +3044,8 @@ public interface CstPackage extends EPackage {
 		EReference TRACE_BLOCK__MODEL_ELEMENT = eINSTANCE.getTraceBlock_ModelElement();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.MacroImpl <em>Macro</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.MacroImpl
+		 * <em>Macro</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.MacroImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getMacro()
@@ -3046,8 +3070,8 @@ public interface CstPackage extends EPackage {
 		EAttribute MACRO__TYPE = eINSTANCE.getMacro_Type();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.QueryImpl <em>Query</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.QueryImpl
+		 * <em>Query</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.impl.QueryImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getQuery()
@@ -3090,8 +3114,8 @@ public interface CstPackage extends EPackage {
 		EEnum VISIBILITY_KIND = eINSTANCE.getVisibilityKind();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.OpenModeKind <em>Open Mode Kind</em>}'
-		 * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.OpenModeKind
+		 * <em>Open Mode Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @see org.eclipse.acceleo.parser.cst.OpenModeKind
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getOpenModeKind()

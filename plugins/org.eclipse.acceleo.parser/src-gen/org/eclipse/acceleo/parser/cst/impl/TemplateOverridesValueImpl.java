@@ -23,8 +23,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl#getStartPosition <em>Start Position</em>}</li>
- * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl#getEndPosition <em>End Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl#getStartPosition <em>Start
+ * Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl#getEndPosition <em>End Position
+ * </em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
@@ -128,10 +130,9 @@ public class TemplateOverridesValueImpl extends EObjectImpl implements TemplateO
 	public void setStartPosition(int newStartPosition) {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					CstPackage.TEMPLATE_OVERRIDES_VALUE__START_POSITION, oldStartPosition, startPosition));
-		}
 	}
 
 	/**
@@ -151,10 +152,9 @@ public class TemplateOverridesValueImpl extends EObjectImpl implements TemplateO
 	public void setEndPosition(int newEndPosition) {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					CstPackage.TEMPLATE_OVERRIDES_VALUE__END_POSITION, oldEndPosition, endPosition));
-		}
 	}
 
 	/**
@@ -174,10 +174,9 @@ public class TemplateOverridesValueImpl extends EObjectImpl implements TemplateO
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired()) {
+		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TEMPLATE_OVERRIDES_VALUE__NAME,
 					oldName, name));
-		}
 	}
 
 	/**
@@ -265,9 +264,8 @@ public class TemplateOverridesValueImpl extends EObjectImpl implements TemplateO
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startPosition: "); //$NON-NLS-1$
