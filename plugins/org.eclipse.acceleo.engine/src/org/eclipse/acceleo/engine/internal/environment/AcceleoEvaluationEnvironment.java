@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -72,6 +73,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * "strtok(String, Integer)" as currently specified.
 	 */
 	private final Map<String, StringTokenizer> tokenizers = new HashMap<String, StringTokenizer>();
+
+	/** This will allow the environment to know of the modules currently in the generation context. */
+	private final Set<Module> currentModules = new HashSet<Module>();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -685,6 +689,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            templates.
 	 */
 	private void mapAllTemplates(Module module) {
+		// Has module already been mapped?
+		if (currentModules.contains(module)) {
+			return;
+		}
+		currentModules.add(module);
+
 		for (final ModuleElement elem : module.getOwnedModuleElement()) {
 			if (elem instanceof Template) {
 				Set<Template> namesakes = templates.get(elem.getName());
@@ -709,6 +719,30 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private void mapDynamicOverrides() {
 		for (Module module : AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules()) {
+			boolean map = false;
+			final Set<Module> unMappedRequiredModules = new LinkedHashSet<Module>();
+			for (Module extended : module.getExtends()) {
+				if (currentModules.contains(extended)) {
+					map = true;
+				} else {
+					unMappedRequiredModules.add(extended);
+				}
+			}
+			// This module shouldn't be added to the context. Go to next.
+			if (!map) {
+				continue;
+			}
+
+			for (Module imported : module.getImports()) {
+				if (!currentModules.contains(imported)) {
+					unMappedRequiredModules.add(imported);
+				}
+			}
+
+			for (Module required : unMappedRequiredModules) {
+				mapAllTemplates(required);
+			}
+
 			for (final ModuleElement elem : module.getOwnedModuleElement()) {
 				if (elem instanceof Template) {
 					for (final Template overriden : ((Template)elem).getOverrides()) {
