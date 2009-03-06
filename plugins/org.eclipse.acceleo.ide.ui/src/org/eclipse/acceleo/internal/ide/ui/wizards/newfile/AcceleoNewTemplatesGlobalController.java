@@ -124,7 +124,7 @@ public final class AcceleoNewTemplatesGlobalController {
 				currentController.initView();
 			}
 		}
-	};
+	}
 
 	/**
 	 * Constructor.
