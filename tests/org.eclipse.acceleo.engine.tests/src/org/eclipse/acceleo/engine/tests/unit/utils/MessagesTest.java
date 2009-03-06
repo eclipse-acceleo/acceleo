@@ -33,8 +33,8 @@ public class MessagesTest extends TestCase {
 
 	/** Contains the expected results for the valid keys (only used if locale is en). */
 	private final String[] expectedForValidKeys = {"Start of user code",
-			"Cannot iterate on empty iteration.", "Cannot invoke non-public template for generation.",
-			"Arguments of a generation cannot be null.",};
+			"Empty loop iteration at position {0} in Module {1}.",
+			"Cannot invoke non-public template for generation.", "Arguments of a generation cannot be null.",};
 
 	/** These will be used when testing message retrieval with invalid keys. */
 	private final String[] invalidKeys = {"invalidKey", "AcceleoEvaluationContext.CleanUpError1", "",
@@ -204,13 +204,22 @@ public class MessagesTest extends TestCase {
 	 */
 	public void testUnFormattedGetStringValidKey() {
 		for (int i = 0; i < validKeys.length; i++) {
-			if (Locale.getDefault().getLanguage().equalsIgnoreCase("en")) {
-				assertEquals("Unexpected String returned by getString(String).", expectedForValidKeys[i],
-						AcceleoEngineMessages.getString(validKeys[i]));
+			Locale previousLocale = null;
+			if (Locale.getDefault() != Locale.ENGLISH) {
+				previousLocale = Locale.getDefault();
+			}
+			Locale.setDefault(Locale.ENGLISH);
+			String result = AcceleoEngineMessages.getString(validKeys[i]);
+			assertEquals("Unexpected String returned by getString(String).", expectedForValidKeys[i], result);
+			if (previousLocale != null) {
+				Locale.setDefault(previousLocale);
 			} else {
-				final String result = AcceleoEngineMessages.getString(validKeys[i]);
-				assertFalse("Message class did not find an existing parameterisable key.", result
-						.equals('!' + validKeys[i] + '!'));
+				Locale.setDefault(Locale.FRENCH);
+			}
+			assertFalse("Message class did not find an existing parameterisable key.", result
+					.equals('!' + validKeys[i] + '!'));
+			if (previousLocale == null) {
+				Locale.setDefault(Locale.ENGLISH);
 			}
 		}
 	}
