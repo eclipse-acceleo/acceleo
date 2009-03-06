@@ -26,5 +26,8 @@ Contributors:
             activityId="org.eclipse.acceleo.ui.capabilities.ide"
             categoryId="org.eclipse.categories.developmentCategory">
       </categoryActivityBinding>
+      <defaultEnablement
+            id="org.eclipse.acceleo.ui.capabilities.ide">
+      </defaultEnablement>
    </extension>
 </plugin>
