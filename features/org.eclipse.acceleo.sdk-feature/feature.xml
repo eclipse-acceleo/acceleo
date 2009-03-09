@@ -220,9 +220,9 @@ litigation.
          id="org.eclipse.acceleo"
          version="0.0.0"/>
 
-    <includes
-        id="org.eclipse.acceleo.source"
-       version="0.0.0"/>
+   <includes
+         id="org.eclipse.acceleo.source"
+         version="0.0.0"/>
 
    <includes
          id="org.eclipse.acceleo.examples"
@@ -231,9 +231,13 @@ litigation.
    <includes
          id="org.eclipse.acceleo.runtime"
          version="0.0.0"/>
-         
+
    <includes
          id="org.eclipse.acceleo.doc"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.acceleo.ui.capabilities"
          version="0.0.0"/>
 
 </feature>
