@@ -31,8 +31,17 @@ import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.acceleo.model.mtl.impl.spec.FileBlockSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.ForBlockSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.IfBlockSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.InitSectionSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.LetBlockSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.ModuleSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.ProtectedAreaBlockSpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.QueryInvocationSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.QuerySpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.TemplateInvocationSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.TemplateSpec;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -160,10 +169,10 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public Module createModule() {
-		ModuleImpl module = new ModuleImpl();
+		ModuleImpl module = new ModuleSpec();
 		return module;
 	}
 
@@ -190,20 +199,20 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public InitSection createInitSection() {
-		InitSectionImpl initSection = new InitSectionImpl();
+		InitSectionImpl initSection = new InitSectionSpec();
 		return initSection;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public Template createTemplate() {
-		TemplateImpl template = new TemplateImpl();
+		TemplateImpl template = new TemplateSpec();
 		return template;
 	}
 
@@ -220,10 +229,10 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public Query createQuery() {
-		QueryImpl query = new QueryImpl();
+		QueryImpl query = new QuerySpec();
 		return query;
 	}
 
@@ -240,50 +249,50 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public ProtectedAreaBlock createProtectedAreaBlock() {
-		ProtectedAreaBlockImpl protectedAreaBlock = new ProtectedAreaBlockImpl();
+		ProtectedAreaBlockImpl protectedAreaBlock = new ProtectedAreaBlockSpec();
 		return protectedAreaBlock;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public ForBlock createForBlock() {
-		ForBlockImpl forBlock = new ForBlockImpl();
+		ForBlockImpl forBlock = new ForBlockSpec();
 		return forBlock;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public IfBlock createIfBlock() {
-		IfBlockImpl ifBlock = new IfBlockImpl();
+		IfBlockImpl ifBlock = new IfBlockSpec();
 		return ifBlock;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public LetBlock createLetBlock() {
-		LetBlockImpl letBlock = new LetBlockImpl();
+		LetBlockImpl letBlock = new LetBlockSpec();
 		return letBlock;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public FileBlock createFileBlock() {
-		FileBlockImpl fileBlock = new FileBlockImpl();
+		FileBlockImpl fileBlock = new FileBlockSpec();
 		return fileBlock;
 	}
 
@@ -334,9 +343,10 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 */
 	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
 		VisibilityKind result = VisibilityKind.get(initialValue);
-		if (result == null)
+		if (result == null) {
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 		return result;
 	}
 
@@ -356,9 +366,10 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 */
 	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
 		OpenModeKind result = OpenModeKind.get(initialValue);
-		if (result == null)
+		if (result == null) {
 			throw new IllegalArgumentException(
 					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 		return result;
 	}
 

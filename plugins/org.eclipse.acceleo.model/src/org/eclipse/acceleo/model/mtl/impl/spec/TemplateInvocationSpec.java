@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl.spec;
 
+import java.util.List;
+
+import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl;
 import org.eclipse.ocl.EvaluationVisitorDecorator;
+import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.utilities.Visitor;
 
 /**
@@ -40,5 +44,27 @@ public class TemplateInvocationSpec extends TemplateInvocationImpl {
 			return (T)((EvaluationVisitorDecorator)v).visitExpression(this);
 		}
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#toString()
+	 */
+	@Override
+	public String toString() {
+		final Template temp = getDefinition();
+		final List<OCLExpression> args = getArgument();
+
+		final StringBuilder toString = new StringBuilder(temp.getName());
+		toString.append('(');
+		for (int i = 0; i < args.size(); i++) {
+			toString.append(args.get(i).toString());
+			if (i + 1 < args.size()) {
+				toString.append(',');
+			}
+		}
+		toString.append(')');
+		return toString.toString();
 	}
 }

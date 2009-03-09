@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.model.mtl.impl.spec;
 
+import java.util.List;
+
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl;
 import org.eclipse.ocl.EvaluationVisitorDecorator;
+import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.utilities.Visitor;
 
 /**
@@ -40,5 +44,27 @@ public class QueryInvocationSpec extends QueryInvocationImpl {
 			return (T)((EvaluationVisitorDecorator)v).visitExpression(this);
 		}
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.impl.OCLExpressionImpl#toString()
+	 */
+	@Override
+	public String toString() {
+		final Query def = getDefinition();
+		final List<OCLExpression> args = getArgument();
+
+		final StringBuilder toString = new StringBuilder(def.getName());
+		toString.append('(');
+		for (int i = 0; i < args.size(); i++) {
+			toString.append(args.get(i).toString());
+			if (i + 1 < args.size()) {
+				toString.append(',');
+			}
+		}
+		toString.append(')');
+		return toString.toString();
 	}
 }
