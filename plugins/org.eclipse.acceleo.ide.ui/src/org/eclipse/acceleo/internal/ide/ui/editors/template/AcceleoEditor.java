@@ -469,9 +469,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		for (int i = 0; i < deletedAnnotations.size(); i++) {
 			deleted[i] = deletedAnnotations.get(i);
 		}
-		annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
-		for (Map.Entry<Annotation, Position> entry : modifiedAnnotations.entrySet()) {
-			annotationModel.modifyAnnotationPosition(entry.getKey(), entry.getValue());
+		if (annotationModel != null) {
+			annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
+			for (Map.Entry<Annotation, Position> entry : modifiedAnnotations.entrySet()) {
+				annotationModel.modifyAnnotationPosition(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 
