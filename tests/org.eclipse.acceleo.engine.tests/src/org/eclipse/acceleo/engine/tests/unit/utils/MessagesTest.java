@@ -32,8 +32,7 @@ public class MessagesTest extends TestCase {
 			"Could not find public template {0} in module {1}.",};
 
 	/** Contains the expected results for the valid keys (only used if locale is en). */
-	private final String[] expectedForValidKeys = {"Start of user code",
-			"Empty loop iteration at position {0} in Module {1}.",
+	private final String[] expectedForValidKeys = {"Start of user code", "Could not dispose open buffers.",
 			"Cannot invoke non-public template for generation.", "Arguments of a generation cannot be null.",};
 
 	/** These will be used when testing message retrieval with invalid keys. */
@@ -55,7 +54,7 @@ public class MessagesTest extends TestCase {
 	 * These are valid, un-parameterisable keys. See
 	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties.
 	 */
-	private final String[] validKeys = {"usercode.start", "AcceleoEvaluationVisitor.NullForIteration",
+	private final String[] validKeys = {"usercode.start", "AcceleoEvaluationContext.CleanUpError",
 			"AcceleoEngine.IllegalTemplateInvocation", "AcceleoService.NullArguments",};
 
 	/**
