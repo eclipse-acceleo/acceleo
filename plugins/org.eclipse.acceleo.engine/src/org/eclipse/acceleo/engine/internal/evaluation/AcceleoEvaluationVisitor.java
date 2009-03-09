@@ -299,10 +299,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public void visitAcceleoFileBlock(FileBlock fileBlock) {
 		final Object fileURLResult = visitExpression((OCLExpression)fileBlock.getFileUrl());
 		if (isUndefined(fileURLResult)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-					AcceleoEngineMessages
-							.getString(
-									"AcceleoEvaluationVisitor.UndefinedFileURL", fileBlock.getStartPosition(), ((Module)EcoreUtil.getRootContainer(fileBlock)).getName())); //$NON-NLS-1$
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UndefinedFileURL", fileBlock.getStartPosition(), //$NON-NLS-1$
+							((Module)EcoreUtil.getRootContainer(fileBlock)).getName(), fileBlock.toString(),
+							getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
 			exception.fillInStackTrace();
 			throw exception;
 		}
@@ -340,11 +340,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 
 		if (isUndefined(iteration)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-					AcceleoEngineMessages
-							.getString(
-									"AcceleoEvaluationVisitor.NullForIteration", forBlock.getStartPosition(), ((Module)EcoreUtil //$NON-NLS-1$
-											.getRootContainer(forBlock)).getName()));
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.NullForIteration", forBlock.getStartPosition(), //$NON-NLS-1$
+							((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock.toString(),
+							currentSelf));
 			exception.fillInStackTrace();
 			throw exception;
 		}
@@ -371,7 +370,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 							AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
 									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(forBlock))
-									.getName()));
+									.getName(), forBlock, o, forBlock.getGuard()));
 					exception.fillInStackTrace();
 					throw exception;
 				}
@@ -404,9 +403,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			if (isUndefined(guardValue)) {
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-						AcceleoEngineMessages
-								.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock.getStartPosition(),
-										((Module)EcoreUtil.getRootContainer(forBlock)).getName()));
+						AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
+								.getStartPosition(),
+								((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock,
+								iteration, forBlock.getGuard()));
 				exception.fillInStackTrace();
 				throw exception;
 			}
@@ -434,13 +434,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoIfBlock(IfBlock ifBlock) {
 		final OCLExpression condition = ifBlock.getIfExpr();
+		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 
 		final Object conditionValue = visitExpression(condition);
 		if (isUndefined(conditionValue)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-					AcceleoEngineMessages
-							.getString(
-									"AcceleoEvaluationVisitor.UndefinedCondition", ifBlock.getStartPosition(), ((Module)EcoreUtil.getRootContainer(ifBlock)).getName())); //$NON-NLS-1$
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UndefinedCondition", ifBlock.getStartPosition(), //$NON-NLS-1$
+							((Module)EcoreUtil.getRootContainer(ifBlock)).getName(), ifBlock, currentSelf));
 			exception.fillInStackTrace();
 			throw exception;
 		}
@@ -457,9 +457,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					final Object elseValue = visitExpression((OCLExpression)elseif.getIfExpr());
 					if (isUndefined(elseValue)) {
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-								AcceleoEngineMessages
-										.getString(
-												"AcceleoEvaluationVisitor.UndefinedElseCondition", elseif.getStartPosition(), ((Module)EcoreUtil.getRootContainer(elseif)).getName())); //$NON-NLS-1$
+								AcceleoEngineMessages.getString(
+										"AcceleoEvaluationVisitor.UndefinedElseCondition", elseif //$NON-NLS-1$
+												.getStartPosition(), ((Module)EcoreUtil
+												.getRootContainer(elseif)).getName(), elseif, currentSelf));
 						exception.fillInStackTrace();
 						throw exception;
 					}
@@ -489,13 +490,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoLetBlock(LetBlock letBlock) {
+		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		Variable var = letBlock.getLetVariable();
 		Object value = visitExpression((OCLExpression)var.getInitExpression());
 		if (isUndefined(value)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-					AcceleoEngineMessages
-							.getString(
-									"AcceleoEvaluationVisitor.UndefinedLetValue", letBlock.getStartPosition(), ((Module)EcoreUtil.getRootContainer(letBlock)).getName())); //$NON-NLS-1$
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UndefinedLetValue", letBlock.getStartPosition(), //$NON-NLS-1$
+							((Module)EcoreUtil.getRootContainer(letBlock)).getName(), letBlock, currentSelf));
 			exception.fillInStackTrace();
 			throw exception;
 		}
@@ -514,9 +515,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					value = visitExpression((OCLExpression)var.getInitExpression());
 					if (isUndefined(value)) {
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-								AcceleoEngineMessages
-										.getString(
-												"AcceleoEvaluationVisitor.UndefinedElseLetValue", elseLet.getStartPosition(), ((Module)EcoreUtil.getRootContainer(elseLet)).getName())); //$NON-NLS-1$
+								AcceleoEngineMessages.getString(
+										"AcceleoEvaluationVisitor.UndefinedElseLetValue", elseLet //$NON-NLS-1$
+												.getStartPosition(), ((Module)EcoreUtil
+												.getRootContainer(elseLet)).getName(), elseLet, currentSelf));
 						exception.fillInStackTrace();
 						throw exception;
 					}
@@ -548,18 +550,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
 		final Object markerValue = visitExpression((OCLExpression)protectedArea.getMarker());
+		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (isUndefined(markerValue)) {
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-					AcceleoEngineMessages
-							.getString(
-									"AcceleoEvaluationVisitor.UndefinedAreaMarker", protectedArea.getStartPosition(), ((Module)EcoreUtil.getRootContainer(protectedArea)).getName())); //$NON-NLS-1$
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UndefinedAreaMarker", protectedArea //$NON-NLS-1$
+							.getStartPosition(), ((Module)EcoreUtil.getRootContainer(protectedArea))
+							.getName(), protectedArea, source));
 			exception.fillInStackTrace();
 			throw exception;
 		}
 
 		final String marker = markerValue.toString().trim();
 		final String areaContent = context.getProtectedAreaContent(marker);
-		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
 		}
@@ -592,8 +594,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (isUndefined(argValue)) {
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString(
-								"AcceleoEvaluationVisitor.UndefinedArgument", invocation.getStartPosition(), //$NON-NLS-1$
-								((Module)EcoreUtil.getRootContainer(invocation)).getName()));
+								"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
+								invocation.getStartPosition(), ((Module)EcoreUtil
+										.getRootContainer(invocation)).getName(), invocation,
+								getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), invocation
+										.getArgument().get(i)));
 				exception.fillInStackTrace();
 				throw exception;
 			}
@@ -716,9 +721,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (isUndefined(argValue)) {
 					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 							AcceleoEngineMessages.getString(
-									"AcceleoEvaluationVisitor.UndefinedArgument", invocation //$NON-NLS-1$
-											.getStartPosition(), ((Module)EcoreUtil
-											.getRootContainer(invocation)).getName()));
+									"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
+									invocation.getStartPosition(), ((Module)EcoreUtil
+											.getRootContainer(invocation)).getName(), invocation,
+									getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), expression));
 					exception.fillInStackTrace();
 					throw exception;
 				}
@@ -817,7 +823,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (isUndefined(guardValue)) {
 				exception = new AcceleoEvaluationException(AcceleoEngineMessages.getString(
 						UNDEFINED_GUARD_MESSAGE_KEY, candidate.getStartPosition(), ((Module)EcoreUtil
-								.getRootContainer(candidate)).getName()));
+								.getRootContainer(candidate)).getName(), candidate,
+						getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), candidate.getGuard()));
 				exception.fillInStackTrace();
 				candidates.remove(candidate);
 				continue;
@@ -861,9 +868,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			final Object newValue = visitExpression((OCLExpression)var.getInitExpression());
 			if (isUndefined(newValue)) {
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-						AcceleoEngineMessages
-								.getString(
-										"AcceleoEvaluationVisitor.UndefinedVariable", var.getStartPosition(), ((Module)EcoreUtil.getRootContainer(init)).getName())); //$NON-NLS-1$
+						AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedVariable", var //$NON-NLS-1$
+								.getStartPosition(), ((Module)EcoreUtil.getRootContainer(init)).getName(),
+								init.eContainer(), getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME),
+								var));
 				exception.fillInStackTrace();
 				throw exception;
 			}
