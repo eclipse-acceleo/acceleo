@@ -90,7 +90,6 @@ public final class AcceleoServicesRegistry {
 	 */
 	public Set<Method> getAllRegisteredServices() {
 		final Set<Object> serviceInstances = getAllRegisteredServiceInstances();
-		// at least
 		final Set<Method> services = new LinkedHashSet<Method>(serviceInstances.size());
 		for (Object serviceInstance : serviceInstances) {
 			for (Method method : serviceInstance.getClass().getMethods()) {

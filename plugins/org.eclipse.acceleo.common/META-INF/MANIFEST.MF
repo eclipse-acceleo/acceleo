@@ -6,11 +6,12 @@ Bundle-Version: 0.8.0.qualifier
 Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.common,
  org.eclipse.acceleo.common.internal.utils;x-friends:="org.eclipse.acceleo.engine,org.eclipse.acceleo.parser",
+ org.eclipse.acceleo.common.library.connector,
  org.eclipse.acceleo.common.utils
 Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl.ecore,
- org.eclipse.core.runtime;bundle-version="3.3.0";resolution:=optional,
- org.eclipse.pde.core;bundle-version="3.3.0";resolution:=optional,
+ org.eclipse.core.runtime;bundle-version="3.4.0";resolution:=optional,
+ org.eclipse.pde.core;bundle-version="3.4.0";resolution:=optional,
  org.eclipse.core.resources;bundle-version="3.3.0";resolution:=optional
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
