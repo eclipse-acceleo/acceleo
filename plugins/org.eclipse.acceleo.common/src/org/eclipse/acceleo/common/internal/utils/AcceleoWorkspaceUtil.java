@@ -310,7 +310,7 @@ public final class AcceleoWorkspaceUtil {
 	 * @param bundles
 	 *            Bundles which exported packages are to be refreshed.
 	 */
-	private static void refreshPackages(Bundle[] bundles) {
+	private static synchronized void refreshPackages(Bundle[] bundles) {
 		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
 		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
 		PackageAdmin packageAdmin = null;
