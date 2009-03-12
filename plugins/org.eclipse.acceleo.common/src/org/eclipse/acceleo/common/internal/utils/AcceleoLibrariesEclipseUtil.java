@@ -69,7 +69,7 @@ public final class AcceleoLibrariesEclipseUtil {
 	 */
 	public static void removeLibrary(String library) {
 		for (ILibrary candidate : new ArrayList<ILibrary>(LIBRARIES)) {
-			if (library.equals(candidate.getURI())) {
+			if (candidate.getURI().toString().endsWith(library)) {
 				LIBRARIES.remove(candidate);
 			}
 		}
