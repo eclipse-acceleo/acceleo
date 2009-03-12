@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
@@ -112,11 +113,8 @@ public final class AcceleoWorkspaceUtil {
 	 * not intended to be called by clients.
 	 */
 	public static void initialize() {
-		/*
-		 * FIXME currently not reacting to project creations. Should : find the plugin model
-		 * (PluginRegistry.findModel()), install the model listener and install the bundle if needed.
-		 */
-		final int interestingEvents = IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE;
+		final int interestingEvents = IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE
+				| IResourceChangeEvent.POST_CHANGE | IResourceChangeEvent.POST_BUILD;
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(WORKSPACE_LISTENER, interestingEvents);
 
 		final IPluginModelBase[] workspaceModels = PluginRegistry.getWorkspaceModels();
@@ -387,10 +385,15 @@ public final class AcceleoWorkspaceUtil {
 		 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
-			if (event.getResource() instanceof IProject) {
-				switch (event.getType()) {
-					case IResourceChangeEvent.PRE_CLOSE:
-					case IResourceChangeEvent.PRE_DELETE:
+			final IResourceDelta delta = event.getDelta();
+			switch (event.getType()) {
+				/*
+				 * Closing and deleting projects trigger the same actions : we must remove the model listener
+				 * and uninstall the bundle.
+				 */
+				case IResourceChangeEvent.PRE_CLOSE:
+				case IResourceChangeEvent.PRE_DELETE:
+					if (event.getResource() instanceof IProject) {
 						final IProject project = (IProject)event.getResource();
 						final IPluginModelBase model = PluginRegistry.findModel(project);
 						if (model != null) {
@@ -409,10 +412,48 @@ public final class AcceleoWorkspaceUtil {
 								}
 							}
 						}
-						break;
-					default:
-						// no default action
-				}
+					}
+					break;
+				case IResourceChangeEvent.POST_CHANGE:
+					processDelta(delta);
+					break;
+				case IResourceChangeEvent.POST_BUILD:
+					for (IResourceDelta child : delta.getAffectedChildren()) {
+						final IResource childResource = child.getResource();
+						if (childResource instanceof IProject) {
+							final IPluginModelBase model = PluginRegistry.findModel((IProject)childResource);
+							if (model != null && WORKSPACE_INSTALLED_BUNDLES.containsKey(model)) {
+								CHANGED_CONTRIBUTIONS.add(model);
+							}
+						}
+					}
+					break;
+				default:
+					// no default action
+			}
+		}
+
+		/**
+		 * Handles evaluation of a given resource Delta.
+		 * 
+		 * @param delta
+		 *            The delta we need to react to.
+		 */
+		private void processDelta(IResourceDelta delta) {
+			final IResource resource = delta.getResource();
+			switch (delta.getKind()) {
+				case IResourceDelta.ADDED:
+					if (resource instanceof IProject) {
+						final IPluginModelBase model = PluginRegistry.findModel((IProject)resource);
+						if (model != null) {
+							final IModelChangedListener listener = new WorkspaceModelListener();
+							model.addModelChangedListener(listener);
+							INSTALLED_MODEL_LISTENERS.put(model, listener);
+						}
+					}
+					break;
+				default:
+					// No default action
 			}
 		}
 	}
