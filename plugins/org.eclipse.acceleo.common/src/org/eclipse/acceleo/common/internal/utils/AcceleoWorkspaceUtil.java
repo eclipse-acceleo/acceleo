@@ -137,8 +137,8 @@ public final class AcceleoWorkspaceUtil {
 			return;
 		}
 
-		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
-		ServiceReference jobManagerReference = context.getServiceReference(IJobManager.class.getName());
+		final BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
+		final ServiceReference jobManagerReference = context.getServiceReference(IJobManager.class.getName());
 		IJobManager jobManager = null;
 		if (jobManagerReference != null) {
 			jobManager = (IJobManager)context.getService(jobManagerReference);
@@ -308,7 +308,7 @@ public final class AcceleoWorkspaceUtil {
 	 * @param bundles
 	 *            Bundles which exported packages are to be refreshed.
 	 */
-	private static synchronized void refreshPackages(Bundle[] bundles) {
+	private static void refreshPackages(Bundle[] bundles) {
 		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
 		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
 		PackageAdmin packageAdmin = null;
