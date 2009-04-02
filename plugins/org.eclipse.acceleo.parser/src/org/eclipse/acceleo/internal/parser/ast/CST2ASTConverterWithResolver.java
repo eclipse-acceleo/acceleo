@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
@@ -263,7 +262,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						getModule(oTemplate), ioNext.getName(), paramTypes);
 				if (oOverrides.size() == 0) {
 					log(
-							AcceleoCommonMessages.getString(
+							AcceleoParserMessages.getString(
 									"CST2ASTConverterWithResolver.MissingTemplate", ioNext.getName()), ioNext.getStartPosition(), ioNext //$NON-NLS-1$
 									.getEndPosition());
 				} else {
@@ -486,7 +485,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setBefore(oBefore);
 					transformStepResolve(iBefore);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.BEFORE),
+					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.BEFORE),
 							iBefore.getStartPosition(), iBefore.getEndPosition());
 				}
 			}
@@ -497,7 +496,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setEach(oEach);
 					transformStepResolve(iEach);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.SEPARATOR),
+					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.SEPARATOR),
 							iEach.getStartPosition(), iEach.getEndPosition());
 				}
 			}
@@ -508,7 +507,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setAfter(oAfter);
 					transformStepResolve(iAfter);
 				} else {
-					log(AcceleoCommonMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.AFTER),
+					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.AFTER),
 							iAfter.getStartPosition(), iAfter.getEndPosition());
 				}
 			}
