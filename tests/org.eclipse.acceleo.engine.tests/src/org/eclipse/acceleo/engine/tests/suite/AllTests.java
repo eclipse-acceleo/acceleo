@@ -23,6 +23,7 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTempl
 import org.eclipse.acceleo.engine.tests.unit.engine.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
+import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.ParameterTypeNarrowingResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.SimpleNamesakeResolutionTest;
@@ -66,6 +67,9 @@ public class AllTests extends TestCase {
 
 		// Engine
 		suite.addTestSuite(AcceleoGenericEngineTest.class);
+
+		// Evaluation visitor
+		suite.addTest(AcceleoEvaluationVisitorTestSuite.suite());
 
 		// Listeners
 		// FIXME LGO suite.addTestSuite(AcceleoListenersTest.class);
