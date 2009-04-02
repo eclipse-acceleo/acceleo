@@ -12,24 +12,16 @@ package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
- * This will allow Acceleo to dynamically resolve templates overrides within the modules registered by this
+ * This will allow Acceleo to dynamically resolve template overrides within the modules registered by this
  * registry.
  * <p>
  * Take note that all modules will be loaded in the registry's resource set if loaded from the registry
@@ -43,14 +35,11 @@ public final class AcceleoDynamicTemplatesRegistry {
 	/** Singleton instance of the registry. */
 	public static final AcceleoDynamicTemplatesRegistry INSTANCE = new AcceleoDynamicTemplatesRegistry();
 
-	/** This will contain the modules contained by this registry. */
-	private final Set<Module> registeredModules = new LinkedHashSet<Module>();
-
-	/** ResourceSet that will be used by the singleton instance to load modules. */
-	private final ResourceSet resourceSet = new ResourceSetImpl();
+	/** This will contain references to the modules added to this registry. */
+	private final Set<File> registeredModules = new LinkedHashSet<File>();
 
 	/**
-	 * This class is a singleton. Access instance through {@link #INSTANCE}.
+	 * This class is a singleton. Access the instance through {@link #INSTANCE}.
 	 */
 	private AcceleoDynamicTemplatesRegistry() {
 		// hides default constructor
@@ -63,26 +52,26 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 *            Module that is to be registered for dynamic template resolution.
 	 * @return <code>true</code> if the set didn't already contain <code>module</code>.
 	 */
-	public boolean addModule(Module module) {
+	public boolean addModule(File module) {
 		return registeredModules.add(module);
 	}
 
 	/**
-	 * Adds a set of module to the registry.
+	 * Adds a set of modules to the registry.
 	 * 
 	 * @param modules
 	 *            Modules that are to be registered for dynamic template resolution.
 	 * @return <code>true</code> if the set didn't already contain one of the modules contained by
 	 *         <code>modules</code>.
 	 */
-	public boolean addModules(Collection<Module> modules) {
+	public boolean addModules(Collection<File> modules) {
 		return registeredModules.addAll(modules);
 	}
 
 	/**
 	 * This will register all modules that can be retrieved from <code>file</code>.
 	 * <p>
-	 * That is, if <code>file</code> is a directory, this will iterate over all its direct and indirect
+	 * That is, if <code>file</code> is a directory, this will iterate over all of its direct and indirect
 	 * children (except for &quot;CVS&quot; and &quot;.svn&quot; named sub-directories), then load and
 	 * register all child representing a module. Otherwise, if <code>file</code> itself represents a module,
 	 * it will be loaded and registered.
@@ -110,16 +99,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 				}
 			} else if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(file.getPath().substring(
 					file.getPath().lastIndexOf('.') + 1))) {
-				try {
-					Resource res = ModelUtils.load(file, resourceSet).eResource();
-					for (EObject child : res.getContents()) {
-						if (child instanceof Module) {
-							registeredModules.add((Module)child);
-						}
-					}
-				} catch (IOException e) {
-					AcceleoEnginePlugin.log(e, false);
-				}
+				addModule(file);
 			}
 		}
 	}
@@ -129,8 +109,8 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * 
 	 * @return A copy of the registered modules set.
 	 */
-	public Set<Module> getRegisteredModules() {
-		final Set<Module> compound = new LinkedHashSet<Module>();
+	public Set<File> getRegisteredModules() {
+		final Set<File> compound = new LinkedHashSet<File>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			compound.addAll(AcceleoDynamicTemplatesEclipseUtil.getRegisteredModules());
 		}
@@ -145,7 +125,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 *            Module that is to be removed from dynamic template resolution.
 	 * @return <code>true</code> if the set contained <code>module</code>.
 	 */
-	public boolean removeModule(Module module) {
+	public boolean removeModule(File module) {
 		return registeredModules.remove(module);
 	}
 
@@ -156,8 +136,8 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 *            Modules that are to be removed from dynamic template resolution.
 	 * @return <code>true</code> if the set has been changed.
 	 */
-	public boolean removeModules(Collection<Module> modules) {
-		return registeredModules.remove(modules);
+	public boolean removeModules(Collection<File> modules) {
+		return registeredModules.removeAll(modules);
 	}
 
 	/**
@@ -165,9 +145,6 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * modules loaded from extension points will not be cleared by this.
 	 */
 	public void clearRegistryResourceSet() {
-		for (Resource res : resourceSet.getResources()) {
-			res.unload();
-		}
-		resourceSet.getResources().clear();
+		registeredModules.clear();
 	}
 }

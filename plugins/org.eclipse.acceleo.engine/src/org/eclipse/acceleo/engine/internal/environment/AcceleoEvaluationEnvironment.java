@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.environment;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +28,9 @@ import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -41,6 +45,8 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
@@ -712,10 +718,49 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * This will load all dynamic modules in the first {@link ResourceSet} found by iterating over the
+	 * {@link #currentModules}.
+	 * 
+	 * @return The set of loaded modules.
+	 */
+	private Set<Module> loadDynamicModules() {
+		ResourceSet resourceSet = null;
+		for (Module module : currentModules) {
+			if (module.eResource() != null && module.eResource().getResourceSet() != null) {
+				resourceSet = module.eResource().getResourceSet();
+				break;
+			}
+		}
+		// If we couldn't find a resourceSet, break the loading loop and log an exception
+		if (resourceSet == null) {
+			// set as a blocker so that it is logged as an error
+			AcceleoEnginePlugin.log(AcceleoEngineMessages
+					.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
+			return Collections.<Module> emptySet();
+		}
+		final Set<Module> dynamicModules = new LinkedHashSet<Module>();
+		for (File moduleFile : AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules()) {
+			if (moduleFile.exists() && moduleFile.canRead()) {
+				try {
+					Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
+					for (EObject root : res.getContents()) {
+						if (root instanceof Module) {
+							dynamicModules.add((Module)root);
+						}
+					}
+				} catch (IOException e) {
+					AcceleoEnginePlugin.log(e, false);
+				}
+			}
+		}
+		return dynamicModules;
+	}
+
+	/**
 	 * Maps dynamic overriding templates for smoother polymorphic resolution.
 	 */
 	private void mapDynamicOverrides() {
-		for (Module module : AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules()) {
+		for (Module module : loadDynamicModules()) {
 			boolean map = false;
 			final Set<Module> unMappedRequiredModules = new LinkedHashSet<Module>();
 			for (Module extended : module.getExtends()) {
