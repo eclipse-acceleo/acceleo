@@ -305,6 +305,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 							getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
 			exception.fillInStackTrace();
 			throw exception;
+		} else if (fileURLResult instanceof Collection) {
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.CollectionFileURL", fileBlock.getStartPosition(), //$NON-NLS-1$
+							((Module)EcoreUtil.getRootContainer(fileBlock)).getName(), fileBlock.toString(),
+							getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
+			exception.fillInStackTrace();
+			throw exception;
 		}
 		final String filePath = String.valueOf(fileURLResult);
 		final boolean appendMode = fileBlock.getOpenMode().getValue() == OpenModeKind.APPEND_VALUE;

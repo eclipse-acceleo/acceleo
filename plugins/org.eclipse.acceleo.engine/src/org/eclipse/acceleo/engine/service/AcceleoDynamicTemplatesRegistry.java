@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.EMFPlugin;
@@ -117,7 +118,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 						}
 					}
 				} catch (IOException e) {
-					// FIXME propagate this
+					AcceleoEnginePlugin.log(e, false);
 				}
 			}
 		}

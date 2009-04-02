@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.ecore.EObject;
@@ -31,6 +32,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.Bundle;
 
+/* FIXME modules shouldn't be loaded at extension point parsing time : keep references to the files and 
+ * have the engine dynamically load them in the evaluated modules' resourceSet.
+ */
 /**
  * Eclipse-specific utilities for Acceleo dynamic templates. It will be initialized with all dynamic templates
  * that could be parsed from the extension point if Eclipse is running and won't be used when outside of
@@ -108,7 +112,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					}
 				}
 			} catch (IOException e) {
-				// FIXME propagate this
+				AcceleoEnginePlugin.log(e, false);
 			}
 		}
 	}
@@ -147,7 +151,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 						addModule(moduleFile);
 					}
 				} catch (IOException e) {
-					// FIXME propagate this
+					AcceleoEnginePlugin.log(e, false);
 				}
 			}
 		}

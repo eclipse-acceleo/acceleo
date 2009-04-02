@@ -145,4 +145,11 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	public Map<String, StringWriter> getEvaluationPreview() {
 		return context.getGenerationPreview();
 	}
+
+	/**
+	 * This can be used to dispose of all resources loaded from this factory.
+	 */
+	public void dispose() {
+		context.dispose();
+	}
 }

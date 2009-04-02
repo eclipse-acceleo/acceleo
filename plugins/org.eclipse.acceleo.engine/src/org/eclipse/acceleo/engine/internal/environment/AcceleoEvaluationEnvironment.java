@@ -299,11 +299,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		} else {
 			sourceLabel = source.getClass().getName();
 		}
-		throw new UnsupportedOperationException(
-				AcceleoEngineMessages
-						.getString(
-								"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
-								sourceLabel));
+		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
+				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
+						.toString(), sourceLabel));
 	}
 
 	/**
@@ -585,7 +583,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@SuppressWarnings("unchecked")
 	private List<EObject> getContents(EObject eObject) {
-		// TODO can this be cached (Map<EClass, List<EReference>>)?
 		final List<EObject> result = new ArrayList<EObject>(eObject.eContents());
 		for (final EReference reference : eObject.eClass().getEAllReferences()) {
 			if (reference.isContainment() && reference.isDerived()) {

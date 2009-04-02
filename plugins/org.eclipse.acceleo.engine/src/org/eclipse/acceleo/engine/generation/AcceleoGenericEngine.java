@@ -26,7 +26,6 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.ocl.ecore.OCL;
-import org.eclipse.ocl.ecore.OCL.Query;
 import org.eclipse.ocl.ecore.Variable;
 
 /**
@@ -82,10 +81,13 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 
 		doEvaluate(template, arguments);
 
+		Map<String, StringWriter> result = Collections.<String, StringWriter> emptyMap();
 		if (preview) {
-			return factory.getEvaluationPreview();
+			result = factory.getEvaluationPreview();
 		}
-		return Collections.<String, StringWriter> emptyMap();
+		factory.dispose();
+
+		return result;
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 		// Guard Evaluation
 		boolean guardValue = true;
 		if (template.getGuard() != null) {
-			final Query guard = ocl.createQuery(template.getGuard());
+			final OCL.Query guard = ocl.createQuery(template.getGuard());
 			// Sets all needed variables for the guard evaluation
 			for (int i = 0; i < template.getParameter().size(); i++) {
 				Variable param = template.getParameter().get(i);
@@ -131,7 +133,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 
 		// If there were no guard or its condition is verified, evaluate the template now.
 		if (guardValue) {
-			final Query query = ocl.createQuery(template);
+			final OCL.Query query = ocl.createQuery(template);
 			// Sets all needed variables for the template evaluation
 			for (int i = 0; i < template.getParameter().size(); i++) {
 				Variable param = template.getParameter().get(i);

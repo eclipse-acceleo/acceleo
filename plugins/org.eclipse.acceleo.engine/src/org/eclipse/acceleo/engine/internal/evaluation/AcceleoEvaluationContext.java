@@ -210,6 +210,12 @@ public final class AcceleoEvaluationContext {
 		AcceleoEvaluationException exception = null;
 		try {
 			try {
+				awaitCompletion();
+			} catch (InterruptedException e) {
+				exception = new AcceleoEvaluationException(AcceleoEngineMessages
+						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
+			}
+			try {
 				for (final Writer writer : writers) {
 					writer.close();
 				}
@@ -217,12 +223,7 @@ public final class AcceleoEvaluationContext {
 				exception = new AcceleoEvaluationException(AcceleoEngineMessages
 						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
 			}
-			try {
-				awaitCompletion();
-			} catch (InterruptedException e) {
-				exception = new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
-			}
+			flatten();
 		} finally {
 			writers.clear();
 			blockVariables.clear();
@@ -242,7 +243,7 @@ public final class AcceleoEvaluationContext {
 	 * @return The generation preview.
 	 */
 	public Map<String, StringWriter> getGenerationPreview() {
-		return generationPreview;
+		return new HashMap<String, StringWriter>(generationPreview);
 	}
 
 	/**
@@ -295,8 +296,7 @@ public final class AcceleoEvaluationContext {
 			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.FlushError"), //$NON-NLS-1$
-					e);
+					.getString("AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
 		}
 		writers.add(new StringWriter(DEFAULT_BUFFER_SIZE));
 	}
@@ -315,8 +315,7 @@ public final class AcceleoEvaluationContext {
 			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.FlushError"), //$NON-NLS-1$
-					e);
+					.getString("AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
 		}
 		writers.add(new OutputStreamWriter(new AcceleoFilterOutputStream(stream)));
 	}
@@ -356,7 +355,9 @@ public final class AcceleoEvaluationContext {
 			}
 		}
 		try {
-			writers.getLast().flush();
+			if (writers.size() > 0) {
+				writers.getLast().flush();
+			}
 			Map<String, String> savedCodeBlocks = new HashMap<String, String>();
 			if (generatedFile.exists()) {
 				savedCodeBlocks = saveProtectedAreas(generatedFile);
@@ -365,7 +366,11 @@ public final class AcceleoEvaluationContext {
 			if (!previewMode) {
 				writer = new AcceleoFileWriter(generatedFile, appendMode);
 			} else {
-				writer = new StringWriter();
+				if (appendMode && generationPreview.containsKey(generatedFile.getPath())) {
+					writer = generationPreview.get(generatedFile.getPath());
+				} else {
+					writer = new StringWriter();
+				}
 				generationPreview.put(generatedFile.getPath(), (StringWriter)writer);
 			}
 			userCodeBlocks.put(writer, savedCodeBlocks);
