@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -37,6 +38,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
@@ -44,6 +46,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -724,32 +727,37 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The set of loaded modules.
 	 */
 	private Set<Module> loadDynamicModules() {
-		ResourceSet resourceSet = null;
-		for (Module module : currentModules) {
-			if (module.eResource() != null && module.eResource().getResourceSet() != null) {
-				resourceSet = module.eResource().getResourceSet();
-				break;
-			}
-		}
-		// If we couldn't find a resourceSet, break the loading loop and log an exception
-		if (resourceSet == null) {
-			// set as a blocker so that it is logged as an error
-			AcceleoEnginePlugin.log(AcceleoEngineMessages
-					.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
-			return Collections.<Module> emptySet();
-		}
+		final Set<File> dynamicModuleFiles = AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules();
 		final Set<Module> dynamicModules = new LinkedHashSet<Module>();
-		for (File moduleFile : AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules()) {
-			if (moduleFile.exists() && moduleFile.canRead()) {
-				try {
-					Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
-					for (EObject root : res.getContents()) {
-						if (root instanceof Module) {
-							dynamicModules.add((Module)root);
+		// shortcut
+		if (dynamicModuleFiles.size() > 0) {
+			ResourceSet resourceSet = null;
+			for (Module module : currentModules) {
+				if (module.eResource() != null && module.eResource().getResourceSet() != null) {
+					resourceSet = module.eResource().getResourceSet();
+					break;
+				}
+			}
+			// If we couldn't find a resourceSet, break the loading loop and log an exception
+			if (resourceSet == null) {
+				// set as a blocker so that it is logged as an error
+				AcceleoEnginePlugin.log(AcceleoEngineMessages
+						.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
+				return dynamicModules;
+			}
+			for (File moduleFile : dynamicModuleFiles) {
+				if (moduleFile.exists() && moduleFile.canRead()) {
+					try {
+						Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
+						new DynamicModulesReferenceResolver(res);
+						for (EObject root : res.getContents()) {
+							if (root instanceof Module) {
+								dynamicModules.add((Module)root);
+							}
 						}
+					} catch (IOException e) {
+						AcceleoEnginePlugin.log(e, false);
 					}
-				} catch (IOException e) {
-					AcceleoEnginePlugin.log(e, false);
 				}
 			}
 		}
@@ -1026,5 +1034,90 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result.add(tokenizer.nextToken());
 		}
 		return result;
+	}
+
+	/**
+	 * This will allow us to handle references to file scheme URIs within the resource set containing the
+	 * generation modules and their dynamic overrides. We need this since the dynamic overrides are loaded
+	 * with file scheme URIs whereas the generation module can be loaded through platform scheme URIs and we
+	 * need references to be resolved anyway.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private final class DynamicModulesReferenceResolver extends EcoreUtil.CrossReferencer {
+		/**
+		 * Instantiates the reference resolver given the dynamic template which references are to be resolved.
+		 * 
+		 * @param resource
+		 *            The resource containing the dynamic template which references are to be resolved.
+		 */
+		protected DynamicModulesReferenceResolver(Resource resource) {
+			super(resource);
+			crossReference();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer#resolve()
+		 */
+		@Override
+		protected boolean resolve() {
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer#crossReference(org.eclipse.emf.ecore.EObject,
+		 *      org.eclipse.emf.ecore.EReference, org.eclipse.emf.ecore.EObject)
+		 */
+		@Override
+		protected boolean crossReference(EObject object, EReference reference, EObject crossReferencedEObject) {
+			if (crossReferencedEObject.eIsProxy()) {
+				final URI proxyURI = ((InternalEObject)crossReferencedEObject).eProxyURI();
+				if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(proxyURI.fileExtension())
+						&& "file".equals(proxyURI.scheme())) { //$NON-NLS-1$
+					String moduleName = proxyURI.lastSegment();
+					moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+					for (Module module : currentModules) {
+						if (moduleName.equals(module.getName())) {
+							final EObject crossReferencedTarget = module.eResource().getEObject(
+									proxyURI.fragment());
+							if (crossReferencedTarget != null) {
+								setOrAdd(object, reference, crossReferencedTarget);
+								add((InternalEObject)object, reference, crossReferencedTarget);
+								return false;
+							}
+						}
+					}
+				}
+			}
+			return super.crossReference(object, reference, crossReferencedEObject);
+		}
+
+		/**
+		 * Will behave like either eSet or eAdd according to the given reference upper bound.
+		 * 
+		 * @param object
+		 *            The object on which a reference value is to be modified.
+		 * @param reference
+		 *            The reference which value is(are) to be modified.
+		 * @param value
+		 *            The value that is to be set for the reference if it is unique, or added to the reference
+		 *            values if it is multi-valued.
+		 */
+		@SuppressWarnings("unchecked")
+		private void setOrAdd(EObject object, EReference reference, EObject value) {
+			if (reference.isMany()) {
+				if (value instanceof Collection) {
+					((Collection)object.eGet(reference)).addAll((Collection)value);
+				} else {
+					((Collection)object.eGet(reference)).add(value);
+				}
+			} else {
+				object.eSet(reference, value);
+			}
+		}
 	}
 }

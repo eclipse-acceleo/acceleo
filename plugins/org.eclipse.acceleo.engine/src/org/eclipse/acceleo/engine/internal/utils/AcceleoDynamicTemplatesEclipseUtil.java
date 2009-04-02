@@ -104,6 +104,11 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					emtlFiles = entry.getKey().findEntries(actualPath.replace("/src", "/bin"), "*." //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ IAcceleoConstants.EMTL_FILE_EXTENSION, true);
 				}
+				// no dynamic templates here
+				if (emtlFiles == null) {
+					// FIXME log
+					return;
+				}
 				try {
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
