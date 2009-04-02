@@ -47,7 +47,6 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -62,6 +61,9 @@ import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
+	/** This will allow the environment to know of the modules currently in the generation context. */
+	final Set<Module> currentModules = new HashSet<Module>();
+
 	/** Maps dynamic overrides as registered in the {@link AcceleoDynamicTemplatesRegistry}. */
 	private final Map<Template, Set<Template>> dynamicOverrides = new HashMap<Template, Set<Template>>();
 
@@ -82,9 +84,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * "strtok(String, Integer)" as currently specified.
 	 */
 	private final Map<String, StringTokenizer> tokenizers = new HashMap<String, StringTokenizer>();
-
-	/** This will allow the environment to know of the modules currently in the generation context. */
-	private final Set<Module> currentModules = new HashSet<Module>();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -497,7 +496,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		if (settings == null) {
 			return Collections.emptySet();
 		}
-		for (Setting setting : settings) {
+		for (EStructuralFeature.Setting setting : settings) {
 			result.add(setting.getEObject());
 		}
 		return result;
@@ -688,39 +687,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
-	 * This will resolve all dependencies of the given module and keep references to all accessible templates.
-	 * 
-	 * @param module
-	 *            We will resolve dependencies for this module and keep references to all accessible
-	 *            templates.
-	 */
-	private void mapAllTemplates(Module module) {
-		// Has module already been mapped?
-		if (currentModules.contains(module)) {
-			return;
-		}
-		currentModules.add(module);
-
-		for (final ModuleElement elem : module.getOwnedModuleElement()) {
-			if (elem instanceof Template) {
-				Set<Template> namesakes = templates.get(elem.getName());
-				if (namesakes == null) {
-					namesakes = new LinkedHashSet<Template>();
-					templates.put(elem.getName(), namesakes);
-				}
-				namesakes.add((Template)elem);
-				mapOverridingTemplate((Template)elem);
-			}
-		}
-		for (final Module extended : module.getExtends()) {
-			mapAllTemplates(extended);
-		}
-		for (final Module imported : module.getImports()) {
-			mapAllTemplates(imported);
-		}
-	}
-
-	/**
 	 * This will load all dynamic modules in the first {@link ResourceSet} found by iterating over the
 	 * {@link #currentModules}.
 	 * 
@@ -762,6 +728,39 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		return dynamicModules;
+	}
+
+	/**
+	 * This will resolve all dependencies of the given module and keep references to all accessible templates.
+	 * 
+	 * @param module
+	 *            We will resolve dependencies for this module and keep references to all accessible
+	 *            templates.
+	 */
+	private void mapAllTemplates(Module module) {
+		// Has module already been mapped?
+		if (currentModules.contains(module)) {
+			return;
+		}
+		currentModules.add(module);
+
+		for (final ModuleElement elem : module.getOwnedModuleElement()) {
+			if (elem instanceof Template) {
+				Set<Template> namesakes = templates.get(elem.getName());
+				if (namesakes == null) {
+					namesakes = new LinkedHashSet<Template>();
+					templates.put(elem.getName(), namesakes);
+				}
+				namesakes.add((Template)elem);
+				mapOverridingTemplate((Template)elem);
+			}
+		}
+		for (final Module extended : module.getExtends()) {
+			mapAllTemplates(extended);
+		}
+		for (final Module imported : module.getImports()) {
+			mapAllTemplates(imported);
+		}
 	}
 
 	/**
@@ -1045,6 +1044,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private final class DynamicModulesReferenceResolver extends EcoreUtil.CrossReferencer {
+		/** Generated SUID. */
+		private static final long serialVersionUID = -8156535301924238350L;
+
 		/**
 		 * Instantiates the reference resolver given the dynamic template which references are to be resolved.
 		 * 
@@ -1059,6 +1061,22 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		/**
 		 * {@inheritDoc}
 		 * 
+		 * @see org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer#crossReference(org.eclipse.emf.ecore.EObject,
+		 *      org.eclipse.emf.ecore.EReference, org.eclipse.emf.ecore.EObject)
+		 */
+		@Override
+		protected boolean crossReference(EObject object, EReference reference, EObject crossReferencedEObject) {
+			if (crossReferencedEObject.eIsProxy()) {
+				if (resolveProxy(object, reference, crossReferencedEObject)) {
+					return false;
+				}
+			}
+			return super.crossReference(object, reference, crossReferencedEObject);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer#resolve()
 		 */
 		@Override
@@ -1067,33 +1085,36 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		/**
-		 * {@inheritDoc}
+		 * This will try and resolve the given proxy value for the given reference.
 		 * 
-		 * @see org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer#crossReference(org.eclipse.emf.ecore.EObject,
-		 *      org.eclipse.emf.ecore.EReference, org.eclipse.emf.ecore.EObject)
+		 * @param object
+		 *            The object on which a reference value is a proxy.
+		 * @param reference
+		 *            The reference which value is to be resolved.
+		 * @param proxy
+		 *            The proxy which is to be resolved.
+		 * @return <code>true</code> if <code>proxy</code> could be resolved in the current modules,
+		 *         <code>false</code> otherwise.
 		 */
-		@Override
-		protected boolean crossReference(EObject object, EReference reference, EObject crossReferencedEObject) {
-			if (crossReferencedEObject.eIsProxy()) {
-				final URI proxyURI = ((InternalEObject)crossReferencedEObject).eProxyURI();
-				if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(proxyURI.fileExtension())
-						&& "file".equals(proxyURI.scheme())) { //$NON-NLS-1$
-					String moduleName = proxyURI.lastSegment();
-					moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-					for (Module module : currentModules) {
-						if (moduleName.equals(module.getName())) {
-							final EObject crossReferencedTarget = module.eResource().getEObject(
-									proxyURI.fragment());
-							if (crossReferencedTarget != null) {
-								setOrAdd(object, reference, crossReferencedTarget);
-								add((InternalEObject)object, reference, crossReferencedTarget);
-								return false;
-							}
+		private boolean resolveProxy(EObject object, EReference reference, EObject proxy) {
+			final URI proxyURI = ((InternalEObject)proxy).eProxyURI();
+			if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(proxyURI.fileExtension())
+					&& "file".equals(proxyURI.scheme())) { //$NON-NLS-1$
+				String moduleName = proxyURI.lastSegment();
+				moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+				for (Module module : currentModules) {
+					if (moduleName.equals(module.getName())) {
+						final EObject crossReferencedTarget = module.eResource().getEObject(
+								proxyURI.fragment());
+						if (crossReferencedTarget != null) {
+							setOrAdd(object, reference, crossReferencedTarget);
+							add((InternalEObject)object, reference, crossReferencedTarget);
+							return true;
 						}
 					}
 				}
 			}
-			return super.crossReference(object, reference, crossReferencedEObject);
+			return false;
 		}
 
 		/**
