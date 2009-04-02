@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.osgi.framework.Bundle;
@@ -106,7 +107,9 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				}
 				// no dynamic templates here
 				if (emtlFiles == null) {
-					// FIXME log
+					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+							"AcceleoDynamicTemplatesEclipseUtil.MissingDynamicTemplates", entry.getKey() //$NON-NLS-1$
+									.getSymbolicName(), path), false);
 					return;
 				}
 				try {
