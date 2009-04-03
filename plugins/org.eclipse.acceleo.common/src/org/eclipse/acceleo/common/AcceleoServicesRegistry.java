@@ -49,19 +49,13 @@ public final class AcceleoServicesRegistry {
 			try {
 				registeredServices.add(((Class<?>)service).newInstance());
 			} catch (InstantiationException e) {
-				AcceleoCommonPlugin
-						.log(
-								AcceleoCommonMessages
-										.getString(
-												"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), e //$NON-NLS-1$
-														.getMessage()), false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
+						e.getMessage()), false);
 			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin
-						.log(
-								AcceleoCommonMessages
-										.getString(
-												"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), e //$NON-NLS-1$
-														.getMessage()), false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
+						e.getMessage()), false);
 			}
 		}
 		return registeredServices.add(service);
