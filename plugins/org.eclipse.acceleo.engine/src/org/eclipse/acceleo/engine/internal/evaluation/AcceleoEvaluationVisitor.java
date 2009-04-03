@@ -575,12 +575,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (areaContent != null) {
 			context.append(areaContent, protectedArea, lastEObjectSelfValue);
 		} else {
-			context.append(
-					AcceleoEngineMessages.getString("usercode.start"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
+			context.append(AcceleoEngineMessages.getString("usercode.start"), protectedArea, //$NON-NLS-1$
+					lastEObjectSelfValue);
 			context.append(' ' + marker, protectedArea, lastEObjectSelfValue);
 			visitAcceleoBlock(protectedArea);
-			context.append(
-					AcceleoEngineMessages.getString("usercode.end"), protectedArea, lastEObjectSelfValue); //$NON-NLS-1$
+			context.append(AcceleoEngineMessages.getString("usercode.end"), protectedArea, //$NON-NLS-1$
+					lastEObjectSelfValue);
 		}
 	}
 
