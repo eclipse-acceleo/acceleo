@@ -12,7 +12,7 @@ package org.eclipse.acceleo.engine.tests.unit.engine;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -107,14 +107,14 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		generationRoot = new File(getGenerationRootPath("GuardedTemplate"));
 
 		// preview mode
-		Map<String, StringWriter> previewMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
+		Map<String, Writer> previewMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
 				validArguments, generationRoot, true);
 
 		assertTrue("Preview map should have been empty", previewMode.isEmpty());
 		assertSame("There shouldn't have been generated files", 0, getFiles(generationRoot).length);
 
 		// generation mode
-		Map<String, StringWriter> generationMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
+		Map<String, Writer> generationMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
 				validArguments, generationRoot, false);
 
 		assertTrue("Preview map should have been empty", generationMode.isEmpty());
@@ -265,8 +265,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
-				validArguments, generationRoot, false);
+		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
+				generationRoot, false);
 
 		assertTrue("Preview map should have been empty", preview.isEmpty());
 		try {
@@ -295,18 +295,18 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePublicTemplateValidArgsNullRootPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsNullRootPreview"));
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
-				validArguments, null, true);
+		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
+				null, true);
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());
 		assertSame("There shouldn't have been generated files", 0, getFiles(generationRoot).length);
 
-		Entry<String, StringWriter> entry = preview.entrySet().iterator().next();
+		Entry<String, Writer> entry = preview.entrySet().iterator().next();
 		assertEquals("Preview didn't contain the accurate file preview.", "test_generic_engine", entry
 				.getKey());
-		assertTrue("Preview didn't contain the accurate output.", entry.getValue().getBuffer().toString()
-				.contains("constant output"));
+		assertTrue("Preview didn't contain the accurate output.", entry.getValue().toString().contains(
+				"constant output"));
 	}
 
 	/**
@@ -323,18 +323,18 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePublicTemplateValidArgsPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsPreview"));
 
-		Map<String, StringWriter> preview = new AcceleoGenericEngine().evaluate(publicTemplate,
-				validArguments, generationRoot, true);
+		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
+				generationRoot, true);
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());
 		assertSame("There shouldn't have been generated files", 0, getFiles(generationRoot).length);
 
-		Entry<String, StringWriter> entry = preview.entrySet().iterator().next();
+		Entry<String, Writer> entry = preview.entrySet().iterator().next();
 		assertEquals("Preview didn't contain the accurate file preview.", generationRoot.getPath()
 				+ File.separatorChar + "test_generic_engine", entry.getKey());
-		assertTrue("Preview didn't contain the accurate output.", entry.getValue().getBuffer().toString()
-				.contains("constant output"));
+		assertTrue("Preview didn't contain the accurate output.", entry.getValue().toString().contains(
+				"constant output"));
 	}
 
 	/**

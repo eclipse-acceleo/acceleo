@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -70,7 +70,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		// The evaluation should go through the body of the let
 		evaluationVisitor.visitExpression(getParentTemplate(letBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", OUTPUT, entry.getValue() //$NON-NLS-1$ 
@@ -103,7 +103,30 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		// The evaluation should go through the else of the let
 		evaluationVisitor.visitExpression(getParentTemplate(letBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		assertEquals("Unexpected file URL.", //$NON-NLS-1$
+				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
+		assertEquals("Unexpected content generated from the let block.", ELSE, entry.getValue() //$NON-NLS-1$ 
+				.toString());
+	}
+
+	/**
+	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let hasn't
+	 * been set for the let.
+	 */
+	public void testLetBlockElseNoElseLet() {
+		final LetBlock letBlock = getDummyLetBlock();
+		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
+		letBlock.getLetVariable().setInitExpression(
+				createOCLExpression("eSuperTypes->last()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+
+		// set the value of self to the third eclass of the test package
+		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(2)); //$NON-NLS-1$
+
+		// The evaluation should go through the else of the let
+		evaluationVisitor.visitExpression(getParentTemplate(letBlock));
+		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", ELSE, entry.getValue() //$NON-NLS-1$ 
@@ -136,7 +159,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		// The evaluation should go through the else of the let
 		evaluationVisitor.visitExpression(getParentTemplate(letBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", ELSELET, entry.getValue() //$NON-NLS-1$ 
@@ -176,7 +199,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(elseLet)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$
@@ -205,7 +228,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(letBlock)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$
@@ -235,7 +258,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(letBlock)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the let block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$

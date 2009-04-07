@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -79,7 +80,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		}
 
 		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(".lost")); //$NON-NLS-1$ //$NON-NLS-2$
+			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith( //$NON-NLS-1$
+					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
 			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
 			// We expect two protected areas to have been created
 			assertTrue(content.contains("user code 1")); //$NON-NLS-1$
@@ -128,7 +130,7 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		int lostFiles = 0;
 		for (File generated : getFiles(generationRoot)) {
 			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			if (generated.getName().endsWith(".lost")) { //$NON-NLS-1$
+			if (generated.getName().endsWith(IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION)) {
 				lostFiles++;
 				// We expect a protected area to have been lost
 				assertTrue(content.contains("user code 1")); //$NON-NLS-1$
@@ -181,7 +183,7 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		int lostFiles = 0;
 		for (File generated : getFiles(generationRoot)) {
 			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			if (generated.getName().endsWith(".lost")) { //$NON-NLS-1$
+			if (generated.getName().endsWith(IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION)) {
 				lostFiles++;
 				// We expect a protected area to have been lost
 				assertTrue(content.contains("user code 1")); //$NON-NLS-1$

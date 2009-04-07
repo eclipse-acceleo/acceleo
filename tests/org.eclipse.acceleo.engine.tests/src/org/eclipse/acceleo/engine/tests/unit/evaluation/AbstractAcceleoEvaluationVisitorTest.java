@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -41,6 +41,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.helper.OCLHelper;
 
 /**
@@ -80,12 +81,25 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	}
 
 	/**
+	 * Wraps the given String literal in an OCL "StringLiteralExp". This is mainly used for special characters
+	 * such as the carriage return or line feed.
+	 * 
+	 * @return The created OCLExpression.
+	 */
+	protected OCLExpression createOCLStringLiteralExpression(String literal) {
+		final StringLiteralExp literalExpression = org.eclipse.ocl.ecore.EcoreFactory.eINSTANCE
+				.createStringLiteralExp();
+		literalExpression.setStringSymbol(literal);
+		return literalExpression;
+	}
+
+	/**
 	 * Creates an OCLExpression for <code>expression</code>. Expression context should be set beforehand
 	 * through <code>ocl.getEvaluationEnvironment().add(String, Object)</code>.
 	 * 
 	 * @param expression
 	 *            The expression that should be parsed as an OCLExpression.
-	 * @return
+	 * @return The parsed OCLExpression.
 	 */
 	protected OCLExpression createOCLExpression(String expression) {
 		return createOCLExpression(expression, EcorePackage.eINSTANCE.getEClassifier());
@@ -134,7 +148,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	 * 
 	 * @return The generation preview for this test.
 	 */
-	protected Map<String, StringWriter> getPreview() {
+	protected Map<String, Writer> getPreview() {
 		return factory.getEvaluationPreview();
 	}
 

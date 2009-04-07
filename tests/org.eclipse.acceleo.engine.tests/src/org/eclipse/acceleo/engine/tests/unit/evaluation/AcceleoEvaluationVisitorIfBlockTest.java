@@ -1,5 +1,4 @@
 /*******************************************************************************
- * Copyright (c) 2009 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +10,7 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -57,7 +56,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// The evaluation should go through the body of the if
 		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the if block.", OUTPUT, entry.getValue() //$NON-NLS-1$ 
@@ -85,7 +84,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// The evaluation should go through the "else" of the if
 		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the if block.", ELSE, entry.getValue() //$NON-NLS-1$ 
@@ -113,7 +112,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// The evaluation should go through the "elseif" of the if
 		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the if block.", ELSEIF, entry.getValue() //$NON-NLS-1$ 
@@ -148,7 +147,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(elseIf)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition of the else if was undefined, we expect no content to have been generated
@@ -177,7 +176,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(ifBlock)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition was incorrect we expect no content to have been generated
@@ -206,7 +205,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(ifBlock)).getName()));
 		}
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition was incorrect we expect no content to have been generated

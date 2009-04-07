@@ -21,6 +21,7 @@ import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -192,7 +193,7 @@ public abstract class AbstractAcceleoTest extends TestCase {
 				String dir2fileName = genDir.getAbsolutePath() + File.separator + child.getName();
 				if (child.isDirectory()) {
 					compareDirectories(child, new File(dir2fileName));
-				} else if (child.getName().endsWith(".lost")) { //$NON-NLS-1$
+				} else if (child.getName().endsWith(IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION)) {
 					assertEquals(dir2fileName, deleteWhitespaces(removeTimeStamp(getAbsoluteFileContent(child
 							.getAbsolutePath()))),
 							deleteWhitespaces(removeTimeStamp(getAbsoluteFileContent(dir2fileName))));

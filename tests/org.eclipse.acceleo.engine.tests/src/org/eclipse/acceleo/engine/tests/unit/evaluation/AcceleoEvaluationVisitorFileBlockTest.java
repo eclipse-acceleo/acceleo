@@ -12,7 +12,7 @@ package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -47,7 +47,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		 */
 		evaluationVisitor.visitExpression(getParentTemplate(mtlFileBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, StringWriter> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
 		assertEquals("File hasn't been created as expected.", OUTPUT, entry.getValue().toString()); //$NON-NLS-1$ 
@@ -61,7 +61,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
-		assertEquals("File hasn't been appended to as expected.", OUTPUT + OUTPUT, entry //$NON-NLS-1$ 
+		assertEquals("File hasn't been appended to as expected.", OUTPUT + '\n' + OUTPUT, entry //$NON-NLS-1$ 
 				.getValue().toString());
 
 		// Now set the append mode to overwrite and check that the file is created anew.

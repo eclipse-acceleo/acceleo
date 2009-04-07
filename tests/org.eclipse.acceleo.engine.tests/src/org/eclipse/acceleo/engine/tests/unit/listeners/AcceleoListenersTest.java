@@ -12,7 +12,7 @@ package org.eclipse.acceleo.engine.tests.unit.listeners;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -97,13 +97,13 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		AcceleoGenerationEventTestListener listener = new AcceleoGenerationEventTestListener();
 		AcceleoService.addListener(listener);
 
-		final Map<String, StringWriter> preview = AcceleoService.doGenerate(module,
+		final Map<String, Writer> preview = AcceleoService.doGenerate(module,
 				"test_generation_event", inputModel, generationRoot, true); //$NON-NLS-1$
 
 		assertFalse("There should have been a preview generated.", preview.isEmpty()); //$NON-NLS-1$
 		assertSame("We expected a single preview to be available.", 1, preview.size()); //$NON-NLS-1$
 
-		final Entry<String, StringWriter> previewEntry = preview.entrySet().iterator().next();
+		final Entry<String, Writer> previewEntry = preview.entrySet().iterator().next();
 		// We know the file block is the first element of the second template
 		final EObject fileBlock = module.eContents().get(2).eContents().get(0);
 
