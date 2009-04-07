@@ -105,6 +105,14 @@ public final class AcceleoDynamicTemplatesRegistry {
 	}
 
 	/**
+	 * This can be used to clear the registry's resource set from manually loaded Modules. Take note that
+	 * modules loaded from extension points will not be cleared by this.
+	 */
+	public void clearRegistryResourceSet() {
+		registeredModules.clear();
+	}
+
+	/**
 	 * Returns all registered modules. The returned set is a copy of this instance's.
 	 * 
 	 * @return A copy of the registered modules set.
@@ -138,13 +146,5 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 */
 	public boolean removeModules(Collection<File> modules) {
 		return registeredModules.removeAll(modules);
-	}
-
-	/**
-	 * This can be used to clear the registry's resource set from manually loaded Modules. Take note that
-	 * modules loaded from extension points will not be cleared by this.
-	 */
-	public void clearRegistryResourceSet() {
-		registeredModules.clear();
 	}
 }
