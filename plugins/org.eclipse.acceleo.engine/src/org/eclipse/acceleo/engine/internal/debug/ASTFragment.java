@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class ASTFragment {
-
 	/**
 	 * Inner separator between the file short name and the EObject fragment URI.
 	 */
@@ -209,9 +208,7 @@ public class ASTFragment {
 	public String toString() {
 		if (empty) {
 			return ""; //$NON-NLS-1$
-		} else {
-			return fileShortName + SEPARATOR + fragmentURI + SEPARATOR + eObjectNameFilter;
 		}
+		return fileShortName + SEPARATOR + fragmentURI + SEPARATOR + eObjectNameFilter;
 	}
-
 }
