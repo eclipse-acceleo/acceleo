@@ -1007,8 +1007,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		// Surrounding the regex with \Q [...] \E allows just that
 		final String regex = "\\Q" + substring + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
 		// We also need to escape backslashes and dollar signs in the replacement (scary!)
-		final String replacementValue = replacement
-				.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", "\\\\\\$"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final String replacementValue = replacement.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"\\\\\\$"); //$NON-NLS-1$
 
 		if (substituteAll) {
 			return source.replaceAll(regex, replacementValue);
