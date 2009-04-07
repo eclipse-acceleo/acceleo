@@ -36,14 +36,14 @@ public class AcceleoEnginePlugin extends Plugin {
 	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.engine"; //$NON-NLS-1$
 
+	/** Name of the extension point's templates tag "path" atribute. */
+	private static final String DYNAMIC_TEMPLATES_ATTRIBUTE_PATH = "path"; //$NON-NLS-1$
+
 	/** Name of the extension point to parse for template locations. */
 	private static final String DYNAMIC_TEMPLATES_EXTENSION_POINT = "org.eclipse.acceleo.engine.dynamic.templates"; //$NON-NLS-1$
 
 	/** Name of the extension point's "templates" tag. */
 	private static final String DYNAMIC_TEMPLATES_TAG_TEMPLATES = "templates"; //$NON-NLS-1$
-
-	/** Name of the extension point's templates tag "path" atribute. */
-	private static final String DYNAMIC_TEMPLATES_ATTRIBUTE_PATH = "path"; //$NON-NLS-1$
 
 	/** This plug-in's shared instance. */
 	private static AcceleoEnginePlugin plugin;

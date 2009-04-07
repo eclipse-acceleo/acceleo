@@ -34,21 +34,6 @@ public final class AcceleoEngineMessages {
 	}
 
 	/**
-	 * This will return an unformatted String from the resource bundle.
-	 * 
-	 * @param key
-	 *            Key of the String we seek.
-	 * @return An unformatted String from the bundle.
-	 */
-	private static String internalGetString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
-
-	/**
 	 * Returns the specified {@link String} from the resource bundle.
 	 * 
 	 * @param key
@@ -77,5 +62,20 @@ public final class AcceleoEngineMessages {
 			return getString(key);
 		}
 		return MessageFormat.format(internalGetString(key), arguments);
+	}
+
+	/**
+	 * This will return an unformatted String from the resource bundle.
+	 * 
+	 * @param key
+	 *            Key of the String we seek.
+	 * @return An unformatted String from the bundle.
+	 */
+	private static String internalGetString(String key) {
+		try {
+			return RESOURCE_BUNDLE.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
 	}
 }
