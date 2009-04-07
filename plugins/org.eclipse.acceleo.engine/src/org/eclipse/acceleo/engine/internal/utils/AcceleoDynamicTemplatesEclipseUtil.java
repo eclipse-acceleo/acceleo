@@ -66,6 +66,14 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	}
 
 	/**
+	 * Clears the registry from all registered bundles.
+	 */
+	public static void clearRegistry() {
+		EXTENDING_BUNDLES.clear();
+		REGISTERED_MODULES.clear();
+	}
+
+	/**
 	 * Returns all registered modules. The returned set is a copy of this instance's.
 	 * 
 	 * @return A copy of the registered modules set.
@@ -99,11 +107,11 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				if (actualPath.charAt(0) != '/') {
 					actualPath = '/' + actualPath;
 				}
-				Enumeration<URL> emtlFiles = entry.getKey().findEntries(actualPath, "*." //$NON-NLS-1$
-						+ IAcceleoConstants.EMTL_FILE_EXTENSION, true);
+				Enumeration<URL> emtlFiles = entry.getKey().findEntries(actualPath,
+						"*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$
 				if (emtlFiles == null || !emtlFiles.hasMoreElements()) {
-					emtlFiles = entry.getKey().findEntries(actualPath.replace("/src", "/bin"), "*." //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							+ IAcceleoConstants.EMTL_FILE_EXTENSION, true);
+					emtlFiles = entry.getKey().findEntries(actualPath.replace("/src", "/bin"), //$NON-NLS-1$ //$NON-NLS-2$
+							"*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$
 				}
 				// no dynamic templates here
 				if (emtlFiles == null) {
@@ -125,13 +133,5 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Clears the registry from all registered bundles.
-	 */
-	public static void clearRegistry() {
-		EXTENDING_BUNDLES.clear();
-		REGISTERED_MODULES.clear();
 	}
 }
