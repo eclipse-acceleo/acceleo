@@ -16,6 +16,8 @@ package org.eclipse.acceleo.common;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public interface IAcceleoConstants {
+	/** Extension of the lost files. */
+	String ACCELEO_LOST_FILE_EXTENSION = ".lost"; //$NON-NLS-1$
 
 	/**
 	 * Extension of the concrete syntax file.
@@ -250,7 +252,7 @@ public interface IAcceleoConstants {
 	 * <p>
 	 * [ ... <b>/]</b>
 	 */
-	String[] INVOCATION_END = new String[] {DEFAULT_END_BODY_CHAR, DEFAULT_END};
+	String[] INVOCATION_END = new String[] {DEFAULT_END_BODY_CHAR, DEFAULT_END, };
 
 	/**
 	 * Beginning delimiter of parenthesis.
