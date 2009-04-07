@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.internal.environment;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -138,18 +138,18 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	}
 
 	/**
-	 * Returns the preview of the generation handled by this factory's generation context.
-	 * 
-	 * @return The preview of the generation handled by this factory's generation context.
-	 */
-	public Map<String, StringWriter> getEvaluationPreview() {
-		return context.getGenerationPreview();
-	}
-
-	/**
 	 * This can be used to dispose of all resources loaded from this factory.
 	 */
 	public void dispose() {
 		context.dispose();
+	}
+
+	/**
+	 * Returns the preview of the generation handled by this factory's generation context.
+	 * 
+	 * @return The preview of the generation handled by this factory's generation context.
+	 */
+	public Map<String, Writer> getEvaluationPreview() {
+		return context.getGenerationPreview();
 	}
 }

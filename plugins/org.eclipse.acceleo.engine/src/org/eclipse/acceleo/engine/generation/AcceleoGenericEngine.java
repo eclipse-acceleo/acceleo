@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.generation;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +59,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template,
 	 *      java.util.List, java.io.File, boolean)
 	 */
-	public Map<String, StringWriter> evaluate(Template template, List<? extends Object> arguments,
+	public Map<String, Writer> evaluate(Template template, List<? extends Object> arguments,
 			File generationRoot, boolean preview) {
 		if (template == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
@@ -81,7 +81,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 
 		doEvaluate(template, arguments);
 
-		Map<String, StringWriter> result = Collections.<String, StringWriter> emptyMap();
+		Map<String, Writer> result = Collections.<String, Writer> emptyMap();
 		if (preview) {
 			result = factory.getEvaluationPreview();
 		}

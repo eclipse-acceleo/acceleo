@@ -79,22 +79,16 @@ import org.eclipse.ocl.expressions.PropertyCallExp;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
-	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
-	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
-
-	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
-	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
-
 	/**
 	 * To debug an AST evaluation. TODO JMU : Put this debugger instance in the evaluation context
 	 */
 	private static IDebugAST debug;
 
-	/**
-	 * A query returns the same result each time it is called with the same arguments. This map will allow us
-	 * to keep the result in cache for faster subsequent calls.
-	 */
-	private final Map<Query, Map<List<Object>, Object>> queryResults = new HashMap<Query, Map<List<Object>, Object>>();
+	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
+	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
+
+	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
+	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
 
 	/** Generation context of this visitor. */
 	private final AcceleoEvaluationContext context;
@@ -113,6 +107,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 	/** Retrieve OCL_Invalid once and for all. */
 	private final Object oclInvalid = getEnvironment().getOCLStandardLibrary().getOclInvalid();
+
+	/**
+	 * A query returns the same result each time it is called with the same arguments. This map will allow us
+	 * to keep the result in cache for faster subsequent calls.
+	 */
+	private final Map<Query, Map<List<Object>, Object>> queryResults = new HashMap<Query, Map<List<Object>, Object>>();
 
 	/**
 	 * Default constructor.
@@ -137,143 +137,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public static void setDebug(IDebugAST acceleoDebug) {
 		debug = acceleoDebug;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractEvaluationVisitor#visitExpression(org.eclipse.ocl.expressions.OCLExpression)
-	 */
-	@Override
-	public Object visitExpression(OCLExpression<C> expression) {
-		Object result = null;
-		EObject debugInput = null;
-		ASTFragment astFragment = null;
-		if (debug != null && !(expression instanceof StringLiteralExp)) {
-			// TODO JMU see new object "lastSourceExpressionResult". this could be interesting.
-			debugInput = lastEObjectSelfValue;
-			astFragment = new ASTFragment(expression);
-			if (debugInput != null && debugInput.eClass().getEStructuralFeature("name") != null) { //$NON-NLS-1$
-				Object name = debugInput.eGet(debugInput.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
-				if (name instanceof String) {
-					astFragment.setEObjectNameFilter((String)name);
-				}
-			}
-			debug.startDebug(astFragment);
-			debug.stepDebugInput(astFragment, debugInput);
-		}
-		// This try / catch block allows us to handle the disposal of all context information.
-		try {
-			// All evaluations pass through here. We'll handle blocks' init sections here.
-			final boolean hasInit = expression instanceof Block && ((Block)expression).getInit() != null;
-			if (hasInit) {
-				handleAcceleoInitSection(((Block)expression).getInit());
-			}
-			// Actual delegation to the visitor's methods.
-			if (expression instanceof Template) {
-				result = visitAcceleoTemplate((Template)expression);
-			} else if (expression instanceof IfBlock) {
-				visitAcceleoIfBlock((IfBlock)expression);
-				// This has no explicit result
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof ForBlock) {
-				visitAcceleoForBlock((ForBlock)expression);
-				// This has no explicit result
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof FileBlock) {
-				visitAcceleoFileBlock((FileBlock)expression);
-				// This has no explicit result
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof TemplateInvocation) {
-				result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
-			} else if (expression instanceof QueryInvocation) {
-				result = visitAcceleoQueryInvocation((QueryInvocation)expression);
-			} else if (expression instanceof LetBlock) {
-				visitAcceleoLetBlock((LetBlock)expression);
-				// This has no explicit result
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof ProtectedAreaBlock) {
-				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
-				// This has no explicit result
-				result = ""; //$NON-NLS-1$
-			} else {
-				result = super.visitExpression(expression);
-			}
-
-			if (expression == lastSourceExpression) {
-				lastSourceExpressionResult = result;
-			}
-
-			if (shouldGenerateText((EReference)expression.eContainingFeature())) {
-				Object source = null;
-				// TODO get last structural feature
-				EObject generatedBlock = expression;
-				while (!(generatedBlock instanceof Block)) {
-					generatedBlock = generatedBlock.eContainer();
-				}
-				if (lastSourceExpressionResult == null) {
-					source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-				} else {
-					source = lastSourceExpressionResult;
-					lastSourceExpressionResult = null;
-				}
-				if (source instanceof EObject) {
-					lastEObjectSelfValue = (EObject)source;
-				}
-				context.append(String.valueOf(result), (Block)generatedBlock, lastEObjectSelfValue);
-			}
-
-			// If we were evaluating a block and it had an init section, restore variables as they were now.
-			if (hasInit) {
-				restoreVariables();
-			}
-		} catch (final AcceleoEvaluationException e) {
-			throw e;
-			// CHECKSTYLE:OFF
-			/*
-			 * deactivated checkstyle as we need to properly dispose the context when an exception is throw
-			 * yet we cannot use finally (this visitor is called recursively).
-			 */
-		} catch (final RuntimeException e) {
-			// CHECKSTYLE:ON
-			try {
-				context.dispose();
-			} catch (final AcceleoEvaluationException ee) {
-				// We're already in an exception handling phase. Propagate the former exception.
-			}
-			throw e;
-		} finally {
-			if (debug != null && !(expression instanceof StringLiteralExp)) {
-				debug.stepDebugOutput(astFragment, debugInput, result);
-				debug.endDebug(astFragment);
-			}
-		}
-		// FIXME check if OCL_Invalid results are logged by OCL
-		// FIXME handle exceptions (should probably add runtime error markers)
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitPropertyCallExp(org.eclipse.ocl.expressions.PropertyCallExp)
-	 */
-	@Override
-	public Object visitPropertyCallExp(PropertyCallExp<C, P> callExp) {
-		lastSourceExpression = callExp.getSource();
-		return super.visitPropertyCallExp(callExp);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitOperationCallExp(org.eclipse.ocl.expressions.OperationCallExp)
-	 */
-	@Override
-	public Object visitOperationCallExp(OperationCallExp<C, O> callExp) {
-		lastSourceExpression = callExp.getSource();
-		return super.visitOperationCallExp(callExp);
 	}
 
 	/**
@@ -463,11 +326,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				for (final IfBlock elseif : ifBlock.getElseIf()) {
 					final Object elseValue = visitExpression((OCLExpression)elseif.getIfExpr());
 					if (isUndefined(elseValue)) {
+						final String rootName = ((Module)EcoreUtil.getRootContainer(elseif)).getName();
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 								AcceleoEngineMessages.getString(
-										"AcceleoEvaluationVisitor.UndefinedElseCondition", elseif //$NON-NLS-1$
-												.getStartPosition(), ((Module)EcoreUtil
-												.getRootContainer(elseif)).getName(), elseif, currentSelf));
+										"AcceleoEvaluationVisitor.UndefinedElseCondition", elseif //$NON-NLS-1$s
+												.getStartPosition(), rootName, elseif, currentSelf));
 						exception.fillInStackTrace();
 						throw exception;
 					}
@@ -521,11 +384,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					var = elseLet.getLetVariable();
 					value = visitExpression((OCLExpression)var.getInitExpression());
 					if (isUndefined(value)) {
+						final String rootName = ((Module)EcoreUtil.getRootContainer(elseLet)).getName();
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 								AcceleoEngineMessages.getString(
 										"AcceleoEvaluationVisitor.UndefinedElseLetValue", elseLet //$NON-NLS-1$
-												.getStartPosition(), ((Module)EcoreUtil
-												.getRootContainer(elseLet)).getName(), elseLet, currentSelf));
+												.getStartPosition(), rootName, elseLet, currentSelf));
 						exception.fillInStackTrace();
 						throw exception;
 					}
@@ -599,11 +462,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		for (int i = 0; i < query.getParameter().size(); i++) {
 			final Object argValue = visitExpression((OCLExpression)invocation.getArgument().get(i));
 			if (isUndefined(argValue)) {
+				final String rootName = ((Module)EcoreUtil.getRootContainer(invocation)).getName();
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString(
 								"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
-								invocation.getStartPosition(), ((Module)EcoreUtil
-										.getRootContainer(invocation)).getName(), invocation,
+								invocation.getStartPosition(), rootName, invocation,
 								getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), invocation
 										.getArgument().get(i)));
 				exception.fillInStackTrace();
@@ -789,6 +652,143 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationVisitor#visitExpression(org.eclipse.ocl.expressions.OCLExpression)
+	 */
+	@Override
+	public Object visitExpression(OCLExpression<C> expression) {
+		Object result = null;
+		EObject debugInput = null;
+		ASTFragment astFragment = null;
+		if (debug != null && !(expression instanceof StringLiteralExp)) {
+			// TODO JMU see new object "lastSourceExpressionResult". this could be interesting.
+			debugInput = lastEObjectSelfValue;
+			astFragment = new ASTFragment(expression);
+			if (debugInput != null && debugInput.eClass().getEStructuralFeature("name") != null) { //$NON-NLS-1$
+				Object name = debugInput.eGet(debugInput.eClass().getEStructuralFeature("name")); //$NON-NLS-1$
+				if (name instanceof String) {
+					astFragment.setEObjectNameFilter((String)name);
+				}
+			}
+			debug.startDebug(astFragment);
+			debug.stepDebugInput(astFragment, debugInput);
+		}
+		// This try / catch block allows us to handle the disposal of all context information.
+		try {
+			// All evaluations pass through here. We'll handle blocks' init sections here.
+			final boolean hasInit = expression instanceof Block && ((Block)expression).getInit() != null;
+			if (hasInit) {
+				handleAcceleoInitSection(((Block)expression).getInit());
+			}
+			// Actual delegation to the visitor's methods.
+			if (expression instanceof Template) {
+				result = visitAcceleoTemplate((Template)expression);
+			} else if (expression instanceof IfBlock) {
+				visitAcceleoIfBlock((IfBlock)expression);
+				// This has no explicit result
+				result = ""; //$NON-NLS-1$
+			} else if (expression instanceof ForBlock) {
+				visitAcceleoForBlock((ForBlock)expression);
+				// This has no explicit result
+				result = ""; //$NON-NLS-1$
+			} else if (expression instanceof FileBlock) {
+				visitAcceleoFileBlock((FileBlock)expression);
+				// This has no explicit result
+				result = ""; //$NON-NLS-1$
+			} else if (expression instanceof TemplateInvocation) {
+				result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
+			} else if (expression instanceof QueryInvocation) {
+				result = visitAcceleoQueryInvocation((QueryInvocation)expression);
+			} else if (expression instanceof LetBlock) {
+				visitAcceleoLetBlock((LetBlock)expression);
+				// This has no explicit result
+				result = ""; //$NON-NLS-1$
+			} else if (expression instanceof ProtectedAreaBlock) {
+				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
+				// This has no explicit result
+				result = ""; //$NON-NLS-1$
+			} else {
+				result = super.visitExpression(expression);
+			}
+
+			if (expression == lastSourceExpression) {
+				lastSourceExpressionResult = result;
+			}
+
+			if (shouldGenerateText((EReference)expression.eContainingFeature())) {
+				Object source = null;
+				// TODO get last structural feature
+				EObject generatedBlock = expression;
+				while (!(generatedBlock instanceof Block)) {
+					generatedBlock = generatedBlock.eContainer();
+				}
+				if (lastSourceExpressionResult == null) {
+					source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
+				} else {
+					source = lastSourceExpressionResult;
+					lastSourceExpressionResult = null;
+				}
+				if (source instanceof EObject) {
+					lastEObjectSelfValue = (EObject)source;
+				}
+				context.append(String.valueOf(result), (Block)generatedBlock, lastEObjectSelfValue);
+			}
+
+			// If we were evaluating a block and it had an init section, restore variables as they were now.
+			if (hasInit) {
+				restoreVariables();
+			}
+		} catch (final AcceleoEvaluationException e) {
+			throw e;
+			// CHECKSTYLE:OFF
+			/*
+			 * deactivated checkstyle as we need to properly dispose the context when an exception is thrown
+			 * yet we cannot use finally (this visitor is called recursively).
+			 */
+		} catch (final RuntimeException e) {
+			// CHECKSTYLE:ON
+			try {
+				context.dispose();
+			} catch (final AcceleoEvaluationException ee) {
+				// We're already in an exception handling phase. Propagate the former exception.
+			}
+			throw e;
+		} finally {
+			if (debug != null && !(expression instanceof StringLiteralExp)) {
+				debug.stepDebugOutput(astFragment, debugInput, result);
+				debug.endDebug(astFragment);
+			}
+		}
+		// FIXME check if OCL_Invalid results are logged by OCL
+		// FIXME handle exceptions (should probably add runtime error markers)
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitOperationCallExp(org.eclipse.ocl.expressions.OperationCallExp)
+	 */
+	@Override
+	public Object visitOperationCallExp(OperationCallExp<C, O> callExp) {
+		lastSourceExpression = callExp.getSource();
+		return super.visitOperationCallExp(callExp);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitPropertyCallExp(org.eclipse.ocl.expressions.PropertyCallExp)
+	 */
+	@Override
+	public Object visitPropertyCallExp(PropertyCallExp<C, P> callExp) {
+		lastSourceExpression = callExp.getSource();
+		return super.visitPropertyCallExp(callExp);
+	}
+
+	/**
 	 * This will evaluate guards of all <code>candidates</code> and filter out those whose guard is evaluated
 	 * to <code>false</code>. Template with no specified guards aren't removed from the list.
 	 * <p>
@@ -888,6 +888,19 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Returns <code>true</code> if the value is either <code>null</code> or equal to the OCL standard
+	 * library's OCLInvalid object.
+	 * 
+	 * @param value
+	 *            Value we need to test.
+	 * @return <code>true</code> if the value is either <code>null</code> or equal to the OCL standard
+	 *         library's OCLInvalid object, <code>false</code> otherwise.
+	 */
+	private boolean isUndefined(Object value) {
+		return value == null || value == oclInvalid;
+	}
+
+	/**
 	 * This will restore all variables in the environment according to the values saved within the evaluation
 	 * context. This is called internally for all blocks that had an init section and shouldn't be called from
 	 * anywhere else.
@@ -952,18 +965,5 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_After();
 		return generate;
-	}
-
-	/**
-	 * Returns <code>true</code> if the value is either <code>null</code> or equal to the OCL standard
-	 * library's OCLInvalid object.
-	 * 
-	 * @param value
-	 *            Value we need to test.
-	 * @return <code>true</code> if the value is either <code>null</code> or equal to the OCL standard
-	 *         library's OCLInvalid object, <code>false</code> otherwise.
-	 */
-	private boolean isUndefined(Object value) {
-		return value == null || value == oclInvalid;
 	}
 }

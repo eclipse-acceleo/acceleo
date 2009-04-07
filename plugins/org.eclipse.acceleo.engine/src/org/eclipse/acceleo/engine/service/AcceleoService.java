@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,7 +103,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerate(Map<Module, Set<String>> templates, EObject model,
+	public static Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, boolean preview) {
 		if (templates == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -123,7 +123,7 @@ public final class AcceleoService {
 			}
 		}
 
-		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
 
 		// Calls all templates with each of their potential arguments
 		final List<Object> arguments = new ArrayList<Object>();
@@ -190,7 +190,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerate(Module module, String templateName, EObject model,
+	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
 			File generationRoot, boolean preview) {
 		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview);
 	}
@@ -235,7 +235,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerate(Module module, String templateName, EObject model,
+	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, boolean preview) {
 		if (model == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -246,7 +246,7 @@ public final class AcceleoService {
 					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
 		}
 
-		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
 
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
@@ -307,7 +307,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerate(Template template, EObject model, File generationRoot,
+	public static Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
 			boolean preview) {
 		if (template == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -321,7 +321,7 @@ public final class AcceleoService {
 					.getString("AcceleoEngine.VoidArguments")); //$NON-NLS-1$
 		}
 
-		final Map<String, StringWriter> previewResult = new HashMap<String, StringWriter>();
+		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
 
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
@@ -376,7 +376,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerateTemplate(Module module, String templateName,
+	public static Map<String, Writer> doGenerateTemplate(Module module, String templateName,
 			List<? extends Object> arguments, File generationRoot, boolean preview) {
 		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
 				preview);
@@ -412,8 +412,8 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, StringWriter> doGenerateTemplate(Template template,
-			List<? extends Object> arguments, File generationRoot, boolean preview) {
+	public static Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
+			File generationRoot, boolean preview) {
 		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview);
 	}
 
@@ -452,8 +452,7 @@ public final class AcceleoService {
 			}
 		}
 		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-				"AcceleoService.UndefinedTemplate", //$NON-NLS-1$
-				templateName, module.getName()));
+				"AcceleoService.UndefinedTemplate", templateName, module.getName())); //$NON-NLS-1$
 	}
 
 	/**
@@ -489,7 +488,6 @@ public final class AcceleoService {
 			}
 		}
 		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-				"AcceleoService.UndefinedTemplate", //$NON-NLS-1$
-				templateName, module.getName()));
+				"AcceleoService.UndefinedTemplate", templateName, module.getName())); //$NON-NLS-1$
 	}
 }

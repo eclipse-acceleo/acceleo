@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.engine.generation;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +62,8 @@ public interface IAcceleoEngine {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	Map<String, StringWriter> evaluate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview);
+	Map<String, Writer> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
+			boolean preview);
 
 	/**
 	 * Removes a listener from the notification loops.
