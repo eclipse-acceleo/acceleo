@@ -18,6 +18,7 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
@@ -105,6 +106,13 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		protectedBlock.setMarker(createOCLExpression('\'' + MARKER + 's' + '\''));
 
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
+
+		try {
+			AcceleoEvaluationContext.awaitCompletion();
+		} catch (InterruptedException e) {
+			fail("Lost file creator pool termination interrupted."); //$NON-NLS-1$
+		}
+
 		assertSame("Expecting two previews created, the lost file and the actual file.", 2, getPreview() //$NON-NLS-1$
 				.size());
 
