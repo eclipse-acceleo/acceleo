@@ -192,9 +192,12 @@ public class OCLParser {
 		if (eAnnotation != null) {
 			String type = eAnnotation.getDetails().get(ANNOTATION_KEY_TYPE);
 			if (type != null) {
-				newVariable.setType(lookupClassifier(type));
+				EClassifier eType = lookupClassifier(type);
+				if (eType != null && eType != getInvalidType()) {
+					newVariable.getEAnnotations().remove(eAnnotation);
+				}
+				newVariable.setType(eType);
 			}
-			newVariable.getEAnnotations().remove(eAnnotation);
 		}
 	}
 
@@ -544,9 +547,12 @@ public class OCLParser {
 		if (eAnnotation != null) {
 			String type = eAnnotation.getDetails().get(ANNOTATION_KEY_TYPE);
 			if (type != null) {
-				newQuery.setType(lookupClassifier(type));
+				EClassifier eType = lookupClassifier(type);
+				if (eType != null && eType != getInvalidType()) {
+					newQuery.getEAnnotations().remove(eAnnotation);
+				}
+				newQuery.setType(eType);
 			}
-			newQuery.getEAnnotations().remove(eAnnotation);
 		}
 	}
 
@@ -616,9 +622,12 @@ public class OCLParser {
 		if (eAnnotation != null) {
 			String type = eAnnotation.getDetails().get(ANNOTATION_KEY_TYPE);
 			if (type != null) {
-				newMacro.setType(lookupClassifier(type));
+				EClassifier eType = lookupClassifier(type);
+				if (eType != null && eType != getInvalidType()) {
+					newMacro.getEAnnotations().remove(eAnnotation);
+				}
+				newMacro.setType(eType);
 			}
-			newMacro.getEAnnotations().remove(eAnnotation);
 		}
 	}
 
