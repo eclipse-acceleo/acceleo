@@ -179,7 +179,7 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		for (Iterator<EPackage> ePackages = eTypedModel.getTakesTypesFrom().iterator(); ePackages.hasNext();) {
 			text.append(ePackages.next().getName());
 			if (ePackages.hasNext()) {
-				text.append(" ,"); //$NON-NLS-1$
+				text.append(", "); //$NON-NLS-1$
 			}
 		}
 		return text;

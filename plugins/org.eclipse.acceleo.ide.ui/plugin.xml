@@ -26,10 +26,12 @@ Contributors:
             class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.MTContentStrategy"/>
    </extension>
 
+   <!-- 
    <extension point="org.eclipse.acceleo.ide.ui.example">
       <strategy
             class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.XpandContentStrategy"/>
    </extension>
+   -->
   
    <extension-point id="launching" name="org.eclipse.acceleo.ide.ui.launching" schema="schema/launching.exsd"/>
 
