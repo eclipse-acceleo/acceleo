@@ -188,7 +188,7 @@ public class AcceleoCommonPlugin extends Plugin {
 		AcceleoWorkspaceUtil.initialize();
 		context = bundleContext;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.addListener(servicesListener, SERVICES_EXTENSION_POINT);
+		// registry.addListener(servicesListener, SERVICES_EXTENSION_POINT);
 		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);
 		registry.addListener(librariesListener, LIBRARIES_EXTENSION_POINT);
 		parseInitialContributions();
@@ -205,7 +205,7 @@ public class AcceleoCommonPlugin extends Plugin {
 		context = null;
 		super.stop(bundleContext);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.removeListener(servicesListener);
+		// registry.removeListener(servicesListener);
 		registry.removeListener(librariesConnectorListener);
 		registry.removeListener(librariesListener);
 		AcceleoServicesEclipseUtil.clearRegistry();
@@ -215,7 +215,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	}
 
 	/**
-	 * Though we have listeners on both provided extension points, there could have been contributions before
+	 * Though we have listeners on the provided extension points, there could have been contributions before
 	 * this plugin got started. This will parse them.
 	 */
 	@SuppressWarnings("unchecked")

@@ -24,11 +24,18 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.osgi.baseadaptor.BaseData;
+import org.eclipse.osgi.framework.internal.core.AbstractBundle;
 import org.eclipse.pde.core.IModelChangedEvent;
 import org.eclipse.pde.core.IModelChangedListener;
 import org.eclipse.pde.core.plugin.IExtensions;
@@ -91,10 +98,9 @@ public final class AcceleoWorkspaceUtil {
 			try {
 				uninstallBundle(bundle);
 			} catch (BundleException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"WorkspaceUtil.UninstallationFailure", bundle.getSymbolicName(), e //$NON-NLS-1$
-								.getMessage()), true);
-				AcceleoCommonPlugin.log(e, true);
+				final IStatus status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
+						AcceleoCommonMessages.getString("WorkspaceUtil.UninstallationFailure"), e); //$NON-NLS-1$
+				AcceleoCommonPlugin.log(status);
 			}
 		}
 		WORKSPACE_INSTALLED_BUNDLES.clear();
@@ -144,7 +150,7 @@ public final class AcceleoWorkspaceUtil {
 			jobManager = (IJobManager)context.getService(jobManagerReference);
 		}
 		try {
-			final boolean[] flag = new boolean[] {false,};
+			final boolean[] flag = new boolean[] {false, };
 			for (IPluginModelBase candidate : CHANGED_CONTRIBUTIONS) {
 				try {
 					final IResource candidateManifest = candidate.getUnderlyingResource();
@@ -180,13 +186,21 @@ public final class AcceleoWorkspaceUtil {
 						jobManager.addJobChangeListener(listener);
 					}
 
-					// do the actual installation or refreshing of bundles
+					// Install the bundle if needed
 					if (bundle == null) {
 						bundle = installBundle(candidateLocationReference);
+						final IProject project = candidate.getUnderlyingResource().getProject();
+						final IJavaProject javaProject = JavaCore.create(project);
+						try {
+							final IPath output = javaProject.getOutputLocation();
+							final BaseData bundleData = (BaseData)((AbstractBundle)bundle).getBundleData();
+							bundleData.setClassPathString(output.removeFirstSegments(1).toString());
+						} catch (JavaModelException e) {
+							AcceleoCommonPlugin.log(e, false);
+						}
 						WORKSPACE_INSTALLED_BUNDLES.put(candidate, bundle);
-					} else {
-						refreshPackages(new Bundle[] {bundle,});
 					}
+					refreshPackages(new Bundle[] {bundle, });
 
 					// wait for all registry updates to end and remove listener
 					if (jobManager != null) {
@@ -298,7 +312,6 @@ public final class AcceleoWorkspaceUtil {
 			throw new IllegalStateException(AcceleoCommonMessages.getString(
 					"WorkspaceUtil.IllegalBundleState", target, state)); //$NON-NLS-1$
 		}
-		refreshPackages(new Bundle[] {target});
 		return target;
 	}
 
@@ -317,7 +330,7 @@ public final class AcceleoWorkspaceUtil {
 		}
 
 		if (packageAdmin != null) {
-			final boolean[] flag = new boolean[] {false,};
+			final boolean[] flag = new boolean[] {false, };
 			FrameworkListener listener = new FrameworkListener() {
 				public void frameworkEvent(FrameworkEvent event) {
 					if (event.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
