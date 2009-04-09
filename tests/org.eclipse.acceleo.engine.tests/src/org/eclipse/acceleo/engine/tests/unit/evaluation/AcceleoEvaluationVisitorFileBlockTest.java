@@ -61,8 +61,8 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
-		assertEquals("File hasn't been appended to as expected.", OUTPUT + '\n' + OUTPUT, entry //$NON-NLS-1$ 
-				.getValue().toString());
+		assertEquals("File hasn't been appended to as expected.", OUTPUT //$NON-NLS-1$ 
+				+ System.getProperty("line.separator") + OUTPUT, entry.getValue().toString()); //$NON-NLS-1$ 
 
 		// Now set the append mode to overwrite and check that the file is created anew.
 		mtlFileBlock.setOpenMode(OpenModeKind.OVER_WRITE);
