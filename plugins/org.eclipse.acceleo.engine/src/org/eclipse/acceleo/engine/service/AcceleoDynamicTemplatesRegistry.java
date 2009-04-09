@@ -51,6 +51,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @param module
 	 *            Module that is to be registered for dynamic template resolution.
 	 * @return <code>true</code> if the set didn't already contain <code>module</code>.
+	 * @since 0.8
 	 */
 	public boolean addModule(File module) {
 		return registeredModules.add(module);
@@ -132,6 +133,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @param module
 	 *            Module that is to be removed from dynamic template resolution.
 	 * @return <code>true</code> if the set contained <code>module</code>.
+	 * @since 0.8
 	 */
 	public boolean removeModule(File module) {
 		return registeredModules.remove(module);
