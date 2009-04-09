@@ -54,6 +54,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doLoad(java.io.InputStream, java.util.Map)
 	 */
+	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
 		super.doLoad(inputStream, options);
 		EAnnotation positions = getPositions(false);
@@ -68,6 +69,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doSave(java.io.OutputStream, java.util.Map)
 	 */
+	@Override
 	public void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 		EAnnotation positions = getPositions(true);
 		savePositions(positions);
