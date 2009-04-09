@@ -16,7 +16,11 @@ package org.eclipse.acceleo.common;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public interface IAcceleoConstants {
-	/** Extension of the lost files. */
+	/**
+	 * Extension of the lost files.
+	 * 
+	 * @since 0.8
+	 */
 	String ACCELEO_LOST_FILE_EXTENSION = ".lost"; //$NON-NLS-1$
 
 	/**
