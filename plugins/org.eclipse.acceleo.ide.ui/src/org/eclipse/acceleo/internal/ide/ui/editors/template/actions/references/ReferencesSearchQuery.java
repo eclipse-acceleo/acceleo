@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.natures.AcceleoNature;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -151,7 +150,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		for (int i = 0; i < projects.length; i++) {
 			try {
 				if (projects[i] != project && projects[i].isAccessible()
-						&& projects[i].hasNature(AcceleoNature.NATURE_ID)) {
+						&& projects[i].hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					AcceleoProject acceleoProject = new AcceleoProject(projects[i]);
 					for (URI uri : acceleoProject.getOutputFiles()) {
 						if (!allURIs.contains(uri)) {

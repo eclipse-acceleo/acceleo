@@ -16,6 +16,8 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
  * Constant definitions for Acceleo launch configurations.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @noimplement This interface is not intended to be implemented by clients.
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public interface IAcceleoLaunchConfigurationConstants {
 

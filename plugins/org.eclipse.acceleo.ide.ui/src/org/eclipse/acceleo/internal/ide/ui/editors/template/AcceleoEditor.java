@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.natures.AcceleoNature;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IFile;
@@ -174,7 +174,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private void initializeContent(IDocument document, IFile file) {
 		if (document != null && file != null) {
 			try {
-				if (file.getProject().hasNature(AcceleoNature.NATURE_ID)) {
+				if (file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {
@@ -198,7 +198,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	protected void initializeKeyBindingScopes() {
-		setKeyBindingScopes(new String[] {"org.eclipse.acceleo.ide.ui.editors.template.editor"}); //$NON-NLS-1$
+		setKeyBindingScopes(new String[] {"org.eclipse.acceleo.ide.ui.editors.template.editor", }); //$NON-NLS-1$
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		support.setMatchingCharacterPainterPreferenceKeys(MATCHING_BRACKETS, MATCHING_BRACKETS_COLOR);
 		// TODO it was JavaPlugin.getDefault().getPreferenceStore()
 		IPreferenceStore pref = AcceleoUIActivator.getDefault().getPreferenceStore();
-		IPreferenceStore[] stores = {getPreferenceStore(), pref};
+		IPreferenceStore[] stores = {getPreferenceStore(), pref, };
 		setPreferenceStore(new ChainedPreferenceStore(stores));
 		support.install(getPreferenceStore());
 		super.configureSourceViewerDecorationSupport(support);

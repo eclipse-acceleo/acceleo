@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.natures.AcceleoNature;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -97,7 +96,7 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 			IProjectDescription description = project.getDescription();
 			String[] natures = description.getNatureIds();
 			for (int i = 0; i < natures.length; ++i) {
-				if (AcceleoNature.NATURE_ID.equals(natures[i])) {
+				if (IAcceleoConstants.ACCELEO_NATURE_ID.equals(natures[i])) {
 					// Remove the nature
 					String[] newNatures = new String[natures.length - 1];
 					System.arraycopy(natures, 0, newNatures, 0, i);
@@ -123,7 +122,7 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 			// Add the nature
 			String[] newNatures = new String[natures.length + 1];
 			System.arraycopy(natures, 0, newNatures, 1, natures.length);
-			newNatures[0] = AcceleoNature.NATURE_ID;
+			newNatures[0] = IAcceleoConstants.ACCELEO_NATURE_ID;
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {

@@ -26,7 +26,10 @@ public class AcceleoNature implements IProjectNature {
 
 	/**
 	 * ID of this project nature.
+	 * 
+	 * @deprecated use {@link org.eclipse.acceleo.common.IAcceleoConstants#ACCELEO_NATURE_ID} instead.
 	 */
+	@Deprecated
 	public static final String NATURE_ID = "org.eclipse.acceleo.ide.ui.acceleoNature"; //$NON-NLS-1$
 
 	/**
