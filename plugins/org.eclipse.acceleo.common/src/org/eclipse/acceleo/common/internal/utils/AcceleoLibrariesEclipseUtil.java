@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
 
 /**
@@ -57,7 +58,7 @@ public final class AcceleoLibrariesEclipseUtil {
 	 * @return All registered library instances.
 	 */
 	public static Set<ILibrary> getRegisteredLibraries() {
-		AcceleoWorkspaceUtil.refreshContributions();
+		AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
 		return new LinkedHashSet<ILibrary>(LIBRARIES);
 	}
 

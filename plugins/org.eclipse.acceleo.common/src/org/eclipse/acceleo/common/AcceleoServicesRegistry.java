@@ -45,9 +45,10 @@ public final class AcceleoServicesRegistry {
 	 * @return <code>true</code> if the set didn't already contain <code>service</code>.
 	 */
 	public boolean addService(Object service) {
+		boolean registered = false;
 		if (service instanceof Class) {
 			try {
-				registeredServices.add(((Class<?>)service).newInstance());
+				registered = registeredServices.add(((Class<?>)service).newInstance());
 			} catch (InstantiationException e) {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
 						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
@@ -57,8 +58,10 @@ public final class AcceleoServicesRegistry {
 						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
 						e.getMessage()), false);
 			}
+		} else {
+			registered = registeredServices.add(service);
 		}
-		return registeredServices.add(service);
+		return registered;
 	}
 
 	/**
@@ -114,7 +117,51 @@ public final class AcceleoServicesRegistry {
 	}
 
 	/**
-	 * Removes a service from the registry.
+	 *This will attempt to register the service corresponding to the given information within the registry.
+	 * <p>
+	 * If Eclipse is currently running, it will try and find a workspace plugin which symbolic name is equal
+	 * to <code>bundleName</code> and install it, then load the class <code>qualifiedName</code> in this
+	 * workspace defined bundle. When no workspace plugin can be found with this symbolic name, the registry
+	 * will try and find an installed bundle with this name.
+	 * </p>
+	 * <p>
+	 * Outside of Eclispe, this will simply try to load a class named <code>qualifiedName</code> from the
+	 * current classloader.
+	 * </p>
+	 * 
+	 * @param bundleName
+	 *            Symbolic name of the bundle containing the acceleo generator currently being evaluated.
+	 * @param qualifiedName
+	 *            Qualified name of the service class we need an instance of.
+	 * @return <code>true</code> if we could instantiate the service and add it for evaluation,
+	 *         <code>false</code> otherwise.
+	 * @since 0.8
+	 */
+	public boolean addService(String bundleName, String qualifiedName) {
+		Object serviceInstance = null;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			serviceInstance = AcceleoServicesEclipseUtil.registerService(bundleName, qualifiedName);
+		} else {
+			try {
+				final Class<?> clazz = Class.forName(qualifiedName);
+				serviceInstance = clazz.newInstance();
+				if (serviceInstance != null) {
+					registeredServices.add(serviceInstance);
+				}
+			} catch (ClassNotFoundException e) {
+				// FIXME log
+			} catch (IllegalAccessException e) {
+				// FIXME log
+			} catch (InstantiationException e) {
+				// FIXME log
+			}
+		}
+		return serviceInstance != null;
+	}
+
+	/**
+	 * Removes a service from the registry. <b>Note</b> that this cannot be used to remove a service
+	 * registered dynamically registered from the workspace.
 	 * 
 	 * @param service
 	 *            Service that is to be removed from Acceleo evaluations contexts.

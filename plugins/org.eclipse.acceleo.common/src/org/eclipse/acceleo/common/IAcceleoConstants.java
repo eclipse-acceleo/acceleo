@@ -14,6 +14,7 @@ package org.eclipse.acceleo.common;
  * Concrete syntax constants for text explicit mode only.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IAcceleoConstants {
 	/**
@@ -22,6 +23,13 @@ public interface IAcceleoConstants {
 	 * @since 0.8
 	 */
 	String ACCELEO_LOST_FILE_EXTENSION = ".lost"; //$NON-NLS-1$
+
+	/**
+	 * ID of the Acceleo Project Nature.
+	 * 
+	 * @since 0.8
+	 */
+	String ACCELEO_NATURE_ID = "org.eclipse.acceleo.ide.ui.acceleoNature"; //$NON-NLS-1$
 
 	/**
 	 * Extension of the concrete syntax file.
