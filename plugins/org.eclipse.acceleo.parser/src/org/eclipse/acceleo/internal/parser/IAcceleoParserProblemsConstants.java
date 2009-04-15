@@ -14,6 +14,8 @@ package org.eclipse.acceleo.internal.parser;
  * The syntax problems of the parsing.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @noimplement This interface is not intended to be implemented by clients.
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public interface IAcceleoParserProblemsConstants {
 
