@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.debug;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -63,8 +62,7 @@ public class ASTFragment {
 			this.fragmentURI = ""; //$NON-NLS-1$
 			this.empty = true;
 		} else if (astNode.eResource() != null) {
-			this.fileShortName = new Path(astNode.eResource().getURI().lastSegment()).removeFileExtension()
-					.lastSegment();
+			this.fileShortName = astNode.eResource().getURI().trimFileExtension().lastSegment();
 			this.fragmentURI = astNode.eResource().getURIFragment(astNode);
 			this.empty = false;
 		} else {
