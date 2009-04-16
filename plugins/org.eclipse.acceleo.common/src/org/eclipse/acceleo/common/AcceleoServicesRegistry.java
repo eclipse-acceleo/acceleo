@@ -51,12 +51,12 @@ public final class AcceleoServicesRegistry {
 				registered = registeredServices.add(((Class<?>)service).newInstance());
 			} catch (InstantiationException e) {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
-						e.getMessage()), false);
+						"AcceleoServicesRegistry.ClassInstantiationFailure", ((Class<?>)service).getName()), //$NON-NLS-1$
+						e, false);
 			} catch (IllegalAccessException e) {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ServiceInstantiationFailure", ((Class<?>)service).getName(), //$NON-NLS-1$
-						e.getMessage()), false);
+						"AcceleoServicesRegistry.ClassConstructorFailure", ((Class<?>)service).getName()), e, //$NON-NLS-1$
+						false);
 			}
 		} else {
 			registered = registeredServices.add(service);
@@ -149,11 +149,16 @@ public final class AcceleoServicesRegistry {
 					registeredServices.add(serviceInstance);
 				}
 			} catch (ClassNotFoundException e) {
-				// FIXME log
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
 			} catch (IllegalAccessException e) {
-				// FIXME log
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ClassConstructorFailure", qualifiedName), e, //$NON-NLS-1$
+						false);
 			} catch (InstantiationException e) {
-				// FIXME log
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ClassInstantiationFailure", qualifiedName), //$NON-NLS-1$
+						e, false);
 			}
 		}
 		return serviceInstance != null;

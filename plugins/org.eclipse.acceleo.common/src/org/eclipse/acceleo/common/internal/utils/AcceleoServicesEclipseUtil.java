@@ -13,6 +13,8 @@ package org.eclipse.acceleo.common.internal.utils;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
@@ -91,11 +93,14 @@ public final class AcceleoServicesEclipseUtil {
 				REGISTERED_SERVICES.add(qualifiedName);
 			}
 		} catch (ClassNotFoundException e) {
-			// FIXME log
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		} catch (IllegalAccessException e) {
-			// FIXME log
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		} catch (InstantiationException e) {
-			// FIXME log
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return instance;
 	}

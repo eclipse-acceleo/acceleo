@@ -12,6 +12,7 @@ package org.eclipse.acceleo.common.internal.utils.workspace;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -428,14 +430,14 @@ public final class AcceleoWorkspaceUtil {
 					.getSymbolicName()));
 			return instance;
 		} catch (ClassNotFoundException e) {
-			// FIXME log, non blocker
-			// "Couldn't load class 'qualifiedName' in bundle 'bundle.getSymbolicName'. Is it exported?"
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		} catch (InstantiationException e) {
-			// FIXME log, non blocker
-			// "Couldn't instantiate class 'qualifiedName' from bundle '*'. Does it declare a default constructor?"
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		} catch (IllegalAccessException e) {
-			// FIXME log, non blocker
-			// "Couldn't instantiate class 'qualifiedName' from bundle '*'. It needs a public default constructor."
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
+					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return null;
 	}
@@ -494,15 +496,57 @@ public final class AcceleoWorkspaceUtil {
 	 *            The equinox bundle which classpath is to reflect an eclipse development plugin.
 	 */
 	private void setBundleClasspath(IProject plugin, Bundle bundle) {
-		final IJavaProject javaProject = JavaCore.create(plugin);
+		final Set<String> classpathEntries = getOutputFolders(plugin);
+		final BaseData bundleData = (BaseData)((AbstractBundle)bundle).getBundleData();
+		if (classpathEntries.size() == 1) {
+			bundleData.setClassPathString(classpathEntries.iterator().next());
+		} else {
+			final StringBuilder classpath = new StringBuilder();
+			final Iterator<String> entryIterator = classpathEntries.iterator();
+			while (entryIterator.hasNext()) {
+				classpath.append(entryIterator.next());
+				if (entryIterator.hasNext()) {
+					classpath.append(',');
+				}
+			}
+			bundleData.setClassPathString(classpath.toString());
+		}
+	}
+
+	/**
+	 * This will return the set of output folders name for the given (java) project.
+	 * <p>
+	 * For example, if a project has a source folder "src" with its output folder set as "bin" and a source
+	 * folder "src-gen" with its output folder set as "bin-gen", this will return a LinkedHashSet containing
+	 * both "bin" and "bin-gen".
+	 * </p>
+	 * 
+	 * @param project
+	 *            The project we seek the output folders of.
+	 * @return The set of output folders name for the given (java) project.
+	 */
+	private Set<String> getOutputFolders(IProject project) {
+		final Set<String> classpathEntries = new LinkedHashSet<String>();
+		final IJavaProject javaProject = JavaCore.create(project);
 		try {
-			// TODO retrieve actual source folders' output instead of the default one
+			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					final IPath output = entry.getOutputLocation();
+					if (output != null) {
+						classpathEntries.add(output.removeFirstSegments(1).toString());
+					}
+				}
+			}
+			/*
+			 * Add the default output location to the classpath anyway since source folders are not required
+			 * to have their own
+			 */
 			final IPath output = javaProject.getOutputLocation();
-			final BaseData bundleData = (BaseData)((AbstractBundle)bundle).getBundleData();
-			bundleData.setClassPathString(output.removeFirstSegments(1).toString());
+			classpathEntries.add(output.removeFirstSegments(1).toString());
 		} catch (JavaModelException e) {
 			AcceleoCommonPlugin.log(e, false);
 		}
+		return classpathEntries;
 	}
 
 	/**
@@ -574,7 +618,7 @@ public final class AcceleoWorkspaceUtil {
 					try {
 						delta.accept(visitor);
 					} catch (CoreException e) {
-						// FIXME log
+						AcceleoCommonPlugin.log(e, false);
 					}
 					for (IProject changed : visitor.getChangedProjects()) {
 						changedContributions.add(PluginRegistry.findModel(changed));
