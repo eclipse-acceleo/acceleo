@@ -22,6 +22,7 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.engine.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
+import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
@@ -93,6 +94,7 @@ public class AllTests extends TestCase {
 
 		// operation libraries
 		suite.addTestSuite(AcceleoStandardLibraryTest.class);
+		suite.addTestSuite(AcceleoStandardLibraryParsedTest.class);
 		suite.addTestSuite(AcceleoNonStandardLibraryTest.class);
 
 		return suite;
