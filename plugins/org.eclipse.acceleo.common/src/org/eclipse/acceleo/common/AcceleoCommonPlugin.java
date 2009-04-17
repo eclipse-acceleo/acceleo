@@ -251,7 +251,7 @@ public class AcceleoCommonPlugin extends Plugin {
 
 	/**
 	 * Though we have listeners on the provided extension points, there could have been contributions before
-	 * this plugin got started. This will parse them.
+	 * this plugin got started and listeners installed. This will parse them.
 	 */
 	@SuppressWarnings("unchecked")
 	private void parseInitialContributions() {
