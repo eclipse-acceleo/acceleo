@@ -17,15 +17,12 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.model.mtl.FileBlock;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "protected content" for the file block tested here. */
@@ -47,8 +44,8 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	private static final String END_USER_CODE = AcceleoEngineMessages.getString("usercode.end"); //$NON-NLS-1$
 
 	/** Expected content of the dummy protected area. */
-	private static final String EXPECTED_PROTECTED_OUTPUT = START_USER_CODE + ' ' + MARKER + '\n' + PROTECTED
-			+ END_USER_CODE;
+	private static final String EXPECTED_PROTECTED_OUTPUT = START_USER_CODE + ' ' + MARKER
+			+ System.getProperty("line.separator") + PROTECTED + END_USER_CODE; //$NON-NLS-1$
 
 	/** Constant output of the file block tested here. */
 	private static final String OUTPUT = "constantOutput"; //$NON-NLS-1$
@@ -72,7 +69,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 
 		// If we evaluate a second time while changing the protected content, the output shouldn't be modified
 		protectedBlock.getBody().clear();
-		protectedBlock.getBody().add(createOCLStringLiteralExpression("\n")); //$NON-NLS-1$
+		protectedBlock.getBody().add(createOCLLineSeparator());
 		protectedBlock.getBody().add(createOCLExpression('\'' + CHANGED + '\''));
 
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
@@ -156,22 +153,14 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
 
-		try {
-			evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
-			fail("Evaluation of a protected area with an undefined marker should have thrown an exception."); //$NON-NLS-1$
-		} catch (AcceleoEvaluationException e) {
-			// expected behavior
-			assertTrue(e.getMessage().contains(protectedBlock.getMarker().toString()));
-			assertTrue(e.getMessage()
-					.contains(((Module)EcoreUtil.getRootContainer(protectedBlock)).getName()));
-		}
+		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview as no lost file should have been created", 1, getPreview() //$NON-NLS-1$
 				.size());
 		final Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("No output should have been generated for a protected area with no marker.", "", entry //$NON-NLS-1$ //$NON-NLS-2$
-				.getValue().toString());
+		assertEquals("No output should have been generated for a protected area with no marker.", OUTPUT //$NON-NLS-1$ 
+				+ OUTPUT, entry.getValue().toString());
 	}
 
 	/**
@@ -185,22 +174,14 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
 
-		try {
-			evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
-			fail("Evaluation of a protected area with a null marker should have thrown an exception."); //$NON-NLS-1$
-		} catch (AcceleoEvaluationException e) {
-			// expected behavior
-			assertTrue(e.getMessage().contains(protectedBlock.getMarker().toString()));
-			assertTrue(e.getMessage()
-					.contains(((Module)EcoreUtil.getRootContainer(protectedBlock)).getName()));
-		}
+		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview as no lost file should have been created", 1, getPreview() //$NON-NLS-1$
 				.size());
 		final Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("No output should have been generated for a protected area with no marker.", "", entry //$NON-NLS-1$ //$NON-NLS-2$
-				.getValue().toString());
+		assertEquals("No output should have been generated for a protected area with no marker.", OUTPUT //$NON-NLS-1$ 
+				+ OUTPUT, entry.getValue().toString());
 	}
 
 	/**
@@ -217,7 +198,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		getDummyTemplate().getBody().add(mtlFileBlock);
 
 		final ProtectedAreaBlock dummy = MtlFactory.eINSTANCE.createProtectedAreaBlock();
-		dummy.getBody().add(createOCLStringLiteralExpression("\n")); //$NON-NLS-1$
+		dummy.getBody().add(createOCLLineSeparator());
 		dummy.getBody().add(createOCLExpression('\'' + PROTECTED + '\''));
 		dummy.setMarker(createOCLExpression('\'' + MARKER + '\''));
 		mtlFileBlock.getBody().add(dummy);

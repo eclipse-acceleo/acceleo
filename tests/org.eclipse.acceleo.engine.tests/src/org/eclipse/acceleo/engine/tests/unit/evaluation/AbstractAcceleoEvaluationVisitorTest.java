@@ -81,6 +81,15 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	}
 
 	/**
+	 * Wraps the System line separator in an OCL "StringLiteralExp".
+	 * 
+	 * @return The created OCLExpression.
+	 */
+	protected OCLExpression createOCLLineSeparator() {
+		return createOCLStringLiteralExpression(System.getProperty("line.separator")); //$NON-NLS-1$
+	}
+
+	/**
 	 * Wraps the given String literal in an OCL "StringLiteralExp". This is mainly used for special characters
 	 * such as the carriage return or line feed.
 	 * 

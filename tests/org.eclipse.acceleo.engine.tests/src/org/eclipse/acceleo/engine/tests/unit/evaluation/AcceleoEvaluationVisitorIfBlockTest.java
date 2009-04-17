@@ -13,15 +13,12 @@ import java.io.File;
 import java.io.Writer;
 import java.util.Map;
 
-import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "else" statement for the if block tested here. */
@@ -33,8 +30,11 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	/** This is the file name that will be used for the dummy file block. */
 	private static final String FILE_NAME = "validFile.url"; //$NON-NLS-1$
 
-	/** Constant output of the if block tested here. */
+	/** Constant output of the file block tested here. */
 	private static final String OUTPUT = "constantOutput"; //$NON-NLS-1$
+
+	/** Constant output of the if block tested here. */
+	private static final String IF_OUTPUT = "ifBodyOutput"; //$NON-NLS-1$
 
 	/**
 	 * Tests the evaluation of an if block with its condition evaluating to true.
@@ -59,8 +59,9 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from the if block.", OUTPUT, entry.getValue() //$NON-NLS-1$ 
-				.toString());
+		assertEquals(
+				"Unexpected content generated from the if block.", OUTPUT + IF_OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+						.toString());
 	}
 
 	/**
@@ -87,8 +88,9 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from the if block.", ELSE, entry.getValue() //$NON-NLS-1$ 
-				.toString());
+		assertEquals(
+				"Unexpected content generated from the if block.", OUTPUT + ELSE + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+						.toString());
 	}
 
 	/**
@@ -115,8 +117,9 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from the if block.", ELSEIF, entry.getValue() //$NON-NLS-1$ 
-				.toString());
+		assertEquals(
+				"Unexpected content generated from the if block.", OUTPUT + ELSEIF + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+						.toString());
 	}
 
 	/**
@@ -137,21 +140,13 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
 
-		try {
-			evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
-			fail("Evaluation visitor did not throw the expected evaluation exception for an if block" + //$NON-NLS-1$
-					" with an undefined else if condition"); //$NON-NLS-1$
-		} catch (AcceleoEvaluationException e) {
-			// expected behavior
-			assertTrue(e.getMessage().contains(elseIf.toString()));
-			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(elseIf)).getName()));
-		}
+		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition of the else if was undefined, we expect no content to have been generated
-		assertEquals("Unexpected content generated from the if block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
 				.toString());
 	}
 
@@ -166,21 +161,13 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
 
-		try {
-			evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
-			fail("Evaluation visitor did not throw the expected evaluation exception for an if block" + //$NON-NLS-1$
-					" with a null condition"); //$NON-NLS-1$
-		} catch (AcceleoEvaluationException e) {
-			// expected behavior
-			assertTrue(e.getMessage().contains(ifBlock.toString()));
-			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(ifBlock)).getName()));
-		}
+		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition was incorrect we expect no content to have been generated
-		assertEquals("Unexpected content generated from the if block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
 				.toString());
 	}
 
@@ -195,21 +182,13 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
 
-		try {
-			evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
-			fail("Evaluation visitor did not throw the expected evaluation exception for an if block" + //$NON-NLS-1$
-					" with an undefined condition"); //$NON-NLS-1$
-		} catch (AcceleoEvaluationException e) {
-			// expected behavior
-			assertTrue(e.getMessage().contains(ifBlock.toString()));
-			assertTrue(e.getMessage().contains(((Module)EcoreUtil.getRootContainer(ifBlock)).getName()));
-		}
+		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the condition was incorrect we expect no content to have been generated
-		assertEquals("Unexpected content generated from the if block.", "", entry.getValue() //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
 				.toString());
 	}
 
@@ -222,15 +201,17 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		final FileBlock mtlFileBlock = MtlFactory.eINSTANCE.createFileBlock();
 		mtlFileBlock.setFileUrl(createOCLExpression('\'' + FILE_NAME + '\''));
 		mtlFileBlock.setOpenMode(OpenModeKind.OVER_WRITE);
+		mtlFileBlock.getBody().add(createOCLExpression('\'' + OUTPUT + '\''));
 		getDummyTemplate().getBody().add(mtlFileBlock);
 
 		final IfBlock dummy = MtlFactory.eINSTANCE.createIfBlock();
-		dummy.getBody().add(createOCLExpression('\'' + OUTPUT + '\''));
+		dummy.getBody().add(createOCLExpression('\'' + IF_OUTPUT + '\''));
 		final Block elseBlock = MtlFactory.eINSTANCE.createBlock();
 		elseBlock.getBody().add(createOCLExpression('\'' + ELSE + '\''));
 		dummy.setElse(elseBlock);
 
 		mtlFileBlock.getBody().add(dummy);
+		mtlFileBlock.getBody().add(createOCLExpression('\'' + OUTPUT + '\''));
 
 		return dummy;
 	}
