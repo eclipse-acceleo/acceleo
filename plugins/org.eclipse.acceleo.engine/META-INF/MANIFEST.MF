@@ -8,7 +8,9 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.acceleo.common,
  org.eclipse.acceleo.model,
  org.eclipse.ocl.ecore,
- org.eclipse.core.runtime;resolution:=optional
+ org.eclipse.core.runtime;resolution:=optional,
+ org.eclipse.osgi;resolution:=optional,
+ org.eclipse.emf.codegen.ecore;bundle-version="2.4.0";resolution:=optional
 Export-Package: org.eclipse.acceleo.engine,
  org.eclipse.acceleo.engine.event,
  org.eclipse.acceleo.engine.generation,

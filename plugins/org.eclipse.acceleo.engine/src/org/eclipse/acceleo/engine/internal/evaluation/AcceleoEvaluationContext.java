@@ -13,6 +13,7 @@ package org.eclipse.acceleo.engine.internal.evaluation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -42,8 +43,14 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.emf.codegen.merge.java.JControlModel;
+import org.eclipse.emf.codegen.merge.java.JMerger;
+import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
+// FIXME use System.getProperty("line.separator") instead of '\n'
 /**
  * This will hold all necessary variables for the evaluation of an Acceleo module.
  * 
@@ -52,6 +59,9 @@ import org.eclipse.emf.ecore.EObject;
 public final class AcceleoEvaluationContext {
 	/** Default size to be used for new buffers. */
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
+
+	/** This is the tag we will look for to determine if a file has to be passed through JMerge. */
+	private static final String JMERGE_TAG = "@generated"; //$NON-NLS-1$
 
 	/** This will be populated with the list of tasks currently executing fot the creation of lost files. */
 	private static final List<Future<Object>> LOST_CREATION_TASKS = new ArrayList<Future<Object>>();
@@ -74,6 +84,9 @@ public final class AcceleoEvaluationContext {
 
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
+
+	/** The state of his boolean will be changed while reading files prior to generation. */
+	private boolean hasJMergeTag;
 
 	/**
 	 * This will hold the list of all listeners registered for notification on text generation from this
@@ -170,7 +183,7 @@ public final class AcceleoEvaluationContext {
 
 				// Save the file
 				if (previewMode) {
-					last.flush();
+					last.close();
 					generationPreview.put(filePath, last);
 				} else {
 					// Add a carriage return at the end of each file so that no problem will arise with
@@ -216,14 +229,13 @@ public final class AcceleoEvaluationContext {
 				exception = new AcceleoEvaluationException(AcceleoEngineMessages
 						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
 			}
-			flatten();
 		} finally {
-			writers.clear();
-			blockVariables.clear();
-			userCodeBlocks.clear();
-			listeners.clear();
-			generationPreview.clear();
 			LOST_CREATION_TASKS.clear();
+			generationPreview.clear();
+			blockVariables.clear();
+			listeners.clear();
+			userCodeBlocks.clear();
+			writers.clear();
 		}
 		if (exception != null) {
 			throw exception;
@@ -351,25 +363,35 @@ public final class AcceleoEvaluationContext {
 			if (writers.size() > 0) {
 				writers.getLast().flush();
 			}
-			Map<String, String> savedCodeBlocks = new HashMap<String, String>();
+			final Map<String, String> savedCodeBlocks = new HashMap<String, String>();
 			if (generatedFile.exists()) {
-				savedCodeBlocks = saveProtectedAreas(generatedFile);
+				savedCodeBlocks.putAll(saveProtectedAreas(generatedFile));
 			}
 			if (generationPreview.containsKey(generatedFile.getPath())) {
-				savedCodeBlocks = saveProtectedAreas(generationPreview.get(generatedFile.getPath())
-						.toString());
+				savedCodeBlocks.putAll(saveProtectedAreas(generationPreview.get(generatedFile.getPath())
+						.toString()));
 			}
+			// We checked for JMerge tags when saving protected areas. we'll use this information here.
 			final Writer writer;
-			if (!previewMode) {
+			if (!previewMode && (!hasJMergeTag || appendMode)) {
 				writer = new AcceleoWriterDecorator(generatedFile, appendMode);
 			} else {
 				if (appendMode && generationPreview.containsKey(generatedFile.getPath())) {
 					writer = generationPreview.get(generatedFile.getPath());
-					((BufferedWriter)writer).newLine();
+					writer.append(System.getProperty("line.separator")); //$NON-NLS-1$
+				} else if (!appendMode && hasJMergeTag) {
+					if (!previewMode) {
+						writer = new AcceleoWriterDecorator(generatedFile.getPath(), hasJMergeTag);
+					} else {
+						writer = generationPreview.get(generatedFile.getPath());
+						((AcceleoWriterDecorator)writer).reinit();
+					}
 				} else {
 					writer = new AcceleoWriterDecorator(generatedFile.getPath());
 				}
 				generationPreview.put(generatedFile.getPath(), writer);
+				// reset the jmerge state for the following file blocks
+				hasJMergeTag = false;
 			}
 			userCodeBlocks.put(writer, savedCodeBlocks);
 			writers.add(writer);
@@ -433,7 +455,7 @@ public final class AcceleoEvaluationContext {
 	 */
 	private void flatten() {
 		for (Future<Object> task : new ArrayList<Future<Object>>(LOST_CREATION_TASKS)) {
-			if (task.isDone() && task.isCancelled()) {
+			if (task.isDone() || task.isCancelled()) {
 				LOST_CREATION_TASKS.remove(task);
 			}
 		}
@@ -454,6 +476,9 @@ public final class AcceleoEvaluationContext {
 		final String usercodeEnd = AcceleoEngineMessages.getString("usercode.end"); //$NON-NLS-1$
 		String line = reader.readLine();
 		while (line != null) {
+			if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
+				hasJMergeTag = true;
+			}
 			if (line.contains(usercodeStart)) {
 				final String marker = line.substring(line.indexOf(usercodeStart) + usercodeStart.length())
 						.trim();
@@ -463,6 +488,9 @@ public final class AcceleoEvaluationContext {
 				line = reader.readLine();
 				while (line != null) {
 					areaContent.append('\n');
+					if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
+						hasJMergeTag = true;
+					}
 					// Everything following the end of use code marker doesn't need to be saved
 					if (line.contains(usercodeEnd)) {
 						areaContent.append(line
@@ -480,7 +508,8 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
-	 * This will return the list of protected areas the given file contains.
+	 * This will return the list of protected areas the given file contains. <b>Note</b> that we will use this
+	 * occasion to look for {@value #JMERGE_TAG} throughout the file.
 	 * 
 	 * @param file
 	 *            File which protected areas are to be saved.
@@ -505,7 +534,8 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
-	 * This will return the list of protected areas the given String contains.
+	 * This will return the list of protected areas the given String contains. <b>Note</b> that we will use
+	 * this occasion to look for {@value #JMERGE_TAG} throughout the file.
 	 * 
 	 * @param buffer
 	 *            String (file content) which protected areas are to be saved.
@@ -567,14 +597,30 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
-	 * This implementation of a BufferedWriter will be wrapped around a FileWriter and keep a reference to its
-	 * target file's absolute path. If we are in preview mode, this will simply delegate to a StringWriter.
+	 * This implementation of a Writer will be wrapped around a FileWriter and keep a reference to its target
+	 * file's absolute path. If we are in preview mode, this will simply delegate to a StringWriter. This
+	 * buffer will mostly be used to support JMerge tags in generation targets.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private final class AcceleoWriterDecorator extends BufferedWriter {
+	private final class AcceleoWriterDecorator extends Writer {
+		/** The buffer to which all calls will be delegated. */
+		private Writer delegate;
+
 		/** This will be set to true if the delegate is a file writer. */
 		private final boolean isFile;
+
+		/**
+		 * If we are in preview mode and the user has JMerge tags in his file, this will be initialized with
+		 * the old contents of this writer has it will be overriden by the generation.
+		 */
+		private String oldContent;
+
+		/**
+		 * If this is set to <code>true</code>, closing this buffer will first attempt to merge the previous
+		 * file content with the to-be-generated content.
+		 */
+		private boolean shouldMerge;
 
 		/** Keeps a reference to the target file's absolute path. */
 		private final String targetPath;
@@ -590,12 +636,13 @@ public final class AcceleoEvaluationContext {
 		 *             Thrown if the target file doesn't exist and cannot be created.
 		 */
 		public AcceleoWriterDecorator(File target, boolean appendMode) throws IOException {
-			super(new FileWriter(target, appendMode));
+			delegate = new BufferedWriter(new FileWriter(target, appendMode));
 			if (appendMode) {
-				newLine();
+				((BufferedWriter)delegate).newLine();
 			}
 			targetPath = target.getAbsolutePath();
 			isFile = true;
+			shouldMerge = false;
 		}
 
 		/**
@@ -605,9 +652,25 @@ public final class AcceleoEvaluationContext {
 		 *            Path of the file this writer will contain the content of.
 		 */
 		public AcceleoWriterDecorator(String filePath) {
-			super(new StringWriter());
+			delegate = new StringWriter();
 			targetPath = filePath;
 			isFile = false;
+			shouldMerge = false;
+		}
+
+		/**
+		 * Constructs a buffered file writer around the given file.
+		 * 
+		 * @param filePath
+		 *            Path of the file this writer will contain the content of.
+		 * @param merge
+		 *            If <code>true</code>, we'll use JMerge to merge the file content before overwriting it.
+		 */
+		public AcceleoWriterDecorator(String filePath, boolean merge) {
+			delegate = new StringWriter();
+			targetPath = filePath;
+			isFile = true;
+			shouldMerge = merge;
 		}
 
 		/**
@@ -618,11 +681,27 @@ public final class AcceleoEvaluationContext {
 		@Override
 		public void close() throws IOException {
 			if (isFile) {
-				super.close();
+				if (!shouldMerge) {
+					delegate.close();
+				} else {
+					// The decorated writer is a StringWriter. Closing has no effect on it
+					flush();
+					mergeFileContent();
+				}
 			} else {
 				// closing as no effect on StringWriter, yet it does on BufferedWriters
 				flush();
 			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Writer#flush()
+		 */
+		@Override
+		public void flush() throws IOException {
+			delegate.flush();
 		}
 
 		/**
@@ -635,14 +714,101 @@ public final class AcceleoEvaluationContext {
 		}
 
 		/**
+		 * This will be used in preview mode to reinitialize the delegate writer.
+		 */
+		public void reinit() {
+			oldContent = toString();
+			shouldMerge = true;
+			delegate = new StringWriter();
+		}
+
+		/**
 		 * {@inheritDoc}
 		 * 
 		 * @see java.lang.Object#toString()
 		 */
 		@Override
 		public String toString() {
-			// Taking advantage that the lock is the delegate writer
-			return lock.toString();
+			return delegate.toString();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Writer#write(char[], int, int)
+		 */
+		@Override
+		public void write(char[] cbuf, int off, int len) throws IOException {
+			delegate.write(cbuf, off, len);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Writer#write(int)
+		 */
+		@Override
+		public void write(int c) throws IOException {
+			delegate.write(c);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Writer#write(java.lang.String, int, int)
+		 */
+		@Override
+		public void write(String str, int off, int len) throws IOException {
+			delegate.write(str, off, len);
+		}
+
+		/**
+		 * This will use JMerge to merge the file content with the generated content.
+		 * 
+		 * @throws IOException
+		 *             Throw if we couldn't append data to the target file.
+		 */
+		private void mergeFileContent() throws IOException {
+			final File target = new File(targetPath);
+			String content = toString();
+			if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+				final FileWriter writer = new FileWriter(target);
+				writer.append(content);
+				writer.close();
+				return;
+			}
+			if (target.getName().endsWith(".java")) { //$NON-NLS-1$
+				// FIXME With this kind of URI, JMerge support is only accessible within Eclipse
+				String jmergeFile = URI.createPlatformPluginURI(
+						"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
+				JControlModel model = new JControlModel();
+				model.initialize(new ASTFacadeHelper(), jmergeFile);
+				if (model.canMerge()) {
+					JMerger jMerger = new JMerger(model);
+					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
+					if (!previewMode) {
+						jMerger.setTargetCompilationUnit(jMerger
+								.createCompilationUnitForInputStream(new FileInputStream(target)));
+					} else {
+						jMerger
+								.setTargetCompilationUnit(jMerger
+										.createCompilationUnitForContents(oldContent));
+					}
+					jMerger.merge();
+					content = jMerger.getTargetCompilationUnit().getContents();
+				} else {
+					// FIXME log, couldn't find emf-merge.xml
+				}
+			}
+			if (!previewMode) {
+				final FileWriter writer = new FileWriter(target);
+				writer.append(content);
+				writer.close();
+			} else {
+				delegate = new StringWriter();
+				delegate.append(content);
+				delegate.flush();
+			}
 		}
 	}
 

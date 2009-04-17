@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
@@ -740,7 +741,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				restoreVariables();
 			}
 		} catch (final AcceleoEvaluationException e) {
-			throw e;
+			// We'll Try and carry on evaluating the expressions
+			AcceleoEnginePlugin.log(e, false);
 			// CHECKSTYLE:OFF
 			/*
 			 * deactivated checkstyle as we need to properly dispose the context when an exception is thrown
