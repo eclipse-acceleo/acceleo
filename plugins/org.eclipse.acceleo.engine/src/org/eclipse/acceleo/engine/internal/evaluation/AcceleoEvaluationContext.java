@@ -13,7 +13,6 @@ package org.eclipse.acceleo.engine.internal.evaluation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -43,11 +42,6 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Block;
-import org.eclipse.emf.codegen.merge.java.JControlModel;
-import org.eclipse.emf.codegen.merge.java.JMerger;
-import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
-import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
 // FIXME use System.getProperty("line.separator") instead of '\n'
@@ -686,10 +680,23 @@ public final class AcceleoEvaluationContext {
 				} else {
 					// The decorated writer is a StringWriter. Closing has no effect on it
 					flush();
-					mergeFileContent();
+					try {
+						Class.forName("org.eclipse.emf.codegen.merge.java.JMerger"); //$NON-NLS-1$
+						final Writer newDelegate = JMergeUtil.mergeFileContent(new File(targetPath),
+								toString(), previewMode, oldContent);
+						if (newDelegate != null) {
+							delegate = newDelegate;
+						}
+					} catch (ClassNotFoundException e) {
+						/*
+						 * shouldn't happen. This would mean we are in eclipse yet org.eclipse.emf.codegen
+						 * cannot be found as a dependency of the generator plugin. This shouldn't happen
+						 * since it is a reexported dependency of the engine.
+						 */
+					}
 				}
 			} else {
-				// closing as no effect on StringWriter, yet it does on BufferedWriters
+				// closing has no effect on StringWriters, yet it does on BufferedWriters
 				flush();
 			}
 		}
@@ -760,55 +767,6 @@ public final class AcceleoEvaluationContext {
 		@Override
 		public void write(String str, int off, int len) throws IOException {
 			delegate.write(str, off, len);
-		}
-
-		/**
-		 * This will use JMerge to merge the file content with the generated content.
-		 * 
-		 * @throws IOException
-		 *             Throw if we couldn't append data to the target file.
-		 */
-		private void mergeFileContent() throws IOException {
-			final File target = new File(targetPath);
-			String content = toString();
-			if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-				final FileWriter writer = new FileWriter(target);
-				writer.append(content);
-				writer.close();
-				return;
-			}
-			if (target.getName().endsWith(".java")) { //$NON-NLS-1$
-				// FIXME With this kind of URI, JMerge support is only accessible within Eclipse
-				String jmergeFile = URI.createPlatformPluginURI(
-						"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
-				JControlModel model = new JControlModel();
-				model.initialize(new ASTFacadeHelper(), jmergeFile);
-				if (model.canMerge()) {
-					JMerger jMerger = new JMerger(model);
-					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
-					if (!previewMode) {
-						jMerger.setTargetCompilationUnit(jMerger
-								.createCompilationUnitForInputStream(new FileInputStream(target)));
-					} else {
-						jMerger
-								.setTargetCompilationUnit(jMerger
-										.createCompilationUnitForContents(oldContent));
-					}
-					jMerger.merge();
-					content = jMerger.getTargetCompilationUnit().getContents();
-				} else {
-					// FIXME log, couldn't find emf-merge.xml
-				}
-			}
-			if (!previewMode) {
-				final FileWriter writer = new FileWriter(target);
-				writer.append(content);
-				writer.close();
-			} else {
-				delegate = new StringWriter();
-				delegate.append(content);
-				delegate.flush();
-			}
 		}
 	}
 
