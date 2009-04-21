@@ -11,36 +11,20 @@
 package org.eclipse.acceleo.internal.ide.ui.launching;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.service.AcceleoService;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
-import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 
 /**
  * To launch an Acceleo application as an Eclipse plug-in operation.
@@ -48,16 +32,20 @@ import org.eclipse.jdt.core.JavaModelException;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoLaunchOperation implements IWorkspaceRunnable {
+	/**
+	 * The project that contains the Generator that's to be launched.
+	 */
+	private final IProject project;
 
 	/**
-	 * The EMTL model file URI. The generation module is the root object of this model.
+	 * Qualified name of the class that's to be launched.
 	 */
-	private URI moduleURI;
+	private final String qualifiedName;
 
 	/**
 	 * The model URI.
 	 */
-	private URI modelURI;
+	private String model;
 
 	/**
 	 * The target folder.
@@ -67,7 +55,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	/**
 	 * The other arguments of the code generation.
 	 */
-	private List<? extends Object> args;
+	private List<String> args;
 
 	/**
 	 * The launching strategy. An internal extension point is defined to specify multiple launching
@@ -80,10 +68,10 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	 * 
 	 * @param project
 	 *            the project where the module is located.
-	 * @param moduleJavaName
+	 * @param qualifiedName
 	 *            the module Java name (the first character may be in upper case)
-	 * @param modelURI
-	 *            the model URI
+	 * @param model
+	 *            the model
 	 * @param targetFolder
 	 *            the target folder
 	 * @param args
@@ -91,77 +79,15 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	 * @param launchingStrategy
 	 *            the launching strategy used to define a specific way of launching an Acceleo generation
 	 */
-	public AcceleoLaunchOperation(IProject project, String moduleJavaName, URI modelURI, File targetFolder,
-			List<? extends Object> args, IAcceleoLaunchingStrategy launchingStrategy) {
+	public AcceleoLaunchOperation(IProject project, String qualifiedName, String model, File targetFolder,
+			List<String> args, IAcceleoLaunchingStrategy launchingStrategy) {
 		super();
-		this.moduleURI = createModuleURI(project, moduleJavaName);
-		this.modelURI = modelURI;
+		this.project = project;
+		this.qualifiedName = qualifiedName;
+		this.model = model;
 		this.targetFolder = targetFolder;
 		this.args = args;
 		this.launchingStrategy = launchingStrategy;
-	}
-
-	/**
-	 * Creates the module file URI (EMTL file) which has the given name in the project.
-	 * 
-	 * @param aProject
-	 *            is the project that contains the EMTL file
-	 * @param moduleJavaName
-	 *            is the name of the module to search in the project
-	 * @return the module file URI
-	 */
-	private URI createModuleURI(IProject aProject, String moduleJavaName) {
-		IFolder outputFolder = getOutputFolder(aProject);
-		if (outputFolder != null && moduleJavaName.length() > 0) {
-			IPath modulePath = new Path(moduleJavaName.replace('.', '/'))
-					.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION);
-			IFolder container;
-			if (modulePath.segmentCount() == 1) {
-				container = outputFolder;
-			} else {
-				container = outputFolder.getFolder(modulePath.removeLastSegments(1));
-			}
-			if (container.exists()) {
-				try {
-					String moduleShortName = modulePath.lastSegment().toLowerCase();
-					IResource[] members = container.members(IResource.FILE);
-					for (int i = 0; i < members.length; i++) {
-						if (members[i].getName().toLowerCase().equals(moduleShortName)) {
-							modulePath = modulePath.removeLastSegments(1).append(members[i].getName());
-							break;
-						}
-					}
-				} catch (CoreException e) {
-					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-				}
-			}
-			return URI.createPlatformResourceURI(outputFolder.getFile(modulePath).getFullPath().toString(),
-					false);
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the Java output folder (/bin) of the given project.
-	 * 
-	 * @param aProject
-	 *            is the project that contains EMTL files
-	 * @return the Java output folder
-	 */
-	private IFolder getOutputFolder(IProject aProject) {
-		final IJavaProject javaProject = JavaCore.create(aProject);
-		try {
-			IPath output = javaProject.getOutputLocation();
-			if (output != null && output.segmentCount() > 1) {
-				IFolder folder = aProject.getWorkspace().getRoot().getFolder(output);
-				if (folder.isAccessible()) {
-					return folder;
-				}
-			}
-		} catch (JavaModelException e) {
-			// continue
-		}
-		return null;
 	}
 
 	/**
@@ -169,56 +95,42 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	 * 
 	 * @see org.eclipse.core.resources.IWorkspaceRunnable#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+
 	public void run(IProgressMonitor monitor) throws CoreException {
+		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
+		final Class<?> generatorClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName);
+		// We know the generated class has a "main()" method.
 		try {
-			ResourceSet moduleResourceSet = new ResourceSetImpl();
-			EObject module;
-			module = ModelUtils.load(moduleURI, moduleResourceSet);
-			ResourceSet modelResourceSet = new ResourceSetImpl();
-			EObject model = ModelUtils.load(modelURI, modelResourceSet);
-			if (module instanceof Module && model != null && targetFolder != null) {
-				List<String> templateNames = new ArrayList<String>();
-				computesMainTemplateNames(templateNames, module);
-				if (launchingStrategy != null) {
-					launchingStrategy.doGenerate((Module)module, templateNames, model, args, targetFolder);
-				} else {
-					for (int i = 0; i < templateNames.size(); i++) {
-						AcceleoService.doGenerate((Module)module, templateNames.get(i), model, args,
-								targetFolder, false);
-					}
+			if (generatorClass != null) {
+				final Method main = generatorClass.getDeclaredMethod("main", String[].class); //$NON-NLS-1$
+				final String[] invocationArgs = new String[2 + args.size()];
+				invocationArgs[0] = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(model)
+						.toString();
+				invocationArgs[1] = targetFolder.getAbsolutePath();
+				for (int i = 0; i < args.size(); i++) {
+					invocationArgs[i + 2] = args.get(i);
+
 				}
+				main.invoke(null, new Object[] {invocationArgs, });
 			} else {
-				String message = AcceleoUIMessages.getString("AcceleoLaunchOperation.BadConfiguration"); //$NON-NLS-1$
-				Status status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message);
+				final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+						"couldn't load class " + qualifiedName + " from project " + project.getName());
 				AcceleoUIActivator.getDefault().getLog().log(status);
 			}
-		} catch (IOException e) {
-			Status status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+		} catch (NoSuchMethodException e) {
+			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
+		} catch (IllegalArgumentException e) {
+			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+			AcceleoUIActivator.getDefault().getLog().log(status);
+		} catch (IllegalAccessException e) {
+			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+			AcceleoUIActivator.getDefault().getLog().log(status);
+		} catch (InvocationTargetException e) {
+			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+			AcceleoUIActivator.getDefault().getLog().log(status);
+		} finally {
+			AcceleoWorkspaceUtil.INSTANCE.reset();
 		}
 	}
-
-	/**
-	 * Gets all the templates that contain the main tag (@main).
-	 * 
-	 * @param mainTemplateNames
-	 *            are the templates that contain the main tag (output parameter)
-	 * @param eObject
-	 *            is the object to browse
-	 */
-	private void computesMainTemplateNames(List<String> mainTemplateNames, EObject eObject) {
-		if (eObject instanceof Template) {
-			Template eTemplate = (Template)eObject;
-			if (eTemplate.isMain() && !mainTemplateNames.contains(eTemplate.getName())) {
-				mainTemplateNames.add(eTemplate.getName());
-			}
-		} else if (eObject != null) {
-			Iterator<EObject> eContentsIt = eObject.eContents().iterator();
-			while (eContentsIt.hasNext()) {
-				EObject eContent = eContentsIt.next();
-				computesMainTemplateNames(mainTemplateNames, eContent);
-			}
-		}
-	}
-
 }
