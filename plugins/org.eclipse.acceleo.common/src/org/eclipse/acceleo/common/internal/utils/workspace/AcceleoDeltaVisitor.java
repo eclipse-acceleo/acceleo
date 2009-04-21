@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -27,12 +28,12 @@ import org.eclipse.jdt.core.util.IClassFileReader;
  */
 final class AcceleoDeltaVisitor implements IResourceDeltaVisitor {
 	/** Keeps the list of the changed classes' qualified name. */
-	private List<String> changedClasses;
+	private List<String> changedClasses = new ArrayList<String>();
 
 	/**
 	 * This will be populated with all projects which class files have been changed (even if only partially).
 	 */
-	private List<IProject> changedProjects;
+	private List<IProject> changedProjects = new ArrayList<IProject>();
 
 	/**
 	 * Returns the qualified names of all changed class files.
@@ -74,6 +75,9 @@ final class AcceleoDeltaVisitor implements IResourceDeltaVisitor {
 								.getLocation().toOSString(), IClassFileReader.CLASSFILE_ATTRIBUTES);
 						changedClasses.add(new String(reader.getClassName()));
 					}
+					break;
+				case IResource.PROJECT:
+					changedProjects.add((IProject)resource);
 					break;
 				default:
 					visit = true;

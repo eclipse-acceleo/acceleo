@@ -131,61 +131,73 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This will seek through the workspace loaded instances for classes corresponding to the given qualified
-	 * names and return their singleton instances if they have already been loaded. Qualified names that do
-	 * not correspond to loaded workspace classes will only be loaded if <code>loadNew</code> is
-	 * <code>true</code>.
-	 * <p>
-	 * Take note that any stale instance will be instantiated anew as a result of this call. Workspace
-	 * contributions will also be refreshed prior to any attempt at seeking cached instances.
-	 * </p>
-	 * <p>
-	 * The order of the returned set of instances will be consistent with the order in which
-	 * <code>qualifiedNames</code> are supplied.
-	 * </p>
+	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
+	 * bundles for a class corresponding to <code>qualifiedName</code>.
 	 * 
-	 * @param qualifiedNames
-	 *            Qualified names of the instances we seek to retrieve.
-	 * @param loadNew
-	 *            If <code>true</code>, qualified names corresponding to classes that haven't been loaded yet
-	 *            will be resolved in the workspace and an instance will be returned. Otherwise, they will
-	 *            simply be ignored.
-	 * @return The set of refreshed instances. Order will be consistent with <code>qualifiedNames</code>.
+	 * @param qualifiedName
+	 *            The qualified name of the class we seek to load.
+	 * @return The class <code>qualifiedName</code> if it could be found in the workspace bundles,
+	 *         <code>null</code> otherwise.
 	 */
-	public synchronized Set<Object> refreshInstances(Set<String> qualifiedNames, boolean loadNew) {
+	public synchronized Class<?> getClass(String qualifiedName) {
 		if (changedContributions.size() > 0) {
 			refreshContributions();
 		}
-		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
+		Class<?> clazz = null;
+		final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(qualifiedName);
+		if (workspaceInstance != null) {
+			if (workspaceInstance.isStale()) {
+				for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+					final IPluginModelBase model = entry.getKey();
+					if (workspaceInstance.getBundle().equals(model.getBundleDescription().getSymbolicName())) {
+						final Object instance = internalLoadClass(entry.getValue(), qualifiedName);
+						workspaceInstance.setStale(false);
+						workspaceInstance.setInstance(instance);
+						clazz = instance.getClass();
+						break;
+					}
+				}
+			} else {
+				clazz = workspaceInstance.getInstance().getClass();
+			}
+		}
+		if (clazz != null) {
+			return clazz;
+		}
 
-		for (String qualifiedName : qualifiedNames) {
-			if (loadNew || workspaceLoadedClasses.containsKey(qualifiedName)) {
-				workspaceInstances.add(getClassInstance(qualifiedName));
+		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+			final IPluginModelBase model = entry.getKey();
+
+			String packageName = ""; //$NON-NLS-1$
+			final int end = qualifiedName.lastIndexOf('.');
+			if (end != -1) {
+				packageName = qualifiedName.substring(0, end);
+			}
+
+			boolean packageFound = false;
+			for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
+				if (packageName.startsWith(exported.getName())) {
+					packageFound = true;
+					break;
+				}
+			}
+			if (!packageFound) {
+				continue;
+			}
+
+			final Bundle bundle = entry.getValue();
+			try {
+				clazz = bundle.loadClass(qualifiedName);
+			} catch (ClassNotFoundException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+						qualifiedName, bundle.getSymbolicName()), e, false);
+			}
+			if (clazz != null) {
+				break;
 			}
 		}
 
-		return workspaceInstances;
-	}
-
-	/**
-	 * This will return the set of all classes that have been loaded from the workspace and set in cache.
-	 * <b>Note</b> that this will refresh the workspace contributions and attempt to refresh all stale class
-	 * instances if any. Also take note that as a result of this refreshing, the order in which the instances
-	 * are returned is not guaranteed to be the same for each call.
-	 * 
-	 * @return The set of all classes that have been loaded from the workspace and set in cache.
-	 */
-	public synchronized Set<Object> getWorkspaceInstances() {
-		if (changedContributions.size() > 0) {
-			refreshContributions();
-		}
-		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
-
-		for (String qualifiedName : workspaceLoadedClasses.keySet()) {
-			workspaceInstances.add(getClassInstance(qualifiedName));
-		}
-
-		return workspaceInstances;
+		return clazz;
 	}
 
 	/**
@@ -270,6 +282,27 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * This will return the set of all classes that have been loaded from the workspace and set in cache.
+	 * <b>Note</b> that this will refresh the workspace contributions and attempt to refresh all stale class
+	 * instances if any. Also take note that as a result of this refreshing, the order in which the instances
+	 * are returned is not guaranteed to be the same for each call.
+	 * 
+	 * @return The set of all classes that have been loaded from the workspace and set in cache.
+	 */
+	public synchronized Set<Object> getWorkspaceInstances() {
+		if (changedContributions.size() > 0) {
+			refreshContributions();
+		}
+		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
+
+		for (String qualifiedName : workspaceLoadedClasses.keySet()) {
+			workspaceInstances.add(getClassInstance(qualifiedName));
+		}
+
+		return workspaceInstances;
+	}
+
+	/**
 	 * Adds model listeners to all workspace-defined bundles. This will be called at plugin starting and is
 	 * not intended to be called by clients.
 	 * 
@@ -297,6 +330,139 @@ public final class AcceleoWorkspaceUtil {
 			installBundle(candidate);
 		}
 		changedContributions.clear();
+	}
+
+	/**
+	 * This will seek through the workspace loaded instances for a class corresponding to the given qualified
+	 * name and return its singleton instance if it has already been loaded. Qualified names that do not
+	 * correspond to loaded workspace classes will only be loaded if <code>loadNew</code> is <code>true</code>
+	 * .
+	 * <p>
+	 * Take note that any stale instance will be instantiated anew as a result of this call. Workspace
+	 * contributions will also be refreshed prior to any attempt at seeking cached instances.
+	 * </p>
+	 * 
+	 * @param qualifiedName
+	 *            Qualified name of the instance we seek to retrieve.
+	 * @param loadNew
+	 *            If <code>true</code>, qualified names corresponding to classes that haven't been loaded yet
+	 *            will be resolved in the workspace and an instance will be returned. Otherwise, they will
+	 *            simply be ignored.
+	 * @return The refreshed instance, <code>null</code> if it couldn't be found or loaded.
+	 */
+	public synchronized Object refreshInstance(String qualifiedName, boolean loadNew) {
+		if (changedContributions.size() > 0) {
+			refreshContributions();
+		}
+
+		if (loadNew || workspaceLoadedClasses.containsKey(qualifiedName)) {
+			return getClassInstance(qualifiedName);
+		}
+
+		return null;
+	}
+
+	/**
+	 * This will seek through the workspace loaded instances for classes corresponding to the given qualified
+	 * names and return their singleton instances if they have already been loaded. Qualified names that do
+	 * not correspond to loaded workspace classes will only be loaded if <code>loadNew</code> is
+	 * <code>true</code>.
+	 * <p>
+	 * Take note that any stale instance will be instantiated anew as a result of this call. Workspace
+	 * contributions will also be refreshed prior to any attempt at seeking cached instances.
+	 * </p>
+	 * <p>
+	 * The order of the returned set of instances will be consistent with the order in which
+	 * <code>qualifiedNames</code> are supplied.
+	 * </p>
+	 * 
+	 * @param qualifiedNames
+	 *            Qualified names of the instances we seek to retrieve.
+	 * @param loadNew
+	 *            If <code>true</code>, qualified names corresponding to classes that haven't been loaded yet
+	 *            will be resolved in the workspace and an instance will be returned. Otherwise, they will
+	 *            simply be ignored.
+	 * @return The set of refreshed instances. Order will be consistent with <code>qualifiedNames</code>.
+	 */
+	public synchronized Set<Object> refreshInstances(Set<String> qualifiedNames, boolean loadNew) {
+		if (changedContributions.size() > 0) {
+			refreshContributions();
+		}
+		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
+
+		for (String qualifiedName : qualifiedNames) {
+			if (loadNew || workspaceLoadedClasses.containsKey(qualifiedName)) {
+				workspaceInstances.add(getClassInstance(qualifiedName));
+			}
+		}
+
+		return workspaceInstances;
+	}
+
+	/**
+	 * This will be used internally to reset the workspace utility to its initialized state. Not intended to
+	 * be called by clients.
+	 */
+	public synchronized void reset() {
+		changedContributions.clear();
+		workspaceLoadedClasses.clear();
+
+		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+			final Bundle bundle = entry.getValue();
+
+			try {
+				uninstallBundle(bundle);
+			} catch (BundleException e) {
+				AcceleoCommonPlugin
+						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
+								.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()), e));
+			}
+		}
+		workspaceInstalledBundles.clear();
+	}
+
+	/**
+	 * Refreshes all exported packages of the given bundles. This must be called after installing the bundle.
+	 * 
+	 * @param bundles
+	 *            Bundles which exported packages are to be refreshed.
+	 */
+	void refreshPackages(Bundle[] bundles) {
+		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
+		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
+		PackageAdmin packageAdmin = null;
+		if (packageAdminReference != null) {
+			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
+		}
+
+		if (packageAdmin != null) {
+			final boolean[] flag = new boolean[] {false, };
+			FrameworkListener listener = new FrameworkListener() {
+				public void frameworkEvent(FrameworkEvent event) {
+					if (event.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
+						synchronized(flag) {
+							flag[0] = true;
+							flag.notifyAll();
+						}
+					}
+				}
+			};
+
+			context.addFrameworkListener(listener);
+			packageAdmin.refreshPackages(bundles);
+			synchronized(flag) {
+				while (!flag[0]) {
+					try {
+						flag.wait();
+					} catch (InterruptedException e) {
+						// discard
+						break;
+					}
+				}
+			}
+			context.removeFrameworkListener(listener);
+			context.ungetService(packageAdminReference);
+		}
 	}
 
 	/**
@@ -357,6 +523,42 @@ public final class AcceleoWorkspaceUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This will return the set of output folders name for the given (java) project.
+	 * <p>
+	 * For example, if a project has a source folder "src" with its output folder set as "bin" and a source
+	 * folder "src-gen" with its output folder set as "bin-gen", this will return a LinkedHashSet containing
+	 * both "bin" and "bin-gen".
+	 * </p>
+	 * 
+	 * @param project
+	 *            The project we seek the output folders of.
+	 * @return The set of output folders name for the given (java) project.
+	 */
+	private Set<String> getOutputFolders(IProject project) {
+		final Set<String> classpathEntries = new LinkedHashSet<String>();
+		final IJavaProject javaProject = JavaCore.create(project);
+		try {
+			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					final IPath output = entry.getOutputLocation();
+					if (output != null) {
+						classpathEntries.add(output.removeFirstSegments(1).toString());
+					}
+				}
+			}
+			/*
+			 * Add the default output location to the classpath anyway since source folders are not required
+			 * to have their own
+			 */
+			final IPath output = javaProject.getOutputLocation();
+			classpathEntries.add(output.removeFirstSegments(1).toString());
+		} catch (JavaModelException e) {
+			AcceleoCommonPlugin.log(e, false);
+		}
+		return classpathEntries;
 	}
 
 	/**
@@ -443,50 +645,6 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * Refreshes all exported packages of the given bundles. This must be called after installing the bundle.
-	 * 
-	 * @param bundles
-	 *            Bundles which exported packages are to be refreshed.
-	 */
-	void refreshPackages(Bundle[] bundles) {
-		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
-		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
-		PackageAdmin packageAdmin = null;
-		if (packageAdminReference != null) {
-			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
-		}
-
-		if (packageAdmin != null) {
-			final boolean[] flag = new boolean[] {false, };
-			FrameworkListener listener = new FrameworkListener() {
-				public void frameworkEvent(FrameworkEvent event) {
-					if (event.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
-						synchronized(flag) {
-							flag[0] = true;
-							flag.notifyAll();
-						}
-					}
-				}
-			};
-
-			context.addFrameworkListener(listener);
-			packageAdmin.refreshPackages(bundles);
-			synchronized(flag) {
-				while (!flag[0]) {
-					try {
-						flag.wait();
-					} catch (InterruptedException e) {
-						// discard
-						break;
-					}
-				}
-			}
-			context.removeFrameworkListener(listener);
-			context.ungetService(packageAdminReference);
-		}
-	}
-
-	/**
 	 * This will set the equinox classpath of <code>bundle</code> to reflect the eclipse classpath of
 	 * <code>plugin</code>.
 	 * 
@@ -511,42 +669,6 @@ public final class AcceleoWorkspaceUtil {
 			}
 			bundleData.setClassPathString(classpath.toString());
 		}
-	}
-
-	/**
-	 * This will return the set of output folders name for the given (java) project.
-	 * <p>
-	 * For example, if a project has a source folder "src" with its output folder set as "bin" and a source
-	 * folder "src-gen" with its output folder set as "bin-gen", this will return a LinkedHashSet containing
-	 * both "bin" and "bin-gen".
-	 * </p>
-	 * 
-	 * @param project
-	 *            The project we seek the output folders of.
-	 * @return The set of output folders name for the given (java) project.
-	 */
-	private Set<String> getOutputFolders(IProject project) {
-		final Set<String> classpathEntries = new LinkedHashSet<String>();
-		final IJavaProject javaProject = JavaCore.create(project);
-		try {
-			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
-				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					final IPath output = entry.getOutputLocation();
-					if (output != null) {
-						classpathEntries.add(output.removeFirstSegments(1).toString());
-					}
-				}
-			}
-			/*
-			 * Add the default output location to the classpath anyway since source folders are not required
-			 * to have their own
-			 */
-			final IPath output = javaProject.getOutputLocation();
-			classpathEntries.add(output.removeFirstSegments(1).toString());
-		} catch (JavaModelException e) {
-			AcceleoCommonPlugin.log(e, false);
-		}
-		return classpathEntries;
 	}
 
 	/**

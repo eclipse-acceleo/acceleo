@@ -45,28 +45,23 @@ public final class AcceleoServicesEclipseUtil {
 	}
 
 	/**
-	 * This will refresh workspace contributions to Acceleo and load the given service if it is located in a
-	 * workspace bundle.
-	 * <p>
-	 * As a result of this call, the service will be added to the list of registered services, allowing it to
-	 * be retrieved through {@link #getRegisteredServices()} afterwards.
-	 * </p>
+	 * Returns all registered service classes.
 	 * 
-	 * @param project
-	 *            The {@link IProject} containing the acceleo file which tries to make use of a service name
-	 *            <code>qualifiedName</code>.
-	 * @param qualifiedName
-	 *            Qualified name of the service we are looking for.
-	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
+	 * @return All registered service classes.
 	 */
-	public static Object registerService(IProject project, String qualifiedName) {
-		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
-		AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
-		final Object instance = AcceleoWorkspaceUtil.INSTANCE.getClassInstance(qualifiedName);
-		if (instance != null) {
-			REGISTERED_SERVICES.add(qualifiedName);
-		}
-		return instance;
+	public static Set<Object> getRegisteredServices() {
+		return AcceleoWorkspaceUtil.INSTANCE.refreshInstances(REGISTERED_SERVICES, false);
+	}
+
+	/**
+	 * Returns the registered service going by <code>qualifiedName</code>.
+	 * 
+	 * @param qualifiedName
+	 *            Qualified name of the service we seek an instance of.
+	 * @return The registered service going by name <code>qualifiedName</code>.
+	 */
+	public static Object getService(String qualifiedName) {
+		return AcceleoWorkspaceUtil.INSTANCE.refreshInstance(qualifiedName, false);
 	}
 
 	/**
@@ -106,6 +101,31 @@ public final class AcceleoServicesEclipseUtil {
 	}
 
 	/**
+	 * This will refresh workspace contributions to Acceleo and load the given service if it is located in a
+	 * workspace bundle.
+	 * <p>
+	 * As a result of this call, the service will be added to the list of registered services, allowing it to
+	 * be retrieved through {@link #getRegisteredServices()} afterwards.
+	 * </p>
+	 * 
+	 * @param project
+	 *            The {@link IProject} containing the acceleo file which tries to make use of a service name
+	 *            <code>qualifiedName</code>.
+	 * @param qualifiedName
+	 *            Qualified name of the service we are looking for.
+	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
+	 */
+	public static Object registerService(IProject project, String qualifiedName) {
+		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
+		AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
+		final Object instance = AcceleoWorkspaceUtil.INSTANCE.getClassInstance(qualifiedName);
+		if (instance != null) {
+			REGISTERED_SERVICES.add(qualifiedName);
+		}
+		return instance;
+	}
+
+	/**
 	 * This will return an instance of class named <code>qualifiedName</code> loaded from the given bundle.
 	 * This will first attempt to search through the workspace projects if one of them corresponds to this
 	 * symbolic name, and will be fully equivalent to calling
@@ -131,14 +151,5 @@ public final class AcceleoServicesEclipseUtil {
 			instance = registerService(Platform.getBundle(bundleName), qualifiedName);
 		}
 		return instance;
-	}
-
-	/**
-	 * Returns all registered service classes.
-	 * 
-	 * @return All registered service classes.
-	 */
-	public static Set<Object> getRegisteredServices() {
-		return AcceleoWorkspaceUtil.INSTANCE.refreshInstances(REGISTERED_SERVICES, false);
 	}
 }
