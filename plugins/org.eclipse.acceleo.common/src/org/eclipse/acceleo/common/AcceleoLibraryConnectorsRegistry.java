@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.library.connector.ILibrary;
@@ -72,9 +71,9 @@ public final class AcceleoLibraryConnectorsRegistry {
 			if (attribute.equals(connector.getName())) {
 				this.registeredLibraryConnectors.remove(connector);
 
-				for (Iterator<Entry<String, Class<?>>> it = this.connectorByFileExtension.entrySet()
+				for (Iterator<Map.Entry<String, Class<?>>> it = this.connectorByFileExtension.entrySet()
 						.iterator(); it.hasNext();) {
-					Entry<String, Class<?>> entry = it.next();
+					Map.Entry<String, Class<?>> entry = it.next();
 					if (entry.getValue().equals(connector)) {
 						it.remove();
 					}
@@ -98,7 +97,7 @@ public final class AcceleoLibraryConnectorsRegistry {
 	@SuppressWarnings("unchecked")
 	public Class<ILibrary> getConnectorForResource(String resource) {
 		Class<ILibrary> ret = null;
-		int idx = resource.lastIndexOf(".");
+		int idx = resource.lastIndexOf('.');
 
 		if (idx > 0 && idx < resource.length()) {
 			String fileExtension = resource.substring(idx + 1, resource.length());

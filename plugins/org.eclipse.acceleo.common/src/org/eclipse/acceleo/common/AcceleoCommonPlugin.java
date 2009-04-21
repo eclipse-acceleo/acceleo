@@ -288,7 +288,8 @@ public class AcceleoCommonPlugin extends Plugin {
 						log(e, true);
 					}
 				} else {
-					log("No library connector handle " + pathToFile, false);
+					log(AcceleoCommonMessages.getString("AcceleoCommonPlugin.MissingHandle", pathToFile), //$NON-NLS-1$
+							false);
 				}
 			}
 		}
@@ -323,7 +324,8 @@ public class AcceleoCommonPlugin extends Plugin {
 							log(e, true);
 						}
 					} else {
-						log("No library connector handle " + pathToFile, false);
+						log(AcceleoCommonMessages.getString("AcceleoCommonPlugin.MissingHandle", pathToFile), //$NON-NLS-1$
+								false);
 					}
 				}
 			}
