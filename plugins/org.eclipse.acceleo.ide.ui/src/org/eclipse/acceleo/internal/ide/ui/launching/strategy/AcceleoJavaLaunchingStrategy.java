@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.launching.strategy;
 
-import java.io.File;
-import java.util.List;
-
 import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 
 /**
  * Java standalone launching strategy. It is used to launch an Acceleo application in a Java standalone way.
@@ -27,12 +26,12 @@ public class AcceleoJavaLaunchingStrategy implements IAcceleoLaunchingStrategy {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy#doGenerate(org.eclipse.acceleo.model.mtl.Module,
-	 *      java.util.List, org.eclipse.emf.ecore.EObject, java.util.List, java.io.File)
+	 * @see org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy#launch(org.eclipse.debug.core.ILaunchConfiguration,
+	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public void doGenerate(Module module, List<String> templateNames, EObject model,
-			List<? extends Object> arguments, File generationRoot) {
-		// do nothing
+	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor monitor) throws CoreException {
+
 	}
 
 }

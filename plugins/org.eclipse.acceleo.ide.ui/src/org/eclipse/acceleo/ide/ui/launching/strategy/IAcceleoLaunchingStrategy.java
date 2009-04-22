@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.launching.strategy;
 
-import java.io.File;
-import java.util.List;
-
-import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 
 /**
  * An internal extension point is defined to specify multiple launching strategies. It is used to define a
@@ -33,21 +32,21 @@ public interface IAcceleoLaunchingStrategy {
 	String LAUNCHING_STRATEGY_EXTENSION_ID = "org.eclipse.acceleo.ide.ui.launching"; //$NON-NLS-1$
 
 	/**
-	 * Launches the generation for a list of Acceleo templates.
+	 * Launches the given configuration in the current Eclipse thread.
 	 * 
-	 * @param module
-	 *            the module
-	 * @param templateNames
-	 *            names of the module templates that are to be generated
-	 * @param model
-	 *            input model for these Acceleo templates
-	 * @param arguments
-	 *            arguments of the template call
-	 * @param generationRoot
-	 *            this will be used as the root for the generated files. This can be <code>null</code>, in
-	 *            which case the user home directory should be used as root.
+	 * @param configuration
+	 *            the configuration to launch
+	 * @param mode
+	 *            the mode in which to launch, one of the mode constants defined by ILaunchManager - RUN_MODE
+	 *            or DEBUG_MODE
+	 * @param launch
+	 *            the launch object to contribute processes and debug targets to
+	 * @param monitor
+	 *            is the progress monitor
+	 * @throws CoreException
+	 *             when an issue occurs
 	 */
-	void doGenerate(Module module, List<String> templateNames, EObject model,
-			List<? extends Object> arguments, File generationRoot);
+	void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
+			throws CoreException;
 
 }

@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -58,12 +57,6 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	private List<String> args;
 
 	/**
-	 * The launching strategy. An internal extension point is defined to specify multiple launching
-	 * strategies. It is used to define a specific way of launching an Acceleo generation.
-	 */
-	private IAcceleoLaunchingStrategy launchingStrategy;
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param project
@@ -76,18 +69,15 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	 *            the target folder
 	 * @param args
 	 *            the other arguments of the code generation
-	 * @param launchingStrategy
-	 *            the launching strategy used to define a specific way of launching an Acceleo generation
 	 */
 	public AcceleoLaunchOperation(IProject project, String qualifiedName, String model, File targetFolder,
-			List<String> args, IAcceleoLaunchingStrategy launchingStrategy) {
+			List<String> args) {
 		super();
 		this.project = project;
 		this.qualifiedName = qualifiedName;
 		this.model = model;
 		this.targetFolder = targetFolder;
 		this.args = args;
-		this.launchingStrategy = launchingStrategy;
 	}
 
 	/**
