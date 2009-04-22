@@ -19,7 +19,6 @@ import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
-import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.Template;
@@ -227,7 +226,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	 *            The block we seek the containing Template of.
 	 * @return The parent Template of a given block.
 	 */
-	protected Template getParentTemplate(Block block) {
+	protected Template getParentTemplate(EObject block) {
 		EObject container = block.eContainer();
 		while (container != null && !(container instanceof Template)) {
 			container = container.eContainer();

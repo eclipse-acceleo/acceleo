@@ -146,6 +146,10 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		 * Both the method name and "@generated" tag have changed. The generated file shouldn't be modified
 		 * when generating again.
 		 */
+		/*
+		 * FIXME this doesn't test the merging : we changed the "@generated" tag in the template, not in the
+		 * preview
+		 */
 		evaluationVisitor.visitExpression(getParentTemplate(mtlFileBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
 		entry = getPreview().entrySet().iterator().next();
