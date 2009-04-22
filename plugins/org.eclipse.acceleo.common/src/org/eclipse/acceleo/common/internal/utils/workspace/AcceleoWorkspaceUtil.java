@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -571,7 +573,8 @@ public final class AcceleoWorkspaceUtil {
 		try {
 			final IResource candidateManifest = model.getUnderlyingResource();
 			final String candidateLocationReference = "reference:" //$NON-NLS-1$
-					+ candidateManifest.getProject().getLocationURI().toURL().toExternalForm();
+					+ URLDecoder.decode(candidateManifest.getProject().getLocationURI().toURL()
+							.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
 			Bundle bundle = getBundle(candidateLocationReference);
 
@@ -589,6 +592,8 @@ public final class AcceleoWorkspaceUtil {
 					AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", model //$NON-NLS-1$
 							.getBundleDescription().getName()), e));
 		} catch (MalformedURLException e) {
+			AcceleoCommonPlugin.log(e, false);
+		} catch (UnsupportedEncodingException e) {
 			AcceleoCommonPlugin.log(e, false);
 		}
 	}
