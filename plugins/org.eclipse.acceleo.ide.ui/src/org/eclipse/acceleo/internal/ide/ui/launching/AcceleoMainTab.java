@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -123,6 +124,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#dispose()
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 		if (mainTypeShell != null && !mainTypeShell.isDisposed()) {
@@ -135,6 +137,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		Composite mainComposite = (Composite)getControl();
@@ -155,6 +158,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#createMainTypeExtensions(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected void createMainTypeExtensions(Composite parent) {
 		if (mainTypeShell == null) {
 			mainTypeShell = new Shell();
@@ -203,7 +207,23 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		if (path != null && path.length() > 0 && new Path(path).lastSegment().length() > 0) {
 			dialog.setInitialPattern(new Path(path).lastSegment());
 		} else {
-			dialog.setInitialPattern("*.xmi"); //$NON-NLS-1$
+			String projectName;
+			try {
+				projectName = getCurrentLaunchConfiguration().getAttribute(
+						IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+			} catch (CoreException e) {
+				projectName = ""; //$NON-NLS-1$
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+			String initial;
+			if (projectName.toLowerCase().contains(".uml")) { //$NON-NLS-1$
+				initial = "*.uml"; //$NON-NLS-1$
+			} else if (projectName.toLowerCase().contains(".ecore")) { //$NON-NLS-1$
+				initial = "*.ecore"; //$NON-NLS-1$
+			} else {
+				initial = "*.xmi"; //$NON-NLS-1$
+			}
+			dialog.setInitialPattern(initial);
 		}
 		dialog.open();
 		if (dialog.getResult() != null && dialog.getResult().length > 0
@@ -257,7 +277,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				.getWorkspace().getRoot(), true, AcceleoUIMessages
 				.getString("AcceleoNewTemplateWizardPage.ContainerSelection")); //$NON-NLS-1$
 		if (initial != null) {
-			dialog.setInitialSelections(new Object[] {initial});
+			dialog.setInitialSelections(new Object[] {initial });
 		}
 		dialog.showClosedProjects(false);
 		if (dialog.open() == Window.OK) {
@@ -431,6 +451,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getName()
 	 */
+	@Override
 	public String getName() {
 		return "Acceleo"; //$NON-NLS-1$
 	}
@@ -440,6 +461,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getId()
 	 */
+	@Override
 	public String getId() {
 		return "org.eclipse.acceleo.ide.ui.launching.acceleoMainTab"; //$NON-NLS-1$
 	}
@@ -449,6 +471,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
+	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 		super.initializeFrom(config);
 		updateAcceleoModelFromConfig(config);
@@ -535,6 +558,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#isValid(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
+	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		boolean result = super.isValid(config);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -545,12 +569,12 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				IFile file = workspace.getRoot().getFile(new Path(model));
 				if (!file.exists()) {
 					setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingModel", //$NON-NLS-1$
-							new Object[] {model}));
+							new Object[] {model }));
 					result = false;
 				}
 			} else {
 				setErrorMessage(AcceleoUIMessages.getString(
-						"AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
+						"AcceleoMainTab.Error.InvalidModel", new Object[] {model })); //$NON-NLS-1$
 				result = false;
 			}
 		}
@@ -559,7 +583,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			IStatus status = workspace.validatePath(target, IResource.FOLDER | IResource.PROJECT);
 			if (!status.isOK()) {
 				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.InvalidTarget", //$NON-NLS-1$
-						new Object[] {target}));
+						new Object[] {target }));
 				result = false;
 			}
 		}
@@ -571,6 +595,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		if (javaArgumentsTab != null) {
 			javaArgumentsTab.updateArguments(config, modelText.getText().trim(), targetText.getText().trim(),
@@ -590,6 +615,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
@@ -603,6 +629,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab#getImage()
 	 */
+	@Override
 	public Image getImage() {
 		return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_main.gif"); //$NON-NLS-1$
 	}
