@@ -85,6 +85,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private static IDebugAST debug;
 
+	/** This instance will be used as the cached result of a query when it is undefined. */
+	private static final Object UNDEFINED_QUERY_RESULT = new Object();
+
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
@@ -479,6 +482,15 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
 			final Object result = results.get(arguments);
+			if (result == UNDEFINED_QUERY_RESULT) {
+				final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
+				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+						AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
+								.getExpression(), invocation.getStartPosition(), rootName, query,
+								getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
+				exception.fillInStackTrace();
+				throw exception;
+			}
 			if (result != null) {
 				return result;
 			}
@@ -503,7 +515,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// restores parameters as they were prior to the call
 		for (int i = 0; i < query.getParameter().size(); i++) {
 			final Variable param = query.getParameter().get(i);
-			getEvaluationEnvironment().replace(param.getName(), oldArgs[i]);
+			if (oldArgs[i] != null) {
+				getEvaluationEnvironment().replace(param.getName(), oldArgs[i]);
+			} else {
+				getEvaluationEnvironment().remove(param.getName());
+			}
 		}
 		// [255379] restore self if need be
 		if (query.getParameter().size() > 0) {
@@ -512,11 +528,28 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// Store result of the query invocation
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
-			results.put(arguments, result);
+			if (isUndefined(result)) {
+				results.put(arguments, UNDEFINED_QUERY_RESULT);
+			} else {
+				results.put(arguments, result);
+			}
 		} else {
 			final Map<List<Object>, Object> results = new HashMap<List<Object>, Object>(2);
-			results.put(arguments, result);
+			if (isUndefined(result)) {
+				results.put(arguments, UNDEFINED_QUERY_RESULT);
+			} else {
+				results.put(arguments, result);
+			}
 			queryResults.put(query, results);
+		}
+		if (isUndefined(result)) {
+			final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
+			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UndefinedQuery", query.getExpression(), invocation //$NON-NLS-1$
+							.getStartPosition(), rootName, query, getEvaluationEnvironment().getValueOf(
+							SELF_VARIABLE_NAME)));
+			exception.fillInStackTrace();
+			throw exception;
 		}
 		return result;
 	}
@@ -664,6 +697,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		ASTFragment astFragment = null;
 		if (debug != null && !(expression instanceof StringLiteralExp)) {
 			// TODO JMU see new object "lastSourceExpressionResult". this could be interesting.
+			// FIXME add variables in input
 			debugInput = lastEObjectSelfValue;
 			astFragment = new ASTFragment(expression);
 			if (debugInput != null && debugInput.eClass().getEStructuralFeature("name") != null) { //$NON-NLS-1$
