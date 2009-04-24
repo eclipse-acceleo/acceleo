@@ -137,10 +137,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			} else {
 				computeOtherFilesToBuild(deltaFilesOutput);
 			}
+		} else {
+			computeOtherFilesToBuild(deltaFilesOutput);
+		}
+		if (deltaFilesOutput.size() > 0) {
 			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
 		}
+
 	}
 
 	/**
