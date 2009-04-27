@@ -90,6 +90,7 @@ public class Region {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object arg0) {
 		if (arg0 instanceof Region) {
 			Region other = (Region)arg0;
@@ -104,6 +105,7 @@ public class Region {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -117,6 +119,7 @@ public class Region {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return '[' + Integer.toString(b) + ',' + Integer.toString(e) + ']';
 	}

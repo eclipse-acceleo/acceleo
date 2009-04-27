@@ -47,6 +47,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 * 
 	 * @see org.eclipse.ocl.ecore.EcoreEnvironmentFactory#loadEnvironment(org.eclipse.emf.ecore.resource.Resource)
 	 */
+	@Override
 	public Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> loadEnvironment(
 			Resource resource) {
 		AcceleoEnvironment result = new AcceleoEnvironment(resource);

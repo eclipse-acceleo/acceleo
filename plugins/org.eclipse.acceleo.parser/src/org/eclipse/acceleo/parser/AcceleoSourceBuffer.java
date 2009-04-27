@@ -274,7 +274,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 				e--;
 			}
 		}
-		return new int[] {b, e};
+		return new int[] {b, e };
 	}
 
 }
