@@ -64,7 +64,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 		Image result;
 		if (element instanceof AcceleoVariable) {
 			try {
-				result = ((AcceleoValue)((AcceleoVariable)element).getValue()).getImage(element);
+				result = ((AcceleoValue)((AcceleoVariable)element).getValue()).getImage();
 			} catch (DebugException e) {
 				result = null;
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());

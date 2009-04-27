@@ -124,7 +124,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		super();
 		content = new AcceleoSourceContent();
 		colorManager = new ColorManager();
-		blockMatcher = new AcceleoPairMatcher(this);
+		blockMatcher = new AcceleoPairMatcher();
 	}
 
 	/**

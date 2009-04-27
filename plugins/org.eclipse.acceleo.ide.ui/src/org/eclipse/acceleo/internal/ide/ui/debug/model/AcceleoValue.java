@@ -62,13 +62,11 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	/**
 	 * Returns an image for the element, or null if a default image should be used.
 	 * 
-	 * @param element
-	 *            is the element
 	 * @return an image or null
 	 * @throws DebugException
 	 *             when an issue occurs
 	 */
-	public Image getImage(Object element) throws DebugException {
+	public Image getImage() throws DebugException {
 		Image ret = null;
 		if (type == AcceleoVariable.CLASS_TYPE) {
 			ret = AcceleoUIActivator.getDefault().getImage("icons/debug/class.gif"); //$NON-NLS-1$

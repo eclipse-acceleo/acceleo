@@ -34,11 +34,8 @@ public class AcceleoPairMatcher extends DefaultCharacterPairMatcher {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param editor
-	 *            is the editor
 	 */
-	public AcceleoPairMatcher(AcceleoEditor editor) {
+	public AcceleoPairMatcher() {
 		super(new char[0]);
 		aggregatedMatcher = new DefaultCharacterPairMatcher(BLOCKS);
 
