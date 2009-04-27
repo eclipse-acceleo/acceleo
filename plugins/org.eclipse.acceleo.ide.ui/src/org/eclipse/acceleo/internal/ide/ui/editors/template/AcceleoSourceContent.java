@@ -93,6 +93,64 @@ public class AcceleoSourceContent {
 	private CSTParser cstParser;
 
 	/**
+	 * There can be several syntax help requested. It count the requests.
+	 */
+	private int syntaxHelpCount;
+
+	/**
+	 * The current resource set used to compute the syntax help information. It contains a copy of the current
+	 * AST and its dependencies.
+	 */
+	private ResourceSet syntaxHelpResourceSet;
+
+	/**
+	 * The job instance to unload the syntax help information.
+	 */
+	private SyntaxHelpJob syntaxHelpUnloadJob = new SyntaxHelpJob();
+
+	/**
+	 * The job class to unload the syntax help information.
+	 * 
+	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+	 */
+	private class SyntaxHelpJob {
+
+		/**
+		 * The job.
+		 */
+		Job unloadJob;
+
+		/**
+		 * Executes this job.
+		 */
+		public void run() {
+			if (unloadJob != null) {
+				unloadJob.cancel();
+			}
+			unloadJob = new Job("Acceleo") { //$NON-NLS-1$
+
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					ResourceSet resourceSet = syntaxHelpResourceSet;
+					if (syntaxHelpCount == 0) {
+						syntaxHelpResourceSet = null;
+						if (resourceSet != null) {
+							Iterator<Resource> resources = resourceSet.getResources().iterator();
+							while (resources.hasNext()) {
+								resources.next().unload();
+							}
+						}
+					}
+					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
+				}
+			};
+			unloadJob.setPriority(Job.DECORATE);
+			final int delay = 4000;
+			unloadJob.schedule(delay);
+		}
+	}
+
+	/**
 	 * Constructor.
 	 */
 	public AcceleoSourceContent() {
@@ -556,47 +614,57 @@ public class AcceleoSourceContent {
 	 *         relative relevance or frequency of a choice
 	 */
 	public synchronized Collection<Choice> getSyntaxHelp(String text, int offset) {
-		if (getCST() != null) {
-			org.eclipse.acceleo.model.mtl.Module vAST = source.getAST();
-			OCLParser oclParser;
-			if (vAST == null) {
-				createAST();
-				vAST = source.getAST();
-			}
-			if (vAST != null) {
-				URI uri = vAST.eResource().getURI();
-				vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
-				ResourceSet resourceSet = new ResourceSetImpl();
-				Resource resource = resourceSet.createResource(uri);
-				resource.getContents().add(vAST);
-				oclParser = new OCLParser(resource);
-				List<URI> dependenciesURIs = getAccessibleOutputFiles();
-				loadImportsDependencies(vAST, dependenciesURIs);
-				loadExtendsDependencies(vAST, dependenciesURIs);
-				oclParser.addRecursivelyMetamodelsToScope(vAST);
-				boolean isAfterDot = isAfterDot(text);
-				oclParser.addRecursivelyBehavioralFeaturesToScope(vAST, true, !isAfterDot,
-						getCurrentQualifiedName(text));
-				int specificOffset = getSpecificOffset(offset);
-				EClassifier eContext = oclParser.addRecursivelyVariablesToScopeAndGetContextClassifierAt(
-						vAST, specificOffset);
-				if (eContext != null) {
-					oclParser.pushContext(eContext);
+		syntaxHelpCount++;
+		try {
+			if (getCST() != null) {
+				org.eclipse.acceleo.model.mtl.Module vAST = source.getAST();
+				OCLParser oclParser;
+				if (vAST == null) {
+					createAST();
+					vAST = source.getAST();
 				}
-				try {
-					return order(oclParser.getSyntaxHelp(text), oclParser);
-				} finally {
+				if (vAST != null) {
+					URI uri = vAST.eResource().getURI();
+					vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
+					if (syntaxHelpResourceSet == null) {
+						syntaxHelpResourceSet = new ResourceSetImpl();
+					}
+					Resource resource;
+					if (syntaxHelpResourceSet.getResources().size() > 0) {
+						resource = syntaxHelpResourceSet.getResources().get(0);
+						resource.unload();
+					} else {
+						resource = syntaxHelpResourceSet.createResource(uri);
+					}
+					resource.getContents().add(vAST);
+					oclParser = new OCLParser(resource);
+					List<URI> dependenciesURIs = getAccessibleOutputFiles();
+					loadImportsDependencies(vAST, dependenciesURIs);
+					loadExtendsDependencies(vAST, dependenciesURIs);
+					oclParser.addRecursivelyMetamodelsToScope(vAST);
+					boolean isAfterDot = isAfterDot(text);
+					oclParser.addRecursivelyBehavioralFeaturesToScope(vAST, true, !isAfterDot,
+							getCurrentQualifiedName(text));
+					int specificOffset = getSpecificOffset(offset);
+					EClassifier eContext = oclParser.addRecursivelyVariablesToScopeAndGetContextClassifierAt(
+							vAST, specificOffset);
 					if (eContext != null) {
-						oclParser.popContext();
+						oclParser.pushContext(eContext);
 					}
-					Iterator<Resource> resources = resourceSet.getResources().iterator();
-					while (resources.hasNext()) {
-						resources.next().unload();
+					try {
+						return order(oclParser.getSyntaxHelp(text), oclParser);
+					} finally {
+						if (eContext != null) {
+							oclParser.popContext();
+						}
+						syntaxHelpUnloadJob.run();
 					}
 				}
 			}
+			return new ArrayList<Choice>();
+		} finally {
+			syntaxHelpCount--;
 		}
-		return new ArrayList<Choice>();
 	}
 
 	/**
