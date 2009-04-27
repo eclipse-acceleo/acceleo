@@ -47,6 +47,7 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#modifyM2TContent(java.lang.StringBuffer,
 	 *      boolean)
 	 */
+	@Override
 	protected void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain) {
 		int offset = text.indexOf("/*");
 		if (offset > -1) {
@@ -122,7 +123,7 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 
 				"[*\"*\"*\"*\"*]" + END_LINE, "[$1'$2'$3'$4'$5]",
 
-				"[*\"*\"*]" + END_LINE, "[$1'$2'$3]",};
+				"[*\"*\"*]" + END_LINE, "[$1'$2'$3]", };
 	}
 
 	/**

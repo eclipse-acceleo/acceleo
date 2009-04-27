@@ -35,6 +35,7 @@ public class AcceleoJavaArgumentsTab extends JavaArgumentsTab {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		fPrgmArgumentsText.setEditable(false);

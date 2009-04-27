@@ -34,6 +34,7 @@ public class AcceleoForScanner extends AcceleoBlockScanner {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.scanner.AcceleoBlockScanner#getConfiguredContentType()
 	 */
+	@Override
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_FOR;
 	}

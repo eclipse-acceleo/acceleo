@@ -67,6 +67,7 @@ public class TraceabilityModel extends TraceabilityContainer {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		if (eObject != null) {
 			String result;

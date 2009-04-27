@@ -66,6 +66,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getLaunch()
 	 */
+	@Override
 	public ILaunch getLaunch() {
 		return getDebugTarget().getLaunch();
 	}
@@ -93,6 +94,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getAdapter(java.lang.Class)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		Object ret = null;

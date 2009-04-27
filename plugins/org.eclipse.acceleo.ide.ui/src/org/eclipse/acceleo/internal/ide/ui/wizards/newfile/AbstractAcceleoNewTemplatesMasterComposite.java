@@ -113,6 +113,7 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 		addButton = new Button(buttonGroup, SWT.NONE);
 		addButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.AddButton")); //$NON-NLS-1$
 		addButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addController(treeViewer.getSelection());
 				treeViewer.refresh();
@@ -127,6 +128,7 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 		removeButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.RemoveButton")); //$NON-NLS-1$
 		removeButton.setLayoutData(gridData);
 		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				removeController(treeViewer.getSelection());
 				treeViewer.refresh();
@@ -144,32 +146,14 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 	 */
 	private void createTreeViewer(Composite treeViewerGroup) {
 		treeViewer = new TreeViewer(treeViewerGroup);
-		treeViewer.setContentProvider(new ITreeContentProvider() {
-			public Object[] getChildren(Object parentElement) {
-				if (parentElement instanceof AcceleoNewTemplatesGlobalController) {
-					return ((AcceleoNewTemplatesGlobalController)parentElement).getControllers().toArray();
-				}
-				return null;
-			}
-			public Object getParent(Object element) {
-				return null;
-			}
-			public boolean hasChildren(Object element) {
-				return false;
-			}
-			public Object[] getElements(Object inputElement) {
-				return getChildren(inputElement);
-			}
-			public void dispose() {
-			}
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			}
-		});
+		treeViewer.setContentProvider(new TemplatesTreeContentProvider());
 		treeViewer.setLabelProvider(new LabelProvider() {
+			@Override
 			public Image getImage(Object element) {
 				return AcceleoUIActivator.getDefault().getImage("icons/AcceleoEditor.gif"); //$NON-NLS-1$;
 			}
 
+			@Override
 			public String getText(Object element) {
 				if (element instanceof AcceleoNewTemplatesWizardController
 						&& ((AcceleoNewTemplatesWizardController)element).getModel() != null) {
@@ -213,4 +197,68 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 		return treeViewer;
 	}
 
+	/**
+	 * This will be used as the content provider of this composite's tree viewer.
+	 * 
+	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+	 */
+	class TemplatesTreeContentProvider implements ITreeContentProvider {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+		 */
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof AcceleoNewTemplatesGlobalController) {
+				return ((AcceleoNewTemplatesGlobalController)parentElement).getControllers().toArray();
+			}
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+		 */
+		public Object getParent(Object element) {
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+		 */
+		public boolean hasChildren(Object element) {
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+		 */
+		public Object[] getElements(Object inputElement) {
+			return getChildren(inputElement);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+		 */
+		public void dispose() {
+			// empty implementation
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
+		 *      java.lang.Object, java.lang.Object)
+		 */
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			// empty implementation
+		}
+	}
 }

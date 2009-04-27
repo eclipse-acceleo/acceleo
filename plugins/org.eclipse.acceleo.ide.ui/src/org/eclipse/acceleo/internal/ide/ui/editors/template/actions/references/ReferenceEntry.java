@@ -162,6 +162,7 @@ public class ReferenceEntry implements IAdaptable {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return templateFile.getName() + ": " + message; //$NON-NLS-1$
 	}

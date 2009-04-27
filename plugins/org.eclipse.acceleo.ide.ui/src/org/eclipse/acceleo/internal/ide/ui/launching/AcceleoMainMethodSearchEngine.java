@@ -81,6 +81,7 @@ public class AcceleoMainMethodSearchEngine {
 		 * 
 		 * @see org.eclipse.jdt.core.search.SearchRequestor#acceptSearchMatch(org.eclipse.jdt.core.search.SearchMatch)
 		 */
+		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
 			Object enclosingElement = match.getElement();
 			if (enclosingElement instanceof IMethod) { // defensive code
@@ -123,7 +124,7 @@ public class AcceleoMainMethodSearchEngine {
 				.createPattern(
 						"main(String[]) void", IJavaSearchConstants.METHOD, IJavaSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE); //$NON-NLS-1$
 		SearchParticipant[] participants = new SearchParticipant[] {SearchEngine
-				.getDefaultSearchParticipant(),};
+				.getDefaultSearchParticipant(), };
 		MethodCollector collector = new MethodCollector();
 		IProgressMonitor searchMonitor = new SubProgressMonitor(pm, searchTicks);
 		try {

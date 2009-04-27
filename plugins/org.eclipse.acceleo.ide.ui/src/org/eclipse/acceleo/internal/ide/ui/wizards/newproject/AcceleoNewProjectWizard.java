@@ -72,6 +72,7 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 	 * 
 	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard#multipleTemplates()
 	 */
+	@Override
 	protected boolean multipleTemplates() {
 		return true;
 	}

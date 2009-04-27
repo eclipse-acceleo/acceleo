@@ -50,6 +50,7 @@ public class AcceleoProtectedAreaScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.scanner.AbstractAcceleoScanner#getConfiguredContentType()
 	 */
+	@Override
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_PROTECTED_AREA;
 	}

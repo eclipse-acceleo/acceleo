@@ -59,6 +59,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object element) {
 		Image result;
 		if (element instanceof AcceleoVariable) {
@@ -93,6 +94,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
+	@Override
 	public String getText(Object element) {
 		String vRet = AcceleoUIMessages.getString("AcceleoModelPresentation.ElementText"); //$NON-NLS-1$
 		if (element instanceof AcceleoLineBreakpoint) {
@@ -109,7 +111,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 				}
 				vRet = AcceleoUIMessages
 						.getString(
-								"AcceleoModelPresentation.BreakpointText", new Object[] {filePath, Integer.toString(breakPoint.getLineNumber()),}); //$NON-NLS-1$
+								"AcceleoModelPresentation.BreakpointText", new Object[] {filePath, Integer.toString(breakPoint.getLineNumber()), }); //$NON-NLS-1$
 			} catch (CoreException e) {
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}

@@ -95,6 +95,7 @@ public class AcceleoCompletionChoice implements Choice {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return oclChoice.hashCode();
 	}
@@ -104,6 +105,7 @@ public class AcceleoCompletionChoice implements Choice {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AcceleoCompletionChoice) {
 			return oclChoice.equals(((AcceleoCompletionChoice)obj).oclChoice);
@@ -117,6 +119,7 @@ public class AcceleoCompletionChoice implements Choice {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return oclChoice.toString();
 	}

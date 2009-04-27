@@ -48,6 +48,7 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * 
 	 * @see org.eclipse.search.ui.text.AbstractTextSearchResult#getEditorMatchAdapter()
 	 */
+	@Override
 	public IEditorMatchAdapter getEditorMatchAdapter() {
 		return this;
 	}
@@ -57,6 +58,7 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * 
 	 * @see org.eclipse.search.ui.text.AbstractTextSearchResult#getFileMatchAdapter()
 	 */
+	@Override
 	public IFileMatchAdapter getFileMatchAdapter() {
 		return this;
 	}

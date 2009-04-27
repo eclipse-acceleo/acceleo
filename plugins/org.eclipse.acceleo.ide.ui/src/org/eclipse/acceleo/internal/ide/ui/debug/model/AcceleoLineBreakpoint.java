@@ -50,6 +50,7 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 	 * breakpoint's attributes.
 	 */
 	public AcceleoLineBreakpoint() {
+		// Empty implementation, this allows reflective instantiation
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 								IMarker.MESSAGE,
 								AcceleoUIMessages
 										.getString(
-												"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), resource.getName(), Integer.toString(lineNumber),})); //$NON-NLS-1$
+												"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), resource.getName(), Integer.toString(lineNumber), })); //$NON-NLS-1$
 			}
 		};
 		run(getMarkerRule(resource), runnable);
@@ -120,6 +121,7 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 	 * 
 	 * @see org.eclipse.debug.core.model.Breakpoint#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean enabled) throws CoreException {
 		super.setEnabled(enabled);
 		IBreakpointManager breakpointManager = DebugPlugin.getDefault().getBreakpointManager();

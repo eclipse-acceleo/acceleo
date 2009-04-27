@@ -252,6 +252,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		data.horizontalSpan = 3;
 		advancedButton.setLayoutData(data);
 		advancedButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleAdvancedButtonSelect(templateGroup);
 			}
@@ -381,31 +382,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 
 		exampleBrowseButton = new Button(initializeFileTemplate, SWT.PUSH);
 		exampleBrowseButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage" + ".Browse")); //$NON-NLS-1$ //$NON-NLS-2$
-		exampleBrowseButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				FilteredResourcesSelectionDialog dialog = new FilteredResourcesSelectionDialog(getShell(),
-						false, ResourcesPlugin.getWorkspace().getRoot(), IResource.FILE);
-				dialog.setTitle(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.TemplateExample")); //$NON-NLS-1$
-				String path = templateExamplePath.getText();
-				if (path != null && path.length() > 0 && new Path(path).lastSegment().length() > 0) {
-					dialog.setInitialPattern("*." + new Path(path).getFileExtension()); //$NON-NLS-1$
-				} else {
-					IAcceleoExampleStrategy strategy = getTemplateExampleStrategy();
-					if (strategy != null) {
-						dialog.setInitialPattern(strategy.getInitialFileNameFilter());
-					} else {
-						dialog.setInitialPattern("*.java"); //$NON-NLS-1$
-					}
-				}
-				dialog.open();
-				if (dialog.getResult() != null && dialog.getResult().length > 0
-						&& dialog.getResult()[0] instanceof IFile) {
-					templateExamplePath.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
-					templateName.setText(((IFile)dialog.getResult()[0]).getFullPath().removeFileExtension()
-							.lastSegment().toLowerCase().replace('-', '_'));
-				}
-			}
-		});
+		exampleBrowseButton.addSelectionListener(new ExampleBrowseSelectionAdapter());
 
 		initExampleStrategyGroup();
 	}
@@ -580,6 +557,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		Button button = new Button(rootContainer, SWT.PUSH);
 		button.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Browse")); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleSelectMetamodelURI();
 			}
@@ -663,6 +641,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			protected Iterator<? extends EObject> getEObjectChildren(EObject eObject) {
 				if (eObject instanceof EPackage) {
 					return ((EPackage)eObject).getESubpackages().iterator();
@@ -696,7 +675,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			}
 		}
 		if (current != null) {
-			dialog.setInitialSelections(new Object[] {current});
+			dialog.setInitialSelections(new Object[] {current });
 		}
 		if (dialog.open() == Window.OK) {
 			Object[] result = dialog.getResult();
@@ -997,6 +976,43 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			}
 		} else {
 			this.templateExampleStrategy.select(0);
+		}
+	}
+
+	/**
+	 * This will be used to allow the user to browse the workspace for examples.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	class ExampleBrowseSelectionAdapter extends SelectionAdapter {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			FilteredResourcesSelectionDialog dialog = new FilteredResourcesSelectionDialog(getShell(), false,
+					ResourcesPlugin.getWorkspace().getRoot(), IResource.FILE);
+			dialog.setTitle(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.TemplateExample")); //$NON-NLS-1$
+			String path = templateExamplePath.getText();
+			if (path != null && path.length() > 0 && new Path(path).lastSegment().length() > 0) {
+				dialog.setInitialPattern("*." + new Path(path).getFileExtension()); //$NON-NLS-1$
+			} else {
+				IAcceleoExampleStrategy strategy = getTemplateExampleStrategy();
+				if (strategy != null) {
+					dialog.setInitialPattern(strategy.getInitialFileNameFilter());
+				} else {
+					dialog.setInitialPattern("*.java"); //$NON-NLS-1$
+				}
+			}
+			dialog.open();
+			if (dialog.getResult() != null && dialog.getResult().length > 0
+					&& dialog.getResult()[0] instanceof IFile) {
+				templateExamplePath.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
+				templateName.setText(((IFile)dialog.getResult()[0]).getFullPath().removeFileExtension()
+						.lastSegment().toLowerCase().replace('-', '_'));
+			}
 		}
 	}
 }

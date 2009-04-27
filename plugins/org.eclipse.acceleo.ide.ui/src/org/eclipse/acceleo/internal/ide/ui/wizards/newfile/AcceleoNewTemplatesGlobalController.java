@@ -30,22 +30,22 @@ public final class AcceleoNewTemplatesGlobalController {
 	/**
 	 * List of the 'details' composite controllers.
 	 */
-	private List<AcceleoNewTemplatesWizardController> controllers;
+	protected List<AcceleoNewTemplatesWizardController> controllers;
 
 	/**
 	 * The current controller of the page.
 	 */
-	private AcceleoNewTemplatesWizardController currentController;
+	protected AcceleoNewTemplatesWizardController currentController;
 
 	/**
 	 * The 'master' composite. This composite contains the useful widgets to create and delete the templates.
 	 */
-	private AbstractAcceleoNewTemplatesMasterComposite viewMasterComposite;
+	protected AbstractAcceleoNewTemplatesMasterComposite viewMasterComposite;
 
 	/**
 	 * The 'details' composite. This composite contains the useful widgets to manage one template settings.
 	 */
-	private AcceleoNewTemplatesDetailsComposite viewDetailsComposite;
+	protected AcceleoNewTemplatesDetailsComposite viewDetailsComposite;
 
 	/**
 	 * The 'new' wizard page for Acceleo templates.
@@ -84,6 +84,7 @@ public final class AcceleoNewTemplatesGlobalController {
 		 * 
 		 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AbstractAcceleoNewTemplatesMasterComposite#addController(org.eclipse.jface.viewers.ISelection)
 		 */
+		@Override
 		public void addController(ISelection selection) {
 			CreateTemplateData data;
 			if (selection instanceof IStructuredSelection
@@ -102,6 +103,7 @@ public final class AcceleoNewTemplatesGlobalController {
 		 * 
 		 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AbstractAcceleoNewTemplatesMasterComposite#removeController(org.eclipse.jface.viewers.ISelection)
 		 */
+		@Override
 		public void removeController(ISelection selection) {
 			if (selection instanceof StructuredSelection) {
 				controllers.removeAll(((StructuredSelection)selection).toList());
@@ -113,6 +115,7 @@ public final class AcceleoNewTemplatesGlobalController {
 		 * 
 		 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AbstractAcceleoNewTemplatesMasterComposite#acceleoSelectionChanged(org.eclipse.jface.viewers.ISelection)
 		 */
+		@Override
 		protected void acceleoSelectionChanged(ISelection selection) {
 			if (selection instanceof IStructuredSelection
 					&& ((IStructuredSelection)selection).getFirstElement() instanceof AcceleoNewTemplatesWizardController) {
@@ -196,7 +199,7 @@ public final class AcceleoNewTemplatesGlobalController {
 	 * @param other
 	 *            is the model to copy for the new template
 	 */
-	private void addNewTemplate(CreateTemplateData other) {
+	protected void addNewTemplate(CreateTemplateData other) {
 		CreateTemplateData templateData;
 		if (other == null) {
 			templateData = initializeTemplateData();

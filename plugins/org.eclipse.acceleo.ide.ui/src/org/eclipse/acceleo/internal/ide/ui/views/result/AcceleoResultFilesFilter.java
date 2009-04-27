@@ -44,6 +44,7 @@ public class AcceleoResultFilesFilter extends ViewerFilter {
 	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
 	 *      java.lang.Object)
 	 */
+	@Override
 	public boolean select(Viewer viewer, Object parent, Object element) {
 		if (element instanceof String) {
 			return true;

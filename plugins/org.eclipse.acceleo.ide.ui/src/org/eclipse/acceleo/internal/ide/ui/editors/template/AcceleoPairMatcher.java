@@ -25,7 +25,7 @@ public class AcceleoPairMatcher extends DefaultCharacterPairMatcher {
 	/**
 	 * Blocks used by aggregated the matcher.
 	 */
-	protected static final char[] BLOCKS = {'(', ')', '[', ']', '{', '}'};
+	protected static final char[] BLOCKS = {'(', ')', '[', ']', '{', '}' };
 
 	/**
 	 * The aggregated matcher, it is used for trivial block matching.
@@ -50,6 +50,7 @@ public class AcceleoPairMatcher extends DefaultCharacterPairMatcher {
 	 * @see org.eclipse.jface.text.source.DefaultCharacterPairMatcher#match(org.eclipse.jface.text.IDocument,
 	 *      int)
 	 */
+	@Override
 	public IRegion match(IDocument document, int offset) {
 		try {
 			return performMatch(document, offset);

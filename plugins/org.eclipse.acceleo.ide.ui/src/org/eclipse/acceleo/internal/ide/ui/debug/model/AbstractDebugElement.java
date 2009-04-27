@@ -77,6 +77,7 @@ public abstract class AbstractDebugElement extends PlatformObject implements IDe
 	 * 
 	 * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		Object result;
@@ -112,7 +113,7 @@ public abstract class AbstractDebugElement extends PlatformObject implements IDe
 	 *            the event to be fired
 	 */
 	protected void fireEvent(DebugEvent event) {
-		DebugPlugin.getDefault().fireDebugEventSet(new DebugEvent[] {event});
+		DebugPlugin.getDefault().fireDebugEventSet(new DebugEvent[] {event });
 	}
 
 	/**

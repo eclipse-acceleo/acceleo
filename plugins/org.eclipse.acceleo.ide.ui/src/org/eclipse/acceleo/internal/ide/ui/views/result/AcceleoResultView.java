@@ -86,9 +86,10 @@ public class AcceleoResultView extends ResourceNavigator {
 		 * 
 		 * @see org.eclipse.ui.model.BaseWorkbenchContentProvider#getElements(java.lang.Object)
 		 */
+		@Override
 		public Object[] getElements(Object element) {
 			if (element instanceof String) {
-				return new Object[] {(String)element};
+				return new Object[] {(String)element };
 			} else {
 				return super.getElements(element);
 			}
@@ -99,6 +100,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		 * 
 		 * @see org.eclipse.ui.model.BaseWorkbenchContentProvider#getChildren(java.lang.Object)
 		 */
+		@Override
 		public Object[] getChildren(Object element) {
 			Object[] result;
 			if (element instanceof IFile) {
@@ -153,6 +155,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		 * 
 		 * @see org.eclipse.jface.viewers.DecoratingLabelProvider#dispose()
 		 */
+		@Override
 		public void dispose() {
 			super.dispose();
 			resourcesLabelProvider.dispose();
@@ -163,6 +166,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		 * 
 		 * @see org.eclipse.jface.viewers.DecoratingLabelProvider#getText(java.lang.Object)
 		 */
+		@Override
 		public String getText(Object element) {
 			String text = resourcesLabelProvider.getText(element);
 			if (text != null && text.length() > 0) {
@@ -187,6 +191,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		 * 
 		 * @see org.eclipse.jface.viewers.DecoratingLabelProvider#getImage(java.lang.Object)
 		 */
+		@Override
 		public Image getImage(Object element) {
 			Image image = resourcesLabelProvider.getImage(element);
 			if (image == null) {
@@ -213,6 +218,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#initContentProvider(org.eclipse.jface.viewers.TreeViewer)
 	 */
+	@Override
 	protected void initContentProvider(TreeViewer viewer) {
 		viewer.setContentProvider(new AcceleoPreviewContentProvider());
 	}
@@ -222,6 +228,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#initLabelProvider(org.eclipse.jface.viewers.TreeViewer)
 	 */
+	@Override
 	protected void initLabelProvider(TreeViewer viewer) {
 		viewer.setLabelProvider(new AcceleoPreviewLabelProvider());
 	}
@@ -244,6 +251,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#initFilters(org.eclipse.jface.viewers.TreeViewer)
 	 */
+	@Override
 	protected void initFilters(TreeViewer viewer) {
 		viewer.addFilter(previewFilesFilter);
 	}
@@ -253,6 +261,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		if (content != null) {
@@ -276,6 +285,7 @@ public class AcceleoResultView extends ResourceNavigator {
 			refreshUIJob.cancel();
 		}
 		refreshUIJob = new UIJob("Acceleo") { //$NON-NLS-1$
+			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				getViewer().refresh();
 				return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
@@ -292,6 +302,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#dispose()
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 		if (content != null) {
@@ -309,6 +320,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * 
 	 * @see org.eclipse.ui.views.navigator.ResourceNavigator#handleDoubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
 	 */
+	@Override
 	protected void handleDoubleClick(DoubleClickEvent event) {
 		if (event.getSelection() instanceof TreeSelection
 				&& ((TreeSelection)event.getSelection()).getFirstElement() instanceof TraceabilityElement) {

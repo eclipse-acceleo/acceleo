@@ -35,6 +35,7 @@ public class AcceleoSourceLookupParticipant extends JavaSourceLookupParticipant 
 	 * @exception CoreException
 	 *                if unable to retrieve the source name
 	 */
+	@Override
 	public String getSourceName(Object object) throws CoreException {
 		if (object instanceof AcceleoStackFrame) {
 			return ((AcceleoStackFrame)object).getSourceName();
@@ -48,6 +49,7 @@ public class AcceleoSourceLookupParticipant extends JavaSourceLookupParticipant 
 	 * 
 	 * @see org.eclipse.debug.core.sourcelookup.AbstractSourceLookupParticipant#findSourceElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] findSourceElements(Object object) throws CoreException {
 		Object[] result = super.findSourceElements(object);
 		for (int i = 0; i < result.length; i++) {

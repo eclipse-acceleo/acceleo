@@ -77,6 +77,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		if (astNode != null) {
 			String templateName = astNode.eResource().getURI().lastSegment();

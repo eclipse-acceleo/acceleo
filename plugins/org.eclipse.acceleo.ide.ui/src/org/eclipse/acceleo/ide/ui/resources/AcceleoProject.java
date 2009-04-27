@@ -105,6 +105,7 @@ public class AcceleoProject {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AcceleoProject) {
 			return ((AcceleoProject)obj).project.equals(project);
@@ -118,6 +119,7 @@ public class AcceleoProject {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return project.getName().hashCode();
 	}

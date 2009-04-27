@@ -220,6 +220,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getLaunch()
 	 */
+	@Override
 	public ILaunch getLaunch() {
 		return launch;
 	}
@@ -250,7 +251,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 	public IThread[] getThreads() throws DebugException {
 		IThread[] ret;
 		if (thread != null) {
-			ret = new IThread[] {thread};
+			ret = new IThread[] {thread };
 		} else {
 			ret = new IThread[] {};
 		}
@@ -467,6 +468,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getDebugTarget()
 	 */
+	@Override
 	public IDebugTarget getDebugTarget() {
 		return this;
 	}

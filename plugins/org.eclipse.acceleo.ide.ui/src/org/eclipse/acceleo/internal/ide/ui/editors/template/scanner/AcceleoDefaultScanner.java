@@ -42,6 +42,7 @@ public class AcceleoDefaultScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.scanner.AbstractAcceleoScanner#getConfiguredContentType()
 	 */
+	@Override
 	public String getConfiguredContentType() {
 		return IDocument.DEFAULT_CONTENT_TYPE;
 	}

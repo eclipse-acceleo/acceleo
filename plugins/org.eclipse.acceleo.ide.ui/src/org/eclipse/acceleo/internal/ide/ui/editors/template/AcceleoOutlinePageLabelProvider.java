@@ -36,6 +36,7 @@ public class AcceleoOutlinePageLabelProvider extends AdapterFactoryLabelProvider
 	 * 
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object object) {
 		return super.getImage(object);
 	}

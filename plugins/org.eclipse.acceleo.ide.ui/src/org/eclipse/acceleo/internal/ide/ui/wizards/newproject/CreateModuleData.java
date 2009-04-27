@@ -99,15 +99,13 @@ public class CreateModuleData {
 	private void computeMetamodelDependencies(AcceleoNewProjectWizard wizard) {
 		List<String> metamodelDone = new ArrayList<String>();
 		for (AcceleoNewTemplatesWizardController controller : wizard.getTemplatePage().getControllers()) {
-			if (controller.getModel() instanceof CreateTemplateData) {
-				CreateTemplateData data = (CreateTemplateData)controller.getModel();
-				String metamodelURI = data.getTemplateMetamodel();
-				if (!metamodelDone.contains(metamodelURI)) {
-					metamodelDone.add(metamodelURI);
-					EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(metamodelURI);
-					if (metamodel != null) {
-						computeMetamodelDependencies(metamodel);
-					}
+			CreateTemplateData data = controller.getModel();
+			String metamodelURI = data.getTemplateMetamodel();
+			if (!metamodelDone.contains(metamodelURI)) {
+				metamodelDone.add(metamodelURI);
+				EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(metamodelURI);
+				if (metamodel != null) {
+					computeMetamodelDependencies(metamodel);
 				}
 			}
 		}

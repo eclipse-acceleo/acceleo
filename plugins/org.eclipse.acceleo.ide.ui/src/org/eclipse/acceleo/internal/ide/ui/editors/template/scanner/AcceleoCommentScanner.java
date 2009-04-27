@@ -44,6 +44,7 @@ public class AcceleoCommentScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.scanner.AbstractAcceleoScanner#getConfiguredContentType()
 	 */
+	@Override
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_COMMENT;
 	}

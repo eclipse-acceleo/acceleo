@@ -44,7 +44,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 			IAcceleoConstants.IF, IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE, IAcceleoConstants.LET,
 			IAcceleoConstants.ELSE_LET, IAcceleoConstants.TRACE, IAcceleoConstants.MACRO,
 			IAcceleoConstants.FILE, IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.SELF,
-			IAcceleoConstants.SUPER,};
+			IAcceleoConstants.SUPER, };
 
 	/**
 	 * All the delimiters sequences of the concrete syntax. <code>[, ], [/, /]</code>
@@ -52,7 +52,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	private static final String[] DELIMITERS = {
 			IAcceleoConstants.DEFAULT_BEGIN + IAcceleoConstants.DEFAULT_END_BODY_CHAR,
 			IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END,
-			IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END,};
+			IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DEFAULT_END, };
 
 	/**
 	 * Constructor.
@@ -103,10 +103,10 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		Color foreGroundColor = manager.getColor(IAcceleoColorConstants.KEYWORD);
 		Color backGroundColor = manager.getColor(IAcceleoColorConstants.FIRST_VARIABLE);
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.FOR,
-				IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
+				IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
 				backGroundColor, style))));
 		rules.add(new FirstVariableRule(
-				new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.LET}, new Token(
+				new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.LET }, new Token(
 						new TextAttribute(foreGroundColor, backGroundColor, style))));
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.ELSE_LET, }, new Token(new TextAttribute(foreGroundColor, backGroundColor,
@@ -187,6 +187,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.scanner.AbstractAcceleoScanner#getConfiguredContentType()
 	 */
+	@Override
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_BLOCK;
 	}

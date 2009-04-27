@@ -24,6 +24,7 @@ public class ReferenceSorter extends ViewerSorter {
 	 * 
 	 * @see org.eclipse.jface.viewers.ViewerComparator#category(java.lang.Object)
 	 */
+	@Override
 	public int category(Object element) {
 		if (element instanceof ReferenceEntry) {
 			return 0;

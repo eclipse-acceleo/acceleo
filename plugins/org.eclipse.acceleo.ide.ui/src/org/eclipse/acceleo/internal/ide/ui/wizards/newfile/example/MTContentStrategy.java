@@ -114,7 +114,7 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 
 			"[*toL1Case()*]" + END_LINE, "[$1toLowerFirst()$2]",
 
-			"[*filter(\"$\")*]" + END_LINE, "[$1oclAsType($2)$3]",};
+			"[*filter(\"$\")*]" + END_LINE, "[$1oclAsType($2)$3]", };
 
 	/**
 	 * {@inheritDoc}
@@ -140,6 +140,7 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#modifyM2TContent(java.lang.StringBuffer,
 	 *      boolean)
 	 */
+	@Override
 	protected void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain) {
 		for (int i = 0; i < mappings.length - 1; i += 2) {
 			String initialString = mappings[i];

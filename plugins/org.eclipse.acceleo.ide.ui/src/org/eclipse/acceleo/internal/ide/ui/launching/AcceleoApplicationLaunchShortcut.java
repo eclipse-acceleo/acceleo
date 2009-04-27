@@ -111,6 +111,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#createConfiguration(org.eclipse.jdt.core.IType)
 	 */
+	@Override
 	protected ILaunchConfiguration createConfiguration(IType type) {
 		ILaunchConfiguration config = null;
 		ILaunchConfigurationWorkingCopy wc = null;
@@ -122,7 +123,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 					.getFullyQualifiedName());
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, type.getJavaProject()
 					.getElementName());
-			wc.setMappedResources(new IResource[] {type.getUnderlyingResource()});
+			wc.setMappedResources(new IResource[] {type.getUnderlyingResource() });
 			config = wc.doSave();
 			IStructuredSelection selection;
 			if (config == null) {
@@ -149,6 +150,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#getConfigurationType()
 	 */
+	@Override
 	protected ILaunchConfigurationType getConfigurationType() {
 		return getLaunchManager()
 				.getLaunchConfigurationType(
@@ -170,13 +172,14 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#findTypes(java.lang.Object[],
 	 *      org.eclipse.jface.operation.IRunnableContext)
 	 */
+	@Override
 	protected IType[] findTypes(Object[] elements, IRunnableContext context) throws InterruptedException,
 			CoreException {
 		try {
 			if (elements.length == 1) {
 				IType type = isMainMethod(elements[0]);
 				if (type != null) {
-					return new IType[] {type};
+					return new IType[] {type };
 				}
 			}
 			IJavaElement[] javaElements = getJavaElements(elements);
@@ -222,6 +225,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#getTypeSelectionTitle()
 	 */
+	@Override
 	protected String getTypeSelectionTitle() {
 		return AcceleoUIMessages.getString("AcceleoApplicationLaunchShortcut.getTypeSelectionTitle"); //$NON-NLS-1$
 	}
@@ -231,6 +235,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#getEditorEmptyMessage()
 	 */
+	@Override
 	protected String getEditorEmptyMessage() {
 		return AcceleoUIMessages.getString("AcceleoApplicationLaunchShortcut.getEditorEmptyMessage"); //$NON-NLS-1$
 	}
@@ -240,6 +245,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 	 * 
 	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#getSelectionEmptyMessage()
 	 */
+	@Override
 	protected String getSelectionEmptyMessage() {
 		return AcceleoUIMessages.getString("AcceleoApplicationLaunchShortcut.getSelectionEmptyMessage"); //$NON-NLS-1$
 	}

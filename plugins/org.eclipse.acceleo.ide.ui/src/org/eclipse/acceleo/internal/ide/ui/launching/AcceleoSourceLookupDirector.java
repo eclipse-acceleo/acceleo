@@ -42,7 +42,7 @@ public class AcceleoSourceLookupDirector extends AbstractSourceLookupDirector {
 	 * @see org.eclipse.debug.core.sourcelookup.ISourceLookupDirector#initializeParticipants()
 	 */
 	public void initializeParticipants() {
-		addParticipants(new ISourceLookupParticipant[] {new AcceleoSourceLookupParticipant()});
+		addParticipants(new ISourceLookupParticipant[] {new AcceleoSourceLookupParticipant() });
 	}
 
 	/**
@@ -50,6 +50,7 @@ public class AcceleoSourceLookupDirector extends AbstractSourceLookupDirector {
 	 * 
 	 * @see org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector#supportsSourceContainerType(org.eclipse.debug.core.sourcelookup.ISourceContainerType)
 	 */
+	@Override
 	public boolean supportsSourceContainerType(ISourceContainerType type) {
 		return !fFilteredTypes.contains(type.getId());
 	}

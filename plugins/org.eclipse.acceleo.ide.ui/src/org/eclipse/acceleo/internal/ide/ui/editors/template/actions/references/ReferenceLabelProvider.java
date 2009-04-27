@@ -17,7 +17,6 @@ import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.swt.graphics.Image;
@@ -47,6 +46,7 @@ public class ReferenceLabelProvider extends LabelProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object element) {
 		Image result;
 		if (element instanceof IResource) {
@@ -56,7 +56,7 @@ public class ReferenceLabelProvider extends LabelProvider {
 			if (entry.getMatch() instanceof ModuleElement || entry.getMatch() instanceof Variable
 					|| entry.getMatch() instanceof Module || entry.getMatch() instanceof TypedModel) {
 				result = AcceleoUIActivator.getDefault().getImage(
-						"/icons/template-editor/" + ((EObject)entry.getMatch()).eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
+						"/icons/template-editor/" + (entry.getMatch()).eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				result = AcceleoUIActivator.getDefault().getImage(
 						"/icons/template-editor/ModelExpression.gif"); //$NON-NLS-1$
@@ -72,6 +72,7 @@ public class ReferenceLabelProvider extends LabelProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
 	 */
+	@Override
 	public String getText(Object element) {
 		String res = super.getText(element);
 		if (element instanceof IFile) {

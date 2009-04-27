@@ -70,7 +70,7 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 		int i = 0;
 		for (Iterator<String> iterator = stackInfo.getVariables().keySet().iterator(); iterator.hasNext();) {
 			String name = iterator.next();
-			Object value = (Object)stackInfo.getVariables().get(name);
+			Object value = stackInfo.getVariables().get(name);
 			ret[i] = new AcceleoVariable(this, name, value, AcceleoVariable.DEFAULT_TYPE);
 			++i;
 		}
@@ -293,6 +293,7 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AcceleoStackFrame) {
 			AcceleoStackFrame sf = (AcceleoStackFrame)obj;
@@ -311,6 +312,7 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return getSourceName().hashCode();
 	}

@@ -30,6 +30,7 @@ public class AcceleoEditorActionContributor extends BasicTextEditorActionContrib
 	 * 
 	 * @see org.eclipse.ui.texteditor.BasicTextEditorActionContributor#setActiveEditor(org.eclipse.ui.IEditorPart)
 	 */
+	@Override
 	public void setActiveEditor(IEditorPart part) {
 		super.setActiveEditor(part);
 		if (!(part instanceof ITextEditor)) {
