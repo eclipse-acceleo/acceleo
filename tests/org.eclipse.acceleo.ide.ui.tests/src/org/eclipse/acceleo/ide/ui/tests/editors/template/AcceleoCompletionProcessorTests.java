@@ -19,16 +19,17 @@ import java.util.StringTokenizer;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.osgi.framework.Bundle;
 
+@SuppressWarnings("nls")
 public class AcceleoCompletionProcessorTests extends TestCase {
 
 	private Bundle bundle;
@@ -46,6 +47,7 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 		File file = createFile("/data/template/mtlCompletionProcessor.mtl");
 		text = FileContent.getFileContent(file);
 		AcceleoSourceContent content = new AcceleoSourceContent() {
+			@Override
 			public List<URI> getAccessibleOutputFiles() {
 				List<URI> dependencies = new ArrayList<URI>();
 				dependencies.add(createFileURI("/data/template/mtlCompletionProcessorCommon.emtl"));
@@ -73,7 +75,7 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 
 	}
 
-	private URI createFileURI(String pathName) {
+	protected URI createFileURI(String pathName) {
 		try {
 			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
 			return URI.createFileURI(fileLocation);
@@ -194,14 +196,14 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 			}
 		}
 		if (!ok) {
-			StringBuffer text = new StringBuffer();
+			StringBuffer txt = new StringBuffer();
 			for (int i = 0; i < proposals.length; i++) {
-				text.append(proposals[i].getDisplayString().trim());
+				txt.append(proposals[i].getDisplayString().trim());
 				if (i + 1 < proposals.length) {
-					text.append('$');
+					txt.append('$');
 				}
 			}
-			String message = "\n[" + line + "," + column + "] : proposals not valid, NR=" + text.toString();
+			String message = "\n[" + line + "," + column + "] : proposals not valid, NR=" + txt.toString();
 			messages.add(message);
 		}
 	}
