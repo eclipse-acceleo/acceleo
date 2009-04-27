@@ -50,7 +50,7 @@ import org.eclipse.emf.ecore.EObject;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class AcceleoEvaluationContext {
-	/** This will hold the system specific line separator ("\n" for unix, "\n\r" for dos, "\r" for mac, ...). */
+	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */
 	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** Default size to be used for new buffers. */
