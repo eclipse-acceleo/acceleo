@@ -71,7 +71,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_first";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -84,7 +84,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_index";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -98,7 +98,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_isAlpha";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -112,7 +112,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_isAlphanum";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_last";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -138,7 +138,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_strcmp";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -151,7 +151,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_strstr";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -163,7 +163,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_strtok";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -179,7 +179,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_substitute";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -191,7 +191,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_toLowerFirst";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
@@ -203,7 +203,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 		final String fileName = "test_string_toUpperFirst";
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertTrue(filePreview.getValue().toString().equals(OUTPUT));
+				assertEquals(OUTPUT, filePreview.getValue().toString());
 			}
 		}
 	}
