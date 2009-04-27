@@ -45,6 +45,7 @@ public interface IAcceleoLaunchingStrategy {
 	 *            is the progress monitor
 	 * @throws CoreException
 	 *             when an issue occurs
+	 * @since 0.8
 	 */
 	void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException;

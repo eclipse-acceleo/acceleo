@@ -51,6 +51,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @throws CoreException
 	 * @see org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy#launch(org.eclipse.debug.core.ILaunchConfiguration,
 	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
+	 * @since 0.8
 	 */
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
@@ -146,6 +147,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the project, or null if it doesn't exist
+	 * @since 0.8
 	 */
 	protected IProject getProject(ILaunchConfiguration configuration) {
 		String projectName;
@@ -169,6 +171,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the main type or an empty string
+	 * @since 0.8
 	 */
 	protected String getMainType(final ILaunchConfiguration configuration) {
 		String type = ""; //$NON-NLS-1$
@@ -187,6 +190,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the model path or an empty string
+	 * @since 0.8
 	 */
 	protected String getModelPath(final ILaunchConfiguration configuration) {
 		String model = ""; //$NON-NLS-1$
@@ -205,6 +209,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the target folder or an empty string
+	 * @since 0.8
 	 */
 	protected String getTargetPath(final ILaunchConfiguration configuration) {
 		String target = ""; //$NON-NLS-1$
@@ -224,6 +229,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the arguments or an empty list
+	 * @since 0.8
 	 */
 	protected List<String> getArguments(final ILaunchConfiguration configuration) {
 		String args = ""; //$NON-NLS-1$
