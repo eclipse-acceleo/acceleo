@@ -18,6 +18,7 @@ import java.util.TreeSet;
 
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
 /**
@@ -42,6 +43,7 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 	 * 
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object[] getElements(Object object) {
 		if (object instanceof List) {
@@ -65,6 +67,16 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 		} else {
 			return super.getElements(object);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#notifyChanged(org.eclipse.emf.common.notify.Notification)
+	 */
+	@Override
+	public void notifyChanged(Notification notification) {
+
 	}
 
 }

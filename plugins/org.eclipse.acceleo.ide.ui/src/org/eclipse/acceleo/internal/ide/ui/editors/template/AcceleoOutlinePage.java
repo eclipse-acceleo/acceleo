@@ -14,7 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.parser.cst.Module;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -57,6 +62,56 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 	 * The item provider of the outline page.
 	 */
 	protected AcceleoOutlinePageItemProviderAdapterFactory outlinePageItemProvider;
+
+	/**
+	 * The job instance to refresh the outline view.
+	 */
+	private RefreshViewJob refreshViewJob = new RefreshViewJob();
+
+	/**
+	 * The job class to refresh the outline view.
+	 * 
+	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+	 */
+	private class RefreshViewJob {
+
+		/**
+		 * The element to refresh.
+		 */
+		Object element;
+
+		/**
+		 * The job.
+		 */
+		Job refreshJob;
+
+		/**
+		 * Refreshes the view for the given element.
+		 * 
+		 * @param elem
+		 *            is the element to refresh
+		 */
+		public void refreshView(Object elem) {
+			if (refreshJob != null) {
+				refreshJob.cancel();
+			}
+			this.element = elem;
+			refreshJob = new Job("Acceleo") { //$NON-NLS-1$
+
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					getTreeViewer().getControl().getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							refreshContainer(element);
+						}
+					});
+					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
+				}
+			};
+			refreshJob.setPriority(Job.DECORATE);
+			refreshJob.schedule(1000);
+		}
+	}
 
 	/**
 	 * Constructor.
@@ -119,11 +174,10 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 	 */
 	public void refresh(final Object element) {
 		if (element instanceof EObject && ((EObject)element).eContainer() != null) {
-			refreshContainer(((EObject)element).eContainer());
+			refreshViewJob.refreshView(((EObject)element).eContainer());
 		} else {
-			refreshContainer(element);
+			refreshViewJob.refreshView(element);
 		}
-		getTreeViewer().expandToLevel(element, 2);
 	}
 
 	/**
@@ -142,6 +196,7 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 			getTreeViewer().setExpandedElements(elements);
 			getTreeViewer().setExpandedTreePaths(treePaths);
 		}
+		getTreeViewer().expandToLevel(element, 2);
 	}
 
 }
