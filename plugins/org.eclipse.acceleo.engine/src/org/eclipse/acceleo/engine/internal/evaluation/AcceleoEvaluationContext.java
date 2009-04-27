@@ -44,13 +44,15 @@ import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.emf.ecore.EObject;
 
-// FIXME use System.getProperty("line.separator") instead of '\n'
 /**
  * This will hold all necessary variables for the evaluation of an Acceleo module.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class AcceleoEvaluationContext {
+	/** This will hold the system specific line separator ("\n" for unix, "\n\r" for dos, "\r" for mac, ...). */
+	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
+
 	/** Default size to be used for new buffers. */
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
 
@@ -182,7 +184,7 @@ public final class AcceleoEvaluationContext {
 				} else {
 					// Add a carriage return at the end of each file so that no problem will arise with
 					// indentation when appending
-					last.append('\n');
+					last.append(LINE_SEPARATOR);
 					last.close();
 				}
 				result = ""; //$NON-NLS-1$
@@ -476,12 +478,20 @@ public final class AcceleoEvaluationContext {
 			if (line.contains(usercodeStart)) {
 				final String marker = line.substring(line.indexOf(usercodeStart) + usercodeStart.length())
 						.trim();
-				final StringBuffer areaContent = new StringBuffer('\n');
+				final StringBuffer areaContent = new StringBuffer(DEFAULT_BUFFER_SIZE);
+				// Append a line separator before the protected area if need be
+				if (line.indexOf(usercodeStart) - LINE_SEPARATOR.length() > 0) {
+					final String previous = line.substring(line.indexOf(usercodeStart)
+							- LINE_SEPARATOR.length(), line.indexOf(usercodeStart));
+					if (LINE_SEPARATOR.equals(previous)) {
+						areaContent.append(LINE_SEPARATOR);
+					}
+				}
 				// Everything preceding the start of user code doesn't need to be saved
 				areaContent.append(line.substring(line.indexOf(usercodeStart)));
 				line = reader.readLine();
 				while (line != null) {
-					areaContent.append('\n');
+					areaContent.append(LINE_SEPARATOR);
 					if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
 						hasJMergeTag = true;
 					}
@@ -646,7 +656,7 @@ public final class AcceleoEvaluationContext {
 		 *            Path of the file this writer will contain the content of.
 		 */
 		public AcceleoWriterDecorator(String filePath) {
-			delegate = new StringWriter();
+			delegate = new StringWriter(DEFAULT_BUFFER_SIZE);
 			targetPath = filePath;
 			isFile = false;
 			shouldMerge = false;
@@ -661,7 +671,7 @@ public final class AcceleoEvaluationContext {
 		 *            If <code>true</code>, we'll use JMerge to merge the file content before overwriting it.
 		 */
 		public AcceleoWriterDecorator(String filePath, boolean merge) {
-			delegate = new StringWriter();
+			delegate = new StringWriter(DEFAULT_BUFFER_SIZE);
 			targetPath = filePath;
 			isFile = true;
 			shouldMerge = merge;
@@ -726,7 +736,7 @@ public final class AcceleoEvaluationContext {
 		public void reinit() {
 			oldContent = toString();
 			shouldMerge = true;
-			delegate = new StringWriter();
+			delegate = new StringWriter(DEFAULT_BUFFER_SIZE);
 		}
 
 		/**
@@ -805,7 +815,7 @@ public final class AcceleoEvaluationContext {
 			StringBuilder lostContent = new StringBuilder();
 			for (final String lostAreaContent : lostAreas.values()) {
 				lostContent.append(lostAreaContent);
-				lostContent.append('\n');
+				lostContent.append(LINE_SEPARATOR);
 			}
 			Writer writer = null;
 			try {
@@ -814,7 +824,7 @@ public final class AcceleoEvaluationContext {
 				if (!previewMode) {
 					writer = new BufferedWriter(new FileWriter(lostFile, true));
 				} else {
-					writer = new StringWriter();
+					writer = new StringWriter(DEFAULT_BUFFER_SIZE);
 					if (lostFile.exists() && lostFile.canRead()) {
 						final BufferedReader lostFileReader = new BufferedReader(new FileReader(lostFile));
 						String line = lostFileReader.readLine();
@@ -824,10 +834,11 @@ public final class AcceleoEvaluationContext {
 						}
 					}
 				}
-				writer.append('\n').append(Calendar.getInstance().getTime().toString()).append('\n');
+				writer.append(LINE_SEPARATOR).append(Calendar.getInstance().getTime().toString()).append(
+						LINE_SEPARATOR);
 				writer
 						.append("================================================================================"); //$NON-NLS-1$
-				writer.append('\n');
+				writer.append(LINE_SEPARATOR);
 				writer.append(lostContent);
 			} catch (final IOException e) {
 				final String errorMessage = AcceleoEngineMessages.getString(
