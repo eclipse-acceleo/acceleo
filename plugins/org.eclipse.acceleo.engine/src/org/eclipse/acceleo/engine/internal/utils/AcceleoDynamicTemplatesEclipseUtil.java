@@ -107,13 +107,16 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				if (actualPath.charAt(0) != '/') {
 					actualPath = '/' + actualPath;
 				}
-				Enumeration<URL> emtlFiles = entry.getKey().findEntries(actualPath,
-						"*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$
-				if (emtlFiles == null || !emtlFiles.hasMoreElements()) {
-					emtlFiles = entry.getKey().findEntries(actualPath.replace("/src", "/bin"), //$NON-NLS-1$ //$NON-NLS-2$
-							"*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$
+				if (actualPath.charAt(actualPath.length() - 1) == '/') {
+					actualPath = actualPath.substring(0, actualPath.length() - 1);
 				}
-				// no dynamic templates here
+				if (actualPath.startsWith("/src") || actualPath.startsWith("/bin")) { //$NON-NLS-1$ //$NON-NLS-2$
+					actualPath = actualPath.substring(actualPath.indexOf('/', 2));
+				}
+				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
+				Enumeration<URL> emtlFiles = entry.getKey().findEntries("/", //$NON-NLS-1$
+						filePattern, true);
+				// no dynamic templates in this bundle
 				if (emtlFiles == null) {
 					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
 							"AcceleoDynamicTemplatesEclipseUtil.MissingDynamicTemplates", entry.getKey() //$NON-NLS-1$
@@ -123,9 +126,13 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				try {
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
-						final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-						if (moduleFile.exists() && moduleFile.canRead()) {
-							REGISTERED_MODULES.add(moduleFile);
+						String emtlPath = next.getPath();
+						emtlPath.substring(0, emtlPath.lastIndexOf('/'));
+						if (emtlPath.endsWith(actualPath)) {
+							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
+							if (moduleFile.exists() && moduleFile.canRead()) {
+								REGISTERED_MODULES.add(moduleFile);
+							}
 						}
 					}
 				} catch (IOException e) {
