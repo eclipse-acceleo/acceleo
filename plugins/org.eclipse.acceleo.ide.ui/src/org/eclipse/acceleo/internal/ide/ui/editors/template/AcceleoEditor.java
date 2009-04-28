@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -465,15 +466,21 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	public void updateFoldingStructure(Map<Annotation, Position> addedAnnotations,
 			List<Annotation> deletedAnnotations, Map<Annotation, Position> modifiedAnnotations) {
-		Annotation[] deleted = new Annotation[deletedAnnotations.size()];
+		Annotation[] deleted = new Annotation[deletedAnnotations.size() + modifiedAnnotations.size()];
 		for (int i = 0; i < deletedAnnotations.size(); i++) {
 			deleted[i] = deletedAnnotations.get(i);
 		}
+		/*
+		 * bug [273034] : merge "modified" annotations with deleted and added so as to update the whole
+		 * folding structure in one go.
+		 */
+		final Iterator<Annotation> modifiedIterator = modifiedAnnotations.keySet().iterator();
+		for (int i = deletedAnnotations.size(); i < deleted.length; i++) {
+			deleted[i] = modifiedIterator.next();
+		}
+		addedAnnotations.putAll(modifiedAnnotations);
 		if (annotationModel != null) {
 			annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
-			for (Map.Entry<Annotation, Position> entry : modifiedAnnotations.entrySet()) {
-				annotationModel.modifyAnnotationPosition(entry.getKey(), entry.getValue());
-			}
 		}
 	}
 
