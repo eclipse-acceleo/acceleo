@@ -163,11 +163,26 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 				// fall through : let else fail in UnsupportedOperationException
 			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName)) {
-				result = ancestors(sourceValue);
+				if (args.length == 0) {
+					result = ancestors(sourceValue, null);
+				} else if (args.length == 1 && args[0] instanceof EClassifier) {
+					result = ancestors(sourceValue, (EClassifier)args[0]);
+				}
+				// fall through : let else fail in UnsupportedOperationException
 			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName)) {
-				result = siblings(sourceValue);
+				if (args.length == 0) {
+					result = siblings(sourceValue, null);
+				} else if (args.length == 1 && args[0] instanceof EClassifier) {
+					result = siblings(sourceValue, (EClassifier)args[0]);
+				}
+				// fall through : let else fail in UnsupportedOperationException
 			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName)) {
-				result = eInverse(sourceValue);
+				if (args.length == 0) {
+					result = eInverse(sourceValue, null);
+				} else if (args.length == 1 && args[0] instanceof EClassifier) {
+					result = eInverse(sourceValue, (EClassifier)args[0]);
+				}
+				// fall through : let else fail in UnsupportedOperationException
 			}
 		}
 
@@ -178,22 +193,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		// If we're here, the operation is undefined.
 		final StringBuilder argErrorMsg = new StringBuilder();
 		for (int i = 0; i < args.length; i++) {
-			argErrorMsg.append(args[i].getClass().getName());
+			argErrorMsg.append(args[i].getClass().getSimpleName());
 			if (i < args.length - 1) {
 				argErrorMsg.append(", "); //$NON-NLS-1$
 			}
 		}
-		final String sourceLabel;
-		if (source == null) {
-			sourceLabel = "null"; //$NON-NLS-1$
-		} else {
-			sourceLabel = source.getClass().getName();
-		}
-		throw new UnsupportedOperationException(
-				AcceleoEngineMessages
-						.getString(
-								"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg.toString(), //$NON-NLS-1$
-								sourceLabel));
+		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
+				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
+						.toString(), source.getClass().getName()));
 	}
 
 	/**
@@ -296,20 +303,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		// If we're here, the operation is undefined.
 		final StringBuilder argErrorMsg = new StringBuilder();
 		for (int i = 0; i < args.length; i++) {
-			argErrorMsg.append(args[i].getClass().getName());
+			argErrorMsg.append(args[i].getClass().getSimpleName());
 			if (i < args.length - 1) {
 				argErrorMsg.append(", "); //$NON-NLS-1$
 			}
 		}
-		final String sourceLabel;
-		if (source == null) {
-			sourceLabel = "null"; //$NON-NLS-1$
-		} else {
-			sourceLabel = source.getClass().getName();
-		}
 		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
 				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
-						.toString(), sourceLabel));
+						.toString(), source.getClass().getName()));
 	}
 
 	/**
@@ -387,13 +388,17 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @param source
 	 *            The EObject we seek the ancestors of.
+	 * @param filter
+	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's ancestors.
 	 */
-	private Set<EObject> ancestors(EObject source) {
+	private Set<EObject> ancestors(EObject source, EClassifier filter) {
 		final Set<EObject> result = new LinkedHashSet<EObject>();
 		EObject container = source.eContainer();
 		while (container != null) {
-			result.add(container);
+			if (filter == null || filter.isInstance(container)) {
+				result.add(container);
+			}
 			container = container.eContainer();
 		}
 		return result;
@@ -427,6 +432,49 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * This will create the cross referencer that's to be used by the "eInverse" library. It will attempt to
+	 * create the cross referencer on the target's resourceSet. If it is null, we'll then attempt to create
+	 * the cross referencer on the target's resource. When the resource too is null, we'll create the cross
+	 * referencer on the target's root container.
+	 * 
+	 * @param target
+	 *            Target of the cross referencing.
+	 */
+	private void createEInverseCrossreferencer(EObject target) {
+		if (target.eResource() != null && target.eResource().getResourceSet() != null) {
+			referencer = new CrossReferencer(target.eResource().getResourceSet()) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+				}
+			};
+		} else if (target.eResource() != null) {
+			referencer = new CrossReferencer(target.eResource()) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+				}
+			};
+		} else {
+			referencer = new CrossReferencer(EcoreUtil.getRootContainer(target)) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+				}
+			};
+		}
+	}
+
+	/**
 	 * Iterates over the content of the given EObject and returns the elements of type <code>filter</code>
 	 * from its content tree as a list.
 	 * 
@@ -455,49 +503,23 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @param target
 	 *            The EObject we seek the inverse references of.
+	 * @param filter
+	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of inverse references.
 	 */
-	private Set<EObject> eInverse(EObject target) {
+	private Set<EObject> eInverse(EObject target, EClassifier filter) {
 		final Set<EObject> result = new LinkedHashSet<EObject>();
 		if (referencer == null) {
-			if (target.eResource() != null && target.eResource().getResourceSet() != null) {
-				referencer = new CrossReferencer(target.eResource().getResourceSet()) {
-					/** Default SUID. */
-					private static final long serialVersionUID = 1L;
-
-					// static initializer
-					{
-						crossReference();
-					}
-				};
-			} else if (target.eResource() != null) {
-				referencer = new CrossReferencer(target.eResource()) {
-					/** Default SUID. */
-					private static final long serialVersionUID = 1L;
-
-					// static initializer
-					{
-						crossReference();
-					}
-				};
-			} else {
-				referencer = new CrossReferencer(EcoreUtil.getRootContainer(target)) {
-					/** Default SUID. */
-					private static final long serialVersionUID = 1L;
-
-					// static initializer
-					{
-						crossReference();
-					}
-				};
-			}
+			createEInverseCrossreferencer(target);
 		}
 		Collection<EStructuralFeature.Setting> settings = referencer.get(target);
 		if (settings == null) {
 			return Collections.emptySet();
 		}
 		for (EStructuralFeature.Setting setting : settings) {
-			result.add(setting.getEObject());
+			if (filter == null || filter.isInstance(setting.getEObject())) {
+				result.add(setting.getEObject());
+			}
 		}
 		return result;
 	}
@@ -596,8 +618,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			if (reference.isContainment() && reference.isDerived()) {
 				final Object value = eObject.eGet(reference);
 				if (value instanceof Collection) {
-					result.addAll((Collection)value);
-				} else if (value instanceof EObject) {
+					for (Object newValue : (Collection)value) {
+						if (!result.contains(newValue) && newValue instanceof EObject) {
+							result.add((EObject)newValue);
+						}
+					}
+				} else if (!result.contains(value) && value instanceof EObject) {
 					result.add((EObject)value);
 				}
 			}
@@ -922,13 +948,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @param source
 	 *            The EObject we seek the siblings of.
+	 * @param filter
+	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
-	private Set<EObject> siblings(EObject source) {
+	private Set<EObject> siblings(EObject source, EClassifier filter) {
 		final Set<EObject> result = new LinkedHashSet<EObject>();
 		EObject container = source.eContainer();
 		for (EObject child : getContents(container)) {
-			if (child != source) {
+			if (child != source && (filter == null || filter.isInstance(child))) {
 				result.add(child);
 			}
 		}
