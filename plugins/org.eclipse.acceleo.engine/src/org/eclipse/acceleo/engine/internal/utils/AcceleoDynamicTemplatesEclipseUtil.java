@@ -111,7 +111,12 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					actualPath = actualPath.substring(0, actualPath.length() - 1);
 				}
 				if (actualPath.startsWith("/src") || actualPath.startsWith("/bin")) { //$NON-NLS-1$ //$NON-NLS-2$
-					actualPath = actualPath.substring(actualPath.indexOf('/', 2));
+					int firstFragmentEnd = actualPath.indexOf('/', 2);
+					if (firstFragmentEnd > 0) {
+						actualPath = actualPath.substring(firstFragmentEnd);
+					} else {
+						actualPath = "/"; //$NON-NLS-1$
+					}
 				}
 				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
 				Enumeration<URL> emtlFiles = entry.getKey().findEntries("/", //$NON-NLS-1$
