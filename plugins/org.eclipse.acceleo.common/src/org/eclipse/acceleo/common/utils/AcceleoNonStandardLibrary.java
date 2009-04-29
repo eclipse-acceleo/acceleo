@@ -33,19 +33,29 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  */
 public final class AcceleoNonStandardLibrary {
 	/**
-	 * Name of the &quot;ancestors&quot; non-standard operation accessible on all objects.
+	 * Name of the &quot;ancestors&quot; non-standard operation accessible on all objects. This operation
+	 * comes in two flavors :
 	 * <p>
 	 * <b>ancestors( ) : Sequence</b><br/> Returns a Sequence containing the full set of the receiver's
 	 * ancestors.
+	 * </p>
+	 * <p>
+	 * <b>ancestors( OclAny ) : Sequence</b><br/> Returns the elements of the given type from the set of the
+	 * receiver's ancestors as a Sequence.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_ANCESTORS = "ancestors"; //$NON-NLS-1$
 
 	/**
-	 * Name of the &quot;siblings&quot; non-standard operation accessible on all objects.
+	 * Name of the &quot;siblings&quot; non-standard operation accessible on all objects. This operation comes
+	 * in two flavors :
 	 * <p>
 	 * <b>siblings( ) : Sequence</b><br/> Returns a Sequence containing the full set of the receiver's
 	 * siblings.
+	 * </p>
+	 * <p>
+	 * <b>siblings( OclAny ) : Sequence</b><br/> Returns the elements of the given type from the set of the
+	 * receiver's siblings as a Sequence.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_SIBLINGS = "siblings"; //$NON-NLS-1$
@@ -64,9 +74,14 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
 
 	/**
-	 * Name of the &quot;eInverse&quot; non-standard operation accessible on all objects.
+	 * Name of the &quot;eInverse&quot; non-standard operation accessible on all objects. This operation comes
+	 * in two flavors :
 	 * <p>
 	 * <b>eInverse( ) : Sequence(T)</b><br/> Returns the inverse references of the receiver.
+	 * </p>
+	 * <p>
+	 * <b>eInverse( OclAny ) : Sequence(T)</b><br/> Returns the elements of the given type from the set of the
+	 * inverse references of the receiver.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_EINVERSE = "eInverse"; //$NON-NLS-1$
