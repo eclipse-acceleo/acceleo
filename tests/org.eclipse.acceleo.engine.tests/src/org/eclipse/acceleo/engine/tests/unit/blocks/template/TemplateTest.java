@@ -16,7 +16,6 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -71,7 +70,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_super", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_super", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -94,7 +93,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_protected_visibility", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_protected_visibility", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -116,7 +115,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_private_visibility", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_private_visibility", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -138,7 +137,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_before", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_before", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -160,7 +159,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_after", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_after", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -182,7 +181,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_false_guard", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_false_guard", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -204,7 +203,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_true_guard", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_true_guard", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -226,7 +225,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_protect_override", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_protect_override", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -248,7 +247,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_import", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_import", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

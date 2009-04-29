@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
@@ -86,7 +87,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("NonStdLib"));
 		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<AcceleoTextGenerationListener>(), true);
+				new ArrayList<AcceleoTextGenerationListener>(), true, new AcceleoProgressMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
 	}

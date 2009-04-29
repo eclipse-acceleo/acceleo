@@ -16,6 +16,7 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -74,8 +75,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_3_extend_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_3_extend_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -100,8 +100,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_external_extend_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_external_extend_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -126,8 +125,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_external_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_external_import_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -152,8 +150,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_3_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_3_import_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -178,8 +175,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService
-				.doGenerate(module, "test_namesake_3_local_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module, "test_namesake_3_local_specific", inputModel, generationRoot, //$NON-NLS-1$
+				false, new AcceleoProgressMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -204,8 +201,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_extend_extend_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_extend_extend_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -230,8 +226,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_extend_local_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_extend_local_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -256,8 +251,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_import_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_import_import_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -282,8 +276,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_import_local_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_import_local_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

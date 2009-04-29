@@ -13,7 +13,6 @@ package org.eclipse.acceleo.engine.tests.unit.blocks.ifBlock;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 
 /**
@@ -54,7 +53,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "testingCompleteIf", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("testingCompleteIf", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -74,7 +73,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "testingElse", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("testingElse", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -94,7 +93,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "testingElseif", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("testingElseif", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -114,7 +113,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "testingIf", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("testingIf", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -134,7 +133,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "testingNestedIf", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("testingNestedIf", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

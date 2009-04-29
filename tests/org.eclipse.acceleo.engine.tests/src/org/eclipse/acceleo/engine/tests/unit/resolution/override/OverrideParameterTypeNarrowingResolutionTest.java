@@ -16,6 +16,7 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -72,8 +73,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_resolution_override_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_resolution_override_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -97,8 +97,8 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService
-				.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, //$NON-NLS-1$
+				false, new AcceleoProgressMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -122,8 +122,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_resolution_external_override", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_resolution_external_override", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

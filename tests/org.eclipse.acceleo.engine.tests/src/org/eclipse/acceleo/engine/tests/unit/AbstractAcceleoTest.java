@@ -14,8 +14,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
@@ -23,6 +25,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
+import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.parser.AcceleoParser;
@@ -148,6 +152,19 @@ public abstract class AbstractAcceleoTest extends TestCase {
 				deleteFile(child);
 			}
 		}
+	}
+
+	/**
+	 * This will call the Acceleo service to generate the given template.
+	 * 
+	 * @param templateName
+	 *            Name of the templat that is to be evaluated.
+	 * @param preview
+	 *            <code>true</code> if we are to evaluate the template in preview mode.
+	 */
+	protected Map<String, Writer> generate(String templateName, boolean preview) {
+		return AcceleoService.doGenerate(module, templateName, inputModel, generationRoot, preview,
+				new AcceleoProgressMonitor());
 	}
 
 	/**

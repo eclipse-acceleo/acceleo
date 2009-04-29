@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -72,7 +73,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		final List<EObject> templateArgs = new ArrayList<EObject>(1);
 		templateArgs.add(target);
 
-		AcceleoService.doGenerateTemplate(module, "test_protected_area", templateArgs, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerateTemplate(module, "test_protected_area", templateArgs, generationRoot, false, //$NON-NLS-1$
+				new AcceleoProgressMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -115,8 +117,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		final List<EObject> templateArgs = new ArrayList<EObject>(1);
 		templateArgs.add(target);
 
-		AcceleoService.doGenerateTemplate(module,
-				"test_removed_protected_area", templateArgs, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerateTemplate(module, "test_removed_protected_area", templateArgs, //$NON-NLS-1$
+				generationRoot, false, new AcceleoProgressMonitor());
 
 		try {
 			AcceleoEvaluationContext.awaitCompletion();
@@ -168,8 +170,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		final List<EObject> templateArgs = new ArrayList<EObject>(1);
 		templateArgs.add(target);
 
-		AcceleoService.doGenerateTemplate(module,
-				"test_lost_protected_area", templateArgs, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerateTemplate(module, "test_lost_protected_area", templateArgs, generationRoot, //$NON-NLS-1$
+				false, new AcceleoProgressMonitor());
 
 		try {
 			AcceleoEvaluationContext.awaitCompletion();

@@ -66,7 +66,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		AcceleoGenerationCountListener listener = new AcceleoGenerationCountListener();
 		AcceleoService.addListener(listener);
 
-		AcceleoService.doGenerate(module, "test_generation_listeners", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_generation_listeners", false); //$NON-NLS-1$
 
 		int eClassCount = 0;
 		final TreeIterator<EObject> iterator = inputModel.eAllContents();
@@ -77,8 +77,8 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 			}
 		}
 
-		// We know 62 text generations were called. If this changes, check generated files.
-		final int generationCount = 62;
+		// We know 47 text generations events were fired. If this figure changes, check generated files.
+		final int generationCount = 47;
 		assertSame("Unexpected count of text generations.", generationCount, listener.generationCount); //$NON-NLS-1$
 		assertSame("Wrong count of generated files.", eClassCount, listener.generatedFileCount); //$NON-NLS-1$
 
@@ -97,8 +97,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		AcceleoGenerationEventTestListener listener = new AcceleoGenerationEventTestListener();
 		AcceleoService.addListener(listener);
 
-		final Map<String, Writer> preview = AcceleoService.doGenerate(module,
-				"test_generation_event", inputModel, generationRoot, true); //$NON-NLS-1$
+		final Map<String, Writer> preview = generate("test_generation_event", true); //$NON-NLS-1$
 
 		assertFalse("There should have been a preview generated.", preview.isEmpty()); //$NON-NLS-1$
 		assertSame("We expected a single preview to be available.", 1, preview.size()); //$NON-NLS-1$

@@ -16,6 +16,7 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -73,7 +74,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_guard", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_guard", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -99,8 +100,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_guard_import_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_guard_import_specific", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -126,8 +126,8 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService
-				.doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, false); //$NON-NLS-1$
+		AcceleoService.doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, //$NON-NLS-1$
+				false, new AcceleoProgressMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

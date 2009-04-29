@@ -13,7 +13,6 @@ package org.eclipse.acceleo.engine.tests.unit.variables;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 
 /**
@@ -54,7 +53,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_self_query", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_self_query", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -80,7 +79,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_self_template", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_self_template", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -106,7 +105,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_implicit_self_query", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_implicit_self_query", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -132,7 +131,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_implicit_self_template", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_implicit_self_template", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

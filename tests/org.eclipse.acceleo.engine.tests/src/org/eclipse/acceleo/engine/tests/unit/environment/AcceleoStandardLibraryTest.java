@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
@@ -86,7 +87,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("StdLib"));
 		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<AcceleoTextGenerationListener>(), true);
+				new ArrayList<AcceleoTextGenerationListener>(), true, new AcceleoProgressMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
 	}

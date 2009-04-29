@@ -13,7 +13,6 @@ package org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 
 /**
@@ -54,7 +53,7 @@ public class DualTemplateInvocationTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

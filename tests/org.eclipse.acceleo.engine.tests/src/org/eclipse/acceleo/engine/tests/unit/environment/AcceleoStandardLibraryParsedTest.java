@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.Writer;
 import java.util.Map;
 
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 
 /**
@@ -40,7 +39,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		generationRoot = new File(getGenerationRootPath("StdLib")); //$NON-NLS-1$
-		generatedPreview = AcceleoService.doGenerate(module, "test_stdlib", inputModel, generationRoot, true); //$NON-NLS-1$
+		generatedPreview = generate("test_stdlib", true); //$NON-NLS-1$
 	}
 
 	/**

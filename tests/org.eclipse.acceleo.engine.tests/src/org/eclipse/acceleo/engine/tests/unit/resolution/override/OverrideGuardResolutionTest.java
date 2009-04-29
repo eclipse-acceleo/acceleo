@@ -16,7 +16,6 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -74,8 +73,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_resolution_override_specific_guarded", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_resolution_override_specific_guarded", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -100,8 +98,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_resolution_local_override_definition_guarded", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_resolution_local_override_definition_guarded", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -126,8 +123,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_resolution_external_override_definition_guarded", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_resolution_external_override_definition_guarded", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

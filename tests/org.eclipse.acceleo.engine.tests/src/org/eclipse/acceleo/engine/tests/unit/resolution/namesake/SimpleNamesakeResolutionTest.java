@@ -16,7 +16,6 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -73,7 +72,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_extend", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_extend", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -97,7 +96,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_import", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_import", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -122,7 +121,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_external", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_external", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -147,8 +146,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module,
-				"test_namesake_distinct_param_name", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_distinct_param_name", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -173,7 +171,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_3", inputModel, generationRoot, false); //$NON-NLS-1$
+		generate("test_namesake_3", false); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

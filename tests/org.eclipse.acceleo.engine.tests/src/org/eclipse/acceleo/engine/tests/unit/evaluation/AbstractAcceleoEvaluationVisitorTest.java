@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -224,7 +225,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	 * 
 	 * @param block
 	 *            The block we seek the containing Template of.
-	 * @return The parent Template of a given block.
+	 * @return The parent Template of a given block., new AcceleoProgressMonitor()
 	 */
 	protected Template getParentTemplate(EObject block) {
 		EObject container = block.eContainer();
@@ -245,7 +246,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("EvaluationVisitor")); //$NON-NLS-1$
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<AcceleoTextGenerationListener>(), true);
+				new ArrayList<AcceleoTextGenerationListener>(), true, new AcceleoProgressMonitor());
 		ocl = OCL.newInstance(factory);
 		evaluationVisitor = (AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl

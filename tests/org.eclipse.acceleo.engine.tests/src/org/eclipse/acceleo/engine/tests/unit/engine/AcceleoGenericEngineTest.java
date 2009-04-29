@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -108,17 +109,45 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 
 		// preview mode
 		Map<String, Writer> previewMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
-				validArguments, generationRoot, true);
+				validArguments, generationRoot, true, new AcceleoProgressMonitor());
 
 		assertTrue("Preview map should have been empty", previewMode.isEmpty());
 		assertSame("There shouldn't have been generated files", 0, getFiles(generationRoot).length);
 
 		// generation mode
 		Map<String, Writer> generationMode = new AcceleoGenericEngine().evaluate(publicGuardedTemplate,
-				validArguments, generationRoot, false);
+				validArguments, generationRoot, false, new AcceleoProgressMonitor());
 
 		assertTrue("Preview map should have been empty", generationMode.isEmpty());
 		assertSame("There shouldn't have been generated files", 0, getFiles(generationRoot).length);
+	}
+
+	/**
+	 * Tests the behavior of {@link AcceleoGenericEngine#evaluate(Template, List, File, boolean)} on a valid
+	 * template with mismatching arguments when a guard must be evaluated.
+	 * <p>
+	 * Expects an {@link AcceleoEvaluationException} to be thrown.
+	 * </p>
+	 * 
+	 * @throws IOException
+	 *             Thrown if the evaluation fails unexpectedly.
+	 */
+	public void testEvaluateGuardedTemplateMismatchingArgs() throws IOException {
+		generationRoot = new File(getGenerationRootPath("GuardedTemplate"));
+		try {
+			new AcceleoGenericEngine().evaluate(publicGuardedTemplate, invalidArguments, generationRoot,
+					false, new AcceleoProgressMonitor());
+			fail(EVALUATION_EXCEPTION_FAILURE);
+		} catch (AcceleoEvaluationException e) {
+			// Expected behavior
+		}
+		try {
+			new AcceleoGenericEngine().evaluate(publicGuardedTemplate, invalidArguments, generationRoot,
+					true, new AcceleoProgressMonitor());
+			fail(EVALUATION_EXCEPTION_FAILURE);
+		} catch (AcceleoEvaluationException e) {
+			// Expected behavior
+		}
 	}
 
 	/**
@@ -134,13 +163,15 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluateNullArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("InvalidNullArgs"));
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, null, generationRoot, true);
+			new AcceleoGenericEngine().evaluate(publicTemplate, null, generationRoot, true,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
 		}
 		try {
-			new AcceleoGenericEngine().evaluate(privateTemplate, null, generationRoot, false);
+			new AcceleoGenericEngine().evaluate(privateTemplate, null, generationRoot, false,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
@@ -159,13 +190,15 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 */
 	public void testEvaluateNullRootNoPreview() throws IOException {
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, null, false);
+			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, null, false,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
 		}
 		try {
-			new AcceleoGenericEngine().evaluate(privateTemplate, invalidArguments, null, false);
+			new AcceleoGenericEngine().evaluate(privateTemplate, invalidArguments, null, false,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
@@ -185,13 +218,15 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluateNullTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("InvalidNullTemplate"));
 		try {
-			new AcceleoGenericEngine().evaluate(null, validArguments, generationRoot, true);
+			new AcceleoGenericEngine().evaluate(null, validArguments, generationRoot, true,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
 		}
 		try {
-			new AcceleoGenericEngine().evaluate(null, invalidArguments, generationRoot, false);
+			new AcceleoGenericEngine().evaluate(null, invalidArguments, generationRoot, false,
+					new AcceleoProgressMonitor());
 			fail(NPE_FAILURE);
 		} catch (NullPointerException e) {
 			// expected behavior
@@ -209,13 +244,15 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePrivateTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PrivateTemplate"));
 		try {
-			new AcceleoGenericEngine().evaluate(privateTemplate, validArguments, generationRoot, false);
+			new AcceleoGenericEngine().evaluate(privateTemplate, validArguments, generationRoot, false,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
 		}
 		try {
-			new AcceleoGenericEngine().evaluate(privateTemplate, validArguments, generationRoot, true);
+			new AcceleoGenericEngine().evaluate(privateTemplate, validArguments, generationRoot, true,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
@@ -235,13 +272,15 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	public void testEvaluatePublicTemplateMismatchingArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("MismatchingArgs"));
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, invalidArguments, generationRoot, false);
+			new AcceleoGenericEngine().evaluate(publicTemplate, invalidArguments, generationRoot, false,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
 		}
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, invalidArguments, generationRoot, true);
+			new AcceleoGenericEngine().evaluate(publicTemplate, invalidArguments, generationRoot, true,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
@@ -266,7 +305,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		cleanGenerationRoot();
 
 		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				generationRoot, false);
+				generationRoot, false, new AcceleoProgressMonitor());
 
 		assertTrue("Preview map should have been empty", preview.isEmpty());
 		try {
@@ -296,7 +335,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsNullRootPreview"));
 
 		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				null, true);
+				null, true, new AcceleoProgressMonitor());
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());
@@ -324,7 +363,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsPreview"));
 
 		Map<String, Writer> preview = new AcceleoGenericEngine().evaluate(publicTemplate, validArguments,
-				generationRoot, true);
+				generationRoot, true, new AcceleoProgressMonitor());
 
 		assertFalse("Preview map was empty", preview.isEmpty());
 		assertSame("There should have been a single result for preview", 1, preview.size());
@@ -353,7 +392,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		// Too many args
 		validArguments.add(Integer.valueOf(5));
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, generationRoot, false);
+			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, generationRoot, false,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
@@ -362,7 +402,8 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 		validArguments.remove(0);
 		validArguments.remove(0);
 		try {
-			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, generationRoot, true);
+			new AcceleoGenericEngine().evaluate(publicTemplate, validArguments, generationRoot, true,
+					new AcceleoProgressMonitor());
 			fail(EVALUATION_EXCEPTION_FAILURE);
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
