@@ -46,11 +46,25 @@
     <eOperations name="ancestors" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
-    <eOperations name="siblings" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
-    <eOperations name="toString" eType="#//String">
+    <eOperations name="ancestors" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+    </eOperations>
+    <eOperations name="siblings" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="siblings" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+    </eOperations>
+    <eOperations name="eInverse" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
     <eOperations name="eInverse" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+    </eOperations>
+    <eOperations name="toString" eType="#//String">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
   </eClassifiers>
