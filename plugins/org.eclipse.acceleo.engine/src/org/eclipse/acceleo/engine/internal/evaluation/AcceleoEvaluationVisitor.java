@@ -85,14 +85,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private static IDebugAST debug;
 
-	/** This instance will be used as the cached result of a query when it is undefined. */
-	private static final Object UNDEFINED_QUERY_RESULT = new Object();
+	/** This instance will be used as the cached result of a query when it is null. */
+	private static final Object NULL_QUERY_RESULT = new Object();
 
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
 	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
 	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
+
+	/** This instance will be used as the cached result of a query when it is undefined. */
+	private static final Object UNDEFINED_QUERY_RESULT = new Object();
 
 	/** Generation context of this visitor. */
 	private final AcceleoEvaluationContext context;
@@ -240,7 +243,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				} else {
 					guardValue = visitExpression((OCLExpression)forBlock.getGuard());
 				}
-				if (isUndefined(guardValue)) {
+				if (isInvalid(guardValue)) {
 					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 							AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
 									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(forBlock))
@@ -249,7 +252,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					throw exception;
 				}
 
-				if (((Boolean)guardValue).booleanValue()) {
+				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
 					for (final OCLExpression nested : forBlock.getBody()) {
 						visitExpression(nested);
 					}
@@ -275,7 +278,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				guardValue = visitExpression((OCLExpression)forBlock.getGuard());
 			}
-			if (isUndefined(guardValue)) {
+			if (isInvalid(guardValue)) {
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
 								.getStartPosition(),
@@ -285,7 +288,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				throw exception;
 			}
 
-			if (((Boolean)guardValue).booleanValue()) {
+			if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
 				for (final OCLExpression nested : forBlock.getBody()) {
 					visitExpression(nested);
 				}
@@ -311,7 +314,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 
 		final Object conditionValue = visitExpression(condition);
-		if (isUndefined(conditionValue)) {
+		if (isInvalid(conditionValue)) {
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.UndefinedCondition", ifBlock.getStartPosition(), //$NON-NLS-1$
 							((Module)EcoreUtil.getRootContainer(ifBlock)).getName(), ifBlock, currentSelf));
@@ -319,7 +322,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			throw exception;
 		}
 
-		if (((Boolean)conditionValue).booleanValue()) {
+		if (conditionValue != null && ((Boolean)conditionValue).booleanValue()) {
 			for (final OCLExpression nested : ifBlock.getBody()) {
 				visitExpression(nested);
 			}
@@ -329,7 +332,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				IfBlock temp = null;
 				for (final IfBlock elseif : ifBlock.getElseIf()) {
 					final Object elseValue = visitExpression((OCLExpression)elseif.getIfExpr());
-					if (isUndefined(elseValue)) {
+					if (isInvalid(elseValue)) {
 						final String rootName = ((Module)EcoreUtil.getRootContainer(elseif)).getName();
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 								AcceleoEngineMessages.getString(
@@ -338,7 +341,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						exception.fillInStackTrace();
 						throw exception;
 					}
-					if (((Boolean)elseValue).booleanValue()) {
+					if (elseValue != null && ((Boolean)elseValue).booleanValue()) {
 						temp = elseif;
 						break;
 					}
@@ -367,7 +370,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		Variable var = letBlock.getLetVariable();
 		Object value = visitExpression((OCLExpression)var.getInitExpression());
-		if (isUndefined(value)) {
+		if (isInvalid(value)) {
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.UndefinedLetValue", letBlock.getStartPosition(), //$NON-NLS-1$
 							((Module)EcoreUtil.getRootContainer(letBlock)).getName(), letBlock, currentSelf));
@@ -387,7 +390,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				for (final LetBlock elseLet : letBlock.getElseLet()) {
 					var = elseLet.getLetVariable();
 					value = visitExpression((OCLExpression)var.getInitExpression());
-					if (isUndefined(value)) {
+					if (isInvalid(value)) {
 						final String rootName = ((Module)EcoreUtil.getRootContainer(elseLet)).getName();
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 								AcceleoEngineMessages.getString(
@@ -465,7 +468,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final List<Object> arguments = new ArrayList<Object>();
 		for (int i = 0; i < query.getParameter().size(); i++) {
 			final Object argValue = visitExpression((OCLExpression)invocation.getArgument().get(i));
-			if (isUndefined(argValue)) {
+			if (isInvalid(argValue)) {
 				final String rootName = ((Module)EcoreUtil.getRootContainer(invocation)).getName();
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString(
@@ -481,7 +484,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// If the query has already been run with these arguments, return the cached result
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
-			final Object result = results.get(arguments);
+			Object result = results.get(arguments);
 			if (result == UNDEFINED_QUERY_RESULT) {
 				final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
@@ -492,6 +495,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				throw exception;
 			}
 			if (result != null) {
+				if (result == NULL_QUERY_RESULT) {
+					result = null;
+				}
 				return result;
 			}
 		}
@@ -528,21 +534,25 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// Store result of the query invocation
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
-			if (isUndefined(result)) {
+			if (isInvalid(result)) {
 				results.put(arguments, UNDEFINED_QUERY_RESULT);
+			} else if (result == null) {
+				results.put(arguments, NULL_QUERY_RESULT);
 			} else {
 				results.put(arguments, result);
 			}
 		} else {
 			final Map<List<Object>, Object> results = new HashMap<List<Object>, Object>(2);
-			if (isUndefined(result)) {
+			if (isInvalid(result)) {
 				results.put(arguments, UNDEFINED_QUERY_RESULT);
+			} else if (result == null) {
+				results.put(arguments, NULL_QUERY_RESULT);
 			} else {
 				results.put(arguments, result);
 			}
 			queryResults.put(query, results);
 		}
-		if (isUndefined(result)) {
+		if (isInvalid(result)) {
 			final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.UndefinedQuery", query.getExpression(), invocation //$NON-NLS-1$
@@ -622,7 +632,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			// Determine values of the arguments
 			for (OCLExpression expression : invocation.getArgument()) {
 				final Object argValue = visitExpression(expression);
-				if (isUndefined(argValue)) {
+				if (isInvalid(argValue)) {
 					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 							AcceleoEngineMessages.getString(
 									"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
@@ -767,7 +777,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (source instanceof EObject) {
 					lastEObjectSelfValue = (EObject)source;
 				}
-				context.append(String.valueOf(result), (Block)generatedBlock, lastEObjectSelfValue);
+				if (result != null) {
+					context.append(String.valueOf(result), (Block)generatedBlock, lastEObjectSelfValue);
+				}
 			}
 
 			// If we were evaluating a block and it had an init section, restore variables as they were now.
@@ -796,8 +808,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				debug.endDebug(astFragment);
 			}
 		}
-		// FIXME check if OCL_Invalid results are logged by OCL
-		// FIXME handle exceptions (should probably add runtime error markers)
 
 		return result;
 	}
@@ -863,7 +873,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				guardValue = visitExpression((OCLExpression)candidate.getGuard());
 			}
-			if (isUndefined(guardValue)) {
+			if (isInvalid(guardValue)) {
 				exception = new AcceleoEvaluationException(AcceleoEngineMessages.getString(
 						UNDEFINED_GUARD_MESSAGE_KEY, candidate.getStartPosition(), ((Module)EcoreUtil
 								.getRootContainer(candidate)).getName(), candidate,
@@ -873,7 +883,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				continue;
 			}
 
-			if (!((Boolean)guardValue).booleanValue()) {
+			if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
 				candidates.remove(candidate);
 			}
 
@@ -909,7 +919,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			final Object oldValue = getEvaluationEnvironment().getValueOf(varName);
 			oldVariables.put(varName, oldValue);
 			final Object newValue = visitExpression((OCLExpression)var.getInitExpression());
-			if (isUndefined(newValue)) {
+			if (isInvalid(newValue)) {
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedVariable", var //$NON-NLS-1$
 								.getStartPosition(), ((Module)EcoreUtil.getRootContainer(init)).getName(),
@@ -934,6 +944,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private boolean isUndefined(Object value) {
 		return value == null || value == oclInvalid;
+	}
+
+	/**
+	 * Returns <code>true</code> if the value is equal to the OCL standard library's OCLInvalid object.
+	 * 
+	 * @param value
+	 *            Value we need to test.
+	 * @return <code>true</code> if the value is equal to the OCL standard library's OCLInvalid object,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isInvalid(Object value) {
+		return value == oclInvalid;
 	}
 
 	/**
