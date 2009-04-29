@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
@@ -772,15 +773,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				result = visitAcceleoTemplate((Template)expression);
 			} else if (expression instanceof IfBlock) {
 				visitAcceleoIfBlock((IfBlock)expression);
-				// This has no explicit result
 				result = ""; //$NON-NLS-1$
 			} else if (expression instanceof ForBlock) {
 				visitAcceleoForBlock((ForBlock)expression);
-				// This has no explicit result
 				result = ""; //$NON-NLS-1$
 			} else if (expression instanceof FileBlock) {
 				visitAcceleoFileBlock((FileBlock)expression);
-				// This has no explicit result
 				result = ""; //$NON-NLS-1$
 			} else if (expression instanceof TemplateInvocation) {
 				result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
@@ -788,11 +786,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				result = visitAcceleoQueryInvocation((QueryInvocation)expression);
 			} else if (expression instanceof LetBlock) {
 				visitAcceleoLetBlock((LetBlock)expression);
-				// This has no explicit result
 				result = ""; //$NON-NLS-1$
 			} else if (expression instanceof ProtectedAreaBlock) {
 				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
-				// This has no explicit result
 				result = ""; //$NON-NLS-1$
 			} else {
 				result = super.visitExpression(expression);
@@ -855,7 +851,31 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 		}
 
+		if (context.getProgressMonitor().isCanceled()) {
+			cancel(astFragment, debugInput, result);
+		}
+
 		return result;
+	}
+
+	/**
+	 * Cancels the current evaluation. <b>Note</b> that the normal execution of this method will throw a
+	 * runtime exception.
+	 * 
+	 * @param astFragment
+	 *            Current debug AST fragment.
+	 * @param debugInput
+	 *            Current debug input
+	 * @param result
+	 *            Result of the evaluation from which we detected the operation cancelation.
+	 */
+	private void cancel(ASTFragment astFragment, EObject debugInput, Object result) {
+		debug.stepDebugOutput(astFragment, debugInput, result);
+		debug.endDebug(astFragment);
+		debug = null;
+		context.dispose();
+		throw new AcceleoEvaluationCancelledException(AcceleoEngineMessages
+				.getString("AcceleoEvaluationVisitor.CancelException")); //$NON-NLS-1$
 	}
 
 	/**

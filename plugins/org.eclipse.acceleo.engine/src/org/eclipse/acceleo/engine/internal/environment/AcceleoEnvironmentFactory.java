@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -63,11 +64,13 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 *            The list of all listeners that are to be notified for text generation from this context.
 	 * @param preview
 	 *            Tells the evaluation context that it is currently in preview mode.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
-			List<AcceleoTextGenerationListener> listeners, boolean preview) {
+			List<AcceleoTextGenerationListener> listeners, boolean preview, AcceleoProgressMonitor monitor) {
 		super(EPackage.Registry.INSTANCE);
-		context = new AcceleoEvaluationContext(generationRoot, listeners, preview);
+		context = new AcceleoEvaluationContext(generationRoot, listeners, preview, monitor);
 		this.module = module;
 	}
 

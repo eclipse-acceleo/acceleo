@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
@@ -99,12 +100,14 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
-			File generationRoot, boolean preview) {
+			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
 		if (templates == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -132,7 +135,8 @@ public final class AcceleoService {
 		for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
 			if (entry.getKey().isInstance(model)) {
 				for (Template template : entry.getValue()) {
-					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview,
+							monitor));
 				}
 			}
 		}
@@ -144,8 +148,8 @@ public final class AcceleoService {
 					arguments.clear();
 					arguments.add(potentialTarget);
 					for (Template template : entry.getValue()) {
-						previewResult
-								.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+						previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview,
+								monitor));
 					}
 				}
 			}
@@ -186,13 +190,15 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			File generationRoot, boolean preview) {
-		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview);
+			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview, monitor);
 	}
 
 	/**
@@ -231,12 +237,15 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			List<? extends Object> arguments, File generationRoot, boolean preview) {
+			List<? extends Object> arguments, File generationRoot, boolean preview,
+			AcceleoProgressMonitor monitor) {
 		if (model == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -255,7 +264,8 @@ public final class AcceleoService {
 			final List<Object> actualArguments = new ArrayList<Object>();
 			actualArguments.add(model);
 			actualArguments.addAll(arguments);
-			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview));
+			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview,
+					monitor));
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -264,7 +274,8 @@ public final class AcceleoService {
 				final List<Object> actualArguments = new ArrayList<Object>();
 				actualArguments.add(potentialTarget);
 				actualArguments.addAll(arguments);
-				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview));
+				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview,
+						monitor));
 			}
 		}
 
@@ -303,12 +314,14 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
-			boolean preview) {
+			boolean preview, AcceleoProgressMonitor monitor) {
 		if (template == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -329,7 +342,7 @@ public final class AcceleoService {
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			arguments.add(model);
-			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview, monitor));
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -337,7 +350,8 @@ public final class AcceleoService {
 			if (argumentType.isInstance(potentialTarget)) {
 				arguments.clear();
 				arguments.add(potentialTarget);
-				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview));
+				previewResult
+						.putAll(doGenerateTemplate(template, arguments, generationRoot, preview, monitor));
 			}
 		}
 
@@ -372,14 +386,17 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerateTemplate(Module module, String templateName,
-			List<? extends Object> arguments, File generationRoot, boolean preview) {
+			List<? extends Object> arguments, File generationRoot, boolean preview,
+			AcceleoProgressMonitor monitor) {
 		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
-				preview);
+				preview, monitor);
 	}
 
 	/**
@@ -409,13 +426,15 @@ public final class AcceleoService {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview) {
-		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview);
+			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview, monitor);
 	}
 
 	/**

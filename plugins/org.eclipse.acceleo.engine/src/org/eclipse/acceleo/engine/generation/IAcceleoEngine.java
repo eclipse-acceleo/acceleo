@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Template;
 
@@ -58,12 +59,15 @@ public interface IAcceleoEngine {
 	 * @param preview
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
+	 * @since 0.8
 	 */
 	Map<String, Writer> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
-			boolean preview);
+			boolean preview, AcceleoProgressMonitor monitor);
 
 	/**
 	 * Removes a listener from the notification loops.

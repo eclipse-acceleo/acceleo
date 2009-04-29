@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
@@ -57,10 +59,11 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template,
-	 *      java.util.List, java.io.File, boolean)
+	 *      java.util.List, java.io.File, boolean, org.eclipse.acceleo.engine.AcceleoProgressMonitor)
+	 * @since 0.8
 	 */
 	public Map<String, Writer> evaluate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview) {
+			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
 		if (template == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
 		}
@@ -75,11 +78,15 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
 		AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, (Module)template
-				.eContainer(), new ArrayList<AcceleoTextGenerationListener>(listeners), preview);
+				.eContainer(), new ArrayList<AcceleoTextGenerationListener>(listeners), preview, monitor);
 		ocl = OCL.newInstance(factory);
 		((AcceleoEnvironment)ocl.getEnvironment()).restoreBrokenEnvironmentPackages(template.eResource());
 
-		doEvaluate(template, arguments);
+		try {
+			doEvaluate(template, arguments);
+		} catch (AcceleoEvaluationCancelledException e) {
+			// All necessary disposal should have been made
+		}
 
 		Map<String, Writer> result = Collections.<String, Writer> emptyMap();
 		if (preview) {
