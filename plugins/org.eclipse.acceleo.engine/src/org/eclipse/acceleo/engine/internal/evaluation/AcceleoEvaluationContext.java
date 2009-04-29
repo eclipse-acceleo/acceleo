@@ -143,14 +143,19 @@ public final class AcceleoEvaluationContext {
 	 *            The block for which this text has been generated.
 	 * @param source
 	 *            The Object for which was generated this text.
+	 * @param fireEvent
+	 *            Tells us whether we should fire generation events.
 	 * @throws AcceleoEvaluationException
 	 *             Thrown if we cannot append to the current buffer.
 	 */
-	public void append(String string, Block sourceBlock, EObject source) throws AcceleoEvaluationException {
+	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent)
+			throws AcceleoEvaluationException {
 		try {
 			final Writer currentWriter = writers.getLast();
 			currentWriter.append(string);
-			fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
+			if (fireEvent) {
+				fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
+			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationContext.AppendError"), e); //$NON-NLS-1$
