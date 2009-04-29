@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
@@ -44,7 +45,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 	/** Values that will be used to test standard string operations. */
 	private final String[] stringValues = new String[] {"a", "\u00e9\u00e8\u0020\u00f1", "", "Foehn12",
-			"Standard sentence."};
+			"Standard sentence.", };
 
 	{
 		AcceleoStandardLibrary lib = new AcceleoStandardLibrary();
@@ -165,7 +166,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		for (String value : stringValues) {
 			Object result = evaluationEnvironment.callStandardOperation(operation, value,
-					new Object[] {Integer.valueOf(-5)});
+					new Object[] {Integer.valueOf(-5), });
 			assertEquals("Calling the standard operation String.first(int) with a negative "
 					+ "parameter should return self.", value, result);
 			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(0));
@@ -428,6 +429,21 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		assertEquals("Call to standard operation String.strtok(\" \", 0) did not return the first word "
 				+ "of self", "Standard", result);
 
+		// Calling strtok with its flag at 1 on a new String will have the same effect as a "0" flag
+		final String newValue = "test sentence.";
+		result = evaluationEnvironment.callStandardOperation(operation, newValue, " ", Integer.valueOf(1));
+		assertEquals("Call to standard operation String.strtok(\" \", 1) on a new source did not return"
+				+ " the first word of self", "test", result);
+
+		// Calling strtok with an invalid flag fails
+		try {
+			result = evaluationEnvironment
+					.callStandardOperation(operation, newValue, " ", Integer.valueOf(5));
+			fail("The standard String.strtok operation should have failed with an invalid flag");
+		} catch (AcceleoEvaluationException e) {
+			// Expected behavior
+		}
+
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
 			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null, Integer
@@ -543,6 +559,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior
 			final String expectedErrMsg = "undefinedOperation()";
+			assertTrue("Exception hasn't been affected an accurate error message", e.getMessage().contains(
+					expectedErrMsg));
+		}
+
+		try {
+			evaluationEnvironment.callStandardOperation(operation, "source", "arg1", "arg2");
+			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
+		} catch (UnsupportedOperationException e) {
+			// Expected behavior
+			final String expectedErrMsg = "undefinedOperation(String, String)";
 			assertTrue("Exception hasn't been affected an accurate error message", e.getMessage().contains(
 					expectedErrMsg));
 		}

@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -52,7 +53,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 	/** Values that will be used to test non standard string operations. */
 	private final String[] stringValues = new String[] {"a", "\u00e9\u00e8\u0020\u00f1", "", "Foehn12",
-			"Standard sentence."};
+			"Standard sentence.", };
 
 	{
 		AcceleoNonStandardLibrary lib = new AcceleoNonStandardLibrary();
@@ -112,12 +113,12 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * Tests the behavior of the non standard "ancestors" operation on OclAny.
+	 * Tests the behavior of the non standard "ancestors()" operation on OclAny.
 	 * <p>
 	 * Expects the result to contain all of the containers of the given object.
 	 * </p>
 	 */
-	public void testOclAnyAncestors() {
+	public void testOclAnyUnParameterizableAncestors() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
 
@@ -140,6 +141,38 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		assertSame("The third container of the attribute should have been the first sub-package", sub,
 				children.next());
 		assertSame("The fourth container of the attribute should have been the root package", root, children
+				.next());
+	}
+
+	/**
+	 * Tests the behavior of the non standard "ancestors(OclAny)" operation on OclAny.
+	 * <p>
+	 * Expects the result to contain all of the containers of the given type for the given object.
+	 * </p>
+	 */
+	public void testOclAnyParameterizableAncestors() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
+				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
+
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		root.getESubpackages().add(sub);
+
+		Object result = evaluationEnvironment.callNonStandardOperation(operation, attribute,
+				EcorePackage.eINSTANCE.getEPackage());
+		assertSame("Unexpected count of ancestors returned", 3, ((Collection<?>)result).size());
+		final Iterator<?> children = ((Collection<?>)result).iterator();
+		assertSame("The first container of the attribute should have been the second sub-package", subSub,
+				children.next());
+		assertSame("The second container of the attribute should have been the first sub-package", sub,
+				children.next());
+		assertSame("The third container of the attribute should have been the root package", root, children
 				.next());
 	}
 
@@ -229,7 +262,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the Objects that have a reference towards self.
 	 * </p>
 	 */
-	public void testOclAnyEInverse() {
+	public void testOclAnyUnparameterizableEInverse() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
 
@@ -258,12 +291,46 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * Tests the behavior of the non standard "siblings" operation on OclAny.
+	 * Tests the behavior of the non standard "eInverse(OclAny)" operation on OclAny.
+	 * <p>
+	 * Expects the result to contain all of the Objects that have a reference towards self and are instances
+	 * of the given type.
+	 * </p>
+	 */
+	public void testOclAnyParameterizableEInverse() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
+				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
+
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+
+		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2,
+				EcorePackage.eINSTANCE.getEGenericType());
+		assertSame("Unexpected count of inverse references returned", 1, ((Collection<?>)result).size());
+		final Iterator<?> children = ((Collection<?>)result).iterator();
+		assertTrue("The inverse reference on the second EClass should have been a GenericType", children
+				.next() instanceof EGenericType);
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings()" operation on OclAny.
 	 * <p>
 	 * Expects the result to contain all of the siblings of the given object, excluding self.
 	 * </p>
 	 */
-	public void testOclAnySiblings() {
+	public void testOclAnyUnparameterizableSiblings() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
 
@@ -290,6 +357,43 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		children = ((Collection<?>)result).iterator();
 		assertSame("The sibling should have been the second added EClass.", clazz2, children.next());
 		assertSame("The sibling should have been the third added EClass.", clazz3, children.next());
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings(OclAny)" operation on OclAny.
+	 * <p>
+	 * Expects the result to contain all of the siblings of the given type for the given object, excluding
+	 * self.
+	 * </p>
+	 */
+	public void testOclAnyParameterizableSiblings() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
+				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
+
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz1 = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz3 = EcoreFactory.eINSTANCE.createEClass();
+		final EEnum enumeration = EcoreFactory.eINSTANCE.createEEnum();
+		subSub.getEClassifiers().add(clazz1);
+		subSub.getEClassifiers().add(clazz2);
+		subSub.getEClassifiers().add(clazz3);
+		subSub.getEClassifiers().add(enumeration);
+		sub.getESubpackages().add(subSub);
+		root.getESubpackages().add(sub);
+
+		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2,
+				EcorePackage.eINSTANCE.getEEnum());
+		assertSame("Unexpected count of siblings returned", 1, ((Collection<?>)result).size());
+		Iterator<?> children = ((Collection<?>)result).iterator();
+		assertSame("The sibling should have been the only eenum.", enumeration, children.next());
+
+		result = evaluationEnvironment.callNonStandardOperation(operation, enumeration,
+				EcorePackage.eINSTANCE.getEEnum());
+		assertTrue("There shouldn't have been any sibling of type EEnum for the only EEnum of a package",
+				((Collection<?>)result).isEmpty());
 	}
 
 	/**
@@ -580,7 +684,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
 
-		final String[] expected = {"this", "is", "a", "randomly", "delimited", "sentence",};
+		final String[] expected = {"this", "is", "a", "randomly", "delimited", "sentence", };
 		final String value = "this/is.a\\randomly_delimited^sentence";
 		final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, "^/_.\\");
 		assertTrue("Result should have been a list.", result instanceof List);
@@ -633,6 +737,16 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior
 			final String expectedErrMsg = "undefinedOperation()";
+			assertTrue("Exception hasn't been affected an accurate error message", e.getMessage().contains(
+					expectedErrMsg));
+		}
+
+		try {
+			evaluationEnvironment.callNonStandardOperation(operation, "source", "arg1", "arg2");
+			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
+		} catch (UnsupportedOperationException e) {
+			// Expected behavior
+			final String expectedErrMsg = "undefinedOperation(String, String)";
 			assertTrue("Exception hasn't been affected an accurate error message", e.getMessage().contains(
 					expectedErrMsg));
 		}
