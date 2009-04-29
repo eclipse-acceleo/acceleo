@@ -87,7 +87,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 		param.setType(EcorePackage.eINSTANCE.getEClass());
 		invocation.getDefinition().getParameter().add(param);
 		invocation.getDefinition().setExpression(
-				createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+				createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
 
 		// set the value of self to the first eclass of the test package
 		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
@@ -130,8 +130,8 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from a query invocation with an undefined parameter.", //$NON-NLS-1$
-				OUTPUT + OUTPUT, entry.getValue().toString());
+		assertEquals("Unexpected content generated from a query invocation with a null parameter.", //$NON-NLS-1$
+				OUTPUT + QUERY_OUTPUT + OUTPUT, entry.getValue().toString());
 
 		// A second call in the same conditions should result in the same result (cache coverage)
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
@@ -139,8 +139,8 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 		entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from a query invocation with an undefined parameter.", //$NON-NLS-1$
-				OUTPUT + OUTPUT, entry.getValue().toString());
+		assertEquals("Unexpected content generated from a query invocation with a null parameter.", //$NON-NLS-1$
+				OUTPUT + QUERY_OUTPUT + OUTPUT, entry.getValue().toString());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	 */
 	public void testQueryInvocationUndefinedParameter() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
-		invocation.getArgument().add(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
+		invocation.getArgument().add(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
 				.getEClass()));
 		final Variable param = EcoreFactory.eINSTANCE.createVariable();
 		param.setName("s"); //$NON-NLS-1$

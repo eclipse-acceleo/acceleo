@@ -154,6 +154,29 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	}
 
 	/**
+	 * Tests the evaluation of a for block on a collection iteration with a null guard.
+	 */
+	public void testForBlockCollectionIterationNullGuard() {
+		final ForBlock forBlock = getDummyForBlock();
+		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+		forBlock.setGuard(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+
+		// set the value of self to the third eclass of the test package
+		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(2)); //$NON-NLS-1$
+
+		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
+		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		assertEquals("Unexpected file URL.", //$NON-NLS-1$
+				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
+		// A guard evaluating to null is the same as "false" hence no content is expected
+		assertEquals("Unexpected content generated from the for block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+				.toString());
+	}
+
+	/**
 	 * Tests the evaluation of a for block on a collection iteration with an undefined guard.
 	 */
 	public void testForBlockCollectionIterationUndefinedGuard() {
@@ -331,6 +354,29 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the for block.", OUTPUT + BEFORE + FOR_OUTPUT + AFTER //$NON-NLS-1$
 				+ OUTPUT, entry.getValue().toString());
+	}
+
+	/**
+	 * Tests the evaluation of a for block on a single element iteration with a null guard.
+	 */
+	public void testForBlockUniqueIterationNullGuard() {
+		final ForBlock forBlock = getDummyForBlock();
+		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+		forBlock.setGuard(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+
+		// set the value of self to the third eclass of the test package
+		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(2)); //$NON-NLS-1$
+
+		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
+		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		assertEquals("Unexpected file URL.", //$NON-NLS-1$
+				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
+		// A guard evaluating to null is the same as "false" hence no content is expected
+		assertEquals("Unexpected content generated from the for block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+				.toString());
 	}
 
 	/**

@@ -124,6 +124,35 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 
 	/**
 	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
+	 * and its condition is null.
+	 */
+	public void testIfBlockElseIfNullCondition() {
+		final IfBlock ifBlock = getDummyIfBlock();
+		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+
+		final IfBlock elseIf = MtlFactory.eINSTANCE.createIfBlock();
+		elseIf.setIfExpr(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
+				.getEClass()));
+		elseIf.getBody().add(createOCLExpression('\'' + ELSEIF + '\''));
+		ifBlock.getElseIf().add(elseIf);
+
+		// set the value of self to the first eclass of the test package
+		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(0)); //$NON-NLS-1$
+
+		evaluationVisitor.visitExpression(getParentTemplate(ifBlock));
+		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		assertEquals("Unexpected file URL.", //$NON-NLS-1$
+				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
+		// As the condition of the else if was undefined, we expect no content to have been generated
+		assertEquals(
+				"Unexpected content generated from the if block.", OUTPUT + ELSE + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+						.toString());
+	}
+
+	/**
+	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
 	 * and its condition is undefined.
 	 */
 	public void testIfBlockElseIfUndefinedCondition() {
@@ -132,7 +161,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 				.getEClass()));
 
 		final IfBlock elseIf = MtlFactory.eINSTANCE.createIfBlock();
-		elseIf.setIfExpr(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
+		elseIf.setIfExpr(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
 				.getEClass()));
 		elseIf.getBody().add(createOCLExpression('\'' + ELSEIF + '\''));
 		ifBlock.getElseIf().add(elseIf);
@@ -166,9 +195,8 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		// As the condition was incorrect we expect no content to have been generated
-		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
-				.toString());
+		assertEquals("Unexpected content generated from the if block.", OUTPUT + ELSE + OUTPUT, entry //$NON-NLS-1$
+				.getValue().toString());
 	}
 
 	/**
@@ -176,7 +204,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	 */
 	public void testIfBlockUndefinedCondition() {
 		final IfBlock ifBlock = getDummyIfBlock();
-		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
+		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
 				.getEClass()));
 
 		// set the value of self to the first eclass of the test package
@@ -187,8 +215,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		// As the condition was incorrect we expect no content to have been generated
-		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
+		assertEquals("Unexpected content generated from the if block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$
 				.toString());
 	}
 

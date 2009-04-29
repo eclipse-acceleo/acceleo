@@ -168,6 +168,38 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 
 	/**
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
+	 * been set for the let, its condition being null.
+	 */
+	public void testLetBlockElseLetNullCondition() {
+		final LetBlock letBlock = getDummyLetBlock();
+		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
+		letBlock.getLetVariable().setInitExpression(
+				createOCLExpression("eSuperTypes->last()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+
+		// set the value of self to the third eclass of the test package
+		evaluationVisitor.getEvaluationEnvironment().add("self", getTestPackage().getEClassifiers().get(2)); //$NON-NLS-1$
+
+		final LetBlock elseLet = MtlFactory.eINSTANCE.createLetBlock();
+		elseLet.getBody().add(createOCLExpression('\'' + ELSELET + '\''));
+		final Variable elseLetVar = EcoreFactory.eINSTANCE.createVariable();
+		elseLetVar.setName(ELSE_LET_VAR_NAME);
+		elseLetVar.setType(EcorePackage.eINSTANCE.getEObject());
+		elseLetVar.setInitExpression(createOCLExpression(
+				"eSuperTypes->select(oclIsKindOf(EReference))->first()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+		elseLet.setLetVariable(elseLetVar);
+		letBlock.getElseLet().add(elseLet);
+
+		evaluationVisitor.visitExpression(getParentTemplate(letBlock));
+		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
+		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		assertEquals("Unexpected file URL.", //$NON-NLS-1$
+				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
+		assertEquals("Unexpected content generated from the let block.", OUTPUT + ELSE + OUTPUT, entry //$NON-NLS-1$
+				.getValue().toString());
+	}
+
+	/**
+	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
 	 * been set for the let, its condition being undefined.
 	 */
 	public void testLetBlockElseLetUndefinedCondition() {
@@ -185,7 +217,8 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		elseLetVar.setName(ELSE_LET_VAR_NAME);
 		elseLetVar.setType(EcorePackage.eINSTANCE.getEObject());
 		elseLetVar.setInitExpression(createOCLExpression(
-				"eSuperTypes->select(oclIsKindOf(EReference))->first()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+				"eSuperTypes->select(oclIsKindOf(EReference))->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
+						.getEClass()));
 		elseLet.setLetVariable(elseLetVar);
 		letBlock.getElseLet().add(elseLet);
 
@@ -215,8 +248,8 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from the let block.", OUTPUT + OUTPUT, entry.getValue() //$NON-NLS-1$ 
-				.toString());
+		assertEquals("Unexpected content generated from the let block.", OUTPUT + ELSE + OUTPUT, entry //$NON-NLS-1$ 
+				.getValue().toString());
 	}
 
 	/**
@@ -226,7 +259,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
 		letBlock.getLetVariable().setInitExpression(
-				createOCLExpression("eSuperTypes->select(oclIsKindOf(EReference))->first()", //$NON-NLS-1$
+				createOCLExpression("eSuperTypes->select(oclIsKindOf(EReference))->first().name", //$NON-NLS-1$
 						EcorePackage.eINSTANCE.getEClass()));
 
 		// set the value of self to the third eclass of the test package
