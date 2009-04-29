@@ -40,6 +40,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
@@ -231,7 +232,7 @@ public class <%=content.getClassShortName()%> {
 					arguments.add(args[i]);
 				}
 				<%=content.getClassShortName()%> generator = new <%=content.getClassShortName()%>(modelURI, folder, arguments);
-				generator.doGenerate();
+				generator.doGenerate(new AcceleoProgressMonitor());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -241,16 +242,18 @@ public class <%=content.getClassShortName()%> {
 	/**
 	 * Launches the generation.
 	 * 
+	 * @param monitor
+	 *             This will be used to display progress information to the user.
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 * @generated
 	 */
-	public void doGenerate() throws IOException {
+	public void doGenerate(AcceleoProgressMonitor monitor) throws IOException {
 		if (!targetFolder.exists()) {
 			targetFolder.mkdirs();
 		}
 		for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-			AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false);
+			AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false, monitor);
 		}
 	}
 

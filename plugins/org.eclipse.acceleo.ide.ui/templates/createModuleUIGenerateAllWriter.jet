@@ -24,7 +24,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
@@ -76,12 +78,14 @@ public class GenerateAll {
 
 	/**
 	 * Launches the generation.
-	 * 
+	 *
+	 * @param monitor
+	 *            This will be used to display progress information to the user.
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 * @generated
 	 */
-	public void doGenerate() throws IOException {
+	public void doGenerate(IProgressMonitor monitor) throws IOException {
 		if (!targetFolder.exists()) {
 			targetFolder.mkdirs();
 		}
@@ -92,7 +96,7 @@ public class GenerateAll {
 				return template0;
 			}
 		};
-		gen0.doGenerate();
+		gen0.doGenerate(new AcceleoProgressMonitor(monitor));
 			<%if (content.getModuleJavaClasses().size() > 1) {%>
 		EObject model = gen0.getModel();
 		if (model != null) {
@@ -103,7 +107,7 @@ public class GenerateAll {
 					return template<%=i%>;
 				}
 			};
-			gen<%=i%>.doGenerate();<%}%>
+			gen<%=i%>.doGenerate(new AcceleoProgressMonitor(monitor));<%}%>
 		}
 			<%}%>
 		<%}%>
