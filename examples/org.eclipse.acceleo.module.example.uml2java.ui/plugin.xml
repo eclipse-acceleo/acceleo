@@ -23,7 +23,7 @@ Contributors:
                <groupMarker name="acceleo"/> 
          </menu>
          <action
-               class="org.eclipse.acceleo.module.example.uml2java.ui.popupMenus.AcceleoGenerateUmlToJavaAction"
+               class="org.eclipse.acceleo.module.example.uml2java.ui.popupMenus.AcceleoGenerateExampleUml2javaAction"
                enablesFor="+"
                id="org.eclipse.acceleo.module.example.uml2java.ui.popupMenus.acceleoGenerateUmlToJavaAction"
                icon="icons/default.gif"
