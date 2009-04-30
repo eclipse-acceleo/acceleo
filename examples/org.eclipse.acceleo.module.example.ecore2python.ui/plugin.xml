@@ -23,7 +23,7 @@ Contributors:
                <groupMarker name="acceleo"/> 
          </menu>
          <action
-               class="org.eclipse.acceleo.module.example.ecore2python.ui.popupMenus.AcceleoGenerateEcoreToPythonAction"
+               class="org.eclipse.acceleo.module.example.ecore2python.ui.popupMenus.AcceleoGenerateExampleEcore2pythonAction"
                enablesFor="+"
                id="org.eclipse.acceleo.module.example.ecore2python.ui.popupMenus.acceleoGenerateEcoreToPythonAction"
                icon="icons/default.gif"
