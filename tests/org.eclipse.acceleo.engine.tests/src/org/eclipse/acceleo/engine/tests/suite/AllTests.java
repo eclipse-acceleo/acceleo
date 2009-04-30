@@ -20,6 +20,7 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.ifBlock.IfBlockTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.protectedareablock.ProtectedAreaBlockTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
+import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.QueryPropertyInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.engine.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryParsedTest;
@@ -66,6 +67,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(ProtectedAreaBlockTest.class);
 		suite.addTestSuite(TemplateTest.class);
 		suite.addTestSuite(DualTemplateInvocationTest.class);
+		suite.addTestSuite(QueryPropertyInvocationTest.class);
 
 		// Engine
 		suite.addTestSuite(AcceleoGenericEngineTest.class);
