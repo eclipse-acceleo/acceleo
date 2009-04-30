@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -96,7 +96,7 @@ public class GenerateAll {
 				return template0;
 			}
 		};
-		gen0.doGenerate(new AcceleoProgressMonitor(monitor));
+		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 			<%if (content.getModuleJavaClasses().size() > 1) {%>
 		EObject model = gen0.getModel();
 		if (model != null) {
@@ -107,7 +107,7 @@ public class GenerateAll {
 					return template<%=i%>;
 				}
 			};
-			gen<%=i%>.doGenerate(new AcceleoProgressMonitor(monitor));<%}%>
+			gen<%=i%>.doGenerate(BasicMonitor.toMonitor(monitor));<%}%>
 		}
 			<%}%>
 		<%}%>
