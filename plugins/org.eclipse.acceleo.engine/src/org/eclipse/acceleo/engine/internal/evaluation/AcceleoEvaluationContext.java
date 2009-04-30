@@ -40,7 +40,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
@@ -93,7 +93,7 @@ public final class AcceleoEvaluationContext {
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
 	 */
-	private final List<AcceleoTextGenerationListener> listeners = new ArrayList<AcceleoTextGenerationListener>(
+	private final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>(
 			3);
 
 	/** This will keep a reference to all user code blocks of a given File. */
@@ -114,7 +114,7 @@ public final class AcceleoEvaluationContext {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation.
 	 */
-	public AcceleoEvaluationContext(File root, List<AcceleoTextGenerationListener> listeners,
+	public AcceleoEvaluationContext(File root, List<IAcceleoTextGenerationListener> listeners,
 			boolean preview, Monitor monitor) {
 		generationRoot = root;
 		previewMode = preview;
@@ -456,7 +456,7 @@ public final class AcceleoEvaluationContext {
 	 *            The generation event that is to be sent to registered listeners.
 	 */
 	private void fireFilePathComputed(AcceleoTextGenerationEvent event) {
-		for (AcceleoTextGenerationListener listener : listeners) {
+		for (IAcceleoTextGenerationListener listener : listeners) {
 			listener.filePathComputed(event);
 		}
 	}
@@ -468,7 +468,7 @@ public final class AcceleoEvaluationContext {
 	 *            The generation event that is to be sent to registered listeners.
 	 */
 	private void fireTextGenerated(AcceleoTextGenerationEvent event) {
-		for (AcceleoTextGenerationListener listener : listeners) {
+		for (IAcceleoTextGenerationListener listener : listeners) {
 			listener.textGenerated(event);
 		}
 	}

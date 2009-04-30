@@ -20,7 +20,7 @@ import java.util.Map;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -40,7 +40,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
 	 */
-	private final List<AcceleoTextGenerationListener> listeners = new ArrayList<AcceleoTextGenerationListener>(
+	private final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>(
 			3);
 
 	/** Holds a reference to the ocl instance. */
@@ -49,9 +49,10 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#addListener(org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener)
+	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#addListener(org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener)
+	 * @since 0.8
 	 */
-	public void addListener(AcceleoTextGenerationListener listener) {
+	public void addListener(IAcceleoTextGenerationListener listener) {
 		listeners.add(listener);
 	}
 
@@ -78,7 +79,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
 		AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, (Module)template
-				.eContainer(), new ArrayList<AcceleoTextGenerationListener>(listeners), preview, monitor);
+				.eContainer(), new ArrayList<IAcceleoTextGenerationListener>(listeners), preview, monitor);
 		ocl = OCL.newInstance(factory);
 		((AcceleoEnvironment)ocl.getEnvironment()).restoreBrokenEnvironmentPackages(template.eResource());
 
@@ -100,9 +101,10 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeListener(org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener)
+	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeListener(org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener)
+	 * @since 0.8
 	 */
-	public void removeListener(AcceleoTextGenerationListener listener) {
+	public void removeListener(IAcceleoTextGenerationListener listener) {
 		listeners.remove(listener);
 	}
 

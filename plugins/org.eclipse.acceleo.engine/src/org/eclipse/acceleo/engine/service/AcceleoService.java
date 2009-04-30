@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -56,12 +56,13 @@ public final class AcceleoService {
 	/**
 	 * Registers a listener to be notified for any text generation that will take place in this engine
 	 * evaluation process. This will have to be removed manually through
-	 * {@link #removeListener(AcceleoTextGenerationListener)}.
+	 * {@link #removeListener(IAcceleoTextGenerationListener)}.
 	 * 
 	 * @param listener
 	 *            The new listener that is to be registered for notification.
+	 * @since 0.8
 	 */
-	public static void addListener(AcceleoTextGenerationListener listener) {
+	public static void addListener(IAcceleoTextGenerationListener listener) {
 		GENERATION_ENGINE.addListener(listener);
 	}
 
@@ -369,8 +370,9 @@ public final class AcceleoService {
 	 * [/template]
 	 * </pre>
 	 * 
-	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
-	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * evaluated with <tt>file:\\c:\@since 0.8</tt> as <tt>generationRoot</tt> would create the file
+	 * <tt>c:\log.log</tt> and generate a line &quot;processing class &lt;className&gt;&quot; for each class
+	 * of the input model.
 	 * </p>
 	 * 
 	 * @param module
@@ -440,8 +442,9 @@ public final class AcceleoService {
 	 * 
 	 * @param listener
 	 *            The listener that is to be removed from this engine's notification loops.
+	 * @since 0.8
 	 */
-	public static void removeListener(AcceleoTextGenerationListener listener) {
+	public static void removeListener(IAcceleoTextGenerationListener listener) {
 		GENERATION_ENGINE.removeListener(listener);
 	}
 

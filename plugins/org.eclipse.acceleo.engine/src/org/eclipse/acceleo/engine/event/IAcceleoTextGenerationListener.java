@@ -14,8 +14,9 @@ package org.eclipse.acceleo.engine.event;
  * Instances of this listener will be notified whenever text is generated from an Acceleo Block.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 0.8
  */
-public interface AcceleoTextGenerationListener {
+public interface IAcceleoTextGenerationListener {
 	/**
 	 * This will be called whenever text is generated from an Acceleo Block.
 	 * 

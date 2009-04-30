@@ -15,7 +15,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.Monitor;
 
@@ -31,8 +31,9 @@ public interface IAcceleoEngine {
 	 * 
 	 * @param listener
 	 *            The new listener that is to be registered for notification.
+	 * @since 0.8
 	 */
-	void addListener(AcceleoTextGenerationListener listener);
+	void addListener(IAcceleoTextGenerationListener listener);
 
 	/**
 	 * Evaluates the given Acceleo Template with the given arguments.
@@ -74,6 +75,7 @@ public interface IAcceleoEngine {
 	 * 
 	 * @param listener
 	 *            The listener that is to be removed from this engine's notification loops.
+	 * @since 0.8
 	 */
-	void removeListener(AcceleoTextGenerationListener listener);
+	void removeListener(IAcceleoTextGenerationListener listener);
 }
