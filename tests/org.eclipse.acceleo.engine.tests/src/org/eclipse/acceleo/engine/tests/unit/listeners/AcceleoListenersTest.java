@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Block;
@@ -129,7 +129,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 * This implementation of an AcceleoTextGenerationListener allows us to check that the accurate info is
 	 * set on the generation events.
 	 */
-	private class AcceleoGenerationEventTestListener implements AcceleoTextGenerationListener {
+	private class AcceleoGenerationEventTestListener implements IAcceleoTextGenerationListener {
 		/** The generated text itself. */
 		String generatedText;
 
@@ -158,7 +158,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 		 */
 		public void textGenerated(AcceleoTextGenerationEvent event) {
 			textSourceBlock = event.getBlock();
@@ -169,7 +169,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 		 */
 		public void filePathComputed(AcceleoTextGenerationEvent event) {
 			fileSourceBlock = event.getBlock();
@@ -182,7 +182,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 * This implementation of an AcceleoTextGenerationListener allows us to count the number of times the
 	 * engine generated text.
 	 */
-	private class AcceleoGenerationCountListener implements AcceleoTextGenerationListener {
+	private class AcceleoGenerationCountListener implements IAcceleoTextGenerationListener {
 		/** This will be incremented for each call to {@link #textGenerated(AcceleoTextGenerationEvent)}. */
 		int generationCount;
 
@@ -199,7 +199,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 		 */
 		public void textGenerated(AcceleoTextGenerationEvent event) {
 			generationCount++;
@@ -208,7 +208,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 		 */
 		public void filePathComputed(AcceleoTextGenerationEvent event) {
 			generatedFileCount++;
