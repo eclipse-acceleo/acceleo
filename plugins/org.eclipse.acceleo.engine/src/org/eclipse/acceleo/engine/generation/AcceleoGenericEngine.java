@@ -20,13 +20,13 @@ import java.util.Map;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.Variable;
 
@@ -59,11 +59,11 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template,
-	 *      java.util.List, java.io.File, boolean, org.eclipse.acceleo.engine.AcceleoProgressMonitor)
+	 *      java.util.List, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)
 	 * @since 0.8
 	 */
 	public Map<String, Writer> evaluate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+			File generationRoot, boolean preview, Monitor monitor) {
 		if (template == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
 		}

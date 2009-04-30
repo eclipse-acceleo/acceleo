@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
@@ -29,6 +28,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -107,7 +107,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
-			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+			File generationRoot, boolean preview, Monitor monitor) {
 		if (templates == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -197,7 +197,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+			File generationRoot, boolean preview, Monitor monitor) {
 		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview, monitor);
 	}
 
@@ -244,8 +244,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			List<? extends Object> arguments, File generationRoot, boolean preview,
-			AcceleoProgressMonitor monitor) {
+			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
 		if (model == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -321,7 +320,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
-			boolean preview, AcceleoProgressMonitor monitor) {
+			boolean preview, Monitor monitor) {
 		if (template == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
@@ -393,8 +392,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerateTemplate(Module module, String templateName,
-			List<? extends Object> arguments, File generationRoot, boolean preview,
-			AcceleoProgressMonitor monitor) {
+			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
 		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
 				preview, monitor);
 	}
@@ -433,7 +431,7 @@ public final class AcceleoService {
 	 *         empty otherwise.
 	 */
 	public static Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview, AcceleoProgressMonitor monitor) {
+			File generationRoot, boolean preview, Monitor monitor) {
 		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview, monitor);
 	}
 

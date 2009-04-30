@@ -39,10 +39,11 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -74,7 +75,7 @@ public final class AcceleoEvaluationContext {
 	protected final boolean previewMode;
 
 	/** This will be initialized with this generation's progress monitor. */
-	private final AcceleoProgressMonitor progressMonitor;
+	private final Monitor progressMonitor;
 
 	/**
 	 * Blocks' init sections might change existing variables which will need to be restored afterwards. This
@@ -114,14 +115,14 @@ public final class AcceleoEvaluationContext {
 	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEvaluationContext(File root, List<AcceleoTextGenerationListener> listeners,
-			boolean preview, AcceleoProgressMonitor monitor) {
+			boolean preview, Monitor monitor) {
 		generationRoot = root;
 		previewMode = preview;
 		this.listeners.addAll(listeners);
 		if (monitor != null) {
 			progressMonitor = monitor;
 		} else {
-			progressMonitor = new AcceleoProgressMonitor();
+			progressMonitor = new BasicMonitor();
 		}
 		flatten();
 	}
@@ -279,7 +280,7 @@ public final class AcceleoEvaluationContext {
 	 * 
 	 * @return The current progress monitor.
 	 */
-	public AcceleoProgressMonitor getProgressMonitor() {
+	public Monitor getProgressMonitor() {
 		return progressMonitor;
 	}
 
@@ -523,8 +524,12 @@ public final class AcceleoEvaluationContext {
 					}
 					// Everything following the end of use code marker doesn't need to be saved
 					if (line.contains(usercodeEnd)) {
-						areaContent.append(line
-								.substring(0, line.indexOf(usercodeEnd) + usercodeEnd.length()));
+						final int endOffset = line.indexOf(usercodeEnd) + usercodeEnd.length();
+						areaContent.append(line.substring(0, endOffset));
+						final String next = line.substring(endOffset, endOffset + LINE_SEPARATOR.length());
+						if (LINE_SEPARATOR.equals(next)) {
+							areaContent.append(LINE_SEPARATOR);
+						}
 						break;
 					}
 					areaContent.append(line);

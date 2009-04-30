@@ -15,9 +15,9 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.emf.common.util.Monitor;
 
 /**
  * Base interface for all implementation of an Acceleo evaluation engine.
@@ -67,7 +67,7 @@ public interface IAcceleoEngine {
 	 * @since 0.8
 	 */
 	Map<String, Writer> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
-			boolean preview, AcceleoProgressMonitor monitor);
+			boolean preview, Monitor monitor);
 
 	/**
 	 * Removes a listener from the notification loops.

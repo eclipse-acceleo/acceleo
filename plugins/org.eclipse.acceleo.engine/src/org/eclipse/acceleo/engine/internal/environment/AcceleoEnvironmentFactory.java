@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -68,7 +68,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
-			List<AcceleoTextGenerationListener> listeners, boolean preview, AcceleoProgressMonitor monitor) {
+			List<AcceleoTextGenerationListener> listeners, boolean preview, Monitor monitor) {
 		super(EPackage.Registry.INSTANCE);
 		context = new AcceleoEvaluationContext(generationRoot, listeners, preview, monitor);
 		this.module = module;
