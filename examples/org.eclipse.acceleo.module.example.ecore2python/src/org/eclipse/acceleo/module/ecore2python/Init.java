@@ -21,6 +21,10 @@ import java.util.Map;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -92,7 +96,12 @@ public class Init {
     ResourceSet resourceSet = new ResourceSetImpl();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
-    URL templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+    final URL templateURL;
+    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+    } else {
+      templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+    }
     if (templateURL == null) {
       throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
     } else {
@@ -121,7 +130,12 @@ public class Init {
     ResourceSet resourceSet = model.eResource().getResourceSet();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
-    URL templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+    final URL templateURL;
+    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+    } else {
+      templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+    }
     if (templateURL == null) {
       throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
     } else {
@@ -212,7 +226,7 @@ public class Init {
           arguments.add(args[i]);
         }
         Init generator = new Init(modelURI, folder, arguments);
-        generator.doGenerate();
+        generator.doGenerate(new BasicMonitor());
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -220,22 +234,24 @@ public class Init {
   }
 
 	/**
-	 * Launches the generation.
-	 * 
-	 * @throws IOException
-	 *             Thrown when the output cannot be saved.
-	 * @generated
-	 */
-	public void doGenerate() throws IOException {
+   * Launches the generation.
+   * 
+   * @param monitor
+   *             This will be used to display progress information to the user.
+   * @throws IOException
+   *             Thrown when the output cannot be saved.
+   * @generated
+   */
+  public void doGenerate(Monitor monitor) throws IOException {
     if (!targetFolder.exists()) {
       targetFolder.mkdirs();
     }
     for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false);
+      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false, monitor);
     }
   }
 
-	/**
+  /**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
 	 * <p>
 	 * This will return the first root of the loaded model, other roots can be accessed via the resource's
