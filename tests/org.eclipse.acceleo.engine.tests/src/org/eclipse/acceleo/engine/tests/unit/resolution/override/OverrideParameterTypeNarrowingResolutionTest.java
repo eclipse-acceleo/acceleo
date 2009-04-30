@@ -16,11 +16,11 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -98,7 +98,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 		cleanGenerationRoot();
 
 		AcceleoService.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, //$NON-NLS-1$
-				false, new AcceleoProgressMonitor());
+				false, new BasicMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

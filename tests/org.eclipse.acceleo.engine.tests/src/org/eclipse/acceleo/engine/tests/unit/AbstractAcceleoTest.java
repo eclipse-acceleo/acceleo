@@ -25,7 +25,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.AcceleoProgressMonitor;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -34,6 +33,7 @@ import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -164,7 +164,7 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 */
 	protected Map<String, Writer> generate(String templateName, boolean preview) {
 		return AcceleoService.doGenerate(module, templateName, inputModel, generationRoot, preview,
-				new AcceleoProgressMonitor());
+				new BasicMonitor());
 	}
 
 	/**
