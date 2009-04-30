@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
-import org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 
@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoResultContent implements AcceleoTextGenerationListener {
+public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 
 	/**
 	 * The generated files. The key is the full path of the file and the value its traceability data.
@@ -63,7 +63,7 @@ public class AcceleoResultContent implements AcceleoTextGenerationListener {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 	 */
 	public void filePathComputed(AcceleoTextGenerationEvent event) {
 		String targetPath = new Path(event.getText()).toString();
@@ -75,7 +75,7 @@ public class AcceleoResultContent implements AcceleoTextGenerationListener {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.event.AcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 	 */
 	public void textGenerated(AcceleoTextGenerationEvent event) {
 		if (event.getText() != null && event.getText().length() > 0 && targetFile != null) {
