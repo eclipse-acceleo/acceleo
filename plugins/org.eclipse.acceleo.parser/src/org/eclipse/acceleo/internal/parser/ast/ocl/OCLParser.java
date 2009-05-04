@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.ecore.CallExp;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.OCL;
@@ -784,6 +785,10 @@ public class OCLParser {
 	 * @return the new OCL expression, which is an invocation of the Acceleo module element
 	 */
 	private OCLExpression createAcceleoInvocation(EObject eObject) {
+		// Check the source of this object and replace it if needed
+		if (eObject instanceof CallExp) {
+			createAcceleoInvocation(((CallExp)eObject).getSource());
+		}
 		if (eObject instanceof OperationCallExp) {
 			OperationCallExp eCall = (OperationCallExp)eObject;
 			if (eCall.getReferredOperation() != null
