@@ -526,8 +526,10 @@ public final class AcceleoEvaluationContext {
 					if (line.contains(usercodeEnd)) {
 						final int endOffset = line.indexOf(usercodeEnd) + usercodeEnd.length();
 						areaContent.append(line.substring(0, endOffset));
-						final String next = line.substring(endOffset, endOffset + LINE_SEPARATOR.length());
-						if (LINE_SEPARATOR.equals(next)) {
+						// Append a line separator after the protected area if need be
+						if (endOffset + LINE_SEPARATOR.length() <= line.length()
+								&& LINE_SEPARATOR.equals(line.substring(endOffset, endOffset
+										+ LINE_SEPARATOR.length()))) {
 							areaContent.append(LINE_SEPARATOR);
 						}
 						break;
