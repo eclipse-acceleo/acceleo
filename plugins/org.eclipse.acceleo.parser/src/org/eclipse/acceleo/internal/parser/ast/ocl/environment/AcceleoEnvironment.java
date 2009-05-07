@@ -26,11 +26,13 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.utilities.UMLReflection;
 
 /**
  * The environment that will be used throughout the evaluation of Acceleo templates.
@@ -45,7 +47,21 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private AcceleoStandardLibrary acceleoStdLib;
 
 	/** List of {@link EPackage} the parser knows about. */
-	private Collection<EPackage> metamodels;
+	private Collection<EPackage> metamodels = new ArrayList<EPackage>();
+
+	/** We'll only create a single instance of the uml reflection. */
+	private UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> umlReflection;
+
+	/**
+	 * Delegates instantiation to the super constructor.
+	 * 
+	 * @param parent
+	 *            Parent for this Acceleo environment.
+	 */
+	protected AcceleoEnvironment(
+			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
+		super(parent);
+	}
 
 	/**
 	 * Delegates instantiation to the super-constructor.
@@ -55,7 +71,6 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	protected AcceleoEnvironment(Resource oclEnvironmentResource) {
 		super(EPackage.Registry.INSTANCE, oclEnvironmentResource);
-		metamodels = new ArrayList<EPackage>();
 
 		// Add standard Acceleo operations
 		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoStandardLibrary()
@@ -100,10 +115,14 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	@Override
 	public EClassifier lookupClassifier(List<String> names) {
+		EClassifier classifier = null;
 		if (names.size() > 0) {
-			return lookupClassifier(names.get(names.size() - 1));
+			classifier = lookupClassifier(names.get(names.size() - 1));
+			if (classifier == null) {
+				classifier = super.lookupClassifier(names);
+			}
 		}
-		return null;
+		return classifier;
 	}
 
 	/**
@@ -123,7 +142,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				}
 			}
 		}
-		return getOCLStandardLibrary().getInvalid();
+		// super never returns invalid types.
+		// return getOCLStandardLibrary().getInvalid();
+		return null;
 	}
 
 	/**
@@ -187,6 +208,19 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 		computeOCLType(result, getOCLStandardLibrary().getT2());
 		computeOCLType(result, getOCLStandardLibrary().getUnlimitedNatural());
 		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#getUMLReflection()
+	 */
+	@Override
+	public UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> getUMLReflection() {
+		if (umlReflection == null) {
+			umlReflection = new AcceleoUMLReflection(super.getUMLReflection());
+		}
+		return umlReflection;
 	}
 
 	/**
