@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
+import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -55,4 +56,20 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.EcoreEnvironmentFactory#createEnvironment(org.eclipse.ocl.Environment)
+	 */
+	@Override
+	public Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> createEnvironment(
+			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
+		if (!(parent instanceof AcceleoEnvironment)) {
+			throw new IllegalArgumentException(AcceleoParserMessages.getString(
+					"AcceleoEnvironmentFactory.IllegalParent", parent.getClass().getName())); //$NON-NLS-1$
+		}
+		final AcceleoEnvironment result = new AcceleoEnvironment(parent);
+		result.setFactory(this);
+		return result;
+	}
 }
