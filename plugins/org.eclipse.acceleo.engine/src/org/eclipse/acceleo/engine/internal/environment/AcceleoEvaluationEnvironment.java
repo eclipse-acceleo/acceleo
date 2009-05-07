@@ -151,6 +151,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				result = sourceValue.trim();
 			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE.equals(operationName)) {
 				result = tokenize(sourceValue, (String)args[0]);
+			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
+				result = sourceValue.contains((String)args[0]);
 			}
 		} else if (source instanceof EObject) {
 			final EObject sourceValue = (EObject)source;
