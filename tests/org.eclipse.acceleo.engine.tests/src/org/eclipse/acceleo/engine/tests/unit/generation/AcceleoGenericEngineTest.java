@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.engine.tests.unit.engine;
+package org.eclipse.acceleo.engine.tests.unit.generation;
 
 import java.io.File;
 import java.io.IOException;

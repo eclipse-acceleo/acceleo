@@ -439,6 +439,63 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the non standard "contains(String)" operation on String.
+	 * <p>
+	 * Expects the result to be the same as {@link String#contains(CharSequence)}.
+	 * </p>
+	 */
+	public void testStringContains() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
+				AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
+
+		final String uncontainedString = "tgdjfsleo";
+
+		// Taking random characters as the value : expecting contains to return false
+		for (String value : stringValues) {
+			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value,
+					uncontainedString);
+			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
+			assertEquals("Result should have been false.", Boolean.FALSE, result);
+			assertEquals("The non standard operation should have returned the same result as "
+					+ "String#contains(CharSequence)", value.contains(uncontainedString), result);
+		}
+
+		// Taking random substring of the value : expecting contains to return true
+		for (String value : stringValues) {
+			final String subString;
+			if (value.length() == 0) {
+				subString = value;
+			} else {
+				final int offset1 = Double.valueOf(Math.random() * value.length()).intValue();
+				final int offset2 = Double.valueOf(Math.random() * value.length()).intValue();
+				subString = value.substring(Math.min(offset1, offset2), Math.max(offset1, offset2));
+			}
+			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, subString);
+			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
+			assertEquals("Result should have been true.", Boolean.TRUE, result);
+			assertEquals("The non standard operation should have returned the same result as "
+					+ "String#contains(CharSequence)", value.contains(subString), result);
+		}
+
+		// Checking if value "contains" itself : expecting contains to return true
+		for (String value : stringValues) {
+			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, value);
+			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
+			assertEquals("Result should have been true.", Boolean.TRUE, result);
+			assertEquals("The non standard operation should have returned the same result as "
+					+ "String#contains(CharSequence)", value.contains(value), result);
+		}
+
+		// Ensure the behavior when passing null as argument doesn't evolve
+		try {
+			evaluationEnvironment.callNonStandardOperation(operation, stringValues[0], (Object)null);
+			fail("The non standard String.contains operation previously threw NPEs when called with null argument");
+		} catch (NullPointerException e) {
+			// Expected behavior
+		}
+	}
+
+	/**
 	 * Tests the behavior of the non standard "endsWith(String)" operation on String.
 	 * <p>
 	 * Expects the result to be the same as {@link String#endsWith(String)}.

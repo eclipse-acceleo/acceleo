@@ -49,7 +49,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	@Override
 	public String getModuleLocation() {
-		return "data/StandardLibrary/stdlib.mtl";
+		return "data/Library/stdlib.mtl";
 	}
 
 	/**
@@ -68,10 +68,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringFirst() {
 		final String fileName = "test_string_first";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -81,10 +86,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringIndex() {
 		final String fileName = "test_string_index";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -95,10 +105,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringIsAlpha() {
 		final String fileName = "test_string_isAlpha";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -109,10 +124,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringIsAlphanum() {
 		final String fileName = "test_string_isAlphanum";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -122,10 +142,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringLast() {
 		final String fileName = "test_string_last";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -135,10 +160,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringStrcmp() {
 		final String fileName = "test_string_strcmp";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -148,10 +178,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringStrstr() {
 		final String fileName = "test_string_strstr";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -160,10 +195,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringStrtok() {
 		final String fileName = "test_string_strtok";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -176,10 +216,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringSubstitute() {
 		final String fileName = "test_string_substitute";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -188,10 +233,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringToLowerFirst() {
 		final String fileName = "test_string_toLowerFirst";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 
@@ -200,10 +250,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	public void testStringToUpperFirst() {
 		final String fileName = "test_string_toUpperFirst";
+		boolean fileFound = false;
 		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
 			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
 		}
 	}
 }
