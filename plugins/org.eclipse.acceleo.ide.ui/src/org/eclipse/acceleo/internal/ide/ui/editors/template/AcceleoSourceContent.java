@@ -638,9 +638,11 @@ public class AcceleoSourceContent {
 					}
 					resource.getContents().add(vAST);
 					oclParser = new OCLParser(resource);
-					List<URI> dependenciesURIs = getAccessibleOutputFiles();
-					loadImportsDependencies(vAST, dependenciesURIs);
-					loadExtendsDependencies(vAST, dependenciesURIs);
+					if (!getCST().getImports().isEmpty() || !getCST().getExtends().isEmpty()) {
+						List<URI> dependenciesURIs = getAccessibleOutputFiles();
+						loadImportsDependencies(vAST, dependenciesURIs);
+						loadExtendsDependencies(vAST, dependenciesURIs);
+					}
 					oclParser.addRecursivelyMetamodelsToScope(vAST);
 					boolean isAfterDot = isAfterDot(text);
 					oclParser.addRecursivelyBehavioralFeaturesToScope(vAST, true, !isAfterDot,
