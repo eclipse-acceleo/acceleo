@@ -21,12 +21,13 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.protectedareablock.Protected
 import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.QueryPropertyInvocationTest;
-import org.eclipse.acceleo.engine.tests.unit.engine.AcceleoGenericEngineTest;
+import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
-import org.eclipse.acceleo.engine.tests.unit.listeners.AcceleoListenersTest;
+import org.eclipse.acceleo.engine.tests.unit.event.AcceleoListenersTest;
+import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.ParameterTypeNarrowingResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.SimpleNamesakeResolutionTest;
@@ -99,6 +100,12 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(AcceleoStandardLibraryTest.class);
 		suite.addTestSuite(AcceleoStandardLibraryParsedTest.class);
 		suite.addTestSuite(AcceleoNonStandardLibraryTest.class);
+		try {
+			Class.forName("org.eclipse.ocl.TypeChecker"); //$NON-NLS-1$
+			suite.addTestSuite(AcceleoNonStandardLibraryParsedTest.class);
+		} catch (ClassNotFoundException e) {
+			// OCL 1.3 isn't accessible in the classpath
+		}
 
 		return suite;
 	}
