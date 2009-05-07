@@ -95,6 +95,17 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_TOSTRING = "toString"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;contains&quot; non-standard String operation.
+	 * <p>
+	 * <b>contains( String substring ) : Boolean</b><br/> Returns <code>true</code> if self contains the
+	 * substring <code>substring</code>, <code>false</code> otherwise.
+	 * </p>
+	 * 
+	 * @since 0.8
+	 */
+	public static final String OPERATION_STRING_CONTAINS = "contains"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;endsWith&quot; non-standard String operation.
 	 * <p>
 	 * <b>endsWith( String substring ) : Boolean</b><br/> Returns <code>true</code> if self ends with the
