@@ -1,0 +1,13 @@
+[module progress_monitor(http://www.eclipse.org/emf/2002/Ecore)/]
+[template public test(c:EClass)]
+	[file ('progress_monitor', false)]
+		constant output
+	[/file]
+[/template]
+[template public test_cancel(c:EClass)]
+	[file ('progress_monitor_canceled', false)]
+		[c.name.infinite_recurse()/]
+	[/file]
+[/template]
+
+[query public infinite_recurse(s : String) : String = infinite_recurse(s)/]
