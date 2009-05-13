@@ -102,7 +102,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
@@ -192,7 +192,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
@@ -239,7 +239,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
@@ -315,7 +315,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
@@ -388,7 +388,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
@@ -427,7 +427,7 @@ public final class AcceleoService {
 	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
 	 *            generated content will be returned.
 	 * @param monitor
-	 *            This will be used as the progress monitor for the generation.
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
