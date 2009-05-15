@@ -68,7 +68,14 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 			throw new IllegalArgumentException(AcceleoParserMessages.getString(
 					"AcceleoEnvironmentFactory.IllegalParent", parent.getClass().getName())); //$NON-NLS-1$
 		}
-		final AcceleoEnvironment result = new AcceleoEnvironment(parent);
+		AcceleoEnvironment result;
+		try {
+			Class.forName("org.eclipse.ocl.TypeChecker"); //$NON-NLS-1$
+			result = new AcceleoEnvironmentGalileo(parent);
+		} catch (ClassNotFoundException e) {
+			// OCL 1.3 isn't accessible in the classpath
+			result = new AcceleoEnvironment(parent);
+		}
 		result.setFactory(this);
 		return result;
 	}
