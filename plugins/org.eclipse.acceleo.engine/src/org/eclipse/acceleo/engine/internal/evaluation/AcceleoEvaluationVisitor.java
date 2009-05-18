@@ -870,6 +870,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            Result of the evaluation from which we detected the operation cancelation.
 	 */
 	private void cancel(ASTFragment astFragment, EObject debugInput, Object result) {
+		// #276667 "debug" can be null
 		if (debug != null) {
 			debug.stepDebugOutput(astFragment, debugInput, result);
 			debug.endDebug(astFragment);
