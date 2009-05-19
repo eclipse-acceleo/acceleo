@@ -12,7 +12,7 @@
 
 [template public toModuleInit(packaje : EPackage)]
 	[comment @main /]
-	[file (packaje.moduleInit().trim(), false)]
+	[file (packaje.moduleInit(), false)]
 	Module [packaje.name/]
 	
 	Sample usage :
@@ -24,20 +24,20 @@
 	"""
 	
 	[for (sub : EPackage | packaje.eSubpackages) before('#import subpackages')]
-	import [sub.moduleName().trim().substituteAll('/', '.')/]
+	import [sub.moduleName().substituteAll('/', '.')/]
 	[/for]
 
-	from [packaje.moduleName().trim()/] import *
+	from [packaje.moduleName()/] import *
 
-	from __factory__ import [packaje.factoryClassName().trim()/]
+	from __factory__ import [packaje.factoryClassName()/]
 	"""
 	Initialize the default instances factory
 	"""
-	factory = [packaje.factoryClassName().trim()/]() 
+	factory = [packaje.factoryClassName()/]() 
 	# here you may redefine the module singletons or do some special tricks
 
-	from __common__ import [packaje.resourceFactory().trim()/]
-	resourceFactory = [packaje.resourceFactory().trim()/]()
+	from __common__ import [packaje.resourceFactory()/]
+	resourceFactory = [packaje.resourceFactory()/]()
 	[/file]
 [/template]
 

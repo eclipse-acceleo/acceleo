@@ -11,10 +11,10 @@
 
 [template public packageToPythonCommonFile(packaje : EPackage)]
 	[comment @main /]
-	[file (packaje.moduleCommon().trim(), false)]
-	class [packaje.baseClass().trim()/]:
+	[file (packaje.moduleCommon(), false)]
+	class [packaje.baseClass()/]:
 		"""
-		[packaje.baseClass().trim()/] is the base class of all elements in the [packaje.moduleName().trim()/] module.
+		[packaje.baseClass()/] is the base class of all elements in the [packaje.moduleName()/] module.
 		"""
 		def __init__(self):
 			pass
@@ -23,15 +23,15 @@
 		def __eResource__(self):
 			pass
 	    	
-	class [packaje.relationBaseClass().trim()/](list):
+	class [packaje.relationBaseClass()/](list):
 		"""
 		Base class for relations
 		"""
 		pass
 		
-	class [packaje.resourceClass().trim()/]:
+	class [packaje.resourceClass()/]:
 		"""
-		The [packaje.resourceClass().trim()/] is responsible for model serialization.
+		The [packaje.resourceClass()/] is responsible for model serialization.
 		"""
 		def __init__(self,uri):
 			# type here your specific code
@@ -44,9 +44,9 @@
 		def save(self,options=dict()):
 			pass
 	
-	class [packaje.resourceFactory().trim()/]:
+	class [packaje.resourceFactory()/]:
 		"""
-		The [packaje.resourceFactory().trim()/] is responsible for creating resource.
+		The [packaje.resourceFactory()/] is responsible for creating resource.
 		"""
 		def __init__(self):
 			# type here your specific code

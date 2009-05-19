@@ -10,19 +10,19 @@
 [import common/]
 
 [template public moduleCommon(packaje : EPackage)]
-	[packaje.moduleFullName().trim()/]/__common__.py
+	[packaje.moduleFullName()/]/__common__.py
 [/template]
 
 [template public moduleFactory(packaje : EPackage)]
-	[packaje.moduleFullName().trim()/]/__factory__.py
+	[packaje.moduleFullName()/]/__factory__.py
 [/template]
 
 [template public moduleInit(packaje : EPackage)]
-	[packaje.moduleFullName().trim()/]/__init__.py
+	[packaje.moduleFullName()/]/__init__.py
 [/template]
 
 [template public parserName(packaje : EPackage)]
-	[packaje.moduleFullName().trim()/]/__parser__.py
+	[packaje.moduleFullName()/]/__parser__.py
 [/template]
 
 [template public baseClass(packaje : EPackage)]
