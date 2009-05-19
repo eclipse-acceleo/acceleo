@@ -223,6 +223,17 @@ Contributors:
                id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
          </actionSet>
       </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
+         <actionSet
+               id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
+         </actionSet>
+         <view
+               id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
     </extension>
     <extension
           point="org.eclipse.ui.newWizards">
