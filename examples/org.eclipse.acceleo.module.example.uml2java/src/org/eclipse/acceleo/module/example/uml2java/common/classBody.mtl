@@ -56,11 +56,11 @@ public[if (c.isAbstract)] abstract[/if] class [c.name.toUpperFirst()/][for (supe
 [/if]
 [/for]
 [for (o : Operation | c.getOperations())]
-    [o.operationBody().trim()/]
+[o.operationBody()/]
 [/for]
 [for (interf : Interface | c.getImplementedInterfaces())]
 [for (o : Operation | interf.ownedOperation)]
-    [o.operationBody().trim()/]
+[o.operationBody()/]
 [/for]
 [/for]
 }
@@ -76,7 +76,7 @@ public[if (c.isAbstract)] abstract[/if] class [c.name.toUpperFirst()/][for (supe
 [returnOperationComment()/]
 [/if]
      */
-    public [o.returnTypeOperation().trim()/]([o.getInParameter().trim()/]) {
+    public [o.returnTypeOperation()/]([o.getInParameter()/]) {
 [if (not o.type.name.oclIsUndefined())]
         // [protected ('for operation '.concat(o.name))]
         // TODO should be implemented

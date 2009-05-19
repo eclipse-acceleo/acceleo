@@ -23,7 +23,7 @@ public interface [i.name.toUpperFirst()/] {
 [returnOperationComment()/]
 [/if]
      */
-    public [o.returnTypeOperation().trim()/]([o.getInParameter().trim()/]);
+    public [o.returnTypeOperation()/]([o.getInParameter()/]);
 [/for]
 }
 [/template]
