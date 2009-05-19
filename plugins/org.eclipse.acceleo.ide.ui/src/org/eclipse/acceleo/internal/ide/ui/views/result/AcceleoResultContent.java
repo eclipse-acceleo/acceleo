@@ -90,15 +90,11 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 						region = lastRegion;
 					}
 				}
-				if (region == null) {
-					region = new TraceabilityRegion(targetFileOffset, event.getText().length(), event
-							.getBlock());
-					targetFileOffset += event.getText().length();
-					model.getRegions().add(region);
-					region.setParent(model);
-				} else {
-					region.enlarge(event.getText().length());
-				}
+				// TODO JMU ENLARGE
+				region = new TraceabilityRegion(targetFileOffset, event.getText().length(), event.getBlock());
+				targetFileOffset += event.getText().length();
+				model.getRegions().add(region);
+				region.setParent(model);
 			}
 		}
 	}
