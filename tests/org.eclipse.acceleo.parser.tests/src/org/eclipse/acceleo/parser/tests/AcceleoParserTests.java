@@ -159,12 +159,12 @@ public class AcceleoParserTests extends TestCase {
 			fail(source.getProblems().getMessage());
 		}
 		String[] results = {"\n", "\n", "\t\t", "\n", "", "\t\t", "\n", "", "\t", "\n", "\t\t", "\n", "", "",
-				"\t\t\t", "\n", "", "\t\t\t", "\n", "", "\n", "\n\t\t", "\n", ""};
+				"\t\t\t", "\n", "", "\t\t\t", "\n", "", "\n", "\n\t\t", "\n", "\n" };
 		int i = -1;
 		StringBuffer report = new StringBuffer();
 		Iterator<EObject> it = resource.getContents().get(0).eAllContents();
 		while (it.hasNext()) {
-			EObject eObject = (EObject)it.next();
+			EObject eObject = it.next();
 			if (eObject instanceof org.eclipse.ocl.ecore.StringLiteralExp) {
 				i++;
 				org.eclipse.ocl.ecore.StringLiteralExp literal = (org.eclipse.ocl.ecore.StringLiteralExp)eObject;
