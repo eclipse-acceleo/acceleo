@@ -28,7 +28,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	private Map<String, Writer> generatedPreview;
 
 	/** This is the output we expect from each generated file. */
-	private final static String OUTPUT = "constant output";
+	private final static String OUTPUT = "constant output" + System.getProperty("line.separator");
 
 	/**
 	 * {@inheritDoc}
