@@ -123,17 +123,17 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 */
 	private void init() {
 		lines.add(0);
-		for (int i = 0; i < buffer.length(); i++) {
-			if (buffer.charAt(i) == '\n') {
-				lines.add(Integer.valueOf(i));
-			} else if (buffer.charAt(i) == '\r') {
-				lines.add(Integer.valueOf(i));
-				if (buffer.charAt(i + 1) == '\n') {
-					// CHECKSTYLE:OFF this modification of the loop variable is legitimate
-					i++;
-					// CHECKSTYLE:ON
+		int offset = 0;
+		while (offset < buffer.length()) {
+			if (buffer.charAt(offset) == '\n') {
+				lines.add(Integer.valueOf(offset));
+			} else if (buffer.charAt(offset) == '\r') {
+				lines.add(Integer.valueOf(offset));
+				if (buffer.charAt(offset + 1) == '\n') {
+					offset++;
 				}
 			}
+			offset++;
 		}
 	}
 
