@@ -199,7 +199,7 @@ public class CSTParserTests extends TestCase {
 				+ "[template public class2Java(c1 : Class)]" + "[c1.";
 		String bufferAfter = "/] [/template]";
 		List<Choice> choices = getSyntaxHelp(bufferBefore + bufferAfter, bufferBefore.length());
-		assertEquals(choices.size(), 52);
+		assertSame(choices.size(), 52);
 	}
 
 	private List<Choice> getSyntaxHelp(String buffer, int offset) {
