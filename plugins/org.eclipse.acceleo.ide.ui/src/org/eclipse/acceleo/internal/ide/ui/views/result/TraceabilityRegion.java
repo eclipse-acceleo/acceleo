@@ -73,6 +73,25 @@ public class TraceabilityRegion extends TraceabilityElement {
 	}
 
 	/**
+	 * Gets the last template AST node used to create this text region.
+	 * 
+	 * @return the last template AST node used to create this text region
+	 */
+	public Block getAstNode() {
+		return astNode;
+	}
+
+	/**
+	 * Increases the text region length.
+	 * 
+	 * @param length
+	 *            is the length to add (targetFileLength += length)
+	 */
+	public void enlarge(int length) {
+		targetFileLength += length;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.lang.Object#toString()
