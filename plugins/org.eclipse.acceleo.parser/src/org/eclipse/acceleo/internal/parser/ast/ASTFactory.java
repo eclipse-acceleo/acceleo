@@ -33,7 +33,7 @@ public class ASTFactory {
 	/**
 	 * A log Handler to save AST logging messages.
 	 */
-	private IASTLogHandler logHandler;
+	private IASTProvider logHandler;
 
 	/**
 	 * To get an AST Module corresponding to a CST Module.
@@ -156,7 +156,7 @@ public class ASTFactory {
 	 * @param logHandler
 	 *            is the new log handler
 	 */
-	public void setLogHandler(IASTLogHandler logHandler) {
+	public void setLogHandler(IASTProvider logHandler) {
 		this.logHandler = logHandler;
 	}
 

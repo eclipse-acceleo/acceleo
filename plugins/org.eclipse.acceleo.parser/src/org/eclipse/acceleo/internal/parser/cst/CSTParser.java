@@ -151,23 +151,23 @@ public class CSTParser {
 		pComment = ParserUtils
 				.createAcceleoSequenceBlock(false, IAcceleoConstants.COMMENT, false, null, null);
 		pParenthesis = new SequenceBlock(new Sequence(IAcceleoConstants.PARENTHESIS_BEGIN), new Sequence(
-				IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral});
+				IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral });
 		pBrackets = new SequenceBlock(new Sequence(IAcceleoConstants.BRACKETS_BEGIN), new Sequence(
-				IAcceleoConstants.BRACKETS_END), null, true, new SequenceBlock[] {pLiteral});
+				IAcceleoConstants.BRACKETS_END), null, true, new SequenceBlock[] {pLiteral });
 		pComma = new Sequence(IAcceleoConstants.COMMA_SEPARATOR);
 		pSemicolon = new Sequence(IAcceleoConstants.SEMICOLON_SEPARATOR);
 		pPipe = new Sequence(IAcceleoConstants.PIPE_SEPARATOR);
 		pGuard = new Sequence(IAcceleoConstants.GUARD);
 		pModule = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.MODULE, false,
-				new SequenceBlock[] {pLiteral}, null);
+				new SequenceBlock[] {pLiteral }, null);
 		pImport = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.IMPORT, false,
-				new SequenceBlock[] {pLiteral}, null);
+				new SequenceBlock[] {pLiteral }, null);
 		pTemplate = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TEMPLATE, false,
-				new SequenceBlock[] {pLiteral, pParenthesis}, new SequenceBlock[] {pComment});
+				new SequenceBlock[] {pLiteral, pParenthesis }, new SequenceBlock[] {pComment });
 		pMacro = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.MACRO, true,
-				new SequenceBlock[] {pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
+				new SequenceBlock[] {pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
 		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, false,
-				new SequenceBlock[] {pLiteral, pParenthesis,}, new SequenceBlock[] {pComment});
+				new SequenceBlock[] {pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
 		pBlock = new CSTParserBlock(this);
 	}
 
@@ -262,8 +262,8 @@ public class CSTParser {
 			String name = source.getBuffer().substring(posBegin, posEnd).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(
-						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, posEnd); //$NON-NLS-1$
+				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, //$NON-NLS-1$
+						posEnd);
 			}
 		} else {
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
@@ -327,7 +327,7 @@ public class CSTParser {
 		int currentPos = posBegin;
 		while (currentPos != posEnd) {
 			Region comma = pComma.search(source.getBuffer(), currentPos, posEnd, null,
-					new SequenceBlock[] {pLiteral});
+					new SequenceBlock[] {pLiteral });
 			TypedModel typedModel = CstFactory.eINSTANCE.createTypedModel();
 			int e;
 			if (comma.b() == -1) {
@@ -378,7 +378,7 @@ public class CSTParser {
 		if (bExtend != posBegin) {
 			while (bExtend != posEnd) {
 				Region comma = pComma.search(source.getBuffer(), bExtend, posEnd, null,
-						new SequenceBlock[] {pLiteral});
+						new SequenceBlock[] {pLiteral });
 				if (comma.b() == -1) {
 					ModuleExtendsValue eModuleExtendsValue = CstFactory.eINSTANCE.createModuleExtendsValue();
 					setPositions(eModuleExtendsValue, bExtend, posEnd);
@@ -427,7 +427,7 @@ public class CSTParser {
 	 */
 	public void parseModuleBody(int posBegin, int posEnd, Module eModule) {
 		int currentPosBegin = posBegin;
-		SequenceBlock[] pModuleElements = new SequenceBlock[] {pComment, pImport, pTemplate, pMacro, pQuery};
+		SequenceBlock[] pModuleElements = new SequenceBlock[] {pComment, pImport, pTemplate, pMacro, pQuery };
 		Region[] positions = Region.createPositions(pModuleElements.length);
 		while (currentPosBegin > -1 && currentPosBegin < posEnd) {
 			int i = ParserUtils.getNextSequence(source.getBuffer(), currentPosBegin, posEnd, pModuleElements,
@@ -722,12 +722,12 @@ public class CSTParser {
 	private int parseTemplateHeaderIndexOfGuardOrBrackets(int posBegin, int posEnd) {
 		int currentPosEnd = posEnd;
 		Region guard = pGuard.search(source.getBuffer(), posBegin, currentPosEnd, null,
-				new SequenceBlock[] {pLiteral});
+				new SequenceBlock[] {pLiteral });
 		if (guard.b() > -1) {
 			currentPosEnd = guard.b();
 		} else {
 			Region bracket = pBrackets.search(source.getBuffer(), posBegin, currentPosEnd, null,
-					new SequenceBlock[] {pLiteral});
+					new SequenceBlock[] {pLiteral });
 			if (bracket.b() > -1) {
 				currentPosEnd = bracket.b();
 			}
@@ -754,7 +754,7 @@ public class CSTParser {
 			currentPosBegin = bOverride;
 			while (currentPosBegin != posEnd) {
 				Region comma = pComma.search(source.getBuffer(), currentPosBegin, posEnd, null,
-						new SequenceBlock[] {pLiteral});
+						new SequenceBlock[] {pLiteral });
 				if (comma.b() == -1) {
 					TemplateOverridesValue eTemplateOverridesValue = CstFactory.eINSTANCE
 							.createTemplateOverridesValue();

@@ -11,9 +11,10 @@
 package org.eclipse.acceleo.parser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.acceleo.internal.parser.ast.CST2ASTConverterWithResolver;
-import org.eclipse.acceleo.internal.parser.ast.IASTLogHandler;
 import org.eclipse.acceleo.internal.parser.ast.IASTProvider;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
@@ -52,7 +53,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
+public class AcceleoSourceBuffer implements IASTProvider {
 
 	/**
 	 * The file to parse, can be null if the object is created with a buffer.
@@ -63,6 +64,13 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 	 * The buffer to parse.
 	 */
 	protected final StringBuffer buffer;
+
+	/**
+	 * This list will be initialized with the beginning offset of all lines in the given source buffer.
+	 * 
+	 * @since 0.8
+	 */
+	protected final List<Integer> lines = new ArrayList<Integer>();
 
 	/**
 	 * Parsing problems.
@@ -94,6 +102,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 		this.file = file;
 		this.buffer = FileContent.getFileContent(file);
 		this.problems = new AcceleoParserProblems();
+		init();
 	}
 
 	/**
@@ -106,6 +115,57 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 		this.file = null;
 		this.buffer = buffer;
 		this.problems = new AcceleoParserProblems();
+		init();
+	}
+
+	/**
+	 * Initializes the line information for the underlying buffer.
+	 */
+	private void init() {
+		lines.add(0);
+		for (int i = 0; i < buffer.length(); i++) {
+			if (buffer.charAt(i) == '\n') {
+				lines.add(Integer.valueOf(i));
+			} else if (buffer.charAt(i) == '\r') {
+				lines.add(Integer.valueOf(i));
+				if (buffer.charAt(i + 1) == '\n') {
+					// CHECKSTYLE:OFF this modification of the loop variable is legitimate
+					i++;
+					// CHECKSTYLE:ON
+				}
+			}
+		}
+	}
+
+	/***
+	 * Returns the line number of the given offset.
+	 * 
+	 * @param offset
+	 *            Offset we need to know the line of.
+	 * @return The line number of the given offset.
+	 * @since 0.8
+	 */
+	public int getLineOfOffset(int offset) {
+		int soughtLine = -1;
+		// shortcut
+		if (offset == 0) {
+			soughtLine = 0;
+		}
+		if (offset == buffer.length()) {
+			soughtLine = lines.size();
+		}
+		if (soughtLine == -1) {
+			for (int i = 0; i < lines.size(); i++) {
+				if (lines.get(i) > offset) {
+					soughtLine = i - 1;
+					break;
+				}
+			}
+		}
+		if (soughtLine == -1) {
+			soughtLine = lines.size();
+		}
+		return soughtLine;
 	}
 
 	/**
@@ -176,7 +236,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 			createCST();
 		}
 		astCreator = new CST2ASTConverterWithResolver();
-		astCreator.setLogHandler(this);
+		astCreator.setASTProvider(this);
 		astCreator.createAST(cst, resource);
 		if (resource.getContents().size() > 0
 				&& resource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
@@ -233,7 +293,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.parser.ast.IASTLogHandler#log(java.lang.String, int, int)
+	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider#log(java.lang.String, int, int)
 	 */
 	public void log(String message, int posBegin, int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
@@ -276,5 +336,4 @@ public class AcceleoSourceBuffer implements IASTProvider, IASTLogHandler {
 		}
 		return new int[] {b, e };
 	}
-
 }

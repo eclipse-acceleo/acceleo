@@ -48,4 +48,25 @@ public interface IASTProvider {
 	 */
 	void resolveAST();
 
+	/**
+	 * To log a new problem.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	void log(String message, int posBegin, int posEnd);
+
+	/***
+	 * Returns the line number of the given offset.
+	 * 
+	 * @param offset
+	 *            Offset we need to know the line of.
+	 * @return The line number of the given offset.
+	 * @since 0.8
+	 */
+	int getLineOfOffset(int offset);
 }

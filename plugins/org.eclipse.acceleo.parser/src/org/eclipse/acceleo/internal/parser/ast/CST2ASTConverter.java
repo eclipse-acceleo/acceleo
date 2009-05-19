@@ -40,9 +40,9 @@ public class CST2ASTConverter {
 	protected ASTFactory factory;
 
 	/**
-	 * A log Handler to save AST logging messages.
+	 * The AST provider will allow logging and line number retrieval.
 	 */
-	protected IASTLogHandler logHandler;
+	protected IASTProvider astProvider;
 
 	/**
 	 * Indicates if the current CST to AST action has been canceled.
@@ -55,7 +55,7 @@ public class CST2ASTConverter {
 	public CST2ASTConverter() {
 		super();
 		factory = new ASTFactory();
-		logHandler = null;
+		astProvider = null;
 		isCanceled = false;
 	}
 
@@ -71,12 +71,12 @@ public class CST2ASTConverter {
 	/**
 	 * Sets the log Handler to save AST logging messages.
 	 * 
-	 * @param logHandler
+	 * @param theASTProvider
 	 *            is the new log handler
 	 */
-	public void setLogHandler(IASTLogHandler logHandler) {
-		this.logHandler = logHandler;
-		factory.setLogHandler(logHandler);
+	public void setASTProvider(IASTProvider theASTProvider) {
+		astProvider = theASTProvider;
+		factory.setLogHandler(astProvider);
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class CST2ASTConverter {
 	 *            is the ending index of the problem
 	 */
 	protected void log(String message, int posBegin, int posEnd) {
-		if (logHandler != null) {
-			logHandler.log(message, posBegin, posEnd);
+		if (astProvider != null) {
+			astProvider.log(message, posBegin, posEnd);
 		}
 	}
 
@@ -259,6 +259,19 @@ public class CST2ASTConverter {
 	}
 
 	/**
+	 * This will return <code>true</code> iff the start position of the given <code>block</code> is on the
+	 * same line than is its end position.
+	 * 
+	 * @param block
+	 *            The block we need to check.
+	 * @return <code>true</code> iff the given <code>block</code> is a single line block.
+	 */
+	private boolean isSingleLineBlock(Block block) {
+		return astProvider.getLineOfOffset(block.getStartPosition()) == astProvider.getLineOfOffset(block
+				.getEndPosition() - 1);
+	}
+
+	/**
 	 * Deletes the characters to ignore at the beginning and at the end of the given text. (Indentation
 	 * strategy method)
 	 * 
@@ -279,7 +292,14 @@ public class CST2ASTConverter {
 				int shiftBegin;
 				if (index == 0 && iTextExpression.eContainer() instanceof ProtectedAreaBlock) {
 					shiftBegin = 0;
-				} else if (index == 0 || eBody.get(index - 1) instanceof Block) {
+				} else if (index == 0
+						|| (eBody.get(index - 1) instanceof Block
+								&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineBlock((Block)eBody
+								.get(index - 1)))) {
+					/*
+					 * Ignore the carriage return directly following a block iff the latter isn't either a
+					 * Protected area or a single line block
+					 */
 					shiftBegin = shiftBegin(ioValue);
 				} else {
 					shiftBegin = 0;
