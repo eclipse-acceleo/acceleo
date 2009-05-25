@@ -163,6 +163,10 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 				}
 				int offsetIf = text.lastIndexOf('\n' + tab + "[if", offset);
 				int offsetFor = text.lastIndexOf('\n' + tab + "[for", offset);
+				if (offsetIf == -1 && offsetFor == -1) {
+					offsetIf = text.lastIndexOf("[if", offset);
+					offsetFor = text.lastIndexOf("[for", offset);
+				}
 				String newText;
 				if (offsetFor > offsetIf) {
 					newText = "[/for]";
