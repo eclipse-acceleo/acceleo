@@ -82,13 +82,17 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 			if (event.getSource() != null) {
 				TraceabilityModel model = getOrCreateModelInChildren(targetFile, event.getSource());
 				TraceabilityRegion region = null;
+				TraceabilityRegion lastRegion;
 				if (model.getRegions().size() > 0) {
-					TraceabilityRegion lastRegion = model.getRegions().get(model.getRegions().size() - 1);
-					if (event.getBlock() == lastRegion.getAstNode()
-							&& event.getSource() == model.getEObject()
-							&& lastRegion.getTargetFileOffset() + lastRegion.getTargetFileLength() == targetFileOffset) {
-						region = lastRegion;
-					}
+					lastRegion = model.getRegions().get(model.getRegions().size() - 1);
+				} else {
+					lastRegion = null;
+				}
+				if (lastRegion != null
+						&& event.getBlock() == lastRegion.getAstNode()
+						&& event.getSource() == model.getEObject()
+						&& lastRegion.getTargetFileOffset() + lastRegion.getTargetFileLength() == targetFileOffset) {
+					region = lastRegion;
 				}
 				// TODO JMU ENLARGE
 				region = new TraceabilityRegion(targetFileOffset, event.getText().length(), event.getBlock());
