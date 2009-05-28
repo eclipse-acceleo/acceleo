@@ -37,7 +37,7 @@ public class Sequence implements ISequence {
 	 *            is the single token of the sequence
 	 */
 	public Sequence(String token) {
-		this(new String[] {token});
+		this(new String[] {token });
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Sequence implements ISequence {
 	 *            is the second token of the sequence
 	 */
 	public Sequence(String token1, String token2) {
-		this(new String[] {token1, token2});
+		this(new String[] {token1, token2 });
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Sequence implements ISequence {
 	 *            is the third token of the sequence
 	 */
 	public Sequence(String token1, String token2, String token3) {
-		this(new String[] {token1, token2, token3});
+		this(new String[] {token1, token2, token3 });
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class Sequence implements ISequence {
 	 *            is the forth token of the sequence
 	 */
 	public Sequence(String token1, String token2, String token3, String token4) {
-		this(new String[] {token1, token2, token3, token4});
+		this(new String[] {token1, token2, token3, token4 });
 	}
 
 	/**
@@ -139,7 +139,20 @@ public class Sequence implements ISequence {
 				return false;
 			}
 		}
-		return true;
+		boolean wholeWord = tag.length() > 0 && Character.isJavaIdentifierPart(tag.charAt(0));
+		boolean result;
+		if (wholeWord) {
+			if ((pos == 0 || !Character.isJavaIdentifierPart(buffer.charAt(pos - 1)))
+					&& (currentPos >= buffer.length() || !Character.isJavaIdentifierPart(buffer
+							.charAt(currentPos)))) {
+				result = true;
+			} else {
+				result = false;
+			}
+		} else {
+			result = true;
+		}
+		return result;
 	}
 
 	/**
@@ -196,8 +209,7 @@ public class Sequence implements ISequence {
 			while (i < posEnd && Character.isSpaceChar(buffer.charAt(i))) {
 				i++;
 			}
-			if (tokens[j].length() > 0 && (i + tokens[j].length() <= posEnd)
-					&& tokens[j].equals(buffer.substring(i, i + tokens[j].length()))) {
+			if (tokens[j].length() > 0 && (i + tokens[j].length() <= posEnd) && matches(buffer, tokens[j], i)) {
 				i += tokens[j].length();
 				if (j + 1 == tokens.length) {
 					e = new Integer(i);
