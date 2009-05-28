@@ -29,12 +29,12 @@ public class SequenceTests extends TestCase {
 	}
 
 	public void testSequence() {
-		StringBuffer buffer = new StringBuffer("abcde");
-		assertEquals(new Sequence("a").search(buffer).b(), 0);
-		assertEquals(new Sequence("abcde").search(buffer).b(), 0);
+		StringBuffer buffer = new StringBuffer("g.abcde");
+		assertEquals(new Sequence("a").search(buffer).b(), -1);
+		assertEquals(new Sequence("abcde").search(buffer).b(), 2);
 		assertEquals(new Sequence("f").search(buffer).b(), -1);
 
-		Sequence seq = new Sequence("a");
+		Sequence seq = new Sequence("g");
 		assertEquals(seq.search(buffer), new Region(0, 1, seq));
 		assertEquals(seq.search(buffer).toString(), "[0,1]");
 		seq = new Sequence("f");
@@ -45,9 +45,9 @@ public class SequenceTests extends TestCase {
 		StringBuffer buffer = new StringBuffer("a((h)g)h");
 		SequenceBlock parenthesis = new SequenceBlock(new Sequence("("), new Sequence(")"), null, true, null);
 		assertEquals(new Sequence("g").search(buffer, 0, buffer.length(), null,
-				new SequenceBlock[] {parenthesis}).b(), -1);
+				new SequenceBlock[] {parenthesis }).b(), -1);
 		assertEquals(new Sequence("h").search(buffer, 0, buffer.length(), null,
-				new SequenceBlock[] {parenthesis}).b(), 7);
+				new SequenceBlock[] {parenthesis }).b(), 7);
 	}
 
 }
