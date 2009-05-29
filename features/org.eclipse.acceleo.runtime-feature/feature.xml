@@ -3,7 +3,7 @@
       id="org.eclipse.acceleo.runtime"
       label="Model to Text Language Runtime (Incubation)"
       version="0.8.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse Modeling Project">
 
    <description>
       MOF models to text Transformation Language runtime, able to evaluate Acceleo templates.
