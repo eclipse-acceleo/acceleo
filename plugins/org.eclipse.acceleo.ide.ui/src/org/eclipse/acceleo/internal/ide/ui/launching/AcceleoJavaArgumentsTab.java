@@ -55,11 +55,24 @@ public class AcceleoJavaArgumentsTab extends JavaArgumentsTab {
 	 */
 	public void updateArguments(ILaunchConfigurationWorkingCopy config, String model, String target,
 			String args) {
-		IPath modelPath = new Path(model);
+		IPath modelPath;
+		if (model != null) {
+			modelPath = new Path(model);
+		} else {
+			modelPath = new Path("");
+		}
 		if (modelPath.segmentCount() > 1) {
 			modelPath = ResourcesPlugin.getWorkspace().getRoot().getFile(modelPath).getLocation();
 		}
-		IPath targetPath = new Path(target);
+		if (modelPath == null) {
+			modelPath = new Path(""); //$NON-NLS-1$
+		}
+		IPath targetPath;
+		if (target != null) {
+			targetPath = new Path(target);
+		} else {
+			targetPath = new Path("");
+		}
 		if (targetPath.segmentCount() == 1) {
 			targetPath = ResourcesPlugin.getWorkspace().getRoot().getProject(targetPath.lastSegment())
 					.getLocation();
