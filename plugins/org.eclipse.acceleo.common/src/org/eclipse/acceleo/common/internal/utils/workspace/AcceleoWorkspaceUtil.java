@@ -102,7 +102,7 @@ public final class AcceleoWorkspaceUtil {
 	 */
 	public synchronized void addWorkspaceContribution(IProject project) {
 		final IPluginModelBase model = PluginRegistry.findModel(project);
-		if (!workspaceInstalledBundles.containsKey(model)) {
+		if (model != null && !workspaceInstalledBundles.containsKey(model)) {
 			changedContributions.add(model);
 		}
 	}
@@ -748,7 +748,10 @@ public final class AcceleoWorkspaceUtil {
 						AcceleoCommonPlugin.log(e, false);
 					}
 					for (IProject changed : visitor.getChangedProjects()) {
-						changedContributions.add(PluginRegistry.findModel(changed));
+						IPluginModelBase model = PluginRegistry.findModel(changed);
+						if (model != null) {
+							changedContributions.add(model);
+						}
 					}
 					for (String changedClass : visitor.getChangedClasses()) {
 						final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses
@@ -760,7 +763,10 @@ public final class AcceleoWorkspaceUtil {
 					break;
 				case IncrementalProjectBuilder.FULL_BUILD:
 					for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-						changedContributions.add(entry.getKey());
+						IPluginModelBase model = entry.getKey();
+						if (model != null) {
+							changedContributions.add(model);
+						}
 					}
 					for (WorkspaceClassInstance workspaceInstance : workspaceLoadedClasses.values()) {
 						workspaceInstance.setStale(true);
