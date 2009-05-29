@@ -3,7 +3,7 @@
       id="org.eclipse.acceleo.ide"
       label="Model to Text Language Development Environment (Incubation)"
       version="0.8.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse Modeling Project">
 
    <description>
       MOF models to text Transformation Language Development Environment, tooling to design Acceleo templates.
