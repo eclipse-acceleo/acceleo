@@ -117,7 +117,15 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	public EClassifier lookupClassifier(List<String> names) {
 		EClassifier classifier = null;
 		if (names.size() > 0) {
-			classifier = lookupClassifier(names.get(names.size() - 1));
+			Iterator<EClassifier> eClassifierIt = getTypes().iterator();
+			while (classifier == null && eClassifierIt.hasNext()) {
+				EClassifier eClassifier = eClassifierIt.next();
+				if (names.get(names.size() - 1).equals(eClassifier.getName())
+						&& (names.size() < 2 || names.get(names.size() - 2).equals(
+								eClassifier.getEPackage().getName()))) {
+					classifier = eClassifier;
+				}
+			}
 			if (classifier == null) {
 				classifier = super.lookupClassifier(names);
 			}
