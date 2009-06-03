@@ -16,6 +16,7 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl;
 import org.eclipse.ocl.EvaluationVisitorDecorator;
 import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.util.ToStringVisitor;
 import org.eclipse.ocl.utilities.Visitor;
 
 /**
@@ -42,6 +43,8 @@ public class TemplateInvocationSpec extends TemplateInvocationImpl {
 	public <T, U extends Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(U v) {
 		if (v instanceof EvaluationVisitorDecorator) {
 			return (T)((EvaluationVisitorDecorator)v).visitExpression(this);
+		} else if (v instanceof ToStringVisitor) {
+			return (T)toString();
 		}
 		throw new UnsupportedOperationException();
 	}

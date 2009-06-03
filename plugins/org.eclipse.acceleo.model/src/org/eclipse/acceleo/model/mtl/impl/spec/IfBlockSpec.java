@@ -13,6 +13,7 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.impl.IfBlockImpl;
 import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.util.ToStringVisitor;
 
 /**
  * Specializes the IfBlock implementation.
@@ -20,6 +21,21 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class IfBlockSpec extends IfBlockImpl {
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.impl.OCLExpressionImpl#accept(org.eclipse.ocl.utilities.Visitor)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
+			U v) {
+		if (v instanceof ToStringVisitor) {
+			return (T)toString();
+		}
+		return super.accept(v);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 

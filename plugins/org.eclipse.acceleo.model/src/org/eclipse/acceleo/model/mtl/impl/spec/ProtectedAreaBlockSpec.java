@@ -12,6 +12,7 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl;
+import org.eclipse.ocl.util.ToStringVisitor;
 
 /**
  * Specializes the ProtectedAreaBlock implementation.
@@ -19,6 +20,21 @@ import org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ProtectedAreaBlockSpec extends ProtectedAreaBlockImpl {
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.impl.OCLExpressionImpl#accept(org.eclipse.ocl.utilities.Visitor)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
+			U v) {
+		if (v instanceof ToStringVisitor) {
+			return (T)toString();
+		}
+		return super.accept(v);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 

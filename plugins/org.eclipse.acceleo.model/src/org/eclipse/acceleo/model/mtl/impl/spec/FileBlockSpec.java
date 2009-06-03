@@ -13,6 +13,7 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.impl.FileBlockImpl;
+import org.eclipse.ocl.util.ToStringVisitor;
 
 /**
  * Specializes the FileBlock implementation.
@@ -20,6 +21,21 @@ import org.eclipse.acceleo.model.mtl.impl.FileBlockImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class FileBlockSpec extends FileBlockImpl {
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#accept(org.eclipse.ocl.utilities.Visitor)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
+			U v) {
+		if (v instanceof ToStringVisitor) {
+			return (T)toString();
+		}
+		return super.accept(v);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
