@@ -132,8 +132,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
 						String emtlPath = next.getPath();
-						emtlPath.substring(0, emtlPath.lastIndexOf('/'));
-						if (emtlPath.endsWith(actualPath)) {
+						if (emtlPath.substring(0, emtlPath.lastIndexOf('/')).endsWith(actualPath)) {
 							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
 							if (moduleFile.exists() && moduleFile.canRead()) {
 								REGISTERED_MODULES.add(moduleFile);
