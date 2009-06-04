@@ -680,6 +680,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            type of the argument we're trying to use as an argument.
 	 * @return <code>true</code> if the value is applicable to the given type, <code>false</code> otherwise.
 	 */
+	@SuppressWarnings("unchecked")
 	private boolean isApplicableArgument(Object expectedType, Object argumentType) {
 		boolean isApplicable = false;
 		if (expectedType instanceof EClass && argumentType instanceof EClass) {
@@ -1101,29 +1102,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					} else if (candidates.size() == 1) {
 						normalized = candidates.iterator().next().eResource().getURI();
 					} else {
-						final Iterator<Module> candidatesIterator = candidates.iterator();
-						final List<String> referenceSegments = Arrays.asList(uri.segments());
-						Collections.reverse(referenceSegments);
-						int highestEqualFragments = 0;
-
-						while (candidatesIterator.hasNext()) {
-							final Module next = candidatesIterator.next();
-							int equalFragments = 0;
-							final List<String> candidateSegments = Arrays.asList(next.eResource().getURI()
-									.segments());
-							Collections.reverse(candidateSegments);
-							for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
-								if (candidateSegments.get(i) == referenceSegments.get(i)) {
-									equalFragments++;
-								} else {
-									break;
-								}
-							}
-							if (equalFragments > highestEqualFragments) {
-								highestEqualFragments = equalFragments;
-								normalized = next.eResource().getURI();
-							}
-						}
+						normalized = normalizeMultipleCandidates(uri, candidates);
 					}
 					if (!uri.equals(normalized)) {
 						getURIMap().put(uri, normalized);
@@ -1133,6 +1112,42 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			} else {
 				return super.normalize(uri);
 			}
+		}
+
+		/**
+		 * Returns the normalized form of the URI, using the given multiple candidates (it means more than 2
+		 * generation context modules that have the right name).
+		 * 
+		 * @param uri
+		 *            the URI to normalize
+		 * @param candidates
+		 *            are the generation context modules with the right name
+		 * @return the normalized form
+		 */
+		private URI normalizeMultipleCandidates(URI uri, Set<Module> candidates) {
+			URI normalized = null;
+			final Iterator<Module> candidatesIterator = candidates.iterator();
+			final List<String> referenceSegments = Arrays.asList(uri.segments());
+			Collections.reverse(referenceSegments);
+			int highestEqualFragments = 0;
+			while (candidatesIterator.hasNext()) {
+				final Module next = candidatesIterator.next();
+				int equalFragments = 0;
+				final List<String> candidateSegments = Arrays.asList(next.eResource().getURI().segments());
+				Collections.reverse(candidateSegments);
+				for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
+					if (candidateSegments.get(i) == referenceSegments.get(i)) {
+						equalFragments++;
+					} else {
+						break;
+					}
+				}
+				if (equalFragments > highestEqualFragments) {
+					highestEqualFragments = equalFragments;
+					normalized = next.eResource().getURI();
+				}
+			}
+			return normalized;
 		}
 	}
 }

@@ -100,6 +100,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	@SuppressWarnings("unchecked")
 	private static void refreshModules() {
 		REGISTERED_MODULES.clear();
+		final String pathSeparator = "/";
 		for (java.util.Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
 				EXTENDING_BUNDLES.entrySet())) {
 			for (String path : entry.getValue()) {
@@ -115,12 +116,11 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					if (firstFragmentEnd > 0) {
 						actualPath = actualPath.substring(firstFragmentEnd);
 					} else {
-						actualPath = "/"; //$NON-NLS-1$
+						actualPath = pathSeparator;
 					}
 				}
 				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
-				Enumeration<URL> emtlFiles = entry.getKey().findEntries("/", //$NON-NLS-1$
-						filePattern, true);
+				Enumeration<URL> emtlFiles = entry.getKey().findEntries(pathSeparator, filePattern, true);
 				// no dynamic templates in this bundle
 				if (emtlFiles == null) {
 					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
@@ -131,7 +131,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				try {
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
-						if (actualPath == "/") {
+						if (actualPath == pathSeparator) {
 							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
 							if (moduleFile.exists() && moduleFile.canRead()) {
 								REGISTERED_MODULES.add(moduleFile);
