@@ -49,6 +49,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	/** List of {@link EPackage} the parser knows about. */
 	private Collection<EPackage> metamodels = new ArrayList<EPackage>();
 
+	/** List of {@link EClassifier} the parser knows about. */
+	private List<EClassifier> types = new ArrayList<EClassifier>();
+
 	/** We'll only create a single instance of the uml reflection. */
 	private UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> umlReflection;
 
@@ -96,6 +99,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	public void addMetamodel(EPackage metamodel) {
 		metamodels.add(metamodel);
+		types.clear();
 	}
 
 	/**
@@ -106,6 +110,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	public void removeMetamodel(EPackage metamodel) {
 		metamodels.remove(metamodel);
+		types.clear();
 	}
 
 	/**
@@ -185,37 +190,38 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @return the meta-model objects, or an empty list
 	 */
 	public List<EClassifier> getTypes() {
-		List<EClassifier> result = new ArrayList<EClassifier>();
-		final Iterator<EPackage> ePackageIt = metamodels.iterator();
-		while (ePackageIt.hasNext()) {
-			final EPackage ePackage = ePackageIt.next();
-			Iterator<EClassifier> eClassifierIt = ePackage.getEClassifiers().iterator();
-			while (eClassifierIt.hasNext()) {
-				EClassifier eClassifier = eClassifierIt.next();
-				computeOCLType(result, eClassifier);
+		if (types.size() == 0) {
+			final Iterator<EPackage> ePackageIt = metamodels.iterator();
+			while (ePackageIt.hasNext()) {
+				final EPackage ePackage = ePackageIt.next();
+				Iterator<EClassifier> eClassifierIt = ePackage.getEClassifiers().iterator();
+				while (eClassifierIt.hasNext()) {
+					EClassifier eClassifier = eClassifierIt.next();
+					computeOCLType(types, eClassifier);
+				}
 			}
+			computeOCLType(types, getOCLStandardLibrary().getBag());
+			computeOCLType(types, getOCLStandardLibrary().getBoolean());
+			computeOCLType(types, getOCLStandardLibrary().getCollection());
+			computeOCLType(types, getOCLStandardLibrary().getInteger());
+			computeOCLType(types, getOCLStandardLibrary().getInvalid());
+			computeOCLType(types, getOCLStandardLibrary().getOclAny());
+			computeOCLType(types, getOCLStandardLibrary().getOclElement());
+			computeOCLType(types, getOCLStandardLibrary().getOclExpression());
+			computeOCLType(types, getOCLStandardLibrary().getOclMessage());
+			computeOCLType(types, getOCLStandardLibrary().getOclType());
+			computeOCLType(types, getOCLStandardLibrary().getOclVoid());
+			computeOCLType(types, getOCLStandardLibrary().getOrderedSet());
+			computeOCLType(types, getOCLStandardLibrary().getReal());
+			computeOCLType(types, getOCLStandardLibrary().getSequence());
+			computeOCLType(types, getOCLStandardLibrary().getSet());
+			computeOCLType(types, getOCLStandardLibrary().getState());
+			computeOCLType(types, getOCLStandardLibrary().getString());
+			computeOCLType(types, getOCLStandardLibrary().getT());
+			computeOCLType(types, getOCLStandardLibrary().getT2());
+			computeOCLType(types, getOCLStandardLibrary().getUnlimitedNatural());
 		}
-		computeOCLType(result, getOCLStandardLibrary().getBag());
-		computeOCLType(result, getOCLStandardLibrary().getBoolean());
-		computeOCLType(result, getOCLStandardLibrary().getCollection());
-		computeOCLType(result, getOCLStandardLibrary().getInteger());
-		computeOCLType(result, getOCLStandardLibrary().getInvalid());
-		computeOCLType(result, getOCLStandardLibrary().getOclAny());
-		computeOCLType(result, getOCLStandardLibrary().getOclElement());
-		computeOCLType(result, getOCLStandardLibrary().getOclExpression());
-		computeOCLType(result, getOCLStandardLibrary().getOclMessage());
-		computeOCLType(result, getOCLStandardLibrary().getOclType());
-		computeOCLType(result, getOCLStandardLibrary().getOclVoid());
-		computeOCLType(result, getOCLStandardLibrary().getOrderedSet());
-		computeOCLType(result, getOCLStandardLibrary().getReal());
-		computeOCLType(result, getOCLStandardLibrary().getSequence());
-		computeOCLType(result, getOCLStandardLibrary().getSet());
-		computeOCLType(result, getOCLStandardLibrary().getState());
-		computeOCLType(result, getOCLStandardLibrary().getString());
-		computeOCLType(result, getOCLStandardLibrary().getT());
-		computeOCLType(result, getOCLStandardLibrary().getT2());
-		computeOCLType(result, getOCLStandardLibrary().getUnlimitedNatural());
-		return result;
+		return types;
 	}
 
 	/**
@@ -242,9 +248,13 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private void computeOCLType(List<EClassifier> result, EClassifier type) {
 		EClassifier oclType = getTypeResolver().resolve(type);
 		if (oclType != null) {
-			result.add(oclType);
+			if (!result.contains(oclType)) {
+				result.add(oclType);
+			}
 		} else {
-			result.add(type);
+			if (!result.contains(type)) {
+				result.add(type);
+			}
 		}
 	}
 
