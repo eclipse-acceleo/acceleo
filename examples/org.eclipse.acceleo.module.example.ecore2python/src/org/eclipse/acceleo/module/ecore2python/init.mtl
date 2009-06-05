@@ -12,7 +12,7 @@
 
 [template public toModuleInit(packaje : EPackage)]
 	[comment @main /]
-	[file (packaje.moduleInit(), false)]
+	[file (packaje.moduleInit().trim(), false)]
 	Module [packaje.name/]
 	
 	Sample usage :

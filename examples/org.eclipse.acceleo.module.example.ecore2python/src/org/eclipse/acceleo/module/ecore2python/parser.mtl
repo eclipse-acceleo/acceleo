@@ -11,7 +11,7 @@
 
 [template public generateParser(packaje : EPackage)]
 	[comment @main /]
-	[file (packaje.parserName(), false)]
+	[file (packaje.parserName().trim(), false)]
 	from xml.sax import ContentHandler, make_parser
 
 	class MyHandler(ContentHandler):

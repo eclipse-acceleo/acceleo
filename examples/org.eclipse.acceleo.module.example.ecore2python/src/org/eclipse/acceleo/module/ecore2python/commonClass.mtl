@@ -11,7 +11,7 @@
 
 [template public packageToPythonCommonFile(packaje : EPackage)]
 	[comment @main /]
-	[file (packaje.moduleCommon(), false)]
+	[file (packaje.moduleCommon().trim(), false)]
 	class [packaje.baseClass()/]:
 		"""
 		[packaje.baseClass()/] is the base class of all elements in the [packaje.moduleName()/] module.
