@@ -828,7 +828,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				if (elem instanceof Template) {
 					for (final Template overriden : ((Template)elem).getOverrides()) {
 						Set<Template> overriding = dynamicOverrides.get(overriden);
-						if (overriding == null) {
+						if (overriding == null && templates.containsKey(overriden.getName())) {
 							overriding = new LinkedHashSet<Template>();
 							Template match = overriden;
 							Set<Template> candidates = templates.get(overriden.getName());
@@ -840,7 +840,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 							}
 							dynamicOverrides.put(match, overriding);
 						}
-						overriding.add((Template)elem);
+						if (overriding != null) {
+							overriding.add((Template)elem);
+						}
 					}
 				}
 			}
