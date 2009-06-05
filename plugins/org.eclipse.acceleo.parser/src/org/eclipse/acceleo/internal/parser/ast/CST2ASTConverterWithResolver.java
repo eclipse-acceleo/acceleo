@@ -110,41 +110,45 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				transformStepResolveAddEPackage(iNext);
 
 			}
-			Iterator<ModuleImportsValue> iImportsIt = iModule.getImports().iterator();
-			while (iImportsIt.hasNext()) {
-				ModuleImportsValue ioNext = iImportsIt.next();
-				org.eclipse.acceleo.model.mtl.Module oImportedModule = getModuleNamed(oModule.eResource(),
-						ioNext.getName());
-				if (oImportedModule == null) {
-					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
-							.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
-				} else {
-					oModule.getImports().add(oImportedModule);
-				}
-			}
-			Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
-			while (iExtendsIt.hasNext()) {
-				ModuleExtendsValue ioNext = iExtendsIt.next();
-				org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModuleNamed(oModule.eResource(),
-						ioNext.getName());
-				if (oExtendedModule == null) {
-					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
-							.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
-				} else {
-					oModule.getExtends().add(oExtendedModule);
-				}
-			}
-			factory.getOCL().addRecursivelyBehavioralFeaturesToScope(oModule);
 			try {
-				transformStepResolveOwnedModuleElement(iModule, oModule);
+				Iterator<ModuleImportsValue> iImportsIt = iModule.getImports().iterator();
+				while (iImportsIt.hasNext()) {
+					ModuleImportsValue ioNext = iImportsIt.next();
+					org.eclipse.acceleo.model.mtl.Module oImportedModule = getModuleNamed(
+							oModule.eResource(), ioNext.getName());
+					if (oImportedModule == null) {
+						log(AcceleoParserMessages.getString(
+								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
+										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
+					} else {
+						oModule.getImports().add(oImportedModule);
+					}
+				}
+				Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
+				while (iExtendsIt.hasNext()) {
+					ModuleExtendsValue ioNext = iExtendsIt.next();
+					org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModuleNamed(
+							oModule.eResource(), ioNext.getName());
+					if (oExtendedModule == null) {
+						log(AcceleoParserMessages.getString(
+								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
+										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
+					} else {
+						oModule.getExtends().add(oExtendedModule);
+					}
+				}
+				factory.getOCL().addRecursivelyBehavioralFeaturesToScope(oModule);
+				try {
+					transformStepResolveOwnedModuleElement(iModule, oModule);
+				} finally {
+					factory.getOCL().removeRecursivelyBehavioralFeaturesToScope(oModule);
+				}
 			} finally {
-				factory.getOCL().removeRecursivelyBehavioralFeaturesToScope(oModule);
-			}
-
-			iInputIt = iModule.getInput().iterator();
-			while (iInputIt.hasNext()) {
-				org.eclipse.acceleo.parser.cst.TypedModel iNext = iInputIt.next();
-				transformStepResolveRemoveEPackage(iNext);
+				iInputIt = iModule.getInput().iterator();
+				while (iInputIt.hasNext()) {
+					org.eclipse.acceleo.parser.cst.TypedModel iNext = iInputIt.next();
+					transformStepResolveRemoveEPackage(iNext);
+				}
 			}
 		}
 	}
