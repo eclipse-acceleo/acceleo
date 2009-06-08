@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.cst.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.eclipse.acceleo.common.IAcceleoConstants;
 
 /**
  * Utilities to read files.
@@ -37,23 +39,72 @@ public final class FileContent {
 	 * @return the content of the file
 	 */
 	public static StringBuffer getFileContent(File file) {
+		StringBuffer buffer = getEncodedFileContent(file, null);
+		if (file.getName() != null && file.getName().endsWith(IAcceleoConstants.MTL_FILE_EXTENSION)) {
+			String encoding = getEncoding(buffer);
+			if (encoding != null) {
+				buffer = getEncodedFileContent(file, encoding);
+			}
+		}
+		return buffer;
+	}
+
+	/**
+	 * Return the content of the file using the specified encoding.
+	 * 
+	 * @param file
+	 *            is the file
+	 * @param encodingCode
+	 *            encodingCode to use in order to read the file
+	 * @return the content of the file
+	 */
+	private static StringBuffer getEncodedFileContent(File file, String encodingCode) {
 		StringBuffer buffer = new StringBuffer();
+		FileInputStream input;
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(file));
+			input = new FileInputStream(file);
+			InputStreamReader reader;
+			if (encodingCode != null) {
+				reader = new InputStreamReader(input, encodingCode);
+			} else {
+				reader = new InputStreamReader(input);
+			}
 			try {
 				int size = 0;
 				final int buffLength = 512;
 				char[] buff = new char[buffLength];
-				while ((size = in.read(buff)) >= 0) {
+				while ((size = reader.read(buff)) >= 0) {
 					buffer.append(buff, 0, size);
 				}
 			} finally {
-				in.close();
+				reader.close();
 			}
 		} catch (IOException e) {
 			// continue and return an empty string
 		}
 		return buffer;
+	}
+
+	/**
+	 * Gets the encoding of the current buffer, or null if the encoding tag doesn't exist.
+	 * 
+	 * @param buffer
+	 *            buffer in which we want to look for an encoding code
+	 * @return the found encoding code or null
+	 */
+	private static String getEncoding(StringBuffer buffer) {
+		Sequence bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.COMMENT,
+				IAcceleoConstants.ENCODING, IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
+		Sequence eSequence = new Sequence(IAcceleoConstants.DEFAULT_END_BODY_CHAR,
+				IAcceleoConstants.DEFAULT_END);
+		Region b = bSequence.search(buffer);
+		if (b.e() != -1) {
+			Region e = eSequence.search(buffer, b.e(), buffer.length());
+			if (e.b() != -1) {
+				return buffer.substring(b.e(), e.b()).trim();
+			}
+		}
+		return null;
 	}
 
 	/**
