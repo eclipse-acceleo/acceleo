@@ -360,4 +360,11 @@ public interface IAcceleoConstants {
 	 */
 	String TAG_MAIN = "@main"; //$NON-NLS-1$
 
+	/**
+	 * Comment : Encoding keyword.
+	 * <p>
+	 * [comment encoding = UTF-8 /]
+	 */
+	String ENCODING = "encoding"; //$NON-NLS-1$
+
 }
