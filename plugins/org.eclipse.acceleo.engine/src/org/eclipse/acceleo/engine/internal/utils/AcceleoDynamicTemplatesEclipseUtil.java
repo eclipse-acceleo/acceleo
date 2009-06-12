@@ -100,7 +100,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	@SuppressWarnings("unchecked")
 	private static void refreshModules() {
 		REGISTERED_MODULES.clear();
-		final String pathSeparator = "/";
+		final String pathSeparator = "/"; //$NON-NLS-1$
 		for (java.util.Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
 				EXTENDING_BUNDLES.entrySet())) {
 			for (String path : entry.getValue()) {
