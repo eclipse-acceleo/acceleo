@@ -71,6 +71,12 @@
     <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
+    <eOperations name="invoke" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="class" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="method" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ocl.ecore:SequenceType" name="Sequence(String)" instanceClassName="java.util.List"
       elementType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
