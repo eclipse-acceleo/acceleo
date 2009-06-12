@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.URI;
 
 /**
  * This will allow Acceleo to know which java services are to be added to the evaluation context.
@@ -26,6 +27,12 @@ import org.eclipse.emf.common.EMFPlugin;
 public final class AcceleoServicesRegistry {
 	/** Singleton instance of the registry. */
 	public static final AcceleoServicesRegistry INSTANCE = new AcceleoServicesRegistry();
+
+	/** Key of the error message displayed in case of instantiation exceptions. */
+	private static final String INSTANTIATION_FAILURE_KEY = "AcceleoServicesRegistry.ClassInstantiationFailure"; //$NON-NLS-1$
+
+	/** Key of the error message displayed in case of exceptions in service constructors. */
+	private static final String CONSTRUCTOR_FAILURE_KEY = "AcceleoServicesRegistry.ClassConstructorFailure"; //$NON-NLS-1$
 
 	/** This will contain the services registered for Acceleo evaluations. */
 	private final Set<Object> registeredServices = new LinkedHashSet<Object>();
@@ -50,13 +57,11 @@ public final class AcceleoServicesRegistry {
 			try {
 				registered = registeredServices.add(((Class<?>)service).newInstance());
 			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ClassInstantiationFailure", ((Class<?>)service).getName()), //$NON-NLS-1$
-						e, false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
+						((Class<?>)service).getName()), e, false);
 			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ClassConstructorFailure", ((Class<?>)service).getName()), e, //$NON-NLS-1$
-						false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
+						((Class<?>)service).getName()), e, false);
 			}
 		} else {
 			registered = registeredServices.add(service);
@@ -152,16 +157,60 @@ public final class AcceleoServicesRegistry {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
 						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
 			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ClassConstructorFailure", qualifiedName), e, //$NON-NLS-1$
-						false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
+						qualifiedName), e, false);
 			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ClassInstantiationFailure", qualifiedName), //$NON-NLS-1$
-						e, false);
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
+						qualifiedName), e, false);
 			}
 		}
 		return serviceInstance != null;
+	}
+
+	/**
+	 *This will attempt to register the service corresponding to the given information within the registry.
+	 * <p>
+	 * If Eclipse is currently running, it will try and find a workspace plugin corresponding to the given URI
+	 * and install it, then load the class <code>qualifiedName</code> in this workspace defined bundle. When
+	 * no corrsponding workspace plugin can be found, the registry will try and find it in the installed
+	 * bundles.
+	 * </p>
+	 * <p>
+	 * Outside of Eclispe, this will simply try to load a class named <code>qualifiedName</code> from the
+	 * current classloader.
+	 * </p>
+	 * 
+	 * @param uri
+	 *            URI of the module currently being evaluated. This will be used as a source to find the
+	 *            required service by looking through its dependencies.
+	 * @param qualifiedName
+	 *            Qualified name of the service class we need an instance of.
+	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
+	 * @since 0.8
+	 */
+	public Object addService(URI uri, String qualifiedName) {
+		Object serviceInstance = null;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			serviceInstance = AcceleoServicesEclipseUtil.registerService(uri, qualifiedName);
+		} else {
+			try {
+				final Class<?> clazz = Class.forName(qualifiedName);
+				serviceInstance = clazz.newInstance();
+				if (serviceInstance != null) {
+					registeredServices.add(serviceInstance);
+				}
+			} catch (ClassNotFoundException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
+			} catch (IllegalAccessException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
+						qualifiedName), e, false);
+			} catch (InstantiationException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
+						qualifiedName), e, false);
+			}
+		}
+		return serviceInstance;
 	}
 
 	/**

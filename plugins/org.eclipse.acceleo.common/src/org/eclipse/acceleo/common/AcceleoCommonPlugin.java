@@ -237,9 +237,6 @@ public class AcceleoCommonPlugin extends Plugin {
 	 */
 	@Override
 	public void stop(final BundleContext bundleContext) throws Exception {
-		plugin = null;
-		context = null;
-		super.stop(bundleContext);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.removeListener(librariesConnectorListener);
 		registry.removeListener(librariesListener);
@@ -247,6 +244,9 @@ public class AcceleoCommonPlugin extends Plugin {
 		AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
 		AcceleoLibrariesEclipseUtil.clearRegistry();
 		AcceleoWorkspaceUtil.INSTANCE.dispose();
+		plugin = null;
+		context = null;
+		super.stop(bundleContext);
 	}
 
 	/**

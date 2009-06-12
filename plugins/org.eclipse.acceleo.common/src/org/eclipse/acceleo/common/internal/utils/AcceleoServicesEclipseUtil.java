@@ -17,7 +17,10 @@ import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.Bundle;
 
 /**
@@ -54,7 +57,8 @@ public final class AcceleoServicesEclipseUtil {
 	}
 
 	/**
-	 * Returns the registered service going by <code>qualifiedName</code>.
+	 * Returns the registered service going by <code>qualifiedName</code>. <b>Note</b> that the service needs
+	 * to be registered before it can be retrieved through this if it is not in the workspace.
 	 * 
 	 * @param qualifiedName
 	 *            Qualified name of the service we seek an instance of.
@@ -116,9 +120,7 @@ public final class AcceleoServicesEclipseUtil {
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
 	public static Object registerService(IProject project, String qualifiedName) {
-		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
-		AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
-		final Object instance = AcceleoWorkspaceUtil.INSTANCE.getClassInstance(qualifiedName);
+		final Object instance = AcceleoWorkspaceUtil.INSTANCE.getClassInstance(project, qualifiedName);
 		if (instance != null) {
 			REGISTERED_SERVICES.add(qualifiedName);
 		}
@@ -149,6 +151,47 @@ public final class AcceleoServicesEclipseUtil {
 			instance = registerService(project, qualifiedName);
 		} else {
 			instance = registerService(Platform.getBundle(bundleName), qualifiedName);
+		}
+		return instance;
+	}
+
+	/**
+	 * This will return an instance of class named <code>qualifiedName</code> loaded from the bundle
+	 * containing the file described by <code>uri</code>.
+	 * <p>
+	 * As a result of this call, the service will be added to the list of registered services, allowing it to
+	 * be retrieved through {@link #getRegisteredServices()} afterwards.
+	 * </p>
+	 * 
+	 * @param uri
+	 *            URI of the module currently being evaluated. This will be used as a source to find the
+	 *            required service by looking through its dependencies.
+	 * @param qualifiedName
+	 *            Qualified name of the service we are looking for.
+	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
+	 */
+	public static Object registerService(URI uri, String qualifiedName) {
+		Object instance = null;
+		if (uri.isPlatform()) {
+			final String bundleName = uri.segment(1);
+			final Bundle bundle = Platform.getBundle(bundleName);
+			if (bundle != null) {
+				instance = registerService(bundle, qualifiedName);
+			}
+		} else {
+			final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+			final URI workspaceRootURI = URI.createURI(workspaceRoot.getLocationURI().toString());
+			final URI workspaceRelative = uri.deresolve(workspaceRootURI);
+			if (!workspaceRelative.equals(uri)) {
+				final String projectName = workspaceRelative.segment(1);
+				final IProject project = workspaceRoot.getProject(projectName);
+				if (project != null) {
+					instance = registerService(project, qualifiedName);
+				}
+			}
+		}
+		if (instance != null) {
+			REGISTERED_SERVICES.add(qualifiedName);
 		}
 		return instance;
 	}

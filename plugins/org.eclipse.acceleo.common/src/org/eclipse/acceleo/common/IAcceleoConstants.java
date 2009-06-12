@@ -364,6 +364,8 @@ public interface IAcceleoConstants {
 	 * Comment : Encoding keyword.
 	 * <p>
 	 * [comment encoding = UTF-8 /]
+	 * 
+	 * @since 0.8
 	 */
 	String ENCODING = "encoding"; //$NON-NLS-1$
 

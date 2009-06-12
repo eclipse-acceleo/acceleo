@@ -87,6 +87,18 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_EINVERSE = "eInverse"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;invoke&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>invoke( String class, String method, Sequence(OclAny) arguments ) : OclAny</b><br/> Invokes the
+	 * method <code>method</code> of class <code>class</code> with the given arguments. This will return
+	 * OclInvalid if the method cannot be called.
+	 * </p>
+	 * 
+	 * @since 0.8
+	 */
+	public static final String OPERATION_OCLANY_INVOKE = "invoke"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;toString&quot; non-standard operation accessible on all objects.
 	 * <p>
 	 * <b>toString( ) : String</b><br/> Returns the String representation of the receiver.

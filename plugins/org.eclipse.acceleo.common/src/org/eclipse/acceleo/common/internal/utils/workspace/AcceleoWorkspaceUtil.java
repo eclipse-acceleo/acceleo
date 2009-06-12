@@ -94,7 +94,7 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * Adds a given to the set of projects that are to be dynamically installed.
+	 * Adds a given project to the set of projects that are to be dynamically installed.
 	 * 
 	 * @param project
 	 *            The project that is to be dynamically installed when Acceleo searches for workspace
@@ -200,6 +200,30 @@ public final class AcceleoWorkspaceUtil {
 		}
 
 		return clazz;
+	}
+
+	/**
+	 * This will install or refresh the given workspace contribution if needed, then search through it for a
+	 * class corresponding to <code>qualifiedName</code>.
+	 * 
+	 * @param project
+	 *            The project that is to be dynamically installed when Acceleo searches for workspace
+	 *            contributions.
+	 * @param qualifiedName
+	 *            The qualified name of the class we seek to load.
+	 * @return An instance of the class <code>qualifiedName</code> if it could be found in the workspace
+	 *         bundles, <code>null</code> otherwise.
+	 */
+	public synchronized Object getClassInstance(IProject project, String qualifiedName) {
+		Object instance = null;
+		addWorkspaceContribution(project);
+		refreshContributions();
+		final IPluginModelBase model = PluginRegistry.findModel(project);
+		final Bundle installedBundle = workspaceInstalledBundles.get(model);
+		if (installedBundle != null) {
+			instance = internalLoadClass(installedBundle, qualifiedName);
+		}
+		return instance;
 	}
 
 	/**
@@ -700,6 +724,7 @@ public final class AcceleoWorkspaceUtil {
 						final IPluginModelBase model = PluginRegistry.findModel(project);
 						if (model != null) {
 							final Bundle bundle = workspaceInstalledBundles.remove(model);
+							changedContributions.remove(model);
 							if (bundle != null) {
 								try {
 									uninstallBundle(bundle);
