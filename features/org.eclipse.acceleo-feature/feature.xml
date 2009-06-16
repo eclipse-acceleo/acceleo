@@ -13,7 +13,8 @@ Contributors:
       id="org.eclipse.acceleo"
       label="%featureName"
       version="0.8.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      plugin="org.eclipse.acceleo.common">
 
    <description>
       MOF models to text Transformation Language
