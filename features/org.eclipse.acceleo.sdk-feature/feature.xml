@@ -3,7 +3,8 @@
       id="org.eclipse.acceleo.sdk"
       label="Acceleo SDK (Incubation)"
       version="0.8.0.qualifier"
-      provider-name="Eclipse Modeling Project">
+      provider-name="Eclipse Modeling Project"
+      plugin="org.eclipse.acceleo.common">
 
    <description>
       MOF models to text Transformation Language
