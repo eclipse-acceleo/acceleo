@@ -49,6 +49,10 @@ public class AllTests {
 		suite.addTestSuite(CSTParserTests.class);
 		suite.addTestSuite(FileContentTests.class);
 		suite.addTestSuite(SequenceTests.class);
+
+		// generated tests
+		suite.addTest(CstTestSuite.suite());
+
 		return suite;
 	}
 
