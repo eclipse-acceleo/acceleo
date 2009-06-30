@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -104,7 +105,8 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				main.invoke(null, new Object[] {invocationArgs, });
 			} else {
 				final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-						"couldn't load class " + qualifiedName + " from project " + project.getName());
+						AcceleoUIMessages.getString("AcceleoLaunchOperation.ClassNotFound", qualifiedName, //$NON-NLS-1$
+								project.getName()));
 				AcceleoUIActivator.getDefault().getLog().log(status);
 			}
 		} catch (NoSuchMethodException e) {
