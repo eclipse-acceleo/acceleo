@@ -1,0 +1,7 @@
+[module importedMockModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public importedMockTemplate(c : EPackage)]
+	[file ('importedMockTemplate', false)]
+		imported mock template output
+	[/file]
+[/template]

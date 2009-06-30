@@ -1,0 +1,10 @@
+[module overridingMockModule('http://www.eclipse.org/emf/2002/Ecore') extends mockModule/]
+[import importedMockModule/]
+
+[template public overridingMockTemplate(c : EPackage) overrides mockTemplate]
+	[file ('overridingMockTemplate', false)]
+		overriding mock template output
+	[/file]
+	[super/]
+	[c.importedMockTemplate()/]
+[/template]
