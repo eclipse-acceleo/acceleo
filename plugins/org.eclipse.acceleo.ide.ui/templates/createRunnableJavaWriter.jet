@@ -48,8 +48,6 @@ import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 
 /**
  * Entry point of the '<%=content.getClassShortName()%>' generation module.
- * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class <%=content.getClassShortName()%> {
 

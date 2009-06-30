@@ -37,8 +37,6 @@ import org.osgi.framework.Bundle;
 
 /**
  * Main entry point of the '<%=content.getModuleNameWithSpaces()%>' generation module.
- * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class GenerateAll {
 

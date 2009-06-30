@@ -18,7 +18,7 @@ public class CreateModuleMANIFESTWriter
   protected final String TEXT_4 = ".Activator" + NL + "Bundle-Vendor: Eclipse.org" + NL + "Require-Bundle: org.eclipse.core.runtime, ";
   protected final String TEXT_5 = NL + " ";
   protected final String TEXT_6 = ",";
-  protected final String TEXT_7 = NL + " org.eclipse.emf.ecore," + NL + " org.eclipse.emf.ecore.xmi," + NL + " org.eclipse.ocl," + NL + " org.eclipse.ocl.ecore," + NL + " org.eclipse.acceleo.model," + NL + " org.eclipse.acceleo.engine" + NL + "Bundle-RequiredExecutionEnvironment: J2SE-1.5" + NL + "Bundle-ActivationPolicy: lazy";
+  protected final String TEXT_7 = NL + " org.eclipse.emf.ecore," + NL + " org.eclipse.emf.ecore.xmi," + NL + " org.eclipse.ocl," + NL + " org.eclipse.ocl.ecore," + NL + " org.eclipse.acceleo.model," + NL + " org.eclipse.acceleo.engine" + NL + "Bundle-RequiredExecutionEnvironment: J2SE-1.5" + NL + "Bundle-ActivationPolicy: lazy" + NL + "Eclipse-LazyStart: true";
   protected final String TEXT_8 = NL;
 
   public String generate(Object argument)

@@ -44,9 +44,6 @@ import org.eclipse.ui.actions.ActionDelegate;
 
 /**
  * <%=content.getModuleNameWithSpaces()%> code generation.
- * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
- * 
  */
 public class AcceleoGenerate<%=content.getModuleNameWithoutSpaces()%>Action extends ActionDelegate implements IActionDelegate {
 	
