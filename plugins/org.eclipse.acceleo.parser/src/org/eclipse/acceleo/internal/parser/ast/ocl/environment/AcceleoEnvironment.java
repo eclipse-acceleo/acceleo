@@ -64,6 +64,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	protected AcceleoEnvironment(
 			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
 		super(parent);
+		addAdditionalOperations();
 	}
 
 	/**
@@ -74,21 +75,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	protected AcceleoEnvironment(Resource oclEnvironmentResource) {
 		super(EPackage.Registry.INSTANCE, oclEnvironmentResource);
-
-		// Add standard Acceleo operations
-		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getString()));
-		addHelperOperations(getOCLStandardLibrary().getInteger(), getAcceleoStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getInteger()));
-		addHelperOperations(getOCLStandardLibrary().getReal(), getAcceleoStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getReal()));
-
-		// TODO we should provide a way to desactivate non-standard library
-		// Add non-standard Acceleo operations
-		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getString()));
-		addHelperOperations(getOCLStandardLibrary().getOclAny(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getOclAny()));
+		addAdditionalOperations();
 	}
 
 	/**
@@ -267,6 +254,34 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	protected void setFactory(
 			EnvironmentFactory<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> factory) {
 		super.setFactory(factory);
+	}
+
+	/**
+	 * Adds custom operations from the standard and non-standard libraries to the environment.
+	 */
+	private void addAdditionalOperations() {
+		// Add standard Acceleo operations
+		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getString()));
+		addHelperOperations(getOCLStandardLibrary().getInteger(), getAcceleoStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getInteger()));
+		addHelperOperations(getOCLStandardLibrary().getReal(), getAcceleoStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getReal()));
+
+		// TODO we should provide a way to desactivate non-standard library
+		// Add non-standard Acceleo operations
+		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getString()));
+		addHelperOperations(getOCLStandardLibrary().getOclAny(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getOclAny()));
+		addHelperOperations(getOCLStandardLibrary().getBag(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getBag()));
+		addHelperOperations(getOCLStandardLibrary().getSequence(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getSequence()));
+		addHelperOperations(getOCLStandardLibrary().getSet(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getSet()));
+		addHelperOperations(getOCLStandardLibrary().getOrderedSet(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getOrderedSet()));
 	}
 
 	/**
