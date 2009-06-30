@@ -84,25 +84,20 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	}
 
 	/**
-	 * Removes a bundle from the extending bundles map.
-	 * 
-	 * @param bundle
-	 *            The bundle that is to be removed.
-	 */
-	public static void removeExtendingBundle(Bundle bundle) {
-		EXTENDING_BUNDLES.remove(bundle);
-	}
-
-	/**
 	 * This will be called prior to all invocations of getRegisteredModules so as to be aware of new additions
 	 * or removals of dynamic templates.
 	 */
 	@SuppressWarnings("unchecked")
 	private static void refreshModules() {
 		REGISTERED_MODULES.clear();
+		final List<Bundle> uninstalledBundles = new ArrayList<Bundle>();
 		final String pathSeparator = "/"; //$NON-NLS-1$
-		for (java.util.Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
+		for (Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<Map.Entry<Bundle, List<String>>>(
 				EXTENDING_BUNDLES.entrySet())) {
+			if (entry.getKey().getState() == Bundle.UNINSTALLED) {
+				uninstalledBundles.add(entry.getKey());
+				continue;
+			}
 			for (String path : entry.getValue()) {
 				String actualPath = path;
 				if (actualPath.charAt(0) != '/') {
@@ -120,7 +115,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					}
 				}
 				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
-				Enumeration<URL> emtlFiles = entry.getKey().findEntries(pathSeparator, filePattern, true);
+				Enumeration<URL> emtlFiles = entry.getKey().findEntries(actualPath, filePattern, true);
 				// no dynamic templates in this bundle
 				if (emtlFiles == null) {
 					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
@@ -131,25 +126,18 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				try {
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
-						if (actualPath == pathSeparator) {
-							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-							if (moduleFile.exists() && moduleFile.canRead()) {
-								REGISTERED_MODULES.add(moduleFile);
-							}
-						} else {
-							String emtlPath = next.getPath();
-							if (emtlPath.substring(0, emtlPath.lastIndexOf('/')).endsWith(actualPath)) {
-								final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-								if (moduleFile.exists() && moduleFile.canRead()) {
-									REGISTERED_MODULES.add(moduleFile);
-								}
-							}
+						final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
+						if (moduleFile.exists() && moduleFile.canRead()) {
+							REGISTERED_MODULES.add(moduleFile);
 						}
 					}
 				} catch (IOException e) {
 					AcceleoEnginePlugin.log(e, false);
 				}
 			}
+		}
+		for (Bundle uninstalledBundle : uninstalledBundles) {
+			EXTENDING_BUNDLES.remove(uninstalledBundle);
 		}
 	}
 }
