@@ -78,8 +78,34 @@
       <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
     </eOperations>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Set(T)">
+    <eOperations name="sep" eType="#//Bag(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)">
+    <eOperations name="sep" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Bag(T)">
+    <eOperations name="sep" eType="#//Bag(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)">
+    <eOperations name="sep" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+  </eClassifiers>
   <eClassifiers xsi:type="ocl.ecore:SequenceType" name="Sequence(String)" instanceClassName="java.util.List"
       elementType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   <eClassifiers xsi:type="ocl.ecore:SequenceType" name="Sequence(OclAny)" instanceClassName="java.util.List"
+      elementType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+  <eClassifiers xsi:type="ocl.ecore:BagType" name="Bag(OclAny)" instanceClassName="org.eclipse.ocl.util.Bag"
       elementType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
 </ecore:EPackage>
