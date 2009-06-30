@@ -57,6 +57,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
+import org.eclipse.ocl.util.Bag;
+import org.eclipse.ocl.util.CollectionUtil;
 
 /**
  * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and
@@ -65,6 +67,9 @@ import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
+	/** This will be used as a place holder when trying to call templates with a <code>null</code> argument. */
+	private static final Object NULL_ARGUMENT = new Object();
+
 	/** This will allow the environment to know of the modules currently in the generation context. */
 	final Set<Module> currentModules = new HashSet<Module>();
 
@@ -195,6 +200,25 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 				// fall through : let else fail in UnsupportedOperationException
 			}
+		} else if (source instanceof Collection<?>) {
+			final Collection<?> collection = (Collection<?>)source;
+
+			if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
+				final Collection<Object> temp;
+				if (source instanceof Set<?> || source instanceof Bag<?>) {
+					temp = CollectionUtil.createNewBag();
+				} else {
+					temp = new ArrayList<Object>(collection.size() << 1);
+				}
+				final Iterator<?> sourceIterator = collection.iterator();
+				while (sourceIterator.hasNext()) {
+					temp.add(sourceIterator.next());
+					if (sourceIterator.hasNext()) {
+						temp.add(args[0]);
+					}
+				}
+				result = temp;
+			}
 		}
 
 		if (result != null) {
@@ -209,9 +233,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				argErrorMsg.append(", "); //$NON-NLS-1$
 			}
 		}
+		final String sourceName;
+		if (source == null) {
+			sourceName = "null"; //$NON-NLS-1$
+		} else {
+			sourceName = source.getClass().getName();
+		}
 		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
 				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
-						.toString(), source.getClass().getName()));
+						.toString(), sourceName));
 	}
 
 	/**
@@ -341,8 +371,10 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		for (final Object arg : arguments) {
 			if (arg instanceof EObject) {
 				argumentTypes.add(((EObject)arg).eClass());
-			} else {
+			} else if (arg != null) {
 				argumentTypes.add(arg.getClass());
+			} else {
+				argumentTypes.add(NULL_ARGUMENT);
 			}
 		}
 
@@ -392,103 +424,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			mostSpecific = mostSpecificTemplate(mostSpecific, candidateIterator.next(), arguments);
 		}
 		return mostSpecific;
-	}
-
-	/**
-	 * Handles the invocation of a service.
-	 * 
-	 * @param moduleURI
-	 *            URI of the module which is currently being evaluated.
-	 * @param source
-	 *            Receiver of the invocation. It will be passed as the first argument of the service
-	 *            invocation.
-	 * @param args
-	 *            Arguments of the invocation. May not contain the receiver, in which case it will be set as
-	 *            the first argument.
-	 * @return Result of the invocation.
-	 */
-	@SuppressWarnings("unchecked")
-	public Object invoke(URI moduleURI, Object source, Object[] args) {
-		Object result = null;
-		final Object serviceInstance = AcceleoServicesRegistry.INSTANCE
-				.addService(moduleURI, (String)args[0]);
-		if (serviceInstance != null) {
-			final Class<?> serviceClass = serviceInstance.getClass();
-			final String methodSignature = (String)args[1];
-			final Method method;
-			try {
-				final int openParenthesisIndex = methodSignature.indexOf('(');
-				if (openParenthesisIndex != -1) {
-					final String methodName = methodSignature.substring(0, openParenthesisIndex);
-					final int closeParenthesisIndex = methodSignature.indexOf(')');
-					if (closeParenthesisIndex - openParenthesisIndex > 1) {
-						final String parameterTypesString = methodSignature.substring(
-								openParenthesisIndex + 1, closeParenthesisIndex);
-						final List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
-						int nextCommaIndex = parameterTypesString.indexOf(',');
-						int previousComma = 0;
-						while (nextCommaIndex != -1) {
-							final String parameterType = parameterTypesString.substring(previousComma,
-									nextCommaIndex).trim();
-							parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
-									parameterType));
-							previousComma = nextCommaIndex + 1;
-							nextCommaIndex = parameterTypesString.indexOf(nextCommaIndex, ',');
-						}
-						/*
-						 * The last (or only) parameter type is not followed by a comma and not handled in the
-						 * while
-						 */
-						final String parameterType = parameterTypesString.substring(previousComma,
-								parameterTypesString.length()).trim();
-						parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
-								parameterType));
-						method = serviceClass.getMethod(methodName, parameterTypes
-								.toArray(new Class[parameterTypes.size()]));
-					} else {
-						method = serviceClass.getMethod(methodName);
-					}
-				} else {
-					method = serviceClass.getMethod(methodSignature);
-				}
-				if (method == null) {
-					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-							"AcceleoEvaluationEnvironment.NoSuchMethod", methodSignature, serviceClass //$NON-NLS-1$
-									.getName()));
-				}
-				final List<Object> invocationArguments = (List<Object>)args[2];
-				if (method.getParameterTypes().length == 0) {
-					if (invocationArguments.size() == 0) {
-						result = method.invoke(source);
-					} else {
-						result = method.invoke(invocationArguments.get(0));
-					}
-				} else {
-					if (method.getParameterTypes().length - invocationArguments.size() == 1) {
-						invocationArguments.add(0, source);
-					}
-					result = method.invoke(serviceInstance, invocationArguments
-							.toArray(new Object[invocationArguments.size()]));
-				}
-			} catch (NoSuchMethodException e) {
-				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-						"AcceleoEvaluationEnvironment.NoSuchMethod", args[1], args[0]), e); //$NON-NLS-1$
-			} catch (IllegalArgumentException e) {
-				throw new AcceleoEvaluationException(e.getMessage(), e);
-			} catch (IllegalAccessException e) {
-				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-						"AcceleoEvaluationEnvironment.RestrictedMethod", args[1], args[0]), e); //$NON-NLS-1$
-			} catch (InvocationTargetException e) {
-				throw new AcceleoEvaluationException(e.getMessage(), e);
-			} catch (ClassNotFoundException e) {
-				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-						"AcceleoEvaluationEnvironment.ParameterClassNotFound", args[1], args[0]), e); //$NON-NLS-1$
-			}
-		} else {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationEnvironment.ClassNotFound", args[0], moduleURI.lastSegment())); //$NON-NLS-1$
-		}
-		return result;
 	}
 
 	/**
@@ -740,6 +675,117 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * Handles the invocation of a service.
+	 * 
+	 * @param moduleURI
+	 *            URI of the module which is currently being evaluated.
+	 * @param source
+	 *            Receiver of the invocation. It will be passed as the first argument of the service
+	 *            invocation.
+	 * @param args
+	 *            Arguments of the invocation. May not contain the receiver, in which case it will be set as
+	 *            the first argument.
+	 * @return Result of the invocation.
+	 */
+	@SuppressWarnings("unchecked")
+	private Object invoke(URI moduleURI, Object source, Object[] args) {
+		Object result = null;
+		final Object serviceInstance = AcceleoServicesRegistry.INSTANCE
+				.addService(moduleURI, (String)args[0]);
+		if (serviceInstance == null) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationEnvironment.ClassNotFound", args[0], moduleURI.lastSegment())); //$NON-NLS-1$
+		}
+		final Class<?> serviceClass = serviceInstance.getClass();
+		final String methodSignature = (String)args[1];
+		final Method method;
+		try {
+			final int openParenthesisIndex = methodSignature.indexOf('(');
+			if (openParenthesisIndex != -1) {
+				final String methodName = methodSignature.substring(0, openParenthesisIndex);
+				final int closeParenthesisIndex = methodSignature.indexOf(')');
+				if (closeParenthesisIndex - openParenthesisIndex > 1) {
+					final String parameterTypesString = methodSignature.substring(openParenthesisIndex + 1,
+							closeParenthesisIndex);
+					final List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
+					int nextCommaIndex = parameterTypesString.indexOf(',');
+					int previousComma = 0;
+					while (nextCommaIndex != -1) {
+						final String parameterType = parameterTypesString.substring(previousComma,
+								nextCommaIndex).trim();
+						if (serviceInstance.getClass().getClassLoader() != null) {
+							parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
+									parameterType));
+						} else {
+							parameterTypes.add(Class.forName(parameterType));
+						}
+						previousComma = nextCommaIndex + 1;
+						nextCommaIndex = parameterTypesString.indexOf(nextCommaIndex, ',');
+					}
+					/*
+					 * The last (or only) parameter type is not followed by a comma and not handled in the
+					 * while
+					 */
+					final String parameterType = parameterTypesString.substring(previousComma,
+							parameterTypesString.length()).trim();
+					if (serviceInstance.getClass().getClassLoader() != null) {
+						parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
+								parameterType));
+					} else {
+						parameterTypes.add(Class.forName(parameterType));
+					}
+					method = serviceClass.getMethod(methodName, parameterTypes
+							.toArray(new Class[parameterTypes.size()]));
+				} else {
+					method = serviceClass.getMethod(methodName);
+				}
+			} else {
+				method = serviceClass.getMethod(methodSignature);
+			}
+			// method cannot be null at this point. getMetod has thrown an exception in such cases
+			assert method != null;
+			final List<Object> invocationArguments = (List<Object>)args[2];
+			if (method.getParameterTypes().length == 0) {
+				if (invocationArguments.size() == 0) {
+					result = method.invoke(source);
+				} else {
+					result = method.invoke(invocationArguments.get(0));
+				}
+			} else {
+				if (method.getParameterTypes().length - invocationArguments.size() == 1) {
+					invocationArguments.add(0, source);
+				}
+				if (method.getParameterTypes().length - invocationArguments.size() == -1) {
+					final Object swappedSource = invocationArguments.remove(0);
+					result = method.invoke(swappedSource, invocationArguments
+							.toArray(new Object[invocationArguments.size()]));
+				} else {
+					result = method.invoke(serviceInstance, invocationArguments
+							.toArray(new Object[invocationArguments.size()]));
+				}
+			}
+		} catch (NoSuchMethodException e) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationEnvironment.NoSuchMethod", args[1], args[0]), e); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			throw new AcceleoEvaluationException(e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			/*
+			 * Shouldn't happen. We retrieve methods through Class#getMethod() which only iterates over public
+			 * members.
+			 */
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationEnvironment.RestrictedMethod", args[1], args[0]), e); //$NON-NLS-1$
+		} catch (InvocationTargetException e) {
+			throw new AcceleoEvaluationException(e.getMessage(), e);
+		} catch (ClassNotFoundException e) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationEnvironment.ParameterClassNotFound", args[1], args[0]), e); //$NON-NLS-1$
+		}
+		return result;
+	}
+
+	/**
 	 * This will return true if all of the given String's characters are considered letters as per
 	 * {@link Character#isLetter(char)}.
 	 * 
@@ -787,12 +833,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private boolean isApplicableArgument(Object expectedType, Object argumentType) {
 		boolean isApplicable = false;
-		if (expectedType instanceof EClass && argumentType instanceof EClass) {
+		if (argumentType == NULL_ARGUMENT) {
+			isApplicable = true;
+		} else if (expectedType instanceof EClass && argumentType instanceof EClass) {
 			isApplicable = expectedType == argumentType
 					|| isSubTypeOf((EClass)expectedType, (EClass)argumentType);
-		} else if (expectedType instanceof Class && argumentType instanceof Class) {
+		} else if (expectedType instanceof Class<?> && argumentType instanceof Class<?>) {
 			isApplicable = ((Class<?>)expectedType).isAssignableFrom((Class<?>)argumentType);
-		} else if (expectedType instanceof EDataType && argumentType instanceof Class) {
+		} else if (expectedType instanceof EDataType && argumentType instanceof Class<?>) {
 			isApplicable = ((EDataType)expectedType).getInstanceClass() == argumentType;
 		} else {
 			isApplicable = expectedType.getClass().isInstance(argumentType);
