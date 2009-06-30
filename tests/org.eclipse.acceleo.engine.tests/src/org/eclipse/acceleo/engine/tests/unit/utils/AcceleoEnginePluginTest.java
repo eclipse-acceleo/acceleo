@@ -34,10 +34,10 @@ import org.eclipse.core.runtime.Status;
 public class AcceleoEnginePluginTest extends TestCase {
 	/** Error messages to use for these tests. */
 	private static final String[] ERROR_MESSAGES = {"NullPointerException has been thrown.",
-			"failed to build.", "\u00ec", "test",};
+			"failed to build.", "\u00ec", "test", };
 
 	/** Possible severities for an exception. */
-	private static final int[] ERROR_SEVERITIES = {IStatus.WARNING, IStatus.ERROR, IStatus.INFO,};
+	private static final int[] ERROR_SEVERITIES = {IStatus.WARNING, IStatus.ERROR, IStatus.INFO, };
 
 	/** This will keep track of the last {@link IStatus} that has been logged. */
 	protected IStatus loggedStatus;
@@ -63,12 +63,11 @@ public class AcceleoEnginePluginTest extends TestCase {
 		for (String message : ERROR_MESSAGES) {
 			final PrintStream systemErr = System.err;
 			// disables standard error to avoid all logged exception to be displayed in console.
+			final Exception exception = new IllegalArgumentException(message);
 			System.setErr(temporaryErr);
-			AcceleoEnginePlugin.log(new IllegalArgumentException(message), blocker);
+			AcceleoEnginePlugin.log(exception, blocker);
 			System.setErr(systemErr);
 
-			final String expectedMessage = AcceleoEngineMessages
-					.getString("AcceleoEnginePlugin.JavaException");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -77,7 +76,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 			}
 			blocker = !blocker;
 
-			assertEquals("Unexpected message of the logged exception.", expectedMessage, loggedStatus
+			assertEquals("Unexpected message of the logged exception.", exception.getMessage(), loggedStatus
 					.getMessage());
 			assertEquals("Unexpected severity of the logged exception.", expectedSeverity, loggedStatus
 					.getSeverity());

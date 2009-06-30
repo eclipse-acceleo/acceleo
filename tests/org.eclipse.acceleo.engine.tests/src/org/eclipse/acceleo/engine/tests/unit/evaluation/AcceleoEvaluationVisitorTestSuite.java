@@ -28,6 +28,7 @@ public class AcceleoEvaluationVisitorTestSuite extends TestCase {
 		suite.addTestSuite(AcceleoEvaluationVisitorLetBlockTest.class);
 		suite.addTestSuite(AcceleoEvaluationVisitorProtectedAreaBlockTest.class);
 		suite.addTestSuite(AcceleoEvaluationVisitorQueryInvocationTest.class);
+		suite.addTestSuite(AcceleoEvaluationVisitorTemplateInvocationTest.class);
 		return suite;
 	}
 }

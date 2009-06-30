@@ -24,6 +24,11 @@ import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.emf.ecore.EcorePackage;
 
+/**
+ * This will test the behavior of protected area blocks evaluation.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "protected content" for the file block tested here. */
 	private static final String PROTECTED = "protectedOutput"; //$NON-NLS-1$

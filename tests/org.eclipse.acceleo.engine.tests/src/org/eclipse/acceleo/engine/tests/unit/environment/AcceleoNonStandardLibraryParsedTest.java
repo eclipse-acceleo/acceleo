@@ -24,23 +24,11 @@ import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
  */
 @SuppressWarnings("nls")
 public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
-	/** This will be generated from setup. */
-	private Map<String, Writer> generatedPreview;
-
 	/** This is the output we expect from each generated file. */
 	private final static String OUTPUT = "constant output" + System.getProperty("line.separator");
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		generationRoot = new File(getGenerationRootPath("NonStdLib")); //$NON-NLS-1$
-		generatedPreview = generate("test_nonstdlib", true); //$NON-NLS-1$
-	}
+	/** This will be generated from setup. */
+	private Map<String, Writer> generatedPreview;
 
 	/**
 	 * {@inheritDoc}
@@ -63,22 +51,87 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * This is the only assertion needed for each of the preview files.
-	 * 
-	 * @param fileName
-	 *            Name of the file on which to run the assertion.
+	 * Tests the behavior of the non standard "ancestors()" operation on OclAny.
 	 */
-	private void assertFileContainsOutput(String fileName) {
-		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
-			if (filePreview.getKey().endsWith(fileName)) {
-				assertEquals(OUTPUT, filePreview.getValue().toString());
-				fileFound = true;
-			}
-		}
-		if (!fileFound) {
-			fail("expected file hasn't been generated.");
-		}
+	public void testOclAnyAncestors() {
+		assertFileContainsOutput("test_oclany_ancestors");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "eAllContents()" operation on OclAny.
+	 */
+	public void testOclAnyEAllContents() {
+		assertFileContainsOutput("test_oclany_eAllContents");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "eInverse()" operation on OclAny.
+	 */
+	public void testOclAnyEInverse() {
+		assertFileContainsOutput("test_oclany_eInverse");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "invoke()" operation on OclAny.
+	 */
+	public void testOclAnyInvoke() {
+		assertFileContainsOutput("test_oclany_invoke");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings()" operation on OclAny.
+	 */
+	public void testOclAnySiblings() {
+		assertFileContainsOutput("test_oclany_siblings");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "toString()" operation on OclAny.
+	 */
+	public void testOclAnyToString() {
+		assertFileContainsOutput("test_oclany_toString");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "ancestors(OclAny)" operation on OclAny.
+	 */
+	public void testOclAnyTypedAncestors() {
+		assertFileContainsOutput("test_oclany_typed_eAllContents");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "eAllContents(OclAny)" operation on OclAny.
+	 */
+	public void testOclAnyTypedEAllContents() {
+		assertFileContainsOutput("test_oclany_typed_eAllContents");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "eInverse(OclAny)" operation on OclAny.
+	 */
+	public void testOclAnyTypedEInverse() {
+		assertFileContainsOutput("test_oclany_typed_eInverse");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings(OclAny)" operation on OclAny.
+	 */
+	public void testOclAnyTypedSiblings() {
+		assertFileContainsOutput("test_oclany_typed_siblings");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "contains(String)" operation on Strings.
+	 */
+	public void testStringContains() {
+		assertFileContainsOutput("test_string_contains");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "endsWith(String)" operation on Strings.
+	 */
+	public void testStringEndsWith() {
+		assertFileContainsOutput("test_string_endsWith");
 	}
 
 	/**
@@ -96,13 +149,6 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * Tests the behavior of the non standard "substituteAll(String, String)" operation on Strings.
-	 */
-	public void testStringSubstituteAll() {
-		assertFileContainsOutput("test_string_substituteAll");
-	}
-
-	/**
 	 * Tests the behavior of the non standard "startsWith(String)" operation on Strings.
 	 */
 	public void testStringStartsWith() {
@@ -110,17 +156,10 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * Tests the behavior of the non standard "endsWith(String)" operation on Strings.
+	 * Tests the behavior of the non standard "substituteAll(String, String)" operation on Strings.
 	 */
-	public void testStringEndsWith() {
-		assertFileContainsOutput("test_string_endsWith");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "trim()" operation on Strings.
-	 */
-	public void testStringTrim() {
-		assertFileContainsOutput("test_string_trim");
+	public void testStringSubstituteAll() {
+		assertFileContainsOutput("test_string_substituteAll");
 	}
 
 	/**
@@ -131,72 +170,40 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * Tests the behavior of the non standard "contains(String)" operation on Strings.
+	 * Tests the behavior of the non standard "trim()" operation on Strings.
 	 */
-	public void testStringContains() {
-		assertFileContainsOutput("test_string_contains");
+	public void testStringTrim() {
+		assertFileContainsOutput("test_string_trim");
 	}
 
 	/**
-	 * Tests the behavior of the non standard "eAllContents()" operation on OclAny.
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
-	public void testOclAnyEAllContents() {
-		assertFileContainsOutput("test_oclany_eAllContents");
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		generationRoot = new File(getGenerationRootPath("NonStdLib")); //$NON-NLS-1$
+		generatedPreview = generate("test_nonstdlib", true); //$NON-NLS-1$
 	}
 
 	/**
-	 * Tests the behavior of the non standard "eAllContents(OclAny)" operation on OclAny.
+	 * This is the only assertion needed for each of the preview files.
+	 * 
+	 * @param fileName
+	 *            Name of the file on which to run the assertion.
 	 */
-	public void testOclAnyTypedEAllContents() {
-		assertFileContainsOutput("test_oclany_typed_eAllContents");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "ancestors()" operation on OclAny.
-	 */
-	public void testOclAnyAncestors() {
-		assertFileContainsOutput("test_oclany_ancestors");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "ancestors(OclAny)" operation on OclAny.
-	 */
-	public void testOclAnyTypedAncestors() {
-		assertFileContainsOutput("test_oclany_typed_eAllContents");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "siblings()" operation on OclAny.
-	 */
-	public void testOclAnySiblings() {
-		assertFileContainsOutput("test_oclany_siblings");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "siblings(OclAny)" operation on OclAny.
-	 */
-	public void testOclAnyTypedSiblings() {
-		assertFileContainsOutput("test_oclany_typed_siblings");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "eInverse()" operation on OclAny.
-	 */
-	public void testOclAnyEInverse() {
-		assertFileContainsOutput("test_oclany_eInverse");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "eInverse(OclAny)" operation on OclAny.
-	 */
-	public void testOclAnyTypedEInverse() {
-		assertFileContainsOutput("test_oclany_typed_eInverse");
-	}
-
-	/**
-	 * Tests the behavior of the non standard "toString()" operation on OclAny.
-	 */
-	public void testOclAnyToString() {
-		assertFileContainsOutput("test_oclany_toString");
+	private void assertFileContainsOutput(String fileName) {
+		boolean fileFound = false;
+		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+			if (filePreview.getKey().endsWith(fileName)) {
+				assertEquals(OUTPUT, filePreview.getValue().toString());
+				fileFound = true;
+			}
+		}
+		if (!fileFound) {
+			fail("expected file hasn't been generated.");
+		}
 	}
 }

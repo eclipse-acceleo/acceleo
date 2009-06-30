@@ -20,12 +20,15 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
+import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -36,6 +39,8 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.OCL;
 
@@ -119,7 +124,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the containers of the given object.
 	 * </p>
 	 */
-	public void testOclAnyUnParameterizableAncestors() {
+	public void testOclAnyAncestorsUnParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
 
@@ -151,7 +156,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the containers of the given type for the given object.
 	 * </p>
 	 */
-	public void testOclAnyParameterizableAncestors() {
+	public void testOclAnyAncestorsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
 
@@ -184,7 +189,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * {@link EObject#eAllContents()}.
 	 * </p>
 	 */
-	public void testOclAnyUnparameterizableEAllContents() {
+	public void testOclAnyEAllContentsUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS);
 
@@ -221,7 +226,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * {@link EObject#eAllContents()} of ther given type.
 	 * </p>
 	 */
-	public void testOclAnyParameterizableEAllContents() {
+	public void testOclAnyEAllContentsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS);
 
@@ -263,7 +268,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the Objects that have a reference towards self.
 	 * </p>
 	 */
-	public void testOclAnyUnparameterizableEInverse() {
+	public void testOclAnyEInverseUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
 
@@ -298,7 +303,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * of the given type.
 	 * </p>
 	 */
-	public void testOclAnyParameterizableEInverse() {
+	public void testOclAnyEInverseParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
 
@@ -331,7 +336,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the siblings of the given object, excluding self.
 	 * </p>
 	 */
-	public void testOclAnyUnparameterizableSiblings() {
+	public void testOclAnySiblingsUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
 
@@ -361,13 +366,90 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the non standard "invoke()" operation on OclAny.
+	 * <p>
+	 * As this can be used more or less for anything, we will use it to invoke generic methods with easily
+	 * inferred results.
+	 * </p>
+	 */
+	public void testOclAnyInvoke() {
+		final Resource resource = new ResourceImpl();
+		resource.setURI(URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
+				+ "data/Library/nonstdlib" + EMTL_EXTENSION, true));
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
+				AcceleoNonStandardLibrary.OPERATION_OCLANY_INVOKE);
+		resource.getContents().add(operation);
+
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz1 = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz3 = EcoreFactory.eINSTANCE.createEClass();
+		final EEnum enumeration = EcoreFactory.eINSTANCE.createEEnum();
+		subSub.getEClassifiers().add(clazz1);
+		subSub.getEClassifiers().add(clazz2);
+		subSub.getEClassifiers().add(clazz3);
+		subSub.getEClassifiers().add(enumeration);
+		sub.getESubpackages().add(subSub);
+		root.getESubpackages().add(sub);
+
+		final List<Object> args = new ArrayList<Object>();
+
+		Object result = evaluationEnvironment.callNonStandardOperation(operation, root, "java.lang.Object",
+				"toString()", args);
+		assertNotNull("A result should have been returned", result);
+		assertEquals("Unexpected result of invocation with Object.toString as target", root.toString(),
+				result);
+
+		args.add(root);
+		result = evaluationEnvironment.callNonStandardOperation(operation, root,
+				"org.eclipse.emf.ecore.util.EcoreUtil", "getURI(org.eclipse.emf.ecore.EObject)", args);
+		assertNotNull("A result should have been returned", result);
+		assertEquals("Unexpected result of invocation with Object.toString as target",
+				EcoreUtil.getURI(root), result);
+
+		// ClassNotFound
+		try {
+			result = evaluationEnvironment.callNonStandardOperation(operation, root, "inexisting.Object",
+					"method()", args);
+			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
+					+ "when trying to invoke a method of an inexisting class.");
+		} catch (AcceleoEvaluationException e) {
+			// expected behavior
+		}
+
+		// NoSuchMethod
+		try {
+			result = evaluationEnvironment.callNonStandardOperation(operation, root, "java.lang.Object",
+					"unknownMethod()", args);
+			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
+					+ "when trying to invoke an inexisting method.");
+		} catch (AcceleoEvaluationException e) {
+			// expected behavior
+		}
+
+		// IllegalArgument
+		try {
+			args.clear();
+			args.add("test");
+			result = evaluationEnvironment.callNonStandardOperation(operation, root,
+					"org.eclipse.emf.ecore.util.EcoreUtil", "getURI(org.eclipse.emf.ecore.EObject)", args);
+			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
+					+ "when trying to invoke a method with illegal arguments.");
+		} catch (AcceleoEvaluationException e) {
+			// expected behavior
+		}
+	}
+
+	/**
 	 * Tests the behavior of the non standard "siblings(OclAny)" operation on OclAny.
 	 * <p>
 	 * Expects the result to contain all of the siblings of the given type for the given object, excluding
 	 * self.
 	 * </p>
 	 */
-	public void testOclAnyParameterizableSiblings() {
+	public void testOclAnySiblingsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
 

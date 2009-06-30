@@ -1,0 +1,15 @@
+[module mockModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public entryPoint(c : EPackage)]
+	[mockTemplate(c)/]
+[/template]
+
+[template public mockTemplate(c : EPackage)]
+	[file ('mockTemplate', false)]
+		mock template output
+	[/file]
+[/template]
+
+[template public mockTemplate(c : EPackage, s : String)]
+	won't be called
+[/template]

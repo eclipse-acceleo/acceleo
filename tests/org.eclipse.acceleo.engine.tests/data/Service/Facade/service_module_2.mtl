@@ -4,3 +4,9 @@
 		constant output
 	[/file]
 [/template]
+
+[template public template_2_2(p:EPackage, s:String)]
+	[file ('template_2_2', false)]
+		constant output
+	[/file]
+[/template]

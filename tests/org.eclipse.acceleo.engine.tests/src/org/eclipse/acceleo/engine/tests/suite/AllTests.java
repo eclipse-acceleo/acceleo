@@ -27,6 +27,7 @@ import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryP
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
 import org.eclipse.acceleo.engine.tests.unit.event.AcceleoListenersTest;
+import org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride.AcceleoDynamicOverridesTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoProgressMonitorTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
@@ -35,7 +36,8 @@ import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.SimpleNamesakeR
 import org.eclipse.acceleo.engine.tests.unit.resolution.override.OverrideGuardResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.override.OverrideParameterTypeNarrowingResolutionTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.override.SimpleOverridesResolutionTest;
-import org.eclipse.acceleo.engine.tests.unit.service.AcceleoServiceTest;
+import org.eclipse.acceleo.engine.tests.unit.service.facade.AcceleoServiceTest;
+import org.eclipse.acceleo.engine.tests.unit.service.java.AcceleoJavaServicesTest;
 import org.eclipse.acceleo.engine.tests.unit.utils.AcceleoEnginePluginTest;
 import org.eclipse.acceleo.engine.tests.unit.utils.MessagesTest;
 import org.eclipse.acceleo.engine.tests.unit.variables.SelfTest;
@@ -82,8 +84,14 @@ public class AllTests extends TestCase {
 		// Service facade
 		suite.addTestSuite(AcceleoServiceTest.class);
 
+		// Services
+		suite.addTestSuite(AcceleoJavaServicesTest.class);
+
 		// Listeners
 		suite.addTestSuite(AcceleoListenersTest.class);
+
+		// Extensibility
+		suite.addTestSuite(AcceleoDynamicOverridesTest.class);
 
 		// Namesakes
 		suite.addTestSuite(SimpleNamesakeResolutionTest.class);

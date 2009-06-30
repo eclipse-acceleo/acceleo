@@ -20,6 +20,11 @@ import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
 
+/**
+ * This will test the behavior of if blocks evaluation.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "else" statement for the if block tested here. */
 	private static final String ELSE = "elseOutput"; //$NON-NLS-1$

@@ -22,6 +22,11 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
 
+/**
+ * This will test the behavior of for blocks evaluation.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "after" statement for the for block tested here. */
 	private static final String AFTER = "afterOutput"; //$NON-NLS-1$

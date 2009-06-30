@@ -10,3 +10,9 @@
 		constant output
 	[/file]
 [/template]
+
+[template private template_1_3(c:EClass)]
+	[file ('template_1_3', false)]
+		constant output
+	[/file]
+[/template]

@@ -23,6 +23,11 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
 
+/**
+ * This will test the behavior of let blocks evaluation.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluationVisitorTest {
 	/** Constant output of the "else" statement for the let block tested here. */
 	private static final String ELSE = "elseOutput"; //$NON-NLS-1$
