@@ -101,8 +101,7 @@ public class AcceleoEnginePlugin extends Plugin {
 			if (blocker) {
 				severity = IStatus.ERROR;
 			}
-			log(new Status(severity, PLUGIN_ID, severity, AcceleoEngineMessages
-					.getString("AcceleoEnginePlugin.JavaException"), e)); //$NON-NLS-1$
+			log(new Status(severity, PLUGIN_ID, severity, e.getMessage(), e));
 		}
 	}
 
@@ -254,13 +253,10 @@ public class AcceleoEnginePlugin extends Plugin {
 		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
 		 */
 		public void removed(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				final Bundle bundle = Platform.getBundle(extension.getContributor().getName());
-				// If bundle is null, the bundle id is different than its name.
-				if (bundle != null) {
-					AcceleoDynamicTemplatesEclipseUtil.removeExtendingBundle(bundle);
-				}
-			}
+			/*
+			 * Etensions will be removed on the fly by AcceleoDynamicTemplatesEclipseUtil when trying to
+			 * access uninstalled bundles
+			 */
 		}
 
 		/**
