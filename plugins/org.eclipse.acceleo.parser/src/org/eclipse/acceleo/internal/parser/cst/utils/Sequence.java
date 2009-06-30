@@ -257,6 +257,8 @@ public class Sequence implements ISequence {
 				} else if (iPositionMin == 1 /* tag */) {
 					result = positions[iPositionMin];
 				} else if (iPositionMin >= 2 /* inhibs */) {
+					// FIXME JMU it could be null...
+					assert inhibs != null;
 					currentPos = inhibs[iPositionMin - 2].searchEndBodyAtBeginHeader(buffer,
 							positions[iPositionMin], posEnd).e();
 				}
