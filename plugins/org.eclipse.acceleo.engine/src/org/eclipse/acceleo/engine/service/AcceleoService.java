@@ -250,10 +250,7 @@ public final class AcceleoService {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
 		final Template template = findTemplate(module, templateName, arguments.size() + 1);
-		if (template.getVisibility() != VisibilityKind.PUBLIC) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
-		}
+		// #findTemplate never returns private templates.
 
 		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
 
