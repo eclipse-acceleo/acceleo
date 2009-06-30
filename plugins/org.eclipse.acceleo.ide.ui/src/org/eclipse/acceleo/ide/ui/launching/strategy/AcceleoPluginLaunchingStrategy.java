@@ -107,7 +107,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			} finally {
 				if ("debug".equals(mode)) { //$NON-NLS-1$
 					AcceleoEvaluationVisitor.setDebug(null);
-					debugger.end();
+					if (debugger != null) {
+						debugger.end();
+					}
 				}
 			}
 		}

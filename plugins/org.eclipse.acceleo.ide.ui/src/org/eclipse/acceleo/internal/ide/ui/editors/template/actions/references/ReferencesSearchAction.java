@@ -31,12 +31,12 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 	/**
 	 * The action ID.
 	 */
-	public static final String ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.search.references"; //$NON-NLS-1$
+	public static final String CUSTOM_ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.search.references"; //$NON-NLS-1$
 
 	/**
 	 * The associated command ID.
 	 */
-	public static final String COMMAND_ID = "org.eclipse.acceleo.ide.ui.search.references"; //$NON-NLS-1$
+	public static final String CUSTOM_COMMAND_ID = "org.eclipse.acceleo.ide.ui.search.references"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}

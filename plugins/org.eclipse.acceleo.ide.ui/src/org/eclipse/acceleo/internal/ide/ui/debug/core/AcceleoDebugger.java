@@ -108,27 +108,27 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 		/**
 		 * The Acceleo file which contains the the AST node.
 		 */
-		private File file;
+		public File file;
 
 		/**
 		 * The line of the AST node offset in the Acceleo file.
 		 */
-		private int line;
+		public int line;
 
 		/**
 		 * The beginning index of the AST node.
 		 */
-		private int start;
+		public int start;
 
 		/**
 		 * The ending index of the AST node.
 		 */
-		private int end;
+		public int end;
 
 		/**
 		 * Constructor.
 		 */
-		private FileRegion() {
+		public FileRegion() {
 			super();
 		}
 
@@ -289,7 +289,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 		if (variables != null && !stackDebugger.isEmpty()) {
 			StackInfo stackInfo = stackDebugger.peek();
 			for (Iterator<String> iterator = variables.keySet().iterator(); iterator.hasNext();) {
-				String name = (String)iterator.next();
+				String name = iterator.next();
 				Object value = variables.get(name);
 				stackInfo.addVariable(name, value);
 			}
@@ -522,7 +522,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireSuspendedBreakpointEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.suspendBreakpoint();
 		}
 	}
@@ -532,7 +532,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireResumedClientEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.resumeClient();
 		}
 	}
@@ -542,7 +542,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireResumedStepEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.resumeStep();
 		}
 	}
@@ -552,7 +552,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireSuspendedStepEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.suspendStep();
 		}
 	}
@@ -562,7 +562,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireStartEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.start();
 		}
 	}
@@ -572,7 +572,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 */
 	private void fireEndEvent() {
 		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
-			ITemplateDebuggerListener debugListener = (ITemplateDebuggerListener)iterator.next();
+			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.end();
 		}
 	}
@@ -588,7 +588,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 			if (variables != null) {
 				StackInfo stackInfo = stackDebugger.peek();
 				for (Iterator<String> iterator = variables.keySet().iterator(); iterator.hasNext();) {
-					String name = (String)iterator.next();
+					String name = iterator.next();
 					Object value = variables.get(name);
 					stackInfo.addVariable(name, value);
 				}

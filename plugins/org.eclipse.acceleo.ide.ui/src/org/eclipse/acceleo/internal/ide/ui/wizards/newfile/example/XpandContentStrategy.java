@@ -49,11 +49,11 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 	 */
 	@Override
 	protected void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain) {
-		int offset = text.indexOf("/*");
+		int offset = text.indexOf("/*"); //$NON-NLS-1$
 		if (offset > -1) {
-			int end = text.indexOf("*/", offset);
+			int end = text.indexOf("*/", offset); //$NON-NLS-1$
 			if (end > -1) {
-				text.replace(offset, end + 2, "[comment " + text.substring(offset + 2, end) + "/]");
+				text.replace(offset, end + 2, "[comment " + text.substring(offset + 2, end) + "/]"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		String[] mappings = getMappings(moduleName);
@@ -62,8 +62,8 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 			String replacingString = mappings[i + 1];
 			replaceAll(text, initialString, replacingString);
 		}
-		modifyTemplateInvocation(text, "\\[[a-zA-Z_\\:]+");
-		modifyTemplateInvocation(text, "\\.a-zA-Z_\\:]+");
+		modifyTemplateInvocation(text, "\\[[a-zA-Z_\\:]+"); //$NON-NLS-1$
+		modifyTemplateInvocation(text, "\\.a-zA-Z_\\:]+"); //$NON-NLS-1$
 	}
 
 	/**
@@ -77,53 +77,53 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 	 * @return the mapping rules
 	 */
 	private String[] getMappings(String moduleName) {
-		return new String[] {"-\u00BB" + END_LINE, "\u00BB",
+		return new String[] {"-\u00BB" + END_LINE, "\u00BB", //$NON-NLS-1$ //$NON-NLS-2$
 
-		"\u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB",
-				'[' + "module " + moduleName + "('$1', '$2', '$3')/]",
+				"\u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB", //$NON-NLS-1$
+				'[' + "module " + moduleName + "('$1', '$2', '$3')/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB",
-				"[module " + moduleName + "('$1', '$2')/]",
+				"\u00AB IMPORT \"*\" \u00BB \u00AB IMPORT \"*\" \u00BB", //$NON-NLS-1$ 
+				"[module " + moduleName + "('$1', '$2')/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB IMPORT \"*\" \u00BB" + END_LINE, "[module " + moduleName + "('$1')/]",
+				"\u00AB IMPORT \"*\" \u00BB" + END_LINE, "[module " + moduleName + "('$1')/]", //$NON-NLS-1$ //$NON-NLS-2$  //$NON-NLS-3$
 
-				"\u00AB EXTENSION * \u00BB" + END_LINE, "[import $1/]",
+				"\u00AB EXTENSION * \u00BB" + END_LINE, "[import $1/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB DEFINE * ( * ) FOR * :: * \u00BB" + END_LINE, "[template public $1 (v$4 : $4, $2)]",
+				"\u00AB DEFINE * ( * ) FOR * :: * \u00BB" + END_LINE, "[template public $1 (v$4 : $4, $2)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB DEFINE * ( * ) FOR * \u00BB" + END_LINE, "[template public $1 (v$3 : EObject, $2)]",
+				"\u00AB DEFINE * ( * ) FOR * \u00BB" + END_LINE, "[template public $1 (v$3 : EObject, $2)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB DEFINE * FOR * :: * \u00BB" + END_LINE, "[template public $1 (v$3 : $3)]",
+				"\u00AB DEFINE * FOR * :: * \u00BB" + END_LINE, "[template public $1 (v$3 : $3)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB DEFINE * FOR * \u00BB" + END_LINE, "[template public $1 (v$2 : EObject)]",
+				"\u00AB DEFINE * FOR * \u00BB" + END_LINE, "[template public $1 (v$2 : EObject)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ENDDEFINE \u00BB" + END_LINE, "[/template]",
+				"\u00AB ENDDEFINE \u00BB" + END_LINE, "[/template]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB FOREACH * AS * \u00BB" + END_LINE, "[for ($2 : EObject | $1)]",
+				"\u00AB FOREACH * AS * \u00BB" + END_LINE, "[for ($2 : EObject | $1)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ENDFOREACH \u00BB" + END_LINE, "[/for]",
+				"\u00AB ENDFOREACH \u00BB" + END_LINE, "[/for]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB IF * \u00BB" + END_LINE, "[if ($1)]",
+				"\u00AB IF * \u00BB" + END_LINE, "[if ($1)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ELSE IF * \u00BB" + END_LINE, "[else if ($1)]",
+				"\u00AB ELSE IF * \u00BB" + END_LINE, "[else if ($1)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ELSE * \u00BB" + END_LINE, "[else]",
+				"\u00AB ELSE * \u00BB" + END_LINE, "[else]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ENDIF \u00BB" + END_LINE, "[/if]",
+				"\u00AB ENDIF \u00BB" + END_LINE, "[/if]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB LET * AS * \u00BB" + END_LINE, "[let $2 : EObject = $1]",
+				"\u00AB LET * AS * \u00BB" + END_LINE, "[let $2 : EObject = $1]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB ENDLET \u00BB" + END_LINE, "[/let]",
+				"\u00AB ENDLET \u00BB" + END_LINE, "[/let]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB REM \u00BB * \u00AB ENDREM \u00BB", "[comment $1 /]",
+				"\u00AB REM \u00BB * \u00AB ENDREM \u00BB", "[comment $1 /]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB EXPAND * \u00BB" + END_LINE, "[$1/]",
+				"\u00AB EXPAND * \u00BB" + END_LINE, "[$1/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"\u00AB * \u00BB" + END_LINE, "[$1/]",
+				"\u00AB * \u00BB" + END_LINE, "[$1/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"[*\"*\"*\"*\"*]" + END_LINE, "[$1'$2'$3'$4'$5]",
+				"[*\"*\"*\"*\"*]" + END_LINE, "[$1'$2'$3'$4'$5]", //$NON-NLS-1$ //$NON-NLS-2$
 
-				"[*\"*\"*]" + END_LINE, "[$1'$2'$3]", };
+				"[*\"*\"*]" + END_LINE, "[$1'$2'$3]", }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -136,25 +136,25 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 	 */
 	private void modifyTemplateInvocation(StringBuffer text, String pattern) {
 		int offset;
-		Pattern p = Pattern.compile(pattern + "[ ]*/\\]");
+		Pattern p = Pattern.compile(pattern + "[ ]*/\\]"); //$NON-NLS-1$
 		Matcher m = p.matcher(text);
 		offset = 0;
 		while (offset > -1 && m.find(offset)) {
 			int b = m.start();
 			offset = m.end();
 			String string = text.substring(b, offset).trim();
-			Pattern pID = Pattern.compile("[a-zA-Z_\\:]+");
+			Pattern pID = Pattern.compile("[a-zA-Z_\\:]+"); //$NON-NLS-1$
 			Matcher mID = pID.matcher(string);
 			if (mID.find()) {
 				string = string.substring(mID.start(), mID.end());
 			}
-			if (string.lastIndexOf(":") > -1) {
-				string = string.substring(string.lastIndexOf(":") + 1);
+			if (string.lastIndexOf(":") > -1) { //$NON-NLS-1$
+				string = string.substring(string.lastIndexOf(":") + 1); //$NON-NLS-1$
 			}
-			Pattern pDeclare = Pattern.compile("public[ \t]+" + string + "[ \t]*\\(");
+			Pattern pDeclare = Pattern.compile("public[ \t]+" + string + "[ \t]*\\("); //$NON-NLS-1$ //$NON-NLS-2$
 			Matcher mDeclare = pDeclare.matcher(text);
 			if (mDeclare.find()) {
-				text.insert(offset - 2, "()");
+				text.insert(offset - 2, "()"); //$NON-NLS-1$
 			}
 		}
 	}

@@ -112,7 +112,7 @@ public class ReferencesTreeContentProvider implements ITreeContentProvider {
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(Object parentElement) {
-		final Set<Object> children = (Set<Object>)map.get(parentElement);
+		final Set<Object> children = map.get(parentElement);
 		if (children == null) {
 			return EMPTY_ARR;
 		}
@@ -304,7 +304,7 @@ public class ReferencesTreeContentProvider implements ITreeContentProvider {
 	 *            the parent node to use
 	 */
 	private void removeFromSiblings(Object element, Object parent) {
-		final Set<Object> siblings = (Set<Object>)map.get(parent);
+		final Set<Object> siblings = map.get(parent);
 		if (siblings != null) {
 			siblings.remove(element);
 		}

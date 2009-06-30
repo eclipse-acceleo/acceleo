@@ -85,7 +85,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 				ret = AcceleoUIActivator.getDefault().getImage("icons/debug/int.gif"); //$NON-NLS-1$
 			} else if (value instanceof String) {
 				ret = AcceleoUIActivator.getDefault().getImage("icons/debug/string.gif"); //$NON-NLS-1$
-			} else if (value instanceof List) {
+			} else if (value instanceof List<?>) {
 				ret = AcceleoUIActivator.getDefault().getImage("icons/debug/list.gif"); //$NON-NLS-1$
 			} else if (value == null) {
 				ret = AcceleoUIActivator.getDefault().getImage("icons/debug/null.gif"); //$NON-NLS-1$
@@ -122,7 +122,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 			if (value instanceof EObject) {
 				EObject eObject = (EObject)value;
 				ret = getEObjectValue(eObject);
-			} else if (value instanceof Collection) {
+			} else if (value instanceof Collection<?>) {
 				ret = toSimpleString((Collection<?>)value);
 			} else {
 				ret = value.toString();
@@ -150,7 +150,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 		if (value != null) {
 			if (value instanceof EObject) {
 				ret = this.computeEObjectVariables((EObject)value);
-			} else if (value instanceof Collection) {
+			} else if (value instanceof Collection<?>) {
 				ret = this.computeCollectionVariables((Collection<?>)value);
 			} else {
 				ret = this.computeVariables(value);
@@ -191,8 +191,8 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 			} else {
 				referenceType = AcceleoVariable.ATTRIBUTE_TYPE;
 			}
-			if ((featureValue instanceof Collection && ((Collection<?>)featureValue).size() > 0)
-					|| (!(featureValue instanceof Collection) && featureValue != null)) {
+			if ((featureValue instanceof Collection<?> && ((Collection<?>)featureValue).size() > 0)
+					|| (!(featureValue instanceof Collection<?>) && featureValue != null)) {
 				variables
 						.add(new AcceleoVariable(getDebugTarget(), featureName, featureValue, referenceType));
 			}
@@ -215,7 +215,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 			Object element = iterObjects.next();
 			if (element instanceof EObject) {
 				variables.add(this.eObjectToVariable((EObject)element));
-			} else if (element instanceof Collection) {
+			} else if (element instanceof Collection<?>) {
 				variables.add(new AcceleoVariable(getDebugTarget(), toSimpleString((Collection<?>)element),
 						element, AcceleoVariable.DEFAULT_TYPE));
 			} else {
@@ -299,7 +299,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 					}
 				}
 				strings.add(typeName + ':' + label);
-			} else if (currentValue instanceof Collection) {
+			} else if (currentValue instanceof Collection<?>) {
 				strings.add("Collection"); //$NON-NLS-1$
 			} else {
 				String typeName = currentValue.getClass().getName().substring(

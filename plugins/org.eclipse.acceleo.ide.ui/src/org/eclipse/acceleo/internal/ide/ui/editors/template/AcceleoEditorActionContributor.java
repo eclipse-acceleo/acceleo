@@ -45,8 +45,8 @@ public class AcceleoEditorActionContributor extends BasicTextEditorActionContrib
 		actionBars.setGlobalActionHandler(OpenDeclarationAction.COMMAND_ID, openAction);
 
 		ReferencesSearchAction referencesSearchAction = new ReferencesSearchAction();
-		referencesSearchAction.setActionDefinitionId(ReferencesSearchAction.ACTION_ID);
-		actionBars.setGlobalActionHandler(ReferencesSearchAction.COMMAND_ID, referencesSearchAction);
+		referencesSearchAction.setActionDefinitionId(ReferencesSearchAction.CUSTOM_ACTION_ID);
+		actionBars.setGlobalActionHandler(ReferencesSearchAction.CUSTOM_COMMAND_ID, referencesSearchAction);
 
 		CommentAction commentAction = new CommentAction();
 		commentAction.setActionDefinitionId(CommentAction.ACTION_ID);
