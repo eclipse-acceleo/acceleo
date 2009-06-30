@@ -130,9 +130,6 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 * set on the generation events.
 	 */
 	private class AcceleoGenerationEventTestListener implements IAcceleoTextGenerationListener {
-		/** The generated text itself. */
-		String generatedText;
-
 		/** EObject for which text has been generated. */
 		EObject textSourceElement;
 
@@ -163,7 +160,6 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		public void textGenerated(AcceleoTextGenerationEvent event) {
 			textSourceBlock = event.getBlock();
 			textSourceElement = event.getSource();
-			generatedText = event.getText();
 		}
 
 		/**
