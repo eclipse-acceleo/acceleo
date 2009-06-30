@@ -246,8 +246,20 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				visitExpression((OCLExpression)forBlock.getBefore());
 			}
 			final Iterator<Object> contentIterator = ((Collection)iteration).iterator();
+			boolean iterationCCE = false;
 			while (contentIterator.hasNext()) {
 				final Object o = contentIterator.next();
+				// null typed loop variables will be the same as "Object" typed
+				if (loopVariable.getType() != null && !loopVariable.getType().isInstance(o)) {
+					if (!iterationCCE) {
+						AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+								"AcceleoEvaluationVisitor.IterationClassCast", ((Module)EcoreUtil //$NON-NLS-1$
+										.getRootContainer(forBlock)).getName(), forBlock.toString(), o
+										.getClass().getName(), loopVariable.getType().getName()), false);
+						iterationCCE = true;
+					}
+					continue;
+				}
 				getEvaluationEnvironment().replace(loopVariable.getName(), o);
 				// [255379] sets new value of "self" to change context
 				getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, o);
@@ -469,7 +481,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			throw exception;
 		}
 
-		final String marker = markerValue.toString().trim();
+		final String marker = toString(markerValue).trim();
 		final String areaContent = context.getProtectedAreaContent(marker);
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
@@ -629,7 +641,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	@SuppressWarnings("unchecked")
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
 		// FIXME refactor this into multiple methods
-		context.openNested();
 		final Template template = invocation.getDefinition();
 		final List<Object> newArguments = new ArrayList<Object>();
 		final Object[] oldArgs;
@@ -708,6 +719,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				actualTemplate = MtlFactory.eINSTANCE.createTemplate();
 			}
 		}
+		context.openNested();
 		if (invocation.getBefore() != null) {
 			visitExpression((OCLExpression)invocation.getBefore());
 		}
@@ -715,7 +727,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
 		}
-		context.append(visitExpression((OCLExpression)actualTemplate).toString(), actualTemplate,
+		context.append(toString(visitExpression((OCLExpression)actualTemplate)), actualTemplate,
 				lastEObjectSelfValue, false);
 		if (invocation.getAfter() != null) {
 			visitExpression((OCLExpression)invocation.getAfter());
@@ -819,8 +831,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					final boolean fireEvent = fireGenerationEvent
 							&& !(expression instanceof TemplateInvocation)
 							&& !(expression instanceof Template);
-					context.append(String.valueOf(result), (Block)generatedBlock, lastEObjectSelfValue,
-							fireEvent);
+					context.append(toString(result), (Block)generatedBlock, lastEObjectSelfValue, fireEvent);
 				}
 			}
 
@@ -856,6 +867,27 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		return result;
+	}
+
+	/**
+	 * Collections need special handling when generated from Acceleo.
+	 * 
+	 * @param object
+	 *            The object we wish the String representation of.
+	 * @return String representation of the given Object. For Collections, this will be the concatenation of
+	 *         all contained Objects' toString.
+	 */
+	private String toString(Object object) {
+		final StringBuffer buffer = new StringBuffer();
+		if (object instanceof Collection<?>) {
+			final Iterator<?> childrenIterator = ((Collection<?>)object).iterator();
+			while (childrenIterator.hasNext()) {
+				buffer.append(toString(childrenIterator.next()));
+			}
+		} else {
+			buffer.append(object.toString());
+		}
+		return buffer.toString();
 	}
 
 	/**
