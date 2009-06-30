@@ -211,7 +211,10 @@ public class AcceleoSourceContent {
 				@Override
 				protected void canceling() {
 					super.canceling();
-					astCreator.canceling(true);
+					// could be canceled before astCreator is created
+					if (astCreator != null) {
+						astCreator.canceling(true);
+					}
 				}
 			};
 		}
