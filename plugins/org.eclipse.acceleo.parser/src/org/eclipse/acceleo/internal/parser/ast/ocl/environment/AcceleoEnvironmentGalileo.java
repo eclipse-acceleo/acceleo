@@ -37,6 +37,7 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.options.ParsingOptions;
 import org.eclipse.ocl.types.CollectionType;
 import org.eclipse.ocl.types.TupleType;
 import org.eclipse.ocl.utilities.TypedElement;
@@ -57,7 +58,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	protected AcceleoEnvironmentGalileo(
 			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
 		super(parent);
-		// FIXME LGO setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
+		setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	 */
 	protected AcceleoEnvironmentGalileo(Resource oclEnvironmentResource) {
 		super(oclEnvironmentResource);
-		// FIXME LGO setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
+		setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
 	}
 
 	/**
