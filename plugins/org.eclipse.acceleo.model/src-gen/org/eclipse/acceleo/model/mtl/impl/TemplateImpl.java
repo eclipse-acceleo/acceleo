@@ -34,11 +34,11 @@ import org.eclipse.ocl.ecore.Variable;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getVisibility <em> Visibility</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getOverrides <em> Overrides</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em> Parameter</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isMain <em>Main </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getOverrides <em>Overrides</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em>Parameter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isMain <em>Main</em>}</li>
  * </ul>
  * </p>
  * 
@@ -409,37 +409,19 @@ public class TemplateImpl extends BlockImpl implements Template {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
+		if (eIsProxy())
 			return super.toString();
-		}
 
-		final StringBuffer result = new StringBuffer(/* super.toString() */);
-		// result.append(" (visibility: ");
-		// result.append(visibility);
-		// result.append(')');
-		result.append(getVisibility());
-		result.append(' ').append(getName());
-		result.append('(');
-		for (final Variable var : getParameter()) {
-			result.append(var.getType().getName());
-			if (var != getParameter().get(getParameter().size() - 1)) {
-				result.append(", "); //$NON-NLS-1$
-			}
-		}
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (visibility: "); //$NON-NLS-1$
+		result.append(visibility);
+		result.append(", main: "); //$NON-NLS-1$
+		result.append(main);
 		result.append(')');
-		if (getOverrides().size() > 0) {
-			result.append(' ').append("overrides").append(' '); //$NON-NLS-1$
-			for (final Template overriden : getOverrides()) {
-				result.append(overriden.getName());
-				if (overriden != getOverrides().get(getOverrides().size() - 1)) {
-					result.append(", "); //$NON-NLS-1$
-				}
-			}
-		}
 		return result.toString();
 	}
 
