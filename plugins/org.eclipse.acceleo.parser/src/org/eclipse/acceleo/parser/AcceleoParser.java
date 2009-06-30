@@ -98,11 +98,8 @@ public class AcceleoParser {
 				try {
 					newResource.save(options);
 				} catch (IOException e) {
-					source
-							.log(
-									AcceleoParserMessages
-											.getString(
-													"AcceleoParser.Error.FileSaving", newResource.getURI().lastSegment(), e.getMessage()), 0, -1); //$NON-NLS-1$
+					source.log(AcceleoParserMessages.getString("AcceleoParser.Error.FileSaving", newResource //$NON-NLS-1$
+							.getURI().lastSegment(), e.getMessage()), 0, -1);
 				}
 			} else {
 				source.log(AcceleoParserMessages.getString("AcceleoParser.Error.InvalidAST", source.getFile() //$NON-NLS-1$
