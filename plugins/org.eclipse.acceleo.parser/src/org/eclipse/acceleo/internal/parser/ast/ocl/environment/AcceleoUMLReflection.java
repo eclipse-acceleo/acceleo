@@ -300,7 +300,7 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 * 
 	 * @see org.eclipse.ocl.utilities.UMLReflection#getOperations(java.lang.Object)
 	 */
-	public List<EOperation> getOperations(EClassifier classifier) {
+	public synchronized List<EOperation> getOperations(EClassifier classifier) {
 		final List<EOperation> operations = new ArrayList<EOperation>(delegate.getOperations(classifier));
 		final Iterator<EOperation> operationIterator = operations.iterator();
 		while (operationIterator.hasNext()) {
