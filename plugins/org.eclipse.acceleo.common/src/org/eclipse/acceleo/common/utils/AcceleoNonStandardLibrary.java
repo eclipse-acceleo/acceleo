@@ -33,6 +33,40 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  */
 public final class AcceleoNonStandardLibrary {
 	/**
+	 * Name of the &quot;sep&quot; non-standard operation accessible on collections. Note that depending on
+	 * the source collection, the returned collection will be of different types.
+	 * <table>
+	 * <tr>
+	 * <td>Source Type</td>
+	 * <td>Return Type</td>
+	 * </tr>
+	 * <tr>
+	 * <td>Set(T)</td>
+	 * <td>Bag(OclAny)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>OrderedSet(T)</td>
+	 * <td>Sequence(OclAny)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>Sequence(T)</td>
+	 * <td>Sequence(OclAny)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>Bag(T)</td>
+	 * <td>Bag(OclAny)</td>
+	 * </tr>
+	 * </table>
+	 * <p>
+	 * <b>sep( String ) : Collection</b><br/> Returns all elements from the source collection separated by an
+	 * element composed of the <code>separator</code> String.
+	 * </p>
+	 * 
+	 * @since 0.8
+	 */
+	public static final String OPERATION_COLLECTION_SEP = "sep"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;ancestors&quot; non-standard operation accessible on all objects. This operation
 	 * comes in two flavors :
 	 * <p>
@@ -188,8 +222,36 @@ public final class AcceleoNonStandardLibrary {
 	/** Name of the primitive type "String" as defined in the OCL standard library. */
 	public static final String PRIMITIVE_STRING_NAME = "String"; //$NON-NLS-1$
 
+	/**
+	 * Name of the type "Bag" used for common EOperations on OCL ordered bags.
+	 * 
+	 * @since 0.8
+	 */
+	public static final String TYPE_BAG_NAME = "Bag(T)"; //$NON-NLS-1$
+
 	/** Name of the type "OclAny" used for common EOperations for all EObjects. */
 	public static final String TYPE_OCLANY_NAME = "OclAny"; //$NON-NLS-1$
+
+	/**
+	 * Name of the type "OrderedSet" used for common EOperations on OCL ordered sets.
+	 * 
+	 * @since 0.8
+	 */
+	public static final String TYPE_ORDEREDSET_NAME = "OrderedSet(T)"; //$NON-NLS-1$
+
+	/**
+	 * Name of the type "Sequence" used for common EOperations on OCL sequences.
+	 * 
+	 * @since 0.8
+	 */
+	public static final String TYPE_SEQUENCE_NAME = "Sequence(T)"; //$NON-NLS-1$
+
+	/**
+	 * Name of the type "Sequence" used for common EOperations on OCL sets.
+	 * 
+	 * @since 0.8
+	 */
+	public static final String TYPE_SET_NAME = "Set(T)"; //$NON-NLS-1$
 
 	/** This is the ecore package that will contain the Acceleo non-standard Library classifiers. */
 	private static EPackage nonStdLibPackage;
@@ -197,8 +259,20 @@ public final class AcceleoNonStandardLibrary {
 	/** NS URI of the mtlnonstdlib.ecore which defines the Acceleo non-standard operation library. */
 	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore"; //$NON-NLS-1$
 
+	/** EClass for the Acceleo non-standard library's "Bag" type. */
+	private static EClass bagType;
+
 	/** EClass for the Acceleo non-standard library's "OclAny" type. */
 	private static EClass oclAnyType;
+
+	/** EClass for the Acceleo non-standard library's "OrderedSet" type. */
+	private static EClass orderedSetType;
+
+	/** EClass for the Acceleo non-standard library's "Sequence" type. */
+	private static EClass sequenceType;
+
+	/** EClass for the Acceleo non-standard library's "Set" type. */
+	private static EClass setType;
 
 	/** EClass for the Acceleo non-standard library's "String" type. */
 	private static EClass stringType;
@@ -211,8 +285,12 @@ public final class AcceleoNonStandardLibrary {
 
 		try {
 			nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
-			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
+			bagType = (EClass)nonStdLibPackage.getEClassifier(TYPE_BAG_NAME);
 			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
+			orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
+			sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
+			setType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SET_NAME);
+			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
 		} catch (IOException e) {
 			AcceleoCommonPlugin.log(
 					AcceleoCommonMessages.getString("AcceleoNonStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
@@ -237,13 +315,21 @@ public final class AcceleoNonStandardLibrary {
 	 *            The name of the classifier which operation are sought.
 	 * @return The operations it declares. <code>null</code> if none.
 	 */
-	public EList<EOperation> getExistingOperations(String classifierName) {
+	public synchronized EList<EOperation> getExistingOperations(String classifierName) {
 		EList<EOperation> result = new BasicEList<EOperation>();
 
 		if (PRIMITIVE_STRING_NAME.equals(classifierName)) {
 			result.addAll(stringType.getEOperations());
 		} else if (TYPE_OCLANY_NAME.equals(classifierName)) {
 			result.addAll(oclAnyType.getEOperations());
+		} else if (TYPE_BAG_NAME.equals(classifierName)) {
+			result.addAll(bagType.getEOperations());
+		} else if (TYPE_ORDEREDSET_NAME.equals(classifierName)) {
+			result.addAll(orderedSetType.getEOperations());
+		} else if (TYPE_SET_NAME.equals(classifierName)) {
+			result.addAll(setType.getEOperations());
+		} else if (TYPE_SEQUENCE_NAME.equals(classifierName)) {
+			result.addAll(sequenceType.getEOperations());
 		}
 
 		return result;
