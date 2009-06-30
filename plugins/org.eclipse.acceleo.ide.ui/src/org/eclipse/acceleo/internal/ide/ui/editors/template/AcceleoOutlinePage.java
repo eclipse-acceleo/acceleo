@@ -15,9 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -29,10 +32,21 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.part.IPageSite;
+import org.eclipse.ui.part.Page;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
  * The template content outline page. This content outline page will be presented to the user via the standard
@@ -41,8 +55,7 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoOutlinePage extends ContentOutlinePage {
-
+public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener {
 	/**
 	 * The editor.
 	 */
@@ -63,6 +76,12 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 	 */
 	protected AcceleoOutlinePageItemProviderAdapterFactory outlinePageItemProvider;
 
+	/** List of listeners registered for selection change against this page. */
+	private ListenerList selectionChangedListeners = new ListenerList();
+
+	/** Actual viewer displayed in the outline. */
+	private TreeViewer treeViewer;
+
 	/**
 	 * The job instance to refresh the outline view.
 	 */
@@ -73,7 +92,7 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
 	 */
-	private class RefreshViewJob {
+	class RefreshViewJob {
 
 		/**
 		 * The element to refresh.
@@ -137,15 +156,120 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		selectionChangedListeners.add(listener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ui.views.contentoutline.ContentOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		super.createControl(parent);
+		treeViewer = new AcceleoOutlineTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		treeViewer.addSelectionChangedListener(this);
 		TreeViewer viewer = getTreeViewer();
 		viewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
 		viewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
 		setInput(editor.getContent().getCST());
+	}
+
+	/**
+	 * Fires a selection changed event.
+	 * 
+	 * @param selection
+	 *            the new selection
+	 */
+	protected void fireSelectionChanged(ISelection selection) {
+		// create an event
+		final SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
+
+		// fire the event
+		Object[] listeners = selectionChangedListeners.getListeners();
+		for (int i = 0; i < listeners.length; ++i) {
+			final ISelectionChangedListener l = (ISelectionChangedListener)listeners[i];
+			SafeRunner.run(new SafeRunnable() {
+				public void run() {
+					l.selectionChanged(event);
+				}
+			});
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.Page#getControl()
+	 */
+	@Override
+	public Control getControl() {
+		if (treeViewer == null) {
+			return null;
+		}
+		return treeViewer.getControl();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
+	 */
+	public ISelection getSelection() {
+		if (treeViewer == null) {
+			return StructuredSelection.EMPTY;
+		}
+		return treeViewer.getSelection();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.Page#init(org.eclipse.ui.part.IPageSite)
+	 */
+	@Override
+	public void init(IPageSite pageSite) {
+		super.init(pageSite);
+		pageSite.setSelectionProvider(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.ISelectionChangedListener)
+	 */
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+		selectionChangedListeners.remove(listener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+	 */
+	public void selectionChanged(SelectionChangedEvent event) {
+		fireSelectionChanged(event.getSelection());
+	}
+
+	/**
+	 * Sets focus to a part in the page.
+	 */
+	@Override
+	public void setFocus() {
+		treeViewer.getControl().setFocus();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
+	 */
+	public void setSelection(ISelection selection) {
+		if (treeViewer != null) {
+			treeViewer.setSelection(selection);
+		}
 	}
 
 	/**
@@ -199,4 +323,50 @@ public class AcceleoOutlinePage extends ContentOutlinePage {
 		getTreeViewer().expandToLevel(element, 2);
 	}
 
+	/**
+	 * Returns this page's tree viewer.
+	 * 
+	 * @return this page's tree viewer, or <code>null</code> if <code>createControl</code> has not been called
+	 *         yet
+	 */
+	protected TreeViewer getTreeViewer() {
+		return treeViewer;
+	}
+
+	/**
+	 * This basic implementation of a tree viewer will allow us to collapse ModuleElements by default.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	class AcceleoOutlineTreeViewer extends TreeViewer {
+		/**
+		 * Simply delegates to the super constructor.
+		 * 
+		 * @param parent
+		 *            Parent of this composite.
+		 * @param style
+		 *            the SWT style bits used to create the tree.
+		 */
+		public AcceleoOutlineTreeViewer(Composite parent, int style) {
+			super(parent, style);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.AbstractTreeViewer#internalExpandToLevel(org.eclipse.swt.widgets.Widget,
+		 *      int)
+		 */
+		@Override
+		protected void internalExpandToLevel(Widget widget, int level) {
+			if (widget instanceof Item) {
+				Item i = (Item)widget;
+				if (i.getData() instanceof ModuleElement) {
+					setExpanded(i, false);
+					return;
+				}
+			}
+			super.internalExpandToLevel(widget, level);
+		}
+	}
 }
