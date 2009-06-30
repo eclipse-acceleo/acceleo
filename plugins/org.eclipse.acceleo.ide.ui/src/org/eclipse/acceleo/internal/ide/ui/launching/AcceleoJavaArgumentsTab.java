@@ -59,7 +59,7 @@ public class AcceleoJavaArgumentsTab extends JavaArgumentsTab {
 		if (model != null) {
 			modelPath = new Path(model);
 		} else {
-			modelPath = new Path("");
+			modelPath = new Path(""); //$NON-NLS-1$
 		}
 		if (modelPath.segmentCount() > 1) {
 			modelPath = ResourcesPlugin.getWorkspace().getRoot().getFile(modelPath).getLocation();
@@ -71,7 +71,7 @@ public class AcceleoJavaArgumentsTab extends JavaArgumentsTab {
 		if (target != null) {
 			targetPath = new Path(target);
 		} else {
-			targetPath = new Path("");
+			targetPath = new Path(""); //$NON-NLS-1$
 		}
 		if (targetPath.segmentCount() == 1) {
 			targetPath = ResourcesPlugin.getWorkspace().getRoot().getProject(targetPath.lastSegment())

@@ -29,92 +29,91 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	 * mappings[i] is the text before and mappings[i+1] is the text after.
 	 * </p>
 	 */
-	private final String[] mappings = {
-			"<% metamodel * %>",
-			"[comment metamodel $1/]",
+	private final String[] mappings = {"<% metamodel * %>", //$NON-NLS-1$
+			"[comment metamodel $1/]", //$NON-NLS-1$
 
-			"<% import * %>",
-			"[comment import $1/]",
+			"<% import * %>", //$NON-NLS-1$
+			"[comment import $1/]", //$NON-NLS-1$
 
-			"file = \" <%*%> \"" + END_LINE,
-			"file = \"$1\"",
+			"file = \" <%*%> \"" + END_LINE, //$NON-NLS-1$
+			"file = \"$1\"", //$NON-NLS-1$
 
-			"file = \" <%*%> *\"" + END_LINE,
-			"file = \"$1.concat($2)\"",
+			"file = \" <%*%> *\"" + END_LINE, //$NON-NLS-1$
+			"file = \"$1.concat($2)\"", //$NON-NLS-1$
 
-			"<% script name = \"$\" type = \"$\" %>" + END_LINE,
-			"[template public $1 (v$2 : $2)]",
+			"<% script name = \"$\" type = \"$\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $1 (v$2 : $2)]", //$NON-NLS-1$
 
-			"<% script type = \"$\" name = \"$\" %>" + END_LINE,
-			"[template public $2 (v$1 : $1)]",
+			"<% script type = \"$\" name = \"$\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $2 (v$1 : $1)]", //$NON-NLS-1$
 
-			"<% script type = \"$\" name = \"$\" file = \"*\" %>" + END_LINE,
-			"[template public $2 (v$1 : $1)]\n" + "	[file ($3, false)]\n		[$2Sub()/]\n	[/file]\n"
-					+ "\n[template private $2Sub (v$1 : $1)]",
+			"<% script type = \"$\" name = \"$\" file = \"*\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $2 (v$1 : $1)]\n" + "	[file ($3, false)]\n		[$2Sub()/]\n	[/file]\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ "\n[template private $2Sub (v$1 : $1)]", //$NON-NLS-1$
 
-			"<% script name = \"$\" type = \"$\" file = \"*\" %>" + END_LINE,
-			"[template public $1 (v$2 : $2)]\n" + "	[file ($3, false)]\n		[$1Sub()/]\n	[/file]\n"
-					+ "\n[template private $1Sub (v$2 : $2)]",
+			"<% script name = \"$\" type = \"$\" file = \"*\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $1 (v$2 : $2)]\n" + "	[file ($3, false)]\n		[$1Sub()/]\n	[/file]\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ "\n[template private $1Sub (v$2 : $2)]", //$NON-NLS-1$
 
-			"<% script type = \"$\" name = \"$\" file = \"*\" post = \"*\" %>" + END_LINE,
-			"[template public $2 (v$1 : $1)]\n" + "	[file ($3, false)]\n		[$2Sub().$4/]\n	[/file]\n"
-					+ "\n[template private $2Sub (v$1 : $1)]",
+			"<% script type = \"$\" name = \"$\" file = \"*\" post = \"*\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $2 (v$1 : $1)]\n" + "	[file ($3, false)]\n		[$2Sub().$4/]\n	[/file]\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ "\n[template private $2Sub (v$1 : $1)]", //$NON-NLS-1$
 
-			"<% script name = \"$\" type = \"$\" file = \"*\" post = \"*\" %>" + END_LINE,
-			"[template public $1 (v$2 : $2)]\n" + "	[file ($3, false)]\n		[$1Sub().$4/]\n	[/file]\n"
-					+ "\n[template private $1Sub (v$2 : $2)]",
+			"<% script name = \"$\" type = \"$\" file = \"*\" post = \"*\" %>" + END_LINE, //$NON-NLS-1$
+			"[template public $1 (v$2 : $2)]\n" + "	[file ($3, false)]\n		[$1Sub().$4/]\n	[/file]\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ "\n[template private $1Sub (v$2 : $2)]", //$NON-NLS-1$
 
-			"<% script name = \"$\" type = \"$\" * %>" + END_LINE, "[template public $1 (v$2 : $2)$3]",
+			"<% script name = \"$\" type = \"$\" * %>" + END_LINE, "[template public $1 (v$2 : $2)$3]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% script type = \"$\" name = \"$\" * %>" + END_LINE, "[template public $2 (v$1 : $1)$3]",
+			"<% script type = \"$\" name = \"$\" * %>" + END_LINE, "[template public $2 (v$1 : $1)$3]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% for (*.filter(\"$\")*) { %>" + END_LINE, "[for (v$2 : $2 | $1.oclAsType($2)$3)]",
+			"<% for (*.filter(\"$\")*) { %>" + END_LINE, "[for (v$2 : $2 | $1.oclAsType($2)$3)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% for (*) { %>" + END_LINE, "[for (v : EObject | $1)]",
+			"<% for (*) { %>" + END_LINE, "[for (v : EObject | $1)]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% for * { %>" + END_LINE, "[for $1]",
+			"<% for * { %>" + END_LINE, "[for $1]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% if * { %>" + END_LINE, "[if $1]",
+			"<% if * { %>" + END_LINE, "[if $1]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% } else if * { %>" + END_LINE, "[else if $1]",
+			"<% } else if * { %>" + END_LINE, "[else if $1]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% } else { %>" + END_LINE, "[else]",
+			"<% } else { %>" + END_LINE, "[else]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% startUserCode * %>" + END_LINE, "[protected ('TODO')]",
+			"<% startUserCode * %>" + END_LINE, "[protected ('TODO')]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% endUserCode * %>" + END_LINE, "[/protected]",
+			"<% endUserCode * %>" + END_LINE, "[/protected]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<%-- * --%>" + END_LINE, "[comment $1 /]",
+			"<%-- * --%>" + END_LINE, "[comment $1 /]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"<% * %>" + END_LINE, "[$1/]",
+			"<% * %>" + END_LINE, "[$1/]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*&&*]" + END_LINE, "[$1and $2]",
+			"[*&&*]" + END_LINE, "[$1and $2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*||*]" + END_LINE, "[$1or $2]",
+			"[*||*]" + END_LINE, "[$1or $2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*!=*]" + END_LINE, "[$1<> $2]",
+			"[*!=*]" + END_LINE, "[$1<> $2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*==*]" + END_LINE, "[$1== $2]",
+			"[*==*]" + END_LINE, "[$1== $2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*\"*\"*\"*\"*]" + END_LINE, "[$1'$2'$3'$4'$5]",
+			"[*\"*\"*\"*\"*]" + END_LINE, "[$1'$2'$3'$4'$5]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*\"*\"*]" + END_LINE, "[$1'$2'$3]",
+			"[*\"*\"*]" + END_LINE, "[$1'$2'$3]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*.sep(\"*\")*]" + END_LINE, "[$1 separator('$2')$3]",
+			"[*.sep(\"*\")*]" + END_LINE, "[$1 separator('$2')$3]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*current(\"$\")*]" + END_LINE, "[$1v$2$3]",
+			"[*current(\"$\")*]" + END_LINE, "[$1v$2$3]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*current()*]" + END_LINE, "[$1v$2]",
+			"[*current()*]" + END_LINE, "[$1v$2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*toLowerCase()*]" + END_LINE, "[$1toLower()$2]",
+			"[*toLowerCase()*]" + END_LINE, "[$1toLower()$2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*toUpperCase()*]" + END_LINE, "[$1toUpper()$2]",
+			"[*toUpperCase()*]" + END_LINE, "[$1toUpper()$2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*toU1Case()*]" + END_LINE, "[$1toUpperFirst()$2]",
+			"[*toU1Case()*]" + END_LINE, "[$1toUpperFirst()$2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*toL1Case()*]" + END_LINE, "[$1toLowerFirst()$2]",
+			"[*toL1Case()*]" + END_LINE, "[$1toLowerFirst()$2]", //$NON-NLS-1$ //$NON-NLS-2$
 
-			"[*filter(\"$\")*]" + END_LINE, "[$1oclAsType($2)$3]", };
+			"[*filter(\"$\")*]" + END_LINE, "[$1oclAsType($2)$3]", }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * {@inheritDoc}
@@ -149,61 +148,61 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 		}
 		int offset = 0;
 		while (offset > -1) {
-			offset = replaceNext(text, "[ } /]" + END_LINE, offset, "");
+			offset = replaceNext(text, "[ } /]" + END_LINE, offset, ""); //$NON-NLS-1$ //$NON-NLS-2$
 			if (offset > -1) {
-				int beginLine = text.lastIndexOf("\n", offset) + 1;
+				int beginLine = text.lastIndexOf("\n", offset) + 1; //$NON-NLS-1$
 				String tab;
 				if (beginLine > -1 && offset < text.length() && beginLine < offset) {
 					tab = text.substring(beginLine, offset);
 					if (tab.trim().length() != 0) {
-						tab = "";
+						tab = ""; //$NON-NLS-1$
 					}
 				} else {
-					tab = "";
+					tab = ""; //$NON-NLS-1$
 				}
-				int offsetIf = text.lastIndexOf('\n' + tab + "[if", offset);
-				int offsetFor = text.lastIndexOf('\n' + tab + "[for", offset);
+				int offsetIf = text.lastIndexOf('\n' + tab + "[if", offset); //$NON-NLS-1$
+				int offsetFor = text.lastIndexOf('\n' + tab + "[for", offset); //$NON-NLS-1$
 				if (offsetIf == -1 && offsetFor == -1) {
-					offsetIf = text.lastIndexOf("[if", offset);
-					offsetFor = text.lastIndexOf("[for", offset);
+					offsetIf = text.lastIndexOf("[if", offset); //$NON-NLS-1$
+					offsetFor = text.lastIndexOf("[for", offset); //$NON-NLS-1$
 				}
 				String newText;
 				if (offsetFor > offsetIf) {
-					newText = "[/for]";
+					newText = "[/for]"; //$NON-NLS-1$
 				} else {
-					newText = "[/if]";
+					newText = "[/if]"; //$NON-NLS-1$
 				}
 				text.insert(offset, newText);
 				offset += newText.length();
 			}
 		}
 		offset = 0;
-		final String templateBeginTag = "[template";
+		final String templateBeginTag = "[template"; //$NON-NLS-1$
 		offset = replaceNext(text, templateBeginTag, offset, templateBeginTag);
 		if (offset > -1) {
 			while (offset > -1) {
-				offset = replaceNext(text, templateBeginTag, offset, "");
+				offset = replaceNext(text, templateBeginTag, offset, ""); //$NON-NLS-1$
 				if (offset > -1) {
 					if (offset > 0 && text.charAt(offset - 1) == '\n') {
 						offset--;
 						text.deleteCharAt(offset);
 					}
-					String newText = "[/template]\n\n" + templateBeginTag;
+					String newText = "[/template]\n\n" + templateBeginTag; //$NON-NLS-1$
 					text.insert(offset, newText);
 					offset += newText.length();
 				}
 			}
-			text.append("\n[/template]");
+			text.append("\n[/template]"); //$NON-NLS-1$
 
 		}
 		if (templateIsMain) {
 			offset = 0;
 			while (offset > -1) {
-				offset = replaceNext(text, "[file (", offset, "[comment @main /]\n\t[file (");
+				offset = replaceNext(text, "[file (", offset, "[comment @main /]\n\t[file ("); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
-		modifyTemplateInvocation(text, "\\[[a-zA-Z_]+");
-		modifyTemplateInvocation(text, "\\.a-zA-Z_]+");
+		modifyTemplateInvocation(text, "\\[[a-zA-Z_]+"); //$NON-NLS-1$
+		modifyTemplateInvocation(text, "\\.a-zA-Z_]+"); //$NON-NLS-1$
 		text.insert(0, "[module " + moduleName + "('" + getMetamodelURI(text) + "')/]\n\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
@@ -217,20 +216,20 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	 */
 	private void modifyTemplateInvocation(StringBuffer text, String pattern) {
 		int offset;
-		Pattern p = Pattern.compile(pattern + "[ ]*/\\]");
+		Pattern p = Pattern.compile(pattern + "[ ]*/\\]"); //$NON-NLS-1$
 		Matcher m = p.matcher(text);
 		offset = 0;
 		while (offset > -1 && m.find(offset)) {
 			int b = m.start();
 			offset = m.end();
 			String string = text.substring(b, offset).trim();
-			Pattern pID = Pattern.compile("[a-zA-Z_]+");
+			Pattern pID = Pattern.compile("[a-zA-Z_]+"); //$NON-NLS-1$
 			Matcher mID = pID.matcher(string);
 			if (mID.find()) {
 				string = string.substring(mID.start(), mID.end());
 			}
-			if (text.indexOf("public " + string + " (") > -1 || text.indexOf("public " + string + "(") > -1) {
-				text.insert(offset - 2, "()");
+			if (text.indexOf("public " + string + " (") > -1 || text.indexOf("public " + string + "(") > -1) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				text.insert(offset - 2, "()"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -243,17 +242,17 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	 * @return the meta-model URI
 	 */
 	private String getMetamodelURI(StringBuffer text) {
-		int iMetamodel = text.indexOf("metamodel");
-		int iImport = text.indexOf("import");
+		int iMetamodel = text.indexOf("metamodel"); //$NON-NLS-1$
+		int iImport = text.indexOf("import"); //$NON-NLS-1$
 		int b;
 		if (iMetamodel > -1 && iMetamodel < iImport) {
-			b = iMetamodel + "metamodel".length();
+			b = iMetamodel + "metamodel".length(); //$NON-NLS-1$
 		} else if (iImport > -1) {
-			b = iImport + "import".length();
+			b = iImport + "import".length(); //$NON-NLS-1$
 		} else {
 			b = 0;
 		}
-		int e = text.indexOf("\n", b);
+		int e = text.indexOf("\n", b); //$NON-NLS-1$
 		if (e == -1) {
 			e = text.length();
 		}

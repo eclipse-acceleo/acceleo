@@ -71,16 +71,16 @@ public class TraceabilityModel extends TraceabilityContainer {
 	public String toString() {
 		if (eObject != null) {
 			String result;
-			EStructuralFeature eFeature = eObject.eClass().getEStructuralFeature("name");
+			EStructuralFeature eFeature = eObject.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
 			if (eFeature != null) {
 				Object value = eObject.eGet(eFeature);
-				result = "<" + eObject.eClass().getName() + "> " + String.valueOf(value);
+				result = "<" + eObject.eClass().getName() + "> " + String.valueOf(value); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				result = "<" + eObject.eClass().getName() + ">";
+				result = "<" + eObject.eClass().getName() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return result;
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 

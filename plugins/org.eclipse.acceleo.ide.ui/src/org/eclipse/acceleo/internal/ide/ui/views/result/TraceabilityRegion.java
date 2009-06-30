@@ -112,10 +112,10 @@ public class TraceabilityRegion extends TraceabilityElement {
 					templateDisplay = '/' + templateName + '/' + astNode.eClass().getName();
 				}
 			}
-			return "[" + targetFileOffset + "," + (targetFileOffset + targetFileLength) + "] by '"
-					+ templateDisplay + "'";
+			return "[" + targetFileOffset + "," + (targetFileOffset + targetFileLength) + "] by '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ templateDisplay + "'"; //$NON-NLS-1$
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
