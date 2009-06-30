@@ -513,6 +513,9 @@ public final class AcceleoWorkspaceUtil {
 	 */
 	private void checkDependencies(IPluginModelBase model) {
 		final BundleDescription desc = model.getBundleDescription();
+		if (desc == null) {
+			return;
+		}
 		for (BundleSpecification requiredBundle : desc.getRequiredBundles()) {
 			for (IPluginModelBase workspaceModel : PluginRegistry.getWorkspaceModels()) {
 				if (requiredBundle.isSatisfiedBy(workspaceModel.getBundleDescription())) {
