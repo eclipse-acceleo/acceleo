@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
  * end-user-doc -->
  * 
  * @generated
+ * @since 0.8
  */
 public class MtlXMLProcessor extends XMLProcessor {
 
