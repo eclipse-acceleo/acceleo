@@ -648,7 +648,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/**
 	 * Elements held by a reference with containment=true and derived=true are not returned by
 	 * {@link EObject#eContents()}. This allows us to return the list of all contents from an EObject
-	 * <u>including</u> those references.
+	 * <b>including</b> those references.
 	 * 
 	 * @param eObject
 	 *            The EObject we seek the content of.

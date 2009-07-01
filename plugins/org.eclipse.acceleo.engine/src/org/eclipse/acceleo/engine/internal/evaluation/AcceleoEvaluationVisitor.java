@@ -1009,7 +1009,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/**
 	 * Handles the evaluation of an Acceleo {@link InitSection}. This will simply add all the declared
 	 * variables to the evaluation environment. Evaluation of all blocks should use this in order to save the
-	 * variables state <u>before</u> evaluation and be able to restore it afterwards through
+	 * variables state <b>before</b> evaluation and be able to restore it afterwards through
 	 * {@link #restoreVariables()} .
 	 * 
 	 * @param init
