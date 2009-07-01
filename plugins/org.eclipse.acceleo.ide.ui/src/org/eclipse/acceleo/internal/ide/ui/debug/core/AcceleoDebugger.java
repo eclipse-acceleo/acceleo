@@ -108,22 +108,22 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 		/**
 		 * The Acceleo file which contains the the AST node.
 		 */
-		public File file;
+		File file;
 
 		/**
 		 * The line of the AST node offset in the Acceleo file.
 		 */
-		public int line;
+		int line;
 
 		/**
 		 * The beginning index of the AST node.
 		 */
-		public int start;
+		int start;
 
 		/**
 		 * The ending index of the AST node.
 		 */
-		public int end;
+		int end;
 
 		/**
 		 * Constructor.
