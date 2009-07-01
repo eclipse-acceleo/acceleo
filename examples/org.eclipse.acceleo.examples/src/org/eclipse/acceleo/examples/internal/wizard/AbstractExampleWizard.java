@@ -12,10 +12,7 @@
  *   Obeo - code cleanup and tweaking for use within Acceleo
  *
  * </copyright>
- *
- * $Id: AbstractExampleWizard.java,v 1.2 2009/03/05 17:14:12 jmusset Exp $
  */
-
 package org.eclipse.acceleo.examples.internal.wizard;
 
 import java.io.File;
