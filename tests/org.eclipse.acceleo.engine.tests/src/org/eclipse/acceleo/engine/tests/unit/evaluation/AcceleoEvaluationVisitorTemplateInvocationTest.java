@@ -105,7 +105,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a template invocation with an undefined result.", //$NON-NLS-1$
-				OUTPUT + OUTPUT, entry.getValue().toString());
+				OUTPUT + oclInvalidObject.toString() + OUTPUT, entry.getValue().toString());
 	}
 
 	/**
