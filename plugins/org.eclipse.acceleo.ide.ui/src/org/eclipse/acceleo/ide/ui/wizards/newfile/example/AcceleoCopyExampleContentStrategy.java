@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.wizards.newfile.example;
 
+import java.util.StringTokenizer;
+
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
@@ -72,7 +74,15 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 			fileExtension = ""; //$NON-NLS-1$
 		}
 		StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
-		buffer.append("[module " + moduleName + "('" + metamodelURI + "')/]\n\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		buffer.append("[module " + moduleName + "('"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringTokenizer st = new StringTokenizer(metamodelURI, ","); //$NON-NLS-1$
+		while (st.hasMoreTokens()) {
+			buffer.append(st.nextToken().trim());
+			if (st.hasMoreTokens()) {
+				buffer.append("', '"); //$NON-NLS-1$
+			}
+		}
+		buffer.append("')/]\n\n"); //$NON-NLS-1$
 		buffer.append("[template public " + moduleName + "(" + var + " : " + metamodelFileType + ")]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		if (templateIsMain) {
 			buffer.append("\t\n"); //$NON-NLS-1$

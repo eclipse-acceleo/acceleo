@@ -100,12 +100,16 @@ public class CreateModuleData {
 		List<String> metamodelDone = new ArrayList<String>();
 		for (AcceleoNewTemplatesWizardController controller : wizard.getTemplatePage().getControllers()) {
 			CreateTemplateData data = controller.getModel();
-			String metamodelURI = data.getTemplateMetamodel();
-			if (!metamodelDone.contains(metamodelURI)) {
-				metamodelDone.add(metamodelURI);
-				EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(metamodelURI);
-				if (metamodel != null) {
-					computeMetamodelDependencies(metamodel);
+			String metamodelURIs = data.getTemplateMetamodel();
+			StringTokenizer st = new StringTokenizer(metamodelURIs, ",");
+			while (st.hasMoreTokens()) {
+				String metamodelURI = st.nextToken().trim();
+				if (!metamodelDone.contains(metamodelURI)) {
+					metamodelDone.add(metamodelURI);
+					EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(metamodelURI);
+					if (metamodel != null) {
+						computeMetamodelDependencies(metamodel);
+					}
 				}
 			}
 		}

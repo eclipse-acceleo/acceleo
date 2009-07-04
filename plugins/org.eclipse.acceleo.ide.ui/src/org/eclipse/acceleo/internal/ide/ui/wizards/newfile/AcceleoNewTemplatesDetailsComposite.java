@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
@@ -611,7 +612,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 					for (EPackage ePackage : getAllPackages(resource)) {
 						if (nsURIs.contains(ePackage.getNsURI())) {
 							uris.append(ePackage.getNsURI());
-							uris.append("  "); //$NON-NLS-1$
+							uris.append(',');
 							break;
 						}
 					}
@@ -621,7 +622,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 				StringBuffer uris = new StringBuffer();
 				for (int i = 0; i < result.length; i++) {
 					uris.append(result[i]);
-					uris.append("  "); //$NON-NLS-1$
+					uris.append(',');
 				}
 				metamodelURI.setText(uris.toString().trim());
 			}
@@ -721,15 +722,19 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		if (metamodelType != null) {
 			String oldSelection = metamodelType.getText();
 			TreeSet<String> typeValues = new TreeSet<String>();
-			EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(getMetamodelURI());
-			if (ePackage != null) {
-				List<EClassifier> eClassifiers = new ArrayList<EClassifier>();
-				computeClassifiers(eClassifiers, ePackage);
-				for (int i = 0; i < eClassifiers.size(); i++) {
-					EClassifier eClassifier = eClassifiers.get(i);
-					typeValues.add(eClassifier.getName());
+			StringTokenizer st = new StringTokenizer(getMetamodelURI(), ",");
+			while (st.hasMoreTokens()) {
+				EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(st.nextToken().trim());
+				if (ePackage != null) {
+					List<EClassifier> eClassifiers = new ArrayList<EClassifier>();
+					computeClassifiers(eClassifiers, ePackage);
+					for (int i = 0; i < eClassifiers.size(); i++) {
+						EClassifier eClassifier = eClassifiers.get(i);
+						typeValues.add(eClassifier.getName());
+					}
 				}
 			}
+
 			metamodelTypes = typeValues.toArray(new String[typeValues.size()]);
 			metamodelType.setItems(metamodelTypes);
 			final int visibleItemCount = 15;
@@ -824,7 +829,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	}
 
 	/**
-	 * Returns the metamodel URI.
+	 * Returns the metamodel URI. It cans return multiple metamodels by using a comma separator.
 	 * 
 	 * @return the metamodel URI
 	 */

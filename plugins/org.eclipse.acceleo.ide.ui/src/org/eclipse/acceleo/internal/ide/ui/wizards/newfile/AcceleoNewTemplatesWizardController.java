@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.wizards.newfile;
 
 import java.util.EventObject;
+import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
@@ -231,7 +232,7 @@ public class AcceleoNewTemplatesWizardController {
 			} else {
 				if (viewDetailsComposite.getMetamodelURI().length() == 0) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.MissingURI")); //$NON-NLS-1$
-				} else if (EPackage.Registry.INSTANCE.getEPackage(viewDetailsComposite.getMetamodelURI()) == null) {
+				} else if (!isValidMetamodelURI(viewDetailsComposite.getMetamodelURI())) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.InvalidURI")); //$NON-NLS-1$
 				} else if (viewDetailsComposite.getMetamodelType().length() == 0) {
 					updateStatus(AcceleoUIMessages
@@ -241,6 +242,25 @@ public class AcceleoNewTemplatesWizardController {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Indicates if the given metamodel URI exists. It cans be multiple metamodels if the value contains a
+	 * comma separator. In this case, all the URIs must exist.
+	 * 
+	 * @param uris
+	 *            the metamodel URI
+	 * @return true if the given metamodel URI exists
+	 */
+	private boolean isValidMetamodelURI(String uris) {
+		StringTokenizer st = new StringTokenizer(uris, ",");
+		while (st.hasMoreTokens()) {
+			String uri = st.nextToken().trim();
+			if (EPackage.Registry.INSTANCE.getEPackage(uri) == null) {
+				return false;
+			}
+		}
+		return uris.trim().length() > 0;
 	}
 
 	/**

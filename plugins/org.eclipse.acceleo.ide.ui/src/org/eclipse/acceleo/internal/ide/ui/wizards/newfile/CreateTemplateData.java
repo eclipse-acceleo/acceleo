@@ -53,7 +53,7 @@ public class CreateTemplateData {
 	private boolean templateIsMain;
 
 	/**
-	 * The metamodel URI which defines the available types in the template.
+	 * The metamodel URI(s) which defines the available types in the template.
 	 */
 	private String templateMetamodel = ""; //$NON-NLS-1$
 
@@ -107,7 +107,8 @@ public class CreateTemplateData {
 	}
 
 	/**
-	 * Gets the metamodel URI which defines the available types in the new template.
+	 * Gets the metamodel URI which defines the available types in the new template. It cans return multiple
+	 * metamodels by using a comma separator.
 	 * 
 	 * @return the metamodel URI
 	 */
