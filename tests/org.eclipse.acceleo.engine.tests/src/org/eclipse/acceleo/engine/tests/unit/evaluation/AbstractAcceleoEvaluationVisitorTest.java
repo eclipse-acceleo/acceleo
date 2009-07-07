@@ -59,6 +59,9 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	/** This can be used by subclasses to create OCLExpressions. */
 	protected OCL ocl;
 
+	/** Instance of the "oclInvalid" standard library object. */
+	protected Object oclInvalidObject;
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -251,5 +254,6 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 		evaluationVisitor = (AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl
 						.getExtentMap());
+		oclInvalidObject = ocl.getEnvironment().getOCLStandardLibrary().getOclInvalid();
 	}
 }
