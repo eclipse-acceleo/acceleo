@@ -1211,6 +1211,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					for (Module candidateModule : candidateModules) {
 						candidateURIs.add(candidateModule.eResource().getURI());
 					}
+					// If there were no matching module, search in their ResourceSet(s)
 					if (candidateURIs.size() == 0) {
 						candidateURIs.addAll(searchResourceSetForMatches(moduleName));
 					}
@@ -1282,13 +1283,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		/**
-		 * Returns the normalized form of the URI, using the given multiple candidates (it means more than 2
-		 * generation context modules that have the right name).
+		 * Returns the normalized form of the URI, using the given multiple candidates (this means that more
+		 * than 2 modules had a matching name).
 		 * 
 		 * @param uri
-		 *            the URI to normalize
-		 * @param candidates
-		 *            are the generation context modules with the right name
+		 *            The URI that is to be normalized.
+		 * @param candidateURIs
+		 *            URIs of the modules that can potentially be a match for <code>uri</code>.
 		 * @return the normalized form
 		 */
 		private URI findBestMatchFor(URI uri, Set<URI> candidateURIs) {
