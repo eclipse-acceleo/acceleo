@@ -1,0 +1,28 @@
+[module mt2mtl('http://www.eclipse.org/acceleo/mt/2.6.0')/]
+
+[template public main (t : Template)]
+[comment @main /]
+[file (t.name.replaceAll('\.mt', '').replaceAll('\.', '/').concat('.mtl'), false)]
+['['/]module [t.name/]([for (m : Metamodel | t.imports.oclAsType(Metamodel)) separator (', ')]'[m.name/]'[/for])/[']'/]
+
+[for (s : Script | t.scripts)]
+[s.mt2mtl()/]
+
+[/for]
+[/file]
+[/template]
+
+[template public shortName (t : Template)][name/][/template]
+
+[template public mt2mtl (s : Script)]
+['['/]template public [s.descriptor.name/](o : [s.descriptor.type/]) [']'/]
+
+	[for (o : ASTNode | eAllContents().oclAsType(ASTNode))]
+		[o.oclAsType(EObject).eClass().name/] ['['/][o.begin/],[o.end/][']'/]
+	[/for]
+	
+['['/]/template[']'/]
+
+[/template]
+
+
