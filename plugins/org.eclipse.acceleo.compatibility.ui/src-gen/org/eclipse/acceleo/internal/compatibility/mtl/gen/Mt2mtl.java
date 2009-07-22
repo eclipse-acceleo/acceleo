@@ -57,7 +57,7 @@ public class Mt2mtl {
 	 * 
 	 * @generated
 	 */
-	public static final String[] TEMPLATE_NAMES = {"main", };
+	public static final String[] TEMPLATE_NAMES = { "main", };
 
 	/**
 	 * The root element of the module.
@@ -93,25 +93,25 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public Mt2mtl(URI modelURI, File targetFolder, List<? extends Object> arguments) throws IOException {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
-		final URL templateURL;
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
-		} else {
-			templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-		}
-		if (templateURL == null) {
-			throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-		} else {
-			URI templateURI = createTemplateURI(templateURL.getPath());
-			module = (Module)load(templateURI, resourceSet);
-			model = load(modelURI, resourceSet);
-			this.targetFolder = targetFolder;
-			this.arguments = arguments;
-		}
-	}
+    ResourceSet resourceSet = new ResourceSetImpl();
+    registerResourceFactories(resourceSet);
+    registerPackages(resourceSet);
+    final URL templateURL;
+    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+      templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
+    } else {
+      templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
+    }
+    if (templateURL == null) {
+      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
+    } else {
+      URI templateURI = createTemplateURI(templateURL.getPath());
+      module = (Module)load(templateURI, resourceSet);
+      model = load(modelURI, resourceSet);
+      this.targetFolder = targetFolder;
+      this.arguments = arguments;
+    }
+  }
 
 	/**
 	 * Constructor.
@@ -127,25 +127,25 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public Mt2mtl(EObject model, File targetFolder, List<? extends Object> arguments) throws IOException {
-		ResourceSet resourceSet = model.eResource().getResourceSet();
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
-		final URL templateURL;
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
-		} else {
-			templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-		}
-		if (templateURL == null) {
-			throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-		} else {
-			URI templateURI = createTemplateURI(templateURL.getPath());
-			module = (Module)load(templateURI, resourceSet);
-			this.model = model;
-			this.targetFolder = targetFolder;
-			this.arguments = arguments;
-		}
-	}
+    ResourceSet resourceSet = model.eResource().getResourceSet();
+    registerResourceFactories(resourceSet);
+    registerPackages(resourceSet);
+    final URL templateURL;
+    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+      templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
+    } else {
+      templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
+    }
+    if (templateURL == null) {
+      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
+    } else {
+      URI templateURI = createTemplateURI(templateURL.getPath());
+      module = (Module)load(templateURI, resourceSet);
+      this.model = model;
+      this.targetFolder = targetFolder;
+      this.arguments = arguments;
+    }
+  }
 
 	/**
 	 * Creates the template URI.
@@ -156,8 +156,8 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	protected URI createTemplateURI(String entry) {
-		return URI.createFileURI(URI.decode(entry));
-	}
+    return URI.createFileURI(URI.decode(entry));
+  }
 
 	/**
 	 * Gets the model.
@@ -176,28 +176,15 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private void registerPackages(ResourceSet resourceSet) {
-		resourceSet.getPackageRegistry().put(
-				org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE.getNsURI(),
-				org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(
-				org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE.getNsURI(),
-				org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(
-				org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE
-						.getNsURI(),
-				org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(
-				org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE.getNsURI(),
-				org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
-				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(
-				org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(),
-				org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore",
-				getOCLStdLibPackage());
-	}
+    resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+    resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", getOCLStdLibPackage());
+  }
 
 	/**
 	 * Returns the package containing the OCL standard library.
@@ -206,10 +193,10 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private EPackage getOCLStdLibPackage() {
-		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
-		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
-		return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
-	}
+    EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+    EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+    return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
+  }
 
 	/**
 	 * Updates the registry used for looking up resources factory in the given resource set.
@@ -219,13 +206,10 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private void registerResourceFactories(ResourceSet resourceSet) {
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore",
-				new EcoreResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl",
-				new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-	}
+    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
+    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl", new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
+    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+  }
 
 	/**
 	 * The main method.
@@ -235,23 +219,23 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		try {
-			if (args.length < 2) {
-				System.out.println("Arguments not valid : {model, folder}.");
-			} else {
-				URI modelURI = URI.createFileURI(args[0]);
-				File folder = new File(args[1]);
-				List<String> arguments = new ArrayList<String>();
-				for (int i = 2; i < args.length; i++) {
-					arguments.add(args[i]);
-				}
-				Mt2mtl generator = new Mt2mtl(modelURI, folder, arguments);
-				generator.doGenerate(new BasicMonitor());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    try {
+      if (args.length < 2) {
+        System.out.println("Arguments not valid : {model, folder}.");
+      } else {
+        URI modelURI = URI.createFileURI(args[0]);
+        File folder = new File(args[1]);
+        List<String> arguments = new ArrayList<String>();
+        for (int i = 2; i < args.length; i++) {
+          arguments.add(args[i]);
+        }
+        Mt2mtl generator = new Mt2mtl(modelURI, folder, arguments);
+        generator.doGenerate(new BasicMonitor());
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 	/**
 	 * Launches the generation.
@@ -263,14 +247,13 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public void doGenerate(Monitor monitor) throws IOException {
-		if (!targetFolder.exists()) {
-			targetFolder.mkdirs();
-		}
-		for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-			AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false,
-					monitor);
-		}
-	}
+    if (!targetFolder.exists()) {
+      targetFolder.mkdirs();
+    }
+    for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
+      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false, monitor);
+    }
+  }
 
 	/**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
@@ -289,16 +272,16 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-		EObject result = null;
-		final Resource modelResource = createResource(modelURI, resourceSet);
-		final Map<String, String> options = new HashMap<String, String>();
-		options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
-		modelResource.load(options);
-		if (modelResource.getContents().size() > 0) {
-			result = modelResource.getContents().get(0);
-		}
-		return result;
-	}
+    EObject result = null;
+    final Resource modelResource = createResource(modelURI, resourceSet);
+    final Map<String, String> options = new HashMap<String, String>();
+    options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
+    modelResource.load(options);
+    if (modelResource.getContents().size() > 0) {
+      result = modelResource.getContents().get(0);
+    }
+    return result;
+  }
 
 	/**
 	 * This will create a {@link Resource} given the model extension it is intended for and a ResourceSet.
@@ -311,20 +294,20 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private Resource createResource(URI modelURI, ResourceSet resourceSet) {
-		String fileExtension = modelURI.fileExtension();
-		if (fileExtension == null || fileExtension.length() == 0) {
-			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-		}
-		final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-		final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
-		if (resourceFactory != null) {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					resourceFactory);
-		} else {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					new XMIResourceFactoryImpl());
-		}
-		return resourceSet.createResource(modelURI);
-	}
+    String fileExtension = modelURI.fileExtension();
+    if (fileExtension == null || fileExtension.length() == 0) {
+      fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
+    }
+    final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
+    final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
+    if (resourceFactory != null) {
+      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+          resourceFactory);
+    } else {
+      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+          new XMIResourceFactoryImpl());
+    }
+    return resourceSet.createResource(modelURI);
+  }
 
 }
