@@ -39,6 +39,7 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.ide.ui.launching.strategy,
  org.eclipse.acceleo.ide.ui.natures,
+ org.eclipse.acceleo.ide.ui.popupMenus,
  org.eclipse.acceleo.ide.ui.resources,
  org.eclipse.acceleo.ide.ui.wizards.newfile.example,
  org.eclipse.acceleo.internal.ide.ui.editors.template;x-friends:="org.eclipse.acceleo.ide.ui.tests",

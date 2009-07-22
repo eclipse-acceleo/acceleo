@@ -95,8 +95,11 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	public Image getImage(String path) {
 		Image result = imageMap.get(path);
 		if (result == null) {
-			result = getImageDescriptor(path).createImage();
-			imageMap.put(path, result);
+			ImageDescriptor descriptor = getImageDescriptor(path);
+			if (descriptor != null) {
+				result = descriptor.createImage();
+				imageMap.put(path, result);
+			}
 		}
 		return result;
 	}
