@@ -81,6 +81,7 @@ public final class TextSearch {
 				}
 				for (int i = 3; i < positions.length; i++) { // inhibsTag
 					if (positions[i].b() != -1 && pos > positions[i].b()) {
+						assert inhibs != null;
 						positions[i] = indexIn(buffer, inhibs[i - 3][0], new Region(pos, region.e()));
 					}
 				}
@@ -101,6 +102,7 @@ public final class TextSearch {
 					toReturn = positions[iPositionMin];
 				} else if (iPositionMin >= 3 /* inhibsTag */) {
 					boolean forceNotRecursive;
+					assert inhibs != null;
 					if (inhibs[iPositionMin - 3].length >= 3 && inhibs[iPositionMin - 3][2] != null) {
 						forceNotRecursive = inhibs[iPositionMin - 3][2].indexOf(FORCE_NOT_RECURSIVE) > -1;
 					} else {
@@ -218,6 +220,7 @@ public final class TextSearch {
 			}
 			for (int i = 4; i < positions.length; i++) { // inhibsTag
 				if (positions[i].b() != -1 && pos > positions[i].b()) {
+					assert inhibs != null;
 					positions[i] = indexIn(buffer, inhibs[i - 4][0], new Region(pos, region.e()));
 				}
 			}
@@ -245,6 +248,7 @@ public final class TextSearch {
 				pos = positions[iPositionMin].e();
 			} else if (iPositionMin >= 4 /* inhibsTag */) {
 				boolean forceNotRecursive;
+				assert inhibs != null;
 				if (inhibs[iPositionMin - 4].length >= 3 && inhibs[iPositionMin - 4][2] != null) {
 					forceNotRecursive = inhibs[iPositionMin - 4][2].indexOf(FORCE_NOT_RECURSIVE) > -1;
 				} else {
