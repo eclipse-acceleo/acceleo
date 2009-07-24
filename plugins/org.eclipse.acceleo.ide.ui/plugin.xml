@@ -443,13 +443,6 @@ Contributors:
             contextId="org.eclipse.acceleo.ide.ui.debug">
       </modelContextBinding>
    </extension>
-   
-   <extension point="org.eclipse.core.runtime.contentTypes">
-	  <content-type id="emtl" name="Acceleo AST File" 
-		 base-type="org.eclipse.jdt.core.javaClass"
-		 priority="high"
-		 file-extensions="emtl"/>
-   </extension>
 
     <extension
           point="org.eclipse.search.searchResultViewPages">
