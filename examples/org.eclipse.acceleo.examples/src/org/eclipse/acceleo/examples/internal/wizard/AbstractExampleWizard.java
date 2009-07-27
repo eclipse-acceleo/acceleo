@@ -92,10 +92,9 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 						protected void execute(IProgressMonitor m)
 
 						throws CoreException, InvocationTargetException, InterruptedException {
-							m
-									.beginTask(
-											AcceleoExamplesMessages
-													.getString("AbstractExampleWizard.Task.Unzip"), projectDescriptors.size()); //$NON-NLS-1$
+							m.beginTask(
+									AcceleoExamplesMessages.getString("AbstractExampleWizard.Task.Unzip"), //$NON-NLS-1$
+									projectDescriptors.size());
 
 							for (final ProjectDescriptor project : projectDescriptors) {
 								unzipProject(project, m);

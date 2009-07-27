@@ -20,6 +20,7 @@
 
 	<property name="ecore2python.plugin" value="org.eclipse.acceleo.module.example.ecore2python" />
 	<property name="ecore2python.ui.plugin" value="org.eclipse.acceleo.module.example.ecore2python.ui" />
+	<property name="ecore2unittests.plugin" value="org.eclipse.acceleo.module.example.ecore2unittests" />
 	<property name="uml2java.plugin" value="org.eclipse.acceleo.module.example.uml2java" />
 	<property name="uml2java.ui.plugin" value="org.eclipse.acceleo.module.example.uml2java.ui" />
 
@@ -38,6 +39,9 @@
 		</zip>
 		<zip destfile="${dest.dir}/${ecore2python.ui.plugin}.zip">
 			<zipfileset dir="${plugins.base.dir}/${ecore2python.ui.plugin}" />
+		</zip>
+		<zip destfile="${dest.dir}/${ecore2unittests.plugin}.zip">
+			<zipfileset dir="${plugins.base.dir}/${ecore2unittests.plugin}" />
 		</zip>
 		<zip destfile="${dest.dir}/${uml2java.plugin}.zip">
 			<zipfileset dir="${plugins.base.dir}/${uml2java.plugin}" />
