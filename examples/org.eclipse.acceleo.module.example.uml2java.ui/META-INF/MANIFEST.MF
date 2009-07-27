@@ -4,7 +4,7 @@ Bundle-Name: Acceleo Uml To Java Module IDE Plug-in
 Bundle-SymbolicName: org.eclipse.acceleo.module.example.uml2java.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.example.uml2java.ui.Activator
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources, 
