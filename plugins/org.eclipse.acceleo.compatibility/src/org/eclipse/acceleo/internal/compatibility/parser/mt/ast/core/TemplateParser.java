@@ -292,6 +292,7 @@ public final class TemplateParser {
 				importedMetamodel.setName(uri);
 				root.getResources().add(importedMetamodel);
 			}
+			template.getImports().add(importedMetamodel);
 			return true;
 		} else {
 			return false;
