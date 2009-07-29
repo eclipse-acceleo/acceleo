@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
@@ -38,6 +39,7 @@ import org.eclipse.ui.PlatformUI;
  * Xpand).
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @since 0.8
  */
 public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWindowActionDelegate {
 
@@ -87,15 +89,14 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 			try {
 				if (wizard.getTemplatePage().getControllers().size() > 0) {
 					CreateTemplateData data = wizard.getTemplatePage().getControllers().get(0).getModel();
-					data.setTemplateShortName("chain");
+					data.setTemplateShortName("chain"); //$NON-NLS-1$
 					data.setTemplateHasFileBlock(false);
 					data.setTemplateIsInitialized(false);
 					browseTemplates(projects.toArray(new IProject[projects.size()]));
 					String metamodelURIs = computeMetamodelURIs();
 					data.setTemplateMetamodel(metamodelURIs);
 					wizard.getTemplatePage().getControllers().get(0).initView();
-					if (dialog.open() == WizardDialog.OK
-							&& wizard.getTemplatePage().getControllers().size() > 0) {
+					if (dialog.open() == Window.OK && wizard.getTemplatePage().getControllers().size() > 0) {
 						data = wizard.getTemplatePage().getControllers().get(0).getModel();
 						IPath baseFolder = new Path(data.getTemplateContainer());
 						generateMTL(baseFolder);
@@ -105,7 +106,7 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 				AcceleoCommonPlugin.log(e.getStatus());
 			} catch (IOException e) {
 				Status status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage()
-						.toString());
+						.toString(), e);
 				AcceleoCommonPlugin.log(status);
 			}
 		}
