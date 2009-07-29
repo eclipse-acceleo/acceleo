@@ -15,7 +15,7 @@ public class CreateModuleMANIFESTWriter
   protected final String TEXT_1 = "Manifest-Version: 1.0" + NL + "Bundle-ManifestVersion: 2" + NL + "Bundle-Name: Acceleo ";
   protected final String TEXT_2 = " Module Runtime Plug-in" + NL + "Bundle-SymbolicName: ";
   protected final String TEXT_3 = NL + "Bundle-Version: 1.0.0.qualifier" + NL + "Bundle-Activator: ";
-  protected final String TEXT_4 = ".Activator" + NL + "Bundle-Vendor: Eclipse.org" + NL + "Require-Bundle: org.eclipse.core.runtime, ";
+  protected final String TEXT_4 = ".Activator" + NL + "Bundle-Vendor: Eclipse Modeling Project" + NL + "Require-Bundle: org.eclipse.core.runtime, ";
   protected final String TEXT_5 = NL + " ";
   protected final String TEXT_6 = ",";
   protected final String TEXT_7 = NL + " org.eclipse.emf.ecore," + NL + " org.eclipse.emf.ecore.xmi," + NL + " org.eclipse.ocl," + NL + " org.eclipse.ocl.ecore," + NL + " org.eclipse.acceleo.model," + NL + " org.eclipse.acceleo.engine" + NL + "Bundle-RequiredExecutionEnvironment: J2SE-1.5" + NL + "Bundle-ActivationPolicy: lazy" + NL + "Eclipse-LazyStart: true";
