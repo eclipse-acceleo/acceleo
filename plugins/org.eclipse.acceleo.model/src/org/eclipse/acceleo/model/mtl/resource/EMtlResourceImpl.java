@@ -13,7 +13,9 @@ package org.eclipse.acceleo.model.mtl.resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.model.mtl.Module;
@@ -23,6 +25,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
@@ -33,11 +36,16 @@ import org.eclipse.ocl.utilities.ASTNode;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class EMtlResourceImpl extends XMIResourceImpl {
-
 	/**
 	 * The specific annotation used to store the positions of the AST nodes.
 	 */
 	private static final String POSITIONS_ANNOTATION_NAME = "positions"; //$NON-NLS-1$
+
+	/** Holds the prefix of all temporary variables' names. */
+	private static final String VARIABLE_PREFIX = "temp"; //$NON-NLS-1$
+
+	/** This will hold all variables names when fixing ambiguities. */
+	private List<String> variableNames;
 
 	/**
 	 * Constructor.
@@ -72,7 +80,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	@Override
 	public void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 		EAnnotation positions = getPositions(true);
-		savePositions(positions);
+		fixVariablesAndPositions(positions);
 		try {
 			super.doSave(outputStream, options);
 		} finally {
@@ -81,28 +89,72 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	}
 
 	/**
-	 * Computes the specific annotation content before saving the resource. It will store every AST nodes
-	 * positions.
+	 * Iterates over the whole content tree of the current resource and fixes {@link ASTNode}s' positions and
+	 * temporary Variable names.
 	 * 
 	 * @param positions
 	 *            is the annotation root element where to store the positions
 	 */
-	private void savePositions(EAnnotation positions) {
-		Iterator<EObject> contents = getContents().iterator();
-		while (contents.hasNext()) {
-			EObject content = contents.next();
+	private void fixVariablesAndPositions(EAnnotation positions) {
+		variableNames = new ArrayList<String>();
+		Iterator<EObject> contentsIterator = getContents().iterator();
+		while (contentsIterator.hasNext()) {
+			EObject content = contentsIterator.next();
 			if (content instanceof Module) {
 				Module eModule = (Module)content;
 				TreeIterator<EObject> eAllContents = eModule.eAllContents();
 				while (eAllContents.hasNext()) {
 					EObject eObject = eAllContents.next();
-					if (eObject instanceof ASTNode) {
-						int start = ((ASTNode)eObject).getStartPosition();
-						int end = ((ASTNode)eObject).getEndPosition();
-						savePosition(positions, (ASTNode)eObject, start, end);
-					}
+					fixVariableAmbiguities(eObject);
+					savePositions(eObject, positions);
 				}
 			}
+		}
+		variableNames.clear();
+		variableNames = null;
+	}
+
+	/**
+	 * Alters names of temporary variables to unique names.
+	 * 
+	 * @param element
+	 *            Element which name is to be changed if it is a temporary variable.
+	 */
+	@SuppressWarnings("unchecked")
+	private void fixVariableAmbiguities(EObject element) {
+		if (element instanceof Variable && ((Variable)element).getName().startsWith(VARIABLE_PREFIX)) {
+			final String varName = ((Variable)element).getName();
+			if (!varName.matches("temp\\d+")) { //$NON-NLS-1$
+				return;
+			}
+			if (variableNames.contains(varName)) {
+				final String lastName = variableNames.get(variableNames.size() - 1);
+				int lastIndex = Integer.valueOf(lastName.substring(VARIABLE_PREFIX.length()));
+				do {
+					lastIndex++;
+				} while (variableNames.contains(VARIABLE_PREFIX + lastIndex));
+				((Variable)element).setName(VARIABLE_PREFIX + lastIndex);
+				variableNames.add(VARIABLE_PREFIX + lastIndex);
+			} else {
+				variableNames.add(varName);
+			}
+		}
+	}
+
+	/**
+	 * Computes the specific annotation content before saving the resource. It will store every AST nodes
+	 * positions.
+	 * 
+	 * @param element
+	 *            Element which position is to be saved.
+	 * @param positions
+	 *            is the annotation root element where to store the positions
+	 */
+	private void savePositions(EObject element, EAnnotation positions) {
+		if (element instanceof ASTNode) {
+			int start = ((ASTNode)element).getStartPosition();
+			int end = ((ASTNode)element).getEndPosition();
+			savePosition(positions, (ASTNode)element, start, end);
 		}
 	}
 
