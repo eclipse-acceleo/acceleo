@@ -246,7 +246,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				visitExpression((OCLExpression)forBlock.getBefore());
 			}
 			final Iterator<Object> contentIterator = ((Collection)iteration).iterator();
+			// This will be use to only record and log a single CCE if many arise with this loop
 			boolean iterationCCE = false;
+			// This will be used to generate separators only if the iterator had a previous element
+			boolean hasPrevious = false;
 			while (contentIterator.hasNext()) {
 				final Object o = contentIterator.next();
 				// null typed loop variables will be the same as "Object" typed
@@ -282,13 +285,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				}
 
 				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
+					if (forBlock.getEach() != null && hasPrevious) {
+						visitExpression((OCLExpression)forBlock.getEach());
+						/*
+						 * no need to reset the state of the "previous" boolean as all following do have a
+						 * previous item
+						 */
+					}
 					for (final OCLExpression nested : forBlock.getBody()) {
 						visitExpression(nested);
 					}
-					if (forBlock.getEach() != null && contentIterator.hasNext()) {
-						visitExpression((OCLExpression)forBlock.getEach());
-					}
 				}
+				hasPrevious = true;
 			}
 			if (((Collection)iteration).size() > 0 && forBlock.getAfter() != null) {
 				visitExpression((OCLExpression)forBlock.getAfter());
@@ -355,6 +363,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			exception.fillInStackTrace();
 			throw exception;
 		}
+		// FIXME the condition could be something other than a boolean. throw exception
 
 		if (conditionValue != null && ((Boolean)conditionValue).booleanValue()) {
 			for (final OCLExpression nested : ifBlock.getBody()) {
