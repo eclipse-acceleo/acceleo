@@ -57,6 +57,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
+import org.eclipse.ocl.options.EvaluationOptions;
 import org.eclipse.ocl.util.Bag;
 import org.eclipse.ocl.util.CollectionUtil;
 
@@ -109,6 +110,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		super(parent);
 		mapAllTemplates(module);
 		mapDynamicOverrides();
+		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 	}
 
 	/**
@@ -122,6 +124,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		super();
 		mapAllTemplates(module);
 		mapDynamicOverrides();
+		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 	}
 
 	/**
@@ -142,7 +145,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		// Specifications of each non-standard operation can be found as comments of
 		// AcceleoNonStandardLibrary#OPERATION_*.
 		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)) {
-			result = source.toString();
+			result = toString(source);
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_INVOKE.equals(operationName)) {
 			if (args.length == 3) {
 				result = invoke(operation.eResource().getURI(), source, args);
@@ -1224,6 +1227,27 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * Collections need special handling when generated from Acceleo.
+	 * 
+	 * @param object
+	 *            The object we wish the String representation of.
+	 * @return String representation of the given Object. For Collections, this will be the concatenation of
+	 *         all contained Objects' toString.
+	 */
+	private String toString(Object object) {
+		final StringBuffer buffer = new StringBuffer();
+		if (object instanceof Collection<?>) {
+			final Iterator<?> childrenIterator = ((Collection<?>)object).iterator();
+			while (childrenIterator.hasNext()) {
+				buffer.append(toString(childrenIterator.next()));
+			}
+		} else {
+			buffer.append(object.toString());
+		}
+		return buffer.toString();
+	}
+
+	/**
 	 * This will allow us to handle references to file scheme URIs within the resource set containing the
 	 * generation modules and their dynamic overrides. We need this since the dynamic overrides are loaded
 	 * with file scheme URIs whereas the generation module can be loaded through platform scheme URIs and we
@@ -1252,18 +1276,23 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				if (normalized == null) {
 					String moduleName = uri.lastSegment();
 					moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-					Set<Module> candidates = new LinkedHashSet<Module>();
-					for (Module module : currentModules) {
-						if (moduleName.equals(module.getName())) {
-							candidates.add(module);
-						}
+					Set<URI> candidateURIs = new LinkedHashSet<URI>();
+
+					// Search matching module in the current generation context
+					Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
+					for (Module candidateModule : candidateModules) {
+						candidateURIs.add(candidateModule.eResource().getURI());
 					}
-					if (candidates.size() == 0) {
+					// If there were no matching module, search in their ResourceSet(s)
+					if (candidateURIs.size() == 0) {
+						candidateURIs.addAll(searchResourceSetForMatches(moduleName));
+					}
+					if (candidateURIs.size() == 0) {
 						normalized = super.normalize(uri);
-					} else if (candidates.size() == 1) {
-						normalized = candidates.iterator().next().eResource().getURI();
+					} else if (candidateURIs.size() == 1) {
+						normalized = candidateURIs.iterator().next();
 					} else {
-						normalized = normalizeMultipleCandidates(uri, candidates);
+						normalized = findBestMatchFor(uri, candidateURIs);
 					}
 					if (!uri.equals(normalized)) {
 						getURIMap().put(uri, normalized);
@@ -1275,25 +1304,76 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		/**
-		 * Returns the normalized form of the URI, using the given multiple candidates (it means more than 2
-		 * generation context modules that have the right name).
+		 * This will search the current generation context for a loaded module matching the given
+		 * <code>moduleName</code>.
+		 * 
+		 * @param moduleName
+		 *            Name of the module we seek.
+		 * @return The Set of all modules currently loaded for generation going by the name
+		 *         <code>moduleName</code>.
+		 */
+		private Set<Module> searchCurrentModuleForCandidateMatches(String moduleName) {
+			Set<Module> candidates = new LinkedHashSet<Module>();
+			for (Module module : currentModules) {
+				if (moduleName.equals(module.getName())) {
+					candidates.add(module);
+				}
+			}
+			return candidates;
+		}
+
+		/**
+		 * This will search throughout the resourceSet(s) containing the loaded modules for modules going by
+		 * name <code>moduleName</code>.
+		 * 
+		 * @param moduleName
+		 *            Name of the module we seek.
+		 * @return The Set of all modules loaded within the generation ResourceSet going by the name
+		 *         <code>moduleName</code>.
+		 */
+		private Set<URI> searchResourceSetForMatches(String moduleName) {
+			final Set<URI> candidates = new LinkedHashSet<URI>();
+			final List<ResourceSet> resourceSets = new ArrayList<ResourceSet>();
+			for (Module module : currentModules) {
+				final ResourceSet resourceSet = module.eResource().getResourceSet();
+				if (!resourceSets.contains(resourceSet)) {
+					resourceSets.add(resourceSet);
+				}
+			}
+			for (ResourceSet resourceSet : resourceSets) {
+				for (Resource resource : resourceSet.getResources()) {
+					if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(resource.getURI().fileExtension())) {
+						String candidateName = resource.getURI().lastSegment();
+						candidateName = candidateName.substring(0, candidateName.lastIndexOf('.'));
+						if (moduleName.equals(candidateName)) {
+							candidates.add(resource.getURI());
+						}
+					}
+				}
+			}
+			return candidates;
+		}
+
+		/**
+		 * Returns the normalized form of the URI, using the given multiple candidates (this means that more
+		 * than 2 modules had a matching name).
 		 * 
 		 * @param uri
-		 *            the URI to normalize
-		 * @param candidates
-		 *            are the generation context modules with the right name
+		 *            The URI that is to be normalized.
+		 * @param candidateURIs
+		 *            URIs of the modules that can potentially be a match for <code>uri</code>.
 		 * @return the normalized form
 		 */
-		private URI normalizeMultipleCandidates(URI uri, Set<Module> candidates) {
+		private URI findBestMatchFor(URI uri, Set<URI> candidateURIs) {
 			URI normalized = null;
-			final Iterator<Module> candidatesIterator = candidates.iterator();
+			final Iterator<URI> candidatesIterator = candidateURIs.iterator();
 			final List<String> referenceSegments = Arrays.asList(uri.segments());
 			Collections.reverse(referenceSegments);
 			int highestEqualFragments = 0;
 			while (candidatesIterator.hasNext()) {
-				final Module next = candidatesIterator.next();
+				final URI next = candidatesIterator.next();
 				int equalFragments = 0;
-				final List<String> candidateSegments = Arrays.asList(next.eResource().getURI().segments());
+				final List<String> candidateSegments = Arrays.asList(next.segments());
 				Collections.reverse(candidateSegments);
 				for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
 					if (candidateSegments.get(i) == referenceSegments.get(i)) {
@@ -1304,7 +1384,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 				if (equalFragments > highestEqualFragments) {
 					highestEqualFragments = equalFragments;
-					normalized = next.eResource().getURI();
+					normalized = next;
 				}
 			}
 			return normalized;
