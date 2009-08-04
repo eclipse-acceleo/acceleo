@@ -139,8 +139,8 @@ public final class ProjectParser {
 				IResource resource = children[i];
 				if (resource instanceof IFile
 						&& MTFileContent.MT_FILE_EXTENSION.equals(((IFile)resource).getFileExtension())) {
-					String[] segments = ((IFile)resource).getFullPath().removeFirstSegments(
-							inputFolder.segmentCount()).segments();
+					String[] segments = ((IFile)resource).getFullPath().removeFileExtension()
+							.removeFirstSegments(inputFolder.segmentCount()).segments();
 					StringBuffer qualifiedName = new StringBuffer();
 					for (int j = 0; j < segments.length; j++) {
 						if (j > 0) {
