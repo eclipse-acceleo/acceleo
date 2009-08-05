@@ -15,14 +15,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoBehavioralFeatureScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoBlockScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoCommentScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoDefaultScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoForScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoIfScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoLetScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoMacroScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoProtectedAreaScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoQueryScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoTemplateScanner;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
@@ -84,7 +86,9 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	protected AbstractAcceleoScanner[] getScanners() {
 		if (scanners == null) {
 			List<AbstractAcceleoScanner> list = new ArrayList<AbstractAcceleoScanner>();
-			list.add(new AcceleoBehavioralFeatureScanner(editor.getColorManager()));
+			list.add(new AcceleoTemplateScanner(editor.getColorManager()));
+			list.add(new AcceleoQueryScanner(editor.getColorManager()));
+			list.add(new AcceleoMacroScanner(editor.getColorManager()));
 			list.add(new AcceleoForScanner(editor.getColorManager()));
 			list.add(new AcceleoIfScanner(editor.getColorManager()));
 			list.add(new AcceleoLetScanner(editor.getColorManager()));

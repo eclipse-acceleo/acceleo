@@ -32,9 +32,19 @@ public interface IAcceleoColorConstants {
 	RGB LITERAL = new RGB(63, 127, 127);
 
 	/**
-	 * Template, Query and Macro color.
+	 * Template color.
 	 */
-	RGB BEHAVIORAL_FEATURE = new RGB(192, 0, 0);
+	RGB TEMPLATE = new RGB(192, 0, 0);
+
+	/**
+	 * Query.
+	 */
+	RGB QUERY = new RGB(127, 0, 85);
+
+	/**
+	 * Macro color.
+	 */
+	RGB MACRO = new RGB(192, 0, 0);
 
 	/**
 	 * Protected Area color.

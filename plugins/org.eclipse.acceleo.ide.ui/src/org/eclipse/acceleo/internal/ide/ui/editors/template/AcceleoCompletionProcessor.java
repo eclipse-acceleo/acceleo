@@ -65,7 +65,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * The auto activation characters for completion proposal.
 	 */
-	private static final char[] AUTO_ACTIVATION_CHARACTERS = new char[] {' ', '.', '[', '-', '>', ':'}; // Unless
+	private static final char[] AUTO_ACTIVATION_CHARACTERS = new char[] {' ', '.', '[', '-', '>', ':' }; // Unless
 
 	/**
 	 * The source content.
@@ -729,7 +729,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String tab, Image patternImage) {
 		if (IAcceleoConstants.TEMPLATE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.TEMPLATE).startsWith(start.toLowerCase())) {
-			String replacementStringBefore = '[' + IAcceleoConstants.TEMPLATE + ' ';
+			String replacementStringBefore = '[' + IAcceleoConstants.TEMPLATE + ' '
+					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
 			String replacementStringAfter = '(' + "e : " + defaultVariableType + ")]\n" + tab //$NON-NLS-1$ //$NON-NLS-2$
 					+ '\t' + '\n' + tab + '[' + '/' + IAcceleoConstants.TEMPLATE + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
@@ -739,7 +740,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		if (IAcceleoConstants.QUERY.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.QUERY).startsWith(start.toLowerCase())) {
-			String replacementStringBefore = '[' + IAcceleoConstants.QUERY + ' ';
+			String replacementStringBefore = '[' + IAcceleoConstants.QUERY + ' '
+					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
 			String replacementStringAfter = "(e : " + defaultVariableType + ") : " + defaultVariableType //$NON-NLS-1$ //$NON-NLS-2$
 					+ " = /]\n"; //$NON-NLS-1$
 			String replacementString = replacementStringBefore + replacementStringAfter;
@@ -749,7 +751,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		if (IAcceleoConstants.MACRO.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.MACRO).startsWith(start.toLowerCase())) {
-			String replacementStringBefore = '[' + IAcceleoConstants.MACRO + ' ';
+			String replacementStringBefore = '[' + IAcceleoConstants.MACRO + ' '
+					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
 			String replacementStringAfter = "(e : " + defaultVariableType + ") : " + defaultVariableType //$NON-NLS-1$ //$NON-NLS-2$
 					+ "]\n" + tab + '\t' + '\n' + tab + '[' + '/' + IAcceleoConstants.MACRO //$NON-NLS-1$
 					+ ']';
@@ -1176,13 +1179,13 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		SequenceBlock pLiteral = new SequenceBlock(new Sequence(IAcceleoConstants.LITERAL_BEGIN),
 				new Sequence(IAcceleoConstants.LITERAL_END), literalEscape, false, null);
 		SequenceBlock pParenthesis = new SequenceBlock(new Sequence(IAcceleoConstants.PARENTHESIS_BEGIN),
-				new Sequence(IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral});
+				new Sequence(IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral });
 		Sequence pHeaderEnd = new Sequence(IAcceleoConstants.DEFAULT_END);
 		Sequence pTag = new Sequence(tag);
-		return (pHeaderEnd.search(buffer, 0, buffer.length(), null, new SequenceBlock[] {pLiteral,}).b() == -1)
+		return (pHeaderEnd.search(buffer, 0, buffer.length(), null, new SequenceBlock[] {pLiteral, }).b() == -1)
 				&& (pParenthesis.search(buffer, 0, buffer.length()).b() > -1)
 				&& (pTag.search(buffer, 0, buffer.length(), null,
-						new SequenceBlock[] {pLiteral, pParenthesis,}).b() > -1);
+						new SequenceBlock[] {pLiteral, pParenthesis, }).b() > -1);
 	}
 
 	/**

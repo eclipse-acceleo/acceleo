@@ -26,11 +26,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
 /**
- * A scanner for detecting 'template', 'query' or 'macro' sequences.
+ * A scanner for detecting 'template' sequences.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
+public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 
 	/**
 	 * Constructor.
@@ -38,23 +38,18 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoBehavioralFeatureScanner(ColorManager manager) {
+	public AcceleoTemplateScanner(ColorManager manager) {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
 				new TextAttribute(manager.getColor(IAcceleoColorConstants.LITERAL)))));
 		computeFirstVariableRule(rules, IAcceleoConstants.TEMPLATE, manager);
-		computeFirstVariableRule(rules, IAcceleoConstants.QUERY, manager);
-		computeFirstVariableRule(rules, IAcceleoConstants.MACRO, manager);
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
 		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, manager));
-		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, manager));
-		rules.add(computeKeywordRule(IAcceleoConstants.MACRO, manager));
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE))));
+		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(IAcceleoColorConstants.TEMPLATE))));
 	}
 
 	/**
@@ -68,14 +63,14 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 */
 	private void computeFirstVariableRule(List<IRule> rules, String behaviorType, ColorManager manager) {
-		final Color foreGroundColor = manager.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE);
+		final Color foreGroundColor = manager.getColor(IAcceleoColorConstants.TEMPLATE);
 		final Color backGroundColor = manager.getColor(IAcceleoColorConstants.FIRST_VARIABLE);
 		final String unknown = "*"; //$NON-NLS-1$
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
-				unknown, IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
+				unknown, IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
 				backGroundColor, SWT.NONE))));
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
-				IAcceleoConstants.PARENTHESIS_BEGIN,}, new Token(new TextAttribute(foreGroundColor,
+				IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
 				backGroundColor, SWT.NONE))));
 	}
 
@@ -90,7 +85,7 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 	 */
 	private IRule computeKeywordRule(String keyword, ColorManager manager) {
 		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE), null, SWT.BOLD)));
+				.getColor(IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
 	}
 
 	/**
@@ -104,7 +99,7 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 	 */
 	private IRule computeDelimiterRule(String delimiter, ColorManager manager) {
 		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.BEHAVIORAL_FEATURE), null, SWT.BOLD)));
+				.getColor(IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
 	}
 
 	/**
@@ -114,7 +109,7 @@ public class AcceleoBehavioralFeatureScanner extends AbstractAcceleoScanner {
 	 */
 	@Override
 	public String getConfiguredContentType() {
-		return AcceleoPartitionScanner.ACCELEO_BEHAVIORAL_FEATURE;
+		return AcceleoPartitionScanner.ACCELEO_TEMPLATE;
 	}
 
 }

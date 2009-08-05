@@ -37,10 +37,22 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	public static final String ACCELEO_COMMENT = "__ACCELEO_comment"; //$NON-NLS-1$
 
 	/**
-	 * Legal content type for a 'template|query|macro' part in the text. This data is attached to a
-	 * 'template|query|macro' token, by the scanner.
+	 * Legal content type for a 'template' part in the text. This data is attached to a 'template' token, by
+	 * the scanner.
 	 */
-	public static final String ACCELEO_BEHAVIORAL_FEATURE = "__ACCELEO_behavioral_feature"; //$NON-NLS-1$
+	public static final String ACCELEO_TEMPLATE = "__ACCELEO_template"; //$NON-NLS-1$
+
+	/**
+	 * Legal content type for a 'query' part in the text. This data is attached to a 'query' token, by the
+	 * scanner.
+	 */
+	public static final String ACCELEO_QUERY = "__ACCELEO_query"; //$NON-NLS-1$
+
+	/**
+	 * Legal content type for a 'macro' part in the text. This data is attached to a 'macro' token, by the
+	 * scanner.
+	 */
+	public static final String ACCELEO_MACRO = "__ACCELEO_macro"; //$NON-NLS-1$
 
 	/**
 	 * Legal content type for a 'protected area' part in the text. This data is attached to a 'protected area'
@@ -74,8 +86,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	/**
 	 * All legal content types.
 	 */
-	public static final String[] LEGAL_CONTENT_TYPES = new String[] {ACCELEO_COMMENT,
-			ACCELEO_BEHAVIORAL_FEATURE, ACCELEO_PROTECTED_AREA, ACCELEO_IF, ACCELEO_LET, ACCELEO_FOR,
+	public static final String[] LEGAL_CONTENT_TYPES = new String[] {ACCELEO_COMMENT, ACCELEO_TEMPLATE,
+			ACCELEO_QUERY, ACCELEO_MACRO, ACCELEO_PROTECTED_AREA, ACCELEO_IF, ACCELEO_LET, ACCELEO_FOR,
 			ACCELEO_BLOCK, };
 
 	/**
@@ -125,22 +137,24 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	private void computeBehavioralFeatureRules(List<IRule> rules, SequenceBlockRule literal) {
 		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.TEMPLATE), new KeywordRule(
 				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-				ACCELEO_BEHAVIORAL_FEATURE)));
+				ACCELEO_TEMPLATE)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.TEMPLATE,
-				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
-		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.QUERY), new KeywordRule(
-				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-				ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_TEMPLATE)));
+		rules
+				.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.QUERY), new KeywordRule(
+						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
+						ACCELEO_QUERY)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.QUERY,
-				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
-		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.MACRO), new KeywordRule(
-				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-				ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_QUERY)));
+		rules
+				.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.MACRO), new KeywordRule(
+						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
+						ACCELEO_MACRO)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.MACRO,
-				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_BEHAVIORAL_FEATURE)));
+				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_MACRO)));
 	}
 
 	/**
