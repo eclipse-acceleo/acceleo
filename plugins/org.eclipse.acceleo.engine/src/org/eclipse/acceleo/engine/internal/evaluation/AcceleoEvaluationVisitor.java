@@ -47,6 +47,7 @@ import org.eclipse.ocl.EvaluationVisitor;
 import org.eclipse.ocl.EvaluationVisitorDecorator;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.Variable;
+import org.eclipse.ocl.expressions.IteratorExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.PropertyCallExp;
@@ -229,6 +230,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object iteration = visitExpression((OCLExpression)forBlock.getIterSet());
 		fireGenerationEvent = fireEvents;
 		final Variable loopVariable = forBlock.getLoopVariable();
+		Object oldLoopVariableValue = null;
+		if (loopVariable != null) {
+			oldLoopVariableValue = getEvaluationEnvironment().getValueOf(loopVariable.getName());
+		}
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 
 		if (isUndefined(iteration)) {
@@ -241,73 +246,43 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		// There is a possibility for the for to have a single element in its iteration
-		if (iteration instanceof Collection) {
-			if (((Collection)iteration).size() > 0 && forBlock.getBefore() != null) {
-				visitExpression((OCLExpression)forBlock.getBefore());
-			}
-			final Iterator<Object> contentIterator = ((Collection)iteration).iterator();
-			// This will be use to only record and log a single CCE if many arise with this loop
-			boolean iterationCCE = false;
-			// This will be used to generate separators only if the iterator had a previous element
-			boolean hasPrevious = false;
-			while (contentIterator.hasNext()) {
-				final Object o = contentIterator.next();
-				// null typed loop variables will be the same as "Object" typed
-				if (loopVariable.getType() != null && !loopVariable.getType().isInstance(o)) {
-					if (!iterationCCE) {
-						AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
-								"AcceleoEvaluationVisitor.IterationClassCast", ((Module)EcoreUtil //$NON-NLS-1$
-										.getRootContainer(forBlock)).getName(), forBlock.toString(), o
-										.getClass().getName(), loopVariable.getType().getName()), false);
-						iterationCCE = true;
-					}
-					continue;
-				}
-				getEvaluationEnvironment().replace(loopVariable.getName(), o);
-				// [255379] sets new value of "self" to change context
-				getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, o);
-
-				final Object guardValue;
-				if (forBlock.getGuard() == null) {
-					guardValue = Boolean.TRUE;
-				} else {
-					fireGenerationEvent = false;
-					guardValue = visitExpression((OCLExpression)forBlock.getGuard());
-					fireGenerationEvent = fireEvents;
-				}
-				if (isInvalid(guardValue)) {
-					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-							AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
-									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(forBlock))
-									.getName(), forBlock, o, forBlock.getGuard()));
-					exception.fillInStackTrace();
-					throw exception;
-				}
-
-				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
-					if (forBlock.getEach() != null && hasPrevious) {
-						visitExpression((OCLExpression)forBlock.getEach());
-						/*
-						 * no need to reset the state of the "previous" boolean as all following do have a
-						 * previous item
-						 */
-					}
-					for (final OCLExpression nested : forBlock.getBody()) {
-						visitExpression(nested);
-					}
-				}
-				hasPrevious = true;
-			}
-			if (((Collection)iteration).size() > 0 && forBlock.getAfter() != null) {
-				visitExpression((OCLExpression)forBlock.getAfter());
-			}
+		final Collection<Object> actualIteration;
+		if (iteration instanceof Collection<?>) {
+			actualIteration = (Collection<Object>)iteration;
 		} else {
-			if (forBlock.getBefore() != null) {
-				visitExpression((OCLExpression)forBlock.getBefore());
+			actualIteration = new ArrayList<Object>();
+			((List<Object>)actualIteration).add(iteration);
+		}
+
+		if (actualIteration.size() > 0 && forBlock.getBefore() != null) {
+			visitExpression((OCLExpression)forBlock.getBefore());
+		}
+		final Iterator<Object> contentIterator = actualIteration.iterator();
+		// This will be use to only record and log a single CCE if many arise with this loop
+		boolean iterationCCE = false;
+		// This will be used to generate separators only if the iterator had a previous element
+		boolean hasPrevious = false;
+		while (contentIterator.hasNext()) {
+			final Object o = contentIterator.next();
+			// null typed loop variables will be the same as "Object" typed
+			// We could have no loop variables. In such cases, "self" will do
+			// TODO implicit loop variables (self) are non standard. provide a way to deactivate
+			if (loopVariable != null && loopVariable.getType() != null
+					&& !loopVariable.getType().isInstance(o)) {
+				if (!iterationCCE) {
+					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+							"AcceleoEvaluationVisitor.IterationClassCast", ((Module)EcoreUtil //$NON-NLS-1$
+									.getRootContainer(forBlock)).getName(), forBlock.toString(), o.getClass()
+									.getName(), loopVariable.getType().getName()), false);
+					iterationCCE = true;
+				}
+				continue;
 			}
-			getEvaluationEnvironment().replace(loopVariable.getName(), iteration);
+			if (loopVariable != null) {
+				getEvaluationEnvironment().replace(loopVariable.getName(), o);
+			}
 			// [255379] sets new value of "self" to change context
-			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, iteration);
+			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, o);
 
 			final Object guardValue;
 			if (forBlock.getGuard() == null) {
@@ -321,22 +296,37 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
 						AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
 								.getStartPosition(),
-								((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock,
-								iteration, forBlock.getGuard()));
+								((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock, o,
+								forBlock.getGuard()));
 				exception.fillInStackTrace();
 				throw exception;
 			}
 
 			if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
+				if (forBlock.getEach() != null && hasPrevious) {
+					visitExpression((OCLExpression)forBlock.getEach());
+					/*
+					 * no need to reset the state of the "previous" boolean as all following do have a
+					 * previous item
+					 */
+				}
 				for (final OCLExpression nested : forBlock.getBody()) {
 					visitExpression(nested);
 				}
 			}
-			if (forBlock.getAfter() != null) {
-				visitExpression((OCLExpression)forBlock.getAfter());
-			}
+			hasPrevious = true;
+		}
+		if (actualIteration.size() > 0 && forBlock.getAfter() != null) {
+			visitExpression((OCLExpression)forBlock.getAfter());
 		}
 
+		if (loopVariable != null) {
+			if (oldLoopVariableValue != null) {
+				getEvaluationEnvironment().replace(loopVariable.getName(), oldLoopVariableValue);
+			} else {
+				getEvaluationEnvironment().remove(loopVariable.getName());
+			}
+		}
 		// [255379] restore context
 		getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, currentSelf);
 	}
@@ -942,6 +932,32 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public Object visitPropertyCallExp(PropertyCallExp<C, P> callExp) {
 		lastSourceExpression = callExp.getSource();
 		return super.visitPropertyCallExp(callExp);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitIteratorExp(org.eclipse.ocl.expressions.IteratorExp)
+	 */
+	@Override
+	public Object visitIteratorExp(IteratorExp<C, PM> callExp) {
+		Map<String, Object> oldIterators = new HashMap<String, Object>();
+		for (org.eclipse.ocl.expressions.Variable<C, PM> iterator : callExp.getIterator()) {
+			final String iteratorName = iterator.getName();
+			final Object oldValue = getEvaluationEnvironment().getValueOf(iteratorName);
+			if (oldValue != null) {
+				oldIterators.put(iteratorName, oldValue);
+				getEvaluationEnvironment().remove(iteratorName);
+			}
+		}
+
+		final Object result = super.visitIteratorExp(callExp);
+
+		for (Map.Entry<String, Object> oldValue : oldIterators.entrySet()) {
+			getEvaluationEnvironment().replace(oldValue.getKey(), oldValue.getValue());
+		}
+
+		return result;
 	}
 
 	/**
