@@ -45,28 +45,28 @@
     </eOperations>
     <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
     <eOperations name="ancestors" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
     <eOperations name="ancestors" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
     <eOperations name="siblings" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
     <eOperations name="siblings" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
     <eOperations name="eInverse" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
     <eOperations name="eInverse" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
     <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
       <eAnnotations source="MTL non-standard"/>
@@ -78,25 +78,7 @@
       <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Set(T)">
-    <eOperations name="sep" eType="#//Bag(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-    </eOperations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)">
-    <eOperations name="sep" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-    </eOperations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Bag(T)">
-    <eOperations name="sep" eType="#//Bag(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-    </eOperations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)">
+  <eClassifiers xsi:type="ecore:EClass" name="Collection(T)">
     <eOperations name="sep" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
