@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.ecore.CollectionType;
 
 /**
  * The main class used to transform a CST model to an AST model. This class is able to run the 'Resolve' step.
@@ -710,9 +711,18 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} else {
 				oLoopVariable = null;
 			}
+			EClassifier context = null;
 			if (iLoopVariable != null && oLoopVariable != null) {
 				transformStepResolveAddVariable(iLoopVariable);
-				factory.getOCL().pushContext(oLoopVariable.getType());
+				context = oLoopVariable.getType();
+			} else if (oIterSet != null) {
+				context = oIterSet.getEType();
+				if (context instanceof CollectionType) {
+					context = ((CollectionType)context).getElementType();
+				}
+			}
+			if (context != null) {
+				factory.getOCL().pushContext(context);
 			}
 			try {
 				org.eclipse.acceleo.parser.cst.ModelExpression iGuard = iForBlock.getGuard();
@@ -731,6 +741,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} finally {
 				if (iLoopVariable != null && oLoopVariable != null) {
 					transformStepResolveRemoveVariable(iLoopVariable);
+				}
+				if (context != null) {
 					factory.getOCL().popContext();
 				}
 			}
