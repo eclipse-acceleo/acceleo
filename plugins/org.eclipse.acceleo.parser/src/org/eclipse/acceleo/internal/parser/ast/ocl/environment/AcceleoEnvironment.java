@@ -274,14 +274,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				.getExistingOperations(getOCLStandardLibrary().getString()));
 		addHelperOperations(getOCLStandardLibrary().getOclAny(), getAcceleoNonStandardLibrary()
 				.getExistingOperations(getOCLStandardLibrary().getOclAny()));
-		addHelperOperations(getOCLStandardLibrary().getBag(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getBag()));
-		addHelperOperations(getOCLStandardLibrary().getSequence(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getSequence()));
-		addHelperOperations(getOCLStandardLibrary().getSet(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getSet()));
-		addHelperOperations(getOCLStandardLibrary().getOrderedSet(), getAcceleoNonStandardLibrary()
-				.getExistingOperations(getOCLStandardLibrary().getOrderedSet()));
+		addHelperOperations(getOCLStandardLibrary().getCollection(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getCollection()));
 	}
 
 	/**
