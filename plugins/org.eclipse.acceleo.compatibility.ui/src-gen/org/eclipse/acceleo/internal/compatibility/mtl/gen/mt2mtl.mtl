@@ -1,28 +1,513 @@
 [module mt2mtl('http://www.eclipse.org/acceleo/mt/2.6.0')/]
+[import ServiceUtils/]
 
-[template public main (t : Template)]
+[comment]
+This will be used to convert a given Acceleo.org "template" (an aggregate of scripts) to an
+Acceleo MTL "module" (aggregate of queries, templates and macros). The name of the "template"'s
+containing file will be used as the name of the converted module.
+
+templ : Acceleo.org template that needs be converted.
+[/comment]
+[template public convertToModule(templ : Template)]
 [comment @main /]
-[file (t.name.replaceAll('\.mt', '').replaceAll('\.', '/').concat('.mtl'), false)]
-['['/]module [t.name/]([for (m : Metamodel | t.imports.oclAsType(Metamodel)) separator (', ')]'[m.name/]'[/for])/[']'/]
+[file (templ.name.replaceAll('\\.', '/').concat('.mtl'), false)]
+['['/]module [templ.shortName()/]([for (templ.imports->select(oclIsKindOf(Metamodel))) separator (', ')]'[name/]'[/for])/]
+[for (imported : Template | templ.imports->select(not oclIsKindOf(Metamodel)))]
+['['/]import [imported.shortName()/]/]
+[/for]
 
-[for (s : Script | t.scripts)]
-[s.mt2mtl()/]
+[for (templ.scripts) separator('\n')]
+[convertToTemplate()/]
+[/for]
 
+[for (adaptCall : Call | templ.ancestors()->last().allCalls().oclAsType(mt::expressions::Call)->select(name = 'adapt')->asSet())]
+['['/]query private ['adaptTo'.concat(adaptCall.arguments->first().convertExpressionToOCL().replaceAll('\'', ''))/](o : OclAny) : [adaptCall.inferAdaptReturnType()/] = invoke('org.eclipse.acceleo.compatibility.services.MigrationServices', '['adaptTo'.concat(adaptCall.arguments->first().convertExpressionToOCL().replaceAll('\'', ''))/](java.lang.Object)', Sequence{o})/]
 [/for]
 [/file]
 [/template]
 
-[template public shortName (t : Template)][name/][/template]
+[comment]
+This will be used to convert a given Acceleo.org "script" to an Acceleo MTL "template".
 
-[template public mt2mtl (s : Script)]
-['['/]template public [s.descriptor.name/](o : [s.descriptor.type/]) [']'/]
-
-	[for (o : ASTNode | eAllContents().oclAsType(ASTNode))]
-		[o.oclAsType(EObject).eClass().name/] ['['/][o.begin/],[o.end/][']'/]
-	[/for]
-	
-['['/]/template[']'/]
-
+script : Acceleo script that will be converted to an Acceleo MTL template.
+[/comment]
+[template public convertToTemplate(script : Script)]
+['['/]template public [script.descriptor.name/]([script.descriptor.type.getVariableNameForType()/] : [script.descriptor.type.convertType()/][script.getAdditionalArguments()/])]
+[if (script.descriptor.file.statements->size() > 0)]
+['['/]file ([script.descriptor.file.statements.convertStatementToOCL()/], false)]
+[/if]
+[script.statements.convertStatement()/]
+[if (script.descriptor.file.statements->size() > 0)]
+['[/'/]file]
+[/if]
+['[/'/]template[']'/]
 [/template]
 
+[query private getAdditionalArguments(script : Script) : String =
+	 let additionalArguments : OrderedSet(String) = script.eAllContents(mt::expressions::Call)->select(name = 'args')->collect(name.concat(arguments->first().convertExpressionToOCL()))->asOrderedSet() in
+	 additionalArguments->iterate(arg; res : String = '' | (if additionalArguments->first() = arg then ', ' else res endif).concat(arg).concat(' : OclAny').concat(if additionalArguments->last() <> arg then ', ' else '' endif))
+	/]
 
+[comment]
+This is as placeholder for the compiler to be able to compile calls on "Statement", yet  this
+getting called means we're missing a specialized implementation of "convertStatement" for the
+runtime class of the given statement.
+
+statement : Statement that is to be converted.
+[/comment]
+[template public convertStatement(statement : Statement)]
+<<<FIXME : couldn't convert statement [statement/].>>>
+[/template]
+
+[comment]
+This is as placeholder for the compiler to be able to compile calls on "Statement", yet  this
+getting called means we're missing a specialized implementation of "convertStatementToOCL" for the
+runtime class of the given statement.
+
+statement : Statement that is to be converted.
+[/comment]
+[template public convertStatementToOCL(statement : Statement)]
+<<<FIXME : couldn't convert statement [statement/] to OCL.>>>
+[/template]
+
+[template public convertStatement(cmtStmt : Comment)]
+['['/]comment [cmtStmt.value/]/]
+[/template]
+
+[template public convertStatementToOCL(cmtStmt : Comment)]
+[cmtStmt.convertStatement()/]
+[/template]
+
+[template public convertStatement(ifStmt : If) {isMultiLine : Boolean = ifStmt.eAllContents(Text)->collect(value.index('\n') > 0)->includes(true);}]
+['['/]if [ifStmt.condition.convertExpressionToOCL()/]][if (isMultiLine)]['\n'/][/if][ifStmt.thenStatements.convertStatement()/][if (isMultiLine)]['\n'/][/if][for (elseIf : If | ifStmt.elseIf)]['['/]elseif [elseIf.condition.convertExpressionToOCL()/]][if (isMultiLine)]['\n'/][/if][elseIf.thenStatements.convertStatement()/][if (isMultiLine)]['\n'/][/if][/for][if (ifStmt.elseStatements->size() > 0)]['['/]else][if (isMultiLine)]['\n'/][/if][ifStmt.elseStatements.convertStatement()/][if (isMultiLine)]['\n'/][/if][/if]['['/]/if]
+[/template]
+
+[template public convertStatementToOCL(ifStmt : If)]
+[ifStmt.convertStatement()/]
+[/template]
+
+[comment]
+Converts a for loop of Acceleo.org to Acceleo MTL. There is no difference between this and its
+converStatementToOCL counterpart.
+
+forLoop : The for loop that will be converted.
+[/comment]
+[template public convertStatement(forLoop : For)]
+['['/]for [forLoop.iterator.convertExpressionToOCL()/]]
+[forLoop.statements.convertStatement()/]['['/]/for]
+[/template]
+
+[comment]
+Converts a for loop of Acceleo.org to Acceleo MTL. There is no difference between this and its
+converStatement counterpart.
+
+forLoop : The for loop that will be converted.
+[/comment]
+[template public convertStatementToOCL(forLoop : For)]
+[forLoop.convertStatement()/]
+[/template]
+
+[comment]
+Converts a composite statement (property call, operation call, ...) to an Acceleo MTL equivalent.
+The returned expression will be nested within brackets.
+
+This mustn't be used for Acceleo.org "script"s' 'file' attribute : file="<%name%>.txt" must be
+converted to name.concat('.txt') and not [name/].txt.
+
+feature : Statement that is to be converted.
+[/comment]
+[template public convertStatement(feature : Feature)]
+[feature.expression.convertExpression()/]
+[/template]
+
+[comment]
+Converts a composite statement (property call, operation call, ...) to an Acceleo MTL equivalent.
+The returned expression will not be nested within brackets.
+
+This must be used for Acceleo.org "script"s' 'file' attribute : file="<%name%>.txt" must be
+converted to name.concat('.txt') and not [name/].txt.
+
+feature : Statement that is to be converted.
+[/comment]
+[template public convertStatementToOCL(feature : Feature)]
+[feature.expression.convertExpressionToOCL()/]
+[/template]
+
+[comment]
+Converts a static text part region from Acceleo.org to Acceleo MTL. With this, the text will be
+returned as is; as opposed to convertStatementToOCL.
+
+text : Text that needs be converted.
+[/comment]
+[template public convertStatement(text : Text)]
+[text.value/]
+[/template]
+
+[comment]
+Converts a static text part region from Acceleo.org to Acceleo MTL. With this, the text will be
+nested within simple quotes, and possibly preceded by ".concat(" if we're in the middle of a
+composite expression.
+
+text : Text that needs be converted.
+[/comment]
+[template public convertStatementToOCL(text : Text)]
+[if (self.oclAsType(EObject).eContainer().eContents()->indexOf(text) > 1)].concat('[text.value/]')[else]'[text.value/]'[/if]
+[/template]
+
+[comment]
+This is as placeholder for the compiler to be able to compile calls on "Expression", yet  this
+getting called means we're missing a specialized implementation of "convertExpression" for the
+runtime class of the given expression.
+
+expression : The expression we should convert to an Acceleo equivalent.
+[/comment]
+[template public convertExpression(expression : Expression)]
+<<<FIXME : couldn't convert expression [expression/].>>>
+[/template]
+
+[comment]
+This is as placeholder for the compiler to be able to compile calls on "Expression", yet  this
+getting called means we're missing a specialized implementation of "convertExpressionToOCL" for the
+runtime class of the given expression.
+
+expression : The expression we should convert to an Acceleo equivalent.
+[/comment]
+[template public convertExpressionToOCL(expression : Expression)]
+<<<FIXME : couldn't convert expression [expression/].>>>
+[/template]
+
+[comment]
+This will recursively call for the conversion of all calls contained within the given callSet. The
+returned expression will be nests within brackets.
+
+For example, <%name%>.txt would be converted to [name.concat('.txt')/] as opposed to
+convertExpressionToOCL which would return name.concat('.txt').
+
+callSet : CallSet which contents are to be converted to Acceleo MTL equivalents.
+[/comment]
+[template public convertExpression(callSet : CallSet)]
+['['/][convertExpressionToOCL()/]/]
+[/template]
+
+[comment]
+This will recursively call for the conversion of all calls contained within the given callSet. The
+returned expression will not be nested within brackets.
+
+For example, <%name%>.txt would be converted to name.concat('.txt') as opposed to convertExpression
+which would return [name.concat('.txt')/].
+
+callSet : CallSet which contents are to be converted to Acceleo MTL equivalents.
+[/comment]
+[template public convertExpressionToOCL(callSet : CallSet)]
+[callSet.calls.convertExpressionToOCL()/]
+[/template]
+
+[comment]
+Converts a single Acceleo.org call to an Acceleo MTL equivalent. The returned expression will be
+nested within brackets.
+
+call : The particular call that is to be converted to an equivalent.
+[/comment]
+[template public convertExpression(call : Call)]
+['['/][call.getSeparator()/][if (call.isOperationCall())][convertServiceCall()/][else][call.name/][/if][if (not call.filter.oclIsUndefined())]->select([call.filter.convertExpressionToOCL()/])[/if]/]
+[/template]
+
+[comment]
+Converts a single Acceleo.org call to an Acceleo MTL equivalent. The returned expression will not
+be nested within brackets.
+
+call : The particular call that is to be converted to an equivalent.
+[/comment]
+[template public convertExpressionToOCL(call : Call)]
+[call.getSeparator()/][if (call.isOperationCall())][convertServiceCall()/][else][call.name/][/if][if (not call.filter.oclIsUndefined())]->select([call.filter.convertExpressionToOCL()/])[/if]
+[/template]
+
+[template public convertExpression(notExpr : Not)]
+['['/][convertExpressionToOCL()/]/]
+[/template]
+
+[template public convertExpressionToOCL(notExpr : Not)]
+not ([notExpr.expression.convertExpressionToOCL()/])
+[/template]
+
+[template public convertExpression(operator : Operator)]
+['['/][convertExpressionToOCL()/]/]
+[/template]
+
+[template public convertExpressionToOCL(operator : Operator)]
+[for (operand : Expression | operator.operands)][operand.convertExpressionToOCL()/][if (operator.operands->last() <> operand)][' '/][operator.operator.convertOperator()/][' '/][/if][/for]
+[/template]
+
+[comment]
+Converts Acceleo.org parenthesis expression to an Acceleo MTL equivalent. The expression nested
+within these parenthesis will be converted nested within brackets.
+
+parenthesis : Parenthesis expression that is to be converted to an equivalent.
+[/comment]
+[template public convertExpression(parenthesis : Parenthesis)]
+([parenthesis.expression.convertExpression()/])
+[/template]
+
+[comment]
+Converts Acceleo.org parenthesis expression to an Acceleo MTL equivalent. The expression nested
+within these parenthesis will not be converted nested within brackets.
+
+parenthesis : Parenthesis expression that is to be converted to an equivalent.
+[/comment]
+[template public convertExpressionToOCL(parenthesis : Parenthesis)]
+([parenthesis.expression.convertExpressionToOCL()/])
+[/template]
+
+[template public convertExpression(stringLiteral : StringLiteral)]
+'[value/]'
+[/template]
+
+[template public convertExpressionToOCL(stringLiteral : StringLiteral)]
+[convertExpression()/]
+[/template]
+
+[template public convertExpression(intLiteral : IntegerLiteral)]
+[value/]
+[/template]
+
+[template public convertExpressionToOCL(intLiteral : IntegerLiteral)]
+[convertExpression()/]
+[/template]
+
+[template public convertExpression(doubleLiteral : DoubleLiteral)]
+[value/]
+[/template]
+
+[template public convertExpressionToOCL(doubleLiteral : DoubleLiteral)]
+[convertExpression()/]
+[/template]
+
+[template public convertExpression(booleanLiteral : BooleanLiteral)]
+[value/]
+[/template]
+
+[template public convertExpressionToOCL(booleanLiteral : BooleanLiteral)]
+[convertExpression()/]
+[/template]
+
+[template public convertExpression(nullLiteral : NullLiteral)]
+null
+[/template]
+
+[template public convertExpressionToOCL(nullLiteral : NullLiteral)]
+[convertExpression()/]
+[/template]
+
+[comment]
+Returns the short name (without path information) of the given template.
+
+templ : Template which path is to be considered.
+[/comment]
+[query private shortName(templ : Template) : String = templ.name.replaceAll('.*\\.(.*)', '$1')/]
+
+[comment]
+Converts qualified type names to uml notation.
+
+For example, "ecore.EClass" would be converted to "ecore::EClass".
+
+type : name of the type that is to be converted.
+[/comment]
+[query private convertType(type : String) : String = type.replace('\\.', '::')/]
+
+[comment]
+This will return a suitable variable name from a given type.
+
+For example, this would return "eClass" for type "ecore.EClass" or "_package" for type
+"uml.Package".
+
+type : name of the type we need a variable for.
+[/comment]
+[query private getVariableNameForType(type : String) : String = let protectedNames : Sequence(String) = Sequence{'template', 'query', 'macro', 'import', 'module', 'private', 'protected', 'public', 'for', 'if', 'let', 'else', 'then'}, name : String = if type.contains('.') then type.substring(type.index('.') + 2, type.size()) else type endif in if protectedNames->includes(name) then '_'.concat(name).toLowerFirst() else name.toLowerFirst() endif/]
+
+[query private convertSource(call : Call) : String = let precedingCalls : Sequence(Call) = call.oclAsType(ecore::EObject).eContainer().eContents().oclAsType(Call)->subSequence(1, call.oclAsType(ecore::EObject).eContainer().eContents()->indexOf(call))->excluding(call) in precedingCalls->iterate(element; res : String = '' | res.concat(element.convertExpressionToOCL()))/]
+
+[query private getSeparator(call : Call) : String = if call.isFirstCall() or call.isIgnoredCall() then '' else if isListOperation() then '->' else '.' endif endif/]
+
+[query private isFirstCall(call : Call) : Boolean = call.oclAsType(ecore::EObject).eContainer().eContents()->indexOf(call) = 1/]
+
+[query private isIgnoredCall(call : Call) : Boolean = not call.isFirstCall() and call.name = 'current' and call.arguments->size() = 0/]
+
+[query private isListOperation(call : Call) : Boolean =
+	call.name = 'select' or
+	call.name = 'delete' or
+	call.name = 'cast' or
+	call.name = 'filter' or
+	call.name = 'nMinimize' or
+	call.name = 'minmize' or
+	call.name = 'nContains' or
+	call.name = 'nFirst' or
+	call.name = 'nLast' or
+	call.name = 'nGet' or
+	call.name = 'nReverse' or
+	call.name = 'reverse' or
+	call.name = 'nSize' or
+	call.name = 'nSort' or
+	call.name = 'sort' or
+	call.name = 'sep' or
+	call.name = 'sepStr'/]
+
+[query private convertOperator(operator : String) : String =
+	if operator = '&&' then 'and' else
+	if operator = '||' then 'or' else
+	if operator = '!=' then '<>' else
+	if operator = '==' then '=' else
+	operator
+	endif endif endif endif/]
+	
+[query private convertServiceCall(call : Call) : String =
+	if call.name.isStringService() then convertStringService() else
+	if call.name.isEObjectService() then convertEObjectService() else
+	if call.name.isRequestService() then convertRequestService() else
+	if call.name.isResourceService() then convertResourceService() else
+	if call.name.isSystemService() then convertSystemService() else
+	if call.name.isXPathService() then convertXPathService() else
+	if call.name.isENodeService() then convertENodeService() else
+	if call.name.isContextService() then convertContextService() else
+	if call.name.isPropertiesService() then convertPropertiesService() else
+	call.name.concat(call.convertArguments())
+	endif endif endif endif endif endif endif endif endif/]
+
+[query private convertArguments(call : Call) : String = if call.arguments->size() = 0 then '()' else call.arguments->iterate(arg; aggregate : String = '(' | aggregate.concat(arg.convertExpressionToOCL()).concat(if call.arguments->last() = arg then '' else ', ' endif)).concat(')') endif/]
+
+[query private inferAdaptReturnType(adaptCall : Call) : String =
+	let typeName : String = adaptCall.arguments->first().convertExpressionToOCL().toLower() in
+	if typeName = 'double' then 'Real' else
+	if typeName = 'eobject' or typeName = 'enode' then 'ecore::EObject' else
+	if typeName = 'list' or typeName = 'enodelist' then 'Sequence(T)' else
+	if typeName = 'integer' then 'Integer' else
+	if typeName = 'boolean' then 'Boolean' else
+	'String'
+	endif endif endif endif endif/]
+
+[query private convertStringService(call : Call) : String =
+	if call.name = 'length' then 'size()' else
+	if call.name = 'toUpperCase' then 'toUpper()' else
+	if call.name = 'toLowerCase' then 'toLower()' else
+	if call.name = 'toU1Case' then 'toUpperFirst()' else
+	if call.name = 'toL1Case' then 'toLowerFirst()' else
+	if call.name = 'substring' and call.arguments->size() = 1 then 'substring('.concat(call.arguments->first().convertExpressionToOCL()).concat(' + 1, ').concat(call.convertSource()).concat('.size())') else
+	if call.name = 'substring' and call.arguments->size() = 2 then 'substring('.concat(call.arguments->first().convertExpressionToOCL()).concat(' + 1, ').concat(call.arguments->last().convertExpressionToOCL()).concat(')') else
+	if call.name = 'replaceAll' then 'replaceAll('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\\(?=b|t|n|f|r|\\|"\')', '\\\\$0')).concat(', ').concat(call.arguments->last().convertExpressionToOCL()).concat(')') else
+	if call.name = 'trim' then 'trim()' else
+	if call.name = 'startsWith' then 'startsWith('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'endsWith' then 'endsWith('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'equalsIgnoreCase' then 'toLower() = '.concat(call.arguments->first().convertExpressionToOCL()).concat('.toLower()') else
+	if call.name = 'matches' then 'replace('.concat(call.arguments->first().convertExpressionToOCL()).concat(', \'\') <> ').concat(call.convertSource()) else
+	if call.name = 'charAt' then 'substring('.concat(call.arguments->first().convertExpressionToOCL()).concat(' + 1, ').concat(call.arguments->first().convertExpressionToOCL()).concat(' + 1)') else
+	if call.name = 'indexOf' and call.arguments->size() = 1 then 'index('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'indexOf' and call.arguments->size() = 2 then 'substring('.concat(call.arguments->last().convertExpressionToOCL()).concat(' + 1, ').concat(call.convertSource()).concat('.size()).index(').concat(call.arguments->first().convertExpressionToOCL()).concat(') + ').concat(call.arguments->last().convertExpressionToOCL()) else
+	if call.name = 'lastIndexOf' and call.arguments->size() = 1 then '<<<FIXME "lastIndexOf" has no equivalent in Acceleo OCL. lastIndexOf('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'lastIndexOf' and call.arguments->size() = 2 then '<<<FIXME "lastIndexOf" has no equivalent in Acceleo OCL. lastIndexOf('.concat(call.arguments->first().convertExpressionToOCL()).concat(', ').concat(call.arguments->last().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'split' then '<<<FIXME "split" has no equivalent in Acceleo OCL. split('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'indentSpace' then 'replaceAll(\'(?!<\\r)\\n|\\r\\n|\\r(?!\\n)\', \'$0 \')' else
+	if call.name = 'indentTab'then 'replaceAll(\'(?!<\\r)\\n|\\r\\n|\\r(?!\\n)\', \'$0\\t\')' else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif/]
+
+[query private convertEObjectService(call : Call) : String =
+	if call.name = 'eAllContents' and call.arguments->size() = 0 then 'eAllContents()' else
+	if call.name = 'eAllContents' and call.arguments->size() = 1 then 'eAllContents('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(')') else
+	if call.name = 'eClass' then 'eClass()' else
+	if call.name = 'eContainer' and call.arguments->size() = 0 then 'eContainer()' else
+	if call.name = 'eContainer' and call.arguments->size() = 1 then 'ancestors('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(')->first()') else
+	if call.name = 'eContainingFeature' then 'eContainingFeature()' else
+	if call.name = 'eContainmentFeature' then 'eContainmentFeature()' else
+	if call.name = 'eContents' then 'eContents()' else
+	if call.name = 'eCrossReferences' then 'eCrossReferences()' else
+	if call.name = 'eResource' then 'eResource()' else
+	if call.name = 'eResourceName' then '<<<FIXME "eResourceName" has no equivalent in Acceleo OCL. eResourceName()>>>' else
+	if call.name = 'getRootContainer' then 'ancestors()->last()' else
+	if call.name = 'load' then '<<<FIXME "load" has no equivalent in Acceleo OCL. load('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif endif endif endif endif endif endif endif endif/]
+	
+[query private convertRequestService(call : Call) : String =
+	if call.name = 'select' and call.arguments->size() = 1 then 'select('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(')') else
+	if call.name = 'select' and call.arguments->size() = 2 then 'select('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(' = ').concat(call.arguments->last().convertExpressionToOCL()).concat(')') else
+	if call.name = 'delete' and call.arguments->size() = 1 then 'reject('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(')') else
+	if call.name = 'delete' and call.arguments->size() = 2 then 'reject('.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat(' = ').concat(call.arguments->last().convertExpressionToOCL()).concat(')') else
+	if call.name = 'evaluate' then '<<<FIXME "evaluate" has no equivalent in Acceleo OCL. evaluate('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif/]
+
+[query private convertResourceService(call : Call) : String =
+	if call.name = 'getFileContent' then '<<<FIXME "getFileContent" has no equivalent in Acceleo OCL. getFileContent('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'getChainPath' then '<<<FIXME "getChainPath" has no equivalent in Acceleo OCL. getChainPath()>>>' else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif/]
+
+[query private convertSystemService(call : Call) : String =
+	if call.name = 'i' then '<<<FIXME "i()" has no equivalent in Acceleo OCL. i()>>>' else
+	if call.name = 'args' then 'args'.concat(arguments->first().convertExpressionToOCL()) else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif/]
+
+[query private convertXPathService(call : Call) : String =
+	if call.name = 'ancestor' then 'ancestors()' else
+	if call.name = 'parent' then 'eContainer()' else
+	if call.name = 'self' then 'self' else
+	if call.name = 'child' then 'eContents()' else
+	if call.name = 'descendant' then 'eAllContents()' else
+	if call.name = 'precedingSibling' then 'eContainer().eContents()->subSequence(1, '.concat(call.convertSource()).concat('eContainer().eContents()->indexOf(').concat(call.convertSource()).concat('))->excluding(').concat(call.convertSource()).concat(')') else
+	if call.name = 'preceding' then '<<<FIXME "preceding()" has no equivalent in Acceleo OCL. preceding()>>>' else
+	if call.name = 'followingSibling' then 'eContainer().eContents()->subSequence('.concat(call.convertSource()).concat('eContainer().eContents()->indexOf(').concat(call.convertSource()).concat('), ').concat(call.convertSource()).concat('eContainer().eContents()->size())->excluding(').concat(call.convertSource()).concat(')') else
+	if call.name = 'following' then '<<<FIXME "following()" has no equivalent in Acceleo OCL. following()>>>' else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif endif endif endif endif/]
+	
+[query private convertENodeService(call : Call) : String =
+	if call.name = 'adapt' then 'adaptTo'.concat(call.arguments->first().convertExpressionToOCL().replaceAll('\'', '')).concat('()') else
+	if call.name = 'cast' then 'select(not oclIsKindOf(EObject) or oclIsKindOf('.concat(call.arguments->first().convertExpressionToOCL()).concat('))') else
+	if call.name = 'filter' then 'select(not oclIsKindOf(EObject) or oclIsKindOf('.concat(call.arguments->first().convertExpressionToOCL()).concat('))') else
+	if call.name = 'current' and call.arguments->size() = 0 then if call.isFirstCall() then 'self' else '' endif else
+	if call.name = 'current' and call.arguments->size() = 1 then '<<<FIXME "current(ENode)" has no equivalent in Acceleo OCL. Use the named variable. current('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'debug' then '<<<FIXME "debug()" has no equivalent in Acceleo OCL. debug()>>>' else
+	if call.name = 'trace' then '<<<FIXME "trace()" has no equivalent in Acceleo OCL. trace()>>>' else
+	if call.name = 'nPut' then '<<<FIXME "nPut(String)" has no equivalent in Acceleo OCL. nPut('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'nPeek' then '<<<FIXME "nPeek()" has no equivalent in Acceleo OCL. nPeek()>>>' else
+	if call.name = 'nPop' then '<<<FIXME "nPop()" has no equivalent in Acceleo OCL. nPop()>>>' else
+	if call.name = 'nPush' then '<<<FIXME "nPush()" has no equivalent in Acceleo OCL. nPush()>>>' else
+	if call.name = 'nMinimize' then 'asOrderedSet()->asSequence()' else
+	if call.name = 'minimize' then 'asOrderedSet()->asSequence()' else
+	if call.name = 'nContains' then 'includes('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'nFirst' then 'first()' else
+	if call.name = 'nLast' then 'last()' else
+	if call.name = 'nGet' and call.arguments->size() = 1 then 'at('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'nGet' and call.arguments->size() = 2 then 'subSequence('.concat(call.arguments->first().convertExpressionToOCL()).concat(' + 1, ').concat(call.arguments->last().convertExpressionToOCL()).concat(' + 1)') else
+	if call.name = 'nReverse' then 'reverse()' else
+	if call.name = 'reverse' then 'reverse()' else
+	if call.name = 'nSize' then 'size()' else
+	if call.name = 'nSort' and call.arguments->size() = 0 then 'sortedBy(toString())' else
+	if call.name = 'nSort' and call.arguments->size() = 1 then 'sortedBy('.concat(call.arguments->first().convertExpressionToOCL()).concat(')') else
+	if call.name = 'sort' and call.arguments->size() = 0 then 'sortedBy(toString())->asOrderedSet()->asSequence()' else
+	if call.name = 'sort' and call.arguments->size() = 1 then 'sortedBy('.concat(call.arguments->first().convertExpressionToOCL()).concat(')->asOrderedSet()->asSequence()') else
+	if call.name = 'sep' then 'sep(\''.concat(call.arguments->first().convertExpressionToOCL()).concat('\')') else
+	if call.name = 'sepStr' then 'sep(\''.concat(call.arguments->first().convertExpressionToOCL()).concat('\')') else
+	if call.name = 'toString' then 'toString()' else
+	if call.name = 'until' then '<<<FIXME "until(String, String)" has no equivalent in Acceleo OCL. until('.concat(call.arguments->first().convertExpressionToOCL()).concat(', ').concat(call.arguments->last().convertExpressionToOCL()).concat(')>>>') else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif endif/]
+
+[query private convertContextService(call : Call) : String =
+	if call.name = 'get' then '<<<FIXME "get()" has no equivalent in Acceleo OCL. get('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'peek' then '<<<FIXME "peek" has no equivalent in Acceleo OCL. peek()>>>' else
+	if call.name = 'pop' then '<<<FIXME "pop" has no equivalent in Acceleo OCL. pop()>>>' else
+	if call.name = 'push' then '<<<FIXME "push" has no equivalent in Acceleo OCL. push()>>>' else
+	if call.name = 'put' then '<<<FIXME "put(String, Object)" has no equivalent in Acceleo OCL. put('.concat(call.arguments->first().convertExpressionToOCL()).concat(', ').concat(call.arguments->last().convertExpressionToOCL()).concat(')>>>') else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif endif endif/]
+	
+[query private convertPropertiesService(call : Call) : String =
+	if call.name = 'getBestProperty' then '<<<FIXME "getBestProperty(String)" has no equivalent in Acceleo OCL. getBestProperty('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'getProperty' and call.arguments->size() = 1 then '<<<FIXME "getProperty(String)" has no equivalent in Acceleo OCL. getProperty('.concat(call.arguments->first().convertExpressionToOCL()).concat(')>>>') else
+	if call.name = 'getProperty' and call.arguments->size() = 2 then '<<<FIXME "getProperty(String, String)" has no equivalent in Acceleo OCL. getProperty('.concat(call.arguments->first().convertExpressionToOCL()).concat(', ').concat(call.arguments->last().convertExpressionToOCL()).concat(')>>>') else
+	'<<<FIXME couldn\'t convert call '.concat(call.name).concat(' to Acceleo OCL>>>')
+	endif endif endif/]
+
+[comment this has been externalized here to make use of the query's caching/]
+[query private allCalls(root : OclAny) : Sequence(T) = root.eAllContents(mt::expressions::Call)/]

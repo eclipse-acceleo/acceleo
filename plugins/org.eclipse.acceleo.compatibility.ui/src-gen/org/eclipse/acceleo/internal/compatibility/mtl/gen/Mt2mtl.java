@@ -57,7 +57,7 @@ public class Mt2mtl {
 	 * 
 	 * @generated
 	 */
-	public static final String[] TEMPLATE_NAMES = { "main", };
+	public static final String[] TEMPLATE_NAMES = { "convertToModule", };
 
 	/**
 	 * The root element of the module.

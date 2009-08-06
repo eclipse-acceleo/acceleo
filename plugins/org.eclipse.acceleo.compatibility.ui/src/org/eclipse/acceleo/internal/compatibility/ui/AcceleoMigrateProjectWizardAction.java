@@ -26,6 +26,7 @@ import org.eclipse.acceleo.internal.compatibility.mtl.gen.Mt2mtl;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core.ProjectParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -92,14 +93,14 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 	@Override
 	protected void generateMTL(IPath baseFolder) throws IOException, CoreException {
 		if (baseFolder.segmentCount() > 0) {
-			IPath emtFile = baseFolder.append("chain.emt");
-			ModelUtils.save(root, emtFile.toString());
-			IContainer targetContainer = ResourcesPlugin.getWorkspace().getRoot().getFile(emtFile)
-					.getParent();
+			IFile emtFile = ResourcesPlugin.getWorkspace().getRoot().getFile(baseFolder.append("chain.emt")); //$NON-NLS-1$
+			IPath emtPath = emtFile.getLocation();
+			ModelUtils.save(root, emtPath.toString());
+			IContainer targetContainer = emtFile.getParent();
 			File targetFolder = targetContainer.getLocation().toFile();
 			Mt2mtl mt2mtl = new Mt2mtl(root, targetFolder, new ArrayList<Object>());
 			mt2mtl.doGenerate(new BasicMonitor());
-			if (ResourcesPlugin.getWorkspace().getRoot().getFile(emtFile).getParent().isAccessible()) {
+			if (targetContainer.isAccessible()) {
 				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}
 		}
