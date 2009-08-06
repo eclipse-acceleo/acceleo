@@ -58,8 +58,9 @@ public final class AcceleoNonStandardLibrary {
 	 * </tr>
 	 * </table>
 	 * <p>
-	 * <b>sep( String ) : Collection</b><br/> Returns all elements from the source collection separated by an
-	 * element composed of the <code>separator</code> String.
+	 * <b>sep( String ) : Collection</b><br/>
+	 * Returns all elements from the source collection separated by an element composed of the
+	 * <code>separator</code> String.
 	 * </p>
 	 * 
 	 * @since 0.8
@@ -70,12 +71,12 @@ public final class AcceleoNonStandardLibrary {
 	 * Name of the &quot;ancestors&quot; non-standard operation accessible on all objects. This operation
 	 * comes in two flavors :
 	 * <p>
-	 * <b>ancestors( ) : Sequence</b><br/> Returns a Sequence containing the full set of the receiver's
-	 * ancestors.
+	 * <b>ancestors( ) : Sequence</b><br/>
+	 * Returns a Sequence containing the full set of the receiver's ancestors.
 	 * </p>
 	 * <p>
-	 * <b>ancestors( OclAny ) : Sequence</b><br/> Returns the elements of the given type from the set of the
-	 * receiver's ancestors as a Sequence.
+	 * <b>ancestors( OclAny ) : Sequence</b><br/>
+	 * Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_ANCESTORS = "ancestors"; //$NON-NLS-1$
@@ -84,12 +85,12 @@ public final class AcceleoNonStandardLibrary {
 	 * Name of the &quot;siblings&quot; non-standard operation accessible on all objects. This operation comes
 	 * in two flavors :
 	 * <p>
-	 * <b>siblings( ) : Sequence</b><br/> Returns a Sequence containing the full set of the receiver's
-	 * siblings.
+	 * <b>siblings( ) : Sequence</b><br/>
+	 * Returns a Sequence containing the full set of the receiver's siblings.
 	 * </p>
 	 * <p>
-	 * <b>siblings( OclAny ) : Sequence</b><br/> Returns the elements of the given type from the set of the
-	 * receiver's siblings as a Sequence.
+	 * <b>siblings( OclAny ) : Sequence</b><br/>
+	 * Returns the elements of the given type from the set of the receiver's siblings as a Sequence.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_SIBLINGS = "siblings"; //$NON-NLS-1$
@@ -98,11 +99,12 @@ public final class AcceleoNonStandardLibrary {
 	 * Name of the &quot;eAllContents&quot; non-standard operation accessible on all objects. This operation
 	 * comes in two flavors :
 	 * <p>
-	 * <b>eAllContents( ) : Sequence</b><br/> Returns the whole content tree of the receiver as a Sequence.
+	 * <b>eAllContents( ) : Sequence</b><br/>
+	 * Returns the whole content tree of the receiver as a Sequence.
 	 * </p>
 	 * <p>
-	 * <b>eAllContents( OclAny ) : Sequence</b><br/> Returns the elements of the given type from the whole
-	 * content tree of the receiver as a Sequence.
+	 * <b>eAllContents( OclAny ) : Sequence</b><br/>
+	 * Returns the elements of the given type from the whole content tree of the receiver as a Sequence.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
@@ -111,11 +113,12 @@ public final class AcceleoNonStandardLibrary {
 	 * Name of the &quot;eInverse&quot; non-standard operation accessible on all objects. This operation comes
 	 * in two flavors :
 	 * <p>
-	 * <b>eInverse( ) : Sequence(T)</b><br/> Returns the inverse references of the receiver.
+	 * <b>eInverse( ) : Sequence(T)</b><br/>
+	 * Returns the inverse references of the receiver.
 	 * </p>
 	 * <p>
-	 * <b>eInverse( OclAny ) : Sequence(T)</b><br/> Returns the elements of the given type from the set of the
-	 * inverse references of the receiver.
+	 * <b>eInverse( OclAny ) : Sequence(T)</b><br/>
+	 * Returns the elements of the given type from the set of the inverse references of the receiver.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_EINVERSE = "eInverse"; //$NON-NLS-1$
@@ -123,9 +126,9 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;invoke&quot; non-standard operation accessible on all objects.
 	 * <p>
-	 * <b>invoke( String class, String method, Sequence(OclAny) arguments ) : OclAny</b><br/> Invokes the
-	 * method <code>method</code> of class <code>class</code> with the given arguments. This will return
-	 * OclInvalid if the method cannot be called.
+	 * <b>invoke( String class, String method, Sequence(OclAny) arguments ) : OclAny</b><br/>
+	 * Invokes the method <code>method</code> of class <code>class</code> with the given arguments. This will
+	 * return OclInvalid if the method cannot be called.
 	 * </p>
 	 * 
 	 * @since 0.8
@@ -135,7 +138,8 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;toString&quot; non-standard operation accessible on all objects.
 	 * <p>
-	 * <b>toString( ) : String</b><br/> Returns the String representation of the receiver.
+	 * <b>toString( ) : String</b><br/>
+	 * Returns the String representation of the receiver.
 	 * </p>
 	 */
 	public static final String OPERATION_OCLANY_TOSTRING = "toString"; //$NON-NLS-1$
@@ -143,8 +147,9 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;contains&quot; non-standard String operation.
 	 * <p>
-	 * <b>contains( String substring ) : Boolean</b><br/> Returns <code>true</code> if self contains the
-	 * substring <code>substring</code>, <code>false</code> otherwise.
+	 * <b>contains( String substring ) : Boolean</b><br/>
+	 * Returns <code>true</code> if self contains the substring <code>substring</code>, <code>false</code>
+	 * otherwise.
 	 * </p>
 	 * 
 	 * @since 0.8
@@ -154,8 +159,9 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;endsWith&quot; non-standard String operation.
 	 * <p>
-	 * <b>endsWith( String substring ) : Boolean</b><br/> Returns <code>true</code> if self ends with the
-	 * substring <code>substring</code>, <code>false</code> otherwise.
+	 * <b>endsWith( String substring ) : Boolean</b><br/>
+	 * Returns <code>true</code> if self ends with the substring <code>substring</code>, <code>false</code>
+	 * otherwise.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_ENDSWITH = "endsWith"; //$NON-NLS-1$
@@ -163,10 +169,11 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;replace&quot; non-standard String operation.
 	 * <p>
-	 * <b>replace( String substring, String replacement ) : String</b><br/> Substitutes the first occurence of
-	 * substring <code>substring</code> in self by substring <code>replacement</code> and returns the
-	 * resulting string. If there is no occurrence of the substring, The original string is returned.
-	 * <code>substring</code> and <code>replacement</code> are treated as regular expressions.
+	 * <b>replace( String substring, String replacement ) : String</b><br/>
+	 * Substitutes the first occurence of substring <code>substring</code> in self by substring
+	 * <code>replacement</code> and returns the resulting string. If there is no occurrence of the substring,
+	 * The original string is returned. <code>substring</code> and <code>replacement</code> are treated as
+	 * regular expressions.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_REPLACE = "replace"; //$NON-NLS-1$
@@ -174,10 +181,10 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;replaceAll&quot; non-standard String operation.
 	 * <p>
-	 * <b>replaceAll( String substring, String replacement ) : String</b><br/> Substitutes all substrings
-	 * <code>substring</code> in self by substring <code>replacement</code> and returns the resulting string.
-	 * If there is no occurrence of the substring, The original string is returned. <code>substring</code> and
-	 * <code>replacement</code> are treated as regular expressions.
+	 * <b>replaceAll( String substring, String replacement ) : String</b><br/>
+	 * Substitutes all substrings <code>substring</code> in self by substring <code>replacement</code> and
+	 * returns the resulting string. If there is no occurrence of the substring, The original string is
+	 * returned. <code>substring</code> and <code>replacement</code> are treated as regular expressions.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_REPLACEALL = "replaceAll"; //$NON-NLS-1$
@@ -185,8 +192,9 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;startsWith&quot; non-standard String operation.
 	 * <p>
-	 * <b>startsWith( String substring ) : Boolean</b><br/> Returns <code>true</code> if self starts with the
-	 * substring <code>substring</code>, <code>false</code> otherwise.
+	 * <b>startsWith( String substring ) : Boolean</b><br/>
+	 * Returns <code>true</code> if self starts with the substring <code>substring</code>, <code>false</code>
+	 * otherwise.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_STARTSWITH = "startsWith"; //$NON-NLS-1$
@@ -194,10 +202,10 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;substituteAll&quot; non-standard String operation.
 	 * <p>
-	 * <b>substituteAll( String substring, String replacement ) : String</b><br/> Substitutes all substrings
-	 * <code>substring</code> in self by substring <code>replacement</code> and returns the resulting string.
-	 * If there is no occurrence of the substring, The original string is returned. <code>substring</code> and
-	 * <code>replacement</code> are not treated as regular expressions.
+	 * <b>substituteAll( String substring, String replacement ) : String</b><br/>
+	 * Substitutes all substrings <code>substring</code> in self by substring <code>replacement</code> and
+	 * returns the resulting string. If there is no occurrence of the substring, The original string is
+	 * returned. <code>substring</code> and <code>replacement</code> are not treated as regular expressions.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_SUBSTITUTEALL = "substituteAll"; //$NON-NLS-1$
@@ -205,8 +213,9 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;tokenize&quot; non-standard String operation.
 	 * <p>
-	 * <b>tokenize( String delim ) : Sequence</b><br/> Returns a sequence containing all parts of self split
-	 * around delimiters defined by the characters in String delim.
+	 * <b>tokenize( String delim ) : Sequence</b><br/>
+	 * Returns a sequence containing all parts of self split around delimiters defined by the characters in
+	 * String delim.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_TOKENIZE = "tokenize"; //$NON-NLS-1$
@@ -214,7 +223,8 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;trim&quot; non-standard String operation.
 	 * <p>
-	 * <b>trim( ) : String</b><br/> Removes all leading and trailing spaces of self.
+	 * <b>trim( ) : String</b><br/>
+	 * Removes all leading and trailing spaces of self.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_TRIM = "trim"; //$NON-NLS-1$
@@ -223,35 +233,14 @@ public final class AcceleoNonStandardLibrary {
 	public static final String PRIMITIVE_STRING_NAME = "String"; //$NON-NLS-1$
 
 	/**
-	 * Name of the type "Bag" used for common EOperations on OCL ordered bags.
+	 * Name of the type "Collection" used for common EOperations on OCL collection.
 	 * 
 	 * @since 0.8
 	 */
-	public static final String TYPE_BAG_NAME = "Bag(T)"; //$NON-NLS-1$
+	public static final String TYPE_COLLECTION_NAME = "Collection(T)"; //$NON-NLS-1$
 
 	/** Name of the type "OclAny" used for common EOperations for all EObjects. */
 	public static final String TYPE_OCLANY_NAME = "OclAny"; //$NON-NLS-1$
-
-	/**
-	 * Name of the type "OrderedSet" used for common EOperations on OCL ordered sets.
-	 * 
-	 * @since 0.8
-	 */
-	public static final String TYPE_ORDEREDSET_NAME = "OrderedSet(T)"; //$NON-NLS-1$
-
-	/**
-	 * Name of the type "Sequence" used for common EOperations on OCL sequences.
-	 * 
-	 * @since 0.8
-	 */
-	public static final String TYPE_SEQUENCE_NAME = "Sequence(T)"; //$NON-NLS-1$
-
-	/**
-	 * Name of the type "Sequence" used for common EOperations on OCL sets.
-	 * 
-	 * @since 0.8
-	 */
-	public static final String TYPE_SET_NAME = "Set(T)"; //$NON-NLS-1$
 
 	/** This is the ecore package that will contain the Acceleo non-standard Library classifiers. */
 	private static EPackage nonStdLibPackage;
@@ -259,20 +248,11 @@ public final class AcceleoNonStandardLibrary {
 	/** NS URI of the mtlnonstdlib.ecore which defines the Acceleo non-standard operation library. */
 	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore"; //$NON-NLS-1$
 
-	/** EClass for the Acceleo non-standard library's "Bag" type. */
-	private static EClass bagType;
+	/** EClass for the Acceleo non-standard library's "Collection" type. */
+	private static EClass collectionType;
 
 	/** EClass for the Acceleo non-standard library's "OclAny" type. */
 	private static EClass oclAnyType;
-
-	/** EClass for the Acceleo non-standard library's "OrderedSet" type. */
-	private static EClass orderedSetType;
-
-	/** EClass for the Acceleo non-standard library's "Sequence" type. */
-	private static EClass sequenceType;
-
-	/** EClass for the Acceleo non-standard library's "Set" type. */
-	private static EClass setType;
 
 	/** EClass for the Acceleo non-standard library's "String" type. */
 	private static EClass stringType;
@@ -285,11 +265,8 @@ public final class AcceleoNonStandardLibrary {
 
 		try {
 			nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
-			bagType = (EClass)nonStdLibPackage.getEClassifier(TYPE_BAG_NAME);
+			collectionType = (EClass)nonStdLibPackage.getEClassifier(TYPE_COLLECTION_NAME);
 			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
-			orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
-			sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
-			setType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SET_NAME);
 			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
 		} catch (IOException e) {
 			AcceleoCommonPlugin.log(
@@ -322,14 +299,8 @@ public final class AcceleoNonStandardLibrary {
 			result.addAll(stringType.getEOperations());
 		} else if (TYPE_OCLANY_NAME.equals(classifierName)) {
 			result.addAll(oclAnyType.getEOperations());
-		} else if (TYPE_BAG_NAME.equals(classifierName)) {
-			result.addAll(bagType.getEOperations());
-		} else if (TYPE_ORDEREDSET_NAME.equals(classifierName)) {
-			result.addAll(orderedSetType.getEOperations());
-		} else if (TYPE_SET_NAME.equals(classifierName)) {
-			result.addAll(setType.getEOperations());
-		} else if (TYPE_SEQUENCE_NAME.equals(classifierName)) {
-			result.addAll(sequenceType.getEOperations());
+		} else if (TYPE_COLLECTION_NAME.equals(classifierName)) {
+			result.addAll(collectionType.getEOperations());
 		}
 
 		return result;
