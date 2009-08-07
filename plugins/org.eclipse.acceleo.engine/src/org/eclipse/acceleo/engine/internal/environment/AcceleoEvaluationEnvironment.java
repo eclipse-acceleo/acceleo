@@ -467,7 +467,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		for (int i = 0; i < argumentTypes.size(); i++) {
-			for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+			for (final Template candidate : new LinkedHashSet<Template>(applicableCandidates)) {
 				final Object parameterType = candidate.getParameter().get(i).getType();
 				if (!isApplicableArgument(parameterType, argumentTypes.get(i))) {
 					applicableCandidates.remove(candidate);
