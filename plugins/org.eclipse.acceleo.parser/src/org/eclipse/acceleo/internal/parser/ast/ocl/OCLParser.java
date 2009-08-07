@@ -873,8 +873,11 @@ public class OCLParser {
 	private boolean receiverIsArgument(OperationCallExp eCall) {
 		boolean result;
 		if (eCall.getSource() != null) {
-			if (eCall.getSource() instanceof VariableExp) {
-				result = ((VariableExp)eCall.getSource()).getReferredVariable() != null;
+			if (eCall.getSource() instanceof VariableExp
+					&& ((VariableExp)eCall.getSource()).getReferredVariable() != null) {
+				result = !IAcceleoConstants.SELF.equals(((VariableExp)eCall.getSource())
+						.getReferredVariable().getName())
+						|| eCall.getArgument().size() != eCall.getReferredOperation().getEParameters().size();
 			} else {
 				result = true;
 			}
