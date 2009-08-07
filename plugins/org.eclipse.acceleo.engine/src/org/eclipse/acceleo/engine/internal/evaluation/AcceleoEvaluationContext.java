@@ -196,14 +196,9 @@ public final class AcceleoEvaluationContext {
 				}
 
 				// Save the file
+				last.close();
 				if (previewMode) {
-					last.close();
 					generationPreview.put(filePath, last);
-				} else {
-					// Add a carriage return at the end of each file so that no problem will arise with
-					// indentation when appending
-					last.append(LINE_SEPARATOR);
-					last.close();
 				}
 				result = ""; //$NON-NLS-1$
 			} else if (last instanceof OutputStreamWriter) {
@@ -398,6 +393,10 @@ public final class AcceleoEvaluationContext {
 			final Writer writer;
 			if (!previewMode && (!hasJMergeTag || appendMode)) {
 				writer = new AcceleoWriterDecorator(generatedFile, appendMode);
+				// Append a line separator to the new file so as to avoid writing on an existing line
+				if (appendMode) {
+					writer.append(LINE_SEPARATOR);
+				}
 			} else {
 				if (appendMode && generationPreview.containsKey(generatedFile.getPath())) {
 					writer = generationPreview.get(generatedFile.getPath());
