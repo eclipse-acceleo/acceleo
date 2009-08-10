@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.emf.ecore.EClass;
@@ -134,13 +135,18 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	public EClassifier lookupClassifier(String name) {
 		if (name != null) {
-			Iterator<EClassifier> eClassifierIt = getTypes().iterator();
-			while (eClassifierIt.hasNext()) {
-				EClassifier eClassifier = eClassifierIt.next();
-				if (name.equals(eClassifier.getName())) {
-					return eClassifier;
-				}
+			List<String> names = new ArrayList<String>();
+			int eNamespace = name.indexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+			if (eNamespace > -1) {
+				String packageName = name.substring(0, eNamespace).trim();
+				String className = name
+						.substring(eNamespace + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+				names.add(packageName);
+				names.add(className);
+			} else {
+				names.add(name);
 			}
+			return lookupClassifier(names);
 		}
 		// super never returns invalid types.
 		// return getOCLStandardLibrary().getInvalid();
