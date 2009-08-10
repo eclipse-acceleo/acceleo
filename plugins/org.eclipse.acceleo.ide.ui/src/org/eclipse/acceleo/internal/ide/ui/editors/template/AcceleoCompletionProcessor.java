@@ -288,8 +288,16 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					case SIGNAL:
 					case PROPERTY:
 						String displayProperty = next.getDescription();
+						String descriptionProperty;
 						if (next.getElement() instanceof EStructuralFeature) {
 							displayProperty = getPropertyDisplay((EStructuralFeature)next.getElement());
+							StringBuilder descriptionPropertyBuilder = new StringBuilder(displayProperty);
+							descriptionPropertyBuilder.append("\n\t defined on ");
+							descriptionPropertyBuilder.append(((EStructuralFeature)next.getElement())
+									.getEContainingClass().getName());
+							descriptionProperty = descriptionPropertyBuilder.toString();
+						} else {
+							descriptionProperty = displayProperty;
 						}
 						if (!duplicated.contains(displayProperty)) {
 							duplicated.add(displayProperty);
@@ -301,7 +309,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 											replacementString.length(),
 											AcceleoUIActivator.getDefault().getImage(
 													"icons/template-editor/completion/Property.gif"), displayProperty, //$NON-NLS-1$
-											null, displayProperty));
+											null, descriptionProperty));
 						}
 						break;
 					case ENUMERATION_LITERAL:
