@@ -18,4 +18,8 @@
 [template public toLowerFirst1(s:String) overrides toUFirst ]
 	// Parsing this fails in NPE since we cannot define templates on primitive types 
 	[s.substring(1,1).toLower().concat(s.substring(2, s.size()))/]
+	[s->sequenceToString()/]
+[/template]
+
+[template public sequenceToString(s: Set(String))]
 [/template]
