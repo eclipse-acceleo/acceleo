@@ -11,6 +11,8 @@
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +109,17 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		List<IFile> filesOutput = new ArrayList<IFile>();
 		members(filesOutput, getProject());
 		if (filesOutput.size() > 0) {
+			Collections.sort(filesOutput, new Comparator<IFile>() {
+				public int compare(IFile arg0, IFile arg1) {
+					long m0 = arg0.getLocation().toFile().lastModified();
+					long m1 = arg1.getLocation().toFile().lastModified();
+					if (m0 < m1) {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+			});
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
@@ -141,6 +154,17 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			computeOtherFilesToBuild(deltaFilesOutput);
 		}
 		if (deltaFilesOutput.size() > 0) {
+			Collections.sort(deltaFilesOutput, new Comparator<IFile>() {
+				public int compare(IFile arg0, IFile arg1) {
+					long m0 = arg0.getLocation().toFile().lastModified();
+					long m1 = arg1.getLocation().toFile().lastModified();
+					if (m0 < m1) {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+			});
 			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
@@ -164,7 +188,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IFile deltaFile = deltaFiles.get(i);
 			if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(deltaFile.getFileExtension())) {
 				String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
-						new Path(deltaFile.getName()).removeFileExtension().lastSegment(),};
+						new Path(deltaFile.getName()).removeFileExtension().lastSegment(), };
 				importSequencesToSearch.add(new Sequence(tokens));
 				otherTemplates.remove(deltaFile);
 			}
@@ -178,7 +202,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					deltaFiles.add(otherTemplateToBuild);
 					String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 							IAcceleoConstants.IMPORT,
-							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(),};
+							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(), };
 					Sequence importSequence = new Sequence(tokens);
 					importSequencesToSearch.add(importSequence);
 				}
