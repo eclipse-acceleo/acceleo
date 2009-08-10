@@ -14,13 +14,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -58,6 +62,7 @@ public class AcceleoParser {
 		List<Resource> newResources = new ArrayList<Resource>();
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
 		Iterator<URI> itOutputURIs = outputURIs.iterator();
+		Set<String> allImportedFiles = new HashSet<String>();
 		for (Iterator<File> itInputFiles = inputFiles.iterator(); itInputFiles.hasNext()
 				&& itOutputURIs.hasNext();) {
 			File inputFile = itInputFiles.next();
@@ -67,11 +72,22 @@ public class AcceleoParser {
 			Resource oResource = ModelUtils.createResource(oURI, oResourceSet);
 			newResources.add(oResource);
 			source.createCST();
+			for (ModuleImportsValue importValue : source.getCST().getImports()) {
+				String importedFileName = importValue.getName();
+				if (importedFileName != null) {
+					int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+					if (lastSegment > -1) {
+						importedFileName = importedFileName.substring(
+								lastSegment + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+					}
+					allImportedFiles.add(importedFileName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION);
+				}
+			}
 			source.createAST(oResource);
 		}
 		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
 			URI oURI = itDependenciesURIs.next();
-			if (!outputURIs.contains(oURI)) {
+			if (!outputURIs.contains(oURI) && allImportedFiles.contains(oURI.lastSegment())) {
 				try {
 					ModelUtils.load(oURI, oResourceSet);
 				} catch (IOException e) {
@@ -106,7 +122,6 @@ public class AcceleoParser {
 						.getName()), 0, -1);
 			}
 		}
-
 		problems = new HashMap<File, AcceleoParserProblems>(sources.size());
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
@@ -140,11 +155,23 @@ public class AcceleoParser {
 			}
 		}
 		source.createCST();
+		Set<String> allImportedFiles = new HashSet<String>();
+		for (ModuleImportsValue importValue : source.getCST().getImports()) {
+			String importedFileName = importValue.getName();
+			if (importedFileName != null) {
+				int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+				if (lastSegment > -1) {
+					importedFileName = importedFileName.substring(
+							lastSegment + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+				}
+				allImportedFiles.add(importedFileName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION);
+			}
+		}
 		source.createAST(resource);
 		if (resource.getResourceSet() != null) {
 			for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
 				URI oURI = itDependenciesURIs.next();
-				if (!resourceSetURIs.contains(oURI)) {
+				if (!resourceSetURIs.contains(oURI) && allImportedFiles.contains(oURI.lastSegment())) {
 					try {
 						ModelUtils.load(oURI, resource.getResourceSet());
 					} catch (IOException e) {
