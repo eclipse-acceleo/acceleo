@@ -33,6 +33,7 @@ import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.utilities.UMLReflection;
 
 /**
@@ -134,22 +135,53 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @return the meta-model object, or null if it doesn't exist
 	 */
 	public EClassifier lookupClassifier(String name) {
+		EClassifier classifier = null;
 		if (name != null) {
-			List<String> names = new ArrayList<String>();
-			int eNamespace = name.indexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
-			if (eNamespace > -1) {
-				String packageName = name.substring(0, eNamespace).trim();
-				String className = name
-						.substring(eNamespace + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
-				names.add(packageName);
-				names.add(className);
-			} else {
-				names.add(name);
+			classifier = lookupSequenceClassifier(name);
+			if (classifier == null) {
+				List<String> names = new ArrayList<String>();
+				int eNamespace = name.indexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+				if (eNamespace > -1) {
+					String packageName = name.substring(0, eNamespace).trim();
+					String className = name.substring(
+							eNamespace + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+					names.add(packageName);
+					names.add(className);
+				} else {
+					names.add(name);
+				}
+				classifier = lookupClassifier(names);
 			}
-			return lookupClassifier(names);
 		}
-		// super never returns invalid types.
-		// return getOCLStandardLibrary().getInvalid();
+		return classifier;
+	}
+
+	/**
+	 * Selects the sequence type for the given name in the current module.
+	 * 
+	 * @param name
+	 *            is the name of the sequence type to search
+	 * @return the sequence object, or null if it doesn't exist
+	 */
+	private EClassifier lookupSequenceClassifier(String name) {
+		if (name.endsWith(IAcceleoConstants.PARENTHESIS_END)) {
+			int iPar = name.indexOf(IAcceleoConstants.PARENTHESIS_BEGIN);
+			if (iPar > -1) {
+				String sequenceType = name.substring(0, iPar).trim();
+				String elementType = name.substring(iPar + IAcceleoConstants.PARENTHESIS_BEGIN.length(),
+						name.length() - IAcceleoConstants.PARENTHESIS_END.length()).trim();
+				EClassifier elementClassifier = lookupClassifier(elementType);
+				Object sequenceClassifier = null;
+				if (elementClassifier != null && CollectionKind.getByName(sequenceType) != null) {
+					sequenceClassifier = getTypeResolver().resolveCollectionType(
+							CollectionKind.getByName(sequenceType), elementClassifier);
+				}
+				if (sequenceClassifier instanceof EClassifier) {
+					return (EClassifier)sequenceClassifier;
+				}
+
+			}
+		}
 		return null;
 	}
 
