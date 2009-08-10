@@ -41,12 +41,12 @@ public interface IAcceleoParserProblemsConstants {
 	 * Syntax problem message : Type not valid.
 	 */
 	String SYNTAX_TYPE_NOT_VALID = AcceleoParserMessages
-			.getString("IAcceleoParserProblemsConstants.InvalidType") + ':'; //$NON-NLS-1$
+			.getString("IAcceleoParserProblemsConstants.InvalidType"); //$NON-NLS-1$
 
 	/**
 	 * Syntax problem message : Name not valid.
 	 */
 	String SYNTAX_NAME_NOT_VALID = AcceleoParserMessages
-			.getString("IAcceleoParserProblemsConstants.InvalidIdentifier") + ':'; //$NON-NLS-1$
+			.getString("IAcceleoParserProblemsConstants.InvalidIdentifier"); //$NON-NLS-1$
 
 }

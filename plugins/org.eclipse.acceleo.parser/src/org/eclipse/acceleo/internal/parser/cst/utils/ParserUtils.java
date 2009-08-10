@@ -265,4 +265,23 @@ public final class ParserUtils {
 		return posBegin;
 	}
 
+	/**
+	 * Indicates if the given text is a valid identifier.
+	 * 
+	 * @param text
+	 *            is the text to test
+	 * @return true if the given text is a valid identifier
+	 */
+	public static boolean isIdentifier(String text) {
+		if (text != null && text.length() > 0 && Character.isJavaIdentifierStart(text.charAt(0))) {
+			int i = 1;
+			while (i < text.length() && Character.isJavaIdentifierPart(text.charAt(i))) {
+				i++;
+			}
+			return i == text.length();
+		} else {
+			return false;
+		}
+	}
+
 }

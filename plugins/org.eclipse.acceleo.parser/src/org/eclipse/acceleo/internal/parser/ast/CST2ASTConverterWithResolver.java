@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
+import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
@@ -425,16 +426,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			transformStepResolve(iInitExpression);
 			factory.getOCL().addVariableToScope(oVariable);
-			if (oVariable.getName() != null) {
-				boolean isValid = true;
-				for (int i = 0; isValid && i < oVariable.getName().length(); i++) {
-					char c = oVariable.getName().charAt(i);
-					isValid = Character.isJavaIdentifierPart(c);
-				}
-				if (!isValid) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(),
-							iVariable.getStartPosition(), iVariable.getEndPosition());
-				}
+			if (!ParserUtils.isIdentifier(oVariable.getName())) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(), iVariable
+						.getStartPosition(), iVariable.getEndPosition());
 			}
 			if (oVariable.getType() == null || oVariable.getType() == factory.getOCL().getInvalidType()) {
 				EClassifier eClassifier = factory.getOCL().lookupClassifier(iVariable.getType());

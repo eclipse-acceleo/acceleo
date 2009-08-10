@@ -681,9 +681,15 @@ public class CSTParser {
 		if (bH.b() == -1) {
 			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+			}
 			eTemplate.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+			}
 			eTemplate.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
@@ -1045,9 +1051,15 @@ public class CSTParser {
 		if (bH.b() == -1) {
 			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+			}
 			eQuery.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+			}
 			eQuery.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
@@ -1107,9 +1119,15 @@ public class CSTParser {
 		if (bH.b() == -1) {
 			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+			}
 			eMacro.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
+			if (!ParserUtils.isIdentifier(name)) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+			}
 			eMacro.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
