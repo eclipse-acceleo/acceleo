@@ -185,6 +185,9 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 						} else {
 							replaceEnd = e;
 						}
+						if (i + 1 < initialStrings.length && e >= text.length()) {
+							globalSearch = -1;
+						}
 					} else {
 						if (replaceStart > -1) {
 							globalSearch = replaceStart + 1;
@@ -286,6 +289,9 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 						} else {
 							searchEnd = e;
 						}
+						if (i + 1 < sequence.length && e >= text.length()) {
+							globalSearch = -1;
+						}
 					} else {
 						if (searchStart > -1 && "\"".equals(sequence[0])) { //$NON-NLS-1$
 							globalSearch = -1;
@@ -305,7 +311,7 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 					}
 				}
 				if (searchStart > -1 && searchEnd > -1) {
-					return new int[] {searchStart, searchEnd};
+					return new int[] {searchStart, searchEnd };
 				}
 			}
 		}
