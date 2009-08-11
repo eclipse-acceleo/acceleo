@@ -1094,8 +1094,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						transformStepResolve((org.eclipse.acceleo.parser.cst.Macro)iNext);
 					} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Block) {
 						transformStepResolve((org.eclipse.acceleo.parser.cst.Block)iNext);
-					} else {
-						assert iNext instanceof org.eclipse.acceleo.parser.cst.Comment;
+					} else if (!(iNext instanceof org.eclipse.acceleo.parser.cst.Comment)) {
+						log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID + ' '
+								+ iNext.getClass().getName(), iNext.getStartPosition(), iNext
+								.getEndPosition());
 					}
 				}
 			}
