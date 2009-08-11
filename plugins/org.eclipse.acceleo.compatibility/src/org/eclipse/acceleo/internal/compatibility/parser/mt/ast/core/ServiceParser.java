@@ -127,7 +127,7 @@ public final class ServiceParser {
 				return (Service)resource;
 			}
 		}
-		final Class<?> javaClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName);
+		final Class<?> javaClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName, false);
 		Service result;
 		if (javaClass != null) {
 			result = createService(javaClass, root);
