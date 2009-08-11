@@ -119,36 +119,36 @@ public class CSTParserBlock {
 		this.pAcceleo = pAcceleo;
 		this.source = pAcceleo.source;
 		pTrace = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TRACE, false,
-				new SequenceBlock[] {pAcceleo.pLiteral}, new SequenceBlock[] {pAcceleo.pComment});
+				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		pFile = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FILE, true,
-				new SequenceBlock[] {pAcceleo.pLiteral}, new SequenceBlock[] {pAcceleo.pComment});
+				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		pFor = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FOR, true,
-				new SequenceBlock[] {pAcceleo.pLiteral, pAcceleo.pParenthesis,},
-				new SequenceBlock[] {pAcceleo.pComment,});
+				new SequenceBlock[] {pAcceleo.pLiteral, pAcceleo.pParenthesis, },
+				new SequenceBlock[] {pAcceleo.pComment, });
 		pIf = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.IF, true,
-				new SequenceBlock[] {pAcceleo.pLiteral}, new SequenceBlock[] {pAcceleo.pComment});
+				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pElseIfBeginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE_IF);
 		Sequence pElseIfEndHeader = new Sequence(IAcceleoConstants.DEFAULT_END);
 		pElseIf = new SequenceBlock(pElseIfBeginHeader, pElseIfEndHeader, null, false,
-				new SequenceBlock[] {pAcceleo.pLiteral});
+				new SequenceBlock[] {pAcceleo.pLiteral });
 		pElse = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE,
 				IAcceleoConstants.DEFAULT_END);
 		pLet = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.LET, true,
-				new SequenceBlock[] {pAcceleo.pLiteral}, new SequenceBlock[] {pAcceleo.pComment});
+				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pElseLetBeginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.ELSE_LET);
 		Sequence pElseLetEndHeader = new Sequence(IAcceleoConstants.DEFAULT_END);
 		pElseLet = new SequenceBlock(pElseLetBeginHeader, pElseLetEndHeader, null, false,
-				new SequenceBlock[] {pAcceleo.pLiteral});
+				new SequenceBlock[] {pAcceleo.pLiteral });
 		pProtectedArea = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.PROTECTED_AREA,
-				false, new SequenceBlock[] {pAcceleo.pLiteral}, new SequenceBlock[] {pAcceleo.pComment});
+				false, new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pBegin = new Sequence(IAcceleoConstants.DEFAULT_BEGIN);
 		Sequence pEnd = new Sequence(IAcceleoConstants.DEFAULT_END);
 		SequenceBlock pBeginEnd = new SequenceBlock(pBegin, pEnd, null, true,
-				new SequenceBlock[] {pAcceleo.pLiteral});
+				new SequenceBlock[] {pAcceleo.pLiteral });
 		pExpression = new SequenceBlock(new Sequence(IAcceleoConstants.INVOCATION_BEGIN), new Sequence(
 				IAcceleoConstants.INVOCATION_END), null, false, new SequenceBlock[] {pAcceleo.pLiteral,
-				pBeginEnd,});
+				pBeginEnd, });
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class CSTParserBlock {
 	 */
 	public void parse(int posBegin, int posEnd, Block eBlock) {
 		SequenceBlock[] pBlockElements = new SequenceBlock[] {pAcceleo.pComment, pFile, pFor, pIf, pLet,
-				pTrace, pProtectedArea, pExpression,};
+				pTrace, pProtectedArea, pExpression, };
 		int currentPosBegin = posBegin;
 		Region[] positions = Region.createPositions(pBlockElements.length);
 		while (currentPosBegin > -1 && currentPosBegin < posEnd) {
@@ -343,7 +343,7 @@ public class CSTParserBlock {
 		int b = bH.e();
 		int e;
 		Region comma = pAcceleo.pComma.search(source.getBuffer(), b, eH.b(), null, new SequenceBlock[] {
-				pAcceleo.pParenthesis, pAcceleo.pComment, pAcceleo.pLiteral,});
+				pAcceleo.pParenthesis, pAcceleo.pComment, pAcceleo.pLiteral, });
 		if (comma.b() == -1) {
 			e = eH.b();
 		} else {
@@ -640,8 +640,8 @@ public class CSTParserBlock {
 	 *            is the current object of the CST model, it will be modified in this method
 	 */
 	public void parseIfBody(int posBegin, int posEnd, IfBlock eIf) {
-		ISequence[] pElements = new ISequence[] {pElseIf, pElse};
-		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pComment, pIf};
+		ISequence[] pElements = new ISequence[] {pElseIf, pElse };
+		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pComment, pIf };
 		Region[] pElementsPositions = Region.createPositions(pElements.length);
 		Region[] pInhibsPositions = Region.createPositions(pInhibs.length);
 		int i = ParserUtils.getNextSequence(source.getBuffer(), posBegin, posEnd, pElements,
@@ -764,8 +764,8 @@ public class CSTParserBlock {
 	 *            is the current object of the CST model, it will be modified in this method
 	 */
 	public void parseLetBody(int posBegin, int posEnd, LetBlock eLet) {
-		ISequence[] pElements = new ISequence[] {pElseLet, pElse};
-		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pComment, pLet};
+		ISequence[] pElements = new ISequence[] {pElseLet, pElse };
+		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pComment, pLet, pIf };
 		Region[] pElementsPositions = Region.createPositions(pElements.length);
 		Region[] pInhibsPositions = Region.createPositions(pInhibs.length);
 		int i = ParserUtils.getNextSequence(source.getBuffer(), posBegin, posEnd, pElements,
@@ -1026,9 +1026,9 @@ public class CSTParserBlock {
 		Sequence pBefore = new Sequence(IAcceleoConstants.BEFORE, IAcceleoConstants.PARENTHESIS_BEGIN);
 		Sequence pEach = new Sequence(IAcceleoConstants.SEPARATOR, IAcceleoConstants.PARENTHESIS_BEGIN);
 		Sequence pAfter = new Sequence(IAcceleoConstants.AFTER, IAcceleoConstants.PARENTHESIS_BEGIN);
-		Sequence[] pElements = new Sequence[] {pBefore, pEach, pAfter};
+		Sequence[] pElements = new Sequence[] {pBefore, pEach, pAfter };
 		Region[] pElementsPositions = Region.createPositions(pElements.length);
-		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pLiteral, pAcceleo.pParenthesis,};
+		SequenceBlock[] pInhibs = new SequenceBlock[] {pAcceleo.pLiteral, pAcceleo.pParenthesis, };
 		Region[] pInhibsPositions = Region.createPositions(pInhibs.length);
 		int i = ParserUtils.getNextSequence(source.getBuffer(), posBegin, posEnd, pElements,
 				pElementsPositions, pInhibs, pInhibsPositions);
