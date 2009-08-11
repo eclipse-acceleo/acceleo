@@ -89,7 +89,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 
 	public void run(IProgressMonitor monitor) throws CoreException {
 		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
-		final Class<?> generatorClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName);
+		final Class<?> generatorClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName, false);
 		// We know the generated class has a "main()" method.
 		try {
 			if (generatorClass != null) {
