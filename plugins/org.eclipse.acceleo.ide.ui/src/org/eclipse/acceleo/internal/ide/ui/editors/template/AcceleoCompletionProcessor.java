@@ -52,6 +52,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.helper.Choice;
 import org.eclipse.swt.graphics.Image;
 
@@ -536,7 +537,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			while (j > 0 && Character.isWhitespace(text.charAt(j - 1))) {
 				j--;
 			}
-			if (j > 0 && text.charAt(j - 1) == ':') {
+			if (j > 0 && (text.charAt(j - 1) == ':' || typeIsRequiredAfterParenthesis(j))) {
 				String start = text.substring(i, offset);
 				Iterator<EClassifier> eClassifierIt = content.getTypes().iterator();
 				while (eClassifierIt.hasNext()) {
@@ -551,6 +552,56 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Indicates if one meta type is required at the given index.
+	 * 
+	 * @param index
+	 *            is the index in the text
+	 * @return true if the meta types are requested at the given index
+	 */
+	private boolean typeIsRequiredAfterParenthesis(int index) {
+		if (index <= 0 || text.charAt(index - 1) != '(') {
+			return false;
+		}
+		int i = index - 1;
+		while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+			i--;
+		}
+		String start = text.substring(i, index - 1);
+		boolean result;
+		if (start.length() == 0) {
+			result = false;
+		} else if (CollectionKind.getByName(start) != null) {
+			result = true;
+		} else {
+			result = false;
+			int startPosition = cstNode.getStartPosition();
+			if (startPosition < 0) {
+				startPosition = 0;
+			}
+			if (startPosition > index - 1) {
+				startPosition = index - 1;
+			}
+			String textOCL = text.substring(startPosition, index - 1);
+			Iterator<Choice> choices = content.getSyntaxHelp(textOCL, index - 1).iterator();
+			while (!result && choices.hasNext()) {
+				Choice next = choices.next();
+				if (start.length() > 0 && next.getName().startsWith(start)
+						&& next.getElement() instanceof EOperation) {
+					EOperation eOperation = (EOperation)next.getElement();
+					for (EParameter eParameter : eOperation.getEParameters()) {
+						if (eParameter.getEType() != null
+								&& "OclType".equals(eParameter.getEType().getName())) { //$NON-NLS-1$
+							result = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -707,10 +758,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computeMainTagPatternsProposals(List<ICompletionProposal> proposals, String start,
 			String tab, Image patternImage) {
-		if (cstNode instanceof Template || content.getCSTParent(cstNode, Template.class) != null) {
-			if (!(cstNode instanceof ModelExpression)
-					&& (IAcceleoConstants.TAG_MAIN.startsWith(start.toLowerCase()) || ('[' + IAcceleoConstants.TAG_MAIN)
-							.startsWith(start.toLowerCase()))) {
+		if (cstNode instanceof TextExpression) {
+			if (IAcceleoConstants.TAG_MAIN.startsWith(start.toLowerCase())
+					|| ('[' + IAcceleoConstants.TAG_MAIN).startsWith(start.toLowerCase())) {
 				String replacementStringBefore = '[' + IAcceleoConstants.COMMENT + ' '
 						+ IAcceleoConstants.TAG_MAIN + ' ' + "/]\n" + tab; //$NON-NLS-1$
 				String replacementString = replacementStringBefore;
