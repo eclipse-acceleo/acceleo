@@ -147,7 +147,7 @@ public final class AcceleoWorkspaceUtil {
 	 *         <code>null</code> otherwise.
 	 */
 	public synchronized Class<?> getClass(String qualifiedName) {
-		return getClass(qualifiedName, false);
+		return getClass(qualifiedName, true);
 	}
 
 	/**
