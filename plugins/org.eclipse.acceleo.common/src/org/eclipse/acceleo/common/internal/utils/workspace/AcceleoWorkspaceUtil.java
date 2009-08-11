@@ -135,6 +135,11 @@ public final class AcceleoWorkspaceUtil {
 	/**
 	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
 	 * bundles for a class corresponding to <code>qualifiedName</code>.
+	 * <p>
+	 * <b>Note</b> that this will not search through <u>all</u> packages of the workspace bundles : it will
+	 * only go through <u>exported packages</u>. Use {@link #getClass(String, boolean)} to search through all
+	 * potential packages.
+	 * </p>
 	 * 
 	 * @param qualifiedName
 	 *            The qualified name of the class we seek to load.
@@ -142,6 +147,23 @@ public final class AcceleoWorkspaceUtil {
 	 *         <code>null</code> otherwise.
 	 */
 	public synchronized Class<?> getClass(String qualifiedName) {
+		return getClass(qualifiedName, false);
+	}
+
+	/**
+	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
+	 * bundles for a class corresponding to <code>qualifiedName</code>.
+	 * 
+	 * @param qualifiedName
+	 *            The qualified name of the class we seek to load.
+	 * @param honorOSGiVisibility
+	 *            If <code>true</code>, this will only search through exported packages for the class
+	 *            <code>qualifiedName</code>. Otherwise we'll search through all bundles by simply trying to
+	 *            load the class and catching the {@link ClassNotFoundException} if it isn't loadable.
+	 * @return The class <code>qualifiedName</code> if it could be found in the workspace bundles,
+	 *         <code>null</code> otherwise.
+	 */
+	public synchronized Class<?> getClass(String qualifiedName, boolean honorOSGiVisibility) {
 		if (changedContributions.size() > 0) {
 			refreshContributions();
 		}
@@ -176,23 +198,27 @@ public final class AcceleoWorkspaceUtil {
 				packageName = qualifiedName.substring(0, end);
 			}
 
-			boolean packageFound = false;
-			for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
-				if (packageName.startsWith(exported.getName())) {
-					packageFound = true;
-					break;
+			if (honorOSGiVisibility) {
+				boolean packageFound = false;
+				for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
+					if (packageName.startsWith(exported.getName())) {
+						packageFound = true;
+						break;
+					}
 				}
-			}
-			if (!packageFound) {
-				continue;
+				if (!packageFound) {
+					continue;
+				}
 			}
 
 			final Bundle bundle = entry.getValue();
 			try {
 				clazz = bundle.loadClass(qualifiedName);
 			} catch (ClassNotFoundException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
-						qualifiedName, bundle.getSymbolicName()), e, false);
+				if (honorOSGiVisibility) {
+					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+							qualifiedName, bundle.getSymbolicName()), e, false);
+				}
 			}
 			if (clazz != null) {
 				break;
