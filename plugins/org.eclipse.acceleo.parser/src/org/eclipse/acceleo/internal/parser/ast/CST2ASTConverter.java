@@ -10,16 +10,20 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -862,10 +866,14 @@ public class CST2ASTConverter {
 	private void transformStepCopyOwnedModuleElement(org.eclipse.acceleo.parser.cst.Module iModule,
 			org.eclipse.acceleo.model.mtl.Module oModule) {
 		if (!isCanceled) {
+			Set<String> allSignatures = new HashSet<String>();
 			Iterator<org.eclipse.acceleo.parser.cst.ModuleElement> iOwnedModuleElementIt = iModule
 					.getOwnedModuleElement().iterator();
 			while (iOwnedModuleElementIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.ModuleElement iNext = iOwnedModuleElementIt.next();
+				StringBuilder signature = new StringBuilder();
+				signature.append(iNext.getName());
+				signature.append('(');
 				if (iNext instanceof org.eclipse.acceleo.parser.cst.Template) {
 					org.eclipse.acceleo.model.mtl.Template oNext = factory
 							.getOrCreateTemplate((org.eclipse.acceleo.parser.cst.Template)iNext);
@@ -873,6 +881,15 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iNext);
+					boolean first = true;
+					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Template)iNext).getParameter()) {
+						if (first) {
+							first = false;
+						} else {
+							signature.append(',');
+						}
+						signature.append(iVariable.getType());
+					}
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
 					org.eclipse.acceleo.model.mtl.Macro oNext = factory
 							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
@@ -880,6 +897,15 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Macro)iNext);
+					boolean first = true;
+					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Macro)iNext).getParameter()) {
+						if (first) {
+							first = false;
+						} else {
+							signature.append(',');
+						}
+						signature.append(iVariable.getType());
+					}
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Query) {
 					org.eclipse.acceleo.model.mtl.Query oNext = factory
 							.getOrCreateQuery((org.eclipse.acceleo.parser.cst.Query)iNext);
@@ -887,6 +913,23 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Query)iNext);
+					boolean first = true;
+					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Query)iNext).getParameter()) {
+						if (first) {
+							first = false;
+						} else {
+							signature.append(',');
+						}
+						signature.append(iVariable.getType());
+					}
+				}
+				signature.append(')');
+				String sign = signature.toString();
+				if (allSignatures.contains(sign)) {
+					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict",
+							new Object[] {sign }), iNext.getStartPosition(), iNext.getEndPosition());
+				} else {
+					allSignatures.add(sign);
 				}
 			}
 		}
