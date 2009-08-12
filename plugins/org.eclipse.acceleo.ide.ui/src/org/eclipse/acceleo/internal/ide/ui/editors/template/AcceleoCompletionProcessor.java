@@ -212,7 +212,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computeTemplatesProposals(List<ICompletionProposal> proposals) {
 		int i = offset;
-		while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 			i--;
 		}
 		String start = text.substring(i, offset);
@@ -265,7 +265,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computeOCLProposals(List<ICompletionProposal> proposals) {
 		int i = offset;
-		while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 			i--;
 		}
 		String start = text.substring(i, offset);
@@ -530,7 +530,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	private void computeEClassifierProposals(List<ICompletionProposal> proposals) {
 		if (content.getCST() != null) {
 			int i = offset;
-			while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+			while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 				i--;
 			}
 			int j = i;
@@ -566,7 +566,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			return false;
 		}
 		int i = index - 1;
-		while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 			i--;
 		}
 		String start = text.substring(i, index - 1);
@@ -612,7 +612,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computeModulePatternProposals(List<ICompletionProposal> proposals) {
 		int i = offset;
-		while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 			i--;
 		}
 		if (i > 0 && text.charAt(i - 1) == '[') {
@@ -653,7 +653,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computePatternsProposals(List<ICompletionProposal> proposals) {
 		int i = offset;
-		while (i > 0 && (Character.isLetterOrDigit(text.charAt(i - 1)) || text.charAt(i - 1) == '@')) {
+		while (i > 0 && (Character.isJavaIdentifierPart(text.charAt(i - 1)) || text.charAt(i - 1) == '@')) {
 			i--;
 		}
 		if (i > 0 && (text.charAt(i - 1) == '[' || text.charAt(i - 1) == ']')) {
@@ -1009,7 +1009,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	private void computeKeywordsProposals(List<ICompletionProposal> proposals) {
 		if (cstNode != null) {
 			int i = offset;
-			while (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))) {
+			while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
 				i--;
 			}
 			String start = text.substring(i, offset);

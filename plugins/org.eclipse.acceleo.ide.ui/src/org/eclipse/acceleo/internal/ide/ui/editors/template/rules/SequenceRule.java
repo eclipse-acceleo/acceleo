@@ -125,7 +125,10 @@ public class SequenceRule implements ISequenceRule {
 	private int readWord(String word, ICharacterScanner scanner) {
 		for (int i = 0; i < word.length(); i++) {
 			int c = scanner.read();
-			if (c == ICharacterScanner.EOF || c != word.charAt(i)) {
+			boolean stop = c == ICharacterScanner.EOF || c != word.charAt(i);
+			stop = stop
+					|| (i + 1 == word.length() && Character.isJavaIdentifierPart(word.charAt(i)) && !nextIsNotIdentifierPart(scanner));
+			if (stop) {
 				int shift = i;
 				while (shift >= 0) {
 					scanner.unread();
@@ -135,6 +138,20 @@ public class SequenceRule implements ISequenceRule {
 			}
 		}
 		return word.length();
+	}
+
+	/**
+	 * Indicates if the character after the candidate isn't an identifier part.
+	 * 
+	 * @param scanner
+	 *            is the scanner
+	 * @return true if the character after the candidate isn't an identifier part
+	 */
+	private boolean nextIsNotIdentifierPart(ICharacterScanner scanner) {
+		int c = scanner.read();
+		boolean result = (c == ICharacterScanner.EOF) || (!Character.isJavaIdentifierPart(c));
+		scanner.unread();
+		return result;
 	}
 
 	/**

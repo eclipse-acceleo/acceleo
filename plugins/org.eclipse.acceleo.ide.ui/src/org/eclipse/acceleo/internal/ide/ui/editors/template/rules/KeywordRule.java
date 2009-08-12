@@ -141,7 +141,7 @@ public class KeywordRule implements ISequenceRule {
 		}
 		scanner.unread();
 		int c = scanner.read();
-		return !Character.isLetterOrDigit(c);
+		return !Character.isJavaIdentifierPart(c);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class KeywordRule implements ISequenceRule {
 	 */
 	protected boolean nextIsNotIdentifierPart(ICharacterScanner scanner) {
 		int c = scanner.read();
-		boolean result = (c == ICharacterScanner.EOF) || (!Character.isLetterOrDigit(c));
+		boolean result = (c == ICharacterScanner.EOF) || (!Character.isJavaIdentifierPart(c));
 		scanner.unread();
 		return result;
 	}
