@@ -128,6 +128,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 				}
 			};
 			refreshJob.setPriority(Job.DECORATE);
+			refreshJob.setSystem(true);
 			refreshJob.schedule(1000);
 		}
 	}

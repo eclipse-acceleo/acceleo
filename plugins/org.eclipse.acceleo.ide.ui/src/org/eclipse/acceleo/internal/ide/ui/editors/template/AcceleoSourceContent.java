@@ -145,6 +145,7 @@ public class AcceleoSourceContent {
 				}
 			};
 			unloadJob.setPriority(Job.DECORATE);
+			unloadJob.setSystem(true);
 			final int delay = 4000;
 			unloadJob.schedule(delay);
 		}
@@ -190,6 +191,7 @@ public class AcceleoSourceContent {
 			}
 			createASTJob = createASTJob();
 			createASTJob.setPriority(Job.DECORATE);
+			createASTJob.setSystem(true);
 			createASTJob.schedule(1000);
 		}
 

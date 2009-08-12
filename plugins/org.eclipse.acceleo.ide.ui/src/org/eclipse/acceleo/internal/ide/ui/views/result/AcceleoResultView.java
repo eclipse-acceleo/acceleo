@@ -292,6 +292,7 @@ public class AcceleoResultView extends ResourceNavigator {
 			}
 		};
 		refreshUIJob.setPriority(Job.DECORATE);
+		refreshUIJob.setSystem(true);
 		final int schedule = 2000;
 		refreshUIJob.schedule(schedule);
 		refreshUIJob = null;
