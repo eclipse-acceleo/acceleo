@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -143,7 +144,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
-		parser.parse(iFiles, oURIs, dependenciesURIs);
+		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 		for (Iterator<File> iterator = iFiles.iterator(); iterator.hasNext();) {
 			File iFile = iterator.next();
 			AcceleoParserProblems problems = parser.getProblems(iFile);
@@ -160,18 +161,20 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
-		List<IFile> filesWithMainTag = new ArrayList<IFile>();
-		for (Iterator<File> iterator = iFiles.iterator(); iterator.hasNext();) {
-			File iFile = iterator.next();
-			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-					new Path(iFile.getAbsolutePath()));
-			if (workspaceFile != null && workspaceFile.isAccessible() && hasMainTag(workspaceFile)) {
-				filesWithMainTag.add(workspaceFile);
+		if (!monitor.isCanceled()) {
+			List<IFile> filesWithMainTag = new ArrayList<IFile>();
+			for (Iterator<File> iterator = iFiles.iterator(); iterator.hasNext();) {
+				File iFile = iterator.next();
+				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+						new Path(iFile.getAbsolutePath()));
+				if (workspaceFile != null && workspaceFile.isAccessible() && hasMainTag(workspaceFile)) {
+					filesWithMainTag.add(workspaceFile);
+				}
 			}
+			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
+					acceleoProject, filesWithMainTag);
+			createRunnableAcceleoOperation.run(monitor);
 		}
-		CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
-				acceleoProject, filesWithMainTag);
-		createRunnableAcceleoOperation.run(monitor);
 	}
 
 	/**
