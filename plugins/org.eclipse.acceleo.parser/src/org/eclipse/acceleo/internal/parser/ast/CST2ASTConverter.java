@@ -929,7 +929,9 @@ public class CST2ASTConverter {
 					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict",
 							new Object[] {sign }), iNext.getStartPosition(), iNext.getEndPosition());
 				} else {
-					allSignatures.add(sign);
+					if (!(iNext instanceof Comment)) {
+						allSignatures.add(sign);
+					}
 				}
 			}
 		}
