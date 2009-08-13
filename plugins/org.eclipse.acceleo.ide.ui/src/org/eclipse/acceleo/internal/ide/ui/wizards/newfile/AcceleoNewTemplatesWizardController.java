@@ -14,13 +14,13 @@ import java.util.EventObject;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.SelectionEvent;
@@ -234,9 +234,6 @@ public class AcceleoNewTemplatesWizardController {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.MissingURI")); //$NON-NLS-1$
 				} else if (!isValidMetamodelURI(viewDetailsComposite.getMetamodelURI())) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.InvalidURI")); //$NON-NLS-1$
-				} else if (viewDetailsComposite.getMetamodelType().length() == 0) {
-					updateStatus(AcceleoUIMessages
-							.getString("AcceleoNewTemplateWizardPage.Error.MissingType")); //$NON-NLS-1$
 				} else {
 					updateStatus(null);
 				}
@@ -256,7 +253,7 @@ public class AcceleoNewTemplatesWizardController {
 		StringTokenizer st = new StringTokenizer(uris, ",");
 		while (st.hasMoreTokens()) {
 			String uri = st.nextToken().trim();
-			if (EPackage.Registry.INSTANCE.getEPackage(uri) == null) {
+			if (ModelUtils.getEPackage(uri) == null && !uri.endsWith(".ecore")) { //$NON-NLS-1$
 				return false;
 			}
 		}

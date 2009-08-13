@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
@@ -38,6 +39,12 @@ import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
 import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.TypedModel;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
@@ -508,13 +515,67 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			entries = new TreeSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
-				EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(pURI);
+				EPackage ePackage = ModelUtils.getEPackage(pURI);
 				if (ePackage != null) {
 					String shortName = ePackage.getName();
 					if (shortName.startsWith(start.toLowerCase())) {
 						proposals.add(new CompletionProposal(pURI, offset - start.length(), start.length(),
 								pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
 								null, pURI));
+					}
+				}
+			}
+		}
+		List<IFile> ecoreFiles = new ArrayList<IFile>();
+		try {
+			computeEcoreFiles(ecoreFiles, ResourcesPlugin.getWorkspace().getRoot());
+			for (IFile ecoreFile : ecoreFiles) {
+				String ecorePath = ecoreFile.getFullPath().toString();
+				if (ecorePath.toLowerCase().startsWith(start.toLowerCase())) {
+					proposals.add(new CompletionProposal(ecorePath, offset - start.length(), start.length(),
+							ecorePath.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath),
+							ecorePath, null, ecorePath));
+				}
+				if (start.length() > 0) {
+					String shortName = new Path(ecorePath).removeFileExtension().lastSegment();
+					if (shortName.startsWith(start.toLowerCase())) {
+						proposals.add(new CompletionProposal(ecorePath, offset - start.length(), start
+								.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
+								uriImagePath), ecorePath, null, ecorePath));
+					}
+				}
+			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+
+	}
+
+	/**
+	 * Returns a list of existing ecore files in the workspace.
+	 * 
+	 * @param ecoreFiles
+	 *            an output parameter to get all the ecore files
+	 * @param container
+	 *            is the container to browse
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void computeEcoreFiles(List<IFile> ecoreFiles, IContainer container) throws CoreException {
+		if (container != null) {
+			IResource[] children;
+			if (container instanceof IWorkspaceRoot) {
+				children = ((IWorkspaceRoot)container).getProjects();
+			} else {
+				children = container.members();
+			}
+			if (children != null) {
+				for (int i = 0; i < children.length; ++i) {
+					IResource resource = children[i];
+					if (resource instanceof IFile && "ecore".equals(((IFile)resource).getFileExtension())) { //$NON-NLS-1$
+						ecoreFiles.add((IFile)resource);
+					} else if (resource instanceof IContainer && resource.isAccessible()) {
+						computeEcoreFiles(ecoreFiles, (IContainer)resource);
 					}
 				}
 			}

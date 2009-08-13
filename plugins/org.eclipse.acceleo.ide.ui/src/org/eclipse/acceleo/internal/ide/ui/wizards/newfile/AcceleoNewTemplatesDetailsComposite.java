@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AcceleoExampleStrategyUtils;
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -598,24 +600,29 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		if (result != null) {
 			List<?> nsURIs = Arrays.asList(result);
 			if (registeredPackageDialog.isDevelopmentTimeVersion()) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 				StringBuffer uris = new StringBuffer();
-				Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
-						.getEPackageNsURIToGenModelLocationMap();
-				for (int i = 0; i < result.length; i++) {
-					URI location = ePackageNsURItoGenModelLocationMap.get(result[i]);
-					Resource resource = resourceSet.getResource(location, true);
-					EcoreUtil.resolveAll(resource);
-				}
-				for (Resource resource : resourceSet.getResources()) {
-					for (EPackage ePackage : getAllPackages(resource)) {
-						if (nsURIs.contains(ePackage.getNsURI())) {
-							uris.append(ePackage.getNsURI());
-							uris.append(',');
-							break;
+				try {
+					ResourceSet resourceSet = new ResourceSetImpl();
+					resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+					Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
+							.getEPackageNsURIToGenModelLocationMap();
+					for (int i = 0; i < result.length; i++) {
+						URI location = ePackageNsURItoGenModelLocationMap.get(result[i]);
+						Resource resource = resourceSet.getResource(location, true);
+						EcoreUtil.resolveAll(resource);
+					}
+					for (Resource resource : resourceSet.getResources()) {
+						for (EPackage ePackage : getAllPackages(resource)) {
+							if (nsURIs.contains(ePackage.getNsURI())) {
+								uris.append(ePackage.getNsURI());
+								uris.append(',');
+								break;
+							}
 						}
 					}
+				} catch (WrappedException e) {
+					// It catches an EMF WrappedException.
+					// It is very useful if the EMF registry is corrupted by other contributions.
 				}
 				metamodelURI.setText(uris.toString().trim());
 			} else {
@@ -724,7 +731,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			TreeSet<String> typeValues = new TreeSet<String>();
 			StringTokenizer st = new StringTokenizer(getMetamodelURI(), ",");
 			while (st.hasMoreTokens()) {
-				EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(st.nextToken().trim());
+				EPackage ePackage = ModelUtils.getEPackage(st.nextToken().trim());
 				if (ePackage != null) {
 					List<EClassifier> eClassifiers = new ArrayList<EClassifier>();
 					computeClassifiers(eClassifiers, ePackage);

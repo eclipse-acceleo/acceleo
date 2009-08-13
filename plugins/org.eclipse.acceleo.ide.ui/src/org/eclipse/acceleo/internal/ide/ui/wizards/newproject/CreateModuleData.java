@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizardController;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.CreateTemplateData;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -106,7 +107,7 @@ public class CreateModuleData {
 				String metamodelURI = st.nextToken().trim();
 				if (!metamodelDone.contains(metamodelURI)) {
 					metamodelDone.add(metamodelURI);
-					EPackage metamodel = EPackage.Registry.INSTANCE.getEPackage(metamodelURI);
+					EPackage metamodel = ModelUtils.getEPackage(metamodelURI);
 					if (metamodel != null) {
 						computeMetamodelDependencies(metamodel);
 					}
