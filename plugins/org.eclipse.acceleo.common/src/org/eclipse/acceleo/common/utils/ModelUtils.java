@@ -22,7 +22,9 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -386,5 +388,22 @@ public final class ModelUtils {
 		final String result = writer.toString();
 		writer.flush();
 		return result;
+	}
+
+	/**
+	 * Looks up the value in the EMF Registry. It catches an EMF WrappedException. It is very useful if the
+	 * EMF registry is corrupted by other contributions.
+	 * 
+	 * @param nsURI
+	 *            is the NsURI key to search
+	 * @return the EPackage value
+	 * @since 0.9.0
+	 */
+	public static EPackage getEPackage(String nsURI) {
+		try {
+			return EPackage.Registry.INSTANCE.getEPackage(nsURI);
+		} catch (WrappedException e) {
+			return null;
+		}
 	}
 }
