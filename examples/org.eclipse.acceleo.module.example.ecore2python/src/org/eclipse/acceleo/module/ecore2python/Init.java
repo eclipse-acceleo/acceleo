@@ -98,7 +98,12 @@ public class Init {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -132,7 +137,12 @@ public class Init {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
