@@ -98,7 +98,12 @@ public class GenerateJava {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -133,7 +138,12 @@ public class GenerateJava {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = GenerateJava.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
