@@ -65,6 +65,11 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	private boolean isClean;
 
 	/**
+	 * The compilation messages.
+	 */
+	private StringBuilder messages;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param project
@@ -80,6 +85,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		this.project = project;
 		this.files = files;
 		this.isClean = isClean;
+		this.messages = new StringBuilder();
 	}
 
 	/**
@@ -88,6 +94,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	 * @see org.eclipse.core.resources.IWorkspaceRunnable#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void run(IProgressMonitor monitor) throws CoreException {
+		messages = new StringBuilder();
 		monitor.beginTask(AcceleoUIMessages.getString("AcceleoCompileOperation.Task.Compile"), files.length); //$NON-NLS-1$
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		for (int i = 0; i < files.length; i++) {
@@ -106,6 +113,15 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			doCompileResources(monitor);
 		}
 		monitor.done();
+	}
+
+	/**
+	 * Gets the compilation messages.
+	 * 
+	 * @return the compilation messages
+	 */
+	public String getMessages() {
+		return messages.toString();
 	}
 
 	/**
@@ -230,6 +246,12 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		m.setAttribute(IMarker.MESSAGE, message);
 		m.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
 		m.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+		messages.append(file.getFullPath().toString());
+		messages.append(" line "); //$NON-NLS-1$
+		messages.append(line);
+		messages.append('\n');
+		messages.append(message);
+		messages.append('\n');
+		messages.append('\n');
 	}
-
 }

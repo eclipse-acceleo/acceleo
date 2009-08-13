@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateBuildAcceleoWriter;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.core.resources.IContainer;
@@ -31,8 +36,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -123,6 +130,53 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
+			validateAcceleoBuildFile(monitor);
+		}
+	}
+
+	/**
+	 * It checks the build configuration of the Acceleo module. It creates the build.acceleo file if it
+	 * doesn't exist.
+	 * 
+	 * @param monitor
+	 *            is the monitor
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void validateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
+		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
+		if (buildProperties.exists()) {
+			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
+			CreateBuildAcceleoWriter buildWriter = new CreateBuildAcceleoWriter();
+			String buildText = buildWriter.generate(null);
+			if (!buildAcceleo.exists()
+					|| !buildText.equals(FileContent.getFileContent(buildAcceleo.getLocation().toFile())
+							.toString())) {
+				try {
+					ByteArrayInputStream javaStream = new ByteArrayInputStream(buildText.getBytes("UTF8")); //$NON-NLS-1$
+					if (!buildAcceleo.exists()) {
+						buildAcceleo.create(javaStream, true, monitor);
+					} else {
+						buildAcceleo.setContents(javaStream, true, false, monitor);
+					}
+				} catch (UnsupportedEncodingException e) {
+					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+							.getMessage(), e));
+				}
+			}
+			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
+					buildAcceleo.getName()) == -1) {
+				AcceleoUIActivator
+						.getDefault()
+						.getLog()
+						.log(
+								new Status(
+										IStatus.ERROR,
+										AcceleoUIActivator.PLUGIN_ID,
+										AcceleoUIMessages
+												.getString(
+														"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject().getName() }))); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -282,7 +336,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					removeOutputFile((IFile)resource, monitor);
 				}
 				if (delta.getKind() != IResourceDelta.REMOVED
-						&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension())) {
+						&& (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension()) || "MANIFEST.MF" //$NON-NLS-1$
+						.equals(resource.getName()))) {
 					deltaFilesOutput.add((IFile)resource);
 				}
 			} else {

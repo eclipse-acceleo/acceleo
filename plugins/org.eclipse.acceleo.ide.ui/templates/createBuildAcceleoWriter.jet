@@ -1,0 +1,24 @@
+<%@ jet 
+ package="org.eclipse.acceleo.internal.ide.ui.builders.runner"
+ class = "CreateBuildAcceleoWriter"
+ imports = ""
+%>
+<!-- ===================================================================== -->
+<!-- Custom targets.                                                       -->
+<!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
+<!-- ===================================================================== -->
+<project name="Build Acceleo Module" default="run" basedir=".">
+
+	<!-- ================================================================= -->
+	<!-- Steps to do after the target gather.bin.parts                     -->
+	<!-- Available parameters :                                            -->
+	<!--   build.result.folder - folder containing the build results       -->
+	<!--   target.folder - destination folder                              -->
+	<!-- ================================================================= -->
+
+	<target name="post.gather.bin.parts">
+		<acceleoCompiler project="${basedir}" target="${target.folder}">
+		</acceleoCompiler>
+	</target>
+
+</project>

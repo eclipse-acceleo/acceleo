@@ -489,4 +489,16 @@ Contributors:
           </context>
        </target>
     </extension>
+    
+    <extension
+         id="acceleoCompiler"
+         name="Acceleo Compiler"
+         point="org.eclipse.ant.core.antTasks">
+         <antTask name="acceleoCompiler"
+          	class="org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderTask"
+          	library="."
+          	headless="false"
+          	eclipseRuntime="true"/>
+    </extension>
+    
 </plugin>
