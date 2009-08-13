@@ -44,6 +44,7 @@ public class AcceleoQueryScanner extends AbstractAcceleoScanner {
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END_BODY_CHAR, manager));
 		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, manager));
 
 		rules.add(computeKeywordRule(IAcceleoConstants.SELF, manager));
