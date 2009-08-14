@@ -1022,8 +1022,10 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			if (dialog.getResult() != null && dialog.getResult().length > 0
 					&& dialog.getResult()[0] instanceof IFile) {
 				templateExamplePath.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
-				templateName.setText(((IFile)dialog.getResult()[0]).getFullPath().removeFileExtension()
-						.lastSegment().toLowerCase().replace('-', '_'));
+				if (templateName.getText().startsWith(AcceleoNewTemplatesWizardPage.DEFAULT_TEMPLATE_NAME)) {
+					templateName.setText(((IFile)dialog.getResult()[0]).getFullPath().removeFileExtension()
+							.lastSegment().toLowerCase().replace('-', '_'));
+				}
 			}
 		}
 	}
