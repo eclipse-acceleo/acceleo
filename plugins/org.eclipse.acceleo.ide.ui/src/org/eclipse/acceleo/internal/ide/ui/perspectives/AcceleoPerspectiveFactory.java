@@ -48,7 +48,6 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout leftFolder = layout.createFolder("left", IPageLayout.LEFT, oneQuarter, editorArea); //$NON-NLS-1$
 		leftFolder.addView(JavaUI.ID_PACKAGES);
 		leftFolder.addView(JavaUI.ID_TYPE_HIERARCHY);
-		leftFolder.addPlaceholder(IPageLayout.ID_RES_NAV);
 
 		IFolderLayout bottomFolder = layout.createFolder(
 				"bottom", IPageLayout.BOTTOM, threeQuarter, editorArea); //$NON-NLS-1$
@@ -78,13 +77,14 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		// views - workbench
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 
 		// actions - creation wizard
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"); //$NON-NLS-1$
 		layout
 				.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"); //$NON-NLS-1$
+		layout
+				.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoConvertProjectWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewClassCreationWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
