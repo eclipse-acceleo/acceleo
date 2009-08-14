@@ -23,6 +23,11 @@ Contributors:
    
    <extension point="org.eclipse.acceleo.ide.ui.example">
       <strategy
+            class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.JavaServicesWrapperStrategy"/>
+   </extension>
+   
+   <extension point="org.eclipse.acceleo.ide.ui.example">
+      <strategy
             class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.MTContentStrategy"/>
    </extension>
 
