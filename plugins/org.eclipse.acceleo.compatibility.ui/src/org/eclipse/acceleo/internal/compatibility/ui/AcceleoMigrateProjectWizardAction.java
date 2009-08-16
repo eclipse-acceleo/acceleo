@@ -89,11 +89,15 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.popupMenus.AbstractMigrateProjectWizardAction#generateMTL(org.eclipse.core.runtime.IPath,
+	 *      org.eclipse.core.runtime.IPath)
 	 */
 	@Override
-	protected void generateMTL(IPath baseFolder) throws IOException, CoreException {
+	protected void generateMTL(IPath baseFolder, IPath mainTemplate) throws IOException, CoreException {
 		if (baseFolder.segmentCount() > 0) {
-			IFile emtFile = ResourcesPlugin.getWorkspace().getRoot().getFile(baseFolder.append("chain.emt")); //$NON-NLS-1$
+			IFile emtFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
+					mainTemplate.removeFileExtension().addFileExtension("emt")); //$NON-NLS-1$
 			IPath emtPath = emtFile.getLocation();
 			ModelUtils.save(root, emtPath.toString());
 			IContainer targetContainer = emtFile.getParent();
@@ -103,6 +107,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 			if (targetContainer.isAccessible()) {
 				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}
+			// TODO LGO JMU : The main template must be a real entry point of the code generation
 		}
 	}
 }
