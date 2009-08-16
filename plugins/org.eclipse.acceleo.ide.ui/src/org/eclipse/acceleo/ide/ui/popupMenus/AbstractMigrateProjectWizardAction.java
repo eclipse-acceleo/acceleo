@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.CreateTemplateData;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard;
 import org.eclipse.core.resources.IProject;
@@ -99,7 +100,9 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 					if (dialog.open() == Window.OK && wizard.getTemplatePage().getControllers().size() > 0) {
 						data = wizard.getTemplatePage().getControllers().get(0).getModel();
 						IPath baseFolder = new Path(data.getTemplateContainer());
-						generateMTL(baseFolder);
+						IPath mainTemplate = baseFolder.append(data.getTemplateShortName()).addFileExtension(
+								IAcceleoConstants.MTL_FILE_EXTENSION);
+						generateMTL(baseFolder, mainTemplate);
 					}
 				}
 			} catch (CoreException e) {
@@ -153,12 +156,15 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 	 * 
 	 * @param baseFolder
 	 *            is the target folder
+	 * @param mainTemplate
+	 *            is the main template path in the workspace
 	 * @throws IOException
 	 *             when the model cannot be saved
 	 * @throws CoreException
 	 *             when a workspace issue occurs
 	 */
-	protected abstract void generateMTL(IPath baseFolder) throws IOException, CoreException;
+	protected abstract void generateMTL(IPath baseFolder, IPath mainTemplate) throws IOException,
+			CoreException;
 
 	/**
 	 * Computes the metamodel URIs.
