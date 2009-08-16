@@ -170,6 +170,9 @@ public class AcceleoNewTemplatesWizardController {
 				model.setTemplateIsMain(((Button)e.getSource()).getSelection());
 			} else if (eventType == AcceleoNewTemplatesDetailsComposite.TEMPLATE_IS_INITIALISED) {
 				model.setTemplateIsInitialized(((Button)e.getSource()).getSelection());
+				if (!((Button)e.getSource()).getSelection()) {
+					model.setTemplateExampleStrategy(null);
+				}
 			} else if (eventType == AcceleoNewTemplatesDetailsComposite.TEMPLATE_EXAMPLE_STRATEGY) {
 				model.setTemplateExampleStrategy(text);
 			}

@@ -57,6 +57,33 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasFile()
+	 */
+	public boolean forceHasFile() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasMain()
+	 */
+	public boolean forceHasMain() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceMetamodelType()
+	 */
+	public boolean forceMetamodelType() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#getContent(org.eclipse.core.resources.IFile,
 	 *      java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
 	 */
@@ -65,7 +92,7 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 		StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
 		if (exampleFile != null && exampleFile.exists()) {
 			StringBuffer text = readExampleContent(exampleFile);
-			modifyM2TContent(text, moduleName, templateIsMain);
+			modifyM2TContent(text, moduleName);
 			buffer.append(text);
 		}
 		return buffer.toString();
@@ -103,10 +130,8 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 	 *            is the initial buffer of the selected example
 	 * @param moduleName
 	 *            is the module name
-	 * @param templateIsMain
-	 *            indicates if a main tag (@main) must be generated
 	 */
-	protected abstract void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain);
+	protected abstract void modifyM2TContent(StringBuffer text, String moduleName);
 
 	/**
 	 * Utility method to replace in the given buffer each substring that matches the given initial string with

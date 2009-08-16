@@ -154,6 +154,11 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private Text metamodelURI;
 
 	/**
+	 * The button to browse the metamodel URIs.
+	 */
+	private Button metamodelBrowseButton;
+
+	/**
 	 * Available types in the current metamodel. The metamodel is identified by the metamodel URI text widget.
 	 */
 	private Combo metamodelType;
@@ -355,6 +360,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				controller.dialogChanged();
 				controller.firePropertiesChanged(e, TEMPLATE_EXAMPLE_STRATEGY);
+				changeStrategy();
 			}
 		});
 		updateStrategies();
@@ -402,6 +408,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 				controller.dialogChanged();
 				controller.firePropertiesChanged(e, TEMPLATE_IS_INITIALISED);
 				setExampleStrategyGroupEnabled(templateIsInitializeButtonState.getSelection());
+				changeStrategy();
 			}
 
 		});
@@ -434,15 +441,16 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	 * @return the selected example strategy, or null if selection is empty
 	 */
 	public IAcceleoExampleStrategy getTemplateExampleStrategy() {
-		if (templateExampleStrategy != null
-				&& templateExampleStrategy.getSelectionIndex() > -1
-				&& templateExampleStrategy.getSelectionIndex() < AcceleoExampleStrategyUtils
-						.getExampleStrategies().size()) {
-			return AcceleoExampleStrategyUtils.getExampleStrategies().get(
-					templateExampleStrategy.getSelectionIndex());
-		} else {
-			return null;
+		if (templateIsInitializeButtonState.getSelection()) {
+			if (templateExampleStrategy != null
+					&& templateExampleStrategy.getSelectionIndex() > -1
+					&& templateExampleStrategy.getSelectionIndex() < AcceleoExampleStrategyUtils
+							.getExampleStrategies().size()) {
+				return AcceleoExampleStrategyUtils.getExampleStrategies().get(
+						templateExampleStrategy.getSelectionIndex());
+			}
 		}
+		return null;
 	}
 
 	/**
@@ -557,9 +565,9 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 				updateTypes();
 			}
 		});
-		Button button = new Button(rootContainer, SWT.PUSH);
-		button.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Browse")); //$NON-NLS-1$
-		button.addSelectionListener(new SelectionAdapter() {
+		metamodelBrowseButton = new Button(rootContainer, SWT.PUSH);
+		metamodelBrowseButton.setText(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Browse")); //$NON-NLS-1$
+		metamodelBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleSelectMetamodelURI();
@@ -988,6 +996,26 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			}
 		} else {
 			this.templateExampleStrategy.select(0);
+		}
+	}
+
+	/**
+	 * Reads the current example strategy and updates the state of the widgets for this strategy.
+	 */
+	private void changeStrategy() {
+		IAcceleoExampleStrategy strategy = getTemplateExampleStrategy();
+		if (strategy != null) {
+			metamodelURI.setEnabled(!strategy.forceMetamodelURI());
+			metamodelType.setEnabled(!strategy.forceMetamodelType());
+			metamodelBrowseButton.setEnabled(!strategy.forceMetamodelURI());
+			templateHasFileButtonState.setEnabled(!strategy.forceHasFile());
+			templateHasMainButtonState.setEnabled(!strategy.forceHasMain());
+		} else {
+			metamodelURI.setEnabled(true);
+			metamodelType.setEnabled(true);
+			metamodelBrowseButton.setEnabled(true);
+			templateHasFileButtonState.setEnabled(true);
+			templateHasMainButtonState.setEnabled(true);
 		}
 	}
 

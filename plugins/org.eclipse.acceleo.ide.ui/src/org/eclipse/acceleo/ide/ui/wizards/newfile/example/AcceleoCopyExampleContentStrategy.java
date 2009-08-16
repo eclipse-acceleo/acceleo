@@ -56,6 +56,33 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasFile()
+	 */
+	public boolean forceHasFile() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasMain()
+	 */
+	public boolean forceHasMain() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceMetamodelType()
+	 */
+	public boolean forceMetamodelType() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#getContent(org.eclipse.core.resources.IFile,
 	 *      java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
 	 */

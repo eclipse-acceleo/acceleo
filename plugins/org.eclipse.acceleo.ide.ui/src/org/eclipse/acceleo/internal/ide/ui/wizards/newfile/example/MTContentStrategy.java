@@ -136,11 +136,11 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#modifyM2TContent(java.lang.StringBuffer,
-	 *      boolean)
+	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#
+	 *      modifyM2TContent(java.lang.StringBuffer, java.lang.String)
 	 */
 	@Override
-	protected void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain) {
+	protected void modifyM2TContent(StringBuffer text, String moduleName) {
 		for (int i = 0; i < mappings.length - 1; i += 2) {
 			String initialString = mappings[i];
 			String replacingString = mappings[i + 1];
@@ -195,11 +195,9 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 			text.append("\n[/template]"); //$NON-NLS-1$
 
 		}
-		if (templateIsMain) {
-			offset = 0;
-			while (offset > -1) {
-				offset = replaceNext(text, "[file (", offset, "[comment @main /]\n\t[file ("); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+		offset = 0;
+		while (offset > -1) {
+			offset = replaceNext(text, "[file (", offset, "[comment @main /]\n\t[file ("); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		modifyTemplateInvocation(text, "\\[[a-zA-Z_]+"); //$NON-NLS-1$
 		modifyTemplateInvocation(text, "\\.a-zA-Z_]+"); //$NON-NLS-1$

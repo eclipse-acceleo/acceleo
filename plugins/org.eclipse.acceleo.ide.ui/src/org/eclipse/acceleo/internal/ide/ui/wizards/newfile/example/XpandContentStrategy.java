@@ -44,11 +44,11 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#modifyM2TContent(java.lang.StringBuffer,
-	 *      boolean)
+	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AbstractM2TContentStrategy#
+	 *      modifyM2TContent(java.lang.StringBuffer, java.lang.String)
 	 */
 	@Override
-	protected void modifyM2TContent(StringBuffer text, String moduleName, boolean templateIsMain) {
+	protected void modifyM2TContent(StringBuffer text, String moduleName) {
 		int offset = text.indexOf("/*"); //$NON-NLS-1$
 		if (offset > -1) {
 			int end = text.indexOf("*/", offset); //$NON-NLS-1$
