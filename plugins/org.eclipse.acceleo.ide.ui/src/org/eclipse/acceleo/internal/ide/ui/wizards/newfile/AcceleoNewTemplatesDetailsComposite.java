@@ -43,6 +43,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -473,6 +475,14 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			public void modifyText(ModifyEvent e) {
 				controller.dialogChanged();
 				controller.firePropertiesChanged(e, TEMPLATE_NAME);
+			}
+		});
+		templateName.addKeyListener(new KeyListener() {
+			public void keyReleased(KeyEvent e) {
+			}
+
+			public void keyPressed(KeyEvent e) {
+				controller.templateNameManualChange = true;
 			}
 		});
 	}
@@ -1050,7 +1060,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			if (dialog.getResult() != null && dialog.getResult().length > 0
 					&& dialog.getResult()[0] instanceof IFile) {
 				templateExamplePath.setText(((IFile)dialog.getResult()[0]).getFullPath().toString());
-				if (templateName.getText().startsWith(AcceleoNewTemplatesWizardPage.DEFAULT_TEMPLATE_NAME)) {
+				if (!controller.templateNameManualChange) {
 					templateName.setText(((IFile)dialog.getResult()[0]).getFullPath().removeFileExtension()
 							.lastSegment().toLowerCase().replace('-', '_'));
 				}

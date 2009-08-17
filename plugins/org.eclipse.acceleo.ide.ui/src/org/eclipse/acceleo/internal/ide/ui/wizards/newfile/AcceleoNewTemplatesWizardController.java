@@ -37,6 +37,11 @@ import org.eclipse.swt.widgets.Text;
 public class AcceleoNewTemplatesWizardController {
 
 	/**
+	 * Indicates if the template name has manually changed.
+	 */
+	protected boolean templateNameManualChange;
+
+	/**
 	 * The 'master' composite. This composite contains the useful widgets to create and delete the templates.
 	 */
 	private AbstractAcceleoNewTemplatesMasterComposite viewMasterComposite;
