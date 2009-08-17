@@ -170,9 +170,18 @@ public class AcceleoNewTemplatesWizardController {
 				model.setTemplateIsMain(((Button)e.getSource()).getSelection());
 			} else if (eventType == AcceleoNewTemplatesDetailsComposite.TEMPLATE_IS_INITIALISED) {
 				model.setTemplateIsInitialized(((Button)e.getSource()).getSelection());
-				if (!((Button)e.getSource()).getSelection()) {
-					model.setTemplateExampleStrategy(null);
+				String description;
+				String examplePath;
+				if (((Button)e.getSource()).getSelection()
+						&& viewDetailsComposite.getTemplateExampleStrategy() != null) {
+					description = viewDetailsComposite.getTemplateExampleStrategy().getDescription();
+					examplePath = viewDetailsComposite.getTemplateExample();
+				} else {
+					description = ""; //$NON-NLS-1$
+					examplePath = ""; //$NON-NLS-1$
 				}
+				model.setTemplateExampleStrategy(description);
+				model.setTemplateExamplePath(examplePath);
 			} else if (eventType == AcceleoNewTemplatesDetailsComposite.TEMPLATE_EXAMPLE_STRATEGY) {
 				model.setTemplateExampleStrategy(text);
 			}

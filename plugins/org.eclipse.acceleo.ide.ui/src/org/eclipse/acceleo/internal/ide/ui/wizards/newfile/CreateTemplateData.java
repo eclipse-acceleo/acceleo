@@ -149,7 +149,11 @@ public class CreateTemplateData {
 	 * @return the template example path
 	 */
 	public String getTemplateExamplePath() {
-		return templateExamplePath;
+		if (templateIsInitialized) {
+			return templateExamplePath;
+		} else {
+			return ""; //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -158,7 +162,11 @@ public class CreateTemplateData {
 	 * @return the template example strategy
 	 */
 	public String getTemplateExampleStrategy() {
-		return templateExampleStrategy;
+		if (templateIsInitialized) {
+			return templateExampleStrategy;
+		} else {
+			return ""; //$NON-NLS-1$
+		}
 	}
 
 	/**

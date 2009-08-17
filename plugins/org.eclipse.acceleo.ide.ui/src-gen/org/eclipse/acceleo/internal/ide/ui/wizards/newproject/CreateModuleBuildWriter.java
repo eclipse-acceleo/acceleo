@@ -12,7 +12,7 @@ public class CreateModuleBuildWriter
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = "source.. = src/" + NL + "output.. = bin/" + NL + "bin.includes = META-INF/,\\" + NL + "               ." + NL;
+  protected final String TEXT_1 = "source.. = src/" + NL + "output.. = bin/" + NL + "bin.includes = META-INF/,\\" + NL + "               ." + NL + "customBuildCallbacks = build.acceleo";
   protected final String TEXT_2 = NL;
 
   public String generate(Object argument)
