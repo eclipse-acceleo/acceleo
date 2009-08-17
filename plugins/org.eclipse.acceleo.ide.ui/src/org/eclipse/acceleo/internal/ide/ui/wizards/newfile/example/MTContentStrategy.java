@@ -130,7 +130,7 @@ public class MTContentStrategy extends AbstractM2TContentStrategy {
 	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#getInitialFileNameFilter()
 	 */
 	public String getInitialFileNameFilter() {
-		return "*.mt"; //$NON-NLS-1$
+		return "*.mt "; //$NON-NLS-1$
 	}
 
 	/**
