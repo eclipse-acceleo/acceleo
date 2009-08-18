@@ -136,6 +136,22 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_INVOKE = "invoke"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;current&quot; non-standard operation accessible on all objects. This operation comes
+	 * in two flavors :
+	 * <p>
+	 * <b>current( Integer ) : OclAny</b><br/>
+	 * Returns the value of the context <code>index</code> ranks above the current context.
+	 * </p>
+	 * <p>
+	 * <b>current( OclType ) : OclAny</b><br/>
+	 * Returns the value of the first context at or above the current context of type <code>filter</code>.
+	 * </p>
+	 * 
+	 * @since 0.8
+	 */
+	public static final String OPERATION_OCLANY_CURRENT = "current"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;toString&quot; non-standard operation accessible on all objects.
 	 * <p>
 	 * <b>toString( ) : String</b><br/>
