@@ -250,7 +250,10 @@ public final class AcceleoService {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
 		final Template template = findTemplate(module, templateName, arguments.size() + 1);
-		// #findTemplate never returns private templates.
+		if (template.getVisibility() != VisibilityKind.PUBLIC) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
+		}
 
 		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
 
@@ -367,9 +370,8 @@ public final class AcceleoService {
 	 * [/template]
 	 * </pre>
 	 * 
-	 * evaluated with <tt>file:\\c:\@since 0.8</tt> as <tt>generationRoot</tt> would create the file
-	 * <tt>c:\log.log</tt> and generate a line &quot;processing class &lt;className&gt;&quot; for each class
-	 * of the input model.
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
 	 * </p>
 	 * 
 	 * @param module
