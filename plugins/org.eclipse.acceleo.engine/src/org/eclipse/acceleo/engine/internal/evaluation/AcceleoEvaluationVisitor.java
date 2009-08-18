@@ -130,6 +130,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private boolean fireGenerationEvent;
 
 	/**
+	 * This will be used to construct a "stack" of contexts so as to be able to know the order of their
+	 * declaration.
+	 */
+	private int currentContextIndex;
+
+	/**
 	 * Default constructor.
 	 * 
 	 * @param decoratedVisitor
@@ -262,6 +268,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		boolean iterationCCE = false;
 		// This will be used to generate separators only if the iterator had a previous element
 		boolean hasPrevious = false;
+		String implicitContextVariableName = null;
 		while (contentIterator.hasNext()) {
 			final Object o = contentIterator.next();
 			// null typed loop variables will be the same as "Object" typed
@@ -280,6 +287,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			if (loopVariable != null) {
 				getEvaluationEnvironment().replace(loopVariable.getName(), o);
+			}
+			if (implicitContextVariableName == null) {
+				implicitContextVariableName = addContextVariableFor(o);
+			} else {
+				getEvaluationEnvironment().replace(implicitContextVariableName, o);
 			}
 			// [255379] sets new value of "self" to change context
 			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, o);
@@ -327,8 +339,26 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				getEvaluationEnvironment().remove(loopVariable.getName());
 			}
 		}
+		getEvaluationEnvironment().remove(implicitContextVariableName);
+		currentContextIndex--;
 		// [255379] restore context
 		getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, currentSelf);
+	}
+
+	/**
+	 * Adds a context variable for the given Object.
+	 * 
+	 * @param contextValue
+	 *            Value of the variable that is to be created.
+	 * @return Name of the newly created variable.
+	 */
+	private String addContextVariableFor(Object contextValue) {
+		String variableName = "context" + currentContextIndex++; //$NON-NLS-1$
+		while (getEvaluationEnvironment().getValueOf(variableName) != null) {
+			variableName = "context" + currentContextIndex++; //$NON-NLS-1$
+		}
+		getEvaluationEnvironment().add(variableName, contextValue);
+		return variableName;
 	}
 
 	/**
@@ -507,6 +537,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	@SuppressWarnings("unchecked")
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
 		final Query query = invocation.getDefinition();
+		String implicitContextVariableName = null;
 
 		final List<Object> arguments = new ArrayList<Object>();
 		boolean fireEvents = fireGenerationEvent;
@@ -559,6 +590,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (i == 0) {
 				oldArgs[oldArgs.length - 1] = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, arguments.get(i));
+				implicitContextVariableName = addContextVariableFor(arguments.get(i));
 			}
 		}
 
@@ -577,6 +609,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (query.getParameter().size() > 0) {
 			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, oldArgs[oldArgs.length - 1]);
 		}
+		getEvaluationEnvironment().remove(implicitContextVariableName);
+		currentContextIndex--;
 		// Store result of the query invocation
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
@@ -643,6 +677,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Template template = invocation.getDefinition();
 		final List<Object> newArguments = new ArrayList<Object>();
 		final Object[] oldArgs;
+		String implicitContextVariableName = null;
 		// FIXME handle multiple invocations and "each"
 		final Template actualTemplate;
 		if (invocation.isSuper()) {
@@ -669,6 +704,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (i == 0) {
 					oldArgs[oldArgs.length - 1] = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 					getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, newArg);
+					implicitContextVariableName = addContextVariableFor(newArg);
 				}
 			}
 		} else {
@@ -710,6 +746,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						oldArgs[oldArgs.length - 1] = getEvaluationEnvironment().getValueOf(
 								SELF_VARIABLE_NAME);
 						getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, newArguments.get(i));
+						implicitContextVariableName = addContextVariableFor(newArguments.get(i));
 					}
 				}
 			} else {
@@ -741,6 +778,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (actualTemplate.getParameter().size() > 0) {
 			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, oldArgs[oldArgs.length - 1]);
 		}
+		getEvaluationEnvironment().remove(implicitContextVariableName);
+		currentContextIndex--;
 		return context.closeContext();
 	}
 

@@ -151,6 +151,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				result = invoke(operation.eResource().getURI(), source, args);
 			}
 			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)) {
+			if (args.length == 1) {
+				result = getContext(args);
+			}
+			// fall through : let else fail in UnsupportedOperationException
 		} else if (source instanceof String) {
 			final String sourceValue = (String)source;
 
@@ -869,6 +874,48 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * This will search the first context value corresponding to the given filter or index.
+	 * 
+	 * @param args
+	 *            Arguments of the invocation.
+	 * @return Result of the invocation.
+	 */
+	private Object getContext(Object[] args) {
+		final String iteratorPrefix = "context"; //$NON-NLS-1$
+		final Object soughtValue;
+		final List<Object> allIterators = new ArrayList<Object>();
+		int index = 0;
+		Object value = getValueOf(iteratorPrefix + index++);
+		while (value != null) {
+			allIterators.add(value);
+			value = getValueOf(iteratorPrefix + index++);
+		}
+
+		if (args[0] instanceof Integer) {
+			int soughtIndex = ((Integer)args[0]).intValue();
+
+			if (soughtIndex > allIterators.size() - 1) {
+				soughtValue = allIterators.get(0);
+			} else {
+				soughtValue = allIterators.get(allIterators.size() - soughtIndex - 1);
+			}
+		} else {
+			final EClassifier filter = (EClassifier)args[0];
+
+			for (int i = allIterators.size() - 1; i >= 0; i--) {
+				if (filter.isInstance(allIterators.get(i))) {
+					value = allIterators.get(i);
+					break;
+				}
+			}
+			// "value" is null if there were no iterators of the expected type
+			soughtValue = value;
+		}
+
+		return soughtValue;
 	}
 
 	/**

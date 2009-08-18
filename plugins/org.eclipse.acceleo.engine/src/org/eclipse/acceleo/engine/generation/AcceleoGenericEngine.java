@@ -135,6 +135,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
 					guard.getEvaluationEnvironment().add("self", value); //$NON-NLS-1$
+					guard.getEvaluationEnvironment().add("context0", value); //$NON-NLS-1$
 				}
 			}
 			guardValue = ((Boolean)guard.evaluate()).booleanValue();
@@ -156,6 +157,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
 					query.getEvaluationEnvironment().add("self", value); //$NON-NLS-1$
+					query.getEvaluationEnvironment().add("context0", value); //$NON-NLS-1$
 				}
 			}
 			query.evaluate();
