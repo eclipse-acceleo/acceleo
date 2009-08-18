@@ -302,11 +302,11 @@ public interface IAcceleoConstants {
 	String VARIABLE_DECLARATION_SEPARATOR = ":"; //$NON-NLS-1$
 
 	/**
-	 * Separator between the type and it namespace.
+	 * Separator between the type and its namespace.
 	 * <p>
 	 * package <b>::</b> EClass
 	 * 
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	String NAMESPACE_SEPARATOR = "::"; //$NON-NLS-1$
 

@@ -63,7 +63,7 @@ public final class AcceleoNonStandardLibrary {
 	 * <code>separator</code> String.
 	 * </p>
 	 * 
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	public static final String OPERATION_COLLECTION_SEP = "sep"; //$NON-NLS-1$
 
@@ -147,7 +147,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the value of the first context at or above the current context of type <code>filter</code>.
 	 * </p>
 	 * 
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	public static final String OPERATION_OCLANY_CURRENT = "current"; //$NON-NLS-1$
 
@@ -251,7 +251,7 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the type "Collection" used for common EOperations on OCL collection.
 	 * 
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	public static final String TYPE_COLLECTION_NAME = "Collection(T)"; //$NON-NLS-1$
 
