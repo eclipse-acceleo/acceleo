@@ -222,8 +222,8 @@ litigation.
    </url>
 
    <requires>
-      <import feature="org.eclipse.acceleo" version="0.8.0.qualifier"/>
-      <import feature="org.eclipse.acceleo.runtime" version="0.8.0.qualifier"/>
+      <import feature="org.eclipse.acceleo" version="0.8.1.qualifier"/>
+      <import feature="org.eclipse.acceleo.runtime" version="0.8.1.qualifier"/>
    </requires>
 
    <plugin
