@@ -877,7 +877,7 @@ public class OCLParser {
 					&& ((VariableExp)eCall.getSource()).getReferredVariable() != null) {
 				result = !IAcceleoConstants.SELF.equals(((VariableExp)eCall.getSource())
 						.getReferredVariable().getName())
-						|| eCall.getArgument().size() != eCall.getReferredOperation().getEParameters().size();
+						|| eCall.getArgument().size() == 0;
 			} else {
 				result = true;
 			}
