@@ -75,10 +75,11 @@ public class AcceleoParser {
 	 *            URIs of the dependencies that need to be loaded before link resolution
 	 * @param monitor
 	 *            This will be used as the progress monitor for the parsing
+	 * @since 0.8
 	 */
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs, Monitor monitor) {
 		assert inputFiles.size() == outputURIs.size();
-		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles",
+		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
 				new Object[] {inputFiles.size() }), inputFiles.size() * 3);
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<Resource> newResources = new ArrayList<Resource>();
@@ -88,7 +89,7 @@ public class AcceleoParser {
 		for (Iterator<File> itInputFiles = inputFiles.iterator(); !monitor.isCanceled()
 				&& itInputFiles.hasNext() && itOutputURIs.hasNext();) {
 			File inputFile = itInputFiles.next();
-			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST",
+			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", //$NON-NLS-1$
 					new Object[] {inputFile.getName() }));
 			URI oURI = itOutputURIs.next();
 			AcceleoSourceBuffer source = new AcceleoSourceBuffer(inputFile);
@@ -119,8 +120,8 @@ public class AcceleoParser {
 				} catch (IOException e) {
 					for (Iterator<AcceleoSourceBuffer> iterator = sources.iterator(); iterator.hasNext();) {
 						iterator.next().log(
-								AcceleoParserMessages.getString(
-										"AcceleoParser" + ".Error.InvalidAST", oURI.lastSegment()), 0, -1); //$NON-NLS-1$ //$NON-NLS-2$
+								AcceleoParserMessages.getString("AcceleoParser" + ".Error.InvalidAST", oURI //$NON-NLS-1$ //$NON-NLS-2$
+										.lastSegment()), 0, -1);
 
 					}
 				}
@@ -130,7 +131,7 @@ public class AcceleoParser {
 				&& itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			if (source.getFile() != null) {
-				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileAST",
+				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileAST", //$NON-NLS-1$
 						new Object[] {source.getFile().getName() }));
 			}
 			source.resolveAST();
@@ -140,7 +141,7 @@ public class AcceleoParser {
 				&& itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			if (source.getFile() != null) {
-				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", new Object[] {source
+				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", new Object[] {source //$NON-NLS-1$
 						.getFile().getName(), }));
 			}
 			Module eModule = source.getAST();
