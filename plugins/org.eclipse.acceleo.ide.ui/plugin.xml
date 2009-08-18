@@ -517,5 +517,46 @@ Contributors:
           	headless="false"
           	eclipseRuntime="true"/>
     </extension>
+
+   <extension
+         id="activeRegion"
+         name="Acceleo Region Marker"
+         point="org.eclipse.core.resources.markers">
+         <super type="org.eclipse.core.resources.textmarker"/>
+         <persistent value="false"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerType="org.eclipse.acceleo.ide.ui.activeRegion"
+            name="org.eclipse.acceleo.ide.ui.annotation.activeRegion"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.acceleo.ide.ui.annotation.activeRegion"
+            colorPreferenceKey="highlight.color.activeRegion"
+            colorPreferenceValue="218,242,237"
+            contributesToHeader="true"
+            highlightPreferenceKey="highlight.background.activeRegion"
+            highlightPreferenceValue="true"
+            icon="icons/AcceleoActiveRegion.gif"
+            includeOnPreferencePage="false"
+            isGoToNextNavigationTarget="true"
+            isGoToPreviousNavigationTarget="true"
+            label="Acceleo Result Active Region"
+            overviewRulerPreferenceKey="highlight.rulers.overview.activeRegion"
+            overviewRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarAction="true"
+            symbolicIcon="error"
+            textPreferenceKey="highlight.text.activeRegion"
+            textPreferenceValue="true"
+            textStylePreferenceKey="highlight.text.style.activeRegion"
+            textStylePreferenceValue="NONE"
+            verticalRulerPreferenceKey="highlight.rulers.vertical.activeRegion"
+            verticalRulerPreferenceValue="true"/>
+   </extension>
     
 </plugin>

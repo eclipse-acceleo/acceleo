@@ -65,6 +65,17 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 	}
 
 	/**
+	 * Gets the generated file for the given path. It returns null if the file isn't generated.
+	 * 
+	 * @param path
+	 *            is the path of the generated file
+	 * @return the generated file, or null if the file isn't generated
+	 */
+	public TraceabilityTargetFile getTargetFile(String path) {
+		return targetFiles.get(path);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
