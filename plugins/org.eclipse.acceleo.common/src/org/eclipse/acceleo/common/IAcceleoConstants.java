@@ -305,6 +305,8 @@ public interface IAcceleoConstants {
 	 * Separator between the type and it namespace.
 	 * <p>
 	 * package <b>::</b> EClass
+	 * 
+	 * @since 0.8
 	 */
 	String NAMESPACE_SEPARATOR = "::"; //$NON-NLS-1$
 
