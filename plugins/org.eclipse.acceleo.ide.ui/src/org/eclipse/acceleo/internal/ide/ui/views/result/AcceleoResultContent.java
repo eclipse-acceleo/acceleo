@@ -18,8 +18,12 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This is the result view content. This class knows the generated files. It is notified whenever text is
@@ -78,28 +82,32 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 	 */
 	public void textGenerated(AcceleoTextGenerationEvent event) {
-		if (event.getText() != null && event.getText().length() > 0 && targetFile != null) {
-			if (event.getSource() != null) {
-				TraceabilityModel model = getOrCreateModelInChildren(targetFile, event.getSource());
-				TraceabilityRegion region = null;
-				TraceabilityRegion lastRegion;
-				if (model.getRegions().size() > 0) {
-					lastRegion = model.getRegions().get(model.getRegions().size() - 1);
-				} else {
-					lastRegion = null;
-				}
-				if (lastRegion != null
-						&& event.getBlock() == lastRegion.getAstNode()
-						&& event.getSource() == model.getEObject()
-						&& lastRegion.getTargetFileOffset() + lastRegion.getTargetFileLength() == targetFileOffset) {
-					region = lastRegion;
-				}
-				// TODO JMU ENLARGE
-				region = new TraceabilityRegion(targetFileOffset, event.getText().length(), event.getBlock());
-				targetFileOffset += event.getText().length();
-				model.getRegions().add(region);
-				region.setParent(model);
+		if (event.getText() != null && event.getText().length() > 0 && targetFile != null
+				&& event.getSource() != null) {
+			TraceabilityModel model = getOrCreateModelInChildren(targetFile, event.getSource());
+			TraceabilityModel templateRoot = getOrCreateModelInChildren(model, EcoreUtil
+					.getRootContainer(event.getBlock()));
+			EObject eModuleElement = event.getBlock();
+			while (eModuleElement != null && !(eModuleElement instanceof ModuleElement)) {
+				eModuleElement = eModuleElement.eContainer();
 			}
+			TraceabilityModel templateNode;
+			if (eModuleElement instanceof ModuleElement) {
+				TraceabilityModel templateModuleElement = getOrCreateModelInChildren(templateRoot,
+						eModuleElement);
+				if (eModuleElement == event.getBlock()) {
+					templateNode = templateModuleElement;
+				} else {
+					templateNode = getOrCreateModelInChildren(templateModuleElement, event.getBlock());
+				}
+			} else {
+				templateNode = getOrCreateModelInChildren(templateRoot, event.getBlock());
+			}
+			TraceabilityRegion region = new TraceabilityRegion(targetFileOffset, event.getText().length(),
+					event.getBlock());
+			targetFileOffset += event.getText().length();
+			templateNode.getRegions().add(region);
+			region.setParent(templateNode);
 		}
 	}
 
@@ -124,7 +132,14 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 				return result;
 			}
 		}
-		TraceabilityModel newModel = new TraceabilityModel(eObject);
+		TraceabilityModel newModel;
+		if (eObject instanceof Module) {
+			newModel = new TraceabilityTemplate((Module)eObject);
+		} else if (eObject instanceof TemplateExpression) {
+			newModel = new TraceabilityTemplate((TemplateExpression)eObject);
+		} else {
+			newModel = new TraceabilityModel(eObject);
+		}
 		Set<TraceabilityModel> toMove = new HashSet<TraceabilityModel>();
 		for (TraceabilityModel sibling : parent.getChildren()) {
 			if (ancestorOf(newModel.getEObject(), sibling.getEObject())) {
@@ -132,13 +147,40 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 			}
 		}
 		for (TraceabilityModel next : toMove) {
-			newModel.getChildren().add(next);
-			next.setParent(newModel);
+			addInChildren(newModel, next);
 			parent.getChildren().remove(next);
 		}
-		parent.getChildren().add(newModel);
-		newModel.setParent(parent);
+		addInChildren(parent, newModel);
 		return newModel;
+	}
+
+	/**
+	 * Adds the child in the parent children list at the good position.
+	 * 
+	 * @param parent
+	 *            is the parent of the child
+	 * @param child
+	 *            is the child to put in the children list of the parent
+	 */
+	private void addInChildren(TraceabilityContainer parent, TraceabilityModel child) {
+		int index = -1;
+		if (!(child instanceof TraceabilityTemplate)) {
+			int i = 0;
+			for (TraceabilityModel otherChild : parent.getChildren()) {
+				if (otherChild instanceof TraceabilityTemplate) {
+					index = i;
+					break;
+				} else {
+					i++;
+				}
+			}
+		}
+		if (index == -1) {
+			parent.getChildren().add(child);
+		} else {
+			parent.getChildren().add(index, child);
+		}
+		child.setParent(parent);
 	}
 
 	/**

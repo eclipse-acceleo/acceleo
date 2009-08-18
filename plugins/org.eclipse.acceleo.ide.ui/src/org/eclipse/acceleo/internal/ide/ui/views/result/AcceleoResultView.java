@@ -198,6 +198,14 @@ public class AcceleoResultView extends ResourceNavigator {
 			if (image == null) {
 				if (element instanceof String) {
 					image = AcceleoUIActivator.getDefault().getImage("icons/AcceleoPreview.gif"); //$NON-NLS-1$
+				} else if (element instanceof TraceabilityTemplate) {
+					image = AcceleoUIActivator
+							.getDefault()
+							.getImage(
+									"icons/template-editor/" + ((TraceabilityTemplate)element).getEObject().eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
+					if (image == null) {
+						image = getImage(((TraceabilityTemplate)element).getEObject());
+					}
 				} else if (element instanceof TraceabilityModel) {
 					image = getImage(((TraceabilityModel)element).getEObject());
 				} else if (element instanceof TraceabilityRegion) {
@@ -347,19 +355,87 @@ public class AcceleoResultView extends ResourceNavigator {
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
 					editor.selectAndReveal(region.getTargetFileOffset(), region.getTargetFileLength());
-				} else if (element instanceof TraceabilityModel
-						&& ((TraceabilityModel)element).getRegions().size() > 0) {
-					TraceabilityRegion first = ((TraceabilityModel)element).getRegions().get(0);
-					TraceabilityRegion last = ((TraceabilityModel)element).getRegions().get(
-							((TraceabilityModel)element).getRegions().size() - 1);
-					int b = first.getTargetFileOffset();
-					int e = last.getTargetFileOffset() + last.getTargetFileLength();
+				} else if (element instanceof TraceabilityModel) {
+					int b = getMin((TraceabilityModel)element);
+					int e = getMax((TraceabilityModel)element);
 					editor.selectAndReveal(b, e - b);
 				}
 			}
 		} else {
 			super.handleDoubleClick(event);
 		}
+	}
+
+	/**
+	 * Gets the minimum position of the given element in the text.
+	 * 
+	 * @param element
+	 *            is the element to search
+	 * @return the lower index
+	 */
+	private int getMin(TraceabilityModel element) {
+		int min = 0;
+		if (element.getEObject() != null) {
+			if (element instanceof TraceabilityTemplate || element.getRegions().size() == 0) {
+				for (TraceabilityRegion region : element.getRegions()) {
+					int b = region.getTargetFileOffset();
+					if (b > -1 && (b < min || min == 0)) {
+						min = b;
+					}
+				}
+				for (TraceabilityModel model : element.getChildren()) {
+					int b = getMin(model);
+					if (b > -1 && (b < min || min == 0)) {
+						min = b;
+					}
+				}
+			} else {
+				for (TraceabilityRegion region : element.getRegions()) {
+					int b = region.getTargetFileOffset();
+					if (b > -1 && (b < min || min == 0)) {
+						min = b;
+					}
+				}
+			}
+		}
+		return min;
+	}
+
+	/**
+	 * Gets the maximum position of the given element in the text.
+	 * 
+	 * @param element
+	 *            is the element to search
+	 * @return the upper index
+	 */
+	private int getMax(TraceabilityModel element) {
+		int max = 0;
+		if (element.getEObject() != null) {
+			if (element instanceof TraceabilityTemplate || element.getRegions().size() == 0) {
+				for (TraceabilityRegion region : element.getRegions()) {
+					int b = region.getTargetFileOffset();
+					int e = b + region.getTargetFileLength();
+					if (e > max) {
+						max = e;
+					}
+				}
+				for (TraceabilityModel model : element.getChildren()) {
+					int e = getMax(model);
+					if (e > max) {
+						max = e;
+					}
+				}
+			} else {
+				for (TraceabilityRegion region : element.getRegions()) {
+					int b = region.getTargetFileOffset();
+					int e = b + region.getTargetFileLength();
+					if (e > max) {
+						max = e;
+					}
+				}
+			}
+		}
+		return max;
 	}
 
 }
