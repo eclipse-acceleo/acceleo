@@ -3,4 +3,3 @@
 			anAttributeOfB
 , 			anotherAttributeOfB
 , 			aReferenceFromB
-

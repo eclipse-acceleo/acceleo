@@ -4,4 +4,3 @@
 , 			multivaluedAttribute
 , 			aReferenceFromA
 , 			multivaluedReference
-
