@@ -397,7 +397,7 @@ public final class ModelUtils {
 	 * @param nsURI
 	 *            is the NsURI key to search
 	 * @return the EPackage value
-	 * @since 0.9.0
+	 * @since 0.8
 	 */
 	public static EPackage getEPackage(String nsURI) {
 		try {
