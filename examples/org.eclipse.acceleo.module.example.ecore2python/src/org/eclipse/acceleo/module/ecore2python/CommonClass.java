@@ -98,12 +98,7 @@ public class CommonClass {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      URL resourceURL = CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl");
-      if (resourceURL != null) {
-        templateURL = FileLocator.toFileURL(resourceURL);
-      } else {
-        templateURL = null;
-      }
+      templateURL = FileLocator.toFileURL(CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl"));
     } else {
       templateURL = CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -137,12 +132,7 @@ public class CommonClass {
     registerPackages(resourceSet);
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      URL resourceURL = CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl");
-      if (resourceURL != null) {
-        templateURL = FileLocator.toFileURL(resourceURL);
-      } else {
-        templateURL = null;
-      }
+      templateURL = FileLocator.toFileURL(CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl"));
     } else {
       templateURL = CommonClass.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
