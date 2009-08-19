@@ -50,7 +50,7 @@ import org.eclipse.ocl.utilities.Visitable;
  * 
  * @see org.eclipse.acceleo.model.mtl.MtlPackage
  * @generated
- * @since 0.8
+ * @since 0.9
  */
 public class MtlSwitch<T> {
 	/**
