@@ -367,9 +367,8 @@ public final class AcceleoService {
 	 * [/template]
 	 * </pre>
 	 * 
-	 * evaluated with <tt>file:\\c:\@since 0.8</tt> as <tt>generationRoot</tt> would create the file
-	 * <tt>c:\log.log</tt> and generate a line &quot;processing class &lt;className&gt;&quot; for each class
-	 * of the input model.
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
 	 * </p>
 	 * 
 	 * @param module
