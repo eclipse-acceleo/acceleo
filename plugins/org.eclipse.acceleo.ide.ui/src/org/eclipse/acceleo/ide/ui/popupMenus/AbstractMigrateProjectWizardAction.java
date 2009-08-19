@@ -40,7 +40,7 @@ import org.eclipse.ui.PlatformUI;
  * Xpand).
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
- * @since 0.8
+ * @since 0.9
  */
 public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWindowActionDelegate {
 

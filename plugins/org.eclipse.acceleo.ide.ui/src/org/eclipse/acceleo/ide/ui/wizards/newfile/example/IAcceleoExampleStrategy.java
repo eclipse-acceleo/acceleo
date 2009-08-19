@@ -54,7 +54,7 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if this strategy defines itself the meta-model type of the template to create.
 	 * 
 	 * @return true if this strategy defines itself the meta-model type
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	boolean forceMetamodelType();
 
@@ -62,7 +62,7 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if the template created by this strategy will generate a file.
 	 * 
 	 * @return true if the template created by this strategy will generate a file
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	boolean forceHasFile();
 
@@ -70,7 +70,7 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if this strategy defines a main entry (@main).
 	 * 
 	 * @return true if this strategy defines a main entry
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	boolean forceHasMain();
 
