@@ -12,7 +12,7 @@ Contributors:
 <feature
       id="org.eclipse.acceleo.examples"
       label="%featureName"
-      version="0.8.0.qualifier"
+      version="0.9.0.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -36,7 +36,7 @@ http://www.eclipse.org/legal/epl-v10.html
    </url>
 
    <requires>
-      <import feature="org.eclipse.acceleo" version="0.8.0.qualifier"/>
+      <import feature="org.eclipse.acceleo" version="0.9.0.qualifier"/>
    </requires>
 
    <plugin
