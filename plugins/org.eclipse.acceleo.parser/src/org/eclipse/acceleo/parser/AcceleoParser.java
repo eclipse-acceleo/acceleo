@@ -75,7 +75,7 @@ public class AcceleoParser {
 	 *            URIs of the dependencies that need to be loaded before link resolution
 	 * @param monitor
 	 *            This will be used as the progress monitor for the parsing
-	 * @since 0.8
+	 * @since 0.9
 	 */
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs, Monitor monitor) {
 		assert inputFiles.size() == outputURIs.size();
