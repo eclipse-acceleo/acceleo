@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.ide"
       label="Acceleo Development Environment (Incubation)"
-      version="0.8.0.qualifier"
+      version="0.9.0.qualifier"
       provider-name="Eclipse Modeling Project">
 
    <description>
@@ -222,7 +222,7 @@ litigation.
    </url>
 
    <requires>
-      <import feature="org.eclipse.acceleo.runtime" version="0.8.0.qualifier"/>
+      <import feature="org.eclipse.acceleo.runtime" version="0.9.0.qualifier"/>
    </requires>
 
    <plugin
