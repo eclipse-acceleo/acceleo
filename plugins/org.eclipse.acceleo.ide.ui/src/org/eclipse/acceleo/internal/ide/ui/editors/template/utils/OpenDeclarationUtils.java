@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -26,6 +27,7 @@ import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
@@ -41,6 +43,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
@@ -49,6 +52,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.presentation.EcoreEditor;
+import org.eclipse.jdt.internal.debug.ui.LocalFileStorageEditorInput;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.ocl.ecore.OperationCallExp;
@@ -57,6 +61,7 @@ import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -218,10 +223,15 @@ public final class OpenDeclarationUtils {
 		if (fileURI != null && eObject != null) {
 			URI newFileURI = formatURI(fileURI);
 			if (newFileURI != null) {
+				Object fileObject = getIFileXorIOFile(newFileURI);
+				if (fileObject instanceof IFile) {
+					newFileURI = URI.createPlatformResourceURI(((IFile)fileObject).getFullPath().toString(),
+							false);
+				}
 				IEditorDescriptor editorDescriptor;
 				String lastSegment = newFileURI.lastSegment();
 				if (lastSegment.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)
-						|| lastSegment.endsWith(".ecore")) { //$NON-NLS-1$
+						|| lastSegment.endsWith(".ecore") || lastSegment.endsWith(".xmi") || lastSegment.endsWith(".uml")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					editorDescriptor = getXMIEditor();
 				} else {
 					editorDescriptor = workbench.getEditorRegistry().getDefaultEditor(lastSegment);
@@ -240,10 +250,42 @@ public final class OpenDeclarationUtils {
 			}
 		}
 		if (fileURI != null && (eObject instanceof ASTNode || eObject instanceof Module)) {
-			IPath filePath = new Path(fileURI.toPlatformString(true));
-			if (filePath.segmentCount() > 1 && ResourcesPlugin.getWorkspace().getRoot().exists(filePath)) {
+			Object fileObject = getIFileXorIOFile(fileURI);
+			IFile file = null;
+			File absoluteFile = null;
+			if (fileObject instanceof IFile) {
+				file = (IFile)fileObject;
+			} else if (fileObject instanceof File) {
+				absoluteFile = (File)fileObject;
+			}
+			if (file == null && absoluteFile != null) {
+				IEditorInput input = new URIEditorInput(fileURI);
+				String editorID;
+				IEditorDescriptor editor = getXMIEditor();
+				if (editor != null) {
+					editorID = editor.getId();
+				} else {
+					editorID = AcceleoEditor.ACCELEO_EDITOR_ID;
+				}
+				File[] siblings = absoluteFile.getParentFile().listFiles();
+				for (int i = 0; i < siblings.length; i++) {
+					if (siblings[i].getName().equals(
+							new Path(absoluteFile.getName()).removeFileExtension().addFileExtension(
+									IAcceleoConstants.MTL_FILE_EXTENSION).lastSegment())) {
+						input = new LocalFileStorageEditorInput(new LocalFileStorage(siblings[i]));
+						editorID = AcceleoEditor.ACCELEO_EDITOR_ID;
+						break;
+					}
+				}
 				try {
-					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
+					IEditorPart newEditor = IDE.openEditor(page, input, editorID);
+					selectAndReveal(newEditor, region, eObject);
+				} catch (PartInitException e) {
+					// Do nothing
+				}
+			} else if (file != null) {
+				try {
+					IPath filePath = file.getFullPath();
 					if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(filePath.getFileExtension())) {
 						filePath = new AcceleoProject(file.getProject()).getInputFilePath(filePath);
 						file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
@@ -258,6 +300,45 @@ public final class OpenDeclarationUtils {
 					// Do nothing
 				}
 			}
+		}
+	}
+
+	/**
+	 * Returns the workspace file (IFile). If it doesn't exist, we try to find the java.io.File.
+	 * 
+	 * @param fileURI
+	 *            is the platform URI or the file URI...
+	 * @return the IFile, or the java.io.File, or null if it doesn't exist
+	 */
+	private static Object getIFileXorIOFile(URI fileURI) {
+		IFile file = null;
+		String platformString = fileURI.toPlatformString(true);
+		if (platformString != null) {
+			IPath filePath = new Path(platformString);
+			if (filePath.segmentCount() > 1 && ResourcesPlugin.getWorkspace().getRoot().exists(filePath)) {
+				file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
+			}
+		}
+		File absoluteFile;
+		String path = fileURI.toFileString();
+		if (path != null) {
+			absoluteFile = new File(path);
+			if (!absoluteFile.exists()) {
+				absoluteFile = null;
+			}
+		} else {
+			absoluteFile = null;
+		}
+		if (file == null && fileURI.isFile() && absoluteFile != null) {
+			IFile tmpFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(path));
+			if (tmpFile != null && tmpFile.exists()) {
+				file = tmpFile;
+			}
+		}
+		if (file != null) {
+			return file;
+		} else {
+			return absoluteFile;
 		}
 	}
 
@@ -389,9 +470,9 @@ public final class OpenDeclarationUtils {
 					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
 					newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
 				}
-				if (newEObject instanceof ModuleElement
-						&& ((ModuleElement)newEObject).getStartPosition() > -1) {
-					int b = ((ModuleElement)newEObject).getStartPosition();
+				if (newEObject instanceof TemplateExpression
+						&& ((TemplateExpression)newEObject).getStartPosition() > -1) {
+					int b = ((TemplateExpression)newEObject).getStartPosition();
 					int e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END, b) + 1;
 					acceleoEditor.selectAndReveal(b, e - b);
 				}

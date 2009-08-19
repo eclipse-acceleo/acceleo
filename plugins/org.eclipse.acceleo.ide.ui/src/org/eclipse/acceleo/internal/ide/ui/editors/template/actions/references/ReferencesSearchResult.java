@@ -120,10 +120,10 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 *      org.eclipse.ui.IEditorPart)
 	 */
 	public boolean isShownInEditor(Match match, IEditorPart editor) {
-		if ((editor instanceof AcceleoEditor) && match.getElement() instanceof IFile) {
-			AcceleoEditor acceleoEditor = (AcceleoEditor)editor;
+		if (editor instanceof AcceleoEditor && ((AcceleoEditor)editor).getFile() != null
+				&& match.getElement() instanceof IFile) {
 			IFile matchedFile = (IFile)match.getElement();
-			return acceleoEditor.getFile().equals(matchedFile);
+			return ((AcceleoEditor)editor).getFile().equals(matchedFile);
 		} else {
 			return false;
 		}

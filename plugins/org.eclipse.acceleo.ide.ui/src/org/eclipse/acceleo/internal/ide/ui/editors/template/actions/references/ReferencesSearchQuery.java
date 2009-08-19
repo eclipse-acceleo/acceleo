@@ -137,14 +137,20 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 */
 	private void findReferencesForFile() {
 		List<URI> allURIs = new ArrayList<URI>();
-		URI newResourceURI = URI.createPlatformResourceURI(new AcceleoProject(editor.getContent().getFile()
-				.getProject()).getOutputFilePath(editor.getContent().getFile()).toString(), false);
-		allURIs.add(newResourceURI);
-		IProject project = editor.getFile().getProject();
-		for (URI uri : new AcceleoProject(project).getOutputFiles()) {
-			if (!allURIs.contains(uri)) {
-				allURIs.add(uri);
+		IProject project;
+		if (editor.getContent().getFile() != null && editor.getFile() != null) {
+			URI newResourceURI = URI.createPlatformResourceURI(new AcceleoProject(editor.getContent()
+					.getFile().getProject()).getOutputFilePath(editor.getContent().getFile()).toString(),
+					false);
+			allURIs.add(newResourceURI);
+			project = editor.getFile().getProject();
+			for (URI uri : new AcceleoProject(project).getOutputFiles()) {
+				if (!allURIs.contains(uri)) {
+					allURIs.add(uri);
+				}
 			}
+		} else {
+			project = null;
 		}
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < projects.length; i++) {

@@ -170,12 +170,12 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * @param document
 	 *            is the document
 	 * @param file
-	 *            is the file
+	 *            is the file, it can be null if the file isn't in the workspace
 	 */
 	private void initializeContent(IDocument document, IFile file) {
-		if (document != null && file != null) {
+		if (document != null) {
 			try {
-				if (file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+				if (file == null || file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {
@@ -279,7 +279,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != this) {
-			if (event.getType() == IResourceChangeEvent.POST_CHANGE
+			if (event.getType() == IResourceChangeEvent.POST_CHANGE && getFile() != null
 					&& deltaMembers(event.getDelta()).contains(getFile())) {
 				try {
 					init(getEditorSite(), getEditorInput());
@@ -447,7 +447,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	/**
 	 * Get the input file for this editor.
 	 * 
-	 * @return the editor input file
+	 * @return the editor input file, it can be null if the template isn't in the workspace
 	 */
 	public IFile getFile() {
 		return (IFile)getEditorInput().getAdapter(IFile.class);

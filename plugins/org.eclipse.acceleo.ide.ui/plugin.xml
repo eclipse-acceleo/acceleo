@@ -108,6 +108,18 @@ Contributors:
                name="nature"
                value="org.eclipse.acceleo.ide.ui.acceleoNature"/>
       </objectContribution>
+      <objectContribution
+            objectClass="org.eclipse.acceleo.internal.ide.ui.views.result.TraceabilityModel"
+            nameFilter="*"
+            id="org.eclipse.acceleo.ide.ui.popupMenus.contribution.TraceabilityModel">
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.popupMenus.OpenDeclarationTraceabilityElementAction"
+               enablesFor="1"
+               id="org.eclipse.acceleo.ide.ui.popupMenus.OpenDeclarationTraceabilityElementAction"
+               icon = "icons/AcceleoResultOpenDeclaration.gif"
+               label="Open Declaration"
+               menubarPath="additionsAcceleo"/>
+      </objectContribution>
    </extension>
 
    <extension
