@@ -18,13 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -40,44 +41,56 @@ import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 
 /**
  * Entry point of the 'Init' generation module.
- * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class Init {
 
 	/**
 	 * The name of the module.
-	 * 
 	 * @generated
 	 */
 	public static final String MODULE_FILE_NAME = "init";
-
+	
 	/**
 	 * The name of the templates that are to be generated.
-	 * 
 	 * @generated
 	 */
 	public static final String[] TEMPLATE_NAMES = { "toModuleInit", };
 
 	/**
 	 * The root element of the module.
+	 * @generated
 	 */
 	private Module module;
 
 	/**
 	 * The model.
+	 * @generated
 	 */
 	private EObject model;
 
 	/**
 	 * The output folder.
+	 * @generated
 	 */
 	private File targetFolder;
 
 	/**
 	 * The other arguments.
+	 * @generated
 	 */
-	List<? extends Object> arguments;
+	private List<? extends Object> arguments;
+	
+	/**
+	 * This will hold the list of generation listeners that are to be notified when text is generated.
+	 * @generated
+	 */
+	private List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>();
+
+	/**
+	 * This will hold the list of properties files that are to be added to the generation context.
+	 * @generated
+	 */
+	private List<String> propertiesFiles = new ArrayList<String>();
 
 	/**
 	 * Constructor.
@@ -96,9 +109,16 @@ public class Init {
     ResourceSet resourceSet = new ResourceSetImpl();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
+    addListeners();
+    addProperties();
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -130,9 +150,16 @@ public class Init {
     ResourceSet resourceSet = model.eResource().getResourceSet();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
+    addListeners();
+    addProperties();
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Init.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Init.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -152,20 +179,20 @@ public class Init {
 	 * 
 	 * @param entry
 	 *            is the local path of the EMTL file
-	 * @generated NOT
+	 * @generated
 	 */
 	protected URI createTemplateURI(String entry) {
-		return URI.createFileURI(entry);
-	}
+    return URI.createFileURI(URI.decode(entry));
+  }
 
 	/**
 	 * Gets the model.
-	 * 
 	 * @return the model root element
+	 * @generated
 	 */
 	public EObject getModel() {
-		return model;
-	}
+    return model;
+  }
 
 	/**
 	 * Updates the registry used for looking up a package based namespace, in the resource set.
@@ -181,7 +208,7 @@ public class Init {
     resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
     resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", getOCLStdLibPackage());
   }
-
+	
 	/**
 	 * Returns the package containing the OCL standard library.
 	 * 
@@ -193,10 +220,10 @@ public class Init {
     EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
     return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
   }
-
+	
 	/**
 	 * Updates the registry used for looking up resources factory in the given resource set.
-	 * 
+	 *
 	 * @param resourceSet
 	 *            The resource set that is to be updated.
 	 * @generated
@@ -234,24 +261,29 @@ public class Init {
   }
 
 	/**
-   * Launches the generation.
-   * 
-   * @param monitor
-   *             This will be used to display progress information to the user.
-   * @throws IOException
-   *             Thrown when the output cannot be saved.
-   * @generated
-   */
-  public void doGenerate(Monitor monitor) throws IOException {
+	 * Launches the generation.
+	 * 
+	 * @param monitor
+	 *             This will be used to display progress information to the user.
+	 * @throws IOException
+	 *             Thrown when the output cannot be saved.
+	 * @generated
+	 */
+	public void doGenerate(Monitor monitor) throws IOException {
     if (!targetFolder.exists()) {
       targetFolder.mkdirs();
     }
+    AcceleoService service = new AcceleoService();
+    registerListeners(service);
+    registerProperties(service);
     for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false, monitor);
+      service.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false,
+          monitor);
     }
+    service.dispose();
   }
 
-  /**
+	/**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
 	 * <p>
 	 * This will return the first root of the loaded model, other roots can be accessed via the resource's
@@ -304,6 +336,53 @@ public class Init {
           new XMIResourceFactoryImpl());
     }
     return resourceSet.createResource(modelURI);
+  }
+	
+	/**
+	 * Generation listeners can be added for notification through this.
+	 *
+	 * @generated
+	 */
+	private void addListeners() {
+    // TODO : add listeners to the "generationListener" field here.
+  }
+
+	/**
+	 * If the generation modules need properties files, this is where to add them.
+	 *
+	 * @generated
+	 */
+	private void addProperties() {
+    /*
+     * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
+     * relative or absolute pathes, or their path can represent a platform scheme URI.
+     */
+  }
+	
+	/**
+	 * This is in charge of registering all listeners against the given service instance.
+	 *
+	 * @generated
+	 */
+	private void registerListeners(AcceleoService service) {
+    for (IAcceleoTextGenerationListener listener : generationListeners) {
+      service.addListener(listener);
+    }
+  }
+
+	/**
+	 * This will register all properties files against the given service instance.
+	 *
+	 * @generated
+	 */
+	private void registerProperties(AcceleoService service) {
+    try {
+      for (String propertyFile : propertiesFiles) {
+        service.addPropertiesFile(propertyFile);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }
