@@ -152,6 +152,34 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_CURRENT = "current"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;getProperty&quot; non-standard operation accessible on all objects. This operation
+	 * comes in four flavors :
+	 * <p>
+	 * <b>getProperty( String ) : String</b><br/>
+	 * Returns the value of the property corresponding to the given key. <b>Note</b> that parameterized
+	 * properties will be returned as is with this.
+	 * </p>
+	 * <p>
+	 * <b>getProperty( String, Sequence ) : String</b><br/>
+	 * Returns the value of the property corresponding to the given key, with parameters substituted with the
+	 * given values.
+	 * </p>
+	 * <p>
+	 * <b>getProperty( String, String ) : String</b><br/>
+	 * Returns the value of the property corresponding to the given key from a properties file corresponding
+	 * to the given name. <b>Note</b> that parameterized properties will be returned as is with this.
+	 * </p>
+	 * <p>
+	 * <b>getProperty( String, String, Sequence ) : String</b><br/>
+	 * Returns the value of the property corresponding to the given key from a properties file corresponding
+	 * to the given name, with parameters substituted with the given values.
+	 * </p>
+	 * 
+	 * @since 0.9
+	 */
+	public static final String OPERATION_OCLANY_GETPROPERTY = "getProperty"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;toString&quot; non-standard operation accessible on all objects.
 	 * <p>
 	 * <b>toString( ) : String</b><br/>

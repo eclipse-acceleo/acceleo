@@ -25,6 +25,14 @@ public interface IAcceleoConstants {
 	String ACCELEO_LOST_FILE_EXTENSION = ".lost"; //$NON-NLS-1$
 
 	/**
+	 * This special property must be set in order for us to be able to use the getProperty(fileName, key)
+	 * non-standard operation.
+	 * 
+	 * @since 0.9
+	 */
+	String PROPERTY_KEY_FILE_NAME = "properties.holder.file.name"; //$NON-NLS-1$
+
+	/**
 	 * ID of the Acceleo Project Nature.
 	 * 
 	 * @since 0.8

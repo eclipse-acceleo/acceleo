@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +24,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -29,8 +33,11 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -331,6 +338,50 @@ public final class AcceleoWorkspaceUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This will try and resolve the given path against a workspace file. The path can either be relative to
+	 * the workpace or represent an uri of platform scheme.
+	 * 
+	 * @param path
+	 *            The path we seek a file for. Cannot be <code>null</code>.
+	 * @return The resolved file.
+	 * @throws IOException
+	 *             This will be throw if we cannot resolve a "platform://plugin" URI to an existing file.
+	 */
+	public File getWorkspaceFile(String path) throws IOException {
+		final String platformResourcePrefix = "platform:/resource/"; //$NON-NLS-1$
+		final String platformPluginPrefix = "platform:/plugin/"; //$NON-NLS-1$
+
+		final File soughtFile;
+		if (path.startsWith(platformResourcePrefix)) {
+			final IPath relativePath = new Path(path.substring(platformResourcePrefix.length()));
+			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(relativePath);
+			soughtFile = soughtIFile.getLocation().toFile();
+		} else if (path.startsWith(platformPluginPrefix)) {
+			final int bundleNameEnd = path.indexOf("/", platformPluginPrefix.length() + 1); //$NON-NLS-1$
+			final String bundleName = path.substring(platformPluginPrefix.length(), bundleNameEnd);
+			Bundle bundle = Platform.getBundle(bundleName);
+			if (bundle != null) {
+				final URL bundleFileURL = bundle.getEntry(path.substring(bundleNameEnd));
+				final URL fileURL = FileLocator.toFileURL(bundleFileURL);
+				soughtFile = new File(fileURL.getFile());
+			} else {
+				/*
+				 * Being here means that the bundle id is different than the bundle name. We could try and
+				 * find the corresponding bundle in the PluginRegistry.getActiveModels(false) list, but is it
+				 * worth the trouble? Most cases should be handled by the previous code and going through such
+				 * a loop would be extremely CPU intensive.
+				 */
+				soughtFile = null;
+			}
+		} else {
+			final IPath fullPath = new Path(path);
+			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(fullPath);
+			soughtFile = soughtIFile.getLocation().toFile();
+		}
+		return soughtFile;
 	}
 
 	/**
