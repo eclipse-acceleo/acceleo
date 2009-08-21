@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -87,7 +88,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("StdLib"));
 		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<IAcceleoTextGenerationListener>(), true, new BasicMonitor());
+				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(), true,
+				new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
 	}

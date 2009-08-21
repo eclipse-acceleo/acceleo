@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
@@ -92,7 +93,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("NonStdLib"));
 		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<IAcceleoTextGenerationListener>(), true, new BasicMonitor());
+				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(), true,
+				new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
 	}
