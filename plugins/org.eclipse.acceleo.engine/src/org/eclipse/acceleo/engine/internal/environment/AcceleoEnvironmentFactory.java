@@ -12,8 +12,10 @@ package org.eclipse.acceleo.engine.internal.environment;
 
 import java.io.File;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
@@ -53,6 +55,9 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	/** Module for which this environment factory has been created. */
 	private final Module module;
 
+	/** This will hold the list of properties accessible from the generation context. */
+	private final List<Properties> properties = new ArrayList<Properties>();
+
 	/**
 	 * Default constructor. Packages will be looked up into the global EMF registry.
 	 * 
@@ -62,15 +67,19 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 *            The module for which this factory is to be created.
 	 * @param listeners
 	 *            The list of all listeners that are to be notified for text generation from this context.
+	 * @param props
+	 *            The list of Properties that can be accessed from the context.
 	 * @param preview
 	 *            Tells the evaluation context that it is currently in preview mode.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
-			List<IAcceleoTextGenerationListener> listeners, boolean preview, Monitor monitor) {
+			List<IAcceleoTextGenerationListener> listeners, List<Properties> props, boolean preview,
+			Monitor monitor) {
 		super(EPackage.Registry.INSTANCE);
 		context = new AcceleoEvaluationContext(generationRoot, listeners, preview, monitor);
+		properties.addAll(props);
 		this.module = module;
 	}
 
@@ -111,7 +120,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 */
 	@Override
 	public EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> createEvaluationEnvironment() {
-		return new AcceleoEvaluationEnvironment(module);
+		return new AcceleoEvaluationEnvironment(module, properties);
 	}
 
 	/**
@@ -122,7 +131,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	@Override
 	public EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> createEvaluationEnvironment(
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent) {
-		return new AcceleoEvaluationEnvironment(parent, module);
+		return new AcceleoEvaluationEnvironment(parent, module, properties);
 	}
 
 	/**
@@ -145,6 +154,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 */
 	public void dispose() {
 		context.dispose();
+		properties.clear();
 	}
 
 	/**

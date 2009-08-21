@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -80,6 +82,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/** Maps all overriding templates to their <code>super</code>. */
 	private final Map<Template, Set<Template>> overridingTemplates = new HashMap<Template, Set<Template>>();
 
+	/** This will hold the list of properties accessible from this generation. */
+	private final List<Properties> properties = new ArrayList<Properties>();
+
 	/**
 	 * Keeps track of the cross referencer that's been created for this evaluation, if any. This is used and
 	 * will be instantiated by the eInverse() non standard operation.
@@ -103,14 +108,17 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @param module
 	 *            We will resolve dependencies for this module and keep references to all accessible
 	 *            templates.
+	 * @param props
+	 *            The list of Properties that can be accessed from this generation.
 	 */
 	public AcceleoEvaluationEnvironment(
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent,
-			Module module) {
+			Module module, List<Properties> props) {
 		super(parent);
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
+		properties.addAll(props);
 	}
 
 	/**
@@ -119,12 +127,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @param module
 	 *            We will resolve dependencies for this module and keep references to all accessible
 	 *            templates.
+	 * @param props
+	 *            The list of Properties that can be accessed from this generation.
 	 */
-	public AcceleoEvaluationEnvironment(Module module) {
+	public AcceleoEvaluationEnvironment(Module module, List<Properties> props) {
 		super();
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
+		properties.addAll(props);
 	}
 
 	/**
@@ -139,6 +150,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Arguments of the call.
 	 * @return Result of the operation call.
 	 */
+	@SuppressWarnings("unchecked")
 	public Object callNonStandardOperation(EOperation operation, Object source, Object... args) {
 		Object result = null;
 		final String operationName = operation.getName();
@@ -156,77 +168,23 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				result = getContext(args);
 			}
 			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_GETPROPERTY.equals(operationName)) {
+			if (args.length == 1) {
+				result = getProperty((String)args[0]);
+			} else if (args.length == 2 && args[1] instanceof String) {
+				result = getProperty((String)args[0], (String)args[1]);
+			} else if (args.length == 2) {
+				result = getProperty((String)args[0], ((List<Object>)args[1]).toArray());
+			} else if (args.length == 3) {
+				result = getProperty((String)args[0], (String)args[1], ((List<Object>)args[2]).toArray());
+			}
+			// fall through : let else fail in UnsupportedOperationException
 		} else if (source instanceof String) {
-			final String sourceValue = (String)source;
-
-			if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL.equals(operationName)) {
-				result = substitute(sourceValue, (String)args[0], (String)args[1], true);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE.equals(operationName)) {
-				result = sourceValue.replaceFirst((String)args[0], (String)args[1]);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL.equals(operationName)) {
-				result = sourceValue.replaceAll((String)args[0], (String)args[1]);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH.equals(operationName)) {
-				result = sourceValue.endsWith((String)args[0]);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH.equals(operationName)) {
-				result = sourceValue.startsWith((String)args[0]);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TRIM.equals(operationName)) {
-				result = sourceValue.trim();
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE.equals(operationName)) {
-				result = tokenize(sourceValue, (String)args[0]);
-			} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
-				result = sourceValue.contains((String)args[0]);
-			}
+			callNonStandardStringOperation(operation, (String)source, args);
 		} else if (source instanceof EObject) {
-			final EObject sourceValue = (EObject)source;
-
-			if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS.equals(operationName)) {
-				if (args.length == 0) {
-					result = eAllContents(sourceValue, null);
-				} else if (args.length == 1 && args[0] instanceof EClassifier) {
-					result = eAllContents(sourceValue, (EClassifier)args[0]);
-				}
-				// fall through : let else fail in UnsupportedOperationException
-			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName)) {
-				if (args.length == 0) {
-					result = ancestors(sourceValue, null);
-				} else if (args.length == 1 && args[0] instanceof EClassifier) {
-					result = ancestors(sourceValue, (EClassifier)args[0]);
-				}
-				// fall through : let else fail in UnsupportedOperationException
-			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName)) {
-				if (args.length == 0) {
-					result = siblings(sourceValue, null);
-				} else if (args.length == 1 && args[0] instanceof EClassifier) {
-					result = siblings(sourceValue, (EClassifier)args[0]);
-				}
-				// fall through : let else fail in UnsupportedOperationException
-			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName)) {
-				if (args.length == 0) {
-					result = eInverse(sourceValue, null);
-				} else if (args.length == 1 && args[0] instanceof EClassifier) {
-					result = eInverse(sourceValue, (EClassifier)args[0]);
-				}
-				// fall through : let else fail in UnsupportedOperationException
-			}
+			callNonStandardEObjectOperation(operation, (EObject)source, args);
 		} else if (source instanceof Collection<?>) {
-			final Collection<?> collection = (Collection<?>)source;
-
-			if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
-				final Collection<Object> temp;
-				if (source instanceof Set<?> || source instanceof Bag<?>) {
-					temp = CollectionUtil.createNewBag();
-				} else {
-					temp = new ArrayList<Object>(collection.size() << 1);
-				}
-				final Iterator<?> sourceIterator = collection.iterator();
-				while (sourceIterator.hasNext()) {
-					temp.add(sourceIterator.next());
-					if (sourceIterator.hasNext()) {
-						temp.add(args[0]);
-					}
-				}
-				result = temp;
-			}
+			callNonStandardCollectionOperation(operation, (Collection<?>)source, args);
 		}
 
 		if (result != null) {
@@ -234,22 +192,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		// If we're here, the operation is undefined.
-		final StringBuilder argErrorMsg = new StringBuilder();
-		for (int i = 0; i < args.length; i++) {
-			argErrorMsg.append(args[i].getClass().getSimpleName());
-			if (i < args.length - 1) {
-				argErrorMsg.append(", "); //$NON-NLS-1$
-			}
-		}
-		final String sourceName;
-		if (source == null) {
-			sourceName = "null"; //$NON-NLS-1$
-		} else {
-			sourceName = source.getClass().getName();
-		}
-		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
-				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
-						.toString(), sourceName));
+		throw getExceptionOperationCallFailed(operation, source, args);
 	}
 
 	/**
@@ -350,16 +293,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		// If we're here, the operation is undefined.
-		final StringBuilder argErrorMsg = new StringBuilder();
-		for (int i = 0; i < args.length; i++) {
-			argErrorMsg.append(args[i].getClass().getSimpleName());
-			if (i < args.length - 1) {
-				argErrorMsg.append(", "); //$NON-NLS-1$
-			}
-		}
-		throw new UnsupportedOperationException(AcceleoEngineMessages.getString(
-				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
-						.toString(), source.getClass().getName()));
+		throw getExceptionOperationCallFailed(operation, source, args);
 	}
 
 	/**
@@ -480,6 +414,129 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		return applicableCandidates;
+	}
+
+	/**
+	 * The environment will delegate operation calls to this method if it needs to evaluate non-standard
+	 * EObject operations.
+	 * 
+	 * @param operation
+	 *            Operation which is to be evaluated.
+	 * @param source
+	 *            Source on which the operations is evaluated.
+	 * @param args
+	 *            Arguments of the call.
+	 * @return Result of the operation call.
+	 */
+	private Object callNonStandardCollectionOperation(EOperation operation, Collection<?> source,
+			Object... args) {
+		Object result = null;
+		final String operationName = operation.getName();
+
+		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
+			final Collection<Object> temp;
+			if (source instanceof Set<?> || source instanceof Bag<?>) {
+				temp = CollectionUtil.createNewBag();
+			} else {
+				temp = new ArrayList<Object>(source.size() << 1);
+			}
+			final Iterator<?> sourceIterator = source.iterator();
+			while (sourceIterator.hasNext()) {
+				temp.add(sourceIterator.next());
+				if (sourceIterator.hasNext()) {
+					temp.add(args[0]);
+				}
+			}
+			result = temp;
+		}
+
+		return result;
+	}
+
+	/**
+	 * The environment will delegate operation calls to this method if it needs to evaluate non-standard
+	 * EObject operations.
+	 * 
+	 * @param operation
+	 *            Operation which is to be evaluated.
+	 * @param source
+	 *            Source on which the operations is evaluated.
+	 * @param args
+	 *            Arguments of the call.
+	 * @return Result of the operation call.
+	 */
+	private Object callNonStandardEObjectOperation(EOperation operation, EObject source, Object... args) {
+		Object result = null;
+		final String operationName = operation.getName();
+
+		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS.equals(operationName)) {
+			if (args.length == 0) {
+				result = eAllContents(source, null);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = eAllContents(source, (EClassifier)args[0]);
+			}
+			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName)) {
+			if (args.length == 0) {
+				result = ancestors(source, null);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = ancestors(source, (EClassifier)args[0]);
+			}
+			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName)) {
+			if (args.length == 0) {
+				result = siblings(source, null);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = siblings(source, (EClassifier)args[0]);
+			}
+			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName)) {
+			if (args.length == 0) {
+				result = eInverse(source, null);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = eInverse(source, (EClassifier)args[0]);
+			}
+			// fall through : let else fail in UnsupportedOperationException
+		}
+
+		return result;
+	}
+
+	/**
+	 * The environment will delegate operation calls to this method if it needs to evaluate non-standard
+	 * String operations.
+	 * 
+	 * @param operation
+	 *            Operation which is to be evaluated.
+	 * @param source
+	 *            Source on which the operations is evaluated.
+	 * @param args
+	 *            Arguments of the call.
+	 * @return Result of the operation call.
+	 */
+	private Object callNonStandardStringOperation(EOperation operation, String source, Object... args) {
+		Object result = null;
+		final String operationName = operation.getName();
+
+		if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL.equals(operationName)) {
+			result = substitute(source, (String)args[0], (String)args[1], true);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE.equals(operationName)) {
+			result = source.replaceFirst((String)args[0], (String)args[1]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL.equals(operationName)) {
+			result = source.replaceAll((String)args[0], (String)args[1]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH.equals(operationName)) {
+			result = source.endsWith((String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH.equals(operationName)) {
+			result = source.startsWith((String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TRIM.equals(operationName)) {
+			result = source.trim();
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE.equals(operationName)) {
+			result = tokenize(source, (String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
+			result = source.contains((String)args[0]);
+		}
+
+		return result;
 	}
 
 	/**
@@ -683,6 +740,196 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * This will search the first context value corresponding to the given filter or index.
+	 * 
+	 * @param args
+	 *            Arguments of the invocation.
+	 * @return Result of the invocation.
+	 */
+	private Object getContext(Object[] args) {
+		final String iteratorPrefix = "context"; //$NON-NLS-1$
+		final Object soughtValue;
+		final List<Object> allIterators = new ArrayList<Object>();
+		int index = 0;
+		Object value = getValueOf(iteratorPrefix + index++);
+		while (value != null) {
+			allIterators.add(value);
+			value = getValueOf(iteratorPrefix + index++);
+		}
+
+		if (args[0] instanceof Integer) {
+			int soughtIndex = ((Integer)args[0]).intValue();
+
+			if (soughtIndex > allIterators.size() - 1) {
+				soughtValue = allIterators.get(0);
+			} else {
+				soughtValue = allIterators.get(allIterators.size() - soughtIndex - 1);
+			}
+		} else {
+			final EClassifier filter = (EClassifier)args[0];
+
+			for (int i = allIterators.size() - 1; i >= 0; i--) {
+				if (filter.isInstance(allIterators.get(i))) {
+					value = allIterators.get(i);
+					break;
+				}
+			}
+			// "value" is null if there were no iterators of the expected type
+			soughtValue = value;
+		}
+
+		return soughtValue;
+	}
+
+	/**
+	 * This will be used whenever the environment tried to call a custom EOperation and failed.
+	 * 
+	 * @param operation
+	 *            Operation which is to be evaluated.
+	 * @param source
+	 *            Source on which the operations is evaluated.
+	 * @param args
+	 *            Arguments of the call.
+	 * @return The ready-to-throw exception.
+	 */
+	private UnsupportedOperationException getExceptionOperationCallFailed(EOperation operation,
+			Object source, Object... args) {
+		final StringBuilder argErrorMsg = new StringBuilder();
+		for (int i = 0; i < args.length; i++) {
+			argErrorMsg.append(args[i].getClass().getSimpleName());
+			if (i < args.length - 1) {
+				argErrorMsg.append(", "); //$NON-NLS-1$
+			}
+		}
+		final String sourceName;
+		if (source == null) {
+			sourceName = "null"; //$NON-NLS-1$
+		} else {
+			sourceName = source.getClass().getName();
+		}
+		return new UnsupportedOperationException(AcceleoEngineMessages.getString(
+				"AcceleoEvaluationEnvironment.UndefinedOperation", operation.getName(), argErrorMsg //$NON-NLS-1$
+						.toString(), sourceName));
+	}
+
+	/**
+	 * This will return the value of the property corresponding to the given key. Precedence rules for the
+	 * properties can be found in the javadoc of
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * 
+	 * @param key
+	 *            Key of the property which value is to be returned.
+	 * @return The value of the property corresponding to the given key.
+	 */
+	private String getProperty(String key) {
+		String propertyValue = '!' + key + '!';
+		for (Properties propertiesHolder : properties) {
+			final String property = propertiesHolder.getProperty(key);
+			if (property != null) {
+				/*
+				 * Pass through MessageFormat so that we're consistent in the handling of special chars such
+				 * as the apostrophe.
+				 */
+				propertyValue = MessageFormat.format(property, new Object[] {});
+				break;
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * This will return the value of the property corresponding to the given key, with parameters substituted
+	 * as needed. Precedence rules for the properties can be found in the javadoc of
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * 
+	 * @param key
+	 *            Key of the property which value is to be returned.
+	 * @param arguments
+	 *            Substitution for the property parameters.
+	 * @return The value of the property corresponding to the given key.
+	 */
+	private String getProperty(String key, Object[] arguments) {
+		String propertyValue = '!' + key + '!';
+		for (Properties propertiesHolder : properties) {
+			final String property = propertiesHolder.getProperty(key);
+			if (property != null) {
+				propertyValue = MessageFormat.format(property, arguments);
+				break;
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * This will return the value of the property corresponding to the given key from the first properties
+	 * holder of the given name. Precedence rules for the properties can be found in the javadoc of
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * 
+	 * @param propertiesFileName
+	 *            Name of the properties file in which we seek the given key.
+	 * @param key
+	 *            Key of the property which value is to be returned.
+	 * @return The value of the property corresponding to the given key.
+	 */
+	private String getProperty(String propertiesFileName, String key) {
+		String propertyValue = '!' + key + '!';
+		for (Properties propertiesHolder : properties) {
+			String soughtPropertiesFile = propertiesFileName;
+			String propertiesExtension = ".properties"; //$NON-NLS-1$
+			if (!propertiesFileName.endsWith(propertiesExtension)) {
+				soughtPropertiesFile += propertiesExtension;
+			}
+			String fileName = propertiesHolder.getProperty(IAcceleoConstants.PROPERTY_KEY_FILE_NAME);
+			if (soughtPropertiesFile.equals(fileName)) {
+				final String property = propertiesHolder.getProperty(key);
+				if (property != null) {
+					/*
+					 * Pass through MessageFormat so that we're consistent in the handling of special chars
+					 * such as the apostrophe.
+					 */
+					propertyValue = MessageFormat.format(property, new Object[] {});
+					break;
+				}
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
+	 * This will return the value of the property corresponding to the given key from the first properties
+	 * holder of the given name, with parameters substituted as needed. Precedence rules for the properties
+	 * can be found in the javadoc of
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * 
+	 * @param propertiesFileName
+	 *            Name of the properties file in which we seek the given key.
+	 * @param key
+	 *            Key of the property which value is to be returned.
+	 * @param arguments
+	 *            Substitution for the property parameters.
+	 * @return The value of the property corresponding to the given key.
+	 */
+	private String getProperty(String propertiesFileName, String key, Object[] arguments) {
+		String propertyValue = '!' + key + '!';
+		for (Properties propertiesHolder : properties) {
+			String soughtPropertiesFile = propertiesFileName;
+			String propertiesExtension = ".properties"; //$NON-NLS-1$
+			if (!propertiesFileName.endsWith(propertiesExtension)) {
+				soughtPropertiesFile += propertiesExtension;
+			}
+			String fileName = propertiesHolder.getProperty(IAcceleoConstants.PROPERTY_KEY_FILE_NAME);
+			if (soughtPropertiesFile.equals(fileName)) {
+				final String property = propertiesHolder.getProperty(key);
+				if (property != null) {
+					propertyValue = MessageFormat.format(property, arguments);
+					break;
+				}
+			}
+		}
+		return propertyValue;
+	}
+
+	/**
 	 * Handles the invocation of a service.
 	 * 
 	 * @param moduleURI
@@ -874,48 +1121,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * This will search the first context value corresponding to the given filter or index.
-	 * 
-	 * @param args
-	 *            Arguments of the invocation.
-	 * @return Result of the invocation.
-	 */
-	private Object getContext(Object[] args) {
-		final String iteratorPrefix = "context"; //$NON-NLS-1$
-		final Object soughtValue;
-		final List<Object> allIterators = new ArrayList<Object>();
-		int index = 0;
-		Object value = getValueOf(iteratorPrefix + index++);
-		while (value != null) {
-			allIterators.add(value);
-			value = getValueOf(iteratorPrefix + index++);
-		}
-
-		if (args[0] instanceof Integer) {
-			int soughtIndex = ((Integer)args[0]).intValue();
-
-			if (soughtIndex > allIterators.size() - 1) {
-				soughtValue = allIterators.get(0);
-			} else {
-				soughtValue = allIterators.get(allIterators.size() - soughtIndex - 1);
-			}
-		} else {
-			final EClassifier filter = (EClassifier)args[0];
-
-			for (int i = allIterators.size() - 1; i >= 0; i--) {
-				if (filter.isInstance(allIterators.get(i))) {
-					value = allIterators.get(i);
-					break;
-				}
-			}
-			// "value" is null if there were no iterators of the expected type
-			soughtValue = value;
-		}
-
-		return soughtValue;
 	}
 
 	/**
@@ -1360,6 +1565,42 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		/**
+		 * Returns the normalized form of the URI, using the given multiple candidates (this means that more
+		 * than 2 modules had a matching name).
+		 * 
+		 * @param uri
+		 *            The URI that is to be normalized.
+		 * @param candidateURIs
+		 *            URIs of the modules that can potentially be a match for <code>uri</code>.
+		 * @return the normalized form
+		 */
+		private URI findBestMatchFor(URI uri, Set<URI> candidateURIs) {
+			URI normalized = null;
+			final Iterator<URI> candidatesIterator = candidateURIs.iterator();
+			final List<String> referenceSegments = Arrays.asList(uri.segments());
+			Collections.reverse(referenceSegments);
+			int highestEqualFragments = 0;
+			while (candidatesIterator.hasNext()) {
+				final URI next = candidatesIterator.next();
+				int equalFragments = 0;
+				final List<String> candidateSegments = Arrays.asList(next.segments());
+				Collections.reverse(candidateSegments);
+				for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
+					if (candidateSegments.get(i) == referenceSegments.get(i)) {
+						equalFragments++;
+					} else {
+						break;
+					}
+				}
+				if (equalFragments > highestEqualFragments) {
+					highestEqualFragments = equalFragments;
+					normalized = next;
+				}
+			}
+			return normalized;
+		}
+
+		/**
 		 * This will search the current generation context for a loaded module matching the given
 		 * <code>moduleName</code>.
 		 * 
@@ -1408,42 +1649,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 			}
 			return candidates;
-		}
-
-		/**
-		 * Returns the normalized form of the URI, using the given multiple candidates (this means that more
-		 * than 2 modules had a matching name).
-		 * 
-		 * @param uri
-		 *            The URI that is to be normalized.
-		 * @param candidateURIs
-		 *            URIs of the modules that can potentially be a match for <code>uri</code>.
-		 * @return the normalized form
-		 */
-		private URI findBestMatchFor(URI uri, Set<URI> candidateURIs) {
-			URI normalized = null;
-			final Iterator<URI> candidatesIterator = candidateURIs.iterator();
-			final List<String> referenceSegments = Arrays.asList(uri.segments());
-			Collections.reverse(referenceSegments);
-			int highestEqualFragments = 0;
-			while (candidatesIterator.hasNext()) {
-				final URI next = candidatesIterator.next();
-				int equalFragments = 0;
-				final List<String> candidateSegments = Arrays.asList(next.segments());
-				Collections.reverse(candidateSegments);
-				for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
-					if (candidateSegments.get(i) == referenceSegments.get(i)) {
-						equalFragments++;
-					} else {
-						break;
-					}
-				}
-				if (equalFragments > highestEqualFragments) {
-					highestEqualFragments = equalFragments;
-					normalized = next;
-				}
-			}
-			return normalized;
 		}
 	}
 }

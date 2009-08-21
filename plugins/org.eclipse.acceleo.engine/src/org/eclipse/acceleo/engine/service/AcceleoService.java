@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -64,6 +66,113 @@ public final class AcceleoService {
 	 */
 	public static void addListener(IAcceleoTextGenerationListener listener) {
 		GENERATION_ENGINE.addListener(listener);
+	}
+
+	/**
+	 * This will add custom key/value pairs to the generation context so that they can be accessed through the
+	 * getProperty() services at generation time.
+	 * <p>
+	 * <b>Note</b> that such properties always take precedence over properties defined in a properties file.
+	 * </p>
+	 * 
+	 * @param customProperties
+	 *            key/value pairs that are to be added to the generation context.
+	 * @since 0.9
+	 */
+	public static void addProperties(Map<String, String> customProperties) {
+		GENERATION_ENGINE.addProperties(customProperties);
+	}
+
+	/**
+	 * Adds the given properties file to the generation context so that its key/value pairs can be accessed
+	 * through the getProperty() services at generation time.
+	 * <p>
+	 * <b>Note</b> that the first properties file added to this list will take precedence over subsequent
+	 * ones.
+	 * </p>
+	 * <p>
+	 * For example, if plugin A adds "a.properties" which contains a key "a.b.c" and calls a launcher
+	 * contained by a second plugin B which itself contains "b.properties" containing key "a.b.c" :
+	 * 
+	 * <pre>
+	 * getProperty('a.b.c')
+	 * </pre>
+	 * 
+	 * will result in the value from a.properties being printed, whereas
+	 * 
+	 * <pre>
+	 * getProperty('b.properties', 'a.b.c')
+	 * </pre>
+	 * 
+	 * will return the value from b.properties.
+	 * </p>
+	 * <p>
+	 * Take note that properties added through {@link #addProperties(Map)} will always take precedence over
+	 * properties defined in a file.
+	 * </p>
+	 * 
+	 * @param propertiesFile
+	 *            The properties file that is to be added to the generation context.
+	 * @throws IOException
+	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
+	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
+	 * @since 0.9
+	 */
+	public static void addPropertiesFile(File propertiesFile) throws IOException {
+		if (propertiesFile.exists()) {
+			GENERATION_ENGINE.addProperties(propertiesFile);
+		}
+	}
+
+	/**
+	 * Adds the given properties file to the generation context so that its key/value pairs can be accessed
+	 * through the getProperty() services at generation time.
+	 * <p>
+	 * <b>Note</b> that the first properties file added to this list will take precedence over subsequent
+	 * ones.
+	 * </p>
+	 * <p>
+	 * The given path can be either absolute or relative. If it represent an URI of platform scheme, we'll
+	 * resolve this path against the current workspace.
+	 * </p>
+	 * <p>
+	 * For example, if plugin A adds "a.properties" which contains a key "a.b.c" and calls a launcher
+	 * contained by a second plugin B which itself contains "b.properties" containing key "a.b.c" :
+	 * 
+	 * <pre>
+	 * getProperty('a.b.c')
+	 * </pre>
+	 * 
+	 * will result in the value from a.properties being printed, whereas
+	 * 
+	 * <pre>
+	 * getProperty('b.properties', 'a.b.c')
+	 * </pre>
+	 * 
+	 * will return the value from b.properties.
+	 * </p>
+	 * <p>
+	 * Take note that properties added through {@link #addProperties(Map)} will always take precedence over
+	 * properties defined in a file.
+	 * </p>
+	 * 
+	 * @param propertiesFilePath
+	 *            Path to the properties file that is to be added to the generation context.
+	 * @throws IOException
+	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
+	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
+	 * @since 0.9
+	 */
+	public static void addPropertiesFile(String propertiesFilePath) throws IOException {
+		final File propertiesFile;
+		if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
+			propertiesFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(propertiesFilePath);
+		} else if (propertiesFilePath.startsWith("file:/")) { //$NON-NLS-1$
+			propertiesFile = new File(propertiesFilePath.substring(6));
+		} else {
+			propertiesFile = new File(propertiesFilePath);
+		}
+		addPropertiesFile(propertiesFile);
 	}
 
 	/**
@@ -442,6 +551,65 @@ public final class AcceleoService {
 	 */
 	public static void removeListener(IAcceleoTextGenerationListener listener) {
 		GENERATION_ENGINE.removeListener(listener);
+	}
+
+	/**
+	 * Removes a set of custom properties from the generation context.
+	 * 
+	 * @param customPropertyKeys
+	 *            Keys of the custom property pairs that are to be removed from the context.
+	 * @since 0.9
+	 */
+	public static void removeProperties(Set<String> customPropertyKeys) {
+		GENERATION_ENGINE.removeCustomProperties(customPropertyKeys);
+	}
+
+	/**
+	 * Removes the properties holder corresponding to the given file.
+	 * 
+	 * @param propertiesFile
+	 *            File from which has been created the properties holder that is to be removed from the
+	 *            generation context.
+	 * @since 0.9
+	 */
+	public static void removePropertiesFile(File propertiesFile) {
+		GENERATION_ENGINE.removeProperties(propertiesFile);
+	}
+
+	/**
+	 * Removes the properties holder that's been loaded from the given file path.
+	 * 
+	 * @param propertiesFilePath
+	 *            Path from which has been loaded the properties file that is to be removed from the
+	 *            generation context.
+	 * @since 0.9
+	 */
+	public static void removePropertiesFile(String propertiesFilePath) {
+		try {
+			final File propertiesFile;
+			if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
+				propertiesFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(propertiesFilePath);
+			} else {
+				propertiesFile = new File(propertiesFilePath);
+			}
+			GENERATION_ENGINE.removeProperties(propertiesFile);
+		} catch (IOException e) {
+			// silently discard
+		}
+	}
+
+	/**
+	 * Removes a single property from the generation context. This is a shortcut for
+	 * {@link #removeProperties(Set)}.
+	 * 
+	 * @param customPropertyKey
+	 *            Key of the custom property pair that is to be removed from the context.
+	 * @since 0.9
+	 */
+	public static void removeProperty(String customPropertyKey) {
+		final Set<String> properties = new HashSet<String>();
+		properties.add(customPropertyKey);
+		GENERATION_ENGINE.removeCustomProperties(properties);
 	}
 
 	/**
