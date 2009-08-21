@@ -85,6 +85,26 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
+    <eOperations name="getProperty" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="key" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="getProperty" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="key" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
+    </eOperations>
+    <eOperations name="getProperty" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="propertiesFileName" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="key" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="getProperty" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="propertiesFileName" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="key" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Collection(T)">
     <eOperations name="sep" eType="#//Sequence(OclAny)">
