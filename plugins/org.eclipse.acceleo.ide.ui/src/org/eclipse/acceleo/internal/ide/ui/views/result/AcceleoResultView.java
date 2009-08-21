@@ -305,10 +305,10 @@ public class AcceleoResultView extends ResourceNavigator {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		if (content != null) {
-			AcceleoService.removeListener(content);
+			AcceleoService.removeStaticListener(content);
 		}
 		content = new AcceleoResultContent();
-		AcceleoService.addListener(content);
+		AcceleoService.addStaticListener(content);
 		resourceChangeListener = new IResourceChangeListener() {
 			public void resourceChanged(IResourceChangeEvent event) {
 				refresh();
@@ -403,7 +403,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	public void dispose() {
 		super.dispose();
 		if (content != null) {
-			AcceleoService.removeListener(content);
+			AcceleoService.removeStaticListener(content);
 			content = null;
 		}
 		if (resourceChangeListener != null) {
