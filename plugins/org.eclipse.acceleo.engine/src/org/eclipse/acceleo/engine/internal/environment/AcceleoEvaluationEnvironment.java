@@ -180,11 +180,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 			// fall through : let else fail in UnsupportedOperationException
 		} else if (source instanceof String) {
-			callNonStandardStringOperation(operation, (String)source, args);
+			result = callNonStandardStringOperation(operation, (String)source, args);
 		} else if (source instanceof EObject) {
-			callNonStandardEObjectOperation(operation, (EObject)source, args);
+			result = callNonStandardEObjectOperation(operation, (EObject)source, args);
 		} else if (source instanceof Collection<?>) {
-			callNonStandardCollectionOperation(operation, (Collection<?>)source, args);
+			result = callNonStandardCollectionOperation(operation, (Collection<?>)source, args);
 		}
 
 		if (result != null) {

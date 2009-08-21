@@ -24,7 +24,7 @@ import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
-import org.eclipse.acceleo.engine.generation.AcceleoGenericEngine;
+import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -41,31 +41,59 @@ import org.eclipse.emf.ecore.EObject;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class AcceleoService {
-	/** The engine we'll use for all generations through this service. */
-	private static final IAcceleoEngine GENERATION_ENGINE = new AcceleoGenericEngine();
+	/** This list will hold listeners that are to be used for any and all generations. */
+	private static final List<IAcceleoTextGenerationListener> STATIC_LISTENERS = new ArrayList<IAcceleoTextGenerationListener>();
 
 	/** This message will be set for all NPE thrown because of null arguments for this utility's methods. */
 	private static final String TEMPLATE_CALL_NPE = AcceleoEngineMessages
 			.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
 
+	/** The engine we'll use for all generations through this service instance. */
+	private final IAcceleoEngine generationEngine = new AcceleoEngine();
+
 	/**
-	 * Utility classes don't need to (and shouldn't) be instantiated.
+	 * Instantiates an instance of the service.
+	 * 
+	 * @since 0.9
 	 */
-	private AcceleoService() {
-		// prevents instantiation
+	public AcceleoService() {
+		// no action necessary
+	}
+
+	/**
+	 * Registers a listener to be notified for any text generation. This will have to be removed manually
+	 * through {@link #removeListener(IAcceleoTextGenerationListener)} if the listeners mustn't be used for a
+	 * given generation.
+	 * 
+	 * @param listener
+	 *            The new listener that is to be registered for notification.
+	 * @since 0.9
+	 */
+	public static void addStaticListener(IAcceleoTextGenerationListener listener) {
+		STATIC_LISTENERS.add(listener);
+	}
+
+	/**
+	 * Removes a static listener from the notification loops.
+	 * 
+	 * @param listener
+	 *            The listener that is to be removed from the notification loops.
+	 * @since 0.9
+	 */
+	public static void removeStaticListener(IAcceleoTextGenerationListener listener) {
+		STATIC_LISTENERS.remove(listener);
 	}
 
 	/**
 	 * Registers a listener to be notified for any text generation that will take place in this engine
-	 * evaluation process. This will have to be removed manually through
-	 * {@link #removeListener(IAcceleoTextGenerationListener)}.
+	 * evaluation process.
 	 * 
 	 * @param listener
 	 *            The new listener that is to be registered for notification.
 	 * @since 0.8
 	 */
-	public static void addListener(IAcceleoTextGenerationListener listener) {
-		GENERATION_ENGINE.addListener(listener);
+	public void addListener(IAcceleoTextGenerationListener listener) {
+		generationEngine.addListener(listener);
 	}
 
 	/**
@@ -79,8 +107,8 @@ public final class AcceleoService {
 	 *            key/value pairs that are to be added to the generation context.
 	 * @since 0.9
 	 */
-	public static void addProperties(Map<String, String> customProperties) {
-		GENERATION_ENGINE.addProperties(customProperties);
+	public void addProperties(Map<String, String> customProperties) {
+		generationEngine.addProperties(customProperties);
 	}
 
 	/**
@@ -118,9 +146,9 @@ public final class AcceleoService {
 	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
 	 * @since 0.9
 	 */
-	public static void addPropertiesFile(File propertiesFile) throws IOException {
+	public void addPropertiesFile(File propertiesFile) throws IOException {
 		if (propertiesFile.exists()) {
-			GENERATION_ENGINE.addProperties(propertiesFile);
+			generationEngine.addProperties(propertiesFile);
 		}
 	}
 
@@ -163,7 +191,7 @@ public final class AcceleoService {
 	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
 	 * @since 0.9
 	 */
-	public static void addPropertiesFile(String propertiesFilePath) throws IOException {
+	public void addPropertiesFile(String propertiesFilePath) throws IOException {
 		final File propertiesFile;
 		if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
 			propertiesFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(propertiesFilePath);
@@ -173,6 +201,15 @@ public final class AcceleoService {
 			propertiesFile = new File(propertiesFilePath);
 		}
 		addPropertiesFile(propertiesFile);
+	}
+
+	/**
+	 * Properly disposes of everything that could have been loaded from this service.
+	 * 
+	 * @since 0.9
+	 */
+	public void dispose() {
+		generationEngine.reset();
 	}
 
 	/**
@@ -216,7 +253,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
+	public Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, boolean preview, Monitor monitor) {
 		if (templates == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -306,7 +343,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
+	public Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
 			File generationRoot, boolean preview, Monitor monitor) {
 		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview, monitor);
 	}
@@ -353,7 +390,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
+	public Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
 		if (model == null || arguments == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -426,7 +463,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
+	public Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
 			boolean preview, Monitor monitor) {
 		if (template == null || model == null || (!preview && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -498,7 +535,7 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerateTemplate(Module module, String templateName,
+	public Map<String, Writer> doGenerateTemplate(Module module, String templateName,
 			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
 		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
 				preview, monitor);
@@ -537,9 +574,12 @@ public final class AcceleoService {
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public static Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
+	public Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
 			File generationRoot, boolean preview, Monitor monitor) {
-		return GENERATION_ENGINE.evaluate(template, arguments, generationRoot, preview, monitor);
+		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
+			generationEngine.addListener(listener);
+		}
+		return generationEngine.evaluate(template, arguments, generationRoot, preview, monitor);
 	}
 
 	/**
@@ -549,8 +589,8 @@ public final class AcceleoService {
 	 *            The listener that is to be removed from this engine's notification loops.
 	 * @since 0.8
 	 */
-	public static void removeListener(IAcceleoTextGenerationListener listener) {
-		GENERATION_ENGINE.removeListener(listener);
+	public void removeListener(IAcceleoTextGenerationListener listener) {
+		generationEngine.removeListener(listener);
 	}
 
 	/**
@@ -560,8 +600,8 @@ public final class AcceleoService {
 	 *            Keys of the custom property pairs that are to be removed from the context.
 	 * @since 0.9
 	 */
-	public static void removeProperties(Set<String> customPropertyKeys) {
-		GENERATION_ENGINE.removeCustomProperties(customPropertyKeys);
+	public void removeProperties(Set<String> customPropertyKeys) {
+		generationEngine.removeCustomProperties(customPropertyKeys);
 	}
 
 	/**
@@ -572,8 +612,8 @@ public final class AcceleoService {
 	 *            generation context.
 	 * @since 0.9
 	 */
-	public static void removePropertiesFile(File propertiesFile) {
-		GENERATION_ENGINE.removeProperties(propertiesFile);
+	public void removePropertiesFile(File propertiesFile) {
+		generationEngine.removeProperties(propertiesFile);
 	}
 
 	/**
@@ -584,7 +624,7 @@ public final class AcceleoService {
 	 *            generation context.
 	 * @since 0.9
 	 */
-	public static void removePropertiesFile(String propertiesFilePath) {
+	public void removePropertiesFile(String propertiesFilePath) {
 		try {
 			final File propertiesFile;
 			if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
@@ -592,7 +632,7 @@ public final class AcceleoService {
 			} else {
 				propertiesFile = new File(propertiesFilePath);
 			}
-			GENERATION_ENGINE.removeProperties(propertiesFile);
+			generationEngine.removeProperties(propertiesFile);
 		} catch (IOException e) {
 			// silently discard
 		}
@@ -606,10 +646,10 @@ public final class AcceleoService {
 	 *            Key of the custom property pair that is to be removed from the context.
 	 * @since 0.9
 	 */
-	public static void removeProperty(String customPropertyKey) {
+	public void removeProperty(String customPropertyKey) {
 		final Set<String> properties = new HashSet<String>();
 		properties.add(customPropertyKey);
-		GENERATION_ENGINE.removeCustomProperties(properties);
+		generationEngine.removeCustomProperties(properties);
 	}
 
 	/**
@@ -625,7 +665,7 @@ public final class AcceleoService {
 	 * @return The first public template of this name contained by <tt>module</tt>. Will fail in
 	 *         {@link AcceleoEvaluationException} if none can be found.
 	 */
-	private static Template findTemplate(Module module, String templateName, int argumentCount) {
+	private Template findTemplate(Module module, String templateName, int argumentCount) {
 		for (ModuleElement element : module.getOwnedModuleElement()) {
 			if (element instanceof Template) {
 				Template template = (Template)element;
@@ -653,7 +693,7 @@ public final class AcceleoService {
 	 * @return The first public template of this name with matching arguments contained by <tt>module</tt>.
 	 *         Will fail in {@link AcceleoEvaluationException} if none can be found.
 	 */
-	private static Template findTemplate(Module module, String templateName, List<? extends Object> arguments) {
+	private Template findTemplate(Module module, String templateName, List<? extends Object> arguments) {
 		for (ModuleElement element : module.getOwnedModuleElement()) {
 			if (element instanceof Template) {
 				Template template = (Template)element;

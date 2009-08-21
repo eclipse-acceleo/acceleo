@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -41,8 +41,9 @@ import org.eclipse.ocl.ecore.Variable;
  * This class can be used to launch the generation of an Acceleo template.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 0.9
  */
-public class AcceleoGenericEngine implements IAcceleoEngine {
+public class AcceleoEngine implements IAcceleoEngine {
 	/**
 	 * This will contain the custom properties for this engine, properties that will always take precedence
 	 * over those contained within {@link #loadedProperties} no matter what.
@@ -56,7 +57,7 @@ public class AcceleoGenericEngine implements IAcceleoEngine {
 	private final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
 
 	/** This will hold the list of properties accessible from the generation context for this engine instance. */
-	private final Map<File, Properties> loadedProperties = new HashMap<File, Properties>();
+	private final Map<File, Properties> loadedProperties = new LinkedHashMap<File, Properties>();
 
 	/** Holds a reference to the ocl instance. */
 	private OCL ocl;
