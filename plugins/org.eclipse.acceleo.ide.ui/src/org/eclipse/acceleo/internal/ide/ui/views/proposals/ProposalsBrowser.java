@@ -146,7 +146,7 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite rootContainer = new Composite(parent, SWT.NULL);
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.verticalIndent = 1;
 		rootContainer.setLayoutData(gridData);
 		GridLayout rootContainerLayout = new GridLayout();

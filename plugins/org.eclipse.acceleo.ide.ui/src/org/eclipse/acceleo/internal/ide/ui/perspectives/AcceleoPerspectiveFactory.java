@@ -64,6 +64,10 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		layout.addActionSet(JavaUI.ID_ELEMENT_CREATION_ACTION_SET);
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
+		// views - acceleo
+		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"); //$NON-NLS-1$
+		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"); //$NON-NLS-1$
+
 		// views - java
 		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
 		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);

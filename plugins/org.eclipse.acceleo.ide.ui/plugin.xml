@@ -252,6 +252,11 @@ Contributors:
                relationship="right"
                relative="org.eclipse.ui.views.ProblemView">
          </view>
+         <view
+               id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
+               relationship="stack"
+               relative="org.eclipse.jdt.ui.PackageExplorer">
+         </view>
       </perspectiveExtension>
     </extension>
     <extension
