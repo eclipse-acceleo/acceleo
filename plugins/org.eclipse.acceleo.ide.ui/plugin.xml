@@ -389,8 +389,8 @@ Contributors:
                       <adapt type="org.eclipse.jdt.core.IJavaElement">
                   	    <test property="org.eclipse.jdt.core.isInJavaProject"/>
                       </adapt>
+                      <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.acceleo.ide.ui.acceleoNature"/>
                	      <or>
-               	        <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.eclipse.acceleo.ide.ui.acceleoNature"/>
                	        <test property="org.eclipse.jdt.launching.hasMain"/>
                	        <test property="org.eclipse.jdt.launching.isContainer"/>
                	        <test property="org.eclipse.jdt.launching.isPackageFragment"/>
