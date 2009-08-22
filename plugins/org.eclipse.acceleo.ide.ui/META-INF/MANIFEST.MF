@@ -8,6 +8,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.jface,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.core.resources,
@@ -33,7 +34,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.debug,
  org.eclipse.search,
  org.eclipse.ui.workbench.texteditor,
- org.apache.ant
+ org.apache.ant,
+ org.eclipse.compare
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -42,6 +44,7 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.ide.ui.natures,
  org.eclipse.acceleo.ide.ui.popupMenus,
  org.eclipse.acceleo.ide.ui.resources,
+ org.eclipse.acceleo.ide.ui.views.proposals.patterns,
  org.eclipse.acceleo.ide.ui.wizards.newfile.example,
  org.eclipse.acceleo.internal.ide.ui.editors.template;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template.rules;x-friends:="org.eclipse.acceleo.ide.ui.tests"

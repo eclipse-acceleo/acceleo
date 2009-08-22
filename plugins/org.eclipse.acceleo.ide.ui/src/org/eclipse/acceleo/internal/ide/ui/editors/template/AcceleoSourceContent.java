@@ -225,7 +225,7 @@ public class AcceleoSourceContent {
 	/**
 	 * Gets the current CST model. It creates the CST if <code>createCST</code> hasn't been called.
 	 * 
-	 * @return the current CST model
+	 * @return the current CST model, or null if the source is null
 	 */
 	public org.eclipse.acceleo.parser.cst.Module getCST() {
 		if (source == null) {

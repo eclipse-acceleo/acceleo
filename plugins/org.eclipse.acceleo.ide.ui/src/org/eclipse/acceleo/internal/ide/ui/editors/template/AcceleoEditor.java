@@ -227,9 +227,12 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	public void dispose() {
+		if (selectionChangedListener != null) {
+			getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
+			selectionChangedListener = null;
+		}
 		super.dispose();
 		colorManager.dispose();
-		getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		/*
 		 * Dispose the block matcher

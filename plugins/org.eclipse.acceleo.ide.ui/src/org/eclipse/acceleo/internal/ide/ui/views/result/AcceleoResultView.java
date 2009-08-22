@@ -309,13 +309,16 @@ public class AcceleoResultView extends ResourceNavigator {
 		}
 		content = new AcceleoResultContent();
 		AcceleoService.addStaticListener(content);
-		resourceChangeListener = new IResourceChangeListener() {
-			public void resourceChanged(IResourceChangeEvent event) {
-				refresh();
-			}
-		};
+		if (resourceChangeListener == null) {
+			resourceChangeListener = new IResourceChangeListener() {
+				public void resourceChanged(IResourceChangeEvent event) {
+					refresh();
+				}
+			};
+		}
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
+				&& selectionListener == null) {
 			selectionListener = new ISelectionListener() {
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 					if (getContent() != null && selection instanceof TextSelection

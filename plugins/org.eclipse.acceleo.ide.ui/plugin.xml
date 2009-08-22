@@ -14,6 +14,8 @@ Contributors:
 
 <plugin>
 
+   <extension-point id="proposal" name="org.eclipse.acceleo.ide.ui.proposal" schema="schema/proposal.exsd"/>
+   
    <extension-point id="example" name="org.eclipse.acceleo.ide.ui.example" schema="schema/example.exsd"/>
 
    <extension point="org.eclipse.acceleo.ide.ui.example">
@@ -495,6 +497,12 @@ Contributors:
              id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
              name="Acceleo Result">
        </view>
+      <view
+            category="org.eclipse.acceleo.ide.ui"
+            class="org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser"
+            icon="icons/ProposalsBrowser.gif"
+            id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
+            name="Acceleo Proposals"/>
     </extension>
 
 	<extension
@@ -570,5 +578,12 @@ Contributors:
             verticalRulerPreferenceKey="highlight.rulers.vertical.activeRegion"
             verticalRulerPreferenceValue="true"/>
    </extension>
-    
+
+   <extension point="org.eclipse.acceleo.ide.ui.proposal">
+      <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewTemplateForeachType"/>
+      <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewQueryForeachType"/>
+      <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewIfElseIfForeachType"/>
+      <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewLetElseLetForeachType"/>
+   </extension>
+
 </plugin>
