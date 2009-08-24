@@ -50,8 +50,8 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	 * after a while.
 	 */
 	public void testCanceledEvaluation() {
-		final Map<String, Writer> preview = AcceleoService.doGenerate(module, "test_cancel", inputModel,
-				generationRoot, true, new CanceledProgressMonitor());
+		final Map<String, Writer> preview = new AcceleoService().doGenerate(module, "test_cancel",
+				inputModel, generationRoot, true, new CanceledProgressMonitor());
 
 		assertTrue(preview.isEmpty());
 	}
@@ -60,7 +60,7 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	 * Checks that using a null progress monitor doesn't fail : a BasicMonitor should have been created.
 	 */
 	public void testNullMonitor() {
-		final Map<String, Writer> preview = AcceleoService.doGenerate(module, "test", inputModel,
+		final Map<String, Writer> preview = new AcceleoService().doGenerate(module, "test", inputModel,
 				generationRoot, true, null);
 
 		final Writer writer = preview.get("progress_monitor");

@@ -97,7 +97,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, //$NON-NLS-1$
+		new AcceleoService().doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, //$NON-NLS-1$
 				false, new BasicMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);

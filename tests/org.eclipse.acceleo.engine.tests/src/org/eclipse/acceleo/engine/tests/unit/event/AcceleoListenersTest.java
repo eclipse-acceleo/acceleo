@@ -64,9 +64,10 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		cleanGenerationRoot();
 
 		AcceleoGenerationCountListener listener = new AcceleoGenerationCountListener();
-		AcceleoService.addListener(listener);
+		AcceleoService service = new AcceleoService();
+		service.addListener(listener);
 
-		generate("test_generation_listeners", false); //$NON-NLS-1$
+		generate(service, "test_generation_listeners", false); //$NON-NLS-1$
 
 		int eClassCount = 0;
 		final TreeIterator<EObject> iterator = inputModel.eAllContents();
@@ -82,7 +83,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		assertSame("Unexpected count of text generations.", generationCount, listener.generationCount); //$NON-NLS-1$
 		assertSame("Wrong count of generated files.", eClassCount, listener.generatedFileCount); //$NON-NLS-1$
 
-		AcceleoService.removeListener(listener);
+		service.removeListener(listener);
 	}
 
 	/**
@@ -95,9 +96,10 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		generationRoot = new File(getGenerationRootPath("Events")); //$NON-NLS-1$
 
 		AcceleoGenerationEventTestListener listener = new AcceleoGenerationEventTestListener();
-		AcceleoService.addListener(listener);
+		AcceleoService service = new AcceleoService();
+		service.addListener(listener);
 
-		final Map<String, Writer> preview = generate("test_generation_event", true); //$NON-NLS-1$
+		final Map<String, Writer> preview = generate(service, "test_generation_event", true); //$NON-NLS-1$
 
 		assertFalse("There should have been a preview generated.", preview.isEmpty()); //$NON-NLS-1$
 		assertSame("We expected a single preview to be available.", 1, preview.size()); //$NON-NLS-1$
@@ -122,7 +124,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		assertEquals("File path hasn't been set accurately on the text generation event.", previewEntry //$NON-NLS-1$
 				.getKey(), listener.generatedFile);
 
-		AcceleoService.removeListener(listener);
+		service.removeListener(listener);
 	}
 
 	/**

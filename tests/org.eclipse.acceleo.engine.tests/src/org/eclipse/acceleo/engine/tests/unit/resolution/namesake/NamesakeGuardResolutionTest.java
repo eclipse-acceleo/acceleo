@@ -126,7 +126,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		AcceleoService.doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, //$NON-NLS-1$
+		new AcceleoService().doGenerate(module, "test_namesake_guarded_specific", inputModel, generationRoot, //$NON-NLS-1$
 				false, new BasicMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);

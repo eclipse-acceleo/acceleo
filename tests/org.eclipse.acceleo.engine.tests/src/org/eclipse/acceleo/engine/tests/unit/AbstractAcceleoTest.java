@@ -163,7 +163,22 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 *            <code>true</code> if we are to evaluate the template in preview mode.
 	 */
 	protected Map<String, Writer> generate(String templateName, boolean preview) {
-		return AcceleoService.doGenerate(module, templateName, inputModel, generationRoot, preview,
+		return new AcceleoService().doGenerate(module, templateName, inputModel, generationRoot, preview,
+				new BasicMonitor());
+	}
+
+	/**
+	 * This will call the Acceleo service to generate the given template.
+	 * 
+	 * @param service
+	 *            Instance of the AcceleoService that is to be used to launch the generation.
+	 * @param templateName
+	 *            Name of the templat that is to be evaluated.
+	 * @param preview
+	 *            <code>true</code> if we are to evaluate the template in preview mode.
+	 */
+	protected Map<String, Writer> generate(AcceleoService service, String templateName, boolean preview) {
+		return service.doGenerate(module, templateName, inputModel, generationRoot, preview,
 				new BasicMonitor());
 	}
 
