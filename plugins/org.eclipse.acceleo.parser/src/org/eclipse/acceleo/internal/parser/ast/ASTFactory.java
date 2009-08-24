@@ -309,8 +309,10 @@ public class ASTFactory {
 					EObject iContainer = iModelExpression.eContainer();
 					if (iContainer instanceof Variable
 							&& (iContainer.eContainingFeature() == CstPackage.eINSTANCE
-									.getLetBlock_LetVariable() || iContainer.eContainingFeature() == CstPackage.eINSTANCE
-									.getInitSection_Variable())) {
+									.getLetBlock_LetVariable()
+									|| iContainer.eContainingFeature() == CstPackage.eINSTANCE
+											.getInitSection_Variable() || iContainer.eContainingFeature() == CstPackage.eINSTANCE
+									.getForBlock_LoopVariable())) {
 						body = iModelExpression.getBody() + ".oclAsType(" //$NON-NLS-1$
 								+ ((Variable)iContainer).getType() + ")"; //$NON-NLS-1$
 					} else {
