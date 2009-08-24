@@ -1083,7 +1083,8 @@ public class CSTParser {
 				String initExpression = variableBuffer.substring(bInit
 						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length());
 				ModelExpression eInitExpression = CstFactory.eINSTANCE.createModelExpression();
-				setPositions(eInitExpression, posBegin + bInit, posEnd);
+				setPositions(eInitExpression, posBegin + bInit
+						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(), posEnd);
 				eVariable.setInitExpression(eInitExpression);
 				eInitExpression.setBody(initExpression);
 				pBlock.parseExpressionHeader(posBegin + bInit

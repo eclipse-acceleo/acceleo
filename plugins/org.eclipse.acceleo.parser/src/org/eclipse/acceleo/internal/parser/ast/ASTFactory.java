@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
+import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Variable;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.ParserException;
 
@@ -302,8 +305,18 @@ public class ASTFactory {
 			org.eclipse.ocl.ecore.OCLExpression oOCLExpression = ioModelExpression.get(iModelExpression);
 			if (oOCLExpression == null) {
 				try {
-					oOCLExpression = pOCL.parseOCLExpression(iModelExpression.getBody(), iModelExpression
-							.getStartPosition());
+					String body;
+					EObject iContainer = iModelExpression.eContainer();
+					if (iContainer instanceof Variable
+							&& (iContainer.eContainingFeature() == CstPackage.eINSTANCE
+									.getLetBlock_LetVariable() || iContainer.eContainingFeature() == CstPackage.eINSTANCE
+									.getInitSection_Variable())) {
+						body = iModelExpression.getBody() + ".oclAsType(" //$NON-NLS-1$
+								+ ((Variable)iContainer).getType() + ")"; //$NON-NLS-1$
+					} else {
+						body = iModelExpression.getBody();
+					}
+					oOCLExpression = pOCL.parseOCLExpression(body, iModelExpression.getStartPosition());
 					ioModelExpression.put(iModelExpression, oOCLExpression);
 				} catch (ParserException e) {
 					log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
