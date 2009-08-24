@@ -579,7 +579,13 @@ public final class AcceleoService {
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
-		return generationEngine.evaluate(template, arguments, generationRoot, preview, monitor);
+		try {
+			return generationEngine.evaluate(template, arguments, generationRoot, preview, monitor);
+		} finally {
+			for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
+				generationEngine.removeListener(listener);
+			}
+		}
 	}
 
 	/**
