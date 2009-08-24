@@ -27,7 +27,7 @@
 
 [template public generateInterface(i : Interface)]
 [comment @main /]
-[file (i.getFullPathFile().trim(), true)]
+[file (i.getFullPathFile().trim(), false)]
 [_commentFileBlock()/]
 [i.packageBlock()/]
 
