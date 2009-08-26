@@ -43,6 +43,7 @@ import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -56,6 +57,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
@@ -326,8 +328,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		 */
 		final List<Template> orderedNamesakes = reorderCandidatesPriority(origin, getAllCandidateNamesakes(
 				call, argumentTypes));
-		final Set<Template> dynamicOverriding = getAllDynamicCandidateOverriding(orderedNamesakes,
-				argumentTypes);
+		final List<Template> dynamicOverriding = reorderDynamicOverrides(getAllDynamicCandidateOverriding(
+				orderedNamesakes, argumentTypes));
 		final List<Template> overriding = getAllCandidateOverriding(origin, orderedNamesakes, argumentTypes);
 		final List<Template> applicableCandidates = new ArrayList<Template>();
 		// overriding templates come first, then namesakes
@@ -550,13 +552,36 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private void createEInverseCrossreferencer(EObject target) {
 		if (target.eResource() != null && target.eResource().getResourceSet() != null) {
-			referencer = new CrossReferencer(target.eResource().getResourceSet()) {
+			final ResourceSet rs = target.eResource().getResourceSet();
+			final ContentTreeIterator<Notifier> contentIterator = new ContentTreeIterator<Notifier>(
+					Collections.singleton(rs)) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected Iterator<Resource> getResourceSetChildren(ResourceSet resourceSet) {
+					List<Resource> resources = new ArrayList<Resource>();
+					for (Resource res : resourceSet.getResources()) {
+						if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(res.getURI().fileExtension())) {
+							resources.add(res);
+						}
+					}
+					resourceSetIterator = new ResourcesIterator(resources);
+					return resourceSetIterator;
+				}
+			};
+			referencer = new CrossReferencer(rs) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+				}
+
+				@Override
+				protected TreeIterator<Notifier> newContentsIterator() {
+					return contentIterator;
 				}
 			};
 		} else if (target.eResource() != null) {
@@ -1206,63 +1231,82 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Maps dynamic overriding templates for smoother polymorphic resolution.
 	 */
 	private void mapDynamicOverrides() {
-		for (Module module : loadDynamicModules()) {
-			boolean map = false;
-			final Set<Module> unMappedRequiredModules = new LinkedHashSet<Module>();
-			for (Module extended : module.getExtends()) {
-				if (currentModules.contains(extended)) {
-					map = true;
-				} else {
-					unMappedRequiredModules.add(extended);
-				}
-			}
-			// This module shouldn't be added to the context. Go to next.
-			if (!map) {
-				continue;
-			}
+		Set<Module> dynamicModules = loadDynamicModules();
 
-			for (Module imported : module.getImports()) {
-				if (!currentModules.contains(imported)) {
-					unMappedRequiredModules.add(imported);
-				}
-			}
+		for (Module module : dynamicModules) {
+			mapDynamicModule(module, dynamicModules);
+		}
+	}
 
-			for (Module required : unMappedRequiredModules) {
-				mapAllTemplates(required);
-			}
+	/**
+	 * Handles the mapping of a single dynamic module.
+	 * 
+	 * @param module
+	 *            Module that is to be mapped as a dynamic module.
+	 * @param dynamicModules
+	 *            The set of all dynamic modules as returned by {@link #loadDynamicModules()}.
+	 */
+	private void mapDynamicModule(Module module, Set<Module> dynamicModules) {
+		boolean map = false;
 
-			for (final ModuleElement elem : module.getOwnedModuleElement()) {
-				if (elem instanceof Template) {
-					final Template ownedTemplate = (Template)elem;
-					for (final Template overriden : ownedTemplate.getOverrides()) {
-						Set<Template> overriding = dynamicOverrides.get(overriden);
-						if (overriding == null && templates.containsKey(overriden.getName())) {
-							overriding = new LinkedHashSet<Template>();
-							Template match = overriden;
-							Set<Template> candidates = templates.get(overriden.getName());
-							for (Template template : candidates) {
-								if (EcoreUtil.equals(template, overriden)) {
-									match = template;
-									break;
-								}
+		final Set<Module> unMappedRequiredModules = new LinkedHashSet<Module>();
+		for (Module extended : module.getExtends()) {
+			if (dynamicModules.contains(extended)) {
+				mapDynamicModule(extended, dynamicModules);
+			}
+			if (currentModules.contains(extended)) {
+				map = true;
+			} else {
+				unMappedRequiredModules.add(extended);
+			}
+		}
+		// This module shouldn't be added to the context. Go to next.
+		if (!map) {
+			return;
+		}
+
+		for (Module imported : module.getImports()) {
+			if (!currentModules.contains(imported)) {
+				unMappedRequiredModules.add(imported);
+			}
+		}
+
+		for (Module required : unMappedRequiredModules) {
+			mapAllTemplates(required);
+		}
+
+		for (final ModuleElement elem : module.getOwnedModuleElement()) {
+			if (elem instanceof Template) {
+				final Template ownedTemplate = (Template)elem;
+				for (final Template overriden : ownedTemplate.getOverrides()) {
+					Set<Template> overriding = dynamicOverrides.get(overriden);
+					if (overriding == null && templates.containsKey(overriden.getName())) {
+						overriding = new LinkedHashSet<Template>();
+						Template match = overriden;
+						Set<Template> candidates = templates.get(overriden.getName());
+						for (Template template : candidates) {
+							if (EcoreUtil.equals(template, overriden)) {
+								match = template;
+								break;
 							}
-							dynamicOverrides.put(match, overriding);
 						}
-						if (overriding != null) {
-							overriding.add(ownedTemplate);
-						}
+						dynamicOverrides.put(match, overriding);
 					}
-					if (ownedTemplate.getOverrides().size() == 0) {
-						Set<Template> namesakes = templates.get(ownedTemplate.getName());
-						if (namesakes == null) {
-							namesakes = new LinkedHashSet<Template>();
-							templates.put(ownedTemplate.getName(), namesakes);
-						}
-						namesakes.add(ownedTemplate);
+					if (overriding != null) {
+						overriding.add(ownedTemplate);
 					}
+				}
+				if (ownedTemplate.getOverrides().size() == 0) {
+					Set<Template> namesakes = templates.get(ownedTemplate.getName());
+					if (namesakes == null) {
+						namesakes = new LinkedHashSet<Template>();
+						templates.put(ownedTemplate.getName(), namesakes);
+					}
+					namesakes.add(ownedTemplate);
 				}
 			}
 		}
+		currentModules.add(module);
 	}
 
 	/**
@@ -1361,6 +1405,42 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					reorderedList.add(candidate);
 					candidates.remove(candidate);
 				}
+			}
+		}
+
+		return reorderedList;
+	}
+
+	/**
+	 * Reorders tha given list of candidates by order of overriding. For example if the set contains T11
+	 * overriding T1, T21 overriding T11, T31 overriding T11 and T12 overriding T1, The returned list will
+	 * contain in this order : {T31, T12, T21, T11}.
+	 * 
+	 * @param candidates
+	 *            Set of candidates that are to be reordered.
+	 * @return The reordered list of candidates.
+	 */
+	private List<Template> reorderDynamicOverrides(Set<Template> candidates) {
+		final List<Template> reorderedList = new ArrayList<Template>(candidates.size());
+
+		final Set<Template> lowest = new LinkedHashSet<Template>(candidates);
+		while (!lowest.isEmpty()) {
+			for (final Template candidate : new LinkedHashSet<Template>(lowest)) {
+				for (final Template overriden : candidate.getOverrides()) {
+					if (lowest.contains(overriden)) {
+						lowest.remove(overriden);
+					}
+				}
+			}
+			if (lowest.isEmpty()) {
+				List<Template> remainingCandidates = new ArrayList<Template>(candidates);
+				remainingCandidates.removeAll(reorderedList);
+				reorderedList.addAll(remainingCandidates);
+			} else {
+				reorderedList.addAll(lowest);
+				lowest.clear();
+				lowest.addAll(candidates);
+				lowest.removeAll(reorderedList);
 			}
 		}
 
