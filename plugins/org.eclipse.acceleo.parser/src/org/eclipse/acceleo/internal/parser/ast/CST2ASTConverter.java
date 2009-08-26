@@ -873,7 +873,6 @@ public class CST2ASTConverter {
 				org.eclipse.acceleo.parser.cst.ModuleElement iNext = iOwnedModuleElementIt.next();
 				StringBuilder signature = new StringBuilder();
 				signature.append(iNext.getName());
-				signature.append('(');
 				if (iNext instanceof org.eclipse.acceleo.parser.cst.Template) {
 					org.eclipse.acceleo.model.mtl.Template oNext = factory
 							.getOrCreateTemplate((org.eclipse.acceleo.parser.cst.Template)iNext);
@@ -881,6 +880,7 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iNext);
+					signature.append('(');
 					boolean first = true;
 					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Template)iNext).getParameter()) {
 						if (first) {
@@ -890,6 +890,11 @@ public class CST2ASTConverter {
 						}
 						signature.append(iVariable.getType());
 					}
+					signature.append(')');
+					if (((org.eclipse.acceleo.parser.cst.Template)iNext).getGuard() != null) {
+						signature.append(((org.eclipse.acceleo.parser.cst.Template)iNext).getGuard()
+								.getBody());
+					}
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
 					org.eclipse.acceleo.model.mtl.Macro oNext = factory
 							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
@@ -897,6 +902,7 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Macro)iNext);
+					signature.append('(');
 					boolean first = true;
 					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Macro)iNext).getParameter()) {
 						if (first) {
@@ -906,6 +912,7 @@ public class CST2ASTConverter {
 						}
 						signature.append(iVariable.getType());
 					}
+					signature.append(')');
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Query) {
 					org.eclipse.acceleo.model.mtl.Query oNext = factory
 							.getOrCreateQuery((org.eclipse.acceleo.parser.cst.Query)iNext);
@@ -913,6 +920,7 @@ public class CST2ASTConverter {
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Query)iNext);
+					signature.append('(');
 					boolean first = true;
 					for (Variable iVariable : ((org.eclipse.acceleo.parser.cst.Query)iNext).getParameter()) {
 						if (first) {
@@ -922,8 +930,8 @@ public class CST2ASTConverter {
 						}
 						signature.append(iVariable.getType());
 					}
+					signature.append(')');
 				}
-				signature.append(')');
 				String sign = signature.toString();
 				if (allSignatures.contains(sign)) {
 					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict",
