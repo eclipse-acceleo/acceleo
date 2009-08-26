@@ -24,6 +24,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
@@ -78,7 +79,6 @@ public class AcceleoParser {
 	 * @since 0.9
 	 */
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs, Monitor monitor) {
-		assert inputFiles.size() == outputURIs.size();
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
 				new Object[] {inputFiles.size() }), inputFiles.size() * 3);
 		ResourceSet oResourceSet = new ResourceSetImpl();
@@ -99,6 +99,17 @@ public class AcceleoParser {
 			source.createCST();
 			for (ModuleImportsValue importValue : source.getCST().getImports()) {
 				String importedFileName = importValue.getName();
+				if (importedFileName != null) {
+					int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+					if (lastSegment > -1) {
+						importedFileName = importedFileName.substring(
+								lastSegment + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+					}
+					allImportedFiles.add(importedFileName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION);
+				}
+			}
+			for (ModuleExtendsValue extendValue : source.getCST().getExtends()) {
+				String importedFileName = extendValue.getName();
 				if (importedFileName != null) {
 					int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
 					if (lastSegment > -1) {
@@ -197,6 +208,17 @@ public class AcceleoParser {
 		Set<String> allImportedFiles = new HashSet<String>();
 		for (ModuleImportsValue importValue : source.getCST().getImports()) {
 			String importedFileName = importValue.getName();
+			if (importedFileName != null) {
+				int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
+				if (lastSegment > -1) {
+					importedFileName = importedFileName.substring(
+							lastSegment + IAcceleoConstants.NAMESPACE_SEPARATOR.length()).trim();
+				}
+				allImportedFiles.add(importedFileName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION);
+			}
+		}
+		for (ModuleExtendsValue extendValue : source.getCST().getExtends()) {
+			String importedFileName = extendValue.getName();
 			if (importedFileName != null) {
 				int lastSegment = importedFileName.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR);
 				if (lastSegment > -1) {
