@@ -14,7 +14,7 @@
  *
  * </copyright>
  *
- * $Id: test.xml,v 1.1 2009/03/05 16:32:28 jmusset Exp $
+ * $Id: test.xml,v 1.2 2009/08/26 11:50:07 lgoubet Exp $
  */
 -->
 
@@ -41,7 +41,7 @@
   <target name="suite">
     <property name="m2t-folder" value="${eclipse-home}/emf_folder"/>
     <delete dir="${m2t-folder}" quiet="true"/>
-    <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
+    <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
       <property name="data-dir" value="${m2t-folder}"/>
       <property name="plugin-name" value="${plugin-name}"/>
       <property name="classname" value="org.eclipse.acceleo.ide.ui.tests.suite.AllTests"/>
