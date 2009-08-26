@@ -22,8 +22,11 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.CstFactory;
@@ -40,6 +43,8 @@ import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
 import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -71,6 +76,11 @@ public class AcceleoSourceContent {
 	 * Default URI of the EMTL file if it doesn't exist.
 	 */
 	private static final String DEFAULT_EMTL_URI = "http://acceleo.eclipse.org/default.emtl"; //$NON-NLS-1$
+
+	/**
+	 * Name of the extension point to parse for template locations.
+	 */
+	private static final String DYNAMIC_TEMPLATES_EXTENSION_POINT = "org.eclipse.acceleo.engine.dynamic.templates"; //$NON-NLS-1$
 
 	/**
 	 * The Acceleo file. It can be null if the file hasn't been specified.
@@ -851,8 +861,65 @@ public class AcceleoSourceContent {
 					break;
 				}
 			}
-
 		}
+		if (vAST != null && vAST.getExtends().size() > 0) {
+			checkDynamicExtensionPoint();
+		}
+	}
+
+	/**
+	 * Is there an extension point that allows to define dynamic overrides for this generation? If not, we
+	 * report a syntax error.
+	 */
+	private void checkDynamicExtensionPoint() {
+		if (file != null) {
+			boolean found = false;
+			IFile pluginXML = file.getProject().getFile("plugin.xml");
+			if (pluginXML != null && pluginXML.exists()) {
+				StringBuffer buffer = FileContent.getFileContent(pluginXML.getLocation().toFile());
+				if (buffer.indexOf(DYNAMIC_TEMPLATES_EXTENSION_POINT) > -1) {
+					found = true;
+				}
+			}
+			if (!found) {
+				try {
+					IMarker[] markers = file.findMarkers(AcceleoMarker.PROBLEM_MARKER, false, 1);
+					if (markers == null || markers.length == 0) {
+						reportError(file, 1, 0, 1, AcceleoUIMessages.getString(
+								"AcceleoSourceContent.NoPathFound", file.getName())); //$NON-NLS-1$
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Creates an error marker on the given file.
+	 * 
+	 * @param mtlFile
+	 *            is the file that contains a syntax error
+	 * @param line
+	 *            is the line of the problem
+	 * @param posBegin
+	 *            is the beginning position of the problem
+	 * @param posEnd
+	 *            is the ending position of the problem
+	 * @param message
+	 *            is the message of the problem, it is the message displayed when you're hover the marker
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void reportError(IFile mtlFile, int line, int posBegin, int posEnd, String message)
+			throws CoreException {
+		IMarker m = mtlFile.createMarker(AcceleoMarker.PROBLEM_MARKER);
+		m.setAttribute(IMarker.LINE_NUMBER, line);
+		m.setAttribute(IMarker.CHAR_START, posBegin);
+		m.setAttribute(IMarker.CHAR_END, posEnd);
+		m.setAttribute(IMarker.MESSAGE, message);
+		m.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+		m.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 	}
 
 	/**
