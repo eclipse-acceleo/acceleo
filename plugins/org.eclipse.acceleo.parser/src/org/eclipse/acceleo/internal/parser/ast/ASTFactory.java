@@ -305,20 +305,21 @@ public class ASTFactory {
 			org.eclipse.ocl.ecore.OCLExpression oOCLExpression = ioModelExpression.get(iModelExpression);
 			if (oOCLExpression == null) {
 				try {
-					String body;
 					EObject iContainer = iModelExpression.eContainer();
-					if (iContainer instanceof Variable
-							&& (iContainer.eContainingFeature() == CstPackage.eINSTANCE
-									.getLetBlock_LetVariable()
-									|| iContainer.eContainingFeature() == CstPackage.eINSTANCE
-											.getInitSection_Variable() || iContainer.eContainingFeature() == CstPackage.eINSTANCE
-									.getForBlock_LoopVariable())) {
-						body = iModelExpression.getBody() + ".oclAsType(" //$NON-NLS-1$
-								+ ((Variable)iContainer).getType() + ")"; //$NON-NLS-1$
+					if (needCast(iModelExpression)) {
+						try {
+							String body = iModelExpression.getBody() + ".oclAsType(" //$NON-NLS-1$
+									+ ((Variable)iContainer).getType() + ")"; //$NON-NLS-1$
+							oOCLExpression = pOCL.parseOCLExpression(body, iModelExpression
+									.getStartPosition());
+						} catch (ParserException e) {
+							oOCLExpression = pOCL.parseOCLExpression(iModelExpression.getBody(),
+									iModelExpression.getStartPosition());
+						}
 					} else {
-						body = iModelExpression.getBody();
+						oOCLExpression = pOCL.parseOCLExpression(iModelExpression.getBody(), iModelExpression
+								.getStartPosition());
 					}
-					oOCLExpression = pOCL.parseOCLExpression(body, iModelExpression.getStartPosition());
 					ioModelExpression.put(iModelExpression, oOCLExpression);
 				} catch (ParserException e) {
 					log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
@@ -329,6 +330,25 @@ public class ASTFactory {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Indicates if we need to create an implicit cast for the given expression.
+	 * 
+	 * @param iModelExpression
+	 *            is the expression
+	 * @return true if we need to create an implicit cast for the given expression
+	 */
+	private boolean needCast(org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
+		EObject iContainer = iModelExpression.eContainer();
+		if (iContainer instanceof Variable) {
+			if (iContainer.eContainingFeature() == CstPackage.eINSTANCE.getLetBlock_LetVariable()
+					|| iContainer.eContainingFeature() == CstPackage.eINSTANCE.getInitSection_Variable()
+					|| iContainer.eContainingFeature() == CstPackage.eINSTANCE.getForBlock_LoopVariable()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
