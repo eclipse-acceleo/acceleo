@@ -244,6 +244,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
 						new Path(deltaFile.getName()).removeFileExtension().lastSegment(), };
 				importSequencesToSearch.add(new Sequence(tokens));
+				tokens = new String[] {IAcceleoConstants.EXTENDS,
+						new Path(deltaFile.getName()).removeFileExtension().lastSegment(), };
+				importSequencesToSearch.add(new Sequence(tokens));
 				otherTemplates.remove(deltaFile);
 			}
 		}
@@ -257,8 +260,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 							IAcceleoConstants.IMPORT,
 							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(), };
-					Sequence importSequence = new Sequence(tokens);
-					importSequencesToSearch.add(importSequence);
+					importSequencesToSearch.add(new Sequence(tokens));
+					tokens = new String[] {IAcceleoConstants.EXTENDS,
+							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(), };
+					importSequencesToSearch.add(new Sequence(tokens));
+
 				}
 			}
 			otherTemplatesToBuild = getOtherTemplatesToBuild(otherTemplates, importSequencesToSearch);
