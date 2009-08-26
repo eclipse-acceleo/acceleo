@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.service.AcceleoService;
+import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.runtime.Platform;
@@ -232,7 +233,9 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	protected void setUp() throws Exception {
 		// Shortcuts inherited behavior
 		final String mockModulePath = "data/dynamicoverride/mockModule.emtl";
-		Resource moduleResource = ModelUtils.createResource(URI.createFileURI(mockModulePath), resourceSet);
+		final URI mockModuleURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
+				+ mockModulePath, true);
+		Resource moduleResource = ModelUtils.createResource(mockModuleURI, resourceSet);
 		final Map<String, String> options = new HashMap<String, String>();
 		moduleResource.load(options);
 		if (moduleResource.getContents().size() > 0) {
