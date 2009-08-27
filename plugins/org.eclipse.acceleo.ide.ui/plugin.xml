@@ -508,6 +508,12 @@ Contributors:
             icon="icons/ProposalsBrowser.gif"
             id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
             name="Acceleo Proposals"/>
+      <view
+            category="org.eclipse.acceleo.ide.ui"
+            class="org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser"
+            icon="icons/OverridesBrowser.gif"
+            id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
+            name="Acceleo Overrides"/>
     </extension>
 
 	<extension

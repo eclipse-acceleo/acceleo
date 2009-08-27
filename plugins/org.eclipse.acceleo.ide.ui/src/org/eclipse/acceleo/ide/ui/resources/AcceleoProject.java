@@ -14,12 +14,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -27,22 +33,29 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IBundleGroup;
+import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
 
 /**
  * A Acceleo project represents a view of a project resource in terms of Acceleo elements. Each Acceleo
@@ -53,6 +66,17 @@ import org.osgi.framework.Bundle;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoProject {
+
+	/**
+	 * Save the found URIs of the EMTL files in the plug-ins. The key is the bundle symbolic name and the
+	 * values are the URIs of the bundle EMTL files.
+	 */
+	private static Map<String, List<URI>> bundle2outputFiles = new HashMap<String, List<URI>>();
+
+	/**
+	 * Indicates if the EMF registry has been initialized.
+	 */
+	private static boolean registryInitialized;
 
 	/**
 	 * The project.
@@ -83,6 +107,10 @@ public class AcceleoProject {
 	 *            is the project
 	 */
 	public AcceleoProject(IProject project) {
+		if (!registryInitialized) {
+			registryInitialized = true;
+			registerPackages();
+		}
 		this.project = project;
 		this.sourceFolders = new ArrayList<IPath>();
 		final IJavaProject javaProject = JavaCore.create(project);
@@ -98,6 +126,33 @@ public class AcceleoProject {
 				this.sourceFolders.add(entry.getPath());
 			}
 		}
+	}
+
+	/**
+	 * Register the Acceleo metamodel NsURI.
+	 */
+	private void registerPackages() {
+		if (!EPackage.Registry.INSTANCE.containsKey(MtlPackage.eINSTANCE.getNsURI())) {
+			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
+					org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE
+					.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
+			EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore",
+					getOCLStdLibPackage());
+			EPackage.Registry.INSTANCE.put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+		}
+	}
+
+	/**
+	 * Returns the package containing the OCL standard library.
+	 * 
+	 * @return The package containing the OCL standard library.
+	 * @generated
+	 */
+	private EPackage getOCLStdLibPackage() {
+		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+		return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
 	}
 
 	/**
@@ -378,7 +433,7 @@ public class AcceleoProject {
 					if (requiredProject != null && requiredProject.isAccessible()) {
 						computeAccessibleOutputFilesInFolder(outputFilesWithManifest,
 								getOutputFolder(requiredProject));
-					} else if (Platform.getBundle(requiredSymbolicName) != null) {
+					} else {
 						computeAccessibleOutputFilesWithBundle(outputFilesWithManifest, Platform
 								.getBundle(requiredSymbolicName));
 					}
@@ -397,20 +452,9 @@ public class AcceleoProject {
 	 * @param bundle
 	 *            is the current bundle
 	 */
-	@SuppressWarnings("unchecked")
 	private void computeAccessibleOutputFilesWithBundle(List<URI> outputURIs, Bundle bundle) {
-		Enumeration<URL> entries = bundle
-				.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
-		if (entries != null) {
-			while (entries.hasMoreElements()) {
-				URL entry = entries.nextElement();
-				if (entry != null) {
-					IPath path = new Path(entry.getPath());
-					if (path.segmentCount() > 0) {
-						outputURIs.add(URI.createPlatformPluginURI(path.toString(), false));
-					}
-				}
-			}
+		if (bundle != null && (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
+			outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
 		}
 	}
 
@@ -521,6 +565,145 @@ public class AcceleoProject {
 			}
 		}
 		return oResourceSet;
+	}
+
+	/**
+	 * Gets in a single resource set all the not accessible AST resources (EMTL). It means all the EMTL files
+	 * of the Eclipse instance (plugin and workspace) not in the project and not in the required plugins. You
+	 * must unload the resources of the returned resource set by yourself.
+	 * 
+	 * @return a resource set which contains all the not accessible resources
+	 * @since 0.9
+	 */
+	public ResourceSet loadNotAccessibleOutputFiles() {
+		return loadAllPlatformOutputFiles(true);
+	}
+
+	/**
+	 * Gets in a single resource set all the EMTL files of the Eclipse instance, it means in the plug-ins and
+	 * in the workspace. You must unload the resources of the returned resource set by yourself.
+	 * 
+	 * @return a resource set which contains all the not accessible resources
+	 * @since 0.9
+	 */
+	public ResourceSet loadAllPlatformOutputFiles() {
+		return loadAllPlatformOutputFiles(false);
+	}
+
+	/**
+	 * Gets in a single resource set all the EMTL files of the Eclipse instance, it means in the plug-ins and
+	 * in the workspace. You must unload the resources of the returned resource set by yourself. We can ignore
+	 * the accessible output files, it means all the EMTL files of the current project and its required
+	 * plugins.
+	 * 
+	 * @param excludeAccessible
+	 *            indicates if we ignore the accessible output files
+	 * @return a resource set which contains all the not accessible resources
+	 * @since 0.9
+	 */
+	private ResourceSet loadAllPlatformOutputFiles(boolean excludeAccessible) {
+		ResourceSet oResourceSet = new ResourceSetImpl();
+		List<URI> outputURIs = new ArrayList<URI>();
+		for (IProject aProject : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+			try {
+				if (aProject.isAccessible() && aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+					computeAccessibleOutputFilesInFolder(outputURIs, getOutputFolder(aProject));
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
+		outputURIs.addAll(getAllPlatformPluginOutputFiles());
+		List<URI> excludeURIs;
+		if (excludeAccessible) {
+			excludeURIs = getAccessibleOutputFiles();
+		} else {
+			excludeURIs = null;
+		}
+		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext();) {
+			URI oURI = itOutputURIs.next();
+			if (excludeURIs == null || !excludeURIs.contains(oURI)) {
+				try {
+					ModelUtils.load(oURI, oResourceSet);
+				} catch (IOException e) {
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				}
+			}
+		}
+		return oResourceSet;
+	}
+
+	/**
+	 * Gets the URIs of all the EMTL files in the plug-ins. The workspace files are ignored.
+	 * 
+	 * @return the URIs of all the EMTL files
+	 */
+	private List<URI> getAllPlatformPluginOutputFiles() {
+		Set<String> done = new HashSet<String>();
+		List<URI> outputURIs = new ArrayList<URI>();
+		IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
+		for (IBundleGroupProvider provider : providers) {
+			for (IBundleGroup group : provider.getBundleGroups()) {
+				for (Bundle bundle : group.getBundles()) {
+					String name = bundle.getSymbolicName();
+					if (!done.contains(name)
+							&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
+						done.add(name);
+						outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+					}
+				}
+			}
+		}
+		return outputURIs;
+	}
+
+	/**
+	 * Gets and saves the URIs of all the EMTL files in the plug-ins. The workspace files are ignored. We
+	 * search the URIs only one time, because the bundles won't change. This method only saves the found URIs
+	 * of the EMTL files for the given plug-in.
+	 * 
+	 * @param bundle
+	 *            is the OSGI bundle of the plug-in
+	 * @return the URIs of all the EMTL files in the plug-ins
+	 */
+	private List<URI> getOrCreatePlatformPluginSavedURIs(Bundle bundle) {
+		String name = bundle.getSymbolicName();
+		List<URI> savedURIs = bundle2outputFiles.get(name);
+		if (savedURIs == null) {
+			savedURIs = new ArrayList<URI>();
+			bundle2outputFiles.put(name, savedURIs);
+			String required = (String)bundle.getHeaders().get(Constants.REQUIRE_BUNDLE);
+			if (required != null && required.indexOf(AcceleoEnginePlugin.PLUGIN_ID) != -1) {
+				computeSaveURIs(bundle, savedURIs);
+			}
+		}
+		return savedURIs;
+	}
+
+	/**
+	 * Computes the saved URIs of the given bundle.
+	 * 
+	 * @param bundle
+	 *            the bundle to browse
+	 * @param savedURIs
+	 *            the EMTL files URIs to get, it is an input/output parameter
+	 */
+	@SuppressWarnings("unchecked")
+	private void computeSaveURIs(Bundle bundle, List<URI> savedURIs) {
+		Enumeration<URL> entries = bundle
+				.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
+		if (entries != null) {
+			while (entries.hasMoreElements()) {
+				URL entry = entries.nextElement();
+				if (entry != null) {
+					IPath path = new Path(entry.getPath());
+					if (path.segmentCount() > 0) {
+						savedURIs.add(URI.createPlatformPluginURI(path.toString(), false));
+					}
+				}
+			}
+		}
 	}
 
 }
