@@ -348,6 +348,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 						if (event.getElement() instanceof ModuleProjectHandler) {
 							ModuleProjectHandler project = (ModuleProjectHandler)event.getElement();
 							for (Module eModule : project.getModules()) {
+								templatesViewer.expandToLevel(eModule, 1);
+								templatesViewer.setChecked(eModule, event.getChecked());
 								checkStateTemplate(eModule, event.getChecked());
 							}
 						} else if (event.getElement() instanceof Module) {
