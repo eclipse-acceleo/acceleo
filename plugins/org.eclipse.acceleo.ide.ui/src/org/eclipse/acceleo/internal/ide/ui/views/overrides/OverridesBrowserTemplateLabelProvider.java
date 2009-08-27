@@ -95,8 +95,9 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 		} else if (object instanceof ModuleProjectHandler) {
 			result = ((ModuleProjectHandler)object).getName();
 			if (!((ModuleProjectHandler)object).isResolved()) {
-				result += ' ' + '[' + AcceleoUIMessages
-						.getString("OverridesBrowserTemplateLabelProvider.RequiredBundles") + ']'; //$NON-NLS-1$
+				result += " [" //$NON-NLS-1$
+						+ AcceleoUIMessages
+								.getString("OverridesBrowserTemplateLabelProvider.RequiredBundles") + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} else if (object instanceof Module) {
 			result = ((Module)object).getName();
