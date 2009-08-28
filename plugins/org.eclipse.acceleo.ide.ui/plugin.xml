@@ -253,9 +253,14 @@ Contributors:
                relative="org.eclipse.ui.views.ProblemView">
          </view>
          <view
+               id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
+               relationship="stack"
+               relative="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView">
+         </view>
+         <view
                id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
                relationship="stack"
-               relative="org.eclipse.jdt.ui.PackageExplorer">
+               relative="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView">
          </view>
       </perspectiveExtension>
     </extension>
@@ -500,20 +505,20 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.views.result.AcceleoResultView"
              icon="icons/AcceleoResultView.gif"
              id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
-             name="Acceleo Result">
+             name="Result">
        </view>
       <view
             category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser"
             icon="icons/ProposalsBrowser.gif"
             id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
-            name="Acceleo Proposals"/>
+            name="Patterns"/>
       <view
             category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser"
             icon="icons/OverridesBrowser.gif"
             id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
-            name="Acceleo Overrides"/>
+            name="Overrides"/>
     </extension>
 
 	<extension

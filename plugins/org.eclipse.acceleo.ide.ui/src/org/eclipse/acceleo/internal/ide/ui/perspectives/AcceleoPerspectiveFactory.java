@@ -47,7 +47,6 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 
 		IFolderLayout leftFolder = layout.createFolder("left", IPageLayout.LEFT, oneQuarter, editorArea); //$NON-NLS-1$
 		leftFolder.addView(JavaUI.ID_PACKAGES);
-		leftFolder.addView(JavaUI.ID_TYPE_HIERARCHY);
 
 		IFolderLayout bottomFolder = layout.createFolder(
 				"bottom", IPageLayout.BOTTOM, threeQuarter, editorArea); //$NON-NLS-1$
@@ -66,14 +65,11 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 
 		// views - acceleo
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"); //$NON-NLS-1$
+		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"); //$NON-NLS-1$
 
 		// views - java
 		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
-		layout.addShowViewShortcut(JavaUI.ID_TYPE_HIERARCHY);
-
-		// views - search
-		layout.addShowViewShortcut(NewSearchUI.SEARCH_VIEW_ID);
 
 		// views - console
 		layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
