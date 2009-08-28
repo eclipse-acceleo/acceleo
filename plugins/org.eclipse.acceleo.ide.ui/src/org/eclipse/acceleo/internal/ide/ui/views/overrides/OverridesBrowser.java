@@ -61,6 +61,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -183,14 +184,18 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 				public void resourceChanged(IResourceChangeEvent event) {
 					try {
 						IResourceDelta delta = event.getDelta();
-						List<IFile> deltaFiles = new ArrayList<IFile>();
-						deltaMembers(deltaFiles, delta);
-						if (deltaFiles.size() > 0) {
+						if (hasSignificantDelta(delta)) {
 							project = null;
-							if (getSite() != null && getSite().getPage() != null
-									&& getSite().getPage().getActiveEditor() instanceof AcceleoEditor) {
-								updateViewTemplates((AcceleoEditor)getSite().getPage().getActiveEditor());
-							}
+							Display.getDefault().asyncExec(new Runnable() {
+								public void run() {
+									if (getSite() != null && getSite().getPage() != null
+											&& getSite().getPage().getActiveEditor() instanceof AcceleoEditor
+											&& getSite().getPage().isPartVisible(OverridesBrowser.this)) {
+										updateViewTemplates((AcceleoEditor)getSite().getPage()
+												.getActiveEditor());
+									}
+								}
+							});
 						}
 					} catch (CoreException e) {
 						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
@@ -203,30 +208,31 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	}
 
 	/**
-	 * Computes a list of all the modified files (Acceleo files only).
+	 * Indicates if an Acceleo template file has been modified.
 	 * 
-	 * @param deltaFiles
-	 *            an output parameter to get all the modified files
 	 * @param delta
 	 *            the resource delta represents changes in the state of a resource tree
+	 * @return true if an Acceleo template file has been modified
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private void deltaMembers(List<IFile> deltaFiles, IResourceDelta delta) throws CoreException {
+	private boolean hasSignificantDelta(IResourceDelta delta) throws CoreException {
+		boolean result = false;
 		if (delta != null) {
 			IResource resource = delta.getResource();
 			if (resource instanceof IFile) {
-				if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension()) || "MANIFEST.MF" //$NON-NLS-1$
-						.equals(resource.getName())) {
-					deltaFiles.add((IFile)resource);
+				if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(resource.getFileExtension())
+						|| "MANIFEST.MF".equals(resource.getName())) {
+					result = true;
 				}
 			} else {
 				IResourceDelta[] children = delta.getAffectedChildren();
-				for (int i = 0; i < children.length; i++) {
-					deltaMembers(deltaFiles, children[i]);
+				for (int i = 0; !result && i < children.length; i++) {
+					result = hasSignificantDelta(children[i]);
 				}
 			}
 		}
+		return result;
 	}
 
 	/**

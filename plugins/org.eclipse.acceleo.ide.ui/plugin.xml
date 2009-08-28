@@ -291,7 +291,7 @@ Contributors:
        <wizard
              category="org.eclipse.acceleo.ide.ui"
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
-             icon="icons/AcceleoNewProject.gif"
+             icon="icons/AcceleoNewProjectUI.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
              name="Acceleo Module UI Project"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
@@ -303,7 +303,7 @@ Contributors:
        <wizard
              category="org.eclipse.acceleo.ide.ui"
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoConvertProjectWizard"
-             icon="icons/AcceleoNewProject.gif"
+             icon="icons/AcceleoNewProjectConvert.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoConvertProjectWizard"
              name="Convert to Acceleo Module Projects"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"

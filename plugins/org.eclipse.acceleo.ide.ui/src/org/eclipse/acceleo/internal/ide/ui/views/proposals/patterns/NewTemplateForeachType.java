@@ -42,7 +42,7 @@ public class NewTemplateForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getImage()
 	 */
 	public Image getImage() {
-		return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template.gif"); //$NON-NLS-1$
+		return AcceleoUIActivator.getDefault().getImage("icons/proposals/NewTemplateForeachType.gif"); //$NON-NLS-1$
 	}
 
 	/**

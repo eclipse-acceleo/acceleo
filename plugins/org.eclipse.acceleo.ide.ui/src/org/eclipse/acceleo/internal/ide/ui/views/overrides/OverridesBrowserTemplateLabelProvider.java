@@ -158,9 +158,15 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 	public Image getImage(Object object) {
 		Image result;
 		if (object instanceof ModuleProjectHandler) {
-			result = AcceleoUIActivator.getDefault().getImage("icons/AcceleoNewProject.gif"); //$NON-NLS-1$
+			if (((ModuleProjectHandler)object).isResolved()) {
+				result = AcceleoUIActivator.getDefault().getImage(
+						"icons/overrides/AcceleoProjectResolved.gif"); //$NON-NLS-1$
+			} else {
+				result = AcceleoUIActivator.getDefault().getImage(
+						"icons/overrides/AcceleoProjectNotResolved.gif"); //$NON-NLS-1$
+			}
 		} else if (object instanceof Module) {
-			result = AcceleoUIActivator.getDefault().getImage("icons/AcceleoEditor.gif"); //$NON-NLS-1$
+			result = AcceleoUIActivator.getDefault().getImage("icons/overrides/Module.gif"); //$NON-NLS-1$
 		} else if (object instanceof ModuleElement) {
 			result = getModuleElementImage((ModuleElement)object);
 		} else {
@@ -188,11 +194,11 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 				}
 			}
 			if (isMain) {
-				return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_main.gif"); //$NON-NLS-1$
+				return AcceleoUIActivator.getDefault().getImage("icons/overrides/Template_main.gif"); //$NON-NLS-1$
 			}
 		}
 		return AcceleoUIActivator.getDefault().getImage(
-				"icons/template-editor/" + eModuleElement.eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
+				"icons/overrides/" + eModuleElement.eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

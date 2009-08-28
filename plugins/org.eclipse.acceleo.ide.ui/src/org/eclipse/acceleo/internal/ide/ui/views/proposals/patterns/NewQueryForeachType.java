@@ -42,7 +42,7 @@ public class NewQueryForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getImage()
 	 */
 	public Image getImage() {
-		return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Query.gif"); //$NON-NLS-1$
+		return AcceleoUIActivator.getDefault().getImage("icons/proposals/NewQueryForeachType.gif"); //$NON-NLS-1$
 	}
 
 	/**
