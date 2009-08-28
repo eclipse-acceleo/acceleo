@@ -699,7 +699,8 @@ public class AcceleoProject {
 				if (entry != null) {
 					IPath path = new Path(entry.getPath());
 					if (path.segmentCount() > 0) {
-						savedURIs.add(URI.createPlatformPluginURI(path.toString(), false));
+						savedURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName()).append(
+								path).toString(), false));
 					}
 				}
 			}
