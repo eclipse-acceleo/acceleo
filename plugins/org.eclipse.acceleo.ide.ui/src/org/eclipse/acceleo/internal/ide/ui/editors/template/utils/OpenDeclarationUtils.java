@@ -466,7 +466,8 @@ public final class OpenDeclarationUtils {
 			} else {
 				EObject newEObject = null;
 				Module eModule = acceleoEditor.getContent().getAST();
-				if (eModule != null && eModule.eResource() != null) {
+				if (eModule != null && eModule.eResource() != null && eObject != null
+						&& eObject.eResource() != null) {
 					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
 					newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
 				}

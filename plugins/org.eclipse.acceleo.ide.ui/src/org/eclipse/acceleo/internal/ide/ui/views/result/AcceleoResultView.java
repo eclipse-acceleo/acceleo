@@ -315,8 +315,8 @@ public class AcceleoResultView extends ResourceNavigator {
 					refresh();
 				}
 			};
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 		}
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
 				&& selectionListener == null) {
 			selectionListener = new ISelectionListener() {

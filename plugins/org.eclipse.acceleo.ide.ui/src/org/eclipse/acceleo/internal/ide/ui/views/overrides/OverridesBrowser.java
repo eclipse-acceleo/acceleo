@@ -17,17 +17,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.compare.Splitter;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,9 +48,15 @@ import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -89,6 +106,16 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * The resource sets to unload, when we close the view...
 	 */
 	private Set<ResourceSet> toUnload = new HashSet<ResourceSet>();
+
+	/**
+	 * The active project.
+	 */
+	private IProject project;
+
+	/**
+	 * The resource change listener to detect that the view must be refreshed.
+	 */
+	private IResourceChangeListener resourceChangeListener;
 
 	/**
 	 * Constructor.
@@ -147,12 +174,58 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		gridData.verticalIndent = 1;
 		composite.setLayoutData(gridData);
 		createTemplatesViewer(composite);
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
-				&& partListener == null) {
+		if (getSite() != null && getSite().getPage() != null && partListener == null) {
 			partListener = createPartListener();
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.addPartListener(partListener);
+			getSite().getPage().addPartListener(partListener);
+		}
+		if (resourceChangeListener == null) {
+			resourceChangeListener = new IResourceChangeListener() {
+				public void resourceChanged(IResourceChangeEvent event) {
+					try {
+						IResourceDelta delta = event.getDelta();
+						List<IFile> deltaFiles = new ArrayList<IFile>();
+						deltaMembers(deltaFiles, delta);
+						if (deltaFiles.size() > 0) {
+							project = null;
+							if (getSite() != null && getSite().getPage() != null
+									&& getSite().getPage().getActiveEditor() instanceof AcceleoEditor) {
+								updateViewTemplates((AcceleoEditor)getSite().getPage().getActiveEditor());
+							}
+						}
+					} catch (CoreException e) {
+						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+					}
 
+				}
+			};
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
+		}
+	}
+
+	/**
+	 * Computes a list of all the modified files (Acceleo files only).
+	 * 
+	 * @param deltaFiles
+	 *            an output parameter to get all the modified files
+	 * @param delta
+	 *            the resource delta represents changes in the state of a resource tree
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void deltaMembers(List<IFile> deltaFiles, IResourceDelta delta) throws CoreException {
+		if (delta != null) {
+			IResource resource = delta.getResource();
+			if (resource instanceof IFile) {
+				if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension()) || "MANIFEST.MF" //$NON-NLS-1$
+						.equals(resource.getName())) {
+					deltaFiles.add((IFile)resource);
+				}
+			} else {
+				IResourceDelta[] children = delta.getAffectedChildren();
+				for (int i = 0; i < children.length; i++) {
+					deltaMembers(deltaFiles, children[i]);
+				}
+			}
 		}
 	}
 
@@ -196,6 +269,14 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 *            is the editor that contains the current template to display in the Overrides view
 	 */
 	private synchronized void updateViewTemplates(AcceleoEditor editor) {
+		IFile file = editor.getFile();
+		if (file != null && file.getProject() == project) {
+			return;
+		} else if (file != null) {
+			project = file.getProject();
+		} else {
+			project = null;
+		}
 		if (toUnload.size() > 0) {
 			for (ResourceSet resourceSet : toUnload) {
 				for (Resource resource : resourceSet.getResources()) {
@@ -206,9 +287,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			}
 			toUnload.clear();
 		}
-		IFile file = editor.getFile();
-		if (file != null) {
-			AcceleoProject acceleoProject = new AcceleoProject(file.getProject());
+		if (project != null) {
+			AcceleoProject acceleoProject = new AcceleoProject(project);
 			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
 			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles();
 			computeModuleProjectHandlers(resourceSet, true, projects);
@@ -252,8 +332,13 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			for (Map.Entry<String, List<Module>> entry : project2emtl.entrySet()) {
 				String projectName = entry.getKey();
 				List<Module> eModules = entry.getValue();
-				projects.add(new ModuleProjectHandler(projectName, eModules.toArray(new Module[eModules
-						.size()]), isResolved));
+				ModuleProjectHandler projectHanlder = new ModuleProjectHandler(projectName, eModules
+						.toArray(new Module[eModules.size()]), isResolved);
+				if (project != null && projectName.equals(project.getName())) {
+					projects.add(0, projectHanlder);
+				} else {
+					projects.add(projectHanlder);
+				}
 			}
 		}
 	}
@@ -305,11 +390,13 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (partListener != null
-				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().removePartListener(
-					partListener);
+		if (getSite() != null && getSite().getPage() != null && partListener != null) {
+			getSite().getPage().removePartListener(partListener);
 			partListener = null;
+		}
+		if (resourceChangeListener != null) {
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
+			resourceChangeListener = null;
 		}
 		if (toUnload.size() > 0) {
 			for (ResourceSet resourceSet : toUnload) {
@@ -346,9 +433,9 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 					active = true;
 					try {
 						if (event.getElement() instanceof ModuleProjectHandler) {
-							ModuleProjectHandler project = (ModuleProjectHandler)event.getElement();
-							templatesViewer.expandToLevel(project, 1);
-							for (Module eModule : project.getModules()) {
+							ModuleProjectHandler projectHandler = (ModuleProjectHandler)event.getElement();
+							templatesViewer.expandToLevel(projectHandler, 1);
+							for (Module eModule : projectHandler.getModules()) {
 								templatesViewer.expandToLevel(eModule, 1);
 								templatesViewer.setChecked(eModule, event.getChecked());
 								checkStateTemplate(eModule, event.getChecked());
@@ -363,12 +450,85 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 				}
 			}
 		});
+
+		templatesViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
+						&& event.getSelection() instanceof IStructuredSelection
+						&& ((IStructuredSelection)event.getSelection()).getFirstElement() instanceof EObject) {
+					EObject eObject = (EObject)((IStructuredSelection)event.getSelection()).getFirstElement();
+					if (eObject.eResource() != null) {
+						IRegion region;
+						if (eObject instanceof ModuleElement) {
+							region = new Region(((ModuleElement)eObject).getStartPosition(),
+									((ModuleElement)eObject).getEndPosition());
+						} else {
+							region = null;
+						}
+						URI fileURI = eObject.eResource().getURI();
+						if (fileURI != null) {
+							String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+							OpenDeclarationUtils.showEObject(getSite().getPage(), fileURI, region, eObject);
+							expandFragment(fileURI, eObjectFragmentURI);
+						}
+					}
+				}
+
+			}
+		});
+
 		IEditorPart part = getSite().getPage().getActiveEditor();
 		if (part instanceof AcceleoEditor) {
 			AcceleoEditor editor = (AcceleoEditor)part;
 			updateViewTemplates(editor);
 		} else {
 			templatesViewer.setInput(null);
+		}
+	}
+
+	/**
+	 * Try to expand the given element in the view.
+	 * 
+	 * @param eObjectFileURI
+	 *            file URI of the element that is to be expanded
+	 * @param eObjectFragmentURI
+	 *            fragment URI of the element that is to be expanded
+	 */
+	private void expandFragment(URI eObjectFileURI, String eObjectFragmentURI) {
+		if (eObjectFileURI != null && eObjectFragmentURI != null
+				&& templatesViewer.getInput() instanceof Object[]) {
+			Object[] inputs = (Object[])templatesViewer.getInput();
+			for (Object input : inputs) {
+				if (input instanceof ModuleProjectHandler) {
+					ModuleProjectHandler projectHandler = (ModuleProjectHandler)input;
+					for (Module eModule : projectHandler.getModules()) {
+						EObject newEObject;
+						if (eModule.eResource() != null
+								&& eModule.eResource().getURI().equals(eObjectFileURI)) {
+							newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
+						} else {
+							newEObject = null;
+						}
+						if (newEObject instanceof ModuleElement) {
+							List<Object> result = new ArrayList<Object>();
+							result.add(projectHandler);
+							result.add(newEObject.eContainer());
+							result.add(newEObject);
+							templatesViewer.setExpandedElements(result.toArray());
+							templatesViewer.setSelection(new StructuredSelection(newEObject), true);
+						} else if (newEObject instanceof Module) {
+							List<Object> result = new ArrayList<Object>();
+							result.add(projectHandler);
+							result.add(newEObject);
+							templatesViewer.setExpandedElements(result.toArray());
+							templatesViewer.setSelection(new StructuredSelection(newEObject), true);
+						}
+						if (newEObject != null) {
+							return;
+						}
+					}
+				}
+			}
 		}
 	}
 

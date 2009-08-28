@@ -164,11 +164,9 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 		composite.setLayoutData(gridData);
 		createPatternsViewer(composite);
 		createTypesViewer(composite);
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
-				&& partListener == null) {
+		if (getSite() != null && getSite().getPage() != null && partListener == null) {
 			partListener = createPartListener();
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.addPartListener(partListener);
+			getSite().getPage().addPartListener(partListener);
 
 		}
 	}
@@ -213,10 +211,8 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (partListener != null
-				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().removePartListener(
-					partListener);
+		if (partListener != null && getSite() != null && getSite().getPage() != null) {
+			getSite().getPage().removePartListener(partListener);
 			partListener = null;
 		}
 	}
