@@ -320,7 +320,7 @@ public final class OpenDeclarationUtils {
 		} else {
 			platformPath = null;
 		}
-		if (platformPath.segmentCount() > 1) {
+		if (platformPath != null && platformPath.segmentCount() > 1) {
 			if (ResourcesPlugin.getWorkspace().getRoot().exists(platformPath)) {
 				workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(platformPath);
 			} else {
