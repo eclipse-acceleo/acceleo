@@ -310,33 +310,58 @@ public final class OpenDeclarationUtils {
 	 *            is the platform URI or the file URI...
 	 * @return the IFile, or the java.io.File, or null if it doesn't exist
 	 */
-	private static Object getIFileXorIOFile(URI fileURI) {
-		IFile file = null;
+	public static Object getIFileXorIOFile(URI fileURI) {
+		IFile workspaceFile = null;
+		File absoluteFile = null;
 		String platformString = fileURI.toPlatformString(true);
+		IPath platformPath;
 		if (platformString != null) {
-			IPath filePath = new Path(platformString);
-			if (filePath.segmentCount() > 1 && ResourcesPlugin.getWorkspace().getRoot().exists(filePath)) {
-				file = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
+			platformPath = new Path(platformString);
+		} else {
+			platformPath = null;
+		}
+		if (platformPath.segmentCount() > 1) {
+			if (ResourcesPlugin.getWorkspace().getRoot().exists(platformPath)) {
+				workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(platformPath);
+			} else {
+				String pluginName = platformPath.segment(0);
+				String bundleLocation;
+				Bundle bundle = Platform.getBundle(pluginName);
+				if (bundle != null) {
+					try {
+						bundleLocation = bundle.getLocation();
+					} catch (SecurityException e) {
+						bundleLocation = null;
+					}
+				} else {
+					bundleLocation = null;
+				}
+				String prefix = "reference:file:"; //$NON-NLS-1$
+				if (bundleLocation != null && bundleLocation.startsWith(prefix)) {
+					absoluteFile = new Path(bundleLocation.substring(prefix.length())).removeLastSegments(1)
+							.append(platformPath).toFile();
+				} else if (bundleLocation != null) {
+					absoluteFile = new Path(bundleLocation).removeLastSegments(1).append(platformPath)
+							.toFile();
+				}
 			}
 		}
-		File absoluteFile;
-		String path = fileURI.toFileString();
-		if (path != null) {
-			absoluteFile = new File(path);
-			if (!absoluteFile.exists()) {
-				absoluteFile = null;
+		String absolutePath = fileURI.toFileString();
+		if (absolutePath != null) {
+			absoluteFile = new File(absolutePath);
+		}
+		if (workspaceFile == null && fileURI.isFile() && absoluteFile != null) {
+			IFile tmpFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+					new Path(absolutePath));
+			if (tmpFile != null && tmpFile.exists()) {
+				workspaceFile = tmpFile;
 			}
-		} else {
+		}
+		if (absoluteFile != null && !absoluteFile.exists()) {
 			absoluteFile = null;
 		}
-		if (file == null && fileURI.isFile() && absoluteFile != null) {
-			IFile tmpFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(path));
-			if (tmpFile != null && tmpFile.exists()) {
-				file = tmpFile;
-			}
-		}
-		if (file != null) {
-			return file;
+		if (workspaceFile != null) {
+			return workspaceFile;
 		} else {
 			return absoluteFile;
 		}

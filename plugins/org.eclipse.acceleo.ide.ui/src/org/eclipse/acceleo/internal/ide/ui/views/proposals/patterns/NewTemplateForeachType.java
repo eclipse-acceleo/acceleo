@@ -33,7 +33,7 @@ public class NewTemplateForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getDescription()
 	 */
 	public String getDescription() {
-		return "new [template] for all types"; //$NON-NLS-1$
+		return "[template] for all selected types"; //$NON-NLS-1$
 	}
 
 	/**

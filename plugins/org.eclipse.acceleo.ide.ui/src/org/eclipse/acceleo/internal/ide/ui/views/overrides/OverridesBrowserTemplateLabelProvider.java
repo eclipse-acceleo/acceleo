@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
 import org.eclipse.acceleo.model.mtl.Macro;
@@ -94,11 +93,6 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 			result = (String)object;
 		} else if (object instanceof ModuleProjectHandler) {
 			result = ((ModuleProjectHandler)object).getName();
-			if (!((ModuleProjectHandler)object).isResolved()) {
-				result += "  [" //$NON-NLS-1$
-						+ AcceleoUIMessages
-								.getString("OverridesBrowserTemplateLabelProvider.RequiredBundles") + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-			}
 		} else if (object instanceof Module) {
 			result = ((Module)object).getName();
 		} else if (object instanceof ModuleElement) {

@@ -35,7 +35,7 @@ public class NewIfElseIfForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getDescription()
 	 */
 	public String getDescription() {
-		return "new [if] for all types"; //$NON-NLS-1$
+		return "[if] for all selected types"; //$NON-NLS-1$
 	}
 
 	/**

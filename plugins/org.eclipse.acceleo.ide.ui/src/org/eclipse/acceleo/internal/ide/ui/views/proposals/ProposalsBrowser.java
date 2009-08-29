@@ -50,6 +50,7 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -472,15 +473,6 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 		patternsViewer.getTree().setFont(parent.getFont());
 		patternsViewer.setContentProvider(new ProposalsBrowserPatternsProvider(adapterFactory));
 		patternsViewer.setLabelProvider(new ProposalsBrowserPatternsLabelProvider(adapterFactory));
-
-		patternsViewer.addCheckStateListener(new ICheckStateListener() {
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				if (event.getChecked()) {
-					patternsViewer.setCheckedElements(new Object[] {event.getElement() });
-				}
-			}
-		});
-
 		patternsViewer.setInput(AcceleoPatternProposalsUtils.getPatternProposals());
 	}
 
@@ -529,6 +521,9 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 						EClass eClass = ((EClassHandler)typeCheckedElement).getEClass();
 						types.add(eClass);
 					}
+				}
+				if (types.size() == 0) {
+					types.add(EcorePackage.eINSTANCE.getInvalidType());
 				}
 				String newTemplateProposal = pattern.createTemplateProposal(types, indentTab);
 				if (newTemplateProposal != null && newTemplateProposal.length() > 0) {

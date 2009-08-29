@@ -35,7 +35,7 @@ public class NewLetElseLetForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getDescription()
 	 */
 	public String getDescription() {
-		return "new [let] for all types"; //$NON-NLS-1$
+		return "[let] for all selected types"; //$NON-NLS-1$
 	}
 
 	/**

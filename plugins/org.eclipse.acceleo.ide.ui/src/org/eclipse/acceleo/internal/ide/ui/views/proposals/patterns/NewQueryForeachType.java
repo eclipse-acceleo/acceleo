@@ -33,7 +33,7 @@ public class NewQueryForeachType implements IAcceleoPatternProposal {
 	 * @see org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal#getDescription()
 	 */
 	public String getDescription() {
-		return "new [query] for all types"; //$NON-NLS-1$
+		return "[query] for all selected types"; //$NON-NLS-1$
 	}
 
 	/**

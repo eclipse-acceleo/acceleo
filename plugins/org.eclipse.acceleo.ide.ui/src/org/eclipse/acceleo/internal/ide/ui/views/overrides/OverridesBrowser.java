@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.views.overrides;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,11 +21,13 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionTemplateProposal;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
-import org.eclipse.compare.Splitter;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -48,8 +51,14 @@ import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.templates.DocumentTemplateContext;
+import org.eclipse.jface.text.templates.Template;
+import org.eclipse.jface.text.templates.TemplateContext;
+import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -163,18 +172,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		rootContainer.setLayoutData(gridData);
 		GridLayout rootContainerLayout = new GridLayout();
 		rootContainer.setLayout(rootContainerLayout);
-		Composite composite = new Splitter(rootContainer, SWT.VERTICAL);
-		GridLayout layout = new GridLayout();
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		layout.verticalSpacing = 0;
-		layout.horizontalSpacing = 0;
-		layout.numColumns = 1;
-		composite.setLayout(layout);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.verticalIndent = 1;
-		composite.setLayoutData(gridData);
-		createTemplatesViewer(composite);
+		createTemplatesViewer(rootContainer);
 		if (getSite() != null && getSite().getPage() != null && partListener == null) {
 			partListener = createPartListener();
 			getSite().getPage().addPartListener(partListener);
@@ -272,13 +270,24 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * is in the given editor.
 	 * 
 	 * @param editor
-	 *            is the editor that contains the current template to display in the Overrides view
+	 *            is the editor that contains the current template to display in the Overrides view, it can be
+	 *            null
 	 */
 	private synchronized void updateViewTemplates(AcceleoEditor editor) {
-		IFile file = editor.getFile();
-		if (file != null && file.getProject() == project) {
-			return;
-		} else if (file != null) {
+		IFile file;
+		if (editor != null) {
+			file = editor.getFile();
+			boolean stop = getSite() != null && getSite().getPage() != null
+					&& !getSite().getPage().isPartVisible(this);
+			stop = stop || (file != null && file.getProject() == project);
+			stop = stop || (file == null && project == null);
+			if (stop) {
+				return;
+			}
+		} else {
+			file = null;
+		}
+		if (file != null) {
 			project = file.getProject();
 		} else {
 			project = null;
@@ -304,7 +313,11 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			toUnload.add(resourceSet);
 			templatesViewer.setInput(projects.toArray());
 		} else {
-			templatesViewer.setInput(null);
+			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
+			ResourceSet resourceSet = AcceleoProject.loadAllPlatformOutputFiles();
+			computeModuleProjectHandlers(resourceSet, false, projects);
+			toUnload.add(resourceSet);
+			templatesViewer.setInput(projects.toArray());
 		}
 	}
 
@@ -488,7 +501,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			AcceleoEditor editor = (AcceleoEditor)part;
 			updateViewTemplates(editor);
 		} else {
-			templatesViewer.setInput(null);
+			updateViewTemplates(null);
 		}
 	}
 
@@ -550,6 +563,143 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		for (ModuleElement eModuleElement : eModule.getOwnedModuleElement()) {
 			templatesViewer.expandToLevel(eModuleElement, 1);
 			templatesViewer.setChecked(eModuleElement, state);
+		}
+	}
+
+	/**
+	 * Gets the selected 'overrides' completion proposals. It means a replacement string with dynamic
+	 * variables.
+	 * 
+	 * @param document
+	 *            is the document
+	 * @param text
+	 *            is the text of the document
+	 * @param offset
+	 *            is the current offset
+	 * @return the list of selected proposals, it can be empty
+	 */
+	public List<ICompletionProposal> getExtendCompletionProposals(IDocument document, String text, int offset) {
+		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		StringBuilder proposalBuffer = new StringBuilder();
+		Object[] templateCheckedElements = templatesViewer.getCheckedElements();
+		if (templateCheckedElements.length > 0) {
+			int index = offset;
+			while (index > 0 && Character.isJavaIdentifierPart(text.charAt(index - 1))) {
+				index--;
+			}
+			if (index > 0 && (text.charAt(index - 1) == '[' || text.charAt(index - 1) == ']')) {
+				index--;
+			}
+			String start = text.substring(index, offset);
+			Map<URI, StringBuffer> fileURI2Buffer = new HashMap<URI, StringBuffer>();
+			for (int i = 0; i < templateCheckedElements.length; i++) {
+				Object templateCheckedElement = templateCheckedElements[i];
+				if (templateCheckedElement instanceof ModuleElement
+						&& ((ModuleElement)templateCheckedElement).eResource() != null) {
+					ModuleElement element = (ModuleElement)templateCheckedElement;
+					URI fileURI = ((ModuleElement)templateCheckedElement).eResource().getURI();
+					StringBuffer currentBuffer = fileURI2Buffer.get(fileURI);
+					if (currentBuffer == null && fileURI != null) {
+						currentBuffer = createMTLContent(fileURI);
+						fileURI2Buffer.put(fileURI, currentBuffer);
+					}
+					if (currentBuffer != null && element.getEndPosition() > -1
+							&& currentBuffer.length() >= element.getEndPosition()) {
+						StringBuffer currentText = new StringBuffer(currentBuffer.substring(element
+								.getStartPosition(), element.getEndPosition()));
+						currentText.append("\n"); //$NON-NLS-1$
+						modifyModuleElementContent(element, currentText);
+						proposalBuffer.append(currentText);
+						proposalBuffer.append("\n"); //$NON-NLS-1$
+					}
+				}
+			}
+			if (proposalBuffer.length() > 0) {
+				Template template = new Template("Selected Overrides", "Selected Overrides", //$NON-NLS-1$ //$NON-NLS-2$
+						AcceleoPartitionScanner.ACCELEO_BLOCK, proposalBuffer.toString(), true);
+				TemplateContextType type = new TemplateContextType(AcceleoPartitionScanner.ACCELEO_BLOCK,
+						AcceleoPartitionScanner.ACCELEO_BLOCK);
+				TemplateContext context = new DocumentTemplateContext(type, document,
+						offset - start.length(), start.length());
+				Region region = new Region(offset - start.length(), start.length());
+				AcceleoCompletionTemplateProposal proposal = new AcceleoCompletionTemplateProposal(template,
+						context, region, AcceleoUIActivator.getDefault().getImage(
+								"icons/template-editor/completion/OverridesBrowser.gif")); //$NON-NLS-1$
+				proposals.add(proposal);
+			}
+		}
+		return proposals;
+	}
+
+	/**
+	 * Gets the MTL file content of the given EMTL file URI.
+	 * 
+	 * @param fileURI
+	 *            is the URI of the EMTL file
+	 * @return the MTL file content
+	 */
+	private StringBuffer createMTLContent(URI fileURI) {
+		StringBuffer currentBuffer = new StringBuffer();
+		Object fileObject = OpenDeclarationUtils.getIFileXorIOFile(fileURI);
+		File absoluteFile = null;
+		if (fileObject instanceof IFile) {
+			absoluteFile = ((IFile)fileObject).getLocation().toFile();
+		} else if (fileObject instanceof File) {
+			absoluteFile = (File)fileObject;
+		}
+		if (absoluteFile != null) {
+			String mtlName = new Path(absoluteFile.getName()).removeFileExtension().addFileExtension(
+					IAcceleoConstants.MTL_FILE_EXTENSION).lastSegment();
+			File[] members = absoluteFile.getParentFile().listFiles();
+			for (File member : members) {
+				if (mtlName.equals(member.getName())) {
+					currentBuffer = FileContent.getFileContent(member);
+					break;
+				}
+			}
+		}
+		return currentBuffer;
+	}
+
+	/**
+	 * Modify the content of the given module element, by adding an 'overrides' value.
+	 * 
+	 * @param element
+	 *            is the module element
+	 * @param content
+	 *            is the text of the module element in the MTL file
+	 */
+	private void modifyModuleElementContent(ModuleElement element, StringBuffer content) {
+		int iBeginParenth = content.indexOf(IAcceleoConstants.PARENTHESIS_BEGIN);
+		if (iBeginParenth > -1) {
+			if (element instanceof org.eclipse.acceleo.model.mtl.Template) {
+				String templateName = ((org.eclipse.acceleo.model.mtl.Template)element).getName();
+				EObject eObject = ((org.eclipse.acceleo.model.mtl.Template)element).eContainer();
+				if (eObject instanceof Module) {
+					String newComment = "[comment @Override " + ((Module)eObject).getName() + "." //$NON-NLS-1$ //$NON-NLS-2$
+							+ templateName + " /]\n"; //$NON-NLS-1$
+					content.insert(0, newComment);
+					iBeginParenth += newComment.length();
+				}
+				int iEndParenth = content.indexOf(IAcceleoConstants.PARENTHESIS_END, iBeginParenth);
+				if (iEndParenth > -1
+						&& ((org.eclipse.acceleo.model.mtl.Template)element).getOverrides().size() == 0) {
+					iEndParenth += IAcceleoConstants.PARENTHESIS_END.length();
+					final String space = " "; //$NON-NLS-1$
+					content.insert(iEndParenth, space + IAcceleoConstants.OVERRIDES + space + templateName
+							+ space);
+				}
+			}
+			int iEndName = iBeginParenth;
+			while (iEndName > 0 && Character.isWhitespace(content.charAt(iEndName - 1))) {
+				iEndName--;
+			}
+			int iBeginName = iEndName;
+			while (iBeginName > 0 && Character.isJavaIdentifierPart(content.charAt(iBeginName - 1))) {
+				iBeginName--;
+			}
+			content.insert(iEndName, "}"); //$NON-NLS-1$
+			content.insert(iBeginName, "${"); //$NON-NLS-1$
 		}
 	}
 

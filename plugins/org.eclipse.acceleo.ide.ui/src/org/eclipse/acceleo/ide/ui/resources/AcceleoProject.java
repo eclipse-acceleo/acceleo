@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -72,6 +73,11 @@ public class AcceleoProject {
 	 * values are the URIs of the bundle EMTL files.
 	 */
 	private static Map<String, List<URI>> bundle2outputFiles = new HashMap<String, List<URI>>();
+
+	/**
+	 * Indicates if the saved map is complete.
+	 */
+	private static boolean allBundlesOutputFilesFound;
 
 	/**
 	 * Indicates if the EMF registry has been initialized.
@@ -131,7 +137,7 @@ public class AcceleoProject {
 	/**
 	 * Register the Acceleo metamodel NsURI.
 	 */
-	private void registerPackages() {
+	private static void registerPackages() {
 		if (!EPackage.Registry.INSTANCE.containsKey(MtlPackage.eINSTANCE.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
 					org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
@@ -149,7 +155,7 @@ public class AcceleoProject {
 	 * @return The package containing the OCL standard library.
 	 * @generated
 	 */
-	private EPackage getOCLStdLibPackage() {
+	private static EPackage getOCLStdLibPackage() {
 		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
 		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
 		return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
@@ -336,7 +342,7 @@ public class AcceleoProject {
 	 *            is a project of the workspace
 	 * @return the output folder of the project, or null if it doesn't exist
 	 */
-	private IFolder getOutputFolder(IProject aProject) {
+	private static IFolder getOutputFolder(IProject aProject) {
 		final IJavaProject javaProject = JavaCore.create(aProject);
 		try {
 			IPath output = javaProject.getOutputLocation();
@@ -386,7 +392,7 @@ public class AcceleoProject {
 	 * @param folder
 	 *            is the folder to browse
 	 */
-	private void computeAccessibleOutputFilesInFolder(List<URI> outputURIs, IContainer folder) {
+	private static void computeAccessibleOutputFilesInFolder(List<URI> outputURIs, IContainer folder) {
 		if (folder != null) {
 			try {
 				IResource[] members = folder.members();
@@ -576,7 +582,7 @@ public class AcceleoProject {
 	 * @since 0.9
 	 */
 	public ResourceSet loadNotAccessibleOutputFiles() {
-		return loadAllPlatformOutputFiles(true);
+		return loadAllPlatformOutputFiles(this);
 	}
 
 	/**
@@ -586,22 +592,25 @@ public class AcceleoProject {
 	 * @return a resource set which contains all the not accessible resources
 	 * @since 0.9
 	 */
-	public ResourceSet loadAllPlatformOutputFiles() {
-		return loadAllPlatformOutputFiles(false);
+	public static ResourceSet loadAllPlatformOutputFiles() {
+		if (!registryInitialized) {
+			registryInitialized = true;
+			registerPackages();
+		}
+		return loadAllPlatformOutputFiles(null);
 	}
 
 	/**
 	 * Gets in a single resource set all the EMTL files of the Eclipse instance, it means in the plug-ins and
 	 * in the workspace. You must unload the resources of the returned resource set by yourself. We can ignore
-	 * the accessible output files, it means all the EMTL files of the current project and its required
-	 * plugins.
+	 * the accessible output files, it means all the EMTL files of the given project and its required plugins.
 	 * 
 	 * @param excludeAccessible
-	 *            indicates if we ignore the accessible output files
+	 *            the accessible output files we want to exclude, null indicates that we don't want to ignore
+	 *            anything
 	 * @return a resource set which contains all the not accessible resources
-	 * @since 0.9
 	 */
-	private ResourceSet loadAllPlatformOutputFiles(boolean excludeAccessible) {
+	private static ResourceSet loadAllPlatformOutputFiles(AcceleoProject excludeAccessible) {
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<URI> outputURIs = new ArrayList<URI>();
 		for (IProject aProject : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
@@ -615,8 +624,8 @@ public class AcceleoProject {
 		}
 		outputURIs.addAll(getAllPlatformPluginOutputFiles());
 		List<URI> excludeURIs;
-		if (excludeAccessible) {
-			excludeURIs = getAccessibleOutputFiles();
+		if (excludeAccessible != null) {
+			excludeURIs = excludeAccessible.getAccessibleOutputFiles();
 		} else {
 			excludeURIs = null;
 		}
@@ -639,20 +648,38 @@ public class AcceleoProject {
 	 * 
 	 * @return the URIs of all the EMTL files
 	 */
-	private List<URI> getAllPlatformPluginOutputFiles() {
+	private static List<URI> getAllPlatformPluginOutputFiles() {
 		Set<String> done = new HashSet<String>();
 		List<URI> outputURIs = new ArrayList<URI>();
-		IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
-		for (IBundleGroupProvider provider : providers) {
-			for (IBundleGroup group : provider.getBundleGroups()) {
-				for (Bundle bundle : group.getBundles()) {
-					String name = bundle.getSymbolicName();
-					if (!done.contains(name)
-							&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
-						done.add(name);
+		if (!allBundlesOutputFilesFound) {
+			IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
+			for (IBundleGroupProvider provider : providers) {
+				for (IBundleGroup group : provider.getBundleGroups()) {
+					for (Bundle bundle : group.getBundles()) {
+						String name = bundle.getSymbolicName();
+						if (!done.contains(name)
+								&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
+							done.add(name);
+							outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+						}
+					}
+				}
+			}
+			// Deprecated? Yes, but the following API give more results
+			for (IPluginDescriptor descriptor : Platform.getPluginRegistry().getPluginDescriptors()) {
+				String name = descriptor.getUniqueIdentifier();
+				if (!done.contains(name)) {
+					done.add(name);
+					Bundle bundle = Platform.getBundle(name);
+					if (bundle != null) {
 						outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
 					}
 				}
+			}
+			allBundlesOutputFilesFound = true;
+		} else {
+			for (List<URI> values : bundle2outputFiles.values()) {
+				outputURIs.addAll(values);
 			}
 		}
 		return outputURIs;
@@ -667,7 +694,7 @@ public class AcceleoProject {
 	 *            is the OSGI bundle of the plug-in
 	 * @return the URIs of all the EMTL files in the plug-ins
 	 */
-	private List<URI> getOrCreatePlatformPluginSavedURIs(Bundle bundle) {
+	private static List<URI> getOrCreatePlatformPluginSavedURIs(Bundle bundle) {
 		String name = bundle.getSymbolicName();
 		List<URI> savedURIs = bundle2outputFiles.get(name);
 		if (savedURIs == null) {
@@ -690,7 +717,9 @@ public class AcceleoProject {
 	 *            the EMTL files URIs to get, it is an input/output parameter
 	 */
 	@SuppressWarnings("unchecked")
-	private void computeSaveURIs(Bundle bundle, List<URI> savedURIs) {
+	private static void computeSaveURIs(Bundle bundle, List<URI> savedURIs) {
+		// The first time we would like to be sure to extract the MTL files of the plug-in jar.
+		bundle.findEntries("/", "*." + IAcceleoConstants.MTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
 		Enumeration<URL> entries = bundle
 				.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
 		if (entries != null) {

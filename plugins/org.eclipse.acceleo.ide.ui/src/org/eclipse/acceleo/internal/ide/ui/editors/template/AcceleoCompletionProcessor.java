@@ -22,6 +22,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
+import org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser;
 import org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
@@ -202,6 +203,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		computeProposalsBrowserView(proposals);
+		if (cstNode instanceof Module) {
+			computeOverridesBrowserView(proposals);
+		}
 		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 
@@ -221,6 +225,30 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (view instanceof ProposalsBrowser && page.isPartVisible(view) && textViewer != null) {
 					List<ICompletionProposal> advancedCompletionProposals = ((ProposalsBrowser)view)
 							.getPatternCompletionProposals(textViewer.getDocument(), text, offset, cstNode);
+					if (advancedCompletionProposals.size() > 0) {
+						proposals.addAll(0, advancedCompletionProposals);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Computes the 'overrides' proposals specified in the OverridesBrowser view.
+	 * 
+	 * @param proposals
+	 *            are the completion proposals (in out parameter)
+	 */
+	private void computeOverridesBrowserView(List<ICompletionProposal> proposals) {
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		if (page != null) {
+			IViewReference[] references = page.getViewReferences();
+			for (int i = 0; i < references.length; i++) {
+				IViewReference viewReference = references[i];
+				IViewPart view = viewReference.getView(false);
+				if (view instanceof OverridesBrowser && page.isPartVisible(view) && textViewer != null) {
+					List<ICompletionProposal> advancedCompletionProposals = ((OverridesBrowser)view)
+							.getExtendCompletionProposals(textViewer.getDocument(), text, offset);
 					if (advancedCompletionProposals.size() > 0) {
 						proposals.addAll(0, advancedCompletionProposals);
 					}
