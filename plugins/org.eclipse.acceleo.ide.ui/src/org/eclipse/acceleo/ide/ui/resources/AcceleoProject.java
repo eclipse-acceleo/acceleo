@@ -459,8 +459,11 @@ public class AcceleoProject {
 	 *            is the current bundle
 	 */
 	private void computeAccessibleOutputFilesWithBundle(List<URI> outputURIs, Bundle bundle) {
-		if (bundle != null && (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
-			outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+		if (bundle != null) {
+			if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE
+					|| bundle.getState() == Bundle.INSTALLED || bundle.getState() == Bundle.STARTING) {
+				outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+			}
 		}
 	}
 
@@ -657,10 +660,13 @@ public class AcceleoProject {
 				for (IBundleGroup group : provider.getBundleGroups()) {
 					for (Bundle bundle : group.getBundles()) {
 						String name = bundle.getSymbolicName();
-						if (!done.contains(name)
-								&& (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE)) {
-							done.add(name);
-							outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+						if (!done.contains(name)) {
+							if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE
+									|| bundle.getState() == Bundle.INSTALLED
+									|| bundle.getState() == Bundle.STARTING) {
+								done.add(name);
+								outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
+							}
 						}
 					}
 				}
