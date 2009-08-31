@@ -128,6 +128,11 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	private IResourceChangeListener resourceChangeListener;
 
 	/**
+	 * Indicates if the view is currently waiting the end of the double click event.
+	 */
+	private boolean doubleClick;
+
+	/**
 	 * Constructor.
 	 */
 	public OverridesBrowser() {
@@ -279,6 +284,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			file = editor.getFile();
 			boolean stop = getSite() != null && getSite().getPage() != null
 					&& !getSite().getPage().isPartVisible(this);
+			stop = stop || doubleClick;
 			stop = stop || (file != null && file.getProject() == project);
 			stop = stop || (file == null && project == null);
 			if (stop) {
@@ -292,6 +298,36 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		} else {
 			project = null;
 		}
+		Object[] checkedElements = templatesViewer.getCheckedElements();
+		Set<ResourceSet> newResourceSet = new HashSet<ResourceSet>();
+		if (project != null) {
+			AcceleoProject acceleoProject = new AcceleoProject(project);
+			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
+			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles();
+			computeModuleProjectHandlers(resourceSet, true, projects);
+			newResourceSet.add(resourceSet);
+			resourceSet = acceleoProject.loadNotAccessibleOutputFiles();
+			computeModuleProjectHandlers(resourceSet, false, projects);
+			newResourceSet.add(resourceSet);
+			templatesViewer.setInput(projects.toArray());
+		} else {
+			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
+			ResourceSet resourceSet = AcceleoProject.loadAllPlatformOutputFiles();
+			computeModuleProjectHandlers(resourceSet, false, projects);
+			newResourceSet.add(resourceSet);
+			templatesViewer.setInput(projects.toArray());
+		}
+		for (Object checkedElement : checkedElements) {
+			if (checkedElement instanceof EObject && ((EObject)checkedElement).eResource() != null) {
+				EObject eObject = (EObject)checkedElement;
+				URI fileURI = eObject.eResource().getURI();
+				if (fileURI != null) {
+					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+					EObject newEObject = expandFragment(fileURI, eObjectFragmentURI);
+					templatesViewer.setChecked(newEObject, true);
+				}
+			}
+		}
 		if (toUnload.size() > 0) {
 			for (ResourceSet resourceSet : toUnload) {
 				for (Resource resource : resourceSet.getResources()) {
@@ -302,23 +338,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			}
 			toUnload.clear();
 		}
-		if (project != null) {
-			AcceleoProject acceleoProject = new AcceleoProject(project);
-			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
-			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles();
-			computeModuleProjectHandlers(resourceSet, true, projects);
-			toUnload.add(resourceSet);
-			resourceSet = acceleoProject.loadNotAccessibleOutputFiles();
-			computeModuleProjectHandlers(resourceSet, false, projects);
-			toUnload.add(resourceSet);
-			templatesViewer.setInput(projects.toArray());
-		} else {
-			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
-			ResourceSet resourceSet = AcceleoProject.loadAllPlatformOutputFiles();
-			computeModuleProjectHandlers(resourceSet, false, projects);
-			toUnload.add(resourceSet);
-			templatesViewer.setInput(projects.toArray());
-		}
+		toUnload.addAll(newResourceSet);
 	}
 
 	/**
@@ -476,23 +496,13 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 						&& event.getSelection() instanceof IStructuredSelection
 						&& ((IStructuredSelection)event.getSelection()).getFirstElement() instanceof EObject) {
 					EObject eObject = (EObject)((IStructuredSelection)event.getSelection()).getFirstElement();
-					if (eObject.eResource() != null) {
-						IRegion region;
-						if (eObject instanceof ModuleElement) {
-							region = new Region(((ModuleElement)eObject).getStartPosition(),
-									((ModuleElement)eObject).getEndPosition());
-						} else {
-							region = null;
-						}
-						URI fileURI = eObject.eResource().getURI();
-						if (fileURI != null) {
-							String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-							OpenDeclarationUtils.showEObject(getSite().getPage(), fileURI, region, eObject);
-							expandFragment(fileURI, eObjectFragmentURI);
-						}
+					doubleClick = true;
+					try {
+						handleDoubleClick(eObject);
+					} finally {
+						doubleClick = false;
 					}
 				}
-
 			}
 		});
 
@@ -506,14 +516,39 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	}
 
 	/**
+	 * Handle the double click on the given EObject.
+	 * 
+	 * @param eObject
+	 *            is the event object
+	 */
+	private void handleDoubleClick(EObject eObject) {
+		if (eObject.eResource() != null) {
+			IRegion region;
+			if (eObject instanceof ModuleElement) {
+				region = new Region(((ModuleElement)eObject).getStartPosition(), ((ModuleElement)eObject)
+						.getEndPosition());
+			} else {
+				region = null;
+			}
+			URI fileURI = eObject.eResource().getURI();
+			if (fileURI != null) {
+				String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+				OpenDeclarationUtils.showEObject(getSite().getPage(), fileURI, region, eObject);
+				expandFragment(fileURI, eObjectFragmentURI);
+			}
+		}
+	}
+
+	/**
 	 * Try to expand the given element in the view.
 	 * 
 	 * @param eObjectFileURI
 	 *            file URI of the element that is to be expanded
 	 * @param eObjectFragmentURI
 	 *            fragment URI of the element that is to be expanded
+	 * @return the expanded EObject
 	 */
-	private void expandFragment(URI eObjectFileURI, String eObjectFragmentURI) {
+	private EObject expandFragment(URI eObjectFileURI, String eObjectFragmentURI) {
 		if (eObjectFileURI != null && eObjectFragmentURI != null
 				&& templatesViewer.getInput() instanceof Object[]) {
 			Object[] inputs = (Object[])templatesViewer.getInput();
@@ -529,26 +564,21 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 							newEObject = null;
 						}
 						if (newEObject instanceof ModuleElement) {
-							List<Object> result = new ArrayList<Object>();
-							result.add(projectHandler);
-							result.add(newEObject.eContainer());
-							result.add(newEObject);
-							templatesViewer.setExpandedElements(result.toArray());
+							templatesViewer.setExpandedState(projectHandler, true);
+							templatesViewer.setExpandedState(newEObject.eContainer(), true);
 							templatesViewer.setSelection(new StructuredSelection(newEObject), true);
 						} else if (newEObject instanceof Module) {
-							List<Object> result = new ArrayList<Object>();
-							result.add(projectHandler);
-							result.add(newEObject);
-							templatesViewer.setExpandedElements(result.toArray());
+							templatesViewer.setExpandedState(projectHandler, true);
 							templatesViewer.setSelection(new StructuredSelection(newEObject), true);
 						}
 						if (newEObject != null) {
-							return;
+							return newEObject;
 						}
 					}
 				}
 			}
 		}
+		return null;
 	}
 
 	/**
