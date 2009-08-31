@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.views.overrides;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
@@ -88,7 +90,13 @@ public class OverridesBrowserTemplatesProvider extends AdapterFactoryContentProv
 		if (object instanceof ModuleProjectHandler) {
 			result = ((ModuleProjectHandler)object).getModules();
 		} else if (object instanceof Module) {
-			result = ((Module)object).getOwnedModuleElement().toArray();
+			List<ModuleElement> filteredElements = new ArrayList<ModuleElement>();
+			for (ModuleElement moduleElement : ((Module)object).getOwnedModuleElement()) {
+				if (moduleElement.getVisibility() != VisibilityKind.PRIVATE) {
+					filteredElements.add(moduleElement);
+				}
+			}
+			result = filteredElements.toArray();
 		} else if (object instanceof ModuleElement) {
 			result = new Object[] {};
 		} else {
