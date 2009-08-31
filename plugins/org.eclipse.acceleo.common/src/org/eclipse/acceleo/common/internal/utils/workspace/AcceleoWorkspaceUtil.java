@@ -385,6 +385,47 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * This can be used to convert a file-scheme URI to a "platform:/plugin" scheme URI if it can be resolved
+	 * in the installed plugins.
+	 * 
+	 * @param filePath
+	 *            File scheme URI that is to be converted.
+	 * @return The converted URI if the file could be resolved in the installed plugins, <code>null</code>
+	 *         otherwise.
+	 */
+	public String resolveAsPlatformPluginResource(String filePath) {
+		final String fileScheme = "file:/"; //$NON-NLS-1$
+
+		String actualPath = filePath;
+		if (actualPath.startsWith(fileScheme)) {
+			actualPath = actualPath.substring(fileScheme.length());
+		}
+
+		String[] segments = filePath.split("/"); //$NON-NLS-1$
+		Bundle bundle = null;
+		String bundlePath = null;
+		for (int i = segments.length - 1; i >= 0; i--) {
+			bundle = Platform.getBundle(segments[i]);
+			if (bundle != null) {
+				bundlePath = ""; //$NON-NLS-1$
+				for (int j = i + 1; j < segments.length; j++) {
+					bundlePath += '/' + segments[j];
+				}
+				URL fileURL = bundle.getEntry(bundlePath);
+				if (fileURL != null) {
+					break;
+				}
+			}
+		}
+
+		if (bundle != null && bundlePath != null && !"".equals(bundlePath)) { //$NON-NLS-1$
+			// TODO check if this could be /resource/
+			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
+		}
+		return null;
+	}
+
+	/**
 	 * This will return the set of all classes that have been loaded from the workspace and set in cache.
 	 * <b>Note</b> that this will refresh the workspace contributions and attempt to refresh all stale class
 	 * instances if any. Also take note that as a result of this refreshing, the order in which the instances
