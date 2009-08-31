@@ -867,9 +867,10 @@ public class AcceleoSourceContent {
 				}
 			}
 		}
-		if (vAST != null && vAST.getExtends().size() > 0) {
-			checkDynamicExtensionPoint();
-		}
+		// TODO JMU Do we want to check if the dynamic path exists?
+		// if (vAST != null && vAST.getExtends().size() > 0) {
+		// checkDynamicExtensionPoint();
+		// }
 	}
 
 	/**
