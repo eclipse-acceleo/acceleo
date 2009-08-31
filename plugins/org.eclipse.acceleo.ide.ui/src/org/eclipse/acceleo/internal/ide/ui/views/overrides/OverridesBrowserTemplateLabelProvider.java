@@ -108,7 +108,9 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 					} else {
 						signature.append(',');
 					}
-					signature.append(iVariable.getType().getName());
+					if (iVariable.getType() != null) {
+						signature.append(iVariable.getType().getName());
+					}
 				}
 				signature.append(')');
 			} else if (element instanceof Macro) {
@@ -120,7 +122,9 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 					} else {
 						signature.append(',');
 					}
-					signature.append(iVariable.getType().getName());
+					if (iVariable.getType() != null) {
+						signature.append(iVariable.getType().getName());
+					}
 				}
 				signature.append(')');
 			} else if (element instanceof Query) {
@@ -132,7 +136,9 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 					} else {
 						signature.append(',');
 					}
-					signature.append(iVariable.getType().getName());
+					if (iVariable.getType() != null) {
+						signature.append(iVariable.getType().getName());
+					}
 				}
 				signature.append(')');
 			}
