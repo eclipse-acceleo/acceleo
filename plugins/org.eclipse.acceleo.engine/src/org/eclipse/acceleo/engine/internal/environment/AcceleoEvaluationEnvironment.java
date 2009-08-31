@@ -33,6 +33,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -43,6 +44,7 @@ import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -1628,12 +1630,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					if (candidateURIs.size() == 0) {
 						candidateURIs.addAll(searchResourceSetForMatches(moduleName));
 					}
-					if (candidateURIs.size() == 0) {
+					if (candidateURIs.size() == 0 && EMFPlugin.IS_ECLIPSE_RUNNING) {
+						normalized = URI.createURI(AcceleoWorkspaceUtil.INSTANCE
+								.resolveAsPlatformPluginResource(uri.toFileString()));
+					} else if (candidateURIs.size() == 0) {
 						normalized = super.normalize(uri);
 					} else if (candidateURIs.size() == 1) {
 						normalized = candidateURIs.iterator().next();
 					} else {
 						normalized = findBestMatchFor(uri, candidateURIs);
+					}
+					if (normalized == null) {
+						normalized = super.normalize(uri);
 					}
 					if (!uri.equals(normalized)) {
 						getURIMap().put(uri, normalized);
