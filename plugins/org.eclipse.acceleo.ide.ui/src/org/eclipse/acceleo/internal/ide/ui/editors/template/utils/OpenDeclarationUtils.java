@@ -236,9 +236,7 @@ public final class OpenDeclarationUtils {
 				} else {
 					editorDescriptor = workbench.getEditorRegistry().getDefaultEditor(lastSegment);
 				}
-				if (editorDescriptor != null
-						&& (!(eObject instanceof ASTNode || eObject instanceof Module) || fileURI
-								.isPlatformPlugin())) {
+				if (editorDescriptor != null && (!(eObject instanceof ASTNode || eObject instanceof Module))) {
 					try {
 						IEditorPart newEditor = page.openEditor(new URIEditorInput(newFileURI),
 								editorDescriptor.getId());
