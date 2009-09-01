@@ -405,10 +405,23 @@ public final class AcceleoWorkspaceUtil {
 		Bundle bundle = null;
 		String bundlePath = null;
 		for (int i = segments.length - 1; i >= 0; i--) {
-			bundle = Platform.getBundle(segments[i]);
+			if (isBundleID(segments[i])) {
+				bundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(Long.valueOf(segments[i]));
+			} else {
+				bundle = Platform.getBundle(segments[i]);
+			}
+
 			if (bundle != null) {
 				bundlePath = ""; //$NON-NLS-1$
-				for (int j = i + 1; j < segments.length; j++) {
+
+				int pathStart = i + 1;
+				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
+					pathStart += 1;
+				} else if (".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
+					pathStart += 2;
+				}
+
+				for (int j = pathStart; j < segments.length; j++) {
 					bundlePath += '/' + segments[j];
 				}
 				URL fileURL = bundle.getEntry(bundlePath);
@@ -423,6 +436,28 @@ public final class AcceleoWorkspaceUtil {
 			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
 		}
 		return null;
+	}
+
+	/**
+	 * This will check if the given String represents an integer less than five digits long.
+	 * 
+	 * @param s
+	 *            The string we wish compared to an integer.
+	 * @return <code>true</code> if <code>s</code> is an integer comprised between 0 and 9999,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isBundleID(String s) {
+		if (s.length() == 0 || s.length() > 5) {
+			return false;
+		}
+
+		boolean isInteger = true;
+		for (char c : s.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				isInteger = false;
+			}
+		}
+		return isInteger;
 	}
 
 	/**
