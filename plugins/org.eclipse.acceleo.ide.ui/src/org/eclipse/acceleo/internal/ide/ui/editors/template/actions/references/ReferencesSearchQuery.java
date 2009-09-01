@@ -253,7 +253,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				region = new Region(0, 0);
 			}
 			String message;
-			if (region.getOffset() > -1 && region.getOffset() + region.getLength() <= acceleoText.length()) {
+			if (region != null && region.getOffset() > -1
+					&& region.getOffset() + region.getLength() <= acceleoText.length()) {
 				message = acceleoText.substring(region.getOffset(), region.getOffset() + region.getLength());
 				if (message.startsWith(IAcceleoConstants.DEFAULT_BEGIN)
 						&& message.indexOf(IAcceleoConstants.DEFAULT_END) > -1) {
