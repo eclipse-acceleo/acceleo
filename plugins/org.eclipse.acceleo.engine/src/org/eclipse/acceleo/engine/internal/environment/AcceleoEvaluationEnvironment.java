@@ -1613,43 +1613,47 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		 */
 		@Override
 		public URI normalize(URI uri) {
-			if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(uri.fileExtension())
-					&& "file".equals(uri.scheme())) { //$NON-NLS-1$
-				URI normalized = getURIMap().get(uri);
-				if (normalized == null) {
-					String moduleName = uri.lastSegment();
-					moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-					Set<URI> candidateURIs = new LinkedHashSet<URI>();
+			if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(uri.fileExtension())
+					|| !"file".equals(uri.scheme())) { //$NON-NLS-1$
+				return super.normalize(uri);
+			}
+			URI normalized = getURIMap().get(uri);
+			if (normalized == null) {
+				String moduleName = uri.lastSegment();
+				moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+				Set<URI> candidateURIs = new LinkedHashSet<URI>();
 
-					// Search matching module in the current generation context
-					Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
-					for (Module candidateModule : candidateModules) {
-						candidateURIs.add(candidateModule.eResource().getURI());
-					}
-					// If there were no matching module, search in their ResourceSet(s)
-					if (candidateURIs.size() == 0) {
-						candidateURIs.addAll(searchResourceSetForMatches(moduleName));
-					}
-					if (candidateURIs.size() == 0 && EMFPlugin.IS_ECLIPSE_RUNNING) {
-						normalized = URI.createURI(AcceleoWorkspaceUtil.INSTANCE
-								.resolveAsPlatformPluginResource(uri.toFileString()));
-					} else if (candidateURIs.size() == 0) {
-						normalized = super.normalize(uri);
-					} else if (candidateURIs.size() == 1) {
-						normalized = candidateURIs.iterator().next();
-					} else {
-						normalized = findBestMatchFor(uri, candidateURIs);
-					}
-					if (normalized == null) {
-						normalized = super.normalize(uri);
-					}
-					if (!uri.equals(normalized)) {
-						getURIMap().put(uri, normalized);
+				// Search matching module in the current generation context
+				Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
+				for (Module candidateModule : candidateModules) {
+					candidateURIs.add(candidateModule.eResource().getURI());
+				}
+				// If there were no matching module, search in their ResourceSet(s)
+				if (candidateURIs.size() == 0) {
+					candidateURIs.addAll(searchResourceSetForMatches(moduleName));
+				}
+				if (candidateURIs.size() == 1) {
+					normalized = candidateURIs.iterator().next();
+				} else if (candidateURIs.size() > 0) {
+					normalized = findBestMatchFor(uri, candidateURIs);
+				}
+				// There is a chance that our match should itself be normalized
+				if ((normalized == null || "file".equals(normalized.scheme())) //$NON-NLS-1$
+						&& EMFPlugin.IS_ECLIPSE_RUNNING) {
+					String resolvedPath = AcceleoWorkspaceUtil.INSTANCE.resolveAsPlatformPluginResource(uri
+							.toString());
+					if (resolvedPath != null) {
+						normalized = URI.createURI(resolvedPath);
 					}
 				}
-				return normalized;
+				if (normalized == null) {
+					normalized = super.normalize(uri);
+				}
+				if (!uri.equals(normalized)) {
+					getURIMap().put(uri, normalized);
+				}
 			}
-			return super.normalize(uri);
+			return normalized;
 		}
 
 		/**
