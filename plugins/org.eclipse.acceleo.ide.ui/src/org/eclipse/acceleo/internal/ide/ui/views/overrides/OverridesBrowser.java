@@ -128,11 +128,6 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	private IResourceChangeListener resourceChangeListener;
 
 	/**
-	 * Indicates if the view is currently waiting the end of the double click event.
-	 */
-	private boolean doubleClick;
-
-	/**
 	 * Constructor.
 	 */
 	public OverridesBrowser() {
@@ -162,6 +157,11 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 */
 	@Override
 	public void setFocus() {
+		IEditorPart part = getSite().getPage().getActiveEditor();
+		if (part instanceof AcceleoEditor) {
+			AcceleoEditor editor = (AcceleoEditor)part;
+			updateViewTemplates(editor);
+		}
 	}
 
 	/**
@@ -243,6 +243,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * 
 	 * @return the listener
 	 */
+	// CHECKSTYLE:OFF
 	private IPartListener createPartListener() {
 		return new IPartListener() {
 			public void partOpened(IWorkbenchPart part) {
@@ -259,6 +260,9 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			}
 
 			public void partActivated(IWorkbenchPart part) {
+				if (part == OverridesBrowser.this) {
+					initializeTemplatesViewerContent();
+				}
 			}
 
 			public void partBroughtToTop(IWorkbenchPart part) {
@@ -270,6 +274,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		};
 	}
 
+	// CHECKSTYLE:ON
+
 	/**
 	 * Updates the templates in the view by getting the settings of the current template. The current template
 	 * is in the given editor.
@@ -280,18 +286,23 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 */
 	private synchronized void updateViewTemplates(AcceleoEditor editor) {
 		IFile file;
+		boolean stop = getSite() != null && getSite().getPage() != null
+				&& !getSite().getPage().isPartVisible(this);
 		if (editor != null) {
 			file = editor.getFile();
-			boolean stop = getSite() != null && getSite().getPage() != null
-					&& !getSite().getPage().isPartVisible(this);
-			stop = stop || doubleClick;
-			stop = stop || (file != null && file.getProject() == project);
-			stop = stop || (file == null && project == null);
-			if (stop) {
-				return;
+			if (file != null) {
+				stop = stop || file.getProject() == project;
+			} else {
+				stop = true;
 			}
 		} else {
 			file = null;
+			stop = stop
+					|| (templatesViewer.getInput() instanceof Object[] && ((Object[])templatesViewer
+							.getInput()).length > 0);
+		}
+		if (stop) {
+			return;
 		}
 		if (file != null) {
 			project = file.getProject();
@@ -496,16 +507,18 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 						&& event.getSelection() instanceof IStructuredSelection
 						&& ((IStructuredSelection)event.getSelection()).getFirstElement() instanceof EObject) {
 					EObject eObject = (EObject)((IStructuredSelection)event.getSelection()).getFirstElement();
-					doubleClick = true;
-					try {
-						handleDoubleClick(eObject);
-					} finally {
-						doubleClick = false;
-					}
+					handleDoubleClick(eObject);
 				}
 			}
 		});
 
+		initializeTemplatesViewerContent();
+	}
+
+	/**
+	 * Initialize the templates viewer content.
+	 */
+	private void initializeTemplatesViewerContent() {
 		IEditorPart part = getSite().getPage().getActiveEditor();
 		if (part instanceof AcceleoEditor) {
 			AcceleoEditor editor = (AcceleoEditor)part;
@@ -635,8 +648,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 					}
 					if (currentBuffer != null && element.getEndPosition() > -1
 							&& currentBuffer.length() >= element.getEndPosition()) {
-						StringBuffer currentText = new StringBuffer(currentBuffer.substring(element
-								.getStartPosition(), element.getEndPosition()));
+						StringBuffer currentText = new StringBuffer(currentBuffer.substring(
+								element.getStartPosition(), element.getEndPosition()).replace("$", "$$"));
 						currentText.append("\n"); //$NON-NLS-1$
 						modifyModuleElementContent(element, currentText);
 						proposalBuffer.append(currentText);
