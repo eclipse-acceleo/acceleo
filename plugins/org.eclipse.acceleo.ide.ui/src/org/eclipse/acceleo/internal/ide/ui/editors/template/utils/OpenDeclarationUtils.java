@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -36,6 +37,7 @@ import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
 import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -323,24 +325,12 @@ public final class OpenDeclarationUtils {
 				workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(platformPath);
 			} else {
 				String pluginName = platformPath.segment(0);
-				String bundleLocation;
 				Bundle bundle = Platform.getBundle(pluginName);
 				if (bundle != null) {
-					try {
-						bundleLocation = bundle.getLocation();
-					} catch (SecurityException e) {
-						bundleLocation = null;
-					}
-				} else {
-					bundleLocation = null;
-				}
-				String prefix = "reference:file:"; //$NON-NLS-1$
-				if (bundleLocation != null && bundleLocation.startsWith(prefix)) {
-					absoluteFile = new Path(bundleLocation.substring(prefix.length())).removeLastSegments(1)
-							.append(platformPath).toFile();
-				} else if (bundleLocation != null) {
-					absoluteFile = new Path(bundleLocation).removeLastSegments(1).append(platformPath)
-							.toFile();
+					// force to extract the MTL file of the jar archive
+					getAbsoluteFile(bundle, platformPath.removeFirstSegments(1).removeFileExtension()
+							.addFileExtension(IAcceleoConstants.MTL_FILE_EXTENSION).toString());
+					absoluteFile = getAbsoluteFile(bundle, platformPath.removeFirstSegments(1).toString());
 				}
 			}
 		}
@@ -363,6 +353,35 @@ public final class OpenDeclarationUtils {
 		} else {
 			return absoluteFile;
 		}
+	}
+
+	/**
+	 * Gets the absolute file path of the given plug-in entry.
+	 * 
+	 * @param bundle
+	 *            is the plug-in
+	 * @param entryPath
+	 *            is the entry path in the plug-in
+	 * @return the absolute file path
+	 */
+	private static File getAbsoluteFile(Bundle bundle, String entryPath) {
+		URL entry = bundle.getEntry(entryPath);
+		File absoluteFile;
+		if (entry != null) {
+			try {
+				entry = FileLocator.toFileURL(entry);
+				if (entry != null) {
+					absoluteFile = new Path(entry.getPath()).toFile();
+				} else {
+					absoluteFile = null;
+				}
+			} catch (IOException e1) {
+				absoluteFile = null;
+			}
+		} else {
+			absoluteFile = null;
+		}
+		return absoluteFile;
 	}
 
 	/**
