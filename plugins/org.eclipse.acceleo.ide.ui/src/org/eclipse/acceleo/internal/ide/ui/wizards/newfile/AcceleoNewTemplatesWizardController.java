@@ -208,6 +208,16 @@ public class AcceleoNewTemplatesWizardController {
 	 * Initializes the view.
 	 */
 	public void initView() {
+		initView(true);
+	}
+
+	/**
+	 * Initializes the view.
+	 * 
+	 * @param initializeTemplate
+	 *            indicates if the template can be initialized with the content of an example
+	 */
+	public void initView(boolean initializeTemplate) {
 		viewDetailsComposite.setTemplateContainer(model.getTemplateContainer());
 		viewDetailsComposite.setTemplateName(model.getTemplateShortName());
 		String metamodelType = model.getTemplateFileType();
@@ -218,6 +228,9 @@ public class AcceleoNewTemplatesWizardController {
 		viewDetailsComposite.setTemplateIsInitializeButtonState(model.getTemplateIsInitialized());
 		viewDetailsComposite.setTemplateExamplePath(model.getTemplateExamplePath());
 		viewDetailsComposite.setTemplateExampleStrategy(model.getTemplateExampleStrategy());
+		if (!initializeTemplate) {
+			viewDetailsComposite.advancedButton.setVisible(false);
+		}
 		dialogChanged();
 	}
 

@@ -114,6 +114,11 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	protected static final int TEMPLATE_IS_INITIALISED = 8;
 
 	/**
+	 * The advance button widget.
+	 */
+	protected Button advancedButton;
+
+	/**
 	 * The containing resource path in the workspace.
 	 */
 	private Text templateContainer;
@@ -146,11 +151,6 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private Button templateHasMainButtonState;
 
 	/**
-	 * The initialization state button.
-	 */
-	private Button templateIsInitializeButtonState;
-
-	/**
 	 * The metamodel URI text widget.
 	 */
 	private Text metamodelURI;
@@ -179,9 +179,9 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private String selectedContainer;
 
 	/**
-	 * The advance button widget.
+	 * The initialization state button.
 	 */
-	private Button advancedButton;
+	private Button templateIsInitializeButtonState;
 
 	/**
 	 * The advanced expandable composite.
@@ -642,12 +642,18 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 					// It catches an EMF WrappedException.
 					// It is very useful if the EMF registry is corrupted by other contributions.
 				}
-				metamodelURI.setText(uris.toString().trim());
+				String textURI = uris.toString();
+				if (textURI.endsWith(",")) { //$NON-NLS-1$
+					textURI = textURI.substring(0, textURI.length() - 1);
+				}
+				metamodelURI.setText(textURI.trim());
 			} else {
 				StringBuffer uris = new StringBuffer();
 				for (int i = 0; i < result.length; i++) {
 					uris.append(result[i]);
-					uris.append(',');
+					if (i + 1 < result.length) {
+						uris.append(',');
+					}
 				}
 				metamodelURI.setText(uris.toString().trim());
 			}

@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizardController;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.CreateTemplateData;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard;
 import org.eclipse.core.resources.IProject;
@@ -89,16 +90,19 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 			}
 			try {
 				if (wizard.getTemplatePage().getControllers().size() > 0) {
-					CreateTemplateData data = wizard.getTemplatePage().getControllers().get(0).getModel();
+					AcceleoNewTemplatesWizardController first = wizard.getTemplatePage().getControllers()
+							.get(0);
+					CreateTemplateData data = first.getModel();
 					data.setTemplateShortName("chain"); //$NON-NLS-1$
 					data.setTemplateHasFileBlock(false);
 					data.setTemplateIsInitialized(false);
 					browseTemplates(projects.toArray(new IProject[projects.size()]));
 					String metamodelURIs = computeMetamodelURIs();
 					data.setTemplateMetamodel(metamodelURIs);
-					wizard.getTemplatePage().getControllers().get(0).initView();
+					first.initView(false);
 					if (dialog.open() == Window.OK && wizard.getTemplatePage().getControllers().size() > 0) {
-						data = wizard.getTemplatePage().getControllers().get(0).getModel();
+						first = wizard.getTemplatePage().getControllers().get(0);
+						data = first.getModel();
 						IPath baseFolder = new Path(data.getTemplateContainer());
 						IPath mainTemplate = baseFolder.append(data.getTemplateShortName()).addFileExtension(
 								IAcceleoConstants.MTL_FILE_EXTENSION);
