@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -80,6 +81,18 @@ public class Mt2mtl {
 	private List<? extends Object> arguments;
 
 	/**
+   * This will hold the list of generation listeners that are to be notified when text is generated.
+   * @generated
+   */
+  private List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>();
+
+  /**
+   * This will hold the list of properties files that are to be added to the generation context.
+   * @generated
+   */
+  private List<String> propertiesFiles = new ArrayList<String>();
+
+  /**
 	 * Constructor.
 	 * 
 	 * @param modelURI
@@ -96,9 +109,16 @@ public class Mt2mtl {
     ResourceSet resourceSet = new ResourceSetImpl();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
+    addListeners();
+    addProperties();
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -130,9 +150,16 @@ public class Mt2mtl {
     ResourceSet resourceSet = model.eResource().getResourceSet();
     registerResourceFactories(resourceSet);
     registerPackages(resourceSet);
+    addListeners();
+    addProperties();
     final URL templateURL;
     if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      templateURL = FileLocator.toFileURL(Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl"));
+      URL resourceURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
+      if (resourceURL != null) {
+        templateURL = FileLocator.toFileURL(resourceURL);
+      } else {
+        templateURL = null;
+      }
     } else {
       templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
     }
@@ -250,9 +277,14 @@ public class Mt2mtl {
     if (!targetFolder.exists()) {
       targetFolder.mkdirs();
     }
+    AcceleoService service = new AcceleoService();
+    registerListeners(service);
+    registerProperties(service);
     for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      AcceleoService.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false, monitor);
+      service.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false,
+          monitor);
     }
+    service.dispose();
   }
 
 	/**
@@ -308,6 +340,54 @@ public class Mt2mtl {
           new XMIResourceFactoryImpl());
     }
     return resourceSet.createResource(modelURI);
+  }
+
+  /**
+   * Generation listeners can be added for notification through this.
+   *
+   * @generated
+   */
+  private void addListeners() {
+    // TODO : add listeners to the "generationListener" field here.
+  }
+
+  /**
+   * If the generation modules need properties files, this is where to add them. Take note that the first
+   * added properties files will take precedence over subsequent ones if they contain conflicting keys.
+   *
+   * @generated
+   */
+  private void addProperties() {
+    /*
+     * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
+     * relative or absolute pathes, or their path can represent a platform scheme URI.
+     */
+  }
+
+  /**
+   * This is in charge of registering all listeners against the given service instance.
+   *
+   * @generated
+   */
+  private void registerListeners(AcceleoService service) {
+    for (IAcceleoTextGenerationListener listener : generationListeners) {
+      service.addListener(listener);
+    }
+  }
+
+  /**
+   * This will register all properties files against the given service instance.
+   *
+   * @generated
+   */
+  private void registerProperties(AcceleoService service) {
+    try {
+      for (String propertyFile : propertiesFiles) {
+        service.addPropertiesFile(propertyFile);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

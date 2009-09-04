@@ -10,21 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.ui;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.compatibility.model.mt.Resource;
 import org.eclipse.acceleo.compatibility.model.mt.ResourceSet;
 import org.eclipse.acceleo.compatibility.model.mt.core.Metamodel;
+import org.eclipse.acceleo.compatibility.model.mt.core.Script;
+import org.eclipse.acceleo.compatibility.model.mt.core.Template;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.popupMenus.AbstractMigrateProjectWizardAction;
 import org.eclipse.acceleo.internal.compatibility.mtl.gen.Mt2mtl;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core.ProjectParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -95,19 +102,105 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 	 */
 	@Override
 	protected void generateMTL(IPath baseFolder, IPath mainTemplate) throws IOException, CoreException {
-		if (baseFolder.segmentCount() > 0) {
+		if (baseFolder.segmentCount() > 0
+				&& ResourcesPlugin.getWorkspace().getRoot().getProject(baseFolder.segment(0)).isAccessible()) {
 			IFile emtFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 					mainTemplate.removeFileExtension().addFileExtension("emt")); //$NON-NLS-1$
 			IPath emtPath = emtFile.getLocation();
 			ModelUtils.save(root, emtPath.toString());
-			IContainer targetContainer = emtFile.getParent();
+			IContainer targetContainer;
+			if (baseFolder.segmentCount() > 1) {
+				targetContainer = ResourcesPlugin.getWorkspace().getRoot().getProject(baseFolder.segment(0))
+						.getFolder(baseFolder.segment(1));
+				if (!targetContainer.exists()) {
+					targetContainer = emtFile.getParent();
+				}
+			} else {
+				targetContainer = emtFile.getParent();
+			}
 			File targetFolder = targetContainer.getLocation().toFile();
 			Mt2mtl mt2mtl = new Mt2mtl(root, targetFolder, new ArrayList<Object>());
 			mt2mtl.doGenerate(new BasicMonitor());
 			if (targetContainer.isAccessible()) {
 				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}
-			// TODO LGO JMU : The main template must be a real entry point of the code generation
+			IFile mainFile = ResourcesPlugin.getWorkspace().getRoot().getFile(mainTemplate);
+			if (mainFile.exists()) {
+				StringBuffer buffer = FileContent.getFileContent(mainFile.getLocation().toFile());
+				int start = buffer.indexOf(IAcceleoConstants.DEFAULT_BEGIN + IAcceleoConstants.TEMPLATE);
+				if (start == -1) {
+					start = 0;
+				}
+				int iImport = start;
+				start = buffer.indexOf(IAcceleoConstants.DEFAULT_END, start) + 1;
+				int end = buffer.indexOf(IAcceleoConstants.DEFAULT_BEGIN
+						+ IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.TEMPLATE
+						+ IAcceleoConstants.DEFAULT_END, start);
+				if (end == -1) {
+					end = buffer.length();
+				}
+				buffer.delete(start, end);
+				StringBuffer newImportContent = new StringBuffer();
+				StringBuffer newTemplateContent = new StringBuffer('\n');
+				for (Resource resource : root.getResources()) {
+					if (resource instanceof Template) {
+						Template template = (Template)resource;
+						computeImportAndTemplateCall(template, newImportContent, newTemplateContent);
+					}
+				}
+				newImportContent.append('\n');
+				buffer.insert(start, newTemplateContent.toString());
+				buffer.insert(iImport, newImportContent.toString());
+				try {
+					ByteArrayInputStream javaStream = new ByteArrayInputStream(buffer.toString().getBytes(
+							"UTF8")); //$NON-NLS-1$
+					mainFile.setContents(javaStream, true, false, new NullProgressMonitor());
+				} catch (UnsupportedEncodingException e) {
+					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+							.getMessage(), e));
+				}
+			}
 		}
 	}
+
+	/**
+	 * Creates the import sequence and the template content for the given MT template file.
+	 * 
+	 * @param template
+	 *            is the current MT template file
+	 * @param newImportContent
+	 *            is the import sequence to create
+	 * @param newTemplateContent
+	 *            is the main template content
+	 */
+	private void computeImportAndTemplateCall(Template template, StringBuffer newImportContent,
+			StringBuffer newTemplateContent) {
+		String fileTemplateName = null;
+		for (Script script : template.getScripts()) {
+			if (script.getDescriptor() != null && script.getDescriptor().getFile() != null
+					&& script.getDescriptor().getFile().getStatements().size() > 0) {
+				fileTemplateName = script.getDescriptor().getName();
+				break;
+			}
+		}
+		if (fileTemplateName != null) {
+			newImportContent.append("[import "); //$NON-NLS-1$
+			String shortName;
+			int iDot = template.getName().lastIndexOf('.');
+			if (iDot > -1) {
+				shortName = template.getName().substring(iDot + 1);
+			} else {
+				shortName = template.getName();
+			}
+			newImportContent.append(shortName);
+			newImportContent.append(" /]\n"); //$NON-NLS-1$
+			newTemplateContent.append("\t[comment call the file block in '"); //$NON-NLS-1$
+			newTemplateContent.append(shortName);
+			newTemplateContent.append("' /]\n"); //$NON-NLS-1$
+			newTemplateContent.append("\t[ "); //$NON-NLS-1$
+			newTemplateContent.append(fileTemplateName);
+			newTemplateContent.append("() /]\n"); //$NON-NLS-1$
+		}
+	}
+
 }
