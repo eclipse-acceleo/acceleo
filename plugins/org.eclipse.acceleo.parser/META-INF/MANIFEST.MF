@@ -15,7 +15,11 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.ast.ocl;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.cst;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
- org.eclipse.acceleo.internal.parser.cst.utils;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests,org.eclipse.acceleo.parser.tests",
+ org.eclipse.acceleo.internal.parser.cst.utils;
+  x-friends:="org.eclipse.acceleo.ide.ui,
+   org.eclipse.acceleo.ide.ui.tests,
+   org.eclipse.acceleo.parser.tests,
+   org.eclipse.acceleo.compatibility.ui",
  org.eclipse.acceleo.parser,
  org.eclipse.acceleo.parser.cst;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.parser.cst.impl;x-friends:="org.eclipse.acceleo.parser.tests",
