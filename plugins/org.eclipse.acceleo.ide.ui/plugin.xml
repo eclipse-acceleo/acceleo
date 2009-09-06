@@ -246,6 +246,9 @@ Contributors:
          <actionSet
                id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
          </actionSet>
+         <actionSet
+               id="org.eclipse.ui.edit.text.actionSet.presentation">
+         </actionSet>
          <view
                id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
                ratio="0.5"

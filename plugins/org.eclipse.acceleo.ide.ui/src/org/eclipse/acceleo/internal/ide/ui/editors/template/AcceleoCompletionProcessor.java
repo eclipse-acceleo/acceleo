@@ -1020,23 +1020,37 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		if (IAcceleoConstants.FOR.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.FOR).startsWith(start.toLowerCase())) {
+			String virtualText = getVirtualTextInBlock();
 			String replacementStringBefore = '[' + IAcceleoConstants.FOR + ' ' + '(';
-			String replacementStringAfter = "${i} : ${" + defaultVariableType + "} | ${e})]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
-					+ '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
+			String replacementStringAfter;
+			if (virtualText.length() > 0) {
+				replacementStringAfter = "${i} : ${" + defaultVariableType + "} | ${e})]\n" + //$NON-NLS-1$ //$NON-NLS-2$
+						tab + virtualText + tab + '[' + '/' + IAcceleoConstants.FOR + ']' + '\n';
+			} else {
+				replacementStringAfter = "${i} : ${" + defaultVariableType + "} | ${e})]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
+						+ '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
+			}
 			String replacementString = replacementStringBefore + replacementStringAfter;
-			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.FOR + ']', null,
-					tab + replacementString));
+			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length()
+					+ virtualText.length(), replacementStringBefore.length(), patternImage,
+					'[' + IAcceleoConstants.FOR + ']', null, tab + replacementString));
 		}
 		if (IAcceleoConstants.IF.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.IF).startsWith(start.toLowerCase())) {
+			String virtualText = getVirtualTextInBlock();
 			String replacementStringBefore = '[' + IAcceleoConstants.IF + ' ' + '(';
-			String replacementStringAfter = "${e})]\n" + tab + '\t' + '\n' + tab + '[' //$NON-NLS-1$
-					+ '/' + IAcceleoConstants.IF + ']';
+			String replacementStringAfter;
+			if (virtualText.length() > 0) {
+				replacementStringAfter = "${e})]\n" + tab + virtualText + tab + '[' //$NON-NLS-1$
+						+ '/' + IAcceleoConstants.IF + ']' + '\n';
+			} else {
+				replacementStringAfter = "${e})]\n" + tab + '\t' + '\n' + tab + '[' //$NON-NLS-1$
+						+ '/' + IAcceleoConstants.IF + ']';
+			}
 			String replacementString = replacementStringBefore + replacementStringAfter;
-			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.IF + ']', null,
-					tab.toString() + replacementString));
+			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length()
+					+ virtualText.length(), replacementStringBefore.length(), patternImage,
+					'[' + IAcceleoConstants.IF + ']', null, tab.toString() + replacementString));
 		}
 		if (IAcceleoConstants.FILE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.FILE).startsWith(start.toLowerCase())) {
@@ -1091,6 +1105,58 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
 					replacementString.length(), patternImage, "']'", null, replacementString)); //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * Gets the example text in the block to create. If the current line contains a significant character,
+	 * we'll try to embed the following text in the new block.
+	 * 
+	 * @return the content of the new block
+	 */
+	private String getVirtualTextInBlock() {
+		boolean lineContainsTextAfter = false;
+		int i = offset;
+		while (i < text.length()) {
+			char c = text.charAt(i);
+			if (!Character.isWhitespace(c)) {
+				lineContainsTextAfter = true;
+				break;
+			} else if (c == '\n') {
+				break;
+			} else {
+				i++;
+			}
+		}
+		if (lineContainsTextAfter) {
+			i = offset;
+			int iEmptyLineAndNoMTL = -1;
+			int iBeginLine = i;
+			boolean currentLineIsEmpty = false;
+			while (i < text.length()) {
+				char c = text.charAt(i);
+				if (!Character.isWhitespace(c)) {
+					if (currentLineIsEmpty && c == '[') {
+						iEmptyLineAndNoMTL = iBeginLine;
+						break;
+					} else {
+						currentLineIsEmpty = false;
+					}
+				} else if (c == '\n') {
+					if (currentLineIsEmpty) {
+						iEmptyLineAndNoMTL = i + 1;
+						break;
+					} else {
+						currentLineIsEmpty = true;
+						iBeginLine = i + 1;
+					}
+				}
+				i++;
+			}
+			if (iEmptyLineAndNoMTL > -1) {
+				return text.substring(offset, iEmptyLineAndNoMTL);
+			}
+		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
