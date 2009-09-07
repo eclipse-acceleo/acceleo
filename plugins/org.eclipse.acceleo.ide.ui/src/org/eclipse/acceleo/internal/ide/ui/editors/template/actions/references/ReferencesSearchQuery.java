@@ -263,6 +263,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			} else {
 				message = ""; //$NON-NLS-1$
 			}
+			// FIXME JMU this could be null
+			assert region != null;
 			searchResult.addMatch(new Match(new ReferenceEntry(mtlFile, astNode, editor, message), region
 					.getOffset(), region.getLength()));
 		}
