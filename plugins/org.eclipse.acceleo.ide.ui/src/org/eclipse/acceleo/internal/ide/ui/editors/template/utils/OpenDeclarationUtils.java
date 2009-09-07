@@ -13,7 +13,6 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -47,16 +46,19 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.emf.common.ui.URIEditorInput;
+import org.eclipse.emf.common.ui.viewer.IViewerProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.presentation.EcoreEditor;
+import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jdt.internal.debug.ui.LocalFileStorageEditorInput;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.Variable;
@@ -520,17 +522,37 @@ public final class OpenDeclarationUtils {
 					acceleoEditor.selectAndReveal(b, e - b);
 				}
 			}
-		} else if (newEditor instanceof EcoreEditor && eObject.eResource() != null) {
-			EcoreEditor ecoreEditor = (EcoreEditor)newEditor;
+		} else if (newEditor instanceof IEditingDomainProvider && eObject.eResource() != null) {
+			IEditingDomainProvider editor = (IEditingDomainProvider)newEditor;
 			String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-			if (ecoreEditor.getEditingDomain() != null
-					&& ecoreEditor.getEditingDomain().getResourceSet() != null
-					&& ecoreEditor.getEditingDomain().getResourceSet().getResources().size() > 0
+			if (editor.getEditingDomain() != null && editor.getEditingDomain().getResourceSet() != null
+					&& editor.getEditingDomain().getResourceSet().getResources().size() > 0
 					&& eObjectFragmentURI != null) {
-				EObject newObject = ecoreEditor.getEditingDomain().getResourceSet().getResources().get(0)
+				EObject newObject = editor.getEditingDomain().getResourceSet().getResources().get(0)
 						.getEObject(eObjectFragmentURI);
-				ecoreEditor.setSelectionToViewer(Collections.singleton(newObject));
+				if (editor instanceof IViewerProvider) {
+					setSelectionToViewer(newObject, ((IViewerProvider)editor).getViewer());
+				}
 			}
+		}
+	}
+
+	/**
+	 * Select the given EObject in the viewer.
+	 * 
+	 * @param selectedEObject
+	 *            is the object to select
+	 * @param viewer
+	 *            is the viewer that contains some EMF objects
+	 */
+	private static void setSelectionToViewer(final EObject selectedEObject, final Viewer viewer) {
+		if (selectedEObject != null && viewer != null) {
+			Runnable runnable = new Runnable() {
+				public void run() {
+					viewer.setSelection(new StructuredSelection(selectedEObject), true);
+				}
+			};
+			viewer.getControl().getDisplay().asyncExec(runnable);
 		}
 	}
 }
