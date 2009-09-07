@@ -147,7 +147,7 @@ public class ASTFactory {
 	/**
 	 * Gets the OCL parser (from the OCL plug-in).
 	 * 
-	 * @return the OCL parser
+	 * @return the OCL parser, can be null
 	 */
 	public OCLParser getOCL() {
 		return pOCL;

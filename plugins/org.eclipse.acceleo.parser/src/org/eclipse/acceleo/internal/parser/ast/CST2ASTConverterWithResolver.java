@@ -105,7 +105,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	private void transformStepResolve(org.eclipse.acceleo.parser.cst.Module iModule) {
 		org.eclipse.acceleo.model.mtl.Module oModule = factory.getOrCreateModule(iModule);
-		if (iModule != null && oModule != null) {
+		if (iModule != null && oModule != null && factory.getOCL() != null) {
 			Iterator<org.eclipse.acceleo.parser.cst.TypedModel> iInputIt = iModule.getInput().iterator();
 			while (iInputIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.TypedModel iNext = iInputIt.next();
