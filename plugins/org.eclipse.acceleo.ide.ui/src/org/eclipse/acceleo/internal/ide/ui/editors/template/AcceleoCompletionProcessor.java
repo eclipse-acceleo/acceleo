@@ -1159,7 +1159,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				i++;
 			}
 			if (iEmptyLineAndNoMTL > -1) {
-				return text.substring(offset, iEmptyLineAndNoMTL);
+				return text.substring(offset, iEmptyLineAndNoMTL).replace("$", "$$"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return ""; //$NON-NLS-1$
