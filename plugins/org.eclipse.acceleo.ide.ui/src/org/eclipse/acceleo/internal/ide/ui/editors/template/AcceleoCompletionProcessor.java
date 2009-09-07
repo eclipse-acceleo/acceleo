@@ -206,6 +206,12 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (cstNode instanceof Module) {
 			computeOverridesBrowserView(proposals);
 		}
+		if (proposals.size() == 0 && textViewer != null && textViewer.getTextWidget() != null) {
+			if (offset < text.length() && text.charAt(offset) == ']' && text.charAt(offset - 1) == '[') {
+				textViewer.getTextWidget().replaceTextRange(offset, 0,
+						IAcceleoConstants.DEFAULT_END_BODY_CHAR);
+			}
+		}
 		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 
