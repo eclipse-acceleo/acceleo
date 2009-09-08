@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.acceleo.profiler.edit;singleton:=true
+Bundle-Version: 0.9.0
+Bundle-ClassPath: .
+Bundle-Activator: org.eclipse.acceleo.profiler.provider.ProfilerEditPlugin$Implementation
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.eclipse.acceleo.profiler.provider
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.acceleo.profiler;visibility:=reexport,
+ org.eclipse.emf.edit;visibility:=reexport,
+ org.eclipse.emf.edit.ui;bundle-version="2.4.1"
+Bundle-ActivationPolicy: lazy
