@@ -552,7 +552,7 @@ Contributors:
          point="org.eclipse.ant.core.antTasks">
          <antTask name="acceleoCompiler"
           	class="org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderTask"
-          	library="lib/acceleoCompiler.jar"
+          	library="acceleoCompiler.jar"
           	headless="true"
           	eclipseRuntime="true"/>
     </extension>
