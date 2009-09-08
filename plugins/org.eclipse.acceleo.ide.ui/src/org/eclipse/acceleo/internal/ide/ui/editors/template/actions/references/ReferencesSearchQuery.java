@@ -246,15 +246,9 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			}
 		}
 		if (isRef) {
-			IRegion region;
-			if (astNode instanceof ASTNode) {
-				region = createRegion((ASTNode)astNode);
-			} else {
-				region = new Region(0, 0);
-			}
+			IRegion region = createRegion(astNode);
 			String message;
-			if (region != null && region.getOffset() > -1
-					&& region.getOffset() + region.getLength() <= acceleoText.length()) {
+			if (region.getOffset() + region.getLength() <= acceleoText.length()) {
 				message = acceleoText.substring(region.getOffset(), region.getOffset() + region.getLength());
 				if (message.startsWith(IAcceleoConstants.DEFAULT_BEGIN)
 						&& message.indexOf(IAcceleoConstants.DEFAULT_END) > -1) {
@@ -263,8 +257,6 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			} else {
 				message = ""; //$NON-NLS-1$
 			}
-			// FIXME JMU this could be null
-			assert region != null;
 			searchResult.addMatch(new Match(new ReferenceEntry(mtlFile, astNode, editor, message), region
 					.getOffset(), region.getLength()));
 		}
@@ -302,15 +294,23 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 * 
 	 * @param astNode
 	 *            is the module element
-	 * @return a region in the text
+	 * @return a region in the text, or Region(0,0) if it isn't available
 	 */
-	private IRegion createRegion(ASTNode astNode) {
-		int b = astNode.getStartPosition();
-		if (b > -1) {
-			int e = astNode.getEndPosition();
-			return new Region(b, e - b);
+	private IRegion createRegion(EObject astNode) {
+		IRegion result = null;
+		if (astNode instanceof ASTNode) {
+			int b = ((ASTNode)astNode).getStartPosition();
+			if (b > -1) {
+				int e = ((ASTNode)astNode).getEndPosition();
+				if (e >= b) {
+					result = new Region(b, e - b);
+				}
+			}
+		}
+		if (result != null) {
+			return result;
 		} else {
-			return null;
+			return new Region(0, 0);
 		}
 	}
 }
