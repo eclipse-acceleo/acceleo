@@ -1,4 +1,4 @@
-#Tue Jun 30 16:54:49 CEST 2009
+#Tue Sep 08 17:24:22 CEST 2009
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
 org.eclipse.jdt.core.compiler.compliance=1.5
@@ -159,7 +159,7 @@ org.eclipse.jdt.core.formatter.insert_space_before_binary_operator=insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_parameterized_type_reference=do not insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_arguments=do not insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_angle_bracket_in_type_parameters=do not insert
-org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer=do not insert
+org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer=insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_bracket_in_array_allocation_expression=do not insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_bracket_in_array_reference=do not insert
 org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_annotation=do not insert
