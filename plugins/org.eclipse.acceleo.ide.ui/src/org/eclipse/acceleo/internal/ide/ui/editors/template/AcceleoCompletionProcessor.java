@@ -171,6 +171,15 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private ICompletionProposal[] computeCompletionProposals() {
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (textViewer != null && cstNode instanceof TextExpression) {
+			ITextSelection selection = (ITextSelection)textViewer.getSelectionProvider().getSelection();
+			if (selection != null && selection.getLength() > 0) {
+				Template template = (Template)content.getCSTParent(cstNode, Template.class);
+				computeSelectionReplacementProposals(proposals, template, selection.getOffset(), selection
+						.getOffset()
+						+ selection.getLength());
+			}
+		}
 		if (cstNode == null
 				|| (cstNode instanceof Module && cstNode.getEndPosition() == 0 && cstNode.getStartPosition() == 0)) {
 			computeModulePatternProposals(proposals);
@@ -213,6 +222,77 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+	}
+
+	/**
+	 * This method is only called if the current text selection isn't empty. It creates a new completion
+	 * proposal that contains the ending text of the current template, it means from the current offset to the
+	 * ending index of the template. The text is modified by replacing everywhere the current selected text.
+	 * An OCL expression can be created for each occurrence.
+	 * 
+	 * @param proposals
+	 *            are the proposals, it's an input/output parameter
+	 * @param template
+	 *            is the current template, to delimit the modifications
+	 * @param begin
+	 *            is the beginning index of the selection
+	 * @param end
+	 *            is the ending index of the selection
+	 */
+	private void computeSelectionReplacementProposals(List<ICompletionProposal> proposals, Template template,
+			int begin, int end) {
+		if (template != null && template.getEndPosition() > -1 && template.getEndPosition() <= text.length()) {
+			String stringToReplace = text.substring(begin, end);
+			String stringToReplaceLower = stringToReplace.toLowerCase();
+			String endingTextS = text.substring(begin, template.getEndPosition());
+			StringBuffer endingText = new StringBuffer(endingTextS);
+			StringBuffer endingTextLower = new StringBuffer(endingTextS.toLowerCase());
+			int count = 0;
+			int i = endingTextLower.indexOf(stringToReplaceLower);
+			int shift = 0;
+			while (i > -1 && i < endingText.length()) {
+				int b = i;
+				int e = b + stringToReplace.length();
+				CSTNode newNode = content.getCSTNode(begin + b - shift, begin + b - shift);
+				if (newNode instanceof TextExpression) {
+					count++;
+					String stringFound = endingText.substring(b, e);
+					String replacementString;
+					if (stringFound.length() > 1 && stringFound.equals(stringFound.toUpperCase())) {
+						replacementString = "[${name}.toUpper()/]"; //$NON-NLS-1$
+					} else if (Character.isUpperCase(stringFound.charAt(0))) {
+						replacementString = "[${name}.toUpperFirst()/]"; //$NON-NLS-1$
+					} else {
+						replacementString = "[${name}/]"; //$NON-NLS-1$
+					}
+					endingText.replace(b, e, replacementString);
+					endingTextLower.replace(b, e, replacementString);
+					shift += replacementString.length() - (e - b);
+					i = endingTextLower.indexOf(stringToReplaceLower, b + replacementString.length());
+				} else if (newNode == null) {
+					i = -1;
+				} else {
+					i = endingTextLower.indexOf(stringToReplaceLower, e);
+				}
+			}
+			Image image = AcceleoUIActivator.getDefault().getImage(
+					"icons/template-editor/completion/ProposalsBrowser.gif"); //$NON-NLS-1$
+			String label;
+			if (count > 1) {
+				label = "Replacing by [ ] - " + count + " times"; //$NON-NLS-1$ //$NON-NLS-2$
+			} else {
+				label = "Replacing by [ ]"; //$NON-NLS-1$
+			}
+			int last = endingText.length() - 1;
+			for (i = last; i >= 0; i--) {
+				char c = endingText.charAt(i);
+				if (c == '$' && (i == last || endingText.charAt(i + 1) != '{')) {
+					endingText.insert(i, '$');
+				}
+			}
+			proposals.add(createTemplateProposal(endingText.toString(), begin, template.getEndPosition()
+					- begin, begin, image, label, null, stringToReplace + " -> [name/]")); //$NON-NLS-1$
+		}
 	}
 
 	/**
