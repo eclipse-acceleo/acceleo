@@ -276,7 +276,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 			Image image = AcceleoUIActivator.getDefault().getImage(
-					"icons/template-editor/completion/ProposalsBrowser.gif"); //$NON-NLS-1$
+					"icons/template-editor/completion/RefactorTextSelection.gif"); //$NON-NLS-1$
 			String label;
 			if (count > 1) {
 				label = "Replacing by [ ] - " + count + " times"; //$NON-NLS-1$ //$NON-NLS-2$
