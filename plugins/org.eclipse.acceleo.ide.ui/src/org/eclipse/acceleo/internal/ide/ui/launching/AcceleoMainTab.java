@@ -316,7 +316,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		ResourceSelectionDialog dialog = new ResourceSelectionDialog(getShell(), initialResource,
 				AcceleoUIMessages.getString("AcceleoMainTab.SelectProfileModel")); //$NON-NLS-1$
-		dialog.setContentProvider(new FileTreeContentProvider(true, PROFILE_MODE));
+		dialog.setContentProvider(new FileTreeContentProvider(true, PROFILE_EXTENSION));
 		dialog.open();
 
 		if (dialog.getResult().length > 0 && dialog.getResult()[0] instanceof IPath
