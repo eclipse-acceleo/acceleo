@@ -1640,8 +1640,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				// There is a chance that our match should itself be normalized
 				if ((normalized == null || "file".equals(normalized.scheme())) //$NON-NLS-1$
 						&& EMFPlugin.IS_ECLIPSE_RUNNING) {
-					String resolvedPath = AcceleoWorkspaceUtil.INSTANCE.resolveAsPlatformPluginResource(uri
-							.toString());
+					String uriToString = uri.toString();
+					if (uriToString.indexOf('#') > 0) {
+						uriToString = uriToString.substring(0, uriToString.indexOf('#'));
+					}
+					String resolvedPath = AcceleoWorkspaceUtil.INSTANCE
+							.resolveAsPlatformPluginResource(uriToString);
 					if (resolvedPath != null) {
 						normalized = URI.createURI(resolvedPath);
 					}
