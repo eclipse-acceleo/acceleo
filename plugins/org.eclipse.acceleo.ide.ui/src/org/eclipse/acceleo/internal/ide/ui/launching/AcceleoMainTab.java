@@ -69,6 +69,11 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	private static final String PROFILE_MODE = "profile"; //$NON-NLS-1$
 
 	/**
+	 * Profile model extension.
+	 */
+	private static final String PROFILE_EXTENSION = "mtlp"; //$NON-NLS-1$
+
+	/**
 	 * Browse message constant.
 	 */
 	private static final String BROWSE_MESSAGE = "AcceleoMainTab.Browse"; //$NON-NLS-1$
@@ -365,7 +370,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				.getWorkspace().getRoot(), true, AcceleoUIMessages
 				.getString("AcceleoNewTemplateWizardPage.ContainerSelection")); //$NON-NLS-1$
 		if (initial != null) {
-			dialog.setInitialSelections(new Object[] {initial});
+			dialog.setInitialSelections(new Object[] {initial });
 		}
 		dialog.showClosedProjects(false);
 		if (dialog.open() == Window.OK) {
@@ -676,12 +681,12 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				IFile file = workspace.getRoot().getFile(new Path(model));
 				if (!file.exists()) {
 					setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingModel", //$NON-NLS-1$
-							new Object[] {model}));
+							new Object[] {model }));
 					result = false;
 				}
 			} else {
 				setErrorMessage(AcceleoUIMessages.getString(
-						"AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
+						"AcceleoMainTab.Error.InvalidModel", new Object[] {model })); //$NON-NLS-1$
 				result = false;
 			}
 		}
@@ -690,7 +695,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			IStatus status = workspace.validatePath(target, IResource.FOLDER | IResource.PROJECT);
 			if (!status.isOK()) {
 				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.InvalidTarget", //$NON-NLS-1$
-						new Object[] {target}));
+						new Object[] {target }));
 				result = false;
 			}
 		}
@@ -698,7 +703,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			if ("".equals(profileModelText.getText().trim())) { //$NON-NLS-1$
 				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingProfileModel")); //$NON-NLS-1$
 				result = false;
-			} else if (!profileModelText.getText().trim().endsWith(".profile")) { //$NON-NLS-1$
+			} else if (!profileModelText.getText().trim().endsWith(PROFILE_EXTENSION)) {
 				setErrorMessage(AcceleoUIMessages
 						.getString("AcceleoMainTab.Error.MissingProfileModelExtension")); //$NON-NLS-1$
 				result = false;
