@@ -40,6 +40,7 @@ import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
+import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -86,6 +87,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * To debug an AST evaluation. TODO JMU : Put this debugger instance in the evaluation context
 	 */
 	private static IDebugAST debug;
+
+	/**
+	 * To profile an AST evaluation. TODO JMU : Put this profiler instance in the evaluation context
+	 */
+	private static Profiler profile;
 
 	/** This instance will be used as the cached result of a query when it is null. */
 	private static final Object NULL_QUERY_RESULT = new Object();
@@ -158,6 +164,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public static void setDebug(IDebugAST acceleoDebug) {
 		debug = acceleoDebug;
+	}
+
+	/**
+	 * To profile an AST evaluation.
+	 * 
+	 * @param acceleoProfile
+	 *            is the new debugger to consider
+	 * @since 0.9
+	 */
+	public static void setProfile(Profiler acceleoProfile) {
+		profile = acceleoProfile;
 	}
 
 	/**
@@ -807,6 +824,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			debug.startDebug(astFragment);
 			debug.stepDebugInput(astFragment, debugInput);
 		}
+		if (profile != null && profileExpression(expression)) {
+			profile.start(expression);
+			profile.loop(lastEObjectSelfValue);
+		}
 		// This try / catch block allows us to handle the disposal of all context information.
 		try {
 			// All evaluations pass through here. We'll handle blocks' init sections here.
@@ -819,30 +840,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (expression == lastSourceExpression) {
 				fireGenerationEvent = false;
 			}
-			if (expression instanceof Template) {
-				result = visitAcceleoTemplate((Template)expression);
-			} else if (expression instanceof IfBlock) {
-				visitAcceleoIfBlock((IfBlock)expression);
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof ForBlock) {
-				visitAcceleoForBlock((ForBlock)expression);
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof FileBlock) {
-				visitAcceleoFileBlock((FileBlock)expression);
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof TemplateInvocation) {
-				result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
-			} else if (expression instanceof QueryInvocation) {
-				result = visitAcceleoQueryInvocation((QueryInvocation)expression);
-			} else if (expression instanceof LetBlock) {
-				visitAcceleoLetBlock((LetBlock)expression);
-				result = ""; //$NON-NLS-1$
-			} else if (expression instanceof ProtectedAreaBlock) {
-				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
-				result = ""; //$NON-NLS-1$
-			} else {
-				result = super.visitExpression(expression);
-			}
+			result = switchExpression(expression);
 			fireGenerationEvent = fireEvents;
 
 			if (expression == lastSourceExpression) {
@@ -898,6 +896,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				debug.stepDebugOutput(astFragment, debugInput, result);
 				debug.endDebug(astFragment);
 			}
+			if (profile != null && profileExpression(expression)) {
+				profile.stop();
+			}
 		}
 
 		if (context.getProgressMonitor().isCanceled()) {
@@ -905,6 +906,53 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		return result;
+	}
+
+	/**
+	 * Switch to the visiting method according to the expression type.
+	 * 
+	 * @param expression
+	 *            the expression to visite
+	 * @return the result of the visit evaluation
+	 */
+	private Object switchExpression(OCLExpression<C> expression) {
+		Object result;
+		if (expression instanceof Template) {
+			result = visitAcceleoTemplate((Template)expression);
+		} else if (expression instanceof IfBlock) {
+			visitAcceleoIfBlock((IfBlock)expression);
+			result = ""; //$NON-NLS-1$
+		} else if (expression instanceof ForBlock) {
+			visitAcceleoForBlock((ForBlock)expression);
+			result = ""; //$NON-NLS-1$
+		} else if (expression instanceof FileBlock) {
+			visitAcceleoFileBlock((FileBlock)expression);
+			result = ""; //$NON-NLS-1$
+		} else if (expression instanceof TemplateInvocation) {
+			result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
+		} else if (expression instanceof QueryInvocation) {
+			result = visitAcceleoQueryInvocation((QueryInvocation)expression);
+		} else if (expression instanceof LetBlock) {
+			visitAcceleoLetBlock((LetBlock)expression);
+			result = ""; //$NON-NLS-1$
+		} else if (expression instanceof ProtectedAreaBlock) {
+			visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
+			result = ""; //$NON-NLS-1$
+		} else {
+			result = super.visitExpression(expression);
+		}
+		return result;
+	}
+
+	/**
+	 * Tell if we should profile this expression.
+	 * 
+	 * @param expression
+	 *            the expression to check
+	 * @return true if we should profile
+	 */
+	private boolean profileExpression(OCLExpression<C> expression) {
+		return !(expression instanceof StringLiteralExp);
 	}
 
 	/**
