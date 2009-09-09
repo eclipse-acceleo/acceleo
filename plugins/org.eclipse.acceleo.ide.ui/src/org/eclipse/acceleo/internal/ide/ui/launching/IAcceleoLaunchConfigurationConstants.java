@@ -32,6 +32,11 @@ public interface IAcceleoLaunchConfigurationConstants {
 	String ATTR_MODEL_PATH = AcceleoUIActivator.PLUGIN_ID + ".MODEL_PATH"; //$NON-NLS-1$
 
 	/**
+	 * Launch configuration attribute key. The value is the path of the model.
+	 */
+	String ATTR_PROFILE_MODEL_PATH = AcceleoUIActivator.PLUGIN_ID + ".PROFILE_MODEL_PATH"; //$NON-NLS-1$
+
+	/**
 	 * Launch configuration attribute key. The value is the path of the target folder.
 	 */
 	String ATTR_TARGET_PATH = AcceleoUIActivator.PLUGIN_ID + ".TARGET_PATH"; //$NON-NLS-1$

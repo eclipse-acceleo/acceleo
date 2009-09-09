@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.ide.ui.launching.strategy;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -22,6 +23,7 @@ import org.eclipse.acceleo.internal.ide.ui.debug.core.AcceleoDebugger;
 import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoDebugTarget;
 import org.eclipse.acceleo.internal.ide.ui.launching.AcceleoLaunchOperation;
 import org.eclipse.acceleo.internal.ide.ui.launching.IAcceleoLaunchConfigurationConstants;
+import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -58,11 +60,15 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 		IProject project = getProject(configuration);
 		if (project != null) {
 			AcceleoDebugger debugger = null;
+			Profiler profiler = null;
 			if ("debug".equals(mode)) { //$NON-NLS-1$
 				debugger = new AcceleoDebugger(project);
 				launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
 				AcceleoEvaluationVisitor.setDebug(debugger);
 				debugger.start();
+			} else if ("profile".equals(mode)) { //$NON-NLS-1$
+				profiler = new Profiler();
+				AcceleoEvaluationVisitor.setProfile(profiler);
 			}
 			try {
 				String model = getModelPath(configuration);
@@ -110,7 +116,54 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 					if (debugger != null) {
 						debugger.end();
 					}
+				} else if ("profile".equals(mode)) { //$NON-NLS-1$
+					saveProfileModel(configuration, profiler, monitor);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Save the profile model to the workspace.
+	 * 
+	 * @param configuration
+	 *            the launch configuration
+	 * @param profiler
+	 *            the profiler instance
+	 * @param monitor
+	 *            the progress monitor
+	 */
+	private void saveProfileModel(ILaunchConfiguration configuration, Profiler profiler,
+			IProgressMonitor monitor) {
+		if (profiler != null) {
+			try {
+				String profileModelPath = getProfileModelPath(configuration);
+				if (profileModelPath.length() != 0) {
+					profiler.save(ResourcesPlugin.getWorkspace().getRoot().getLocation().append(
+							profileModelPath).toString());
+					try {
+						ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(profileModelPath))
+								.getParent().refreshLocal(1, monitor);
+					} catch (CoreException e) {
+						AcceleoUIActivator
+								.getDefault()
+								.getLog()
+								.log(
+										new Status(
+												IStatus.WARNING,
+												AcceleoUIActivator.PLUGIN_ID,
+												AcceleoUIMessages
+														.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
+					}
+				} else {
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
+									.getString("AcceleoLaunchDelegate.MissingProfileModel"))); //$NON-NLS-1$
+				}
+			} catch (IOException e) {
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages.getString(
+								"AcceleoLaunchDelegate.ProfileModelError", new Object[] {e.getMessage(), }))); //$NON-NLS-1$
 			}
 		}
 	}
@@ -198,6 +251,26 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 		String model = ""; //$NON-NLS-1$
 		try {
 			model = configuration.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			model = ""; //$NON-NLS-1$
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		return model;
+	}
+
+	/**
+	 * Returns the profile model path specified by the given launch configuration, or an empty string if none.
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * @return the profile model path or an empty string
+	 * @since 0.8
+	 */
+	protected String getProfileModelPath(final ILaunchConfiguration configuration) {
+		String model = ""; //$NON-NLS-1$
+		try {
+			model = configuration.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH,
+					""); //$NON-NLS-1$
 		} catch (CoreException e) {
 			model = ""; //$NON-NLS-1$
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());

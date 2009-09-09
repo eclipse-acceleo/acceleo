@@ -337,7 +337,7 @@ Contributors:
             name="%acceleoLaunchConfigurationName"
             sourcePathComputerId="org.eclipse.acceleo.ide.ui.launching.AcceleoSourcePathComputer"
             delegate="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoLaunchDelegate"
-            modes="run, debug"
+            modes="run, debug, profile"
             id="org.eclipse.acceleo.ide.ui.launching.launchConfigurationType">
       </launchConfigurationType>
    </extension>
@@ -380,7 +380,7 @@ Contributors:
             label="%acceleoShortcutLaunchLabel"
             icon="icons/AcceleoLaunch.gif"
             class="org.eclipse.acceleo.internal.ide.ui.launching.AcceleoApplicationLaunchShortcut"
-            modes="run, debug"
+            modes="run, debug, profile"
             id="org.eclipse.acceleo.ide.ui.launching.AcceleoApplicationLaunchShortcut">
          <contextualLaunch>
             <enablement>

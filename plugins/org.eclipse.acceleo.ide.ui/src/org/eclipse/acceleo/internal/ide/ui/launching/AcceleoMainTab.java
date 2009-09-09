@@ -17,6 +17,8 @@ import java.util.List;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.dialog.FileTreeContentProvider;
+import org.eclipse.acceleo.internal.ide.ui.dialog.ResourceSelectionDialog;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -61,6 +64,16 @@ import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab {
 
 	/**
+	 * Profile mode constant.
+	 */
+	private static final String PROFILE_MODE = "profile"; //$NON-NLS-1$
+
+	/**
+	 * Browse message constant.
+	 */
+	private static final String BROWSE_MESSAGE = "AcceleoMainTab.Browse"; //$NON-NLS-1$
+
+	/**
 	 * The launch configuration tab that displays program arguments.
 	 */
 	AcceleoJavaArgumentsTab javaArgumentsTab;
@@ -71,9 +84,19 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	private Text modelText;
 
 	/**
+	 * The profile model path text widget, relative to the workspace.
+	 */
+	private Text profileModelText;
+
+	/**
 	 * The model button, to browse the workspace to select the model.
 	 */
 	private Button modelButton;
+
+	/**
+	 * The profile model button, to browse the workspace to select the model.
+	 */
+	private Button profileModelButton;
 
 	/**
 	 * The target folder path text widget, relative to the workspace.
@@ -148,6 +171,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				0, 0);
 		createAcceleoModelEditor(compModelTarget);
 		createAcceleoTargetEditor(compModelTarget);
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			createAcceleoProfileModelEditor(compModelTarget);
+		}
 		createAcceleoArgumentsEditor(compAcceleo);
 		new Label(mainComposite, SWT.NONE);
 		createAcceleoLaunchingStrategyEditor(mainComposite);
@@ -185,13 +211,51 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				updateLaunchConfigurationDialog();
 			}
 		});
-		modelButton = createPushButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Browse"), null); //$NON-NLS-1$
+		modelButton = createPushButton(comp, AcceleoUIMessages.getString(BROWSE_MESSAGE), null);
 		modelButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowseModelButton();
+			}
+		});
+	}
+
+	/**
+	 * Creates the widgets for specifying the profile model path.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoProfileModelEditor(Composite parent) {
+		Font font = parent.getFont();
+		Group mainGroup = createGroup(parent,
+				AcceleoUIMessages.getString("AcceleoMainTab.ProfileModelPath"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_HORIZONTAL);
+		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		profileModelText = createSingleText(comp, 1);
+		profileModelText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		profileModelButton = createPushButton(comp, AcceleoUIMessages.getString(BROWSE_MESSAGE), null);
+		profileModelButton.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				handleBrowseProfileModelButton();
+			}
+		});
+		fMainText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!"".equals(fMainText.getText().trim()) && "".equals(profileModelText.getText().trim())) { //$NON-NLS-1$ //$NON-NLS-2$
+					profileModelText.setText(fMainText.getText().trim() + ".profiler"); //$NON-NLS-1$
+				}
+				updateLaunchConfigurationDialog();
 			}
 		});
 	}
@@ -233,6 +297,30 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	}
 
 	/**
+	 * Show a dialog that lists all the models.
+	 */
+	private void handleBrowseProfileModelButton() {
+		IResource initialResource;
+		if (new Path(profileModelText.getText()).segmentCount() >= 2
+				&& ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(profileModelText.getText()))
+						.exists()) {
+			initialResource = ResourcesPlugin.getWorkspace().getRoot().getFile(
+					new Path(profileModelText.getText()));
+		} else {
+			initialResource = ResourcesPlugin.getWorkspace().getRoot();
+		}
+		ResourceSelectionDialog dialog = new ResourceSelectionDialog(getShell(), initialResource,
+				AcceleoUIMessages.getString("AcceleoMainTab.SelectProfileModel")); //$NON-NLS-1$
+		dialog.setContentProvider(new FileTreeContentProvider(true, PROFILE_MODE));
+		dialog.open();
+
+		if (dialog.getResult().length > 0 && dialog.getResult()[0] instanceof IPath
+				&& ((IPath)dialog.getResult()[0]).segmentCount() > 0) {
+			profileModelText.setText(dialog.getResult()[0].toString());
+		}
+	}
+
+	/**
 	 * Creates the widgets for specifying the target folder.
 	 * 
 	 * @param parent
@@ -249,7 +337,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				updateLaunchConfigurationDialog();
 			}
 		});
-		targetButton = createPushButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Browse"), null); //$NON-NLS-1$
+		targetButton = createPushButton(comp, AcceleoUIMessages.getString(BROWSE_MESSAGE), null);
 		targetButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -277,7 +365,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				.getWorkspace().getRoot(), true, AcceleoUIMessages
 				.getString("AcceleoNewTemplateWizardPage.ContainerSelection")); //$NON-NLS-1$
 		if (initial != null) {
-			dialog.setInitialSelections(new Object[] {initial });
+			dialog.setInitialSelections(new Object[] {initial});
 		}
 		dialog.showClosedProjects(false);
 		if (dialog.open() == Window.OK) {
@@ -475,6 +563,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	public void initializeFrom(ILaunchConfiguration config) {
 		super.initializeFrom(config);
 		updateAcceleoModelFromConfig(config);
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			updateAcceleoProfileModelFromConfig(config);
+		}
 		updateAcceleoTargetFromConfig(config);
 		updateAcceleoArgumentsFromConfig(config);
 		updateAcceleoLaunchingStrategyFromConfig(config);
@@ -494,6 +585,22 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		modelText.setText(model);
+	}
+
+	/**
+	 * Loads the profile model path from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the model path
+	 */
+	protected void updateAcceleoProfileModelFromConfig(ILaunchConfiguration config) {
+		String model = ""; //$NON-NLS-1$
+		try {
+			model = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH, ""); //$NON-NLS-1$
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		profileModelText.setText(model);
 	}
 
 	/**
@@ -569,12 +676,12 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				IFile file = workspace.getRoot().getFile(new Path(model));
 				if (!file.exists()) {
 					setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingModel", //$NON-NLS-1$
-							new Object[] {model }));
+							new Object[] {model}));
 					result = false;
 				}
 			} else {
 				setErrorMessage(AcceleoUIMessages.getString(
-						"AcceleoMainTab.Error.InvalidModel", new Object[] {model })); //$NON-NLS-1$
+						"AcceleoMainTab.Error.InvalidModel", new Object[] {model})); //$NON-NLS-1$
 				result = false;
 			}
 		}
@@ -583,7 +690,17 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			IStatus status = workspace.validatePath(target, IResource.FOLDER | IResource.PROJECT);
 			if (!status.isOK()) {
 				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.InvalidTarget", //$NON-NLS-1$
-						new Object[] {target }));
+						new Object[] {target}));
+				result = false;
+			}
+		}
+		if (result && PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			if ("".equals(profileModelText.getText().trim())) { //$NON-NLS-1$
+				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingProfileModel")); //$NON-NLS-1$
+				result = false;
+			} else if (!profileModelText.getText().trim().endsWith(".profile")) { //$NON-NLS-1$
+				setErrorMessage(AcceleoUIMessages
+						.getString("AcceleoMainTab.Error.MissingProfileModelExtension")); //$NON-NLS-1$
 				result = false;
 			}
 		}
@@ -603,6 +720,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		super.performApply(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, modelText.getText().trim());
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH,
+					profileModelText.getText().trim());
+		}
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, targetText.getText()
 				.trim());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, argumentsText.getText());
@@ -619,6 +740,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH, ""); //$NON-NLS-1$
+		}
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, ""); //$NON-NLS-1$
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, ""); //$NON-NLS-1$
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
