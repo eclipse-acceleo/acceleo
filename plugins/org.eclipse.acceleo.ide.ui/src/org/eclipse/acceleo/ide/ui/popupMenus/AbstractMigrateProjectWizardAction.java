@@ -73,6 +73,17 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 				protected boolean multipleTemplates() {
 					return false;
 				}
+
+				@Override
+				public void addPages() {
+					super.addPages();
+					if (((IStructuredSelection)currentSelection).getFirstElement() instanceof IProject) {
+						newProjectPage
+								.setInitialProjectName(((IProject)((IStructuredSelection)currentSelection)
+										.getFirstElement()).getName()
+										+ ".migrated"); //$NON-NLS-1$
+					}
+				}
 			};
 			wizard.init(PlatformUI.getWorkbench(), (IStructuredSelection)currentSelection);
 			Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
