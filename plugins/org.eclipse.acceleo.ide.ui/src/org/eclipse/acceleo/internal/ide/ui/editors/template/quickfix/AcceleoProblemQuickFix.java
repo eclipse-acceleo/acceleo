@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
 
@@ -41,7 +43,12 @@ public class AcceleoProblemQuickFix implements IMarkerResolutionGenerator2 {
 	 * @see org.eclipse.ui.IMarkerResolutionGenerator2#hasResolutions(org.eclipse.core.resources.IMarker)
 	 */
 	public boolean hasResolutions(IMarker marker) {
-		return "org.eclipse.acceleo.ide.ui.problem".equals(marker.getId()); //$NON-NLS-1$
+		try {
+			return "org.eclipse.acceleo.ide.ui.problem".equals(marker.getType());
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			return false;
+		}
 	}
 
 }
