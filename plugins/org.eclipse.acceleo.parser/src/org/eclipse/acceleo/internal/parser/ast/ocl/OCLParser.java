@@ -761,16 +761,22 @@ public class OCLParser {
 	 *             if the given text is not conform to what we expect.
 	 */
 	private OCLExpression createQuery(String text) throws ParserException {
+		environment.deleteFirstProblemObject();
 		try {
 			OCLExpression eOCLExpression = helper.createQuery(text);
 			return eOCLExpression;
 		} catch (ParserException e1) {
+			Object firstProblemObject = environment.getFirstProblemObject();
 			pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
 			try {
 				OCLExpression eOCLExpression = helper.createQuery(text);
 				return eOCLExpression;
 			} catch (ParserException e2) {
-				throw e1;
+				if (firstProblemObject != null) {
+					throw new WrappedOCLException(e1, firstProblemObject);
+				} else {
+					throw e1;
+				}
 			} finally {
 				popContext();
 			}

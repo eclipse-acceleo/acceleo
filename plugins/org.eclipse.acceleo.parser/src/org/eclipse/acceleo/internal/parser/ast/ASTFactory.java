@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
+import org.eclipse.acceleo.internal.parser.ast.ocl.WrappedOCLException;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.emf.ecore.EObject;
@@ -321,6 +322,14 @@ public class ASTFactory {
 								.getStartPosition());
 					}
 					ioModelExpression.put(iModelExpression, oOCLExpression);
+				} catch (WrappedOCLException e) {
+					if (e.getStartPosition() > -1 && e.getEndPosition() > -1) {
+						log(e.getMessage(), iModelExpression.getStartPosition() + e.getStartPosition(),
+								iModelExpression.getStartPosition() + e.getEndPosition());
+					} else {
+						log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
+								.getEndPosition());
+					}
 				} catch (ParserException e) {
 					log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
 							.getEndPosition());

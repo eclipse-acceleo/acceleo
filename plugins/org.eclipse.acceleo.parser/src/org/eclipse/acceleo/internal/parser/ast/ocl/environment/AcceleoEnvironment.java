@@ -58,6 +58,11 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> umlReflection;
 
 	/**
+	 * The first problem object of the last compilation made by this environment.
+	 */
+	private Object firstProblemObject;
+
+	/**
 	 * Delegates instantiation to the super constructor.
 	 * 
 	 * @param parent
@@ -329,4 +334,76 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			addHelperOperation(owner, operation);
 		}
 	}
+
+	/**
+	 * Gets the first problem object of the last compilation made by this environment. Make sure to call
+	 * deleteFirstProblemObject() before to get the last compilation issues.
+	 * 
+	 * @return the first registered problem object, or null
+	 */
+	public Object getFirstProblemObject() {
+		Object result;
+		if (firstProblemObject != null) {
+			result = firstProblemObject;
+		} else if (getInternalParent() instanceof AcceleoEnvironment) {
+			result = ((AcceleoEnvironment)getInternalParent()).getFirstProblemObject();
+		} else {
+			result = null;
+		}
+		return result;
+	}
+
+	/**
+	 * Deletes the first problem object to clear the context. You'll have the newest information when you'll
+	 * call getFirstProblemObject().
+	 */
+	public void deleteFirstProblemObject() {
+		firstProblemObject = null;
+		if (getInternalParent() instanceof AcceleoEnvironment) {
+			((AcceleoEnvironment)getInternalParent()).deleteFirstProblemObject();
+		}
+	}
+
+	/**
+	 * Try to set the current problem object of the last compilation made by this environment. We only keep it
+	 * if it is the first one.
+	 * 
+	 * @param problemObject
+	 *            the current problem object
+	 */
+	private void setFirstProblemObjectIfNull(Object problemObject) {
+		if (firstProblemObject == null) {
+			firstProblemObject = problemObject;
+		}
+		if (getInternalParent() instanceof AcceleoEnvironment) {
+			((AcceleoEnvironment)getInternalParent()).setFirstProblemObjectIfNull(problemObject);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.lpg.AbstractBasicEnvironment#analyzerError(java.lang.String, java.lang.String,
+	 *      java.lang.Object)
+	 */
+	@Override
+	public void analyzerError(String problemMessage, String problemContext, Object problemObject) {
+		setFirstProblemObjectIfNull(problemObject);
+		super.analyzerError(problemMessage, problemContext, problemObject);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.lpg.AbstractBasicEnvironment#analyzerError(java.lang.String, java.lang.String,
+	 *      java.util.List)
+	 */
+	@Override
+	public void analyzerError(String problemMessage, String problemContext, List<?> problemObjects) {
+		if (problemObjects != null && problemObjects.size() > 0) {
+			setFirstProblemObjectIfNull(problemObjects.get(0));
+		}
+		super.analyzerError(problemMessage, problemContext, problemObjects);
+	}
+
 }
