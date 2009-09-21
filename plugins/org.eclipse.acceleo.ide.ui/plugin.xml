@@ -72,6 +72,30 @@ Contributors:
       <persistent value="true" />
    </extension>
 
+   <extension
+         point="org.eclipse.ui.editors.annotationTypes">
+      <type
+            markerType="org.eclipse.acceleo.ide.ui.problem"
+            name="org.eclipse.acceleo.ide.ui.annotation.problem"
+            super="org.eclipse.ui.workbench.texteditor.error"
+            markerSeverity="2"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.acceleo.ide.ui.annotation.problem"
+            contributesToHeader="true"
+            icon="icons/AcceleoProblemMarker.gif"
+            includeOnPreferencePage="false"
+            isGoToNextNavigationTarget="true"
+            isGoToPreviousNavigationTarget="true"
+            label="Acceleo Problem"
+            showInNextPrevDropdownToolbarAction="true"
+            symbolicIcon="error"
+            quickFixIcon="icons/AcceleoQuickFix.gif"/>
+   </extension>
+
    <extension point="org.eclipse.ui.ide.projectNatureImages">
       <image 
          id="org.eclipse.acceleo.ide.ui.acceleoNatureImage"
@@ -603,6 +627,14 @@ Contributors:
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewQueryForeachType"/>
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewIfElseIfForeachType"/>
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewLetElseLetForeachType"/>
+   </extension>
+
+   <extension
+      point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+         markerType="org.eclipse.acceleo.ide.ui.problem"
+         class="org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoProblemQuickFix">
+      </markerResolutionGenerator>
    </extension>
 
 </plugin>

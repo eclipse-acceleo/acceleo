@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoQuickFixProcessor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoBlockScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoCommentScanner;
@@ -26,7 +27,10 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoProte
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoQueryScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoTemplateScanner;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -34,12 +38,15 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.quickassist.IQuickAssistAssistant;
+import org.eclipse.jface.text.quickassist.QuickAssistAssistant;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 /**
@@ -179,6 +186,32 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 		return assistant;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getQuickAssistAssistant(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	@Override
+	public IQuickAssistAssistant getQuickAssistAssistant(ISourceViewer sourceViewer) {
+		IQuickAssistAssistant assistant = new QuickAssistAssistant();
+		assistant.setQuickAssistProcessor(new AcceleoQuickFixProcessor());
+		assistant.setInformationControlCreator(getQuickAssistAssistantInformationControlCreator());
+		return assistant;
+	}
+
+	/**
+	 * Returns the information control creator for the quick assist assistant.
+	 * 
+	 * @return the information control creator
+	 */
+	private IInformationControlCreator getQuickAssistAssistantInformationControlCreator() {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				return new DefaultInformationControl(parent);
+			}
+		};
 	}
 
 	/**
