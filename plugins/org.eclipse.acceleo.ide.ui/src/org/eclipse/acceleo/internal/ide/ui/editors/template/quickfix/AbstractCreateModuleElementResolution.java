@@ -80,9 +80,9 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 				}
 				String paramName = Character.toLowerCase(paramType.charAt(0)) + paramType.substring(1);
 				StringBuilder newText = new StringBuilder();
-				if (document.getLength() > 0) {
+				if (newOffset > 0) {
 					newText.append('\n');
-					if (!"\n".equals(document.get(document.getLength() - 1, 1))) { //$NON-NLS-1$
+					if (!"\n".equals(document.get(newOffset - 1, 1))) { //$NON-NLS-1$
 						newText.append("\n"); //$NON-NLS-1$
 					}
 				}
