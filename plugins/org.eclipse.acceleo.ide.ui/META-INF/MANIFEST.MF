@@ -34,7 +34,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.debug,
  org.eclipse.search,
  org.eclipse.ui.workbench.texteditor,
- org.apache.ant,
  org.eclipse.compare,
  org.eclipse.acceleo.profiler
 Eclipse-LazyStart: true

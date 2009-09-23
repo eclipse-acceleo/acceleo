@@ -148,7 +148,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (buildProperties.exists()) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
 			CreateBuildAcceleoWriter buildWriter = new CreateBuildAcceleoWriter();
-			String buildText = buildWriter.generate(null);
+			String buildText = buildWriter.generate(getProject().getName());
 			if (!buildAcceleo.exists()
 					|| !buildText.equals(FileContent.getFileContent(buildAcceleo.getLocation().toFile())
 							.toString())) {

@@ -569,34 +569,23 @@ Contributors:
           </context>
        </target>
     </extension>
-    
-    <extension
-         id="acceleoCompiler"
-         name="Acceleo Compiler"
-         point="org.eclipse.ant.core.antTasks">
-         <antTask name="acceleoCompiler"
-          	class="org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderTask"
-          	library="lib/acceleoCompiler.jar"
-          	headless="true"
-          	eclipseRuntime="true"/>
-    </extension>
 
-   <extension
+    <extension
          id="activeRegion"
          name="Acceleo Region Marker"
          point="org.eclipse.core.resources.markers">
          <super type="org.eclipse.core.resources.textmarker"/>
          <persistent value="false"/>
-   </extension>
+    </extension>
    
-   <extension
+    <extension
          point="org.eclipse.ui.editors.annotationTypes">
       <type
             markerType="org.eclipse.acceleo.ide.ui.activeRegion"
             name="org.eclipse.acceleo.ide.ui.annotation.activeRegion"/>
-   </extension>
+    </extension>
 
-   <extension
+    <extension
          point="org.eclipse.ui.editors.markerAnnotationSpecification">
       <specification
             annotationType="org.eclipse.acceleo.ide.ui.annotation.activeRegion"
@@ -620,21 +609,21 @@ Contributors:
             textStylePreferenceValue="NONE"
             verticalRulerPreferenceKey="highlight.rulers.vertical.activeRegion"
             verticalRulerPreferenceValue="true"/>
-   </extension>
+    </extension>
 
-   <extension point="org.eclipse.acceleo.ide.ui.proposal">
+    <extension point="org.eclipse.acceleo.ide.ui.proposal">
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewTemplateForeachType"/>
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewQueryForeachType"/>
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewIfElseIfForeachType"/>
       <pattern class="org.eclipse.acceleo.internal.ide.ui.views.proposals.patterns.NewLetElseLetForeachType"/>
-   </extension>
+    </extension>
 
-   <extension
+    <extension
       point="org.eclipse.ui.ide.markerResolution">
       <markerResolutionGenerator
          markerType="org.eclipse.acceleo.ide.ui.problem"
          class="org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoProblemQuickFix">
       </markerResolutionGenerator>
-   </extension>
+    </extension>
 
 </plugin>
