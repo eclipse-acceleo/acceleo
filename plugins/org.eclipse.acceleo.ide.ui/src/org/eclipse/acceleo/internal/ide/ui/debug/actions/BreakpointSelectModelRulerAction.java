@@ -16,7 +16,6 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoLineBreakpoint;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.text.source.IVerticalRulerInfo;
 import org.eclipse.jface.window.Window;
@@ -28,7 +27,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class BreakpointSelectModelRulerAction extends AbstractBreakpointRulerAction implements IAction {
+public class BreakpointSelectModelRulerAction extends AbstractBreakpointRulerAction {
 
 	/**
 	 * The constructor.
