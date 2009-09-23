@@ -30,7 +30,7 @@
 		<eclipse.incrementalBuild 
 		  project="<%=projectName%>"
 		  kind="full" />
-		<copydir dest="${target.folder}" src="${basedir}<%=outputFolder%>"></copydir>
+		<copydir dest="${target.folder}" src="${basedir}/<%=outputFolder%>"></copydir>
 	</target>
 
 </project>
