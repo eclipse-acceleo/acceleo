@@ -341,8 +341,27 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * This will try and resolve the given {@link java.io.File} within the workspace and return it if found.
+	 * 
+	 * @param file
+	 *            The file we wish to find in the workspace.
+	 * @return The resolved IFile if any, <code>null</code> otherwise.
+	 */
+	public IFile getWorkspaceFile(File file) {
+		final IPath workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		IPath filePath = new Path(file.getAbsolutePath());
+		if (workspaceLocation.isPrefixOf(filePath)) {
+			filePath = filePath.removeFirstSegments(workspaceLocation.segmentCount());
+			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
+			return soughtIFile;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * This will try and resolve the given path against a workspace file. The path can either be relative to
-	 * the workpace or represent an uri of platform scheme.
+	 * the workpace, an absolute path towards a workspace file or represent an uri of platform scheme.
 	 * 
 	 * @param path
 	 *            The path we seek a file for. Cannot be <code>null</code>.
@@ -377,87 +396,15 @@ public final class AcceleoWorkspaceUtil {
 				soughtFile = null;
 			}
 		} else {
-			final IPath fullPath = new Path(path);
+			final IPath workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+			IPath fullPath = new Path(path);
+			if (workspaceLocation.isPrefixOf(fullPath)) {
+				fullPath = fullPath.removeFirstSegments(workspaceLocation.segmentCount());
+			}
 			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(fullPath);
 			soughtFile = soughtIFile.getLocation().toFile();
 		}
 		return soughtFile;
-	}
-
-	/**
-	 * This can be used to convert a file-scheme URI to a "platform:/plugin" scheme URI if it can be resolved
-	 * in the installed plugins.
-	 * 
-	 * @param filePath
-	 *            File scheme URI that is to be converted.
-	 * @return The converted URI if the file could be resolved in the installed plugins, <code>null</code>
-	 *         otherwise.
-	 */
-	public String resolveAsPlatformPluginResource(String filePath) {
-		final String fileScheme = "file:/"; //$NON-NLS-1$
-
-		String actualPath = filePath;
-		if (actualPath.startsWith(fileScheme)) {
-			actualPath = actualPath.substring(fileScheme.length());
-		}
-
-		String[] segments = filePath.split("/"); //$NON-NLS-1$
-		Bundle bundle = null;
-		String bundlePath = null;
-		for (int i = segments.length - 1; i >= 0; i--) {
-			if (isBundleID(segments[i])) {
-				bundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(Long.valueOf(segments[i]));
-			} else {
-				bundle = Platform.getBundle(segments[i]);
-			}
-
-			if (bundle != null) {
-				bundlePath = ""; //$NON-NLS-1$
-
-				int pathStart = i + 1;
-				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
-					pathStart += 1;
-				} else if (".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
-					pathStart += 2;
-				}
-
-				for (int j = pathStart; j < segments.length; j++) {
-					bundlePath += '/' + segments[j];
-				}
-				URL fileURL = bundle.getEntry(bundlePath);
-				if (fileURL != null) {
-					break;
-				}
-			}
-		}
-
-		if (bundle != null && bundlePath != null && !"".equals(bundlePath)) { //$NON-NLS-1$
-			// TODO check if this could be /resource/
-			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
-		}
-		return null;
-	}
-
-	/**
-	 * This will check if the given String represents an integer less than five digits long.
-	 * 
-	 * @param s
-	 *            The string we wish compared to an integer.
-	 * @return <code>true</code> if <code>s</code> is an integer comprised between 0 and 9999,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isBundleID(String s) {
-		if (s.length() == 0 || s.length() > 5) {
-			return false;
-		}
-
-		boolean isInteger = true;
-		for (char c : s.toCharArray()) {
-			if (!Character.isDigit(c)) {
-				isInteger = false;
-			}
-		}
-		return isInteger;
 	}
 
 	/**
@@ -598,6 +545,60 @@ public final class AcceleoWorkspaceUtil {
 			}
 		}
 		workspaceInstalledBundles.clear();
+	}
+
+	/**
+	 * This can be used to convert a file-scheme URI to a "platform:/plugin" scheme URI if it can be resolved
+	 * in the installed plugins.
+	 * 
+	 * @param filePath
+	 *            File scheme URI that is to be converted.
+	 * @return The converted URI if the file could be resolved in the installed plugins, <code>null</code>
+	 *         otherwise.
+	 */
+	public String resolveAsPlatformPluginResource(String filePath) {
+		final String fileScheme = "file:/"; //$NON-NLS-1$
+
+		String actualPath = filePath;
+		if (actualPath.startsWith(fileScheme)) {
+			actualPath = actualPath.substring(fileScheme.length());
+		}
+
+		String[] segments = filePath.split("/"); //$NON-NLS-1$
+		Bundle bundle = null;
+		String bundlePath = null;
+		for (int i = segments.length - 1; i >= 0; i--) {
+			if (isBundleID(segments[i])) {
+				bundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(Long.valueOf(segments[i]));
+			} else {
+				bundle = Platform.getBundle(segments[i]);
+			}
+
+			if (bundle != null) {
+				bundlePath = ""; //$NON-NLS-1$
+
+				int pathStart = i + 1;
+				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
+					pathStart += 1;
+				} else if (".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
+					pathStart += 2;
+				}
+
+				for (int j = pathStart; j < segments.length; j++) {
+					bundlePath += '/' + segments[j];
+				}
+				URL fileURL = bundle.getEntry(bundlePath);
+				if (fileURL != null) {
+					break;
+				}
+			}
+		}
+
+		if (bundle != null && bundlePath != null && !"".equals(bundlePath)) { //$NON-NLS-1$
+			// TODO check if this could be /resource/
+			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
+		}
+		return null;
 	}
 
 	/**
@@ -827,6 +828,28 @@ public final class AcceleoWorkspaceUtil {
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return null;
+	}
+
+	/**
+	 * This will check if the given String represents an integer less than five digits long.
+	 * 
+	 * @param s
+	 *            The string we wish compared to an integer.
+	 * @return <code>true</code> if <code>s</code> is an integer comprised between 0 and 9999,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isBundleID(String s) {
+		if (s.length() == 0 || s.length() > 5) {
+			return false;
+		}
+
+		boolean isInteger = true;
+		for (char c : s.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				isInteger = false;
+			}
+		}
+		return isInteger;
 	}
 
 	/**
