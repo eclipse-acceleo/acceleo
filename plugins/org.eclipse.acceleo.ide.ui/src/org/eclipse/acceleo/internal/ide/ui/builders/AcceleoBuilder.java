@@ -145,10 +145,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void validateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
-		if (buildProperties.exists()) {
+		if (buildProperties.exists() && outputFolder != null && outputFolder.segmentCount() > 1) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
 			CreateBuildAcceleoWriter buildWriter = new CreateBuildAcceleoWriter();
-			String buildText = buildWriter.generate(getProject().getName());
+			String buildText = buildWriter.generate(new String[] {getProject().getName(),
+					outputFolder.removeFirstSegments(1).toString(), });
 			if (!buildAcceleo.exists()
 					|| !buildText.equals(FileContent.getFileContent(buildAcceleo.getLocation().toFile())
 							.toString())) {
