@@ -28,7 +28,7 @@
 	<target name="post.gather.bin.parts">
 		<eclipse.incrementalBuild 
 		  project="<%=projectName%>"
-		  kind="clean" />
+		  kind="full" />
 	</target>
 
 </project>
