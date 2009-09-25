@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -40,6 +42,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -114,7 +124,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	protected void fullBuild(IProgressMonitor monitor) throws CoreException {
 		List<IFile> filesOutput = new ArrayList<IFile>();
-		members(filesOutput, getProject());
+		members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
 		if (filesOutput.size() > 0) {
 			Collections.sort(filesOutput, new Comparator<IFile>() {
 				public int compare(IFile arg0, IFile arg1) {
@@ -127,10 +137,99 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			});
+			// TODO JMU : Builder temporary fix
+			// The full build is able to register all the ecore files of the workspace
+			List<IFile> ecoreFiles = new ArrayList<IFile>();
+			for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+				if (project.isAccessible()) {
+					members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
+				}
+			}
+			for (IFile ecoreFile : ecoreFiles) {
+				registerEcore(ecoreFile.getFullPath().toString());
+			}
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
 			validateAcceleoBuildFile(monitor);
+		}
+	}
+
+	/**
+	 * Register the given ecore file. It loads the ecore file and browses the elements, it means the root
+	 * EPackage and its descendants.
+	 * 
+	 * @param pathName
+	 *            is the path of the ecore file
+	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
+	 *         corresponding NsURI
+	 */
+	private String registerEcore(String pathName) {
+		EObject eObject;
+		if (pathName != null && pathName.endsWith(".ecore")) { //$NON-NLS-1$
+			ResourceSet resourceSet = new ResourceSetImpl();
+			URI metaURI = URI.createURI(pathName, false);
+			try {
+				eObject = ModelUtils.load(metaURI, resourceSet);
+			} catch (IOException e) {
+				eObject = null;
+			} catch (WrappedException e) {
+				eObject = null;
+			}
+			if (!(eObject instanceof EPackage)) {
+				resourceSet = new ResourceSetImpl();
+				metaURI = URI.createPlatformResourceURI(pathName, false);
+				try {
+					eObject = ModelUtils.load(metaURI, resourceSet);
+				} catch (IOException e) {
+					eObject = null;
+				} catch (WrappedException e) {
+					eObject = null;
+				}
+				if (!(eObject instanceof EPackage)) {
+					resourceSet = new ResourceSetImpl();
+					metaURI = URI.createPlatformPluginURI(pathName, false);
+					try {
+						eObject = ModelUtils.load(metaURI, resourceSet);
+					} catch (IOException e) {
+						eObject = null;
+					} catch (WrappedException e) {
+						eObject = null;
+					}
+				}
+			}
+		} else {
+			eObject = null;
+		}
+		if (eObject instanceof EPackage) {
+			EPackage ePackage = (EPackage)eObject;
+			registerEcorePackageHierarchy(ePackage);
+			return ePackage.getNsURI();
+		} else {
+			return pathName;
+		}
+
+	}
+
+	/**
+	 * Register the given EPackage and its descendants.
+	 * 
+	 * @param ePackage
+	 *            is the root package to register
+	 */
+	private void registerEcorePackageHierarchy(EPackage ePackage) {
+		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
+			if (eClassifier instanceof EClass) {
+				ePackage.getEFactoryInstance().create((EClass)eClassifier);
+				break;
+			}
+		}
+		if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
+			ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
+		}
+		EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
+		for (EPackage subPackage : ePackage.getESubpackages()) {
+			registerEcorePackageHierarchy(subPackage);
 		}
 	}
 
@@ -201,7 +300,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 			if (containsManifest) {
 				deltaFilesOutput.clear();
-				members(deltaFilesOutput, getProject());
+				members(deltaFilesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
 			} else {
 				computeOtherFilesToBuild(deltaFilesOutput);
 			}
@@ -237,7 +336,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void computeOtherFilesToBuild(List<IFile> deltaFiles) throws CoreException {
 		List<IFile> otherTemplates = new ArrayList<IFile>();
-		members(otherTemplates, getProject());
+		members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
 		List<Sequence> importSequencesToSearch = new ArrayList<Sequence>();
 		for (int i = 0; i < deltaFiles.size(); i++) {
 			IFile deltaFile = deltaFiles.get(i);
@@ -313,7 +412,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
 		List<IFile> filesOutput = new ArrayList<IFile>();
-		members(filesOutput, getProject());
+		members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
 		if (filesOutput.size() > 0) {
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, true);
@@ -378,28 +477,29 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * Returns a list of existing member files (Acceleo files only) in this resource.
+	 * Returns a list of existing member files (that validate the file extension) in this resource.
 	 * 
 	 * @param filesOutput
-	 *            an output parameter to get all the Acceleo files
+	 *            an output parameter to get all the files
 	 * @param container
 	 *            is the container to browse
+	 * @param extension
+	 *            is the extension
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private void members(List<IFile> filesOutput, IContainer container) throws CoreException {
+	private void members(List<IFile> filesOutput, IContainer container, String extension)
+			throws CoreException {
 		if (container != null) {
 			IResource[] children = container.members();
 			if (children != null) {
 				for (int i = 0; i < children.length; ++i) {
 					IResource resource = children[i];
-					if (resource instanceof IFile
-							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)resource)
-									.getFileExtension())) {
+					if (resource instanceof IFile && extension.equals(((IFile)resource).getFileExtension())) {
 						filesOutput.add((IFile)resource);
 					} else if (resource instanceof IContainer
 							&& (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath()))) {
-						members(filesOutput, (IContainer)resource);
+						members(filesOutput, (IContainer)resource, extension);
 					}
 				}
 			}
