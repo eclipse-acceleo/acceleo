@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: MtlItemProviderAdapterFactory.java,v 1.1 2009/09/08 16:05:41 ylussaud Exp $
+ * $Id: MtlItemProviderAdapterFactory.java,v 1.2 2009/09/29 12:57:07 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -515,7 +515,7 @@ public class MtlItemProviderAdapterFactory extends MtlAdapterFactory implements 
 	public Object adapt(Object object, Object type) {
 		if (isFactoryForType(type)) {
 			Object adapter = super.adapt(object, type);
-			if (!(type instanceof Class) || (((Class<?>)type).isInstance(adapter))) {
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter))) {
 				return adapter;
 			}
 		}

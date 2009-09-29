@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: FileBlockItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: FileBlockItemProvider.java,v 1.2 2009/09/29 12:57:07 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -91,6 +91,7 @@ public class FileBlockItemProvider extends BlockItemProvider implements IEditing
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(MtlPackage.Literals.FILE_BLOCK__FILE_URL);
 			childrenFeatures.add(MtlPackage.Literals.FILE_BLOCK__UNIQ_ID);
+			childrenFeatures.add(MtlPackage.Literals.FILE_BLOCK__CHARSET);
 		}
 		return childrenFeatures;
 	}
@@ -148,6 +149,7 @@ public class FileBlockItemProvider extends BlockItemProvider implements IEditing
 				return;
 			case MtlPackage.FILE_BLOCK__FILE_URL:
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
+			case MtlPackage.FILE_BLOCK__CHARSET:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true,
 						false));
 				return;
@@ -374,6 +376,111 @@ public class FileBlockItemProvider extends BlockItemProvider implements IEditing
 
 		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__UNIQ_ID,
 				EcoreFactory.eINSTANCE.createVariableExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createTemplateExpression()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createTemplate()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createTemplateInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createQueryInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createProtectedAreaBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createForBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createIfBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createLetBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createFileBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createTraceBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createMacro()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				MtlFactory.eINSTANCE.createMacroInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createAssociationClassCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createBooleanLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createCollectionLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createEnumLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createIfExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createIntegerLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createUnlimitedNaturalLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createInvalidLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createIterateExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createIteratorExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createLetExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createMessageExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createNullLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createOperationCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createPropertyCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createRealLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createStateExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createStringLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createTupleLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createTypeExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createUnspecifiedValueExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.FILE_BLOCK__CHARSET,
+				EcoreFactory.eINSTANCE.createVariableExp()));
 	}
 
 	/**
@@ -389,7 +496,8 @@ public class FileBlockItemProvider extends BlockItemProvider implements IEditing
 
 		boolean qualify = childFeature == MtlPackage.Literals.BLOCK__BODY
 				|| childFeature == MtlPackage.Literals.FILE_BLOCK__FILE_URL
-				|| childFeature == MtlPackage.Literals.FILE_BLOCK__UNIQ_ID;
+				|| childFeature == MtlPackage.Literals.FILE_BLOCK__UNIQ_ID
+				|| childFeature == MtlPackage.Literals.FILE_BLOCK__CHARSET;
 
 		if (qualify) {
 			return getString(
