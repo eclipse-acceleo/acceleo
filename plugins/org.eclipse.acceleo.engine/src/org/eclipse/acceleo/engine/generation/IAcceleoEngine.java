@@ -12,12 +12,12 @@ package org.eclipse.acceleo.engine.generation;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.Monitor;
 
@@ -87,18 +87,17 @@ public interface IAcceleoEngine {
 	 *            List of the template's arguments.
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
+	 * @param strategy
+	 *            The generation strategy that's to be used by this engine.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.8
+	 * @since 0.9
 	 */
-	Map<String, Writer> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
-			boolean preview, Monitor monitor);
+	Map<String, String> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
+			IAcceleoGenerationStrategy strategy, Monitor monitor);
 
 	/**
 	 * Removes the given keys' pairs from the custom properties of the generation context.

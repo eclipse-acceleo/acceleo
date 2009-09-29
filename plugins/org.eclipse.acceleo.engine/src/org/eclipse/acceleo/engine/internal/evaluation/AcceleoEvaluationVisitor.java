@@ -198,10 +198,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoFileBlock(FileBlock fileBlock) {
+		// evaluate sub expressions
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
 		final Object fileURLResult = visitExpression((OCLExpression)fileBlock.getFileUrl());
 		fireGenerationEvent = fireEvents;
+
 		if (isUndefined(fileURLResult)) {
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.UndefinedFileURL", fileBlock.getStartPosition(), //$NON-NLS-1$
@@ -218,7 +220,24 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			throw exception;
 		}
 		final String filePath = String.valueOf(fileURLResult);
+
+		String fileCharset = null;
+		if (fileBlock.getCharset() != null) {
+			final Object fileCharsetResult = visitExpression((OCLExpression)fileBlock.getCharset());
+			if (isUndefined(fileCharsetResult)) {
+				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+						AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedFileCharset", //$NON-NLS-1$
+								fileBlock.getStartPosition(), ((Module)EcoreUtil.getRootContainer(fileBlock))
+										.getName(), fileBlock.toString(), getEvaluationEnvironment()
+										.getValueOf(SELF_VARIABLE_NAME)));
+				exception.fillInStackTrace();
+				AcceleoEnginePlugin.log(exception, false);
+			}
+			fileCharset = String.valueOf(fileCharsetResult);
+		}
+
 		final boolean appendMode = fileBlock.getOpenMode().getValue() == OpenModeKind.APPEND_VALUE;
+
 		if ("stdout".equals(filePath)) { //$NON-NLS-1$
 			context.openNested(System.out);
 		} else {
@@ -229,7 +248,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				source = lastEObjectSelfValue;
 			}
-			context.openNested(filePath, fileBlock, source, appendMode);
+			context.openNested(filePath, fileBlock, source, appendMode, fileCharset);
 		}
 		// TODO handle file ID
 		for (final OCLExpression nested : fileBlock.getBody()) {

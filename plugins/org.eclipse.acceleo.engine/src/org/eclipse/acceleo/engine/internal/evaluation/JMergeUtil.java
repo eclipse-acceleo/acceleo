@@ -12,10 +12,7 @@ package org.eclipse.acceleo.engine.internal.evaluation;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
@@ -38,30 +35,26 @@ public final class JMergeUtil {
 	}
 
 	/**
-	 * This can be used to support JMerge for the merging of generated content (<code>content</code>) with the
-	 * old file content. Old content will be read from either <code>target</code> or <code>oldContent</code>
-	 * according to the value of <code>previewMode</code>
+	 * This can be used to support JMerge for the merging of generated <code>content</code> with the old file
+	 * content. Old content will be read from the <code>target</code> File, new content will be read from
+	 * <code>content</code>. The merged content will be not be written to disk.
+	 * <p>
+	 * <b>Note</b> that JMerge will <u>not</u> be called if eclipse is not running.
+	 * </p>
 	 * 
 	 * @param target
 	 *            Target file of the generation.
 	 * @param content
 	 *            The new content with which we should merge the old.
-	 * @param previewMode
-	 *            <code>true</code> if we are only previewing, <code>false</code> if we should merge with the
-	 *            target file content then override it.
-	 * @param oldContent
-	 *            Previous content of the generation. Can be <code>null</code> if we are not in preview mode.
-	 * @return A new StringWriter with the merged content. This will only be returned when in preview mode.
+	 * @param charset
+	 *            Encoding that should be used to read the target file. Can be <code>null</code>.
+	 * @return The merged content.
 	 * @throws IOException
 	 *             Throw if we couldn't append data to the target file.
 	 */
-	public static Writer mergeFileContent(File target, String content, boolean previewMode, String oldContent)
-			throws IOException {
-		Writer newWriter = null;
+	public static String mergeFileContent(File target, String content, String charset) throws IOException {
 		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-			final FileWriter writer = new FileWriter(target);
-			writer.append(content);
-			writer.close();
+			return content;
 		}
 		String newContent = content;
 		if (target.getName().endsWith(".java")) { //$NON-NLS-1$
@@ -73,27 +66,57 @@ public final class JMergeUtil {
 			if (model.canMerge()) {
 				JMerger jMerger = new JMerger(model);
 				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
-				if (!previewMode) {
-					jMerger.setTargetCompilationUnit(jMerger
-							.createCompilationUnitForInputStream(new FileInputStream(target)));
-				} else {
-					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForContents(oldContent));
-				}
+				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
+						new FileInputStream(target), charset));
 				jMerger.merge();
 				newContent = jMerger.getTargetCompilationUnit().getContents();
 			} else {
 				// FIXME log, couldn't find emf-merge.xml
 			}
 		}
-		if (!previewMode) {
-			final FileWriter writer = new FileWriter(target);
-			writer.append(newContent);
-			writer.close();
-		} else {
-			newWriter = new StringWriter();
-			newWriter.append(newContent);
-			newWriter.flush();
+		return newContent;
+	}
+
+	/**
+	 * This can be used to support JMerge for the merging of generated <code>content</code> with old generated
+	 * content. Old content will be read from <code>oldContent</code> while new content will be read from
+	 * <code>content</code>. The target file's only purpose is to check if we can merge such files (only
+	 * *.java for now).
+	 * <p>
+	 * <b>Note</b> that JMerge will <u>not</u> be called if eclipse is not running.
+	 * </p>
+	 * 
+	 * @param target
+	 *            Target file of the generation.
+	 * @param content
+	 *            The new content with which we should merge the old.
+	 * @param oldContent
+	 *            Previous content of the generation. Can be <code>null</code> if we are not in preview mode.
+	 * @return The merged content.
+	 * @throws IOException
+	 *             Throw if we couldn't append data to the target file.
+	 */
+	public static String mergeContent(File target, String content, String oldContent) throws IOException {
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+			return content;
 		}
-		return newWriter;
+		String newContent = content;
+		if (target.getName().endsWith(".java")) { //$NON-NLS-1$
+			// FIXME With this kind of URI, JMerge support is only accessible within Eclipse
+			String jmergeFile = URI.createPlatformPluginURI(
+					"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
+			JControlModel model = new JControlModel();
+			model.initialize(new ASTFacadeHelper(), jmergeFile);
+			if (model.canMerge()) {
+				JMerger jMerger = new JMerger(model);
+				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
+				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForContents(oldContent));
+				jMerger.merge();
+				newContent = jMerger.getTargetCompilationUnit().getContents();
+			} else {
+				// FIXME log, couldn't find emf-merge.xml
+			}
+		}
+		return newContent;
 	}
 }

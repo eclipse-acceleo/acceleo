@@ -12,7 +12,6 @@ package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +25,9 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
@@ -51,13 +53,32 @@ public final class AcceleoService {
 	/** The engine we'll use for all generations through this service instance. */
 	private final IAcceleoEngine generationEngine = new AcceleoEngine();
 
+	/** The current generation strategy. */
+	private final IAcceleoGenerationStrategy strategy;
+
 	/**
-	 * Instantiates an instance of the service.
+	 * Instantiates an instance of the service with a default generation strategy.
 	 * 
 	 * @since 0.9
 	 */
 	public AcceleoService() {
-		// no action necessary
+		strategy = new DefaultStrategy();
+	}
+
+	/**
+	 * Instantiates an instance of the servie given the generation strategy that is to be used for this
+	 * generation.
+	 * 
+	 * @param generationStrategy
+	 *            Generation strategy that'll be used for this generation.
+	 * @since 0.9
+	 */
+	public AcceleoService(IAcceleoGenerationStrategy generationStrategy) {
+		// if (generationStrategy == null) {
+		// strategy = new DefaultGenerationStrategy();
+		// } else {
+		strategy = generationStrategy;
+		// }
 	}
 
 	/**
@@ -244,18 +265,17 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. Cannot be <code>null</code> except if
 	 *            <code>preview</code> is <code>true</code> in which case no files will be generated.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
+	 * @since 0.9
 	 */
-	public Map<String, Writer> doGenerate(Map<Module, Set<String>> templates, EObject model,
-			File generationRoot, boolean preview, Monitor monitor) {
-		if (templates == null || model == null || (!preview && generationRoot == null)) {
+	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
+			File generationRoot, Monitor monitor) {
+		if (templates == null || model == null
+				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
 		Map<EClassifier, Set<Template>> templateTypes = new HashMap<EClassifier, Set<Template>>();
@@ -273,7 +293,7 @@ public final class AcceleoService {
 			}
 		}
 
-		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
+		final Map<String, String> previewResult = new HashMap<String, String>();
 
 		// Calls all templates with each of their potential arguments
 		final List<Object> arguments = new ArrayList<Object>();
@@ -282,8 +302,7 @@ public final class AcceleoService {
 		for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
 			if (entry.getKey().isInstance(model)) {
 				for (Template template : entry.getValue()) {
-					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview,
-							monitor));
+					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 				}
 			}
 		}
@@ -295,8 +314,8 @@ public final class AcceleoService {
 					arguments.clear();
 					arguments.add(potentialTarget);
 					for (Template template : entry.getValue()) {
-						previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview,
-								monitor));
+						previewResult
+								.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 					}
 				}
 			}
@@ -334,18 +353,16 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
+	 * @since 0.9
 	 */
-	public Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			File generationRoot, boolean preview, Monitor monitor) {
-		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, preview, monitor);
+	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
+			File generationRoot, Monitor monitor) {
+		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, monitor);
 	}
 
 	/**
@@ -381,24 +398,22 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public Map<String, Writer> doGenerate(Module module, String templateName, EObject model,
-			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
-		if (model == null || arguments == null || (!preview && generationRoot == null)) {
+	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
+			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
+		if (model == null || arguments == null
+				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
 		final Template template = findTemplate(module, templateName, arguments.size() + 1);
 		// #findTemplate never returns private templates.
 
-		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
+		final Map<String, String> previewResult = new HashMap<String, String>();
 
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
@@ -407,8 +422,7 @@ public final class AcceleoService {
 			final List<Object> actualArguments = new ArrayList<Object>();
 			actualArguments.add(model);
 			actualArguments.addAll(arguments);
-			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview,
-					monitor));
+			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -417,8 +431,7 @@ public final class AcceleoService {
 				final List<Object> actualArguments = new ArrayList<Object>();
 				actualArguments.add(potentialTarget);
 				actualArguments.addAll(arguments);
-				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, preview,
-						monitor));
+				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
 			}
 		}
 
@@ -454,18 +467,17 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
+	 * @since 0.9
 	 */
-	public Map<String, Writer> doGenerate(Template template, EObject model, File generationRoot,
-			boolean preview, Monitor monitor) {
-		if (template == null || model == null || (!preview && generationRoot == null)) {
+	public Map<String, String> doGenerate(Template template, EObject model, File generationRoot,
+			Monitor monitor) {
+		if (template == null || model == null
+				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
 		if (template.getVisibility() != VisibilityKind.PUBLIC) {
@@ -477,7 +489,7 @@ public final class AcceleoService {
 					.getString("AcceleoEngine.VoidArguments")); //$NON-NLS-1$
 		}
 
-		final Map<String, Writer> previewResult = new HashMap<String, Writer>();
+		final Map<String, String> previewResult = new HashMap<String, String>();
 
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
@@ -485,7 +497,7 @@ public final class AcceleoService {
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			arguments.add(model);
-			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, preview, monitor));
+			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -493,8 +505,7 @@ public final class AcceleoService {
 			if (argumentType.isInstance(potentialTarget)) {
 				arguments.clear();
 				arguments.add(potentialTarget);
-				previewResult
-						.putAll(doGenerateTemplate(template, arguments, generationRoot, preview, monitor));
+				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 			}
 		}
 
@@ -526,19 +537,16 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
-	public Map<String, Writer> doGenerateTemplate(Module module, String templateName,
-			List<? extends Object> arguments, File generationRoot, boolean preview, Monitor monitor) {
+	public Map<String, String> doGenerateTemplate(Module module, String templateName,
+			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
 		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
-				preview, monitor);
+				monitor);
 	}
 
 	/**
@@ -565,22 +573,20 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
-	 * @param preview
-	 *            If <code>true</code>, no files will be generated and a Map mapping file pathes to their
-	 *            generated content will be returned.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
+	 * @since 0.9
 	 */
-	public Map<String, Writer> doGenerateTemplate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview, Monitor monitor) {
+	public Map<String, String> doGenerateTemplate(Template template, List<? extends Object> arguments,
+			File generationRoot, Monitor monitor) {
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
 		try {
-			return generationEngine.evaluate(template, arguments, generationRoot, preview, monitor);
+			return generationEngine.evaluate(template, arguments, generationRoot, strategy, monitor);
 		} finally {
 			for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 				generationEngine.removeListener(listener);

@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.internal.environment;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -69,16 +69,16 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 *            The list of all listeners that are to be notified for text generation from this context.
 	 * @param props
 	 *            The list of Properties that can be accessed from the context.
-	 * @param preview
-	 *            Tells the evaluation context that it is currently in preview mode.
+	 * @param strategy
+	 *            The generation strategy that's to be used by this factory's context.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
-			List<IAcceleoTextGenerationListener> listeners, List<Properties> props, boolean preview,
-			Monitor monitor) {
+			List<IAcceleoTextGenerationListener> listeners, List<Properties> props,
+			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		super(EPackage.Registry.INSTANCE);
-		context = new AcceleoEvaluationContext(generationRoot, listeners, preview, monitor);
+		context = new AcceleoEvaluationContext(generationRoot, listeners, strategy, monitor);
 		properties.addAll(props);
 		this.module = module;
 	}
@@ -162,7 +162,15 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	 * 
 	 * @return The preview of the generation handled by this factory's generation context.
 	 */
-	public Map<String, Writer> getEvaluationPreview() {
+	public Map<String, String> getEvaluationPreview() {
 		return context.getGenerationPreview();
+	}
+
+	/**
+	 * This will be called by the engine once the generation has ended. It will be used internally to call for
+	 * the current strategy's global handlers.
+	 */
+	public void hookGenerationEnd() {
+		context.hookGenerationEnd();
 	}
 }

@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -28,6 +27,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -104,12 +104,13 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#evaluate(org.eclipse.acceleo.model.mtl.Template,
-	 *      java.util.List, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)
-	 * @since 0.8
+	 *      java.util.List, java.io.File,
+	 *      org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy,
+	 *      org.eclipse.emf.common.util.Monitor)
 	 */
-	public Map<String, Writer> evaluate(Template template, List<? extends Object> arguments,
-			File generationRoot, boolean preview, Monitor monitor) {
-		if (template == null || arguments == null || (!preview && generationRoot == null)) {
+	public Map<String, String> evaluate(Template template, List<? extends Object> arguments,
+			File generationRoot, IAcceleoGenerationStrategy strategy, Monitor monitor) {
+		if (template == null || arguments == null) {
 			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
 		}
 		if (template.getVisibility() != VisibilityKind.PUBLIC) {
@@ -127,7 +128,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
 		propertiesCopy.add(0, customProperties);
 		AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, (Module)template
-				.eContainer(), listenersCopy, propertiesCopy, preview, monitor);
+				.eContainer(), listenersCopy, propertiesCopy, strategy, monitor);
 		ocl = OCL.newInstance(factory);
 		((AcceleoEnvironment)ocl.getEnvironment()).restoreBrokenEnvironmentPackages(template.eResource());
 
@@ -137,8 +138,10 @@ public class AcceleoEngine implements IAcceleoEngine {
 			// All necessary disposal should have been made
 		}
 
-		Map<String, Writer> result = Collections.<String, Writer> emptyMap();
-		if (preview) {
+		factory.hookGenerationEnd();
+
+		Map<String, String> result = Collections.<String, String> emptyMap();
+		if (strategy.willReturnPreview()) {
 			result = factory.getEvaluationPreview();
 		}
 		factory.dispose();
