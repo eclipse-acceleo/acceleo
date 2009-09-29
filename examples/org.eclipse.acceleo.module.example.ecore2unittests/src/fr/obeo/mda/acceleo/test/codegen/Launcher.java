@@ -157,7 +157,7 @@ public class Launcher {
 		if (!targetFolder.exists()) {
 			targetFolder.mkdirs();
 		}
-		new AcceleoService().doGenerate(loadedModules, model, targetFolder, false, monitor);
+		new AcceleoService().doGenerate(loadedModules, model, targetFolder, monitor);
 	}
 
 	/**
