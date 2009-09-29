@@ -812,10 +812,22 @@ public final class AcceleoWorkspaceUtil {
 	 */
 	private Object internalLoadClass(Bundle bundle, String qualifiedName) {
 		try {
-			final Class<?> clazz = bundle.loadClass(qualifiedName);
-			final Object instance = clazz.newInstance();
-			workspaceLoadedClasses.put(qualifiedName, new WorkspaceClassInstance(instance, bundle
-					.getSymbolicName()));
+			WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(qualifiedName);
+			final Object instance;
+			if (workspaceInstance == null) {
+				final Class<?> clazz = bundle.loadClass(qualifiedName);
+				instance = clazz.newInstance();
+				workspaceLoadedClasses.put(qualifiedName, new WorkspaceClassInstance(instance, bundle
+						.getSymbolicName()));
+			} else if (workspaceInstance.isStale()) {
+				final Class<?> clazz = bundle.loadClass(qualifiedName);
+				instance = clazz.newInstance();
+				workspaceInstance.setStale(false);
+				workspaceInstance.setInstance(instance);
+			} else {
+				instance = workspaceInstance.getInstance();
+			}
+
 			return instance;
 		} catch (ClassNotFoundException e) {
 			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
