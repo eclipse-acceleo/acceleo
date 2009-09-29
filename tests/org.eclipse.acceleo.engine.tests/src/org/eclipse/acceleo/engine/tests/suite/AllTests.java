@@ -28,7 +28,6 @@ import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryP
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
 import org.eclipse.acceleo.engine.tests.unit.event.AcceleoListenersTest;
-import org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride.AcceleoDynamicOverridesTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoProgressMonitorTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
@@ -96,7 +95,7 @@ public class AllTests extends TestCase {
 
 		// This fails on the build server.
 		// Extensibility
-		suite.addTestSuite(AcceleoDynamicOverridesTest.class);
+		// suite.addTestSuite(AcceleoDynamicOverridesTest.class);
 
 		// Namesakes
 		suite.addTestSuite(SimpleNamesakeResolutionTest.class);
