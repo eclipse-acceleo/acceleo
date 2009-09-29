@@ -16,6 +16,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -70,7 +72,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_super", false); //$NON-NLS-1$
+		generate("test_super", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -93,7 +95,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_protected_visibility", false); //$NON-NLS-1$
+		generate("test_protected_visibility", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -115,7 +117,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_private_visibility", false); //$NON-NLS-1$
+		generate("test_private_visibility", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -137,7 +139,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_before", false); //$NON-NLS-1$
+		generate("test_before", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -159,7 +161,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_after", false); //$NON-NLS-1$
+		generate("test_after", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -181,7 +183,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_false_guard", false); //$NON-NLS-1$
+		generate("test_false_guard", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -203,7 +205,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_true_guard", false); //$NON-NLS-1$
+		generate("test_true_guard", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -225,7 +227,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_protect_override", false); //$NON-NLS-1$
+		generate("test_protect_override", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -247,7 +249,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_import", false); //$NON-NLS-1$
+		generate("test_import", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -279,5 +281,8 @@ public class TemplateTest extends AbstractAcceleoTest {
 		} else {
 			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 }

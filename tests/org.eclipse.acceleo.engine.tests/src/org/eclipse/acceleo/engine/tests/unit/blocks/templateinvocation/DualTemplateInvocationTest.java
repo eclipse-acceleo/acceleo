@@ -53,7 +53,7 @@ public class DualTemplateInvocationTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test", false); //$NON-NLS-1$
+		generate("test", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

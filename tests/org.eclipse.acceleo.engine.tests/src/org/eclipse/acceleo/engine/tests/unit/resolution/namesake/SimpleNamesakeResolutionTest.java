@@ -16,6 +16,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -72,7 +74,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_extend", false); //$NON-NLS-1$
+		generate("test_namesake_extend", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -96,7 +98,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_import", false); //$NON-NLS-1$
+		generate("test_namesake_import", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -121,7 +123,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_external", false); //$NON-NLS-1$
+		generate("test_namesake_external", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -146,7 +148,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_distinct_param_name", false); //$NON-NLS-1$
+		generate("test_namesake_distinct_param_name", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -171,7 +173,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_3", false); //$NON-NLS-1$
+		generate("test_namesake_3", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -206,5 +208,8 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 		} else {
 			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 }

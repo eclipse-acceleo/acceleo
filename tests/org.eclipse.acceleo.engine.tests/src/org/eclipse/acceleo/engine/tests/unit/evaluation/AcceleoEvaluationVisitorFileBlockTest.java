@@ -12,7 +12,6 @@ package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -47,7 +46,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		 */
 		evaluationVisitor.visitExpression(getParentTemplate(mtlFileBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
 		assertEquals("File hasn't been created as expected.", OUTPUT, entry.getValue().toString()); //$NON-NLS-1$ 
@@ -113,7 +112,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 
 		evaluationVisitor.visitExpression(getParentTemplate(mtlFileBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
 		assertEquals("File hasn't been created as expected.", packageDeclaration + LINE_SEPARATOR //$NON-NLS-1$

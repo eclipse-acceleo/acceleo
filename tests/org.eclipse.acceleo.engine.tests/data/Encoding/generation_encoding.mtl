@@ -1,0 +1,26 @@
+[@comment encoding='UTF-8'/]
+[module generation_encoding('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generate_UTF_8(p : EPackage)]
+	[file ('test_UTF8', false, 'UTF-8')]
+		éàùüñ-ὀδυσσεύς
+	[/file]
+[/template]
+
+[template public generate_ISO_8859_1(p : EPackage)]
+	[file ('test_ISO-8859-1', false, 'ISO-8859-1')]
+		áàäâãÁÀÄÂÃ éèëêÉÈËÊ íìïîÍÌÏÎ óòöôÓÒÖÔ úùüûÚÙÜÛ
+	[/file]
+[/template]
+
+[template public generate_ISO_8859_5(p : EPackage)]
+	[file ('test_ISO-8859-5', false, 'ISO-8859-5')]
+		До свидания
+	[/file]
+[/template]
+
+[template public generate_ISO_8859_7(p : EPackage)]
+	[file ('test_ISO-8859-7', false, 'ISO-8859-7')]
+		Άγιος που δε θαυματουργεί, μηδέ δοξολογιέται.
+	[/file]
+[/template]

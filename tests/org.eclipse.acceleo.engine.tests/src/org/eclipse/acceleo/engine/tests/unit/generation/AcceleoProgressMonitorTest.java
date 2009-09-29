@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.generation;
 
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.service.AcceleoService;
@@ -50,8 +49,8 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	 * after a while.
 	 */
 	public void testCanceledEvaluation() {
-		final Map<String, Writer> preview = new AcceleoService().doGenerate(module, "test_cancel",
-				inputModel, generationRoot, true, new CanceledProgressMonitor());
+		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module,
+				"test_cancel", inputModel, generationRoot, new CanceledProgressMonitor());
 
 		assertTrue(preview.isEmpty());
 	}
@@ -60,10 +59,10 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	 * Checks that using a null progress monitor doesn't fail : a BasicMonitor should have been created.
 	 */
 	public void testNullMonitor() {
-		final Map<String, Writer> preview = new AcceleoService().doGenerate(module, "test", inputModel,
-				generationRoot, true, null);
+		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module, "test",
+				inputModel, generationRoot, null);
 
-		final Writer writer = preview.get("progress_monitor");
+		final String writer = preview.get("progress_monitor");
 		assertNotNull("A file should have been generated.", writer);
 		assertEquals("Unexpected content for the generated file.", "constant output", writer.toString()
 				.trim());

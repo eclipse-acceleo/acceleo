@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -63,7 +62,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a query invocation with an undefined result.", OUTPUT //$NON-NLS-1$
@@ -99,7 +98,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a query invocation with an undefined result.", OUTPUT //$NON-NLS-1$
@@ -132,7 +131,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a query invocation with a null parameter.", //$NON-NLS-1$
@@ -166,7 +165,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a query invocation with an undefined parameter.", //$NON-NLS-1$
@@ -193,7 +192,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a valid query invocation.", OUTPUT + QUERY_OUTPUT //$NON-NLS-1$
@@ -285,7 +284,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 
 		evaluationVisitor.visitExpression(template);
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a valid query invocation.", OUTPUT //$NON-NLS-1$

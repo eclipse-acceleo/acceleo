@@ -53,7 +53,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("testingAfter", false); //$NON-NLS-1$
+		generate("testingAfter", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -73,7 +73,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("testingSimple", false); //$NON-NLS-1$
+		generate("testingSimple", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -93,7 +93,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("testingBefore", false); //$NON-NLS-1$
+		generate("testingBefore", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -113,7 +113,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("testingGuard", false); //$NON-NLS-1$
+		generate("testingGuard", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -133,7 +133,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("testingSeparator", false); //$NON-NLS-1$
+		generate("testingSeparator", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

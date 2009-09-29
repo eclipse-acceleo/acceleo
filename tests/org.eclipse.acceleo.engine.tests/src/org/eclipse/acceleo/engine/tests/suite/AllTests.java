@@ -21,12 +21,14 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.protectedareablock.Protected
 import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.QueryPropertyInvocationTest;
+import org.eclipse.acceleo.engine.tests.unit.encoding.GenerationEncodingTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
 import org.eclipse.acceleo.engine.tests.unit.event.AcceleoListenersTest;
+import org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride.AcceleoDynamicOverridesTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoProgressMonitorTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
@@ -73,6 +75,9 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(DualTemplateInvocationTest.class);
 		suite.addTestSuite(QueryPropertyInvocationTest.class);
 
+		// Encoding
+		suite.addTestSuite(GenerationEncodingTest.class);
+
 		// Engine
 		suite.addTestSuite(AcceleoGenericEngineTest.class);
 		suite.addTestSuite(AcceleoProgressMonitorTest.class);
@@ -91,7 +96,7 @@ public class AllTests extends TestCase {
 
 		// This fails on the build server.
 		// Extensibility
-		// suite.addTestSuite(AcceleoDynamicOverridesTest.class);
+		suite.addTestSuite(AcceleoDynamicOverridesTest.class);
 
 		// Namesakes
 		suite.addTestSuite(SimpleNamesakeResolutionTest.class);

@@ -16,6 +16,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -75,7 +77,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_3_extend_specific", false); //$NON-NLS-1$
+		generate("test_namesake_3_extend_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -100,7 +102,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_external_extend_specific", false); //$NON-NLS-1$
+		generate("test_namesake_external_extend_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -125,7 +127,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_external_import_specific", false); //$NON-NLS-1$
+		generate("test_namesake_external_import_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -150,7 +152,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_3_import_specific", false); //$NON-NLS-1$
+		generate("test_namesake_3_import_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -175,8 +177,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		new AcceleoService().doGenerate(module, "test_namesake_3_local_specific", inputModel, generationRoot, //$NON-NLS-1$
-				false, new BasicMonitor());
+		new AcceleoService(defaultStrategy).doGenerate(module,
+				"test_namesake_3_local_specific", inputModel, generationRoot, //$NON-NLS-1$
+				new BasicMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -201,7 +204,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_extend_extend_specific", false); //$NON-NLS-1$
+		generate("test_namesake_extend_extend_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -226,7 +229,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_extend_local_specific", false); //$NON-NLS-1$
+		generate("test_namesake_extend_local_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -251,7 +254,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_import_import_specific", false); //$NON-NLS-1$
+		generate("test_namesake_import_import_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -276,7 +279,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_namesake_import_local_specific", false); //$NON-NLS-1$
+		generate("test_namesake_import_local_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -311,5 +314,8 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 		} else {
 			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 }

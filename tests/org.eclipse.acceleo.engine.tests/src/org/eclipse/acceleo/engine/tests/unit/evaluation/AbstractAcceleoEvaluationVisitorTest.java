@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -161,7 +160,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	 * 
 	 * @return The generation preview for this test.
 	 */
-	protected Map<String, Writer> getPreview() {
+	protected Map<String, String> getPreview() {
 		return factory.getEvaluationPreview();
 	}
 
@@ -250,8 +249,8 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("EvaluationVisitor")); //$NON-NLS-1$
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(), true,
-				new BasicMonitor());
+				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(),
+				previewStrategy, new BasicMonitor());
 		ocl = OCL.newInstance(factory);
 		evaluationVisitor = (AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl

@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -28,7 +27,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	private final static String OUTPUT = "constant output" + System.getProperty("line.separator");
 
 	/** This will be generated from setup. */
-	private Map<String, Writer> generatedPreview;
+	private Map<String, String> generatedPreview;
 
 	/**
 	 * {@inheritDoc}
@@ -185,7 +184,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		generationRoot = new File(getGenerationRootPath("NonStdLib")); //$NON-NLS-1$
-		generatedPreview = generate("test_nonstdlib", true); //$NON-NLS-1$
+		generatedPreview = generate("test_nonstdlib", previewStrategy); //$NON-NLS-1$
 	}
 
 	/**
@@ -196,7 +195,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 */
 	private void assertFileContainsOutput(String fileName) {
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;

@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -25,7 +24,7 @@ import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 @SuppressWarnings("nls")
 public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/** This will be generated from setup. */
-	private Map<String, Writer> generatedPreview;
+	private Map<String, String> generatedPreview;
 
 	/** This is the output we expect from each generated file. */
 	private final static String OUTPUT = "constant output" + System.getProperty("line.separator");
@@ -39,7 +38,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		generationRoot = new File(getGenerationRootPath("StdLib")); //$NON-NLS-1$
-		generatedPreview = generate("test_stdlib", true); //$NON-NLS-1$
+		generatedPreview = generate("test_stdlib", previewStrategy); //$NON-NLS-1$
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringFirst() {
 		final String fileName = "test_string_first";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -87,7 +86,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringIndex() {
 		final String fileName = "test_string_index";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -106,7 +105,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringIsAlpha() {
 		final String fileName = "test_string_isAlpha";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -125,7 +124,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringIsAlphanum() {
 		final String fileName = "test_string_isAlphanum";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -143,7 +142,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringLast() {
 		final String fileName = "test_string_last";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -161,7 +160,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringStrcmp() {
 		final String fileName = "test_string_strcmp";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -179,7 +178,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringStrstr() {
 		final String fileName = "test_string_strstr";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -196,7 +195,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringStrtok() {
 		final String fileName = "test_string_strtok";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -217,7 +216,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringSubstitute() {
 		final String fileName = "test_string_substitute";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -234,7 +233,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringToLowerFirst() {
 		final String fileName = "test_string_toLowerFirst";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;
@@ -251,7 +250,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	public void testStringToUpperFirst() {
 		final String fileName = "test_string_toUpperFirst";
 		boolean fileFound = false;
-		for (Map.Entry<String, Writer> filePreview : generatedPreview.entrySet()) {
+		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
 				assertEquals(OUTPUT, filePreview.getValue().toString());
 				fileFound = true;

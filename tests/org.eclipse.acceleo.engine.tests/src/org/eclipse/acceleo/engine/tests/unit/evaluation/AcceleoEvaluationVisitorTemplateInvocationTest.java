@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -72,7 +71,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a template invocation with a null result.", OUTPUT //$NON-NLS-1$
@@ -101,7 +100,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a template invocation with an undefined result.", //$NON-NLS-1$
@@ -126,7 +125,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a template invocation with a null parameter.", //$NON-NLS-1$
@@ -152,7 +151,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a template invocation with an undefined parameter.", //$NON-NLS-1$
@@ -171,7 +170,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(invocation));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a valid template invocation.", OUTPUT //$NON-NLS-1$
@@ -240,7 +239,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(template);
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from a valid template invocation.", OUTPUT //$NON-NLS-1$

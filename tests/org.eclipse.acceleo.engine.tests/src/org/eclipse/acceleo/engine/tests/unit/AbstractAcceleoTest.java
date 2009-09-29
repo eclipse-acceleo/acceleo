@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,6 +29,9 @@ import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -97,6 +104,12 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	/** Resource set we'll use throughout the test sub-classes. */
 	protected final ResourceSet resourceSet = new ResourceSetImpl();
 
+	/** Instance of the default generation strategy. */
+	protected IAcceleoGenerationStrategy defaultStrategy;
+
+	/** Instance of the preview generation strategy. */
+	protected IAcceleoGenerationStrategy previewStrategy;
+
 	{
 		try {
 			final URI inputModelURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID
@@ -117,15 +130,44 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 *             if I/O error occurs
 	 */
 	protected static String getAbsoluteFileContent(String fileName) throws IOException {
-		String ret = ""; //$NON-NLS-1$
-		FileInputStream is = new FileInputStream(fileName);
-		int length = 0;
-		final int bufferSize = 512;
-		byte[] buffer = new byte[bufferSize];
-		while ((length = is.read(buffer)) > 0) {
-			ret += new String(buffer, 0, length);
+		return getAbsoluteFileContent(fileName, null);
+	}
+
+	/**
+	 * A tool method to get the content of the file specified by its absolute path. Uses the given encoding to
+	 * read the file.
+	 * 
+	 * @param fileName
+	 *            the absolute path of the file
+	 * @param charset
+	 *            Charset that's to be used for reading this file.
+	 * @return the content of the file
+	 * @throws IOException
+	 *             if I/O error occurs
+	 */
+	protected static String getAbsoluteFileContent(String fileName, String charset) throws IOException {
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader bufferedReader = null;
+		try {
+			Reader reader;
+			if (charset != null) {
+				InputStream inputStream = new FileInputStream(fileName);
+				reader = new InputStreamReader(inputStream, charset);
+			} else {
+				reader = new FileReader(fileName);
+			}
+			bufferedReader = new BufferedReader(reader);
+			String line = bufferedReader.readLine();
+			while (line != null) {
+				buffer.append(line);
+				line = bufferedReader.readLine();
+			}
+		} finally {
+			if (bufferedReader != null) {
+				bufferedReader.close();
+			}
 		}
-		return ret;
+		return buffer.toString();
 	}
 
 	/**
@@ -159,11 +201,11 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 * 
 	 * @param templateName
 	 *            Name of the templat that is to be evaluated.
-	 * @param preview
-	 *            <code>true</code> if we are to evaluate the template in preview mode.
+	 * @param strategy
+	 *            Strategy that's to be used for this generation.
 	 */
-	protected Map<String, Writer> generate(String templateName, boolean preview) {
-		return new AcceleoService().doGenerate(module, templateName, inputModel, generationRoot, preview,
+	protected Map<String, String> generate(String templateName, IAcceleoGenerationStrategy strategy) {
+		return new AcceleoService(strategy).doGenerate(module, templateName, inputModel, generationRoot,
 				new BasicMonitor());
 	}
 
@@ -174,12 +216,9 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 *            Instance of the AcceleoService that is to be used to launch the generation.
 	 * @param templateName
 	 *            Name of the templat that is to be evaluated.
-	 * @param preview
-	 *            <code>true</code> if we are to evaluate the template in preview mode.
 	 */
-	protected Map<String, Writer> generate(AcceleoService service, String templateName, boolean preview) {
-		return service.doGenerate(module, templateName, inputModel, generationRoot, preview,
-				new BasicMonitor());
+	protected Map<String, String> generate(AcceleoService service, String templateName) {
+		return service.doGenerate(module, templateName, inputModel, generationRoot, new BasicMonitor());
 	}
 
 	/**
@@ -243,6 +282,47 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	}
 
 	/**
+	 * Compare two directories, ensuring the files are the same according to the given encoding.
+	 * 
+	 * @param refDir
+	 *            reference directory containing reference results
+	 * @param genDir
+	 *            generation directory
+	 * @param charset
+	 *            Charset of the files.
+	 * @throws IOException
+	 *             if I/O error occurs
+	 */
+	protected void compareDirectories(File refDir, File genDir, String charset) throws IOException {
+		boolean compared = false;
+
+		// Does not accept directories named ".svn" or "CVS"
+		File[] children = getFiles(refDir);
+
+		if (children != null) {
+			for (File child : children) {
+				String dir2fileName = genDir.getAbsolutePath() + File.separator + child.getName();
+				if (child.isDirectory()) {
+					compareDirectories(child, new File(dir2fileName), charset);
+				} else if (child.getName().endsWith(IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION)) {
+					assertEquals(dir2fileName, deleteWhitespaces(removeTimeStamp(getAbsoluteFileContent(child
+							.getAbsolutePath(), charset))),
+							deleteWhitespaces(removeTimeStamp(getAbsoluteFileContent(dir2fileName, charset))));
+				} else {
+					assertEquals(dir2fileName, deleteWhitespaces(getAbsoluteFileContent(child
+							.getAbsolutePath(), charset)), deleteWhitespaces(getAbsoluteFileContent(
+							dir2fileName, charset)));
+					compared = true;
+				}
+			}
+		}
+		if (!compared) {
+			fail("Couldn't compare the reference at " + refDir.getAbsolutePath() + " for result " //$NON-NLS-1$ //$NON-NLS-2$
+					+ genDir.getAbsolutePath());
+		}
+	}
+
+	/**
 	 * Removes the time stamp inserted at the beginning of lost files.
 	 * 
 	 * @param text
@@ -250,7 +330,7 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 */
 	private String removeTimeStamp(String text) {
 		if (text.contains("===============================================================")) { //$NON-NLS-1$
-			return text.replaceAll(".*?(\\n|\\r|\\r\\n)={10,}(\\n|\\r|\\r\\n)(?s)(.*)", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
+			return text.replaceAll("[^=]*?={10,}(?:\\n|\\r|\\r\\n)?(?s)(.*)", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return text;
 	}
@@ -370,6 +450,9 @@ public abstract class AbstractAcceleoTest extends TestCase {
 		} else {
 			Assert.fail("Couldn't load the input template."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 
 	/**

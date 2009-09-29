@@ -16,6 +16,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -71,7 +73,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_extend_overriden_direct_call", false); //$NON-NLS-1$
+		generate("test_extend_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -95,7 +97,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_extend_overriden_indirect_call", false); //$NON-NLS-1$
+		generate("test_extend_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -119,7 +121,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_local_overriden_direct_call", false); //$NON-NLS-1$
+		generate("test_local_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -143,7 +145,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_local_overriden_indirect_call", false); //$NON-NLS-1$
+		generate("test_local_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -168,7 +170,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_override_priority_direct", false); //$NON-NLS-1$
+		generate("test_override_priority_direct", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -193,7 +195,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_override_priority_indirect", false); //$NON-NLS-1$
+		generate("test_override_priority_indirect", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -218,7 +220,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_override_priority_indirect_extend", false); //$NON-NLS-1$
+		generate("test_override_priority_indirect_extend", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -255,5 +257,8 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 		} else {
 			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 }

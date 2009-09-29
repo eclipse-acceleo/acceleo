@@ -91,7 +91,7 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_call_no_argument", false); //$NON-NLS-1$
+		generate("test_call_no_argument", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -118,7 +118,7 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_call_single_argument", false); //$NON-NLS-1$
+		generate("test_call_single_argument", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -145,7 +145,7 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_call_multiple_argument", false); //$NON-NLS-1$
+		generate("test_call_multiple_argument", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -173,7 +173,7 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_call_instanceofs", false); //$NON-NLS-1$
+		generate("test_call_instanceofs", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

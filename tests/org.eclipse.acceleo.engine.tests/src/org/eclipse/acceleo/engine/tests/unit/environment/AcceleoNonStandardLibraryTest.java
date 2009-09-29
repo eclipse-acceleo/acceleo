@@ -93,8 +93,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("NonStdLib"));
 		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
-				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(), true,
-				new BasicMonitor());
+				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(),
+				previewStrategy, new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
 	}

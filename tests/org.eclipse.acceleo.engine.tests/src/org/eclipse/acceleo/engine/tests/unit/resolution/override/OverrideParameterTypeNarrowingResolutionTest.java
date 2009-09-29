@@ -16,6 +16,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -73,7 +75,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		generate("test_resolution_override_specific", false); //$NON-NLS-1$
+		generate("test_resolution_override_specific", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -98,7 +100,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 		cleanGenerationRoot();
 
 		new AcceleoService().doGenerate(module, "test_resolution_local_override", inputModel, generationRoot, //$NON-NLS-1$
-				false, new BasicMonitor());
+				new BasicMonitor());
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -122,7 +124,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 
 		cleanGenerationRoot();
 
-		generate("test_resolution_external_override", false); //$NON-NLS-1$
+		generate("test_resolution_external_override", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -159,5 +161,8 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 		} else {
 			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
+
+		defaultStrategy = new DefaultStrategy();
+		previewStrategy = new PreviewStrategy();
 	}
 }

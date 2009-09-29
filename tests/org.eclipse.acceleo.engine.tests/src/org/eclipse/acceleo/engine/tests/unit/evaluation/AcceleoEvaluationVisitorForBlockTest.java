@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.Map;
 
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -59,7 +58,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// We know the class has two super types, we then expect two iterations to have been made
@@ -81,7 +80,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// We know the class has two super types, we then expect two iterations to have been made
@@ -103,7 +102,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// We know the class has two super types, we then expect two iterations to have been made
@@ -125,7 +124,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// We know the class has two super types, we then expect two iterations to have been made
@@ -151,7 +150,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the for block.", OUTPUT + BEFORE + FOR_OUTPUT + EACH //$NON-NLS-1$
@@ -173,7 +172,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// A guard evaluating to null is the same as "false" hence no content is expected
@@ -197,7 +196,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the guard was incorrect we expect no content to have been generated for the for
@@ -218,7 +217,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the iteration was incorrect we expect no content to have been generated
@@ -240,7 +239,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 		// The iteration is undefined (evaluation NPE as the EClass has no super type)
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the iteration was incorrect we expect no content to have been generated
@@ -261,7 +260,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// The iteration had a single element, we then expect one loop to have been made
@@ -283,7 +282,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// The iteration had a single element, we then expect one loop to have been made
@@ -305,7 +304,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// The iteration had a single element, we then expect one loop to have been made
@@ -327,7 +326,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// The iteration had a single element, we then expect one loop to have been made
@@ -354,7 +353,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the for block.", OUTPUT + BEFORE + FOR_OUTPUT + AFTER //$NON-NLS-1$
@@ -376,7 +375,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// A guard evaluating to null is the same as "false" hence no content is expected
@@ -400,7 +399,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 
 		evaluationVisitor.visitExpression(getParentTemplate(forBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		// As the guard was incorrect we expect no content to have been generated

@@ -12,7 +12,6 @@ package org.eclipse.acceleo.engine.tests.unit.event;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -64,10 +63,10 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		cleanGenerationRoot();
 
 		AcceleoGenerationCountListener listener = new AcceleoGenerationCountListener();
-		AcceleoService service = new AcceleoService();
+		AcceleoService service = new AcceleoService(defaultStrategy);
 		service.addListener(listener);
 
-		generate(service, "test_generation_listeners", false); //$NON-NLS-1$
+		generate(service, "test_generation_listeners"); //$NON-NLS-1$
 
 		int eClassCount = 0;
 		final TreeIterator<EObject> iterator = inputModel.eAllContents();
@@ -96,15 +95,15 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		generationRoot = new File(getGenerationRootPath("Events")); //$NON-NLS-1$
 
 		AcceleoGenerationEventTestListener listener = new AcceleoGenerationEventTestListener();
-		AcceleoService service = new AcceleoService();
+		AcceleoService service = new AcceleoService(previewStrategy);
 		service.addListener(listener);
 
-		final Map<String, Writer> preview = generate(service, "test_generation_event", true); //$NON-NLS-1$
+		final Map<String, String> preview = generate(service, "test_generation_event"); //$NON-NLS-1$
 
 		assertFalse("There should have been a preview generated.", preview.isEmpty()); //$NON-NLS-1$
 		assertSame("We expected a single preview to be available.", 1, preview.size()); //$NON-NLS-1$
 
-		final Entry<String, Writer> previewEntry = preview.entrySet().iterator().next();
+		final Entry<String, String> previewEntry = preview.entrySet().iterator().next();
 		// We know the file block is the first element of the second template
 		final EObject fileBlock = module.eContents().get(2).eContents().get(0);
 

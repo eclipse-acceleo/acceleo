@@ -53,7 +53,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_self_query", false); //$NON-NLS-1$
+		generate("test_self_query", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -79,7 +79,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_self_template", false); //$NON-NLS-1$
+		generate("test_self_template", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -105,7 +105,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_implicit_self_query", false); //$NON-NLS-1$
+		generate("test_implicit_self_query", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {
@@ -131,7 +131,7 @@ public class SelfTest extends AbstractAcceleoTest {
 
 		cleanGenerationRoot();
 
-		generate("test_implicit_self_template", false); //$NON-NLS-1$
+		generate("test_implicit_self_template", defaultStrategy); //$NON-NLS-1$
 		try {
 			compareDirectories(referenceRoot, generationRoot);
 		} catch (IOException e) {

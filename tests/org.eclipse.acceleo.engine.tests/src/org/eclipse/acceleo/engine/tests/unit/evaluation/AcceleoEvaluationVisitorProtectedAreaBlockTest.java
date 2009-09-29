@@ -11,13 +11,14 @@
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import java.io.File;
-import java.io.Writer;
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
+import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
@@ -66,7 +67,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the protected block.", OUTPUT //$NON-NLS-1$
@@ -98,7 +99,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
-		Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", generationRoot.getAbsolutePath() + File.separatorChar //$NON-NLS-1$
 				+ FILE_NAME, entry.getKey());
 		assertEquals("Unexpected content generated from the protected block.", OUTPUT //$NON-NLS-1$
@@ -110,7 +111,14 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 
 		try {
-			AcceleoEvaluationContext.awaitCompletion();
+			Field field = AcceleoEvaluationVisitor.class.getDeclaredField("context"); //$NON-NLS-1$
+			field.setAccessible(true);
+			AcceleoEvaluationContext context = (AcceleoEvaluationContext)field.get(evaluationVisitor);
+			context.awaitCompletion();
+		} catch (NoSuchFieldException e) {
+			fail("name of the context field from the AcceleoEvaluationVisitor changed"); //$NON-NLS-1$
+		} catch (IllegalAccessException e) {
+			fail("private field hasn't been made accessible"); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			fail("Lost file creator pool termination interrupted."); //$NON-NLS-1$
 		}
@@ -118,7 +126,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		assertSame("Expecting two previews created, the lost file and the actual file.", 2, getPreview() //$NON-NLS-1$
 				.size());
 
-		final Iterator<Map.Entry<String, Writer>> iterator = getPreview().entrySet().iterator();
+		final Iterator<Map.Entry<String, String>> iterator = getPreview().entrySet().iterator();
 		final String expectedChangedFileContent = EXPECTED_PROTECTED_OUTPUT.replace(MARKER, MARKER + 's');
 		boolean lostFileFound = false;
 		boolean fileFound = false;
@@ -161,7 +169,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview as no lost file should have been created", 1, getPreview() //$NON-NLS-1$
 				.size());
-		final Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		final Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("No output should have been generated for a protected area with no marker.", OUTPUT //$NON-NLS-1$ 
@@ -182,7 +190,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 		assertSame("Expecting a single preview as no lost file should have been created", 1, getPreview() //$NON-NLS-1$
 				.size());
-		final Map.Entry<String, Writer> entry = getPreview().entrySet().iterator().next();
+		final Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
 		assertEquals("No output should have been generated for a protected area with no marker.", OUTPUT //$NON-NLS-1$ 
