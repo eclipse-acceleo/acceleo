@@ -26,12 +26,9 @@ import org.eclipse.ocl.utilities.UtilitiesPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getStartPosition <em>Start Position</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getEndPosition <em>End Position</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getStartPosition <em>Start Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getEndPosition <em>End Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl#getVisibility <em>Visibility</em>}</li>
  * </ul>
  * </p>
  * 

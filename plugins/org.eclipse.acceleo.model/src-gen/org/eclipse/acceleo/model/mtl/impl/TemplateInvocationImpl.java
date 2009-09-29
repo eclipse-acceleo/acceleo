@@ -31,14 +31,10 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getDefinition <em>Definition</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getArgument <em>Argument</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getBefore <em>Before</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getAfter <em>After</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getDefinition <em>Definition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getArgument <em>Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getBefore <em>Before</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getAfter <em>After</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#getEach <em>Each</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl#isSuper <em>Super</em>}</li>
  * </ul>

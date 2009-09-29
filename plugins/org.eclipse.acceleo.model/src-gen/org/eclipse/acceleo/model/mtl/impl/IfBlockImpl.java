@@ -32,7 +32,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getIfExpr <em>If Expr</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElse <em>Else </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElse <em>Else</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.IfBlockImpl#getElseIf <em>Else If</em>}</li>
  * </ul>
  * </p>

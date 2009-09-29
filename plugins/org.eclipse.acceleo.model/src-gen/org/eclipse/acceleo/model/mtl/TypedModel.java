@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EPackage;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom <em> Takes Types From</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TypedModel#getTakesTypesFrom <em>Takes Types From</em>}</li>
  * </ul>
  * </p>
  * 

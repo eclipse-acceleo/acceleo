@@ -31,8 +31,7 @@ import org.eclipse.ocl.ecore.Variable;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getStartPosition <em>Start Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getStartPosition <em>Start Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getEndPosition <em>End Position</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.InitSectionImpl#getVariable <em>Variable</em>}</li>
  * </ul>

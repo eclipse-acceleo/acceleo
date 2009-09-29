@@ -46,7 +46,7 @@ public interface Block extends TemplateExpression {
 	InitSection getInit();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Block#getInit <em>Init</em>}' containment
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Block#getInit <em>Init</em>}' containment
 	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

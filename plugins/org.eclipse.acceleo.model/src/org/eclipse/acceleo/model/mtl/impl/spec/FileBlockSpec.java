@@ -55,6 +55,10 @@ public class FileBlockSpec extends FileBlockImpl {
 		} else {
 			toString.append("false"); //$NON-NLS-1$
 		}
+		if (getCharset() != null) {
+			toString.append(',').append(' ');
+			toString.append(getCharset().toString());
+		}
 		toString.append(')');
 		if (initSection != null) {
 			toString.append(' ');

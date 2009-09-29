@@ -26,9 +26,10 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getOpenMode <em> Open Mode</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getFileUrl <em> File Url</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getUniqId <em> Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getOpenMode <em>Open Mode</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getFileUrl <em>File Url</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.FileBlockImpl#getCharset <em>Charset</em>}</li>
  * </ul>
  * </p>
  * 
@@ -74,6 +75,16 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	 * @ordered
 	 */
 	protected OCLExpression uniqId;
+
+	/**
+	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCharset()
+	 * @generated
+	 * @ordered
+	 */
+	protected OCLExpression charset;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -221,6 +232,56 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	 * 
 	 * @generated
 	 */
+	public OCLExpression getCharset() {
+		return charset;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetCharset(OCLExpression newCharset, NotificationChain msgs) {
+		OCLExpression oldCharset = charset;
+		charset = newCharset;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					MtlPackage.FILE_BLOCK__CHARSET, oldCharset, newCharset);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setCharset(OCLExpression newCharset) {
+		if (newCharset != charset) {
+			NotificationChain msgs = null;
+			if (charset != null)
+				msgs = ((InternalEObject)charset).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- MtlPackage.FILE_BLOCK__CHARSET, null, msgs);
+			if (newCharset != null)
+				msgs = ((InternalEObject)newCharset).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- MtlPackage.FILE_BLOCK__CHARSET, null, msgs);
+			msgs = basicSetCharset(newCharset, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.FILE_BLOCK__CHARSET, newCharset,
+					newCharset));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -228,6 +289,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return basicSetFileUrl(null, msgs);
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
 				return basicSetUniqId(null, msgs);
+			case MtlPackage.FILE_BLOCK__CHARSET:
+				return basicSetCharset(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -246,6 +309,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return getFileUrl();
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
 				return getUniqId();
+			case MtlPackage.FILE_BLOCK__CHARSET:
+				return getCharset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -266,6 +331,9 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return;
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
 				setUniqId((OCLExpression)newValue);
+				return;
+			case MtlPackage.FILE_BLOCK__CHARSET:
+				setCharset((OCLExpression)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -288,6 +356,9 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
 				setUniqId((OCLExpression)null);
 				return;
+			case MtlPackage.FILE_BLOCK__CHARSET:
+				setCharset((OCLExpression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -306,6 +377,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return fileUrl != null;
 			case MtlPackage.FILE_BLOCK__UNIQ_ID:
 				return uniqId != null;
+			case MtlPackage.FILE_BLOCK__CHARSET:
+				return charset != null;
 		}
 		return super.eIsSet(featureID);
 	}

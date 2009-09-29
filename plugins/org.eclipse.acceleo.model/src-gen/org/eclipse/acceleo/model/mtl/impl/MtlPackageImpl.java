@@ -738,6 +738,15 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * 
 	 * @generated
 	 */
+	public EReference getFileBlock_Charset() {
+		return (EReference)fileBlockEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getTraceBlock() {
 		return traceBlockEClass;
 	}
@@ -935,6 +944,7 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 		createEAttribute(fileBlockEClass, FILE_BLOCK__OPEN_MODE);
 		createEReference(fileBlockEClass, FILE_BLOCK__FILE_URL);
 		createEReference(fileBlockEClass, FILE_BLOCK__UNIQ_ID);
+		createEReference(fileBlockEClass, FILE_BLOCK__CHARSET);
 
 		traceBlockEClass = createEClass(TRACE_BLOCK);
 		createEReference(traceBlockEClass, TRACE_BLOCK__MODEL_ELEMENT);
@@ -1246,6 +1256,11 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 				theEcorePackage.getOCLExpression(),
 				null,
 				"uniqId", null, 0, 1, FileBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(
+				getFileBlock_Charset(),
+				theEcorePackage.getOCLExpression(),
+				null,
+				"charset", null, 0, 1, FileBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(traceBlockEClass, TraceBlock.class,
 				"TraceBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

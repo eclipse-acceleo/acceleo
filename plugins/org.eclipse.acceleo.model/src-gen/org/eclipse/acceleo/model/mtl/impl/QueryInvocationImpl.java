@@ -31,10 +31,8 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl#getDefinition <em>Definition</em>}</li>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl#getArgument <em>Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl#getDefinition <em>Definition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl#getArgument <em>Argument</em>}</li>
  * </ul>
  * </p>
  * 

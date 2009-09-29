@@ -226,8 +226,8 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseOCLExpression_1(org.eclipse.ocl.ecore.OCLExpression object) {
-			return createOCLExpression_1Adapter();
+		public Adapter caseEcore_OCLExpression(org.eclipse.ocl.ecore.OCLExpression object) {
+			return createEcore_OCLExpressionAdapter();
 		}
 
 		@Override
@@ -250,7 +250,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.Module
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Module
 	 * <em>Module</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -264,7 +264,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.ModuleElement
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.ModuleElement
 	 * <em>Module Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -278,7 +278,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.TemplateExpression
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.TemplateExpression
 	 * <em>Template Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so
 	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
 	 * anyway. <!-- end-user-doc -->
@@ -292,7 +292,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.Block
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Block
 	 * <em>Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -306,7 +306,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.InitSection
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.InitSection
 	 * <em>Init Section</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -320,7 +320,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.Template
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Template
 	 * <em>Template</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -334,7 +334,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation
 	 * <em>Template Invocation</em>}'. <!-- begin-user-doc --> This default implementation returns null so
 	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
 	 * anyway. <!-- end-user-doc -->
@@ -348,7 +348,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.Query
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Query
 	 * <em>Query</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -362,7 +362,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.QueryInvocation
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.QueryInvocation
 	 * <em>Query Invocation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
 	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
 	 * anyway. <!-- end-user-doc -->
@@ -376,7 +376,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock
 	 * <em>Protected Area Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so
 	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
 	 * anyway. <!-- end-user-doc -->
@@ -390,7 +390,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.ForBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.ForBlock
 	 * <em>For Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -404,7 +404,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.IfBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.IfBlock
 	 * <em>If Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -418,7 +418,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.LetBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.LetBlock
 	 * <em>Let Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -432,7 +432,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.FileBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.FileBlock
 	 * <em>File Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -446,7 +446,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.TraceBlock
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.TraceBlock
 	 * <em>Trace Block</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -460,7 +460,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.Macro
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Macro
 	 * <em>Macro</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -474,7 +474,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.MacroInvocation
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.MacroInvocation
 	 * <em>Macro Invocation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
 	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
 	 * anyway. <!-- end-user-doc -->
@@ -488,7 +488,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.acceleo.model.mtl.TypedModel
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.TypedModel
 	 * <em>Typed Model</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -502,7 +502,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.emf.ecore.EModelElement
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.EModelElement
 	 * <em>EModel Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -516,7 +516,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.emf.ecore.ENamedElement
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.ENamedElement
 	 * <em>ENamed Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -530,7 +530,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.emf.ecore.EPackage <em>EPackage</em>}
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.EPackage <em>EPackage</em>}
 	 * '. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
@@ -543,7 +543,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.ocl.utilities.ASTNode
+	 * Creates a new adapter for an object of class '{@link org.eclipse.ocl.utilities.ASTNode
 	 * <em>AST Node</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -557,7 +557,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.emf.ecore.ETypedElement
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.ETypedElement
 	 * <em>ETyped Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -571,7 +571,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.ocl.utilities.TypedElement
+	 * Creates a new adapter for an object of class '{@link org.eclipse.ocl.utilities.TypedElement
 	 * <em>Typed Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -585,7 +585,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.ocl.utilities.Visitable
+	 * Creates a new adapter for an object of class '{@link org.eclipse.ocl.utilities.Visitable
 	 * <em>Visitable</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -599,8 +599,8 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.ocl.expressions.OCLExpression
-	 * <em>OCL Expression</em>} '. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * Creates a new adapter for an object of class '{@link org.eclipse.ocl.expressions.OCLExpression
+	 * <em>OCL Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * 
@@ -613,7 +613,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class ' {@link org.eclipse.ocl.ecore.OCLExpression
+	 * Creates a new adapter for an object of class '{@link org.eclipse.ocl.ecore.OCLExpression
 	 * <em>OCL Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
 	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
@@ -622,7 +622,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @see org.eclipse.ocl.ecore.OCLExpression
 	 * @generated
 	 */
-	public Adapter createOCLExpression_1Adapter() {
+	public Adapter createEcore_OCLExpressionAdapter() {
 		return null;
 	}
 

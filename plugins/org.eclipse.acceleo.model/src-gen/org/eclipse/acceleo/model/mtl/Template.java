@@ -80,7 +80,7 @@ public interface Template extends Block, ModuleElement {
 	OCLExpression getGuard();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Template#getGuard <em>Guard</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -108,7 +108,7 @@ public interface Template extends Block, ModuleElement {
 	boolean isMain();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Template#isMain <em>Main</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Template#isMain <em>Main</em>}' attribute.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

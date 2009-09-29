@@ -20,11 +20,11 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition <em>Definition</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em> Argument</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em> Before</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em> After</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getArgument <em>Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore <em>Before</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}</li>
  * </ul>
  * </p>
  * 
@@ -50,7 +50,7 @@ public interface TemplateInvocation extends TemplateExpression {
 	Template getDefinition();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getDefinition
 	 * <em>Definition</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -93,7 +93,7 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getBefore();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getBefore
 	 * <em>Before</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -120,8 +120,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getAfter();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter
-	 * <em>After</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getAfter <em>After</em>}
+	 * ' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>After</em>' containment reference.
@@ -147,7 +147,7 @@ public interface TemplateInvocation extends TemplateExpression {
 	OCLExpression getEach();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#getEach <em>Each</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -175,8 +175,8 @@ public interface TemplateInvocation extends TemplateExpression {
 	boolean isSuper();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}
-	 * ' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation#isSuper <em>Super</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
 	 *            the new value of the '<em>Super</em>' attribute.

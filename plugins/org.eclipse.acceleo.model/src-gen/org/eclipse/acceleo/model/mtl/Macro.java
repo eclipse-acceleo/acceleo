@@ -63,7 +63,7 @@ public interface Macro extends Block, ModuleElement {
 	EClassifier getType();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Macro#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

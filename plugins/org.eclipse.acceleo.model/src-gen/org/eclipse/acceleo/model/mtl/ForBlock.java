@@ -20,7 +20,7 @@ import org.eclipse.ocl.ecore.Variable;
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable <em>Loop Variable</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}</li>
@@ -50,7 +50,7 @@ public interface ForBlock extends Block {
 	Variable getLoopVariable();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getLoopVariable
 	 * <em>Loop Variable</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -77,7 +77,7 @@ public interface ForBlock extends Block {
 	OCLExpression getIterSet();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getIterSet <em>Iter Set</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -104,7 +104,7 @@ public interface ForBlock extends Block {
 	OCLExpression getBefore();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getBefore <em>Before</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -131,7 +131,7 @@ public interface ForBlock extends Block {
 	OCLExpression getEach();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getEach <em>Each</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -158,7 +158,7 @@ public interface ForBlock extends Block {
 	OCLExpression getAfter();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getAfter <em>After</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -185,7 +185,7 @@ public interface ForBlock extends Block {
 	OCLExpression getGuard();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard <em>Guard</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ForBlock#getGuard <em>Guard</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

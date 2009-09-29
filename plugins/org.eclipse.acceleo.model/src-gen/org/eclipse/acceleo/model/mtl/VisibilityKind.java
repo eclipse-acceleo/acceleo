@@ -103,7 +103,7 @@ public enum VisibilityKind implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private static final VisibilityKind[] VALUES_ARRAY = new VisibilityKind[] {PRIVATE, PROTECTED, PUBLIC,};
+	private static final VisibilityKind[] VALUES_ARRAY = new VisibilityKind[] {PRIVATE, PROTECTED, PUBLIC, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Visibility Kind</b></em>' enumerators. <!-- begin-user-doc

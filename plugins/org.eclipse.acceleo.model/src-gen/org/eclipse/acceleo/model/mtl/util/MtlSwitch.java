@@ -145,10 +145,7 @@ public class MtlSwitch<T> {
 				TemplateExpression templateExpression = (TemplateExpression)theEObject;
 				T result = caseTemplateExpression(templateExpression);
 				if (result == null) {
-					result = caseOCLExpression_1(templateExpression);
-				}
-				if (result == null) {
-					result = caseASTNode(templateExpression);
+					result = caseEcore_OCLExpression(templateExpression);
 				}
 				if (result == null) {
 					result = caseETypedElement(templateExpression);
@@ -166,6 +163,9 @@ public class MtlSwitch<T> {
 					result = caseVisitable(templateExpression);
 				}
 				if (result == null) {
+					result = caseASTNode(templateExpression);
+				}
+				if (result == null) {
 					result = caseEModelElement(templateExpression);
 				}
 				if (result == null) {
@@ -180,10 +180,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(block);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(block);
-				}
-				if (result == null) {
-					result = caseASTNode(block);
+					result = caseEcore_OCLExpression(block);
 				}
 				if (result == null) {
 					result = caseETypedElement(block);
@@ -199,6 +196,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(block);
+				}
+				if (result == null) {
+					result = caseASTNode(block);
 				}
 				if (result == null) {
 					result = caseEModelElement(block);
@@ -232,16 +232,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(template);
 				}
 				if (result == null) {
-					result = caseENamedElement(template);
-				}
-				if (result == null) {
-					result = caseASTNode(template);
-				}
-				if (result == null) {
-					result = caseOCLExpression_1(template);
-				}
-				if (result == null) {
-					result = caseEModelElement(template);
+					result = caseEcore_OCLExpression(template);
 				}
 				if (result == null) {
 					result = caseETypedElement(template);
@@ -250,10 +241,19 @@ public class MtlSwitch<T> {
 					result = caseOCLExpression(template);
 				}
 				if (result == null) {
+					result = caseENamedElement(template);
+				}
+				if (result == null) {
 					result = caseTypedElement(template);
 				}
 				if (result == null) {
 					result = caseVisitable(template);
+				}
+				if (result == null) {
+					result = caseASTNode(template);
+				}
+				if (result == null) {
+					result = caseEModelElement(template);
 				}
 				if (result == null) {
 					result = defaultCase(theEObject);
@@ -267,10 +267,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(templateInvocation);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(templateInvocation);
-				}
-				if (result == null) {
-					result = caseASTNode(templateInvocation);
+					result = caseEcore_OCLExpression(templateInvocation);
 				}
 				if (result == null) {
 					result = caseETypedElement(templateInvocation);
@@ -286,6 +283,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(templateInvocation);
+				}
+				if (result == null) {
+					result = caseASTNode(templateInvocation);
 				}
 				if (result == null) {
 					result = caseEModelElement(templateInvocation);
@@ -322,10 +322,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(queryInvocation);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(queryInvocation);
-				}
-				if (result == null) {
-					result = caseASTNode(queryInvocation);
+					result = caseEcore_OCLExpression(queryInvocation);
 				}
 				if (result == null) {
 					result = caseETypedElement(queryInvocation);
@@ -341,6 +338,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(queryInvocation);
+				}
+				if (result == null) {
+					result = caseASTNode(queryInvocation);
 				}
 				if (result == null) {
 					result = caseEModelElement(queryInvocation);
@@ -360,10 +360,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(protectedAreaBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(protectedAreaBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(protectedAreaBlock);
+					result = caseEcore_OCLExpression(protectedAreaBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(protectedAreaBlock);
@@ -379,6 +376,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(protectedAreaBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(protectedAreaBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(protectedAreaBlock);
@@ -398,10 +398,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(forBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(forBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(forBlock);
+					result = caseEcore_OCLExpression(forBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(forBlock);
@@ -417,6 +414,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(forBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(forBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(forBlock);
@@ -436,10 +436,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(ifBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(ifBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(ifBlock);
+					result = caseEcore_OCLExpression(ifBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(ifBlock);
@@ -455,6 +452,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(ifBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(ifBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(ifBlock);
@@ -474,10 +474,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(letBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(letBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(letBlock);
+					result = caseEcore_OCLExpression(letBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(letBlock);
@@ -493,6 +490,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(letBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(letBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(letBlock);
@@ -512,10 +512,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(fileBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(fileBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(fileBlock);
+					result = caseEcore_OCLExpression(fileBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(fileBlock);
@@ -531,6 +528,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(fileBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(fileBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(fileBlock);
@@ -550,10 +550,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(traceBlock);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(traceBlock);
-				}
-				if (result == null) {
-					result = caseASTNode(traceBlock);
+					result = caseEcore_OCLExpression(traceBlock);
 				}
 				if (result == null) {
 					result = caseETypedElement(traceBlock);
@@ -569,6 +566,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(traceBlock);
+				}
+				if (result == null) {
+					result = caseASTNode(traceBlock);
 				}
 				if (result == null) {
 					result = caseEModelElement(traceBlock);
@@ -591,16 +591,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(macro);
 				}
 				if (result == null) {
-					result = caseENamedElement(macro);
-				}
-				if (result == null) {
-					result = caseASTNode(macro);
-				}
-				if (result == null) {
-					result = caseOCLExpression_1(macro);
-				}
-				if (result == null) {
-					result = caseEModelElement(macro);
+					result = caseEcore_OCLExpression(macro);
 				}
 				if (result == null) {
 					result = caseETypedElement(macro);
@@ -609,10 +600,19 @@ public class MtlSwitch<T> {
 					result = caseOCLExpression(macro);
 				}
 				if (result == null) {
+					result = caseENamedElement(macro);
+				}
+				if (result == null) {
 					result = caseTypedElement(macro);
 				}
 				if (result == null) {
 					result = caseVisitable(macro);
+				}
+				if (result == null) {
+					result = caseASTNode(macro);
+				}
+				if (result == null) {
+					result = caseEModelElement(macro);
 				}
 				if (result == null) {
 					result = defaultCase(theEObject);
@@ -626,10 +626,7 @@ public class MtlSwitch<T> {
 					result = caseTemplateExpression(macroInvocation);
 				}
 				if (result == null) {
-					result = caseOCLExpression_1(macroInvocation);
-				}
-				if (result == null) {
-					result = caseASTNode(macroInvocation);
+					result = caseEcore_OCLExpression(macroInvocation);
 				}
 				if (result == null) {
 					result = caseETypedElement(macroInvocation);
@@ -645,6 +642,9 @@ public class MtlSwitch<T> {
 				}
 				if (result == null) {
 					result = caseVisitable(macroInvocation);
+				}
+				if (result == null) {
+					result = caseASTNode(macroInvocation);
 				}
 				if (result == null) {
 					result = caseEModelElement(macroInvocation);
@@ -668,13 +668,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of ' <em>Module</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of ' <em>Module</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -713,13 +713,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of ' <em>Block</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of '<em>Block</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of ' <em>Block</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Block</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -773,13 +773,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of ' <em>Query</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of ' <em>Query</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Query</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -893,13 +893,13 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of ' <em>Macro</em>'. <!-- begin-user-doc
+	 * Returns the result of interpreting the object as an instance of '<em>Macro</em>'. <!-- begin-user-doc
 	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
 	 * end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of ' <em>Macro</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Macro</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
@@ -1058,17 +1058,17 @@ public class MtlSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of ' <em>OCL Expression</em>'. <!--
+	 * Returns the result of interpreting the object as an instance of '<em>OCL Expression</em>'. <!--
 	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of ' <em>OCL Expression</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>OCL Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseOCLExpression_1(org.eclipse.ocl.ecore.OCLExpression object) {
+	public T caseEcore_OCLExpression(org.eclipse.ocl.ecore.OCLExpression object) {
 		return null;
 	}
 

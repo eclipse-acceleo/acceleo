@@ -44,7 +44,7 @@ public interface TraceBlock extends Block {
 	OCLExpression getModelElement();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.TraceBlock#getModelElement
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.TraceBlock#getModelElement
 	 * <em>Model Element</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

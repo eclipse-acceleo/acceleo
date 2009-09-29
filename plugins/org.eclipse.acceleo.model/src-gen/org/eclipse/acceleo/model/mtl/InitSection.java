@@ -20,7 +20,7 @@ import org.eclipse.ocl.utilities.ASTNode;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.InitSection#getVariable <em>Variable</em>}</li>
  * </ul>
  * </p>
  * 

@@ -18,7 +18,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em> Marker</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker <em>Marker</em>}</li>
  * </ul>
  * </p>
  * 
@@ -44,7 +44,7 @@ public interface ProtectedAreaBlock extends Block {
 	OCLExpression getMarker();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ProtectedAreaBlock#getMarker
 	 * <em>Marker</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

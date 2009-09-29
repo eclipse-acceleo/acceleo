@@ -123,6 +123,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqId" eType="ecore:EClass platform:/plugin/org.eclipse.ocl.ecore/model/OCLEcore.ecore#//ecore/OCLExpression"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="charset" eType="ecore:EClass platform:/plugin/org.eclipse.ocl.ecore/model/OCLEcore.ecore#//ecore/OCLExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TraceBlock" eSuperTypes="#//Block">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelElement" lowerBound="1"

@@ -19,8 +19,8 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em> Definition</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em> Argument</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition <em>Definition</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getArgument <em>Argument</em>}</li>
  * </ul>
  * </p>
  * 
@@ -46,7 +46,7 @@ public interface MacroInvocation extends TemplateExpression {
 	Macro getDefinition();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.MacroInvocation#getDefinition
 	 * <em>Definition</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

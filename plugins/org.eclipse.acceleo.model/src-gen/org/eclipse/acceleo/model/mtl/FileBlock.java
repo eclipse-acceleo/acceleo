@@ -18,9 +18,10 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.FileBlock#getCharset <em>Charset</em>}</li>
  * </ul>
  * </p>
  * 
@@ -48,7 +49,7 @@ public interface FileBlock extends Block {
 	OpenModeKind getOpenMode();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getOpenMode <em>Open Mode</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -76,7 +77,7 @@ public interface FileBlock extends Block {
 	OCLExpression getFileUrl();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getFileUrl <em>File Url</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -103,7 +104,7 @@ public interface FileBlock extends Block {
 	OCLExpression getUniqId();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getUniqId <em>Uniq Id</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -112,5 +113,34 @@ public interface FileBlock extends Block {
 	 * @generated
 	 */
 	void setUniqId(OCLExpression value);
+
+	/**
+	 * Returns the value of the '<em><b>Charset</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Charset</em>' containment reference isn't clear, there really should be more
+	 * of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Charset</em>' containment reference.
+	 * @see #setCharset(OCLExpression)
+	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getFileBlock_Charset()
+	 * @model containment="true"
+	 * @since 0.9
+	 * @generated
+	 */
+	OCLExpression getCharset();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.FileBlock#getCharset <em>Charset</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Charset</em>' containment reference.
+	 * @see #getCharset()
+	 * @since 0.9
+	 * @generated
+	 */
+	void setCharset(OCLExpression value);
 
 } // FileBlock

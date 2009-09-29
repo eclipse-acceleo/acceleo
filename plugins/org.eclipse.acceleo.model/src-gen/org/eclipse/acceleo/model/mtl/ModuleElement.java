@@ -19,7 +19,7 @@ import org.eclipse.ocl.utilities.ASTNode;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em> Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility <em>Visibility</em>}</li>
  * </ul>
  * </p>
  * 
@@ -47,7 +47,7 @@ public interface ModuleElement extends ENamedElement, ASTNode {
 	VisibilityKind getVisibility();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.ModuleElement#getVisibility
 	 * <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

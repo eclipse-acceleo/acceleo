@@ -26,8 +26,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl#getTakesTypesFrom <em>Takes Types From</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TypedModelImpl#getTakesTypesFrom <em>Takes Types From</em>}</li>
  * </ul>
  * </p>
  * 

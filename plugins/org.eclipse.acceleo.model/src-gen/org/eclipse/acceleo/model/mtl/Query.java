@@ -65,7 +65,7 @@ public interface Query extends ModuleElement {
 	OCLExpression getExpression();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}'
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Query#getExpression <em>Expression</em>}'
 	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -92,7 +92,7 @@ public interface Query extends ModuleElement {
 	EClassifier getType();
 
 	/**
-	 * Sets the value of the ' {@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Query#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value

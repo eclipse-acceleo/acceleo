@@ -31,8 +31,8 @@ import org.eclipse.ocl.ecore.Variable;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl#getElseLet <em> Else Let</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl#getElse <em>Else </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl#getElseLet <em>Else Let</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl#getElse <em>Else</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.LetBlockImpl#getLetVariable <em>Let Variable</em>}</li>
  * </ul>
  * </p>

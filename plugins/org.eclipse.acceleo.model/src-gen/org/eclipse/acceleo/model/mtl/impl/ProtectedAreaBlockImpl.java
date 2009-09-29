@@ -25,8 +25,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>
- * {@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl#getMarker <em>Marker</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl#getMarker <em>Marker</em>}</li>
  * </ul>
  * </p>
  * 

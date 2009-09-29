@@ -27,11 +27,11 @@ import org.eclipse.ocl.ecore.Variable;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getLoopVariable <em>Loop Variable</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getIterSet <em> Iter Set</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getBefore <em> Before</em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getEach <em>Each </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getAfter <em>After </em>}</li>
- * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getGuard <em>Guard </em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getIterSet <em>Iter Set</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getBefore <em>Before</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getEach <em>Each</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getAfter <em>After</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.ForBlockImpl#getGuard <em>Guard</em>}</li>
  * </ul>
  * </p>
  * 

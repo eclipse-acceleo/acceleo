@@ -84,6 +84,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mtl.ecore#//FileBlock/openMode"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//FileBlock/fileUrl"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//FileBlock/uniqId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//FileBlock/charset"/>
     </genClasses>
     <genClasses ecoreClass="mtl.ecore#//TraceBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//TraceBlock/modelElement"/>
