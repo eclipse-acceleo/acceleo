@@ -2,7 +2,14 @@
 <!-- Custom targets.                                                       -->
 <!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
 <!-- ===================================================================== -->
-<project name="Build Acceleo Module" default="run" basedir=".">
+<project name="Build Acceleo Module" default="noDefault">
+
+	<!-- ================================================================= -->
+	<!-- Default target                                                    -->
+	<!-- ================================================================= -->
+	<target name="noDefault">
+		<echo message="This file must be called with explicit targets" />
+	</target>
 
 	<!-- ================================================================= -->
 	<!-- Steps to do after the target gather.bin.parts                     -->
@@ -10,10 +17,11 @@
 	<!--   build.result.folder - folder containing the build results       -->
 	<!--   target.folder - destination folder                              -->
 	<!-- ================================================================= -->
-
 	<target name="post.gather.bin.parts">
-		<acceleoCompiler project="${basedir}" target="${target.folder}">
-		</acceleoCompiler>
+		<eclipse.incrementalBuild 
+		  project="org.eclipse.acceleo.module.example.ecore2python"
+		  kind="full" />
+		<copydir dest="${target.folder}" src="${basedir}/bin"></copydir>
 	</target>
 
 </project>

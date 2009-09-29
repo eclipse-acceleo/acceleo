@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -81,18 +83,18 @@ public class Factory {
 	private List<? extends Object> arguments;
 	
 	/**
-	 * This will hold the list of generation listeners that are to be notified when text is generated.
-	 * @generated
-	 */
-	private List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>();
+   * This will hold the list of generation listeners that are to be notified when text is generated.
+   * @generated
+   */
+  private List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>();
 
-	/**
-	 * This will hold the list of properties files that are to be added to the generation context.
-	 * @generated
-	 */
-	private List<String> propertiesFiles = new ArrayList<String>();
+  /**
+   * This will hold the list of properties files that are to be added to the generation context.
+   * @generated
+   */
+  private List<String> propertiesFiles = new ArrayList<String>();
 
-	/**
+  /**
 	 * Constructor.
 	 * 
 	 * @param modelURI
@@ -273,17 +275,38 @@ public class Factory {
     if (!targetFolder.exists()) {
       targetFolder.mkdirs();
     }
-    AcceleoService service = new AcceleoService();
+    AcceleoService service = new AcceleoService(getGenerationStrategy());
     registerListeners(service);
     registerProperties(service);
     for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      service.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, false,
-          monitor);
+      service.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, monitor);
     }
     service.dispose();
   }
 
 	/**
+   * If you need to change the way files are generated, this is your entry point.
+   * <p>
+   * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates
+   * files on the fly. If you only need to preview the results, return a new
+   * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware
+   * of the running Eclipse and can be used standalone.
+   * </p>
+   * <p>
+   * If you need the file generation to be aware of the workspace (A typical example is when you wanna override
+   * files that are under clear case or any other VCS that could forbid the overriding), then return a new
+   * {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}. <b>Note</b>, however, that
+   * this <b>cannot</b> be used standalone.
+   * </p>
+   * <p>
+   * All three of these default strategies support merging through JMerge.
+   * </p>
+   */
+  public IAcceleoGenerationStrategy getGenerationStrategy() {
+    return new DefaultStrategy();
+  }
+
+  /**
 	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
 	 * <p>
 	 * This will return the first root of the loaded model, other roots can be accessed via the resource's
@@ -337,45 +360,46 @@ public class Factory {
     }
     return resourceSet.createResource(modelURI);
   }
-	
-	/**
-	 * Generation listeners can be added for notification through this.
-	 *
-	 * @generated
-	 */
-	private void addListeners() {
+
+  /**
+   * Generation listeners can be added for notification through this.
+   *
+   * @generated
+   */
+  private void addListeners() {
     // TODO : add listeners to the "generationListener" field here.
   }
 
-	/**
-	 * If the generation modules need properties files, this is where to add them.
-	 *
-	 * @generated
-	 */
-	private void addProperties() {
+  /**
+   * If the generation modules need properties files, this is where to add them. Take note that the first
+   * added properties files will take precedence over subsequent ones if they contain conflicting keys.
+   *
+   * @generated
+   */
+  private void addProperties() {
     /*
      * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
      * relative or absolute pathes, or their path can represent a platform scheme URI.
      */
   }
-	
-	/**
-	 * This is in charge of registering all listeners against the given service instance.
-	 *
-	 * @generated
-	 */
-	private void registerListeners(AcceleoService service) {
+
+  /**
+   * This is in charge of registering all listeners against the given service instance.
+   *
+   * @generated
+   */
+  private void registerListeners(AcceleoService service) {
     for (IAcceleoTextGenerationListener listener : generationListeners) {
       service.addListener(listener);
     }
   }
 
-	/**
-	 * This will register all properties files against the given service instance.
-	 *
-	 * @generated
-	 */
-	private void registerProperties(AcceleoService service) {
+  /**
+   * This will register all properties files against the given service instance.
+   *
+   * @generated
+   */
+  private void registerProperties(AcceleoService service) {
     try {
       for (String propertyFile : propertiesFiles) {
         service.addPropertiesFile(propertyFile);
