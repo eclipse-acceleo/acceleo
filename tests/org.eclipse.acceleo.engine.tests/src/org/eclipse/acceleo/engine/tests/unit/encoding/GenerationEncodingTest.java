@@ -12,6 +12,7 @@ package org.eclipse.acceleo.engine.tests.unit.encoding;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 
@@ -43,7 +44,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 *Checks that we could properly generate a file with UTF-8 encoding
+	 * Checks that we could properly generate a file with UTF-8 encoding.
 	 * 
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
@@ -63,7 +64,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 *Checks that we could properly generate a file with ISO-8859-1 encoding
+	 * Checks that we could properly generate a file with ISO-8859-1 encoding.
 	 * 
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
@@ -83,7 +84,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 *Checks that we could properly generate a file with ISO-8859-7 encoding
+	 * Checks that we could properly generate a file with ISO-8859-5 encoding.
 	 * 
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
@@ -103,7 +104,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 *Checks that we could properly generate a file with ISO-8859-7 encoding
+	 * Checks that we could properly generate a file with ISO-8859-7 encoding.
 	 * 
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
@@ -119,6 +120,28 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 			compareDirectories(referenceRoot, generationRoot, "ISO-8859-7");
 		} catch (IOException e) {
 			fail(errorMessageForCompareDirectoriesMethod);
+		}
+	}
+
+	/**
+	 * Checks that we cannot generate a file with an inexistant encoding.
+	 * 
+	 * @throws IOException
+	 *             Thrown if the evaluation fails unexpectedly.
+	 */
+	public void testEvaluateWrongEncodignTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("WrongEncoding")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("generate_wrong_encoding", defaultStrategy); //$NON-NLS-1$
+		File[] children = getFiles(generationRoot);
+		for (File child : children) {
+			// Reads the file with the default System charset (should have been encoded as such)
+			final String content = getAbsoluteFileContent(child.getAbsolutePath());
+			// If the file hasn't been saved in the default encoding, this will fail
+			final String defaultCharset = Charset.defaultCharset().displayName();
+			assertTrue(content.contains(new String("\u0414".getBytes(defaultCharset), defaultCharset)));
 		}
 	}
 }
