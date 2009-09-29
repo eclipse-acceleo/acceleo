@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl#getOpenMode <em>Open Mode</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl#getFileUrl <em>File Url</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.impl.FileBlockImpl#getCharset <em>Charset</em>}</li>
  * </ul>
  * </p>
  * 
@@ -74,6 +75,16 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	 * @ordered
 	 */
 	protected ModelExpression uniqId;
+
+	/**
+	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCharset()
+	 * @generated
+	 * @ordered
+	 */
+	protected ModelExpression charset;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -221,6 +232,56 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 	 * 
 	 * @generated
 	 */
+	public ModelExpression getCharset() {
+		return charset;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetCharset(ModelExpression newCharset, NotificationChain msgs) {
+		ModelExpression oldCharset = charset;
+		charset = newCharset;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					CstPackage.FILE_BLOCK__CHARSET, oldCharset, newCharset);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setCharset(ModelExpression newCharset) {
+		if (newCharset != charset) {
+			NotificationChain msgs = null;
+			if (charset != null)
+				msgs = ((InternalEObject)charset).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.FILE_BLOCK__CHARSET, null, msgs);
+			if (newCharset != null)
+				msgs = ((InternalEObject)newCharset).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.FILE_BLOCK__CHARSET, null, msgs);
+			msgs = basicSetCharset(newCharset, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.FILE_BLOCK__CHARSET, newCharset,
+					newCharset));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -228,6 +289,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return basicSetFileUrl(null, msgs);
 			case CstPackage.FILE_BLOCK__UNIQ_ID:
 				return basicSetUniqId(null, msgs);
+			case CstPackage.FILE_BLOCK__CHARSET:
+				return basicSetCharset(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -246,6 +309,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return getFileUrl();
 			case CstPackage.FILE_BLOCK__UNIQ_ID:
 				return getUniqId();
+			case CstPackage.FILE_BLOCK__CHARSET:
+				return getCharset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -266,6 +331,9 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return;
 			case CstPackage.FILE_BLOCK__UNIQ_ID:
 				setUniqId((ModelExpression)newValue);
+				return;
+			case CstPackage.FILE_BLOCK__CHARSET:
+				setCharset((ModelExpression)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -288,6 +356,9 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 			case CstPackage.FILE_BLOCK__UNIQ_ID:
 				setUniqId((ModelExpression)null);
 				return;
+			case CstPackage.FILE_BLOCK__CHARSET:
+				setCharset((ModelExpression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -306,6 +377,8 @@ public class FileBlockImpl extends BlockImpl implements FileBlock {
 				return fileUrl != null;
 			case CstPackage.FILE_BLOCK__UNIQ_ID:
 				return uniqId != null;
+			case CstPackage.FILE_BLOCK__CHARSET:
+				return charset != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -19,6 +19,7 @@ package org.eclipse.acceleo.parser.cst;
  * <li>{@link org.eclipse.acceleo.parser.cst.FileBlock#getOpenMode <em>Open Mode</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.FileBlock#getFileUrl <em>File Url</em>}</li>
  * <li>{@link org.eclipse.acceleo.parser.cst.FileBlock#getUniqId <em>Uniq Id</em>}</li>
+ * <li>{@link org.eclipse.acceleo.parser.cst.FileBlock#getCharset <em>Charset</em>}</li>
  * </ul>
  * </p>
  * 
@@ -110,5 +111,32 @@ public interface FileBlock extends Block {
 	 * @generated
 	 */
 	void setUniqId(ModelExpression value);
+
+	/**
+	 * Returns the value of the '<em><b>Charset</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Charset</em>' containment reference isn't clear, there really should be more
+	 * of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Charset</em>' containment reference.
+	 * @see #setCharset(ModelExpression)
+	 * @see org.eclipse.acceleo.parser.cst.CstPackage#getFileBlock_Charset()
+	 * @model containment="true"
+	 * @generated
+	 */
+	ModelExpression getCharset();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.FileBlock#getCharset <em>Charset</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Charset</em>' containment reference.
+	 * @see #getCharset()
+	 * @generated
+	 */
+	void setCharset(ModelExpression value);
 
 } // FileBlock

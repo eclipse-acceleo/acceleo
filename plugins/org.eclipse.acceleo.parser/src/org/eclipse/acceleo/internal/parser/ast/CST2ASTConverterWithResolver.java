@@ -879,12 +879,12 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			transformStepResolve(iFileUrl);
 
-			org.eclipse.acceleo.parser.cst.ModelExpression iUniqId = iFileBlock.getUniqId();
-			org.eclipse.ocl.ecore.OCLExpression oUniqId = factory.getOrCreateOCLExpression(iUniqId);
-			if (oUniqId != null) {
-				oFileBlock.setUniqId(oUniqId);
+			org.eclipse.acceleo.parser.cst.ModelExpression iFileCharset = iFileBlock.getCharset();
+			org.eclipse.ocl.ecore.OCLExpression oFileCharset = factory.getOrCreateOCLExpression(iFileCharset);
+			if (oFileCharset != null) {
+				oFileBlock.setCharset(oFileCharset);
 			}
-			transformStepResolve(iUniqId);
+			transformStepResolve(iFileCharset);
 
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iFileBlock.getInit();
 			transformStepResolveAddVariables(iInit);

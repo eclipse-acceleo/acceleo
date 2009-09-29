@@ -1366,13 +1366,22 @@ public interface CstPackage extends EPackage {
 	int FILE_BLOCK__UNIQ_ID = BLOCK_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Charset</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int FILE_BLOCK__CHARSET = BLOCK_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>File Block</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int FILE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
+	int FILE_BLOCK_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TraceBlockImpl
@@ -2339,6 +2348,18 @@ public interface CstPackage extends EPackage {
 	EReference getFileBlock_UniqId();
 
 	/**
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.FileBlock#getCharset <em>Charset</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Charset</em>'.
+	 * @see org.eclipse.acceleo.parser.cst.FileBlock#getCharset()
+	 * @see #getFileBlock()
+	 * @generated
+	 */
+	EReference getFileBlock_Charset();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TraceBlock
 	 * <em>Trace Block</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -3024,6 +3045,14 @@ public interface CstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference FILE_BLOCK__UNIQ_ID = eINSTANCE.getFileBlock_UniqId();
+
+		/**
+		 * The meta object literal for the '<em><b>Charset</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference FILE_BLOCK__CHARSET = eINSTANCE.getFileBlock_Charset();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.TraceBlockImpl

@@ -369,14 +369,15 @@ public class CSTParserBlock {
 			if (!openModeFound) {
 				log(AcceleoParserMessages.getString("CSTParserBlock.MissingFileMode"), comma.b(), eH.b()); //$NON-NLS-1$
 			} else {
+				// For now, simply ignore the specification's "unique ID"
 				int eComma = ParserUtils.shiftKeyword(source.getBuffer(), b, eH.b(),
 						IAcceleoConstants.COMMA_SEPARATOR, false);
 				if (eComma != b) {
 					b = eComma;
-					ModelExpression eUniqueId = CstFactory.eINSTANCE.createModelExpression();
-					setPositions(eUniqueId, b, eH.b());
-					eFile.setUniqId(eUniqueId);
-					parseExpressionHeader(b, eH.b(), eUniqueId);
+					ModelExpression eFileCharset = CstFactory.eINSTANCE.createModelExpression();
+					setPositions(eFileCharset, b, eH.b());
+					eFile.setCharset(eFileCharset);
+					parseExpressionHeader(b, eH.b(), eFileCharset);
 				} else if (source.getBuffer().substring(b, eH.b()).trim().length() > 0) {
 					log(AcceleoParserMessages.getString(
 							"Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), b, eH.b()); //$NON-NLS-1$

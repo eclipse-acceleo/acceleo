@@ -101,6 +101,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MTLCST.ecore#//FileBlock/openMode"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//FileBlock/fileUrl"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//FileBlock/uniqId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//FileBlock/charset"/>
     </genClasses>
     <genClasses ecoreClass="MTLCST.ecore#//TraceBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//TraceBlock/modelElement"/>

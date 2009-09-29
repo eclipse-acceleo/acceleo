@@ -79,7 +79,7 @@ public enum OpenModeKind implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private static final OpenModeKind[] VALUES_ARRAY = new OpenModeKind[] {APPEND, OVER_WRITE,};
+	private static final OpenModeKind[] VALUES_ARRAY = new OpenModeKind[] {APPEND, OVER_WRITE, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Open Mode Kind</b></em>' enumerators. <!-- begin-user-doc

@@ -121,6 +121,8 @@
         eType="#//ModelExpression" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqId" eType="#//ModelExpression"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="charset" eType="#//ModelExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="OpenModeKind">
     <eLiterals name="Append"/>

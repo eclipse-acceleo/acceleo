@@ -739,8 +739,8 @@ public class CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.ModelExpression iFileUrl = iFileBlock.getFileUrl();
 			transformStepCopy(iFileUrl);
 
-			org.eclipse.acceleo.parser.cst.ModelExpression iUniqId = iFileBlock.getUniqId();
-			transformStepCopy(iUniqId);
+			org.eclipse.acceleo.parser.cst.ModelExpression iFileCharset = iFileBlock.getCharset();
+			transformStepCopy(iFileCharset);
 
 			transformStepCopyBody(iFileBlock, oFileBlock);
 		}
