@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +122,18 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 			 */
 			writer.reinit();
 		} else {
-			writer = new AcceleoStringWriter(file, appendMode, hasJMergeTags, charset);
+			if (charset != null) {
+				if (Charset.isSupported(charset)) {
+					writer = new AcceleoStringWriter(file, appendMode, hasJMergeTags, charset);
+				} else {
+					final String message = AcceleoEngineMessages.getString(
+							"AcceleoGenerationStrategy.UnsupportedCharset", charset); //$NON-NLS-1$
+					AcceleoEnginePlugin.log(message, false);
+					writer = new AcceleoStringWriter(file, appendMode, hasJMergeTags);
+				}
+			} else {
+				writer = new AcceleoStringWriter(file, appendMode, hasJMergeTags);
+			}
 		}
 		return writer;
 	}

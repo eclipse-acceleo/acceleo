@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -115,7 +116,14 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 
 		if (!hasJMergeTags || appendMode) {
 			if (charset != null) {
-				writer = new AcceleoFileWriter(file, appendMode, charset);
+				if (Charset.isSupported(charset)) {
+					writer = new AcceleoFileWriter(file, appendMode, charset);
+				} else {
+					final String message = AcceleoEngineMessages.getString(
+							"AcceleoGenerationStrategy.UnsupportedCharset", charset); //$NON-NLS-1$
+					AcceleoEnginePlugin.log(message, false);
+					writer = new AcceleoFileWriter(file, appendMode);
+				}
 			} else {
 				writer = new AcceleoFileWriter(file, appendMode);
 			}

@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -70,7 +71,18 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	public AbstractAcceleoWriter createWriterFor(File file, AbstractAcceleoWriter previous,
 			boolean appendMode, boolean hasJMergeTags, String charset) throws IOException {
 		final AbstractAcceleoWriter writer;
-		writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags, charset);
+		if (charset != null) {
+			if (Charset.isSupported(charset)) {
+				writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags, charset);
+			} else {
+				final String message = AcceleoEngineMessages.getString(
+						"AcceleoGenerationStrategy.UnsupportedCharset", charset); //$NON-NLS-1$
+				AcceleoEnginePlugin.log(message, false);
+				writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags);
+			}
+		} else {
+			writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags);
+		}
 		if (appendMode) {
 			writer.append(LINE_SEPARATOR);
 		}
