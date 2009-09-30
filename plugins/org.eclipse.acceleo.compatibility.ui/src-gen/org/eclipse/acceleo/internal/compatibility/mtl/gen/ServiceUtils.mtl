@@ -13,12 +13,21 @@
 	call.isScriptCall() or
 	call.isServiceCall() endif/]
 	
-[query private isScriptCall(call : Call) : Boolean = call.ancestors()->last().allScripts()->collect(s | s.oclAsType(mt::core::Script).descriptor.name)->includes(call.name)/]
-[query private isServiceCall(call : Call) : Boolean = call.ancestors()->last().allMethods()->collect(s | s.oclAsType(mt::core::Method).name)->includes(call.name)/]
+[query private isScriptCall(call : Call) : Boolean = call.ancestors()->last().allScripts()->collect(descriptor.name)->includes(call.name)/]
+[query public isServiceCall(call : Call) : Boolean = call.ancestors()->last().allMethods()->collect(name)->includes(call.name)/]
+
+[query public getTargetService(call : Call) : Service = call.ancestors()->last().allMethods()->select(name = call.name)->asSet()/]
 
 [comment this has been externalized here to make use of the query's caching/]
-[query private allScripts(root : OclAny) : Sequence(T) = root.eAllContents(mt::core::Script)/]
-[query private allMethods(root : OclAny) : Sequence(T) = root.eAllContents(mt::core::Method)/]
+[query private allScripts(root : OclAny) : Sequence(Script) = root.eAllContents(mt::core::Script)/]
+[query private allMethods(root : OclAny) : Sequence(Method) = root.eAllContents(mt::core::Method)/]
+
+[query public signature(method : Method) : String = method.name.concat('(').concat(parametersSignature()).concat(')')/]
+
+[query private parametersSignature(method : Method) : String =
+	 let parameters : Sequence(String) = method.parameters.type->sep(', ').oclAsType(String) in
+	 parameters->iterate(param; res : String = '' | res.concat(param))
+	/]
 
 [query public isEObjectService(callName : String) : Boolean = let serviceNames : Sequence(String) = Sequence{
 	'eAllContents', 
