@@ -158,6 +158,15 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				classifier = lookupClassifier(names);
 			}
 		}
+		if (classifier != null) {
+			/*
+			 * We need to check if the UML Reflection doesn't give a replacement for this EClassifier. We
+			 * could be on a user-defined datatype that overlaps with one of the standard library's. An
+			 * example of this would be the UML "String" that need be converted to the standard library's
+			 * String before being returned.
+			 */
+			classifier = getUMLReflection().getOCLType(classifier);
+		}
 		return classifier;
 	}
 
