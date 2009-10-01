@@ -1041,10 +1041,20 @@ public class CSTParser {
 	protected Variable[] createVariablesCommaSeparator(int posBegin, int posEnd, Module eModule) {
 		List<Region> positions = pComma.split(source.getBuffer(), posBegin, posEnd, false, null, null);
 		Variable[] eVariables = new Variable[positions.size()];
+		List<String> variableNames = new ArrayList<String>();
 		for (int i = 0; i < eVariables.length; i++) {
 			Region variablePos = positions.get(i);
 			Variable eVariable = createVariable(variablePos.b(), variablePos.e(), eModule);
 			eVariables[i] = eVariable;
+			if (eVariable != null) {
+				if (!variableNames.contains(eVariable.getName())) {
+					variableNames.add(eVariable.getName());
+				} else {
+					log(
+							AcceleoParserMessages.getString(
+									"CSTParser.DuplicatedVariable", new Object[] {eVariable.getName() }), variablePos.b(), variablePos.e()); //$NON-NLS-1$
+				}
+			}
 		}
 		return eVariables;
 	}
