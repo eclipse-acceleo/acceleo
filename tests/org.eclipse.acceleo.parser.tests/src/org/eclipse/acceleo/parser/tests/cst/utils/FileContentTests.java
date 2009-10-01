@@ -10,15 +10,26 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.cst.utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 
 public class FileContentTests extends TestCase {
+
+	private Bundle bundle;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests");
 	}
 
 	@Override
@@ -48,4 +59,46 @@ public class FileContentTests extends TestCase {
 		assertEquals(FileContent.columnNumber(buffer, 6), 1);
 	}
 
+	public void testencodingISO() {
+		StringBuffer bufferISO = FileContent
+				.getFileContent(createFile("data/template/FileContentEncodingISO_8859_1.mtl"));
+
+		try {
+			String refISO = new String(
+					"[comment FileContentEncodingISO_8859_1=ISO-8859-1 /]\n\n[module FileContentEncoding(http://www.eclipse.org/emf/2002/Ecore) /]\n\n[comment]\n	être, où, haïr, été\n[/comment]\n"
+							.getBytes(), "UTF-8");
+
+			assertEquals(new String(refISO.getBytes("ISO-8859-1"), "UTF-8"), bufferISO.toString());
+		} catch (UnsupportedEncodingException e) {
+			fail(e.getMessage());
+		}
+	}
+
+	public void testencodingUTF() {
+		StringBuffer bufferUTF = FileContent
+				.getFileContent(createFile("data/template/FileContentEncodingUTF_8.mtl"));
+		try {
+			String refUTF = new String(
+					"[comment encoding=UTF-8 /]\n\n[module FileContentEncodingUTF_8(http://www.eclipse.org/emf/2002/Ecore) /]\n\n[comment]\n	добър ден\n[/comment]\n"
+							.getBytes(), "UTF-8");
+
+			assertEquals(new String(refUTF.getBytes("UTF-8"), "UTF-8"), bufferUTF.toString());
+		} catch (UnsupportedEncodingException e) {
+			fail(e.getMessage());
+		}
+	}
+
+	private File createFile(String pathName) {
+		try {
+			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
+			return new File(fileLocation);
+		} catch (IOException e) {
+			throw new AssertionFailedError(e.getMessage());
+		} catch (NullPointerException e) {
+			/*
+			 * on the server the unit test fails with an NPE :S
+			 */
+			throw new AssertionFailedError(e.getMessage());
+		}
+	}
 }
