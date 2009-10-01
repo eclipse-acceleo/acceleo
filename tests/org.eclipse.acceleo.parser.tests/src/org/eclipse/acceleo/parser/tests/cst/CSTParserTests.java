@@ -149,6 +149,11 @@ public class CSTParserTests extends TestCase {
 		testParseTemplateHeader(buffer, 0);
 	}
 
+	public void testParseTemplateHeaderWithDuplicatedParameters() {
+		StringBuffer buffer = new StringBuffer("public class2Java(dup : Class, dup : Class)");
+		testParseTemplateHeader(buffer, 1);
+	}
+
 	public void testParseTemplateHeaderWithBadParameter() {
 		StringBuffer buffer = new StringBuffer("public class2Java(c1 : Class, c2 - Class)");
 		testParseTemplateHeader(buffer, 1);
