@@ -65,10 +65,10 @@ public class FileContentTests extends TestCase {
 
 		try {
 			String refISO = new String(
-					"[comment FileContentEncodingISO_8859_1=ISO-8859-1 /]\n\n[module FileContentEncoding(http://www.eclipse.org/emf/2002/Ecore) /]\n\n[comment]\n	être, où, haïr, été\n[/comment]\n"
-							.getBytes(), "UTF-8");
+					"[comment encoding=ISO-8859-1 /]\n\n[module FileContentEncoding(http://www.eclipse.org/emf/2002/Ecore) /]\n\n[comment]\n	être, où, haïr, été\n[/comment]\n"
+							.getBytes("UTF-8"), "UTF-8");
 
-			assertEquals(new String(refISO.getBytes("ISO-8859-1"), "UTF-8"), bufferISO.toString());
+			assertEquals(refISO, bufferISO.toString());
 		} catch (UnsupportedEncodingException e) {
 			fail(e.getMessage());
 		}
@@ -80,9 +80,9 @@ public class FileContentTests extends TestCase {
 		try {
 			String refUTF = new String(
 					"[comment encoding=UTF-8 /]\n\n[module FileContentEncodingUTF_8(http://www.eclipse.org/emf/2002/Ecore) /]\n\n[comment]\n	добър ден\n[/comment]\n"
-							.getBytes(), "UTF-8");
+							.getBytes("UTF-8"), "UTF-8");
 
-			assertEquals(new String(refUTF.getBytes("UTF-8"), "UTF-8"), bufferUTF.toString());
+			assertEquals(refUTF, bufferUTF.toString());
 		} catch (UnsupportedEncodingException e) {
 			fail(e.getMessage());
 		}
