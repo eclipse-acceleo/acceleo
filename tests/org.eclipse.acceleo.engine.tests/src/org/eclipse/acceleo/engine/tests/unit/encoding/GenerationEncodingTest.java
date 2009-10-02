@@ -129,7 +129,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
-	public void testEvaluateWrongEncodignTemplate() throws IOException {
+	public void testEvaluateWrongEncodingTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("WrongEncoding")); //$NON-NLS-1$
 
 		cleanGenerationRoot();
