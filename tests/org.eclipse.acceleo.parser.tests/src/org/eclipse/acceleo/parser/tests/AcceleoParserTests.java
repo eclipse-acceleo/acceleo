@@ -89,6 +89,30 @@ public class AcceleoParserTests extends TestCase {
 		}
 	}
 
+	public void testCompileRecursiveModuleExtend() {
+		List<File> files = new ArrayList<File>();
+		files.add(createFile("/data/template/RecursiveModule1.mtl"));
+		files.add(createFile("/data/template/RecursiveModule2.mtl"));
+		File problemFile = createFile("/data/template/RecursiveModule3.mtl");
+		files.add(problemFile);
+		ResourceSet resourceSet = new ResourceSetImpl();
+		List<URI> resources = new ArrayList<URI>();
+		resources.add(createFileURI("/data/template/RecursiveModule1.emtl"));
+		resources.add(createFileURI("/data/template/RecursiveModule2.emtl"));
+		resources.add(createFileURI("/data/template/RecursiveModule3.emtl"));
+		AcceleoParser parser = new AcceleoParser();
+		List<URI> dependencies = new ArrayList<URI>();
+		parser.parse(files, resources, dependencies);
+		for (File file : files) {
+			List<AcceleoParserProblem> problems = parser.getProblems(file).getList();
+			if (file != problemFile) {
+				assertEquals(0, problems.size());
+			} else {
+				assertEquals(1, problems.size());
+			}
+		}
+	}
+
 	public void testCompileSourceBufferLibrary2textAcceleo() {
 		File file = createFile("/data/template/mtlParserLibrary2text.mtl");
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
