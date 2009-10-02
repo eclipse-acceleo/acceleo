@@ -137,6 +137,12 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
 						oModule.getExtends().add(oExtendedModule);
+						if (isRecursiveExtends(oModule, oExtendedModule)) {
+							log(AcceleoParserMessages.getString(
+									"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
+									oModule.getName(), oExtendedModule.getName(), }), ioNext
+									.getStartPosition(), ioNext.getEndPosition());
+						}
 					}
 				}
 				factory.getOCL().addRecursivelyBehavioralFeaturesToScope(oModule);
@@ -153,6 +159,33 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Check for recursive extends.
+	 * 
+	 * @param module
+	 *            the module
+	 * @param extendedModule
+	 *            the extended module
+	 * @return true if there is a recursive extend
+	 */
+	private boolean isRecursiveExtends(org.eclipse.acceleo.model.mtl.Module module,
+			org.eclipse.acceleo.model.mtl.Module extendedModule) {
+		boolean res = false;
+		if (module != null && extendedModule != null) {
+			if (module == extendedModule) {
+				res = true;
+			} else {
+				for (org.eclipse.acceleo.model.mtl.Module extended : extendedModule.getExtends()) {
+					if (isRecursiveExtends(module, extended)) {
+						res = true;
+						break;
+					}
+				}
+			}
+		}
+		return res;
 	}
 
 	/**
