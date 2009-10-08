@@ -71,7 +71,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	protected AcceleoEnvironment(
 			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
 		super(parent);
-		addAdditionalOperations();
+		if (!(parent instanceof AcceleoEnvironment)) {
+			addAdditionalOperations();
+		}
 	}
 
 	/**
