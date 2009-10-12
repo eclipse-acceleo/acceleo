@@ -115,14 +115,20 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		public EClassifier getResultType(Object problemObject, EClassifier owner, EOperation operation,
 				List<? extends TypedElement<EClassifier>> args) {
 			EClassifier type = super.getResultType(problemObject, owner, operation, args);
-			if (args.size() > 0 && operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
-				final String operationName = operation.getName();
-				final boolean isParameterizedOperation = AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS
-						.equals(operationName)
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName)
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName)
+			if (args.size() == 0 || operation.getEAnnotation("MTL non-standard") == null) { //$NON-NLS-1$
+				return type;
+			}
+			final String operationName = operation.getName();
+			if (args.get(0) instanceof TypeExp) {
+				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS
+						.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName);
-				if (isParameterizedOperation && args.get(0) instanceof TypeExp) {
+				if (isParameterizedCollection) {
 					final SequenceType alteredSequence = (SequenceType)EcoreUtil.copy(type);
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
 					Set<EClassifier> altered = alteredTypes.get(type);
@@ -132,6 +138,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					}
 					altered.add(alteredSequence);
 					type = alteredSequence;
+				} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)) {
+					type = ((TypeExp)args.get(0)).getReferredType();
 				}
 			}
 			return type;
