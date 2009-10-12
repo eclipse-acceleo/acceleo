@@ -1004,7 +1004,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param debugInput
 	 *            Current debug input
 	 * @param result
-	 *            Result of the evaluation from which we detected the operation cancelation.
+	 *            Result of the evaluation from which we detected the operation canceling.
 	 */
 	private void cancel(ASTFragment astFragment, EObject debugInput, Object result) {
 		// #276667 "debug" can be null
