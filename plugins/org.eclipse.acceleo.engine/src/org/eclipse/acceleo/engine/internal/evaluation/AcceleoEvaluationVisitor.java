@@ -96,6 +96,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** This instance will be used as the cached result of a query when it is null. */
 	private static final Object NULL_QUERY_RESULT = new Object();
 
+	/** We'll use this to store the value of the iteration count. */
+	private static final String ITERATION_COUNT_VARIABLE_NAME = "i"; //$NON-NLS-1$
+
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
@@ -277,7 +280,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			oldLoopVariableValue = getEvaluationEnvironment().getValueOf(loopVariable.getName());
 		}
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-
+		final Object oldIterationCount = getEvaluationEnvironment().getValueOf(ITERATION_COUNT_VARIABLE_NAME);
 		if (isUndefined(iteration)) {
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.NullForIteration", forBlock.getStartPosition(), //$NON-NLS-1$
@@ -286,7 +289,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			exception.fillInStackTrace();
 			throw exception;
 		}
-
 		// There is a possibility for the for to have a single element in its iteration
 		final Collection<Object> actualIteration;
 		if (iteration instanceof Collection<?>) {
@@ -295,7 +297,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			actualIteration = new ArrayList<Object>();
 			((List<Object>)actualIteration).add(iteration);
 		}
-
 		if (actualIteration.size() > 0 && forBlock.getBefore() != null) {
 			visitExpression((OCLExpression)forBlock.getBefore());
 		}
@@ -305,7 +306,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// This will be used to generate separators only if the iterator had a previous element
 		boolean hasPrevious = false;
 		String implicitContextVariableName = null;
+		// The iteration count will start at 1 to match with OCL
+		int count = 0;
 		while (contentIterator.hasNext()) {
+			count++;
+			getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, count);
 			final Object o = contentIterator.next();
 			// null typed loop variables will be the same as "Object" typed
 			// We could have no loop variables. In such cases, "self" will do
@@ -331,7 +336,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			// [255379] sets new value of "self" to change context
 			getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, o);
-
 			final Object guardValue;
 			if (forBlock.getGuard() == null) {
 				guardValue = Boolean.TRUE;
@@ -377,6 +381,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		getEvaluationEnvironment().remove(implicitContextVariableName);
 		currentContextIndex--;
+		if (oldIterationCount != null) {
+			getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, oldIterationCount);
+		} else {
+			getEvaluationEnvironment().remove(ITERATION_COUNT_VARIABLE_NAME);
+		}
 		// [255379] restore context
 		getEvaluationEnvironment().replace(SELF_VARIABLE_NAME, currentSelf);
 	}
