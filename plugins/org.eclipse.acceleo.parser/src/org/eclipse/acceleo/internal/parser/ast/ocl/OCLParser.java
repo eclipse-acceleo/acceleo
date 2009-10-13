@@ -710,6 +710,15 @@ public class OCLParser {
 	}
 
 	/**
+	 * Returns the standard library's integer classifier.
+	 * 
+	 * @return The standard library's integer classifier.
+	 */
+	public EClassifier getIntegerType() {
+		return environment.getOCLStandardLibrary().getInteger();
+	}
+
+	/**
 	 * Parse an OCL Expression and return the corresponding instance. Make sure to declare all the needed
 	 * contextual elements (variables or contexts) before trying to parse.
 	 * 

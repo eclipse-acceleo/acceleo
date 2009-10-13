@@ -751,6 +751,12 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			if (context != null) {
 				factory.getOCL().pushContext(context);
 			}
+			// Implicit "i" variable for the iteration count
+			org.eclipse.ocl.ecore.Variable iterationCount = org.eclipse.ocl.ecore.EcoreFactory.eINSTANCE
+					.createVariable();
+			iterationCount.setName("i"); //$NON-NLS-1$
+			iterationCount.setType(factory.getOCL().getIntegerType());
+			factory.getOCL().addVariableToScope(iterationCount);
 			try {
 				org.eclipse.acceleo.parser.cst.ModelExpression iGuard = iForBlock.getGuard();
 				org.eclipse.ocl.ecore.OCLExpression oGuard = factory.getOrCreateOCLExpression(iGuard);
