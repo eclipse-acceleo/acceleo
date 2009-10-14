@@ -172,9 +172,8 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 	public void createControl(Composite parent) {
 		treeViewer = new AcceleoOutlineTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer.addSelectionChangedListener(this);
-		TreeViewer viewer = getTreeViewer();
-		viewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
-		viewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
+		treeViewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
+		treeViewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
 		setInput(editor.getContent().getCST());
 	}
 
