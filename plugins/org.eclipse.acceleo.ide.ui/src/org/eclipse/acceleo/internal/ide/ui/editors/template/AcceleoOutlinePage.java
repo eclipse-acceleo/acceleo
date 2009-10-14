@@ -142,7 +142,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 	public AcceleoOutlinePage(AcceleoEditor editor) {
 		super();
 		this.editor = editor;
-		outlinePageItemProvider = new AcceleoOutlinePageItemProviderAdapterFactory(editor);
+		outlinePageItemProvider = new AcceleoOutlinePageItemProviderAdapterFactory();
 		List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
 		factories.add(outlinePageItemProvider);
 		factories.add(new ResourceItemProviderAdapterFactory());

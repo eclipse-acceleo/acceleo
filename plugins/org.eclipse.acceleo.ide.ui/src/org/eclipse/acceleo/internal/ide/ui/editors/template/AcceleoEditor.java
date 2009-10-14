@@ -18,6 +18,9 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -33,8 +36,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.information.IInformationPresenter;
+import org.eclipse.jface.text.information.IInformationProvider;
+import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -47,8 +56,10 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -409,6 +420,42 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	}
 
 	/**
+	 * This will create the quick outline presenter and install it on this editor.
+	 * 
+	 * @return The quick outline presenter.
+	 */
+	public IInformationPresenter getQuickOutlinePresenter() {
+		InformationPresenter informationPresenter = new InformationPresenter(
+				new IInformationControlCreator() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see org.eclipse.jface.text.IInformationControlCreator#createInformationControl(org.eclipse.swt.widgets.Shell)
+					 */
+					public IInformationControl createInformationControl(Shell parent) {
+						return new QuickOutlineControl(parent, SWT.RESIZE, AcceleoEditor.this);
+					}
+				});
+		informationPresenter.install(getSourceViewer());
+		IInformationProvider provider = new QuickOutlineInformationProvider(this);
+		informationPresenter.setInformationProvider(provider, IDocument.DEFAULT_CONTENT_TYPE);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_BLOCK);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_COMMENT);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_FOR);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_IF);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_LET);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_MACRO);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_PROTECTED_AREA);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_QUERY);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_TEMPLATE);
+		final int minimalWidth = 50;
+		final int minimalHeight = 30;
+		informationPresenter.setSizeConstraints(minimalWidth, minimalHeight, true, false);
+		informationPresenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);
+		return informationPresenter;
+	}
+
+	/**
 	 * Sets the highlighted range of this text editor to the specified region.
 	 * 
 	 * @param begin
@@ -416,7 +463,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * @param end
 	 *            is the ending index
 	 */
-	protected void selectRange(int begin, int end) {
+	public void selectRange(int begin, int end) {
 		if (begin > -1 && end >= begin) {
 			ISourceViewer viewer = getSourceViewer();
 			StyledText widget = viewer.getTextWidget();

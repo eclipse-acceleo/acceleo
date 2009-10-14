@@ -172,9 +172,9 @@ Contributors:
            definitionId="org.eclipse.acceleo.ide.ui.open.declaration"
            enablesFor="*"
            id="org.eclipse.acceleo.ide.ui.editors.template.actions.open.declaration"
-           label="Open Declaration"
+           label="%acceleoEditorCommandsOpenDeclaration.Label"
            retarget="false"
-           tooltip="Open Declaration">
+           tooltip="%acceleoEditorCommandsOpenDeclaration.Tooltip">
         </action>
         <action
            allowLabelUpdate="true"
@@ -192,33 +192,49 @@ Contributors:
            definitionId="org.eclipse.acceleo.ide.ui.comment"
            enablesFor="*"
            id="org.eclipse.acceleo.ide.ui.editors.template.actions.comment"
-           label="Comment"
+           label="%acceleoEditorCommandsComment.Label"
            retarget="false"
-           tooltip="Comment">
+           tooltip="%acceleoEditorCommandsComment.Tooltip">
+        </action>
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.QuickOutlineAction"
+           definitionId="org.eclipse.acceleo.ide.ui.show.outline"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.show.outline"
+           label="%acceleoEditorCommandsComment.Label"
+           retarget="false"
+           tooltip="%acceleoEditorCommandsComment.Tooltip">
         </action>
       </actionSet>
    </extension>
 
    <extension
          point="org.eclipse.ui.commands">
-          <command
-                categoryId="org.eclipse.ui.category.navigate"
-                description="Open Declaration"
-                id="org.eclipse.acceleo.ide.ui.open.declaration"
-                name="Open Declaration">
-         </command>
-          <command
-                categoryId="org.eclipse.ui.category.navigate"
-                description="%acceleoEditorCommandsReferencesSearch.Description"
-                id="org.eclipse.acceleo.ide.ui.search.references"
-                name="%acceleoEditorCommandsReferencesSearch.Name">
-         </command>
-          <command
-                categoryId="org.eclipse.ui.category.navigate"
-                description="Comment"
-                id="org.eclipse.acceleo.ide.ui.comment"
-                name="Comment">
-      </command>
+		<command
+				categoryId="org.eclipse.ui.category.navigate"
+				description="%acceleoEditorCommandsOpenDeclaration.Description"
+				id="org.eclipse.acceleo.ide.ui.open.declaration"
+				name="%acceleoEditorCommandsOpenDeclaration.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.navigate"
+				description="%acceleoEditorCommandsReferencesSearch.Description"
+				id="org.eclipse.acceleo.ide.ui.search.references"
+				name="%acceleoEditorCommandsReferencesSearch.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.navigate"
+				description="%acceleoEditorCommandsComment.Description"
+				id="org.eclipse.acceleo.ide.ui.comment"
+				name="%acceleoEditorCommandsComment.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.navigate"
+				description="%acceleoEditorCommandsShowOutline.Description"
+				id="org.eclipse.acceleo.ide.ui.show.outline"
+				name="%acceleoEditorCommandsShowOutline.Name">
+		</command>
    </extension>
 
    <extension
@@ -232,26 +248,36 @@ Contributors:
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
+         <!--
+         	linux:  M1=CTRL,    M2=SHIFT, M3=ALT, M4=-
+         	win32:  M1=CTRL,    M2=SHIFT, M3=ALT, M4=-
+            carbon: M1=COMMAND, M2=SHIFT, M3=ALT, M4=CTRL
+         -->
                <key
+               		 sequence="F3"
                      commandId="org.eclipse.acceleo.ide.ui.open.declaration"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
-                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-                     sequence="F3"/>
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
                <key
+               		 sequence="M1+M2+G"
                      commandId="org.eclipse.acceleo.ide.ui.search.references"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
-                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-                     sequence="M1+M2+G"/>
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
 			   <key
+			    	 sequence="M1+M2+C"
                      commandId="org.eclipse.acceleo.ide.ui.comment"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
-                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-                     sequence="M1+M2+C"/>       
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
 			   <key
+			    	 sequence="M1+/"
                      commandId="org.eclipse.acceleo.ide.ui.comment"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
-                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-                     sequence="M1+/"/>                                   
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+               <key
+               		 sequence="M1+O"
+                     commandId="org.eclipse.acceleo.ide.ui.show.outline"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
 
     <extension

@@ -26,18 +26,9 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 public class AcceleoOutlinePageItemProviderAdapterFactory extends ReflectiveItemProviderAdapterFactory {
 
 	/**
-	 * The template editor.
-	 */
-	protected AcceleoEditor editor;
-
-	/**
 	 * Constructor.
-	 * 
-	 * @param editor
-	 *            is the editor
 	 */
-	public AcceleoOutlinePageItemProviderAdapterFactory(AcceleoEditor editor) {
-		this.editor = editor;
+	public AcceleoOutlinePageItemProviderAdapterFactory() {
 		reflectiveItemProviderAdapter = createReflectiveItemProvider();
 		supportedTypes.add(IStructuredItemContentProvider.class);
 		supportedTypes.add(ITreeItemContentProvider.class);
@@ -45,15 +36,6 @@ public class AcceleoOutlinePageItemProviderAdapterFactory extends ReflectiveItem
 		supportedTypes.add(IEditingDomainItemProvider.class);
 		supportedTypes.add(IItemLabelProvider.class);
 		supportedTypes.add(ITableItemLabelProvider.class);
-	}
-
-	/**
-	 * Gets template editor.
-	 * 
-	 * @return the editor
-	 */
-	public AcceleoEditor getSourceEditor() {
-		return editor;
 	}
 
 	/**
