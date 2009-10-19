@@ -280,7 +280,7 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 	 */
 	protected void createTreeViewer(Composite parent) {
 		filteredTree = new FilteredTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL,
-				new QuickOutlinePatternFilter(), true);
+				new QuickOutlinePatternFilter());
 		treeViewer = filteredTree.getViewer();
 		final Tree tree = treeViewer.getTree();
 
