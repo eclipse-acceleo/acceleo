@@ -778,6 +778,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (context != null) {
 					factory.getOCL().popContext();
 				}
+				factory.getOCL().removeVariableFromScope(iterationCount);
 			}
 		}
 	}
