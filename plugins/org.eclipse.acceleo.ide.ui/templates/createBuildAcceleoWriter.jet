@@ -4,21 +4,14 @@
  imports = ""
 %>
 <%
- String projectName = (String) ((Object[])argument)[0];
- String outputFolder = (String) ((Object[])argument)[1];
+// String projectName = (String) ((Object[])argument)[0];
+// String outputFolder = (String) ((Object[])argument)[1];
 %>
 <!-- ===================================================================== -->
 <!-- Custom targets.                                                       -->
 <!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
 <!-- ===================================================================== -->
-<project name="Build Acceleo Module" default="noDefault">
-
-	<!-- ================================================================= -->
-	<!-- Default target                                                    -->
-	<!-- ================================================================= -->
-	<target name="noDefault">
-		<echo message="This file must be called with explicit targets" />
-	</target>
+<project name="Build Acceleo Module" default="run">
 
 	<!-- ================================================================= -->
 	<!-- Steps to do after the target gather.bin.parts                     -->
@@ -26,11 +19,9 @@
 	<!--   build.result.folder - folder containing the build results       -->
 	<!--   target.folder - destination folder                              -->
 	<!-- ================================================================= -->
+
 	<target name="post.gather.bin.parts">
-		<eclipse.incrementalBuild 
-		  project="<%=projectName%>"
-		  kind="full" />
-		<copydir dest="${target.folder}" src="${basedir}/<%=outputFolder%>"></copydir>
+		<acceleoCompiler sourceFolders="${target.folder}"/>
 	</target>
 
 </project>
