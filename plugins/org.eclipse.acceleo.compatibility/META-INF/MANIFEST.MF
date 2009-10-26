@@ -31,4 +31,4 @@ Export-Package: org.eclipse.acceleo.compatibility.model.mt,
  org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core;x-friends:="org.eclipse.acceleo.compatibility.ui,org.eclipse.acceleo.compatibility.tests",
  org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions;x-friends:="org.eclipse.acceleo.compatibility.tests",
  org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements;x-friends:="org.eclipse.acceleo.compatibility.tests",
- org.eclipse.acceleo.internal.compatibility.parser.mt.common;x-friends:="org.eclipse.acceleo.compatibility.ui"
+ org.eclipse.acceleo.internal.compatibility.parser.mt.common;x-friends:="org.eclipse.acceleo.compatibility.ui,org.eclipse.acceleo.compatibility.tests"
