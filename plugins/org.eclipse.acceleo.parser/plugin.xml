@@ -21,4 +21,8 @@ Contributors:
             genModel="model/MTLCST.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.ant.core.antTasks">
+      <antTask name="acceleoCompiler" class="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" library="lib/acceleoCompiler.jar"/>
+   </extension> 
+
 </plugin>
