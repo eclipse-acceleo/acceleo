@@ -22,6 +22,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("nls")
 public class TextParserTest extends AbstractAcceleoTest {
 
 	public void testEmptyString() {

@@ -34,6 +34,7 @@ import org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.statements.Tex
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
+@SuppressWarnings("nls")
 public class ParserTests extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
@@ -46,8 +47,7 @@ public class ParserTests extends TestCase {
 	}
 
 	/**
-	 * Creates the {@link junit.framework.TestSuite TestSuite} for all the
-	 * tests.
+	 * Creates the {@link junit.framework.TestSuite TestSuite} for all the tests.
 	 * 
 	 * @return The testsuite containing all the tests
 	 */

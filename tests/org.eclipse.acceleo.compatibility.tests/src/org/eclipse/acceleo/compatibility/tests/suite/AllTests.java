@@ -17,6 +17,7 @@ import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
 
+@SuppressWarnings("nls")
 public class AllTests extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
