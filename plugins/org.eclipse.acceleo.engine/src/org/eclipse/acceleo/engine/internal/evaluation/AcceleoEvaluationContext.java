@@ -56,12 +56,6 @@ public final class AcceleoEvaluationContext {
 	/** Holds the generation preview in the form of mappings filePath => fileContent. */
 	protected final Map<String, Writer> generationPreview = new HashMap<String, Writer>();
 
-	/**
-	 * Blocks' init sections might change existing variables which will need to be restored afterwards. This
-	 * will keep the altered variables values.
-	 */
-	private final LinkedList<Map<String, Object>> blockVariables = new LinkedList<Map<String, Object>>();
-
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
 
@@ -215,7 +209,6 @@ public final class AcceleoEvaluationContext {
 			}
 		} finally {
 			generationPreview.clear();
-			blockVariables.clear();
 			listeners.clear();
 			userCodeBlocks.clear();
 			writers.clear();
@@ -226,22 +219,29 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
+	 * Returns the file that would be created for the given filePath according to the current generation root.
+	 * 
+	 * @param filePath
+	 *            path of the file that will be generated.
+	 * @return The File that would be created for the given filePath.
+	 */
+	public File getFileFor(String filePath) {
+		final File generatedFile;
+		if (filePath.startsWith("file:")) { //$NON-NLS-1$
+			generatedFile = new File(filePath);
+		} else {
+			generatedFile = new File(generationRoot, filePath);
+		}
+		return generatedFile;
+	}
+
+	/**
 	 * Returns the preview of the generation handled by this context.
 	 * 
 	 * @return The generation preview.
 	 */
 	public Map<String, String> getGenerationPreview() {
 		return new HashMap<String, String>(strategy.preparePreview(generationPreview));
-	}
-
-	/**
-	 * This will return the last variables that were added to the stack so that they can be restored in the
-	 * evaluation environment. Note that calling this method removes the returned variables from the stack.
-	 * 
-	 * @return The variables that were last saved.
-	 */
-	public Map<String, Object> getLastVariablesValues() {
-		return blockVariables.removeLast();
 	}
 
 	/**
@@ -322,6 +322,62 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
+	 * Create a new writer for the file located at the given path under <tt>generationRoot</tt> and appends it
+	 * to the end of the stack.
+	 * <p>
+	 * &quot;file&quot; schemes are handled as absolute paths and will ignore the <tt>generationRoot</tt>.
+	 * </p>
+	 * 
+	 * @param generatedFile
+	 *            File that is to be created.
+	 * @param fileBlock
+	 *            The file block which asked for this context. Only used for generation events.
+	 * @param source
+	 *            The source EObject for this file block. Only used for generation events.
+	 * @param appendMode
+	 *            If <code>false</code>, the file will be replaced by a new one.
+	 * @param charset
+	 *            Charset of the target file.
+	 * @throws AcceleoEvaluationException
+	 *             Thrown if the file cannot be created.
+	 */
+	public void openNested(File generatedFile, Block fileBlock, EObject source, boolean appendMode,
+			String charset) throws AcceleoEvaluationException {
+		fireFilePathComputed(new AcceleoTextGenerationEvent(generatedFile.getPath(), fileBlock, source));
+		try {
+			if (writers.size() > 0) {
+				writers.getLast().flush();
+			}
+			final Map<String, String> savedCodeBlocks = new HashMap<String, String>();
+			if (generatedFile.exists()) {
+				savedCodeBlocks.putAll(saveProtectedAreas(generatedFile));
+			}
+			// If the current preview contains overlapping blocks, give them priority
+			if (generationPreview.containsKey(generatedFile.getPath())) {
+				savedCodeBlocks.putAll(saveProtectedAreas(generationPreview.get(generatedFile.getPath())
+						.toString()));
+			}
+			// We checked for JMerge tags when saving protected areas. we'll use this information here.
+			final AbstractAcceleoWriter writer;
+			if (charset != null) {
+				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
+						.get(generatedFile.getPath()), appendMode, hasJMergeTag, charset);
+			} else {
+				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
+						.get(generatedFile.getPath()), appendMode, hasJMergeTag);
+			}
+			generationPreview.put(generatedFile.getPath(), writer);
+			// reset the jmerge state for the following file blocks
+			hasJMergeTag = false;
+			userCodeBlocks.put(writer, savedCodeBlocks);
+			writers.add(writer);
+		} catch (final IOException e) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FileCreationError", generatedFile.getPath()), e); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * Create a new writer directed at the given {@link OutputStream}. This is mainly used for fileBlocks with
 	 * "stdout" URI.
 	 * 
@@ -361,80 +417,7 @@ public final class AcceleoEvaluationContext {
 	 */
 	public void openNested(String filePath, Block fileBlock, EObject source, boolean appendMode)
 			throws AcceleoEvaluationException {
-		openNested(filePath, fileBlock, source, appendMode, null);
-	}
-
-	/**
-	 * Create a new writer for the file located at the given path under <tt>generationRoot</tt> and appends it
-	 * to the end of the stack.
-	 * <p>
-	 * &quot;file&quot; schemes are handled as absolute paths and will ignore the <tt>generationRoot</tt>.
-	 * </p>
-	 * 
-	 * @param filePath
-	 *            Path of the file around which we need a FileWriter. The file will be created under the
-	 *            generationRoot if needed.
-	 * @param fileBlock
-	 *            The file block which asked for this context. Only used for generation events.
-	 * @param source
-	 *            The source EObject for this file block. Only used for generation events.
-	 * @param appendMode
-	 *            If <code>false</code>, the file will be replaced by a new one.
-	 * @param charset
-	 *            Charset of the target file.
-	 * @throws AcceleoEvaluationException
-	 *             Thrown if the file cannot be created.
-	 */
-	public void openNested(String filePath, Block fileBlock, EObject source, boolean appendMode,
-			String charset) throws AcceleoEvaluationException {
-		final File generatedFile;
-		if (filePath.startsWith("file:")) { //$NON-NLS-1$
-			generatedFile = new File(filePath);
-		} else {
-			generatedFile = new File(generationRoot, filePath);
-		}
-		fireFilePathComputed(new AcceleoTextGenerationEvent(generatedFile.getPath(), fileBlock, source));
-		try {
-			if (writers.size() > 0) {
-				writers.getLast().flush();
-			}
-			final Map<String, String> savedCodeBlocks = new HashMap<String, String>();
-			if (generatedFile.exists()) {
-				savedCodeBlocks.putAll(saveProtectedAreas(generatedFile));
-			}
-			// If the current preview contains overlapping blocks, give them priority
-			if (generationPreview.containsKey(generatedFile.getPath())) {
-				savedCodeBlocks.putAll(saveProtectedAreas(generationPreview.get(generatedFile.getPath())
-						.toString()));
-			}
-			// We checked for JMerge tags when saving protected areas. we'll use this information here.
-			final AbstractAcceleoWriter writer;
-			if (charset != null) {
-				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
-						.get(generatedFile.getPath()), appendMode, hasJMergeTag, charset);
-			} else {
-				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
-						.get(generatedFile.getPath()), appendMode, hasJMergeTag);
-			}
-			generationPreview.put(generatedFile.getPath(), writer);
-			// reset the jmerge state for the following file blocks
-			hasJMergeTag = false;
-			userCodeBlocks.put(writer, savedCodeBlocks);
-			writers.add(writer);
-		} catch (final IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationContext.FileCreationError", generatedFile.getPath()), e); //$NON-NLS-1$
-		}
-	}
-
-	/**
-	 * This will save the given variables in the stack.
-	 * 
-	 * @param vars
-	 *            Variables which values will need to be restored after evaluation.
-	 */
-	public void saveVariableValues(Map<String, Object> vars) {
-		blockVariables.add(vars);
+		openNested(getFileFor(filePath), fileBlock, source, appendMode, null);
 	}
 
 	/**

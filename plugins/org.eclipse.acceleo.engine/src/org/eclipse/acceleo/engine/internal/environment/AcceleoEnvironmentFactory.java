@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.AbstractAcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -37,7 +38,6 @@ import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.EvaluationVisitor;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
-import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.ecore.SendSignalAction;
 
 /**
@@ -45,12 +45,12 @@ import org.eclipse.ocl.ecore.SendSignalAction;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
+public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory {
 	/**
 	 * Generation context for this factory. This will be shared by both the evaluation environment and
 	 * visitor.
 	 */
-	private final AcceleoEvaluationContext context;
+	protected final AcceleoEvaluationContext context;
 
 	/** Module for which this environment factory has been created. */
 	private final Module module;
@@ -92,6 +92,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	public Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> createEnvironment() {
 		AcceleoEnvironment result = new AcceleoEnvironment(getEPackageRegistry());
 		result.setFactory(this);
+		result.restoreBrokenEnvironmentPackages(module.eResource());
 		return result;
 	}
 
@@ -110,6 +111,7 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 
 		AcceleoEnvironment result = new AcceleoEnvironment(getEPackageRegistry());
 		result.setFactory(this);
+		result.restoreBrokenEnvironmentPackages(module.eResource());
 		return result;
 	}
 
@@ -150,26 +152,32 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	}
 
 	/**
-	 * This can be used to dispose of all resources loaded from this factory.
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.generation.AbstractAcceleoEnvironmentFactory#dispose()
 	 */
+	@Override
 	public void dispose() {
 		context.dispose();
 		properties.clear();
 	}
 
 	/**
-	 * Returns the preview of the generation handled by this factory's generation context.
+	 * {@inheritDoc}
 	 * 
-	 * @return The preview of the generation handled by this factory's generation context.
+	 * @see org.eclipse.acceleo.engine.generation.AbstractAcceleoEnvironmentFactory#getEvaluationPreview()
 	 */
+	@Override
 	public Map<String, String> getEvaluationPreview() {
 		return context.getGenerationPreview();
 	}
 
 	/**
-	 * This will be called by the engine once the generation has ended. It will be used internally to call for
-	 * the current strategy's global handlers.
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.generation.AbstractAcceleoEnvironmentFactory#hookGenerationEnd()
 	 */
+	@Override
 	public void hookGenerationEnd() {
 		context.hookGenerationEnd();
 	}

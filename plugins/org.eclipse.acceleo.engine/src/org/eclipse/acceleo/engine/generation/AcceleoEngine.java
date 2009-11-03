@@ -28,7 +28,6 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Template;
@@ -48,16 +47,16 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * This will contain the custom properties for this engine, properties that will always take precedence
 	 * over those contained within {@link #loadedProperties} no matter what.
 	 */
-	private final Properties customProperties = new Properties();
+	protected final Properties customProperties = new Properties();
 
 	/**
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
 	 */
-	private final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
+	protected final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
 
 	/** This will hold the list of properties accessible from the generation context for this engine instance. */
-	private final Map<File, Properties> loadedProperties = new LinkedHashMap<File, Properties>();
+	protected final Map<File, Properties> loadedProperties = new LinkedHashMap<File, Properties>();
 
 	/** Holds a reference to the ocl instance. */
 	private OCL ocl;
@@ -123,14 +122,9 @@ public class AcceleoEngine implements IAcceleoEngine {
 		}
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
-		final List<IAcceleoTextGenerationListener> listenersCopy = new ArrayList<IAcceleoTextGenerationListener>(
-				listeners);
-		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
-		propertiesCopy.add(0, customProperties);
-		AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, (Module)template
-				.eContainer(), listenersCopy, propertiesCopy, strategy, monitor);
+		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(generationRoot, (Module)template
+				.eContainer(), strategy, monitor);
 		ocl = OCL.newInstance(factory);
-		((AcceleoEnvironment)ocl.getEnvironment()).restoreBrokenEnvironmentPackages(template.eResource());
 
 		try {
 			doEvaluate(template, arguments);
@@ -191,6 +185,30 @@ public class AcceleoEngine implements IAcceleoEngine {
 		listeners.clear();
 		loadedProperties.clear();
 		customProperties.clear();
+	}
+
+	/**
+	 * This will be used to create a clean environment for each generation.
+	 * 
+	 * @param generationRoot
+	 *            Root of the generation for which this environment will be used.
+	 * @param rootModule
+	 *            Root module of said generation.
+	 * @param strategy
+	 *            The generation strategy will control the creation of files for this generation.
+	 * @param monitor
+	 *            Process monitor which will be used to display information to the user about the current
+	 *            generation.
+	 * @return The created environment.
+	 */
+	protected AbstractAcceleoEnvironmentFactory createEnvironmentFactory(File generationRoot,
+			Module rootModule, IAcceleoGenerationStrategy strategy, Monitor monitor) {
+		final List<IAcceleoTextGenerationListener> listenersCopy = new ArrayList<IAcceleoTextGenerationListener>(
+				listeners);
+		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
+		propertiesCopy.add(0, customProperties);
+		return new AcceleoEnvironmentFactory(generationRoot, rootModule, listenersCopy, propertiesCopy,
+				strategy, monitor);
 	}
 
 	/**

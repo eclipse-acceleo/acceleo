@@ -28,10 +28,13 @@ import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoEngineRegistry;
+import org.eclipse.acceleo.engine.internal.utils.DefaultEngineSelector;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
@@ -51,7 +54,7 @@ public final class AcceleoService {
 			.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
 
 	/** The engine we'll use for all generations through this service instance. */
-	private final IAcceleoEngine generationEngine = new AcceleoEngine();
+	private IAcceleoEngine generationEngine;
 
 	/** The current generation strategy. */
 	private final IAcceleoGenerationStrategy strategy;
@@ -62,7 +65,7 @@ public final class AcceleoService {
 	 * @since 0.9
 	 */
 	public AcceleoService() {
-		strategy = new DefaultStrategy();
+		this(null);
 	}
 
 	/**
@@ -74,11 +77,12 @@ public final class AcceleoService {
 	 * @since 0.9
 	 */
 	public AcceleoService(IAcceleoGenerationStrategy generationStrategy) {
-		// if (generationStrategy == null) {
-		// strategy = new DefaultGenerationStrategy();
-		// } else {
-		strategy = generationStrategy;
-		// }
+		if (generationStrategy == null) {
+			strategy = new DefaultStrategy();
+		} else {
+			strategy = generationStrategy;
+		}
+		createEngine();
 	}
 
 	/**
@@ -662,6 +666,19 @@ public final class AcceleoService {
 		final Set<String> properties = new HashSet<String>();
 		properties.add(customPropertyKey);
 		generationEngine.removeCustomProperties(properties);
+	}
+
+	/**
+	 * Instantiates the engine that will be used by this service for the generation.
+	 */
+	private void createEngine() {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			generationEngine = new DefaultEngineSelector().selectEngine(AcceleoEngineRegistry
+					.getRegisteredCreators());
+		}
+		if (generationEngine == null) {
+			generationEngine = new AcceleoEngine();
+		}
 	}
 
 	/**

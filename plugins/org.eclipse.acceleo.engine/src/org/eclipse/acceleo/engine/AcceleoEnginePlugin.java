@@ -10,21 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoEngineRegistry;
+import org.eclipse.acceleo.engine.internal.utils.DynamicTemplatesRegistryListener;
+import org.eclipse.acceleo.engine.internal.utils.EngineRegistryListener;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -36,20 +31,14 @@ public class AcceleoEnginePlugin extends Plugin {
 	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.engine"; //$NON-NLS-1$
 
-	/** Name of the extension point's templates tag "path" atribute. */
-	private static final String DYNAMIC_TEMPLATES_ATTRIBUTE_PATH = "path"; //$NON-NLS-1$
-
-	/** Name of the extension point to parse for template locations. */
-	private static final String DYNAMIC_TEMPLATES_EXTENSION_POINT = "org.eclipse.acceleo.engine.dynamic.templates"; //$NON-NLS-1$
-
-	/** Name of the extension point's "templates" tag. */
-	private static final String DYNAMIC_TEMPLATES_TAG_TEMPLATES = "templates"; //$NON-NLS-1$
-
 	/** This plug-in's shared instance. */
 	private static AcceleoEnginePlugin plugin;
 
 	/** The registry listener that will be used to listen to dynamic templates changes. */
 	private final DynamicTemplatesRegistryListener dynamicTemplatesListener = new DynamicTemplatesRegistryListener();
+
+	/** The registry listener that will be used to listen to engine creator changes. */
+	private final EngineRegistryListener engineCreatorListener = new EngineRegistryListener();
 
 	/**
 	 * Default constructor for the plugin.
@@ -166,8 +155,11 @@ public class AcceleoEnginePlugin extends Plugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.addListener(dynamicTemplatesListener, DYNAMIC_TEMPLATES_EXTENSION_POINT);
-		parseInitialContributions();
+		registry.addListener(dynamicTemplatesListener,
+				DynamicTemplatesRegistryListener.DYNAMIC_TEMPLATES_EXTENSION_POINT);
+		registry.addListener(engineCreatorListener, EngineRegistryListener.ENGINE_CREATORS_EXTENSION_POINT);
+		dynamicTemplatesListener.parseInitialContributions();
+		engineCreatorListener.parseInitialContributions();
 	}
 
 	/**
@@ -181,91 +173,8 @@ public class AcceleoEnginePlugin extends Plugin {
 		super.stop(context);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.removeListener(dynamicTemplatesListener);
+		registry.removeListener(engineCreatorListener);
 		AcceleoDynamicTemplatesEclipseUtil.clearRegistry();
-	}
-
-	/**
-	 * Though we have listeners on both provided extension points, there could have been contributions before
-	 * this plugin got started. This will parse them.
-	 */
-	private void parseInitialContributions() {
-		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-
-		// Dynamic templates
-		for (IExtension extension : registry.getExtensionPoint(DYNAMIC_TEMPLATES_EXTENSION_POINT)
-				.getExtensions()) {
-			final IConfigurationElement[] configElements = extension.getConfigurationElements();
-			final List<String> pathes = new ArrayList<String>(configElements.length);
-			for (IConfigurationElement elem : configElements) {
-				if (DYNAMIC_TEMPLATES_TAG_TEMPLATES.equals(elem.getName())) {
-					pathes.add(elem.getAttribute(DYNAMIC_TEMPLATES_ATTRIBUTE_PATH));
-				}
-			}
-			final Bundle bundle = Platform.getBundle(extension.getContributor().getName());
-			// If bundle is null, the bundle id is different than its name.
-			if (bundle != null) {
-				AcceleoDynamicTemplatesEclipseUtil.addExtendingBundle(bundle, pathes);
-			}
-		}
-	}
-
-	/**
-	 * This listener will allow us to be aware of contribution changes against the dynamic templates extension
-	 * point.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	final class DynamicTemplatesRegistryListener implements IRegistryEventListener {
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void added(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				final IConfigurationElement[] configElements = extension.getConfigurationElements();
-				final List<String> pathes = new ArrayList<String>(configElements.length);
-				for (IConfigurationElement elem : configElements) {
-					if (DYNAMIC_TEMPLATES_TAG_TEMPLATES.equals(elem.getName())) {
-						pathes.add(elem.getAttribute(DYNAMIC_TEMPLATES_ATTRIBUTE_PATH));
-					}
-				}
-				final Bundle bundle = Platform.getBundle(extension.getContributor().getName());
-				// If bundle is null, the bundle id is different than its name.
-				if (bundle != null) {
-					AcceleoDynamicTemplatesEclipseUtil.addExtendingBundle(bundle, pathes);
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void added(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this event
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void removed(IExtension[] extensions) {
-			/*
-			 * Etensions will be removed on the fly by AcceleoDynamicTemplatesEclipseUtil when trying to
-			 * access uninstalled bundles
-			 */
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void removed(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this event
-		}
+		AcceleoEngineRegistry.clearRegistry();
 	}
 }

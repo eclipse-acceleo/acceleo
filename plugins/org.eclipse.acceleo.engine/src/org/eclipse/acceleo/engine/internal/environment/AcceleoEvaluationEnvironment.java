@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -105,6 +106,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private final Map<String, StringTokenizer> tokenizers = new HashMap<String, StringTokenizer>();
 
 	/**
+	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
+	 * multiple bindings against the same variable name.
+	 */
+	private final Map<String, LinkedList<Object>> variableMap = new HashMap<String, LinkedList<Object>>();
+
+	/**
 	 * This constructor is needed by the factory.
 	 * 
 	 * @param parent
@@ -140,6 +147,21 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 		properties.addAll(props);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#add(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public void add(String name, Object value) {
+		LinkedList<Object> values = variableMap.get(name);
+		if (values == null) {
+			values = new LinkedList<Object>();
+			variableMap.put(name, values);
+		}
+		values.add(value);
 	}
 
 	/**
@@ -301,6 +323,17 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#clear()
+	 */
+	@Override
+	public void clear() {
+		super.clear();
+		variableMap.clear();
+	}
+
+	/**
 	 * This will return the List of all applicable candidates for the given template call with the given
 	 * arguments. These will be ordered as described on {@link #reorderCandidatesPriority(Module, Set)}.
 	 * 
@@ -370,6 +403,59 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			mostSpecific = mostSpecificTemplate(mostSpecific, candidateIterator.next(), arguments);
 		}
 		return mostSpecific;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#getValueOf(java.lang.String)
+	 */
+	@Override
+	public Object getValueOf(String name) {
+		if (variableMap.containsKey(name)) {
+			return variableMap.get(name).getLast();
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#remove(java.lang.String)
+	 */
+	@Override
+	public Object remove(String name) {
+		if (!variableMap.containsKey(name)) {
+			return null;
+		}
+		Object removedValue = variableMap.get(name).removeLast();
+		if (variableMap.get(name).size() == 0) {
+			variableMap.remove(name);
+		}
+		return removedValue;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#replace(java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public void replace(String name, Object value) {
+		if (variableMap.containsKey(name)) {
+			variableMap.get(name).removeLast();
+		}
+		add(name, value);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#toString()
+	 */
+	@Override
+	public String toString() {
+		return variableMap.toString();
 	}
 
 	/**
@@ -1230,17 +1316,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
-	 * Maps dynamic overriding templates for smoother polymorphic resolution.
-	 */
-	private void mapDynamicOverrides() {
-		Set<Module> dynamicModules = loadDynamicModules();
-
-		for (Module module : dynamicModules) {
-			mapDynamicModule(module, dynamicModules);
-		}
-	}
-
-	/**
 	 * Handles the mapping of a single dynamic module.
 	 * 
 	 * @param module
@@ -1309,6 +1384,17 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 		currentModules.add(module);
+	}
+
+	/**
+	 * Maps dynamic overriding templates for smoother polymorphic resolution.
+	 */
+	private void mapDynamicOverrides() {
+		Set<Module> dynamicModules = loadDynamicModules();
+
+		for (Module module : dynamicModules) {
+			mapDynamicModule(module, dynamicModules);
+		}
 	}
 
 	/**
