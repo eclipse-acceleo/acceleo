@@ -185,8 +185,19 @@ public final class AcceleoServicesEclipseUtil {
 			if (!workspaceRelative.equals(uri)) {
 				final String projectName = workspaceRelative.segment(1);
 				final IProject project = workspaceRoot.getProject(projectName);
-				if (project != null) {
+				if (project != null && project.exists()) {
 					instance = registerService(project, qualifiedName);
+				}
+			}
+			if (instance == null) {
+				URI platformURI = URI.createURI(AcceleoWorkspaceUtil.INSTANCE
+						.resolveAsPlatformPluginResource(uri.toString()));
+				if (platformURI != null) {
+					String bundleName = platformURI.segment(1);
+					Bundle bundle = Platform.getBundle(bundleName);
+					if (bundle != null) {
+						instance = registerService(bundle, qualifiedName);
+					}
 				}
 			}
 		}
