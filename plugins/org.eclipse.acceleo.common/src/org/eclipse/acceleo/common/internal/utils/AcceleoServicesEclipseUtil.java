@@ -190,20 +190,36 @@ public final class AcceleoServicesEclipseUtil {
 				}
 			}
 			if (instance == null) {
-				URI platformURI = URI.createURI(AcceleoWorkspaceUtil.INSTANCE
-						.resolveAsPlatformPluginResource(uri.toString()));
-				if (platformURI != null) {
-					String bundleName = platformURI.segment(1);
-					Bundle bundle = Platform.getBundle(bundleName);
-					if (bundle != null) {
-						instance = registerService(bundle, qualifiedName);
-					}
-				}
+				instance = workspaceSuffixWorkaround(uri, qualifiedName);
 			}
 		}
 		if (instance != null) {
 			REGISTERED_SERVICES.add(qualifiedName);
 		}
 		return instance;
+	}
+
+	/**
+	 * This is a workaround for workspace with same suffix.
+	 * 
+	 * @param uri
+	 *            URI of the module currently being evaluated. This will be used as a source to find the
+	 *            required service by looking through its dependencies.
+	 * @param qualifiedName
+	 *            Qualified name of the service we are looking for.
+	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
+	 */
+	private static Object workspaceSuffixWorkaround(URI uri, String qualifiedName) {
+		Object res = null;
+		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.INSTANCE.resolveAsPlatformPluginResource(uri
+				.toString()));
+		if (platformURI != null) {
+			String bundleName = platformURI.segment(1);
+			Bundle bundle = Platform.getBundle(bundleName);
+			if (bundle != null) {
+				res = registerService(bundle, qualifiedName);
+			}
+		}
+		return res;
 	}
 }
