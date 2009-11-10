@@ -33,7 +33,7 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toString&quot; standard Integer operation.
 	 * <p>
-	 * <b>toString( Integer i ) : String</b><br/> Converts the integer i to a string.
+	 * <b>toString( ) : String</b><br/> Converts the integer self to a string.
 	 * </p>
 	 * <p>
 	 * <b>Note</b> that this has been replaced by the
@@ -45,7 +45,7 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toString&quot; standard Real operation.
 	 * <p>
-	 * <b>toString( Real r ) : String</b><br/> Converts the real r to a string.
+	 * <b>toString( ) : String</b><br/> Converts the real self to a string.
 	 * </p>
 	 * <p>
 	 * <b>Note</b> that this has been replaced by the
