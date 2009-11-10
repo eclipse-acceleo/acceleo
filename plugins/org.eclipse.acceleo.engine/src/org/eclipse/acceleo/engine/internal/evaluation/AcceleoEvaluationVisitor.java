@@ -348,87 +348,91 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		String implicitContextVariableName = null;
 		// The iteration count will start at 1 to match with OCL
 		int count = 0;
-		while (contentIterator.hasNext()) {
-			count++;
-			if (count == 1) {
-				getEvaluationEnvironment().add(ITERATION_COUNT_VARIABLE_NAME, count);
-			} else {
-				getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, count);
-			}
-			final Object o = contentIterator.next();
-			// null typed loop variables will be the same as "Object" typed
-			// We could have no loop variables. In such cases, "self" will do
-			// TODO implicit loop variables (self) are non standard. provide a way to deactivate
-			if (loopVariable != null && loopVariable.getType() != null
-					&& !loopVariable.getType().isInstance(o)) {
-				if (!iterationCCE) {
-					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
-							"AcceleoEvaluationVisitor.IterationClassCast", ((Module)EcoreUtil //$NON-NLS-1$
-									.getRootContainer(forBlock)).getName(), forBlock.toString(), o.getClass()
-									.getName(), loopVariable.getType().getName()), false);
-					iterationCCE = true;
-				}
-				continue;
-			}
-			if (loopVariable != null) {
-				// Do not remove previous values of the loop variable if this is the first iteration.
+		try {
+			while (contentIterator.hasNext()) {
+				count++;
 				if (count == 1) {
-					getEvaluationEnvironment().add(loopVariable.getName(), o);
+					getEvaluationEnvironment().add(ITERATION_COUNT_VARIABLE_NAME, count);
 				} else {
-					getEvaluationEnvironment().replace(loopVariable.getName(), o);
+					getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, count);
 				}
-			}
-			if (implicitContextVariableName == null) {
-				implicitContextVariableName = addContextVariableFor(o);
-			} else {
-				getEvaluationEnvironment().replace(implicitContextVariableName, o);
-			}
-			// [255379] sets new value of "self" to change context
-			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, o);
-			final Object guardValue;
-			if (forBlock.getGuard() == null) {
-				guardValue = Boolean.TRUE;
-			} else {
-				fireGenerationEvent = false;
-				guardValue = visitExpression((OCLExpression)forBlock.getGuard());
-				fireGenerationEvent = fireEvents;
-			}
-			if (isInvalid(guardValue)) {
-				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-						AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
-								.getStartPosition(),
-								((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock, o,
-								forBlock.getGuard()));
-				exception.fillInStackTrace();
-				throw exception;
-			}
+				final Object o = contentIterator.next();
+				// null typed loop variables will be the same as "Object" typed
+				// We could have no loop variables. In such cases, "self" will do
+				// TODO implicit loop variables (self) are non standard. provide a way to deactivate
+				if (loopVariable != null && loopVariable.getType() != null
+						&& !loopVariable.getType().isInstance(o)) {
+					if (!iterationCCE) {
+						AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+								"AcceleoEvaluationVisitor.IterationClassCast", ((Module)EcoreUtil //$NON-NLS-1$
+										.getRootContainer(forBlock)).getName(), forBlock.toString(), o
+										.getClass().getName(), loopVariable.getType().getName()), false);
+						iterationCCE = true;
+					}
+					continue;
+				}
+				if (loopVariable != null) {
+					// Do not remove previous values of the loop variable if this is the first iteration.
+					if (count == 1) {
+						getEvaluationEnvironment().add(loopVariable.getName(), o);
+					} else {
+						getEvaluationEnvironment().replace(loopVariable.getName(), o);
+					}
+				}
+				if (implicitContextVariableName == null) {
+					implicitContextVariableName = addContextVariableFor(o);
+				} else {
+					getEvaluationEnvironment().replace(implicitContextVariableName, o);
+				}
+				// [255379] sets new value of "self" to change context
+				getEvaluationEnvironment().add(SELF_VARIABLE_NAME, o);
+				final Object guardValue;
+				if (forBlock.getGuard() == null) {
+					guardValue = Boolean.TRUE;
+				} else {
+					fireGenerationEvent = false;
+					guardValue = visitExpression((OCLExpression)forBlock.getGuard());
+					fireGenerationEvent = fireEvents;
+				}
+				if (isInvalid(guardValue)) {
+					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+							AcceleoEngineMessages.getString(UNDEFINED_GUARD_MESSAGE_KEY, forBlock
+									.getStartPosition(), ((Module)EcoreUtil.getRootContainer(forBlock))
+									.getName(), forBlock, o, forBlock.getGuard()));
+					exception.fillInStackTrace();
+					throw exception;
+				}
 
-			if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
-				if (forBlock.getEach() != null && hasPrevious) {
-					visitExpression((OCLExpression)forBlock.getEach());
-					/*
-					 * no need to reset the state of the "previous" boolean as all following do have a
-					 * previous item
-					 */
+				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
+					if (forBlock.getEach() != null && hasPrevious) {
+						visitExpression((OCLExpression)forBlock.getEach());
+						/*
+						 * no need to reset the state of the "previous" boolean as all following do have a
+						 * previous item
+						 */
+					}
+					for (final OCLExpression nested : forBlock.getBody()) {
+						visitExpression(nested);
+					}
 				}
-				for (final OCLExpression nested : forBlock.getBody()) {
-					visitExpression(nested);
-				}
+				hasPrevious = true;
 			}
-			hasPrevious = true;
+		} finally {
+			// We didn't set any variable if there was no iteration
+			if (count > 0) {
+				if (loopVariable != null) {
+					getEvaluationEnvironment().remove(loopVariable.getName());
+				}
+				getEvaluationEnvironment().remove(implicitContextVariableName);
+				currentContextIndex--;
+				getEvaluationEnvironment().remove(ITERATION_COUNT_VARIABLE_NAME);
+				// [255379] restore context
+				getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+			}
 		}
 		if (actualIteration.size() > 0 && forBlock.getAfter() != null) {
 			visitExpression((OCLExpression)forBlock.getAfter());
 		}
-
-		if (loopVariable != null) {
-			getEvaluationEnvironment().remove(loopVariable.getName());
-		}
-		getEvaluationEnvironment().remove(implicitContextVariableName);
-		currentContextIndex--;
-		getEvaluationEnvironment().remove(ITERATION_COUNT_VARIABLE_NAME);
-		// [255379] restore context
-		getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
 	}
 
 	/**
@@ -537,50 +541,54 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		// This will hold the name of the variable which value we replaced
 		String varName = null;
-		if (var.getType().isInstance(value)) {
-			varName = var.getName();
-			getEvaluationEnvironment().add(varName, value);
-			for (final OCLExpression nested : letBlock.getBody()) {
-				visitExpression(nested);
-			}
-		} else {
-			if (letBlock.getElseLet().size() > 0) {
-				// If one of the else lets has its "instanceof" condition evaluated to true, this will hold it
-				LetBlock temp = null;
-				for (final LetBlock elseLet : letBlock.getElseLet()) {
-					var = elseLet.getLetVariable();
-					fireGenerationEvent = false;
-					value = visitExpression((OCLExpression)var.getInitExpression());
-					fireGenerationEvent = fireEvents;
-					if (isInvalid(value)) {
-						final String rootName = ((Module)EcoreUtil.getRootContainer(elseLet)).getName();
-						final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-								AcceleoEngineMessages.getString(
-										"AcceleoEvaluationVisitor.UndefinedElseLetValue", elseLet //$NON-NLS-1$
-												.getStartPosition(), rootName, elseLet, currentSelf));
-						exception.fillInStackTrace();
-						throw exception;
-					}
-					if (var.getType().isInstance(value)) {
-						varName = var.getName();
-						getEvaluationEnvironment().add(var.getName(), value);
-						temp = elseLet;
-						break;
-					}
+		try {
+			if (var.getType().isInstance(value)) {
+				varName = var.getName();
+				getEvaluationEnvironment().add(varName, value);
+				for (final OCLExpression nested : letBlock.getBody()) {
+					visitExpression(nested);
 				}
-				if (temp != null) {
-					for (final OCLExpression nested : temp.getBody()) {
-						visitExpression(nested);
+			} else {
+				if (letBlock.getElseLet().size() > 0) {
+					// If one of the else lets has its "instanceof" condition evaluated to true, this will
+					// hold it
+					LetBlock temp = null;
+					for (final LetBlock elseLet : letBlock.getElseLet()) {
+						var = elseLet.getLetVariable();
+						fireGenerationEvent = false;
+						value = visitExpression((OCLExpression)var.getInitExpression());
+						fireGenerationEvent = fireEvents;
+						if (isInvalid(value)) {
+							final String rootName = ((Module)EcoreUtil.getRootContainer(elseLet)).getName();
+							final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+									AcceleoEngineMessages.getString(
+											"AcceleoEvaluationVisitor.UndefinedElseLetValue", elseLet //$NON-NLS-1$
+													.getStartPosition(), rootName, elseLet, currentSelf));
+							exception.fillInStackTrace();
+							throw exception;
+						}
+						if (var.getType().isInstance(value)) {
+							varName = var.getName();
+							getEvaluationEnvironment().add(var.getName(), value);
+							temp = elseLet;
+							break;
+						}
+					}
+					if (temp != null) {
+						for (final OCLExpression nested : temp.getBody()) {
+							visitExpression(nested);
+						}
+					} else if (letBlock.getElse() != null) {
+						visitAcceleoBlock(letBlock.getElse());
 					}
 				} else if (letBlock.getElse() != null) {
 					visitAcceleoBlock(letBlock.getElse());
 				}
-			} else if (letBlock.getElse() != null) {
-				visitAcceleoBlock(letBlock.getElse());
 			}
-		}
-		if (varName != null) {
-			getEvaluationEnvironment().remove(varName);
+		} finally {
+			if (varName != null) {
+				getEvaluationEnvironment().remove(varName);
+			}
 		}
 	}
 
@@ -653,6 +661,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 								getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), invocation
 										.getArgument().get(i)));
 				exception.fillInStackTrace();
+				// Evaluation of this query failed. Remove all previously created variables
+				for (int j = 0; j <= i; j++) {
+					getEvaluationEnvironment().remove(query.getParameter().get(j).getName());
+				}
 				throw exception;
 			}
 			arguments.add(argValue);
@@ -661,22 +673,22 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		fireGenerationEvent = fireEvents;
 		// If the query has already been run with these arguments, return the cached result
 		if (queryResults.containsKey(query)) {
-			// We no longer need the variables at their current value.
-			for (Variable var : query.getParameter()) {
-				getEvaluationEnvironment().remove(var.getName());
-			}
 			final Map<List<Object>, Object> results = queryResults.get(query);
 			Object result = results.get(arguments);
-			if (result == UNDEFINED_QUERY_RESULT) {
-				final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
-				final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-						AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
-								.getExpression(), invocation.getStartPosition(), rootName, query,
-								getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
-				exception.fillInStackTrace();
-				throw exception;
-			}
 			if (result != null) {
+				// We no longer need the variables at their current value.
+				for (Variable var : query.getParameter()) {
+					getEvaluationEnvironment().remove(var.getName());
+				}
+				if (result == UNDEFINED_QUERY_RESULT) {
+					final String rootName = ((Module)EcoreUtil.getRootContainer(query)).getName();
+					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+							AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
+									.getExpression(), invocation.getStartPosition(), rootName, query,
+									getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME)));
+					exception.fillInStackTrace();
+					throw exception;
+				}
 				if (result == NULL_QUERY_RESULT) {
 					result = null;
 				}
@@ -690,18 +702,22 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			implicitContextVariableName = addContextVariableFor(arguments.get(0));
 		}
 
-		final Object result = visitExpression((OCLExpression)query.getExpression());
+		Object result = null;
+		try {
+			result = visitExpression((OCLExpression)query.getExpression());
+		} finally {
+			// restores parameters as they were prior to the call
+			for (Variable var : query.getParameter()) {
+				getEvaluationEnvironment().remove(var.getName());
+			}
+			// [255379] restore context if need be
+			if (arguments.size() > 0) {
+				getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+				getEvaluationEnvironment().remove(implicitContextVariableName);
+				currentContextIndex--;
+			}
+		}
 
-		// restores parameters as they were prior to the call
-		for (Variable var : query.getParameter()) {
-			getEvaluationEnvironment().remove(var.getName());
-		}
-		// [255379] restore context if need be
-		if (arguments.size() > 0) {
-			getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
-			getEvaluationEnvironment().remove(implicitContextVariableName);
-			currentContextIndex--;
-		}
 		// Store result of the query invocation
 		if (queryResults.containsKey(query)) {
 			final Map<List<Object>, Object> results = queryResults.get(query);
@@ -764,98 +780,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		// FIXME refactor this into multiple methods
-		final Template template = invocation.getDefinition();
-		final List<Variable> temporaryArgVars = new ArrayList<Variable>(invocation.getArgument().size());
 		String implicitContextVariableName = null;
-		// FIXME handle multiple invocations and "each"
-		final Template actualTemplate;
 
-		if (invocation.isSuper()) {
-			final Template containingTemplate = (Template)invocation.eContainer();
-			// Was the containing template called through another template invocation?
-			// If Yes, then this latter is the actual *super* we seek
-			// If No, then our super is the first template overriden
-			if (containingTemplate.eContainer() instanceof TemplateInvocation) {
-				actualTemplate = ((TemplateInvocation)containingTemplate.eContainer()).getDefinition();
-			} else {
-				actualTemplate = template.getOverrides().get(0);
-			}
-			boolean fireEvents = fireGenerationEvent;
-			fireGenerationEvent = false;
-			// Determine argument values and context
-			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
-				Variable var = actualTemplate.getParameter().get(i);
-				final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
-				init.setReferredVariable(containingTemplate.getParameter().get(i));
-				var.setInitExpression(init);
-				// Evaluate the value of this new variable
-				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
-				// [255379] sets new value of "self" to match the very first arg of the invocation
-				if (i == 0) {
-					Object newContext = getEvaluationEnvironment().getValueOf(var.getName());
-					getEvaluationEnvironment().add(SELF_VARIABLE_NAME, newContext);
-					implicitContextVariableName = addContextVariableFor(newContext);
-				}
-			}
-			fireGenerationEvent = fireEvents;
-		} else {
-			final List<Object> argValues = new ArrayList<Object>();
-			// Determine values of the arguments
-			boolean fireEvents = fireGenerationEvent;
-			fireGenerationEvent = false;
-			for (int i = 0; i < invocation.getArgument().size(); i++) {
-				final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
-				tempVar.setName("temporaryInvocationVariable$" + i); //$NON-NLS-1$
-				tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation
-						.getArgument().get(i)));
-				temporaryArgVars.add(tempVar);
-				// Evaluate the value of this new variable
-				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
-				final Object argValue = getEvaluationEnvironment().getValueOf(tempVar.getName());
-				if (isInvalid(argValue)) {
-					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
-							AcceleoEngineMessages.getString(
-									"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
-									invocation.getStartPosition(), ((Module)EcoreUtil
-											.getRootContainer(invocation)).getName(), invocation,
-									getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), invocation
-											.getArgument().get(i)));
-					exception.fillInStackTrace();
-					throw exception;
-				}
-				argValues.add(getEvaluationEnvironment().getValueOf(tempVar.getName()));
-			}
-			fireGenerationEvent = fireEvents;
-			// retrieve all applicable candidates of the call
-			final List<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
-					.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), template, argValues);
-			evaluateGuards(applicableCandidates, temporaryArgVars);
-			// We now know the actual template that's to be called
-			if (applicableCandidates.size() > 0) {
-				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
-						.getMostSpecificTemplate(applicableCandidates, argValues);
-				// Determine argument values and context
-				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
-					Variable var = actualTemplate.getParameter().get(i);
-					final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
-					init.setReferredVariable(temporaryArgVars.get(i));
-					var.setInitExpression(init);
-					// Evaluate the value of this new variable
-					getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
-					// [255379] sets new value of "self" to match the very first arg of the invocation
-					if (i == 0) {
-						Object newContext = getEvaluationEnvironment().getValueOf(var.getName());
-						getEvaluationEnvironment().add(SELF_VARIABLE_NAME, newContext);
-						implicitContextVariableName = addContextVariableFor(newContext);
-					}
-				}
-			} else {
-				// No template remains after guard evaluation. Create an empty template so no
-				// text will be generated from this call.
-				actualTemplate = MtlFactory.eINSTANCE.createTemplate();
-			}
+		// FIXME handle multiple invocations and "each"
+		final Template actualTemplate = prepareInvocation(invocation);
+		if (actualTemplate.getParameter().size() > 0) {
+			final Object contextValue = getEvaluationEnvironment().getValueOf(
+					actualTemplate.getParameter().get(0).getName());
+			// [255379] sets new value of "self" to match the very first arg of the invocation
+			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, contextValue);
+			implicitContextVariableName = addContextVariableFor(contextValue);
 		}
+
 		context.openNested();
 		if (invocation.getBefore() != null) {
 			visitExpression((OCLExpression)invocation.getBefore());
@@ -864,22 +800,25 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
 		}
-		delegateAppend(toString(getVisitor().visitExpression((OCLExpression)actualTemplate)), actualTemplate,
-				lastEObjectSelfValue, false);
+		try {
+			final Object result = getVisitor().visitExpression((OCLExpression)actualTemplate);
+			delegateAppend(toString(result), actualTemplate, lastEObjectSelfValue, false);
+		} finally {
+			// restore parameters as they were prior to the call
+			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
+				final Variable param = actualTemplate.getParameter().get(i);
+				param.setInitExpression(null);
+				getEvaluationEnvironment().remove(param.getName());
+			}
+			// [255379] restore self if need be
+			if (actualTemplate.getParameter().size() > 0) {
+				getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+				getEvaluationEnvironment().remove(implicitContextVariableName);
+				currentContextIndex--;
+			}
+		}
 		if (invocation.getAfter() != null) {
 			visitExpression((OCLExpression)invocation.getAfter());
-		}
-		// restore parameters as they were prior to the call
-		for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
-			final Variable param = actualTemplate.getParameter().get(i);
-			param.setInitExpression(null);
-			getEvaluationEnvironment().remove(param.getName());
-		}
-		// [255379] restore self if need be
-		if (actualTemplate.getParameter().size() > 0) {
-			getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
-			getEvaluationEnvironment().remove(implicitContextVariableName);
-			currentContextIndex--;
 		}
 		return context.closeContext();
 	}
@@ -918,9 +857,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			profile.loop(lastEObjectSelfValue);
 		}
 		// This try / catch block allows us to handle the disposal of all context information.
+		final boolean hasInit = expression instanceof Block && ((Block)expression).getInit() != null;
 		try {
 			// All evaluations pass through here. We'll handle blocks' init sections here.
-			final boolean hasInit = expression instanceof Block && ((Block)expression).getInit() != null;
 			if (hasInit) {
 				visitAcceleoInitSection(((Block)expression).getInit());
 			}
@@ -959,11 +898,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					delegateAppend(toString(result), (Block)generatedBlock, lastEObjectSelfValue, fireEvent);
 				}
 			}
-
-			// If we were evaluating a block and it had an init section, restore variables as they were now.
-			if (hasInit) {
-				restoreInitVariables(((Block)expression).getInit());
-			}
 		} catch (final AcceleoEvaluationException e) {
 			// We'll Try and carry on evaluating the expressions
 			AcceleoEnginePlugin.log(e, false);
@@ -987,6 +921,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			if (profile != null && profileExpression(expression)) {
 				profile.stop();
+			}
+			// If we were evaluating a block and it had an init section, restore variables as they were now.
+			if (hasInit) {
+				restoreInitVariables(((Block)expression).getInit());
 			}
 		}
 
@@ -1219,6 +1157,101 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private boolean isUndefined(Object value) {
 		return value == null || value == oclInvalid;
+	}
+
+	/**
+	 * This will be in charge of retrieving the actual template that is to be called for the evaluation of the
+	 * given <code>invocation</code> and evaluate its arguments to set their values in the environment.
+	 * 
+	 * @param invocation
+	 *            The template invocation which evaluation is to be prepared.
+	 * @return The actual template referenced by this invocation.
+	 */
+	@SuppressWarnings("unchecked")
+	private Template prepareInvocation(TemplateInvocation invocation) {
+		final Template template = invocation.getDefinition();
+		final List<Variable> temporaryArgVars = new ArrayList<Variable>(invocation.getArgument().size());
+		final Template actualTemplate;
+
+		if (invocation.isSuper()) {
+			final Template containingTemplate = (Template)invocation.eContainer();
+			// Was the containing template called through another template invocation?
+			// If Yes, then this latter is the actual *super* we seek
+			// If No, then our super is the first template overriden
+			if (containingTemplate.eContainer() instanceof TemplateInvocation) {
+				actualTemplate = ((TemplateInvocation)containingTemplate.eContainer()).getDefinition();
+			} else {
+				actualTemplate = template.getOverrides().get(0);
+			}
+			boolean fireEvents = fireGenerationEvent;
+			fireGenerationEvent = false;
+			// Determine argument values and context
+			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
+				Variable var = actualTemplate.getParameter().get(i);
+				final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
+				init.setReferredVariable(containingTemplate.getParameter().get(i));
+				var.setInitExpression(init);
+				// Evaluate the value of this new variable
+				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
+			}
+			fireGenerationEvent = fireEvents;
+		} else {
+			final List<Object> argValues = new ArrayList<Object>();
+			// Determine values of the arguments
+			boolean fireEvents = fireGenerationEvent;
+			fireGenerationEvent = false;
+			for (int i = 0; i < invocation.getArgument().size(); i++) {
+				final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
+				tempVar.setName("temporaryInvocationVariable$" + i); //$NON-NLS-1$
+				tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation
+						.getArgument().get(i)));
+				temporaryArgVars.add(tempVar);
+				// Evaluate the value of this new variable
+				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
+				final Object argValue = getEvaluationEnvironment().getValueOf(tempVar.getName());
+				if (isInvalid(argValue)) {
+					final AcceleoEvaluationException exception = new AcceleoEvaluationException(
+							AcceleoEngineMessages.getString(
+									"AcceleoEvaluationVisitor.UndefinedArgument", //$NON-NLS-1$
+									invocation.getStartPosition(), ((Module)EcoreUtil
+											.getRootContainer(invocation)).getName(), invocation,
+									getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME), invocation
+											.getArgument().get(i)));
+					exception.fillInStackTrace();
+					// Evaluation of this template failed. Remove all previously created variables
+					for (int j = 0; j <= i; j++) {
+						getEvaluationEnvironment().remove(invocation.getArgument().get(j).getName());
+					}
+					throw exception;
+				}
+				argValues.add(getEvaluationEnvironment().getValueOf(tempVar.getName()));
+			}
+			fireGenerationEvent = fireEvents;
+			// retrieve all applicable candidates of the call
+			final List<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
+					.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), template, argValues);
+			evaluateGuards(applicableCandidates, temporaryArgVars);
+			// We now know the actual template that's to be called
+			if (applicableCandidates.size() > 0) {
+				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
+						.getMostSpecificTemplate(applicableCandidates, argValues);
+				// Determine argument values and context
+				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
+					Variable var = actualTemplate.getParameter().get(i);
+					final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
+					init.setReferredVariable(temporaryArgVars.get(i));
+					var.setInitExpression(init);
+					// Evaluate the value of this new variable
+					getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
+				}
+			} else {
+				// No template remains after guard evaluation. Create an empty template so no
+				// text will be generated from this call.
+				actualTemplate = MtlFactory.eINSTANCE.createTemplate();
+			}
+		}
+
+		return actualTemplate;
 	}
 
 	/**

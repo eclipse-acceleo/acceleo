@@ -428,7 +428,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		if (!variableMap.containsKey(name)) {
 			return null;
 		}
-		Object removedValue = variableMap.get(name).removeLast();
+		final Object removedValue = variableMap.get(name).removeLast();
 		if (variableMap.get(name).size() == 0) {
 			variableMap.remove(name);
 		}
