@@ -53,7 +53,7 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Real">
-    <eOperations name="toString">
+    <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
       <eAnnotations source="MTL"/>
     </eOperations>
   </eClassifiers>
