@@ -34,7 +34,7 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="delimiters" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
-    <eOperations name="contains" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    <eOperations name="contains" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
