@@ -16,3 +16,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.acceleo.compatibility.tests.AcceleoCompatibilityTestPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Export-Package: org.eclipse.acceleo.compatibility.tests.suite;x-friends:="org.eclipse.acceleo.tests"
