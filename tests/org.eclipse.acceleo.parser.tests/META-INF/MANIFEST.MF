@@ -22,4 +22,5 @@ Export-Package: org.eclipse.acceleo.parser.tests,
  org.eclipse.acceleo.parser.tests.cst.utils,
  org.eclipse.acceleo.parser.tests.extlibrary,
  org.eclipse.acceleo.parser.tests.extlibrary.impl,
- org.eclipse.acceleo.parser.tests.extlibrary.util
+ org.eclipse.acceleo.parser.tests.extlibrary.util,
+ org.eclipse.acceleo.parser.tests.suite;x-friends:="org.eclipse.acceleo.tests"
