@@ -14,16 +14,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.ide.ui.tests.editors.template.AcceleoCompletionProcessorTests;
-import org.eclipse.acceleo.ide.ui.tests.editors.template.rules.FirstVariableRuleTests;
-import org.eclipse.acceleo.parser.tests.AcceleoParserTests;
-import org.eclipse.acceleo.parser.tests.cst.CSTParserBlockTests;
-import org.eclipse.acceleo.parser.tests.cst.CSTParserTests;
-import org.eclipse.acceleo.parser.tests.cst.utils.FileContentTests;
-import org.eclipse.acceleo.parser.tests.cst.utils.SequenceTests;
-
 /**
- * This suite will launch all the tests defined for the Acceleo parser.
+ * This suite will launch all the tests defined for the Acceleo project.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -46,13 +38,10 @@ public class AllTests {
 	 */
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("Acceleo test suite");
-		suite.addTestSuite(AcceleoParserTests.class);
-		suite.addTestSuite(CSTParserBlockTests.class);
-		suite.addTestSuite(CSTParserTests.class);
-		suite.addTestSuite(FileContentTests.class);
-		suite.addTestSuite(SequenceTests.class);
-		suite.addTestSuite(AcceleoCompletionProcessorTests.class);
-		suite.addTestSuite(FirstVariableRuleTests.class);
+		suite.addTest(org.eclipse.acceleo.compatibility.tests.suite.AllTests.suite());
+		suite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
+		suite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		suite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 		return suite;
 	}
 
