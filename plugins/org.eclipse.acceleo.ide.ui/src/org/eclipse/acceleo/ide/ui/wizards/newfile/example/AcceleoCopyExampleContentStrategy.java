@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 
 /**
  * Default implementation of the "org.eclipse.acceleo.ide.ui.example" extension point. It is used to
@@ -103,7 +104,19 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 		} else {
 			fileExtension = ""; //$NON-NLS-1$
 		}
-		StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
+		String defaultEncoding;
+		try {
+			if (exampleFile != null) {
+				defaultEncoding = exampleFile.getCharset();
+			} else {
+				defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+			}
+		} catch (CoreException e) {
+			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+		}
+		StringBuffer buffer = new StringBuffer("[comment encoding = "); //$NON-NLS-1$
+		buffer.append(defaultEncoding);
+		buffer.append(" /]\n"); //$NON-NLS-1$
 		buffer.append("[module " + moduleName + "('"); //$NON-NLS-1$ //$NON-NLS-2$
 		StringTokenizer st = new StringTokenizer(metamodelURI, ","); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
@@ -119,7 +132,8 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 			buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 		}
 		if (templateHasFileBlock) {
-			buffer.append("\t[file (" + var + ".name" + fileExtension + ", false)]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			buffer
+					.append("\t[file (" + var + ".name" + fileExtension + ", false, '" + defaultEncoding + "')]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 		if (exampleFile != null && exampleFile.exists()) {
 			StringBuffer text = readExampleContent(exampleFile);

@@ -1271,13 +1271,17 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		String replacementStringBefore = mainTagText + '[' + IAcceleoConstants.FILE + ' ' + "(${path}"; //$NON-NLS-1$
 		org.eclipse.acceleo.parser.cst.ModuleElement cstModuleElement = (org.eclipse.acceleo.parser.cst.ModuleElement)content
 				.getCSTParent(cstNode, org.eclipse.acceleo.parser.cst.ModuleElement.class);
-		String currentModuleElementName;
-		if (cstModuleElement != null) {
-			currentModuleElementName = cstModuleElement.getName();
-		} else {
-			currentModuleElementName = ""; //$NON-NLS-1$
+		String defaultEncoding;
+		try {
+			if (content != null && content.getFile() != null) {
+				defaultEncoding = content.getFile().getCharset();
+			} else {
+				defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+			}
+		} catch (CoreException e) {
+			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
 		}
-		String replacementStringAfter = ", ${false}, '${" + currentModuleElementName.toUpperCase() //$NON-NLS-1$
+		String replacementStringAfter = ", ${false}, '${" + defaultEncoding //$NON-NLS-1$
 				+ "}')]\n" + tab + '\t' + '\n' + tab + '[' + '/' //$NON-NLS-1$
 				+ IAcceleoConstants.FILE + ']';
 		String replacementString = replacementStringBefore + replacementStringAfter;
