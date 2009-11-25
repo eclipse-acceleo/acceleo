@@ -267,7 +267,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			exception.fillInStackTrace();
 			throw exception;
 		}
-		final String filePath = String.valueOf(fileURLResult);
+		final String filePath = String.valueOf(fileURLResult).trim();
 
 		String fileCharset = null;
 		if (fileBlock.getCharset() != null) {
