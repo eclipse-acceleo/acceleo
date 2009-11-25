@@ -95,7 +95,6 @@ public class AcceleoParserTests extends TestCase {
 		files.add(createFile("/data/template/RecursiveModule2.mtl"));
 		File problemFile = createFile("/data/template/RecursiveModule3.mtl");
 		files.add(problemFile);
-		ResourceSet resourceSet = new ResourceSetImpl();
 		List<URI> resources = new ArrayList<URI>();
 		resources.add(createFileURI("/data/template/RecursiveModule1.emtl"));
 		resources.add(createFileURI("/data/template/RecursiveModule2.emtl"));
