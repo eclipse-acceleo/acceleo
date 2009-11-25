@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getInitSection()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface InitSection extends CSTNode {
 	/**

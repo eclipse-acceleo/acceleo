@@ -24,6 +24,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getModuleElement()
  * @model abstract="true"
  * @generated
+ * @since 0.9
  */
 public interface ModuleElement extends CSTNode {
 	/**

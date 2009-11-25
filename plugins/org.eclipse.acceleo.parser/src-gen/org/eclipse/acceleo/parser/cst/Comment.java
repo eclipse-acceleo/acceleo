@@ -23,6 +23,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getComment()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface Comment extends ModuleElement, TemplateExpression {
 	/**

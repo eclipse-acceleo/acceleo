@@ -28,6 +28,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getForBlock()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface ForBlock extends Block {
 	/**

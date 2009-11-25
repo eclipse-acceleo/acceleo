@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getOpenModeKind()
  * @model
  * @generated
+ * @since 0.9
  */
 public enum OpenModeKind implements Enumerator {
 	/**

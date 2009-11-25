@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getTemplate()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface Template extends Block, ModuleElement {
 	/**

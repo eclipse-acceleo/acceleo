@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * @see org.eclipse.acceleo.parser.cst.CstFactory
  * @model kind="package"
  * @generated
+ * @since 0.9
  */
 public interface CstPackage extends EPackage {
 	/**

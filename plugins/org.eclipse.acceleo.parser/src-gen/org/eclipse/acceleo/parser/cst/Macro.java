@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getMacro()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface Macro extends Block, ModuleElement {
 	/**

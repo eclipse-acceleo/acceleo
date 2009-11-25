@@ -24,6 +24,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getVariable()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface Variable extends CSTNode {
 	/**

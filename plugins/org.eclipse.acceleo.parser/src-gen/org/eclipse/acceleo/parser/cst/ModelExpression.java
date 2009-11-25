@@ -26,6 +26,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getModelExpression()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface ModelExpression extends TemplateExpression {
 	/**

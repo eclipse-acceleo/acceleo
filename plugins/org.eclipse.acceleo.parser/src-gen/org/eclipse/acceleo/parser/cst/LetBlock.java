@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getLetBlock()
  * @model
  * @generated
+ * @since 0.9
  */
 public interface LetBlock extends Block {
 	/**
