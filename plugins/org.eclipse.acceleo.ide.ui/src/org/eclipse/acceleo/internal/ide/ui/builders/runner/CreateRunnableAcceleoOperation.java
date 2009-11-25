@@ -310,8 +310,18 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
-		if (!file.exists()
-				|| !text.equals(FileContent.getFileContent(file.getLocation().toFile()).toString())) {
+		boolean update;
+		if (!file.exists()) {
+			update = true;
+		} else {
+			String oldText = FileContent.getFileContent(file.getLocation().toFile()).toString();
+			if (!text.equals(oldText) && oldText.contains("@generated")) { //$NON-NLS-1$
+				update = true;
+			} else {
+				update = false;
+			}
+		}
+		if (update) {
 			ByteArrayInputStream javaStream = new ByteArrayInputStream(text.getBytes("UTF8")); //$NON-NLS-1$
 			if (!file.exists()) {
 				file.create(javaStream, true, monitor);
