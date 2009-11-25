@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.internal.parser.ast.CST2ASTConverterWithResolver;
 import org.eclipse.acceleo.internal.parser.ast.IASTProvider;
+import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.parser.cst.CstFactory;
@@ -210,6 +211,21 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 */
 	public org.eclipse.acceleo.parser.cst.Module getCST() {
 		return cst;
+	}
+
+	/**
+	 * Gets the OCL parser (from the OCL plug-in).
+	 * 
+	 * @return the OCL parser, can be null
+	 * @deprecated
+	 */
+	@Deprecated
+	public OCLParser getOCL() {
+		if (astCreator != null) {
+			return astCreator.getOCL();
+		} else {
+			return null;
+		}
 	}
 
 	/**
