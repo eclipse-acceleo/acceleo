@@ -876,19 +876,16 @@ public final class AcceleoWorkspaceUtil {
 	private void setBundleClasspath(IProject plugin, Bundle bundle) {
 		final Set<String> classpathEntries = getOutputFolders(plugin);
 		final BaseData bundleData = (BaseData)((AbstractBundle)bundle).getBundleData();
-		if (classpathEntries.size() == 1) {
-			bundleData.setClassPathString(classpathEntries.iterator().next());
-		} else {
-			final StringBuilder classpath = new StringBuilder();
-			final Iterator<String> entryIterator = classpathEntries.iterator();
-			while (entryIterator.hasNext()) {
-				classpath.append(entryIterator.next());
-				if (entryIterator.hasNext()) {
-					classpath.append(',');
-				}
+		final StringBuilder classpath = new StringBuilder();
+		classpath.append(bundleData.getClassPathString());
+		final Iterator<String> entryIterator = classpathEntries.iterator();
+		while (entryIterator.hasNext()) {
+			classpath.append(entryIterator.next());
+			if (entryIterator.hasNext()) {
+				classpath.append(',');
 			}
-			bundleData.setClassPathString(classpath.toString());
 		}
+		bundleData.setClassPathString(classpath.toString());
 	}
 
 	/**
