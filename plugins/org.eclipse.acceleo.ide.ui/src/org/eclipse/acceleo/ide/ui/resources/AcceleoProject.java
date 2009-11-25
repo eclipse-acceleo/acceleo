@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.resources;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.parser.AcceleoParser;
+import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -33,6 +36,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
@@ -458,7 +462,7 @@ public class AcceleoProject {
 	 * @param bundle
 	 *            is the current bundle
 	 */
-	private void computeAccessibleOutputFilesWithBundle(List<URI> outputURIs, Bundle bundle) {
+	private static void computeAccessibleOutputFilesWithBundle(List<URI> outputURIs, Bundle bundle) {
 		if (bundle != null) {
 			if (bundle.getState() == Bundle.RESOLVED || bundle.getState() == Bundle.ACTIVE
 					|| bundle.getState() == Bundle.INSTALLED || bundle.getState() == Bundle.STARTING) {
@@ -725,12 +729,13 @@ public class AcceleoProject {
 	@SuppressWarnings("unchecked")
 	private static void computeSaveURIs(Bundle bundle, List<URI> savedURIs) {
 		// The first time we would like to be sure to extract the MTL files of the plug-in jar.
-		bundle.findEntries("/", "*." + IAcceleoConstants.MTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
-		Enumeration<URL> entries = bundle
-				.findEntries("/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
-		if (entries != null) {
-			while (entries.hasMoreElements()) {
-				URL entry = entries.nextElement();
+		Enumeration<URL> entriesMTL = bundle.findEntries(
+				"/", "*." + IAcceleoConstants.MTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
+		Enumeration<URL> entriesEMTL = bundle.findEntries(
+				"/", "*." + IAcceleoConstants.EMTL_FILE_EXTENSION, true); //$NON-NLS-1$ //$NON-NLS-2$
+		if (entriesEMTL != null && entriesEMTL.hasMoreElements()) {
+			while (entriesEMTL.hasMoreElements()) {
+				URL entry = entriesEMTL.nextElement();
 				if (entry != null) {
 					IPath path = new Path(entry.getPath());
 					if (path.segmentCount() > 0) {
@@ -739,7 +744,46 @@ public class AcceleoProject {
 					}
 				}
 			}
+		} else if (entriesMTL != null && entriesMTL.hasMoreElements()) {
+			List<File> inputFiles = new ArrayList<File>();
+			List<URI> absoluteOutputURIs = new ArrayList<URI>();
+			List<URI> pluginOutputURIs = new ArrayList<URI>();
+			while (entriesMTL.hasMoreElements()) {
+				URL entry = entriesMTL.nextElement();
+				if (entry != null) {
+					URL fileURL;
+					try {
+						fileURL = FileLocator.toFileURL(entry);
+					} catch (IOException e) {
+						fileURL = null;
+						AcceleoUIActivator.getDefault().getLog().log(
+								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					}
+					if (fileURL != null) {
+						IPath pathMTL = new Path(fileURL.getPath());
+						File fileMTL = pathMTL.toFile();
+						inputFiles.add(fileMTL);
+						absoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension()
+								.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString()));
+						pluginOutputURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName())
+								.append(new Path(entry.getPath())).removeFileExtension().addFileExtension(
+										IAcceleoConstants.EMTL_FILE_EXTENSION).toString(), false));
+					}
+				}
+			}
+			AcceleoParser parser = new AcceleoParser();
+			parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
+			savedURIs.addAll(pluginOutputURIs);
+			for (File inputFile : inputFiles) {
+				AcceleoParserProblems problems = parser.getProblems(inputFile);
+				if (problems != null) {
+					String message = problems.getMessage();
+					if (message != null && message.length() > 0) {
+						AcceleoUIActivator.getDefault().getLog().log(
+								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
+					}
+				}
+			}
 		}
 	}
-
 }
