@@ -217,7 +217,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * Gets the OCL parser (from the OCL plug-in).
 	 * 
 	 * @return the OCL parser, can be null
-	 * @deprecated
+	 * @deprecated Unused, this will be removed beefore 3.0 is released.
 	 */
 	@Deprecated
 	public OCLParser getOCL() {
