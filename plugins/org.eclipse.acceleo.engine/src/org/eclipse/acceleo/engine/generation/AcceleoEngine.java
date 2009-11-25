@@ -43,6 +43,12 @@ import org.eclipse.ocl.ecore.Variable;
  * @since 0.9
  */
 public class AcceleoEngine implements IAcceleoEngine {
+	/** Externalized name of the "self" context variable to avoid too many distinct uses. */
+	private static final String SELF_CONTEXT_VARIABLE_NAME = "context0"; //$NON-NLS-1$
+
+	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
+	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
+
 	/**
 	 * This will contain the custom properties for this engine, properties that will always take precedence
 	 * over those contained within {@link #loadedProperties} no matter what.
@@ -237,11 +243,19 @@ public class AcceleoEngine implements IAcceleoEngine {
 				}
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
-					guard.getEvaluationEnvironment().add("self", value); //$NON-NLS-1$
-					guard.getEvaluationEnvironment().add("context0", value); //$NON-NLS-1$
+					guard.getEvaluationEnvironment().add(SELF_VARIABLE_NAME, value);
+					guard.getEvaluationEnvironment().add(SELF_CONTEXT_VARIABLE_NAME, value);
 				}
 			}
 			guardValue = ((Boolean)guard.evaluate()).booleanValue();
+			// reset variables
+			for (Variable var : template.getParameter()) {
+				guard.getEvaluationEnvironment().remove(var.getName());
+			}
+			if (template.getParameter().size() > 0) {
+				guard.getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+				guard.getEvaluationEnvironment().remove(SELF_CONTEXT_VARIABLE_NAME);
+			}
 		}
 
 		// If there were no guard or its condition is verified, evaluate the template now.
@@ -259,11 +273,22 @@ public class AcceleoEngine implements IAcceleoEngine {
 				}
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
-					query.getEvaluationEnvironment().add("self", value); //$NON-NLS-1$
-					query.getEvaluationEnvironment().add("context0", value); //$NON-NLS-1$
+					query.getEvaluationEnvironment().add(SELF_VARIABLE_NAME, value);
+					query.getEvaluationEnvironment().add(SELF_CONTEXT_VARIABLE_NAME, value);
 				}
 			}
-			query.evaluate();
+			try {
+				query.evaluate();
+			} finally {
+				// reset variables
+				for (Variable var : template.getParameter()) {
+					query.getEvaluationEnvironment().remove(var.getName());
+				}
+				if (template.getParameter().size() > 0) {
+					query.getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+					query.getEvaluationEnvironment().remove(SELF_CONTEXT_VARIABLE_NAME);
+				}
+			}
 		}
 	}
 }
