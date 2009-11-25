@@ -95,13 +95,22 @@ public final class FileContent {
 	private static String getEncoding(StringBuffer buffer) {
 		Sequence bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.COMMENT,
 				IAcceleoConstants.ENCODING, IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
-		Sequence eSequence = new Sequence(IAcceleoConstants.DEFAULT_END_BODY_CHAR,
-				IAcceleoConstants.DEFAULT_END);
 		Region b = bSequence.search(buffer);
 		if (b.e() != -1) {
-			Region e = eSequence.search(buffer, b.e(), buffer.length());
-			if (e.b() != -1) {
-				return buffer.substring(b.e(), e.b()).trim();
+			int bEncoding = b.e();
+			while (bEncoding < buffer.length() && Character.isWhitespace(buffer.charAt(bEncoding))) {
+				bEncoding++;
+			}
+			if (bEncoding < buffer.length()
+					&& (buffer.charAt(bEncoding) == '-' || Character.isJavaIdentifierStart(buffer
+							.charAt(bEncoding)))) {
+				int eEncoding = bEncoding + 1;
+				while (eEncoding < buffer.length()
+						&& (buffer.charAt(eEncoding) == '-' || Character.isJavaIdentifierPart(buffer
+								.charAt(eEncoding)))) {
+					eEncoding++;
+				}
+				return buffer.substring(bEncoding, eEncoding).trim();
 			}
 		}
 		return null;
