@@ -199,37 +199,14 @@ public class CSTParserTests extends TestCase {
 		}
 	}
 
-	// FIXME JMU This doesn't work on the build machine with the following stack :
-	/*
-	 * junit.framework.AssertionFailedError at
-	 * org.eclipse.acceleo.parser.tests.cst.CSTParserTests.getSyntaxHelp(CSTParserTests.java:220) at
-	 * org.eclipse.acceleo.parser.tests.cst.CSTParserTests.testParseOCLSyntaxHelp(CSTParserTests.java:201) at
-	 * org.eclipse.test.EclipseTestRunner.run(EclipseTestRunner.java:332) at
-	 * org.eclipse.test.EclipseTestRunner.run(EclipseTestRunner.java:202) at
-	 * org.eclipse.test.CoreTestApplication.runTests(CoreTestApplication.java:35) at
-	 * org.eclipse.test.CoreTestApplication.run(CoreTestApplication.java:31) at
-	 * org.eclipse.equinox.internal.app
-	 * .EclipseAppContainer.callMethodWithException(EclipseAppContainer.java:574) at
-	 * org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196) at
-	 * org.eclipse.equinox.internal.app.MainApplicationLauncher.run(MainApplicationLauncher.java:32) at
-	 * org.eclipse
-	 * .core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110) at
-	 * org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79) at
-	 * org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368) at
-	 * org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179) at
-	 * org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559) at
-	 * org.eclipse.equinox.launcher.Main.basicRun(Main.java:514) at
-	 * org.eclipse.equinox.launcher.Main.run(Main.java:1311) at
-	 * org.eclipse.equinox.launcher.Main.main(Main.java:1287) at
-	 * org.eclipse.core.launcher.Main.main(Main.java:34)
-	 */
-	// public void testParseOCLSyntaxHelp() {
-	// String bufferBefore = "[module mymodule(http://www.eclipse.org/uml2/2.1.0/UML)/]"
-	// + "[template public class2Java(c1 : Class)]" + "[c1.";
-	// String bufferAfter = "/] [/template]";
-	// List<Choice> choices = getSyntaxHelp(bufferBefore + bufferAfter, bufferBefore.length());
-	// assertSame(choices.size(), 52);
-	// }
+	public void testParseOCLSyntaxHelp() {
+		String bufferBefore = "[module mymodule(http://www.eclipse.org/uml2/2.1.0/UML)/]"
+				+ "[template public class2Java(c1 : Class)]" + "[c1.";
+		String bufferAfter = "/] [/template]";
+		List<Choice> choices = getSyntaxHelp(bufferBefore + bufferAfter, bufferBefore.length());
+		assertTrue(choices.size() > 40);
+	}
+
 	private List<Choice> getSyntaxHelp(String buffer, int offset) {
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(buffer));
 		CSTParser parser = new CSTParser(source);
