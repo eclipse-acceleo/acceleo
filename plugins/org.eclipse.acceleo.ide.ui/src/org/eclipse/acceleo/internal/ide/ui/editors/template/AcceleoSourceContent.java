@@ -26,6 +26,8 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
+import org.eclipse.acceleo.parser.AcceleoParserProblem;
+import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.CstFactory;
@@ -43,6 +45,7 @@ import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -207,11 +210,13 @@ public class AcceleoSourceContent {
 			createASTJob = createASTJob();
 			createASTJob.setPriority(Job.DECORATE);
 			createASTJob.setSystem(true);
-			createASTJob.schedule(1000);
+			final int schedule = 1500;
+			createASTJob.schedule(schedule);
 		}
 
 		/**
-		 * Creates the job that is able to compute the AST.
+		 * Creates the job that is able to compute the AST. The AST links will be resolved in the specified
+		 * region.
 		 * 
 		 * @return the job
 		 */
@@ -220,7 +225,7 @@ public class AcceleoSourceContent {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					ast = null;
-					AcceleoSourceContent.this.createAST();
+					runCreateAST();
 					astCreator.canceling(false);
 					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
 				}
@@ -234,6 +239,40 @@ public class AcceleoSourceContent {
 					}
 				}
 			};
+		}
+
+		/**
+		 * It computes the AST. The AST links will be resolved in the specified region.
+		 */
+		private void runCreateAST() {
+			source.getProblems().clear();
+			IFile fileMTL = AcceleoSourceContent.this.file;
+			if (fileMTL != null && fileMTL.exists()) {
+				try {
+					fileMTL.deleteMarkers(AcceleoMarker.PROBLEM_MARKER, false, IResource.DEPTH_INFINITE);
+				} catch (CoreException ex) {
+					AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
+				}
+				AcceleoSourceContent.this.createAST();
+				org.eclipse.acceleo.model.mtl.Module vAST = getAST();
+				if (vAST != null) {
+					List<URI> dependenciesURIs = getAccessibleOutputFiles();
+					loadImportsDependencies(vAST, dependenciesURIs);
+					loadExtendsDependencies(vAST, dependenciesURIs);
+					source.resolveAST();
+				}
+				AcceleoParserProblems problems = source.getProblems();
+				if (problems != null) {
+					for (AcceleoParserProblem problem : problems.getList()) {
+						try {
+							reportError(fileMTL, problem.getLine(), problem.getPosBegin(), problem
+									.getPosEnd(), problem.getMessage());
+						} catch (CoreException ex) {
+							AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
+						}
+					}
+				}
+			}
 		}
 	}
 
