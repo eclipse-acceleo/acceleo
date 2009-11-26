@@ -651,14 +651,47 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * Gets the URIs of all the EMTL files in the plug-ins. The workspace files are ignored.
+	 * Gets the URIs of all the EMTL files in the workspace.
 	 * 
 	 * @return the URIs of all the EMTL files
+	 * @since 0.9
 	 */
-	private static List<URI> getAllPlatformPluginOutputFiles() {
-		Set<String> done = new HashSet<String>();
+	public static List<URI> getAllPlatformResourceOutputFiles() {
+		List<URI> outputURIs = new ArrayList<URI>();
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject aProject : projects) {
+			try {
+				if (aProject.isAccessible() && aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+					computeAccessibleOutputFilesInFolder(outputURIs, getOutputFolder(aProject));
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
+		return outputURIs;
+	}
+
+	/**
+	 * Gets the URIs of all the EMTL files in the plug-ins. It also creates the EMTL files if only the MTL
+	 * files are available. The workspace files are ignored.
+	 * 
+	 * @return the URIs of all the EMTL files
+	 * @since 0.9
+	 */
+	public static List<URI> getAllPlatformPluginOutputFiles() {
 		List<URI> outputURIs = new ArrayList<URI>();
 		if (!allBundlesOutputFilesFound) {
+			Set<String> done = new HashSet<String>();
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			for (IProject aProject : projects) {
+				try {
+					if (aProject.isAccessible() && aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						done.add(aProject.getName());
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+				}
+			}
 			IBundleGroupProvider[] providers = Platform.getBundleGroupProviders();
 			for (IBundleGroupProvider provider : providers) {
 				for (IBundleGroup group : provider.getBundleGroups()) {
