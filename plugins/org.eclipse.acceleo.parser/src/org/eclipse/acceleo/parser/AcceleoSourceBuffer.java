@@ -88,6 +88,11 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	protected CST2ASTConverterWithResolver astCreator;
 
 	/**
+	 * The encoding of the buffer to parse.
+	 */
+	private final String encoding;
+
+	/**
 	 * The CST model. It is created when you call the 'createAST' function.
 	 */
 	private org.eclipse.acceleo.parser.cst.Module cst;
@@ -101,6 +106,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	public AcceleoSourceBuffer(File file) {
 		this.file = file;
 		this.buffer = FileContent.getFileContent(file);
+		this.encoding = FileContent.getEncoding(buffer);
 		this.problems = new AcceleoParserProblems();
 		init();
 	}
@@ -114,6 +120,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	public AcceleoSourceBuffer(StringBuffer buffer) {
 		this.file = null;
 		this.buffer = buffer;
+		this.encoding = FileContent.getEncoding(buffer);
 		this.problems = new AcceleoParserProblems();
 		init();
 	}
@@ -193,6 +200,16 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 */
 	public StringBuffer getBuffer() {
 		return buffer;
+	}
+
+	/**
+	 * Returns the encoding of the buffer to parse.
+	 * 
+	 * @return the encoding, or null if it isn't specified in the buffer
+	 * @since 0.9
+	 */
+	public String getEncoding() {
+		return encoding;
 	}
 
 	/**

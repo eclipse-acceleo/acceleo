@@ -159,7 +159,11 @@ public class AcceleoParser {
 			if (eModule != null) {
 				Resource newResource = eModule.eResource();
 				Map<String, String> options = new HashMap<String, String>();
-				options.put(XMLResource.OPTION_ENCODING, "UTF-8"); //$NON-NLS-1$
+				String encoding = source.getEncoding();
+				if (encoding == null) {
+					encoding = "UTF-8"; //$NON-NLS-1$
+				}
+				options.put(XMLResource.OPTION_ENCODING, encoding);
 				try {
 					newResource.save(options);
 				} catch (IOException e) {

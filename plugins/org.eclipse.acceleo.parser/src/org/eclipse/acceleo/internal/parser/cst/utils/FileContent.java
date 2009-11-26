@@ -92,7 +92,7 @@ public final class FileContent {
 	 *            buffer in which we want to look for an encoding code
 	 * @return the found encoding code or null
 	 */
-	private static String getEncoding(StringBuffer buffer) {
+	public static String getEncoding(StringBuffer buffer) {
 		Sequence bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.COMMENT,
 				IAcceleoConstants.ENCODING, IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
 		Region b = bSequence.search(buffer);
