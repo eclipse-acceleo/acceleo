@@ -971,7 +971,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Computes a list of patterns for the main tag (@main).
+	 * Computes a list of patterns for the main annotation (@main).
 	 * 
 	 * @param proposals
 	 *            are the completion proposals (in out parameter)
@@ -1257,7 +1257,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * @param patternImage
 	 *            is the image to show in the completion popup menu
 	 * @param withMainTag
-	 *            indicates if a main tag (@main) must be added before the file block
+	 *            indicates if a main annotation (@main) must be added before the file block
 	 */
 	private void computeFileBlockPatternsProposals(List<ICompletionProposal> proposals, String start,
 			String tab, Image patternImage, boolean withMainTag) {

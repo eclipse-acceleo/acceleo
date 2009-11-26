@@ -235,10 +235,10 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	}
 
 	/**
-	 * Gets all the templates that contain the main tag (@main).
+	 * Gets all the templates that contain the main annotation (@main).
 	 * 
 	 * @param mainTemplateNames
-	 *            are the templates that contain the main tag (output parameter)
+	 *            are the templates that contain the main annotation (output parameter)
 	 * @param eObject
 	 *            is the object to browse
 	 */

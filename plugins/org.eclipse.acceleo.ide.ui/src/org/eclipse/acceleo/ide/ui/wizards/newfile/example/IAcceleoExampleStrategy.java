@@ -67,9 +67,9 @@ public interface IAcceleoExampleStrategy {
 	boolean forceHasFile();
 
 	/**
-	 * Indicates if this strategy defines a main entry (@main).
+	 * Indicates if this strategy defines a main annotation (@main).
 	 * 
-	 * @return true if this strategy defines a main entry
+	 * @return true if this strategy defines a main annotation
 	 * @since 0.9
 	 */
 	boolean forceHasMain();
@@ -84,7 +84,7 @@ public interface IAcceleoExampleStrategy {
 	 * @param templateHasFileBlock
 	 *            indicates if a file block must be generated
 	 * @param templateIsMain
-	 *            indicates if a main tag (@main) must be generated
+	 *            indicates if a main annotation (@main) must be generated
 	 * @param metamodelURI
 	 *            is the metamodel URI
 	 * @param metamodelFileType

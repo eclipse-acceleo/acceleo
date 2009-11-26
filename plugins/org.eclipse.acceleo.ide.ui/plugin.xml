@@ -45,29 +45,29 @@ Contributors:
    <!-- The description attribute mustn't be modified -->
    <extension point="org.eclipse.acceleo.ide.ui.launching">
       <strategy
-            description="Acceleo Plug-in Application"
+            description="%AcceleoPluginLaunch"
             class="org.eclipse.acceleo.ide.ui.launching.strategy.AcceleoPluginLaunchingStrategy"/>
    </extension>
    <extension point="org.eclipse.acceleo.ide.ui.launching">
       <strategy
-            description="Java Application"
+            description="%AcceleoJavaLaunch"
             class="org.eclipse.acceleo.internal.ide.ui.launching.strategy.AcceleoJavaLaunchingStrategy"/>
    </extension>
 
-   <extension point="org.eclipse.core.resources.builders" id="acceleoBuilder" name="Acceleo Builder">
+   <extension point="org.eclipse.core.resources.builders" id="acceleoBuilder" name="%AcceleoBuilderName">
       <builder hasNature="true">
          <run class="org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilder" /> 
       </builder>
    </extension>
    
-   <extension point="org.eclipse.core.resources.natures" id="acceleoNature" name="Acceleo Nature">
+   <extension point="org.eclipse.core.resources.natures" id="acceleoNature" name="%AcceleoNatureName">
       <runtime>
          <run class="org.eclipse.acceleo.ide.ui.natures.AcceleoNature" /> 
       </runtime>
       <builder id="org.eclipse.acceleo.ide.ui.acceleoBuilder"/>
    </extension>
 
-   <extension id="problem" point="org.eclipse.core.resources.markers" name="Acceleo Problem">
+   <extension id="problem" point="org.eclipse.core.resources.markers" name="%AcceleoProblemLabel">
       <super type="org.eclipse.core.resources.problemmarker" /> 
       <persistent value="true" />
    </extension>
@@ -90,7 +90,7 @@ Contributors:
             includeOnPreferencePage="false"
             isGoToNextNavigationTarget="true"
             isGoToPreviousNavigationTarget="true"
-            label="Acceleo Problem"
+            label="%AcceleoProblemLabel"
             showInNextPrevDropdownToolbarAction="true"
             symbolicIcon="error"
             quickFixIcon="icons/AcceleoQuickFix.gif"/>
@@ -118,7 +118,7 @@ Contributors:
                enablesFor="+"
                id="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureAction"
                icon = "icons/AcceleoNature.gif"
-               label="Remove Acceleo Nature"
+               label="%AcceleoNatureRemoveActionLabel"
                menubarPath="org.eclipse.acceleo.ide.ui.menu/acceleo"/>
          <filter
                name="nature"
@@ -128,7 +128,7 @@ Contributors:
                enablesFor="1"
                id="org.eclipse.acceleo.ide.ui.popupMenus.AcceleoNewProjectUIWizardAction"
                icon = "icons/AcceleoNewProject.gif"
-               label="Create Acceleo Module UI Project"
+               label="%AcceleoModuleUIFromProjectActionLabel"
                menubarPath="org.eclipse.acceleo.ide.ui.menu/acceleo"/>
          <filter
                name="nature"
@@ -143,7 +143,7 @@ Contributors:
                enablesFor="1"
                id="org.eclipse.acceleo.ide.ui.popupMenus.OpenDeclarationTraceabilityElementAction"
                icon = "icons/AcceleoResultOpenDeclaration.gif"
-               label="Open Declaration"
+               label="%OpenDeclarationActionLabel"
                menubarPath="additionsAcceleo"/>
       </objectContribution>
    </extension>
@@ -154,7 +154,7 @@ Contributors:
             class="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor"
             icon="icons/AcceleoEditor.gif"
             contributorClass="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditorActionContributor"
-            name="Acceleo Template Editor"
+            name="%AcceleoEditor"
             extensions="mtl"
             id="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor"/>
    </extension>
@@ -162,8 +162,8 @@ Contributors:
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            label="Acceleo Editor Actions"
-            description="Acceleo Editor Actions"
+            label="%AcceleoEditorActionSet"
+            description="%AcceleoEditorActionSet"
             visible="false"
             id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
         <action
@@ -240,7 +240,7 @@ Contributors:
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            name="Acceleo Editor"
+            name="%AcceleoEditor"
             description="Acceleo editing template context"
             parentId="org.eclipse.ui.textEditorScope"
             id="org.eclipse.acceleo.ide.ui.editors.template.editor">
@@ -321,17 +321,17 @@ Contributors:
           point="org.eclipse.ui.newWizards">
        <category
              id="org.eclipse.acceleo.ide.ui"
-             name="%acceleo">
+             name="%AcceleoCategory">
        </category>
        <wizard
              category="org.eclipse.acceleo.ide.ui"
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
              icon="icons/AcceleoEditor.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
-             name="Acceleo Template"
+             name="%AcceleoModuleWizardName"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
           <description>
-             %AcceleoTemplateDescription
+             %AcceleoModuleWizardDescription
           </description>
        </wizard>
        <wizard
@@ -339,11 +339,11 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
              icon="icons/AcceleoNewProject.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
-             name="Acceleo Module Project"
+             name="%AcceleoProjectWizardName"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
              project="true">
           <description>
-             %AcceleoModuleDescription
+             %AcceleoProjectWizardDescription
           </description>
        </wizard>
        <wizard
@@ -351,11 +351,11 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
              icon="icons/AcceleoNewProjectUI.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectUIWizard"
-             name="Acceleo Module UI Project"
+             name="%AcceleoUILauncherWizardName"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
              project="true">
           <description>
-             %AcceleoUIModuleDescription
+             %AcceleoUILauncherWizardDescription
           </description>
        </wizard>
        <wizard
@@ -363,18 +363,18 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoConvertProjectWizard"
              icon="icons/AcceleoNewProjectConvert.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoConvertProjectWizard"
-             name="Convert to Acceleo Module Projects"
+             name="%AcceleoConvertProjectWizardName"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
              project="true">
           <description>
-             %AcceleoConvertProjectDescription
+             %AcceleoConvertProjectWizardDescription
           </description>
        </wizard>
     </extension>
 
    <extension point="org.eclipse.ui.perspectives">
       <perspective
-          name="Acceleo"
+          name="%AcceleoPerspective"
           icon="/icons/AcceleoPerspective.gif"
           class="org.eclipse.acceleo.internal.ide.ui.perspectives.AcceleoPerspectiveFactory"
           id="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
@@ -506,13 +506,13 @@ Contributors:
             targetID="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor"
             id="acceleo.rulerActions">
          <action
-               label="Toggle Acceleo Breakpoint"
+               label="%ToggleBreakpointActionLabel"
                class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
                style="push"
                actionID="RulerDoubleClick"
                id="org.eclipse.acceleo.ide.ui.debug.actions.doubleClickBreakpointAction"/>
          <action
-               label="Filter Acceleo Breakpoint"
+               label="%FilterBreakpointLabel"
                class="org.eclipse.acceleo.internal.ide.ui.debug.actions.RulerSelectModelActionDelegate"
                style="push"
                actionID="RulerClick"
@@ -551,27 +551,27 @@ Contributors:
           point="org.eclipse.ui.views">
        <category
              id="org.eclipse.acceleo.ide.ui"
-             name="Acceleo">
+             name="%AcceleoCategory">
        </category>
        <view
              category="org.eclipse.acceleo.ide.ui"
              class="org.eclipse.acceleo.internal.ide.ui.views.result.AcceleoResultView"
              icon="icons/AcceleoResultView.gif"
              id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
-             name="Result">
+             name="%AcceleoResultView">
        </view>
       <view
             category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser"
             icon="icons/ProposalsBrowser.gif"
             id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
-            name="Patterns"/>
+            name="%AcceleoGeneratioPatternsView"/>
       <view
             category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser"
             icon="icons/OverridesBrowser.gif"
             id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
-            name="Overrides"/>
+            name="%AcceleoOverridesView"/>
     </extension>
 
 	<extension
@@ -580,7 +580,7 @@ Contributors:
              activate="true"
              class="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoElementHyperlinkDetector"
              id="org.eclipse.acceleo.ide.ui.openDeclarationHyperlink"
-             name="Acceleo Open Declaration"
+             name="%AcceleoHyperlinkDetector"
              targetId="org.eclipse.acceleo.ide.ui.AcceleoTemplateSource">
        </hyperlinkDetector>
     </extension>
@@ -589,7 +589,7 @@ Contributors:
           point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
        <target
              id="org.eclipse.acceleo.ide.ui.AcceleoTemplateSource"
-             name="Acceleo Editor">
+             name="%AcceleoEditor">
           <context
                 type="org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor">
           </context>
@@ -598,7 +598,7 @@ Contributors:
 
     <extension
          id="activeRegion"
-         name="Acceleo Region Marker"
+         name="%AcceleoRegionMarker"
          point="org.eclipse.core.resources.markers">
          <super type="org.eclipse.core.resources.textmarker"/>
          <persistent value="false"/>
@@ -624,7 +624,7 @@ Contributors:
             includeOnPreferencePage="false"
             isGoToNextNavigationTarget="true"
             isGoToPreviousNavigationTarget="true"
-            label="Acceleo Result Active Region"
+            label="%AcceleoMarkerAnnotation"
             overviewRulerPreferenceKey="highlight.rulers.overview.activeRegion"
             overviewRulerPreferenceValue="true"
             showInNextPrevDropdownToolbarAction="true"

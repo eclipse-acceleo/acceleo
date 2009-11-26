@@ -48,7 +48,7 @@ public class CreateTemplateData {
 	private boolean templateIsInitialized;
 
 	/**
-	 * Indicates if a main tag (@main) must be generated.
+	 * Indicates if a main annotation (@main) must be generated.
 	 */
 	private boolean templateIsMain;
 
@@ -188,7 +188,7 @@ public class CreateTemplateData {
 	}
 
 	/**
-	 * Indicates if the template is a main entry point (@main tag).
+	 * Indicates if the template is a main entry point (@main annotation).
 	 * 
 	 * @return true if the template is a main entry point
 	 */
@@ -263,7 +263,7 @@ public class CreateTemplateData {
 	}
 
 	/**
-	 * Indicates if the template is a main entry point (@main tag).
+	 * Indicates if the template is a main entry point (@main annotation).
 	 * 
 	 * @param templateIsMain
 	 *            indicates if the template is a main entry point

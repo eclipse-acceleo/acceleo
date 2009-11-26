@@ -194,11 +194,11 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	}
 
 	/**
-	 * Indicates if the given file contains a main tag (@main).
+	 * Indicates if the given file contains a main annotation (@main).
 	 * 
 	 * @param file
 	 *            is the template file
-	 * @return true if the given file contains a main tag (@main)
+	 * @return true if the given file contains a main annotation (@main)
 	 */
 	private boolean hasMainTag(IFile file) {
 		Sequence pattern = new Sequence(IAcceleoConstants.TAG_MAIN);

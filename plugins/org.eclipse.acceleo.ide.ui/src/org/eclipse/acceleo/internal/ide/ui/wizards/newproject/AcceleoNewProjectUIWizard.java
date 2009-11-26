@@ -211,8 +211,7 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 		}
 		newProjectPage.setInitialProjectName(initialProjectName);
 		newProjectPage.setTitle(AcceleoUIMessages.getString("AcceleoNewProjectUIWizard.Title")); //$NON-NLS-1$
-		newProjectPage.setDescription(AcceleoUIMessages
-				.getString("AcceleoNewProjectUIWizard.Module.Description")); //$NON-NLS-1$
+		newProjectPage.setDescription(AcceleoUIMessages.getString("AcceleoNewProjectUIWizard.Description")); //$NON-NLS-1$
 		newProjectPage.setImageDescriptor(wizardImage);
 		addPage(newProjectPage);
 		projectReferencesPage = new WizardNewProjectReferencePage(AcceleoUIMessages

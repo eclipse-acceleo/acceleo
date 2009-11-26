@@ -94,7 +94,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	protected static final int TEMPLATE_IS_FILE = 4;
 
 	/**
-	 * Fire property change event. The 'has main tag' check button has been modified.
+	 * Fire property change event. The 'has main annotation' check button has been modified.
 	 */
 	protected static final int TEMPLATE_HAS_MAIN = 5;
 
@@ -851,9 +851,9 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	}
 
 	/**
-	 * Indicates if the template is a main entry point. If true, it must have a main tag (@main).
+	 * Indicates if the template is a main entry point. If true, it must have a main annotation (@main).
 	 * 
-	 * @return true if the template must have a main tag
+	 * @return true if the template must have a main annotation
 	 */
 	public boolean getTemplateIsMain() {
 		return templateHasMainButtonState.getSelection();
@@ -923,10 +923,10 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	}
 
 	/**
-	 * Sets the 'has main tag' selection state.
+	 * Sets the 'has main annotation' selection state.
 	 * 
 	 * @param templateHasMainButtonState
-	 *            the 'has main tag' selection state
+	 *            the 'has main annotation' selection state
 	 */
 	public void setTemplateHasMainButtonState(boolean templateHasMainButtonState) {
 		this.templateHasMainButtonState.setSelection(templateHasMainButtonState);
