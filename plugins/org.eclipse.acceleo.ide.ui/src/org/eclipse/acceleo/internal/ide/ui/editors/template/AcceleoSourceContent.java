@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -70,6 +72,7 @@ import org.eclipse.pde.core.plugin.IPluginExtension;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.IPluginObject;
 import org.eclipse.pde.core.plugin.PluginRegistry;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * The source content (i.e the semantic content for the template editor). It can create a CST model and it is
@@ -248,8 +251,19 @@ public class AcceleoSourceContent {
 			source.getProblems().clear();
 			IFile fileMTL = AcceleoSourceContent.this.file;
 			if (fileMTL != null && fileMTL.exists()) {
+				Map<String, IMarker> position2marker = new HashMap<String, IMarker>();
 				try {
-					fileMTL.deleteMarkers(AcceleoMarker.PROBLEM_MARKER, false, IResource.DEPTH_INFINITE);
+					IMarker[] markers = fileMTL.findMarkers(AcceleoMarker.PROBLEM_MARKER, false,
+							IResource.DEPTH_INFINITE);
+					for (IMarker marker : markers) {
+						String key = MarkerUtilities.getCharStart(marker)
+								+ "," + MarkerUtilities.getCharEnd(marker); //$NON-NLS-1$
+						if (position2marker.containsKey(key)) {
+							marker.delete();
+						} else {
+							position2marker.put(key, marker);
+						}
+					}
 				} catch (CoreException ex) {
 					AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
 				}
@@ -265,11 +279,23 @@ public class AcceleoSourceContent {
 				if (problems != null) {
 					for (AcceleoParserProblem problem : problems.getList()) {
 						try {
-							reportError(fileMTL, problem.getLine(), problem.getPosBegin(), problem
-									.getPosEnd(), problem.getMessage());
+							String key = problem.getPosBegin() + "," + problem.getPosEnd(); //$NON-NLS-1$
+							if (!position2marker.containsKey(key)) {
+								reportError(fileMTL, problem.getLine(), problem.getPosBegin(), problem
+										.getPosEnd(), problem.getMessage());
+							} else {
+								position2marker.remove(key);
+							}
 						} catch (CoreException ex) {
 							AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
 						}
+					}
+				}
+				for (IMarker markerToDelete : position2marker.values()) {
+					try {
+						markerToDelete.delete();
+					} catch (CoreException e) {
+						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					}
 				}
 			}
