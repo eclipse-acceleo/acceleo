@@ -778,8 +778,10 @@ public class AcceleoProject {
 				}
 			}
 		} else if (entriesMTL != null && entriesMTL.hasMoreElements()) {
+			final String testExtension = "acceleotest"; //$NON-NLS-1$
 			List<File> inputFiles = new ArrayList<File>();
 			List<URI> absoluteOutputURIs = new ArrayList<URI>();
+			List<URI> testAbsoluteOutputURIs = new ArrayList<URI>();
 			List<URI> pluginOutputURIs = new ArrayList<URI>();
 			while (entriesMTL.hasMoreElements()) {
 				URL entry = entriesMTL.nextElement();
@@ -798,24 +800,39 @@ public class AcceleoProject {
 						inputFiles.add(fileMTL);
 						absoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension()
 								.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString()));
+						testAbsoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension()
+								.addFileExtension(testExtension).toString()));
 						pluginOutputURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName())
 								.append(new Path(entry.getPath())).removeFileExtension().addFileExtension(
 										IAcceleoConstants.EMTL_FILE_EXTENSION).toString(), false));
 					}
 				}
 			}
+			// The real EMTL files musn't be created when an issue occurs.
 			AcceleoParser parser = new AcceleoParser();
-			parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
+			parser.parse(inputFiles, testAbsoluteOutputURIs, new ArrayList<URI>());
 			savedURIs.addAll(pluginOutputURIs);
+			boolean hasProblem = false;
 			for (File inputFile : inputFiles) {
 				AcceleoParserProblems problems = parser.getProblems(inputFile);
 				if (problems != null) {
 					String message = problems.getMessage();
 					if (message != null && message.length() > 0) {
+						hasProblem = true;
 						AcceleoUIActivator.getDefault().getLog().log(
 								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
 					}
 				}
+				for (File file : inputFile.getParentFile().listFiles()) {
+					if (file.getName() != null && file.getName().endsWith(testExtension)) {
+						file.delete();
+					}
+				}
+			}
+			if (!hasProblem) {
+				// We create the real EMTL files
+				parser = new AcceleoParser();
+				parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
 			}
 		}
 	}
