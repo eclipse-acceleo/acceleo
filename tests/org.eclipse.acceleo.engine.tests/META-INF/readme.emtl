@@ -1,0 +1,4 @@
+TODO JMU : Disable compilation issues in the runtime instance.
+This file is used to disable the MTL compilation of this project when eclipse starts.
+There isn't any .emtl files in the project but there are severals .mtl files.
+So, the Acceleo Bundle Compiler wanted to compile these files.
