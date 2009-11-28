@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -641,6 +642,10 @@ public class AcceleoProject {
 			if (excludeURIs == null || !excludeURIs.contains(oURI)) {
 				try {
 					ModelUtils.load(oURI, oResourceSet);
+				} catch (WrappedException e) {
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, oURI.toString()
+									+ " : " + e.getMessage(), e)); //$NON-NLS-1$
 				} catch (IOException e) {
 					AcceleoUIActivator.getDefault().getLog().log(
 							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
