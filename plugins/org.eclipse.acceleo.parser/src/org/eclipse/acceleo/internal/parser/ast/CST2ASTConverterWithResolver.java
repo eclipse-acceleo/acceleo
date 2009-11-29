@@ -198,15 +198,17 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @return an AST module (i.e the root element of another AST)
 	 */
 	private org.eclipse.acceleo.model.mtl.Module getModuleNamed(Resource oResource, String name) {
-		Iterator<Resource> itOtherResources = oResource.getResourceSet().getResources().iterator();
-		while (itOtherResources.hasNext()) {
-			Resource otherResource = itOtherResources.next();
-			if (otherResource.getContents().size() > 0
-					&& otherResource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
-				org.eclipse.acceleo.model.mtl.Module otherModule = (org.eclipse.acceleo.model.mtl.Module)otherResource
-						.getContents().get(0);
-				if (name.equals(otherModule.getName())) {
-					return otherModule;
+		if (oResource != null && name != null) {
+			Iterator<Resource> itOtherResources = oResource.getResourceSet().getResources().iterator();
+			while (itOtherResources.hasNext()) {
+				Resource otherResource = itOtherResources.next();
+				if (otherResource.getContents().size() > 0
+						&& otherResource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
+					org.eclipse.acceleo.model.mtl.Module otherModule = (org.eclipse.acceleo.model.mtl.Module)otherResource
+							.getContents().get(0);
+					if (name.equals(otherModule.getName())) {
+						return otherModule;
+					}
 				}
 			}
 		}
