@@ -37,7 +37,11 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
@@ -123,9 +127,19 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	private IProject project;
 
 	/**
+	 * Indicates if we have to clean the view.
+	 */
+	private boolean clean = true;
+
+	/**
 	 * The resource change listener to detect that the view must be refreshed.
 	 */
 	private IResourceChangeListener resourceChangeListener;
+
+	/**
+	 * The job to refresh the content of the view.
+	 */
+	private Job refreshContent;
 
 	/**
 	 * Constructor.
@@ -160,7 +174,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		IEditorPart part = getSite().getPage().getActiveEditor();
 		if (part instanceof AcceleoEditor) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			updateViewTemplates(editor);
+			refreshContent(editor.getFile());
 		}
 	}
 
@@ -187,18 +201,11 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 				public void resourceChanged(IResourceChangeEvent event) {
 					try {
 						IResourceDelta delta = event.getDelta();
-						if (hasSignificantDelta(delta)) {
+						IFile aFile = getFileInDelta(delta);
+						if (aFile != null) {
+							clean = true;
 							project = null;
-							Display.getDefault().asyncExec(new Runnable() {
-								public void run() {
-									if (getSite() != null && getSite().getPage() != null
-											&& getSite().getPage().getActiveEditor() instanceof AcceleoEditor
-											&& getSite().getPage().isPartVisible(OverridesBrowser.this)) {
-										updateViewTemplates((AcceleoEditor)getSite().getPage()
-												.getActiveEditor());
-									}
-								}
-							});
+							refreshContent(aFile);
 						}
 					} catch (CoreException e) {
 						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
@@ -211,27 +218,28 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	}
 
 	/**
-	 * Indicates if an Acceleo template file has been modified.
+	 * Gets the last significant file that has been modified. It means an Acceleo template file or the
+	 * MANIFEST.MF file of the current project.
 	 * 
 	 * @param delta
 	 *            the resource delta represents changes in the state of a resource tree
-	 * @return true if an Acceleo template file has been modified
+	 * @return the modified Acceleo template file or the MANIFEST.MF file
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private boolean hasSignificantDelta(IResourceDelta delta) throws CoreException {
-		boolean result = false;
+	private IFile getFileInDelta(IResourceDelta delta) throws CoreException {
+		IFile result = null;
 		if (delta != null) {
 			IResource resource = delta.getResource();
 			if (resource instanceof IFile) {
-				if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(resource.getFileExtension())
+				if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension())
 						|| "MANIFEST.MF".equals(resource.getName())) {
-					result = true;
+					result = (IFile)resource;
 				}
 			} else {
 				IResourceDelta[] children = delta.getAffectedChildren();
-				for (int i = 0; !result && i < children.length; i++) {
-					result = hasSignificantDelta(children[i]);
+				for (int i = 0; result == null && i < children.length; i++) {
+					result = getFileInDelta(children[i]);
 				}
 			}
 		}
@@ -249,7 +257,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			public void partOpened(IWorkbenchPart part) {
 				if (part instanceof AcceleoEditor) {
 					AcceleoEditor editor = (AcceleoEditor)part;
-					updateViewTemplates(editor);
+					refreshContent(editor.getFile());
 				}
 			}
 
@@ -268,7 +276,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			public void partBroughtToTop(IWorkbenchPart part) {
 				if (part instanceof AcceleoEditor) {
 					AcceleoEditor editor = (AcceleoEditor)part;
-					updateViewTemplates(editor);
+					refreshContent(editor.getFile());
 				}
 			}
 		};
@@ -277,79 +285,132 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	// CHECKSTYLE:ON
 
 	/**
-	 * Updates the templates in the view by getting the settings of the current template. The current template
-	 * is in the given editor.
+	 * It refreshes the view by considering that the given file is the main file. The corresponding project
+	 * will be the first one displayed in the view.
 	 * 
-	 * @param editor
-	 *            is the editor that contains the current template to display in the Overrides view, it can be
-	 *            null
+	 * @param aFile
+	 *            is the current template
 	 */
-	private synchronized void updateViewTemplates(AcceleoEditor editor) {
-		IFile file;
-		boolean stop = getSite() != null && getSite().getPage() != null
-				&& !getSite().getPage().isPartVisible(this);
-		if (editor != null) {
-			file = editor.getFile();
-			if (file != null) {
-				stop = stop || file.getProject() == project;
-			} else {
-				stop = true;
+	private void refreshContent(IFile aFile) {
+		IProject aProject;
+		if (aFile != null) {
+			aProject = aFile.getProject();
+		} else {
+			aProject = null;
+		}
+		if (!clean) {
+			if (aProject == null || aProject != null && aProject == project) {
+				return;
 			}
-		} else {
-			file = null;
-			stop = stop
-					|| (templatesViewer.getInput() instanceof Object[] && ((Object[])templatesViewer
-							.getInput()).length > 0);
 		}
-		if (stop) {
-			return;
+		clean = false;
+		project = aProject;
+		if (refreshContent != null) {
+			refreshContent.cancel();
 		}
-		if (file != null) {
-			project = file.getProject();
-		} else {
-			project = null;
-		}
-		Object[] checkedElements = templatesViewer.getCheckedElements();
-		Set<ResourceSet> newResourceSet = new HashSet<ResourceSet>();
+		refreshContent = new Job("Acceleo") { //$NON-NLS-1$
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				updateViewTemplates(monitor);
+				return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
+			}
+		};
+		refreshContent.setPriority(Job.DECORATE);
+		refreshContent.setSystem(true);
+		final int schedule = 1000;
+		refreshContent.schedule(schedule);
+	}
+
+	/**
+	 * Updates the templates in the view by getting the settings of the current project.
+	 * 
+	 * @param monitor
+	 *            is the current monitor
+	 */
+	private synchronized void updateViewTemplates(IProgressMonitor monitor) {
 		if (project != null) {
+			Set<ResourceSet> newResourceSet = new HashSet<ResourceSet>();
 			AcceleoProject acceleoProject = new AcceleoProject(project);
-			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
-			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles();
+			final List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
+			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles(monitor);
 			computeModuleProjectHandlers(resourceSet, true, projects);
 			newResourceSet.add(resourceSet);
-			resourceSet = acceleoProject.loadNotAccessibleOutputFiles();
-			computeModuleProjectHandlers(resourceSet, false, projects);
-			newResourceSet.add(resourceSet);
-			templatesViewer.setInput(projects.toArray());
-		} else {
-			List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
-			ResourceSet resourceSet = AcceleoProject.loadAllPlatformOutputFiles();
-			computeModuleProjectHandlers(resourceSet, false, projects);
-			newResourceSet.add(resourceSet);
-			templatesViewer.setInput(projects.toArray());
-		}
-		for (Object checkedElement : checkedElements) {
-			if (checkedElement instanceof EObject && ((EObject)checkedElement).eResource() != null) {
-				EObject eObject = (EObject)checkedElement;
-				URI fileURI = eObject.eResource().getURI();
-				if (fileURI != null) {
-					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-					EObject newEObject = expandFragment(fileURI, eObjectFragmentURI);
-					templatesViewer.setChecked(newEObject, true);
+			if (!monitor.isCanceled()) {
+				resourceSet = acceleoProject.loadNotAccessibleOutputFiles(monitor);
+				newResourceSet.add(resourceSet);
+			}
+			if (!monitor.isCanceled()) {
+				computeModuleProjectHandlers(resourceSet, false, projects);
+				asyncUpdateViewTemplates(projects);
+				if (toUnload.size() > 0) {
+					for (ResourceSet resourceSetToUnload : toUnload) {
+						unloadResourceSet(resourceSetToUnload);
+					}
+					toUnload.clear();
+				}
+				toUnload.addAll(newResourceSet);
+			} else {
+				for (ResourceSet resourceSetToUnload : newResourceSet) {
+					unloadResourceSet(resourceSetToUnload);
 				}
 			}
+		} else {
+			final List<ModuleProjectHandler> projects = new ArrayList<ModuleProjectHandler>();
+			ResourceSet resourceSet = AcceleoProject.loadAllPlatformOutputFiles(monitor);
+			if (!monitor.isCanceled()) {
+				computeModuleProjectHandlers(resourceSet, false, projects);
+				asyncUpdateViewTemplates(projects);
+				if (toUnload.size() > 0) {
+					for (ResourceSet resourceSetToUnload : toUnload) {
+						unloadResourceSet(resourceSetToUnload);
+					}
+					toUnload.clear();
+				}
+				toUnload.add(resourceSet);
+			} else {
+				unloadResourceSet(resourceSet);
+			}
 		}
-		if (toUnload.size() > 0) {
-			for (ResourceSet resourceSet : toUnload) {
-				for (Resource resource : resourceSet.getResources()) {
-					if (resource.isLoaded()) {
-						resource.unload();
+	}
+
+	/**
+	 * Updates the Overrides view with the Acceleo projects and the Acceleo plugins.
+	 * 
+	 * @param projects
+	 *            are the project handlers used to show a workspace project or a bundle project in the view
+	 */
+	private void asyncUpdateViewTemplates(final List<ModuleProjectHandler> projects) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				Object[] checkedElements = templatesViewer.getCheckedElements();
+				templatesViewer.setInput(projects.toArray());
+				for (Object checkedElement : checkedElements) {
+					if (checkedElement instanceof EObject && ((EObject)checkedElement).eResource() != null) {
+						EObject eObject = (EObject)checkedElement;
+						URI fileURI = eObject.eResource().getURI();
+						if (fileURI != null) {
+							String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+							EObject newEObject = expandFragment(fileURI, eObjectFragmentURI);
+							templatesViewer.setChecked(newEObject, true);
+						}
 					}
 				}
 			}
-			toUnload.clear();
+		});
+	}
+
+	/**
+	 * Clears the resources of the given resource set.
+	 * 
+	 * @param resourceSetToUnload
+	 *            is a set of resources to unload
+	 */
+	private void unloadResourceSet(ResourceSet resourceSetToUnload) {
+		for (Resource resource : resourceSetToUnload.getResources()) {
+			if (resource.isLoaded()) {
+				resource.unload();
+			}
 		}
-		toUnload.addAll(newResourceSet);
 	}
 
 	/**
@@ -450,11 +511,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		}
 		if (toUnload.size() > 0) {
 			for (ResourceSet resourceSet : toUnload) {
-				for (Resource resource : resourceSet.getResources()) {
-					if (resource.isLoaded()) {
-						resource.unload();
-					}
-				}
+				unloadResourceSet(resourceSet);
 			}
 			toUnload.clear();
 		}
@@ -522,9 +579,9 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 		IEditorPart part = getSite().getPage().getActiveEditor();
 		if (part instanceof AcceleoEditor) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			updateViewTemplates(editor);
+			refreshContent(editor.getFile());
 		} else {
-			updateViewTemplates(null);
+			refreshContent(null);
 		}
 	}
 

@@ -41,7 +41,9 @@ import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IPluginDescriptor;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -565,11 +567,29 @@ public class AcceleoProject {
 	 * set by yourself.
 	 * 
 	 * @return a resource set which contains all the accessible resources
+	 * @deprecated It's a long time operation, the monitor allows the operation to be canceled. Now you have
+	 *             to use : loadAccessibleOutputFiles(IProgressMonitor monitor)
 	 */
+	@Deprecated
 	public ResourceSet loadAccessibleOutputFiles() {
+		return loadAccessibleOutputFiles(new NullProgressMonitor());
+	}
+
+	/**
+	 * Gets in a single resource set all the accessible AST resources (EMTL). It means the files of the
+	 * project and the files of the required plugins. You must unload the resources of the returned resource
+	 * set by yourself.
+	 * 
+	 * @param monitor
+	 *            is the monitor
+	 * @return a resource set which contains all the accessible resources
+	 * @since 0.9
+	 */
+	public ResourceSet loadAccessibleOutputFiles(IProgressMonitor monitor) {
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<URI> outputURIs = getAccessibleOutputFiles();
-		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext();) {
+		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext()
+				&& !monitor.isCanceled();) {
 			URI oURI = itOutputURIs.next();
 			try {
 				ModelUtils.load(oURI, oResourceSet);
@@ -586,26 +606,30 @@ public class AcceleoProject {
 	 * of the Eclipse instance (plugin and workspace) not in the project and not in the required plugins. You
 	 * must unload the resources of the returned resource set by yourself.
 	 * 
+	 * @param monitor
+	 *            is the monitor
 	 * @return a resource set which contains all the not accessible resources
 	 * @since 0.9
 	 */
-	public ResourceSet loadNotAccessibleOutputFiles() {
-		return loadAllPlatformOutputFiles(this);
+	public ResourceSet loadNotAccessibleOutputFiles(IProgressMonitor monitor) {
+		return loadAllPlatformOutputFiles(this, monitor);
 	}
 
 	/**
 	 * Gets in a single resource set all the EMTL files of the Eclipse instance, it means in the plug-ins and
 	 * in the workspace. You must unload the resources of the returned resource set by yourself.
 	 * 
+	 * @param monitor
+	 *            is the monitor
 	 * @return a resource set which contains all the not accessible resources
 	 * @since 0.9
 	 */
-	public static ResourceSet loadAllPlatformOutputFiles() {
+	public static ResourceSet loadAllPlatformOutputFiles(IProgressMonitor monitor) {
 		if (!registryInitialized) {
 			registryInitialized = true;
 			registerPackages();
 		}
-		return loadAllPlatformOutputFiles(null);
+		return loadAllPlatformOutputFiles(null, monitor);
 	}
 
 	/**
@@ -616,9 +640,12 @@ public class AcceleoProject {
 	 * @param excludeAccessible
 	 *            the accessible output files we want to exclude, null indicates that we don't want to ignore
 	 *            anything
+	 * @param monitor
+	 *            is the monitor
 	 * @return a resource set which contains all the not accessible resources
 	 */
-	private static ResourceSet loadAllPlatformOutputFiles(AcceleoProject excludeAccessible) {
+	private static ResourceSet loadAllPlatformOutputFiles(AcceleoProject excludeAccessible,
+			IProgressMonitor monitor) {
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<URI> outputURIs = new ArrayList<URI>();
 		for (IProject aProject : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
@@ -637,7 +664,8 @@ public class AcceleoProject {
 		} else {
 			excludeURIs = null;
 		}
-		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext();) {
+		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext()
+				&& !monitor.isCanceled();) {
 			URI oURI = itOutputURIs.next();
 			if (excludeURIs == null || !excludeURIs.contains(oURI)) {
 				try {
