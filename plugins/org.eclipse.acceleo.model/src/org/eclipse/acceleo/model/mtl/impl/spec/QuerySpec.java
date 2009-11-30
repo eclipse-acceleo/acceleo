@@ -44,7 +44,7 @@ public class QuerySpec extends QueryImpl {
 				toString.append(',');
 			}
 		}
-		toString.append(')').append(' ').append(':');
+		toString.append(')').append(' ').append(':').append(' ');
 		toString.append(getType().getName());
 		return toString.toString();
 	}
