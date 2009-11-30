@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.CallExp;
 import org.eclipse.ocl.ecore.Constraint;
@@ -689,6 +690,16 @@ public class OCLParser {
 	 */
 	public EClassifier lookupClassifier(String name) {
 		return environment.lookupClassifier(name);
+	}
+
+	/**
+	 * Returns the underlying OCL environment.
+	 * 
+	 * @return The underlying OCL environment.
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
+		return helper.getEnvironment();
 	}
 
 	/**

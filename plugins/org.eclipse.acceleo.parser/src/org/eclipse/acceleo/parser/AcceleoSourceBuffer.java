@@ -20,7 +20,11 @@ import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.parser.cst.CstFactory;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.ocl.Environment;
 
 /**
  * The source to parse. It can be created from a file or a buffer. The file property is null if this object
@@ -243,6 +247,15 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Returns the environment instance that was used under the covers by the ocl parser.
+	 * 
+	 * @return The environment instance that was used under the covers by the ocl parser.
+	 */
+	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
+		return astCreator.getOCL().getOCLEnvironment();
 	}
 
 	/**
