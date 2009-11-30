@@ -262,7 +262,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			if (AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE.equals(operation.getName())) {
 				result = substitute(sourceValue, (String)args[0], (String)args[1], false);
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_INDEX.equals(operation.getName())) {
-				result = sourceValue.indexOf((String)args[0]);
+				// Increment java index value by 1 for OCL
+				result = sourceValue.indexOf((String)args[0]) + 1;
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_FIRST.equals(operation.getName())) {
 				int endIndex = ((Integer)args[0]).intValue();
 				if (endIndex < 0 || endIndex > sourceValue.length()) {
