@@ -59,10 +59,12 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.helper.Choice;
 import org.eclipse.ocl.helper.ChoiceKind;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -686,6 +688,16 @@ public class AcceleoSourceContent {
 			eContainer = (CSTNode)eContainer.eContainer();
 		}
 		return null;
+	}
+
+	/**
+	 * Returns the environment instance that was used under the covers by the ocl parser.
+	 * 
+	 * @return The environment instance that was used under the covers by the ocl parser.
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
+		return source.getOCLEnvironment();
 	}
 
 	/**

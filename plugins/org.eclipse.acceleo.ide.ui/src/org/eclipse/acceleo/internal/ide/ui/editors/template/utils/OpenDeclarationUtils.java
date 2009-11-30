@@ -59,8 +59,11 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.ocl.Environment;
+import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
+import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -148,8 +151,64 @@ public final class OpenDeclarationUtils {
 		} else if (astNode instanceof Variable) {
 			EClassifier eClassifier = ((Variable)astNode).getType();
 			res = eClassifier;
+		} else if (astNode instanceof TypeExp) {
+			EClassifier eClassifier = ((TypeExp)astNode).getReferredType();
+			res = eClassifier;
+		} else if (astNode instanceof IteratorExp) {
+			res = astNode;
 		}
 		return res;
+	}
+
+	/**
+	 * Returns the correct EOperation from the given <em>environment</em>'s standard library instance
+	 * corresponding to the given iterator expression.
+	 * <p>
+	 * At the time of writing, iterators consist of :
+	 * <ul>
+	 * <li>exists</li>
+	 * <li>forAll</li>
+	 * <li>select</li>
+	 * <li>reject</li>
+	 * <li>collect</li>
+	 * <li>collectNested</li>
+	 * <li>one</li>
+	 * <li>any</li>
+	 * <li>sortedBy</li>
+	 * <li>isUnique</li>
+	 * <li>closure</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param environment
+	 *            Environment which standard library is to be referenced.
+	 * @param iteratorExp
+	 *            Iterator forw which an EOperation is to be retrieved.
+	 * @return The EOperation <em>iteratorExp</em> references.
+	 */
+	public static EObject findIteratorEOperation(
+			Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> environment,
+			IteratorExp iteratorExp) {
+		/*
+		 * There is no way to access the "*_Class" classifier from the ocl standard library package that
+		 * contains all EOperations, thus this code.
+		 */
+		final EPackage stdLibPackage = (EPackage)environment.getOCLStandardLibrary().getCollection()
+				.eContainer();
+		final EClassifier sourceType = iteratorExp.getSource().getType();
+		final String operationHolderName = sourceType.getName().substring(0,
+				sourceType.getName().indexOf('(')).concat("(T)_Class");
+		final EClassifier operationHolder = stdLibPackage.getEClassifier(operationHolderName);
+		final String operationName = iteratorExp.getName();
+
+		EOperation referredOperation = null;
+		for (EObject child : operationHolder.eContents()) {
+			if (child instanceof EOperation && operationName.equals(((EOperation)child).getName())) {
+				referredOperation = (EOperation)child;
+				break;
+			}
+		}
+		return referredOperation;
 	}
 
 	/**

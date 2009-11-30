@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.parser.cst.CSTNode;
+import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -23,8 +24,10 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ui.texteditor.ITextEditor;
 
@@ -46,30 +49,195 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region,
 			boolean canShowMultipleHyperlinks) {
 		final ITextEditor textEditor = (ITextEditor)getAdapter(ITextEditor.class);
+		// shortcut : do not show links for non relevant chars (dot, arrows, ...)
+		boolean shortcut = false;
 		if (region == null || !(textEditor instanceof AcceleoEditor)) {
+			shortcut = true;
+		}
+		int offset = region.getOffset();
+		final AcceleoEditor editor = (AcceleoEditor)textEditor;
+		final int start = Math.max(0, offset - 10);
+		final int end = Math.min(editor.getContent().getText().length(), offset + 10);
+		// Creates a new String to avoid keeping the whole document in memory
+		final String expressionSurroundings = new String(editor.getContent().getText().substring(start, end));
+		if (!isRelevant(expressionSurroundings, offset - start)) {
+			shortcut = true;
+		}
+		if (shortcut) {
 			return null;
 		}
 
 		EObject res = null;
-		final AcceleoEditor editor = (AcceleoEditor)textEditor;
-		int offset = region.getOffset();
 
+		int wordStart = -1;
+		int wordLength = -1;
+
+		/*
+		 * This boolean will be used to determine whether we need to compute a smarter region than what's
+		 * carried on by the AST/CST node.
+		 */
+		boolean inferWordRegion = true;
 		ASTNode astNode = editor.getContent().getASTNode(offset, offset);
 		if (astNode != null) {
 			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+			if (res instanceof IteratorExp) {
+				res = OpenDeclarationUtils.findIteratorEOperation(editor.getContent().getOCLEnvironment(),
+						(IteratorExp)res);
+			}
+			wordStart = astNode.getStartPosition();
+			wordLength = astNode.getEndPosition() - astNode.getStartPosition();
 		}
 		if (res == null) {
 			CSTNode cstNode = editor.getContent().getCSTNode(offset, offset);
 			if (cstNode != null) {
 				res = OpenDeclarationUtils.findDeclarationFromCST(editor, astNode, cstNode);
+				wordStart = cstNode.getStartPosition();
+				wordLength = cstNode.getEndPosition() - cstNode.getStartPosition();
+			}
+			if (cstNode instanceof TypedModel) {
+				inferWordRegion = false;
 			}
 		}
 		IHyperlink[] links = null;
 		if (res != null) {
 			links = new IHyperlink[1];
-			links[0] = new AcceleoElementHyperlink(editor, region, res);
+			final IRegion wordRegion;
+			if (inferWordRegion) {
+				wordRegion = getWordRegion(editor, offset, wordStart, wordLength);
+			} else {
+				wordRegion = new Region(wordStart, wordLength);
+			}
+			links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
 		}
 		return links;
+	}
+
+	/**
+	 * Tries and return the actual region span of the word under "cursorOffset". Note that a "word" can
+	 * actualy contain spaces, dots, colons, ...
+	 * <p>
+	 * For example, if the cursor is currently on the "metamodel" declaration, then this will return the full
+	 * extent of the metamodel's URI, regardless of slashes, dots, colons, sharps, ...
+	 * </p>
+	 * <p>
+	 * On a type expression, this can and will return the full type if it is qualified, packages included
+	 * (mt::core::Query) and whether or not there are spaces in-between colons and package/type names.
+	 * </p>
+	 * <p>
+	 * On a variable declaration, this will return the region containing both the variable name and its type,
+	 * once again regardless of spaces (templ : mt::core::Template).
+	 * </p>
+	 * 
+	 * @param currentEditor
+	 *            The editor currently displaying the text we search a region from.
+	 * @param cursorOffset
+	 *            Offset above which the mouse currently hovers.
+	 * @param expressionStart
+	 *            Starting offset of the expression in which we seek a particular region.
+	 * @param expressionLength
+	 *            Ending offset of the expression in which we seek a particular region.
+	 * @return Region of the word we're currently hovering over.
+	 */
+	private IRegion getWordRegion(AcceleoEditor currentEditor, int cursorOffset, int expressionStart,
+			int expressionLength) {
+		// Creates a new String to avoid keeping the whole document in memory
+		final String expression = new String(currentEditor.getContent().getText().substring(expressionStart,
+				expressionStart + expressionLength));
+		int cursorPositionInExpression = cursorOffset - expressionStart;
+		final int wordStart;
+		final int wordEnd;
+
+		int prev = cursorPositionInExpression - 1;
+		if (prev >= 0) {
+			while (prev >= 0 && isRelevant(expression, prev)) {
+				prev--;
+			}
+		}
+
+		int next = cursorPositionInExpression + 1;
+		if (next < expression.length()) {
+			while (next < expression.length() - 1 && isRelevant(expression, next)) {
+				next++;
+			}
+		}
+
+		if (prev == -1) {
+			wordStart = 0;
+		} else {
+			// We found a non relevant character at "prev". Add 1 to start at the last browsed.
+			wordStart = prev + 1;
+		}
+		if (next == expression.length() - 1) {
+			wordEnd = expression.length();
+		} else {
+			wordEnd = next;
+		}
+
+		// now set back the offsets in document range
+		int wordLength = wordEnd - wordStart;
+		return new Region(wordStart + expressionStart, wordLength);
+	}
+
+	/**
+	 * Given an expression and offset in that expression, this method will check wether the character at
+	 * <em>offset</em> is relevant for hyperlinking. Some examples are given in the javadoc of
+	 * {@link #getWordRegion(AcceleoEditor, int, int, int)}.
+	 * 
+	 * @param expression
+	 *            Expression in which a character is to be considered.
+	 * @param offset
+	 *            Offset of the character we need to determine relevancy of.
+	 * @return <code>true</code> if the character at <em>offset</em> in <em>expression</em> is relevant for
+	 *         hyperlink regions.
+	 */
+	private boolean isRelevant(String expression, int offset) {
+		char character = expression.charAt(offset);
+		// shortcut
+		if (Character.isLetter(character)) {
+			return true;
+		}
+
+		boolean relevant = false;
+		// initialize at random "relevant" character : doesn't matter which as long as it isn't '-' (arrows)
+		char previous = 'a';
+		char next = 'a';
+
+		if (offset > 1) {
+			previous = expression.charAt(offset - 1);
+		}
+		if (offset < expression.length() - 2) {
+			next = expression.charAt(offset + 1);
+		}
+
+		/*
+		 * ':' is somewhat special in that it is relevant and can serve as a "junction" in variable
+		 * declaration and type expressions. In both of these, ':', '::' *and* the spaces before and after are
+		 * relevant.
+		 */
+		if (Character.isWhitespace(character)) {
+			int curOffset = offset;
+			while (curOffset < expression.length() - 2 && !Character.isLetter(next) && next != ':') {
+				next = expression.charAt(++curOffset);
+			}
+			curOffset = offset;
+			while (curOffset > 1 && !Character.isLetter(previous) && previous != ':') {
+				previous = expression.charAt(--curOffset);
+			}
+			if (previous == ':' || next == ':') {
+				relevant = true;
+			}
+		} else if (character == ':') {
+			relevant = true;
+		} else if (character == '>' && previous == '-') {
+			relevant = false;
+		} else if (character == '-' && next == '>') {
+			relevant = false;
+		} else if (character == '<' || character == '>' || character == '=') {
+			relevant = true;
+		} else if (character == '+' || character == '-' || character == '/' || character == '*') {
+			relevant = true;
+		}
+		return relevant;
 	}
 
 	/**
