@@ -1,0 +1,124 @@
+/*
+Author: Goubet Laurent
+Date: 2009/11/03
+Version: 1.0
+Copyright: This file is made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
+*/
+
+body {
+  font: 100% Arial, sans-sserif;
+  background: #ffffff;
+  color: black;
+  margin: 2em;
+  padding-left: 2em;
+}
+
+h1.title {
+  color: #004070;
+  font-size: 300%;
+}
+
+h1 {
+  padding-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 2px solid #aaaaaa;
+  color: #004070;
+}
+
+h1 a {
+  color: #004070;
+}
+
+h2.subtitle {
+  color: #004070;
+  border-bottom: 0px;
+}
+
+h2 {
+  font-size: 160%;
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #aaaaaa;
+  color: #004070;
+}
+
+h2 a {
+  color: #004070;
+}
+
+h3 {
+  font-size: 140%;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.reference {
+  color: #0066aa;
+  text-decoration: underline;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+dt {
+  font-style: bold;
+  color: #0000a0;
+}
+
+dd {
+  margin-bottom: 2em;
+}
+
+table.docinfo {
+  text-align: left;
+  margin: 1em;
+}
+
+table.exampletable {
+  border-spacing: 0px;
+  border: 2px solid #000000;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+table.exampletable th {
+  padding: 0px;
+  border: 2px solid #000000;
+  background-color: #e0e0e0;
+}
+
+table.exampletable td {
+  border: 1px solid black;
+  padding-left: 1em;
+}
+
+table.exampletable p {
+  margin: 0em;
+}
+
+table.truthtable {
+  border-spacing: 0px;
+  border: 2px solid #000000;
+  border-collapse: collapse;
+  width: 30%;
+}
+
+table.truthtable th {
+  padding: 0px;
+  border: 2px solid #000000;
+  background-color: #e0e0e0;
+}
+
+table.truthtable td {
+  border: 1px solid black;
+  padding-left: 1em;
+}
+
+table.truthtable p {
+  margin: 0em;
+}

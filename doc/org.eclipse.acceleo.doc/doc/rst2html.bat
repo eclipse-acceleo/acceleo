@@ -2,7 +2,7 @@
 FOR %%f IN (rst\*.rst) DO (
 	FOR %%h IN (html\%%~nf.html) DO (
 		IF %%~tf GTR %%~th (
-			C:\dev\programs\python\python.exe C:\dev\programs\docutils\tools\rst2html.py %%f html\%%~nf.html --stylesheet=style/lsr.css
+			C:\python26\python.exe "C:\Program Files\docutils\tools\rst2html.py" %%f html\%%~nf.html --link-stylesheet --stylesheet-path=style/acceleo.css
 		)
 	)
 )
