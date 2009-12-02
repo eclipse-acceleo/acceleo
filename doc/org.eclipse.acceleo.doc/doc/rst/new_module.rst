@@ -11,7 +11,7 @@ Copyright |copy| 2008, Obeo\ |trade|.
 .. |trade| unicode:: U+2122
 
 New Acceleo project
-================
+===================
 
 The aim of an Acceleo project is to generate text from a model.
 For this tutorial, we will create a new Acceleo module for generating java beans from a UML model.

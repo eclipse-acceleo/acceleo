@@ -3,233 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
 <title>Acceleo Tutorial</title>
 <meta name="authors" content="Laurent Goubet" />
-<style type="text/css">
-
-/*
-Author: Peter Parente
-Date: 2008/01/22
-Version: 1.0
-Copyright: This stylesheet has been placed in the public domain - free to edit and use for all uses.
-*/
-
-body {
-  font: 100% sans-serif;
-  background: #ffffff;
-  color: black;
-  margin: 2em;
-  padding: 0em 2em;
-}
-
-p.topic-title {
-  font-weight: bold;
-}
-
-table.docinfo {
-  text-align: left;
-  margin: 2em 0em;
-}
-
-a[href] {
-  color: #436976;
-  background-color: transparent;
-}
-
-a.toc-backref {
-  text-decoration: none;
-}
-
-h1 a[href] {
-  color: #003a6b;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a.strong {
-  font-weight: bold;
-}
-
-img {
-  margin: 0;
-  border: 0;
-}
-
-p {
-  margin: 0.5em 0 1em 0;
-  line-height: 1.5em;
-}
-
-p a:visited {
-  color: purple;
-  background-color: transparent;
-}
-
-p a:active {
-  color: red;
-  background-color: transparent;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-p img {
-  border: 0;
-  margin: 0;
-}
-
-p.rubric {
-  font-weight: bold;
-  font-style: italic;
-}
-
-h1.title {
-  color: #003a6b;
-  font-size: 250%;
-  margin-bottom: 0em;
-}
-
-h2.subtitle {
-  color: #003a6b;
-  border-bottom: 0px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: #555;
-  background-color: transparent;
-  margin: 0em;
-  padding-top: 0.5em;
-}
-
-h1 {
-  font-size: 160%;
-  margin-bottom: 0.5em;
-  border-bottom: 2px solid #aaa;
-}
-
-h2 {
-  font-size: 140%;
-  margin-bottom: 0.5em;
-  border-bottom: 1px solid #aaa;
-}
-
-h3 {
-  font-size: 130%;
-  margin-bottom: 0.5em;
-}
-
-h4 {
-  font-size: 110%;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
-h5 {
-  font-size: 105%;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
-h6 {
-  font-size: 100%;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
-dt {
-  font-style: italic;
-}
-
-dd {
-  margin-bottom: 1.5em;
-}
-
-div.admonition, div.note, div.tip, div.caution, div.important {
-  margin: 2em 2em;
-  padding: 0em 1em;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-  border-bottom: 2px solid #555;
-  border-right: 2px solid #555;
-}
-
-div.important {
-  background: transparent url('../images/important.png') 10px 2px no-repeat;
-}
-
-div.caution {
-  background: transparent url('../images/caution.png') 10px 2px no-repeat;
-}
-
-div.note {
-  background: transparent url('../images/note.png') 10px 2px no-repeat;
-}
-
-div.tip {
-  background: transparent url('../images/tip.png') 10px 2px no-repeat;
-}
-
-div.admonition-example {
-  background: transparent url('../images/tip.png') 10px 2px no-repeat;
-}
-
-div.admonition-critical-example {
-  background: transparent url('../images/important.png') 10px 2px no-repeat;
-}
-
-p.admonition-title {
-  font-weight: bold;
-  border-bottom: 1px solid #aaa;
-  padding-left: 30px;
-}
-
-table.docutils {
-  text-align: left;
-  border: 1px solid gray;
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1.5em 0em;
-}
-
-table.docutils caption {
-  font-style: italic;
-}
-
-table.docutils td, table.docutils th {
-  padding: 0.25em 0.5em;
-}
-
-table.docutils th {
-  background-color: #dddddd;
-}
-
-div.sidebar {
-  width: 33%;
-  float: right;
-  margin: 0em 2em;
-  padding: 0em 1em;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-  border-bottom: 2px solid #555;
-  border-right: 2px solid #555;
-}
-
-p.sidebar-title {
-  margin-bottom: 0em;
-  color: #003a6b;
-  border-bottom: 1px solid #aaa;
-  font-weight: bold;
-}
-
-p.sidebar-subtitle {
-  margin-top: 0em;
-  font-style: italic;
-  color: #003a6b;
-}
-
-</style>
+<link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
 </head>
 <body>
 <div class="document" id="acceleo-tutorial">
@@ -250,9 +27,7 @@ p.sidebar-subtitle {
 <p>The aim of an Acceleo project is to generate text from a model.
 For this tutorial, we will create a new Acceleo module for generating java beans from a UML model.</p>
 <img alt="../images/uml_model_example.png" src="../images/uml_model_example.png" />
-<p>To create a new Acceleo project, you can use the <em>Acceleo Module Project</em> wizard.</p>
-<img alt="../images/new_acceleo_module_project_0.png" src="../images/new_acceleo_module_project_0.png" />
-<p>On the Acceleo perspective, you can also right click on the package explorer view and select <em>New-&gt;Acceleo Module Project</em>.</p>
+<p>To create a new Acceleo project, you can right click on the package explorer view then <em>New-&gt;Acceleo Module Project</em>.</p>
 <img alt="../images/new_acceleo_module_project.png" src="../images/new_acceleo_module_project.png" />
 <p>Choose a correct plugin name for the project, then click next.</p>
 <img alt="../images/new_acceleo_module_project_1.png" src="../images/new_acceleo_module_project_1.png" />
@@ -260,12 +35,12 @@ For this tutorial, we will create a new Acceleo module for generating java beans
 <ul class="simple">
 <li>Select the folder in witch you want to create the new template.</li>
 <li>Then type the template name</li>
+<li>Optionally you can browse an existing file, which will be copied into the template. This could be useful to create a template from an existing file.</li>
 <li>Then choose the metamodel that will be used by the template ( UML in this example )</li>
 <li>Finally choose the metaclass that will be used to generate the file. ( Class )</li>
 </ul>
-<img alt="../images/new_acceleo_module_project_2_no_advanced.png" src="../images/new_acceleo_module_project_2_no_advanced.png" />
-<p>Optionally you can browse an existing file, which will be copied into the template. This could be useful to create a template from an existing file.</p>
 <img alt="../images/new_acceleo_module_project_2.png" src="../images/new_acceleo_module_project_2.png" />
+<p>If you click on next, a new template wizard page will show up, allowing you to create another template.</p>
 <p>Clicking on finish will create the template(s), and some files associated with it ( more on these below ).</p>
 <img alt="../images/new_acceleo_module_project_result.png" src="../images/new_acceleo_module_project_result.png" />
 </div>

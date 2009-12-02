@@ -1,6 +1,6 @@
-===============================
+===================================
  Acceleo Plug-ins Features Overview
-===============================
+===================================
 
 :Authors: Laurent Goubet
 :Contact: Laurent.Goubet@obeo.fr
@@ -43,7 +43,7 @@ Acceleo depends on:
 #. OCL runtime ( 1.2.X )
 
 Acceleo Modules and Projects
-========================
+============================
 
 The Acceleo plugins come with a perspective called Acceleo. To open this
 perspective, select *Window -> Open perspective -> Others*, then click
@@ -84,7 +84,7 @@ name is *com::example::acceleo::myModule* must be stored in the file
   .. image:: ../images/acceleo_project-structure.png
 
 Acceleo Template Editor Features
-============================
+================================
 
 The Acceleo template editor is associated with Acceleo source files (*.mtl*
 files) and provides all the features of a modern programming editor to
@@ -102,7 +102,7 @@ make you more productive when developing modules:
 Some of these features are described in details below.
 
 Smart Completion on Acceleo Syntax Constructs
------------------------------------------
+---------------------------------------------
 
 The Acceleo editor provides smart completion on all the available Acceleo
 language constructs. It is activated by default using the *Ctrl+Space*
@@ -185,7 +185,7 @@ all kinds of elements: Acceleo variables, templates, queries and modules,
 meta-model types, features and operations.
 
 Running and debugging Acceleo modules
-=================================
+=====================================
 
 Acceleo modules can be run and debugged very easily using the standard
 Eclipse mechanisms.

@@ -11,7 +11,7 @@ Copyright |copy| 2008, Obeo\ |trade|.
 .. |trade| unicode:: U+2122
 
 New Acceleo UI project
-==================
+======================
 
 Once your templates are ready, you may want to have some wizards to launch the generation from eclipse.
 You can use the ant tasks or the java code, but you can also use the *New Acceleo UI project* wizard.
