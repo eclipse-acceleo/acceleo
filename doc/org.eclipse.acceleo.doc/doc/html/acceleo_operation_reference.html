@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<title>Acceleo Operations Reference</title>
+<meta name="authors" content="Laurent Goubet" />
+<link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="acceleo-operations-reference">
+<h1 class="title">Acceleo Operations Reference</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Goubet</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2009, Obeo™.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#acceleo-standard-operations-reference" id="id1">Acceleo standard operations reference</a><ul>
+<li><a class="reference internal" href="#standard-string-operations" id="id2">Standard <em>String</em> Operations</a></li>
+<li><a class="reference internal" href="#standard-integer-operations" id="id3">Standard <em>Integer</em> operations</a></li>
+<li><a class="reference internal" href="#standard-real-operations" id="id4">Standard <em>Real</em> operations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#acceleo-non-standard-operations-reference" id="id5">Acceleo non standard operations reference</a><ul>
+<li><a class="reference internal" href="#non-standard-string-operations" id="id6">Non-standard <em>String</em> operations</a></li>
+<li><a class="reference internal" href="#non-standard-oclany-operations" id="id7">Non-standard <em>OclAny</em> operations</a></li>
+<li><a class="reference internal" href="#non-standard-collection-operations" id="id8">Non-standard <em>Collection</em> operations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#glossary" id="id9">Glossary</a></li>
+</ul>
+</div>
+<div class="section" id="acceleo-standard-operations-reference">
+<h1><a class="toc-backref" href="#id1">Acceleo standard operations reference</a></h1>
+<div class="section" id="standard-string-operations">
+<h2><a class="toc-backref" href="#id2">Standard <em>String</em> Operations</a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>substitute (String r, String t ) : String</strong></dt>
+<dd><p class="first">Substitutes substring <em>r</em> in <em>self</em> by substring <em>t</em> and returns the resulting string. Will return <em>self</em>
+if it contains no occurrence of the substring <em>r</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'substitute operation'.substitute('t', 'T')</td>
+<td>'subsTiTuTe operaTion'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>index (String r) : Integer</strong></dt>
+<dd><p class="first">Returns the index of substring <em>r</em> in <em>self</em>, or -1 if <em>self</em> contains no occurence of <em>r</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'index operation'.index('op')</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>first (Integer n) : String</strong></dt>
+<dd><p class="first">Returns the first <em>n</em> characters of <em>self</em>, or <em>self</em> if its size is less than <em>n</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'first operation'.first(8)</td>
+<td>'first op'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>last (Integer n) : String</strong></dt>
+<dd><p class="first">Returns the last <em>n</em> characters of <em>self</em>, or <em>self</em> if its size is less than <em>n</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'first operation'.last(8)</td>
+<td>'peration'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>strstr (String r) : Boolean</strong></dt>
+<dd><p class="first">Searches for string <em>r</em> in <em>self</em>. Returns <strong>true</strong> if found, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'strstr operation'.strstr('ope')</td>
+<td>true</td>
+</tr>
+<tr><td>'strstr operation'.strstr('false')</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>strtok (String r, Integer n) : String</strong></dt>
+<dd><p class="first">Breaks <em>self</em> into a sequence of tokens, each of which delimited by any one of the characters in <em>s1</em>, and
+return the next element in this sequence. The parameter flag should be <em>0</em> when strtok is called for the
+first time and will reset the sequence, <em>1</em> subsequently so as to access the next element.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'strtok operation'.strtok('opz', 0)</td>
+<td>'strt'</td>
+</tr>
+<tr><td>'strtok operation'.strtok('pn', 0)</td>
+<td>'strtok o'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>strcmp (String s1) : Integer</strong></dt>
+<dd><p class="first">Returns an integer that is either negative, zero or positive depending on whether <em>s1</em> is alphabetically less than,
+equal to or greater than <em>self</em>. Note that uppercase letters come before lower case ones, so that 'AA' is closer to
+'AC' than it is to 'Ab'.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'strcmp operation'.strstr('strcmp')</td>
+<td>10</td>
+</tr>
+<tr><td>'strcmp operation'.strstr('strcmp operation')</td>
+<td>0</td>
+</tr>
+<tr><td>'strcmp operation'.strstr('strtok')</td>
+<td>-17</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>isAlpha () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> consists only of alphabetical characters, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'isAlpha'.isAlpha()</td>
+<td>true</td>
+</tr>
+<tr><td>'isAlpha operation'.isAlpha()</td>
+<td>false</td>
+</tr>
+<tr><td>'isAlpha11'.isAlpha()</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>isAlphanum () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> consists only of alphanumeric characters, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'isAlphanum'.isAlphanum()</td>
+<td>true</td>
+</tr>
+<tr><td>'isAlphanum operation'.isAlphanum()</td>
+<td>false</td>
+</tr>
+<tr><td>'isAlphanum11'.isAlphanum()</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toUpperFirst () : String</strong></dt>
+<dd><p class="first">Creates a copy of <em>self</em> with its first character converted to uppercase and returns it.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'toUpperFirst operation'.toUpperFirst()</td>
+<td>'ToUpperFirst operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toLowerFirst () : String</strong></dt>
+<dd><p class="first">Creates a copy of <em>self</em> with its first character converted to lowercase and returns it.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'ToLowerFirst operation'.toLowerFirst()</td>
+<td>'toLowerFirst operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="standard-integer-operations">
+<h2><a class="toc-backref" href="#id3">Standard <em>Integer</em> operations</a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>toString () : String</strong></dt>
+<dd><p class="first">Converts the integer <em>self</em> to a string.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>2009.toString()</td>
+<td>'2009'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="standard-real-operations">
+<h2><a class="toc-backref" href="#id4">Standard <em>Real</em> operations</a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>toString () : String</strong></dt>
+<dd><p class="first">Converts the real <em>self</em> to a string.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>(-5.3).toString()</td>
+<td>'-5.3'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+</div>
+<div class="section" id="acceleo-non-standard-operations-reference">
+<h1><a class="toc-backref" href="#id5">Acceleo non standard operations reference</a></h1>
+<div class="section" id="non-standard-string-operations">
+<h2><a class="toc-backref" href="#id6">Non-standard <em>String</em> operations</a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>replace (String substring, String replacement) : String</strong></dt>
+<dd><p class="first">Substitutes the first occurence of substring <em>substring</em> in <em>self</em> by substring <em>replacement</em> and returns the
+resulting string. Returns <em>self</em> if it contains no occurence of <em>substring</em>. Note that both <em>substring</em> and
+<em>replacement</em> are treated as regular expressions.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'replace operation'.replace('p', 'P')</td>
+<td>'rePlace operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>replaceAll (String substring, String replacement) : String</strong></dt>
+<dd><p class="first">Substitutes all substrings <em>substring</em> in <em>self</em> by substring <em>replacement</em> and returns the resulting string.
+Returns <em>self</em> if it contains no occurence of <em>substring</em>. Note that both <em>substring</em> and <em>replacement</em> are
+treated as regular expressions.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'replaceAll operation'.replaceAll('p', 'P')</td>
+<td>'rePlaceAll oPeration'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>substituteAll (String substring, String replacement) : String</strong></dt>
+<dd><p class="first">Substitutes all substrings <em>substring</em> in self by substring <em>replacement</em> and returns the resulting string.
+Returns <em>self</em> if it contains no occurence of <em>substring</em>. Unlike the <strong>replaceAll</strong> operation, neither
+<em>substring</em> nor <em>replacement</em> are considered as regular expressions.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'substituteAll operation'.substituteAll('t', 'T')</td>
+<td>'subsTiTuTeAll operaTion'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>startsWith (String substring) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> starts with the substring <em>substring</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'startsWith operation'.startsWith('star')</td>
+<td>true</td>
+</tr>
+<tr><td>'startsWith operation'.startsWith('ope')</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>endsWith (String substring) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> ends in the substring <em>substring</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'endsWith operation'.endsWith('ation')</td>
+<td>true</td>
+</tr>
+<tr><td>'endsWith operation'.endsWith('endsWith')</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>trim () : String</strong></dt>
+<dd><p class="first">Removes all leading and trailing white space characters (tabulation, space, line feed, ...) of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>' trim operation '.trim()</td>
+<td>'trim operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>tokenize (String substring) : Sequence(String)</strong></dt>
+<dd><p class="first">Returns a sequence containing all parts of self split around delimiters defined by the characters in
+String delim.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="59%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'tokenize operation'.tokenize('e')</td>
+<td>Sequence{'tok', 'niz', ' op', 'ration'}</td>
+</tr>
+<tr><td>'tokenize operation'.tokenize('i')</td>
+<td>Sequence{'token', 'ze operat', 'on'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>contains (String substring) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the substring <em>substring</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'contains operation'.contains('ins op')</td>
+<td>true</td>
+</tr>
+<tr><td>'contains operation'.contains('2009')</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="non-standard-oclany-operations">
+<h2><a class="toc-backref" href="#id7">Non-standard <em>OclAny</em> operations</a></h2>
+<blockquote>
+<p>All of the examples from this section are set in the context of this model (with <strong>root</strong> being an instance of
+<em>Model</em> as per the UML metamodel) :</p>
+<img alt="../images/model_example.png" src="../images/model_example.png" />
+<p><strong>A note on properties</strong> : properties can be accessed only if they've been added through the API. For this
+purpose, a number of facilities is provided. You can either override the generated launcher's <em>addProperties</em>
+method and add new pathes to properties files there, call manually one of the methods
+<strong>AcceleoService#addPropertiesFile()</strong> or manually add key/value pairs through <strong>AcceleoService#addProperties()</strong>.
+Take note that the key/value pairs manually added will <em>always</em> take precedence over the properties taken from
+<em>.properties</em> files; and the <em>first</em> added property file will always take precedence over subsequently added
+files.</p>
+<p>The example on all four <em>getProperty</em> variants will take into account the following setup : we provided the
+environment with a properties file <em>a.properties</em> containing the key/value pair :</p>
+<pre class="literal-block">
+a.b.c = This is a parameterized property : {0}
+</pre>
+<p>Then we provided it with a file <em>b.properties</em> containing the pairs :</p>
+<pre class="literal-block">
+a.b.c.d = This is a standard property
+a.b.c = Parameterized property with a name conflict : {0}
+</pre>
+<dl class="docutils">
+<dt><strong>eAllContents () : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the whole content tree of the receiver as a Sequence.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>root.eAllContents()</td>
+<td>Sequence{package1, package11, Class11, Class1a, Class1b, package2, Class2, aClas2}</td>
+</tr>
+<tr><td>package1.eAllContents()</td>
+<td>Sequence{package11, Class11, Class1a, Class1b}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>eAllContents (OclType oclType) : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the elements of the given type from the whole content tree of the receiver as a Sequence.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>root.eAllContents(Class)</td>
+<td>Sequence{Class11, Class1a, Class1b, Class2}</td>
+</tr>
+<tr><td>package1.eAllContents(Class)</td>
+<td>Sequence{Class11, Class1a, Class1b}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>ancestors () : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns a Sequence containing the full set of the receiver's ancestors.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class11.ancestors()</td>
+<td>Sequence{package11, package1, root}</td>
+</tr>
+<tr><td>package11.ancestors()</td>
+<td>Sequence{package1, root}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>ancestors (OclType oclType) : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class11.ancestors(Package)</td>
+<td>Sequence{package11, package1}</td>
+</tr>
+<tr><td>package11.ancestors(Package)</td>
+<td>Sequence{package1}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>siblings () : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns a Sequence containing the full set of the receiver's siblings.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class11.siblings()</td>
+<td>Sequence{}</td>
+</tr>
+<tr><td>Class1a.siblings()</td>
+<td>Sequence{package11, Class1b}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>siblings (OclType oclType) : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the elements of the given type from the set of the receiver's siblings as a Sequence.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class11.siblings(Class)</td>
+<td>Sequence{}</td>
+</tr>
+<tr><td>Class1a.siblings(Class)</td>
+<td>Sequence{Class1b}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>eInverse () : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the set of all objects referencing <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class2.eInverse()</td>
+<td>Sequence{aClass2}</td>
+</tr>
+<tr><td>package11.eInverse()</td>
+<td>Sequence{}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>eInverse (OclType oclType) : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns the elements of the given type from the set of the inverse references of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class2.eInverse(Property)</td>
+<td>Sequence{aClass2}</td>
+</tr>
+<tr><td>Class2.eInverse(Package)</td>
+<td>Sequence{}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toString () : String</strong></dt>
+<dd><p class="first">Returns the String representation of the receiver.</p>
+<p>examples depend on the &quot;toString()&quot; implementation of <em>self</em>. Let's assume it has been changed to return the
+object's name:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="70%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Class11.toString()</td>
+<td>'Class11'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>invoke (String class, String method, Sequence(OclAny) arguments ) : OclAny</strong></dt>
+<dd><p class="first">Invokes the method <em>method</em> of class <em>class</em> with the given arguments. This will return OclInvalid if the method
+cannot be called in any way (bad arguments, mispelled name, mispelled signature, encapsulation errors, ...).</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="76%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>invoke('java.lang.String', 'toUpperCase()', Sequence{root.name})</td>
+<td>ROOT</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>current (Integer index) : OclAny</strong></dt>
+<dd><p class="first">Returns the value of the context <em>index</em> ranks above the current context.</p>
+<p>The following example is explained line by line in the &quot;result&quot; column.</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><div class="first last line-block">
+<div class="line">[for (p : Package | root.packagedElement)]</div>
+<div class="line-block">
+<div class="line">[for (c : Class | p.packagedElement)]</div>
+<div class="line-block">
+<div class="line">[current(0)/]</div>
+<div class="line">[current(1)/]</div>
+<div class="line">[current(2)/]</div>
+</div>
+<div class="line">[/for]</div>
+</div>
+<div class="line">[/for]</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">Iterates over all packages of the Model <em>root</em></div>
+<div class="line">Iterates over all classes of the current package</div>
+<div class="line">allows access to the current class (equivalent to <em>c</em>)</div>
+<div class="line">allows access to the current package (equivalent to <em>p</em>)</div>
+<div class="line">allows access to <em>self</em> as it was before the first <strong>for</strong> loop</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>current (OclType filter) : OclAny</strong></dt>
+<dd><p class="first">This will have the same effect as current(Integer) except that is will return the first context (<em>self</em> variable) of
+the given type, at or above the current one.</p>
+<p>The following example is explained line by line in the &quot;result&quot; column.</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><div class="first last line-block">
+<div class="line">[for (p : Package | root.packagedElement)]</div>
+<div class="line-block">
+<div class="line">[for (c : Class | p.packagedElement)]</div>
+<div class="line-block">
+<div class="line">[current(Class)/]</div>
+<div class="line">[current(Package)/]</div>
+<div class="line">[current(Model)/]</div>
+</div>
+<div class="line">[/for]</div>
+</div>
+<div class="line">[/for]</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">Iterates over all packages of the Model <em>root</em></div>
+<div class="line">Iterates over all classes of the current package</div>
+<div class="line">allows access to the current class (equivalent to <em>c</em>)</div>
+<div class="line">allows access to the current package (equivalent to <em>p</em>)</div>
+<div class="line">allows access to the the <em>root</em> <strong>Model</strong></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>getProperty (String key) : OclAny</strong></dt>
+<dd><p class="first">Returns the value of the property corresponding to the given <em>key</em>. Note that parameterized properties will be
+returned as is with this.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="54%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>getProperty('a.b.c')</td>
+<td>'This is a parameterized property : {0}'</td>
+</tr>
+<tr><td>getProperty('a.b.c.d')</td>
+<td>'This is a standard property'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>getProperty (String key, Sequence(OclAny) parameters) : OclAny</strong></dt>
+<dd><p class="first">Returns the value of the property corresponding to the given key, with its parameters substituted with the given
+values if any.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>getProperty('a.b.c', Sequence{'substitution'})</td>
+<td>'This is a parameterized property : substitution'</td>
+</tr>
+<tr><td>getProperty('a.b.c', Sequence{})</td>
+<td>'This is a parameterized property : {0}'</td>
+</tr>
+<tr><td>getProperty('a.b.c.d', Sequence{'substitution'})</td>
+<td>'This is a standard property'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>getProperty (String name, String key) : OclAny</strong></dt>
+<dd><p class="first">Returns the value of the property corresponding to the given <em>key</em> from a properties file corresponding to the
+given <em>name</em>. Note that parameterized properties will be returned as is with this.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>getProperty('b.properties', 'a.b.c')</td>
+<td>'Parameterized property with a name conflict : {0}'</td>
+</tr>
+<tr><td>getProperty('a.properties', 'a.b.c.d')</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>getProperty (String name, String key, Sequence(OclAny) parameters) : OclAny</strong></dt>
+<dd><p class="first">Returns the value of the property corresponding to the given <em>key</em> from a properties file corresponding to the
+given <em>name</em>, with its parameters substituted with the given values if any.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>getProperty('b.properties', 'a.b.c', Sequence{'substitution'})</td>
+<td>'Parameterized property with a name conflict : substitution'</td>
+</tr>
+<tr><td>getProperty('b.properties', 'a.b.c', Sequence{})</td>
+<td>'Parameterized property with a name conflict : {0}'</td>
+</tr>
+<tr><td>getProperty('a.properties', 'a.b.c.d', Sequence{'substitution'})</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="non-standard-collection-operations">
+<h2><a class="toc-backref" href="#id8">Non-standard <em>Collection</em> operations</a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>sep (String separator) : Sequence(OclAny)</strong></dt>
+<dd><p class="first">Returns all elements from the source collection separated by an element composed of the String <em>separator</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>package1.eContents().name.sep('2009')</td>
+<td>Sequence{'Package11', '2009', 'Class1a', '2009', 'Class1b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+</div>
+<div class="section" id="glossary">
+<h1><a class="toc-backref" href="#id9">Glossary</a></h1>
+<blockquote>
+<dl class="docutils">
+<dt><strong>invalid</strong></dt>
+<dd><em>invalid</em> is the singleton instance of the OCLInvalid type. It is returned whenever an evaluation fails,
+whatever the cause. Referred to as Ø in this guide.</dd>
+<dt><strong>Standard / Non-standard</strong></dt>
+<dd>We refer as <em>standard</em> everything that directly comes or has been inferred from the OMG MOFM2T specification. As
+such, Standard operations are operations that were defined in the MTL standard library. Likewise, <em>non-standard</em>
+features are deviations from the specification.</dd>
+<dt>Ø</dt>
+<dd>See <strong>invalid</strong>.</dd>
+</dl>
+</blockquote>
+</div>
+</div>
+</body>
+</html>
