@@ -53,7 +53,7 @@ public final class AcceleoServicesRegistry {
 	 */
 	public boolean addService(Object service) {
 		boolean registered = false;
-		if (service instanceof Class) {
+		if (service instanceof Class<?>) {
 			try {
 				registered = registeredServices.add(((Class<?>)service).newInstance());
 			} catch (InstantiationException e) {
