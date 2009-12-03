@@ -5,7 +5,7 @@
 :Authors: Laurent Goubet
 :Contact: laurent.goubet@obeo.fr
 
-Copyright |copy| 2009, Obeo\ |trade|.
+Copyright |copy| 2009 Obeo\ |trade|.
 
 .. |copy| unicode:: 0xA9 
 .. |trade| unicode:: U+2122

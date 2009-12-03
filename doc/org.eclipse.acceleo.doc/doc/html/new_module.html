@@ -21,48 +21,51 @@
 <td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
 </tbody>
 </table>
-<p>Copyright © 2008, Obeo™.</p>
+<p>Copyright © 2008, 2009 Obeo™.</p>
 <div class="section" id="new-acceleo-project">
 <h1>New Acceleo project</h1>
 <p>The aim of an Acceleo project is to generate text from a model.
 For this tutorial, we will create a new Acceleo module for generating java beans from a UML model.</p>
 <img alt="../images/uml_model_example.png" src="../images/uml_model_example.png" />
-<p>To create a new Acceleo project, you can right click on the package explorer view then <em>New-&gt;Acceleo Module Project</em>.</p>
+<p>To create a new Acceleo project, you can right click on the package explorer view then <em>New-&gt;Acceleo Project</em>.</p>
 <img alt="../images/new_acceleo_module_project.png" src="../images/new_acceleo_module_project.png" />
 <p>Choose a correct plugin name for the project, then click next.</p>
 <img alt="../images/new_acceleo_module_project_1.png" src="../images/new_acceleo_module_project_1.png" />
-<p>Next you can create a new Acceleo template.</p>
+<p>Next you can create a new Acceleo module file.</p>
 <ul class="simple">
-<li>Select the folder in witch you want to create the new template.</li>
-<li>Then type the template name</li>
-<li>Optionally you can browse an existing file, which will be copied into the template. This could be useful to create a template from an existing file.</li>
-<li>Then choose the metamodel that will be used by the template ( UML in this example )</li>
-<li>Finally choose the metaclass that will be used to generate the file. ( Class )</li>
+<li>Select the folder in which you want to create the new module file.</li>
+<li>Fill in the module name</li>
+<li>Optionally, you can browse for an existing file which will be copied into the new module file. This could be useful to create a module from an existing file.</li>
+<li>Then, select the metamodel from which your generation file will take its types (in this example, UML)</li>
+<li>Finally, choose the metaclass that will be used to generate the file (in this example, Class)</li>
 </ul>
 <img alt="../images/new_acceleo_module_project_2.png" src="../images/new_acceleo_module_project_2.png" />
-<p>If you click on next, a new template wizard page will show up, allowing you to create another template.</p>
-<p>Clicking on finish will create the template(s), and some files associated with it ( more on these below ).</p>
+<p>You can create more than one module file in this project by using the &quot;Add&quot; button ont the left.</p>
+<p>Clicking on finish will create the module file(s), and some files automatically generated from it ( more on these below ).</p>
 <img alt="../images/new_acceleo_module_project_result.png" src="../images/new_acceleo_module_project_result.png" />
 </div>
-<div class="section" id="the-template-editor">
-<h1>The template editor</h1>
-<p>The template editor provides the following features :</p>
+<div class="section" id="the-acceleo-editor">
+<h1>The Acceleo editor</h1>
+<p>The module editor provides the following features :</p>
 <ul class="simple">
 <li>Syntax highlighting</li>
-<li>Content assistant</li>
-<li>Error highlighting</li>
+<li>Content assistant (ctrl + space)</li>
+<li>Error detection</li>
+<li>Quick fixes (ctrl + shift + 1)</li>
 <li>Dynamic outline</li>
+<li>Quick outline (ctrl + O)</li>
 <li>Code folding</li>
+<li>Open declaration (either with 'ctrl + left click' or 'F3')</li>
+<li>Search references (ctrl + shift + G)</li>
 </ul>
 <img alt="../images/acceleo_editor.png" src="../images/acceleo_editor.png" />
-<p>For more information about the Acceleo syntax, please read the official OMG specification : &lt;<a class="reference external" href="http://www.omg.org/docs/ptc/07-08-16.pdf">http://www.omg.org/docs/ptc/07-08-16.pdf</a>&gt;</p>
+<p>For more information about the Acceleo syntax, please read the official OMG specification accessible from : &lt;<a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">http://www.omg.org/spec/MOFM2T/1.0/</a>&gt;</p>
 </div>
-<div class="section" id="creating-a-template-for-generating-java-beans">
-<h1>Creating a template for generating java beans</h1>
-<p>We would like to create a bean for each of the classes defined in the model.
-Here is the code for the template :</p>
+<div class="section" id="creating-a-module-to-generate-java-beans">
+<h1>Creating a module to generate java beans</h1>
+<p>We would like to create a bean for each of the classes defined in the model. Here is the code for the module file :</p>
 <pre class="literal-block">
-[module generate(http://www.eclipse.org/uml2/2.1.0/UML)/]
+[module generate('http://www.eclipse.org/uml2/2.1.0/UML')/]
 
 [template public generate(c : Class)]
         [file (c.name.concat('.java'), false)]
@@ -86,23 +89,24 @@ Here is the code for the template :</p>
 </pre>
 <p>As shown below, the content assistant provides choices for the UML metamodel :</p>
 <img alt="../images/acceleo_editor_example.png" src="../images/acceleo_editor_example.png" />
-<p>The resulting java file generated by this template will look like this :</p>
+<p>The resulting java file generated by  launching this module file will look like this :</p>
 <img alt="../images/acceleo_module_java_result.png" src="../images/acceleo_module_java_result.png" />
 </div>
 <div class="section" id="the-java-file">
 <h1>The java file</h1>
 <p>Note : This feature may evolve in future releases.</p>
-<p>Next to each template file, a java file with the same name is automatically generated.
-This allows you to launch the generation via the <em>doGenerate()</em> method.
-This can be achieved either by creating a new instance of the class, or calling the <em>main()</em> method of the file.</p>
+<p>Next to each module file containing a <strong>[comment &#64;main]</strong> annotation, a java file with the same name is automatically
+generated. This allows you to launch the generation via the <em>doGenerate()</em> method. This can be achieved either by
+creating a new instance of the class, or calling its <em>main()</em> method.</p>
 <img alt="../images/acceleo_java.png" src="../images/acceleo_java.png" />
 </div>
 <div class="section" id="the-ant-task">
 <h1>The ant task</h1>
 <p>Note : This feature may evolve in future releases.</p>
-<p>In the <em>tasks</em> folder can also be found an ant file which can be used to launch a generation with the specified template.
-In order to use this build file, copy it inside a project which contains the model to generate from, rename it to <em>build.xml</em> for example, then change the <em>MODEL</em> and <em>TARGET</em> properties.
-Launch the build via <em>External Tools &gt; Run As &gt; Ant Build</em>.</p>
+<p>If you create a <em>tasks</em> folder at the root of our project, there will also be generated an ant file which can be used
+to launch a generation with the specified template. In order to use this build file, copy it inside the project
+containing the model to generate from, rename it to <em>build.xml</em> for example, then change the <em>MODEL</em> and <em>TARGET</em>
+properties accordingly. Launch the build via <em>External Tools &gt; Run As &gt; Ant Build</em>.</p>
 <img alt="../images/acceleo_ant.png" src="../images/acceleo_ant.png" />
 </div>
 </div>
