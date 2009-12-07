@@ -138,7 +138,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 			// All necessary disposal should have been made
 		}
 
-		factory.hookGenerationEnd();
+		hookGenerationEnd(factory);
 
 		Map<String, String> result = Collections.<String, String> emptyMap();
 		if (strategy.willReturnPreview()) {
@@ -215,6 +215,18 @@ public class AcceleoEngine implements IAcceleoEngine {
 		propertiesCopy.add(0, customProperties);
 		return new AcceleoEnvironmentFactory(generationRoot, rootModule, listenersCopy, propertiesCopy,
 				strategy, monitor);
+	}
+
+	/**
+	 * This will be called internally by the engine to offer a chance of disposing anything that could have
+	 * been loaded during the generation.
+	 * 
+	 * @param factory
+	 *            {@link AbstractAcceleoEnvironmentFactory} that's been used for this generation.
+	 * @nooverride This method is not intended to be re-implemented or extended by clients.
+	 */
+	protected void hookGenerationEnd(AbstractAcceleoEnvironmentFactory factory) {
+		factory.hookGenerationEnd();
 	}
 
 	/**
