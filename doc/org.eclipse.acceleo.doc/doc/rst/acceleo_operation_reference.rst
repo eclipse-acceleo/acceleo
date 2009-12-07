@@ -13,8 +13,6 @@ Copyright |copy| 2009 Obeo\ |trade|.
 .. |pipe| unicode:: U+007C
 .. contents:: Contents
 
-
-
 Acceleo standard operations reference
 =====================================
 
