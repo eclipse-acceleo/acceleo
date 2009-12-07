@@ -223,7 +223,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 						value.length() - 1));
 				assertEquals("Calling the standard operation String.index(String) with a String that is "
 						+ "contained by self should have had the same result as source.indexOf(String).",
-						value.indexOf(value.substring(2, value.length() - 1)), result);
+						value.indexOf(value.substring(2, value.length() - 1)), ((Integer)result - 1));
 			}
 		}
 

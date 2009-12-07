@@ -5,7 +5,7 @@
 		[if ('test'.substitute('es', 'se') = 'tset')]constant output[/if]
 	[/file]
 	[file ('test_string_index', false)]
-		[if ('test'.index('es') = 1)]constant output[/if]
+		[if ('test'.index('es') = 2)]constant output[/if]
 	[/file]
 	[file ('test_string_first', false)]
 		[if ('test'.first(2) = 'te') and '1test'.first(1) = '1']constant output[/if]
