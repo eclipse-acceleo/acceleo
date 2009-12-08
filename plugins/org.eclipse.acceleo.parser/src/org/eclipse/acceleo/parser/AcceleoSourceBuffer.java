@@ -253,6 +253,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * Returns the environment instance that was used under the covers by the ocl parser.
 	 * 
 	 * @return The environment instance that was used under the covers by the ocl parser.
+	 * @since 0.9
 	 */
 	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
 		return astCreator.getOCL().getOCLEnvironment();
