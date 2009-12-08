@@ -108,7 +108,7 @@ public class AcceleoSourceContent {
 	/**
 	 * The source.
 	 */
-	private AcceleoSourceBuffer source;
+	private AcceleoSourceBufferWithASTJob source;
 
 	/**
 	 * The parser used to create a CST model from the document.
@@ -220,6 +220,15 @@ public class AcceleoSourceContent {
 		}
 
 		/**
+		 * A method to cancel the current job.
+		 */
+		public void cancel() {
+			if (createASTJob != null) {
+				createASTJob.cancel();
+			}
+		}
+
+		/**
 		 * Creates the job that is able to compute the AST. The AST links will be resolved in the specified
 		 * region.
 		 * 
@@ -250,7 +259,6 @@ public class AcceleoSourceContent {
 		 * It computes the AST. The AST links will be resolved in the specified region.
 		 */
 		private void runCreateAST() {
-			source.getProblems().clear();
 			IFile fileMTL = AcceleoSourceContent.this.file;
 			if (fileMTL != null && fileMTL.exists()) {
 				Map<String, IMarker> position2marker = new HashMap<String, IMarker>();
@@ -300,6 +308,7 @@ public class AcceleoSourceContent {
 						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					}
 				}
+				source.getProblems().clear();
 			}
 		}
 	}
@@ -378,8 +387,8 @@ public class AcceleoSourceContent {
 	 * Creates a CST model. You can get it with the method <code>getCST</code>.
 	 */
 	public void createCST() {
-		source.createCST();
 		source.getProblems().clear();
+		source.createCST();
 	}
 
 	/**
@@ -395,6 +404,7 @@ public class AcceleoSourceContent {
 	 * @return the modified object
 	 */
 	public CSTNode updateCST(int posBegin, int posEnd, String newText) {
+		source.getProblems().clear();
 		source.getBuffer().replace(posBegin, posEnd, newText);
 		CSTNode current = getCSTNode(posBegin, posEnd);
 		if (current instanceof TextExpression && newText.indexOf(IAcceleoConstants.DEFAULT_BEGIN) > -1) {
@@ -452,10 +462,19 @@ public class AcceleoSourceContent {
 			}
 			current = (CSTNode)current.eContainer();
 		}
-		source.createCST();
-		source.getProblems().clear();
-		source.refreshAST();
+		doSave();
 		return source.getCST();
+	}
+
+	/**
+	 * Performs a save of the editor content.
+	 */
+	public void doSave() {
+		if (source != null) {
+			source.cancel();
+		}
+		source.getProblems().clear();
+		source.createCST();
 	}
 
 	/**
@@ -472,7 +491,6 @@ public class AcceleoSourceContent {
 		}
 		cstParser.parseModuleBody(oldModuleElement.getStartPosition(), oldModuleElement.getEndPosition(),
 				tempModule);
-		source.getProblems().clear();
 		if (tempModule.getOwnedModuleElement().size() > 0) {
 			try {
 				ModuleElement newModuleElement = tempModule.getOwnedModuleElement().get(0);
@@ -500,7 +518,6 @@ public class AcceleoSourceContent {
 		oldExpression.setAfter(null);
 		cstParser.getPBlock().parseExpressionHeader(oldExpression.getStartPosition(),
 				oldExpression.getEndPosition(), oldExpression);
-		source.getProblems().clear();
 		return oldExpression;
 	}
 
@@ -520,7 +537,6 @@ public class AcceleoSourceContent {
 		tempModule.getOwnedModuleElement().add(tempBlock);
 		cstParser.getPBlock().parse(oldExpression.getStartPosition(), oldExpression.getEndPosition(),
 				tempBlock);
-		source.getProblems().clear();
 		if (tempBlock.getBody().size() > 0) {
 			try {
 				TemplateExpression newExpression = tempBlock.getBody().get(0);
@@ -549,7 +565,6 @@ public class AcceleoSourceContent {
 		}
 		Variable newVariable = cstParser.createVariable(oldVariable.getStartPosition(), oldVariable
 				.getEndPosition(), tempModule);
-		source.getProblems().clear();
 		if (newVariable != null) {
 			try {
 				EcoreUtil.replace(oldVariable, newVariable);
@@ -1024,6 +1039,7 @@ public class AcceleoSourceContent {
 	private void reportError(IFile mtlFile, int line, int posBegin, int posEnd, String message)
 			throws CoreException {
 		IMarker m = mtlFile.createMarker(AcceleoMarker.PROBLEM_MARKER);
+		m.setAttribute(IMarker.TRANSIENT, true);
 		m.setAttribute(IMarker.LINE_NUMBER, line);
 		m.setAttribute(IMarker.CHAR_START, posBegin);
 		m.setAttribute(IMarker.CHAR_END, posEnd);

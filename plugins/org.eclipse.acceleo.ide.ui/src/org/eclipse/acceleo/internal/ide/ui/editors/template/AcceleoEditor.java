@@ -18,11 +18,13 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -238,6 +240,19 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	public void dispose() {
+		if (content != null && content.getFile() != null) {
+			try {
+				IMarker[] markers = content.getFile().findMarkers(AcceleoMarker.PROBLEM_MARKER, false,
+						IResource.DEPTH_INFINITE);
+				for (IMarker marker : markers) {
+					if (marker.getAttribute(IMarker.TRANSIENT, false)) {
+						marker.delete();
+					}
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
 		if (selectionChangedListener != null) {
 			getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
 			selectionChangedListener = null;
@@ -481,6 +496,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
+		content.doSave();
 		super.doSave(progressMonitor);
 	}
 
@@ -491,6 +507,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	public void doSaveAs() {
+		content.doSave();
 		super.doSaveAs();
 	}
 
