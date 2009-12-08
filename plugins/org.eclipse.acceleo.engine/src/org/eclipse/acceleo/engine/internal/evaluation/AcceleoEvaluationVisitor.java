@@ -418,7 +418,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				hasPrevious = true;
 			}
 		} finally {
-			// We didn't set any variable if there was no iteration
+			// We didn't set any variable if there hasn't been any iteration
 			if (count > 0) {
 				if (loopVariable != null) {
 					getEvaluationEnvironment().remove(loopVariable.getName());

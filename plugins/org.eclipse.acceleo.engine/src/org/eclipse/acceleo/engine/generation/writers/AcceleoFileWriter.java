@@ -56,9 +56,6 @@ public final class AcceleoFileWriter extends AbstractAcceleoWriter {
 	 */
 	public AcceleoFileWriter(File target, boolean appendMode) throws IOException {
 		delegate = new BufferedWriter(new FileWriter(target, appendMode));
-		if (appendMode) {
-			((BufferedWriter)delegate).newLine();
-		}
 		targetPath = target.getAbsolutePath();
 		shouldMerge = false;
 	}
@@ -80,9 +77,6 @@ public final class AcceleoFileWriter extends AbstractAcceleoWriter {
 		final OutputStream fileOutputStream = new FileOutputStream(target, appendMode);
 		final OutputStreamWriter fileWriter = new OutputStreamWriter(fileOutputStream, charset);
 		delegate = new BufferedWriter(fileWriter);
-		if (appendMode) {
-			((BufferedWriter)delegate).newLine();
-		}
 		targetPath = target.getAbsolutePath();
 		shouldMerge = false;
 	}

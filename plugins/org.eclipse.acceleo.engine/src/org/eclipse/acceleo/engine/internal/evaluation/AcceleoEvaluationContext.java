@@ -482,7 +482,7 @@ public final class AcceleoEvaluationContext {
 					if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
 						hasJMergeTag = true;
 					}
-					// Everything following the end of use code marker doesn't need to be saved
+					// Everything following the end of user code marker doesn't need to be saved
 					if (line.contains(usercodeEnd)) {
 						final int endOffset = line.indexOf(usercodeEnd) + usercodeEnd.length();
 						areaContent.append(line.substring(0, endOffset));

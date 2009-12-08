@@ -71,6 +71,8 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	public AbstractAcceleoWriter createWriterFor(File file, AbstractAcceleoWriter previous,
 			boolean appendMode, boolean hasJMergeTags, String charset) throws IOException {
 		final AbstractAcceleoWriter writer;
+		boolean fileExisted = file.exists();
+
 		if (charset != null) {
 			if (Charset.isSupported(charset)) {
 				writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags, charset);
@@ -83,7 +85,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		} else {
 			writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags);
 		}
-		if (appendMode) {
+		if (appendMode && fileExisted) {
 			writer.append(LINE_SEPARATOR);
 		}
 		return writer;

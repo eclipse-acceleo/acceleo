@@ -114,6 +114,8 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 			}
 		}
 
+		boolean fileExisted = file.exists();
+
 		if (!hasJMergeTags || appendMode) {
 			if (charset != null) {
 				if (Charset.isSupported(charset)) {
@@ -127,7 +129,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 			} else {
 				writer = new AcceleoFileWriter(file, appendMode);
 			}
-			if (appendMode) {
+			if (appendMode && fileExisted) {
 				writer.append(LINE_SEPARATOR);
 			}
 		} else {
