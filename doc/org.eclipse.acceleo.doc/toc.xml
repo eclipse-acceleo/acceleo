@@ -10,9 +10,9 @@
  <topic href="doc/overview.html" label="User Guide">
     <topic href="doc/html/plugin_overview.html" label="Plugin overview">
     </topic>
-    <topic href="doc/html/new_module.html" label="Create a new Module">
+    <topic href="doc/html/new_acceleo_project.html" label="Create a new Acceleo project">
     </topic>
-    <topic href="doc/html/new_ui_module.html" label="Create a new UI Module">
+    <topic href="doc/html/new_acceleo_ui_project.html" label="Create a new Acceleo UI project">
     </topic>
  </topic>
  <topic href="doc/Legal.html" label="Legal">
