@@ -240,6 +240,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	@Override
 	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		if (selectionChangedListener != null) {
+			getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
+			selectionChangedListener = null;
+		}
 		if (content != null && content.getFile() != null) {
 			try {
 				IMarker[] markers = content.getFile().findMarkers(AcceleoMarker.PROBLEM_MARKER, false,
@@ -253,13 +258,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
-		if (selectionChangedListener != null) {
-			getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
-			selectionChangedListener = null;
-		}
 		super.dispose();
 		colorManager.dispose();
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		/*
 		 * Dispose the block matcher
 		 */
