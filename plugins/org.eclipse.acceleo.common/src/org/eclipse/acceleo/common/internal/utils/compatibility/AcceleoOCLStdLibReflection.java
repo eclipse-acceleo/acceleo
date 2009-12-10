@@ -1,0 +1,99 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.common.internal.utils.compatibility;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.types.OCLStandardLibrary;
+
+/**
+ * This class will allow us to remain compatible with OCL through standard library breakages.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
+public class AcceleoOCLStdLibReflection {
+	/** Parent environment of this reflection. */
+	private EcoreEnvironment environment;
+
+	/** Singleton instance of the OCLInvalid type. */
+	private Object invalid;
+
+	/** Classifier representing the OCL invalid type. */
+	private EClassifier oclInvalid;
+
+	/**
+	 * Prepares the library reflection using the given parent environment.
+	 * 
+	 * @param env
+	 *            Parent environment of this reflection.
+	 */
+	public AcceleoOCLStdLibReflection(EcoreEnvironment env) {
+		environment = env;
+	}
+
+	/**
+	 * This will return the singleton instance of the "OCLInvalid" type.
+	 * 
+	 * @return The singleton instance of the "OCLInvalid" type.
+	 */
+	public Object getInvalid() {
+		if (invalid == null) {
+			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
+			String methodName = "getOclInvalid";
+			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+				methodName = "getInvalid";
+			}
+			try {
+				final Method method = stdLib.getClass().getMethod(methodName);
+				invalid = method.invoke(stdLib);
+			} catch (NoSuchMethodException e) {
+				// Shouldn't happen
+				AcceleoCommonPlugin.log(e, true);
+			} catch (InvocationTargetException e) {
+				// cannot happen
+			} catch (IllegalAccessException e) {
+				// We know this method is public
+			}
+		}
+		return invalid;
+	}
+
+	/**
+	 * This will return the classifier representing the invalid type.
+	 * 
+	 * @return Classifier representing the invalid type.
+	 */
+	public EClassifier getOCLInvalid() {
+		if (oclInvalid == null) {
+			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
+			String methodName = "getInvalid";
+			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+				methodName = "getOclInvalid";
+			}
+			try {
+				final Method method = stdLib.getClass().getMethod(methodName);
+				oclInvalid = (EClassifier)method.invoke(stdLib);
+			} catch (NoSuchMethodException e) {
+				// Shouldn't happen
+				AcceleoCommonPlugin.log(e, true);
+			} catch (InvocationTargetException e) {
+				// cannot happen
+			} catch (IllegalAccessException e) {
+				// We know this method is public
+			}
+		}
+		return oclInvalid;
+	}
+}
