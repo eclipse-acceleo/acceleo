@@ -717,7 +717,7 @@ public class OCLParser {
 	 * @return the OCL invalid type
 	 */
 	public EClassifier getInvalidType() {
-		return environment.getOCLStandardLibrary().getInvalid();
+		return environment.getOCLStandardLibraryReflection().getOCLInvalid();
 	}
 
 	/**

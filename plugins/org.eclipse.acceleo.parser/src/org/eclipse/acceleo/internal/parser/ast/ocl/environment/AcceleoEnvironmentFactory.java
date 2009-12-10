@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
+import org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment.AcceleoEnvironmentGalileo;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -51,7 +54,12 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	@Override
 	public Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> loadEnvironment(
 			Resource resource) {
-		AcceleoEnvironment result = new AcceleoEnvironment(resource);
+		AcceleoEnvironment result;
+		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GANYMEDE) {
+			result = new AcceleoEnvironment(resource);
+		} else {
+			result = new AcceleoEnvironmentGalileo(resource);
+		}
 		result.setFactory(this);
 		return result;
 	}
@@ -69,12 +77,10 @@ public class AcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 					"AcceleoEnvironmentFactory.IllegalParent", parent.getClass().getName())); //$NON-NLS-1$
 		}
 		AcceleoEnvironment result;
-		try {
-			Class.forName("org.eclipse.ocl.TypeChecker"); //$NON-NLS-1$
-			result = new AcceleoEnvironmentGalileo(parent);
-		} catch (ClassNotFoundException e) {
-			// OCL 1.3 isn't accessible in the classpath
+		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GANYMEDE) {
 			result = new AcceleoEnvironment(parent);
+		} else {
+			result = new AcceleoEnvironmentGalileo(parent);
 		}
 		result.setFactory(this);
 		return result;

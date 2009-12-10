@@ -16,8 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLStdLibReflection;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment.AcceleoUMLReflectionHelios;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -57,6 +61,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	/** We'll only create a single instance of the uml reflection. */
 	private UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> umlReflection;
 
+	/** Instance of the OCL standard library reflection for this environment. */
+	private AcceleoOCLStdLibReflection oclStdLibReflection;
+
 	/**
 	 * The first problem object of the last compilation made by this environment.
 	 */
@@ -68,7 +75,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @param parent
 	 *            Parent for this Acceleo environment.
 	 */
-	protected AcceleoEnvironment(
+	public AcceleoEnvironment(
 			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
 		super(parent);
 		if (!(parent instanceof AcceleoEnvironment)) {
@@ -82,7 +89,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @param oclEnvironmentResource
 	 *            resource used to keep the OCL environment.
 	 */
-	protected AcceleoEnvironment(Resource oclEnvironmentResource) {
+	public AcceleoEnvironment(Resource oclEnvironmentResource) {
 		super(EPackage.Registry.INSTANCE, oclEnvironmentResource);
 		addAdditionalOperations();
 	}
@@ -245,7 +252,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			computeOCLType(types, getOCLStandardLibrary().getBoolean());
 			computeOCLType(types, getOCLStandardLibrary().getCollection());
 			computeOCLType(types, getOCLStandardLibrary().getInteger());
-			computeOCLType(types, getOCLStandardLibrary().getInvalid());
+			computeOCLType(types, getOCLStandardLibraryReflection().getOCLInvalid());
 			computeOCLType(types, getOCLStandardLibrary().getOclAny());
 			computeOCLType(types, getOCLStandardLibrary().getOclElement());
 			computeOCLType(types, getOCLStandardLibrary().getOclExpression());
@@ -266,6 +273,18 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	}
 
 	/**
+	 * Returns this environment's reflection of the OCL standard library.
+	 * 
+	 * @return This environment's reflection of the OCL standard library.
+	 */
+	public AcceleoOCLStdLibReflection getOCLStandardLibraryReflection() {
+		if (oclStdLibReflection == null) {
+			oclStdLibReflection = new AcceleoOCLStdLibReflection(this);
+		}
+		return oclStdLibReflection;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#getUMLReflection()
@@ -273,7 +292,11 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	@Override
 	public UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> getUMLReflection() {
 		if (umlReflection == null) {
-			umlReflection = new AcceleoUMLReflection(super.getUMLReflection());
+			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+				umlReflection = new AcceleoUMLReflectionHelios(super.getUMLReflection());
+			} else {
+				umlReflection = new AcceleoUMLReflection(super.getUMLReflection());
+			}
 		}
 		return umlReflection;
 	}
@@ -305,7 +328,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#setFactory(org.eclipse.ocl.EnvironmentFactory)
 	 */
 	@Override
-	protected void setFactory(
+	public void setFactory(
 			EnvironmentFactory<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> factory) {
 		super.setFactory(factory);
 	}

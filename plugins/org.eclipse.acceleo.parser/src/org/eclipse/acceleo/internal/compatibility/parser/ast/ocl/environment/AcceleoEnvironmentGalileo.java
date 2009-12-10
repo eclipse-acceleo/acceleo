@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
+package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
+import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -55,7 +56,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	 * @param parent
 	 *            Parent for this Acceleo environment.
 	 */
-	protected AcceleoEnvironmentGalileo(
+	public AcceleoEnvironmentGalileo(
 			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
 		super(parent);
 		setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
@@ -67,7 +68,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	 * @param oclEnvironmentResource
 	 *            resource used to keep the OCL environment.
 	 */
-	protected AcceleoEnvironmentGalileo(Resource oclEnvironmentResource) {
+	public AcceleoEnvironmentGalileo(Resource oclEnvironmentResource) {
 		super(oclEnvironmentResource);
 		setOption(ParsingOptions.USE_BACKSLASH_ESCAPE_PROCESSING, Boolean.TRUE);
 	}
@@ -78,7 +79,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	 * @see org.eclipse.ocl.AbstractEnvironment#createTypeChecker()
 	 */
 	@Override
-	protected TypeChecker<EClassifier, EOperation, EStructuralFeature> createTypeChecker() {
+	public TypeChecker<EClassifier, EOperation, EStructuralFeature> createTypeChecker() {
 		return new AcceleoTypeChecker(this);
 	}
 

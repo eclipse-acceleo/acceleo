@@ -41,7 +41,7 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	private static final EOperation EOBJECT_EALLCONTENTS;
 
 	/** We will delegate all calls to this implementation. */
-	private final org.eclipse.ocl.utilities.UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> delegate;
+	protected final org.eclipse.ocl.utilities.UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> delegate;
 
 	static {
 		EOperation temp = null;
@@ -451,6 +451,17 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ocl.utilities.UMLReflection#isConstraint(java.lang.Object)
+	 */
+	public boolean isConstraint(Object metaElement) {
+		// should never be called as it appeared in helios and will then be overriden
+		assert false;
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ocl.utilities.UMLReflection#isDataType(java.lang.Object)
 	 */
 	public boolean isDataType(Object metaElement) {
@@ -482,6 +493,17 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 */
 	public boolean isOperation(Object metaElement) {
 		return delegate.isOperation(metaElement);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.utilities.UMLReflection#isPackage(java.lang.Object)
+	 */
+	public boolean isPackage(Object metaElement) {
+		// should never be called as it appeared in helios and will then be overriden
+		assert false;
+		return false;
 	}
 
 	/**
@@ -527,6 +549,17 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 */
 	public void setConstraintName(Constraint constraint, String name) {
 		delegate.setConstraintName(constraint, name);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.utilities.UMLReflection#setIsStatic(java.lang.Object, boolean)
+	 */
+	public boolean setIsStatic(Object feature, boolean isStatic) {
+		// should never be called as it appeared in helios and will then be overriden
+		assert false;
+		return false;
 	}
 
 	/**
