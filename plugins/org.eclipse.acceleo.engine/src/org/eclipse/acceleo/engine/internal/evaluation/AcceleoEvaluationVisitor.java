@@ -24,6 +24,7 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -137,8 +138,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** Keeps track of the result of the last source expression. */
 	private Object lastSourceExpressionResult;
 
-	/** Retrieve OCL_Invalid once and for all. */
-	private final Object oclInvalid = getEnvironment().getOCLStandardLibrary().getOclInvalid();
+	/** Retrieve invalid once and for all. */
+	private final Object invalid = getAcceleoEnvironment().getOCLStandardLibraryReflection().getInvalid();
 
 	/**
 	 * A query returns the same result each time it is called with the same arguments. This map will allow us
@@ -1135,6 +1136,15 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Returns the current environment, cast as an AcceleoEnvironment as we know it is one.
+	 * 
+	 * @return The current environment as an AcceleoEnvironment.
+	 */
+	private AcceleoEnvironment getAcceleoEnvironment() {
+		return (AcceleoEnvironment)getEnvironment();
+	}
+
+	/**
 	 * Returns <code>true</code> if the value is equal to the OCL standard library's OCLInvalid object.
 	 * 
 	 * @param value
@@ -1143,7 +1153,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *         <code>false</code> otherwise.
 	 */
 	private boolean isInvalid(Object value) {
-		return value == oclInvalid;
+		return value == invalid;
 	}
 
 	/**
@@ -1156,7 +1166,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *         library's OCLInvalid object, <code>false</code> otherwise.
 	 */
 	private boolean isUndefined(Object value) {
-		return value == null || value == oclInvalid;
+		return value == null || value == invalid;
 	}
 
 	/**

@@ -13,6 +13,7 @@ package org.eclipse.acceleo.engine.internal.environment;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLStdLibReflection;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -42,6 +43,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	private final Map<String, EFactory> factories = new HashMap<String, EFactory>(4);
 
+	/** Instance of the OCL standard library reflection for this environment. */
+	private AcceleoOCLStdLibReflection oclStdLibReflection;
+
 	/**
 	 * Delegates instantiation to the super-constructor.
 	 * 
@@ -50,6 +54,18 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	protected AcceleoEnvironment(EPackage.Registry reg) {
 		super(reg);
+	}
+
+	/**
+	 * Returns this environment's reflection of the OCL standard library.
+	 * 
+	 * @return This environment's reflection of the OCL standard library.
+	 */
+	public AcceleoOCLStdLibReflection getOCLStandardLibraryReflection() {
+		if (oclStdLibReflection == null) {
+			oclStdLibReflection = new AcceleoOCLStdLibReflection(this);
+		}
+		return oclStdLibReflection;
 	}
 
 	/**
