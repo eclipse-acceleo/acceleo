@@ -139,7 +139,7 @@
       </eOperations>
       <eOperations name="contains">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
         <eParameters name="substring">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
@@ -160,6 +160,7 @@
       </eAnnotations>
       <eOperations name="toString">
         <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
       </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OclAny_Class">
@@ -293,11 +294,6 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
       </eOperations>
-    </eClassifiers>
-  </ecore:EPackage>
-  <ecore:EPackage name="collections">
-    <eClassifiers xsi:type="ocl.ecore:SequenceType" instanceClassName="java.util.List">
-      <elementType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
     </eClassifiers>
   </ecore:EPackage>
   <ocl.ecore:Variable name="self">
