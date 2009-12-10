@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -60,7 +61,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	protected OCL ocl;
 
 	/** Instance of the "oclInvalid" standard library object. */
-	protected Object oclInvalidObject;
+	protected Object invalidObject;
 
 	/**
 	 * {@inheritDoc}
@@ -255,6 +256,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 		evaluationVisitor = (AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl
 						.getExtentMap());
-		oclInvalidObject = ocl.getEnvironment().getOCLStandardLibrary().getOclInvalid();
+		invalidObject = ((AcceleoEnvironment)ocl.getEnvironment()).getOCLStandardLibraryReflection()
+				.getInvalid();
 	}
 }
