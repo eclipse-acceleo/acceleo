@@ -57,29 +57,29 @@
 
 [comment template definitions/]
 [template public namesake_3_import_specific(c:EClassifier, d:EClassifier)]
-	local.namesake_3_import_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_3_import_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_3_extend_specific(c:EClassifier, d:EClassifier)]
-	local.namesake_3_extend_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_3_extend_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_3_local_specific(c:EClass, d:EClass)]
-	local.namesake_3_local_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_3_local_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_import_local_specific(c:EClass, d:EClass)]
-	local.namesake_import_local_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_import_local_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_import_import_specific(c:EClassifier, d:EClassifier)]
-	local.namesake_import_import_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_import_import_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_extend_local_specific(c:EClass, d:EClass)]
-	local.namesake_extend_local_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_extend_local_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_extend_extend_specific(c:EClassifier, d:EClassifier)]
-	local.namesake_extend_extend_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_extend_extend_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

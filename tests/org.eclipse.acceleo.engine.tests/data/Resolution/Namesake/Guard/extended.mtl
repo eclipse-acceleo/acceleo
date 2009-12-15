@@ -4,9 +4,9 @@
 [/template]
 
 [template public namesake_guard_import_specific(c:EClassifier) ? (c.oclIsKindOf(EClass) and c.oclAsType(EClass).abstract)]
-	extended.namesake_guard_import_specific called on [c.eClass().name/] [c.name/]
+	extended.namesake_guard_import_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_guarded_specific(c:EClass) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
-	extended.namesake_guarded_specific called on [c.eClass().name/] [c.name/]
+	extended.namesake_guarded_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

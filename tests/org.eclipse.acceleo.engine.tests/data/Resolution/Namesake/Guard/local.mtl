@@ -21,13 +21,13 @@
 
 [comment template definitions/]
 [template public namesake_guard(c:EClassifier) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
-	local.namesake_guard called on [c.eClass().name/] [c.name/]
+	local.namesake_guard called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_guard_import_specific(c:EClass) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
-	local.namesake_guard_import_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_guard_import_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_guarded_specific(c:EClass) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
-	local.namesake_guarded_specific called on [c.eClass().name/] [c.name/]
+	local.namesake_guarded_specific called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

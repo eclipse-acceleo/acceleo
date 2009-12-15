@@ -33,15 +33,15 @@
 
 [comment template definitions/]
 [template public namesake_3(c:EClassifier)]
-	local.namesake_3 called on [c.eClass().name/] [c.name/]
+	local.namesake_3 called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_extend(c:EClassifier)]
-	local.namesake_extend called on [c.eClass().name/] [c.name/]
+	local.namesake_extend called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_import(c:EClassifier)]
-	local.namesake_import called on [c.eClass().name/] [c.name/]
+	local.namesake_import called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public namesake_param_names(c:EClassifier)]
@@ -49,5 +49,5 @@
 [/template]
 
 [template public namesake_param_names(class:EClass)]
-	local.namesake_param_names called on [class.eClass().name/] [class.name/]
+	local.namesake_param_names called on [class.oclAsType(EObject).eClass().name/] [class.name/]
 [/template]

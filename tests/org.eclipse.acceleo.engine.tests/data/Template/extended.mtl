@@ -1,16 +1,16 @@
 [module extended(http://www.eclipse.org/emf/2002/Ecore)/]
 [template protected protected_extended_template(c:EClass)]
-	extended.protected_extended_template called on [c.eClass().name/] [c.name/]
+	extended.protected_extended_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template protected super_extended_template(c:EClass)]
-	extended.super_extended_template called on [c.eClass().name/] [c.name/]
+	extended.super_extended_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template private private_extended_template(c:EClass)]
-	extended.private_extended_template called on [c.eClass().name/] [c.name/]
+	extended.private_extended_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public imported_template(c:EClass)]
-    extended.imported_template called on [c.eClass().name/] [c.name/]
+    extended.imported_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

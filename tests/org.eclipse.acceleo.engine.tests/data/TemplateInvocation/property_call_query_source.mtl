@@ -8,6 +8,6 @@
 	[/file]
 [/template]
 
-[query public getContainer(e:ENamedElement) : ENamedElement = e.eContainer()/]
+[query public getContainer(e:ENamedElement) : ENamedElement = e.oclAsType(EObject).eContainer()/]
 [query public toUpperLastQuery(s:String) : String = s.substring(1, s.size() - 1).concat(s.last(1).toUpper())/]
 [template public toUpperLastTemplate(s:String)][s.substring(1, s.size() - 1).concat(s.last(1).toUpper())/][/template]

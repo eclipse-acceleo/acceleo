@@ -21,9 +21,9 @@
 
 [comment template definitions/]
 [template public parameter_narrowing_3_local_override(c:EClass) overrides parameter_narrowing_extend_override]
-	local.parameter_narrowing_3_local_override called on [c.eClass().name/] [c.name/]
+	local.parameter_narrowing_3_local_override called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public parameter_narrowing_local_override(c:EClass) overrides parameter_narrowing_extend_definition]
-	local.parameter_narrowing_local_override called on [c.eClass().name/] [c.name/]
+	local.parameter_narrowing_local_override called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

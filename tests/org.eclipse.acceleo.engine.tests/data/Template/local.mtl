@@ -57,11 +57,11 @@
 [comment template definitions/]
 [comment visibility tests/]
 [template protected protected_overriding_template(c:EClass) overrides protected_extended_template]
-	local.protected_overriding_template called on [c.eClass().name/] [c.name/]
+	local.protected_overriding_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template private private_local_template(c:EClass)]
-	local.private_local_template called on [c.eClass().name/] [c.name/]
+	local.private_local_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [comment super test/]
@@ -71,9 +71,9 @@
 
 [comment guard tests/]
 [template public false_guard_template(c:EClass) ? (not c.abstract)]
-	local.false_guard_template called on [c.eClass().name/] [c.name/]
+	local.false_guard_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public true_guard_template(c:EClass) ? (c.abstract)]
-	local.true_guard_template called on [c.eClass().name/] [c.name/]
+	local.true_guard_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

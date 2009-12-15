@@ -45,9 +45,9 @@
 
 [comment template definitions/]
 [template public local_overriden(c:EClassifier) overrides extend_defined]
-	local.local_overriden called on [c.eClass().name/] [c.name/]
+	local.local_overriden called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public local_override_3(c:EClassifier) overrides extend_override_3]
-	local.local_override_3 called on [c.eClass().name/] [c.name/]
+	local.local_override_3 called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]

@@ -21,9 +21,9 @@
 
 [comment template definitions/]
 [template public override_resolution_3_local_notguard(c:EClass) overrides override_resolution_notguard ? (not c.abstract)]
-	local.override_resolution_3_local_notguard called on [c.eClass().name/] [c.name/]
+	local.override_resolution_3_local_notguard called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
 
 [template public override_resolution_local_guard(c:EClass) overrides override_resolution_extend_definition_notguard ? (c.abstract)]
-	local.override_resolution_local_guard called on [c.eClass().name/] [c.name/]
+	local.override_resolution_local_guard called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
