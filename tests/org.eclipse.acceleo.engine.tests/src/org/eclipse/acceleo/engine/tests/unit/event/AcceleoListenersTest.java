@@ -77,8 +77,8 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 			}
 		}
 
-		// We know 47 text generations events were fired. If this figure changes, check generated files.
-		final int generationCount = 47;
+		// We know 38 text generations events were fired. If this figure changes, check generated files.
+		final int generationCount = 38;
 		assertSame("Unexpected count of text generations.", generationCount, listener.generationCount); //$NON-NLS-1$
 		assertSame("Wrong count of generated files.", eClassCount, listener.generatedFileCount); //$NON-NLS-1$
 
