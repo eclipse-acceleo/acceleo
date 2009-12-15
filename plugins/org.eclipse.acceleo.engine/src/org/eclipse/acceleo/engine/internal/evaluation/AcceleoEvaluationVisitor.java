@@ -235,7 +235,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoBlock(Block block) {
 		for (final OCLExpression nested : block.getBody()) {
-			visitExpression(nested);
+			getVisitor().visitExpression(nested);
 		}
 	}
 
@@ -413,7 +413,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						 */
 					}
 					for (final OCLExpression nested : forBlock.getBody()) {
-						visitExpression(nested);
+						getVisitor().visitExpression(nested);
 					}
 				}
 				hasPrevious = true;
@@ -767,7 +767,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * (template invocation).
 		 */
 		for (final OCLExpression nested : template.getBody()) {
-			visitExpression(nested);
+			getVisitor().visitExpression(nested);
 		}
 		return context.closeContext();
 	}
@@ -965,6 +965,20 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * If my delegate (as returned by {@link #getVisitor()} is an {@link AcceleoEvaluationVisitorDecorator},
+	 * this will return it once cast.
+	 * 
+	 * @return The decorating visitor if it is an {@link AcceleoEvaluationVisitorDecorator}, <code>null</code>
+	 *         otherwise.
+	 */
+	protected final AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> getAcceleoVisitor() {
+		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return (AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E>)getVisitor();
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the decorating visitor.
 	 * 
 	 * @return The decorating visitor.
@@ -1027,8 +1041,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private void delegateAppend(String string, Block sourceBlock, EObject source, boolean fireEvent) {
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			((AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E>)getVisitor())
-					.append(string, sourceBlock, source, fireEvent);
+			getAcceleoVisitor().append(string, sourceBlock, source, fireEvent);
 		} else {
 			append(string, sourceBlock, source, fireEvent);
 		}
@@ -1055,8 +1068,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private void delegateCreateFileWriter(String filePath, Block fileBlock, EObject source,
 			boolean appendMode, String charset) throws AcceleoEvaluationException {
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			((AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E>)getVisitor())
-					.createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode, charset);
+			getAcceleoVisitor().createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode,
+					charset);
 		} else {
 			createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode, charset);
 		}
@@ -1351,26 +1364,59 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private Object switchExpression(OCLExpression<C> expression) {
 		Object result;
+		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
-			result = visitAcceleoTemplate((Template)expression);
+			if (delegate != null) {
+				result = delegate.visitAcceleoTemplate((Template)expression);
+			} else {
+				result = visitAcceleoTemplate((Template)expression);
+			}
 		} else if (expression instanceof IfBlock) {
-			visitAcceleoIfBlock((IfBlock)expression);
+			if (delegate != null) {
+				delegate.visitAcceleoIfBlock((IfBlock)expression);
+			} else {
+				visitAcceleoIfBlock((IfBlock)expression);
+			}
 			result = ""; //$NON-NLS-1$
 		} else if (expression instanceof ForBlock) {
-			visitAcceleoForBlock((ForBlock)expression);
+			if (delegate != null) {
+				delegate.visitAcceleoForBlock((ForBlock)expression);
+			} else {
+				visitAcceleoForBlock((ForBlock)expression);
+			}
 			result = ""; //$NON-NLS-1$
 		} else if (expression instanceof FileBlock) {
-			visitAcceleoFileBlock((FileBlock)expression);
+			if (delegate != null) {
+				delegate.visitAcceleoFileBlock((FileBlock)expression);
+			} else {
+				visitAcceleoFileBlock((FileBlock)expression);
+			}
 			result = ""; //$NON-NLS-1$
 		} else if (expression instanceof TemplateInvocation) {
-			result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
+			if (delegate != null) {
+				result = delegate.visitAcceleoTemplateInvocation((TemplateInvocation)expression);
+			} else {
+				result = visitAcceleoTemplateInvocation((TemplateInvocation)expression);
+			}
 		} else if (expression instanceof QueryInvocation) {
-			result = visitAcceleoQueryInvocation((QueryInvocation)expression);
+			if (delegate != null) {
+				result = delegate.visitAcceleoQueryInvocation((QueryInvocation)expression);
+			} else {
+				result = visitAcceleoQueryInvocation((QueryInvocation)expression);
+			}
 		} else if (expression instanceof LetBlock) {
-			visitAcceleoLetBlock((LetBlock)expression);
+			if (delegate != null) {
+				delegate.visitAcceleoLetBlock((LetBlock)expression);
+			} else {
+				visitAcceleoLetBlock((LetBlock)expression);
+			}
 			result = ""; //$NON-NLS-1$
 		} else if (expression instanceof ProtectedAreaBlock) {
-			visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
+			if (delegate != null) {
+				delegate.visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
+			} else {
+				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
+			}
 			result = ""; //$NON-NLS-1$
 		} else {
 			result = super.visitExpression(expression);

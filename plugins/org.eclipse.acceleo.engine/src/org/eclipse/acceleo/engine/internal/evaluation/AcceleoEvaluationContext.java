@@ -125,7 +125,7 @@ public final class AcceleoEvaluationContext {
 		try {
 			final Writer currentWriter = writers.getLast();
 			currentWriter.append(string);
-			if (fireEvent) {
+			if (fireEvent && string.length() > 0) {
 				fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
 			}
 		} catch (final IOException e) {

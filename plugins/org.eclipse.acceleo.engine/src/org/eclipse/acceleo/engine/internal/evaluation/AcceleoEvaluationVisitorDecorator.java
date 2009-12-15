@@ -200,7 +200,7 @@ public class AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA,
 	 * @return Result of the template evaluation.
 	 */
 	public String visitAcceleoTemplate(Template template) {
-		return visitAcceleoTemplate(template);
+		return getAcceleoDelegate().visitAcceleoTemplate(template);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA,
 	 * @return result of the invocation.
 	 */
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		return visitAcceleoTemplateInvocation(invocation);
+		return getAcceleoDelegate().visitAcceleoTemplateInvocation(invocation);
 	}
 
 	/**
