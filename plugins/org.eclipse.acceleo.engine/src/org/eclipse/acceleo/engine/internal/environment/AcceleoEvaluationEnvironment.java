@@ -65,8 +65,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
 import org.eclipse.ocl.options.EvaluationOptions;
-import org.eclipse.ocl.util.Bag;
-import org.eclipse.ocl.util.CollectionUtil;
 
 /**
  * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and
@@ -528,12 +526,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
-			final Collection<Object> temp;
-			if (source instanceof Set<?> || source instanceof Bag<?>) {
-				temp = CollectionUtil.createNewBag();
-			} else {
-				temp = new ArrayList<Object>(source.size() << 1);
-			}
+			final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
 			final Iterator<?> sourceIterator = source.iterator();
 			while (sourceIterator.hasNext()) {
 				temp.add(sourceIterator.next());
