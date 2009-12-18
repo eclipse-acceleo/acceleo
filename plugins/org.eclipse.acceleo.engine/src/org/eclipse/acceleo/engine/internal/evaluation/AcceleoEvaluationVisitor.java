@@ -342,7 +342,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			visitExpression((OCLExpression)forBlock.getBefore());
 		}
 		final Iterator<Object> contentIterator = actualIteration.iterator();
-		// This will be use to only record and log a single CCE if many arise with this loop
+		// This will be used to only record and log a single CCE if many arise with this loop
 		boolean iterationCCE = false;
 		// This will be used to generate separators only if the iterator had a previous element
 		boolean hasPrevious = false;
@@ -449,7 +449,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
-		final Object conditionValue = visitExpression(condition);
+		final Object conditionValue = getVisitor().visitExpression(condition);
 		fireGenerationEvent = fireEvents;
 		if (isInvalid(conditionValue)) {
 			final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
@@ -470,7 +470,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				IfBlock temp = null;
 				for (final IfBlock elseif : ifBlock.getElseIf()) {
 					fireGenerationEvent = false;
-					final Object elseValue = visitExpression((OCLExpression)elseif.getIfExpr());
+					final Object elseValue = getVisitor().visitExpression((OCLExpression)elseif.getIfExpr());
 					fireGenerationEvent = fireEvents;
 					if (isInvalid(elseValue)) {
 						final String rootName = ((Module)EcoreUtil.getRootContainer(elseif)).getName();
@@ -603,7 +603,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
-		final Object markerValue = visitExpression((OCLExpression)protectedArea.getMarker());
+		final Object markerValue = getVisitor().visitExpression((OCLExpression)protectedArea.getMarker());
 		fireGenerationEvent = fireEvents;
 		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (isUndefined(markerValue)) {
@@ -623,12 +623,21 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (areaContent != null) {
 			delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 		} else {
-			delegateAppend(AcceleoEngineMessages.getString("usercode.start"), protectedArea, //$NON-NLS-1$
-					lastEObjectSelfValue, fireGenerationEvent);
-			delegateAppend(' ' + marker, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
+			context.openNested();
+			fireGenerationEvent = false;
 			visitAcceleoBlock(protectedArea);
-			delegateAppend(AcceleoEngineMessages.getString("usercode.end"), protectedArea, //$NON-NLS-1$
-					lastEObjectSelfValue, fireGenerationEvent);
+			fireGenerationEvent = fireEvents;
+			String blockContent = context.closeContext();
+
+			// We'll make it so that we only have a single appending in the context
+			StringBuilder buffer = new StringBuilder();
+			buffer.append(AcceleoEngineMessages.getString("usercode.start")); //$NON-NLS-1$
+			buffer.append(' ');
+			buffer.append(marker);
+			buffer.append(blockContent);
+			buffer.append(AcceleoEngineMessages.getString("usercode.end")); //$NON-NLS-1$
+
+			delegateAppend(buffer.toString(), protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 		}
 	}
 
@@ -1364,6 +1373,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private Object switchExpression(OCLExpression<C> expression) {
 		Object result;
+		if (expression == null) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationError"));
+		}
 		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
 			if (delegate != null) {
