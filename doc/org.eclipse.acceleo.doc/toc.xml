@@ -14,6 +14,10 @@
     </topic>
     <topic href="doc/html/new_acceleo_ui_project.html" label="Create a new Acceleo UI project">
     </topic>
+    <topic href="doc/html/ocl_operation_reference.html" label="OCL operations reference">
+    </topic>
+    <topic href="doc/html/acceleo_operation_reference.html" label="MTL operations reference">
+    </topic>
  </topic>
  <topic href="doc/Legal.html" label="Legal">
  </topic>
