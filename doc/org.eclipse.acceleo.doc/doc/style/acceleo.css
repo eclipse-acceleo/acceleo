@@ -115,6 +115,10 @@ table.docinfo td {
   border: none;
 }
 
+table.docinfo tr {
+  background: none;
+}
+
 table.exampletable {
   width: 70%;
 }
