@@ -1,0 +1,2715 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<title>OCL operations reference</title>
+<meta name="authors" content="Laurent Goubet" />
+<link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="ocl-operations-reference">
+<h1 class="title">OCL operations reference</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Goubet</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2009 Obeo™.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#ocl-operations-for-classifier" id="id1">Ocl operations for <em>Classifier</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-oclany" id="id2">Ocl operations for <em>OclAny</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-string" id="id3">Ocl operations for <em>String</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-number" id="id4">Ocl operations for <em>Number</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-collection" id="id5">Ocl operations for <em>Collection</em></a><ul>
+<li><a class="reference internal" href="#ocl-operations-for-sequence" id="id6">Ocl operations for <em>Sequence</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-bag" id="id7">Ocl operations for <em>Bag</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-orderedset" id="id8">Ocl operations for <em>OrderedSet</em></a></li>
+<li><a class="reference internal" href="#ocl-operations-for-set" id="id9">Ocl operations for <em>Set</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ocl-operations-for-boolean" id="id10">Ocl operations for <em>Boolean</em></a></li>
+<li><a class="reference internal" href="#glossary" id="id11">Glossary</a></li>
+</ul>
+</div>
+<div class="section" id="ocl-operations-for-classifier">
+<h1><a class="toc-backref" href="#id1">Ocl operations for <em>Classifier</em></a></h1>
+<blockquote>
+<dl class="docutils">
+<dt><strong>allInstances () : Set{T}</strong></dt>
+<dd><p class="first">Returns a Set containing all of the existing instances of the current classifier (along with instances of all its
+inherited classifiers).</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="84%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : String = 'a', b : String = 'b', c : Integer = 2 in String.allInstances()</td>
+<td>Set{'a','b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-oclany">
+<h1><a class="toc-backref" href="#id2">Ocl operations for <em>OclAny</em></a></h1>
+<blockquote>
+<dl class="docutils">
+<dt><strong>oclIsKindOf( Classifier typespec ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if the type of <em>self</em> corresponds to the type or supertype of typespec, <strong>false</strong> otherwise. This
+operation allows users to check the class hierarchy of <em>self</em> much like would an <em>instanceof</em> Java.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="81%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>anEmployee.oclIsKindOf(Employee)</td>
+<td>true</td>
+</tr>
+<tr><td>anEmployee.oclIsKindOf(Person)</td>
+<td>true</td>
+</tr>
+<tr><td>aCat.oclIsKindOf(Person)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>oclIsTypeOf( typespec : Classifier ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if the type of <em>self</em> is the same as typespec, or <strong>false</strong> otherwise. This operation allows users
+to check the exact class type of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="81%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>anEmployee.oclIsTypeOf(Employee)</td>
+<td>true</td>
+</tr>
+<tr><td>anEmployee.oclIsTypeOf(Person)</td>
+<td>false</td>
+</tr>
+<tr><td>aCat.oclIsTypeOf(Person)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>oclAsType ( typespec : Classifier ) : T</strong></dt>
+<dd><p class="first">Returns <em>self</em> statically typed as typespec if it is an instance of this type. <em>Note</em> that this does not alter the
+runtime value of <em>self</em>, it only enables access to subtype operations. This operation allows users to cast <em>self</em>
+to another type.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>aPerson.oclAsType(Employee)</td>
+<td>an object of Employee type</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>oclIsUndefined () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is equal to <em>invalid</em> or <em>null</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let anObject : String = null in anObject.oclIsUndefined()</td>
+<td>true</td>
+</tr>
+<tr><td>let anObject : String = invalid in anObject.oclIsUndefined()</td>
+<td>true</td>
+</tr>
+<tr><td>let anObject : String = 'null' in anObject.oclIsUndefined()</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>oclIsInvalid () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is equal to <em>invalid</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let anObject : String = null in anObject.oclIsUndefined()</td>
+<td>false</td>
+</tr>
+<tr><td>let anObject : String = invalid in anObject.oclIsUndefined()</td>
+<td>true</td>
+</tr>
+<tr><td>let anObject : String = 'null' in anObject.oclIsUndefined()</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( object : OclAny ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is a different object from <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="86%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : String = 'a', b : String = 'a' in a &lt;&gt; b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : Integer = 2, b : Real = 2.0 in a &lt;&gt; b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : Integer = -2, b : Integer = 2 in a &lt;&gt; b</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>= ( object : OclAny) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is equal to <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="86%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : String = 'a', b : String = 'a' in a = b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : Integer = 2, b : Real = 2.0 in a = b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : Integer = -2, b : Integer = 2 in a = b</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt; ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and less than <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : Integer = 1, b : Integer = 2 in a &lt; b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : Real = 1.5, b : Integer = 2 in a &lt; b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : String = 'Anteater', b : String = 'Aardvark' in a &lt; b</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&gt; ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and greater than <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : Integer = 1, b : Integer = 2 in a &gt; b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : Real = 1.5, b : Integer = 2 in a &gt; b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : String = 'Anteater', b : String = 'Aardvark' in a &gt; b</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;= ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and less than or equal to <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : Integer = 1, b : Integer = 2 in a &lt;= b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : Real = 1.5, b : Integer = 2 in a &lt;= b</td>
+<td>true</td>
+</tr>
+<tr><td>let a : String = 'Anteater', b : String = 'Aardvark' in a &lt;= b</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&gt;= ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and greater than or equal to <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="89%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>let a : Integer = 1, b : Integer = 2 in a &gt;= b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : Real = 1.5, b : Integer = 2 in a &gt;= b</td>
+<td>false</td>
+</tr>
+<tr><td>let a : String = 'Anteater', b : String = 'Aardvark' in a &gt;= b</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-string">
+<h1><a class="toc-backref" href="#id3">Ocl operations for <em>String</em></a></h1>
+<p><strong>A note on Strings</strong> : OCL Strings begin at index <em>1</em>, not <em>0</em> as in most languages. Thus <em>'test'.at(0)</em> fails in
+<em>invalid</em> whereas <em>'test'.at(1)</em> yields <em>'t'</em>. Likewise, <em>'test'.substring(2, 2)</em> returns <em>'e'</em>.</p>
+<blockquote>
+<dl class="docutils">
+<dt><strong>size () : Integer</strong></dt>
+<dd><p class="first">Returns the number of characters composing <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="88%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'size operation'.size()</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>concat ( s : String ) : String</strong></dt>
+<dd><p class="first">Returns a string containing <em>self</em> followed by <em>s</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="77%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'concat'.concat(' ').concat('operation')</td>
+<td>'concat operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>substring ( lower : Integer, upper : Integer ) : String</strong></dt>
+<dd><p class="first">Returns a string containing all characters from <em>self</em> starting from index <em>lower</em> up to index <em>upper</em> included.
+Both <em>lower</em> and <em>upper</em> parameters should be contained between <em>1</em> and <em>self.size()</em> included. <em>lower</em> cannot be
+greater than <em>upper</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'substring operation'.substring(11, 19)</td>
+<td>'operation'</td>
+</tr>
+<tr><td>'substring operation'.substring(1, 1)</td>
+<td>'s'</td>
+</tr>
+<tr><td>'substring operation'.substring(0, 1)</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toInteger () : Integer</strong></dt>
+<dd><p class="first">Returns an Integer of value equal to <em>self</em>, or Ø if <em>self</em> does not represent an integer.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'3.0'.toInteger()</td>
+<td>Ø</td>
+</tr>
+<tr><td>'4'.toInteger()</td>
+<td>4</td>
+</tr>
+<tr><td>'toInteger'.toInteger()</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toReal () : Real</strong></dt>
+<dd><p class="first">Returns a Real of value equal to <em>self</em>, or Ø if <em>self</em> does not represent a real.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'3.0'.toReal()</td>
+<td>3.0</td>
+</tr>
+<tr><td>'4'.toReal()</td>
+<td>4.0</td>
+</tr>
+<tr><td>'toReal'.toReal()</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toLower () : String</strong></dt>
+<dd><p class="first">Returns <em>self</em> with all characters converted to lowercase.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="76%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'LoWeR OpErAtIoN'.toLower()</td>
+<td>'lower operation'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>toUpper () : String</strong></dt>
+<dd><p class="first">Returns <em>self</em> with all characters converted to uppercase.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="76%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>'UpPeR OpErAtIoN'.toUpper()</td>
+<td>'UPPER OPERATION'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-number">
+<h1><a class="toc-backref" href="#id4">Ocl operations for <em>Number</em></a></h1>
+<p>In addition to the basic math functions (+, -, /, *) are a number of advanced functions. Take note that <em>Number</em>
+denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless otherwise specified.</p>
+<blockquote>
+<dl class="docutils">
+<dt><strong>Number::min ( r : Number ) : Number</strong></dt>
+<dd><p class="first">Returns the lowest number between <em>self</em> and <em>r</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>6.min(3)</td>
+<td>6</td>
+</tr>
+<tr><td>6.min(5.2)</td>
+<td>5.2</td>
+</tr>
+<tr><td>(2.3).min(3)</td>
+<td>2.3</td>
+</tr>
+<tr><td>(2.3).min(5.2)</td>
+<td>2.3</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Number::max ( r : Number ) : Number</strong></dt>
+<dd><p class="first">Returns the greatest number between <em>self</em> and <em>r</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>6.max(3)</td>
+<td>6</td>
+</tr>
+<tr><td>6.max(5.2)</td>
+<td>6.0</td>
+</tr>
+<tr><td>(2.3).max(3)</td>
+<td>3.0</td>
+</tr>
+<tr><td>(2.3).max(5.2)</td>
+<td>5.2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Number::abs () : Number</strong></dt>
+<dd><p class="first">Returns the absolute value of <em>self</em>, <em>self</em> if it is already a positive number.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>(-2.3).abs()</td>
+<td>2.3</td>
+</tr>
+<tr><td>-5.abs()</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Number::round () : Integer</strong></dt>
+<dd><p class="first">Returns the nearest integer to <em>self</em> if it is a Real, <em>self</em> if it is an Integer.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>(2.3).round()</td>
+<td>2</td>
+</tr>
+<tr><td>(2.5).round()</td>
+<td>3</td>
+</tr>
+<tr><td>(2.8).round()</td>
+<td>3</td>
+</tr>
+<tr><td>2.round()</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Number::floor () : Integer</strong></dt>
+<dd><p class="first">Returns the integer part of <em>self</em> if it is a Real, <em>self</em> if it is an Integer.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>(2.3).floor()</td>
+<td>2</td>
+</tr>
+<tr><td>(2.8).floor()</td>
+<td>2</td>
+</tr>
+<tr><td>2.floor()</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Integer::div ( i : Integer ) : Integer</strong></dt>
+<dd><p class="first">Returns the integer quotient of the division of <em>self</em> by <em>i</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>3.div(2)</td>
+<td>1</td>
+</tr>
+<tr><td>11.div(3)</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>Integer::mod ( i : Integer ) : Integer</strong></dt>
+<dd><p class="first">Returns the integer remainder of the division of <em>self</em> by <em>i</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>3.mod(2)</td>
+<td>1</td>
+</tr>
+<tr><td>11.mod(3)</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-collection">
+<h1><a class="toc-backref" href="#id5">Ocl operations for <em>Collection</em></a></h1>
+<p>Take note that collections in OCL can contain the <em>null</em> value (null) but not the <em>invalid</em> value (Ø). Trying
+to add Ø within a new or existing collection will yield Ø as a result. OCL proposes four distinct kind
+of collections offering all possibilities of ordering/unicity.</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub">Collection type</th>
+<th class="head">Ordered</th>
+<th class="head">Unique</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub">Sequence</th>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr><th class="stub">OrderedSet</th>
+<td>true</td>
+<td>true</td>
+</tr>
+<tr><th class="stub">Bag</th>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr><th class="stub">Set</th>
+<td>false</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><strong>count ( object : T ) : Integer</strong></dt>
+<dd><p class="first">Returns how many times <em>object</em> is in the collection <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2}-&gt;count(5.2)</td>
+<td>1</td>
+</tr>
+<tr><td>Set{3, 'test', 4.0, 4, 4.0, 'test'}-&gt;count(null)</td>
+<td>0</td>
+</tr>
+<tr><td>Set{3, null, 4.0, null, 'test'}-&gt;count(null)</td>
+<td>1</td>
+</tr>
+<tr><td>Bag{3, null, 4.0, null, 'test'}-&gt;count(null)</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>excludes ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>object</em> is not contained in <em>self</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3}-&gt;excludes(2.1)</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{2.0}-&gt;excludes(2)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>excludesAll ( c2 : Collection(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if no element of <em>c2</em> is contained in <em>self</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2, 'a', 3, null}-&gt;excludesAll(Set{4, null})</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{2.3, 5.2, 'a', 3}-&gt;excludesAll(Set{4, null})</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>includes ( object : T ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>object</em> is contained in <em>self</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3}-&gt;includes(2.1)</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{2.0}-&gt;includes(2)</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>includesAll ( c2 : Collection(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if all element of <em>c2</em> are contained in <em>self</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2, 'a', 3, null}-&gt;includesAll(Set{3, null})</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{2.3, 5.2, 'a', 3}-&gt;includesAll(Set{3, null})</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>isEmpty () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> is empty, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2, 'a'}-&gt;isEmpty()</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{null}-&gt;isEmpty()</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{}-&gt;isEmpty()</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>notEmpty () : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains at least one element, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2, 'a'}-&gt;notEmpty()</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{null}-&gt;notEmpty()</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{}-&gt;notEmpty()</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>product ( c2 : Collection(T2) ) : Set(Tuple(first : T, second : T2))</strong></dt>
+<dd><p class="first">Returns a Set of Tuples which represents the cartesian product of <em>self</em> with <em>c2</em>.</p>
+<p>examples (notation of the tuples has been simplified):</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{3, 4}-&gt;product(Bag{3.0, 4.0})</td>
+<td>Set{Tuple{3, 3.0}, Tuple{3, 4.0}, Tuple{4, 3.0}, Tuple{4, 4.0}}</td>
+</tr>
+<tr><td>Set{3, 4}-&gt;product(OrderedSet{3.0, 4.0})</td>
+<td>Set{Tuple{3, 3.0}, Tuple{3, 4.0}, Tuple{4, 3.0}, Tuple{4, 4.0}}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>size () : Boolean</strong></dt>
+<dd><p class="first">Returns the number of elements contained in <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5}-&gt;size()</td>
+<td>2</td>
+</tr>
+<tr><td>Sequence{}-&gt;size()</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>sum () : Real</strong></dt>
+<dd><p class="first">Returns the sum of all elements contained in <em>self</em> if they support the '+' operation.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2} in c-&gt;sum()</td>
+<td>7.5</td>
+</tr>
+<tr><td>Sequence{2, 4} in c-&gt;sum()</td>
+<td>6</td>
+</tr>
+<tr><td>Sequence{2, '4'} in c-&gt;sum()</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>exists ( expr : OclExpression ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if at least one element in <em>self</em> validates the condition <em>expr</em>, <strong>false</strong> otherwise. The evaluation
+is shortcut as soon as one element validating <em>expr</em> is found.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2}-&gt;exists(self &gt; 3)</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>forAll ( expr : OclExpression ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if the elements contained in <em>self</em> all validate the condition <em>expr</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2}-&gt;forAll(self &gt; 3)</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{2.3, 5.2}-&gt;forAll(self &gt; 1.2)</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>isUnique ( expr : OclExpression ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if all elements contained in <em>self</em> evaluate to a distinct value for <em>expr</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{2.3, 5.2}-&gt;isUnique(self &gt; 3)</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{2.3, 5.2}-&gt;isUnique(self &gt; 1)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>one ( expr : OclExpression ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if there is only one element contained in <em>self</em> that validates the condition <em>expr</em>, <strong>false</strong> otherwise.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1.2, 2.3, 5.2, 0.9}-&gt;one(self &lt; 1)</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{1.2, 2.3, 5.2, 0.9}-&gt;one(self &lt; 2)</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>any ( expr : OclExpression ) : T</strong></dt>
+<dd><p class="first">Returns any element contained in <em>self</em> that validates the condition <em>expr</em>, null otherwise. Evaluation is shortcut as soon
+as an element validating <em>expr</em> is found. Note that the result of this on unordered collections will be random if more than
+one element validates <em>expr</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1.2, 2.3, 5.2, 0.9}-&gt;any(self &lt; 1)</td>
+<td>0.9</td>
+</tr>
+<tr><td>Sequence{1.2, 2.3, 5.2, 0.9}-&gt;any(self &lt; 2)</td>
+<td>1.2</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>collect ( expr : OclExpression ) : Collection(T2)</strong></dt>
+<dd><p class="first">Returns a collection containing the result of applying <em>expr</em> on all elements contained in <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'first', 'second'}-&gt;collect(toUpper())</td>
+<td>Sequence{'FIRST', 'SECOND'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>collectNested ( expr : OclExpression ) : Collection(T2)</strong></dt>
+<dd><p class="first">Returns a collection containing all the elements contained in <em>self</em> on which we applied the OclExpression <em>expr</em>.
+The results won't be flattened. The type of the resulting collection depends on the type of <em>self</em>.</p>
+<p>examples:</p>
+<p>For the purpose of these examples we'll assume here that we have a Class <em>Person</em> with a reference <em>children</em>. Our
+model contains two persons such as <em>person1.children = {James, Jane}</em> and <em>person2.children = {John}</em>.</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>self.persons-&gt;collectNested(children.firstname)</td>
+<td>Sequence{Sequence{James, Jane}, Sequence{John}}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>flatten () : Collection(T2)</strong></dt>
+<dd><p class="first">Returns a collection containing all elements of <em>self</em> recursively flattened.
+<strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
+flattening.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="67%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{Set{1, 2, 3}, Sequence{2.0, 3.0}, Bag{'test'}}-&gt;flatten()</td>
+<td>Sequence{1, 2, 3, 2.0, 3.0, 'test'}</td>
+</tr>
+<tr><td>Bag{Set{Bag{'test', 2, 3.0}}, Sequence{OrderedSet{2.0, 3, 1}}}-&gt;flatten()</td>
+<td>Bag{1, 2, 3, 2.0, 3.0, 'test'}</td>
+</tr>
+<tr><td>OrderedSet{Set{Bag{'test', 2, 3.0}}, Sequence{Set{2.0, 3, 1}}}-&gt;flatten()</td>
+<td>Set{3.0, 2, 1, 3, 'test', 2.0}</td>
+</tr>
+<tr><td>Set{Set{Bag{'test', 2, 3.0}}, Sequence{OrderedSet{2.0, 3, 1}}}-&gt;flatten()</td>
+<td>Set{3.0, 2, 1, 3, 'test', 2.0}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>including ( object : T ) : Collection(T)</strong></dt>
+<dd><p class="first">Returns a collection containing all elements of <em>self</em> followed by <em>object</em>.
+<strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
+including elements.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;including('c')</td>
+<td>Sequence{'a', 'b', 'c'}</td>
+</tr>
+<tr><td>Bag{'a', 'b'}-&gt;including('c')</td>
+<td>Bag{'a', 'c', 'b'}</td>
+</tr>
+<tr><td>OrderedSet{'a', 'b'}-&gt;including('c')</td>
+<td>Set{'a', 'c', 'b'}</td>
+</tr>
+<tr><td>Set{'a', 'b'}-&gt;including('c')</td>
+<td>Set{'a', 'c', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>excluding ( object : T ) : Collection(T)</strong></dt>
+<dd><p class="first">Returns a collection containing all elements of <em>self</em> minus all occurences of <em>object</em>.
+<strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
+excluding elements.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'b', 'a', 'b', 'c'}-&gt;excluding('b')</td>
+<td>Sequence{'a', 'c'}</td>
+</tr>
+<tr><td>Bag{'b', 'a', 'b', 'c'}-&gt;excluding('b')</td>
+<td>Bag{'c', 'a'}</td>
+</tr>
+<tr><td>OrderedSet{'b', 'a', 'b', 'c'}-&gt;excluding('b')</td>
+<td>Set{'c', 'a'}</td>
+</tr>
+<tr><td>Set{'b', 'a', 'b', 'c'}-&gt;excluding('b')</td>
+<td>Set{'c', 'a'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>select ( expr : OclExpression ) : Collection(T)</strong></dt>
+<dd><p class="first">Returns a collection with all elements of <em>self</em> that validate the OclExpression <em>expr</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2, 3}-&gt;select(i : Integer | i &gt; 1)</td>
+<td>Sequence{2, 3}</td>
+</tr>
+<tr><td>Bag{1, 2, 3}-&gt;select(i : Integer | i &gt; 1 )</td>
+<td>Bag{3, 2}</td>
+</tr>
+<tr><td>OrderedSet{1, 2, 3}-&gt;select(i : Integer | i &gt; 1 )</td>
+<td>OrderedSet{2, 3}</td>
+</tr>
+<tr><td>Set{1, 2, 3}-&gt;select(i : Integer | i &gt; 1 )</td>
+<td>Set{3, 2}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>reject ( expr : OclExpression ) : Collection(T)</strong></dt>
+<dd><p class="first">Returns a collection with all elements of <em>self</em> except for those who validate the OclExpression <em>expr</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2, 3}-&gt;reject(i : Integer | i &gt; 1 )</td>
+<td>Sequence{1}</td>
+</tr>
+<tr><td>Bag{1, 2, 3}-&gt;reject(i : Integer | i &gt; 1 )</td>
+<td>Bag{1}</td>
+</tr>
+<tr><td>OrderedSet{1, 2, 3}-&gt;reject(i : Integer | i &gt; 1 )</td>
+<td>OrderedSet{1}</td>
+</tr>
+<tr><td>Set{1, 2, 3}-&gt;reject(i : Integer | i &gt; 1 )</td>
+<td>Set{1}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>sortedBy ( expr : OclExpression ) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a sorted collection containing all elements from <em>self</em> sorted in accordance with the OclExpression <em>expr</em>.
+This can be used on all kind of collections yet will always yield a Sequence-typed result except for OrderedSet which
+returns an OrderedSet.</p>
+<p>examples:</p>
+<p>For the purpose of these examples we'll assume here that we have a Class <em>Employee</em> with an attribute <em>age</em>. Our
+model contains two employees such as <em>employee1.age = 24</em> and <em>employee2.age = 27</em>.</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>self.employees-&gt;sortedBy(age)</td>
+<td>Sequence{employee1, employee2}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>asBag () : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="71%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'3', 1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{2.0, '3', 1, '3'}</td>
+</tr>
+<tr><td>Bag{1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{2.0, 1, '3'}</td>
+</tr>
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{2.0, 1, '3'}</td>
+</tr>
+<tr><td>OrderedSet{1, 1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{'3', 1, 2.0}</td>
+</tr>
+<tr><td>Set{1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{2.0, 1, '3'}</td>
+</tr>
+<tr><td>Set{1, 1, 2.0, '3'}-&gt;asBag()</td>
+<td>Bag{2.0, '3', 1}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>asSet () : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="71%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{1, '3', 2.0}</td>
+</tr>
+<tr><td>Sequence{1, 1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{'3', 1, 2.0}</td>
+</tr>
+<tr><td>Bag{1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{2.0, 1, '3'}</td>
+</tr>
+<tr><td>Bag{1, 1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{1, '3', 2.0}</td>
+</tr>
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{1, '3', 2.0}</td>
+</tr>
+<tr><td>OrderedSet{1, 1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{'3', 1, 2.0}</td>
+</tr>
+<tr><td>Set{1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{2.0, 1, '3'}</td>
+</tr>
+<tr><td>Set{1, 1, 2.0, '3'}-&gt;asSet()</td>
+<td>Set{'3', 1, 2.0}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>asSequence () : Boolean</strong></dt>
+<dd><p class="first">Returns a Sequence containing all elements of <em>self</em>. Element ordering is preserved when possible.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="71%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2.0, '3'}-&gt;asSequence()</td>
+<td>Sequence{1, 2.0, '3'}</td>
+</tr>
+<tr><td>Bag{1, 2.0, '3'}-&gt;asSequence()</td>
+<td>Sequence{2.0, 1, '3'}</td>
+</tr>
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;asSequence()</td>
+<td>Sequence{1, 2.0, '3'}</td>
+</tr>
+<tr><td>Set{1, 2.0, '3'}-&gt;asSequence()</td>
+<td>Sequence{'3', 1, 2.0}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>asOrderedSet () : OrderedSet(T)</strong></dt>
+<dd><p class="first">Returns an OrderedSet containing all elements of <em>self</em>. Element ordering is preserved when possible.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="69%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{1, '3', 2.0}</td>
+</tr>
+<tr><td>Sequence{1, 1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{'3', 1, 2.0}</td>
+</tr>
+<tr><td>Bag{1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{2.0, 1, '3'}</td>
+</tr>
+<tr><td>Bag{1, 1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{1, '3', 2.0}</td>
+</tr>
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{1, 2.0, '3'}</td>
+</tr>
+<tr><td>Set{1, 2.0, '3'}-&gt;asOrderedSet()</td>
+<td>OrderedSet{'3', 1, 2.0}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+<div class="section" id="ocl-operations-for-sequence">
+<h2><a class="toc-backref" href="#id6">Ocl operations for <em>Sequence</em></a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>= ( seq : Sequence(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the very same objects as <em>seq</em> in the very same order as they are in <em>seq</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{4, 5, 'test'} = Sequence{4, 5, 'test'}</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{4, 5, 'test'} = Sequence{4, 'test', 5}</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{4, 5, 'test', 5} = Sequence{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( seq : Sequence(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>seq</em>, or if these objects are not in the same order
+as they are in <em>seq</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{4, 5, 'test'} = Sequence{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+<tr><td>Sequence{4, 5, 'test'} = Sequence{4, 'test', 5}</td>
+<td>true</td>
+</tr>
+<tr><td>Sequence{4, 5, 'test', 5} = Sequence{4, 5, 'test'}</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( seq : Sequence(T) ) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a Sequence containing all elements of <em>self</em> followed by all elements of <em>seq</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b', 'a'}-&gt;union(Sequence{'b', 'c'})</td>
+<td>Sequence{'a', 'b', 'a', 'b', 'c'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>append ( object : T ) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a Sequence containing all elements of <em>self</em> followed by <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;append('c')</td>
+<td>Sequence{'a', 'b', 'c'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>prepend ( object : T ) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a Sequence containing <em>object</em> followed by all elements of <em>self</em> .</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;prepend('c')</td>
+<td>Sequence{'c', 'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>insertAt ( index : Integer, object : T) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a Sequence containing <em>self</em> with <em>object</em> inserted at the <em>index</em> position.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;insertAt(0, 'c')</td>
+<td>Ø</td>
+</tr>
+<tr><td>Sequence{'a', 'b'}-&gt;insertAt(1, 'c')</td>
+<td>Sequence{'c', 'a', 'b'}</td>
+</tr>
+<tr><td>Sequence{'a', 'b'}-&gt;insertAt(3, 'c')</td>
+<td>Sequence{'a', 'b', 'c'}</td>
+</tr>
+<tr><td>Sequence{'a', 'b'}-&gt;insertAt(4, 'c')</td>
+<td>Ø</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>subSequence ( startIndex : Integer, endIndex : Integer ) : Sequence(T)</strong></dt>
+<dd><p class="first">Returns a Sequence containing all elements of <em>self</em> between the positions 'startIndex' and 'endIndex'.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b', 'c', 'd'}-&gt;subSequence(2, 3)</td>
+<td>Sequence{'b', 'c'}</td>
+</tr>
+<tr><td>Sequence{'a', 'b', 'c', 'd'}-&gt;subSequence(4, 4)</td>
+<td>Sequence{'d'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>at ( index : Integer ) : T</strong></dt>
+<dd><p class="first">Returns the element of <em>self</em> at the <em>index</em> position.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;at(1)</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>indexOf ( object : T ) : Integer</strong></dt>
+<dd><p class="first">Returns the position of <em>object</em> in sequence <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{'a', 'b'}-&gt;indexOf('a')</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>first () : T</strong></dt>
+<dd><p class="first">Returns the first element of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2.0, '3'}-&gt;first()</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>last () : T</strong></dt>
+<dd><p class="first">Returns the last element of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Sequence{1, 2.0, '3'}-&gt;last()</td>
+<td>'3'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-bag">
+<h2><a class="toc-backref" href="#id7">Ocl operations for <em>Bag</em></a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>= ( bag : Bag(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>bag</em> in the same quantities.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{4, 5, 'test', 4} = Bag{4, 'test', 5, 4}</td>
+<td>true</td>
+</tr>
+<tr><td>Bag{4, 5, 'test'} = Bag{4, 'test', 5}</td>
+<td>true</td>
+</tr>
+<tr><td>Bag{4, 5, 'test', 5} = Bag{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( bag : Bag(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>bag</em> in the same quantities.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{4, 5, 'test'} = Bag{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+<tr><td>Bag{4, 5, 'test'} = Bag{4, 'test', 5}</td>
+<td>false</td>
+</tr>
+<tr><td>Bag{4, 5, 'test', 5} = Bag{4, 5, 'test'}</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( bag : Bag(T) ) : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> and all elements of <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{'a', 'b', 'a'}-&gt;union(Bag{'b', 'c'})</td>
+<td>Bag{'b', 'a', 'b', 'a', 'c'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( set : Set(T) ) : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> and all elements of <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{'a', 'b', 'a'}-&gt;union(Set{'b', 'c'})</td>
+<td>Bag{'b', 'c', 'a', 'b', 'a'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( bag : Bag(T) ) : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> that are also contained by <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{'a', 'b', 'a'}-&gt;intersection(Bag{'a', 'b'})</td>
+<td>Bag{'a', 'b'}</td>
+</tr>
+<tr><td>Bag{'a', 'b', 'a', 'b'}-&gt;intersection(Bag{'a', 'b', 'b'})</td>
+<td>Bag{'b', 'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> that are also contained by <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="62%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Bag{'a', 'b', 'a'}-&gt;intersection(Set{'a', 'b', 'c'})</td>
+<td>Set{'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-orderedset">
+<h2><a class="toc-backref" href="#id8">Ocl operations for <em>OrderedSet</em></a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>= ( set : Set(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{3, 5, 4} = Set{3, 5, 4}</td>
+<td>true</td>
+</tr>
+<tr><td>OrderedSet{3, 5, 4} = Set{4, 3, 5, 4, 4}</td>
+<td>true</td>
+</tr>
+<tr><td>OrderedSet{3, 5, 4} = Set{2, 5 ,4, 4}</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>= ( orderedset : OrderedSet(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>orderedset</em> regardless of element ordering.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{3, 5, 4} = OrderedSet{3, 5, 4}</td>
+<td>true</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test', 5} = OrderedSet{4, 5, 'test'}</td>
+<td>true</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test'} = OrderedSet{4, 'test', 5}</td>
+<td>true</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test'} = OrderedSet{4, 'test'}</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( set : Set(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; Set{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; Set{4, 'test', 5, 4}</td>
+<td>false</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; Set{4, 5, 'test', 2}</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( orderedset : OrderedSet(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>orderedset</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; OrderedSet{4, 5, 'test')</td>
+<td>false</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; OrderedSet{4, 'test', 5, 4}</td>
+<td>false</td>
+</tr>
+<tr><td>OrderedSet{4, 5, 'test', 4} &lt;&gt; OrderedSet{4, 5, 'test', 2}</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( bag : Bag(T) ) : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> followed by all elements of <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'a'}-&gt;union(Bag{'b', 'c'})</td>
+<td>Bag{'a', 'c', 'b', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> followed by all elements of <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'a'}-&gt;union(Set{'b', 'c'})</td>
+<td>Set{'a', 'c', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>- ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> minus all elements of <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'c'} - Set{'c', 'a'}</td>
+<td>Set{'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( bag : Bag(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> that are also contained by <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'a'}-&gt;intersection(Bag{'a', 'b'})</td>
+<td>Set{'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> that are also contained by <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'a'}-&gt;intersection(Set{'a', 'b'})</td>
+<td>Set{'b', 'a'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>symmetricDifference ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all of the elements of <em>self</em> and <em>set</em> that are not present in both.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="83%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'b', 'a', 'b', 'c'}-&gt;symmetricDifference(Set{'a', 'c', 'd'})</td>
+<td>Set{'d', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>append ( object : T ) : OrderedSet(T)</strong></dt>
+<dd><p class="first">Returns an OrderedSet containing all elements of <em>self</em> followed by <em>object</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b'}-&gt;append('c')</td>
+<td>OrderedSet{'a', 'b', 'c'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>at ( index : Integer ) : T</strong></dt>
+<dd><p class="first">Returns the element of <em>self</em> located at position <em>index</em> in the collection.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b'}-&gt;at(1)</td>
+<td>'a'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>indexOf ( object : T ) : Integer</strong></dt>
+<dd><p class="first">Returns the position of <em>object</em> in <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b'}-&gt;indexOf('a')</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>insertAt ( index : Integer, object : T ) : OrderedSet(T)</strong></dt>
+<dd><p class="first">Returns an OrderedSet containing <em>self</em> with <em>object</em> inserted at the <em>index</em> position.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b'}-&gt;insertAt(1, 'c')</td>
+<td>OrderedSet{'c', 'a', 'b'}</td>
+</tr>
+<tr><td>OrderedSet{'a', 'b'}-&gt;insertAt(3, 'c')</td>
+<td>OrderedSet{'a', 'b', 'c'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>prepend ( object : T ) : OrderedSet(T)</strong></dt>
+<dd><p class="first">Returns an OrderedSet containing <em>object</em> followed by all elements of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b'}-&gt;prepend('c')</td>
+<td>OrderedSet{'c', 'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>subOrderedSet ( startIndex : Integer, endIndex : Integer ) : OrderedSet(T)</strong></dt>
+<dd><p class="first">Returns an OrderedSet containing all elements of <em>self</em> between the positions <em>startIndex</em> and <em>endIndex</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="66%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{'a', 'b', 'c', 'd'}-&gt;subOrderedSet(2, 3)</td>
+<td>OrderedSet{'b', 'c'}</td>
+</tr>
+<tr><td>OrderedSet{'a', 'b', 'c', 'd'}-&gt;subOrderedSet(4, 4)</td>
+<td>OrderedSet{'d'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>first () : T</strong></dt>
+<dd><p class="first">Returns the first element of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;first()</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>last () : T</strong></dt>
+<dd><p class="first">Returns the last element of <em>self</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>OrderedSet{1, 2.0, '3'}-&gt;last()</td>
+<td>'3'</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+<div class="section" id="ocl-operations-for-set">
+<h2><a class="toc-backref" href="#id9">Ocl operations for <em>Set</em></a></h2>
+<blockquote>
+<dl class="docutils">
+<dt><strong>= ( set : Set(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{3, 5, 4} = Set{3, 5, 4}</td>
+<td>true</td>
+</tr>
+<tr><td>Set{3, 5, 4} = Set{3, 4, 4, 5}</td>
+<td>true</td>
+</tr>
+<tr><td>Set{3, 5, 4} = Set{2, 3, 5, 4}</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>&lt;&gt; ( set : Set(T) ) : Boolean</strong></dt>
+<dd><p class="first">Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="80%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{4, 5, 'test', 4} &lt;&gt; Set{4, 5, 'test'}</td>
+<td>false</td>
+</tr>
+<tr><td>Set{4, 5, 'test', 4} &lt;&gt; Set{5, 4, 'test', 4}</td>
+<td>false</td>
+</tr>
+<tr><td>Set{4, 5, 'test', 4} &lt;&gt; Set{4, 'test', 5, 2}</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>- ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> minus all elements of <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'a', 'b', 'c'} - Set{'c', 'a'}</td>
+<td>Set{'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( bag : Bag(T) ) : Bag(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> and all elements of <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'a', 'b', 'a'}-&gt;union(Bag{'b', 'c'})</td>
+<td>Bag{'a', 'c', 'b', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>union ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> and all elements of <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'a', 'b', 'a'}-&gt;union(Set{'b', 'c'})</td>
+<td>Set{'a', 'c', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( bag : Bag(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Bag containing all elements of <em>self</em> that are also contained in <em>bag</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'a', 'b', 'a'}-&gt;intersection(Bag{'a', 'b', 'c'})</td>
+<td>Set{'a', 'b'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>intersection ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all elements of <em>self</em> that are also contained in <em>set</em>.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'a', 'b', 'a'}-&gt;intersection(Set{'a', 'b', 'c'})</td>
+<td>Set{'b', 'a'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><strong>symmetricDifference ( set : Set(T) ) : Set(T)</strong></dt>
+<dd><p class="first">Returns a Set containing all of the elements of <em>self</em> and <em>set</em> that are not present in both.</p>
+<p>examples:</p>
+<table border="1" class="exampletable last docutils">
+<colgroup>
+<col width="73%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Expression</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Set{'b', 'a', 'b', 'c'}-&gt;symmetricDifference(Set{'a', 'c', 'd'})</td>
+<td>Set{'b', 'd'}</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</blockquote>
+</div>
+</div>
+<div class="section" id="ocl-operations-for-boolean">
+<h1><a class="toc-backref" href="#id10">Ocl operations for <em>Boolean</em></a></h1>
+<ol class="arabic">
+<li><p class="first"><strong>Operation OR</strong></p>
+<blockquote>
+<table border="1" class="truthtable docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub"><p class="first last">Or</p>
+</th>
+<th class="head"><p class="first last">true</p>
+</th>
+<th class="head"><p class="first last">false</p>
+</th>
+<th class="head"><p class="first last">Ø</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub"><p class="first last">true</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">false</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">Ø</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+<li><p class="first"><strong>Operation AND</strong></p>
+<blockquote>
+<table border="1" class="truthtable docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub"><p class="first last">And</p>
+</th>
+<th class="head"><p class="first last">true</p>
+</th>
+<th class="head"><p class="first last">false</p>
+</th>
+<th class="head"><p class="first last">Ø</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub"><p class="first last">true</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">false</p>
+</th>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">Ø</p>
+</th>
+<td><p class="first last">Ø</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+<li><p class="first">Operation XOR</p>
+<blockquote>
+<table border="1" class="truthtable docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub"><p class="first last">Xor</p>
+</th>
+<th class="head"><p class="first last">true</p>
+</th>
+<th class="head"><p class="first last">false</p>
+</th>
+<th class="head"><p class="first last">Ø</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub"><p class="first last">true</p>
+</th>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">false</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">Ø</p>
+</th>
+<td><p class="first last">Ø</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+<li><p class="first">Operation IMPLIES</p>
+<blockquote>
+<table border="1" class="truthtable docutils">
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub"><p class="first last">Implies</p>
+</th>
+<th class="head"><p class="first last">true</p>
+</th>
+<th class="head"><p class="first last">false</p>
+</th>
+<th class="head"><p class="first last">Ø</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub"><p class="first last">true</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">false</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">false</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">true</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">Ø</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+<li><p class="first">Operation NOT</p>
+<blockquote>
+<table border="1" class="truthtable docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head stub"><p class="first last">Not</p>
+</th>
+<th class="head"><p class="first last">Result</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><th class="stub"><p class="first last">true</p>
+</th>
+<td><p class="first last">false</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">false</p>
+</th>
+<td><p class="first last">true</p>
+</td>
+</tr>
+<tr><th class="stub"><p class="first last">Ø</p>
+</th>
+<td><p class="first last">Ø</p>
+</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="glossary">
+<h1><a class="toc-backref" href="#id11">Glossary</a></h1>
+<blockquote>
+<dl class="docutils">
+<dt><strong>invalid</strong></dt>
+<dd><em>invalid</em> is the singleton instance of the OCLInvalid type. It is returned whenever an evaluation fails,
+whatever the cause. Referred to as Ø in this guide.</dd>
+<dt><strong>|invalid|</strong></dt>
+<dd>See <strong>invalid</strong>.</dd>
+</dl>
+</blockquote>
+</div>
+</div>
+</body>
+</html>
