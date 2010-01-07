@@ -1711,5 +1711,5 @@ Glossary
    *invalid* is the singleton instance of the OCLInvalid type. It is returned whenever an evaluation fails,
    whatever the cause. Referred to as |invalid| in this guide.
 
- **|invalid|**
+ |invalid|
    See **invalid**.
