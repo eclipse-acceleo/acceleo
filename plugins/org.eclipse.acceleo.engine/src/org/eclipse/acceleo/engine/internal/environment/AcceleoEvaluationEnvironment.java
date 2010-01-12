@@ -584,6 +584,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				result = eInverse(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EGET.equals(operationName)) {
+			result = eGet(source, (String)args[0]);
 		}
 
 		return result;
@@ -710,6 +712,28 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			final EObject next = contentIterator.next();
 			if (filter == null || filter.isInstance(next)) {
 				result.add(next);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Handles calls to the non standard operation "eGet". This will fetch the value of the feature named
+	 * <em>featureName</em> on <em>source</em>.
+	 * 
+	 * @param source
+	 *            The EObject we seek to retrieve a feature value of.
+	 * @param featureName
+	 *            Name of the feature which value we need to retrieve.
+	 * @return Value of the given feature on the given object.
+	 */
+	private Object eGet(EObject source, String featureName) {
+		Object result = null;
+
+		for (EStructuralFeature feature : source.eClass().getEAllStructuralFeatures()) {
+			if (feature.getName().equals(featureName)) {
+				result = source.eGet(feature);
 			}
 		}
 
