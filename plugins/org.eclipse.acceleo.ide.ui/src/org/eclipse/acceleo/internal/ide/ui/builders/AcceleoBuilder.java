@@ -220,7 +220,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	private void registerEcorePackageHierarchy(EPackage ePackage) {
 		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
 			if (eClassifier instanceof EClass) {
-				ePackage.getEFactoryInstance().create((EClass)eClassifier);
+				try {
+					ePackage.getEFactoryInstance().create((EClass)eClassifier);
+				} catch (RuntimeException e) {
+					// continue
+				}
 				break;
 			}
 		}
