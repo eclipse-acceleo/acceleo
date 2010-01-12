@@ -388,7 +388,7 @@ public class CSTParser {
 	 */
 	private String registerEcore(String pathName) {
 		EObject eObject;
-		if (pathName != null && pathName.endsWith(".ecore")) { //$NON-NLS-1$
+		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://")) { //$NON-NLS-1$ //$NON-NLS-2$
 			ResourceSet resourceSet = new ResourceSetImpl();
 			URI metaURI = URI.createURI(pathName, false);
 			try {
