@@ -110,6 +110,16 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;eGet&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>eGet( String ) : EJavaObject</b><br/>
+	 * This will fetch the value of the feature named <em>featureName</em> on the current Object. Return type
+	 * can as well be a collection as a single value.
+	 * </p>
+	 */
+	public static final String OPERATION_OCLANY_EGET = "eGet"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;eInverse&quot; non-standard operation accessible on all objects. This operation comes
 	 * in two flavors :
 	 * <p>
