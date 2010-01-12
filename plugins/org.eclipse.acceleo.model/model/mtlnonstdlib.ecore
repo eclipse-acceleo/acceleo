@@ -105,6 +105,10 @@
       <eParameters name="key" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
       <eParameters name="arguments" eType="#//Sequence(OclAny)"/>
     </eOperations>
+    <eOperations name="eGet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="featureName" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Collection(T)">
     <eOperations name="sep" eType="#//Sequence(OclAny)">
