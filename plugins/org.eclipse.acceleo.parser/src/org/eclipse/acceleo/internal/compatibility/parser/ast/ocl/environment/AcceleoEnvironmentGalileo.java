@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -27,15 +28,19 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.AbstractTypeChecker;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.TypeChecker;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.SequenceType;
+import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.options.ParsingOptions;
@@ -50,6 +55,9 @@ import org.eclipse.ocl.utilities.TypedElement;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
+	/** Type checker created for this environment. */
+	private AcceleoTypeChecker typeChecker;
+
 	/**
 	 * Delegates instantiation to the super constructor.
 	 * 
@@ -80,7 +88,21 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	 */
 	@Override
 	public TypeChecker<EClassifier, EOperation, EStructuralFeature> createTypeChecker() {
-		return new AcceleoTypeChecker(this);
+		if (typeChecker == null) {
+			typeChecker = new AcceleoTypeChecker(this);
+		}
+		return typeChecker;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		typeChecker.dispose();
 	}
 
 	/**
@@ -94,6 +116,15 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 * the modified types.
 		 */
 		private final Map<EClassifier, Set<EClassifier>> alteredTypes = new HashMap<EClassifier, Set<EClassifier>>();
+
+		/** This will allow us to maintain the subtypes hierarchy of our metamodel. */
+		private final Map<EClassifier, Set<EClassifier>> subTypes = new HashMap<EClassifier, Set<EClassifier>>();
+
+		/**
+		 * This will map a duet EClassifier-featureName to the actual EStructuralFeature in the subtypes
+		 * hierarchy. Keys of this map will be <code>EClassifier.hashCode() + featureName.hasCode()</code>.
+		 */
+		private final Map<Long, EStructuralFeature> hierarchyFeatureCache = new HashMap<Long, EStructuralFeature>();
 
 		/**
 		 * Delegates instantiation to the super constructor.
@@ -119,7 +150,9 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			if (args.size() == 0 || operation.getEAnnotation("MTL non-standard") == null) { //$NON-NLS-1$
 				return type;
 			}
+
 			final String operationName = operation.getName();
+			// Handles all operations which can return a typed sequence as their result.
 			if (args.get(0) instanceof TypeExp) {
 				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS
 						.equals(operationName);
@@ -142,8 +175,153 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)) {
 					type = ((TypeExp)args.get(0)).getReferredType();
 				}
+			} else if (args.get(0) instanceof StringLiteralExp
+					&& AcceleoNonStandardLibrary.OPERATION_OCLANY_EGET.equals(operationName)) {
+				final String featureName = ((StringLiteralExp)args.get(0)).getStringSymbol();
+
+				EStructuralFeature feature = null;
+				if (owner instanceof EClass) {
+					for (EStructuralFeature childFeature : ((EClass)owner).getEAllStructuralFeatures()) {
+						if (childFeature.getName().equals(featureName)) {
+							feature = childFeature;
+							break;
+						}
+					}
+				}
+
+				if (feature == null) {
+					createSubTypesHierarchy(owner);
+
+					feature = findFeatureInSubTypesHierarchy(owner, featureName);
+				}
+
+				if (feature != null) {
+					type = inferTypeFromFeature(feature);
+					final Long key = Long.valueOf(owner.hashCode() + featureName.hashCode());
+					if (!hierarchyFeatureCache.containsKey(key)) {
+						hierarchyFeatureCache.put(key, feature);
+					}
+				}
+			}
+
+			return type;
+		}
+
+		/**
+		 * Gets rid of caches.
+		 */
+		private void dispose() {
+			for (Set<EClassifier> alteredTypesValuesSet : alteredTypes.values()) {
+				alteredTypesValuesSet.clear();
+			}
+			for (Set<EClassifier> subTypesValuesSet : subTypes.values()) {
+				subTypesValuesSet.clear();
+			}
+			alteredTypes.clear();
+			subTypes.clear();
+			hierarchyFeatureCache.clear();
+		}
+
+		/**
+		 * Searches the given type for a feature named <code>featureName</code>.
+		 * 
+		 * @param type
+		 *            The type in which to search the feature.
+		 * @param featureName
+		 *            Name of the sought feature.
+		 * @return The feature named <code>featureName</code> in <code>type</code> if it exists,
+		 *         <code>null</code> otherwise.
+		 */
+		private EStructuralFeature findFeatureInType(EClassifier type, String featureName) {
+			final Long key = Long.valueOf(type.hashCode() + featureName.hashCode());
+			if (hierarchyFeatureCache.containsKey(key)) {
+				return hierarchyFeatureCache.get(key);
+			}
+
+			EStructuralFeature feature = null;
+			for (EObject child : type.eContents()) {
+				if (child instanceof EStructuralFeature
+						&& ((EStructuralFeature)child).getName().equals(featureName)) {
+					feature = (EStructuralFeature)child;
+					hierarchyFeatureCache.put(key, feature);
+					break;
+				}
+			}
+
+			return feature;
+		}
+
+		/**
+		 * Goes down the <code>base</code> classifier's subtypes hierachy in search of a feature named
+		 * <code>featureName</code> and returns it.
+		 * 
+		 * @param base
+		 *            The starting point of the hierachy lookup.
+		 * @param featureName
+		 *            Name of the sought feature.
+		 * @return The feature named <code>featureName</code> in <code>base</code>'s hierarchy.
+		 */
+		private EStructuralFeature findFeatureInSubTypesHierarchy(EClassifier base, String featureName) {
+			EStructuralFeature feature = null;
+			for (EClassifier subType : subTypes.get(base)) {
+				feature = findFeatureInType(subType, featureName);
+				if (feature == null) {
+					feature = findFeatureInSubTypesHierarchy(subType, featureName);
+				}
+				if (feature != null) {
+					break;
+				}
+			}
+			return feature;
+		}
+
+		/**
+		 * Tries and determine the static type of the given <code>feature</code>'s value.
+		 * 
+		 * @param feature
+		 *            Feature we need a static type of.
+		 * @return The determined type for this feature.
+		 */
+		@SuppressWarnings("unchecked")
+		private EClassifier inferTypeFromFeature(EStructuralFeature feature) {
+			EClassifier type = feature.getEType();
+			// FIXME handle lists
+			if (feature.isMany()) {
+				if (feature.isOrdered() && feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createOrderedSetType();
+				} else if (feature.isOrdered() && !feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createSequenceType();
+				} else if (!feature.isOrdered() && feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createSetType();
+				} else {
+					type = EcoreFactory.eINSTANCE.createBagType();
+				}
+				((CollectionType)type).setElementType(feature.getEType());
 			}
 			return type;
+		}
+
+		/**
+		 * Creates and stores the subtypes hierarchy of <code>classifier</code>.
+		 * 
+		 * @param classifier
+		 *            The classifier we need the subtypes hierarchy of.
+		 */
+		private void createSubTypesHierarchy(EClassifier classifier) {
+			if (subTypes.get(classifier) == null) {
+				final Set<EClassifier> hierarchy = new HashSet<EClassifier>();
+
+				ECrossReferenceAdapter referencer = getCrossReferencer(classifier);
+				for (EStructuralFeature.Setting setting : referencer.getInverseReferences(classifier, false)) {
+					if (setting.getEStructuralFeature() == EcorePackage.eINSTANCE.getEClass_ESuperTypes()) {
+						EClassifier subType = (EClassifier)setting.getEObject();
+						hierarchy.add(subType);
+						createSubTypesHierarchy(subType);
+					}
+				}
+
+				subTypes.put(classifier, hierarchy);
+			}
 		}
 
 		/**
@@ -209,6 +387,29 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		protected TupleType<EOperation, EStructuralFeature> resolveTupleType(
 				EList<? extends TypedElement<EClassifier>> parts) {
 			return getEnvironment().getTypeResolver().resolveTupleType(parts);
+		}
+
+		/**
+		 * This will retrieve (and create if needed) a cross referencer adapter for the resource
+		 * <code>scope</code> is in.
+		 * 
+		 * @param scope
+		 *            Object that will serve as the scope of our new cross referencer.
+		 * @return The <code>scope</code>'s resource cross referencer.
+		 */
+		private ECrossReferenceAdapter getCrossReferencer(EObject scope) {
+			ECrossReferenceAdapter referencer = null;
+			for (Adapter adapter : scope.eResource().eAdapters()) {
+				if (adapter instanceof ECrossReferenceAdapter) {
+					referencer = (ECrossReferenceAdapter)adapter;
+					break;
+				}
+			}
+			if (referencer == null) {
+				referencer = new ECrossReferenceAdapter();
+				scope.eResource().eAdapters().add(referencer);
+			}
+			return referencer;
 		}
 	}
 }

@@ -399,6 +399,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		acceleoNonStdLib = null;
+		acceleoStdLib = null;
+		firstProblemObject = null;
+		metamodels.clear();
+		metamodels = null;
+		oclStdLibReflection = null;
+		types.clear();
+		types = null;
+		umlReflection = null;
+	}
+
+	/**
 	 * Try to set the current problem object of the last compilation made by this environment. We only keep it
 	 * if it is the first one.
 	 * 
