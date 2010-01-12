@@ -444,7 +444,7 @@ public class CSTParser {
 			if (eClassifier instanceof EClass) {
 				try {
 					ePackage.getEFactoryInstance().create((EClass)eClassifier);
-				} catch (RuntimeException e) {
+				} catch (IllegalArgumentException e) {
 					// continue
 				}
 				break;
