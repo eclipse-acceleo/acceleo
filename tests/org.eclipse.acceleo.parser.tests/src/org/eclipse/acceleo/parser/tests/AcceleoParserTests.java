@@ -85,6 +85,7 @@ public class AcceleoParserTests extends TestCase {
 		parser.parse(source, resource, dependencies);
 		assertNotNull(source.getAST());
 		if (source.getProblems().getList().size() > 0) {
+			// Remark : It fails for eclipse 3.4 because OCL didn't support "Set(String)"
 			fail(source.getProblems().getMessage());
 		}
 	}
