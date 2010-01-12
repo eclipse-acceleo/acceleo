@@ -34,11 +34,14 @@ public final class AcceleoCompatibilityEclipseHelper {
 	 */
 	public static OCLVersion getCurrentOCLVersion() {
 		OCLVersion version = OCLVersion.GANYMEDE;
-		Version oclVersion = Platform.getBundle(OCL_BUNDLE_ID).getVersion();
-		if (oclVersion.getMajor() == 1 && oclVersion.getMinor() >= 3) {
-			version = OCLVersion.GALILEO;
-		} else if (oclVersion.getMajor() > 1) {
-			version = OCLVersion.HELIOS;
+		Object oclVersion = Platform.getBundle(OCL_BUNDLE_ID).getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+		if (oclVersion instanceof String) {
+			Version oclOSGiVersion = Version.parseVersion((String)oclVersion);
+			if (oclOSGiVersion.getMajor() == 1 && oclOSGiVersion.getMinor() >= 3) {
+				version = OCLVersion.GALILEO;
+			} else if (oclOSGiVersion.getMajor() > 1) {
+				version = OCLVersion.HELIOS;
+			}
 		}
 		return version;
 	}
