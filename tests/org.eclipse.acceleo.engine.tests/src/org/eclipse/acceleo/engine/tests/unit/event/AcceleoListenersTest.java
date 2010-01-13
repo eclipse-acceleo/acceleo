@@ -173,6 +173,24 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 			fileSourceElement = event.getSource();
 			generatedFile = event.getText();
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#fileGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 */
+		public void fileGenerated(AcceleoTextGenerationEvent event) {
+			// naught to do
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#generationEnd(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 */
+		public void generationEnd(AcceleoTextGenerationEvent event) {
+			// naught to do
+		}
 	}
 
 	/**
@@ -209,6 +227,24 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		 */
 		public void filePathComputed(AcceleoTextGenerationEvent event) {
 			generatedFileCount++;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#fileGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 */
+		public void fileGenerated(AcceleoTextGenerationEvent event) {
+			// naught to do
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#generationEnd(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+		 */
+		public void generationEnd(AcceleoTextGenerationEvent event) {
+			// naught to do
 		}
 	}
 }
