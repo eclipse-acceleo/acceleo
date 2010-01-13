@@ -128,14 +128,14 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 						final URL next = emtlFiles.nextElement();
 						if (actualPath == pathSeparator) {
 							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-							if (moduleFile.exists() && moduleFile.canRead()) {
+							if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
 								REGISTERED_MODULES.add(moduleFile);
 							}
 						} else {
 							String emtlPath = next.getPath();
 							if (emtlPath.substring(0, emtlPath.lastIndexOf('/')).contains(actualPath)) {
 								final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
-								if (moduleFile.exists() && moduleFile.canRead()) {
+								if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
 									REGISTERED_MODULES.add(moduleFile);
 								}
 							}
