@@ -32,6 +32,7 @@ import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -221,6 +222,17 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	@Override
 	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
+		return new AcceleoHover(editor);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
+	 */
+	@Override
+	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return new AcceleoHover(editor);
 	}
 
