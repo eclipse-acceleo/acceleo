@@ -105,6 +105,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
+	/** Holds the prefix we'll use for the temporary variables created to hold argument values. */
+	private static final String TEMPORARY_INVOCATION_ARG_PREFIX = "temporaryInvocationVariable$"; //$NON-NLS-1$
+
 	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
 	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
 
@@ -819,6 +822,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				final Variable param = actualTemplate.getParameter().get(i);
 				param.setInitExpression(null);
 				getEvaluationEnvironment().remove(param.getName());
+				getEvaluationEnvironment().remove(TEMPORARY_INVOCATION_ARG_PREFIX + i);
 			}
 			// [255379] restore self if need be
 			if (actualTemplate.getParameter().size() > 0) {
@@ -1234,7 +1238,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			fireGenerationEvent = false;
 			for (int i = 0; i < invocation.getArgument().size(); i++) {
 				final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
-				tempVar.setName("temporaryInvocationVariable$" + i); //$NON-NLS-1$
+				tempVar.setName(TEMPORARY_INVOCATION_ARG_PREFIX + i);
 				tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation
 						.getArgument().get(i)));
 				temporaryArgVars.add(tempVar);
