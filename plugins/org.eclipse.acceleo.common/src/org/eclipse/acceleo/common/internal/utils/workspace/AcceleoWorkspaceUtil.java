@@ -580,7 +580,7 @@ public final class AcceleoWorkspaceUtil {
 				int pathStart = i + 1;
 				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
 					pathStart += 1;
-				} else if (".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
+				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
 					pathStart += 2;
 				}
 
