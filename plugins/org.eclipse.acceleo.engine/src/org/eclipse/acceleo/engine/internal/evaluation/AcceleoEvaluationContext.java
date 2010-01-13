@@ -43,7 +43,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public final class AcceleoEvaluationContext {
+public class AcceleoEvaluationContext {
 	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */
 	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
@@ -56,18 +56,20 @@ public final class AcceleoEvaluationContext {
 	/** Holds the generation preview in the form of mappings filePath => fileContent. */
 	protected final Map<String, Writer> generationPreview = new HashMap<String, Writer>();
 
+	/**
+	 * This will hold the list of all listeners registered for notification on text generation from this
+	 * engine.
+	 * 
+	 * @since 1.0
+	 */
+	protected final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>(
+			3);
+
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
 
 	/** The state of his boolean will be changed while reading files prior to generation. */
 	private boolean hasJMergeTag;
-
-	/**
-	 * This will hold the list of all listeners registered for notification on text generation from this
-	 * engine.
-	 */
-	private final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>(
-			3);
 
 	/** This will be initialized with this generation's progress monitor. */
 	private final Monitor progressMonitor;
@@ -145,14 +147,30 @@ public final class AcceleoEvaluationContext {
 	}
 
 	/**
-	 * Closes the last writer of the stack and returns its result if it was a StringWriter. The empty String
-	 * will be returned for FileWriters.
+	 * Closes the last writer of the stack and returns its result if it was a StringWriter. This is a
+	 * convenience methode to close contexts that were opened for other than file blocks.
 	 * 
 	 * @return Result held by the last writer of the stack.
 	 * @throws AcceleoEvaluationException
 	 *             This will be thrown if the last writer of the stack cannot be flushed and closed.
 	 */
 	public String closeContext() throws AcceleoEvaluationException {
+		return closeContext(null, null);
+	}
+
+	/**
+	 * Closes the last writer of the stack and returns its result if it was a StringWriter. The empty String
+	 * will be returned for FileWriters.
+	 * 
+	 * @param sourceBlock
+	 *            The source block that first created this context. Only used when closing a file context.
+	 * @param source
+	 *            The source EObject for this block. Only used when closing a file context.
+	 * @return Result held by the last writer of the stack.
+	 * @throws AcceleoEvaluationException
+	 *             This will be thrown if the last writer of the stack cannot be flushed and closed.
+	 */
+	public String closeContext(Block sourceBlock, EObject source) throws AcceleoEvaluationException {
 		final Writer last = writers.removeLast();
 		final String result;
 		try {
@@ -168,6 +186,7 @@ public final class AcceleoEvaluationContext {
 					}
 				}
 				strategy.flushWriter(filePath, last);
+				fireFileGenerated(filePath, sourceBlock, source);
 				result = ""; //$NON-NLS-1$
 			} else if (last instanceof OutputStreamWriter) {
 				last.close();
@@ -418,6 +437,23 @@ public final class AcceleoEvaluationContext {
 	public void openNested(String filePath, Block fileBlock, EObject source, boolean appendMode)
 			throws AcceleoEvaluationException {
 		openNested(getFileFor(filePath), fileBlock, source, appendMode, null);
+	}
+
+	/**
+	 * Notifies all listeners that a file has just been generated.
+	 * 
+	 * @param filePath
+	 *            Path of the generated file.
+	 * @param fileBlock
+	 *            File block which generation just ended.
+	 * @param source
+	 *            The Object for which was generated this file.
+	 */
+	protected void fireFileGenerated(String filePath, Block fileBlock, EObject source) {
+		AcceleoTextGenerationEvent event = new AcceleoTextGenerationEvent(filePath, fileBlock, source);
+		for (IAcceleoTextGenerationListener listener : listeners) {
+			listener.fileGenerated(event);
+		}
 	}
 
 	/**

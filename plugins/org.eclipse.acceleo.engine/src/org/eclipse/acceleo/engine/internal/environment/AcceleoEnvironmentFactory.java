@@ -50,7 +50,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	 * Generation context for this factory. This will be shared by both the evaluation environment and
 	 * visitor.
 	 */
-	protected final AcceleoEvaluationContext context;
+	protected AcceleoEvaluationContext context;
 
 	/** Module for which this environment factory has been created. */
 	private final Module module;

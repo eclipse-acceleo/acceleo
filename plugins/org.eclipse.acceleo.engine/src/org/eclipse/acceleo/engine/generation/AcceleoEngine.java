@@ -26,6 +26,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
@@ -227,6 +228,16 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 */
 	protected void hookGenerationEnd(AbstractAcceleoEnvironmentFactory factory) {
 		factory.hookGenerationEnd();
+		fireGenerationEnd();
+	}
+
+	/**
+	 * Notifies all registered listeners that the generation just ended.
+	 */
+	protected void fireGenerationEnd() {
+		for (IAcceleoTextGenerationListener listener : listeners) {
+			listener.generationEnd(new AcceleoTextGenerationEvent(null, null, null));
+		}
 	}
 
 	/**

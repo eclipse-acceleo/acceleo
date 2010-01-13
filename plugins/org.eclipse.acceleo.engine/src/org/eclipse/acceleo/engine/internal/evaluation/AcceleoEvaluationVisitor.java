@@ -290,16 +290,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		final boolean appendMode = fileBlock.getOpenMode().getValue() == OpenModeKind.APPEND_VALUE;
 
+		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
+		final EObject source;
+		if (currentSelf instanceof EObject) {
+			source = (EObject)currentSelf;
+		} else {
+			source = lastEObjectSelfValue;
+		}
+
 		if ("stdout".equals(filePath)) { //$NON-NLS-1$
 			context.openNested(System.out);
 		} else {
-			final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-			final EObject source;
-			if (currentSelf instanceof EObject) {
-				source = (EObject)currentSelf;
-			} else {
-				source = lastEObjectSelfValue;
-			}
 			delegateCreateFileWriter(filePath, fileBlock, source, appendMode, fileCharset);
 		}
 		// TODO handle file ID
@@ -308,7 +309,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			getVisitor().visitExpression(nested);
 			fireGenerationEvent = fireEvents;
 		}
-		context.closeContext();
+		context.closeContext(fileBlock, source);
 	}
 
 	/**
