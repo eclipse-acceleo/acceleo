@@ -29,12 +29,12 @@ public class QuickOutlineAction extends Action implements IWorkbenchWindowAction
 	/**
 	 * The action ID.
 	 */
-	public static final String ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.CommentAction"; //$NON-NLS-1$
+	public static final String ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.show.outline"; //$NON-NLS-1$
 
 	/**
 	 * The associated command ID.
 	 */
-	public static final String COMMAND_ID = "org.eclipse.acceleo.ide.ui.comment"; //$NON-NLS-1$
+	public static final String COMMAND_ID = "org.eclipse.acceleo.ide.ui.show.outline"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}

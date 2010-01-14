@@ -35,7 +35,7 @@ public class CommentAction extends Action implements IWorkbenchWindowActionDeleg
 	/**
 	 * The action ID.
 	 */
-	public static final String ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.CommentAction"; //$NON-NLS-1$
+	public static final String ACTION_ID = "org.eclipse.acceleo.ide.ui.editors.template.actions.comment"; //$NON-NLS-1$
 
 	/**
 	 * The associated command ID.

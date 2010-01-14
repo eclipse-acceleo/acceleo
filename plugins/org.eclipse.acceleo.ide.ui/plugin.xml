@@ -188,6 +188,16 @@ Contributors:
         </action>
         <action
            allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.QuickOutlineAction"
+           definitionId="org.eclipse.acceleo.ide.ui.show.outline"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.show.outline"
+           label="%acceleoEditorCommandsComment.Label"
+           retarget="false"
+           tooltip="%acceleoEditorCommandsComment.Tooltip">
+        </action>
+        <action
+           allowLabelUpdate="true"
            class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.CommentAction"
            definitionId="org.eclipse.acceleo.ide.ui.comment"
            enablesFor="*"
@@ -198,13 +208,13 @@ Contributors:
         </action>
         <action
            allowLabelUpdate="true"
-           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.QuickOutlineAction"
-           definitionId="org.eclipse.acceleo.ide.ui.show.outline"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.ExtractAsTemplateAction"
+           definitionId="org.eclipse.acceleo.ide.ui.extractAsTemplate"
            enablesFor="*"
-           id="org.eclipse.acceleo.ide.ui.editors.template.actions.show.outline"
-           label="%acceleoEditorCommandsComment.Label"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.refactor.extractAsTemplate"
+           label="%acceleoEditorCommandsExtractAsTemplate.Label"
            retarget="false"
-           tooltip="%acceleoEditorCommandsComment.Tooltip">
+           tooltip="%acceleoEditorCommandsExtractAsTemplate.Tooltip">
         </action>
       </actionSet>
    </extension>
@@ -225,15 +235,21 @@ Contributors:
 		</command>
 		<command
 				categoryId="org.eclipse.ui.category.navigate"
+				description="%acceleoEditorCommandsShowOutline.Description"
+				id="org.eclipse.acceleo.ide.ui.show.outline"
+				name="%acceleoEditorCommandsShowOutline.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.edit"
 				description="%acceleoEditorCommandsComment.Description"
 				id="org.eclipse.acceleo.ide.ui.comment"
 				name="%acceleoEditorCommandsComment.Name">
 		</command>
 		<command
-				categoryId="org.eclipse.ui.category.navigate"
-				description="%acceleoEditorCommandsShowOutline.Description"
-				id="org.eclipse.acceleo.ide.ui.show.outline"
-				name="%acceleoEditorCommandsShowOutline.Name">
+				categoryId="org.eclipse.ui.category.edit"
+				description="%acceleoEditorCommandsExtractAsTemplate.Description"
+				id="org.eclipse.acceleo.ide.ui.extractAsTemplate"
+				name="%acceleoEditorCommandsExtractAsTemplate.Name">
 		</command>
    </extension>
 
@@ -278,6 +294,11 @@ Contributors:
                      commandId="org.eclipse.acceleo.ide.ui.show.outline"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+               <key
+               		 sequence="M3+M2+T"
+                     commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
     </extension>
 
     <extension point="org.eclipse.ui.menus">   
@@ -299,6 +320,11 @@ Contributors:
          </command>
          <separator name="source"/>
          <command commandId="org.eclipse.acceleo.ide.ui.comment">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+         <command commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate">
             <visibleWhen>
                <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
             </visibleWhen>
