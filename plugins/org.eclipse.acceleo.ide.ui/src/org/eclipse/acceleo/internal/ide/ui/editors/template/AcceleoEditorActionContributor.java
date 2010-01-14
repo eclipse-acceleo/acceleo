@@ -12,6 +12,7 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.CommentAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.OpenDeclarationAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.ExtractAsTemplateAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchAction;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -51,6 +52,10 @@ public class AcceleoEditorActionContributor extends BasicTextEditorActionContrib
 		CommentAction commentAction = new CommentAction();
 		commentAction.setActionDefinitionId(CommentAction.ACTION_ID);
 		actionBars.setGlobalActionHandler(CommentAction.COMMAND_ID, commentAction);
+
+		ExtractAsTemplateAction asTemplateAction = new ExtractAsTemplateAction();
+		asTemplateAction.setActionDefinitionId(ExtractAsTemplateAction.ACTION_ID);
+		actionBars.setGlobalActionHandler(ExtractAsTemplateAction.COMMAND_ID, asTemplateAction);
 	}
 
 }
