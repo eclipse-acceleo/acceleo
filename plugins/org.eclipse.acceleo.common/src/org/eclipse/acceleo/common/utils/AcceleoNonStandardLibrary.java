@@ -116,6 +116,8 @@ public final class AcceleoNonStandardLibrary {
 	 * This will fetch the value of the feature named <em>featureName</em> on the current Object. Return type
 	 * can as well be a collection as a single value.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_OCLANY_EGET = "eGet"; //$NON-NLS-1$
 
