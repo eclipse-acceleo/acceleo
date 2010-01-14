@@ -191,6 +191,15 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		public void generationEnd(AcceleoTextGenerationEvent event) {
 			// naught to do
 		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#listensToGenerationEnd()
+		 */
+		public boolean listensToGenerationEnd() {
+			return false;
+		}
 	}
 
 	/**
@@ -245,6 +254,15 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 		 */
 		public void generationEnd(AcceleoTextGenerationEvent event) {
 			// naught to do
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#listensToGenerationEnd()
+		 */
+		public boolean listensToGenerationEnd() {
+			return false;
 		}
 	}
 }
