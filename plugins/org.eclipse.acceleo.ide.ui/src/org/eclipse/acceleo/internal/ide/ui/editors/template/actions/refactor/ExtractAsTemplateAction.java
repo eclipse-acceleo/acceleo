@@ -15,6 +15,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.ModuleElement;
+import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
@@ -23,7 +24,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -142,29 +142,29 @@ public class ExtractAsTemplateAction extends Action implements IWorkbenchWindowA
 	 */
 	private String getCurrentTypeName(CSTNode currentNode, String defaultType) {
 		Variable eContext = null;
-		if (currentNode instanceof org.eclipse.acceleo.model.mtl.Template) {
-			org.eclipse.acceleo.model.mtl.Template oTemplate = (org.eclipse.acceleo.model.mtl.Template)currentNode;
-			if (oTemplate.getParameter().size() > 0) {
-				eContext = oTemplate.getParameter().get(0);
+		if (currentNode instanceof org.eclipse.acceleo.parser.cst.Template) {
+			org.eclipse.acceleo.parser.cst.Template iTemplate = (org.eclipse.acceleo.parser.cst.Template)currentNode;
+			if (iTemplate.getParameter().size() > 0) {
+				eContext = iTemplate.getParameter().get(0);
 			}
-		} else if (currentNode instanceof org.eclipse.acceleo.model.mtl.Query) {
-			org.eclipse.acceleo.model.mtl.Query oQuery = (org.eclipse.acceleo.model.mtl.Query)currentNode;
-			if (oQuery.getParameter().size() > 0) {
-				eContext = oQuery.getParameter().get(0);
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Query) {
+			org.eclipse.acceleo.parser.cst.Query iQuery = (org.eclipse.acceleo.parser.cst.Query)currentNode;
+			if (iQuery.getParameter().size() > 0) {
+				eContext = iQuery.getParameter().get(0);
 			}
-		} else if (currentNode instanceof org.eclipse.acceleo.model.mtl.Macro) {
-			org.eclipse.acceleo.model.mtl.Macro oMacro = (org.eclipse.acceleo.model.mtl.Macro)currentNode;
-			if (oMacro.getParameter().size() > 0) {
-				eContext = oMacro.getParameter().get(0);
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Macro) {
+			org.eclipse.acceleo.parser.cst.Macro iMacro = (org.eclipse.acceleo.parser.cst.Macro)currentNode;
+			if (iMacro.getParameter().size() > 0) {
+				eContext = iMacro.getParameter().get(0);
 			}
-		} else if (currentNode instanceof org.eclipse.acceleo.model.mtl.ForBlock) {
-			eContext = ((org.eclipse.acceleo.model.mtl.ForBlock)currentNode).getLoopVariable();
-		} else if (currentNode instanceof org.eclipse.acceleo.model.mtl.LetBlock) {
-			eContext = ((org.eclipse.acceleo.model.mtl.LetBlock)currentNode).getLetVariable();
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.ForBlock) {
+			eContext = ((org.eclipse.acceleo.parser.cst.ForBlock)currentNode).getLoopVariable();
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.LetBlock) {
+			eContext = ((org.eclipse.acceleo.parser.cst.LetBlock)currentNode).getLetVariable();
 		}
 		String res;
-		if (eContext != null && eContext.getType() != null && eContext.getType().getName() != null) {
-			res = eContext.getType().getName();
+		if (eContext != null && eContext.getType() != null) {
+			res = eContext.getType();
 		} else if (eContext != null && eContext.eContainer() instanceof CSTNode) {
 			res = getCurrentTypeName((CSTNode)currentNode.eContainer(), defaultType);
 		} else {
