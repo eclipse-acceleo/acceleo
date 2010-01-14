@@ -43,6 +43,7 @@ public interface IAcceleoTextGenerationListener {
 	 * 
 	 * @param event
 	 *            This will hold information on the generation details.
+	 * @since 0.9
 	 */
 	void fileGenerated(AcceleoTextGenerationEvent event);
 
@@ -52,6 +53,7 @@ public interface IAcceleoTextGenerationListener {
 	 * 
 	 * @param event
 	 *            Placeholder for potential overriding engines.
+	 * @since 0.9
 	 */
 	void generationEnd(AcceleoTextGenerationEvent event);
 }
