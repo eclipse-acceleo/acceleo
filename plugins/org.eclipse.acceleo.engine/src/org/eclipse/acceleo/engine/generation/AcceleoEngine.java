@@ -65,6 +65,14 @@ public class AcceleoEngine implements IAcceleoEngine {
 	/** This will hold the list of properties accessible from the generation context for this engine instance. */
 	protected final Map<File, Properties> loadedProperties = new LinkedHashMap<File, Properties>();
 
+	/**
+	 * This will be set to true if one of the registered generation listener is interested in generation end
+	 * notifications.
+	 * 
+	 * @since 0.9
+	 */
+	protected boolean notifyOnGenerationEnd;
+
 	/** Holds a reference to the ocl instance. */
 	private OCL ocl;
 
@@ -76,6 +84,9 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 */
 	public void addListener(IAcceleoTextGenerationListener listener) {
 		listeners.add(listener);
+		if (listener.listensToGenerationEnd()) {
+			notifyOnGenerationEnd = true;
+		}
 	}
 
 	/**
@@ -235,8 +246,13 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * Notifies all registered listeners that the generation just ended.
 	 */
 	protected void fireGenerationEnd() {
+		if (!notifyOnGenerationEnd) {
+			return;
+		}
 		for (IAcceleoTextGenerationListener listener : listeners) {
-			listener.generationEnd(new AcceleoTextGenerationEvent(null, null, null));
+			if (listener.listensToGenerationEnd()) {
+				listener.generationEnd(new AcceleoTextGenerationEvent(null, null, null));
+			}
 		}
 	}
 

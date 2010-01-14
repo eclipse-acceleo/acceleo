@@ -56,4 +56,14 @@ public interface IAcceleoTextGenerationListener {
 	 * @since 0.9
 	 */
 	void generationEnd(AcceleoTextGenerationEvent event);
+
+	/**
+	 * This is required to return <code>true</code> if the listener's implementation needs the "generationEnd"
+	 * events sent ({@link #generationEnd(AcceleoTextGenerationEvent)}) or not.
+	 * 
+	 * @return <code>true</code> if generation end events are to be sent by the framework, <code>false</code>
+	 *         otherwise.
+	 * @since 0.9
+	 */
+	boolean listensToGenerationEnd();
 }

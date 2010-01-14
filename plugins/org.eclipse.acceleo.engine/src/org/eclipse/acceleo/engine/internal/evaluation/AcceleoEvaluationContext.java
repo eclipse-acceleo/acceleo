@@ -65,6 +65,14 @@ public class AcceleoEvaluationContext {
 	protected final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>(
 			3);
 
+	/**
+	 * This will be set to true if one of the registered generation listener is interested in generation end
+	 * notifications.
+	 * 
+	 * @since 0.9
+	 */
+	protected final boolean notifyOnGenerationEnd;
+
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
 
@@ -105,6 +113,15 @@ public class AcceleoEvaluationContext {
 		} else {
 			progressMonitor = new BasicMonitor();
 		}
+
+		boolean temp = false;
+		for (IAcceleoTextGenerationListener listener : listeners) {
+			if (listener.listensToGenerationEnd()) {
+				temp = true;
+				break;
+			}
+		}
+		notifyOnGenerationEnd = temp;
 	}
 
 	/**
