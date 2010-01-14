@@ -278,9 +278,44 @@ Contributors:
                      commandId="org.eclipse.acceleo.ide.ui.show.outline"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-   </extension>
+    </extension>
 
-    <extension
+    <extension point="org.eclipse.ui.menus">   
+     <menuContribution locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <command commandId="org.eclipse.acceleo.ide.ui.open.declaration">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+         <command commandId="org.eclipse.acceleo.ide.ui.search.references">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+         <command commandId="org.eclipse.acceleo.ide.ui.show.outline">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+         <separator name="source"/>
+         <command commandId="org.eclipse.acceleo.ide.ui.comment">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+      </menuContribution>      
+    </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet">
+         <with variable="activeContexts">
+            <iterate operator="or">
+               <equals value="org.eclipse.acceleo.ide.ui.editors.template.editor"/>
+            </iterate>
+         </with>
+      </definition>
+   </extension>
+     
+   <extension
           point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
          <actionSet
@@ -316,8 +351,8 @@ Contributors:
                relative="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView">
          </view>
       </perspectiveExtension>
-    </extension>
-    <extension
+   </extension>
+   <extension
           point="org.eclipse.ui.newWizards">
        <category
              id="org.eclipse.acceleo.ide.ui"
@@ -370,7 +405,7 @@ Contributors:
              %AcceleoConvertProjectWizardDescription
           </description>
        </wizard>
-    </extension>
+   </extension>
 
    <extension point="org.eclipse.ui.perspectives">
       <perspective
