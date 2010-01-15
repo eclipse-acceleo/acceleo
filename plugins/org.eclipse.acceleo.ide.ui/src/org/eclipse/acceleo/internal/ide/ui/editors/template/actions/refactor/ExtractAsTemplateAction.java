@@ -43,19 +43,15 @@ public class ExtractAsTemplateAction extends AbstractRefactoringWithVariableCont
 	protected int modify(IDocument document, AcceleoSourceContent content, int offset, int length)
 			throws BadLocationException {
 		int newOffset = document.getLength();
-		String paramType = "E"; //$NON-NLS-1$
-		String paramName = "e"; //$NON-NLS-1$
 		CSTNode currentNode = content.getCSTNode(offset, offset + length);
+		String paramType = getCurrentVariableTypeName(currentNode, "E"); //$NON-NLS-1$
+		String paramName = getCurrentVariableName(currentNode, "e"); //$NON-NLS-1$
 		if (currentNode instanceof ModuleElement) {
 			newOffset = ((ModuleElement)currentNode).getEndPosition();
-			paramType = getCurrentVariableTypeName(currentNode, paramType);
-			paramName = getCurrentVariableName(currentNode, paramName);
 		} else if (currentNode != null) {
-			currentNode = content.getCSTParent(currentNode, ModuleElement.class);
-			if (currentNode instanceof ModuleElement) {
-				newOffset = ((ModuleElement)currentNode).getEndPosition();
-				paramType = getCurrentVariableTypeName(currentNode, paramType);
-				paramName = getCurrentVariableName(currentNode, paramName);
+			CSTNode parentNode = content.getCSTParent(currentNode, ModuleElement.class);
+			if (parentNode instanceof ModuleElement) {
+				newOffset = ((ModuleElement)parentNode).getEndPosition();
 			}
 		}
 		String templateName = "new" + paramType + "Template"; //$NON-NLS-1$ //$NON-NLS-2$

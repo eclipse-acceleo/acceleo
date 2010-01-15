@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.CSTNode;
-import org.eclipse.acceleo.parser.cst.ModuleElement;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
@@ -42,36 +41,13 @@ public class CreateProtectedAreaAction extends AbstractRefactoringWithVariableCo
 	@Override
 	protected int modify(IDocument document, AcceleoSourceContent content, int offset, int length)
 			throws BadLocationException {
-		String text = document.get();
 		int b = offset;
 		int e = offset + length;
-		while (b < e && Character.isWhitespace(text.charAt(b))) {
-			b++;
-		}
-		while (e > b && Character.isWhitespace(text.charAt(e - 1))) {
-			e--;
-		}
-		String paramName = "e"; //$NON-NLS-1$
 		CSTNode currentNode = content.getCSTNode(b, e);
-		if (currentNode instanceof ModuleElement) {
-			paramName = getCurrentVariableName(currentNode, paramName);
-		} else if (currentNode != null) {
-			currentNode = content.getCSTParent(currentNode, ModuleElement.class);
-			if (currentNode instanceof ModuleElement) {
-				paramName = getCurrentVariableName(currentNode, paramName);
-			}
-		}
-		if (b == e) {
-			while (b > 0 && text.charAt(b - 1) != '\n') {
-				b--;
-			}
-			while (e < text.length() && text.charAt(e) != '\r' && text.charAt(e) != '\n') {
-				e++;
-			}
-		}
+		String paramName = getCurrentVariableName(currentNode, "e"); //$NON-NLS-1$
 		try {
 			String prefix = "[protected (" + paramName + ".name)]\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			String suffix = "\n[/protected]\n"; //$NON-NLS-1$
+			String suffix = "\n[/protected]"; //$NON-NLS-1$
 			document.replace(e, 0, suffix);
 			document.replace(b, 0, prefix);
 			return b + prefix.length();
