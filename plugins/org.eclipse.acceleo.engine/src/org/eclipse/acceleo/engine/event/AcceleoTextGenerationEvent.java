@@ -34,6 +34,8 @@ public class AcceleoTextGenerationEvent {
 
 	/**
 	 * Instantiates an empty text generation event.
+	 * 
+	 * @since 0.9
 	 */
 	public AcceleoTextGenerationEvent() {
 		this(null, null, null, null);
@@ -65,6 +67,7 @@ public class AcceleoTextGenerationEvent {
 	 * @param traceInformation
 	 *            Traceability information about this event. This will be <code>null</code> in all cases when
 	 *            traceability isn't enabled.
+	 * @since 0.9
 	 */
 	public AcceleoTextGenerationEvent(String generatedText, Block block, EObject source,
 			EObject traceInformation) {
@@ -114,6 +117,7 @@ public class AcceleoTextGenerationEvent {
 	 * </p>
 	 * 
 	 * @return The traceability information associated to this event.
+	 * @since 0.9
 	 */
 	public EObject getTraceabilityInformation() {
 		return traceabilityInformation;
