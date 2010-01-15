@@ -70,7 +70,7 @@ public class CreateProtectedAreaAction extends AbstractRefactoringWithVariableCo
 			}
 		}
 		try {
-			String prefix = "[protected]\n"; //$NON-NLS-1$
+			String prefix = "[protected (" + paramName + ".name)]\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			String suffix = "\n[/protected]\n"; //$NON-NLS-1$
 			document.replace(e, 0, suffix);
 			document.replace(b, 0, prefix);
