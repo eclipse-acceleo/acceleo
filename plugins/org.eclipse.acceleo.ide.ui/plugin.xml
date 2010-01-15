@@ -216,6 +216,16 @@ Contributors:
            retarget="false"
            tooltip="%acceleoEditorCommandsExtractAsTemplate.Tooltip">
         </action>
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.CreateProtectedAreaAction"
+           definitionId="org.eclipse.acceleo.ide.ui.createProtectedArea"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.refactor.createProtectedArea"
+           label="%acceleoEditorCommandsCreateProtectedArea.Label"
+           retarget="false"
+           tooltip="%acceleoEditorCommandsCreateProtectedArea.Tooltip">
+        </action>
       </actionSet>
    </extension>
 
@@ -250,6 +260,12 @@ Contributors:
 				description="%acceleoEditorCommandsExtractAsTemplate.Description"
 				id="org.eclipse.acceleo.ide.ui.extractAsTemplate"
 				name="%acceleoEditorCommandsExtractAsTemplate.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.edit"
+				description="%acceleoEditorCommandsCreateProtectedArea.Description"
+				id="org.eclipse.acceleo.ide.ui.createProtectedArea"
+				name="%acceleoEditorCommandsCreateProtectedArea.Name">
 		</command>
    </extension>
 
@@ -299,6 +315,11 @@ Contributors:
                      commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+               <key
+               		 sequence="M3+M2+P"
+                     commandId="org.eclipse.acceleo.ide.ui.createProtectedArea"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
     </extension>
 
     <extension point="org.eclipse.ui.menus">   
@@ -325,6 +346,11 @@ Contributors:
             </visibleWhen>
          </command>
          <command commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate">
+            <visibleWhen>
+               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+            </visibleWhen>
+         </command>
+         <command commandId="org.eclipse.acceleo.ide.ui.createProtectedArea">
             <visibleWhen>
                <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
             </visibleWhen>

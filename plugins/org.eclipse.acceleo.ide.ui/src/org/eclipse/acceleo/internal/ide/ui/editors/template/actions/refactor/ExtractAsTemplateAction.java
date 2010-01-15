@@ -10,32 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor;
 
-import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.ModuleElement;
-import org.eclipse.acceleo.parser.cst.Variable;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * An action to extract the selected text as a new template.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class ExtractAsTemplateAction extends Action implements IWorkbenchWindowActionDelegate, IObjectActionDelegate {
+public class ExtractAsTemplateAction extends AbstractRefactoringWithVariableContextAction {
 
 	/**
 	 * The action ID.
@@ -50,69 +36,28 @@ public class ExtractAsTemplateAction extends Action implements IWorkbenchWindowA
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AbstractRefactoringWithVariableContextAction#modify(org.eclipse.jface.text.IDocument,
+	 *      org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent, int, int)
 	 */
-	public void run(IAction action) {
-		super.run();
-		AcceleoEditor editor = null;
-		IDocument document = null;
-		ITextSelection selection = null;
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		if (window != null && window.getActivePage() != null
-				&& window.getActivePage().getActiveEditor() instanceof AcceleoEditor) {
-			editor = (AcceleoEditor)window.getActivePage().getActiveEditor();
-			document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
-			if (editor.getSelectionProvider() != null
-					&& editor.getSelectionProvider().getSelection() instanceof ITextSelection) {
-				selection = (ITextSelection)editor.getSelectionProvider().getSelection();
-			}
-			if (editor.getContent() != null && document != null && selection != null
-					&& selection.getLength() > 0) {
-				try {
-					int newOffset = modify(document, editor.getContent(), selection.getOffset(), selection
-							.getLength());
-					if (newOffset > -1) {
-						editor.selectAndReveal(newOffset, 0);
-					}
-				} catch (BadLocationException ex) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, ex.getMessage(), ex));
-				}
-			}
-		}
-	}
-
-	/**
-	 * Modify the content of the editor.
-	 * 
-	 * @param document
-	 *            is the document to modify
-	 * @param content
-	 *            is the content of the editor
-	 * @param offset
-	 *            is the offset of the text to extract
-	 * @param length
-	 *            is the length of the text to extract
-	 * @return the new offset to reveal in the editor
-	 * @throws BadLocationException
-	 *             when an index issue occurs
-	 */
-	private int modify(IDocument document, AcceleoSourceContent content, int offset, int length)
+	@Override
+	protected int modify(IDocument document, AcceleoSourceContent content, int offset, int length)
 			throws BadLocationException {
 		int newOffset = document.getLength();
 		String paramType = "E"; //$NON-NLS-1$
+		String paramName = "e"; //$NON-NLS-1$
 		CSTNode currentNode = content.getCSTNode(offset, offset + length);
 		if (currentNode instanceof ModuleElement) {
 			newOffset = ((ModuleElement)currentNode).getEndPosition();
-			paramType = getCurrentTypeName(currentNode, paramType);
+			paramType = getCurrentVariableTypeName(currentNode, paramType);
+			paramName = getCurrentVariableName(currentNode, paramName);
 		} else if (currentNode != null) {
 			currentNode = content.getCSTParent(currentNode, ModuleElement.class);
 			if (currentNode instanceof ModuleElement) {
 				newOffset = ((ModuleElement)currentNode).getEndPosition();
-				paramType = getCurrentTypeName(currentNode, paramType);
+				paramType = getCurrentVariableTypeName(currentNode, paramType);
+				paramName = getCurrentVariableName(currentNode, paramName);
 			}
 		}
-		String paramName = Character.toLowerCase(paramType.charAt(0)) + paramType.substring(1);
 		String templateName = "new" + paramType + "Template"; //$NON-NLS-1$ //$NON-NLS-2$
 		StringBuilder newText = new StringBuilder();
 		if (newOffset > 0) {
@@ -129,48 +74,6 @@ public class ExtractAsTemplateAction extends Action implements IWorkbenchWindowA
 		document.replace(offset, length, templateCall);
 		selectAndReveal = selectAndReveal + (templateCall.length() - length);
 		return selectAndReveal;
-	}
-
-	/**
-	 * Gets the name of the current context type.
-	 * 
-	 * @param currentNode
-	 *            is the current CST node, it means the node at the current position
-	 * @param defaultType
-	 *            the default value if there isn't any context type at the given position
-	 * @return the type name, or the given default value
-	 */
-	private String getCurrentTypeName(CSTNode currentNode, String defaultType) {
-		Variable eContext = null;
-		if (currentNode instanceof org.eclipse.acceleo.parser.cst.Template) {
-			org.eclipse.acceleo.parser.cst.Template iTemplate = (org.eclipse.acceleo.parser.cst.Template)currentNode;
-			if (iTemplate.getParameter().size() > 0) {
-				eContext = iTemplate.getParameter().get(0);
-			}
-		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Query) {
-			org.eclipse.acceleo.parser.cst.Query iQuery = (org.eclipse.acceleo.parser.cst.Query)currentNode;
-			if (iQuery.getParameter().size() > 0) {
-				eContext = iQuery.getParameter().get(0);
-			}
-		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Macro) {
-			org.eclipse.acceleo.parser.cst.Macro iMacro = (org.eclipse.acceleo.parser.cst.Macro)currentNode;
-			if (iMacro.getParameter().size() > 0) {
-				eContext = iMacro.getParameter().get(0);
-			}
-		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.ForBlock) {
-			eContext = ((org.eclipse.acceleo.parser.cst.ForBlock)currentNode).getLoopVariable();
-		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.LetBlock) {
-			eContext = ((org.eclipse.acceleo.parser.cst.LetBlock)currentNode).getLetVariable();
-		}
-		String res;
-		if (eContext != null && eContext.getType() != null) {
-			res = eContext.getType();
-		} else if (eContext != null && eContext.eContainer() instanceof CSTNode) {
-			res = getCurrentTypeName((CSTNode)currentNode.eContainer(), defaultType);
-		} else {
-			res = defaultType;
-		}
-		return res;
 	}
 
 	/**
@@ -198,40 +101,6 @@ public class ExtractAsTemplateAction extends Action implements IWorkbenchWindowA
 		newText.append('\n');
 		newText.append("[/template]"); //$NON-NLS-1$
 		return newText.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-	 */
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-	 */
-	public void init(IWorkbenchWindow window) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
-	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
 }

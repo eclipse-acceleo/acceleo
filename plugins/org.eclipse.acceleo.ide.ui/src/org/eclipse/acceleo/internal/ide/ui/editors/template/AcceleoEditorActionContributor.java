@@ -12,6 +12,7 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.CommentAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.OpenDeclarationAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.CreateProtectedAreaAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.ExtractAsTemplateAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchAction;
 import org.eclipse.ui.IActionBars;
@@ -56,6 +57,10 @@ public class AcceleoEditorActionContributor extends BasicTextEditorActionContrib
 		ExtractAsTemplateAction asTemplateAction = new ExtractAsTemplateAction();
 		asTemplateAction.setActionDefinitionId(ExtractAsTemplateAction.ACTION_ID);
 		actionBars.setGlobalActionHandler(ExtractAsTemplateAction.COMMAND_ID, asTemplateAction);
+
+		CreateProtectedAreaAction protectedAreaAction = new CreateProtectedAreaAction();
+		protectedAreaAction.setActionDefinitionId(CreateProtectedAreaAction.ACTION_ID);
+		actionBars.setGlobalActionHandler(CreateProtectedAreaAction.COMMAND_ID, protectedAreaAction);
 	}
 
 }
