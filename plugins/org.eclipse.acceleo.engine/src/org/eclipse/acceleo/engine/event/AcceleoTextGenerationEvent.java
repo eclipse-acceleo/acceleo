@@ -29,6 +29,16 @@ public class AcceleoTextGenerationEvent {
 	/** The object which triggered generation of this text. */
 	private final EObject source;
 
+	/** This will contain traceability information when the traceability is enabled on the current generation. */
+	private final EObject traceabilityInformation;
+
+	/**
+	 * Instantiates an empty text generation event.
+	 */
+	public AcceleoTextGenerationEvent() {
+		this(null, null, null, null);
+	}
+
 	/**
 	 * Instantiates a text generation event.
 	 * 
@@ -40,9 +50,28 @@ public class AcceleoTextGenerationEvent {
 	 *            EObject which triggered the generation.
 	 */
 	public AcceleoTextGenerationEvent(String generatedText, Block block, EObject source) {
+		this(generatedText, block, source, null);
+	}
+
+	/**
+	 * Instantiates a text generation event.
+	 * 
+	 * @param generatedText
+	 *            Text which generation triggered this event.
+	 * @param block
+	 *            The block from which <code>generatedText</code> has been generated.
+	 * @param source
+	 *            EObject which triggered the generation.
+	 * @param traceInformation
+	 *            Traceability information about this event. This will be <code>null</code> in all cases when
+	 *            traceability isn't enabled.
+	 */
+	public AcceleoTextGenerationEvent(String generatedText, Block block, EObject source,
+			EObject traceInformation) {
 		this.text = generatedText;
 		this.block = block;
 		this.source = source;
+		this.traceabilityInformation = traceInformation;
 	}
 
 	/**
@@ -70,5 +99,23 @@ public class AcceleoTextGenerationEvent {
 	 */
 	public EObject getSource() {
 		return source;
+	}
+
+	/**
+	 * Returns the traceability information associated to this event.
+	 * <p>
+	 * In all cases when traceability isn't enabled, this will be <code>null</code>.
+	 * </p>
+	 * <p>
+	 * This will be an instance of {@link org.eclipse.acceleo.traceability.GeneratedFile GeneratedFile} if the
+	 * event has been sent for a generated file, or a
+	 * {@link org.eclipse.acceleo.traceability.TraceabilityModel TraceabilityModel} if this event corresponds
+	 * to the end of a generation.
+	 * </p>
+	 * 
+	 * @return The traceability information associated to this event.
+	 */
+	public EObject getTraceabilityInformation() {
+		return traceabilityInformation;
 	}
 }

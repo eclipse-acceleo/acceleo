@@ -251,7 +251,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 		}
 		for (IAcceleoTextGenerationListener listener : listeners) {
 			if (listener.listensToGenerationEnd()) {
-				listener.generationEnd(new AcceleoTextGenerationEvent(null, null, null));
+				listener.generationEnd(new AcceleoTextGenerationEvent());
 			}
 		}
 	}
