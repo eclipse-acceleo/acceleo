@@ -72,8 +72,8 @@ public class CreateProtectedAreaAction extends AbstractRefactoringWithVariableCo
 		try {
 			String prefix = "[protected]\n"; //$NON-NLS-1$
 			String suffix = "\n[/protected]\n"; //$NON-NLS-1$
-			document.replace(b, 0, prefix);
 			document.replace(e, 0, suffix);
+			document.replace(b, 0, prefix);
 			return b + prefix.length();
 		} catch (BadLocationException ex) {
 			return offset;
