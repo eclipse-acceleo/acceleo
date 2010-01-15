@@ -322,7 +322,7 @@ Contributors:
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
     </extension>
 
-    <extension point="org.eclipse.ui.menus">   
+    <extension point="org.eclipse.ui.menus">
      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          <command commandId="org.eclipse.acceleo.ide.ui.open.declaration">
             <visibleWhen>
@@ -339,23 +339,26 @@ Contributors:
                <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
             </visibleWhen>
          </command>
-         <separator name="source"/>
-         <command commandId="org.eclipse.acceleo.ide.ui.comment">
-            <visibleWhen>
-               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
-            </visibleWhen>
-         </command>
-         <command commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate">
-            <visibleWhen>
-               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
-            </visibleWhen>
-         </command>
-         <command commandId="org.eclipse.acceleo.ide.ui.createProtectedArea">
-            <visibleWhen>
-               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
-            </visibleWhen>
-         </command>
-      </menuContribution>      
+         <menu label="Source">
+	         <command commandId="org.eclipse.acceleo.ide.ui.comment">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>
+	         <command commandId="org.eclipse.acceleo.ide.ui.createProtectedArea">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>            
+         </menu>
+         <menu label="Refactor">
+	         <command commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>       
+         </menu>
+      </menuContribution>
     </extension>
     <extension point="org.eclipse.core.expressions.definitions">
       <definition id="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet">
