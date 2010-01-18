@@ -419,8 +419,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					for (final OCLExpression nested : forBlock.getBody()) {
 						getVisitor().visitExpression(nested);
 					}
+					hasPrevious = true;
 				}
-				hasPrevious = true;
 			}
 		} finally {
 			// We didn't set any variable if there hasn't been any iteration
