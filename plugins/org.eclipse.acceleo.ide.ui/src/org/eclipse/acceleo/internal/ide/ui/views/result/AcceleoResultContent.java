@@ -21,9 +21,12 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.TemplateExpression;
+import org.eclipse.acceleo.traceability.GeneratedFile;
+import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * This is the result view content. This class knows the generated files. It is notified whenever text is
@@ -37,16 +40,6 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 	 * The generated files. The key is the full path of the file and the value its traceability data.
 	 */
 	private Map<String, TraceabilityTargetFile> targetFiles = new HashMap<String, TraceabilityTargetFile>();
-
-	/**
-	 * The current generated file. It changes when 'filePathComputed' is called.
-	 */
-	private TraceabilityTargetFile targetFile;
-
-	/**
-	 * The current offset in the current generated file.
-	 */
-	private int targetFileOffset;
 
 	/**
 	 * Constructor.
@@ -78,45 +71,71 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#fileGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
 	 */
-	public void filePathComputed(AcceleoTextGenerationEvent event) {
-		String targetPath = new Path(event.getText()).toString();
-		targetFile = new TraceabilityTargetFile(targetPath);
-		targetFiles.put(targetPath, targetFile);
-		targetFileOffset = 0;
+	public void fileGenerated(AcceleoTextGenerationEvent event) {
+		EObject traceabilityElement = event.getTraceabilityInformation();
+		if (traceabilityElement instanceof GeneratedFile) {
+			GeneratedFile generatedFile = (GeneratedFile)traceabilityElement;
+			String targetPath = new Path(generatedFile.getPath()).toString();
+			TraceabilityTargetFile targetFile = new TraceabilityTargetFile(targetPath);
+			targetFiles.put(targetPath, targetFile);
+			for (GeneratedText generatedText : generatedFile.getGeneratedRegions()) {
+				EObject eObject = event.getSource();
+				if (generatedText.getSourceElement() != null) {
+					if (generatedText.getSourceElement().getModelElement() != null) {
+						eObject = generatedText.getSourceElement().getModelElement();
+					}
+				}
+				ASTNode astNode = event.getBlock();
+				if (generatedText.getModuleElement() != null) {
+					if (generatedText.getModuleElement().getModuleElement() instanceof ASTNode) {
+						astNode = (ASTNode)generatedText.getModuleElement().getModuleElement();
+					}
+				}
+				onGeneratedText(targetFile, generatedText, eObject, astNode);
+			}
+		}
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * This will be called on each text region of the generated file.
 	 * 
-	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 * @param targetFile
+	 *            is the target file
+	 * @param generatedText
+	 *            is the current text region
+	 * @param eObject
+	 *            is the model object to link with the text region
+	 * @param astNode
+	 *            is the template element to link with the text region
 	 */
-	public void textGenerated(AcceleoTextGenerationEvent event) {
-		if (event.getText() != null && event.getText().length() > 0 && targetFile != null
-				&& event.getSource() != null) {
-			TraceabilityModel model = getOrCreateModelInChildren(targetFile, event.getSource());
+	private void onGeneratedText(TraceabilityTargetFile targetFile, GeneratedText generatedText,
+			EObject eObject, ASTNode astNode) {
+		if (generatedText.getEndOffset() > generatedText.getStartOffset() && eObject != null
+				&& astNode != null) {
+			TraceabilityModel model = getOrCreateModelInChildren(targetFile, eObject);
 			TraceabilityModel templateRoot = getOrCreateModelInChildren(model, EcoreUtil
-					.getRootContainer(event.getBlock()));
-			EObject eModuleElement = event.getBlock();
-			while (eModuleElement != null && !(eModuleElement instanceof ModuleElement)) {
-				eModuleElement = eModuleElement.eContainer();
+					.getRootContainer(astNode));
+			EObject currentModuleElement = astNode;
+			while (currentModuleElement != null && !(currentModuleElement instanceof ModuleElement)) {
+				currentModuleElement = currentModuleElement.eContainer();
 			}
 			TraceabilityModel templateNode;
-			if (eModuleElement instanceof ModuleElement) {
+			if (currentModuleElement instanceof ModuleElement) {
 				TraceabilityModel templateModuleElement = getOrCreateModelInChildren(templateRoot,
-						eModuleElement);
-				if (eModuleElement == event.getBlock()) {
+						currentModuleElement);
+				if (currentModuleElement == astNode) {
 					templateNode = templateModuleElement;
 				} else {
-					templateNode = getOrCreateModelInChildren(templateModuleElement, event.getBlock());
+					templateNode = getOrCreateModelInChildren(templateModuleElement, astNode);
 				}
 			} else {
-				templateNode = getOrCreateModelInChildren(templateRoot, event.getBlock());
+				templateNode = getOrCreateModelInChildren(templateRoot, astNode);
 			}
-			TraceabilityRegion region = new TraceabilityRegion(targetFileOffset, event.getText().length(),
-					event.getBlock());
-			targetFileOffset += event.getText().length();
+			TraceabilityRegion region = new TraceabilityRegion(generatedText.getStartOffset(), generatedText
+					.getEndOffset()
+					- generatedText.getStartOffset(), astNode);
 			templateNode.getRegions().add(region);
 			region.setParent(templateNode);
 		}
@@ -213,6 +232,39 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 			current = current.eContainer();
 		}
 		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#generationEnd(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 */
+	public void generationEnd(AcceleoTextGenerationEvent event) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#listensToGenerationEnd()
+	 */
+	public boolean listensToGenerationEnd() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#filePathComputed(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 */
+	public void filePathComputed(AcceleoTextGenerationEvent event) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#textGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
+	 */
+	public void textGenerated(AcceleoTextGenerationEvent event) {
 	}
 
 }

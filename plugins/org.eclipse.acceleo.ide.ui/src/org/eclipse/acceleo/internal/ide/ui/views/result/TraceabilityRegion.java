@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.views.result;
 
-import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * The regions of the text synchronized with the current EObject. We store the offset and the length of the
@@ -35,7 +35,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 	/**
 	 * The last template AST node used to create this text region.
 	 */
-	private Block astNode;
+	private ASTNode astNode;
 
 	/**
 	 * Constructor.
@@ -47,7 +47,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 * @param astNode
 	 *            the last template AST node used to create this text region
 	 */
-	public TraceabilityRegion(int targetFileOffset, int targetFileLength, Block astNode) {
+	public TraceabilityRegion(int targetFileOffset, int targetFileLength, ASTNode astNode) {
 		super();
 		this.targetFileOffset = targetFileOffset;
 		this.targetFileLength = targetFileLength;
@@ -77,7 +77,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 * 
 	 * @return the last template AST node used to create this text region
 	 */
-	public Block getAstNode() {
+	public ASTNode getAstNode() {
 		return astNode;
 	}
 
