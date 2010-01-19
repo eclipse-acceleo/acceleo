@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -160,6 +161,9 @@ public class AcceleoEnginePlugin extends Plugin {
 		registry.addListener(engineCreatorListener, EngineRegistryListener.ENGINE_CREATORS_EXTENSION_POINT);
 		dynamicTemplatesListener.parseInitialContributions();
 		engineCreatorListener.parseInitialContributions();
+		// TODO LGO Is it the only way to activate the traceability listener?
+		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
+				"org.eclipse.acceleo.traceability.activation", true);
 	}
 
 	/**
