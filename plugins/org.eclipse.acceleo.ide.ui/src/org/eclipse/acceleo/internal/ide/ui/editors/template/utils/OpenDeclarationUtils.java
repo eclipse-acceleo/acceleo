@@ -27,7 +27,6 @@ import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
@@ -574,11 +573,8 @@ public final class OpenDeclarationUtils {
 					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
 					newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
 				}
-				if (newEObject instanceof TemplateExpression
-						&& ((TemplateExpression)newEObject).getStartPosition() > -1) {
-					int b = ((TemplateExpression)newEObject).getStartPosition();
-					int e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END, b) + 1;
-					acceleoEditor.selectAndReveal(b, e - b);
+				if (newEObject instanceof ASTNode) {
+					selectAndRevealASTNode(acceleoEditor, (ASTNode)newEObject);
 				}
 			}
 		} else if (newEditor instanceof IEditingDomainProvider && eObject.eResource() != null) {
@@ -593,6 +589,34 @@ public final class OpenDeclarationUtils {
 					setSelectionToViewer(newObject, ((IViewerProvider)editor).getViewer());
 				}
 			}
+		}
+	}
+
+	/**
+	 * Select and reveal the given ASTNode in the given editor.
+	 * 
+	 * @param acceleoEditor
+	 *            is the editor
+	 * @param astNode
+	 *            is the AST node to select
+	 */
+	private static void selectAndRevealASTNode(AcceleoEditor acceleoEditor, ASTNode astNode) {
+		if (astNode != null && astNode.getStartPosition() > -1) {
+			int b = astNode.getStartPosition();
+			int e;
+			if ((b + IAcceleoConstants.DEFAULT_BEGIN.length() < acceleoEditor.getContent().getText().length())
+					&& acceleoEditor.getContent().getText().substring(b,
+							b + IAcceleoConstants.DEFAULT_BEGIN.length()).equals(
+							IAcceleoConstants.DEFAULT_BEGIN)) {
+				e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END, b)
+						+ IAcceleoConstants.DEFAULT_END.length();
+			} else {
+				e = astNode.getEndPosition();
+			}
+			if (e < b) {
+				e = b;
+			}
+			acceleoEditor.selectAndReveal(b, e - b);
 		}
 	}
 
