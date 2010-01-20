@@ -571,10 +571,24 @@ public final class OpenDeclarationUtils {
 				if (eModule != null && eModule.eResource() != null && eObject != null
 						&& eObject.eResource() != null) {
 					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-					newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
+					try {
+						newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
+					} catch (IllegalArgumentException e) {
+						newEObject = eObject;
+					}
+					// Remark : We must be sure to get the positions of the new EObject
+				}
+				int defaultBegin;
+				int defaultEnd;
+				if (eObject instanceof ASTNode) {
+					defaultBegin = ((ASTNode)eObject).getStartPosition();
+					defaultEnd = ((ASTNode)eObject).getEndPosition();
+				} else {
+					defaultBegin = -1;
+					defaultEnd = -1;
 				}
 				if (newEObject instanceof ASTNode) {
-					selectAndRevealASTNode(acceleoEditor, (ASTNode)newEObject);
+					selectAndRevealASTNode(acceleoEditor, (ASTNode)newEObject, defaultBegin, defaultEnd);
 				}
 			}
 		} else if (newEditor instanceof IEditingDomainProvider && eObject.eResource() != null) {
@@ -599,19 +613,35 @@ public final class OpenDeclarationUtils {
 	 *            is the editor
 	 * @param astNode
 	 *            is the AST node to select
+	 * @param defaultBegin
+	 *            is the default beginning index if the given AST node start position is -1
+	 * @param defaultEnd
+	 *            is the default ending index if the given AST node end position is -1
 	 */
-	private static void selectAndRevealASTNode(AcceleoEditor acceleoEditor, ASTNode astNode) {
-		if (astNode != null && astNode.getStartPosition() > -1) {
-			int b = astNode.getStartPosition();
-			int e;
+	private static void selectAndRevealASTNode(AcceleoEditor acceleoEditor, ASTNode astNode,
+			int defaultBegin, int defaultEnd) {
+		int b;
+		int e;
+		if (astNode != null) {
+			b = astNode.getStartPosition();
+			e = astNode.getEndPosition();
+		} else {
+			b = -1;
+			e = -1;
+		}
+		if (b == -1) {
+			b = defaultBegin;
+		}
+		if (e == -1) {
+			e = defaultEnd;
+		}
+		if (b > -1) {
 			if ((b + IAcceleoConstants.DEFAULT_BEGIN.length() < acceleoEditor.getContent().getText().length())
 					&& acceleoEditor.getContent().getText().substring(b,
 							b + IAcceleoConstants.DEFAULT_BEGIN.length()).equals(
 							IAcceleoConstants.DEFAULT_BEGIN)) {
 				e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END, b)
 						+ IAcceleoConstants.DEFAULT_END.length();
-			} else {
-				e = astNode.getEndPosition();
 			}
 			if (e < b) {
 				e = b;
