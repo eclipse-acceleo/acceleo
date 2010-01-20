@@ -236,8 +236,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final GeneratedText endRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
 		endRegion.setStartOffset(markerEndIndex);
 		endRegion.setEndOffset(content.length());
-		startRegion.setModuleElement(getModuleElement(protectedArea));
-		startRegion.setSourceElement(protectedAreaSource);
+		endRegion.setModuleElement(getModuleElement(protectedArea));
+		endRegion.setSourceElement(protectedAreaSource);
 
 		trace.getTraces().get(protectedAreaSource).add(startRegion);
 		trace.getTraces().get(protectedAreaSource).add(endRegion);
