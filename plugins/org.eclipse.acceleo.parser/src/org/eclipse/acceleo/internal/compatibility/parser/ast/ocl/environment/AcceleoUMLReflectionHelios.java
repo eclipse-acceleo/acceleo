@@ -25,6 +25,10 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 /**
  * The UMLReflection interface has evolved between OCL 1.3 and OCL 3.0. In order to be compatible with both,
  * we need to externalize here the delegated calls to the new methods.
+ * <p>
+ * This code is meant to be called in Eclipse 3.6 and later only, and will <em>not</em> compile in earlier
+ * versions. That is expected and will not provoke runtime errors.
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */

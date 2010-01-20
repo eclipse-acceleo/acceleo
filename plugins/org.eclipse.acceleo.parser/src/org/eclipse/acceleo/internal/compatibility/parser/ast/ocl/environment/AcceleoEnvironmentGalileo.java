@@ -51,6 +51,10 @@ import org.eclipse.ocl.utilities.TypedElement;
 /**
  * This class will not compile under Eclipse Ganymede with OCL 1.2 installed. It requires OCL 1.3 and
  * shouldn't be called or instantiated under previous versions.
+ * <p>
+ * This code is meant to be called in Eclipse 3.5 and later only, and will <em>not</em> compile in earlier
+ * versions. That is expected and will not provoke runtime errors.
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
