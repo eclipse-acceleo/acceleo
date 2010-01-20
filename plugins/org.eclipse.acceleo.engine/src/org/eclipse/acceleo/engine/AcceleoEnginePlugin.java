@@ -155,15 +155,15 @@ public class AcceleoEnginePlugin extends Plugin {
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
+		// FIXME Change this
+		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
+				"org.eclipse.acceleo.traceability.activation", true);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(dynamicTemplatesListener,
 				DynamicTemplatesRegistryListener.DYNAMIC_TEMPLATES_EXTENSION_POINT);
 		registry.addListener(engineCreatorListener, EngineRegistryListener.ENGINE_CREATORS_EXTENSION_POINT);
 		dynamicTemplatesListener.parseInitialContributions();
 		engineCreatorListener.parseInitialContributions();
-		// TODO LGO Is it the only way to activate the traceability listener?
-		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
-				"org.eclipse.acceleo.traceability.activation", true);
 	}
 
 	/**
