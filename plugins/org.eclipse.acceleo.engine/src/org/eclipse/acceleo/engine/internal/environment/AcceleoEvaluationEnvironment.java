@@ -586,6 +586,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			// fall through : let else fail in UnsupportedOperationException
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EGET.equals(operationName)) {
 			result = eGet(source, (String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName)) {
+			result = eContainer(source, (EClassifier)args[0]);
 		}
 
 		return result;
@@ -716,6 +718,24 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Handles calls to the non standard operation "eContainer". This will retrieve the very first container
+	 * in the hierarchy that is of type <em>filter</em>.
+	 * 
+	 * @param source
+	 *            The EObject we seek to retrieve a feature value of.
+	 * @param filter
+	 *            Types of the container we seek to retrieve.
+	 * @return The first container of type <em>filter</em>.
+	 */
+	private Object eContainer(EObject source, EClassifier filter) {
+		EObject container = source.eContainer();
+		while (!filter.isInstance(container)) {
+			container = container.eContainer();
+		}
+		return container;
 	}
 
 	/**
