@@ -110,6 +110,15 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;eContainer&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>eContainer( OclAny ) : Sequence</b><br/>
+	 * Returns the first container of the receiver that if of the given type.
+	 * </p>
+	 */
+	public static final String OPERATION_OCLANY_ECONTAINER = "eContainer"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;eGet&quot; non-standard operation accessible on all objects.
 	 * <p>
 	 * <b>eGet( String ) : EJavaObject</b><br/>
