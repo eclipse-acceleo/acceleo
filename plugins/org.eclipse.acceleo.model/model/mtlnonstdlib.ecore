@@ -109,6 +109,10 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="featureName" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
+    <eOperations name="eContainer" eType="#//OclAny">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Collection(T)">
     <eOperations name="sep" eType="#//Sequence(OclAny)">
