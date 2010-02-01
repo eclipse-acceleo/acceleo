@@ -36,10 +36,10 @@ public interface IAcceleoTextGenerationListener {
 	void filePathComputed(AcceleoTextGenerationEvent event);
 
 	/**
-	 * This will be called when by the engine when it encounters the end of a file block. The full text
-	 * content of the generated file won't be accessible through <code>event</code> : clients will need to
-	 * open back the file which path will be contained in <code>event.getText()</code>. Note that generated
-	 * files could be reopened and overriden before a generation ends.
+	 * This will be called by the engine when it encounters the end of a file block. The full text content of
+	 * the generated file won't be accessible through <code>event</code> : clients will need to open back the
+	 * file which path will be contained in <code>event.getText()</code>. Note that generated files could be
+	 * reopened and overriden before a generation ends.
 	 * 
 	 * @param event
 	 *            This will hold information on the generation details.
