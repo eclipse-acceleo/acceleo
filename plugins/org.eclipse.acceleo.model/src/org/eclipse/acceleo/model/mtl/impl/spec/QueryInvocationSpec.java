@@ -59,15 +59,19 @@ public class QueryInvocationSpec extends QueryInvocationImpl {
 		final Query def = getDefinition();
 		final List<OCLExpression> args = getArgument();
 
-		final StringBuilder toString = new StringBuilder(def.getName());
-		toString.append('(');
-		for (int i = 0; i < args.size(); i++) {
-			toString.append(args.get(i).toString());
-			if (i + 1 < args.size()) {
-				toString.append(',');
+		if (def == null) {
+			return "unresolved query invocation : " + getName() + "()";
+		} else {
+			final StringBuilder toString = new StringBuilder(def.getName());
+			toString.append('(');
+			for (int i = 0; i < args.size(); i++) {
+				toString.append(args.get(i).toString());
+				if (i + 1 < args.size()) {
+					toString.append(',');
+				}
 			}
+			toString.append(')');
+			return toString.toString();
 		}
-		toString.append(')');
-		return toString.toString();
 	}
 }
