@@ -260,7 +260,9 @@ public class AcceleoNewTemplatesWizardController {
 					&& new AcceleoProject(file.getProject()).getOutputFilePath(file) == null) {
 				updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.JavaFolder")); //$NON-NLS-1$
 			} else {
-				if (viewDetailsComposite.getMetamodelURI().length() == 0) {
+				if (viewDetailsComposite.getMetamodelField().isEnabled()) {
+					updateStatus(null);
+				} else if (viewDetailsComposite.getMetamodelURI().length() == 0) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.MissingURI")); //$NON-NLS-1$
 				} else if (!isValidMetamodelURI(viewDetailsComposite.getMetamodelURI())) {
 					updateStatus(AcceleoUIMessages.getString("AcceleoNewTemplateWizardPage.Error.InvalidURI")); //$NON-NLS-1$

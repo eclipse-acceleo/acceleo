@@ -869,6 +869,15 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	}
 
 	/**
+	 * Returns the text field used to prompt users for the metamodel on which to create the new module.
+	 * 
+	 * @return The text field used to prompt users for the metamodel on which to create the new module.
+	 */
+	public Text getMetamodelField() {
+		return metamodelURI;
+	}
+
+	/**
 	 * Returns the main metamodel type.
 	 * 
 	 * @return the main metamodel type
