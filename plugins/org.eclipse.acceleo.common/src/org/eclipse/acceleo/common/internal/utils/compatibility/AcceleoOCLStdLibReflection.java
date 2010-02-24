@@ -19,7 +19,7 @@ import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.types.OCLStandardLibrary;
 
 /**
- * This class will allow us to remain compatible with OCL through standard library breakages.
+ * This class will allow us to remain compatible with OCL throughout standard library breakages.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
