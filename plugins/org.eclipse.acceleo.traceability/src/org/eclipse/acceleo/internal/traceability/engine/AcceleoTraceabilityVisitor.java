@@ -20,6 +20,8 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
@@ -121,7 +123,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private final Object invalid = ((AcceleoEnvironment)getEnvironment()).getOCLStandardLibraryReflection()
 			.getInvalid();
 
-	/** This we'll allow us to retrieve the proper source value of a given operation call. */
+	/**
+	 * We'll use this to record accurate trace information for the library's traceability-impacting
+	 * operations.
+	 */
+	private ExpressionTrace operationArgumentTrace;
+
+	/** This will allow us to retrieve the proper source value of a given operation call. */
 	private OCLExpression<C> operationCallSourceExpression;
 
 	/**
@@ -213,15 +221,27 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private void alterProtectedAreaTrace(String content, Block protectedArea, ExpressionTrace trace) {
 		final String areaStart = AcceleoEngineMessages.getString("usercode.start") + ' ';
 		final int markerIndex = content.indexOf(areaStart) + areaStart.length();
+		final boolean isExistingArea = trace.getTraces().size() == 0;
 
-		int markerEndIndex = -1;
-		// Alter indices of the "marker" traces
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			for (GeneratedText text : entry.getValue()) {
-				text.setStartOffset(text.getStartOffset() + markerIndex);
-				text.setEndOffset(text.getEndOffset() + markerIndex);
-				if (text.getEndOffset() > markerEndIndex) {
-					markerEndIndex = text.getEndOffset();
+		int markerEndIndex = content.indexOf("\r\n", markerIndex);
+		if (markerEndIndex == -1) {
+			markerEndIndex = content.indexOf('\n', markerIndex);
+		}
+		if (markerEndIndex == -1) {
+			markerEndIndex = content.indexOf('\r', markerIndex);
+		}
+		if (isExistingArea) {
+			final GeneratedText markerRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
+			markerRegion.setStartOffset(markerIndex);
+			markerRegion.setStartOffset(markerEndIndex);
+			markerRegion.setModuleElement(getModuleElement(protectedArea));
+			trace.addTrace(protectedAreaSource, markerRegion, content);
+		} else {
+			// Alter indices of the "marker" traces
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				for (GeneratedText text : entry.getValue()) {
+					text.setStartOffset(text.getStartOffset() + markerIndex);
+					text.setEndOffset(text.getEndOffset() + markerIndex);
 				}
 			}
 		}
@@ -556,20 +576,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		final Object result = getDelegate().visitPropertyCallExp(callExp);
 
-		if (propertyCallSource != null) {
+		if (propertyCallSource != null && result != null) {
 			InputElement propertyCallInput = getInputElement(propertyCallSource, (EStructuralFeature)callExp
 					.getReferredProperty());
 			propertyCallSource = null;
 
-			if (initializingVariable != null && !(result instanceof EObject)) {
-				ModuleElement modElement = getModuleElement(callExp);
-				GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
-				text.setModuleElement(modElement);
+			GeneratedText text = createGeneratedTextFor(callExp);
+			if (operationArgumentTrace != null) {
+				operationArgumentTrace.addTrace(propertyCallInput, text, result);
+			} else if (initializingVariable != null && !(result instanceof EObject)) {
 				variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
 			} else if (recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
-				ModuleElement modElement = getModuleElement(callExp);
-				GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
-				text.setModuleElement(modElement);
 				recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 			}
 		}
@@ -582,6 +599,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		return result;
+	}
+
+	/**
+	 * Creates both the {@link ModuleElement} instance and a {@link GeneratedText} for the given
+	 * <em>moduleElement</em>.
+	 * 
+	 * @param moduleElement
+	 *            Element from the Acceleo module for which we need a GeneratedText created.
+	 * @return A new {@link GeneratedText} for the given <em>moduleElement</em>.
+	 */
+	private GeneratedText createGeneratedTextFor(EObject moduleElement) {
+		ModuleElement modElement = getModuleElement(moduleElement);
+		GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
+		text.setModuleElement(modElement);
+		return text;
 	}
 
 	/**
@@ -841,23 +873,37 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitVariableExp(VariableExp<C, PM> variableExp) {
 		final Object result = super.visitVariableExp(variableExp);
 
-		if (initializingVariable == null) {
-			if (recordedTraces.size() > 0 && result instanceof String && ((String)result).length() > 0) {
-				VariableTrace referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
+		boolean recordOperationArgument = operationArgumentTrace != null;
+		boolean recordVariableInitialization = initializingVariable != null
+				&& variableTraces.get(variableExp.getReferredVariable()) != null
+				&& shouldRecordTrace(variableExp);
+		boolean recordTrace = initializingVariable == null && recordedTraces.size() > 0
+				&& result instanceof String && ((String)result).length() > 0;
+
+		if (recordVariableInitialization || recordTrace || recordOperationArgument) {
+			VariableTrace referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
+			if (referredVarTrace != null) {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : referredVarTrace.getTraces()
 						.entrySet()) {
 					InputElement input = entry.getKey();
 					for (GeneratedText text : entry.getValue()) {
-						recordedTraces.getLast().addTrace(input, text, result);
+						if (recordOperationArgument) {
+							operationArgumentTrace.addTrace(input, text, result);
+						} else if (recordTrace) {
+							recordedTraces.getLast().addTrace(input, text, result);
+						} else if (recordVariableInitialization) {
+							variableTraces.get(initializingVariable).addTrace(input, text, result);
+						}
 					}
 				}
-			}
-		} else if (variableTraces.get(variableExp.getReferredVariable()) != null
-				&& shouldRecordTrace(variableExp)) {
-			VariableTrace referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
-			for (Map.Entry<InputElement, Set<GeneratedText>> entry : referredVarTrace.getTraces().entrySet()) {
-				InputElement input = entry.getKey();
-				for (GeneratedText text : entry.getValue()) {
+			} else {
+				InputElement input = getInputElement(retrieveScopeEObjectValue(0));
+				GeneratedText text = createGeneratedTextFor(variableExp);
+				if (recordOperationArgument) {
+					operationArgumentTrace.addTrace(input, text, result);
+				} else if (recordTrace) {
+					recordedTraces.getLast().addTrace(input, text, result);
+				} else if (recordVariableInitialization) {
 					variableTraces.get(initializingVariable).addTrace(input, text, result);
 				}
 			}
@@ -880,11 +926,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitStringLiteralExp(StringLiteralExp<C> literalExp) {
 		final Object result = super.visitStringLiteralExp(literalExp);
 
-		if (recordedTraces.size() > 0 && ((String)result).length() > 0 && shouldRecordTrace(literalExp)) {
-			InputElement input = getInputElement(retrieveScopeEObjectValue());
-			ModuleElement modElement = getModuleElement(literalExp);
-			GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
-			text.setModuleElement(modElement);
+		InputElement input = getInputElement(retrieveScopeEObjectValue());
+		GeneratedText text = createGeneratedTextFor(literalExp);
+		if (operationArgumentTrace != null) {
+			operationArgumentTrace.addTrace(input, text, result);
+		} else if (initializingVariable != null) {
+			variableTraces.get(initializingVariable).addTrace(input, text, result);
+		} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
+				&& shouldRecordTrace(literalExp)) {
 			recordedTraces.getLast().addTrace(input, text, result);
 		}
 		return result;
@@ -895,10 +944,22 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The scope value of the currently evaluated expression.
 	 */
-	@SuppressWarnings("unchecked")
 	private EObject retrieveScopeEObjectValue() {
+		return retrieveScopeEObjectValue(scopeEObjects.size() - 1);
+	}
+
+	/**
+	 * Returne the scope value of the n-th scope of this evaluation. 0 being the EObject passed as argument of
+	 * the generation, <em>{@link #scopeEObjects}.size() - 1</em> the scope of the current expression.
+	 * 
+	 * @param index
+	 *            Index of the scope EObject value we wish to fetch.
+	 * @return The scope value of the n-th scope of this evaluation.
+	 */
+	@SuppressWarnings("unchecked")
+	private EObject retrieveScopeEObjectValue(int index) {
 		EObject scopeValue = null;
-		for (int i = scopeEObjects.size() - 1; i >= 0; i--) {
+		for (int i = index; i >= 0; i--) {
 			EObject scope = scopeEObjects.get(i);
 			if (scope instanceof Variable<?, ?>) {
 				final Object value = getEvaluationEnvironment()
@@ -980,6 +1041,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = visitIsAlphanumOperation((String)sourceObject);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE)) {
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			Object substring = super.visitExpression(callExp.getArgument().get(0));
+			ExpressionTrace oldArgTrace = operationArgumentTrace;
+			operationArgumentTrace = new ExpressionTrace(callExp.getArgument().get(1));
+			Object substitution = super.visitExpression(callExp.getArgument().get(1));
+			result = visitSubstituteOperation((String)sourceObject, (String)substring, (String)substitution,
+					operationArgumentTrace, false, false);
+			operationArgumentTrace = oldArgTrace;
 		} else {
 			result = super.visitOperationCallExp(callExp);
 		}
@@ -1148,6 +1218,61 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * Handles the "substitute" and "replace" standard operations directly from the traceability visitor so as
+	 * to record accurate traceability information.
+	 * 
+	 * @param source
+	 *            String within which we need to replace substrings.
+	 * @param substring
+	 *            The substring that is to be substituted.
+	 * @param replacement
+	 *            The String which will be inserted in <em>source</em> where <em>substring</em> was.
+	 * @param substitutionTrace
+	 *            Traceability information of the replacement.
+	 * @param substituteRegexes
+	 *            Consider <em>substring</em> and <em>replacement</em> as regexes.
+	 * @param substituteAll
+	 *            Indicates wheter we should substitute all occurences of the substring or only the first.
+	 * @return <em>source</em> with the first occurence of <em>substring</em> replaced by <em>replacement</em>
+	 *         or <em>source</em> unchanged if it did not contain <em>substring</em>.
+	 */
+	private String visitSubstituteOperation(String source, String substring, String replacement,
+			ExpressionTrace substitutionTrace, boolean substituteRegexes, boolean substituteAll) {
+		if (substring == null || replacement == null) {
+			throw new NullPointerException();
+		}
+		final String regex;
+		final String replacementValue;
+		if (!substituteRegexes) {
+			// substitute replaces Strings, not regexes.
+			// Surrounding the regex with \Q [...] \E allows just that
+			regex = "\\Q" + substring + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
+			// We also need to escape backslashes and dollar signs in the replacement (scary!)
+			replacementValue = replacement.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"\\\\\\$"); //$NON-NLS-1$
+		} else {
+			regex = substring;
+			replacementValue = replacement;
+		}
+
+		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
+		StringBuffer result = new StringBuffer();
+		boolean hasMatch = sourceMatcher.find();
+		while (hasMatch) {
+			// FIXME alter existing traces for this source String
+
+			sourceMatcher.appendReplacement(result, replacementValue);
+			if (!substituteAll) {
+				// Do once
+				break;
+			}
+			hasMatch = sourceMatcher.find();
+		}
+		sourceMatcher.appendTail(result);
+		return result.toString();
+	}
+
+	/**
 	 * Handles the "substring" OCL operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -1299,23 +1424,40 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
 			} else {
 				final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
-				isImpacting = operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
-				isImpacting = operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
 			}
 		}
 
