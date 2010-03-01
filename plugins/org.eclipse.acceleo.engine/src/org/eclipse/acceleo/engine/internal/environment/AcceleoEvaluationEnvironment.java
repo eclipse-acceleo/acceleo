@@ -617,6 +617,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result = source.replaceAll((String)args[0], (String)args[1]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH.equals(operationName)) {
 			result = source.endsWith((String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE.equals(operationName)) {
+			result = source.equalsIgnoreCase((String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH.equals(operationName)) {
 			result = source.startsWith((String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TRIM.equals(operationName)) {
@@ -625,6 +627,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result = tokenize(source, (String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
 			result = source.contains((String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEXOF.equals(operationName)) {
+			// Increment java index value by 1 for OCL
+			result = source.lastIndexOf((String)args[0]) + 1;
+			if (result == Integer.valueOf(0)) {
+				result = Integer.valueOf(-1);
+			}
 		}
 
 		return result;
