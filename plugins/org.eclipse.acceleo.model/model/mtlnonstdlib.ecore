@@ -38,6 +38,14 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
+    <eOperations name="lastIndexOf" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="equalsIgnoreCase" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="other" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OclAny">
     <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
