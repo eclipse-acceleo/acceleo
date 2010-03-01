@@ -19,10 +19,12 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.parser.cst.Block;
+import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
@@ -37,6 +39,14 @@ import org.eclipse.emf.ecore.resource.Resource;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class CST2ASTConverter {
+	/** Line separator of the unix platforms. */
+	private static final String UNIX_LINE_SEPARATOR = "\n";
+
+	/** Line separator of the mac platforms. */
+	private static final String MAC_LINE_SEPARATOR = "\r";
+
+	/** Line separator of the dos platforms. */
+	private static final String DOS_LINE_SEPARATOR = "\r\n";
 
 	/**
 	 * The factory used to create the objects of the AST model.
@@ -276,6 +286,125 @@ public class CST2ASTConverter {
 	}
 
 	/**
+	 * We give this method a list of CST elements and the index of a text expression that is either followed
+	 * by (<code>checkStartIndex</code> is <code>true</code>) or preceded by (<code>checkStartIndex</code> is
+	 * <code>false</code>) a comment. It will check if either the line on which the comment starts (
+	 * <code>checkStartIndex</code> is <code>true</code>) or the line on which the comment ends (
+	 * <code>checkStartIndex</code> is <code>false</code>) is comprised of whitespaces and comments only.
+	 * 
+	 * @param bodyContent
+	 *            This list contains the whole set of CST elements of the block containing the comment that is
+	 *            to be checked.
+	 * @param index
+	 *            Index of the text expression which we need to check.
+	 * @param checkStartPosition
+	 *            if <code>true</code>, this will check the line on which the given comment starts, otherwise
+	 *            the comment's ending line will be checked instead.
+	 * @return <code>true</code> iff the given <code>comment</code> block is the only non-whitespace on its
+	 *         line.
+	 */
+	private boolean isCommentLine(List<CSTNode> bodyContent, int index, boolean checkStartPosition) {
+		boolean result = false;
+		if (checkStartPosition && endsInEmptyLine(((TextExpression)bodyContent.get(index)).getValue())) {
+			int nextIndex = index + 1;
+			CSTNode nextNode = bodyContent.get(nextIndex++);
+			while (astProvider.getLineOfOffset(nextNode.getStartPosition()) == astProvider
+					.getLineOfOffset(nextNode.getEndPosition())) {
+				if (nextNode instanceof Comment) {
+					nextNode = bodyContent.get(nextIndex++);
+				} else if (nextNode instanceof TextExpression
+						&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
+					nextNode = bodyContent.get(nextIndex++);
+				} else {
+					break;
+				}
+			}
+			if (nextNode instanceof Comment) {
+				result = true;
+			} else if (nextNode instanceof TextExpression
+					&& startsInEmptyLine(((TextExpression)nextNode).getValue())) {
+				result = true;
+			}
+		} else if (!checkStartPosition
+				&& startsInEmptyLine(((TextExpression)bodyContent.get(index)).getValue())) {
+			int nextIndex = index - 1;
+			CSTNode nextNode = bodyContent.get(nextIndex--);
+			while (astProvider.getLineOfOffset(nextNode.getStartPosition()) == astProvider
+					.getLineOfOffset(nextNode.getEndPosition())) {
+				if (nextNode instanceof Comment) {
+					nextNode = bodyContent.get(nextIndex--);
+				} else if (nextNode instanceof TextExpression
+						&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
+					nextNode = bodyContent.get(nextIndex--);
+				} else {
+					break;
+				}
+			}
+			if (nextNode instanceof Comment) {
+				result = true;
+			} else if (nextNode instanceof TextExpression
+					&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * This will check the very first line of <code>text</code> and return <code>true</code> if it only
+	 * contains whitespaces, <code>false</code> otherwise.
+	 * 
+	 * @param text
+	 *            Text which is to be checked.
+	 * @return <code>true</code> if the first line of <code>text</code> contains only whitespaces.
+	 */
+	private boolean startsInEmptyLine(String text) {
+		int endIndex = 0;
+		if (text.contains(DOS_LINE_SEPARATOR)) {
+			endIndex = text.indexOf(DOS_LINE_SEPARATOR);
+		} else if (text.contains(UNIX_LINE_SEPARATOR)) {
+			endIndex = text.indexOf(UNIX_LINE_SEPARATOR);
+		} else if (text.contains(MAC_LINE_SEPARATOR)) {
+			endIndex = text.indexOf(MAC_LINE_SEPARATOR);
+		}
+		boolean endsInEmptyLine = true;
+		for (int i = 0; i < endIndex; i++) {
+			if (!Character.isWhitespace(text.charAt(i))) {
+				endsInEmptyLine = false;
+				break;
+			}
+		}
+		return endsInEmptyLine;
+	}
+
+	/**
+	 * This will check the very last line of <code>text</code> and return <code>true</code> if it only
+	 * contains whitespaces, <code>false</code> otherwise.
+	 * 
+	 * @param text
+	 *            Text which is to be checked.
+	 * @return <code>true</code> if the last line of <code>text</code> contains only whitespaces.
+	 */
+	private boolean endsInEmptyLine(String text) {
+		int startIndex = 0;
+		if (text.contains(DOS_LINE_SEPARATOR)) {
+			startIndex = text.lastIndexOf(DOS_LINE_SEPARATOR) + 2;
+		} else if (text.contains(UNIX_LINE_SEPARATOR)) {
+			startIndex = text.lastIndexOf(UNIX_LINE_SEPARATOR) + 1;
+		} else if (text.contains(MAC_LINE_SEPARATOR)) {
+			startIndex = text.lastIndexOf(MAC_LINE_SEPARATOR) + 1;
+		}
+		boolean endsInEmptyLine = true;
+		for (int i = startIndex; i < text.length(); i++) {
+			if (!Character.isWhitespace(text.charAt(i))) {
+				endsInEmptyLine = false;
+				break;
+			}
+		}
+		return endsInEmptyLine;
+	}
+
+	/**
 	 * Deletes the characters to ignore at the beginning and at the end of the given text. (Indentation
 	 * strategy method)
 	 * 
@@ -288,52 +417,79 @@ public class CST2ASTConverter {
 	private void transformFormattedText(org.eclipse.acceleo.parser.cst.TextExpression iTextExpression,
 			org.eclipse.ocl.ecore.StringLiteralExp oTextExpression) {
 		String ioValue = iTextExpression.getValue();
-		if (ioValue != null && iTextExpression.eContainingFeature() == CstPackage.eINSTANCE.getBlock_Body()
-				&& iTextExpression.eContainer() != null) {
-			List eBody = (List)iTextExpression.eContainer().eGet(CstPackage.eINSTANCE.getBlock_Body());
-			if (eBody != null && eBody.size() > 0) {
-				int index = eBody.indexOf(iTextExpression);
-				int shiftBegin;
-				if (index == 0 && iTextExpression.eContainer() instanceof ProtectedAreaBlock) {
-					shiftBegin = 0;
-				} else if (index == 0
-						|| (eBody.get(index - 1) instanceof Block
-								&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineBlock((Block)eBody
-								.get(index - 1)))) {
-					/*
-					 * Ignore the carriage return directly following a block iff the latter isn't either a
-					 * Protected area or a single line block
-					 */
-					shiftBegin = shiftBegin(ioValue);
-				} else {
-					shiftBegin = 0;
-				}
-				if (shiftBegin > ioValue.length()) {
-					oTextExpression.setStartPosition(oTextExpression.getStartPosition() + ioValue.length());
-					ioValue = ""; //$NON-NLS-1$
-				} else if (shiftBegin > 0) {
-					oTextExpression.setStartPosition(oTextExpression.getStartPosition() + shiftBegin);
-					ioValue = ioValue.substring(shiftBegin);
-				}
-				int shiftEnd;
-				if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
-					shiftEnd = shiftEnd(ioValue, false);
-				} else if (index == eBody.size() - 1) {
-					shiftEnd = shiftEnd(ioValue, true);
-				} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block) {
-					shiftEnd = shiftEnd(ioValue, true);
-				} else {
-					shiftEnd = 0;
-				}
-				if (shiftEnd > ioValue.length()) {
-					oTextExpression.setEndPosition(oTextExpression.getEndPosition() - ioValue.length());
-					ioValue = ""; //$NON-NLS-1$
-				} else if (shiftEnd > 0) {
-					oTextExpression.setEndPosition(oTextExpression.getEndPosition() - shiftEnd);
-					ioValue = ioValue.substring(0, ioValue.length() - shiftEnd);
-				}
+		// shortcut
+		if (ioValue == null || iTextExpression.eContainingFeature() != CstPackage.eINSTANCE.getBlock_Body()
+				|| iTextExpression.eContainer() == null) {
+			oTextExpression.setStringSymbol(ioValue);
+			return;
+		}
 
+		List eBody = (List)iTextExpression.eContainer().eGet(CstPackage.eINSTANCE.getBlock_Body());
+		if (eBody != null && eBody.size() > 0) {
+			int index = eBody.indexOf(iTextExpression);
+			int shiftBegin;
+			if (index == 0 && iTextExpression.eContainer() instanceof ProtectedAreaBlock) {
+				shiftBegin = 0;
+			} else if (index > 0 && eBody.get(index - 1) instanceof Comment
+					&& isCommentLine(eBody, index, false)) {
+				// This is the same as calling shiftBegin(ioValue), though shortcut to avoid iteration.
+				if (ioValue.contains(DOS_LINE_SEPARATOR)) {
+					shiftBegin = ioValue.indexOf(DOS_LINE_SEPARATOR) + 2;
+				} else if (ioValue.contains(UNIX_LINE_SEPARATOR)) {
+					shiftBegin = ioValue.indexOf(UNIX_LINE_SEPARATOR) + 1;
+				} else if (ioValue.contains(MAC_LINE_SEPARATOR)) {
+					shiftBegin = ioValue.indexOf(MAC_LINE_SEPARATOR) + 1;
+				} else {
+					shiftBegin = 0;
+				}
+			} else if (index == 0
+					|| (eBody.get(index - 1) instanceof Block
+							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineBlock((Block)eBody
+							.get(index - 1)))) {
+				/*
+				 * Ignore the carriage return directly following a block iff the latter isn't either a
+				 * Protected area or a single line block
+				 */
+				shiftBegin = shiftBegin(ioValue);
+			} else {
+				shiftBegin = 0;
 			}
+			if (shiftBegin > ioValue.length()) {
+				oTextExpression.setStartPosition(oTextExpression.getStartPosition() + ioValue.length());
+				ioValue = ""; //$NON-NLS-1$
+			} else if (shiftBegin > 0) {
+				oTextExpression.setStartPosition(oTextExpression.getStartPosition() + shiftBegin);
+				ioValue = ioValue.substring(shiftBegin);
+			}
+			int shiftEnd;
+			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
+				shiftEnd = shiftEnd(ioValue, false);
+			} else if (index == eBody.size() - 1) {
+				shiftEnd = shiftEnd(ioValue, true);
+			} else if (eBody.get(index + 1) instanceof Comment && isCommentLine(eBody, index, true)) {
+				// This is the same as calling shiftEnd(ioValue), though shortcut to avoid iteration.
+				if (ioValue.contains(DOS_LINE_SEPARATOR)) {
+					shiftEnd = ioValue.length() - ioValue.lastIndexOf(DOS_LINE_SEPARATOR);
+				} else if (ioValue.contains(UNIX_LINE_SEPARATOR)) {
+					shiftEnd = ioValue.length() - ioValue.lastIndexOf(UNIX_LINE_SEPARATOR);
+				} else if (ioValue.contains(MAC_LINE_SEPARATOR)) {
+					shiftEnd = ioValue.length() - ioValue.lastIndexOf(MAC_LINE_SEPARATOR);
+				} else {
+					shiftEnd = ioValue.length();
+				}
+			} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block) {
+				shiftEnd = shiftEnd(ioValue, true);
+			} else {
+				shiftEnd = 0;
+			}
+			if (shiftEnd > ioValue.length()) {
+				oTextExpression.setEndPosition(oTextExpression.getEndPosition() - ioValue.length());
+				ioValue = ""; //$NON-NLS-1$
+			} else if (shiftEnd > 0) {
+				oTextExpression.setEndPosition(oTextExpression.getEndPosition() - shiftEnd);
+				ioValue = ioValue.substring(0, ioValue.length() - shiftEnd);
+			}
+
 		}
 		oTextExpression.setStringSymbol(ioValue);
 	}
@@ -350,6 +506,8 @@ public class CST2ASTConverter {
 		for (int b = 0; shiftBegin == -1 && b < ioValue.length(); b++) {
 			char c = ioValue.charAt(b);
 			if (c == '\n') {
+				shiftBegin = b + 1;
+			} else if (c == '\r' && ioValue.charAt(b + 1) != '\n') {
 				shiftBegin = b + 1;
 			} else if (!Character.isWhitespace(c)) {
 				shiftBegin = 0;
