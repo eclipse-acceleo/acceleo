@@ -232,6 +232,26 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_STRING_ENDSWITH = "endsWith"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;equalsIgnoreCase&quot; non-standard String operation.
+	 * <p>
+	 * <b>equalsIgnoreCase( String other ) : Boolean</b><br/>
+	 * Returns <code>true</code> if self is equal to <code>other</code>, without considering casing in the
+	 * comparison; <code>false</code> otherwise.
+	 * </p>
+	 */
+	public static final String OPERATION_STRING_EQUALSIGNORECASE = "equalsIgnoreCase"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;lastIndexOf&quot; non-standard String operation.
+	 * <p>
+	 * <b>lastIndexOf( String substring ) : Integer</b><br/>
+	 * Returns the index of the last occurence of <code>substring</code> in self, <code>-1</code> if self
+	 * doesn't contain this particular substring.
+	 * </p>
+	 */
+	public static final String OPERATION_STRING_LASTINDEXOF = "lastIndexOf"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;replace&quot; non-standard String operation.
 	 * <p>
 	 * <b>replace( String substring, String replacement ) : String</b><br/>
