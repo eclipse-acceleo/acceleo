@@ -28,8 +28,23 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */
 	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
+	/** DOS line separators. */
+	protected static final String DOS_LINE_SEPARATOR = "\r\n";
+
+	/** Unix line separators. */
+	protected static final String UNIX_LINE_SEPARATOR = "\n";
+
+	/** Mac line separators. */
+	protected static final String MAC_LINE_SEPARATOR = "\r";
+
 	/** The buffer to which all calls will be delegated. */
 	protected Writer delegate;
+
+	/** This will be maintained on-the-fly by all implementation when appending new lines. */
+	protected StringBuffer currentIndentation;
+
+	/** This will be <code>true</code> until a non-whitespace character is inserted after a line terminator. */
+	protected boolean recordIndentation;
 
 	/**
 	 * Default constructor. This will delegate all calls to a StringWriter.
@@ -66,6 +81,16 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	public abstract String getTargetPath();
 
 	/**
+	 * This will be used by the visitor to determine indentation of template invocations. It is meant to
+	 * return the indentation of the last line that's been written by this implementation.
+	 * 
+	 * @return Indentation of the last line that's been written by this implementation.
+	 */
+	public String getCurrentLineIndentation() {
+		return currentIndentation.toString();
+	}
+
+	/**
 	 * If you need to flush/reset the delegate writer, this is the place to do so.
 	 */
 	public void reinit() {
@@ -89,7 +114,7 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	 */
 	@Override
 	public void write(char[] cbuf, int off, int len) throws IOException {
-		delegate.write(cbuf, off, len);
+		write(new String(cbuf), off, len);
 	}
 
 	/**
@@ -109,6 +134,34 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	 */
 	@Override
 	public void write(String str, int off, int len) throws IOException {
+		int newLineIndex = -1;
+		if (str.contains(DOS_LINE_SEPARATOR)) {
+			newLineIndex = str.lastIndexOf(DOS_LINE_SEPARATOR) + DOS_LINE_SEPARATOR.length();
+		} else if (str.contains(UNIX_LINE_SEPARATOR)) {
+			newLineIndex = str.lastIndexOf(UNIX_LINE_SEPARATOR) + UNIX_LINE_SEPARATOR.length();
+		} else if (str.contains(MAC_LINE_SEPARATOR)) {
+			newLineIndex = str.lastIndexOf(MAC_LINE_SEPARATOR) + MAC_LINE_SEPARATOR.length();
+		}
+		if (newLineIndex != -1) {
+			currentIndentation = new StringBuffer();
+			recordIndentation = true;
+		} else if (currentIndentation == null) {
+			currentIndentation = new StringBuffer();
+			recordIndentation = true;
+			newLineIndex = 0;
+		} else if (recordIndentation) {
+			newLineIndex = 0;
+		}
+		if (recordIndentation) {
+			for (int i = newLineIndex; i < str.length(); i++) {
+				if (Character.isWhitespace(str.charAt(i))) {
+					currentIndentation.append(str.charAt(i));
+				} else {
+					recordIndentation = false;
+					break;
+				}
+			}
+		}
 		delegate.write(str, off, len);
 	}
 }

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -421,6 +423,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					}
 					hasPrevious = true;
 				}
+				// [255379] restore context
+				getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
 			}
 		} finally {
 			// We didn't set any variable if there hasn't been any iteration
@@ -431,8 +435,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				getEvaluationEnvironment().remove(implicitContextVariableName);
 				currentContextIndex--;
 				getEvaluationEnvironment().remove(ITERATION_COUNT_VARIABLE_NAME);
-				// [255379] restore context
-				getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
 			}
 		}
 		if (actualIteration.size() > 0 && forBlock.getAfter() != null) {
@@ -835,7 +837,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (invocation.getAfter() != null) {
 			visitExpression((OCLExpression)invocation.getAfter());
 		}
-		return context.closeContext();
+		String invocationResult = context.closeContext();
+		return fitIndentationToContext(invocationResult);
 	}
 
 	/**
@@ -1440,6 +1443,32 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			result = super.visitExpression(expression);
 		}
 		return result;
+	}
+
+	/**
+	 * This will alter all lines of the given <em>text</em> so that they all fit with the indentation of the
+	 * last line of the current context.
+	 * 
+	 * @param source
+	 *            Text which indentation is to be altered.
+	 * @return The input <em>text</em> after its indentation has been modified to fit the context.
+	 */
+	private String fitIndentationToContext(String source) {
+		// FIXME fix this for traceability.
+		// Do not alter the very first line (^)
+		String regex = "\r\n|\r|\n";
+		String currentIndent = context.getCurrentLineIndentation();
+		String replacement = "$0" + currentIndent;
+
+		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
+		StringBuffer result = new StringBuffer();
+		boolean hasMatch = sourceMatcher.find();
+		while (hasMatch) {
+			sourceMatcher.appendReplacement(result, replacement);
+			hasMatch = sourceMatcher.find();
+		}
+		sourceMatcher.appendTail(result);
+		return result.toString();
 	}
 
 	/**
