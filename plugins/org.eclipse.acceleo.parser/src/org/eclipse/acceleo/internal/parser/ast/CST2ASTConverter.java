@@ -24,6 +24,7 @@ import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.TemplateExpression;
 import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -31,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * The main class used to transform a CST model to an AST model. This class is not able to run the 'Resolve'
@@ -269,85 +271,167 @@ public class CST2ASTConverter {
 		if (iTextExpression != null && oTextExpression != null) {
 			transformStepCopyPositions(iTextExpression, oTextExpression);
 			transformFormattedText(iTextExpression, oTextExpression);
+			if ("".equals(oTextExpression.getStringSymbol())) {
+				EcoreUtil.remove(oTextExpression);
+			}
 		}
+	}
+
+	/**
+	 * We give this method a list of CST elements and the index of a text expression that is either preceded
+	 * by (<code>checkStartIndex</code> is <code>true</code>) or followed by (<code>checkStartIndex</code> is
+	 * <code>false</code>) a line of which we need to determine relevance. Specifically, a line which
+	 * <em>only contains whitespaces</em> is considered relevant, yet a line containing only whitespaces and
+	 * comments, whitespace and block opening or whitespaces and block endings is <em>not</em> considered to
+	 * be a relevant line. The text at the given <em>index</em> in the <em>bodyContent</em> list will have its
+	 * starting/ending whitespaces trimmed if the line before/after it isn't a relevant one for generation.
+	 * 
+	 * @param bodyContent
+	 *            This list contains the whole set of CST elements of the block containing the line that is to
+	 *            be checked.
+	 * @param index
+	 *            Index of the text expression which we need to check.
+	 * @param checkStartPosition
+	 *            if <code>true</code>, this will check the line on which the given text expression starts,
+	 *            otherwise the text's ending line will be checked instead.
+	 * @return <code>true</code> iff the given text expression is to be trimmed.
+	 */
+	private boolean isRelevantLine(List<CSTNode> bodyContent, int index, boolean checkStartPosition) {
+		TextExpression expression = (TextExpression)bodyContent.get(index);
+		// Does the expression span multiple lines?
+		boolean isSingleLineExpression = isSingleLineExpression(expression);
+		boolean result = true;
+		// if not, we can shortcut this if the expression contains anything other than whitespaces
+		if (isSingleLineExpression && !isEmpty(expression.getValue())) {
+			return true;
+		}
+
+		/*
+		 * We need to check if what's _before_ the text expression is relevant in two cases: a) the text is
+		 * single line and comprised of whitespace only or b) the text starts with an empty line and
+		 * checkStartposition is true.
+		 */
+		if (index > 0
+				&& (isSingleLineExpression || (checkStartPosition && startsInEmptyLine(expression.getValue())))) {
+			result = containsRelevantExpressionsOnLine(bodyContent, index - 1, true);
+		}
+
+		/*
+		 * We need to check if what's _after_ the text expression is relevant in two cases: a) the text is
+		 * single line and comprised of whitespace only or b) the text ends with an empty line and
+		 * checkStartposition is false.
+		 */
+		if (index < bodyContent.size() - 1
+				&& (isSingleLineExpression || (!checkStartPosition && endsInEmptyLine(expression.getValue())))) {
+			result = containsRelevantExpressionsOnLine(bodyContent, index + 1, false);
+		}
+
+		return result;
+	}
+
+	/**
+	 * This will look on the line of the expression at <code>index</code> in bodyContent and check whether
+	 * there are relevant expressions on it. Comments, block headers and block footers are not considered
+	 * relevant.
+	 * 
+	 * @param bodyContent
+	 *            This list contains the whole set of CST elements of the block containing the line that is to
+	 *            be checked.
+	 * @param index
+	 *            Index of the text expression which we need to check.
+	 * @param lookbehind
+	 *            If <code>true</code>, this method will iterate over the template elements located
+	 *            <u>before</u> the element <code>index</code> and all previous until we reach the end of
+	 *            line.
+	 * @return <code>true</code> if this line contains relevant characters, <code>false</code> otherwise.
+	 */
+	private boolean containsRelevantExpressionsOnLine(List<? extends CSTNode> bodyContent, int index,
+			boolean lookbehind) {
+		boolean result = false;
+		int increment = 1;
+		if (lookbehind) {
+			increment = -1;
+		}
+
+		int nextIndex = index;
+		CSTNode nextNode = bodyContent.get(nextIndex);
+		nextIndex += increment;
+		while (nextIndex > 0 && nextIndex < bodyContent.size() - 1 && isSingleLineExpression(nextNode)) {
+			if (nextNode instanceof Comment) {
+				nextIndex += increment;
+			} else if (nextNode instanceof TextExpression && isEmpty(((TextExpression)nextNode).getValue())) {
+				nextIndex += increment;
+			} else if (nextNode instanceof Block) {
+				List<TemplateExpression> nextBody = ((Block)nextNode).getBody();
+				if (nextBody.size() == 0) {
+					nextIndex += increment;
+				} else {
+					int startIndex = 0;
+					if (lookbehind) {
+						startIndex = nextBody.size() - 1;
+					}
+					if (containsRelevantExpressionsOnLine(nextBody, startIndex, lookbehind)) {
+						result = true;
+						break;
+					}
+					nextIndex += increment;
+				}
+			} else {
+				result = true;
+				break;
+			}
+			nextNode = bodyContent.get(nextIndex);
+		}
+
+		if (result) {
+			return result;
+		}
+
+		if (nextNode instanceof Comment) {
+			result = false;
+		} else if (nextNode instanceof TextExpression) {
+			if (lookbehind && endsInEmptyLine(((TextExpression)nextNode).getValue())) {
+				result = false;
+			} else if (!lookbehind && startsInEmptyLine(((TextExpression)nextNode).getValue())) {
+				result = false;
+			} else {
+				result = true;
+			}
+		} else if (nextNode instanceof Block) {
+			List<TemplateExpression> nextBody = ((Block)nextNode).getBody();
+			if (nextBody.size() == 0) {
+				result = false;
+			} else {
+				int startIndex = 0;
+				if (lookbehind) {
+					startIndex = nextBody.size() - 1;
+				}
+				if (containsRelevantExpressionsOnLine(nextBody, startIndex, lookbehind)) {
+					result = true;
+				}
+				result = false;
+			}
+		} else {
+			result = true;
+		}
+		return result;
 	}
 
 	/**
 	 * This will return <code>true</code> iff the start position of the given <code>block</code> is on the
 	 * same line than is its end position.
 	 * 
-	 * @param block
-	 *            The block we need to check.
+	 * @param node
+	 *            The node we need to check.
 	 * @return <code>true</code> iff the given <code>block</code> is a single line block.
 	 */
-	private boolean isSingleLineBlock(Block block) {
-		return astProvider.getLineOfOffset(block.getStartPosition()) == astProvider.getLineOfOffset(block
-				.getEndPosition() - 1);
-	}
-
-	/**
-	 * We give this method a list of CST elements and the index of a text expression that is either followed
-	 * by (<code>checkStartIndex</code> is <code>true</code>) or preceded by (<code>checkStartIndex</code> is
-	 * <code>false</code>) a comment. It will check if either the line on which the comment starts (
-	 * <code>checkStartIndex</code> is <code>true</code>) or the line on which the comment ends (
-	 * <code>checkStartIndex</code> is <code>false</code>) is comprised of whitespaces and comments only.
-	 * 
-	 * @param bodyContent
-	 *            This list contains the whole set of CST elements of the block containing the comment that is
-	 *            to be checked.
-	 * @param index
-	 *            Index of the text expression which we need to check.
-	 * @param checkStartPosition
-	 *            if <code>true</code>, this will check the line on which the given comment starts, otherwise
-	 *            the comment's ending line will be checked instead.
-	 * @return <code>true</code> iff the given <code>comment</code> block is the only non-whitespace on its
-	 *         line.
-	 */
-	private boolean isCommentLine(List<CSTNode> bodyContent, int index, boolean checkStartPosition) {
-		boolean result = false;
-		if (checkStartPosition && endsInEmptyLine(((TextExpression)bodyContent.get(index)).getValue())) {
-			int nextIndex = index + 1;
-			CSTNode nextNode = bodyContent.get(nextIndex++);
-			while (astProvider.getLineOfOffset(nextNode.getStartPosition()) == astProvider
-					.getLineOfOffset(nextNode.getEndPosition())) {
-				if (nextNode instanceof Comment) {
-					nextNode = bodyContent.get(nextIndex++);
-				} else if (nextNode instanceof TextExpression
-						&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
-					nextNode = bodyContent.get(nextIndex++);
-				} else {
-					break;
-				}
-			}
-			if (nextNode instanceof Comment) {
-				result = true;
-			} else if (nextNode instanceof TextExpression
-					&& startsInEmptyLine(((TextExpression)nextNode).getValue())) {
-				result = true;
-			}
-		} else if (!checkStartPosition
-				&& startsInEmptyLine(((TextExpression)bodyContent.get(index)).getValue())) {
-			int nextIndex = index - 1;
-			CSTNode nextNode = bodyContent.get(nextIndex--);
-			while (astProvider.getLineOfOffset(nextNode.getStartPosition()) == astProvider
-					.getLineOfOffset(nextNode.getEndPosition())) {
-				if (nextNode instanceof Comment) {
-					nextNode = bodyContent.get(nextIndex--);
-				} else if (nextNode instanceof TextExpression
-						&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
-					nextNode = bodyContent.get(nextIndex--);
-				} else {
-					break;
-				}
-			}
-			if (nextNode instanceof Comment) {
-				result = true;
-			} else if (nextNode instanceof TextExpression
-					&& endsInEmptyLine(((TextExpression)nextNode).getValue())) {
-				result = true;
-			}
+	private boolean isSingleLineExpression(CSTNode node) {
+		if (node instanceof TextExpression) {
+			return !((TextExpression)node).getValue().contains(UNIX_LINE_SEPARATOR)
+					&& !((TextExpression)node).getValue().contains(MAC_LINE_SEPARATOR);
 		}
-		return result;
+		return astProvider.getLineOfOffset(node.getStartPosition()) == astProvider.getLineOfOffset(node
+				.getEndPosition() - 1);
 	}
 
 	/**
@@ -359,7 +443,7 @@ public class CST2ASTConverter {
 	 * @return <code>true</code> if the first line of <code>text</code> contains only whitespaces.
 	 */
 	private boolean startsInEmptyLine(String text) {
-		int endIndex = 0;
+		int endIndex = text.length();
 		if (text.contains(DOS_LINE_SEPARATOR)) {
 			endIndex = text.indexOf(DOS_LINE_SEPARATOR);
 		} else if (text.contains(UNIX_LINE_SEPARATOR)) {
@@ -369,6 +453,25 @@ public class CST2ASTConverter {
 		}
 		boolean endsInEmptyLine = true;
 		for (int i = 0; i < endIndex; i++) {
+			if (!Character.isWhitespace(text.charAt(i))) {
+				endsInEmptyLine = false;
+				break;
+			}
+		}
+		return endsInEmptyLine;
+	}
+
+	/**
+	 * Returns <code>true</code> if <em>text</em> is only comprised of whitespace characters as returned by
+	 * {@link Character#isWhitespace(char)}.
+	 * 
+	 * @param text
+	 *            Text which is to be checked.
+	 * @return <code>true</code> if <em>text</em> is only comprised of whitespace characters.
+	 */
+	private boolean isEmpty(String text) {
+		boolean endsInEmptyLine = true;
+		for (int i = 0; i < text.length(); i++) {
 			if (!Character.isWhitespace(text.charAt(i))) {
 				endsInEmptyLine = false;
 				break;
@@ -430,21 +533,11 @@ public class CST2ASTConverter {
 			int shiftBegin;
 			if (index == 0 && iTextExpression.eContainer() instanceof ProtectedAreaBlock) {
 				shiftBegin = 0;
-			} else if (index > 0 && eBody.get(index - 1) instanceof Comment
-					&& isCommentLine(eBody, index, false)) {
-				// This is the same as calling shiftBegin(ioValue), though shortcut to avoid iteration.
-				if (ioValue.contains(DOS_LINE_SEPARATOR)) {
-					shiftBegin = ioValue.indexOf(DOS_LINE_SEPARATOR) + 2;
-				} else if (ioValue.contains(UNIX_LINE_SEPARATOR)) {
-					shiftBegin = ioValue.indexOf(UNIX_LINE_SEPARATOR) + 1;
-				} else if (ioValue.contains(MAC_LINE_SEPARATOR)) {
-					shiftBegin = ioValue.indexOf(MAC_LINE_SEPARATOR) + 1;
-				} else {
-					shiftBegin = 0;
-				}
+			} else if (index > 0 && !isRelevantLine(eBody, index, true)) {
+				shiftBegin = shiftBegin(ioValue);
 			} else if (index == 0
 					|| (eBody.get(index - 1) instanceof Block
-							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineBlock((Block)eBody
+							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineExpression((Block)eBody
 							.get(index - 1)))) {
 				/*
 				 * Ignore the carriage return directly following a block iff the latter isn't either a
@@ -466,17 +559,8 @@ public class CST2ASTConverter {
 				shiftEnd = shiftEnd(ioValue, false);
 			} else if (index == eBody.size() - 1) {
 				shiftEnd = shiftEnd(ioValue, true);
-			} else if (eBody.get(index + 1) instanceof Comment && isCommentLine(eBody, index, true)) {
-				// This is the same as calling shiftEnd(ioValue), though shortcut to avoid iteration.
-				if (ioValue.contains(DOS_LINE_SEPARATOR)) {
-					shiftEnd = ioValue.length() - ioValue.lastIndexOf(DOS_LINE_SEPARATOR);
-				} else if (ioValue.contains(UNIX_LINE_SEPARATOR)) {
-					shiftEnd = ioValue.length() - ioValue.lastIndexOf(UNIX_LINE_SEPARATOR);
-				} else if (ioValue.contains(MAC_LINE_SEPARATOR)) {
-					shiftEnd = ioValue.length() - ioValue.lastIndexOf(MAC_LINE_SEPARATOR);
-				} else {
-					shiftEnd = ioValue.length();
-				}
+			} else if (!isRelevantLine(eBody, index, false)) {
+				shiftEnd = shiftEnd(ioValue, true);
 			} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else {
@@ -489,7 +573,6 @@ public class CST2ASTConverter {
 				oTextExpression.setEndPosition(oTextExpression.getEndPosition() - shiftEnd);
 				ioValue = ioValue.substring(0, ioValue.length() - shiftEnd);
 			}
-
 		}
 		oTextExpression.setStringSymbol(ioValue);
 	}
