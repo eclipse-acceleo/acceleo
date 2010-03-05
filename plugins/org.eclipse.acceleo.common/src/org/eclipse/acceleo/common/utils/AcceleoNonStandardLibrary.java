@@ -33,6 +33,43 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  */
 public final class AcceleoNonStandardLibrary {
 	/**
+	 * Name of the &quot;lastIndexOf&quot; non-standard operation accessible on collections.
+	 * <p>
+	 * <b>lastIndexOf( T element ) : Integer</b><br/>
+	 * returns the index of the last occurence of <code>element</code> in <code>self</code>.
+	 * </p>
+	 * 
+	 * @since 0.9
+	 */
+	public static final String OPERATION_COLLECTION_LASTINDEXOF = "lastIndexOf"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;reverse&quot; non-standard operation accessible on collections. Note that depending
+	 * on the source collection, the returned collection will be of different types.
+	 * <table>
+	 * <tr>
+	 * <td>Source Type</td>
+	 * <td>Return Type</td>
+	 * </tr>
+	 * <tr>
+	 * <td>OrderedSet(T)</td>
+	 * <td>OrderedSet(T)</td>
+	 * </tr>
+	 * <tr>
+	 * <td>Sequence(T)</td>
+	 * <td>Sequence(T)</td>
+	 * </tr>
+	 * </table>
+	 * <p>
+	 * <b>reverse( ) : Collection</b><br/>
+	 * Returns all elements from the source collection in reverse order.
+	 * </p>
+	 * 
+	 * @since 0.9
+	 */
+	public static final String OPERATION_COLLECTION_REVERSE = "reverse"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;sep&quot; non-standard operation accessible on collections. Note that depending on
 	 * the source collection, the returned collection will be of different types.
 	 * <table>
@@ -58,7 +95,7 @@ public final class AcceleoNonStandardLibrary {
 	 * </tr>
 	 * </table>
 	 * <p>
-	 * <b>sep( String ) : Collection</b><br/>
+	 * <b>sep( String separator ) : Collection</b><br/>
 	 * Returns all elements from the source collection separated by an element composed of the
 	 * <code>separator</code> String.
 	 * </p>
@@ -242,14 +279,23 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_STRING_EQUALSIGNORECASE = "equalsIgnoreCase"; //$NON-NLS-1$
 
 	/**
-	 * Name of the &quot;lastIndexOf&quot; non-standard String operation.
+	 * Name of the &quot;lastIndex&quot; non-standard String operation.
 	 * <p>
-	 * <b>lastIndexOf( String substring ) : Integer</b><br/>
+	 * <b>lastIndex( String substring ) : Integer</b><br/>
 	 * Returns the index of the last occurence of <code>substring</code> in self, <code>-1</code> if self
 	 * doesn't contain this particular substring.
 	 * </p>
 	 */
-	public static final String OPERATION_STRING_LASTINDEXOF = "lastIndexOf"; //$NON-NLS-1$
+	public static final String OPERATION_STRING_LASTINDEX = "lastIndex"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;matches&quot; non-standard String operation.
+	 * <p>
+	 * <b>matches( String regex ) : Integer</b><br/>
+	 * Returns <code>true</code> if <code>self</code> matches the given <code>regex</code>.
+	 * </p>
+	 */
+	public static final String OPERATION_STRING_MATCHES = "matches"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;replace&quot; non-standard String operation.
@@ -296,6 +342,16 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_STRING_SUBSTITUTEALL = "substituteAll"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;substring&quot; non-standard String operation.
+	 * <p>
+	 * <b>substring( Integer startIndex ) : String</b><br/>
+	 * Returns the substring composed of all characters of <code>self</code> starting at index
+	 * <code>startIndex</code>.
+	 * </p>
+	 */
+	public static final String OPERATION_STRING_SUBSTRING = "substring"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;tokenize&quot; non-standard String operation.
 	 * <p>
 	 * <b>tokenize( String delim ) : Sequence</b><br/>
@@ -327,6 +383,20 @@ public final class AcceleoNonStandardLibrary {
 	/** Name of the type "OclAny" used for common EOperations for all EObjects. */
 	public static final String TYPE_OCLANY_NAME = "OclAny"; //$NON-NLS-1$
 
+	/**
+	 * Name of the type "OrderedSet" used for common EOperations on OCL OrderedSet.
+	 * 
+	 * @since 0.9
+	 */
+	public static final String TYPE_ORDEREDSET_NAME = "OrderedSet(T)"; //$NON-NLS-1$
+
+	/**
+	 * Name of the type "Sequence" used for common EOperations on OCL Sequence.
+	 * 
+	 * @since 0.9
+	 */
+	public static final String TYPE_SEQUENCE_NAME = "Sequence(T)"; //$NON-NLS-1$
+
 	/** This is the ecore package that will contain the Acceleo non-standard Library classifiers. */
 	private static EPackage nonStdLibPackage;
 
@@ -338,6 +408,12 @@ public final class AcceleoNonStandardLibrary {
 
 	/** EClass for the Acceleo non-standard library's "OclAny" type. */
 	private static EClass oclAnyType;
+
+	/** EClass for the Acceleo non-standard library's "OrderedSet" type. */
+	private static EClass orderedSetType;
+
+	/** EClass for the Acceleo non-standard library's "Sequence" type. */
+	private static EClass sequenceType;
 
 	/** EClass for the Acceleo non-standard library's "String" type. */
 	private static EClass stringType;
@@ -352,6 +428,8 @@ public final class AcceleoNonStandardLibrary {
 			nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
 			collectionType = (EClass)nonStdLibPackage.getEClassifier(TYPE_COLLECTION_NAME);
 			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
+			orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
+			sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
 			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
 		} catch (IOException e) {
 			AcceleoCommonPlugin.log(
@@ -386,8 +464,11 @@ public final class AcceleoNonStandardLibrary {
 			result.addAll(oclAnyType.getEOperations());
 		} else if (TYPE_COLLECTION_NAME.equals(classifierName)) {
 			result.addAll(collectionType.getEOperations());
+		} else if (TYPE_ORDEREDSET_NAME.equals(classifierName)) {
+			result.addAll(orderedSetType.getEOperations());
+		} else if (TYPE_SEQUENCE_NAME.equals(classifierName)) {
+			result.addAll(sequenceType.getEOperations());
 		}
-
 		return result;
 	}
 }
