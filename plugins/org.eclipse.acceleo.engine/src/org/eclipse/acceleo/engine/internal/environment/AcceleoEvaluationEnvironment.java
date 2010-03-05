@@ -535,6 +535,21 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 			}
 			result = temp;
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName)) {
+			final List<Object> temp = new ArrayList<Object>(source);
+			Collections.reverse(temp);
+			if (source instanceof LinkedHashSet<?>) {
+				final Set<Object> reversedSet = new LinkedHashSet<Object>(temp);
+				result = reversedSet;
+			} else {
+				result = temp;
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_LASTINDEXOF.equals(operationName)) {
+			final List<Object> temp = new ArrayList<Object>(source);
+			result = Integer.valueOf(temp.lastIndexOf(args[0]) + 1);
+			if (result == Integer.valueOf(0)) {
+				Integer.valueOf(-1);
+			}
 		}
 
 		return result;
@@ -627,12 +642,16 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result = tokenize(source, (String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
 			result = source.contains((String)args[0]);
-		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEXOF.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES.equals(operationName)) {
+			result = source.matches((String)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX.equals(operationName)) {
 			// Increment java index value by 1 for OCL
 			result = source.lastIndexOf((String)args[0]) + 1;
 			if (result == Integer.valueOf(0)) {
 				result = Integer.valueOf(-1);
 			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING.equals(operationName)) {
+			result = source.substring(((Integer)args[0]).intValue() - 1);
 		}
 
 		return result;
