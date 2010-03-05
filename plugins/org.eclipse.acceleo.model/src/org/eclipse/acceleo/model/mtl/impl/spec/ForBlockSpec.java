@@ -50,9 +50,11 @@ public class ForBlockSpec extends ForBlockImpl {
 		final InitSection initSection = getInit();
 
 		final StringBuilder toString = new StringBuilder("for"); //$NON-NLS-1$
-		toString.append(' ').append('(');
-		toString.append(getIterSet().toString());
-		toString.append(')');
+		if (getIterSet() != null) {
+			toString.append(' ').append('(');
+			toString.append(getIterSet().toString());
+			toString.append(')');
+		}
 		if (beforeExp != null) {
 			toString.append(' ');
 			toString.append("before"); //$NON-NLS-1$
