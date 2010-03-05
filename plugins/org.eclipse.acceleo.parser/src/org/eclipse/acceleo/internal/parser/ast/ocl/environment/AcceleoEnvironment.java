@@ -33,11 +33,17 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
+import org.eclipse.ocl.ecore.BagType;
 import org.eclipse.ocl.ecore.CallOperationAction;
+import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.OrderedSetType;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.ecore.SequenceType;
+import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
 
 /**
@@ -353,6 +359,42 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				.getExistingOperations(getOCLStandardLibrary().getOclAny()));
 		addHelperOperations(getOCLStandardLibrary().getCollection(), getAcceleoNonStandardLibrary()
 				.getExistingOperations(getOCLStandardLibrary().getCollection()));
+		addHelperOperations(getOCLStandardLibrary().getSequence(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getSequence()));
+		addHelperOperations(getOCLStandardLibrary().getOrderedSet(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(getOCLStandardLibrary().getOrderedSet()));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupOperation(java.lang.Object, java.lang.String,
+	 *      java.util.List)
+	 */
+	@Override
+	public EOperation lookupOperation(EClassifier owner, String name,
+			List<? extends TypedElement<EClassifier>> args) {
+		EOperation oper = super.lookupOperation(owner, name, args);
+		if (oper == null) {
+			/*
+			 * We need to try a second lookup with the "default" collection types. i.e. if we looked up for an
+			 * operation on "Sequence(OclAny)", we need to do it a second time on "Sequence(T)" because of
+			 * OCL's resolution paradigm. Note that this behavior might change with OCL 3.0 and should be
+			 * tried on both 1.x and 3.x versions before modifications.
+			 */
+			if (owner instanceof SequenceType) {
+				oper = super.lookupOperation(getOCLStandardLibrary().getSequence(), name, args);
+			} else if (owner instanceof BagType) {
+				oper = super.lookupOperation(getOCLStandardLibrary().getBag(), name, args);
+			} else if (owner instanceof OrderedSetType) {
+				oper = super.lookupOperation(getOCLStandardLibrary().getOrderedSet(), name, args);
+			} else if (owner instanceof SetType) {
+				oper = super.lookupOperation(getOCLStandardLibrary().getSet(), name, args);
+			} else if (owner instanceof CollectionType) {
+				oper = super.lookupOperation(getOCLStandardLibrary().getCollection(), name, args);
+			}
+		}
+		return oper;
 	}
 
 	/**
