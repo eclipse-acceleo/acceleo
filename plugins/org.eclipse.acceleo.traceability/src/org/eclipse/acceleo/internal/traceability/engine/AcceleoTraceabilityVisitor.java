@@ -695,12 +695,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public void visitAcceleoForBlock(ForBlock forBlock) {
-		scopeEObjects.add(forBlock.getLoopVariable());
+		if (forBlock.getLoopVariable() != null) {
+			scopeEObjects.add(forBlock.getLoopVariable());
+		}
 		// FIXME what to do if the iteration set is of a primitive type? ([for (eClass.eSupertypes.name)/])
 
 		super.visitAcceleoForBlock(forBlock);
 
-		scopeEObjects.removeLast();
+		if (forBlock.getLoopVariable() != null) {
+			scopeEObjects.removeLast();
+		}
 	}
 
 	/**
