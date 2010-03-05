@@ -163,6 +163,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName);
