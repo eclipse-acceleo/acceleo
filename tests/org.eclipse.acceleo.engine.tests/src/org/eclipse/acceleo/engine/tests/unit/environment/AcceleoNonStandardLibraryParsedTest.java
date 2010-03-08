@@ -24,7 +24,7 @@ import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 @SuppressWarnings("nls")
 public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/** This is the output we expect from each generated file. */
-	private final static String OUTPUT = "constant output" + System.getProperty("line.separator");
+	private final static String OUTPUT = "constant output";
 
 	/** This will be generated from setup. */
 	private Map<String, String> generatedPreview;
