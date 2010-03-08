@@ -916,6 +916,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					delegateAppend(toString(result), (Block)generatedBlock, lastEObjectSelfValue, fireEvent);
 				}
 			}
+		} catch (final AcceleoEvaluationCancelledException e) {
+			/*
+			 * We already took care of all disposal, yet we need this catch to avoid falling back to the
+			 * generic catch (AcceleoEvaluationException).
+			 */
+			throw e;
 		} catch (final AcceleoEvaluationException e) {
 			// We'll Try and carry on evaluating the expressions
 			AcceleoEnginePlugin.log(e, false);
