@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
@@ -182,14 +183,16 @@ public class AcceleoParserTests extends TestCase {
 		if (source.getProblems().getList().size() > 0) {
 			fail(source.getProblems().getMessage());
 		}
-		String[] results = {"\n", "\n", "\t\t", "\n", "", "\t\t", "\n", "", "\t", "\n", "\t\t", "\n", "", "",
-				"\t\t\t", "\n", "", "\t\t\t", "\n", "", "\n", "\n\t\t", "\n", "\n" };
+		String[] results = {"\n", "\n", "\t\t", "\n", "\t\t", "\n", "\n", "\t", "\n", "\t\t", "\n", "\t\t\t",
+				"\n", "\t\t\t", "\n", "\n", "\n\t\t", "\n", "\n" };
 		int i = -1;
 		StringBuffer report = new StringBuffer();
 		Iterator<EObject> it = resource.getContents().get(0).eAllContents();
 		while (it.hasNext()) {
 			EObject eObject = it.next();
-			if (eObject instanceof org.eclipse.ocl.ecore.StringLiteralExp) {
+			if (eObject instanceof org.eclipse.ocl.ecore.StringLiteralExp
+					&& !(eObject.eContainer() != null && eObject.eContainer().eContainingFeature() == MtlPackage.eINSTANCE
+							.getIfBlock_IfExpr())) {
 				i++;
 				org.eclipse.ocl.ecore.StringLiteralExp literal = (org.eclipse.ocl.ecore.StringLiteralExp)eObject;
 				String symbol = literal.getStringSymbol().replaceAll("\r", "");
