@@ -555,7 +555,8 @@ public class CST2ASTConverter {
 				ioValue = ioValue.substring(shiftBegin);
 			}
 			int shiftEnd;
-			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
+			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template
+					&& !isEmpty(ioValue)) {
 				shiftEnd = shiftEnd(ioValue, false);
 			} else if (index == eBody.size() - 1) {
 				shiftEnd = shiftEnd(ioValue, true);
