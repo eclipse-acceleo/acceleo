@@ -55,7 +55,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.acceleo.common.query.connector.IQueryConnector"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.acceleo.common.library.connector.ILibrary"/>
                </appInfo>
             </annotation>
          </attribute>
