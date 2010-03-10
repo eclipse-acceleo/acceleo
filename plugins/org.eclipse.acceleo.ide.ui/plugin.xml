@@ -226,6 +226,16 @@ Contributors:
            retarget="false"
            tooltip="%acceleoEditorCommandsCreateProtectedArea.Tooltip">
         </action>
+        <action
+           allowLabelUpdate="true"
+           class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.CreateForIfAction"
+           definitionId="org.eclipse.acceleo.ide.ui.createForIf"
+           enablesFor="*"
+           id="org.eclipse.acceleo.ide.ui.editors.template.actions.refactor.createForIfArea"
+           label="%acceleoEditorCommandsCreateForIf.Label"
+           retarget="false"
+           tooltip="%acceleoEditorCommandsCreateForIf.Tooltip">
+        </action>
       </actionSet>
    </extension>
 
@@ -266,6 +276,12 @@ Contributors:
 				description="%acceleoEditorCommandsCreateProtectedArea.Description"
 				id="org.eclipse.acceleo.ide.ui.createProtectedArea"
 				name="%acceleoEditorCommandsCreateProtectedArea.Name">
+		</command>
+		<command
+				categoryId="org.eclipse.ui.category.edit"
+				description="%acceleoEditorCommandsCreateForIf.Description"
+				id="org.eclipse.acceleo.ide.ui.createForIf"
+				name="%acceleoEditorCommandsCreateForIf.Name">
 		</command>
    </extension>
 
@@ -320,6 +336,11 @@ Contributors:
                      commandId="org.eclipse.acceleo.ide.ui.createProtectedArea"
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+               <key
+               		 sequence="M3+M2+F"
+                     commandId="org.eclipse.acceleo.ide.ui.createForIf"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
     </extension>
 
     <extension point="org.eclipse.ui.menus">
@@ -346,6 +367,11 @@ Contributors:
 	            </visibleWhen>
 	         </command>
 	         <command commandId="org.eclipse.acceleo.ide.ui.createProtectedArea">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>            
+	         <command commandId="org.eclipse.acceleo.ide.ui.createForIf">
 	            <visibleWhen>
 	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
 	            </visibleWhen>
