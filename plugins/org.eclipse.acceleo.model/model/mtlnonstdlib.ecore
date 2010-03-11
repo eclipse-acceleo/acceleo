@@ -52,7 +52,7 @@
     </eOperations>
     <eOperations name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
       <eAnnotations source="MTL non-standard"/>
-      <eParameters name="startIndex" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integers"/>
+      <eParameters name="startIndex" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OclAny">
