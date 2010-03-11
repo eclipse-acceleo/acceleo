@@ -16,10 +16,14 @@ import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.Block;
+import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.IfBlock;
 import org.eclipse.acceleo.parser.cst.ModelExpression;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
@@ -56,6 +60,7 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 			final String newLine = "\n"; //$NON-NLS-1$
 			int outputIndex = b;
 			String text = document.get(offset, length);
+			CSTNode currentNode = content.getCSTNode(b, e);
 			boolean singleLine = !text.contains(newLine);
 			StringBuilder newBuffer = new StringBuilder();
 			List<String> parts = getParts(text);
@@ -69,9 +74,8 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 			}
 			StringBuilder prefix = new StringBuilder();
 			if (parts.size() > 1) {
-				String forCondition = findBestAvailableExpression(content, text, false, true);
 				prefix.append("\t[for ("); //$NON-NLS-1$
-				prefix.append(forCondition);
+				prefix.append(computeForExpression(content, text, currentNode));
 				outputIndex = b + prefix.length();
 				prefix.append(")"); //$NON-NLS-1$
 				prefix.append("]"); //$NON-NLS-1$
@@ -82,7 +86,7 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 			prefix.append(indentIf);
 			String ifCondition;
 			if (parts.size() > 0) {
-				ifCondition = findBestAvailableExpression(content, parts.get(0), true, false);
+				ifCondition = computeIfExpression(content, parts.get(0));
 			} else {
 				ifCondition = ""; //$NON-NLS-1$ 
 			}
@@ -101,7 +105,7 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 						StringBuilder elseIfPrefix = new StringBuilder();
 						elseIfPrefix.append(indentIf);
 						elseIfPrefix.append("[elseif ("); //$NON-NLS-1$ 
-						elseIfPrefix.append(findBestAvailableExpression(content, part, true, false));
+						elseIfPrefix.append(computeIfExpression(content, part));
 						elseIfPrefix.append(")]"); //$NON-NLS-1$
 						if (!singleLine) {
 							elseIfPrefix.append(newLine);
@@ -168,6 +172,76 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 			result.add(current.toString());
 		}
 		return result;
+	}
+
+	/**
+	 * Try to compute the best "If" expression.
+	 * 
+	 * @param content
+	 *            is the editor content
+	 * @param text
+	 *            is the text that we would like to put in the new "If" block
+	 * @return the best OCL expression for the "If" block
+	 */
+	private String computeIfExpression(AcceleoSourceContent content, String text) {
+		StringBuilder result = new StringBuilder();
+		String ifCondition = findBestAvailableExpression(content, text, true, false);
+		if (ifCondition != null && ifCondition.length() > 0) {
+			result.append(ifCondition);
+		} else {
+			result.append("oclIsKindOf()"); //$NON-NLS-1$
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Try to compute the best "For" expression.
+	 * 
+	 * @param content
+	 *            is the editor content
+	 * @param text
+	 *            is the text that we would like to put in the new "For" block
+	 * @param currentNode
+	 *            is the current CST node, can be null
+	 * @return the best OCL expression for the "For" block
+	 */
+	private String computeForExpression(AcceleoSourceContent content, String text, CSTNode currentNode) {
+		StringBuilder result = new StringBuilder();
+		String forCondition = findBestAvailableExpression(content, text, false, true);
+		if (forCondition != null && forCondition.length() > 0) {
+			result.append(forCondition);
+		} else if (currentNode == null) {
+			result.append("e : E | eAllContents()"); //$NON-NLS-1$
+		} else {
+			EReference eRef = null;
+			String currentType = getCurrentVariableTypeName(currentNode, ""); //$NON-NLS-1$
+			for (Iterator<EClassifier> eTypes = content.getTypes().iterator(); eRef == null
+					&& eTypes.hasNext();) {
+				EClassifier eType = eTypes.next();
+				if (eType instanceof EClass && ((EClass)eType).getName() != null
+						&& ((EClass)eType).getName().equals(currentType)) {
+					for (EReference eReference : ((EClass)eType).getEAllReferences()) {
+						if (eReference.isContainment() && !eReference.isDerived()) {
+							eRef = eReference;
+							break;
+						}
+					}
+				}
+			}
+			if (eRef != null && eRef.getName() != null && eRef.getEType() != null
+					&& eRef.getEType().getName() != null) {
+				if (eRef.getEType().getName().length() > 0) {
+					result.append(Character.toLowerCase(eRef.getEType().getName().charAt(0)));
+				}
+				result.append(" : "); //$NON-NLS-1$
+				result.append(eRef.getEType().getName());
+				result.append(" | "); //$NON-NLS-1$
+				result.append(eRef.getName());
+			} else {
+				result.append("e : E | eAllContents()"); //$NON-NLS-1$
+			}
+		}
+		return result.toString();
 	}
 
 	/**
