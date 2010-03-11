@@ -359,6 +359,9 @@ public class CST2ASTConverter {
 		while (nextIndex > 0 && nextIndex < bodyContent.size() - 1 && isSingleLineExpression(nextNode)) {
 			if (nextNode instanceof Comment) {
 				nextIndex += increment;
+			} else if (nextNode instanceof ProtectedAreaBlock) {
+				result = true;
+				break;
 			} else if (nextNode instanceof TextExpression && isEmpty(((TextExpression)nextNode).getValue())) {
 				nextIndex += increment;
 			} else if (nextNode instanceof Block) {
@@ -432,6 +435,31 @@ public class CST2ASTConverter {
 		}
 		return astProvider.getLineOfOffset(node.getStartPosition()) == astProvider.getLineOfOffset(node
 				.getEndPosition() - 1);
+	}
+
+	/**
+	 * This is only to be used with the last text expression of a template. Specifically, it will check
+	 * whether the text expression is composed of two new line characters, and if the first has been trimmed.
+	 * 
+	 * @param textValue
+	 *            Actual value of the text expression.
+	 * @param transformedValue
+	 *            value after we shifted its beginning.
+	 * @return <code>true</code>iff the text expression is composed of two new line characters and the first
+	 *         has been trimmed.
+	 */
+	private boolean shouldKeepLastNewLine(String textValue, String transformedValue) {
+		String lineSeparator;
+		if (textValue.contains(DOS_LINE_SEPARATOR)) {
+			lineSeparator = DOS_LINE_SEPARATOR;
+		} else if (textValue.contains(UNIX_LINE_SEPARATOR)) {
+			lineSeparator = UNIX_LINE_SEPARATOR;
+		} else if (textValue.contains(MAC_LINE_SEPARATOR)) {
+			lineSeparator = MAC_LINE_SEPARATOR;
+		} else {
+			return false;
+		}
+		return textValue.equals(lineSeparator + lineSeparator) && transformedValue.equals(lineSeparator);
 	}
 
 	/**
@@ -556,7 +584,8 @@ public class CST2ASTConverter {
 			}
 			int shiftEnd;
 			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
-				shiftEnd = shiftEnd(ioValue, false);
+				boolean keepNewLine = shouldKeepLastNewLine(iTextExpression.getValue(), ioValue);
+				shiftEnd = shiftEnd(ioValue, keepNewLine);
 			} else if (index == eBody.size() - 1) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else if (!isRelevantLine(eBody, index, false)) {
