@@ -49,7 +49,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
+import org.eclipse.emf.common.util.DiagnosticException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -283,8 +285,8 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 			model.initialize(astFacadeHelper, jmergeFile);
 			if (model.canMerge()) {
 				JMerger jMerger = new JMerger(model);
-				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(text));
 				try {
+					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(text));
 					jMerger.setTargetCompilationUnit(jMerger
 							.createCompilationUnitForInputStream(new FileInputStream(file.getLocation()
 									.toFile()))); // target=last generated code
@@ -293,11 +295,20 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 				} catch (FileNotFoundException e) {
 					AcceleoUIActivator.getDefault().getLog().log(
 							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				} catch (WrappedException e) {
+					if (e.getCause() instanceof DiagnosticException) {
+						AcceleoUIActivator.getDefault().getLog().log(
+								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
+										.getString("CreateRunnableAcceleoOperation.MergerFailure"), e
+										.getCause()));
+					} else {
+						throw e;
+					}
 				}
 			} else {
 				AcceleoUIActivator.getDefault().getLog().log(
 						new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-								.getString("CreateRunnableAcceleoOperation.MergerFailure"), null)); //$NON-NLS-1$
+								.getString("CreateRunnableAcceleoOperation.MergerUnusable"), null)); //$NON-NLS-1$
 			}
 		}
 		if (!file.exists() && file.getParent().exists()) {
