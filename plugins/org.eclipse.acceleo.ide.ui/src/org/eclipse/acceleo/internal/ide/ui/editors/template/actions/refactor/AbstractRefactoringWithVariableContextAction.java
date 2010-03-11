@@ -124,7 +124,7 @@ public abstract class AbstractRefactoringWithVariableContextAction extends Actio
 		String res;
 		if (eContext != null && eContext.getType() != null) {
 			res = eContext.getType();
-		} else if (eContext != null && eContext.eContainer() instanceof CSTNode) {
+		} else if (currentNode != null && currentNode.eContainer() instanceof CSTNode) {
 			res = getCurrentVariableTypeName((CSTNode)currentNode.eContainer(), defaultType);
 		} else {
 			res = defaultType;
@@ -166,7 +166,7 @@ public abstract class AbstractRefactoringWithVariableContextAction extends Actio
 		String res;
 		if (eContext != null && eContext.getName() != null) {
 			res = eContext.getName();
-		} else if (eContext != null && eContext.eContainer() instanceof CSTNode) {
+		} else if (currentNode != null && currentNode.eContainer() instanceof CSTNode) {
 			res = getCurrentVariableName((CSTNode)currentNode.eContainer(), defaultName);
 		} else {
 			res = defaultName;
