@@ -501,7 +501,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param iModelExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ModelExpression'
 	 */
-	private void transformStepResolve(org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
+	private synchronized void transformStepResolve(
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		if (!isValidRegion(iModelExpression)) {
 			return;
 		}
