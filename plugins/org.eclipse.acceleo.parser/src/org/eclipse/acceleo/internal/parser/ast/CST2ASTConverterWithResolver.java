@@ -358,13 +358,15 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private List<org.eclipse.acceleo.model.mtl.Template> getExtendedTemplatesNamed(
 			org.eclipse.acceleo.model.mtl.Module oModule, String name, List<EClassifier> paramTypes) {
 		List<org.eclipse.acceleo.model.mtl.Template> result = new ArrayList<org.eclipse.acceleo.model.mtl.Template>();
-		result.addAll(getProtectedTemplatesNamed(oModule, name, paramTypes));
-		List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
-		computeAllExtends(allExtends, oModule);
-		Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = allExtends.iterator();
-		while (itOtherModules.hasNext()) {
-			org.eclipse.acceleo.model.mtl.Module oOtherModule = itOtherModules.next();
-			result.addAll(getProtectedTemplatesNamed(oOtherModule, name, paramTypes));
+		if (oModule != null) {
+			result.addAll(getProtectedTemplatesNamed(oModule, name, paramTypes));
+			List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
+			computeAllExtends(allExtends, oModule);
+			Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = allExtends.iterator();
+			while (itOtherModules.hasNext()) {
+				org.eclipse.acceleo.model.mtl.Module oOtherModule = itOtherModules.next();
+				result.addAll(getProtectedTemplatesNamed(oOtherModule, name, paramTypes));
+			}
 		}
 		return result;
 	}
