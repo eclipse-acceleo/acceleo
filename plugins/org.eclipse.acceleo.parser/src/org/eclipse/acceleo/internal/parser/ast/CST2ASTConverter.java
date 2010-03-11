@@ -23,6 +23,7 @@ import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
+import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateExpression;
 import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
@@ -554,7 +555,9 @@ public class CST2ASTConverter {
 				ioValue = ioValue.substring(shiftBegin);
 			}
 			int shiftEnd;
-			if (index == eBody.size() - 1) {
+			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
+				shiftEnd = shiftEnd(ioValue, false);
+			} else if (index == eBody.size() - 1) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else if (!isRelevantLine(eBody, index, false)) {
 				shiftEnd = shiftEnd(ioValue, true);
