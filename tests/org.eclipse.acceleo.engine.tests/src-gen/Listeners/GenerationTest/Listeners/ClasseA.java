@@ -1,6 +1,3 @@
-		package 	target
+		package target
 		
-			anAttribute
-, 			multivaluedAttribute
-, 			aReferenceFromA
-, 			multivaluedReference
+anAttribute, multivaluedAttribute, aReferenceFromA, multivaluedReference

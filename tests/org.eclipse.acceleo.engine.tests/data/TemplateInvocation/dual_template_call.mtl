@@ -8,13 +8,9 @@
 	[/file]
 [/template]
 
-[template public toUpperLast(s:String)]
-	[s.substring(1, s.size() - 1).concat(s.substring(s.size() - 1, s.size() - 1).toUpper())/]
-[/template]
+[template public toUpperLast(s:String)][s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toUpper())/][/template]
 
-[template public toLowerLast(s:String)]
-	[s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toLower())/]
-[/template]
+[template public toLowerLast(s:String)][s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toLower())/][/template]
 
 [query public toLowerLastQuery(s:String) : String = s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toLower())/]
-[query public toUpperLastQuery(s:String) : String = s.substring(1, s.size() - 1).concat(s.substring(s.size() - 1, s.size() - 1).toUpper())/]
+[query public toUpperLastQuery(s:String) : String = s.substring(1, s.size() - 1).concat(s.substring(s.size(), s.size()).toUpper())/]
