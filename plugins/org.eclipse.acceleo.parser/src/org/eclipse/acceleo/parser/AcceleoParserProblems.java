@@ -70,7 +70,8 @@ public class AcceleoParserProblems {
 	 * @return the list of problems
 	 */
 	public List<AcceleoParserProblem> getList() {
-		return list;
+		// We copy the problems list to prevent concurrent thread access...
+		return new ArrayList<AcceleoParserProblem>(list);
 	}
 
 	/**
