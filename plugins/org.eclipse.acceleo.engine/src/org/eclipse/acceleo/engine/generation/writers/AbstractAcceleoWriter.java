@@ -87,7 +87,10 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	 * @return Indentation of the last line that's been written by this implementation.
 	 */
 	public String getCurrentLineIndentation() {
-		return currentIndentation.toString();
+		if (currentIndentation != null) {
+			return currentIndentation.toString();
+		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
