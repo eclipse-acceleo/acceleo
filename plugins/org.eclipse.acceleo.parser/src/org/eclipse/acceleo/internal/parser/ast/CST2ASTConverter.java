@@ -302,7 +302,9 @@ public class CST2ASTConverter {
 		boolean isSingleLineExpression = isSingleLineExpression(expression);
 		boolean result = true;
 		// if not, we can shortcut this if the expression contains anything other than whitespaces
-		if (isSingleLineExpression && !isEmpty(expression.getValue())) {
+		// likewise, if our parent block is single line, this _is_ a relevant line
+		if (isSingleLineExpression((CSTNode)expression.eContainer())
+				|| (isSingleLineExpression && !isEmpty(expression.getValue()))) {
 			return true;
 		}
 
@@ -355,8 +357,8 @@ public class CST2ASTConverter {
 
 		int nextIndex = index;
 		CSTNode nextNode = bodyContent.get(nextIndex);
-		nextIndex += increment;
-		while (nextIndex > 0 && nextIndex < bodyContent.size() - 1 && isSingleLineExpression(nextNode)) {
+		while (nextIndex + increment > 0 && nextIndex + increment < bodyContent.size() - 1
+				&& isSingleLineExpression(nextNode)) {
 			if (nextNode instanceof Comment) {
 				nextIndex += increment;
 			} else if (nextNode instanceof ProtectedAreaBlock) {
@@ -563,6 +565,8 @@ public class CST2ASTConverter {
 			int shiftBegin;
 			if (index == 0 && iTextExpression.eContainer() instanceof ProtectedAreaBlock) {
 				shiftBegin = 0;
+			} else if (index == 00 && isSingleLineExpression((CSTNode)iTextExpression.eContainer())) {
+				shiftBegin = 0;
 			} else if (index > 0 && !isRelevantLine(eBody, index, true)) {
 				shiftBegin = shiftBegin(ioValue);
 			} else if (index == 0
@@ -588,11 +592,13 @@ public class CST2ASTConverter {
 			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
 				boolean keepNewLine = shouldKeepLastNewLine(iTextExpression.getValue(), ioValue);
 				shiftEnd = shiftEnd(ioValue, keepNewLine);
-			} else if (index == eBody.size() - 1) {
+			} else if (index == eBody.size() - 1
+					&& !isSingleLineExpression((CSTNode)iTextExpression.eContainer())) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else if (!isRelevantLine(eBody, index, false)) {
 				shiftEnd = shiftEnd(ioValue, true);
-			} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block) {
+			} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block
+					&& !isSingleLineExpression((CSTNode)eBody.get(index + 1))) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else {
 				shiftEnd = 0;
