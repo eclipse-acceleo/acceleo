@@ -392,6 +392,8 @@ public class CST2ASTConverter {
 
 		if (nextNode instanceof Comment) {
 			result = false;
+		} else if (nextNode instanceof ProtectedAreaBlock) {
+			result = true;
 		} else if (nextNode instanceof TextExpression) {
 			if (lookbehind && endsInEmptyLine(((TextExpression)nextNode).getValue())) {
 				result = false;
