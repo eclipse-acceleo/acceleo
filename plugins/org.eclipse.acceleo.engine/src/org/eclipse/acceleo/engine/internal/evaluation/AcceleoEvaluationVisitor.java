@@ -838,7 +838,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			visitExpression((OCLExpression)invocation.getAfter());
 		}
 		String invocationResult = context.closeContext();
-		return fitIndentationToContext(invocationResult);
+		return delegateFitIndentation(invocationResult);
 	}
 
 	/**
@@ -1457,14 +1457,14 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * 
 	 * @param source
 	 *            Text which indentation is to be altered.
+	 * @param indentation
+	 *            Indentation that is to be given to all of <em>source</em> lines.
 	 * @return The input <em>text</em> after its indentation has been modified to fit the context.
 	 */
-	private String fitIndentationToContext(String source) {
-		// FIXME fix this for traceability.
+	public String fitIndentationTo(String source, String indentation) {
 		// Do not alter the very first line (^)
 		String regex = "\r\n|\r|\n";
-		String currentIndent = context.getCurrentLineIndentation();
-		String replacement = "$0" + currentIndent;
+		String replacement = "$0" + indentation;
 
 		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
 		StringBuffer result = new StringBuffer();
@@ -1475,6 +1475,23 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		sourceMatcher.appendTail(result);
 		return result.toString();
+	}
+
+	/**
+	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate all
+	 * indentation management to it.
+	 * 
+	 * @param source
+	 *            Text which indentation is to be altered.
+	 * @return The source text after having changed all of its lines' indentation.
+	 */
+	private String delegateFitIndentation(String source) {
+		String currentIndent = context.getCurrentLineIndentation();
+		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
+		} else {
+			return fitIndentationTo(source, currentIndent);
+		}
 	}
 
 	/**

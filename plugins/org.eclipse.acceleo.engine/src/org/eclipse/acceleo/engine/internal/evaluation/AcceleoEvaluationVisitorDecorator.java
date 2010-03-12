@@ -109,6 +109,21 @@ public class AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA,
 	}
 
 	/**
+	 * This will be called to alter all lines of the given <em>text</em> so that they all fit with the given
+	 * indentation.
+	 * 
+	 * @param source
+	 *            Text which indentation is to be altered.
+	 * @param indentation
+	 *            Indentation that is to be given to all of <em>source</em> lines.
+	 * @return The input <em>text</em> after its indentation has been modified to fit the given
+	 *         <em>indentation</em>.
+	 */
+	public String fitIndentationTo(String source, String indentation) {
+		return getAcceleoDelegate().fitIndentationTo(source, indentation);
+	}
+
+	/**
 	 * Handles the evaluation of an Acceleo {@link Block}.
 	 * 
 	 * @param block
