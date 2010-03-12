@@ -468,7 +468,7 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 				} else {
 					AcceleoUIActivator.getDefault().getLog().log(
 							new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-									.getString("CreateRunnableAcceleoOperation.MergerFailure"), null)); //$NON-NLS-1$
+									.getString("CreateRunnableAcceleoOperation.MergerUnusable"), null)); //$NON-NLS-1$
 				}
 			}
 			if (!file.exists()
