@@ -53,6 +53,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.expressions.AssociationClassCallExp;
 import org.eclipse.ocl.expressions.EnumLiteralExp;
 import org.eclipse.ocl.expressions.ExpressionsPackage;
@@ -105,6 +106,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
 
+	/** Traceability needs to kno what expression is being processed at all times. */
+	private OCLExpression<C> currentExpression;
+
 	/** This will hold the stack of generated files. */
 	private LinkedList<GeneratedFile> currentFiles = new LinkedList<GeneratedFile>();
 
@@ -115,6 +119,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/** This will hold the stack of all created traceability contexts. */
 	private final LinkedList<ExpressionTrace> recordedTraces = new LinkedList<ExpressionTrace>();
+
+	/** This will be used internally to prevent trace recording for set expressions. */
+	private boolean record = true;
 
 	/** Keeps track of the variable currently being initialized. */
 	private Variable<C, PM> initializingVariable;
@@ -157,11 +164,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private InputElement protectedAreaSource;
 
 	/**
-	 * This will be set to <code>true</code> in order to bypass trace recording when evaluating if conditions.
-	 */
-	private boolean evaluatingIfCondition;
-
-	/**
 	 * Default constructor.
 	 * 
 	 * @param decoratedVisitor
@@ -185,23 +187,26 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@Override
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent) {
 		if (fireEvent && string.length() > 0) {
-			GeneratedFile generatedFile = currentFiles.getLast();
-			final ExpressionTrace trace = recordedTraces.removeLast();
-			if (protectedAreaSource != null) {
-				alterProtectedAreaTrace(string, sourceBlock, trace);
-			}
-			final int fileLength = generatedFile.getLength();
-			int addedLength = 0;
-			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-				for (GeneratedText text : entry.getValue()) {
-					addedLength += text.getEndOffset() - text.getStartOffset();
-					text.setStartOffset(text.getStartOffset() + fileLength);
-					text.setEndOffset(text.getEndOffset() + fileLength);
-					generatedFile.getGeneratedRegions().add(text);
+			if (currentFiles != null && recordedTraces != null && currentFiles.size() > 0
+					&& recordedTraces.size() > 0) {
+				GeneratedFile generatedFile = currentFiles.getLast();
+				final ExpressionTrace trace = recordedTraces.removeLast();
+				if (protectedAreaSource != null) {
+					alterProtectedAreaTrace(string, sourceBlock, trace);
 				}
+				final int fileLength = generatedFile.getLength();
+				int addedLength = 0;
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+					for (GeneratedText text : entry.getValue()) {
+						addedLength += text.getEndOffset() - text.getStartOffset();
+						text.setStartOffset(text.getStartOffset() + fileLength);
+						text.setEndOffset(text.getEndOffset() + fileLength);
+						generatedFile.getGeneratedRegions().add(text);
+					}
+				}
+				generatedFile.setLength(fileLength + addedLength);
+				trace.dispose();
 			}
-			generatedFile.setLength(fileLength + addedLength);
-			trace.dispose();
 		}
 		super.append(string, sourceBlock, source, fireEvent);
 	}
@@ -291,6 +296,29 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		super.createFileWriter(generatedFile, fileBlock, source, appendMode, charset);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#fitIndentationTo(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+	public String fitIndentationTo(String source, String indentation) {
+		String regex = "\r\n|\r|\n";
+		String replacement = "$0" + indentation;
+
+		EObject scopeEObject = retrieveScopeEObjectValue();
+
+		InputElement input = getInputElement(scopeEObject);
+		GeneratedText text = createGeneratedTextFor(currentExpression);
+		text.setEndOffset(indentation.length());
+
+		ExpressionTrace indentationTrace = new ExpressionTrace(currentExpression);
+		indentationTrace.addTrace(input, text, indentation);
+
+		return visitSubstituteOperation(source, regex, replacement, indentationTrace, true, true);
 	}
 
 	/**
@@ -491,6 +519,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public Object visitExpression(OCLExpression<C> expression) {
+		OCLExpression<C> oldExpression = currentExpression;
+		currentExpression = expression;
+
 		// Very first call of a template comes from IAcceleoEngine#doEvaluate()
 		if (scopeEObjects.size() == 0 && expression instanceof Template) {
 			for (org.eclipse.ocl.ecore.Variable var : ((Template)expression).getParameter()) {
@@ -502,10 +533,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 
-		boolean oldEvaluatingCondition = evaluatingIfCondition;
+		boolean oldRecordingValue = record;
 		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getIfBlock_IfExpr()
 				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()) {
-			evaluatingIfCondition = true;
+			record = false;
 		}
 		if (shouldRecordTrace((EReference)expression.eContainingFeature())
 				&& !(expression.eContainer() instanceof ProtectedAreaBlock)) {
@@ -518,7 +549,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			cancel();
 			throw e;
 		}
-		evaluatingIfCondition = oldEvaluatingCondition;
+		record = oldRecordingValue;
 
 		if (isPropertyCallSource(expression)) {
 			propertyCallSource = (EObject)result;
@@ -528,6 +559,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()) {
 			visitTrimOperation((String)result);
 		}
+		currentExpression = oldExpression;
 		return result;
 	}
 
@@ -576,6 +608,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		final Object result = getDelegate().visitPropertyCallExp(callExp);
 
+		propertyCallSourceExpression = oldPropertyCallSourceExpression;
+
 		if (propertyCallSource != null && result != null) {
 			InputElement propertyCallInput = getInputElement(propertyCallSource, (EStructuralFeature)callExp
 					.getReferredProperty());
@@ -590,7 +624,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 			}
 		}
-		propertyCallSourceExpression = oldPropertyCallSourceExpression;
 
 		if (isPropertyCallSource(callExp)) {
 			propertyCallSource = (EObject)result;
@@ -994,7 +1027,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		initializingVariable = null;
 		propertyCallSource = null;
 		propertyCallSourceExpression = null;
-		evaluatingIfCondition = false;
+		record = true;
 		for (VariableTrace trace : variableTraces.values()) {
 			trace.dispose();
 		}
@@ -1014,6 +1047,39 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
 		final Object result;
 
+		/*
+		 * All four "substitute" type operations will be handled the same, yet they require that argument
+		 * traces be recorded. We'll handle them apart from the rest.
+		 */
+		if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE)
+				|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL)
+				|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE)
+				|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL)) {
+			boolean substituteAll = false;
+			boolean substituteRegexes = false;
+			if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL)) {
+				substituteAll = true;
+			} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE)) {
+				substituteRegexes = true;
+			} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL)) {
+				substituteAll = true;
+				substituteRegexes = true;
+			}
+
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			boolean oldRecordingValue = record;
+			record = false;
+			Object substring = super.visitExpression(callExp.getArgument().get(0));
+			record = oldRecordingValue;
+			ExpressionTrace oldArgTrace = operationArgumentTrace;
+			operationArgumentTrace = new ExpressionTrace(callExp.getArgument().get(1));
+			Object substitution = super.visitExpression(callExp.getArgument().get(1));
+			result = visitSubstituteOperation((String)sourceObject, (String)substring, (String)substitution,
+					operationArgumentTrace, substituteRegexes, substituteAll);
+			operationArgumentTrace = oldArgTrace;
+
+			return result;
+		}
 		/*
 		 * FIXME when all cases are handled, externalize source/args evaluation before the if - else if, and
 		 * check for invalid values.
@@ -1045,15 +1111,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = visitIsAlphanumOperation((String)sourceObject);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object substring = super.visitExpression(callExp.getArgument().get(0));
-			ExpressionTrace oldArgTrace = operationArgumentTrace;
-			operationArgumentTrace = new ExpressionTrace(callExp.getArgument().get(1));
-			Object substitution = super.visitExpression(callExp.getArgument().get(1));
-			result = visitSubstituteOperation((String)sourceObject, (String)substring, (String)substitution,
-					operationArgumentTrace, false, false);
-			operationArgumentTrace = oldArgTrace;
 		} else {
 			result = super.visitOperationCallExp(callExp);
 		}
@@ -1261,11 +1318,72 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
 		StringBuffer result = new StringBuffer();
+		ExpressionTrace trace = recordedTraces.getLast();
 		boolean hasMatch = sourceMatcher.find();
+		// Note : despite its name, this could be negative
+		int addedLength = 0;
+		// FIXME This loop does _not_ take group references into account except $0 at the start
+		boolean startsWithZeroGroupRef = replacementValue.startsWith("$0");
 		while (hasMatch) {
-			// FIXME alter existing traces for this source String
-
+			// If we've already changed the String size, take it into account
+			int startIndex = sourceMatcher.start() + addedLength;
+			int endIndex = sourceMatcher.end() + addedLength;
+			if (startsWithZeroGroupRef) {
+				startIndex = endIndex;
+			}
+			int replacementLength = startIndex;
 			sourceMatcher.appendReplacement(result, replacementValue);
+			replacementLength = result.length() - startIndex;
+			// We now remove from the replacementLength the length of the replaced substring
+			replacementLength -= endIndex - startIndex;
+			addedLength += replacementLength;
+
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+					if (text.getEndOffset() < startIndex) {
+						continue;
+					}
+					/*
+					 * This can be one of five cases : 1) the text ends with a replaced substring, 2) the text
+					 * starts with a replaced substring, 3) the text contains a replaced substring, 4) the
+					 * text is contained within a replaced substring or 5) The text starts after the
+					 * replacement
+					 */
+					if (text.getStartOffset() < startIndex && text.getEndOffset() <= endIndex) {
+						text.setEndOffset(startIndex);
+					} else if (text.getStartOffset() >= startIndex && text.getEndOffset() > endIndex) {
+						text.setStartOffset(startIndex + replacementLength);
+						text.setEndOffset(text.getEndOffset() + replacementLength);
+					} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
+						// This instance of a GeneratedText is split in two by the substring
+						GeneratedText endSubstring = (GeneratedText)EcoreUtil.copy(text);
+						endSubstring.setStartOffset(endIndex + replacementLength);
+						endSubstring.setEndOffset(text.getEndOffset() + replacementLength);
+						text.setEndOffset(startIndex);
+						entry.getValue().add(endSubstring);
+					} else if (text.getStartOffset() >= startIndex && text.getEndOffset() <= endIndex) {
+						entry.getValue().remove(text);
+					} else {
+						text.setStartOffset(text.getStartOffset() + replacementLength);
+						text.setEndOffset(text.getEndOffset() + replacementLength);
+					}
+				}
+			}
+			// For each replacement that takes place, we need to add the substitution traces
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces().entrySet()) {
+				Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
+				if (existingTraces == null) {
+					existingTraces = new LinkedHashSet<GeneratedText>();
+					trace.getTraces().put(entry.getKey(), existingTraces);
+				}
+				for (GeneratedText text : entry.getValue()) {
+					GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+					copy.setStartOffset(copy.getStartOffset() + startIndex);
+					copy.setEndOffset(copy.getEndOffset() + startIndex);
+					existingTraces.add(copy);
+				}
+			}
+
 			if (!substituteAll) {
 				// Do once
 				break;
@@ -1540,23 +1658,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@SuppressWarnings("unchecked")
 	private boolean shouldRecordTrace(OCLExpression<C> expression) {
-		boolean record = true;
-		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getForBlock_IterSet()
-				|| evaluatingIfCondition) {
+		boolean result = true;
+		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getForBlock_IterSet() || !record) {
 			return false;
 		}
 		if (isPropertyCallSource(expression)) {
-			record = false;
+			result = false;
 		} else if (isOperationCallSource(expression)) {
 			OperationCallExp<C, O> call = (OperationCallExp<C, O>)expression.eContainer();
 			EOperation op = (EOperation)call.getReferredOperation();
-			if (isTraceabilityImpactingOperation(call)) {
-				record = false;
-			} else if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
-				record = false;
+			/*
+			 * if (isTraceabilityImpactingOperation(call)) { result = false; } else
+			 */
+			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
+				result = false;
 			}
 		}
-		return record;
+		return result;
 	}
 
 	/**
