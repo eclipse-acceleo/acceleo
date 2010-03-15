@@ -163,8 +163,6 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName);
-				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName);
@@ -178,7 +176,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					}
 					altered.add(alteredSequence);
 					type = alteredSequence;
-				} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)) {
+				} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)
+						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName)) {
 					type = ((TypeExp)args.get(0)).getReferredType();
 				}
 			} else if (args.get(0) instanceof StringLiteralExp
