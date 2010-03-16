@@ -152,6 +152,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>eContainer( OclAny ) : Sequence</b><br/>
 	 * Returns the first container of the receiver that if of the given type.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_OCLANY_ECONTAINER = "eContainer"; //$NON-NLS-1$
 
@@ -275,6 +277,8 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns <code>true</code> if self is equal to <code>other</code>, without considering casing in the
 	 * comparison; <code>false</code> otherwise.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_STRING_EQUALSIGNORECASE = "equalsIgnoreCase"; //$NON-NLS-1$
 
@@ -285,6 +289,8 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the index of the last occurence of <code>substring</code> in self, <code>-1</code> if self
 	 * doesn't contain this particular substring.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_STRING_LASTINDEX = "lastIndex"; //$NON-NLS-1$
 
@@ -294,6 +300,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>matches( String regex ) : Integer</b><br/>
 	 * Returns <code>true</code> if <code>self</code> matches the given <code>regex</code>.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_STRING_MATCHES = "matches"; //$NON-NLS-1$
 
@@ -348,6 +356,8 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the substring composed of all characters of <code>self</code> starting at index
 	 * <code>startIndex</code>.
 	 * </p>
+	 * 
+	 * @since 0.9
 	 */
 	public static final String OPERATION_STRING_SUBSTRING = "substring"; //$NON-NLS-1$
 
