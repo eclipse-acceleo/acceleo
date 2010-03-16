@@ -28,7 +28,7 @@ public interface IAcceleoConstants {
 	 * This special property must be set in order for us to be able to use the getProperty(fileName, key)
 	 * non-standard operation.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	String PROPERTY_KEY_FILE_NAME = "properties.holder.file.name"; //$NON-NLS-1$
 
@@ -314,7 +314,7 @@ public interface IAcceleoConstants {
 	 * <p>
 	 * package <b>::</b> EClass
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	String NAMESPACE_SEPARATOR = "::"; //$NON-NLS-1$
 

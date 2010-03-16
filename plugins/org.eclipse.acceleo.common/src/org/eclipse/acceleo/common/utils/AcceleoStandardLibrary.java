@@ -33,7 +33,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toString&quot; standard Integer operation.
 	 * <p>
-	 * <b>toString( ) : String</b><br/> Converts the integer self to a string.
+	 * <b>toString( ) : String</b><br/>
+	 * Converts the integer self to a string.
 	 * </p>
 	 * <p>
 	 * <b>Note</b> that this has been replaced by the
@@ -45,7 +46,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toString&quot; standard Real operation.
 	 * <p>
-	 * <b>toString( ) : String</b><br/> Converts the real self to a string.
+	 * <b>toString( ) : String</b><br/>
+	 * Converts the real self to a string.
 	 * </p>
 	 * <p>
 	 * <b>Note</b> that this has been replaced by the
@@ -57,8 +59,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;first&quot; standard String operation.
 	 * <p>
-	 * <b>first( Integer n ) : String</b><br/> Returns first n characters of self, or self if size of self is
-	 * less than n.
+	 * <b>first( Integer n ) : String</b><br/>
+	 * Returns first n characters of self, or self if size of self is less than n.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_FIRST = "first"; //$NON-NLS-1$
@@ -66,8 +68,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;index&quot; standard String operation.
 	 * <p>
-	 * <b>index( String r ) : Integer</b><br/> Returns the index of substring r in self, or -1 if r is not in
-	 * self.
+	 * <b>index( String r ) : Integer</b><br/>
+	 * Returns the index of substring r in self, or -1 if r is not in self.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_INDEX = "index"; //$NON-NLS-1$
@@ -75,8 +77,9 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;isAlpha&quot; standard String operation.
 	 * <p>
-	 * <b>isAlpha() : Boolean</b><br/> Returns <code>true</code> if self consists only of alphabetical
-	 * characters, <code>false</code> otherwise.
+	 * <b>isAlpha() : Boolean</b><br/>
+	 * Returns <code>true</code> if self consists only of alphabetical characters, <code>false</code>
+	 * otherwise.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_ISALPHA = "isAlpha"; //$NON-NLS-1$
@@ -84,8 +87,9 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;isAlphanum&quot; standard String operation.
 	 * <p>
-	 * <b>isAlphanum() : Boolean</b><br/> Returns <code>true</code> if self consists only of alphanumeric
-	 * characters, <code>false</code> otherwise.
+	 * <b>isAlphanum() : Boolean</b><br/>
+	 * Returns <code>true</code> if self consists only of alphanumeric characters, <code>false</code>
+	 * otherwise.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_ISALPHANUM = "isAlphanum"; //$NON-NLS-1$
@@ -93,8 +97,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;last&quot; standard String operation.
 	 * <p>
-	 * <b>last( Integer n ) : String</b><br/> Returns last n characters of self, or self if size of self is
-	 * less than n.
+	 * <b>last( Integer n ) : String</b><br/>
+	 * Returns last n characters of self, or self if size of self is less than n.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_LAST = "last"; //$NON-NLS-1$
@@ -102,8 +106,9 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;strcmp&quot; standard String operation.
 	 * <p>
-	 * <b>strcmp( String s1 ) : Integer</b><br/> Returns an integer less than zero, equal to zero, or greater
-	 * than zero depending on whether s1 is lexicographically less than, equal to, or greater than self.
+	 * <b>strcmp( String s1 ) : Integer</b><br/>
+	 * Returns an integer less than zero, equal to zero, or greater than zero depending on whether s1 is
+	 * lexicographically less than, equal to, or greater than self.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_STRCMP = "strcmp"; //$NON-NLS-1$
@@ -111,8 +116,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;strstr&quot; standard String operation.
 	 * <p>
-	 * <b>strstr( String r ) : Boolean</b><br/> Searches for string r in self. Returns true if found, false
-	 * otherwise.
+	 * <b>strstr( String r ) : Boolean</b><br/>
+	 * Searches for string r in self. Returns true if found, false otherwise.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_STRSTR = "strstr"; //$NON-NLS-1$
@@ -120,9 +125,9 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;strtok&quot; standard String operation.
 	 * <p>
-	 * <b>strtok( String s1, Integer flag ) : String</b><br/> Breaks the string self into a sequence of tokens
-	 * each of which is delimited by any character in string s1. The parameter flag should be 0 when strtok is
-	 * called for the first time, 1 subsequently.
+	 * <b>strtok( String s1, Integer flag ) : String</b><br/>
+	 * Breaks the string self into a sequence of tokens each of which is delimited by any character in string
+	 * s1. The parameter flag should be 0 when strtok is called for the first time, 1 subsequently.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_STRTOK = "strtok"; //$NON-NLS-1$
@@ -130,9 +135,9 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;substitute&quot; standard String operation.
 	 * <p>
-	 * <b>substitute( String r, String t ) : String</b><br/> Substitutes substring r in self by substring t
-	 * and returns the resulting string. If there is no occurrence of the substring, it returns the original
-	 * string.
+	 * <b>substitute( String r, String t ) : String</b><br/>
+	 * Substitutes substring r in self by substring t and returns the resulting string. If there is no
+	 * occurrence of the substring, it returns the original string.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_SUBSTITUTE = "substitute"; //$NON-NLS-1$
@@ -140,8 +145,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toLowerFirst&quot; standard String operation.
 	 * <p>
-	 * <b>toLowerFirst() : String</b><br/> Creates a copy of self with first character converted to lowercase
-	 * and returns it.
+	 * <b>toLowerFirst() : String</b><br/>
+	 * Creates a copy of self with first character converted to lowercase and returns it.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_TOLOWERFIRST = "toLowerFirst"; //$NON-NLS-1$
@@ -149,8 +154,8 @@ public final class AcceleoStandardLibrary {
 	/**
 	 * Name of the &quot;toUpperFirst&quot; standard String operation.
 	 * <p>
-	 * <b>toUpperFirst() : String</b><br/> Creates a copy of self with first character converted to uppercase
-	 * and returns it.
+	 * <b>toUpperFirst() : String</b><br/>
+	 * Creates a copy of self with first character converted to uppercase and returns it.
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_TOUPPERFIRST = "toUpperFirst"; //$NON-NLS-1$
@@ -168,7 +173,7 @@ public final class AcceleoStandardLibrary {
 	private static EClass integerType;
 
 	/** NS URI of the mtlstdlib.ecore which defines the Acceleo standard operation library. */
-	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/0.8.0/mtlstdlib.ecore"; //$NON-NLS-1$
+	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/3.0/mtlstdlib.ecore"; //$NON-NLS-1$
 
 	/** EClass for the Acceleo standard library's "Real" type. */
 	private static EClass realType;

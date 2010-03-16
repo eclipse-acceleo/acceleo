@@ -39,7 +39,7 @@ public final class AcceleoNonStandardLibrary {
 	 * returns the index of the last occurence of <code>element</code> in <code>self</code>.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_COLLECTION_LASTINDEXOF = "lastIndexOf"; //$NON-NLS-1$
 
@@ -65,7 +65,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns all elements from the source collection in reverse order.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_COLLECTION_REVERSE = "reverse"; //$NON-NLS-1$
 
@@ -100,7 +100,7 @@ public final class AcceleoNonStandardLibrary {
 	 * <code>separator</code> String.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_COLLECTION_SEP = "sep"; //$NON-NLS-1$
 
@@ -153,7 +153,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the first container of the receiver that if of the given type.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_OCLANY_ECONTAINER = "eContainer"; //$NON-NLS-1$
 
@@ -165,7 +165,7 @@ public final class AcceleoNonStandardLibrary {
 	 * can as well be a collection as a single value.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_OCLANY_EGET = "eGet"; //$NON-NLS-1$
 
@@ -207,7 +207,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the value of the first context at or above the current context of type <code>filter</code>.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_OCLANY_CURRENT = "current"; //$NON-NLS-1$
 
@@ -235,7 +235,7 @@ public final class AcceleoNonStandardLibrary {
 	 * to the given name, with parameters substituted with the given values.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_OCLANY_GETPROPERTY = "getProperty"; //$NON-NLS-1$
 
@@ -278,7 +278,7 @@ public final class AcceleoNonStandardLibrary {
 	 * comparison; <code>false</code> otherwise.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_STRING_EQUALSIGNORECASE = "equalsIgnoreCase"; //$NON-NLS-1$
 
@@ -290,7 +290,7 @@ public final class AcceleoNonStandardLibrary {
 	 * doesn't contain this particular substring.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_STRING_LASTINDEX = "lastIndex"; //$NON-NLS-1$
 
@@ -301,7 +301,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns <code>true</code> if <code>self</code> matches the given <code>regex</code>.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_STRING_MATCHES = "matches"; //$NON-NLS-1$
 
@@ -357,7 +357,7 @@ public final class AcceleoNonStandardLibrary {
 	 * <code>startIndex</code>.
 	 * </p>
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String OPERATION_STRING_SUBSTRING = "substring"; //$NON-NLS-1$
 
@@ -386,7 +386,7 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the type "Collection" used for common EOperations on OCL collection.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String TYPE_COLLECTION_NAME = "Collection(T)"; //$NON-NLS-1$
 
@@ -396,14 +396,14 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the type "OrderedSet" used for common EOperations on OCL OrderedSet.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String TYPE_ORDEREDSET_NAME = "OrderedSet(T)"; //$NON-NLS-1$
 
 	/**
 	 * Name of the type "Sequence" used for common EOperations on OCL Sequence.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static final String TYPE_SEQUENCE_NAME = "Sequence(T)"; //$NON-NLS-1$
 
@@ -411,7 +411,7 @@ public final class AcceleoNonStandardLibrary {
 	private static EPackage nonStdLibPackage;
 
 	/** NS URI of the mtlnonstdlib.ecore which defines the Acceleo non-standard operation library. */
-	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore"; //$NON-NLS-1$
+	private static final String NS_URI = "http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore"; //$NON-NLS-1$
 
 	/** EClass for the Acceleo non-standard library's "Collection" type. */
 	private static EClass collectionType;
