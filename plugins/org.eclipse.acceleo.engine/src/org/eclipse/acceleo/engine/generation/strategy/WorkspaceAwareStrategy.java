@@ -45,7 +45,7 @@ import org.eclipse.core.runtime.IStatus;
  * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	/**

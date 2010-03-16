@@ -187,7 +187,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * 
 	 * @param acceleoProfile
 	 *            is the new debugger to consider
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static void setProfile(Profiler acceleoProfile) {
 		profile = acceleoProfile;

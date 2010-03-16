@@ -78,7 +78,7 @@ public class AcceleoEvaluationContext {
 	 * This will be set to true if one of the registered generation listener is interested in generation end
 	 * notifications.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	protected final boolean notifyOnGenerationEnd;
 

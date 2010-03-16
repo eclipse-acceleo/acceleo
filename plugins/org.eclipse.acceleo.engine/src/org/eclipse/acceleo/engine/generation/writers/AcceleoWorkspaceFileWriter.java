@@ -36,7 +36,7 @@ import org.eclipse.emf.common.EMFPlugin;
  * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 	/** Keeps a reference to the target file's absolute path. */

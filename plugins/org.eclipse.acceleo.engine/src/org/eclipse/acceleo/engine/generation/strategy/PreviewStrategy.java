@@ -31,7 +31,7 @@ import org.eclipse.acceleo.engine.generation.writers.AcceleoStringWriter;
  * This generation strategy is meant to be used for preview purposes only : no files will be written to disk.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class PreviewStrategy extends AbstractGenerationStrategy {
 	/** Default size to be used for new buffers. */

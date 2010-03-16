@@ -41,7 +41,7 @@ import org.eclipse.acceleo.engine.generation.writers.AcceleoFileWriter;
  * writing the files. This is not to be used with a project under clearcase for example.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class DefaultStrategy extends AbstractGenerationStrategy {
 	/** This will be populated with the list of tasks currently executing fot the creation of lost files. */
@@ -169,7 +169,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 	 * This will be used to create lost files.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	protected final class LostFileCreator implements Callable<Object> {
 		/** Lost protected areas. */

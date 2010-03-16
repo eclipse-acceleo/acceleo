@@ -19,7 +19,7 @@ import java.io.Writer;
  * {@link AcceleoWriterDecorator} instead.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public abstract class AbstractAcceleoWriter extends Writer {
 	/** Default size to be used for new buffers. */

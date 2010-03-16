@@ -41,7 +41,7 @@ import org.eclipse.ocl.ecore.Variable;
  * This class can be used to launch the generation of an Acceleo template.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class AcceleoEngine implements IAcceleoEngine {
 	/** Externalized name of the "self" context variable to avoid too many distinct uses. */
@@ -69,7 +69,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * This will be set to true if one of the registered generation listener is interested in generation end
 	 * notifications.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	protected boolean notifyOnGenerationEnd;
 
@@ -93,7 +93,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(java.io.File)
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void addProperties(File propertiesHolder) throws IOException {
 		final Properties property = new Properties();
@@ -111,7 +111,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(java.util.Map)
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void addProperties(Map<String, String> customProps) {
 		customProperties.putAll(customProps);
@@ -165,7 +165,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeCustomProperties(java.util.Set)
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removeCustomProperties(Set<String> customPropertyKeys) {
 		for (String key : customPropertyKeys) {
@@ -187,7 +187,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeProperties(java.io.File)
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removeProperties(File propertiesHolder) {
 		loadedProperties.remove(propertiesHolder);
@@ -197,7 +197,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#reset()
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void reset() {
 		listeners.clear();

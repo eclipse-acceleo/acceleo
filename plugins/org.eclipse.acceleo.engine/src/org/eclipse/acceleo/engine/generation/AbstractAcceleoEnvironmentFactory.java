@@ -19,7 +19,7 @@ import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
  * Base implementation of the environment factory used by Acceleo.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public abstract class AbstractAcceleoEnvironmentFactory extends EcoreEnvironmentFactory {
 	/**

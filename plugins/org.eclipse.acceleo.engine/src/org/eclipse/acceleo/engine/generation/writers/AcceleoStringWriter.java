@@ -27,7 +27,7 @@ import org.eclipse.emf.common.EMFPlugin;
  * Writer that will previously merge the content of an writer with the new content through JMerge.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public class AcceleoStringWriter extends AbstractAcceleoWriter {
 	/**

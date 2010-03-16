@@ -37,7 +37,7 @@ import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
  * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public interface IAcceleoGenerationStrategy {
 	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */

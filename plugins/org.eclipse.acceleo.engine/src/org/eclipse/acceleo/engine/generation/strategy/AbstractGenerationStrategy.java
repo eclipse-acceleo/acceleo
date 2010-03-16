@@ -23,7 +23,7 @@ import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
  * This may be extended instead of {@link IAcceleoGenerationStrategy} to ease the implementation.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public abstract class AbstractGenerationStrategy implements IAcceleoGenerationStrategy {
 	/**

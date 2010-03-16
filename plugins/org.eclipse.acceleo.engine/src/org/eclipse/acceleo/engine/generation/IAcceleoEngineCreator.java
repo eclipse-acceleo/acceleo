@@ -15,7 +15,7 @@ package org.eclipse.acceleo.engine.generation;
  * created.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public interface IAcceleoEngineCreator {
 	/**

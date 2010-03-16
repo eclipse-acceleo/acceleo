@@ -28,7 +28,7 @@ import org.eclipse.emf.common.EMFPlugin;
  * that will previously merge the content of an existing file with the new content through JMerge.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 0.9
+ * @since 3.0
  */
 public final class AcceleoFileWriter extends AbstractAcceleoWriter {
 	/** If using JMerge, this will be used as the charset for the file created with the merged content. */

@@ -62,7 +62,7 @@ public final class AcceleoService {
 	/**
 	 * Instantiates an instance of the service with a default generation strategy.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public AcceleoService() {
 		this(null);
@@ -74,7 +74,7 @@ public final class AcceleoService {
 	 * 
 	 * @param generationStrategy
 	 *            Generation strategy that'll be used for this generation.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public AcceleoService(IAcceleoGenerationStrategy generationStrategy) {
 		if (generationStrategy == null) {
@@ -92,7 +92,7 @@ public final class AcceleoService {
 	 * 
 	 * @param listener
 	 *            The new listener that is to be registered for notification.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static void addStaticListener(IAcceleoTextGenerationListener listener) {
 		STATIC_LISTENERS.add(listener);
@@ -103,7 +103,7 @@ public final class AcceleoService {
 	 * 
 	 * @param listener
 	 *            The listener that is to be removed from the notification loops.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static void removeStaticListener(IAcceleoTextGenerationListener listener) {
 		STATIC_LISTENERS.remove(listener);
@@ -130,7 +130,7 @@ public final class AcceleoService {
 	 * 
 	 * @param customProperties
 	 *            key/value pairs that are to be added to the generation context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void addProperties(Map<String, String> customProperties) {
 		generationEngine.addProperties(customProperties);
@@ -169,7 +169,7 @@ public final class AcceleoService {
 	 * @throws IOException
 	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
 	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void addPropertiesFile(File propertiesFile) throws IOException {
 		if (propertiesFile.exists()) {
@@ -214,7 +214,7 @@ public final class AcceleoService {
 	 * @throws IOException
 	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
 	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void addPropertiesFile(String propertiesFilePath) throws IOException {
 		final File propertiesFile;
@@ -231,7 +231,7 @@ public final class AcceleoService {
 	/**
 	 * Properly disposes of everything that could have been loaded from this service.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void dispose() {
 		generationEngine.reset();
@@ -274,7 +274,7 @@ public final class AcceleoService {
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, Monitor monitor) {
@@ -362,7 +362,7 @@ public final class AcceleoService {
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			File generationRoot, Monitor monitor) {
@@ -476,7 +476,7 @@ public final class AcceleoService {
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public Map<String, String> doGenerate(Template template, EObject model, File generationRoot,
 			Monitor monitor) {
@@ -582,7 +582,7 @@ public final class AcceleoService {
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public Map<String, String> doGenerateTemplate(Template template, List<? extends Object> arguments,
 			File generationRoot, Monitor monitor) {
@@ -614,7 +614,7 @@ public final class AcceleoService {
 	 * 
 	 * @param customPropertyKeys
 	 *            Keys of the custom property pairs that are to be removed from the context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removeProperties(Set<String> customPropertyKeys) {
 		generationEngine.removeCustomProperties(customPropertyKeys);
@@ -626,7 +626,7 @@ public final class AcceleoService {
 	 * @param propertiesFile
 	 *            File from which has been created the properties holder that is to be removed from the
 	 *            generation context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removePropertiesFile(File propertiesFile) {
 		generationEngine.removeProperties(propertiesFile);
@@ -638,7 +638,7 @@ public final class AcceleoService {
 	 * @param propertiesFilePath
 	 *            Path from which has been loaded the properties file that is to be removed from the
 	 *            generation context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removePropertiesFile(String propertiesFilePath) {
 		try {
@@ -660,7 +660,7 @@ public final class AcceleoService {
 	 * 
 	 * @param customPropertyKey
 	 *            Key of the custom property pair that is to be removed from the context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void removeProperty(String customPropertyKey) {
 		final Set<String> properties = new HashSet<String>();

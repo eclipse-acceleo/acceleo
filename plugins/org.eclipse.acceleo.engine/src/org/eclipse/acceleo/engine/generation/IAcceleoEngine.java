@@ -50,7 +50,7 @@ public interface IAcceleoEngine {
 	 *            The properties catalog that is to be added to the generation context.
 	 * @throws IOException
 	 *             This will be thrown if any exception occurs while reading the file.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	void addProperties(File propertiesFile) throws IOException;
 
@@ -61,7 +61,7 @@ public interface IAcceleoEngine {
 	 * 
 	 * @param customProperties
 	 *            Pairs that are to be added to the generation context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	void addProperties(Map<String, String> customProperties);
 
@@ -94,7 +94,7 @@ public interface IAcceleoEngine {
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
 	 *         mapping all file pathes to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	Map<String, String> evaluate(Template template, List<? extends Object> arguments, File generationRoot,
 			IAcceleoGenerationStrategy strategy, Monitor monitor);
@@ -104,7 +104,7 @@ public interface IAcceleoEngine {
 	 * 
 	 * @param customPropertyKeys
 	 *            Keys which pairs are to be removed from the context.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	void removeCustomProperties(Set<String> customPropertyKeys);
 
@@ -122,14 +122,14 @@ public interface IAcceleoEngine {
 	 * 
 	 * @param propertiesFile
 	 *            Properties fiel that is to be removed from the stack.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	void removeProperties(File propertiesFile);
 
 	/**
 	 * This can be used to reset all contextual information from this engine.
 	 * 
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	void reset();
 }
