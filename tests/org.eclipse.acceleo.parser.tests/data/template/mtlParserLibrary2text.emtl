@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/0.8.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
   <mtl:Module name="mtlParserLibrary2text" imports="/0">
     <input>
       <takesTypesFrom href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#/"/>
@@ -15,7 +15,6 @@
       </body>
       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;&#xD;&#xA;"/>
       <body xsi:type="mtl:IfBlock">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
         <body xsi:type="mtl:IfBlock">
           <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#x9;&#x9;aaa&#xD;&#xA;"/>
           <ifExpr xsi:type="ocl.ecore:OperationCallExp">
@@ -53,7 +52,6 @@
             </ifExpr>
           </elseIf>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
         <ifExpr xsi:type="ocl.ecore:OperationCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
           <source xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="1">
@@ -109,30 +107,24 @@
       </body>
       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;"/>
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
       </body>
       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;"/>
       <body xsi:type="mtl:TraceBlock">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
         <modelElement xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
         </modelElement>
       </body>
       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;"/>
       <body xsi:type="mtl:LetBlock">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
         <elseLet>
-          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
           <letVariable name="s2">
             <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           </letVariable>
         </elseLet>
-        <else>
-          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=""/>
-        </else>
+        <else/>
         <letVariable name="s1">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </letVariable>
@@ -305,7 +297,7 @@
       </eOperations>
       <eOperations name="tokenize">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(String)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(String)"/>
         <eParameters name="delimiters">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
@@ -315,6 +307,34 @@
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
         <eParameters name="substring">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="matches">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="regex">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="lastIndex">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="equalsIgnoreCase">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="other">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="substring">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="startIndex">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
         </eParameters>
       </eOperations>
       <eOperations name="toLowerCase">
@@ -356,44 +376,44 @@
       </eAnnotations>
       <eOperations name="eAllContents">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
       </eOperations>
       <eOperations name="eAllContents">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
       </eOperations>
       <eOperations name="ancestors">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
       </eOperations>
       <eOperations name="ancestors">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
       </eOperations>
       <eOperations name="siblings">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
       </eOperations>
       <eOperations name="siblings">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
       </eOperations>
       <eOperations name="eInverse">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
       </eOperations>
       <eOperations name="eInverse">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
@@ -412,19 +432,19 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
         <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         </eParameters>
       </eOperations>
       <eOperations name="current">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
         <eParameters name="index">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
         </eParameters>
       </eOperations>
       <eOperations name="current">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
@@ -443,7 +463,7 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
         <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         </eParameters>
       </eOperations>
       <eOperations name="getProperty">
@@ -466,7 +486,7 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
         <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         </eParameters>
       </eOperations>
       <eOperations name="eGet">
@@ -478,7 +498,7 @@
       </eOperations>
       <eOperations name="eContainer">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
         <eParameters name="filter">
           <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
         </eParameters>
@@ -490,9 +510,41 @@
       </eAnnotations>
       <eOperations name="sep">
         <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
         <eParameters name="separatorString">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+      </eAnnotations>
+      <eOperations name="reverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+      </eOperations>
+      <eOperations name="lastIndexOf">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="element">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+      </eAnnotations>
+      <eOperations name="reverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+      </eOperations>
+      <eOperations name="lastIndexOf">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="element">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
         </eParameters>
       </eOperations>
     </eClassifiers>
@@ -665,282 +717,254 @@
       <details key="end" value="393"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/bookToText/@body.3/@body.0">
-      <details key="start" value="302"/>
-      <details key="end" value="302"/>
-    </eAnnotations>
-    <eAnnotations source="positions.7" references="/0/bookToText/@body.3/@body.1">
       <details key="start" value="303"/>
       <details key="end" value="386"/>
     </eAnnotations>
-    <eAnnotations source="positions.8" references="/0/bookToText/@body.3/@body.1/@body.0">
+    <eAnnotations source="positions.7" references="/0/bookToText/@body.3/@body.0/@body.0">
       <details key="start" value="324"/>
       <details key="end" value="331"/>
     </eAnnotations>
-    <eAnnotations source="positions.9" references="/0/bookToText/@body.3/@body.1/@ifExpr">
+    <eAnnotations source="positions.8" references="/0/bookToText/@body.3/@body.0/@ifExpr">
       <details key="start" value="307"/>
       <details key="end" value="321"/>
     </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/bookToText/@body.3/@body.1/@ifExpr/@source">
+    <eAnnotations source="positions.9" references="/0/bookToText/@body.3/@body.0/@ifExpr/@source">
       <details key="start" value="308"/>
       <details key="end" value="315"/>
     </eAnnotations>
-    <eAnnotations source="positions.11" references="/0/bookToText/@body.3/@body.1/@ifExpr/@source/b">
+    <eAnnotations source="positions.10" references="/0/bookToText/@body.3/@body.0/@ifExpr/@source/b">
       <details key="start" value="308"/>
       <details key="end" value="309"/>
     </eAnnotations>
-    <eAnnotations source="positions.12" references="/0/bookToText/@body.3/@body.1/@ifExpr/@argument.0">
+    <eAnnotations source="positions.11" references="/0/bookToText/@body.3/@body.0/@ifExpr/@argument.0">
       <details key="start" value="318"/>
       <details key="end" value="320"/>
     </eAnnotations>
-    <eAnnotations source="positions.13" references="/0/bookToText/@body.3/@body.1/@else">
+    <eAnnotations source="positions.12" references="/0/bookToText/@body.3/@body.0/@else">
       <details key="start" value="365"/>
       <details key="end" value="381"/>
     </eAnnotations>
-    <eAnnotations source="positions.14" references="/0/bookToText/@body.3/@body.1/@else/@body.0">
+    <eAnnotations source="positions.13" references="/0/bookToText/@body.3/@body.0/@else/@body.0">
       <details key="start" value="373"/>
       <details key="end" value="380"/>
     </eAnnotations>
-    <eAnnotations source="positions.15" references="/0/bookToText/@body.3/@body.1/@elseIf.0">
+    <eAnnotations source="positions.14" references="/0/bookToText/@body.3/@body.0/@elseIf.0">
       <details key="start" value="332"/>
       <details key="end" value="365"/>
     </eAnnotations>
-    <eAnnotations source="positions.16" references="/0/bookToText/@body.3/@body.1/@elseIf.0/@body.0">
+    <eAnnotations source="positions.15" references="/0/bookToText/@body.3/@body.0/@elseIf.0/@body.0">
       <details key="start" value="357"/>
       <details key="end" value="364"/>
     </eAnnotations>
-    <eAnnotations source="positions.17" references="/0/bookToText/@body.3/@body.1/@elseIf.0/@ifExpr">
+    <eAnnotations source="positions.16" references="/0/bookToText/@body.3/@body.0/@elseIf.0/@ifExpr">
       <details key="start" value="340"/>
       <details key="end" value="354"/>
     </eAnnotations>
-    <eAnnotations source="positions.18" references="/0/bookToText/@body.3/@body.1/@elseIf.0/@ifExpr/@source">
+    <eAnnotations source="positions.17" references="/0/bookToText/@body.3/@body.0/@elseIf.0/@ifExpr/@source">
       <details key="start" value="341"/>
       <details key="end" value="348"/>
     </eAnnotations>
-    <eAnnotations source="positions.19" references="/0/bookToText/@body.3/@body.1/@elseIf.0/@ifExpr/@source/b">
+    <eAnnotations source="positions.18" references="/0/bookToText/@body.3/@body.0/@elseIf.0/@ifExpr/@source/b">
       <details key="start" value="341"/>
       <details key="end" value="342"/>
     </eAnnotations>
-    <eAnnotations source="positions.20" references="/0/bookToText/@body.3/@body.1/@elseIf.0/@ifExpr/@argument.0">
+    <eAnnotations source="positions.19" references="/0/bookToText/@body.3/@body.0/@elseIf.0/@ifExpr/@argument.0">
       <details key="start" value="351"/>
       <details key="end" value="353"/>
     </eAnnotations>
-    <eAnnotations source="positions.21" references="/0/bookToText/@body.3/@body.2">
-      <details key="start" value="388"/>
-      <details key="end" value="388"/>
-    </eAnnotations>
-    <eAnnotations source="positions.22" references="/0/bookToText/@body.3/@ifExpr">
+    <eAnnotations source="positions.20" references="/0/bookToText/@body.3/@ifExpr">
       <details key="start" value="276"/>
       <details key="end" value="299"/>
     </eAnnotations>
-    <eAnnotations source="positions.23" references="/0/bookToText/@body.3/@ifExpr/@source">
+    <eAnnotations source="positions.21" references="/0/bookToText/@body.3/@ifExpr/@source">
       <details key="start" value="277"/>
       <details key="end" value="278"/>
     </eAnnotations>
-    <eAnnotations source="positions.24" references="/0/bookToText/@body.3/@ifExpr/@argument.0">
+    <eAnnotations source="positions.22" references="/0/bookToText/@body.3/@ifExpr/@argument.0">
       <details key="start" value="281"/>
       <details key="end" value="298"/>
     </eAnnotations>
-    <eAnnotations source="positions.25" references="/0/bookToText/@body.3/@ifExpr/@argument.0/@source">
+    <eAnnotations source="positions.23" references="/0/bookToText/@body.3/@ifExpr/@argument.0/@source">
       <details key="start" value="281"/>
       <details key="end" value="290"/>
     </eAnnotations>
-    <eAnnotations source="positions.26" references="/0/bookToText/@body.3/@ifExpr/@argument.0/@source/l">
+    <eAnnotations source="positions.24" references="/0/bookToText/@body.3/@ifExpr/@argument.0/@source/l">
       <details key="start" value="281"/>
       <details key="end" value="282"/>
     </eAnnotations>
-    <eAnnotations source="positions.27" references="/0/bookToText/@body.4">
+    <eAnnotations source="positions.25" references="/0/bookToText/@body.4">
       <details key="start" value="395"/>
       <details key="end" value="397"/>
     </eAnnotations>
-    <eAnnotations source="positions.28" references="/0/bookToText/@body.5">
+    <eAnnotations source="positions.26" references="/0/bookToText/@body.5">
       <details key="start" value="397"/>
       <details key="end" value="504"/>
     </eAnnotations>
-    <eAnnotations source="positions.29" references="/0/bookToText/@body.5/@init">
+    <eAnnotations source="positions.27" references="/0/bookToText/@body.5/@init">
       <details key="start" value="466"/>
       <details key="end" value="480"/>
     </eAnnotations>
-    <eAnnotations source="positions.30" references="/0/bookToText/@body.5/@init/@variable.0">
+    <eAnnotations source="positions.28" references="/0/bookToText/@body.5/@init/@variable.0">
       <details key="start" value="467"/>
       <details key="end" value="478"/>
     </eAnnotations>
-    <eAnnotations source="positions.31" references="/0/bookToText/@body.5/@body.0">
+    <eAnnotations source="positions.29" references="/0/bookToText/@body.5/@body.0">
       <details key="start" value="483"/>
       <details key="end" value="487"/>
     </eAnnotations>
-    <eAnnotations source="positions.32" references="/0/bookToText/@body.5/@body.1">
+    <eAnnotations source="positions.30" references="/0/bookToText/@body.5/@body.1">
       <details key="start" value="488"/>
       <details key="end" value="494"/>
     </eAnnotations>
-    <eAnnotations source="positions.33" references="/0/bookToText/@body.5/@body.1/w">
+    <eAnnotations source="positions.31" references="/0/bookToText/@body.5/@body.1/w">
       <details key="start" value="488"/>
       <details key="end" value="489"/>
     </eAnnotations>
-    <eAnnotations source="positions.34" references="/0/bookToText/@body.5/@body.2">
+    <eAnnotations source="positions.32" references="/0/bookToText/@body.5/@body.2">
       <details key="start" value="496"/>
       <details key="end" value="498"/>
     </eAnnotations>
-    <eAnnotations source="positions.35" references="/0/bookToText/@body.5/w">
+    <eAnnotations source="positions.33" references="/0/bookToText/@body.5/w">
       <details key="start" value="403"/>
       <details key="end" value="413"/>
     </eAnnotations>
-    <eAnnotations source="positions.36" references="/0/bookToText/@body.5/@iterSet">
+    <eAnnotations source="positions.34" references="/0/bookToText/@body.5/@iterSet">
       <details key="start" value="416"/>
       <details key="end" value="425"/>
     </eAnnotations>
-    <eAnnotations source="positions.37" references="/0/bookToText/@body.5/@iterSet/l">
+    <eAnnotations source="positions.35" references="/0/bookToText/@body.5/@iterSet/l">
       <details key="start" value="416"/>
       <details key="end" value="417"/>
     </eAnnotations>
-    <eAnnotations source="positions.38" references="/0/bookToText/@body.5/@before">
+    <eAnnotations source="positions.36" references="/0/bookToText/@body.5/@before">
       <details key="start" value="435"/>
       <details key="end" value="439"/>
     </eAnnotations>
-    <eAnnotations source="positions.39" references="/0/bookToText/@body.5/@each">
+    <eAnnotations source="positions.37" references="/0/bookToText/@body.5/@each">
       <details key="start" value="452"/>
       <details key="end" value="455"/>
     </eAnnotations>
-    <eAnnotations source="positions.40" references="/0/bookToText/@body.5/@guard">
+    <eAnnotations source="positions.38" references="/0/bookToText/@body.5/@guard">
       <details key="start" value="460"/>
       <details key="end" value="464"/>
     </eAnnotations>
-    <eAnnotations source="positions.41" references="/0/bookToText/@body.6">
+    <eAnnotations source="positions.39" references="/0/bookToText/@body.6">
       <details key="start" value="506"/>
       <details key="end" value="508"/>
     </eAnnotations>
-    <eAnnotations source="positions.42" references="/0/bookToText/@body.7">
+    <eAnnotations source="positions.40" references="/0/bookToText/@body.7">
       <details key="start" value="508"/>
       <details key="end" value="534"/>
     </eAnnotations>
-    <eAnnotations source="positions.43" references="/0/bookToText/@body.7/@body.0">
-      <details key="start" value="527"/>
-      <details key="end" value="527"/>
-    </eAnnotations>
-    <eAnnotations source="positions.44" references="/0/bookToText/@body.7/@fileUrl">
+    <eAnnotations source="positions.41" references="/0/bookToText/@body.7/@fileUrl">
       <details key="start" value="515"/>
       <details key="end" value="517"/>
     </eAnnotations>
-    <eAnnotations source="positions.45" references="/0/bookToText/@body.8">
+    <eAnnotations source="positions.42" references="/0/bookToText/@body.8">
       <details key="start" value="536"/>
       <details key="end" value="538"/>
     </eAnnotations>
-    <eAnnotations source="positions.46" references="/0/bookToText/@body.9">
+    <eAnnotations source="positions.43" references="/0/bookToText/@body.9">
       <details key="start" value="538"/>
       <details key="end" value="555"/>
     </eAnnotations>
-    <eAnnotations source="positions.47" references="/0/bookToText/@body.9/@body.0">
-      <details key="start" value="547"/>
-      <details key="end" value="547"/>
-    </eAnnotations>
-    <eAnnotations source="positions.48" references="/0/bookToText/@body.9/@modelElement">
+    <eAnnotations source="positions.44" references="/0/bookToText/@body.9/@modelElement">
       <details key="start" value="-1"/>
       <details key="end" value="-1"/>
     </eAnnotations>
-    <eAnnotations source="positions.49" references="/0/bookToText/@body.10">
+    <eAnnotations source="positions.45" references="/0/bookToText/@body.10">
       <details key="start" value="557"/>
       <details key="end" value="559"/>
     </eAnnotations>
-    <eAnnotations source="positions.50" references="/0/bookToText/@body.11">
+    <eAnnotations source="positions.46" references="/0/bookToText/@body.11">
       <details key="start" value="559"/>
       <details key="end" value="613"/>
     </eAnnotations>
-    <eAnnotations source="positions.51" references="/0/bookToText/@body.11/@body.0">
-      <details key="start" value="577"/>
-      <details key="end" value="577"/>
-    </eAnnotations>
-    <eAnnotations source="positions.52" references="/0/bookToText/@body.11/@elseLet.0">
+    <eAnnotations source="positions.47" references="/0/bookToText/@body.11/@elseLet.0">
       <details key="start" value="577"/>
       <details key="end" value="599"/>
     </eAnnotations>
-    <eAnnotations source="positions.53" references="/0/bookToText/@body.11/@elseLet.0/@body.0">
-      <details key="start" value="599"/>
-      <details key="end" value="599"/>
-    </eAnnotations>
-    <eAnnotations source="positions.54" references="/0/bookToText/@body.11/@elseLet.0/s2">
+    <eAnnotations source="positions.48" references="/0/bookToText/@body.11/@elseLet.0/s2">
       <details key="start" value="586"/>
       <details key="end" value="595"/>
     </eAnnotations>
-    <eAnnotations source="positions.55" references="/0/bookToText/@body.11/@else">
+    <eAnnotations source="positions.49" references="/0/bookToText/@body.11/@else">
       <details key="start" value="599"/>
       <details key="end" value="607"/>
     </eAnnotations>
-    <eAnnotations source="positions.56" references="/0/bookToText/@body.11/@else/@body.0">
-      <details key="start" value="607"/>
-      <details key="end" value="607"/>
-    </eAnnotations>
-    <eAnnotations source="positions.57" references="/0/bookToText/@body.11/s1">
+    <eAnnotations source="positions.50" references="/0/bookToText/@body.11/s1">
       <details key="start" value="564"/>
       <details key="end" value="573"/>
     </eAnnotations>
-    <eAnnotations source="positions.58" references="/0/bookToText/@body.12">
+    <eAnnotations source="positions.51" references="/0/bookToText/@body.12">
       <details key="start" value="615"/>
       <details key="end" value="617"/>
     </eAnnotations>
-    <eAnnotations source="positions.59" references="/0/bookToText/@body.13">
+    <eAnnotations source="positions.52" references="/0/bookToText/@body.13">
       <details key="start" value="617"/>
       <details key="end" value="657"/>
     </eAnnotations>
-    <eAnnotations source="positions.60" references="/0/bookToText/@body.13/@body.0">
+    <eAnnotations source="positions.53" references="/0/bookToText/@body.13/@body.0">
       <details key="start" value="643"/>
       <details key="end" value="645"/>
     </eAnnotations>
-    <eAnnotations source="positions.61" references="/0/bookToText/@body.13/@marker">
+    <eAnnotations source="positions.54" references="/0/bookToText/@body.13/@marker">
       <details key="start" value="629"/>
       <details key="end" value="641"/>
     </eAnnotations>
-    <eAnnotations source="positions.62" references="/0/bookToText/@body.14">
+    <eAnnotations source="positions.55" references="/0/bookToText/@body.14">
       <details key="start" value="657"/>
       <details key="end" value="661"/>
     </eAnnotations>
-    <eAnnotations source="positions.63" references="/0/bookToText/@body.15">
+    <eAnnotations source="positions.56" references="/0/bookToText/@body.15">
       <details key="start" value="661"/>
       <details key="end" value="688"/>
     </eAnnotations>
-    <eAnnotations source="positions.64" references="/0/bookToText/@body.15/@marker">
+    <eAnnotations source="positions.57" references="/0/bookToText/@body.15/@marker">
       <details key="start" value="673"/>
       <details key="end" value="685"/>
     </eAnnotations>
-    <eAnnotations source="positions.65" references="/0/bookToText/@body.16">
+    <eAnnotations source="positions.58" references="/0/bookToText/@body.16">
       <details key="start" value="688"/>
       <details key="end" value="690"/>
     </eAnnotations>
-    <eAnnotations source="positions.66" references="/0/bookToText/b">
+    <eAnnotations source="positions.59" references="/0/bookToText/b">
       <details key="start" value="224"/>
       <details key="end" value="232"/>
     </eAnnotations>
-    <eAnnotations source="positions.67" references="/0/bookToText/l">
+    <eAnnotations source="positions.60" references="/0/bookToText/l">
       <details key="start" value="234"/>
       <details key="end" value="245"/>
     </eAnnotations>
-    <eAnnotations source="positions.68" references="/0/toLowerCase">
+    <eAnnotations source="positions.61" references="/0/toLowerCase">
       <details key="start" value="707"/>
       <details key="end" value="782"/>
     </eAnnotations>
-    <eAnnotations source="positions.69" references="/0/toLowerCase/@body.0">
+    <eAnnotations source="positions.62" references="/0/toLowerCase/@body.0">
       <details key="start" value="746"/>
       <details key="end" value="753"/>
     </eAnnotations>
-    <eAnnotations source="positions.70" references="/0/toLowerCase/s">
+    <eAnnotations source="positions.63" references="/0/toLowerCase/s">
       <details key="start" value="754"/>
       <details key="end" value="755"/>
     </eAnnotations>
-    <eAnnotations source="positions.71" references="/0/toLowerCase/@body.2">
+    <eAnnotations source="positions.64" references="/0/toLowerCase/@body.2">
       <details key="start" value="757"/>
       <details key="end" value="774"/>
     </eAnnotations>
-    <eAnnotations source="positions.72" references="/0/toLowerCase/s.1">
+    <eAnnotations source="positions.65" references="/0/toLowerCase/s.1">
       <details key="start" value="726"/>
       <details key="end" value="734"/>
     </eAnnotations>
-    <eAnnotations source="positions.73" references="/0/myQuery">
+    <eAnnotations source="positions.66" references="/0/myQuery">
       <details key="start" value="786"/>
       <details key="end" value="825"/>
     </eAnnotations>
-    <eAnnotations source="positions.74" references="/0/myQuery/s">
+    <eAnnotations source="positions.67" references="/0/myQuery/s">
       <details key="start" value="801"/>
       <details key="end" value="809"/>
     </eAnnotations>
-    <eAnnotations source="positions.75" references="/0/myQuery/s.1">
+    <eAnnotations source="positions.68" references="/0/myQuery/s.1">
       <details key="start" value="822"/>
       <details key="end" value="823"/>
     </eAnnotations>
