@@ -18,8 +18,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.BasicMonitor;
 
 /**
@@ -68,5 +70,17 @@ public class TraceabilityTest extends AbstractTraceabilityTest {
 		assertSame(2, preview.size());
 		Map.Entry<String, String> entry = preview.entrySet().iterator().next();
 		assertEquals(generationRoot.getPath() + File.separatorChar + "MyClass.java", entry.getKey());
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
+				"org.eclipse.acceleo.traceability.activation", true);
 	}
 }
