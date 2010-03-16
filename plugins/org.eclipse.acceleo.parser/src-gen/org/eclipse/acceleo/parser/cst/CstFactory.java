@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EFactory;
  * 
  * @see org.eclipse.acceleo.parser.cst.CstPackage
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface CstFactory extends EFactory {
 	/**

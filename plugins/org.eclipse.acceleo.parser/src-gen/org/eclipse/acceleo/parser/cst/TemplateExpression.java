@@ -17,7 +17,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getTemplateExpression()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface TemplateExpression extends CSTNode {
 } // TemplateExpression

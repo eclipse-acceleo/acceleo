@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getTypedModel()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface TypedModel extends CSTNode {
 	/**

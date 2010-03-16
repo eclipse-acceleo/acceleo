@@ -76,7 +76,7 @@ public class AcceleoParser {
 	 *            URIs of the dependencies that need to be loaded before link resolution
 	 * @param monitor
 	 *            This will be used as the progress monitor for the parsing
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs, Monitor monitor) {
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$

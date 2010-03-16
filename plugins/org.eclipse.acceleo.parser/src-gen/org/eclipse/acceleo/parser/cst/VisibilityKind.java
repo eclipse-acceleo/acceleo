@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getVisibilityKind()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public enum VisibilityKind implements Enumerator {
 	/**

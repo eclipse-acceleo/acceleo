@@ -210,7 +210,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * Returns the encoding of the buffer to parse.
 	 * 
 	 * @return the encoding, or null if it isn't specified in the buffer
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public String getEncoding() {
 		return encoding;
@@ -253,7 +253,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * Returns the environment instance that was used under the covers by the ocl parser.
 	 * 
 	 * @return The environment instance that was used under the covers by the ocl parser.
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
 		return astCreator.getOCL().getOCLEnvironment();

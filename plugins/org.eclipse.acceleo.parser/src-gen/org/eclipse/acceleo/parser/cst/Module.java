@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getModule()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface Module extends EPackage, CSTNode {
 	/**

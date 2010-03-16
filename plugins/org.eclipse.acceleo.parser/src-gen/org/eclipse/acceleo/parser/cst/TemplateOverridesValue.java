@@ -23,7 +23,7 @@ package org.eclipse.acceleo.parser.cst;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getTemplateOverridesValue()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface TemplateOverridesValue extends CSTNode {
 	/**

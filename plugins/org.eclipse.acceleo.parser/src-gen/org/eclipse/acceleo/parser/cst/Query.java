@@ -26,7 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getQuery()
  * @model
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface Query extends ModuleElement {
 	/**

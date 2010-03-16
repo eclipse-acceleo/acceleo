@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.eclipse.acceleo.parser.cst.CstPackage#getCSTNode()
  * @model interface="true" abstract="true"
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public interface CSTNode extends EObject {
 	/**
