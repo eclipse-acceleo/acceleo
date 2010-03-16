@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -130,6 +131,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private final Object invalid = ((AcceleoEnvironment)getEnvironment()).getOCLStandardLibraryReflection()
 			.getInvalid();
 
+	/** This will be used to keep pointers towards the latest template invocation traces. */
+	private LinkedList<ExpressionTrace> invocationTraces;
+
 	/**
 	 * We'll use this to record accurate trace information for the library's traceability-impacting
 	 * operations.
@@ -205,7 +209,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					}
 				}
 				generatedFile.setLength(fileLength + addedLength);
-				trace.dispose();
+				if (invocationTraces == null || !invocationTraces.contains(trace)) {
+					trace.dispose();
+				}
 			}
 		}
 		super.append(string, sourceBlock, source, fireEvent);
@@ -306,6 +312,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public String fitIndentationTo(String source, String indentation) {
+		if ("".equals(indentation)) {
+			return source;
+		}
 		String regex = "\r\n|\r|\n";
 		String replacement = "$0" + indentation;
 
@@ -318,7 +327,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		ExpressionTrace indentationTrace = new ExpressionTrace(currentExpression);
 		indentationTrace.addTrace(input, text, indentation);
 
-		return visitSubstituteOperation(source, regex, replacement, indentationTrace, true, true);
+		return visitReplaceOperation(source, regex, replacement, indentationTrace, true, true);
 	}
 
 	/**
@@ -540,7 +549,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 		if (shouldRecordTrace((EReference)expression.eContainingFeature())
 				&& !(expression.eContainer() instanceof ProtectedAreaBlock)) {
-			recordedTraces.add(new ExpressionTrace(expression));
+			ExpressionTrace trace = new ExpressionTrace(expression);
+			recordedTraces.add(trace);
+			if (invocationTraces != null) {
+				invocationTraces.add(trace);
+			}
 		}
 		Object result = null;
 		try {
@@ -738,6 +751,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (forBlock.getLoopVariable() != null) {
 			scopeEObjects.removeLast();
 		}
+		if (recordedTraces.getLast().getReferredExpression() == forBlock
+				&& recordedTraces.getLast().getTraces().size() == 0) {
+			recordedTraces.removeLast();
+		}
 	}
 
 	/**
@@ -799,9 +816,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (invocation.getArgument().size() > 0) {
 			scopeEObjects.add(invocation.getArgument().get(0));
 		}
+		LinkedList<ExpressionTrace> oldTraces = invocationTraces;
+		invocationTraces = new LinkedList<ExpressionTrace>();
 
 		final Object result = super.visitAcceleoTemplateInvocation(invocation);
 
+		for (ExpressionTrace trace : invocationTraces) {
+			trace.dispose();
+		}
+		invocationTraces = oldTraces;
 		if (invocation.getArgument().size() > 0) {
 			scopeEObjects.removeLast();
 		}
@@ -1024,10 +1047,36 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * This will be called when the evaluation has been cancelled somehow.
 	 */
 	private void cancel() {
+		currentExpression = null;
+		if (currentFiles != null) {
+			currentFiles.clear();
+			currentFiles = null;
+		}
 		initializingVariable = null;
+		if (invocationTraces != null) {
+			for (ExpressionTrace trace : invocationTraces) {
+				trace.dispose();
+			}
+			invocationTraces.clear();
+			invocationTraces = null;
+		}
+		if (operationArgumentTrace != null) {
+			operationArgumentTrace.dispose();
+			operationArgumentTrace = null;
+		}
+		operationCallSource = null;
+		operationCallSourceExpression = null;
 		propertyCallSource = null;
 		propertyCallSourceExpression = null;
+		protectedAreaSource = null;
 		record = true;
+		for (ExpressionTrace trace : recordedTraces) {
+			trace.dispose();
+		}
+		recordedTraces.clear();
+		if (scopeEObjects != null) {
+			scopeEObjects.clear();
+		}
 		for (VariableTrace trace : variableTraces.values()) {
 			trace.dispose();
 		}
@@ -1074,8 +1123,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			ExpressionTrace oldArgTrace = operationArgumentTrace;
 			operationArgumentTrace = new ExpressionTrace(callExp.getArgument().get(1));
 			Object substitution = super.visitExpression(callExp.getArgument().get(1));
-			result = visitSubstituteOperation((String)sourceObject, (String)substring, (String)substitution,
-					operationArgumentTrace, substituteRegexes, substituteAll);
+
+			if (!substituteRegexes) {
+				// substitute replaces Strings, not regexes.
+				// Surrounding the regex with \Q [...] \E allows just that
+				substring = "\\Q" + substring + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
+				// We also need to escape backslashes and dollar signs in the replacement (scary!)
+				substitution = ((String)substitution).replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"\\\\\\$"); //$NON-NLS-1$
+			}
+
+			result = visitReplaceOperation((String)sourceObject, (String)substring, (String)substitution,
+					operationArgumentTrace, substituteAll, false);
 			operationArgumentTrace = oldArgTrace;
 
 			return result;
@@ -1290,40 +1349,27 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            The String which will be inserted in <em>source</em> where <em>substring</em> was.
 	 * @param substitutionTrace
 	 *            Traceability information of the replacement.
-	 * @param substituteRegexes
-	 *            Consider <em>substring</em> and <em>replacement</em> as regexes.
 	 * @param substituteAll
 	 *            Indicates wheter we should substitute all occurences of the substring or only the first.
+	 * @param useInvocationTrace
+	 *            If <code>true</code>, {@link #invocationTraces} will be altered in place of the last
+	 *            {@link #recordedTraces}. Should only be <code>true</code> when altering indentation.
 	 * @return <em>source</em> with the first occurence of <em>substring</em> replaced by <em>replacement</em>
 	 *         or <em>source</em> unchanged if it did not contain <em>substring</em>.
 	 */
-	private String visitSubstituteOperation(String source, String substring, String replacement,
-			ExpressionTrace substitutionTrace, boolean substituteRegexes, boolean substituteAll) {
+	private String visitReplaceOperation(String source, String substring, String replacement,
+			ExpressionTrace substitutionTrace, boolean substituteAll, boolean useInvocationTrace) {
 		if (substring == null || replacement == null) {
 			throw new NullPointerException();
 		}
-		final String regex;
-		final String replacementValue;
-		if (!substituteRegexes) {
-			// substitute replaces Strings, not regexes.
-			// Surrounding the regex with \Q [...] \E allows just that
-			regex = "\\Q" + substring + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
-			// We also need to escape backslashes and dollar signs in the replacement (scary!)
-			replacementValue = replacement.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					"\\\\\\$"); //$NON-NLS-1$
-		} else {
-			regex = substring;
-			replacementValue = replacement;
-		}
 
-		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
+		Matcher sourceMatcher = Pattern.compile(substring).matcher(source);
 		StringBuffer result = new StringBuffer();
-		ExpressionTrace trace = recordedTraces.getLast();
 		boolean hasMatch = sourceMatcher.find();
 		// Note : despite its name, this could be negative
 		int addedLength = 0;
 		// FIXME This loop does _not_ take group references into account except $0 at the start
-		boolean startsWithZeroGroupRef = replacementValue.startsWith("$0");
+		boolean startsWithZeroGroupRef = replacement.startsWith("$0");
 		while (hasMatch) {
 			// If we've already changed the String size, take it into account
 			int startIndex = sourceMatcher.start() + addedLength;
@@ -1332,55 +1378,58 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				startIndex = endIndex;
 			}
 			int replacementLength = startIndex;
-			sourceMatcher.appendReplacement(result, replacementValue);
+			sourceMatcher.appendReplacement(result, replacement);
 			replacementLength = result.length() - startIndex;
 			// We now remove from the replacementLength the length of the replaced substring
 			replacementLength -= endIndex - startIndex;
 			addedLength += replacementLength;
 
-			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-				for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
-					if (text.getEndOffset() < startIndex) {
-						continue;
-					}
-					/*
-					 * This can be one of five cases : 1) the text ends with a replaced substring, 2) the text
-					 * starts with a replaced substring, 3) the text contains a replaced substring, 4) the
-					 * text is contained within a replaced substring or 5) The text starts after the
-					 * replacement
-					 */
-					if (text.getStartOffset() < startIndex && text.getEndOffset() <= endIndex) {
-						text.setEndOffset(startIndex);
-					} else if (text.getStartOffset() >= startIndex && text.getEndOffset() > endIndex) {
-						text.setStartOffset(startIndex + replacementLength);
-						text.setEndOffset(text.getEndOffset() + replacementLength);
-					} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
-						// This instance of a GeneratedText is split in two by the substring
-						GeneratedText endSubstring = (GeneratedText)EcoreUtil.copy(text);
-						endSubstring.setStartOffset(endIndex + replacementLength);
-						endSubstring.setEndOffset(text.getEndOffset() + replacementLength);
-						text.setEndOffset(startIndex);
-						entry.getValue().add(endSubstring);
-					} else if (text.getStartOffset() >= startIndex && text.getEndOffset() <= endIndex) {
-						entry.getValue().remove(text);
-					} else {
-						text.setStartOffset(text.getStartOffset() + replacementLength);
-						text.setEndOffset(text.getEndOffset() + replacementLength);
+			if (useInvocationTrace) {
+				// We need the starting index of these traces
+				int offsetGap = -1;
+				for (ExpressionTrace trace : invocationTraces) {
+					for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+						for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+							if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
+								offsetGap = text.getStartOffset();
+							}
+						}
 					}
 				}
-			}
-			// For each replacement that takes place, we need to add the substitution traces
-			for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces().entrySet()) {
-				Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
-				if (existingTraces == null) {
-					existingTraces = new LinkedHashSet<GeneratedText>();
-					trace.getTraces().put(entry.getKey(), existingTraces);
+				startIndex += offsetGap;
+				endIndex += offsetGap;
+				for (ExpressionTrace trace : invocationTraces) {
+					changeTraceabilityIndicesOfReplaceOperation(trace, startIndex, endIndex,
+							replacementLength);
 				}
-				for (GeneratedText text : entry.getValue()) {
-					GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
-					copy.setStartOffset(copy.getStartOffset() + startIndex);
-					copy.setEndOffset(copy.getEndOffset() + startIndex);
-					existingTraces.add(copy);
+				GeneratedFile generatedFile = currentFiles.getLast();
+				final int fileLength = generatedFile.getLength();
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces()
+						.entrySet()) {
+					for (GeneratedText text : entry.getValue()) {
+						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+						copy.setStartOffset(copy.getStartOffset() + startIndex);
+						copy.setEndOffset(copy.getEndOffset() + startIndex);
+						generatedFile.getGeneratedRegions().add(copy);
+					}
+				}
+				generatedFile.setLength(fileLength + replacementLength);
+			} else {
+				ExpressionTrace trace = recordedTraces.getLast();
+				changeTraceabilityIndicesOfReplaceOperation(trace, startIndex, endIndex, replacementLength);
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces()
+						.entrySet()) {
+					Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
+					if (existingTraces == null) {
+						existingTraces = new LinkedHashSet<GeneratedText>();
+						trace.getTraces().put(entry.getKey(), existingTraces);
+					}
+					for (GeneratedText text : entry.getValue()) {
+						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+						copy.setStartOffset(copy.getStartOffset() + startIndex);
+						copy.setEndOffset(copy.getEndOffset() + startIndex);
+						existingTraces.add(copy);
+					}
 				}
 			}
 
@@ -1450,6 +1499,65 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		lastRegion.setStartOffset(0);
 		lastRegion.setStartOffset(length);
 		trace.setOffset(length);
+	}
+
+	/**
+	 * This will be in charge of altering traceability indices of the given <em>trace</em> to cope with a
+	 * substitute or replace operation. That means changing all traces which offsets overlap with the range
+	 * <em>[startIndex, endIndex]</em> so that the given <em>substitutionTrace</em> can be used in this range
+	 * ; for a total length of <em>replacementLength</em>.
+	 * 
+	 * @param trace
+	 *            The trace which offsets are to be altered.
+	 * @param startIndex
+	 *            Starting index of the range where a substring has been replaced.
+	 * @param endIndex
+	 *            Ending index of the range where a substring has been replaced.
+	 * @param replacementLength
+	 *            Total length of the replaced substring. This is not always equal to the length of the range
+	 *            <em>[startIndex, endIndex]</em> as we <u>can</u> replace a small substring by a large one,
+	 *            or the opposite ; which also mean that <em>replacementLength</em> <u>can</u> be negative.
+	 */
+	@SuppressWarnings("unchecked")
+	private void changeTraceabilityIndicesOfReplaceOperation(ExpressionTrace trace, int startIndex,
+			int endIndex, int replacementLength) {
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+				if (text.getEndOffset() < startIndex) {
+					continue;
+				}
+				/*
+				 * This can be one of five cases : 1) the text ends with a replaced substring, 2) the text
+				 * starts with a replaced substring, 3) the text contains a replaced substring, 4) the text is
+				 * contained within a replaced substring or 5) The text starts after the replacement
+				 */
+				if (text.getStartOffset() < startIndex && text.getEndOffset() <= endIndex) {
+					text.setEndOffset(startIndex);
+				} else if (text.getStartOffset() >= startIndex && text.getEndOffset() > endIndex) {
+					text.setStartOffset(startIndex + replacementLength);
+					text.setEndOffset(text.getEndOffset() + replacementLength);
+				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
+					// This instance of a GeneratedText is split in two by the substring
+					GeneratedText endSubstring = (GeneratedText)EcoreUtil.copy(text);
+					endSubstring.setStartOffset(endIndex + replacementLength);
+					endSubstring.setEndOffset(text.getEndOffset() + replacementLength);
+					text.setEndOffset(startIndex);
+					if (text.eContainer() != null) {
+						// We know this is a list
+						((List<EObject>)text.eContainer().eGet(text.eContainingFeature())).add(endSubstring);
+					}
+					entry.getValue().add(endSubstring);
+				} else if (text.getStartOffset() >= startIndex && text.getEndOffset() <= endIndex) {
+					if (text.eContainer() != null) {
+						EcoreUtil.remove(text);
+					}
+					entry.getValue().remove(text);
+				} else {
+					text.setStartOffset(text.getStartOffset() + replacementLength);
+					text.setEndOffset(text.getEndOffset() + replacementLength);
+				}
+			}
+		}
 	}
 
 	/**
