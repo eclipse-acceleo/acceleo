@@ -16,7 +16,7 @@ Contributors:
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://www.eclipse.org/acceleo/mtl/cst/0.8.0"
+            uri="http://www.eclipse.org/acceleo/mtl/cst/3.0"
             class="org.eclipse.acceleo.parser.cst.CstPackage"
             genModel="model/MTLCST.genmodel"/>
    </extension>

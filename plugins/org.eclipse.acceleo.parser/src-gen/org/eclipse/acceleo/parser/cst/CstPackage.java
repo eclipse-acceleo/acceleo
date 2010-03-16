@@ -46,7 +46,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eclipse.org/acceleo/mtl/cst/0.8.0"; //$NON-NLS-1$
+	String eNS_URI = "http://www.eclipse.org/acceleo/mtl/cst/3.0"; //$NON-NLS-1$
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
