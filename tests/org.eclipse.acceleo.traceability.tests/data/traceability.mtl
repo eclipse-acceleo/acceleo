@@ -2,7 +2,6 @@
 
 [template public traceability(e : EClass) {clazzName : String = e.name; pack : EPackage = e.ePackage; root : EPackage = e.ePackage.eContainer()}]
 [file (e.name.concat('.java'), false)]
-['test'.isAlpha().toString().concat('test'.isAlpha().toString())/]
 1. [qualifiedName(clazzName, pack.name, root.name)/]
 2. [qualifiedName(e, pack, root)/]
 3. [qualifiedName(e)/]
