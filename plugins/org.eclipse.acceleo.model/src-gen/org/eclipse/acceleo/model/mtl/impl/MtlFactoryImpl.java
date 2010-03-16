@@ -63,7 +63,7 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	public static MtlFactory init() {
 		try {
 			MtlFactory theMtlFactory = (MtlFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/mtl/0.8.0"); //$NON-NLS-1$ 
+					.getEFactory("http://www.eclipse.org/acceleo/mtl/3.0"); //$NON-NLS-1$ 
 			if (theMtlFactory != null) {
 				return theMtlFactory;
 			}

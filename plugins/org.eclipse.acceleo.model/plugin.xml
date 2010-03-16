@@ -16,7 +16,7 @@ Contributors:
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://www.eclipse.org/acceleo/mtl/0.8.0/" 
+       uri = "http://www.eclipse.org/acceleo/mtl/3.0/" 
        class = "org.eclipse.acceleo.model.mtl.MtlPackage"
        genModel = "model/mtl.genmodel" /> 
   </extension>
@@ -30,7 +30,7 @@ Contributors:
   <extension
         point="org.eclipse.emf.ecore.uri_mapping">
      <mapping
-           source="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlstdlib.ecore"
+           source="http://www.eclipse.org/acceleo/mtl/3.0/mtlstdlib.ecore"
            target="platform:/plugin/org.eclipse.acceleo.model/model/mtlstdlib.ecore">
      </mapping>
   </extension>
@@ -38,7 +38,7 @@ Contributors:
   <extension
         point="org.eclipse.emf.ecore.uri_mapping">
      <mapping
-           source="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore"
+           source="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore"
            target="platform:/plugin/org.eclipse.acceleo.model/model/mtlnonstdlib.ecore">
      </mapping>
   </extension>

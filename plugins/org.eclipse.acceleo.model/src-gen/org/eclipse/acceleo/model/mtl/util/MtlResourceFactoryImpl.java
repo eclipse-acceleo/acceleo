@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  * 
  * @see org.eclipse.acceleo.model.mtl.util.MtlResourceImpl
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public class MtlResourceFactoryImpl extends ResourceFactoryImpl {
 	/**

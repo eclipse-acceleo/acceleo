@@ -126,7 +126,7 @@ public interface FileBlock extends Block {
 	 * @see #setCharset(OCLExpression)
 	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getFileBlock_Charset()
 	 * @model containment="true"
-	 * @since 0.9
+	 * @since 3.0
 	 * @generated
 	 */
 	OCLExpression getCharset();
@@ -138,7 +138,7 @@ public interface FileBlock extends Block {
 	 * @param value
 	 *            the new value of the '<em>Charset</em>' containment reference.
 	 * @see #getCharset()
-	 * @since 0.9
+	 * @since 3.0
 	 * @generated
 	 */
 	void setCharset(OCLExpression value);

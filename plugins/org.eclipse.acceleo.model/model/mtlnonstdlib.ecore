@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore" name="mtlnonstdlib"
-    nsURI="http://www.eclipse.org/acceleo/mtl/0.8.0/mtlnonstdlib.ecore" nsPrefix="mtlnonstdlib">
+    nsURI="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore" nsPrefix="mtlnonstdlib">
   <eClassifiers xsi:type="ecore:EClass" name="String">
     <eOperations name="replace" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
       <eAnnotations source="MTL non-standard"/>

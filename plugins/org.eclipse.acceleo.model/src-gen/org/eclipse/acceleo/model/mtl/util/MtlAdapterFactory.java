@@ -48,7 +48,7 @@ import org.eclipse.ocl.utilities.Visitable;
  * 
  * @see org.eclipse.acceleo.model.mtl.MtlPackage
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public class MtlAdapterFactory extends AdapterFactoryImpl {
 	/**

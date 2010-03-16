@@ -46,7 +46,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eclipse.org/acceleo/mtl/0.8.0"; //$NON-NLS-1$
+	String eNS_URI = "http://www.eclipse.org/acceleo/mtl/3.0"; //$NON-NLS-1$
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2008,7 +2008,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	int FILE_BLOCK__CHARSET = BLOCK_FEATURE_COUNT + 3;
 
@@ -3142,7 +3142,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.FileBlock#getCharset()
 	 * @see #getFileBlock()
 	 * @generated
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	EReference getFileBlock_Charset();
 
@@ -3756,7 +3756,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 0.9
+		 * @since 3.0
 		 */
 		EReference FILE_BLOCK__CHARSET = eINSTANCE.getFileBlock_Charset();
 

@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
  * 
  * @see org.eclipse.acceleo.model.mtl.util.MtlResourceFactoryImpl
  * @generated
- * @since 0.9
+ * @since 3.0
  */
 public class MtlResourceImpl extends XMLResourceImpl {
 	/**
