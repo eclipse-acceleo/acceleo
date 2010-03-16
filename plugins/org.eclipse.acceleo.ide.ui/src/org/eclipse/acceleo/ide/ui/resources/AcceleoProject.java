@@ -583,7 +583,7 @@ public class AcceleoProject {
 	 * @param monitor
 	 *            is the monitor
 	 * @return a resource set which contains all the accessible resources
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public ResourceSet loadAccessibleOutputFiles(IProgressMonitor monitor) {
 		ResourceSet oResourceSet = new ResourceSetImpl();
@@ -609,7 +609,7 @@ public class AcceleoProject {
 	 * @param monitor
 	 *            is the monitor
 	 * @return a resource set which contains all the not accessible resources
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public ResourceSet loadNotAccessibleOutputFiles(IProgressMonitor monitor) {
 		return loadAllPlatformOutputFiles(this, monitor);
@@ -622,7 +622,7 @@ public class AcceleoProject {
 	 * @param monitor
 	 *            is the monitor
 	 * @return a resource set which contains all the not accessible resources
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static ResourceSet loadAllPlatformOutputFiles(IProgressMonitor monitor) {
 		if (!registryInitialized) {
@@ -687,7 +687,7 @@ public class AcceleoProject {
 	 * Gets the URIs of all the EMTL files in the workspace.
 	 * 
 	 * @return the URIs of all the EMTL files
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static List<URI> getAllPlatformResourceOutputFiles() {
 		List<URI> outputURIs = new ArrayList<URI>();
@@ -709,7 +709,7 @@ public class AcceleoProject {
 	 * files are available. The workspace files are ignored.
 	 * 
 	 * @return the URIs of all the EMTL files
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public static List<URI> getAllPlatformPluginOutputFiles() {
 		List<URI> outputURIs = new ArrayList<URI>();

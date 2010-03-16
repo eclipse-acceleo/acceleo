@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
  * Java class implementing this interface.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
- * @since 0.9
+ * @since 3.0
  */
 public interface IAcceleoPatternProposal {
 

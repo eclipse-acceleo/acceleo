@@ -58,7 +58,7 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasFile()
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public boolean forceHasFile() {
 		return false;
@@ -68,7 +68,7 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasMain()
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public boolean forceHasMain() {
 		return false;
@@ -78,7 +78,7 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceMetamodelType()
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	public boolean forceMetamodelType() {
 		return false;

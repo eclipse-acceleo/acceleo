@@ -264,7 +264,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param configuration
 	 *            launch configuration
 	 * @return the profile model path or an empty string
-	 * @since 0.9
+	 * @since 3.0
 	 */
 	protected String getProfileModelPath(final ILaunchConfiguration configuration) {
 		String model = ""; //$NON-NLS-1$
