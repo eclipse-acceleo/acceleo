@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.sdk"
       label="Acceleo SDK (Incubation)"
-      version="0.9.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="Eclipse Modeling Project"
       plugin="org.eclipse.acceleo.common">
 
