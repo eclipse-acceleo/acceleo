@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerPackage.java,v 1.1 2009/09/08 16:10:04 ylussaud Exp $
+ * $Id: ProfilerPackage.java,v 1.2 2010/03/17 09:00:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler;
 
@@ -39,7 +39,7 @@ public interface ProfilerPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eclipse.org/acceleo/profiler/0.8.0";
+	String eNS_URI = "http://www.eclipse.org/acceleo/profiler/3.0";
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->

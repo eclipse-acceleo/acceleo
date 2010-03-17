@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerFactoryImpl.java,v 1.1 2009/09/08 16:10:03 ylussaud Exp $
+ * $Id: ProfilerFactoryImpl.java,v 1.2 2010/03/17 09:00:52 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.impl;
 
@@ -33,7 +33,7 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 	public static ProfilerFactory init() {
 		try {
 			ProfilerFactory theProfilerFactory = (ProfilerFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/profiler/0.8.0");
+					.getEFactory("http://www.eclipse.org/acceleo/profiler/3.0");
 			if (theProfilerFactory != null) {
 				return theProfilerFactory;
 			}
