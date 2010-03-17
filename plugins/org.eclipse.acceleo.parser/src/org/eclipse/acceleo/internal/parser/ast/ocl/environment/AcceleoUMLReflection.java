@@ -183,7 +183,12 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 * 
 	 * @see org.eclipse.ocl.utilities.UMLReflection#getConstrainedElements(java.lang.Object)
 	 */
-	public List<? extends EObject> getConstrainedElements(Constraint constraint) {
+	@SuppressWarnings("unchecked")
+	/*
+	 * !Do not use generics on the return type of this override, API broke between OCL 1.2 and 3.0 and we
+	 * can't cope with both while maintaining a generic signature!
+	 */
+	public List getConstrainedElements(Constraint constraint) {
 		return delegate.getConstrainedElements(constraint);
 	}
 
@@ -599,15 +604,5 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 */
 	public void setType(TypedElement<EClassifier> element, EClassifier type) {
 		delegate.setType(element, type);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.utilities.UMLReflection#addConstrainedElement(java.lang.Object,
-	 *      org.eclipse.emf.ecore.EObject)
-	 */
-	public void addConstrainedElement(Constraint constraint, EObject constrainedElement) {
-		delegate.addConstrainedElement(constraint, constrainedElement);
 	}
 }

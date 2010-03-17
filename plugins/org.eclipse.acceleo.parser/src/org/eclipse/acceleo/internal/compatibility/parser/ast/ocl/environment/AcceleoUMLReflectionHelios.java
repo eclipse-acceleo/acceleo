@@ -74,4 +74,14 @@ public class AcceleoUMLReflectionHelios extends AcceleoUMLReflection {
 	public boolean setIsStatic(Object feature, boolean isStatic) {
 		return delegate.setIsStatic(feature, isStatic);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.utilities.UMLReflection#addConstrainedElement(java.lang.Object,
+	 *      org.eclipse.emf.ecore.EObject)
+	 */
+	public void addConstrainedElement(Constraint constraint, EObject constrainedElement) {
+		delegate.addConstrainedElement(constraint, constrainedElement);
+	}
 }
