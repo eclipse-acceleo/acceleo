@@ -605,4 +605,15 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	public void setType(TypedElement<EClassifier> element, EClassifier type) {
 		delegate.setType(element, type);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.utilities.UMLReflection#addConstrainedElement(java.lang.Object,
+	 *      org.eclipse.emf.ecore.EObject)
+	 */
+	public void addConstrainedElement(Constraint constraint, EObject constrainedElement) {
+		// should never be called as it appeared in helios and will then be overriden
+		assert false;
+	}
 }
