@@ -119,11 +119,18 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					getTreeViewer().getControl().getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							refreshContainer(element);
-						}
-					});
+					if (getTreeViewer().getControl().isDisposed()) {
+						getTreeViewer().getControl().getDisplay().asyncExec(new Runnable() {
+							public void run() {
+								refreshContainer(element);
+							}
+						});
+					} else {
+						/*
+						 * Assume that this was completed successfully : happened because the user closed the
+						 * editor or switched perspective.
+						 */
+					}
 					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
 				}
 			};
