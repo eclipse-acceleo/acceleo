@@ -76,6 +76,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/** This will be used as a place holder when trying to call templates with a <code>null</code> argument. */
 	private static final Object NULL_ARGUMENT = new Object();
 
+	/** This will be used as a place holder so that library operations call can return null. */
+	private static final Object OPERATION_CALL_FAILED = new Object();
+
 	/** This will allow the environment to know of the modules currently in the generation context. */
 	final Set<Module> currentModules = new HashSet<Module>();
 
@@ -176,7 +179,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object callNonStandardOperation(EOperation operation, Object source, Object... args) {
-		Object result = null;
+		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
 		// Specifications of each non-standard operation can be found as comments of
 		// AcceleoNonStandardLibrary#OPERATION_*.
@@ -211,7 +214,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result = callNonStandardCollectionOperation(operation, (Collection<?>)source, args);
 		}
 
-		if (result != null) {
+		if (result != OPERATION_CALL_FAILED) {
 			return result;
 		}
 
@@ -251,7 +254,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return Result of the operation call.
 	 */
 	public Object callStandardOperation(EOperation operation, Object source, Object... args) {
-		Object result = null;
+		Object result = OPERATION_CALL_FAILED;
 		// Specifications of each standard operation can be found as comments of
 		// AcceleoStandardLibrary#OPERATION_*.
 		if (source instanceof String) {
@@ -316,7 +319,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 
-		if (result != null) {
+		if (result != OPERATION_CALL_FAILED) {
 			return result;
 		}
 
