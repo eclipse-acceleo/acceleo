@@ -40,6 +40,7 @@ import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.OrderedSetType;
+import org.eclipse.ocl.ecore.PrimitiveType;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.SetType;
@@ -383,9 +384,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			 * OCL's resolution paradigm. Note that this behavior might change with OCL 3.0 and should be
 			 * tried on both 1.x and 3.x versions before modifications.
 			 */
-			if (owner instanceof EObject) {
-				oper = super.lookupOperation(EcorePackage.eINSTANCE.getEObject(), name, args);
-			} else if (owner instanceof SequenceType) {
+			if (owner instanceof SequenceType) {
 				oper = super.lookupOperation(getOCLStandardLibrary().getSequence(), name, args);
 			} else if (owner instanceof BagType) {
 				oper = super.lookupOperation(getOCLStandardLibrary().getBag(), name, args);
@@ -396,6 +395,13 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			} else if (owner instanceof CollectionType) {
 				oper = super.lookupOperation(getOCLStandardLibrary().getCollection(), name, args);
 			}
+		}
+		/*
+		 * We don't want users to be stuck with oclAsType(ecore::EObject) when trying to access
+		 * EObject-defined operations.
+		 */
+		if (oper == null && !(owner instanceof PrimitiveType)) {
+			oper = super.lookupOperation(EcorePackage.eINSTANCE.getEObject(), name, args);
 		}
 		return oper;
 	}
