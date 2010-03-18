@@ -367,7 +367,10 @@ public class Factory {
    * @generated
    */
   private void addListeners() {
-    // TODO : add listeners to the "generationListener" field here.
+    /*
+     * TODO : add listeners to the "generationListener" field here. Make sure you remove the
+     * @generated annotation or set it to "@generated NOT".
+     */
   }
 
   /**
@@ -379,7 +382,8 @@ public class Factory {
   private void addProperties() {
     /*
      * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
-     * relative or absolute pathes, or their path can represent a platform scheme URI.
+     * relative or absolute pathes, or their path can represent a platform scheme URI. Make sure you remove
+     * the @generated annotation or set it to "@generated NOT".
      */
   }
 
