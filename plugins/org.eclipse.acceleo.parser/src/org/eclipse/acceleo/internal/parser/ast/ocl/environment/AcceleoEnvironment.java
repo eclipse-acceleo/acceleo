@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
@@ -382,7 +383,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			 * OCL's resolution paradigm. Note that this behavior might change with OCL 3.0 and should be
 			 * tried on both 1.x and 3.x versions before modifications.
 			 */
-			if (owner instanceof SequenceType) {
+			if (owner instanceof EObject) {
+				oper = super.lookupOperation(EcorePackage.eINSTANCE.getEObject(), name, args);
+			} else if (owner instanceof SequenceType) {
 				oper = super.lookupOperation(getOCLStandardLibrary().getSequence(), name, args);
 			} else if (owner instanceof BagType) {
 				oper = super.lookupOperation(getOCLStandardLibrary().getBag(), name, args);
