@@ -751,7 +751,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (forBlock.getLoopVariable() != null) {
 			scopeEObjects.removeLast();
 		}
-		if (recordedTraces.getLast().getReferredExpression() == forBlock
+		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == forBlock
 				&& recordedTraces.getLast().getTraces().size() == 0) {
 			recordedTraces.removeLast();
 		}
