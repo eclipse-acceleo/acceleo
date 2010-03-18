@@ -68,16 +68,16 @@ public[if (c.isAbstract)] abstract[/if] class [c.name.toUpperFirst()/][for (supe
 
 [template private operationBody(o : Operation)]
     /**
-     *[for (cmt : Comment | o.ownedComment)] [cmt.body/][/for]
+     *[for (cmt : Comment | o.ownedComment)] [cmt._body/][/for]
 [for (p : Parameter | o.ownedParameter) ? (p.direction <> ParameterDirectionKind::return)]
 [paramOperationComment(p)/]
 [/for]
-[if (not o.type.name.oclIsUndefined())]
+[if (not o.type.oclIsUndefined())]
 [returnOperationComment()/]
 [/if]
      */
     public [o.returnTypeOperation()/]([o.getInParameter()/]) {
-[if (not o.type.name.oclIsUndefined())]
+[if (not o.type.oclIsUndefined())]
         // [protected ('for operation '.concat(o.name))]
         // TODO should be implemented
         return null;

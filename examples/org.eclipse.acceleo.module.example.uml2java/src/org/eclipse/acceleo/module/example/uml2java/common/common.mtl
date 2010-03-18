@@ -26,7 +26,7 @@
 [/template]
 
 [template public returnTypeOperation(o : Operation)]
-[if (o.type.name.oclIsUndefined())]void [o.name/][else][o.type.name/] [o.name/][/if]
+[if (o.type.oclIsUndefined())]void [o.name/][else][o.type.name/] [o.name/][/if]
 [/template]
 
 [template public importBlock()]

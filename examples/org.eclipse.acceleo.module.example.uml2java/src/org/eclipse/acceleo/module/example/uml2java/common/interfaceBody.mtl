@@ -15,7 +15,7 @@ public interface [i.name.toUpperFirst()/] {
 
 [for (o : Operation | i.ownedOperation)]
     /**
-     *[for (cmt : Comment | o.ownedComment)] [cmt.body/][/for]
+     *[for (cmt : Comment | o.ownedComment)] [cmt._body/][/for]
 [for (p : Parameter | o.ownedParameter) ? (p.direction <> ParameterDirectionKind::return)]
 [paramOperationComment(p)/]
 [/for]
