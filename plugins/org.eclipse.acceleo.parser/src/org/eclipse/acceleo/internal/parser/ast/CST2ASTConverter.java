@@ -627,7 +627,7 @@ public class CST2ASTConverter {
 			char c = ioValue.charAt(b);
 			if (c == '\n') {
 				shiftBegin = b + 1;
-			} else if (c == '\r' && ioValue.charAt(b + 1) != '\n') {
+			} else if (c == '\r' && (b == ioValue.length() - 1 || ioValue.charAt(b + 1) != '\n')) {
 				shiftBegin = b + 1;
 			} else if (!Character.isWhitespace(c)) {
 				shiftBegin = 0;
