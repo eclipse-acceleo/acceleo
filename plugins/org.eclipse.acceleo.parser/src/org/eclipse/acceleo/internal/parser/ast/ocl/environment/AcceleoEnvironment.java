@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private AcceleoStandardLibrary acceleoStdLib;
 
 	/** List of {@link EPackage} the parser knows about. */
-	private Collection<EPackage> metamodels = new ArrayList<EPackage>();
+	private List<EPackage> metamodels = new ArrayList<EPackage>();
 
 	/** List of {@link EClassifier} the parser knows about. */
 	private List<EClassifier> types = new ArrayList<EClassifier>();
@@ -247,7 +246,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	public List<EClassifier> getTypes() {
 		if (types.size() == 0) {
-			final Iterator<EPackage> ePackageIt = metamodels.iterator();
+			final Iterator<EPackage> ePackageIt = getMetamodels().iterator();
 			while (ePackageIt.hasNext()) {
 				final EPackage ePackage = ePackageIt.next();
 				Iterator<EClassifier> eClassifierIt = ePackage.getEClassifiers().iterator();
@@ -278,6 +277,29 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			computeOCLType(types, getOCLStandardLibrary().getUnlimitedNatural());
 		}
 		return types;
+	}
+
+	/**
+	 * This will return all metamodels in the scope of this environment (along with metamodels registered on
+	 * parent environments).
+	 * 
+	 * @return All metamodels in the scope of this environment.
+	 */
+	protected List<EPackage> getMetamodels() {
+		List<EPackage> metamodelsInScope = new ArrayList<EPackage>(metamodels);
+		Environment.Internal<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent = getInternalParent();
+		while (parent != null) {
+			if (parent instanceof AcceleoEnvironment) {
+				metamodelsInScope.addAll(((AcceleoEnvironment)parent).getMetamodels());
+				// We only need this once : calling getMetamodels() on the parent will have itself checked
+				// parent
+				// environments.
+				break;
+			} else {
+				parent = getInternalParent();
+			}
+		}
+		return metamodelsInScope;
 	}
 
 	/**
