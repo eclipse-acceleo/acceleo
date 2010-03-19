@@ -1006,7 +1006,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private String getProperty(String key) {
-		String propertyValue = '!' + key + '!';
+		String propertyValue = null;
 		for (Properties propertiesHolder : properties) {
 			final String property = propertiesHolder.getProperty(key);
 			if (property != null) {
@@ -1033,7 +1033,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private String getProperty(String key, Object[] arguments) {
-		String propertyValue = '!' + key + '!';
+		String propertyValue = null;
 		for (Properties propertiesHolder : properties) {
 			final String property = propertiesHolder.getProperty(key);
 			if (property != null) {
@@ -1056,7 +1056,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private String getProperty(String propertiesFileName, String key) {
-		String propertyValue = '!' + key + '!';
+		String propertyValue = null;
 		for (Properties propertiesHolder : properties) {
 			String soughtPropertiesFile = propertiesFileName;
 			String propertiesExtension = ".properties"; //$NON-NLS-1$
@@ -1094,7 +1094,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private String getProperty(String propertiesFileName, String key, Object[] arguments) {
-		String propertyValue = '!' + key + '!';
+		String propertyValue = null;
 		for (Properties propertiesHolder : properties) {
 			String soughtPropertiesFile = propertiesFileName;
 			String propertiesExtension = ".properties"; //$NON-NLS-1$
