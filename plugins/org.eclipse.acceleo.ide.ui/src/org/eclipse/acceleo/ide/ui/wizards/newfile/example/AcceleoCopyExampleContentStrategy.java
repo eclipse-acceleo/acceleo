@@ -109,10 +109,10 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 			if (exampleFile != null) {
 				defaultEncoding = exampleFile.getCharset();
 			} else {
-				defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+				defaultEncoding = "UTF-8"; //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
-			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+			defaultEncoding = "UTF-8"; //$NON-NLS-1$
 		}
 		StringBuffer buffer = new StringBuffer("[comment encoding = "); //$NON-NLS-1$
 		buffer.append(defaultEncoding);
@@ -132,8 +132,7 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 			buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 		}
 		if (templateHasFileBlock) {
-			buffer
-					.append("\t[file (" + var + ".name" + fileExtension + ", false, '" + defaultEncoding + "')]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			buffer.append("\t[file (" + var + ".name" + fileExtension + ", false, '" + defaultEncoding + "')]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 		if (exampleFile != null && exampleFile.exists()) {
 			StringBuffer text = readExampleContent(exampleFile);
