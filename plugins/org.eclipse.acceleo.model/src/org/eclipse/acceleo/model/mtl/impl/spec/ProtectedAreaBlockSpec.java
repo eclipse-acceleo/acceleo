@@ -12,6 +12,7 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.impl.ProtectedAreaBlockImpl;
+import org.eclipse.ocl.parser.ValidationVisitor;
 import org.eclipse.ocl.util.ToStringVisitor;
 
 /**
@@ -29,8 +30,10 @@ public class ProtectedAreaBlockSpec extends ProtectedAreaBlockImpl {
 	@Override
 	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
 			U v) {
-		if (v instanceof ToStringVisitor) {
+		if (v instanceof ToStringVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return (T)toString();
+		} else if (v instanceof ValidationVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return (T)Boolean.TRUE;
 		}
 		return super.accept(v);
 	}

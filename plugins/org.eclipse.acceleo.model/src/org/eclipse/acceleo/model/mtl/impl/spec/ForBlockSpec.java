@@ -13,6 +13,7 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.impl.ForBlockImpl;
 import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.parser.ValidationVisitor;
 import org.eclipse.ocl.util.ToStringVisitor;
 
 /**
@@ -30,8 +31,10 @@ public class ForBlockSpec extends ForBlockImpl {
 	@Override
 	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
 			U v) {
-		if (v instanceof ToStringVisitor) {
+		if (v instanceof ToStringVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return (T)toString();
+		} else if (v instanceof ValidationVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return (T)Boolean.TRUE;
 		}
 		return super.accept(v);
 	}
