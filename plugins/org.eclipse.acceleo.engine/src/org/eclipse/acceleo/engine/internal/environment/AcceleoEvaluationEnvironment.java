@@ -270,14 +270,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				}
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_FIRST.equals(operation.getName())) {
 				int endIndex = ((Integer)args[0]).intValue();
-				if (endIndex < 0 || endIndex > sourceValue.length()) {
+				if (endIndex < 0) {
+					result = getInvalidResult();
+				} else if (endIndex > sourceValue.length()) {
 					result = sourceValue;
 				} else {
 					result = sourceValue.substring(0, endIndex);
 				}
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_LAST.equals(operation.getName())) {
 				int charCount = ((Integer)args[0]).intValue();
-				if (charCount < 0 || charCount > sourceValue.length()) {
+				if (charCount < 0) {
+					result = getInvalidResult();
+				} else if (charCount > sourceValue.length()) {
 					result = sourceValue;
 				} else {
 					result = sourceValue.substring(sourceValue.length() - charCount, sourceValue.length());
@@ -421,6 +425,24 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			return variableMap.get(name).getLast();
 		}
 		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#overrides(org.eclipse.emf.ecore.EOperation, int)
+	 */
+	@Override
+	public boolean overrides(EOperation operation, int opcode) {
+		boolean result = false;
+		if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
+			result = true;
+		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+			result = true;
+		} else {
+			result = super.overrides(operation, opcode);
+		}
+		return result;
 	}
 
 	/**
