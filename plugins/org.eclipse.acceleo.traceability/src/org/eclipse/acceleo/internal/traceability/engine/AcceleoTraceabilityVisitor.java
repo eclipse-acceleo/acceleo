@@ -14,7 +14,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -35,6 +38,7 @@ import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDe
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
+import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -194,22 +198,31 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (currentFiles != null && recordedTraces != null && currentFiles.size() > 0
 					&& recordedTraces.size() > 0) {
 				GeneratedFile generatedFile = currentFiles.getLast();
-				final ExpressionTrace trace = recordedTraces.removeLast();
+				final ExpressionTrace trace;
+				boolean disposeTrace = !(sourceBlock instanceof IfBlock)
+						|| !(sourceBlock instanceof ForBlock);
+				if (sourceBlock instanceof IfBlock || sourceBlock instanceof ForBlock) {
+					trace = recordedTraces.getLast();
+				} else {
+					trace = recordedTraces.removeLast();
+				}
 				if (protectedAreaSource != null) {
 					alterProtectedAreaTrace(string, sourceBlock, trace);
 				}
 				final int fileLength = generatedFile.getLength();
 				int addedLength = 0;
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-					for (GeneratedText text : entry.getValue()) {
+					for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+						int startingOffset = addedLength;
 						addedLength += text.getEndOffset() - text.getStartOffset();
-						text.setStartOffset(text.getStartOffset() + fileLength);
-						text.setEndOffset(text.getEndOffset() + fileLength);
+						text.setStartOffset(fileLength + startingOffset);
+						text.setEndOffset(fileLength + addedLength);
 						generatedFile.getGeneratedRegions().add(text);
+						entry.getValue().remove(text);
 					}
 				}
 				generatedFile.setLength(fileLength + addedLength);
-				if (invocationTraces == null || !invocationTraces.contains(trace)) {
+				if (disposeTrace && (invocationTraces == null || !invocationTraces.contains(trace))) {
 					trace.dispose();
 				}
 			}
@@ -561,8 +574,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} catch (AcceleoEvaluationCancelledException e) {
 			cancel();
 			throw e;
+		} finally {
+			record = oldRecordingValue;
 		}
-		record = oldRecordingValue;
 
 		if (isPropertyCallSource(expression)) {
 			propertyCallSource = (EObject)result;
@@ -737,6 +751,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#visitAcceleoIfBlock(org.eclipse.acceleo.model.mtl.IfBlock)
+	 */
+	@Override
+	public void visitAcceleoIfBlock(IfBlock ifBlock) {
+		super.visitAcceleoIfBlock(ifBlock);
+
+		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == ifBlock
+				&& recordedTraces.getLast().getTraces().size() == 0) {
+			recordedTraces.removeLast();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#visitAcceleoForBlock(org.eclipse.acceleo.model.mtl.ForBlock)
 	 */
 	@Override
@@ -767,6 +796,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		super.visitAcceleoFileBlock(fileBlock);
 
 		currentFiles.removeLast();
+		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == fileBlock
+				&& recordedTraces.getLast().getTraces().size() == 0) {
+			recordedTraces.removeLast();
+		}
 	}
 
 	/**
@@ -1170,6 +1203,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = visitIsAlphanumOperation((String)sourceObject);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			ExpressionTrace oldArgTrace = operationArgumentTrace;
+			operationArgumentTrace = new ExpressionTrace(callExp.getArgument().get(0));
+			Object separator = super.visitExpression(callExp.getArgument().get(0));
+			result = visitSepOperation((Collection<Object>)sourceObject, (String)separator);
+			operationArgumentTrace = oldArgTrace;
 		} else {
 			result = super.visitOperationCallExp(callExp);
 		}
@@ -1443,6 +1483,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		return result.toString();
 	}
 
+	private Collection<Object> visitSepOperation(Collection<Object> source, String separator) {
+		final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+		final Iterator<?> sourceIterator = source.iterator();
+		while (sourceIterator.hasNext()) {
+			temp.add(sourceIterator.next());
+			if (sourceIterator.hasNext()) {
+				temp.add(separator);
+			}
+		}
+		return temp;
+	}
+
 	/**
 	 * Handles the "substring" OCL operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
@@ -1688,6 +1740,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
 				isImpacting = isImpacting
 						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+				isImpacting = isImpacting
+						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
 			}
 		}
 
