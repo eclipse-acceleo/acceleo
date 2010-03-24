@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.outline;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoOutlinePageItemProviderAdapterFactory;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoOutlinePageLabelProvider;
@@ -20,6 +23,8 @@ import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Macro;
 import org.eclipse.acceleo.parser.cst.Query;
 import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -49,6 +54,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.dialogs.PatternFilter;
 
 /**
  * This will be used to display the quick outline to the user.
@@ -279,15 +285,21 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 	 *            parent composite.
 	 */
 	protected void createTreeViewer(Composite parent) {
-		filteredTree = new FilteredTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL,
-				new QuickOutlinePatternFilter());
+		createFilteredTree(parent);
 		treeViewer = filteredTree.getViewer();
 		final Tree tree = treeViewer.getTree();
 
 		tree.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
-				if (event.character == SWT.ESC) {
+				if (event.character == SWT.CR || event.character == SWT.KEYPAD_CR) {
+					TreeItem[] selection = tree.getSelection();
+					if (selection[0].getData() instanceof CSTNode) {
+						CSTNode node = (CSTNode)selection[0].getData();
+						editor.selectRange(node.getStartPosition(), node.getEndPosition());
+						dispose();
+					}
+				} else if (event.character == SWT.ESC) {
 					dispose();
 				}
 			}
@@ -305,6 +317,7 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 					if (selection[0].getData() instanceof CSTNode) {
 						CSTNode node = (CSTNode)selection[0].getData();
 						editor.selectRange(node.getStartPosition(), node.getEndPosition());
+						dispose();
 					}
 				}
 			}
@@ -326,6 +339,62 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 				return element instanceof Template || element instanceof Query || element instanceof Macro;
 			}
 		});
+	}
+
+	/**
+	 * Externalized here due to the number of "catch" clauses the reflective call to a constructor requires.
+	 * 
+	 * @param parent
+	 *            Parent composite of the filtered tree.
+	 */
+	private void createFilteredTree(Composite parent) {
+		Constructor<FilteredTree> filteredTreeConstructor = null;
+		try {
+			filteredTreeConstructor = FilteredTree.class.getConstructor(Composite.class, int.class,
+					PatternFilter.class, boolean.class);
+			filteredTree = filteredTreeConstructor.newInstance(parent, SWT.SINGLE | SWT.H_SCROLL
+					| SWT.V_SCROLL, new QuickOutlinePatternFilter(), true);
+		} catch (NoSuchMethodException e) {
+			// Eclipse < 3.5
+			try {
+				filteredTreeConstructor = FilteredTree.class.getConstructor(Composite.class, int.class,
+						PatternFilter.class);
+				filteredTree = filteredTreeConstructor.newInstance(parent, SWT.SINGLE | SWT.H_SCROLL
+						| SWT.V_SCROLL, new QuickOutlinePatternFilter());
+			} catch (NoSuchMethodException ee) {
+				// shouldn't happen
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, ee.getMessage()));
+			} catch (IllegalArgumentException ee) {
+				// shouldn't happen
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, ee.getMessage()));
+			} catch (InstantiationException ee) {
+				// shouldn't happen
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, ee.getMessage()));
+			} catch (IllegalAccessException ee) {
+				// shouldn't happen
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, ee.getMessage()));
+			} catch (InvocationTargetException ee) {
+				// shouldn't happen
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, ee.getMessage()));
+			}
+		} catch (IllegalArgumentException e) {
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage()));
+		} catch (InstantiationException e) {
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage()));
+		} catch (IllegalAccessException e) {
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage()));
+		} catch (InvocationTargetException e) {
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage()));
+		}
 	}
 
 	/**
