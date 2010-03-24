@@ -113,17 +113,16 @@ public final class ModelUtils {
 		if (fileExtension == null || fileExtension.length() == 0) {
 			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
 		}
-
-		final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-		final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
-		if (resourceFactory != null) {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					resourceFactory);
-		} else {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					new XMIResourceFactoryImpl());
+		Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(
+				fileExtension);
+		if (resourceFactory == null) {
+			resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+					.get(fileExtension);
+			if (resourceFactory != null) {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						resourceFactory);
+			}
 		}
-
 		return resourceSet.createResource(modelURI);
 	}
 
