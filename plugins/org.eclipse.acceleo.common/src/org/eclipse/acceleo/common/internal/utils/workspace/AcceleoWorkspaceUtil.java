@@ -660,12 +660,12 @@ public final class AcceleoWorkspaceUtil {
 
 	/**
 	 * This will check through the dependencies of <code>model</code> and install the necessary workspace
-	 * plugins if they are either required or imported.
+	 * plugins if they are required.
 	 * 
 	 * @param model
-	 *            The model we wish the dependencies checked of.
+	 *            The model of which we wish the dependencies checked.
 	 */
-	private void checkDependencies(IPluginModelBase model) {
+	private void checkRequireBundleDependencies(IPluginModelBase model) {
 		final BundleDescription desc = model.getBundleDescription();
 		if (desc == null) {
 			return;
@@ -677,6 +677,20 @@ public final class AcceleoWorkspaceUtil {
 					break;
 				}
 			}
+		}
+	}
+
+	/**
+	 * This will check the indirect dependencies of <code>model</code> and install the necessary workspace
+	 * plugins if we need to import some of its packages.
+	 * 
+	 * @param model
+	 *            The model of which we wish the dependencies checked.
+	 */
+	private void checkImportPackagesDependencies(IPluginModelBase model) {
+		final BundleDescription desc = model.getBundleDescription();
+		if (desc == null) {
+			return;
 		}
 		for (ImportPackageSpecification importPackage : desc.getImportPackages()) {
 			for (IPluginModelBase workspaceModel : PluginRegistry.getWorkspaceModels()) {
@@ -759,13 +773,18 @@ public final class AcceleoWorkspaceUtil {
 
 			Bundle bundle = getBundle(candidateLocationReference);
 
-			// Install the bundle if needed
+			/*
+			 * Install the bundle if needed. Note that we'll check bundle depencies in two phases as even if
+			 * there cannot be cyclic dependencies through the "require-bundle" header, there could be through
+			 * the "import package" header.
+			 */
 			if (bundle == null) {
-				checkDependencies(model);
+				checkRequireBundleDependencies(model);
 				bundle = installBundle(candidateLocationReference);
 				final IProject project = model.getUnderlyingResource().getProject();
 				setBundleClasspath(project, bundle);
 				workspaceInstalledBundles.put(model, bundle);
+				checkImportPackagesDependencies(model);
 			}
 			refreshPackages(new Bundle[] {bundle, });
 		} catch (BundleException e) {
