@@ -56,6 +56,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -1067,6 +1068,15 @@ public class AcceleoSourceContent {
 		} catch (IOException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+		} catch (WrappedException e) {
+			if (e.getMessage().endsWith(".emtl' does not exist.")) {
+				/*
+				 * Discard exception. This is seldom thrown by the editor when repeatedly copy/pasting chunks
+				 * of code.
+				 */
+			} else {
+				throw e;
+			}
 		}
 		return null;
 	}
