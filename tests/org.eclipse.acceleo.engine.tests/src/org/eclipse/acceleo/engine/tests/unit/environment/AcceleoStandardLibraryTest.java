@@ -20,6 +20,7 @@ import java.util.Properties;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -49,6 +50,9 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	private final String[] stringValues = new String[] {"a", "\u00e9\u00e8\u0020\u00f1", "", "Foehn12",
 			"Standard sentence.", };
 
+	/** Instance of the "oclInvalid" standard library object. */
+	protected Object invalidObject;
+
 	{
 		AcceleoStandardLibrary lib = new AcceleoStandardLibrary();
 
@@ -56,7 +60,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME);
 		List<EOperation> copyOperations = new ArrayList<EOperation>(intOperations.size());
 		for (EOperation operation : intOperations) {
-			copyOperations.add((EOperation)EcoreUtil.copy(operation));
+			copyOperations.add(EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME, copyOperations);
 
@@ -64,7 +68,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME);
 		copyOperations = new ArrayList<EOperation>(realOperations.size());
 		for (EOperation operation : realOperations) {
-			copyOperations.add((EOperation)EcoreUtil.copy(operation));
+			copyOperations.add(EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME, copyOperations);
 
@@ -72,7 +76,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME);
 		copyOperations = new ArrayList<EOperation>(stringOperations.size());
 		for (EOperation operation : stringOperations) {
-			copyOperations.add((EOperation)EcoreUtil.copy(operation));
+			copyOperations.add(EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME, copyOperations);
 	}
@@ -92,6 +96,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				previewStrategy, new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
 		evaluationEnvironment = (AcceleoEvaluationEnvironment)ocl.getEvaluationEnvironment();
+		invalidObject = ((AcceleoEnvironment)ocl.getEnvironment()).getOCLStandardLibraryReflection()
+				.getInvalid();
 	}
 
 	/**
@@ -171,7 +177,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 			Object result = evaluationEnvironment.callStandardOperation(operation, value,
 					new Object[] {Integer.valueOf(-5), });
 			assertEquals("Calling the standard operation String.first(int) with a negative "
-					+ "parameter should return self.", value, result);
+					+ "parameter should return self.", invalidObject, result);
 			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(0));
 			assertEquals("Calling the standard operation String.first(0) should return the empty String.",
 					"", result);
@@ -294,7 +300,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 			Object result = evaluationEnvironment
 					.callStandardOperation(operation, value, Integer.valueOf(-5));
 			assertEquals("Calling the standard operation String.last(int) with a negative "
-					+ "parameter should return self.", value, result);
+					+ "parameter should return self.", invalidObject, result);
 			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(0));
 			assertEquals("Calling the standard operation String.last(0) should return the empty String.", "",
 					result);

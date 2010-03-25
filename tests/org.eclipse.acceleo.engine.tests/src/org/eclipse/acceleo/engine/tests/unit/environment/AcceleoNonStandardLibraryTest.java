@@ -69,7 +69,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME);
 		List<EOperation> copyOperations = new ArrayList<EOperation>(stringOperations.size());
 		for (EOperation operation : stringOperations) {
-			copyOperations.add((EOperation)EcoreUtil.copy(operation));
+			copyOperations.add(EcoreUtil.copy(operation));
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME, copyOperations);
 
@@ -77,9 +77,17 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME);
 		copyOperations = new ArrayList<EOperation>(oclAnyOperations.size());
 		for (EOperation operation : oclAnyOperations) {
-			copyOperations.add((EOperation)EcoreUtil.copy(operation));
+			copyOperations.add(EcoreUtil.copy(operation));
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME, copyOperations);
+
+		List<EOperation> eObjectOperations = lib
+				.getExistingOperations(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME);
+		copyOperations = new ArrayList<EOperation>(eObjectOperations.size());
+		for (EOperation operation : eObjectOperations) {
+			copyOperations.add(EcoreUtil.copy(operation));
+		}
+		nonStdLib.put(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME, copyOperations);
 	}
 
 	/**
@@ -127,8 +135,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyAncestorsUnParameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -159,8 +167,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyAncestorsParameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -192,8 +200,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyEAllContentsUnparameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -229,8 +237,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyEAllContentsParameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -271,8 +279,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyEInverseUnparameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -306,8 +314,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnyEInverseParameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -339,8 +347,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnySiblingsUnparameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
@@ -452,8 +460,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * </p>
 	 */
 	public void testOclAnySiblingsParameterizable() {
-		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
-				AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS);
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
 
 		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
 		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
