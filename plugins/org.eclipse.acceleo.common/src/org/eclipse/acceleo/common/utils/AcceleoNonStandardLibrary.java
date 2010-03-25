@@ -116,7 +116,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
 	 * </p>
 	 */
-	public static final String OPERATION_OCLANY_ANCESTORS = "ancestors"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_ANCESTORS = "ancestors"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;siblings&quot; non-standard operation accessible on all objects. This operation comes
@@ -130,7 +130,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the elements of the given type from the set of the receiver's siblings as a Sequence.
 	 * </p>
 	 */
-	public static final String OPERATION_OCLANY_SIBLINGS = "siblings"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_SIBLINGS = "siblings"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;eAllContents&quot; non-standard operation accessible on all objects. This operation
@@ -144,7 +144,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the elements of the given type from the whole content tree of the receiver as a Sequence.
 	 * </p>
 	 */
-	public static final String OPERATION_OCLANY_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;eContainer&quot; non-standard operation accessible on all objects.
@@ -155,7 +155,7 @@ public final class AcceleoNonStandardLibrary {
 	 * 
 	 * @since 3.0
 	 */
-	public static final String OPERATION_OCLANY_ECONTAINER = "eContainer"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_ECONTAINER = "eContainer"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;eGet&quot; non-standard operation accessible on all objects.
@@ -167,7 +167,7 @@ public final class AcceleoNonStandardLibrary {
 	 * 
 	 * @since 3.0
 	 */
-	public static final String OPERATION_OCLANY_EGET = "eGet"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_EGET = "eGet"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;eInverse&quot; non-standard operation accessible on all objects. This operation comes
@@ -181,7 +181,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the elements of the given type from the set of the inverse references of the receiver.
 	 * </p>
 	 */
-	public static final String OPERATION_OCLANY_EINVERSE = "eInverse"; //$NON-NLS-1$
+	public static final String OPERATION_EOBJECT_EINVERSE = "eInverse"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;invoke&quot; non-standard operation accessible on all objects.
@@ -390,6 +390,13 @@ public final class AcceleoNonStandardLibrary {
 	 */
 	public static final String TYPE_COLLECTION_NAME = "Collection(T)"; //$NON-NLS-1$
 
+	/**
+	 * Name of the type "EObject" used for common EOperations on EObjects.
+	 * 
+	 * @since 3.0
+	 */
+	public static final String TYPE_EOBJECT_NAME = "EObject"; //$NON-NLS-1$
+
 	/** Name of the type "OclAny" used for common EOperations for all EObjects. */
 	public static final String TYPE_OCLANY_NAME = "OclAny"; //$NON-NLS-1$
 
@@ -416,6 +423,9 @@ public final class AcceleoNonStandardLibrary {
 	/** EClass for the Acceleo non-standard library's "Collection" type. */
 	private static EClass collectionType;
 
+	/** EClass for the Acceleo non-standard library's "EObject" type. */
+	private static EClass eObjectType;
+
 	/** EClass for the Acceleo non-standard library's "OclAny" type. */
 	private static EClass oclAnyType;
 
@@ -437,6 +447,7 @@ public final class AcceleoNonStandardLibrary {
 		try {
 			nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
 			collectionType = (EClass)nonStdLibPackage.getEClassifier(TYPE_COLLECTION_NAME);
+			eObjectType = (EClass)nonStdLibPackage.getEClassifier(TYPE_EOBJECT_NAME);
 			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
 			orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
 			sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
@@ -472,6 +483,8 @@ public final class AcceleoNonStandardLibrary {
 			result.addAll(stringType.getEOperations());
 		} else if (TYPE_OCLANY_NAME.equals(classifierName)) {
 			result.addAll(oclAnyType.getEOperations());
+		} else if (TYPE_EOBJECT_NAME.equals(classifierName)) {
+			result.addAll(eObjectType.getEOperations());
 		} else if (TYPE_COLLECTION_NAME.equals(classifierName)) {
 			result.addAll(collectionType.getEOperations());
 		} else if (TYPE_ORDEREDSET_NAME.equals(classifierName)) {
