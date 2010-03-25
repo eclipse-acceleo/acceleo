@@ -158,14 +158,14 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			final String operationName = operation.getName();
 			// Handles all operations which can return a typed sequence as their result.
 			if (args.get(0) instanceof TypeExp) {
-				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS
+				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS
 						.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName);
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName);
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName);
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE.equals(operationName);
 				if (isParameterizedCollection) {
 					final SequenceType alteredSequence = (SequenceType)EcoreUtil.copy(type);
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
@@ -177,11 +177,11 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					altered.add(alteredSequence);
 					type = alteredSequence;
 				} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)
-						|| AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName)) {
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTAINER.equals(operationName)) {
 					type = ((TypeExp)args.get(0)).getReferredType();
 				}
 			} else if (args.get(0) instanceof StringLiteralExp
-					&& AcceleoNonStandardLibrary.OPERATION_OCLANY_EGET.equals(operationName)) {
+					&& AcceleoNonStandardLibrary.OPERATION_EOBJECT_EGET.equals(operationName)) {
 				final String featureName = ((StringLiteralExp)args.get(0)).getStringSymbol();
 
 				EStructuralFeature feature = null;
@@ -287,7 +287,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 *            Feature we need a static type of.
 		 * @return The determined type for this feature.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({"unchecked", "rawtypes" })
 		private EClassifier inferTypeFromFeature(EStructuralFeature feature) {
 			EClassifier type = feature.getEType();
 			// FIXME handle lists

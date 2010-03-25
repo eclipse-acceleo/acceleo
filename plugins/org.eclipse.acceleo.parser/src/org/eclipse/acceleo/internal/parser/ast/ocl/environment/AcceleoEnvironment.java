@@ -379,6 +379,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 		// Add non-standard Acceleo operations
 		addHelperOperations(getOCLStandardLibrary().getString(), getAcceleoNonStandardLibrary()
 				.getExistingOperations(getOCLStandardLibrary().getString()));
+		addHelperOperations(EcorePackage.eINSTANCE.getEObject(), getAcceleoNonStandardLibrary()
+				.getExistingOperations(EcorePackage.eINSTANCE.getEObject()));
 		addHelperOperations(getOCLStandardLibrary().getOclAny(), getAcceleoNonStandardLibrary()
 				.getExistingOperations(getOCLStandardLibrary().getOclAny()));
 		addHelperOperations(getOCLStandardLibrary().getCollection(), getAcceleoNonStandardLibrary()
