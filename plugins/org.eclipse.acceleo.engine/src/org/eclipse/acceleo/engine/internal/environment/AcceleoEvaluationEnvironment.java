@@ -547,7 +547,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private Object callNonStandardCollectionOperation(EOperation operation, Collection<?> source,
 			Object... args) {
-		Object result = null;
+		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
@@ -593,40 +593,40 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return Result of the operation call.
 	 */
 	private Object callNonStandardEObjectOperation(EOperation operation, EObject source, Object... args) {
-		Object result = null;
+		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
 
-		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EALLCONTENTS.equals(operationName)) {
+		if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS.equals(operationName)) {
 			if (args.length == 0) {
 				result = eAllContents(source, null);
 			} else if (args.length == 1 && args[0] instanceof EClassifier) {
 				result = eAllContents(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
-		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ANCESTORS.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS.equals(operationName)) {
 			if (args.length == 0) {
 				result = ancestors(source, null);
 			} else if (args.length == 1 && args[0] instanceof EClassifier) {
 				result = ancestors(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
-		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_SIBLINGS.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS.equals(operationName)) {
 			if (args.length == 0) {
 				result = siblings(source, null);
 			} else if (args.length == 1 && args[0] instanceof EClassifier) {
 				result = siblings(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
-		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EINVERSE.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE.equals(operationName)) {
 			if (args.length == 0) {
 				result = eInverse(source, null);
 			} else if (args.length == 1 && args[0] instanceof EClassifier) {
 				result = eInverse(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
-		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_EGET.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_EGET.equals(operationName)) {
 			result = eGet(source, (String)args[0]);
-		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_ECONTAINER.equals(operationName)) {
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTAINER.equals(operationName)) {
 			result = eContainer(source, (EClassifier)args[0]);
 		}
 
@@ -646,7 +646,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return Result of the operation call.
 	 */
 	private Object callNonStandardStringOperation(EOperation operation, String source, Object... args) {
-		Object result = null;
+		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL.equals(operationName)) {
@@ -925,14 +925,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            The EObject we seek the content of.
 	 * @return The list of all the content of a given EObject, derived containmnent references included.
 	 */
-	@SuppressWarnings("unchecked")
 	private List<EObject> getContents(EObject eObject) {
 		final List<EObject> result = new ArrayList<EObject>(eObject.eContents());
 		for (final EReference reference : eObject.eClass().getEAllReferences()) {
 			if (reference.isContainment() && reference.isDerived()) {
 				final Object value = eObject.eGet(reference);
-				if (value instanceof Collection) {
-					for (Object newValue : (Collection)value) {
+				if (value instanceof Collection<?>) {
+					for (Object newValue : (Collection<?>)value) {
 						if (!result.contains(newValue) && newValue instanceof EObject) {
 							result.add((EObject)newValue);
 						}
