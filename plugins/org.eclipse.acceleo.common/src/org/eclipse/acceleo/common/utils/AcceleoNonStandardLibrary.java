@@ -112,7 +112,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns a Sequence containing the full set of the receiver's ancestors.
 	 * </p>
 	 * <p>
-	 * <b>ancestors( OclAny ) : Sequence</b><br/>
+	 * <b>ancestors( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
 	 * </p>
 	 */
@@ -126,7 +126,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns a Sequence containing the full set of the receiver's siblings.
 	 * </p>
 	 * <p>
-	 * <b>siblings( OclAny ) : Sequence</b><br/>
+	 * <b>siblings( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the set of the receiver's siblings as a Sequence.
 	 * </p>
 	 */
@@ -140,7 +140,7 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the whole content tree of the receiver as a Sequence.
 	 * </p>
 	 * <p>
-	 * <b>eAllContents( OclAny ) : Sequence</b><br/>
+	 * <b>eAllContents( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the whole content tree of the receiver as a Sequence.
 	 * </p>
 	 */
@@ -149,13 +149,24 @@ public final class AcceleoNonStandardLibrary {
 	/**
 	 * Name of the &quot;eContainer&quot; non-standard operation accessible on all objects.
 	 * <p>
-	 * <b>eContainer( OclAny ) : Sequence</b><br/>
+	 * <b>eContainer( OclType ) : Sequence</b><br/>
 	 * Returns the first container of the receiver that if of the given type.
 	 * </p>
 	 * 
 	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_ECONTAINER = "eContainer"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;eContents&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>eContents( OclType ) : Sequence</b><br/>
+	 * Returns the elements of the given type that are direct children of <em>self</em>.
+	 * </p>
+	 * 
+	 * @since 3.0
+	 */
+	public static final String OPERATION_EOBJECT_ECONTENTS = "eContents"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;eGet&quot; non-standard operation accessible on all objects.
@@ -177,11 +188,43 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the inverse references of the receiver.
 	 * </p>
 	 * <p>
-	 * <b>eInverse( OclAny ) : Sequence(T)</b><br/>
+	 * <b>eInverse( OclType ) : Sequence(T)</b><br/>
 	 * Returns the elements of the given type from the set of the inverse references of the receiver.
 	 * </p>
 	 */
 	public static final String OPERATION_EOBJECT_EINVERSE = "eInverse"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;followingSiblings&quot; non-standard operation accessible on all objects. This
+	 * operation comes in two flavors :
+	 * <p>
+	 * <b>followingSiblings( ) : Sequence</b><br/>
+	 * Returns the list of all elements at the same level as <em>self</em> which follow <em>self</em>, without
+	 * reordering them.
+	 * </p>
+	 * <p>
+	 * <b>followingSiblings( OclType ) : Sequence</b><br/>
+	 * Returns the list of all elements of the given type located at the same level as <em>self</em> which
+	 * follow <em>self</em>, without reordering them.
+	 * </p>
+	 */
+	public static final String OPERATION_EOBJECT_FOLLOWINGSIBLINGS = "followingSiblings"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;precedingSiblings&quot; non-standard operation accessible on all objects. This
+	 * operation comes in two flavors :
+	 * <p>
+	 * <b>precedingSiblings( ) : Sequence</b><br/>
+	 * Returns the list of all elements at the same level as <em>self</em> which precede <em>self</em>,
+	 * without reordering them.
+	 * </p>
+	 * <p>
+	 * <b>precedingSiblings( OclType ) : Sequence</b><br/>
+	 * Returns the list of all elements of the given type located at the same level as <em>self</em> which
+	 * precede <em>self</em>, without reordering them.
+	 * </p>
+	 */
+	public static final String OPERATION_EOBJECT_PRECEDINGSIBLINGS = "precedingSiblings"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;invoke&quot; non-standard operation accessible on all objects.
