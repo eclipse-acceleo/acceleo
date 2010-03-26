@@ -216,6 +216,21 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#getAdditionalOperations(java.lang.Object)
+	 */
+	@Override
+	public List<EOperation> getAdditionalOperations(EClassifier classifier) {
+		List<EOperation> result = new ArrayList<EOperation>();
+		result.addAll(super.getAdditionalOperations(classifier));
+		if (!(classifier instanceof PrimitiveType)) {
+			result.addAll(super.getAdditionalOperations(EcorePackage.eINSTANCE.getEObject()));
+		}
+		return result;
+	}
+
+	/**
 	 * Returns the Acceleo non-standard library.
 	 * 
 	 * @return The Acceleo non-standard library.

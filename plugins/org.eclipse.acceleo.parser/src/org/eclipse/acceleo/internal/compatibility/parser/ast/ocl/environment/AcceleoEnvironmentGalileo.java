@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.eclipse.ocl.TypeChecker;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreFactory;
+import org.eclipse.ocl.ecore.PrimitiveType;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.StringLiteralExp;
@@ -144,6 +146,20 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		/**
 		 * {@inheritDoc}
 		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#getOperations(java.lang.Object)
+		 */
+		@Override
+		public List<EOperation> getOperations(EClassifier owner) {
+			final List<EOperation> result = new ArrayList<EOperation>(super.getOperations(owner));
+			if (!(owner instanceof PrimitiveType)) {
+				result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
+			}
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ocl.AbstractTypeChecker#getResultType(java.lang.Object, java.lang.Object,
 		 *      java.lang.Object, java.util.List)
 		 */
@@ -161,11 +177,19 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS
 						.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTENTS.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_PRECEDINGSIBLINGS
+								.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_FOLLOWINGSIBLINGS
+								.equals(operationName);
 				if (isParameterizedCollection) {
 					final SequenceType alteredSequence = (SequenceType)EcoreUtil.copy(type);
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
