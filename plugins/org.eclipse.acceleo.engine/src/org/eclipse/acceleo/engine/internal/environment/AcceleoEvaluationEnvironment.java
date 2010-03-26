@@ -494,8 +494,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's ancestors.
 	 */
-	private Set<EObject> ancestors(EObject source, EClassifier filter) {
-		final Set<EObject> result = new LinkedHashSet<EObject>();
+	private List<EObject> ancestors(EObject source, EClassifier filter) {
+		final List<EObject> result = new ArrayList<EObject>();
 		EObject container = source.eContainer();
 		while (container != null) {
 			if (filter == null || filter.isInstance(container)) {
@@ -617,6 +617,20 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				result = siblings(source, (EClassifier)args[0]);
 			}
 			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_PRECEDINGSIBLINGS.equals(operationName)) {
+			if (args.length == 0) {
+				result = siblings(source, null, true);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = siblings(source, (EClassifier)args[0], true);
+			}
+			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_FOLLOWINGSIBLINGS.equals(operationName)) {
+			if (args.length == 0) {
+				result = siblings(source, null, false);
+			} else if (args.length == 1 && args[0] instanceof EClassifier) {
+				result = siblings(source, (EClassifier)args[0], false);
+			}
+			// fall through : let else fail in UnsupportedOperationException
 		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE.equals(operationName)) {
 			if (args.length == 0) {
 				result = eInverse(source, null);
@@ -628,6 +642,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			result = eGet(source, (String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTAINER.equals(operationName)) {
 			result = eContainer(source, (EClassifier)args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTENTS.equals(operationName)) {
+			result = eContents(source, (EClassifier)args[0]);
 		}
 
 		return result;
@@ -791,6 +807,30 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * Iterates over the direct children of the given EObject and returns the elements of type
+	 * <code>filter</code> as a list.
+	 * 
+	 * @param source
+	 *            The EObject we seek the content of.
+	 * @param filter
+	 *            Types of the EObjects we seek to retrieve.
+	 * @return The given EObject's children of type <em>filter</em> as a list.
+	 */
+	private List<EObject> eContents(EObject source, EClassifier filter) {
+		final Iterator<EObject> contentIterator = source.eContents().iterator();
+		final List<EObject> result = new ArrayList<EObject>();
+
+		while (contentIterator.hasNext()) {
+			final EObject next = contentIterator.next();
+			if (filter == null || filter.isInstance(next)) {
+				result.add(next);
+			}
+		}
+
+		return result;
+	}
+
+	/**
 	 * Handles calls to the non standard operation "eGet". This will fetch the value of the feature named
 	 * <em>featureName</em> on <em>source</em>.
 	 * 
@@ -821,14 +861,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of inverse references.
 	 */
-	private Set<EObject> eInverse(EObject target, EClassifier filter) {
-		final Set<EObject> result = new LinkedHashSet<EObject>();
+	private List<EObject> eInverse(EObject target, EClassifier filter) {
+		final List<EObject> result = new ArrayList<EObject>();
 		if (referencer == null) {
 			createEInverseCrossreferencer(target);
 		}
 		Collection<EStructuralFeature.Setting> settings = referencer.get(target);
 		if (settings == null) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 		for (EStructuralFeature.Setting setting : settings) {
 			if (filter == null || filter.isInstance(setting.getEObject())) {
@@ -1636,11 +1676,46 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
-	private Set<EObject> siblings(EObject source, EClassifier filter) {
-		final Set<EObject> result = new LinkedHashSet<EObject>();
+	private List<EObject> siblings(EObject source, EClassifier filter) {
+		final List<EObject> result = new ArrayList<EObject>();
 		EObject container = source.eContainer();
 		for (EObject child : getContents(container)) {
 			if (child != source && (filter == null || filter.isInstance(child))) {
+				result.add(child);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Returns a Sequence containing either all preceding siblings of <code>source</code>, or all of its
+	 * following siblings.
+	 * 
+	 * @param source
+	 *            The EObject we seek the siblings of.
+	 * @param filter
+	 *            Types of the EObjects we seek to retrieve.
+	 * @param preceding
+	 *            If <code>true</code>, we'll return the preceding siblings of <em>source</em>. Otherwise,
+	 *            this will return its followingSiblings.
+	 * @return Sequence containing the sought set of the receiver's siblings.
+	 */
+	private List<EObject> siblings(EObject source, EClassifier filter, boolean preceding) {
+		final List<EObject> result = new ArrayList<EObject>();
+		final EObject container = source.eContainer();
+		final List<EObject> siblings = getContents(container);
+
+		int startIndex = 0;
+		int endIndex = siblings.size();
+		if (preceding) {
+			endIndex = siblings.indexOf(source);
+		} else {
+			startIndex = siblings.indexOf(source) + 1;
+		}
+
+		for (int i = startIndex; i < endIndex; i++) {
+			EObject child = siblings.get(i);
+			if (filter == null || filter.isInstance(child)) {
 				result.add(child);
 			}
 		}
