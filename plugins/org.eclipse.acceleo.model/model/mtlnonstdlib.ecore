@@ -95,35 +95,53 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObject">
+    <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
+    <eOperations name="ancestors" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="ancestors" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
+    <eOperations name="siblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="siblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
+    <eOperations name="eInverse" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="eInverse" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
+    <eOperations name="precedingSiblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="precedingSiblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
+    <eOperations name="followingSiblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
+    <eOperations name="followingSiblings" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
     <eOperations name="eContainer" eType="#//OclAny">
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
-    <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-    </eOperations>
-    <eOperations name="eAllContents" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-    </eOperations>
-    <eOperations name="ancestors" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-    </eOperations>
-    <eOperations name="ancestors" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-    </eOperations>
-    <eOperations name="siblings" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-    </eOperations>
-    <eOperations name="siblings" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-    </eOperations>
-    <eOperations name="eInverse" eType="#//Sequence(OclAny)">
-      <eAnnotations source="MTL non-standard"/>
-    </eOperations>
-    <eOperations name="eInverse" eType="#//Sequence(OclAny)">
+    <eOperations name="eContents" eType="#//Sequence(OclAny)">
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
