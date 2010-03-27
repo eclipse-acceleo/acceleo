@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -44,10 +43,9 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getElements(java.lang.Object)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object[] getElements(Object object) {
-		if (object instanceof List) {
-			Set<CSTNode> orderedCollection = new TreeSet<CSTNode>(new Comparator<CSTNode>() {
+		if (object instanceof List<?>) {
+			final Comparator<CSTNode> cstNodeComparator = new Comparator<CSTNode>() {
 				public int compare(CSTNode n0, CSTNode n1) {
 					if (n0.getStartPosition() < n1.getStartPosition()) {
 						return -1;
@@ -55,14 +53,14 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 						return 1;
 					}
 				}
-			});
-			Iterator<Object> it = ((List)object).iterator();
-			while (it.hasNext()) {
-				Object element = it.next();
+			};
+			List<CSTNode> orderedCollection = new ArrayList<CSTNode>(((List<?>)object).size());
+			for (Object element : (List<?>)object) {
 				if (element instanceof CSTNode) {
 					orderedCollection.add((CSTNode)element);
 				}
 			}
+			Collections.sort(orderedCollection, cstNodeComparator);
 			return orderedCollection.toArray();
 		} else {
 			return super.getElements(object);
