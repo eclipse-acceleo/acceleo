@@ -13,12 +13,12 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -738,7 +738,7 @@ public class AcceleoSourceContent {
 				}
 				if (vAST != null) {
 					URI uri = vAST.eResource().getURI();
-					vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
+					vAST = EcoreUtil.copy(vAST);
 					if (syntaxHelpResourceSet == null) {
 						syntaxHelpResourceSet = new ResourceSetImpl();
 					}
@@ -791,29 +791,8 @@ public class AcceleoSourceContent {
 	 *            is the OCL parser used to get the given OCL choices
 	 * @return an ordered list
 	 */
-	private Collection<Choice> order(Collection<Choice> choices, OCLParser oclParser) {
-		Collection<Choice> orderedChoices = new TreeSet<Choice>(new Comparator<Choice>() {
-			public int compare(Choice arg0, Choice arg1) {
-				int value;
-				if (arg0.getKind() == ChoiceKind.VARIABLE && arg1.getKind() == ChoiceKind.VARIABLE) {
-					value = -1;
-				} else if (arg0.getKind() == ChoiceKind.VARIABLE) {
-					value = -1;
-				} else if (arg1.getKind() == ChoiceKind.VARIABLE) {
-					value = 1;
-				} else if (arg0.getKind() == ChoiceKind.PROPERTY && arg1.getKind() == ChoiceKind.PROPERTY) {
-					value = arg0.getName().compareTo(arg1.getName());
-				} else if (arg0 instanceof AcceleoCompletionChoice
-						&& !(arg1 instanceof AcceleoCompletionChoice)) {
-					value = -1;
-				} else if (arg0.getKind() == ChoiceKind.PROPERTY) {
-					value = -1;
-				} else {
-					value = 1;
-				}
-				return value;
-			}
-		});
+	private Collection<Choice> order(List<Choice> choices, OCLParser oclParser) {
+		final List<Choice> orderedChoices = new ArrayList<Choice>(choices.size());
 		Iterator<Choice> choicesIt = choices.iterator();
 		while (choicesIt.hasNext()) {
 			Choice choice = choicesIt.next();
@@ -829,6 +808,7 @@ public class AcceleoSourceContent {
 			}
 			orderedChoices.add(choice);
 		}
+		Collections.sort(orderedChoices, new ChoiceComparator());
 		return orderedChoices;
 	}
 
@@ -1096,7 +1076,7 @@ public class AcceleoSourceContent {
 			}
 			if (vAST != null) {
 				URI uri = vAST.eResource().getURI();
-				vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
+				vAST = EcoreUtil.copy(vAST);
 				ResourceSet resourceSet = new ResourceSetImpl();
 				Resource resource = ModelUtils.createResource(uri, resourceSet);
 				resource.getContents().add(vAST);
@@ -1222,4 +1202,128 @@ public class AcceleoSourceContent {
 		return null;
 	}
 
+	/**
+	 * Completion choices will be ordered with this comparator.
+	 * <p>
+	 * In short, choices will be divided in four groups, in the following order :
+	 * <ol>
+	 * <li>Variables</li>
+	 * <li>Properties</li>
+	 * <li>Templates</li>
+	 * <li>Queries</li>
+	 * <li>Operations</li>
+	 * <li>&quot;Everything else&quot;</li>
+	 * </ol>
+	 * Within each of these groups, choices will be alphabetically ordered.
+	 * </p>
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private class ChoiceComparator implements Comparator<Choice> {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(Choice arg0, Choice arg1) {
+			int value;
+			if (arg0.getKind() == ChoiceKind.VARIABLE) {
+				if (arg1.getKind() == ChoiceKind.VARIABLE) {
+					value = arg0.getName().compareTo(arg1.getName());
+				} else {
+					// Variable come before anything else
+					value = -1;
+				}
+			} else if (arg0.getKind() == ChoiceKind.PROPERTY) {
+				if (arg1.getKind() == ChoiceKind.VARIABLE) {
+					// Properties come after variables
+					value = 1;
+				} else if (arg1.getKind() == ChoiceKind.PROPERTY) {
+					value = arg0.getName().compareTo(arg1.getName());
+				} else {
+					// Properties come right after variables
+					value = -1;
+				}
+			} else if (arg0.getKind() == ChoiceKind.OPERATION) {
+				if (arg1.getKind() == ChoiceKind.VARIABLE) {
+					// Operations come after variables ...
+					value = 1;
+				} else if (arg1.getKind() == ChoiceKind.PROPERTY) {
+					// ... and after properties
+					value = 1;
+				} else if (arg1.getKind() == ChoiceKind.OPERATION) {
+					value = compareOperations(arg0, arg1);
+				} else {
+					// Operations come right after properties
+					value = -1;
+				}
+			} else {
+				if (arg1.getKind() == ChoiceKind.VARIABLE) {
+					value = 1;
+				} else if (arg1.getKind() == ChoiceKind.PROPERTY) {
+					value = 1;
+				} else if (arg1.getKind() == ChoiceKind.OPERATION) {
+					value = 1;
+				} else {
+					value = arg0.getName().compareTo(arg1.getName());
+				}
+			}
+			return value;
+		}
+	}
+
+	/**
+	 * This will handle the comparison of two 'operation' kind choices as we need special handling for
+	 * template and query comparison.
+	 * 
+	 * @param arg0
+	 *            The first of the two choices to compare.
+	 * @param arg1
+	 *            The second of the two choices to compare.
+	 * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to,
+	 *         or greater than the second.
+	 */
+	private int compareOperations(Choice arg0, Choice arg1) {
+		int value;
+		// Templates and queries require special handling
+		boolean arg0IsTemplate = arg0 instanceof AcceleoCompletionChoice
+				&& ((AcceleoCompletionChoice)arg0).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template;
+		boolean arg1IsTemplate = arg1 instanceof AcceleoCompletionChoice
+				&& ((AcceleoCompletionChoice)arg1).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template;
+		boolean arg0IsQuery = arg0 instanceof AcceleoCompletionChoice
+				&& ((AcceleoCompletionChoice)arg0).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Query;
+		boolean arg1IsQuery = arg1 instanceof AcceleoCompletionChoice
+				&& ((AcceleoCompletionChoice)arg1).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Query;
+
+		if (arg0IsTemplate) {
+			if (arg1IsTemplate) {
+				value = arg0.getName().compareTo(arg1.getName());
+			} else {
+				// Templates come before queries and regular operations
+				value = -1;
+			}
+		} else if (arg0IsQuery) {
+			if (arg1IsTemplate) {
+				// Queries come after templates
+				value = 1;
+			} else if (arg1IsQuery) {
+				value = arg0.getName().compareTo(arg1.getName());
+			} else {
+				// Queries come before regular operations
+				value = -1;
+			}
+		} else {
+			if (arg1IsTemplate) {
+				// Regular operations come after everything
+				value = 1;
+			} else if (arg1IsQuery) {
+				// Regular operations come after everything
+				value = 1;
+			} else {
+				value = arg0.getName().compareTo(arg1.getName());
+			}
+		}
+
+		return value;
+	}
 }
