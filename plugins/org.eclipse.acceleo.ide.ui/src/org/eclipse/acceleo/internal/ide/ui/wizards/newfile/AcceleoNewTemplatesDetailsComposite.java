@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
@@ -752,7 +751,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	private void updateTypes() {
 		if (metamodelType != null) {
 			String oldSelection = metamodelType.getText();
-			TreeSet<String> typeValues = new TreeSet<String>();
+			List<String> typeValues = new ArrayList<String>();
 			StringTokenizer st = new StringTokenizer(getMetamodelURI(), ",");
 			while (st.hasMoreTokens()) {
 				EPackage ePackage = ModelUtils.getEPackage(st.nextToken().trim());
@@ -766,6 +765,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 				}
 			}
 
+			Collections.sort(typeValues);
 			metamodelTypes = typeValues.toArray(new String[typeValues.size()]);
 			metamodelType.setItems(metamodelTypes);
 			final int visibleItemCount = 15;
