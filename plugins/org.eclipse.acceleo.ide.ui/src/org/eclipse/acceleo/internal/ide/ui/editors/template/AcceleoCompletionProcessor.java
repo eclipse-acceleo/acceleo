@@ -12,11 +12,12 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -81,10 +82,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 
-	/**
-	 * The auto activation characters for completion proposal.
-	 */
-	private static final char[] AUTO_ACTIVATION_CHARACTERS = new char[] {' ', '.', '[', '-', '>', ':' }; // Unless
+	/** The auto activation characters for completion proposal. */
+	private static final char[] AUTO_ACTIVATION_CHARACTERS = new char[] {'.', '[', '-', '>', ':' }; // Unless
 
 	/**
 	 * The current text viewer.
@@ -656,7 +655,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			i--;
 		}
 		String start = text.substring(i, offset);
-		Iterator<String> entries = new TreeSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
+		Iterator<String> entries = EPackage.Registry.INSTANCE.keySet().iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
 			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
@@ -665,7 +664,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		if (start.length() > 0) {
-			entries = new TreeSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
+			entries = EPackage.Registry.INSTANCE.keySet().iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
 				EPackage ePackage = ModelUtils.getEPackage(pURI);
@@ -701,7 +700,12 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
-
+		Collections.sort(proposals, new Comparator<ICompletionProposal>() {
+			public int compare(ICompletionProposal o1, ICompletionProposal o2) {
+				// All completion proposal have the actual package URI as their display name
+				return o1.getDisplayString().compareTo(o2.getDisplayString());
+			}
+		});
 	}
 
 	/**
