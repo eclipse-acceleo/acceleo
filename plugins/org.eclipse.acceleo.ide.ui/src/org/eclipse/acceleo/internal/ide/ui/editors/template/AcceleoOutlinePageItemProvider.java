@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -236,7 +237,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	@Override
 	public Collection<?> getChildren(Object object) {
 		Collection<?> children = super.getChildren(object);
-		Set<CSTNode> orderedCollection = new TreeSet<CSTNode>(new Comparator<CSTNode>() {
+
+		Comparator<CSTNode> cstNodeComparator = new Comparator<CSTNode>() {
 			public int compare(CSTNode n0, CSTNode n1) {
 				if (n0.getStartPosition() < n1.getStartPosition()) {
 					return -1;
@@ -244,16 +246,14 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 					return 1;
 				}
 			}
-		});
-		Iterator<?> childrenIt = children.iterator();
-		while (childrenIt.hasNext()) {
-			Object next = childrenIt.next();
-			if (next instanceof org.eclipse.acceleo.parser.cst.TextExpression) {
-				continue;
-			} else {
-				orderedCollection.add((CSTNode)next);
+		};
+		List<CSTNode> orderedCollection = new ArrayList<CSTNode>(children.size());
+		for (Object child : orderedCollection) {
+			if (!(child instanceof org.eclipse.acceleo.parser.cst.TextExpression)) {
+				orderedCollection.add((CSTNode)child);
 			}
 		}
+		Collections.sort(orderedCollection, cstNodeComparator);
 		return orderedCollection;
 	}
 }
