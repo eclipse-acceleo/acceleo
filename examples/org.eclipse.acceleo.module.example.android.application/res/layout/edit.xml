@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout 
+	android:id="@+id/layout"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<TextView 
+		android:id="@+id/wFirstNameLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="40px"
+		android:text="FirstName"
+		android:layout_x="20px"
+		android:layout_y="28px">
+	</TextView>
+	<EditText 
+		android:id="@+id/wFirstName"
+		android:layout_width="120px"
+		android:layout_height="40px"
+		android:text=""
+		android:textSize="18sp" 
+		android:layout_x="180px"
+		android:layout_y="20px">
+	</EditText>
+	
+	<TextView 
+		android:id="@+id/wLastNameLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="40px"
+		android:text="LastName"
+		android:layout_x="20px"
+		android:layout_y="68px">
+	</TextView>
+	<EditText 
+		android:id="@+id/wLastName"
+		android:layout_width="120px"
+		android:layout_height="40px"
+		android:text=""
+		android:textSize="18sp" 
+		android:layout_x="180px"
+		android:layout_y="60px">
+	</EditText>
+	
+	<TextView 
+		android:id="@+id/wPhoneNumberLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="40px"
+		android:text="PhoneNumber"
+		android:layout_x="20px"
+		android:layout_y="108px">
+	</TextView>
+	<EditText 
+		android:id="@+id/wPhoneNumber"
+		android:layout_width="120px"
+		android:layout_height="40px"
+		android:text=""
+		android:textSize="18sp" 
+		android:layout_x="180px"
+		android:layout_y="100px">
+	</EditText>
+	
+	<TextView 
+		android:id="@+id/wEmailLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="40px"
+		android:text="Email"
+		android:layout_x="20px"
+		android:layout_y="148px">
+	</TextView>
+	<EditText 
+		android:id="@+id/wEmail"
+		android:layout_width="120px"
+		android:layout_height="40px"
+		android:text=""
+		android:textSize="18sp" 
+		android:layout_x="180px"
+		android:layout_y="140px">
+	</EditText>
+	
+	<TextView
+		android:id="@+id/wCountryLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="40px"
+		android:text="Country"
+		android:layout_x="20px"
+		android:layout_y="188px">
+	</TextView>
+	<Spinner
+		android:id="@+id/wCountry"
+		android:layout_width="120px"
+		android:layout_height="40px"
+		android:text=""
+		android:layout_x="180px"
+		android:layout_y="180px">
+	</Spinner>
+	
+	<Button
+		android:id="@+id/wSave"
+		android:layout_width="280px"
+		android:layout_height="40px"
+		android:text="Save"
+		android:layout_x="20px"
+		android:layout_y="230px">
+	</Button>
+
+	
+</AbsoluteLayout>

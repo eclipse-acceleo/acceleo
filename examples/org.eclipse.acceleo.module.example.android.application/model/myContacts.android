@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:android="http://www.eclipse.org/acceleo/example/android" xmlns:widgets="http://www.eclipse.org/acceleo/example/android/widgets" name="Android">
+  <activities name="MyContacts">
+    <widgets xsi:type="widgets:Text" name="firstName"/>
+    <widgets xsi:type="widgets:Text" name="lastName"/>
+    <widgets xsi:type="widgets:Text" name="phoneNumber"/>
+    <widgets xsi:type="widgets:Text" name="email"/>
+    <widgets xsi:type="widgets:Spinner" name="country"/>
+    <widgets xsi:type="widgets:Button" name="save"/>
+  </activities>
+</android:Project>

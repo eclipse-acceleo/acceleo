@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:android="http://www.eclipse.org/acceleo/example/android" xmlns:widgets="http://www.eclipse.org/acceleo/example/android/widgets" name="Android">
+  <activities name="MySocialNetwork">
+    <widgets xsi:type="widgets:Text" name="title"/>
+    <widgets xsi:type="widgets:Text" name="note"/>
+    <widgets xsi:type="widgets:Button" name="putOnTheWeb"/>
+  </activities>
+</android:Project>

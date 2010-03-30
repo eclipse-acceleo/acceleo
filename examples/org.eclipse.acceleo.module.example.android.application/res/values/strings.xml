@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyContacts</string>
+    <string name="menu_insert">Add MyContacts</string>
+    <string name="menu_delete">Delete MyContacts</string>
+</resources>

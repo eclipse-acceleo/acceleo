@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:android="http://www.eclipse.org/acceleo/example/android" xmlns:widgets="http://www.eclipse.org/acceleo/example/android/widgets" name="Android">
+  <activities name="EConRegistration">
+    <widgets xsi:type="widgets:Text" name="lastName"/>
+    <widgets xsi:type="widgets:Text" name="couponCode"/>
+    <widgets xsi:type="widgets:Text" name="acceptedTalks"/>
+    <widgets xsi:type="widgets:Spinner" name="accessPass"/>
+    <widgets xsi:type="widgets:Text" name="creditCardNumber"/>
+    <widgets xsi:type="widgets:Spinner" name="creditCardType"/>
+    <widgets xsi:type="widgets:Text" name="cardHolderName"/>
+    <widgets xsi:type="widgets:Spinner" name="expiryDate"/>
+    <widgets xsi:type="widgets:Button" name="submit"/>
+  </activities>
+</android:Project>
