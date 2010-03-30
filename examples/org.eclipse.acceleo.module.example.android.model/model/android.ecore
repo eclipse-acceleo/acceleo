@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="android"
+    nsURI="http://www.eclipse.org/acceleo/example/android" nsPrefix="android">
+  <eClassifiers xsi:type="ecore:EClass" name="Project">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="activities" upperBound="-1"
+        eType="#//Activity" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Activity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="widgets" upperBound="-1"
+        eType="#//widgets/Widget" containment="true"/>
+  </eClassifiers>
+  <eSubpackages name="widgets" nsURI="http://www.eclipse.org/acceleo/example/android/widgets"
+      nsPrefix="widgets">
+    <eClassifiers xsi:type="ecore:EClass" name="Widget" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Text" eSuperTypes="#//widgets/Widget"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//widgets/Widget"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Spinner" eSuperTypes="#//widgets/Widget"/>
+  </eSubpackages>
+</ecore:EPackage>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.1 2010/03/30 12:57:36 jmusset Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/acceleo/example/android"
+            class="org.eclipse.acceleo.module.example.android.AndroidPackage"
+            genModel="model/android.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/acceleo/example/android/widgets"
+            class="org.eclipse.acceleo.module.example.android.widgets.WidgetsPackage"
+            genModel="model/android.genmodel"/>
+   </extension>
+
+</plugin>
