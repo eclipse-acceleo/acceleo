@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acceleo Android Module Example
+Bundle-SymbolicName: org.eclipse.acceleo.module.example.android
+Bundle-Version: 0.9.0.qualifier
+Bundle-Activator: org.eclipse.acceleo.module.example.android.Activator
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.core.runtime, 
+ org.eclipse.acceleo.module.example.android.model,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.model,
+ org.eclipse.acceleo.engine
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.acceleo.module.example.android.files

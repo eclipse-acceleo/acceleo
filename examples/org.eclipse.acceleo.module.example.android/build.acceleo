@@ -1,0 +1,18 @@
+<!-- ===================================================================== -->
+<!-- Custom targets.                                                       -->
+<!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
+<!-- ===================================================================== -->
+<project name="Build Acceleo Module" default="run">
+
+	<!-- ================================================================= -->
+	<!-- Steps to do after the target gather.bin.parts                     -->
+	<!-- Available parameters :                                            -->
+	<!--   build.result.folder - folder containing the build results       -->
+	<!--   target.folder - destination folder                              -->
+	<!-- ================================================================= -->
+
+	<target name="post.gather.bin.parts">
+		<acceleoCompiler sourceFolders="${target.folder}"/>
+	</target>
+
+</project>

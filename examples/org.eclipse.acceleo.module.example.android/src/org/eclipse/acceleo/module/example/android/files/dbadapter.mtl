@@ -1,0 +1,191 @@
+[comment encoding = UTF-8 /]
+[comment]
+  Copyright (c) 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template
+  and Acceleo.
+
+  author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+[/comment]
+[module dbadapter('http://www.eclipse.org/acceleo/example/android')/]
+
+[template public dbadapter(a : Activity)]
+	[file ('/src/android/activities/'.concat(a.name.concat('DbAdapter.java')), false, 'Cp1252')]
+/*******************************************************************************
+ * Copyright (c) 2006, 2007, 2008, 2009 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package android.activities;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class [a.name.toUpperFirst()/]DbAdapter {
+
+    private static final String TAG = "[a.name.toUpperFirst()/]DbAdapter";
+    
+    public static final String KEY_ROWID = "_id";
+
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+    public static final String KEY_[w.name.toUpper()/] = "[w.name.toLower()/]";
+    
+		[elseif (w.oclIsKindOf(Spinner))]
+    public static final String KEY_[w.name.toUpper()/] = "[w.name.toLower()/]";
+
+		[/if]
+	[/for]
+      
+    private static final String DATABASE_NAME = "[a.name.toLower()/]_db";
+    private static final String DATABASE_TABLE = "[a.name.toLower()/]";
+    private static final int DATABASE_VERSION = 2;
+
+    private static final String DATABASE_CREATE =
+            "create table [a.name.toLower()/] (_id integer primary key autoincrement"
+    	
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+                    + ", [w.name.toLower()/] text not null"
+
+		[elseif (w.oclIsKindOf(Spinner))]
+                    + ", [w.name.toLower()/] integer not null"
+
+		[/if]
+	[/for]
+
+                    + ");";
+
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+    private final Context context;
+
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(DATABASE_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion);
+            db.execSQL("DROP TABLE IF EXISTS [a.name.toLower()/]");
+            onCreate(db);
+        }
+    }
+
+    public [a.name.toUpperFirst()/]DbAdapter(Context context) {
+        this.context = context;
+    }
+
+    public [a.name.toUpperFirst()/]DbAdapter open() throws SQLException {
+        dbHelper = new DatabaseHelper(context);
+        db = dbHelper.getWritableDatabase();
+        return this;
+    }
+    
+    public void close() {
+        dbHelper.close();
+    }
+
+    public long create[a.name.toUpperFirst()/]([allWidgets()/]) {
+        ContentValues args = new ContentValues();
+        
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+        args.put(KEY_[w.name.toUpper()/], [w.name/]);
+        
+		[elseif (w.oclIsKindOf(Spinner))]
+        args.put(KEY_[w.name.toUpper()/], [w.name/]);
+
+		[/if]
+	[/for]
+        
+        return db.insert(DATABASE_TABLE, null, args);
+    }
+    
+    public boolean updateNote(long rowId, [allWidgets()/]) {
+        ContentValues args = new ContentValues();
+        
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+        args.put(KEY_[w.name.toUpper()/], [w.name/]);
+        
+		[elseif (w.oclIsKindOf(Spinner))]
+        args.put(KEY_[w.name.toUpper()/], [w.name/]);
+
+		[/if]
+	[/for]
+        
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+
+    public boolean delete[a.name.toUpperFirst()/](long rowId) {
+        return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+
+     public Cursor fetchAll[a.name.toUpperFirst()/]() {
+        return db.query(DATABASE_TABLE, new String['['/][']'/] {KEY_ROWID
+        		
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+        		, KEY_[w.name.toUpper()/]
+        		
+		[elseif (w.oclIsKindOf(Spinner))]
+        		, KEY_[w.name.toUpper()/]
+
+		[/if]
+	[/for]
+        		
+        	}, null, null, null, null, null);
+    }
+
+    public Cursor fetchNote(long rowId) throws SQLException {
+        Cursor mCursor = db.query(true, DATABASE_TABLE, new String['['/][']'/] {KEY_ROWID
+        		
+	[for (w : Widget | widgets)]
+		[if (w.oclIsKindOf(Text))]
+        		, KEY_[w.name.toUpper()/]
+        		
+		[elseif (w.oclIsKindOf(Spinner))]
+        		, KEY_[w.name.toUpper()/]
+
+		[/if]
+	[/for]
+        		
+        	}, KEY_ROWID + "=" + rowId, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+}
+	[/file]
+[/template]
+
+[template public allWidgets (a : Activity) ]
+[a.widgets->select(not oclIsKindOf(widgets::Button)).oneWidget()->sep(',')/]
+[/template]
+
+[template public oneWidget (widget : Widget) ]
+[if (widget.oclIsKindOf(Spinner))]int[else]String[/if] [widget.name/]
+[/template]
