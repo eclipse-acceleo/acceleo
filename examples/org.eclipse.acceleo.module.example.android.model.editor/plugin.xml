@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.1 2010/03/30 12:59:57 jmusset Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.eclipse.acceleo.module.example.android.presentation.AndroidModelWizardID"
+            name="%_UI_AndroidModelWizard_label"
+            class="org.eclipse.acceleo.module.example.android.presentation.AndroidModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/AndroidModelFile.gif">
+         <description>%_UI_AndroidModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.acceleo.module.example.android.presentation.AndroidEditorID"
+            name="%_UI_AndroidEditor_label"
+            icon="icons/full/obj16/AndroidModelFile.gif"
+            extensions="android"
+            class="org.eclipse.acceleo.module.example.android.presentation.AndroidEditor"
+            contributorClass="org.eclipse.acceleo.module.example.android.presentation.AndroidActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.eclipse.acceleo.module.example.android.widgets.presentation.WidgetsModelWizardID"
+            name="%_UI_WidgetsModelWizard_label"
+            class="org.eclipse.acceleo.module.example.android.widgets.presentation.WidgetsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/WidgetsModelFile.gif">
+         <description>%_UI_WidgetsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.acceleo.module.example.android.widgets.presentation.WidgetsEditorID"
+            name="%_UI_WidgetsEditor_label"
+            icon="icons/full/obj16/WidgetsModelFile.gif"
+            extensions="widgets"
+            class="org.eclipse.acceleo.module.example.android.widgets.presentation.WidgetsEditor"
+            contributorClass="org.eclipse.acceleo.module.example.android.widgets.presentation.WidgetsActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
