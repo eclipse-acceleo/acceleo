@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -655,7 +656,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			i--;
 		}
 		String start = text.substring(i, offset);
-		Iterator<String> entries = EPackage.Registry.INSTANCE.keySet().iterator();
+		Iterator<String> entries = new LinkedHashSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
 			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
@@ -664,7 +665,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		if (start.length() > 0) {
-			entries = EPackage.Registry.INSTANCE.keySet().iterator();
+			entries = new LinkedHashSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
 				EPackage ePackage = ModelUtils.getEPackage(pURI);
