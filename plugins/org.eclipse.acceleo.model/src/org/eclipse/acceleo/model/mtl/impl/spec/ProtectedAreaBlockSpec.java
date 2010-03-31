@@ -30,12 +30,15 @@ public class ProtectedAreaBlockSpec extends ProtectedAreaBlockImpl {
 	@Override
 	public <T extends Object, U extends org.eclipse.ocl.utilities.Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(
 			U v) {
+		T result;
 		if (v instanceof ToStringVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return (T)toString();
+			result = (T)toString();
 		} else if (v instanceof ValidationVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return (T)Boolean.TRUE;
+			result = (T)Boolean.TRUE;
+		} else {
+			result = super.accept(v);
 		}
-		return super.accept(v);
+		return result;
 	}
 
 	/**

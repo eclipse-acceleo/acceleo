@@ -43,15 +43,18 @@ public class TemplateInvocationSpec extends TemplateInvocationImpl {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T, U extends Visitor<T, ?, ?, ?, ?, ?, ?, ?, ?, ?>> T accept(U v) {
+		T result;
 		if (v instanceof EvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return (T)((EvaluationVisitorDecorator<T, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>)v)
+			result = (T)((EvaluationVisitorDecorator<T, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>)v)
 					.visitExpression(this);
 		} else if (v instanceof ToStringVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return (T)toString();
+			result = (T)toString();
 		} else if (v instanceof ValidationVisitor<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return (T)Boolean.TRUE;
+			result = (T)Boolean.TRUE;
+		} else {
+			throw new UnsupportedOperationException();
 		}
-		throw new UnsupportedOperationException();
+		return result;
 	}
 
 	/**
