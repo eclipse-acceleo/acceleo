@@ -41,7 +41,6 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.PrimitiveType;
 import org.eclipse.ocl.ecore.SendSignalAction;
-import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
@@ -191,7 +190,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_FOLLOWINGSIBLINGS
 								.equals(operationName);
 				if (isParameterizedCollection) {
-					final SequenceType alteredSequence = (SequenceType)EcoreUtil.copy(type);
+					final org.eclipse.ocl.ecore.CollectionType alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil
+							.copy(type);
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
 					Set<EClassifier> altered = alteredTypes.get(type);
 					if (altered == null) {
