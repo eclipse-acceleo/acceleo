@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
@@ -36,10 +37,23 @@ import org.eclipse.ocl.utilities.TypedElement;
  */
 public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> {
 	/** Keeps a reference to the {@link org.eclipse.emf.ecore.EObject#eAllContents()} method. */
-	private static final EOperation EOBJECT_EALLCONTENTS = EcorePackage.eINSTANCE.getEObject__EAllContents();
+	private static final EOperation EOBJECT_EALLCONTENTS;
 
 	/** We will delegate all calls to this implementation. */
 	protected final org.eclipse.ocl.utilities.UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> delegate;
+
+	static {
+		EOperation temp = null;
+		final EClass eObject = EcorePackage.eINSTANCE.getEObject();
+		for (EOperation operation : eObject.getEOperations()) {
+			if ("eAllContents".equals(operation.getName()) //$NON-NLS-1$
+					&& operation.getEType() == EcorePackage.eINSTANCE.getETreeIterator()) {
+				temp = operation;
+				break;
+			}
+		}
+		EOBJECT_EALLCONTENTS = temp;
+	}
 
 	/**
 	 * Instantiates an UML Reflection given the one to which all calls are to be redirected.
