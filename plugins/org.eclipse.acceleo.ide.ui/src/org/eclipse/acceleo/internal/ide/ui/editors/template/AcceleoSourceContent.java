@@ -738,7 +738,7 @@ public class AcceleoSourceContent {
 				}
 				if (vAST != null) {
 					URI uri = vAST.eResource().getURI();
-					vAST = EcoreUtil.copy(vAST);
+					vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
 					if (syntaxHelpResourceSet == null) {
 						syntaxHelpResourceSet = new ResourceSetImpl();
 					}
@@ -1076,7 +1076,7 @@ public class AcceleoSourceContent {
 			}
 			if (vAST != null) {
 				URI uri = vAST.eResource().getURI();
-				vAST = EcoreUtil.copy(vAST);
+				vAST = (org.eclipse.acceleo.model.mtl.Module)EcoreUtil.copy(vAST);
 				ResourceSet resourceSet = new ResourceSetImpl();
 				Resource resource = ModelUtils.createResource(uri, resourceSet);
 				resource.getContents().add(vAST);
