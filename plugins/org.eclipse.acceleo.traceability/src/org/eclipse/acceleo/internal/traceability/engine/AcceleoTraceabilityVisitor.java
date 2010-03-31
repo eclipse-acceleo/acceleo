@@ -1483,6 +1483,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		return result.toString();
 	}
 
+	/**
+	 * Takes care of the "sep" non standard operations from the traceability visitor so as to track
+	 * traceability information for the added separators.
+	 * 
+	 * @param source
+	 *            Collection in which we need to add the separators.
+	 * @param separator
+	 *            Separator that is to be added in-between elements.
+	 * @return The source collection, with <em>separator</em> inserted in-between each couple of elements from
+	 *         the <em>source</em>.
+	 */
 	private Collection<Object> visitSepOperation(Collection<Object> source, String separator) {
 		final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
 		final Iterator<?> sourceIterator = source.iterator();
