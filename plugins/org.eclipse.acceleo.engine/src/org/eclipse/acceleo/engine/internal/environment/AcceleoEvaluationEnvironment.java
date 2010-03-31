@@ -181,8 +181,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	public Object callNonStandardOperation(EOperation operation, Object source, Object... args) {
 		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
-		// Specifications of each non-standard operation can be found as comments of
-		// AcceleoNonStandardLibrary#OPERATION_*.
 		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)) {
 			result = toString(source);
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_INVOKE.equals(operationName)) {
@@ -1422,7 +1420,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            templates.
 	 */
 	private void mapAllTemplates(Module module) {
-		// Has module already been mapped?
 		if (currentModules.contains(module)) {
 			return;
 		}
