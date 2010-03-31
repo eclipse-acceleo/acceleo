@@ -859,14 +859,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of inverse references.
 	 */
-	private List<EObject> eInverse(EObject target, EClassifier filter) {
-		final List<EObject> result = new ArrayList<EObject>();
+	private Set<EObject> eInverse(EObject target, EClassifier filter) {
+		final Set<EObject> result = new LinkedHashSet<EObject>();
 		if (referencer == null) {
 			createEInverseCrossreferencer(target);
 		}
 		Collection<EStructuralFeature.Setting> settings = referencer.get(target);
 		if (settings == null) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 		for (EStructuralFeature.Setting setting : settings) {
 			if (filter == null || filter.isInstance(setting.getEObject())) {
