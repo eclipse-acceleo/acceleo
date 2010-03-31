@@ -60,7 +60,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME);
 		List<EOperation> copyOperations = new ArrayList<EOperation>(intOperations.size());
 		for (EOperation operation : intOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME, copyOperations);
 
@@ -68,7 +68,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME);
 		copyOperations = new ArrayList<EOperation>(realOperations.size());
 		for (EOperation operation : realOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME, copyOperations);
 
@@ -76,7 +76,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME);
 		copyOperations = new ArrayList<EOperation>(stringOperations.size());
 		for (EOperation operation : stringOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		stdLib.put(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME, copyOperations);
 	}

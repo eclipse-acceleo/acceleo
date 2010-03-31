@@ -69,7 +69,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME);
 		List<EOperation> copyOperations = new ArrayList<EOperation>(stringOperations.size());
 		for (EOperation operation : stringOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME, copyOperations);
 
@@ -77,7 +77,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME);
 		copyOperations = new ArrayList<EOperation>(oclAnyOperations.size());
 		for (EOperation operation : oclAnyOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME, copyOperations);
 
@@ -85,7 +85,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				.getExistingOperations(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME);
 		copyOperations = new ArrayList<EOperation>(eObjectOperations.size());
 		for (EOperation operation : eObjectOperations) {
-			copyOperations.add(EcoreUtil.copy(operation));
+			copyOperations.add((EOperation)EcoreUtil.copy(operation));
 		}
 		nonStdLib.put(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME, copyOperations);
 	}
