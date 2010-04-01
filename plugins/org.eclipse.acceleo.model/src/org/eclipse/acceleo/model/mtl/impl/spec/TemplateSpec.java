@@ -67,6 +67,13 @@ public class TemplateSpec extends TemplateImpl {
 				}
 			}
 		}
+		if (post != null) {
+			toString.append(' ');
+			toString.append("post");
+			toString.append(" (");
+			toString.append(post.toString());
+			toString.append(')');
+		}
 		if (initSection != null) {
 			toString.append(' ');
 			toString.append(initSection.toString());
