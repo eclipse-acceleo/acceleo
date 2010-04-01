@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TemplateItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: TemplateItemProvider.java,v 1.2 2010/04/01 14:58:01 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -127,6 +127,7 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(MtlPackage.Literals.TEMPLATE__PARAMETER);
 			childrenFeatures.add(MtlPackage.Literals.TEMPLATE__GUARD);
+			childrenFeatures.add(MtlPackage.Literals.TEMPLATE__POST);
 		}
 		return childrenFeatures;
 	}
@@ -185,6 +186,7 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 				return;
 			case MtlPackage.TEMPLATE__PARAMETER:
 			case MtlPackage.TEMPLATE__GUARD:
+			case MtlPackage.TEMPLATE__POST:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true,
 						false));
 				return;
@@ -309,6 +311,111 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 
 		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__GUARD,
 				EcoreFactory.eINSTANCE.createVariableExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createTemplateExpression()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createTemplate()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createTemplateInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createQueryInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createProtectedAreaBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createForBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createIfBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createLetBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createFileBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createTraceBlock()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createMacro()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST, MtlFactory.eINSTANCE
+				.createMacroInvocation()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createAssociationClassCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createBooleanLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createCollectionLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createEnumLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createIfExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createIntegerLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createUnlimitedNaturalLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createInvalidLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createIterateExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createIteratorExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createLetExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createMessageExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createNullLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createOperationCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createPropertyCallExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createRealLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createStateExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createStringLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createTupleLiteralExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createTypeExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createUnspecifiedValueExp()));
+
+		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.TEMPLATE__POST,
+				EcoreFactory.eINSTANCE.createVariableExp()));
 	}
 
 	/**
@@ -323,7 +430,8 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 		Object childObject = child;
 
 		boolean qualify = childFeature == MtlPackage.Literals.BLOCK__BODY
-				|| childFeature == MtlPackage.Literals.TEMPLATE__GUARD;
+				|| childFeature == MtlPackage.Literals.TEMPLATE__GUARD
+				|| childFeature == MtlPackage.Literals.TEMPLATE__POST;
 
 		if (qualify) {
 			return getString(
