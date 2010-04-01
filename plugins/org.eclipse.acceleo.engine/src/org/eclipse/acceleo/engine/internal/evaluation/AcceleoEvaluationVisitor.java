@@ -788,6 +788,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (template.getPost() != null) {
 			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, result);
 			getVisitor().visitExpression((OCLExpression)template.getPost());
+			getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
 		}
 		return result;
 	}
