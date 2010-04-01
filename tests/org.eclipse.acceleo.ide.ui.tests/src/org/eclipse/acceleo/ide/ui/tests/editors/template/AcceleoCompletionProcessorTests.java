@@ -131,7 +131,7 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 		checkProposalsAt(messages, 13, 43, "before ()$separator ()$after ()$? ()");
 		checkProposalsAt(messages, 13, 59, "Integer");
 		checkProposalsAt(messages, 17, 43, "before ()$after ()$? ()${ }");
-		checkProposalsAt(messages, 17, 57, "p:EPackage$self$classToJava() : String");
+		checkProposalsAt(messages, 17, 57, "p:EPackage$self$eAnnotations:EAnnotation [0..*]");
 		if (messages.size() > 0) {
 			fail(messages.toString());
 		}
