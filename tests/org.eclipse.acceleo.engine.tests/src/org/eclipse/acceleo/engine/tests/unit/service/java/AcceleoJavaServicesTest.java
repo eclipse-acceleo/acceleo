@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -140,6 +142,10 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 *             Thrown when the output cannot be saved.
 	 */
 	public void testMultipleArgumentServiceInvocation() throws IOException {
+		if (AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() == OCLVersion.GANYMEDE) {
+			// OCL 1.2 couldn't create a Sequence containing both an EClass and a String
+			return;
+		}
 		generationRoot = new File(getGenerationRootPath("MultipleArgument")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("MultipleArgument")); //$NON-NLS-1$
 
