@@ -115,6 +115,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>ancestors( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_ANCESTORS = "ancestors"; //$NON-NLS-1$
 
@@ -129,6 +131,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>siblings( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the set of the receiver's siblings as a Sequence.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_SIBLINGS = "siblings"; //$NON-NLS-1$
 
@@ -143,6 +147,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>eAllContents( OclType ) : Sequence</b><br/>
 	 * Returns the elements of the given type from the whole content tree of the receiver as a Sequence.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_EALLCONTENTS = "eAllContents"; //$NON-NLS-1$
 
@@ -191,6 +197,8 @@ public final class AcceleoNonStandardLibrary {
 	 * <b>eInverse( OclType ) : Sequence(T)</b><br/>
 	 * Returns the elements of the given type from the set of the inverse references of the receiver.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_EINVERSE = "eInverse"; //$NON-NLS-1$
 
@@ -207,6 +215,8 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the list of all elements of the given type located at the same level as <em>self</em> which
 	 * follow <em>self</em>, without reordering them.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_FOLLOWINGSIBLINGS = "followingSiblings"; //$NON-NLS-1$
 
@@ -223,6 +233,8 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the list of all elements of the given type located at the same level as <em>self</em> which
 	 * precede <em>self</em>, without reordering them.
 	 * </p>
+	 * 
+	 * @since 3.0
 	 */
 	public static final String OPERATION_EOBJECT_PRECEDINGSIBLINGS = "precedingSiblings"; //$NON-NLS-1$
 
