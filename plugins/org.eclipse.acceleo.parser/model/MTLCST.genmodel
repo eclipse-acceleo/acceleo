@@ -50,6 +50,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MTLCST.ecore#//Template/overrides"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//Template/parameter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//Template/guard"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MTLCST.ecore#//Template/post"/>
     </genClasses>
     <genClasses ecoreClass="MTLCST.ecore#//TemplateOverridesValue">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MTLCST.ecore#//TemplateOverridesValue/name"/>

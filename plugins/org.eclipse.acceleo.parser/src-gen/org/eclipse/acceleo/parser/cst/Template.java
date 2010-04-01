@@ -89,4 +89,31 @@ public interface Template extends Block, ModuleElement {
 	 */
 	void setGuard(ModelExpression value);
 
+	/**
+	 * Returns the value of the '<em><b>Post</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Post</em>' containment reference isn't clear, there really should be more of
+	 * a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Post</em>' containment reference.
+	 * @see #setPost(ModelExpression)
+	 * @see org.eclipse.acceleo.parser.cst.CstPackage#getTemplate_Post()
+	 * @model containment="true"
+	 * @generated
+	 */
+	ModelExpression getPost();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Template#getPost <em>Post</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Post</em>' containment reference.
+	 * @see #getPost()
+	 * @generated
+	 */
+	void setPost(ModelExpression value);
+
 } // Template

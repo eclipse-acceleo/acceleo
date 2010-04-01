@@ -678,13 +678,22 @@ public interface CstPackage extends EPackage {
 	int TEMPLATE__GUARD = BLOCK_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Post</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TEMPLATE__POST = BLOCK_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Template</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 5;
+	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.TemplateOverridesValueImpl
@@ -1896,6 +1905,18 @@ public interface CstPackage extends EPackage {
 	EReference getTemplate_Guard();
 
 	/**
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.Template#getPost <em>Post</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Post</em>'.
+	 * @see org.eclipse.acceleo.parser.cst.Template#getPost()
+	 * @see #getTemplate()
+	 * @generated
+	 */
+	EReference getTemplate_Post();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.TemplateOverridesValue
 	 * <em>Template Overrides Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2701,6 +2722,14 @@ public interface CstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TEMPLATE__GUARD = eINSTANCE.getTemplate_Guard();
+
+		/**
+		 * The meta object literal for the '<em><b>Post</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference TEMPLATE__POST = eINSTANCE.getTemplate_Post();
 
 		/**
 		 * The meta object literal for the '

@@ -116,6 +116,16 @@ public class TemplateImpl extends BlockImpl implements Template {
 	protected ModelExpression guard;
 
 	/**
+	 * The cached value of the '{@link #getPost() <em>Post</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getPost()
+	 * @generated
+	 * @ordered
+	 */
+	protected ModelExpression post;
+
+	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -258,6 +268,55 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 * 
 	 * @generated
 	 */
+	public ModelExpression getPost() {
+		return post;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetPost(ModelExpression newPost, NotificationChain msgs) {
+		ModelExpression oldPost = post;
+		post = newPost;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					CstPackage.TEMPLATE__POST, oldPost, newPost);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setPost(ModelExpression newPost) {
+		if (newPost != post) {
+			NotificationChain msgs = null;
+			if (post != null)
+				msgs = ((InternalEObject)post).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.TEMPLATE__POST, null, msgs);
+			if (newPost != null)
+				msgs = ((InternalEObject)newPost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.TEMPLATE__POST, null, msgs);
+			msgs = basicSetPost(newPost, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.TEMPLATE__POST, newPost, newPost));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -267,6 +326,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 			case CstPackage.TEMPLATE__GUARD:
 				return basicSetGuard(null, msgs);
+			case CstPackage.TEMPLATE__POST:
+				return basicSetPost(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -289,6 +350,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return getParameter();
 			case CstPackage.TEMPLATE__GUARD:
 				return getGuard();
+			case CstPackage.TEMPLATE__POST:
+				return getPost();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -319,6 +382,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 			case CstPackage.TEMPLATE__GUARD:
 				setGuard((ModelExpression)newValue);
 				return;
+			case CstPackage.TEMPLATE__POST:
+				setPost((ModelExpression)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -346,6 +412,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 			case CstPackage.TEMPLATE__GUARD:
 				setGuard((ModelExpression)null);
 				return;
+			case CstPackage.TEMPLATE__POST:
+				setPost((ModelExpression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -368,6 +437,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return parameter != null && !parameter.isEmpty();
 			case CstPackage.TEMPLATE__GUARD:
 				return guard != null;
+			case CstPackage.TEMPLATE__POST:
+				return post != null;
 		}
 		return super.eIsSet(featureID);
 	}

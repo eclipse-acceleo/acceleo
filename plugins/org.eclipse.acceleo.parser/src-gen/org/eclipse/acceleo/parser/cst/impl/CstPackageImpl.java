@@ -507,6 +507,15 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * 
 	 * @generated
 	 */
+	public EReference getTemplate_Post() {
+		return (EReference)templateEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getTemplateOverridesValue() {
 		return templateOverridesValueEClass;
 	}
@@ -1028,6 +1037,7 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 		createEReference(templateEClass, TEMPLATE__OVERRIDES);
 		createEReference(templateEClass, TEMPLATE__PARAMETER);
 		createEReference(templateEClass, TEMPLATE__GUARD);
+		createEReference(templateEClass, TEMPLATE__POST);
 
 		templateOverridesValueEClass = createEClass(TEMPLATE_OVERRIDES_VALUE);
 		createEAttribute(templateOverridesValueEClass, TEMPLATE_OVERRIDES_VALUE__NAME);
@@ -1250,6 +1260,11 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 				this.getModelExpression(),
 				null,
 				"guard", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(
+				getTemplate_Post(),
+				this.getModelExpression(),
+				null,
+				"post", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(templateOverridesValueEClass, TemplateOverridesValue.class,
 				"TemplateOverridesValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
