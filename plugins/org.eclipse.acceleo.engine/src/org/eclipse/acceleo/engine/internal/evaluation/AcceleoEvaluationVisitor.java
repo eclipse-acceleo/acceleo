@@ -237,7 +237,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param block
 	 *            The Acceleo block that is to be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoBlock(Block block) {
 		for (final OCLExpression nested : block.getBody()) {
 			getVisitor().visitExpression(nested);
@@ -250,7 +250,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param fileBlock
 	 *            The file block that need be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoFileBlock(FileBlock fileBlock) {
 		// evaluate sub expressions
 		boolean fireEvents = fireGenerationEvent;
@@ -320,7 +320,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param forBlock
 	 *            The Acceleo block that is to be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoForBlock(ForBlock forBlock) {
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
@@ -448,7 +448,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param ifBlock
 	 *            The Acceleo block that is to be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoIfBlock(IfBlock ifBlock) {
 		final OCLExpression condition = ifBlock.getIfExpr();
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
@@ -530,7 +530,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param letBlock
 	 *            The Acceleo let block that is to be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoLetBlock(LetBlock letBlock) {
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		Variable var = letBlock.getLetVariable();
@@ -605,7 +605,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param protectedArea
 	 *            The Acceleo protected area that is to be evaluated.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
@@ -654,7 +654,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            The Acceleo query invocation that is to be evaluated.
 	 * @return result of the invocation.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
 		final Query query = invocation.getDefinition();
 		String implicitContextVariableName = null;
@@ -774,7 +774,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            The Acceleo Template that is to be evaluated.
 	 * @return Result of the template evaluation.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public String visitAcceleoTemplate(Template template) {
 		context.openNested();
 		/*
@@ -784,7 +784,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		for (final OCLExpression nested : template.getBody()) {
 			getVisitor().visitExpression(nested);
 		}
-		return context.closeContext();
+		String result = context.closeContext();
+		if (template.getPost() != null) {
+			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, result);
+			getVisitor().visitExpression((OCLExpression)template.getPost());
+		}
+		return result;
 	}
 
 	/**
@@ -794,7 +799,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            The Acceleo template invocation that is to be evaluated.
 	 * @return result of the invocation.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
 		String implicitContextVariableName = null;
 
@@ -1110,7 +1115,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @param arguments
 	 *            Arguments of all templates. Those need to be set for guard evaluation.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	private void evaluateGuards(List<Template> candidates, List<Variable> arguments) {
 		final boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
