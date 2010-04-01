@@ -118,4 +118,33 @@ public interface Template extends Block, ModuleElement {
 	 */
 	void setMain(boolean value);
 
+	/**
+	 * Returns the value of the '<em><b>Post</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Post</em>' containment reference isn't clear, there really should be more of
+	 * a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Post</em>' containment reference.
+	 * @see #setPost(OCLExpression)
+	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getTemplate_Post()
+	 * @model containment="true"
+	 * @generated
+	 * @since 3.0
+	 */
+	OCLExpression getPost();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Template#getPost <em>Post</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Post</em>' containment reference.
+	 * @see #getPost()
+	 * @generated
+	 * @since 3.0
+	 */
+	void setPost(OCLExpression value);
+
 } // Template

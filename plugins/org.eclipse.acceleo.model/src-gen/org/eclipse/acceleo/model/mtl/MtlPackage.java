@@ -741,13 +741,23 @@ public interface MtlPackage extends EPackage {
 	int TEMPLATE__MAIN = BLOCK_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Post</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int TEMPLATE__POST = BLOCK_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Template</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 5;
+	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
@@ -2732,6 +2742,19 @@ public interface MtlPackage extends EPackage {
 	EAttribute getTemplate_Main();
 
 	/**
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Template#getPost <em>Post</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Post</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Template#getPost()
+	 * @see #getTemplate()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getTemplate_Post();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.TemplateInvocation
 	 * <em>Template Invocation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -3454,6 +3477,15 @@ public interface MtlPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEMPLATE__MAIN = eINSTANCE.getTemplate_Main();
+
+		/**
+		 * The meta object literal for the '<em><b>Post</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference TEMPLATE__POST = eINSTANCE.getTemplate_Post();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl

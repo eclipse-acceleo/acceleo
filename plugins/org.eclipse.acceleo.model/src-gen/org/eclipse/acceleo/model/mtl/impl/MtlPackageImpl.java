@@ -423,6 +423,15 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * 
 	 * @generated
 	 */
+	public EReference getTemplate_Post() {
+		return (EReference)templateEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getTemplateInvocation() {
 		return templateInvocationEClass;
 	}
@@ -901,6 +910,7 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 		createEReference(templateEClass, TEMPLATE__PARAMETER);
 		createEReference(templateEClass, TEMPLATE__GUARD);
 		createEAttribute(templateEClass, TEMPLATE__MAIN);
+		createEReference(templateEClass, TEMPLATE__POST);
 
 		templateInvocationEClass = createEClass(TEMPLATE_INVOCATION);
 		createEReference(templateInvocationEClass, TEMPLATE_INVOCATION__DEFINITION);
@@ -1099,6 +1109,11 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 				getTemplate_Main(),
 				ecorePackage.getEBoolean(),
 				"main", "false", 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+		initEReference(
+				getTemplate_Post(),
+				theEcorePackage.getOCLExpression(),
+				null,
+				"post", null, 0, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(templateInvocationEClass, TemplateInvocation.class,
 				"TemplateInvocation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

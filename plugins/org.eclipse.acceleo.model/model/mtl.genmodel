@@ -41,6 +41,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//Template/parameter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//Template/guard"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mtl.ecore#//Template/main"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference mtl.ecore#//Template/post"/>
     </genClasses>
     <genClasses ecoreClass="mtl.ecore#//TemplateInvocation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference mtl.ecore#//TemplateInvocation/definition"/>

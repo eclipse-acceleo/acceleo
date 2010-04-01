@@ -39,6 +39,7 @@ import org.eclipse.ocl.ecore.Variable;
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em>Parameter</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isMain <em>Main</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getPost <em>Post</em>}</li>
  * </ul>
  * </p>
  * 
@@ -114,6 +115,16 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 * @ordered
 	 */
 	protected boolean main = MAIN_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPost() <em>Post</em>}' containment reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getPost()
+	 * @generated
+	 * @ordered
+	 */
+	protected OCLExpression post;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -258,6 +269,55 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 * 
 	 * @generated
 	 */
+	public OCLExpression getPost() {
+		return post;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetPost(OCLExpression newPost, NotificationChain msgs) {
+		OCLExpression oldPost = post;
+		post = newPost;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					MtlPackage.TEMPLATE__POST, oldPost, newPost);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setPost(OCLExpression newPost) {
+		if (newPost != post) {
+			NotificationChain msgs = null;
+			if (post != null)
+				msgs = ((InternalEObject)post).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- MtlPackage.TEMPLATE__POST, null, msgs);
+			if (newPost != null)
+				msgs = ((InternalEObject)newPost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- MtlPackage.TEMPLATE__POST, null, msgs);
+			msgs = basicSetPost(newPost, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__POST, newPost, newPost));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -265,6 +325,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 			case MtlPackage.TEMPLATE__GUARD:
 				return basicSetGuard(null, msgs);
+			case MtlPackage.TEMPLATE__POST:
+				return basicSetPost(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -287,6 +349,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return getGuard();
 			case MtlPackage.TEMPLATE__MAIN:
 				return isMain() ? Boolean.TRUE : Boolean.FALSE;
+			case MtlPackage.TEMPLATE__POST:
+				return getPost();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -317,6 +381,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 			case MtlPackage.TEMPLATE__MAIN:
 				setMain(((Boolean)newValue).booleanValue());
 				return;
+			case MtlPackage.TEMPLATE__POST:
+				setPost((OCLExpression)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -344,6 +411,9 @@ public class TemplateImpl extends BlockImpl implements Template {
 			case MtlPackage.TEMPLATE__MAIN:
 				setMain(MAIN_EDEFAULT);
 				return;
+			case MtlPackage.TEMPLATE__POST:
+				setPost((OCLExpression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -366,6 +436,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 				return guard != null;
 			case MtlPackage.TEMPLATE__MAIN:
 				return main != MAIN_EDEFAULT;
+			case MtlPackage.TEMPLATE__POST:
+				return post != null;
 		}
 		return super.eIsSet(featureID);
 	}
