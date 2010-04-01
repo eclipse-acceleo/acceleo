@@ -450,10 +450,12 @@ public class CSTParser {
 				break;
 			}
 		}
-		if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-			ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
+		if (ePackage.getNsURI() != null) {
+			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
+				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
+			}
+			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 		}
-		EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 		for (EPackage subPackage : ePackage.getESubpackages()) {
 			registerEcorePackageHierarchy(subPackage);
 		}
