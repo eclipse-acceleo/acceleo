@@ -19,6 +19,8 @@ import java.util.List;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -85,7 +87,8 @@ public class AcceleoParserTests extends TestCase {
 		dependencies.add(createFileURI("/data/template/mtlParserEcoreCommon.emtl"));
 		parser.parse(source, resource, dependencies);
 		assertNotNull(source.getAST());
-		if (source.getProblems().getList().size() > 0) {
+		if (source.getProblems().getList().size() > 0
+				&& AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() != OCLVersion.GANYMEDE) {
 			// Remark : It fails for eclipse 3.4 because OCL didn't support "Set(String)"
 			fail(source.getProblems().getMessage());
 		}
