@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ModuleItemProvider.java,v 1.2 2010/04/01 14:58:01 lgoubet Exp $
+ * $Id: ModuleItemProvider.java,v 1.3 2010/04/01 15:06:03 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -207,9 +207,6 @@ public class ModuleItemProvider extends EPackageItemProvider implements IEditing
 
 		newChildDescriptors.add(createChildParameter(EcorePackage.Literals.EPACKAGE__ECLASSIFIERS,
 				EcoreFactory.eINSTANCE.createSetType()));
-
-		newChildDescriptors.add(createChildParameter(EcorePackage.Literals.EPACKAGE__ECLASSIFIERS,
-				EcoreFactory.eINSTANCE.createTemplateParameterType()));
 
 		newChildDescriptors.add(createChildParameter(EcorePackage.Literals.EPACKAGE__ECLASSIFIERS,
 				EcoreFactory.eINSTANCE.createTupleType()));

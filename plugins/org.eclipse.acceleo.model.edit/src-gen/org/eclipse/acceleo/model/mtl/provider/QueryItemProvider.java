@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: QueryItemProvider.java,v 1.2 2010/04/01 14:58:01 lgoubet Exp $
+ * $Id: QueryItemProvider.java,v 1.3 2010/04/01 15:06:03 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -288,9 +288,6 @@ public class QueryItemProvider extends ModuleElementItemProvider implements IEdi
 
 		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.QUERY__TYPE, EcoreFactory.eINSTANCE
 				.createSetType()));
-
-		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.QUERY__TYPE, EcoreFactory.eINSTANCE
-				.createTemplateParameterType()));
 
 		newChildDescriptors.add(createChildParameter(MtlPackage.Literals.QUERY__TYPE, EcoreFactory.eINSTANCE
 				.createTupleType()));
