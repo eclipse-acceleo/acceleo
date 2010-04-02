@@ -82,6 +82,9 @@ public final class AcceleoTemplateReconcilingStrategy implements IReconcilingStr
 	/** Current offset. */
 	private int offset;
 
+	/** This will inform us that the search for the tail of a given element should look for "/]". */
+	private boolean seekSelfClosing;
+
 	/** The statement start delimiter ('[' at current). */
 	private char statementStart = '[';
 
@@ -245,7 +248,7 @@ public final class AcceleoTemplateReconcilingStrategy implements IReconcilingStr
 	}
 
 	/**
-	 * Eats all chars away till we find the "<code>[/comment</code>" String.
+	 * Eats all chars away till we find either the "<code>[/comment</code>" of the "<code>/]</code>" String.
 	 * 
 	 * @return <code>true</code> if the end of file has been reached. <code>false</code> otherwise.
 	 * @throws BadLocationException
@@ -254,16 +257,28 @@ public final class AcceleoTemplateReconcilingStrategy implements IReconcilingStr
 	private boolean seekCommentEnd() throws BadLocationException {
 		char next = document.getChar(offset);
 		boolean eof = offset + 1 >= document.getLength();
-		while (!eof && next != statementStart) {
+		while (!eof && next != statementStart && (next != ']' || document.getChar(offset - 1) != '/')) {
 			offset++;
+			eof = offset + 1 >= document.getLength();
 			next = document.getChar(offset);
+			if (seekSelfClosing && next == ']' && document.getChar(offset - 1) != '/') {
+				seekSelfClosing = false;
+			}
 		}
-		// char is the sought delimiter
-		if (!eof && '/' != document.getChar(offset + 1)
-				&& COMMENT_STATEMENT_NAME != document.get(offset + 2, COMMENT_STATEMENT_NAME.length())) {
+		/*
+		 * We can be in either one of three cases here 1) eof, don't go any further and return it 2) we're at
+		 * the offset preceding a '[' character 3) we're at the offset preceding a ']' character which is
+		 * itself preceded by '/'
+		 */
+		boolean isSelfClosing = !eof && seekSelfClosing && next == ']' && document.getChar(offset - 1) == '/';
+		boolean isCommentEnd = !isSelfClosing && !eof && '/' != document.getChar(offset + 1)
+				&& COMMENT_STATEMENT_NAME != document.get(offset + 2, COMMENT_STATEMENT_NAME.length());
+		if (!eof && !isSelfClosing && !isCommentEnd) {
 			offset++;
 			seekCommentEnd();
 		}
+		// reset state
+		seekSelfClosing = true;
 		return eof;
 	}
 
