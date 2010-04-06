@@ -200,6 +200,9 @@ public class CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.ModelExpression iGuard = iTemplate.getGuard();
 			transformStepCopy(iGuard);
 
+			org.eclipse.acceleo.parser.cst.ModelExpression iPost = iTemplate.getPost();
+			transformStepCopy(iPost);
+
 			transformStepCopyBody(iTemplate, oTemplate);
 			Iterator<org.eclipse.acceleo.parser.cst.Variable> iParameterIt = iTemplate.getParameter()
 					.iterator();
@@ -1173,6 +1176,7 @@ public class CST2ASTConverter {
 						signature.append(((org.eclipse.acceleo.parser.cst.Template)iNext).getGuard()
 								.getBody());
 					}
+					// Remark : The postcondition expression isn't significant to detect a conflict issue
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
 					org.eclipse.acceleo.model.mtl.Macro oNext = factory
 							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);

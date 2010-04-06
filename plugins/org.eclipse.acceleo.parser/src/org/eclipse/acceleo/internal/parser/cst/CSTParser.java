@@ -116,6 +116,11 @@ public class CSTParser {
 	protected final Sequence pGuard;
 
 	/**
+	 * To parse a postcondition sequence in the text.
+	 */
+	protected final Sequence pPost;
+
+	/**
 	 * To parse a 'module' block in the text.
 	 */
 	protected final SequenceBlock pModule;
@@ -166,6 +171,7 @@ public class CSTParser {
 		pSemicolon = new Sequence(IAcceleoConstants.SEMICOLON_SEPARATOR);
 		pPipe = new Sequence(IAcceleoConstants.PIPE_SEPARATOR);
 		pGuard = new Sequence(IAcceleoConstants.GUARD);
+		pPost = new Sequence(IAcceleoConstants.POST);
 		pModule = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.MODULE, false,
 				new SequenceBlock[] {pLiteral }, null);
 		pImport = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.IMPORT, false,
@@ -804,10 +810,11 @@ public class CSTParser {
 					}
 				}
 				int currentPosBegin = eH.e();
-				int currentPosEnd = parseTemplateHeaderIndexOfGuardOrBrackets(currentPosBegin, posEnd);
+				int currentPosEnd = parseTemplateHeaderIndexOfGuardOrPostOrBrackets(currentPosBegin, posEnd);
 				currentPosBegin = parseTemplateHeaderOverrides(currentPosBegin, currentPosEnd, eTemplate);
 				currentPosEnd = posEnd;
 				currentPosBegin = parseTemplateHeaderGuard(currentPosBegin, currentPosEnd, posEnd, eTemplate);
+				currentPosBegin = parseTemplateHeaderPost(currentPosBegin, currentPosEnd, posEnd, eTemplate);
 				currentPosBegin = shiftInitSectionBody(currentPosBegin, currentPosEnd, eTemplate);
 				if (source.getBuffer().substring(currentPosBegin, posEnd).trim().length() > 0) {
 					log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
@@ -825,17 +832,23 @@ public class CSTParser {
 	 *            is the ending index
 	 * @return the index of the next guard or the index of the next brackets
 	 */
-	private int parseTemplateHeaderIndexOfGuardOrBrackets(int posBegin, int posEnd) {
+	private int parseTemplateHeaderIndexOfGuardOrPostOrBrackets(int posBegin, int posEnd) {
 		int currentPosEnd = posEnd;
 		Region guard = pGuard.search(source.getBuffer(), posBegin, currentPosEnd, null,
 				new SequenceBlock[] {pLiteral });
 		if (guard.b() > -1) {
 			currentPosEnd = guard.b();
 		} else {
-			Region bracket = pBrackets.search(source.getBuffer(), posBegin, currentPosEnd, null,
+			Region post = pPost.search(source.getBuffer(), posBegin, currentPosEnd, null,
 					new SequenceBlock[] {pLiteral });
-			if (bracket.b() > -1) {
-				currentPosEnd = bracket.b();
+			if (post.b() > -1) {
+				currentPosEnd = post.b();
+			} else {
+				Region bracket = pBrackets.search(source.getBuffer(), posBegin, currentPosEnd, null,
+						new SequenceBlock[] {pLiteral });
+				if (bracket.b() > -1) {
+					currentPosEnd = bracket.b();
+				}
 			}
 		}
 		return currentPosEnd;
@@ -919,6 +932,49 @@ public class CSTParser {
 					setPositions(eGuard, bHParenthesis.e(), eHParenthesis.b());
 					eTemplate.setGuard(eGuard);
 					pBlock.parseExpressionHeader(bHParenthesis.e(), eHParenthesis.b(), eGuard);
+					currentPos = eHParenthesis.e();
+				}
+			}
+		}
+		return currentPos;
+	}
+
+	/**
+	 * Reads eventually the post clause in the template header. Spaces are ignored.
+	 * 
+	 * @param posBegin
+	 *            is the beginning index
+	 * @param posEnd
+	 *            is the ending index
+	 * @param headerPosEnd
+	 *            is the ending index of the header
+	 * @param eTemplate
+	 *            is the current node of the CST
+	 * @return the ending index of the clause, or the beginning index if it doesn't exist
+	 */
+	private int parseTemplateHeaderPost(int posBegin, int posEnd, int headerPosEnd, Template eTemplate) {
+		int currentPos = posBegin;
+		int bPost = ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd, IAcceleoConstants.POST,
+				false);
+		if (bPost != currentPos) {
+			currentPos = bPost;
+			if (ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
+					IAcceleoConstants.PARENTHESIS_BEGIN, false) == currentPos) {
+				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos, posEnd);
+				currentPos = headerPosEnd;
+			} else {
+				Region bHParenthesis = pParenthesis.searchBeginHeader(source.getBuffer(), currentPos, posEnd);
+				Region eHParenthesis = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
+						bHParenthesis, posEnd);
+				if (eHParenthesis.b() == -1) {
+					log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bHParenthesis.b(),
+							bHParenthesis.e());
+					currentPos = headerPosEnd;
+				} else {
+					ModelExpression ePost = CstFactory.eINSTANCE.createModelExpression();
+					setPositions(ePost, bHParenthesis.e(), eHParenthesis.b());
+					eTemplate.setPost(ePost);
+					pBlock.parseExpressionHeader(bHParenthesis.e(), eHParenthesis.b(), ePost);
 					currentPos = eHParenthesis.e();
 				}
 			}
