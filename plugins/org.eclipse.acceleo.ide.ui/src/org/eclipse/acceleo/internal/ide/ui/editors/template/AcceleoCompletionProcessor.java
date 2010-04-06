@@ -190,14 +190,18 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		} else {
 			if (offset > 0 && text.charAt(offset - 1) != '/') {
 				computeEClassifierProposals(proposals);
+				boolean addPatterns = false;
 				if (proposals.size() == 0) {
 					computeKeywordsProposals(proposals);
 					if (!isNextSignificantChar(']')) {
-						computePatternsProposals(proposals);
+						addPatterns = true;
 					}
 				}
 				if (text.charAt(offset - 1) != ']') {
 					if (cstNode instanceof ModelExpression || cstNode instanceof InitSection) {
+						computeOCLProposals(proposals);
+					} else if (cstNode instanceof Template
+							&& text.substring(cstNode.getStartPosition(), offset).contains("]")) { //$NON-NLS-1$
 						computeOCLProposals(proposals);
 					} else if (cstNode instanceof Block && !(cstNode instanceof Template)) {
 						computeOCLProposals(proposals);
@@ -208,6 +212,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					} else if (cstNode instanceof TemplateOverridesValue) {
 						computeTemplatesProposals(proposals);
 					}
+				}
+				if (addPatterns) {
+					computePatternsProposals(proposals);
 				}
 			}
 		}
