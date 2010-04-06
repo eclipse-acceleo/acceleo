@@ -183,6 +183,18 @@ public class CSTParserTests extends TestCase {
 		testParseTemplateHeader(buffer, 0);
 	}
 
+	public void testParseTemplateHeaderWithOverridesGuardPostInitSection() {
+		StringBuffer buffer = new StringBuffer(
+				"public class2Java(c1 : Class) overrides class2Java ? (c1.name = '') post (trim()) {c2:Class;}");
+		testParseTemplateHeader(buffer, 0);
+	}
+
+	public void testParseTemplateHeaderWithPostGuardBadSequence() {
+		StringBuffer buffer = new StringBuffer(
+				"public class2Java(c1 : Class) post (trim()) ? (c1.name = '') ");
+		testParseTemplateHeader(buffer, 1);
+	}
+
 	private void testParseTemplateHeader(StringBuffer buffer, int problemsCount) {
 		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
