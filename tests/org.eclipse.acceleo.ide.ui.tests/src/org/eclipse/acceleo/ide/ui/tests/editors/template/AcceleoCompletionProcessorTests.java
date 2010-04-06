@@ -106,8 +106,8 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 
 	public void testTemplate() {
 		List<String> messages = new ArrayList<String>();
-		checkProposalsAt(messages, 5, 41, "overrides$? ()${ }");
-		checkProposalsAt(messages, 5, 42, "overrides$? ()${ }");
+		checkProposalsAt(messages, 5, 41, "overrides$? ()$post ()${ }");
+		checkProposalsAt(messages, 5, 42, "overrides$? ()$post ()${ }");
 		checkProposalsAt(messages, 6, 5,
 				"[ ]$[for]$[if]$[file] - @main$[file]$[let]$[trace]$[protected]$[super]$'['$']'$[comment]$@main");
 		if (messages.size() > 0) {
