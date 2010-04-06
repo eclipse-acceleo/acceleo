@@ -1379,27 +1379,46 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					keywordImage);
 		}
 		if (isHeaderAfterParenthesis(bHeaderText)) {
+			// Remark : The completion proposals have to be ordered : overrides -> guard -> post...
 			StringBuffer bHeaderBuffer = new StringBuffer(bHeaderText);
 			Sequence pGuard = new Sequence(IAcceleoConstants.GUARD, IAcceleoConstants.PARENTHESIS_BEGIN);
+			Sequence pPost = new Sequence(IAcceleoConstants.POST, IAcceleoConstants.PARENTHESIS_BEGIN);
 			Sequence pInit = new Sequence(IAcceleoConstants.BRACKETS_BEGIN);
-			if (((org.eclipse.acceleo.parser.cst.Template)cstNode).getOverrides().size() == 0
-					&& pGuard.search(bHeaderBuffer).b() == -1 && pInit.search(bHeaderBuffer).b() == -1) {
+			org.eclipse.acceleo.parser.cst.Template cstTemplate = (org.eclipse.acceleo.parser.cst.Template)cstNode;
+			if (cstTemplate.getOverrides().size() == 0 && pGuard.search(bHeaderBuffer).b() == -1
+					&& pPost.search(bHeaderBuffer).b() == -1 && pInit.search(bHeaderBuffer).b() == -1) {
 				computeKeywordProposal(proposals, start, IAcceleoConstants.OVERRIDES + ' ', "", keywordImage); //$NON-NLS-1$
 			}
-			if (((org.eclipse.acceleo.parser.cst.Template)cstNode).getGuard() == null
+			boolean isAfterOverrides = cstTemplate.getOverrides().size() == 0
+					|| cstTemplate.getOverrides().get(cstTemplate.getOverrides().size() - 1).getEndPosition() < offset;
+			if (cstTemplate.getGuard() == null && pPost.search(bHeaderBuffer).b() == -1
 					&& pInit.search(bHeaderBuffer).b() == -1) {
-				computeKeywordProposal(proposals, start, IAcceleoConstants.GUARD + ' '
-						+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
-						keywordImage);
+				if (isAfterOverrides) {
+					computeKeywordProposal(proposals, start, IAcceleoConstants.GUARD + ' '
+							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+							keywordImage);
+				}
 			}
-			if (((org.eclipse.acceleo.parser.cst.Template)cstNode).getInit() == null
-					&& "{".startsWith(start.toLowerCase())) { //$NON-NLS-1$
-				String replacementStringBefore = "{ "; //$NON-NLS-1$
-				String replacementStringAfter = "${e} : ${" + defaultVariableType + "}; }"; //$NON-NLS-1$ //$NON-NLS-2$
-				String replacementString = replacementStringBefore + replacementStringAfter;
-				proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
-						.length(), replacementStringBefore.length(), keywordImage, "{ }", null, //$NON-NLS-1$
-						replacementString));
+			boolean isAfterGuard = cstTemplate.getGuard() == null
+					|| cstTemplate.getGuard().getEndPosition() < offset;
+			if (cstTemplate.getPost() == null && pInit.search(bHeaderBuffer).b() == -1) {
+				if (isAfterOverrides && isAfterGuard) {
+					computeKeywordProposal(proposals, start, IAcceleoConstants.POST + ' '
+							+ IAcceleoConstants.PARENTHESIS_BEGIN, IAcceleoConstants.PARENTHESIS_END,
+							keywordImage);
+				}
+			}
+			boolean isAfterPost = cstTemplate.getPost() == null
+					|| cstTemplate.getPost().getEndPosition() < offset;
+			if (cstTemplate.getInit() == null && "{".startsWith(start.toLowerCase())) { //$NON-NLS-1$
+				if (isAfterOverrides && isAfterGuard && isAfterPost) {
+					String replacementStringBefore = "{ "; //$NON-NLS-1$
+					String replacementStringAfter = "${e} : ${" + defaultVariableType + "}; }"; //$NON-NLS-1$ //$NON-NLS-2$
+					String replacementString = replacementStringBefore + replacementStringAfter;
+					proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
+							.length(), replacementStringBefore.length(), keywordImage, "{ }", null, //$NON-NLS-1$
+							replacementString));
+				}
 			}
 		}
 	}
@@ -1539,7 +1558,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * @return true if there are parenthesis in the text, and if there are finished
 	 */
 	private boolean isHeaderAfterParenthesis(String aText) {
-		final String tag = "___TAG___"; //$NON-NLS-1$
+		final String tag = " ---TAG--- "; //$NON-NLS-1$
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(aText);
 		buffer.append(tag);
