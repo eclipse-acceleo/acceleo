@@ -763,6 +763,9 @@ public class AcceleoSourceContent {
 					int specificOffset = getSpecificOffset(offset);
 					EClassifier eContext = oclParser.addRecursivelyVariablesToScopeAndGetContextClassifierAt(
 							vAST, specificOffset);
+					if (isPostOffset(offset)) {
+						eContext = oclParser.getStringType();
+					}
 					if (eContext != null) {
 						oclParser.pushContext(eContext);
 					}
@@ -883,6 +886,27 @@ public class AcceleoSourceContent {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Indicates if the given offset is in a postcondition expression.
+	 * 
+	 * @param offset
+	 *            is the current offset
+	 * @return true if the offset is in a postcondition text region
+	 */
+	private boolean isPostOffset(int offset) {
+		CSTNode cstNode = getCSTNode(offset, offset);
+		if (cstNode != null) {
+			EObject eContainer = cstNode.eContainer();
+			EObject eContainingFeature = cstNode.eContainingFeature();
+			if (cstNode instanceof ModelExpression && eContainer instanceof Template) {
+				if (eContainingFeature == CstPackage.eINSTANCE.getTemplate_Post()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
