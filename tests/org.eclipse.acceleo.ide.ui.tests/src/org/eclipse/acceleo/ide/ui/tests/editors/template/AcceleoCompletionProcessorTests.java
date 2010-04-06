@@ -109,7 +109,7 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 		checkProposalsAt(messages, 5, 41, "overrides$? ()${ }");
 		checkProposalsAt(messages, 5, 42, "overrides$? ()${ }");
 		checkProposalsAt(messages, 6, 5,
-				"[comment]$[ ]$[for]$[if]$[file] - @main$[file]$[let]$[trace]$[protected]$[super]$'['$']'$@main");
+				"[ ]$[for]$[if]$[file] - @main$[file]$[let]$[trace]$[protected]$[super]$'['$']'$[comment]$@main");
 		if (messages.size() > 0) {
 			fail(messages.toString());
 		}
@@ -117,8 +117,8 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 
 	public void testIf() {
 		List<String> messages = new ArrayList<String>();
-		checkProposalsAt(messages, 8, 5, "[elseif]$[else]$[comment]");
-		checkProposalsAt(messages, 10, 5, "[comment]$[ ]$[for]$[if]");
+		checkProposalsAt(messages, 8, 5, "[elseif]$[else]$[ ]");
+		checkProposalsAt(messages, 10, 5, "[ ]$[for]$[if]");
 		if (messages.size() > 0) {
 			fail(messages.toString());
 		}
@@ -150,8 +150,8 @@ public class AcceleoCompletionProcessorTests extends TestCase {
 	public void testLet() {
 		List<String> messages = new ArrayList<String>();
 		checkProposalsAt(messages, 23, 23,
-				"[ ]$[for]$[if]$[file] - @main$[file]$[let]$[trace]$[protected]$[super]$'['$p:EPackage");
-		checkProposalsAt(messages, 24, 5, "[elselet]$[else]$[comment]");
+				"p:EPackage$self$classToJava(p: EPackage) : String$ancestors() : Sequence(OclAny)");
+		checkProposalsAt(messages, 24, 5, "[elselet]$[else]$[ ]");
 		if (messages.size() > 0) {
 			fail(messages.toString());
 		}
