@@ -156,6 +156,15 @@ public interface IAcceleoConstants {
 	String GUARD = "?"; //$NON-NLS-1$
 
 	/**
+	 * Postcondition keyword.
+	 * <p>
+	 * [template ... <b>post</b> (...) ] ... [/template]
+	 * 
+	 * @since 3.0
+	 */
+	String POST = "post"; //$NON-NLS-1$
+
+	/**
 	 * If block keyword.
 	 * <p>
 	 * [if ... ] ... [/if]
