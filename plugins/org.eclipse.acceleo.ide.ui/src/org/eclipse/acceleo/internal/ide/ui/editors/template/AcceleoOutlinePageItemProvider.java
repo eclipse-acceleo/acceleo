@@ -248,7 +248,7 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 			}
 		};
 		List<CSTNode> orderedCollection = new ArrayList<CSTNode>(children.size());
-		for (Object child : orderedCollection) {
+		for (Object child : children) {
 			if (!(child instanceof org.eclipse.acceleo.parser.cst.TextExpression)) {
 				orderedCollection.add((CSTNode)child);
 			}

@@ -119,7 +119,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					if (getTreeViewer().getControl().isDisposed()) {
+					if (!getTreeViewer().getControl().isDisposed()) {
 						getTreeViewer().getControl().getDisplay().asyncExec(new Runnable() {
 							public void run() {
 								refreshContainer(element);
