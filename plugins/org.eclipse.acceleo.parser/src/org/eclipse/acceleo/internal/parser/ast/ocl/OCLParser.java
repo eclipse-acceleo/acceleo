@@ -730,6 +730,15 @@ public class OCLParser {
 	}
 
 	/**
+	 * Returns the standard library's string classifier.
+	 * 
+	 * @return The standard library's string classifier.
+	 */
+	public EClassifier getStringType() {
+		return environment.getOCLStandardLibrary().getString();
+	}
+
+	/**
 	 * Parse an OCL Expression and return the corresponding instance. Make sure to declare all the needed
 	 * contextual elements (variables or contexts) before trying to parse.
 	 * 

@@ -321,12 +321,17 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				}
 				transformStepResolve(iGuard);
 
-				org.eclipse.acceleo.parser.cst.ModelExpression iPost = iTemplate.getPost();
-				org.eclipse.ocl.ecore.OCLExpression oPost = factory.getOrCreateOCLExpression(iPost);
-				if (oPost != null) {
-					oTemplate.setPost(oPost);
+				factory.getOCL().pushContext(getOCL().getStringType());
+				try {
+					org.eclipse.acceleo.parser.cst.ModelExpression iPost = iTemplate.getPost();
+					org.eclipse.ocl.ecore.OCLExpression oPost = factory.getOrCreateOCLExpression(iPost);
+					if (oPost != null) {
+						oTemplate.setPost(oPost);
+					}
+					transformStepResolve(iPost);
+				} finally {
+					factory.getOCL().popContext();
 				}
-				transformStepResolve(iPost);
 
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iTemplate.getInit();
 				transformStepResolveAddVariables(iInit);
