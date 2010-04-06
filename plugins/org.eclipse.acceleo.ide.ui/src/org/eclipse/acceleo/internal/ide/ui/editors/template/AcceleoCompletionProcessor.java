@@ -958,6 +958,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 							'[' + IAcceleoConstants.ELSE + ']', null, replacementString));
 				}
 			}
+			if (!start.startsWith("@")) { //$NON-NLS-1$
+				computeBlocksPatternsProposals(proposals, start, tab, patternImage);
+			}
 			if (!(cstNode instanceof ModelExpression)
 					&& (IAcceleoConstants.COMMENT.startsWith(start.toLowerCase()) || ('[' + IAcceleoConstants.COMMENT)
 							.startsWith(start.toLowerCase()))) {
@@ -968,9 +971,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						.length(), replacementStringBefore.length(), patternImage,
 						'[' + IAcceleoConstants.COMMENT + ']', null, replacementString));
 			}
-		}
-		if (!start.startsWith("@")) { //$NON-NLS-1$
-			computeBlocksPatternsProposals(proposals, start, tab, patternImage);
+		} else {
+			if (!start.startsWith("@")) { //$NON-NLS-1$
+				computeBlocksPatternsProposals(proposals, start, tab, patternImage);
+			}
 		}
 		computeMainTagPatternsProposals(proposals, start, tab, patternImage);
 	}
