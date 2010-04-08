@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
+<title>Acceleo User Guide</title>
+<meta name="authors" content="Laurent Delaigue" />
+<link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="acceleo-user-guide">
+<h1 class="title">Acceleo User Guide</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Delaigue</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2008, 2010 Obeo™.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id1">Introduction</a><ul>
+<li><a class="reference internal" href="#pre-requisites" id="id2">Pre-requisites</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#overview" id="id3">Overview</a><ul>
+<li><a class="reference internal" href="#installation" id="id4">Installation</a></li>
+<li><a class="reference internal" href="#eclipse-integration" id="id5">Eclipse Integration</a><ul>
+<li><a class="reference internal" href="#the-acceleo-perspective" id="id6">The Acceleo Perspective</a></li>
+<li><a class="reference internal" href="#the-acceleo-views" id="id7">The Acceleo Views</a><ul>
+<li><a class="reference internal" href="#the-generation-patterns-view" id="id8">The Generation Patterns View</a></li>
+<li><a class="reference internal" href="#the-overrides-view" id="id9">The Overrides View</a></li>
+<li><a class="reference internal" href="#the-results-view" id="id10">The Results View</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#acceleo-projects" id="id11">Acceleo Projects</a><ul>
+<li><a class="reference internal" href="#creating-an-acceleo-project-from-scratch" id="id12">Creating an Acceleo Project &quot;From Scratch&quot;</a></li>
+<li><a class="reference internal" href="#creating-an-acceleo-ui-project" id="id13">Creating an Acceleo UI Project</a></li>
+<li><a class="reference internal" href="#transforming-an-existing-project-into-an-acceleo-project" id="id14">Transforming an Existing Project into an Acceleo Project</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#acceleo-modules" id="id15">Acceleo Modules</a><ul>
+<li><a class="reference internal" href="#templates" id="id16">Templates</a></li>
+<li><a class="reference internal" href="#queries" id="id17">Queries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edition" id="id18">Edition</a><ul>
+<li><a class="reference internal" href="#the-acceleo-editor" id="id19">The Acceleo Editor</a></li>
+<li><a class="reference internal" href="#editing-modules" id="id20">Editing modules</a><ul>
+<li><a class="reference internal" href="#syntax-highlighting" id="id21">Syntax Highlighting</a></li>
+<li><a class="reference internal" href="#content-assistant" id="id22">Content Assistant</a></li>
+<li><a class="reference internal" href="#comments" id="id23">Comments</a></li>
+<li><a class="reference internal" href="#code-folding" id="id24">Code Folding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#outlines" id="id25">Outlines</a><ul>
+<li><a class="reference internal" href="#the-dynamic-outline" id="id26">The Dynamic Outline</a></li>
+<li><a class="reference internal" href="#the-quick-outline" id="id27">The Quick Outline</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#navigating-acceleo-modules" id="id28">Navigating Acceleo Modules</a><ul>
+<li><a class="reference internal" href="#open-declaration" id="id29">Open Declaration</a></li>
+<li><a class="reference internal" href="#search-references" id="id30">Search References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#detecting-and-solving-problems" id="id31">Detecting and Solving Problems</a><ul>
+<li><a class="reference internal" href="#error-markers" id="id32">Error Markers</a></li>
+<li><a class="reference internal" href="#quick-fixes" id="id33">Quick Fixes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#refactoring" id="id34">Refactoring</a><ul>
+<li><a class="reference internal" href="#extract-as-template" id="id35">Extract as Template</a></li>
+<li><a class="reference internal" href="#transform-to-protected-area" id="id36">Transform to Protected Area</a></li>
+<li><a class="reference internal" href="#transform-to-for-if-block" id="id37">Transform to For/If Block</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-facilities" id="id38">Other Facilities</a><ul>
+<li><a class="reference internal" href="#wrapping-java-services" id="id39">Wrapping Java Services</a></li>
+<li><a class="reference internal" href="#initializing-a-project-with-an-example" id="id40">Initializing a Project with an Example</a></li>
+<li><a class="reference internal" href="#migrating-acceleo-2-x-templates" id="id41">Migrating Acceleo 2.x templates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#execution" id="id42">Execution</a><ul>
+<li><a class="reference internal" href="#running-an-acceleo-generation" id="id43">Running an Acceleo Generation</a><ul>
+<li><a class="reference internal" href="#launch-acceleo-application" id="id44">Launch Acceleo Application</a></li>
+<li><a class="reference internal" href="#launch-configurations" id="id45">Launch Configurations</a></li>
+<li><a class="reference internal" href="#the-generated-api" id="id46">The Generated API</a></li>
+<li><a class="reference internal" href="#standalone-execution" id="id47">Standalone Execution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-an-acceleo-generation" id="id48">Debugging an Acceleo Generation</a><ul>
+<li><a class="reference internal" href="#breakpoints" id="id49">Breakpoints</a></li>
+<li><a class="reference internal" href="#step-by-step-execution" id="id50">Step by Step Execution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#profiling-an-acceleo-generation" id="id51">Profiling an Acceleo Generation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deployment" id="id52">Deployment</a><ul>
+<li><a class="reference internal" href="#acceleo-ui-launcher-projects" id="id53">Acceleo UI Launcher Projects</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id1">Introduction</a></h1>
+<div class="section" id="pre-requisites">
+<h2><a class="toc-backref" href="#id2">Pre-requisites</a></h2>
+<p>The reader should have a minimal knowledge about MDA concepts, the eclipse
+platform, and the java language.</p>
+</div>
+</div>
+<div class="section" id="overview">
+<h1><a class="toc-backref" href="#id3">Overview</a></h1>
+<p>Acceleo is the reference implementation of the OMG MTL Specification.
+It is an Open-Source implementation, fully integrated in the eclipse platform,
+though also able to run outside of eclipse.
+Acceleo is fully compatible with the <a class="reference external" href="http://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework</a>. Consequently, Acceleo is compatible
+with any editor using EMF metamodels, like the eclipse UML implementations.</p>
+<div class="section" id="installation">
+<h2><a class="toc-backref" href="#id4">Installation</a></h2>
+<p>The simplest way of installing Acceleo is to use a version of eclipse where it
+is already installed!
+Some versions of Eclipse Helios contain Acceleo, just pick the version that fits
+you most at <a class="reference external" href="http://www.eclipse.org/downloads/">the eclipse download site</a>.</p>
+<p>Otherwise, it is always possible to install Acceleo like any other feature in
+eclipse. Use the <cite>Help &gt; Install New Software</cite> menu and use the official eclipse
+Helios update site.</p>
+</div>
+<div class="section" id="eclipse-integration">
+<h2><a class="toc-backref" href="#id5">Eclipse Integration</a></h2>
+<p>Acceleo is fully integrated within the eclipse platform. This means that
+editing, running, debugging can all be executed within eclipse, by using the
+usual eclipse paradigms.
+Let's first examine the main elements available for Acceleo in eclipse.</p>
+<div class="section" id="the-acceleo-perspective">
+<h3><a class="toc-backref" href="#id6">The Acceleo Perspective</a></h3>
+<p>The Acceleo perspective allows users to work in an environment which provides
+every facility to increase productivity while working with Acceleo.
+For instance, Acceleo-specific menus are available by default in the Acceleo
+perspective in order to make it easy to create projects or templates, and so on.</p>
+<p>To switch to the Acceleo perspective, click on <em>Window &gt; Open Perspective &gt;
+Other...</em> Select the perspective named <em>Acceleo</em> (Beware, if you have Acceleo
+2.x installed, you may see two Acceleo perspectives available.)</p>
+<p>The views displayed by default in this perspective are :
+- Package explorer
+- Editor area (okay, it's not a view)
+- Outline
+- Problems
+- Error Log</p>
+<p>In the Acceleo perspective, the pop-up menu available on the package explorer
+allows users to easily create Acceleo artifacts (such as projects or modules).</p>
+</div>
+<div class="section" id="the-acceleo-views">
+<h3><a class="toc-backref" href="#id7">The Acceleo Views</a></h3>
+<p>Acceleo provides a few specific views to improve productivity when working with
+templates.
+These views will be detailed later in the relevant chapters.
+Let's just summarize their purpose to get the big picture.</p>
+<p>As usual, they can be opened by clicking on <em>Window &gt; Show View</em> and selecting
+the appropriate view in the menu. Note that in the Acceleo perspective, Acceleo
+views are proposed by default directly in this menu, which will not be the case
+in another perspective.</p>
+<div class="section" id="the-generation-patterns-view">
+<h4><a class="toc-backref" href="#id8">The Generation Patterns View</a></h4>
+</div>
+<div class="section" id="the-overrides-view">
+<h4><a class="toc-backref" href="#id9">The Overrides View</a></h4>
+<p>This view presents you with every Acceleo element that is accessible in your
+workbench (no matter your current project's dependencies). You can select
+one or several elements (use the checkboxes) and override them.</p>
+<p>If the meaning of &quot;override&quot; is not clear, please refer to the <a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">official MTL
+Specification</a>.</p>
+<p>TODO Explain how to use this view</p>
+</div>
+<div class="section" id="the-results-view">
+<h4><a class="toc-backref" href="#id10">The Results View</a></h4>
+<p>This view displays the results of the latest generation run.
+It displays the list of projects where some code has been generated.
+In each project, the files that have been generated (in their folders).</p>
+<p>For each file, the view displays:</p>
+<ul class="simple">
+<li>A list of model elements use for their generation, in a hierarchical way;</li>
+<li>A list of Acceleo modules used for their generation.</li>
+</ul>
+<p>You can double-click on any element to visualize the related portions of
+generated text.</p>
+<p>You can right-click on any element and choose <em>Open Declaration</em> to navigate
+to any atomic element used during the generation, be it a model element or an
+Acceleo element (template, query).</p>
+</div>
+</div>
+</div>
+<div class="section" id="acceleo-projects">
+<h2><a class="toc-backref" href="#id11">Acceleo Projects</a></h2>
+<p>Acceleo projects are eclipse projects associated with the Acceleo nature.
+Such projects contain Acceleo modules, java code, and anything required for the
+needs of the code generation to achieve.</p>
+<p><strong>Note:</strong> It is recommended to use a naming that respects the <a class="reference external" href="http://wiki.eclipse.org/Naming_Conventions">eclipse plugins
+naming conventions</a>. Of course,
+the name prefix has to be adapted to your specific context, but remember that
+using a naming convention that prevents naming conflicts is a good idea.</p>
+<div class="section" id="creating-an-acceleo-project-from-scratch">
+<h3><a class="toc-backref" href="#id12">Creating an Acceleo Project &quot;From Scratch&quot;</a></h3>
+<p>The aim of an Acceleo project is to generate text from a model (or from a set of models).
+For this tutorial, we will create a new Acceleo module for generating java beans from a UML model.</p>
+<img alt="../images/uml_model_example.png" src="../images/uml_model_example.png" />
+<p>To create a new Acceleo project, right click on the package explorer view then select <em>New-&gt;Acceleo Project</em>.</p>
+<img alt="../images/new_acceleo_module_project.png" src="../images/new_acceleo_module_project.png" />
+<p>Choose a correct plugin name for the project, then click next.</p>
+<img alt="../images/new_acceleo_module_project_1.png" src="../images/new_acceleo_module_project_1.png" />
+<p>This wizard's page allows you to initialize the project by creating one or several Acceleo module files.</p>
+<ul class="simple">
+<li>Select the folder in which you want to create the new module file.</li>
+<li>Fill in the module name</li>
+<li>Optionally, you can select an existing file which will be copied into the new module file. This could be useful to create a module from an existing file.</li>
+<li>Then, select the metamodel from which your generation file will take its types (in this example, UML)</li>
+<li>Finally, choose the metaclass that will be used to generate the file (in this example, Class). This can be modified later at any time directly in the module files.</li>
+</ul>
+<p><strong>Note:</strong> Other options are available to initialize the new module with exiting content. These options will be discussed later.</p>
+<img alt="../images/new_acceleo_module_project_2.png" src="../images/new_acceleo_module_project_2.png" />
+<p>You can create more than one module file in this project by using the &quot;Add&quot; button on the left.</p>
+<p>Clicking on finish will create the module file(s), and some files automatically generated from it (more on these below).</p>
+<img alt="../images/new_acceleo_module_project_result.png" src="../images/new_acceleo_module_project_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="creating-an-acceleo-ui-project">
+<h3><a class="toc-backref" href="#id13">Creating an Acceleo UI Project</a></h3>
+<p>This action can only be performed on an existing Acceleo project.</p>
+<p>It allows you to create and initialize a plugin project that will contain
+everything needed to launch the Acceleo generations of your project through
+actions available in pop-up menus, integrated in eclipse.
+This facilitates a lot the deployment of Acceleo generators in the eclipse
+platform.</p>
+<p>To perform this, just right-click on your Acceleo project, then select
+<em>Acceleo &gt; Create Acceleo UI Launcher Project</em>. This will start a wizard that
+will guide you through the creation process. The created project consists in an
+eclipse plugin project that you can afterward maintain as you would any plugin
+project.</p>
+</div>
+<div class="section" id="transforming-an-existing-project-into-an-acceleo-project">
+<h3><a class="toc-backref" href="#id14">Transforming an Existing Project into an Acceleo Project</a></h3>
+<p>Acceleo provides a facility to convert an existing project into an eclipse
+project.
+Technically, this means that the <em>Acceleo nature</em> will be added to the project's
+natures.</p>
+<p>This can be achieved by right-clicking in the package explorer, then selecting
+<em>New &gt; Convert to an Acceleo Project</em>.
+This will start a wizard which will guide you through the conversion process.</p>
+<p>The <em>Acceleo nature</em> can be removed from an Acceleo project simply by
+right-clicking on the project and selecting <em>Acceleo &gt; Remove Acceleo Nature</em>.</p>
+</div>
+</div>
+<div class="section" id="acceleo-modules">
+<h2><a class="toc-backref" href="#id15">Acceleo Modules</a></h2>
+<p>A module is a <tt class="docutils literal">.mtl</tt> file, which contains templates (to generate code) and/or
+queries (to extract information from the manipulated models).</p>
+<div class="section" id="templates">
+<h3><a class="toc-backref" href="#id16">Templates</a></h3>
+<p>Templates are sets of Acceleo statements used to generate text. They are
+delimited by <tt class="docutils literal"><span class="pre">[template]...[/template]</span></tt> tags.</p>
+</div>
+<div class="section" id="queries">
+<h3><a class="toc-backref" href="#id17">Queries</a></h3>
+<p>Queries are sets of OCL statements used to extract information form the model.
+Queries return values, or collections of values. They use the OCL language.</p>
+</div>
+</div>
+</div>
+<div class="section" id="edition">
+<h1><a class="toc-backref" href="#id18">Edition</a></h1>
+<div class="section" id="the-acceleo-editor">
+<h2><a class="toc-backref" href="#id19">The Acceleo Editor</a></h2>
+<p>The module editor provides the following features:</p>
+<ul class="simple">
+<li>Syntax highlighting</li>
+<li>Content assistant (ctrl + space)</li>
+<li>Error detection</li>
+<li>Quick fixes (ctrl + shift + 1)</li>
+<li>Dynamic outline</li>
+<li>Quick outline (ctrl + O)</li>
+<li>Code folding</li>
+<li>Open declaration (either with 'ctrl + left click' or 'F3')</li>
+<li>Search references (ctrl + shift + G)</li>
+</ul>
+<img alt="../images/acceleo_editor.png" src="../images/acceleo_editor.png" />
+<p>For more information about the Acceleo syntax, please read the official OMG
+specification accessible from <a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">the official MTL Specification</a>.</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="editing-modules">
+<h2><a class="toc-backref" href="#id20">Editing modules</a></h2>
+<p>The Acceleo editor is be default associated with the <tt class="docutils literal">.mtl</tt> file extension.</p>
+<div class="section" id="syntax-highlighting">
+<h3><a class="toc-backref" href="#id21">Syntax Highlighting</a></h3>
+<p>The editor uses specific colors for Acceleo templates:</p>
+<ul class="simple">
+<li>red is used for template tags</li>
+<li>purple is used for other tags (queries, modules, imports, ...)</li>
+<li>blue is used for dynamic expressions in templates or other places</li>
+<li>green is used for comments and String literals</li>
+<li>black is used for static text or query bodies</li>
+</ul>
+</div>
+<div class="section" id="content-assistant">
+<h3><a class="toc-backref" href="#id22">Content Assistant</a></h3>
+<p>The content assistant is traditionally invoked with <em>Ctrl + space</em>.
+It proposes a choice of all elements that make sense at the place of invocation.
+It is available everywhere, so don't hesitate to hit <em>Ctrl + space</em> anywhere!</p>
+</div>
+<div class="section" id="comments">
+<h3><a class="toc-backref" href="#id23">Comments</a></h3>
+<p>Comments are entered in <tt class="docutils literal">[comment]</tt> blocks, and appear in some shade of green.
+The <tt class="docutils literal">[comment]</tt> tag can be self closed:</p>
+<p><tt class="docutils literal">[comment Here is some comment of utter importance/]</tt></p>
+<p>But you can also surround a block of text between comment tags:</p>
+<pre class="literal-block">
+[comment]
+Here is some commented text, which cannot contain a right bracket character.
+[/comment]
+</pre>
+<p>Such comments are part of the official MTL specification. They cannot be placed
+inside OCL code, such as queries for instance.</p>
+<p>It is possible to comment some portion of code or text of an Acceleo module
+with the <em>Ctrl + /</em> shortcut, or by right-clicking on the selected text and then
+<em>Source &gt; Comment</em>.
+The behavior depends on what is selected:
+If nothing is selected, the current line (not the line you right-clicked on, but
+the line where the cursor is located) is surrounded with
+<tt class="docutils literal"><span class="pre">[comment]...[\comment]</span></tt> tags.
+If some text is selected, it is surrounded with <tt class="docutils literal"><span class="pre">[comment]...[\comment]</span></tt> tags,
+whether it spans multiple lines or not.</p>
+</div>
+<div class="section" id="code-folding">
+<h3><a class="toc-backref" href="#id24">Code Folding</a></h3>
+<p>Templates, comments, queries, can be folded thanks to a marker located in the
+left margin in front of each of these elements.</p>
+</div>
+</div>
+<div class="section" id="outlines">
+<h2><a class="toc-backref" href="#id25">Outlines</a></h2>
+<div class="section" id="the-dynamic-outline">
+<h3><a class="toc-backref" href="#id26">The Dynamic Outline</a></h3>
+<p>The traditional eclipse outline view is used be Acceleo to display the module's
+structure. imports, templates, queries can be seen there, and double-clicking on
+any of them places the cursor at the corresponding position in the module (in
+the editor).</p>
+</div>
+<div class="section" id="the-quick-outline">
+<h3><a class="toc-backref" href="#id27">The Quick Outline</a></h3>
+<p>The quick outline, which can be displayed using <em>Ctrl + O</em>, displays just the
+necessary information to access any element in the current module.
+So, hitting <em>Ctrl + O</em> displays a pop-up with a list of templates and queries.
+A filter at the top allows you to quickly filter the content in order to easily
+find what you are looking for.</p>
+</div>
+</div>
+<div class="section" id="navigating-acceleo-modules">
+<h2><a class="toc-backref" href="#id28">Navigating Acceleo Modules</a></h2>
+<p>One of the great benefits of modern IDE tooling is the capacity to easily
+navigate in code from elements to their declarations and, vice-versa, from
+declarations to usages.</p>
+<p>These features are available in Acceleo.</p>
+<div class="section" id="open-declaration">
+<h3><a class="toc-backref" href="#id29">Open Declaration</a></h3>
+<p>The traditional shortcut <em>F3</em> is supported by Acceleo, along with <em>Ctrl + click</em>,
+which both take you to the declaration of the selected or clicked element.
+This is supported for all kinds of elements: templates, queries, metamodels,
+metamodel elements, EOperations, etc.</p>
+<p>This can also be achieve by right-clicking on an element, then <em>Open
+Declaration</em>.</p>
+</div>
+<div class="section" id="search-references">
+<h3><a class="toc-backref" href="#id30">Search References</a></h3>
+<p>Conversely, it is possible to get all the elements that refer to a given element.
+The shortcut is <em>Ctrl + Shift + G</em>, but it can also be achieved by right-clicking
+on the element then <em>Search References</em>.</p>
+<p>The relevant elements are displayed in the Search view.</p>
+</div>
+</div>
+<div class="section" id="detecting-and-solving-problems">
+<h2><a class="toc-backref" href="#id31">Detecting and Solving Problems</a></h2>
+<div class="section" id="error-markers">
+<h3><a class="toc-backref" href="#id32">Error Markers</a></h3>
+<p>Obviously, Acceleo displays error markers when errors are detected.
+Error markers also appear in the eclipse Problems view, as usual. Files with
+errors also appear with an error decorator.</p>
+<p>Just hover the marker in the editor margin with the mouse to get a tooltip to
+appear with an explanation of the problem.</p>
+</div>
+<div class="section" id="quick-fixes">
+<h3><a class="toc-backref" href="#id33">Quick Fixes</a></h3>
+<p>Quick fixes are available with the shortcut <em>Ctrl + 1</em>.</p>
+<p>Currently, quick fixes propose to create a supposedly missing template or query,
+before or after the current template.</p>
+<p>More quick fixes will be provided in the next versions of Acceleo.</p>
+</div>
+</div>
+<div class="section" id="refactoring">
+<h2><a class="toc-backref" href="#id34">Refactoring</a></h2>
+<div class="section" id="extract-as-template">
+<h3><a class="toc-backref" href="#id35">Extract as Template</a></h3>
+<p>When you develop Acceleo templates, you will sooner or later (and probably
+sooner than later) wish to extract a piece of code into a template in order to
+prevent the copy/paste syndrom.</p>
+<p>Well, don't worry : you can do it with no effort!</p>
+<p>Just select the piece of text you want to extract in another template, and
+right-click then choose <em>Refactor &gt; Extract Template</em> (or just hit <em>Ctrl + Shift
++ T</em> ).</p>
+<p>The selected text is then extracted in another template. Note that the selected
+text needs to be consistent : you cannot of course extract text that partially
+spans blocks of code and get an adequate result.</p>
+</div>
+<div class="section" id="transform-to-protected-area">
+<h3><a class="toc-backref" href="#id36">Transform to Protected Area</a></h3>
+<p>Similarly, it is very useful to mark some code area as protected.
+Rather than manually entering the <tt class="docutils literal">[protected]</tt> blocks, you can just select
+the portion of code to protect, right-click on it then choose <em>Source &gt; As
+Protected Area...</em> (or use the <em>Alt + Shift + P</em> shortcut).</p>
+<p>The selected text is then surrounded with <tt class="docutils literal">[protected]</tt> markers, with an
+automatically inferred id.</p>
+<p>Please note that you may have to modify the id used to make sure the marker
+works like you want.</p>
+</div>
+<div class="section" id="transform-to-for-if-block">
+<h3><a class="toc-backref" href="#id37">Transform to For/If Block</a></h3>
+<p>TODO Describe this feature</p>
+</div>
+</div>
+<div class="section" id="other-facilities">
+<h2><a class="toc-backref" href="#id38">Other Facilities</a></h2>
+<div class="section" id="wrapping-java-services">
+<h3><a class="toc-backref" href="#id39">Wrapping Java Services</a></h3>
+<p>It is sometimes useful to invoke some java code from inside an Acceleo template.
+The acceleo non-standard library provides a service <cite>invoke</cite> which allows just
+that. The invoked java service is wrapped in an Acceleo query.</p>
+<p>To facilitate the creation of such a wrapper, proceed like this:</p>
+<ol class="arabic simple">
+<li>Right-click on the package you want to create your Acceleo module in, and
+select <em>New &gt; Acceleo Module File</em></li>
+<li>In the wizard, enter the relevant information in the usual fields, then click
+on the <em>Advanced &gt;&gt;</em> button</li>
+<li>Check the <em>Initialize Content</em> checkbox</li>
+<li>Select <em>Create a Java services wrapper</em> in the listbox below</li>
+<li>Select the java file that contains the services to wrap</li>
+<li>Click on the <em>Finish</em> button</li>
+</ol>
+<p>That's it!</p>
+<p>An Acceleo module is created, with a query for each service found in the
+original java class.</p>
+</div>
+<div class="section" id="initializing-a-project-with-an-example">
+<h3><a class="toc-backref" href="#id40">Initializing a Project with an Example</a></h3>
+<p>It is often useful (actually, it is recommended) to use a bottom-up approach
+to develop Acceleo templates.
+So, before beginning to write templates, start by prototyping your target files,
+make sure they work as expected, and then you are ready to start generating them.</p>
+<p>At that time, you'd like to import the content of some files into a new template.</p>
+<ol class="arabic simple">
+<li>Right-click on the package you want to create your Acceleo module in, and
+select <em>New &gt; Acceleo Module File</em></li>
+<li>In the wizard, enter the relevant information in the usual fields, then click
+on the <em>Advanced &gt;&gt;</em> button</li>
+<li>Check the <em>Initialize Content</em> checkbox</li>
+<li>Select <em>Copy example content</em> in the listbox below (which should be selected
+by default)</li>
+<li>select the file that contains the example code</li>
+<li>Click on the <em>Finish</em> button</li>
+</ol>
+<p>An Acceleo module is created, and the content of the example java file is copied
+into this module's primary template.</p>
+</div>
+<div class="section" id="migrating-acceleo-2-x-templates">
+<h3><a class="toc-backref" href="#id41">Migrating Acceleo 2.x templates</a></h3>
+<p><strong>Warning: This feature will probably evolve in future versions.</strong></p>
+<p>TODO Describe this feature</p>
+</div>
+</div>
+</div>
+<div class="section" id="execution">
+<h1><a class="toc-backref" href="#id42">Execution</a></h1>
+<div class="section" id="running-an-acceleo-generation">
+<h2><a class="toc-backref" href="#id43">Running an Acceleo Generation</a></h2>
+<p>There are several ways of launching a generation with Acceleo. We will examine
+now how to generate inside, then outside, eclipse.</p>
+<div class="section" id="launch-acceleo-application">
+<h3><a class="toc-backref" href="#id44">Launch Acceleo Application</a></h3>
+<p>Right-click on a <tt class="docutils literal">.mtl</tt> Acceleo module file, then select <em>Run As &gt; Launch
+Acceleo Application</em>.</p>
+<p>This opens a wizard to create a launch configuration if such a configuration
+does not already exist for this file.
+If a launch configuration already exists, the generation is launched immediately.</p>
+</div>
+<div class="section" id="launch-configurations">
+<h3><a class="toc-backref" href="#id45">Launch Configurations</a></h3>
+<p>Launch configurations for Acceleo can be created like described above, or by
+opêning the <em>Run Configurations</em> window, and then right-clicking on the <em>Acceleo
+Application</em> category to the left, and selecting <em>New</em> or <em>Duplicate</em>.</p>
+<p>An acceleo launch configuration requires:</p>
+<ul class="simple">
+<li>A project (which contains the java entry point to run)</li>
+<li>A java class to run (contained in the above project)</li>
+<li>An input model</li>
+<li>An output folder (where every file will be generated)</li>
+</ul>
+<p>Optionally, properties can be specified directly in the launch configuration.</p>
+</div>
+<div class="section" id="the-generated-api">
+<h3><a class="toc-backref" href="#id46">The Generated API</a></h3>
+<p>To help users, Acceleo creates an API able to launch an Acceleo template.
+This API can easily be customized to fit your specificities -- if you have any.</p>
+<p>It is important to note that Acceleo inspects modules to look for <tt class="docutils literal">&#64;main</tt>
+annotations in comments, and treats those templates specially.
+For every module containing at meast one <tt class="docutils literal">&#64;main</tt> annotation, a java file
+is generated beside the template. This class contains whatever plumbing code is
+needed to run the generator.</p>
+<p>The generation can then be run by calling the main() of the class, or
+instantiating it.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">API</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>addProperties()</td>
+<td>This method allows you to add properties or
+properties files that will subsequently be
+available during the generation</td>
+</tr>
+<tr><td>API</td>
+<td>Meaning</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="standalone-execution">
+<h3><a class="toc-backref" href="#id47">Standalone Execution</a></h3>
+</div>
+</div>
+<div class="section" id="debugging-an-acceleo-generation">
+<h2><a class="toc-backref" href="#id48">Debugging an Acceleo Generation</a></h2>
+<div class="section" id="breakpoints">
+<h3><a class="toc-backref" href="#id49">Breakpoints</a></h3>
+</div>
+<div class="section" id="step-by-step-execution">
+<h3><a class="toc-backref" href="#id50">Step by Step Execution</a></h3>
+</div>
+</div>
+<div class="section" id="profiling-an-acceleo-generation">
+<h2><a class="toc-backref" href="#id51">Profiling an Acceleo Generation</a></h2>
+</div>
+</div>
+<div class="section" id="deployment">
+<h1><a class="toc-backref" href="#id52">Deployment</a></h1>
+<div class="section" id="acceleo-ui-launcher-projects">
+<h2><a class="toc-backref" href="#id53">Acceleo UI Launcher Projects</a></h2>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -5,7 +5,7 @@
 :Authors: Laurent Goubet
 :Contact: Laurent.Goubet@obeo.fr
 
-Copyright |copy| 2008, 2009 Obeo\ |trade|.
+Copyright |copy| 2008, 2010 Obeo\ |trade|.
 
 .. |copy| unicode:: 0xA9 
 .. |trade| unicode:: U+2122
@@ -17,10 +17,10 @@ Introduction
 
 This document provides an overview of the user-visible features of the Acceleo plug-ins which make it easy to develop
 and run Acceleo modules inside Eclipse. It assumes some familiarity with the language itself, although you do not need
-to be an expert to start using the plug-ins : using the provided example projects and the powerful completion feature
+to be an expert to start using the plug-ins: using the provided example projects and the powerful completion feature
 of the Acceleo editor, it is very easy to get started once you understand the basic principles.
 
-Concerning the language, almost all of the OMG specification keywords are supported (those marked with an asterisk are
+Regarding the language, almost all of the OMG specification keywords are supported (those marked with an asterisk are
 not fully supported yet):
 
 ::
@@ -32,6 +32,8 @@ not fully supported yet):
 For all the details about these keywords and the MOF Model to Text Language in general, you can consult
 `the official MTL Specification <http://www.omg.org/spec/MOFM2T/1.0/>`_ available at the OMG website.
 
+back to Contents_
+
 Requirements
 ============
 
@@ -39,6 +41,8 @@ Acceleo depends on:
 
 #. EMF runtime ( 2.4.X )
 #. OCL runtime ( 1.2.X )
+
+back to Contents_
 
 Acceleo Modules and Projects
 ============================
@@ -60,7 +64,7 @@ content*), or an existing Acceleo or Xpand template (respectively *Migrate .mt c
 
 The *Metamodel information* section allows you to specify the input metamodel of your new module file, either from the
 list of registered metamodels or directly by URI. You can also specify the input type of the sample template that will
-be creted inside this module file.
+be created inside this module file.
 
 Once you have filled in all required information, you can either click *Finish* to create the project in the workspace
 or use the **Add** button at the lower end of the *module files* section to add more initial modules to this project.
@@ -72,11 +76,13 @@ project's source folders.
 
   .. image:: ../images/acceleo_project-structure.png
 
+back to Contents_
+
 Acceleo Editor Features
 =======================
 
 The Acceleo editor is associated with Acceleo source files (*.mtl* files) and provides all the features of a modern
-programming editor to make you more productive when developing modules :
+programming editor to make you more productive when developing modules:
 
 - Syntax highlighting
 - Content assistant (ctrl + space)
@@ -90,38 +96,42 @@ programming editor to make you more productive when developing modules :
 
   .. image:: ../images/acceleo_editor_overview.png
 
-Some of these features are described in details below.
+Some of these features are detailed below.
+
+back to Contents_
 
 Smart Completion on Acceleo Syntax Constructs
 ---------------------------------------------
 
-The Acceleo editor provides smart completion on all of the available Acceleo language constructs. It is activated by
-default using the *Ctrl+Space* key combination.
+The Acceleo editor provides smart completion on all of the available Acceleo language constructs.
+It is activated with the *Ctrl+Space* key combination by default.
 
 The completion mechanism is smart enough to only present you the syntactically correct choices in the context where it
 is invoked. For example, when invoked at the top-level of a file (outside of templates, macros, queries, ...), only the
-top-level Acceleo constructs are shown :
+top-level Acceleo constructs are shown:
 
   .. image:: ../images/acceleo_completion-top-level.png
 
-The context is also used to sort the proposed choices. For example, inside an *[if]* block, the *[elsif]* and *[else]*
+The context is also used to sort the proposed choices. For example, inside an *[if]* block, the *[elseif]* and *[else]*
 choices appear at the top of the completion proposals:
 
   .. image:: ../images/acceleo_completion-if.png
 
 Note that although the choices are presented as keywords inside brackets (e.g. *[for]*, *[file]*, etc.), you do not
-have to type the opening bracket but can simply type the first letters :
+have to type the opening bracket but can simply type the first letters:
 
   .. image:: ../images/acceleo_completion-for.png
 
-Smart Completion on Scripts and Meta-model Elements
+back to Contents_
+
+Smart Completion on Scripts and Metamodel Elements
 ---------------------------------------------------
 
 Smart completion also works inside Acceleo expressions, where it can be invoked using *Ctrl+Space*. It is also
 auto-activated after a small delay in some circumstances, like after a dot (*.*).
 
-Inside expressions, completion choices include elements of the meta-models compatible with the context and visible
-Acceleo elements (variables, templates and queries, modules) alike.
+Inside expressions, completion choices include metamodel elements that are compatible with the context and visible
+Acceleo elements (variables, templates, queries and modules) alike.
 
 In the example below, the *p* variable is a UML property, so completion on the partial expression *p.n* proposes both
 features and operations of the UML2 *Property* class which start with *n*:
@@ -129,17 +139,21 @@ features and operations of the UML2 *Property* class which start with *n*:
   .. image:: ../images/acceleo_completion-mm.png
 
 Starting from an empty expression, the completion proposes all visible Acceleo variables and templates which can be
-invoked in addition to features and operations of the current elements (the latter not visible on the screenshot) :
+invoked in addition to features and operations of the current element (the latter not visible on the screenshot):
 
   .. image:: ../images/acceleo_completion.png
+
+back to Contents_
 
 Open Declaration
 ----------------
 
-The Acceleo editor also support the "Open Declaration" feature (*F3* by default, or ctrl+left click on any element),
-which allows easy navigation from any element to its definition. This works for most if not all elements you can find
-in Acceleo module files: variables, modules, templates, queries, types, features and operations of meta-model elements,
-even the meta-model themselves from their URI.
+The Acceleo editor also support the "Open Declaration" feature (*F3* by default, or *Ctrl+left click* on any element),
+which allows an easy navigation from any element to its definition. This works for most if not all elements you can find
+in Acceleo module files: variables, modules, templates, queries, types, features and operations of metamodel elements,
+even the metamodel themselves from their URI.
+
+back to Contents_
 
 Search References
 -----------------
@@ -151,12 +165,14 @@ invoked by default using the *Ctrl+Shift+g* key combination. It can be used eith
 
 In the example below, the cursor was on the definition of the iteration variable *p* in a *for* loop. Invoking
 "Search references" by pressing *Ctrl+Shift+g* opened the Eclipse search view with all the references to this variable
-inside the current module, and potential matches in other modules of the same project :
+inside the current module, and potential matches in other modules of the same project:
 
   .. image:: ../images/acceleo_search-references-1.png
 
 As for "Open Declaration", the "Search References" feature works for all kind of elements: Acceleo variables, templates,
-queries and modules, meta-model types, features and operations.
+queries and modules, metamodel types, features and operations.
+
+back to Contents_
 
 Running and debugging Acceleo modules
 =====================================
@@ -169,10 +185,12 @@ Acceleo project builder automatically creates a Java class which can be used to 
 
 That Java class contains a *main()* method which can be used to invoke the generation with that module. It can be called
 by itself as a normal Java program (including as a standalone application, outside of Eclipse), or using the more
-convenient *Acceleo Application* launcher. Such launchers require two input arguments :
+convenient *Acceleo Application* launcher. Such launchers require two input arguments:
 
 - the input model (for example a *.uml* file)
 - the target folder
+
+back to Contents_
 
 Launching a Module
 ------------------
@@ -214,18 +232,20 @@ Runner
 Once you have specified all the required information, the configuration can be invoked like any Eclipse launch
 configuration.
 
+back to Contents_
+
 Debugging your Modules
 ----------------------
 
 The Acceleo plug-ins also include a debugger for your Acceleo modules. The debugger allows you to set breakpoints
 inside your Acceleo templates and thus follow their execution step by step.
 
-To debug an Acceleo module, follow the sames steps as described above to create a launch configuration, but use the
+To debug an Acceleo module, follow the same steps as described above to create a launch configuration, but use the
 *Debug as* menu instead of *Run as*. Once you have a launch configuration, it can be invoked either as a normal launch
 or as a debug launch.
 
 To put a breakpoint in a template, simply double-click inside the left margin of the Acceleo editor on the target line.
-Note that you can only put breakpoints on lines which contain Acceleo expressions, not on lines which only sport fixed
+Note that you can only put breakpoints on lines which contain Acceleo expressions, not on lines which only contain fixed
 text output.
 
 The Acceleo debugger has some support for conditional breakpoints: once you have set a breakpoint, simply click on it
@@ -233,11 +253,11 @@ in the left margin. A dialog box appears where you can enter a name pattern:
 
   .. image:: ../images/acceleo_breakpoint_condition.png
 
-Once you have set a name pattern, the breakpoint will only be triggered when on elements which name match the pattern
-(note that currently breakpoint conditions are only taken into account for the next debug session).
+Once you have set a name pattern, the breakpoint will only be triggered on elements whose name match the pattern
+(please note that breakpoint conditions are currently only taken into account for the next debug session).
 
 When you launch a debug session on your module, if you have breakpoints and they are enabled, the generation will pause
-when they are hit. If you then switch to the *Debug* perspective, you should see the familiar debug views :
+when they are hit. If you then switch to the *Debug* perspective, you should see the familiar debug views:
 
   .. image:: ../images/acceleo_debugger.png
 
@@ -247,3 +267,5 @@ current *self* object for the expression being executed.
 
 As in Java, you can use the *Step Into*, *Step Over* and *Step Return* actions to execute the template step by step,
 *Resume* the execution until the end or another breakpoint is hit, or simply *Stop* the session.
+
+back to Contents_

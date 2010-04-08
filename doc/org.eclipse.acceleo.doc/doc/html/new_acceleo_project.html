@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
 <title>Acceleo Tutorial</title>
 <meta name="authors" content="Laurent Goubet" />
 <link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
@@ -21,32 +21,46 @@
 <td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
 </tbody>
 </table>
-<p>Copyright © 2008, 2009 Obeo™.</p>
+<p>Copyright © 2008, 2010 Obeo™.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#new-acceleo-project" id="id1">New Acceleo project</a></li>
+<li><a class="reference internal" href="#the-acceleo-editor" id="id2">The Acceleo editor</a></li>
+<li><a class="reference internal" href="#creating-a-module-to-generate-java-beans" id="id3">Creating a module to generate java beans</a></li>
+<li><a class="reference internal" href="#user-code-blocks" id="id4">User-code blocks</a></li>
+<li><a class="reference internal" href="#java-services-wrappers" id="id5">Java services wrappers</a></li>
+<li><a class="reference internal" href="#the-java-helper-file" id="id6">The java helper file</a></li>
+<li><a class="reference internal" href="#the-ant-task" id="id7">The ant task</a></li>
+</ul>
+</div>
 <div class="section" id="new-acceleo-project">
-<h1>New Acceleo project</h1>
-<p>The aim of an Acceleo project is to generate text from a model.
+<h1><a class="toc-backref" href="#id1">New Acceleo project</a></h1>
+<p>The aim of an Acceleo project is to generate text from a model (or from a set of models).
 For this tutorial, we will create a new Acceleo module for generating java beans from a UML model.</p>
 <img alt="../images/uml_model_example.png" src="../images/uml_model_example.png" />
-<p>To create a new Acceleo project, you can right click on the package explorer view then <em>New-&gt;Acceleo Project</em>.</p>
+<p>To create a new Acceleo project, right click on the package explorer view then select <em>New-&gt;Acceleo Project</em>.</p>
 <img alt="../images/new_acceleo_module_project.png" src="../images/new_acceleo_module_project.png" />
 <p>Choose a correct plugin name for the project, then click next.</p>
 <img alt="../images/new_acceleo_module_project_1.png" src="../images/new_acceleo_module_project_1.png" />
-<p>Next you can create a new Acceleo module file.</p>
+<p>This wizard's page allows you to initialize the project by creating one or several Acceleo module files.</p>
 <ul class="simple">
 <li>Select the folder in which you want to create the new module file.</li>
 <li>Fill in the module name</li>
-<li>Optionally, you can browse for an existing file which will be copied into the new module file. This could be useful to create a module from an existing file.</li>
+<li>Optionally, you can select an existing file which will be copied into the new module file. This could be useful to create a module from an existing file.</li>
 <li>Then, select the metamodel from which your generation file will take its types (in this example, UML)</li>
-<li>Finally, choose the metaclass that will be used to generate the file (in this example, Class)</li>
+<li>Finally, choose the metaclass that will be used to generate the file (in this example, Class). This can be modified later at any time directly in the module files.</li>
 </ul>
+<p><strong>Note:</strong> Other options are available to initialize the new module with exiting content. These options will be discussed later.</p>
 <img alt="../images/new_acceleo_module_project_2.png" src="../images/new_acceleo_module_project_2.png" />
-<p>You can create more than one module file in this project by using the &quot;Add&quot; button ont the left.</p>
-<p>Clicking on finish will create the module file(s), and some files automatically generated from it ( more on these below ).</p>
+<p>You can create more than one module file in this project by using the &quot;Add&quot; button on the left.</p>
+<p>Clicking on finish will create the module file(s), and some files automatically generated from it (more on these below).</p>
 <img alt="../images/new_acceleo_module_project_result.png" src="../images/new_acceleo_module_project_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="the-acceleo-editor">
-<h1>The Acceleo editor</h1>
-<p>The module editor provides the following features :</p>
+<h1><a class="toc-backref" href="#id2">The Acceleo editor</a></h1>
+<p>The module editor provides the following features:</p>
 <ul class="simple">
 <li>Syntax highlighting</li>
 <li>Content assistant (ctrl + space)</li>
@@ -59,26 +73,27 @@ For this tutorial, we will create a new Acceleo module for generating java beans
 <li>Search references (ctrl + shift + G)</li>
 </ul>
 <img alt="../images/acceleo_editor.png" src="../images/acceleo_editor.png" />
-<p>For more information about the Acceleo syntax, please read the official OMG specification accessible from : &lt;<a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">http://www.omg.org/spec/MOFM2T/1.0/</a>&gt;</p>
+<p>For more information about the Acceleo syntax, please read the official OMG specification accessible from <a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">the official MTL Specification</a>.</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="creating-a-module-to-generate-java-beans">
-<h1>Creating a module to generate java beans</h1>
-<p>We would like to create a bean for each of the classes defined in the model. Here is the code for the module file :</p>
+<h1><a class="toc-backref" href="#id3">Creating a module to generate java beans</a></h1>
+<p>We would like to create a bean for each of the classes defined in the model. Here is the code for the module file:</p>
 <pre class="literal-block">
 [module generate('http://www.eclipse.org/uml2/2.1.0/UML')/]
 
-[template public generate(c : Class)]
+[template public generate(c: Class)]
         [file (c.name.concat('.java'), false)]
         public class [c.name.toUpperFirst()/] {
-        [for (p : Property | c.attribute)]
+        [for (p: Property | c.attribute)]
         private [p.type.name/] [p.name/];
         [/for]
-        [for (p : Property | c.attribute)]
+        [for (p: Property | c.attribute)]
         public [p.type.name/] get[p.name.toUpperFirst()/]() {
                 return this.[p.name/];
         }
         [/for]
-        [for (o : Operation | c.ownedOperation)]
+        [for (o: Operation | c.ownedOperation)]
         public [o.type.name/] [o.name/]() {
                 // TODO should be implemented
         }
@@ -87,27 +102,75 @@ For this tutorial, we will create a new Acceleo module for generating java beans
         [/file]
 [/template]
 </pre>
-<p>As shown below, the content assistant provides choices for the UML metamodel :</p>
+<p>As shown below, the content assistant provides choices from the UML metamodel:</p>
 <img alt="../images/acceleo_editor_example.png" src="../images/acceleo_editor_example.png" />
-<p>The resulting java file generated by  launching this module file will look like this :</p>
+<p>The resulting java file generated by  launching this module file will look like this:</p>
 <img alt="../images/acceleo_module_java_result.png" src="../images/acceleo_module_java_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="the-java-file">
-<h1>The java file</h1>
-<p>Note : This feature may evolve in future releases.</p>
+<div class="section" id="user-code-blocks">
+<h1><a class="toc-backref" href="#id4">User-code blocks</a></h1>
+<p>Acceleo supports 2 ways of specifying user-code blocks in the generated code. User-code blocks delimit portions of text that are only generated once.
+Such blocks are not modified during subsequent generations. This is very useful to allow users to add code in some places of generated files
+while keeping the rest of the file under the control of the generator.</p>
+<p>The first way of specifying user-code blocks is to use the standard <tt class="docutils literal">[protected <span class="pre">(id)]...[/protected]</span></tt>, as shown below:</p>
+<img alt="../images/acceleo_usercode_1_editor.png" src="../images/acceleo_usercode_1_editor.png" />
+<p>The above module produces the following code:</p>
+<img alt="../images/acceleo_usercode_1_generated.png" src="../images/acceleo_usercode_1_generated.png" />
+<p>The second way, which is specific to generators that target the java language, is to add <tt class="docutils literal">&#64;generated</tt> annotations on elements that must be generated.
+Other elements (those that do not have such annotations) are considered not to be modified by subsequent generations.</p>
+<p>If a file contains at least one annotation <tt class="docutils literal">&#64;generated</tt>, the merge of the former java file and the newly enerated one is delegated to <a class="reference external" href="http://wiki.eclipse.org/JET_FAQ_How_does_JMerge_work%3F">JMerge</a>.
+<tt class="docutils literal">&#64;generated</tt> annotations can be added on any java element which can have modifiers (attributes, methods, inner classes, and so on).</p>
+<img alt="../images/acceleo_usercode_2_editor.png" src="../images/acceleo_usercode_2_editor.png" />
+<p>The above module produces the following code:</p>
+<img alt="../images/acceleo_usercode_2_generated.png" src="../images/acceleo_usercode_2_generated.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="java-services-wrappers">
+<h1><a class="toc-backref" href="#id5">Java services wrappers</a></h1>
+<p>As mentioned earlier, it is possible to iniialize the content of a new Acceleo module file with content that comes from</p>
+<ul class="simple">
+<li>An existing Acceleo module file (a copy of this file is made)</li>
+<li>Some java code that you need to access from your Acceleo templates</li>
+<li>Acceleo 2.x templates (please note that at the time of writing these lines, the Acceleo 2.X to Accelo 3 translator is not complete yet)</li>
+</ul>
+<p>We will detail here the second possibility which makes it possible to execute standard java code from any Acceleo template or query.</p>
+<p>Let's suppose you have a class UML2Services in which you have implemented some specific behavior that you'd like
+to access from your generators. A good idea would be to put this class in a package <tt class="docutils literal">services</tt>.</p>
+<p>Right-click on the package and select <em>New &gt; Acceleo Module File</em>.</p>
+<img alt="../images/acceleo_new_module.png" src="../images/acceleo_new_module.png" />
+<p>In the wizard window, enter the relevant information in the fields, then activate the <em>Advanced</em> button in order to gain access
+to the advanced options.</p>
+<p>Check the <em>Initialize Contents</em> checkbox and select the second choice in the combo: <em>Create a Java services wrapper</em></p>
+<img alt="../images/acceleo_create_service_wrapper.png" src="../images/acceleo_create_service_wrapper.png" />
+<p>Browse to find the Java file containing your services, then click <em>Finish</em>.</p>
+<p>This creates a new Acceleo Module file that contains one or several queries (one per java method in your java class)
+whose role is just to delegate its behavior to the java class, thus making it accessible to your templates.</p>
+<p>This is simply achieved thanks to the non-standard <tt class="docutils literal">invoke</tt> operation.</p>
+<img alt="../images/acceleo_java_service_wrapper.png" src="../images/acceleo_java_service_wrapper.png" />
+</div>
+<div class="section" id="the-java-helper-file">
+<h1><a class="toc-backref" href="#id6">The java helper file</a></h1>
+<p><strong>Note:</strong> This feature may evolve in future releases.</p>
 <p>Next to each module file containing a <strong>[comment &#64;main]</strong> annotation, a java file with the same name is automatically
-generated. This allows you to launch the generation via the <em>doGenerate()</em> method. This can be achieved either by
-creating a new instance of the class, or calling its <em>main()</em> method.</p>
+generated.
+This file captures the plumbing code that has to be written in order to launch the Acceleo generation.
+The entry point for generating is the <tt class="docutils literal">doGenerate()</tt> method.
+To actually launch a generation, you can either create a new instance of the class, or call its <tt class="docutils literal">main()</tt> method.</p>
 <img alt="../images/acceleo_java.png" src="../images/acceleo_java.png" />
+<p>Remember that right-clicking on the template, and selecting <em>Run As &gt; Launch Acceleo Application</em> will create a relevant
+launch configuration.</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="the-ant-task">
-<h1>The ant task</h1>
-<p>Note : This feature may evolve in future releases.</p>
-<p>If you create a <em>tasks</em> folder at the root of our project, there will also be generated an ant file which can be used
+<h1><a class="toc-backref" href="#id7">The ant task</a></h1>
+<p><strong>Note:</strong> This feature may evolve in future releases.</p>
+<p>If you create a <tt class="docutils literal">tasks</tt> folder at the root of our project, an ant file will be generated which can be used
 to launch a generation with the specified template. In order to use this build file, copy it inside the project
-containing the model to generate from, rename it to <em>build.xml</em> for example, then change the <em>MODEL</em> and <em>TARGET</em>
+containing the model to generate from, rename it to <tt class="docutils literal">build.xml</tt> for example, then change the <em>MODEL</em> and <em>TARGET</em>
 properties accordingly. Launch the build via <em>External Tools &gt; Run As &gt; Ant Build</em>.</p>
 <img alt="../images/acceleo_ant.png" src="../images/acceleo_ant.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 </div>
 </body>
