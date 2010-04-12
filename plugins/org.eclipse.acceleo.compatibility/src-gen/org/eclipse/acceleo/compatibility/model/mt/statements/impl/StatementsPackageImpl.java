@@ -384,45 +384,46 @@ public class StatementsPackageImpl extends EPackageImpl implements StatementsPac
 		textEClass.getESuperTypes().add(this.getStatement());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE,
+		initEClass(statementEClass, Statement.class, "Statement", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(commentEClass, Comment.class, "Comment", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(commentEClass, Comment.class, "Comment", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getComment_Value(), ecorePackage.getEString(), "value", null, 1, 1, Comment.class,
+		initEAttribute(getComment_Value(), ecorePackage.getEString(), "value", null, 1, 1, Comment.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 
-		initEClass(ifEClass, If.class, "If", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getIf_Condition(), theExpressionsPackage.getExpression(), null, "condition", null, 1,
+		initEClass(ifEClass, If.class, "If", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getIf_Condition(), theExpressionsPackage.getExpression(), null, "condition", null, 1, //$NON-NLS-1$
 				1, If.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIf_ThenStatements(), this.getStatement(), null, "thenStatements", null, 0, -1,
+		initEReference(getIf_ThenStatements(), this.getStatement(), null, "thenStatements", null, 0, -1, //$NON-NLS-1$
 				If.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIf_ElseStatements(), this.getStatement(), null, "elseStatements", null, 0, -1,
+		initEReference(getIf_ElseStatements(), this.getStatement(), null, "elseStatements", null, 0, -1, //$NON-NLS-1$
 				If.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getIf_ElseIf(), this.getIf(), null, "elseIf", null, 0, -1, If.class, !IS_TRANSIENT,
+		initEReference(getIf_ElseIf(), this.getIf(), null, "elseIf", null, 0, -1, If.class, !IS_TRANSIENT, //$NON-NLS-1$
 				!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 
-		initEClass(forEClass, For.class, "For", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFor_Iterator(), theExpressionsPackage.getExpression(), null, "iterator", null, 1,
+		initEClass(forEClass, For.class, "For", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getFor_Iterator(), theExpressionsPackage.getExpression(), null, "iterator", null, 1, //$NON-NLS-1$
 				1, For.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getFor_Statements(), this.getStatement(), null, "statements", null, 0, -1, For.class,
+		initEReference(getFor_Statements(), this.getStatement(), null, "statements", null, 0, -1, For.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFeature_Expression(), theExpressionsPackage.getExpression(), null, "expression",
+		initEReference(getFeature_Expression(), theExpressionsPackage.getExpression(), null,
+				"expression", //$NON-NLS-1$
 				null, 1, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(textEClass, Text.class, "Text", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getText_Value(), ecorePackage.getEString(), "value", null, 1, 1, Text.class,
+		initEClass(textEClass, Text.class, "Text", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getText_Value(), ecorePackage.getEString(), "value", null, 1, 1, Text.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 	}

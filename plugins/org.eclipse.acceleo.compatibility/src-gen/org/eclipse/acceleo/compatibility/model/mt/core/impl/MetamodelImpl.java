@@ -214,9 +214,9 @@ public class MetamodelImpl extends EObjectImpl implements Metamodel {
 			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
+		result.append(" (name: "); //$NON-NLS-1$
 		result.append(name);
-		result.append(", packageClass: ");
+		result.append(", packageClass: "); //$NON-NLS-1$
 		result.append(packageClass);
 		result.append(')');
 		return result.toString();

@@ -33,7 +33,7 @@ public class MtFactoryImpl extends EFactoryImpl implements MtFactory {
 	public static MtFactory init() {
 		try {
 			MtFactory theMtFactory = (MtFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0");
+					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0"); //$NON-NLS-1$
 			if (theMtFactory != null) {
 				return theMtFactory;
 			}
@@ -63,8 +63,8 @@ public class MtFactoryImpl extends EFactoryImpl implements MtFactory {
 			case MtPackage.RESOURCE_SET:
 				return createResourceSet();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName()
-						+ "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 

@@ -245,15 +245,15 @@ public class MtPackageImpl extends EPackageImpl implements MtPackage {
 		// Add supertypes to classes
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(resourceSetEClass, ResourceSet.class, "ResourceSet", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(resourceSetEClass, ResourceSet.class, "ResourceSet", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getResourceSet_Resources(), this.getResource(), null, "resources", null, 0, -1,
+		initEReference(getResourceSet_Resources(), this.getResource(), null, "resources", null, 0, -1, //$NON-NLS-1$
 				ResourceSet.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(resourceEClass, Resource.class, "Resource", IS_ABSTRACT, IS_INTERFACE,
+		initEClass(resourceEClass, Resource.class, "Resource", IS_ABSTRACT, IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getResource_Name(), ecorePackage.getEString(), "name", null, 1, 1, Resource.class,
+		initEAttribute(getResource_Name(), ecorePackage.getEString(), "name", null, 1, 1, Resource.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 

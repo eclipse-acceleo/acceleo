@@ -159,7 +159,7 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (type: ");
+		result.append(" (type: "); //$NON-NLS-1$
 		result.append(type);
 		result.append(')');
 		return result.toString();

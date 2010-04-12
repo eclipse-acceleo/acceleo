@@ -220,7 +220,7 @@ public class OperatorImpl extends ASTNodeImpl implements Operator {
 			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (operator: ");
+		result.append(" (operator: "); //$NON-NLS-1$
 		result.append(operator);
 		result.append(')');
 		return result.toString();

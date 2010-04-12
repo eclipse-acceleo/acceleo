@@ -37,7 +37,7 @@ public class StatementsFactoryImpl extends EFactoryImpl implements StatementsFac
 	public static StatementsFactory init() {
 		try {
 			StatementsFactory theStatementsFactory = (StatementsFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/statements");
+					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/statements"); //$NON-NLS-1$
 			if (theStatementsFactory != null) {
 				return theStatementsFactory;
 			}
@@ -75,8 +75,8 @@ public class StatementsFactoryImpl extends EFactoryImpl implements StatementsFac
 			case StatementsPackage.TEXT:
 				return createText();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName()
-						+ "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 

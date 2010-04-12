@@ -224,9 +224,9 @@ public abstract class ASTNodeImpl extends EObjectImpl implements ASTNode {
 			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (begin: ");
+		result.append(" (begin: "); //$NON-NLS-1$
 		result.append(begin);
-		result.append(", end: ");
+		result.append(", end: "); //$NON-NLS-1$
 		result.append(end);
 		result.append(')');
 		return result.toString();

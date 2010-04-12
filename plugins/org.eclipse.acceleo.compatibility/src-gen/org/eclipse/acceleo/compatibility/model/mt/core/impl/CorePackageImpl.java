@@ -554,92 +554,93 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
 		serviceEClass.getESuperTypes().add(theMtPackage.getResource());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(astNodeEClass, ASTNode.class, "ASTNode", IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getASTNode_Begin(), ecorePackage.getEInt(), "begin", null, 0, 1, ASTNode.class,
+		initEAttribute(getASTNode_Begin(), ecorePackage.getEInt(), "begin", null, 0, 1, ASTNode.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEAttribute(getASTNode_End(), ecorePackage.getEInt(), "end", null, 0, 1, ASTNode.class,
+		initEAttribute(getASTNode_End(), ecorePackage.getEInt(), "end", null, 0, 1, ASTNode.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 
-		addEOperation(astNodeEClass, this.getTemplate(), "getTemplate", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(astNodeEClass, this.getTemplate(), "getTemplate", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(templateEClass, Template.class, "Template", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTemplate_Imports(), theMtPackage.getResource(), null, "imports", null, 0, -1,
+		initEReference(getTemplate_Imports(), theMtPackage.getResource(), null, "imports", null, 0, -1, //$NON-NLS-1$
 				Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTemplate_Scripts(), this.getScript(), null, "scripts", null, 0, -1, Template.class,
+		initEReference(getTemplate_Scripts(), this.getScript(), null, "scripts", null, 0, -1, Template.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTemplate_BeginTag(), ecorePackage.getEString(), "beginTag", null, 1, 1,
+		initEAttribute(getTemplate_BeginTag(), ecorePackage.getEString(), "beginTag", null, 1, 1, //$NON-NLS-1$
 				Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTemplate_EndTag(), ecorePackage.getEString(), "endTag", null, 1, 1, Template.class,
+		initEAttribute(getTemplate_EndTag(), ecorePackage.getEString(), "endTag", null, 1, 1, Template.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 
-		initEClass(scriptEClass, Script.class, "Script", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(scriptEClass, Script.class, "Script", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getScript_Descriptor(), this.getScriptDescriptor(), null, "descriptor", null, 1, 1,
+		initEReference(getScript_Descriptor(), this.getScriptDescriptor(), null, "descriptor", null, 1, 1, //$NON-NLS-1$
 				Script.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScript_Statements(), theStatementsPackage.getStatement(), null, "statements", null,
+		initEReference(getScript_Statements(), theStatementsPackage.getStatement(), null, "statements", null, //$NON-NLS-1$
 				0, -1, Script.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(scriptDescriptorEClass, ScriptDescriptor.class, "ScriptDescriptor", !IS_ABSTRACT,
+		initEClass(scriptDescriptorEClass, ScriptDescriptor.class, "ScriptDescriptor", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getScriptDescriptor_Name(), ecorePackage.getEString(), "name", null, 1, 1,
+		initEAttribute(getScriptDescriptor_Name(), ecorePackage.getEString(), "name", null, 1, 1, //$NON-NLS-1$
 				ScriptDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScriptDescriptor_Type(), ecorePackage.getEString(), "type", null, 1, 1,
+		initEAttribute(getScriptDescriptor_Type(), ecorePackage.getEString(), "type", null, 1, 1, //$NON-NLS-1$
 				ScriptDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScriptDescriptor_Description(), ecorePackage.getEString(), "description", null, 1,
+		initEAttribute(getScriptDescriptor_Description(), ecorePackage.getEString(), "description", null, 1, //$NON-NLS-1$
 				1, ScriptDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScriptDescriptor_File(), this.getFilePath(), null, "file", null, 0, 1,
+		initEReference(getScriptDescriptor_File(), this.getFilePath(), null, "file", null, 0, 1, //$NON-NLS-1$
 				ScriptDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScriptDescriptor_Post(), theExpressionsPackage.getExpression(), null, "post", null,
+		initEReference(getScriptDescriptor_Post(), theExpressionsPackage.getExpression(), null, "post", null, //$NON-NLS-1$
 				0, 1, ScriptDescriptor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(filePathEClass, FilePath.class, "FilePath", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(filePathEClass, FilePath.class, "FilePath", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFilePath_Statements(), theStatementsPackage.getStatement(), null, "statements",
+		initEReference(getFilePath_Statements(), theStatementsPackage.getStatement(), null,
+				"statements", //$NON-NLS-1$
 				null, 0, -1, FilePath.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(metamodelEClass, Metamodel.class, "Metamodel", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(metamodelEClass, Metamodel.class, "Metamodel", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMetamodel_PackageClass(), ecorePackage.getEString(), "packageClass", null, 0, 1,
+		initEAttribute(getMetamodel_PackageClass(), ecorePackage.getEString(), "packageClass", null, 0, 1, //$NON-NLS-1$
 				Metamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(serviceEClass, Service.class, "Service", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getService_Methods(), this.getMethod(), null, "methods", null, 0, -1, Service.class,
+		initEReference(getService_Methods(), this.getMethod(), null, "methods", null, 0, -1, Service.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(methodEClass, Method.class, "Method", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(methodEClass, Method.class, "Method", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMethod_Name(), ecorePackage.getEString(), "name", null, 1, 1, Method.class,
+		initEAttribute(getMethod_Name(), ecorePackage.getEString(), "name", null, 1, 1, Method.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEReference(getMethod_Parameters(), this.getParameter(), null, "parameters", null, 0, -1,
+		initEReference(getMethod_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, //$NON-NLS-1$
 				Method.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMethod_Return(), ecorePackage.getEString(), "return", null, 0, 1, Method.class,
+		initEAttribute(getMethod_Return(), ecorePackage.getEString(), "return", null, 0, 1, Method.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 
-		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getParameter_Type(), ecorePackage.getEString(), "type", null, 1, 1, Parameter.class,
+		initEAttribute(getParameter_Type(), ecorePackage.getEString(), "type", null, 1, 1, Parameter.class, //$NON-NLS-1$
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 	}

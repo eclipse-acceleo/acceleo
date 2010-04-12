@@ -40,7 +40,7 @@ public class CoreFactoryImpl extends EFactoryImpl implements CoreFactory {
 	public static CoreFactory init() {
 		try {
 			CoreFactory theCoreFactory = (CoreFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/core");
+					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/core"); //$NON-NLS-1$
 			if (theCoreFactory != null) {
 				return theCoreFactory;
 			}
@@ -84,8 +84,8 @@ public class CoreFactoryImpl extends EFactoryImpl implements CoreFactory {
 			case CorePackage.PARAMETER:
 				return createParameter();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName()
-						+ "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 

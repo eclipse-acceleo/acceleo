@@ -42,7 +42,7 @@ public class ExpressionsFactoryImpl extends EFactoryImpl implements ExpressionsF
 	public static ExpressionsFactory init() {
 		try {
 			ExpressionsFactory theExpressionsFactory = (ExpressionsFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/expressions");
+					.getEFactory("http://www.eclipse.org/acceleo/mt/2.6.0/expressions"); //$NON-NLS-1$
 			if (theExpressionsFactory != null) {
 				return theExpressionsFactory;
 			}
@@ -90,8 +90,8 @@ public class ExpressionsFactoryImpl extends EFactoryImpl implements ExpressionsF
 			case ExpressionsPackage.NULL_LITERAL:
 				return createNullLiteral();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName()
-						+ "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 
