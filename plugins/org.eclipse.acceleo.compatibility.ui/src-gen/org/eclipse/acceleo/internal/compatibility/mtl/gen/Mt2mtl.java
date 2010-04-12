@@ -129,7 +129,7 @@ public class Mt2mtl {
     if (templateURL == null) {
       throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
     } else {
-      URI templateURI = createTemplateURI(templateURL.getPath());
+      URI templateURI = createTemplateURI(templateURL.toString());
       module = (Module)load(templateURI, resourceSet);
       model = load(modelURI, resourceSet);
       this.targetFolder = targetFolder;
@@ -170,7 +170,7 @@ public class Mt2mtl {
     if (templateURL == null) {
       throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
     } else {
-      URI templateURI = createTemplateURI(templateURL.getPath());
+      URI templateURI = createTemplateURI(templateURL.toString());
       module = (Module)load(templateURI, resourceSet);
       this.model = model;
       this.targetFolder = targetFolder;
@@ -187,7 +187,9 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	protected URI createTemplateURI(String entry) {
-    return URI.createFileURI(URI.decode(entry));
+    if (entry.startsWith("file") || entry.startsWith("jar"))
+           return URI.createURI(URI.decode(entry));
+       return URI.createFileURI(URI.decode(entry));
   }
 
 	/**
@@ -240,6 +242,8 @@ public class Mt2mtl {
     resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
     resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl", new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
     resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+    // TODO Uncomment the following line if generating from UML models
+    // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
   }
 
 	/**
@@ -352,19 +356,17 @@ public class Mt2mtl {
 	 */
 	private Resource createResource(URI modelURI, ResourceSet resourceSet) {
     String fileExtension = modelURI.fileExtension();
-    if (fileExtension == null || fileExtension.length() == 0) {
-      fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-    }
-    final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-    final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
-    if (resourceFactory != null) {
-      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-          resourceFactory);
-    } else {
-      resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-          new XMIResourceFactoryImpl());
-    }
-    return resourceSet.createResource(modelURI);
+       if (fileExtension == null || fileExtension.length() == 0) {
+           fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
+       }
+       Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(fileExtension);
+       if (resourceFactory == null) {
+           resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().get(fileExtension);
+           if (resourceFactory != null) {
+               resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory);
+           }
+       }
+       return resourceSet.createResource(modelURI);
   }
 
 	/**
@@ -373,7 +375,10 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	private void addListeners() {
-    // TODO : add listeners to the "generationListener" field here.
+    /*
+     * TODO : add listeners to the "generationListener" field here. Make sure you remove the
+     * @generated annotation or set it to "@generated NOT".
+     */
   }
 
 	/**
@@ -385,7 +390,8 @@ public class Mt2mtl {
 	private void addProperties() {
     /*
      * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
-     * relative or absolute pathes, or their path can represent a platform scheme URI.
+     * relative or absolute pathes, or their path can represent a platform scheme URI. Make sure you remove
+     * the @generated annotation or set it to "@generated NOT".
      */
   }
 
