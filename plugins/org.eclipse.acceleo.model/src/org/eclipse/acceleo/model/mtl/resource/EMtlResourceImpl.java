@@ -18,12 +18,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -120,10 +123,10 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * @param element
 	 *            Element which name is to be changed if it is a temporary variable.
 	 */
-	@SuppressWarnings("unchecked")
 	private void fixVariableAmbiguities(EObject element) {
-		if (element instanceof Variable && ((Variable)element).getName().startsWith(VARIABLE_PREFIX)) {
-			final String varName = ((Variable)element).getName();
+		if (element instanceof Variable<?, ?>
+				&& ((Variable<?, ?>)element).getName().startsWith(VARIABLE_PREFIX)) {
+			final String varName = ((Variable<?, ?>)element).getName();
 			if (!varName.matches("temp\\d+")) { //$NON-NLS-1$
 				return;
 			}
@@ -133,7 +136,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 				do {
 					lastIndex++;
 				} while (variableNames.contains(VARIABLE_PREFIX + lastIndex));
-				((Variable)element).setName(VARIABLE_PREFIX + lastIndex);
+				((Variable<?, ?>)element).setName(VARIABLE_PREFIX + lastIndex);
 				variableNames.add(VARIABLE_PREFIX + lastIndex);
 			} else {
 				variableNames.add(varName);
@@ -154,7 +157,12 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		if (element instanceof ASTNode) {
 			int start = ((ASTNode)element).getStartPosition();
 			int end = ((ASTNode)element).getEndPosition();
-			savePosition(positions, (ASTNode)element, start, end);
+			Adapter adapter = EcoreUtil.getAdapter(element.eAdapters(), AcceleoASTNodeAdapter.class);
+			int line = 0;
+			if (adapter instanceof AcceleoASTNodeAdapter) {
+				line = ((AcceleoASTNodeAdapter)adapter).getLine();
+			}
+			savePosition(positions, (ASTNode)element, start, end, line);
 		}
 	}
 
@@ -170,13 +178,16 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 *            the real offset of the AST node
 	 * @param end
 	 *            the last character position of the AST node
+	 * @param line
+	 *            the number of the line on which this AST node starts.
 	 */
-	private void savePosition(EAnnotation positions, ASTNode node, int start, int end) {
+	private void savePosition(EAnnotation positions, ASTNode node, int start, int end, int line) {
 		EAnnotation position = EcoreFactory.eINSTANCE.createEAnnotation();
 		position.setSource(POSITIONS_ANNOTATION_NAME + "." + positions.getEAnnotations().size()); //$NON-NLS-1$
 		position.getReferences().add(node);
 		position.getDetails().put("start", String.valueOf(start)); //$NON-NLS-1$
 		position.getDetails().put("end", String.valueOf(end)); //$NON-NLS-1$
+		position.getDetails().put("line", String.valueOf(line)); //$NON-NLS-1$
 		positions.getEAnnotations().add(position);
 	}
 
@@ -195,8 +206,14 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 			if (node.getStartPosition() == -1 && node.getEndPosition() == -1) {
 				int start = Integer.parseInt(position.getDetails().get("start")); //$NON-NLS-1$
 				int end = Integer.parseInt(position.getDetails().get("end")); //$NON-NLS-1$
+				String lineValue = position.getDetails().get("line"); //$NON-NLS-1$
+				int line = 0;
+				if (lineValue != null) {
+					line = Integer.parseInt(lineValue);
+				}
 				node.setStartPosition(start);
 				node.setEndPosition(end);
+				node.eAdapters().add(new AcceleoASTNodeAdapter(line));
 			}
 		}
 	}
