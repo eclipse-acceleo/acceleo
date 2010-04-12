@@ -253,8 +253,13 @@ public class AcceleoEvaluationContext<C> {
 		for (int i = expressionStack.size() - 1; i >= 0; i--) {
 			OCLExpression<C> expression = expressionStack.get(i);
 			Module containingModule = (Module)EcoreUtil.getRootContainer(expression);
-			String moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment() + '.'
-					+ IAcceleoConstants.MTL_FILE_EXTENSION;
+			String moduleFile;
+			if (containingModule.eResource() != null && containingModule.eResource().getURI() != null) {
+				moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment() + '.'
+						+ IAcceleoConstants.MTL_FILE_EXTENSION;
+			} else {
+				moduleFile = containingModule.getName() + '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
+			}
 			String expressionDescription;
 			if (expression instanceof ENamedElement && ((ENamedElement)expression).getName() != null) {
 				expressionDescription = ((ENamedElement)expression).getName();

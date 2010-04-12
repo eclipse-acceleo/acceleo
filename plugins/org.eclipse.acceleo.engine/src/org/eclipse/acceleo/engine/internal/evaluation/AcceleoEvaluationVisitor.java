@@ -60,6 +60,7 @@ import org.eclipse.ocl.ecore.impl.OCLExpressionImpl;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.PropertyCallExp;
+import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
@@ -363,12 +364,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (loopVariable != null && loopVariable.getType() != null
 						&& !loopVariable.getType().isInstance(o)) {
 					if (!iterationCCE) {
-						Adapter adapter = EcoreUtil.getAdapter(forBlock.eAdapters(),
-								AcceleoASTNodeAdapter.class);
-						int line = 0;
-						if (adapter instanceof AcceleoASTNodeAdapter) {
-							line = ((AcceleoASTNodeAdapter)adapter).getLine();
-						}
+						int line = getLineOf(forBlock);
 						final String message = AcceleoEngineMessages.getString(
 								"AcceleoEvaluationVisitor.IterationClassCast", line, ((Module)EcoreUtil //$NON-NLS-1$
 										.getRootContainer(forBlock)).getName(), forBlock.toString(), o
@@ -676,9 +672,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					getEvaluationEnvironment().remove(var.getName());
 				}
 				if (result == UNDEFINED_QUERY_RESULT) {
-					Adapter adapter = EcoreUtil.getAdapter(invocation.eAdapters(),
-							AcceleoASTNodeAdapter.class);
-					int line = ((AcceleoASTNodeAdapter)adapter).getLine();
+					int line = getLineOf(invocation);
 					final String moduleName = ((Module)EcoreUtil.getRootContainer(query)).getName();
 					final String message = AcceleoEngineMessages.getString(
 							"AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
@@ -738,8 +732,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			queryResults.put(query, results);
 		}
 		if (isInvalid(result)) {
-			Adapter adapter = EcoreUtil.getAdapter(invocation.eAdapters(), AcceleoASTNodeAdapter.class);
-			int line = ((AcceleoASTNodeAdapter)adapter).getLine();
+			int line = getLineOf(invocation);
 			final String moduleName = ((Module)EcoreUtil.getRootContainer(query)).getName();
 			final String message = AcceleoEngineMessages.getString(
 					"AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
@@ -1179,6 +1172,23 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private AcceleoEnvironment getAcceleoEnvironment() {
 		return (AcceleoEnvironment)getEnvironment();
+	}
+
+	/**
+	 * This will search through the list of adapters of the given <em>node</em> for the adapter in charge of
+	 * keeping track of this node's line number, then return it.
+	 * 
+	 * @param node
+	 *            The node of which we seek the line.
+	 * @return Line where the given <em>node</em> is located in the modulefile.
+	 */
+	private int getLineOf(ASTNode node) {
+		Adapter adapter = EcoreUtil.getAdapter(node.eAdapters(), AcceleoASTNodeAdapter.class);
+		int line = 0;
+		if (adapter != null) {
+			line = ((AcceleoASTNodeAdapter)adapter).getLine();
+		}
+		return line;
 	}
 
 	/**
