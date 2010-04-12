@@ -68,7 +68,7 @@ public class QueryInvocationSpec extends QueryInvocationImpl {
 		final List<OCLExpression> args = getArgument();
 
 		if (def.eIsProxy()) {
-			return "unresolved query invocation : " + getName() + "()";
+			return "unresolved query invocation : " + getName() + "()"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			final StringBuilder toString = new StringBuilder(def.getName());
 			toString.append('(');

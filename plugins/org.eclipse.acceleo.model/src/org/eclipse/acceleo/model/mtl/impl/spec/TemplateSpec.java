@@ -69,8 +69,8 @@ public class TemplateSpec extends TemplateImpl {
 		}
 		if (post != null) {
 			toString.append(' ');
-			toString.append("post");
-			toString.append(" (");
+			toString.append("post"); //$NON-NLS-1$
+			toString.append(" ("); //$NON-NLS-1$
 			toString.append(post.toString());
 			toString.append(')');
 		}
