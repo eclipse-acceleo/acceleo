@@ -18,7 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,18 +33,18 @@ import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -58,13 +57,13 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
 import org.eclipse.ocl.options.EvaluationOptions;
+import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
  * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and
@@ -80,7 +79,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private static final Object OPERATION_CALL_FAILED = new Object();
 
 	/** This will allow the environment to know of the modules currently in the generation context. */
-	final Set<Module> currentModules = new HashSet<Module>();
+	private final Set<Module> currentModules = new HashSet<Module>();
 
 	/** Maps dynamic overrides as registered in the {@link AcceleoDynamicTemplatesRegistry}. */
 	private final Map<Template, Set<Template>> dynamicOverrides = new HashMap<Template, Set<Template>>();
@@ -181,7 +180,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	public Object callNonStandardOperation(EOperation operation, Object source, Object... args) {
 		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
-		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)) {
+		if (AcceleoNonStandardLibrary.OPERATION_OCLANY_PLUS.equals(operationName)) {
+			// We'll only be here for two operations : OclAny::+(String) and String::+(OclAny)
+			assert source instanceof String || args[0] instanceof String;
+			result = toString(source) + toString(args[0]);
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)) {
 			result = toString(source);
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_INVOKE.equals(operationName)) {
 			if (args.length == 3) {
@@ -436,7 +439,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
 			result = true;
 		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
-			result = true;
+			if (opcode == PredefinedType.PLUS) {
+				Adapter adapter = EcoreUtil.getAdapter(operation.eAdapters(), AcceleoOverrideAdapter.class);
+				result = adapter != null;
+				operation.eAdapters().remove(adapter);
+			} else {
+				result = true;
+			}
 		} else {
 			result = super.overrides(operation, opcode);
 		}
@@ -663,6 +672,10 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		Object result = OPERATION_CALL_FAILED;
 		final String operationName = operation.getName();
 
+		/*
+		 * Note that because of OCL limitations, String::+(OclAny) will be handled before we even arrive here.
+		 * See #callOperation().
+		 */
 		if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL.equals(operationName)) {
 			result = substitute(source, (String)args[0], (String)args[1], true);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE.equals(operationName)) {
@@ -1022,6 +1035,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		return soughtValue;
+	}
+
+	/**
+	 * This is meant to be used in the Dynamic URI converter only.
+	 * 
+	 * @return The set of all currently accessible modules.
+	 */
+	Set<Module> getCurrentModules() {
+		return new HashSet<Module>(currentModules);
 	}
 
 	/**
@@ -1392,7 +1414,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				return dynamicModules;
 			}
 			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
-				resourceSet.setURIConverter(new DynamicModulesURIConverter());
+				resourceSet.setURIConverter(new DynamicModulesURIConverter(this));
 			}
 			for (File moduleFile : dynamicModuleFiles) {
 				if (moduleFile.exists() && moduleFile.canRead()) {
@@ -1838,163 +1860,5 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			buffer.append(object.toString());
 		}
 		return buffer.toString();
-	}
-
-	/**
-	 * This will allow us to handle references to file scheme URIs within the resource set containing the
-	 * generation modules and their dynamic overrides. We need this since the dynamic overrides are loaded
-	 * with file scheme URIs whereas the generation module can be loaded through platform scheme URIs and we
-	 * need references to be resolved anyway.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	private final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
-		/**
-		 * Enhances visibility of the default constructor.
-		 */
-		public DynamicModulesURIConverter() {
-			// Enhances visibility
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see ExtensibleURIConverterImpl#normalize(URI)
-		 */
-		@Override
-		public URI normalize(URI uri) {
-			if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(uri.fileExtension())
-					|| !"file".equals(uri.scheme())) { //$NON-NLS-1$
-				return super.normalize(uri);
-			}
-			URI normalized = getURIMap().get(uri);
-			if (normalized == null) {
-				String moduleName = uri.lastSegment();
-				moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-				Set<URI> candidateURIs = new LinkedHashSet<URI>();
-
-				// Search matching module in the current generation context
-				Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
-				for (Module candidateModule : candidateModules) {
-					candidateURIs.add(candidateModule.eResource().getURI());
-				}
-				// If there were no matching module, search in their ResourceSet(s)
-				if (candidateURIs.size() == 0) {
-					candidateURIs.addAll(searchResourceSetForMatches(moduleName));
-				}
-				if (candidateURIs.size() == 1) {
-					normalized = candidateURIs.iterator().next();
-				} else if (candidateURIs.size() > 0) {
-					normalized = findBestMatchFor(uri, candidateURIs);
-				}
-				// There is a chance that our match should itself be normalized
-				if ((normalized == null || "file".equals(normalized.scheme())) //$NON-NLS-1$
-						&& EMFPlugin.IS_ECLIPSE_RUNNING) {
-					String uriToString = uri.toString();
-					if (uriToString.indexOf('#') > 0) {
-						uriToString = uriToString.substring(0, uriToString.indexOf('#'));
-					}
-					String resolvedPath = AcceleoWorkspaceUtil.INSTANCE
-							.resolveAsPlatformPluginResource(uriToString);
-					if (resolvedPath != null) {
-						normalized = URI.createURI(resolvedPath);
-					}
-				}
-				if (normalized == null) {
-					normalized = super.normalize(uri);
-				}
-				if (!uri.equals(normalized)) {
-					getURIMap().put(uri, normalized);
-				}
-			}
-			return normalized;
-		}
-
-		/**
-		 * Returns the normalized form of the URI, using the given multiple candidates (this means that more
-		 * than 2 modules had a matching name).
-		 * 
-		 * @param uri
-		 *            The URI that is to be normalized.
-		 * @param candidateURIs
-		 *            URIs of the modules that can potentially be a match for <code>uri</code>.
-		 * @return the normalized form
-		 */
-		private URI findBestMatchFor(URI uri, Set<URI> candidateURIs) {
-			URI normalized = null;
-			final Iterator<URI> candidatesIterator = candidateURIs.iterator();
-			final List<String> referenceSegments = Arrays.asList(uri.segments());
-			Collections.reverse(referenceSegments);
-			int highestEqualFragments = 0;
-			while (candidatesIterator.hasNext()) {
-				final URI next = candidatesIterator.next();
-				int equalFragments = 0;
-				final List<String> candidateSegments = Arrays.asList(next.segments());
-				Collections.reverse(candidateSegments);
-				for (int i = 0; i < Math.min(candidateSegments.size(), referenceSegments.size()); i++) {
-					if (candidateSegments.get(i) == referenceSegments.get(i)) {
-						equalFragments++;
-					} else {
-						break;
-					}
-				}
-				if (equalFragments > highestEqualFragments) {
-					highestEqualFragments = equalFragments;
-					normalized = next;
-				}
-			}
-			return normalized;
-		}
-
-		/**
-		 * This will search the current generation context for a loaded module matching the given
-		 * <code>moduleName</code>.
-		 * 
-		 * @param moduleName
-		 *            Name of the module we seek.
-		 * @return The Set of all modules currently loaded for generation going by the name
-		 *         <code>moduleName</code>.
-		 */
-		private Set<Module> searchCurrentModuleForCandidateMatches(String moduleName) {
-			Set<Module> candidates = new LinkedHashSet<Module>();
-			for (Module module : currentModules) {
-				if (moduleName.equals(module.getName())) {
-					candidates.add(module);
-				}
-			}
-			return candidates;
-		}
-
-		/**
-		 * This will search throughout the resourceSet(s) containing the loaded modules for modules going by
-		 * name <code>moduleName</code>.
-		 * 
-		 * @param moduleName
-		 *            Name of the module we seek.
-		 * @return The Set of all modules loaded within the generation ResourceSet going by the name
-		 *         <code>moduleName</code>.
-		 */
-		private Set<URI> searchResourceSetForMatches(String moduleName) {
-			final Set<URI> candidates = new LinkedHashSet<URI>();
-			final List<ResourceSet> resourceSets = new ArrayList<ResourceSet>();
-			for (Module module : currentModules) {
-				final ResourceSet resourceSet = module.eResource().getResourceSet();
-				if (!resourceSets.contains(resourceSet)) {
-					resourceSets.add(resourceSet);
-				}
-			}
-			for (ResourceSet resourceSet : resourceSets) {
-				for (Resource resource : resourceSet.getResources()) {
-					if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(resource.getURI().fileExtension())) {
-						String candidateName = resource.getURI().lastSegment();
-						candidateName = candidateName.substring(0, candidateName.lastIndexOf('.'));
-						if (moduleName.equals(candidateName)) {
-							candidates.add(resource.getURI());
-						}
-					}
-				}
-			}
-			return candidates;
-		}
 	}
 }

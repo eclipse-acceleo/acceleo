@@ -29,13 +29,13 @@ public abstract class AbstractAcceleoWriter extends Writer {
 	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** DOS line separators. */
-	protected static final String DOS_LINE_SEPARATOR = "\r\n";
+	protected static final String DOS_LINE_SEPARATOR = "\r\n"; //$NON-NLS-1$
 
 	/** Unix line separators. */
-	protected static final String UNIX_LINE_SEPARATOR = "\n";
+	protected static final String UNIX_LINE_SEPARATOR = "\n"; //$NON-NLS-1$
 
 	/** Mac line separators. */
-	protected static final String MAC_LINE_SEPARATOR = "\r";
+	protected static final String MAC_LINE_SEPARATOR = "\r"; //$NON-NLS-1$
 
 	/** The buffer to which all calls will be delegated. */
 	protected Writer delegate;

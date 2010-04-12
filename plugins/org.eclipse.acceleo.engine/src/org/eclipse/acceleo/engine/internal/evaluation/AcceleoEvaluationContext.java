@@ -27,6 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
@@ -34,16 +36,24 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * This will hold all necessary variables for the evaluation of an Acceleo module.
  * 
+ * @param <C>
+ *            This should be EClassifier for ecore, Class for UML.
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoEvaluationContext {
+public class AcceleoEvaluationContext<C> {
 	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */
 	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
@@ -54,13 +64,13 @@ public class AcceleoEvaluationContext {
 	private static final String JMERGE_TAG = "@generated"; //$NON-NLS-1$
 
 	/** DOS line separators. */
-	private static final String DOS_LINE_SEPARATOR = "\r\n";
+	private static final String DOS_LINE_SEPARATOR = "\r\n"; //$NON-NLS-1$
 
 	/** Unix line separators. */
-	private static final String UNIX_LINE_SEPARATOR = "\n";
+	private static final String UNIX_LINE_SEPARATOR = "\n"; //$NON-NLS-1$
 
 	/** Mac line separators. */
-	private static final String MAC_LINE_SEPARATOR = "\r";
+	private static final String MAC_LINE_SEPARATOR = "\r"; //$NON-NLS-1$
 
 	/** Holds the generation preview in the form of mappings filePath => fileContent. */
 	protected final Map<String, Writer> generationPreview = new HashMap<String, Writer>();
@@ -81,6 +91,9 @@ public class AcceleoEvaluationContext {
 	 * @since 3.0
 	 */
 	protected final boolean notifyOnGenerationEnd;
+
+	/** This will maintain the stack trace of expression evaluations. */
+	private List<OCLExpression<C>> expressionStack = new LinkedList<OCLExpression<C>>();
 
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
@@ -163,6 +176,16 @@ public class AcceleoEvaluationContext {
 	}
 
 	/**
+	 * Adds the given expression at the end of the expression stack.
+	 * 
+	 * @param expression
+	 *            Expression that is to be appended to the expression stack trace.
+	 */
+	public void addToStack(OCLExpression<C> expression) {
+		expressionStack.add(expression);
+	}
+
+	/**
 	 * Allows clients to await for the lost file creation to end.
 	 * 
 	 * @throws InterruptedException
@@ -170,6 +193,83 @@ public class AcceleoEvaluationContext {
 	 */
 	public void awaitCompletion() throws InterruptedException {
 		strategy.awaitCompletion();
+	}
+
+	/**
+	 * This will create and return an evaluation exception with a custom stack trace filled in for the given
+	 * block. The <em>messageKey</em> should map to an actual message in
+	 * <em>org/eclipse/acceleo/engine/acceleoenginemessages.properties</em>.
+	 * 
+	 * @param node
+	 *            Node from which the failure originated.
+	 * @param messageKey
+	 *            This should map to the message that is to be retrieved for this exception.
+	 * @param currentSelf
+	 *            The last recorded value of the <em>self</em> variable.
+	 * @return An evaluation exception for the given block.
+	 */
+	public AcceleoEvaluationException createAcceleoException(ASTNode node, String messageKey,
+			Object currentSelf) {
+		return createAcceleoException(node, null, messageKey, currentSelf);
+	}
+
+	/**
+	 * This will create and return an evaluation exception with a custom stack trace filled in for the given
+	 * block. The <em>messageKey</em> should map to an actual message in
+	 * <em>org/eclipse/acceleo/engine/acceleoenginemessages.properties</em>.
+	 * 
+	 * @param node
+	 *            Node from which the failure originated.
+	 * @param expression
+	 *            if the actual failure was caused by a subexpression of <em>block</em>, pass it here.
+	 * @param messageKey
+	 *            This should map to the message that is to be retrieved for this exception.
+	 * @param currentSelf
+	 *            The last recorded value of the <em>self</em> variable.
+	 * @return An evaluation exception for the given block.
+	 */
+	public AcceleoEvaluationException createAcceleoException(ASTNode node, OCLExpression<C> expression,
+			String messageKey, Object currentSelf) {
+		Adapter adapter = EcoreUtil.getAdapter(node.eAdapters(), AcceleoASTNodeAdapter.class);
+		int line = 0;
+		if (adapter instanceof AcceleoASTNodeAdapter) {
+			line = ((AcceleoASTNodeAdapter)adapter).getLine();
+		}
+		final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
+				.getString(messageKey, line, ((Module)EcoreUtil.getRootContainer(node)).getName(), node
+						.toString(), currentSelf, expression));
+		exception.setStackTrace(createAcceleoStackTrace());
+		return exception;
+	}
+
+	/**
+	 * This will create a stack trace according to the current evaluation stack as recorded in
+	 * {@link #expressionStack}.
+	 * 
+	 * @return Stack trace that can be used with {@link Exception#setStackTrace(StackTraceElement[])}.
+	 */
+	public StackTraceElement[] createAcceleoStackTrace() {
+		StackTraceElement[] stackTrace = new StackTraceElement[expressionStack.size()];
+		for (int i = expressionStack.size() - 1; i >= 0; i--) {
+			OCLExpression<C> expression = expressionStack.get(i);
+			Module containingModule = (Module)EcoreUtil.getRootContainer(expression);
+			String moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment() + '.'
+					+ IAcceleoConstants.MTL_FILE_EXTENSION;
+			String expressionDescription;
+			if (expression instanceof ENamedElement && ((ENamedElement)expression).getName() != null) {
+				expressionDescription = ((ENamedElement)expression).getName();
+			} else {
+				expressionDescription = expression.eClass().getName();
+			}
+			Adapter adapter = EcoreUtil.getAdapter(expression.eAdapters(), AcceleoASTNodeAdapter.class);
+			int line = 0;
+			if (adapter instanceof AcceleoASTNodeAdapter) {
+				line = ((AcceleoASTNodeAdapter)adapter).getLine();
+			}
+			stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(containingModule.getName(),
+					expressionDescription, moduleFile, line);
+		}
+		return stackTrace;
 	}
 
 	/**
@@ -257,6 +357,7 @@ public class AcceleoEvaluationContext {
 			listeners.clear();
 			userCodeBlocks.clear();
 			writers.clear();
+			expressionStack.clear();
 		}
 		if (exception != null) {
 			throw exception;
@@ -497,6 +598,16 @@ public class AcceleoEvaluationContext {
 	public void openNested(String filePath, Block fileBlock, EObject source, boolean appendMode)
 			throws AcceleoEvaluationException {
 		openNested(getFileFor(filePath), fileBlock, source, appendMode, null);
+	}
+
+	/**
+	 * Removes the given expression from the expression stack trace.
+	 * 
+	 * @param expression
+	 *            Expression that is to be removed from the stack.
+	 */
+	public void removeFromStack(OCLExpression<C> expression) {
+		expressionStack.remove(expression);
 	}
 
 	/**

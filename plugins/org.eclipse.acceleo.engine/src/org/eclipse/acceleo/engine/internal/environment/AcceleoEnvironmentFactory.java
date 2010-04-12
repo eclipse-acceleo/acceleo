@@ -50,7 +50,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	 * Generation context for this factory. This will be shared by both the evaluation environment and
 	 * visitor.
 	 */
-	protected AcceleoEvaluationContext context;
+	protected AcceleoEvaluationContext<EClassifier> context;
 
 	/** Module for which this environment factory has been created. */
 	private final Module module;
@@ -78,7 +78,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 			List<IAcceleoTextGenerationListener> listeners, List<Properties> props,
 			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		super(EPackage.Registry.INSTANCE);
-		context = new AcceleoEvaluationContext(generationRoot, listeners, strategy, monitor);
+		context = new AcceleoEvaluationContext<EClassifier>(generationRoot, listeners, strategy, monitor);
 		properties.addAll(props);
 		this.module = module;
 	}
