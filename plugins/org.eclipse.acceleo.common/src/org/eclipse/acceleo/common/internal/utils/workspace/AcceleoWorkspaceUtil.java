@@ -43,8 +43,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.osgi.baseadaptor.BaseData;
-import org.eclipse.osgi.framework.internal.core.AbstractBundle;
 import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.osgi.service.resolver.BundleSpecification;
 import org.eclipse.osgi.service.resolver.ExportPackageDescription;
@@ -892,10 +890,17 @@ public final class AcceleoWorkspaceUtil {
 	 * @param bundle
 	 *            The equinox bundle which classpath is to reflect an eclipse development plugin.
 	 */
+	@SuppressWarnings("restriction")
+	/*
+	 * This methods sports a number of restricted class/method usage, yet there is no workaround and the
+	 * equinox team has no plan to open it. We're suppressing the warning until plans change. Details in bug
+	 * 271761.
+	 */
 	private void setBundleClasspath(IProject plugin, Bundle bundle) {
 		final Set<String> classpathEntries = getOutputFolders(plugin);
 		if (classpathEntries.size() > 0) {
-			final BaseData bundleData = (BaseData)((AbstractBundle)bundle).getBundleData();
+			final org.eclipse.osgi.baseadaptor.BaseData bundleData = (org.eclipse.osgi.baseadaptor.BaseData)((org.eclipse.osgi.framework.internal.core.AbstractBundle)bundle)
+					.getBundleData();
 			final StringBuilder classpath = new StringBuilder();
 			classpath.append(bundleData.getClassPathString()).append(',');
 			final Iterator<String> entryIterator = classpathEntries.iterator();
