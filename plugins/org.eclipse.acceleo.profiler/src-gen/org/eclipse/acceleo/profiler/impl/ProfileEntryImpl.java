@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileEntryImpl.java,v 1.1 2009/09/08 16:10:03 ylussaud Exp $
+ * $Id: ProfileEntryImpl.java,v 1.2 2010/04/12 09:35:22 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.impl;
 
@@ -552,13 +552,13 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (duration: ");
+		result.append(" (duration: "); //$NON-NLS-1$
 		result.append(duration);
-		result.append(", count: ");
+		result.append(", count: "); //$NON-NLS-1$
 		result.append(count);
-		result.append(", percentage: ");
+		result.append(", percentage: "); //$NON-NLS-1$
 		result.append(percentage);
-		result.append(", createTime: ");
+		result.append(", createTime: "); //$NON-NLS-1$
 		result.append(createTime);
 		result.append(')');
 		return result.toString();

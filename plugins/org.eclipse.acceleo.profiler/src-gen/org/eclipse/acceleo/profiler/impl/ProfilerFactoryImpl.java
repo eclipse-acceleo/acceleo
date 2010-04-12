@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerFactoryImpl.java,v 1.2 2010/03/17 09:00:52 lgoubet Exp $
+ * $Id: ProfilerFactoryImpl.java,v 1.3 2010/04/12 09:35:22 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.impl;
 
@@ -33,7 +33,7 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 	public static ProfilerFactory init() {
 		try {
 			ProfilerFactory theProfilerFactory = (ProfilerFactory)EPackage.Registry.INSTANCE
-					.getEFactory("http://www.eclipse.org/acceleo/profiler/3.0");
+					.getEFactory("http://www.eclipse.org/acceleo/profiler/3.0"); //$NON-NLS-1$
 			if (theProfilerFactory != null) {
 				return theProfilerFactory;
 			}
@@ -67,8 +67,8 @@ public class ProfilerFactoryImpl extends EFactoryImpl implements ProfilerFactory
 			case ProfilerPackage.PROFILE_RESOURCE:
 				return createProfileResource();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName()
-						+ "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName() //$NON-NLS-1$
+						+ "' is not a valid classifier"); //$NON-NLS-1$
 		}
 	}
 

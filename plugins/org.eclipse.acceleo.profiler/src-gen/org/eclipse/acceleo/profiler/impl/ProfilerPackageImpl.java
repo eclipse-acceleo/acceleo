@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerPackageImpl.java,v 1.1 2009/09/08 16:10:03 ylussaud Exp $
+ * $Id: ProfilerPackageImpl.java,v 1.2 2010/04/12 09:35:23 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.impl;
 
@@ -312,47 +312,48 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 		loopProfileEntryEClass.getESuperTypes().add(this.getProfileEntry());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(profileEntryEClass, ProfileEntry.class, "ProfileEntry", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(profileEntryEClass, ProfileEntry.class, "ProfileEntry", !IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProfileEntry_Duration(), ecorePackage.getELong(), "duration", "0", 0, 1,
+		initEAttribute(getProfileEntry_Duration(), ecorePackage.getELong(), "duration", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProfileEntry_Callees(), this.getProfileEntry(), this.getProfileEntry_Caller(),
-				"callees", null, 0, -1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				"callees", null, 0, -1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
 				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProfileEntry_Caller(), this.getProfileEntry(), this.getProfileEntry_Callees(),
-				"caller", null, 0, 1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				"caller", null, 0, 1, ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, //$NON-NLS-1$
 				!IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_Count(), ecorePackage.getELong(), "count", "0", 0, 1,
+		initEAttribute(getProfileEntry_Count(), ecorePackage.getELong(), "count", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_Percentage(), ecorePackage.getEDouble(), "percentage", "0", 0, 1,
+		initEAttribute(getProfileEntry_Percentage(), ecorePackage.getEDouble(), "percentage", "0", 0, 1, //$NON-NLS-1$ //$NON-NLS-2$
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getProfileEntry_CreateTime(), ecorePackage.getELong(), "createTime", null, 0, 1,
+		initEAttribute(getProfileEntry_CreateTime(), ecorePackage.getELong(), "createTime", null, 0, 1, //$NON-NLS-1$
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProfileEntry_Monitored(), ecorePackage.getEObject(), null, "monitored", null, 0, 1,
+		initEReference(getProfileEntry_Monitored(), ecorePackage.getEObject(), null, "monitored", null, 0, 1, //$NON-NLS-1$
 				ProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(profileEntryEClass, null, "start", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(profileEntryEClass, null, "start", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		addEOperation(profileEntryEClass, null, "stop", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(profileEntryEClass, null, "stop", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(loopProfileEntryEClass, LoopProfileEntry.class, "LoopProfileEntry", !IS_ABSTRACT,
+		initEClass(loopProfileEntryEClass, LoopProfileEntry.class, "LoopProfileEntry", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getLoopProfileEntry_LoopElements(), this.getProfileEntry(), null, "loopElements",
+		initEReference(getLoopProfileEntry_LoopElements(), this.getProfileEntry(), null,
+				"loopElements", //$NON-NLS-1$
 				null, 0, -1, LoopProfileEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(profileResourceEClass, ProfileResource.class, "ProfileResource", !IS_ABSTRACT,
+		initEClass(profileResourceEClass, ProfileResource.class, "ProfileResource", !IS_ABSTRACT, //$NON-NLS-1$
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getProfileResource_Entries(), this.getProfileEntry(), null, "entries", null, 0, -1,
+		initEReference(getProfileResource_Entries(), this.getProfileEntry(), null, "entries", null, 0, -1, //$NON-NLS-1$
 				ProfileResource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(internalEClass, Internal.class, "Internal", IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(internalEClass, Internal.class, "Internal", IS_ABSTRACT, !IS_INTERFACE, //$NON-NLS-1$
 				IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
