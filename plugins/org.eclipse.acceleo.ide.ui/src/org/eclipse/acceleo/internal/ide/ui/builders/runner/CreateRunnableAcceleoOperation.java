@@ -299,7 +299,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 					if (e.getCause() instanceof DiagnosticException) {
 						AcceleoUIActivator.getDefault().getLog().log(
 								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-										.getString("CreateRunnableAcceleoOperation.MergerFailure"), e
+										.getString("CreateRunnableAcceleoOperation.MergerFailure"), e //$NON-NLS-1$
 										.getCause()));
 					} else {
 						throw e;

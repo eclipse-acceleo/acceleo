@@ -233,7 +233,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			IResource resource = delta.getResource();
 			if (resource instanceof IFile) {
 				if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension())
-						|| "MANIFEST.MF".equals(resource.getName())) {
+						|| "MANIFEST.MF".equals(resource.getName())) { //$NON-NLS-1$
 					result = (IFile)resource;
 				}
 			} else {
@@ -706,7 +706,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 					if (currentBuffer != null && element.getEndPosition() > -1
 							&& currentBuffer.length() >= element.getEndPosition()) {
 						StringBuffer currentText = new StringBuffer(currentBuffer.substring(
-								element.getStartPosition(), element.getEndPosition()).replace("$", "$$"));
+								element.getStartPosition(), element.getEndPosition()).replace("$", "$$")); //$NON-NLS-1$ //$NON-NLS-2$
 						currentText.append("\n"); //$NON-NLS-1$
 						modifyModuleElementContent(element, currentText);
 						proposalBuffer.append(currentText);

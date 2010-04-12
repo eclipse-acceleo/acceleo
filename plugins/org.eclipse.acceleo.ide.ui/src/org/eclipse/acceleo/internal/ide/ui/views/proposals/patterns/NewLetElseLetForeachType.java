@@ -79,7 +79,7 @@ public class NewLetElseLetForeachType implements IAcceleoPatternProposal {
 			buffer.append(types.get(0).getName());
 			buffer.append(" = ${self}]\n"); //$NON-NLS-1$
 			buffer.append(indentTab);
-			buffer.append("\t" + "[${e}/]\n"); //$NON-NLS-1$
+			buffer.append("\t" + "[${e}/]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int i = 1; i < types.size(); i++) {
 				EClass eClass = types.get(i);
 				buffer.append(indentTab);

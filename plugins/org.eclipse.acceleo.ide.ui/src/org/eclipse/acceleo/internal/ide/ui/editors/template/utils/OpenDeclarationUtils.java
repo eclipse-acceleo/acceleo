@@ -196,7 +196,7 @@ public final class OpenDeclarationUtils {
 				.eContainer();
 		final EClassifier sourceType = iteratorExp.getSource().getType();
 		final String operationHolderName = sourceType.getName().substring(0,
-				sourceType.getName().indexOf('(')).concat("(T)_Class");
+				sourceType.getName().indexOf('(')).concat("(T)_Class"); //$NON-NLS-1$
 		final EClassifier operationHolder = stdLibPackage.getEClassifier(operationHolderName);
 		final String operationName = iteratorExp.getName();
 

@@ -150,7 +150,7 @@ public class AcceleoProject {
 					org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
 			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE
 					.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
-			EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore",
+			EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
 					getOCLStdLibPackage());
 			EPackage.Registry.INSTANCE.put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
 		}

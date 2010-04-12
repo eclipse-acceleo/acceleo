@@ -282,7 +282,7 @@ public class AcceleoNewTemplatesWizardController {
 	 * @return true if the given metamodel URI exists
 	 */
 	private boolean isValidMetamodelURI(String uris) {
-		StringTokenizer st = new StringTokenizer(uris, ",");
+		StringTokenizer st = new StringTokenizer(uris, ","); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			String uri = st.nextToken().trim();
 			if (ModelUtils.getEPackage(uri) == null && !uri.endsWith(".ecore")) { //$NON-NLS-1$

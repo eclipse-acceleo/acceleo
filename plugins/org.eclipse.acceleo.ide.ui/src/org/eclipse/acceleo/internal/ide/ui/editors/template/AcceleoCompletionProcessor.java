@@ -460,7 +460,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						if (next.getElement() instanceof EStructuralFeature) {
 							displayProperty = getPropertyDisplay((EStructuralFeature)next.getElement());
 							StringBuilder descriptionPropertyBuilder = new StringBuilder(displayProperty);
-							descriptionPropertyBuilder.append("\n\t defined on ");
+							// TODO NLS This should probably be externalized
+							descriptionPropertyBuilder.append("\n\t defined on "); //$NON-NLS-1$
 							descriptionPropertyBuilder.append(((EStructuralFeature)next.getElement())
 									.getEContainingClass().getName());
 							descriptionProperty = descriptionPropertyBuilder.toString();
@@ -562,7 +563,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			Iterator<EParameter> eParametersIt = eOperation.getEParameters().iterator();
 			while (eParametersIt.hasNext()) {
 				EParameter eParameter = eParametersIt.next();
-				replacementStringWithArgsAfter += "${" + eParameter.getName() + "}";
+				replacementStringWithArgsAfter += "${" + eParameter.getName() + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 				if (eParametersIt.hasNext()) {
 					replacementStringWithArgsAfter += ", "; //$NON-NLS-1$
 				}
@@ -1162,7 +1163,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (IAcceleoConstants.LET.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.LET).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.LET + ' ';
-			String replacementStringAfter = "${e}" + " : ${" + defaultVariableType + "}]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
+			String replacementStringAfter = "${e}" + " : ${" + defaultVariableType + "}]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ '\n' + tab + '[' + '/' + IAcceleoConstants.LET + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
@@ -1285,6 +1286,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			mainTagText = ""; //$NON-NLS-1$
 		}
 		String replacementStringBefore = mainTagText + '[' + IAcceleoConstants.FILE + ' ' + "(${path}"; //$NON-NLS-1$
+		// FIXME JMU this variable is never read. Is it really necessary?
 		org.eclipse.acceleo.parser.cst.ModuleElement cstModuleElement = (org.eclipse.acceleo.parser.cst.ModuleElement)content
 				.getCSTParent(cstNode, org.eclipse.acceleo.parser.cst.ModuleElement.class);
 		String defaultEncoding;

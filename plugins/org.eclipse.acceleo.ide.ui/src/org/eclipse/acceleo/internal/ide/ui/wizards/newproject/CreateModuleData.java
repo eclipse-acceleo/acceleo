@@ -102,7 +102,7 @@ public class CreateModuleData {
 		for (AcceleoNewTemplatesWizardController controller : wizard.getTemplatePage().getControllers()) {
 			CreateTemplateData data = controller.getModel();
 			String metamodelURIs = data.getTemplateMetamodel();
-			StringTokenizer st = new StringTokenizer(metamodelURIs, ",");
+			StringTokenizer st = new StringTokenizer(metamodelURIs, ","); //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				String metamodelURI = st.nextToken().trim();
 				if (!metamodelDone.contains(metamodelURI)) {

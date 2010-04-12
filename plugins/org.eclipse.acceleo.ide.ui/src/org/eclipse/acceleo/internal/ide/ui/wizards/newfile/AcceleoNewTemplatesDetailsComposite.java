@@ -752,7 +752,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		if (metamodelType != null) {
 			String oldSelection = metamodelType.getText();
 			List<String> typeValues = new ArrayList<String>();
-			StringTokenizer st = new StringTokenizer(getMetamodelURI(), ",");
+			StringTokenizer st = new StringTokenizer(getMetamodelURI(), ","); //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				EPackage ePackage = ModelUtils.getEPackage(st.nextToken().trim());
 				if (ePackage != null) {

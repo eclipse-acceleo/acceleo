@@ -190,7 +190,7 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 		res.append("["); //$NON-NLS-1$
 		res.append(eObject.eClass().getName());
 		res.append("]  "); //$NON-NLS-1$
-		final String variableSep = " : ";
+		final String variableSep = " : "; //$NON-NLS-1$
 		if (eObject instanceof Variable) {
 			res.append(((Variable)eObject).getName());
 			if (((Variable)eObject).getType() != null) {

@@ -78,7 +78,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * The identifier of the result active region marker. It is often the text range synchronized with an
 	 * EObject or a template element.
 	 */
-	private static final String RESULT_ACTIVE_REGION_MARKER_ID = "org.eclipse.acceleo.ide.ui.activeRegion";
+	private static final String RESULT_ACTIVE_REGION_MARKER_ID = "org.eclipse.acceleo.ide.ui.activeRegion"; //$NON-NLS-1$
 
 	/**
 	 * The result view content.
@@ -312,7 +312,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		content = new AcceleoResultContent();
 		// FIXME Change this
 		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
-				"org.eclipse.acceleo.traceability.activation", true);
+				"org.eclipse.acceleo.traceability.activation", true); //$NON-NLS-1$
 		AcceleoService.addStaticListener(content);
 		if (resourceChangeListener == null) {
 			resourceChangeListener = new IResourceChangeListener() {
@@ -461,9 +461,7 @@ public class AcceleoResultView extends ResourceNavigator {
 				ITextEditor editor = (ITextEditor)part;
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
-					editor
-							.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(),
-									true);
+					editor.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(), true);
 				} else if (element instanceof TraceabilityTemplate) {
 					int b = getMin((TraceabilityTemplate)element);
 					int e = getMax((TraceabilityTemplate)element);
@@ -577,12 +575,11 @@ public class AcceleoResultView extends ResourceNavigator {
 			}
 			current = current.getParent();
 		}
-		map
-				.put(
-						IMarker.MESSAGE,
-						AcceleoUIMessages
-								.getString(
-										"AcceleoResultView.ActiveRegionMarkerMessage", new Object[] {objectToString, featureToString, templateToString, })); //$NON-NLS-1$
+		map.put(
+				IMarker.MESSAGE,
+				AcceleoUIMessages
+						.getString(
+								"AcceleoResultView.ActiveRegionMarkerMessage", new Object[] {objectToString, featureToString, templateToString, })); //$NON-NLS-1$
 		map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_INFO));
 		map.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
 		int begin = region.getTargetFileOffset();

@@ -44,7 +44,7 @@ public class AcceleoProblemQuickFix implements IMarkerResolutionGenerator2 {
 	 */
 	public boolean hasResolutions(IMarker marker) {
 		try {
-			return "org.eclipse.acceleo.ide.ui.problem".equals(marker.getType());
+			return "org.eclipse.acceleo.ide.ui.problem".equals(marker.getType()); //$NON-NLS-1$
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			return false;
