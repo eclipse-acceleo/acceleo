@@ -144,7 +144,7 @@ public final class ProjectParser {
 					StringBuffer qualifiedName = new StringBuffer();
 					for (int j = 0; j < segments.length; j++) {
 						if (j > 0) {
-							qualifiedName.append(".");
+							qualifiedName.append("."); //$NON-NLS-1$
 						}
 						qualifiedName.append(segments[j]);
 					}

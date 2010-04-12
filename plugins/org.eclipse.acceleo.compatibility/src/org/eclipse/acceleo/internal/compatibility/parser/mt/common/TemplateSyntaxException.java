@@ -88,9 +88,9 @@ public class TemplateSyntaxException extends Exception {
 	public String toString() {
 		StringBuffer text = new StringBuffer();
 		if (template != null) {
-			text.append("Syntax error [");
+			text.append("Syntax error ["); //$NON-NLS-1$
 			text.append(template.getName());
-			text.append("] : ");
+			text.append("] : "); //$NON-NLS-1$
 		}
 		text.append(getMessage());
 		return text.toString();

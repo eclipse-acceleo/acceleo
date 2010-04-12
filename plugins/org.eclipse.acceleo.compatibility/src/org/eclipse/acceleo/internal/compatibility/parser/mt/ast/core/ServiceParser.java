@@ -106,7 +106,7 @@ public final class ServiceParser {
 		if (file != null && file.isAccessible()) {
 			return file.getProjectRelativePath().removeLastSegments(1).removeFirstSegments(1);
 		}
-		return new Path("");
+		return new Path(""); //$NON-NLS-1$
 	}
 
 	/**

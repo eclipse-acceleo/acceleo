@@ -111,7 +111,7 @@ public final class TemplateParser {
 					pos = eComment.e();
 				} else {
 					problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages
-							.getString("TemplateSyntaxError.MissingCommentEndTag"), template, bComment.b()));
+							.getString("TemplateSyntaxError.MissingCommentEndTag"), template, bComment.b())); //$NON-NLS-1$
 					pos = end;
 				}
 			} else if (bImports.b() > -1) {
@@ -130,7 +130,7 @@ public final class TemplateParser {
 					pos = eImports.e();
 				} else {
 					problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages
-							.getString("TemplateSyntaxError.InvalidImportSequence"), template, bImports.b()));
+							.getString("TemplateSyntaxError.InvalidImportSequence"), template, bImports.b())); //$NON-NLS-1$
 					pos = end;
 				}
 			} else {
@@ -166,7 +166,7 @@ public final class TemplateParser {
 				final String value = text.substring(valuePos.b(), valuePos.e()).trim();
 				if (importValuesFound.contains(value)) {
 					problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
-							"TemplateSyntaxError.DuplicateValue", new Object[] {"import", }), template,
+							"TemplateSyntaxError.DuplicateValue", new Object[] {"import", }), template, //$NON-NLS-1$ //$NON-NLS-2$
 							valuePos));
 				} else {
 					importValuesFound.add(value);
@@ -178,7 +178,7 @@ public final class TemplateParser {
 				}
 			} else {
 				problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages
-						.getString("TemplateSyntaxError.EmptyImport"), template, range.b()
+						.getString("TemplateSyntaxError.EmptyImport"), template, range.b() //$NON-NLS-1$
 						+ TemplateConstants.getDefault().getImportWord().length()));
 			}
 		} else if (TextSearch.indexIn(text, TemplateConstants.getDefault().getModelTypeWord(), range).b() == range
@@ -189,7 +189,7 @@ public final class TemplateParser {
 				final String value = text.substring(valuePos.b(), valuePos.e()).trim();
 				if (importValuesFound.contains(value)) {
 					problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
-							"TemplateSyntaxError.DuplicateValue", new Object[] {"metamodel", }), template,
+							"TemplateSyntaxError.DuplicateValue", new Object[] {"metamodel", }), template, //$NON-NLS-1$ //$NON-NLS-2$
 							valuePos));
 				} else {
 					importValuesFound.add(value);
@@ -201,12 +201,12 @@ public final class TemplateParser {
 				}
 			} else {
 				problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
-						"TemplateSyntaxError.EmptyValue", new Object[] {"metamodel", }), template, range.b()
+						"TemplateSyntaxError.EmptyValue", new Object[] {"metamodel", }), template, range.b() //$NON-NLS-1$ //$NON-NLS-2$
 						+ TemplateConstants.getDefault().getModelTypeWord().length()));
 			}
 		} else {
 			problems.add(new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
-					"TemplateSyntaxError.MissingKeyWord", new Object[] {"import", }), template, range.b()));
+					"TemplateSyntaxError.MissingKeyWord", new Object[] {"import", }), template, range.b())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -249,7 +249,7 @@ public final class TemplateParser {
 					template.getImports().add(importedService);
 				} else {
 					throw new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
-							"TemplateSyntaxError.UnresolvedImport", new Object[] {value, }), template,
+							"TemplateSyntaxError.UnresolvedImport", new Object[] {value, }), template, //$NON-NLS-1$
 							valuePos);
 				}
 			}
