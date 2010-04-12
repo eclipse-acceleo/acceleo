@@ -1,4 +1,4 @@
-#Thu Sep 03 11:38:45 CEST 2009
+#Fri Apr 09 15:09:23 CEST 2010
 eclipse.preferences.version=1
 editor_save_participant_org.eclipse.jdt.ui.postsavelistener.cleanup=true
 formatter_profile=_Acceleo
@@ -10,6 +10,7 @@ sp_cleanup.add_missing_deprecated_annotations=true
 sp_cleanup.add_missing_methods=false
 sp_cleanup.add_missing_nls_tags=false
 sp_cleanup.add_missing_override_annotations=true
+sp_cleanup.add_missing_override_annotations_interface_methods=false
 sp_cleanup.add_serial_version_id=false
 sp_cleanup.always_use_blocks=true
 sp_cleanup.always_use_parentheses_in_expressions=false
@@ -37,7 +38,7 @@ sp_cleanup.remove_private_constructors=true
 sp_cleanup.remove_trailing_whitespaces=false
 sp_cleanup.remove_trailing_whitespaces_all=true
 sp_cleanup.remove_trailing_whitespaces_ignore_empty=false
-sp_cleanup.remove_unnecessary_casts=true
+sp_cleanup.remove_unnecessary_casts=false
 sp_cleanup.remove_unnecessary_nls_tags=true
 sp_cleanup.remove_unused_imports=true
 sp_cleanup.remove_unused_local_variables=false
