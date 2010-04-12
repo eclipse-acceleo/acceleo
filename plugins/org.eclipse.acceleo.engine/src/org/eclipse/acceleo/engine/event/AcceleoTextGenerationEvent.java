@@ -110,10 +110,9 @@ public class AcceleoTextGenerationEvent {
 	 * In all cases when traceability isn't enabled, this will be <code>null</code>.
 	 * </p>
 	 * <p>
-	 * This will be an instance of {@link org.eclipse.acceleo.traceability.GeneratedFile GeneratedFile} if the
-	 * event has been sent for a generated file, or a
-	 * {@link org.eclipse.acceleo.traceability.TraceabilityModel TraceabilityModel} if this event corresponds
-	 * to the end of a generation.
+	 * This will be an instance of org.eclipse.acceleo.traceability.GeneratedFile GeneratedFile if the event
+	 * has been sent for a generated file, or a org.eclipse.acceleo.traceability.TraceabilityModel
+	 * TraceabilityModel if this event corresponds to the end of a generation.
 	 * </p>
 	 * 
 	 * @return The traceability information associated to this event.
