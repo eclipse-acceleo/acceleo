@@ -98,7 +98,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	 */
 	@Override
 	public void flushWriters(Map<String, Writer> preview) throws IOException {
-		// All files that existed, yet will changed, will be contained here
+		// All files that existed, yet will change, will be contained here
 		final Map<IFile, Writer> needsValidation = new HashMap<IFile, Writer>();
 
 		for (Map.Entry<String, Writer> entry : preview.entrySet()) {
