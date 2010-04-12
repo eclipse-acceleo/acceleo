@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.parser.cst.Block;
@@ -42,13 +43,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  */
 public class CST2ASTConverter {
 	/** Line separator of the unix platforms. */
-	private static final String UNIX_LINE_SEPARATOR = "\n";
+	private static final String UNIX_LINE_SEPARATOR = "\n"; //$NON-NLS-1$
 
 	/** Line separator of the mac platforms. */
-	private static final String MAC_LINE_SEPARATOR = "\r";
+	private static final String MAC_LINE_SEPARATOR = "\r"; //$NON-NLS-1$
 
 	/** Line separator of the dos platforms. */
-	private static final String DOS_LINE_SEPARATOR = "\r\n";
+	private static final String DOS_LINE_SEPARATOR = "\r\n"; //$NON-NLS-1$
 
 	/**
 	 * The factory used to create the objects of the AST model.
@@ -274,7 +275,7 @@ public class CST2ASTConverter {
 		if (iTextExpression != null && oTextExpression != null) {
 			transformStepCopyPositions(iTextExpression, oTextExpression);
 			transformFormattedText(iTextExpression, oTextExpression);
-			if ("".equals(oTextExpression.getStringSymbol())) {
+			if ("".equals(oTextExpression.getStringSymbol())) { //$NON-NLS-1$
 				EcoreUtil.remove(oTextExpression);
 			}
 		}
@@ -562,7 +563,8 @@ public class CST2ASTConverter {
 			return;
 		}
 
-		List eBody = (List)iTextExpression.eContainer().eGet(CstPackage.eINSTANCE.getBlock_Body());
+		List<CSTNode> eBody = (List<CSTNode>)iTextExpression.eContainer().eGet(
+				CstPackage.eINSTANCE.getBlock_Body());
 		if (eBody != null && eBody.size() > 0) {
 			int index = eBody.indexOf(iTextExpression);
 			int shiftBegin;
@@ -574,7 +576,7 @@ public class CST2ASTConverter {
 				shiftBegin = shiftBegin(ioValue);
 			} else if (index == 0
 					|| (eBody.get(index - 1) instanceof Block
-							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineExpression((Block)eBody
+							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineExpression(eBody
 							.get(index - 1)))) {
 				/*
 				 * Ignore the carriage return directly following a block iff the latter isn't either a
@@ -601,7 +603,7 @@ public class CST2ASTConverter {
 			} else if (!isRelevantLine(eBody, index, false)) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else if (index + 1 < eBody.size() && eBody.get(index + 1) instanceof Block
-					&& !isSingleLineExpression((CSTNode)eBody.get(index + 1))) {
+					&& !isSingleLineExpression(eBody.get(index + 1))) {
 				shiftEnd = shiftEnd(ioValue, true);
 			} else {
 				shiftEnd = 0;
@@ -1216,7 +1218,7 @@ public class CST2ASTConverter {
 				}
 				String sign = signature.toString();
 				if (allSignatures.contains(sign)) {
-					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict",
+					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict", //$NON-NLS-1$
 							new Object[] {sign }), iNext.getStartPosition(), iNext.getEndPosition());
 				} else {
 					if (!(iNext instanceof Comment)) {
@@ -1336,6 +1338,8 @@ public class CST2ASTConverter {
 		oNode.setStartPosition(ioStartPosition);
 		int ioEndPosition = iNode.getEndPosition();
 		oNode.setEndPosition(ioEndPosition);
+		// Set up the adapter that'll be in charge of maintaining line information
+		oNode.eAdapters().add(new AcceleoASTNodeAdapter(astProvider.getLineOfOffset(ioStartPosition)));
 	}
 
 	/**

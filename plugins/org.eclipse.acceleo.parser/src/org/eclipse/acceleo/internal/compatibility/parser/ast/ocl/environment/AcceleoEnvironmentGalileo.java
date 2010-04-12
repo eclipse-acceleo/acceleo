@@ -311,7 +311,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 *            Feature we need a static type of.
 		 * @return The determined type for this feature.
 		 */
-		@SuppressWarnings({"unchecked", "rawtypes" })
+		@SuppressWarnings("unchecked")
 		private EClassifier inferTypeFromFeature(EStructuralFeature feature) {
 			EClassifier type = feature.getEType();
 			// FIXME handle lists
@@ -325,7 +325,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				} else {
 					type = EcoreFactory.eINSTANCE.createBagType();
 				}
-				((CollectionType)type).setElementType(feature.getEType());
+				((CollectionType<EClassifier, EOperation>)type).setElementType(feature.getEType());
 			}
 			return type;
 		}

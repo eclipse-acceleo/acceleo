@@ -941,16 +941,13 @@ public class OCLParser {
 	 * @param arguments
 	 *            is the arguments list
 	 */
-	@SuppressWarnings("unchecked")
-	private void checkArgumentInvocations(List arguments) {
-		ListIterator it = arguments.listIterator();
+	private void checkArgumentInvocations(List<OCLExpression> arguments) {
+		ListIterator<OCLExpression> it = arguments.listIterator();
 		while (it.hasNext()) {
-			Object next = it.next();
-			if (next instanceof EObject) {
-				EObject newArgument = createAcceleoInvocation((EObject)next);
-				if (newArgument != null) {
-					it.set(newArgument);
-				}
+			OCLExpression next = it.next();
+			OCLExpression newArgument = createAcceleoInvocation(next);
+			if (newArgument != null) {
+				it.set(newArgument);
 			}
 		}
 	}
@@ -1010,7 +1007,7 @@ public class OCLParser {
 				eContainer.eSet(eContainingFeature, oldVariable);
 			} else {
 				Object eGet = eContainer.eGet(eContainingFeature);
-				if (eGet instanceof Collection) {
+				if (eGet instanceof Collection<?>) {
 					Collection<Variable> list = (Collection<Variable>)eGet;
 					list.add(oldVariable);
 				}
