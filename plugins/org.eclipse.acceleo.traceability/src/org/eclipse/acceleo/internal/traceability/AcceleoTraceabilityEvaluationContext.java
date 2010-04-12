@@ -28,9 +28,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * This specific implementation of the evaluation context will hold a reference to the traceability model so
  * as to be able to send traceability information along with the event when a file is generated.
  * 
+ * @param <C>
+ *            This should be EClassifier for ecore, Class for UML.
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoTraceabilityEvaluationContext extends AcceleoEvaluationContext {
+public class AcceleoTraceabilityEvaluationContext<C> extends AcceleoEvaluationContext<C> {
 	/** Trace of the evaluation. */
 	private final TraceabilityModel evaluationTrace;
 

@@ -243,11 +243,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            The execution trace recorded for this area.
 	 */
 	private void alterProtectedAreaTrace(String content, Block protectedArea, ExpressionTrace trace) {
-		final String areaStart = AcceleoEngineMessages.getString("usercode.start") + ' ';
+		final String areaStart = AcceleoEngineMessages.getString("usercode.start") + ' '; //$NON-NLS-1$
 		final int markerIndex = content.indexOf(areaStart) + areaStart.length();
 		final boolean isExistingArea = trace.getTraces().size() == 0;
 
-		int markerEndIndex = content.indexOf("\r\n", markerIndex);
+		int markerEndIndex = content.indexOf("\r\n", markerIndex); //$NON-NLS-1$
 		if (markerEndIndex == -1) {
 			markerEndIndex = content.indexOf('\n', markerIndex);
 		}
@@ -325,11 +325,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public String fitIndentationTo(String source, String indentation) {
-		if ("".equals(indentation)) {
+		if ("".equals(indentation)) { //$NON-NLS-1$
 			return source;
 		}
-		String regex = "\r\n|\r|\n";
-		String replacement = "$0" + indentation;
+		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
+		String replacement = "$0" + indentation; //$NON-NLS-1$
 
 		EObject scopeEObject = retrieveScopeEObjectValue();
 
@@ -1408,8 +1408,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean hasMatch = sourceMatcher.find();
 		// Note : despite its name, this could be negative
 		int addedLength = 0;
-		// FIXME This loop does _not_ take group references into account except $0 at the start
-		boolean startsWithZeroGroupRef = replacement.startsWith("$0");
+		// FIXME This loop does _not_ take group references into account except "$0 at the start"
+		boolean startsWithZeroGroupRef = replacement.startsWith("$0"); //$NON-NLS-1$
 		while (hasMatch) {
 			// If we've already changed the String size, take it into account
 			int startIndex = sourceMatcher.start() + addedLength;
