@@ -88,6 +88,8 @@ public class AcceleoSourceBuffer implements IASTProvider {
 
 	/**
 	 * The AST creator. It is created when you call the 'createAST' function.
+	 * 
+	 * @noreference This field is not intended to be referenced by clients.
 	 */
 	protected CST2ASTConverterWithResolver astCreator;
 
@@ -168,7 +170,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		if (soughtLine == -1) {
 			for (int i = 0; i < lines.size(); i++) {
 				if (lines.get(i) > offset) {
-					soughtLine = i - 1;
+					soughtLine = i;
 					break;
 				}
 			}
@@ -239,6 +241,8 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * 
 	 * @return the OCL parser, can be null
 	 * @deprecated Unused, this will be removed beefore 3.0 is released.
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @nooverride This method is not intended to be re-implemented or extended by clients.
 	 */
 	@Deprecated
 	public OCLParser getOCL() {
