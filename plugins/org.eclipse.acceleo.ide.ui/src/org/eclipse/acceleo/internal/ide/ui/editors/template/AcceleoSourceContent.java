@@ -24,7 +24,6 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
-import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
@@ -69,12 +68,6 @@ import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.helper.Choice;
 import org.eclipse.ocl.helper.ChoiceKind;
 import org.eclipse.ocl.utilities.ASTNode;
-import org.eclipse.pde.core.plugin.IPluginAttribute;
-import org.eclipse.pde.core.plugin.IPluginElement;
-import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.core.plugin.IPluginObject;
-import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
@@ -964,65 +957,6 @@ public class AcceleoSourceContent {
 				}
 			}
 		}
-		// TODO JMU Do we want to check if the dynamic path exists?
-		// if (vAST != null && vAST.getExtends().size() > 0) {
-		// checkDynamicExtensionPoint();
-		// }
-	}
-
-	/**
-	 * Is there an extension point that allows to define dynamic overrides for this generation? If not, we
-	 * report a syntax error.
-	 */
-	private void checkDynamicExtensionPoint() {
-		if (file != null) {
-			if (!checkDynamicPathValue(file)) {
-				try {
-					IMarker[] markers = file.findMarkers(AcceleoMarker.PROBLEM_MARKER, false, 1);
-					if (markers == null || markers.length == 0) {
-						reportError(file, 1, 0, 1, AcceleoUIMessages.getString(
-								"AcceleoSourceContent.NoPathFound", file.getName())); //$NON-NLS-1$
-					}
-				} catch (CoreException e) {
-					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-				}
-			}
-		}
-	}
-
-	/**
-	 * Is the MTL file included in the dynamic path?
-	 * 
-	 * @param mtlFile
-	 *            is the file to test
-	 * @return true if the MTL file is included in the dynamic path
-	 */
-	private boolean checkDynamicPathValue(IFile mtlFile) {
-		IPluginModelBase plugin = PluginRegistry.findModel(mtlFile.getProject());
-		if (plugin != null && plugin.getExtensions() != null) {
-			IPluginExtension[] pluginExtensions = plugin.getExtensions().getExtensions();
-			for (int i = 0; i < pluginExtensions.length; i++) {
-				if (DYNAMIC_TEMPLATES_EXTENSION_POINT.equals(pluginExtensions[i].getPoint())) {
-					IPluginObject[] children = pluginExtensions[i].getChildren();
-					for (int j = 0; j < children.length; j++) {
-						IPluginAttribute attribute;
-						if (children[j] instanceof IPluginElement) {
-							IPluginElement element = (IPluginElement)children[j];
-							attribute = element.getAttribute("path"); //$NON-NLS-1$
-						} else {
-							attribute = null;
-						}
-						if (attribute != null
-								&& attribute.getValue() != null
-								&& new Path(attribute.getValue())
-										.isPrefixOf(mtlFile.getProjectRelativePath())) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -1073,7 +1007,7 @@ public class AcceleoSourceContent {
 			AcceleoUIActivator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		} catch (WrappedException e) {
-			if (e.getMessage().endsWith(".emtl' does not exist.")) {
+			if (e.getMessage().endsWith(".emtl' does not exist.")) { //$NON-NLS-1$
 				/*
 				 * Discard exception. This is seldom thrown by the editor when repeatedly copy/pasting chunks
 				 * of code.
