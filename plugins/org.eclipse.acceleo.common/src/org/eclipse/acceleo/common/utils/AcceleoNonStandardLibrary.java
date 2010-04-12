@@ -295,6 +295,18 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_GETPROPERTY = "getProperty"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;+&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>+( String other ) : String</b><br/>
+	 * Returns the concatenation of <em>self</em> with <em>other</em>. Note that <em>self</em> will be
+	 * implicitely cast to String via its <em>toString()</em> method beforehand.
+	 * </p>
+	 * 
+	 * @since 3.0
+	 */
+	public static final String OPERATION_OCLANY_PLUS = "+"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;toString&quot; non-standard operation accessible on all objects.
 	 * <p>
 	 * <b>toString( ) : String</b><br/>
@@ -359,6 +371,18 @@ public final class AcceleoNonStandardLibrary {
 	 * @since 3.0
 	 */
 	public static final String OPERATION_STRING_MATCHES = "matches"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;+&quot; non-standard String operation.
+	 * <p>
+	 * <b>+( OclAny other ) : String</b><br/>
+	 * Returns the concatenation of <em>self</em> with <em>other</em>. Note that <em>other</em> will be
+	 * implicitely cast to String via its <em>toString()</em> method beforehand.
+	 * </p>
+	 * 
+	 * @since 3.0
+	 */
+	public static final String OPERATION_STRING_PLUS = "+"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;replace&quot; non-standard String operation.
