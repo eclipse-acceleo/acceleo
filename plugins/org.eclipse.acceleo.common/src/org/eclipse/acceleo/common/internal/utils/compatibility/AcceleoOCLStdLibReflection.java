@@ -51,9 +51,9 @@ public class AcceleoOCLStdLibReflection {
 	public Object getInvalid() {
 		if (invalid == null) {
 			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
-			String methodName = "getOclInvalid";
+			String methodName = "getOclInvalid"; //$NON-NLS-1$
 			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
-				methodName = "getInvalid";
+				methodName = "getInvalid"; //$NON-NLS-1$
 			}
 			try {
 				final Method method = stdLib.getClass().getMethod(methodName);
@@ -78,9 +78,9 @@ public class AcceleoOCLStdLibReflection {
 	public EClassifier getOCLInvalid() {
 		if (oclInvalid == null) {
 			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
-			String methodName = "getInvalid";
+			String methodName = "getInvalid"; //$NON-NLS-1$
 			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
-				methodName = "getOclInvalid";
+				methodName = "getOclInvalid"; //$NON-NLS-1$
 			}
 			try {
 				final Method method = stdLib.getClass().getMethod(methodName);
