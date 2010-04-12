@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileEntryItemProvider.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: ProfileEntryItemProvider.java,v 1.2 2010/04/12 09:35:59 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -75,9 +75,9 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	protected void addDurationPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ProfileEntry_duration_feature"), getString(
-						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_duration_feature",
-						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__DURATION, true,
+				getString("_UI_ProfileEntry_duration_feature"), getString( //$NON-NLS-1$
+						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_duration_feature", //$NON-NLS-1$ //$NON-NLS-2$
+						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__DURATION, true, //$NON-NLS-1$
 				false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
@@ -88,9 +88,9 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 */
 	protected void addCountPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
-				.getRootAdapterFactory(), getResourceLocator(), getString("_UI_ProfileEntry_count_feature"),
-				getString("_UI_PropertyDescriptor_description", "_UI_ProfileEntry_count_feature",
-						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__COUNT, true, false,
+				.getRootAdapterFactory(), getResourceLocator(), getString("_UI_ProfileEntry_count_feature"), //$NON-NLS-1$
+				getString("_UI_PropertyDescriptor_description", "_UI_ProfileEntry_count_feature", //$NON-NLS-1$ //$NON-NLS-2$
+						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__COUNT, true, false, //$NON-NLS-1$
 				false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
@@ -103,9 +103,9 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	protected void addPercentagePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ProfileEntry_percentage_feature"), getString(
-						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_percentage_feature",
-						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__PERCENTAGE, true,
+				getString("_UI_ProfileEntry_percentage_feature"), getString( //$NON-NLS-1$
+						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_percentage_feature", //$NON-NLS-1$ //$NON-NLS-2$
+						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__PERCENTAGE, true, //$NON-NLS-1$
 				false, false, ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
 	}
 
@@ -118,9 +118,9 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	protected void addCreateTimePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ProfileEntry_createTime_feature"), getString(
-						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_createTime_feature",
-						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__CREATE_TIME, true,
+				getString("_UI_ProfileEntry_createTime_feature"), getString( //$NON-NLS-1$
+						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_createTime_feature", //$NON-NLS-1$ //$NON-NLS-2$
+						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__CREATE_TIME, true, //$NON-NLS-1$
 				false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
@@ -133,9 +133,9 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	protected void addMonitoredPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ProfileEntry_monitored_feature"), getString(
-						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_monitored_feature",
-						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__MONITORED, true,
+				getString("_UI_ProfileEntry_monitored_feature"), getString( //$NON-NLS-1$
+						"_UI_PropertyDescriptor_description", "_UI_ProfileEntry_monitored_feature", //$NON-NLS-1$ //$NON-NLS-2$
+						"_UI_ProfileEntry_type"), ProfilerPackage.Literals.PROFILE_ENTRY__MONITORED, true, //$NON-NLS-1$
 				false, true, null, null, null));
 	}
 

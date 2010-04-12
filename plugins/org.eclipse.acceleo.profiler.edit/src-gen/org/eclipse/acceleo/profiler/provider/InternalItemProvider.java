@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: InternalItemProvider.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: InternalItemProvider.java,v 1.2 2010/04/12 09:35:59 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -59,7 +59,7 @@ public class InternalItemProvider extends ItemProviderAdapter implements IEditin
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Internal_type");
+		return getString("_UI_Internal_type"); //$NON-NLS-1$
 	}
 
 	/**

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileResourceItemProvider.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: ProfileResourceItemProvider.java,v 1.2 2010/04/12 09:35:59 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -94,7 +94,7 @@ public class ProfileResourceItemProvider extends ItemProviderAdapter implements 
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ProfileResource"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ProfileResource")); //$NON-NLS-1$
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ProfileResourceItemProvider extends ItemProviderAdapter implements 
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_ProfileResource_type");
+		return getString("_UI_ProfileResource_type"); //$NON-NLS-1$
 	}
 
 	/**

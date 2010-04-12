@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: LoopProfileEntryItemProvider.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: LoopProfileEntryItemProvider.java,v 1.2 2010/04/12 09:35:59 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -172,7 +172,7 @@ public class LoopProfileEntryItemProvider extends ProfileEntryItemProvider imple
 				|| childFeature == ProfilerPackage.Literals.LOOP_PROFILE_ENTRY__LOOP_ELEMENTS;
 
 		if (qualify) {
-			return getString("_UI_CreateChild_text2", new Object[] {getTypeText(childObject),
+			return getString("_UI_CreateChild_text2", new Object[] {getTypeText(childObject), //$NON-NLS-1$
 					getFeatureText(childFeature), getTypeText(owner) });
 		}
 		return super.getCreateChildText(owner, feature, child, selection);
