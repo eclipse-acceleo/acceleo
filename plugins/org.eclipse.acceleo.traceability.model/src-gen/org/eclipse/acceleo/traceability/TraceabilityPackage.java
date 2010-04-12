@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TraceabilityPackage.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: TraceabilityPackage.java,v 1.2 2010/04/12 09:36:28 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability;
 
@@ -885,7 +885,6 @@ public interface TraceabilityPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("hiding")
 	interface Literals {
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.TraceabilityModelImpl <em>Model</em>}' class.
