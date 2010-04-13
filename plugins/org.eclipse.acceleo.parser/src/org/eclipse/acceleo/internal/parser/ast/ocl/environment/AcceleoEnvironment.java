@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityHelper;
-import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLStdLibReflection;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
@@ -69,7 +69,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint> umlReflection;
 
 	/** Instance of the OCL standard library reflection for this environment. */
-	private AcceleoOCLStdLibReflection oclStdLibReflection;
+	private AcceleoOCLReflection oclStdLibReflection;
 
 	/**
 	 * The first problem object of the last compilation made by this environment.
@@ -322,9 +322,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * 
 	 * @return This environment's reflection of the OCL standard library.
 	 */
-	public AcceleoOCLStdLibReflection getOCLStandardLibraryReflection() {
+	public AcceleoOCLReflection getOCLStandardLibraryReflection() {
 		if (oclStdLibReflection == null) {
-			oclStdLibReflection = new AcceleoOCLStdLibReflection(this);
+			oclStdLibReflection = new AcceleoOCLReflection(this);
 		}
 		return oclStdLibReflection;
 	}
