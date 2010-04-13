@@ -21,11 +21,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser;
 import org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser;
+import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
 import org.eclipse.acceleo.parser.cst.Block;
@@ -84,7 +87,7 @@ import org.eclipse.ui.PlatformUI;
 public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 
 	/** The auto activation characters for completion proposal. */
-	private static final char[] AUTO_ACTIVATION_CHARACTERS = new char[] {'.', '[', '-', '>', ':' }; // Unless
+	private static final char[] AUTO_ACTIVATION_CHARACTERS;
 
 	/**
 	 * The current text viewer.
@@ -115,6 +118,22 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * The default type of the variables.
 	 */
 	private String defaultVariableType;
+
+	static {
+		/*
+		 * Assume the version of Eclipse is tied to the associated OCL Version. If this assumption is false,
+		 * the user built his own version of OCL and he'll have to cope with content assist problems. We have
+		 * to have the "space" char in the auto activation triggers as explicit calls to "ctrl+space" wouldn't
+		 * trigger the completion popup otherwise before Galileo (3.5). In general though, having the content
+		 * assistant triggered on whitespaces is useless and, in most cases, stupid. We then only activate
+		 * this under Ganymede when it is mandatory.
+		 */
+		if (AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() == OCLVersion.GANYMEDE) {
+			AUTO_ACTIVATION_CHARACTERS = new char[] {' ', '.', '[', '-', '>', ':' };
+		} else {
+			AUTO_ACTIVATION_CHARACTERS = new char[] {'.', '[', '-', '>', ':' };
+		}
+	}
 
 	/**
 	 * Constructor.
@@ -447,8 +466,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		Collection<Choice> choices = content.getSyntaxHelp(textOCL, offset);
 		Set<String> duplicated = new HashSet<String>();
 		for (Choice next : choices) {
-			String replacementString = next.getName();
-			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
+			String choiceValue = next.getName();
+			String replacement = getReplacementStringFor(choiceValue);
+			if (choiceValue.toLowerCase().startsWith(start.toLowerCase())
+					|| replacement.toLowerCase().startsWith(start.toLowerCase())) {
 				switch (next.getKind()) {
 					case OPERATION:
 						addOCLOperationChoice(proposals, next, start, duplicated);
@@ -472,43 +493,42 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 							duplicated.add(displayProperty);
 							proposals
 									.add(new CompletionProposal(
-											replacementString,
+											replacement,
 											offset - start.length(),
 											start.length(),
-											replacementString.length(),
+											replacement.length(),
 											AcceleoUIActivator.getDefault().getImage(
 													"icons/template-editor/completion/Property.gif"), displayProperty, //$NON-NLS-1$
 											null, descriptionProperty));
 						}
 						break;
 					case ENUMERATION_LITERAL:
-						if (!duplicated.contains(replacementString)) {
-							duplicated.add(replacementString);
-							proposals.add(new CompletionProposal(replacementString, offset - start.length(),
-									start.length(), replacementString.length(), AcceleoUIActivator
-											.getDefault().getImage(
-													"icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
-									replacementString, null, next.getDescription()));
+						if (!duplicated.contains(choiceValue)) {
+							duplicated.add(choiceValue);
+							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
+									.length(), replacement.length(), AcceleoUIActivator.getDefault()
+									.getImage("icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
+									choiceValue, null, next.getDescription()));
 						}
 						break;
 					case VARIABLE:
 						String displayVariable;
 						String description;
-						if (IAcceleoConstants.SELF.equals(replacementString) || next.getDescription() == null) {
-							displayVariable = replacementString;
+						if (IAcceleoConstants.SELF.equals(choiceValue) || next.getDescription() == null) {
+							displayVariable = choiceValue;
 							description = ""; //$NON-NLS-1$
 						} else {
-							displayVariable = replacementString + ":" + next.getDescription(); //$NON-NLS-1$
+							displayVariable = choiceValue + ":" + next.getDescription(); //$NON-NLS-1$
 							description = next.getDescription();
 						}
 						if (!duplicated.contains(displayVariable)) {
 							duplicated.add(displayVariable);
 							proposals
 									.add(new CompletionProposal(
-											replacementString,
+											replacement,
 											offset - start.length(),
 											start.length(),
-											replacementString.length(),
+											replacement.length(),
 											AcceleoUIActivator.getDefault().getImage(
 													"icons/template-editor/completion/Variable.gif"), displayVariable, //$NON-NLS-1$
 											null, description));
@@ -519,6 +539,25 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * This will be in charge of disambigating conflicts between feature/operations and OCL reserved keywords.
+	 * Specifically, we'll prefix any reserved keyword with an underscore.
+	 * 
+	 * @param choiceValue
+	 *            String that is to be replaced.
+	 * @return The replacement String that's to be used instead of <em>choiceValue</em> if it is a reserved
+	 *         keyword, <em>choiceValue</em> otherwise.
+	 */
+	private String getReplacementStringFor(String choiceValue) {
+		if (content.getOCLEnvironment() instanceof AcceleoEnvironment) {
+			AcceleoEnvironment env = (AcceleoEnvironment)content.getOCLEnvironment();
+			if (env.getOCLStandardLibraryReflection().getReservedKeywords().contains(choiceValue)) {
+				return '_' + choiceValue;
+			}
+		}
+		return choiceValue;
 	}
 
 	/**
@@ -557,7 +596,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		if (nextOperationChoice.getElement() instanceof EOperation) {
 			EOperation eOperation = (EOperation)nextOperationChoice.getElement();
-			String replacementStringWithArgsBefore = eOperation.getName()
+			String replacementStringWithArgsBefore = getReplacementStringFor(eOperation.getName())
 					+ IAcceleoConstants.PARENTHESIS_BEGIN;
 			String replacementStringWithArgsAfter = ""; //$NON-NLS-1$
 			Iterator<EParameter> eParametersIt = eOperation.getEParameters().iterator();
@@ -586,9 +625,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		} else {
 			if (!duplicated.contains(nextOperationChoice.getDescription())) {
 				duplicated.add(nextOperationChoice.getDescription());
-				proposals.add(new CompletionProposal(nextOperationChoice.getName(), offset - start.length(),
-						start.length(), nextOperationChoice.getName().length(), image, nextOperationChoice
-								.getDescription(), null, nextOperationChoice.getDescription()));
+				String replacementString = nextOperationChoice.getName();
+				if (replacementString.contains("(")) { //$NON-NLS-1$
+					replacementString = getReplacementStringFor(replacementString.substring(0,
+							replacementString.indexOf('(')));
+				}
+				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+						.length(), replacementString.length(), image, nextOperationChoice.getDescription(),
+						null, nextOperationChoice.getDescription()));
 			}
 		}
 	}
