@@ -12,6 +12,8 @@ package org.eclipse.acceleo.common.internal.utils.compatibility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.emf.ecore.EClassifier;
@@ -23,7 +25,7 @@ import org.eclipse.ocl.types.OCLStandardLibrary;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoOCLStdLibReflection {
+public class AcceleoOCLReflection {
 	/** Parent environment of this reflection. */
 	private EcoreEnvironment environment;
 
@@ -33,13 +35,16 @@ public class AcceleoOCLStdLibReflection {
 	/** Classifier representing the OCL invalid type. */
 	private EClassifier oclInvalid;
 
+	/** Whole set of reserved keywords for the current OCL version. */
+	private Set<String> reservedKeywords;
+
 	/**
 	 * Prepares the library reflection using the given parent environment.
 	 * 
 	 * @param env
 	 *            Parent environment of this reflection.
 	 */
-	public AcceleoOCLStdLibReflection(EcoreEnvironment env) {
+	public AcceleoOCLReflection(EcoreEnvironment env) {
 		environment = env;
 	}
 
@@ -95,5 +100,48 @@ public class AcceleoOCLStdLibReflection {
 			}
 		}
 		return oclInvalid;
+	}
+
+	/**
+	 * This will return the list of reserved keyword for this specific version of OCL.
+	 * 
+	 * @return The list of reserved keyword for this specific version of OCL.
+	 */
+	public Set<String> getReservedKeywords() {
+		if (reservedKeywords != null) {
+			return reservedKeywords;
+		}
+
+		reservedKeywords = new HashSet<String>();
+		reservedKeywords.add("and"); //$NON-NLS-1$
+		reservedKeywords.add("context"); //$NON-NLS-1$
+		reservedKeywords.add("def"); //$NON-NLS-1$
+		reservedKeywords.add("else"); //$NON-NLS-1$
+		reservedKeywords.add("endif"); //$NON-NLS-1$
+		reservedKeywords.add("endpackage"); //$NON-NLS-1$
+		reservedKeywords.add("if"); //$NON-NLS-1$
+		reservedKeywords.add("implies"); //$NON-NLS-1$
+		reservedKeywords.add("in"); //$NON-NLS-1$
+		reservedKeywords.add("inv"); //$NON-NLS-1$
+		reservedKeywords.add("let"); //$NON-NLS-1$
+		reservedKeywords.add("not"); //$NON-NLS-1$
+		reservedKeywords.add("or"); //$NON-NLS-1$
+		reservedKeywords.add("package"); //$NON-NLS-1$
+		reservedKeywords.add("post"); //$NON-NLS-1$
+		reservedKeywords.add("pre"); //$NON-NLS-1$
+		reservedKeywords.add("then"); //$NON-NLS-1$
+		reservedKeywords.add("xor"); //$NON-NLS-1$
+
+		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+			reservedKeywords.add("body"); //$NON-NLS-1$
+			reservedKeywords.add("derive"); //$NON-NLS-1$
+			reservedKeywords.add("init"); //$NON-NLS-1$
+			reservedKeywords.add("static"); //$NON-NLS-1$
+		} else {
+			reservedKeywords.add("attr"); //$NON-NLS-1$
+			reservedKeywords.add("oper"); //$NON-NLS-1$
+		}
+
+		return reservedKeywords;
 	}
 }
