@@ -1124,6 +1124,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * a non-ordered one.
 		 */
 		for (final Template candidate : new ArrayList<Template>(candidates)) {
+			if (candidate.getGuard() == null) {
+				// no need to go any further
+				continue;
+			}
 			// Set parameter values
 			for (int i = 0; i < candidate.getParameter().size(); i++) {
 				final Variable param = candidate.getParameter().get(i);
@@ -1137,12 +1141,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					getEvaluationEnvironment().add(SELF_VARIABLE_NAME, newContext);
 				}
 			}
-			final Object guardValue;
-			if (candidate.getGuard() == null) {
-				guardValue = Boolean.TRUE;
-			} else {
-				guardValue = getVisitor().visitExpression((OCLExpression<C>)candidate.getGuard());
-			}
+			final Object guardValue = getVisitor().visitExpression((OCLExpression<C>)candidate.getGuard());
 
 			// restore parameters as they were prior to the call
 			for (int i = 0; i < candidate.getParameter().size(); i++) {
