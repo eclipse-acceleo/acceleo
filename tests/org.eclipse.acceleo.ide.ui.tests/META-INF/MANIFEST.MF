@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.ide.ui,
  org.eclipse.jface.text,
  org.eclipse.acceleo.parser,
- org.eclipse.emf,
  org.eclipse.core.resources
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
