@@ -764,8 +764,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		String result = context.closeContext();
 		if (template.getPost() != null) {
 			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, result);
-			getVisitor().visitExpression((OCLExpression<C>)template.getPost());
+			final Object postResult = getVisitor().visitExpression((OCLExpression<C>)template.getPost());
 			getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+			if (isInvalid(postResult)) {
+				int line = getLineOf(template);
+				final String moduleName = ((Module)EcoreUtil.getRootContainer(template)).getName();
+				final String message = AcceleoEngineMessages.getString(
+						"AcceleoEvaluationVisitor.UndefinedPost", template.getPost(), line, moduleName, //$NON-NLS-1$
+						template, result);
+				final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
+				throw exception;
+			}
+			result = toString(postResult);
 		}
 		return result;
 	}
