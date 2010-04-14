@@ -1171,10 +1171,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementStringBefore = '[' + IAcceleoConstants.FOR + ' ' + '(';
 			String replacementStringAfter;
 			if (virtualText.length() > 0) {
-				replacementStringAfter = "${i} : ${" + defaultVariableType + "} | ${e})]\n" + //$NON-NLS-1$ //$NON-NLS-2$
+				replacementStringAfter = "${it} : ${" + defaultVariableType + "} | ${e})]\n" + //$NON-NLS-1$ //$NON-NLS-2$
 						tab + virtualText + tab + '[' + '/' + IAcceleoConstants.FOR + ']' + '\n';
 			} else {
-				replacementStringAfter = "${i} : ${" + defaultVariableType + "} | ${e})]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
+				replacementStringAfter = "${it} : ${" + defaultVariableType + "} | ${e})]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
 						+ '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
 			}
 			String replacementString = replacementStringBefore + replacementStringAfter;
