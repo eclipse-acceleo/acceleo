@@ -130,6 +130,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private int currentContextIndex;
 
+	/** This flag will be set to <code>true</code> whenever we start evaluation of init section's variables. */
+	private boolean evaluatingInitSection;
+
 	/**
 	 * This will be changed to <code>true</code> when generation event should fired and reset to
 	 * <code>false</code> whenever they are to be blocked.
@@ -506,9 +509,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public void visitAcceleoInitSection(InitSection init) {
 		final boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
+		evaluatingInitSection = true;
 		for (final Variable var : init.getVariable()) {
 			getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
 		}
+		evaluatingInitSection = false;
 		fireGenerationEvent = fireEvents;
 	}
 
@@ -831,6 +836,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			visitExpression((OCLExpression<C>)invocation.getAfter());
 		}
 		String invocationResult = context.closeContext();
+		if (evaluatingInitSection) {
+			return invocationResult;
+		}
 		return delegateFitIndentation(invocationResult);
 	}
 
