@@ -1856,9 +1856,10 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			while (childrenIterator.hasNext()) {
 				buffer.append(toString(childrenIterator.next()));
 			}
-		} else {
+		} else if (object != null) {
 			buffer.append(object.toString());
 		}
+		// else return empty String
 		return buffer.toString();
 	}
 }
