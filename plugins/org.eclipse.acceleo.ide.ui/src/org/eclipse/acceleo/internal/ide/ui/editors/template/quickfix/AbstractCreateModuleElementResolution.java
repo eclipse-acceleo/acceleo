@@ -88,10 +88,13 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 				}
 				int selectAndReveal = newOffset + newText.length();
 				String templateName = document.get(posBegin, posEnd - posBegin);
+				int newTextLength = newText.length();
 				append(newText, templateName, paramType, paramName);
-				document.replace(newOffset, 0, newText.toString());
-				marker.delete();
-				return selectAndReveal;
+				if (newText.length() > newTextLength) {
+					document.replace(newOffset, 0, newText.toString());
+					marker.delete();
+					return selectAndReveal;
+				}
 			}
 		} catch (BadLocationException e) {
 			AcceleoUIActivator.getDefault().getLog().log(

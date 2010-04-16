@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -139,8 +140,7 @@ public class JavaServicesWrapperStrategy implements IAcceleoExampleStrategy {
 						Method[] javaMethods = javaClass.getDeclaredMethods();
 						for (int j = 0; j < javaMethods.length; j++) {
 							Method javaMethod = javaMethods[j];
-							Class<?>[] javaParameters = javaMethod.getParameterTypes();
-							createQuery(buffer, typeQualifiedName, javaMethod, javaParameters);
+							buffer.append(JavaServicesUtils.createQuery(javaMethod));
 						}
 					}
 				} finally {
@@ -152,75 +152,4 @@ public class JavaServicesWrapperStrategy implements IAcceleoExampleStrategy {
 		return buffer.toString();
 	}
 
-	/**
-	 * Put in the buffer the query that is able to invoke the given method of the selected java class.
-	 * 
-	 * @param buffer
-	 *            is the buffer to fill, it is an input/output parameter
-	 * @param typeQualifiedName
-	 *            is the fully qualified name of the java class
-	 * @param javaMethod
-	 *            is the current method of the class
-	 * @param javaParameters
-	 *            are the parameters types of the method
-	 */
-	private void createQuery(StringBuilder buffer, String typeQualifiedName, Method javaMethod,
-			Class<?>[] javaParameters) {
-		buffer.append("[query public "); //$NON-NLS-1$
-		buffer.append(javaMethod.getName());
-		buffer.append("("); //$NON-NLS-1$
-		for (int i = 0; i < javaParameters.length; i++) {
-			if (i > 0) {
-				buffer.append(',');
-				buffer.append(' ');
-			}
-			buffer.append("arg"); //$NON-NLS-1$
-			buffer.append(i);
-			buffer.append(" : "); //$NON-NLS-1$
-			buffer.append(getShortName(javaParameters[i]));
-		}
-		buffer.append(") : "); //$NON-NLS-1$
-		buffer.append(getShortName(javaMethod.getReturnType()));
-		buffer.append("\n\t= invoke('"); //$NON-NLS-1$
-		buffer.append(typeQualifiedName);
-		buffer.append("', '"); //$NON-NLS-1$
-		buffer.append(javaMethod.getName());
-		buffer.append("("); //$NON-NLS-1$
-		for (int i = 0; i < javaParameters.length; i++) {
-			if (i > 0) {
-				buffer.append(',');
-				buffer.append(' ');
-			}
-			buffer.append(javaParameters[i].getName());
-		}
-		buffer.append(")', Sequence{"); //$NON-NLS-1$
-		for (int i = 0; i < javaParameters.length; i++) {
-			if (i > 0) {
-				buffer.append(", "); //$NON-NLS-1$
-			}
-			buffer.append("arg"); //$NON-NLS-1$
-			buffer.append(i);
-		}
-		buffer.append("}) /]\n\n"); //$NON-NLS-1$
-	}
-
-	/**
-	 * Gets the short name of the java class. It means the last segment of the fully qualified name.
-	 * 
-	 * @param javaClass
-	 *            is the java class
-	 * @return the last segment of the fully qualified name
-	 */
-	private String getShortName(Class<?> javaClass) {
-		if (javaClass != null) {
-			String type = javaClass.getName();
-			int lastDot = type.lastIndexOf('.');
-			if (lastDot > -1) {
-				type = type.substring(lastDot + 1);
-			}
-			return type;
-		} else {
-			return "void"; //$NON-NLS-1$
-		}
-	}
 }

@@ -29,11 +29,12 @@ public class AcceleoProblemQuickFix implements IMarkerResolutionGenerator2 {
 	 * @see org.eclipse.ui.IMarkerResolutionGenerator#getResolutions(org.eclipse.core.resources.IMarker)
 	 */
 	public IMarkerResolution[] getResolutions(IMarker marker) {
-		IMarkerResolution[] result = new IMarkerResolution[4];
+		IMarkerResolution[] result = new IMarkerResolution[5];
 		result[0] = new AcceleoCreateTemplateResolutionAfterLastMember();
 		result[1] = new AcceleoCreateQueryResolutionAfterLastMember();
 		result[2] = new AcceleoCreateTemplateResolutionBeforeNextMember();
 		result[3] = new AcceleoCreateQueryResolutionBeforeNextMember();
+		result[4] = new AcceleoCreateJavaServiceWrapperResolutionAfterLastMember();
 		return result;
 	}
 
