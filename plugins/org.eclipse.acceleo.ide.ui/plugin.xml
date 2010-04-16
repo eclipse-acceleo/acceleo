@@ -767,5 +767,22 @@ Contributors:
          class="org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoProblemQuickFix">
       </markerResolutionGenerator>
     </extension>
+    
+    <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.eclipse.acceleo.internal.ide.ui.builders.prefs.AcceleoCompilerPage"
+            id="org.eclipse.acceleo.ide.ui.builders.properties.AcceleoCompilerPage"
+            name="Acceleo Compiler">
+         <enabledWhen>
+             <instanceof
+                  value="org.eclipse.core.resources.IProject">
+             </instanceof>
+         </enabledWhen>
+         <filter
+               name="nature"
+               value="org.eclipse.acceleo.ide.ui.acceleoNature"/> 
+      </page>
+    </extension>    
 
 </plugin>

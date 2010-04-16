@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -27,6 +28,7 @@ import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
+import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -40,7 +42,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.ocl.ecore.OperationCallExp;
 
 /**
  * The operation that compiles the templates in a background task.
@@ -190,6 +197,62 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
 					acceleoProject, filesWithMainTag);
 			createRunnableAcceleoOperation.run(monitor);
+		}
+		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+		if (AcceleoBuilderSettings.BUILD_FULL_OMG_COMPLIANCE == settings.getCompliance()) {
+			Iterator<File> itFiles = iFiles.iterator();
+			for (Iterator<URI> itURIs = oURIs.iterator(); !monitor.isCanceled() && itURIs.hasNext()
+					&& itFiles.hasNext();) {
+				File iFile = itFiles.next();
+				URI oURI = itURIs.next();
+				checkFullOMGCompliance(iFile, oURI);
+			}
+		}
+	}
+
+	/**
+	 * Check the '.emtl' file and report in the '.mtl' file some syntax errors when we use the non-standard
+	 * library.
+	 * 
+	 * @param iFile
+	 *            is the '.mtl' file
+	 * @param oURI
+	 *            is the URI of the '.emtl' file
+	 */
+	private void checkFullOMGCompliance(File iFile, URI oURI) {
+		try {
+			AcceleoSourceBuffer buffer = new AcceleoSourceBuffer(iFile);
+			ResourceSet oResourceSet = new ResourceSetImpl();
+			EObject oRoot = ModelUtils.load(oURI, oResourceSet);
+			TreeIterator<EObject> oAllContents = oRoot.eAllContents();
+			while (oAllContents.hasNext()) {
+				EObject oNext = oAllContents.next();
+				if (oNext instanceof OperationCallExp) {
+					OperationCallExp oOperationCallExp = (OperationCallExp)oNext;
+					if (oOperationCallExp.getReferredOperation() != null
+							&& oOperationCallExp.getReferredOperation().getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+						IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+								new Path(iFile.getAbsolutePath()));
+						if (workspaceFile != null && workspaceFile.isAccessible()
+								&& oOperationCallExp.getStartPosition() > -1) {
+							int line = buffer.getLineOfOffset(oOperationCallExp.getStartPosition());
+							reportError(
+									workspaceFile,
+									line,
+									oOperationCallExp.getStartPosition(),
+									oOperationCallExp.getEndPosition(),
+									AcceleoUIMessages
+											.getString(
+													"AcceleoCompileOperation.NotFullyCompliant", oOperationCallExp.getReferredOperation().getName())); //$NON-NLS-1$
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			Status status = new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+			AcceleoUIActivator.getDefault().getLog().log(status);
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 	}
 
