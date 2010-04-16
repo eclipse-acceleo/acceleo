@@ -773,7 +773,7 @@ Contributors:
       <page
             class="org.eclipse.acceleo.internal.ide.ui.builders.prefs.AcceleoCompilerPage"
             id="org.eclipse.acceleo.ide.ui.builders.properties.AcceleoCompilerPage"
-            name="Acceleo Compiler">
+            name="%AcceleoCompilerPage">
          <enabledWhen>
              <instanceof
                   value="org.eclipse.core.resources.IProject">
