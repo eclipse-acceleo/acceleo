@@ -771,14 +771,11 @@ Contributors:
     <extension
          point="org.eclipse.ui.propertyPages">
       <page
+      		adaptable="true"
             class="org.eclipse.acceleo.internal.ide.ui.builders.prefs.AcceleoCompilerPage"
             id="org.eclipse.acceleo.ide.ui.builders.properties.AcceleoCompilerPage"
-            name="%AcceleoCompilerPage">
-         <enabledWhen>
-             <instanceof
-                  value="org.eclipse.core.resources.IProject">
-             </instanceof>
-         </enabledWhen>
+            name="%AcceleoCompilerPage"
+            objectClass="org.eclipse.core.resources.IProject">
          <filter
                name="nature"
                value="org.eclipse.acceleo.ide.ui.acceleoNature"/> 
