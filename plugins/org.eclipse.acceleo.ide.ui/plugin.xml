@@ -778,6 +778,7 @@ Contributors:
             id="org.eclipse.acceleo.ide.ui.builders.properties.AcceleoCompilerPage"
             name="%AcceleoCompilerPage"
             objectClass="org.eclipse.core.resources.IProject">
+         <!-- FIXME JMU - deprecated warning, enabledWhen IProject doesn't work -->
          <filter
                name="nature"
                value="org.eclipse.acceleo.ide.ui.acceleoNature"/> 
