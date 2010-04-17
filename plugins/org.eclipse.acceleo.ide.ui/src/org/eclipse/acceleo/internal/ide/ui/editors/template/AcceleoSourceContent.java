@@ -303,6 +303,16 @@ public class AcceleoSourceContent {
 	}
 
 	/**
+	 * Cancel the current background tasks.
+	 */
+	public void cancelTasks() {
+		if (source != null) {
+			source.cancel();
+			source.getProblems().clear();
+		}
+	}
+
+	/**
 	 * Gets the current CST model. It creates the CST if <code>createCST</code> hasn't been called.
 	 * 
 	 * @return the current CST model, or null if the source is null
@@ -461,9 +471,9 @@ public class AcceleoSourceContent {
 	public void doSave() {
 		if (source != null) {
 			source.cancel();
+			source.getProblems().clear();
+			source.createCST();
 		}
-		source.getProblems().clear();
-		source.createCST();
 	}
 
 	/**

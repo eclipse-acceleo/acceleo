@@ -259,6 +259,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
+		if (content != null) {
+			content.cancelTasks();
+		}
 		super.dispose();
 		colorManager.dispose();
 		/*
