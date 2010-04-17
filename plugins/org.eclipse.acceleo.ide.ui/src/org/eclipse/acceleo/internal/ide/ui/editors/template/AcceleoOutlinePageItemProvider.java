@@ -237,7 +237,6 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	@Override
 	public Collection<?> getChildren(Object object) {
 		Collection<?> children = super.getChildren(object);
-
 		Comparator<CSTNode> cstNodeComparator = new Comparator<CSTNode>() {
 			public int compare(CSTNode n0, CSTNode n1) {
 				if (n0.getStartPosition() < n1.getStartPosition()) {
@@ -249,7 +248,9 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		};
 		List<CSTNode> orderedCollection = new ArrayList<CSTNode>(children.size());
 		for (Object child : children) {
-			if (!(child instanceof org.eclipse.acceleo.parser.cst.TextExpression)) {
+			if (child instanceof CSTNode
+					&& !(child instanceof org.eclipse.acceleo.parser.cst.TextExpression
+							|| child instanceof org.eclipse.acceleo.parser.cst.ModelExpression || child instanceof org.eclipse.acceleo.parser.cst.Comment)) {
 				orderedCollection.add((CSTNode)child);
 			}
 		}

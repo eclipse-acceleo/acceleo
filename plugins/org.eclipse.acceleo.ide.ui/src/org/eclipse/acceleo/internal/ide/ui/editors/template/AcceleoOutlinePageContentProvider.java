@@ -56,7 +56,9 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 			};
 			List<CSTNode> orderedCollection = new ArrayList<CSTNode>(((List<?>)object).size());
 			for (Object element : (List<?>)object) {
-				if (element instanceof CSTNode) {
+				if (element instanceof CSTNode
+						&& !(element instanceof org.eclipse.acceleo.parser.cst.TextExpression
+								|| element instanceof org.eclipse.acceleo.parser.cst.ModelExpression || element instanceof org.eclipse.acceleo.parser.cst.Comment)) {
 					orderedCollection.add((CSTNode)element);
 				}
 			}

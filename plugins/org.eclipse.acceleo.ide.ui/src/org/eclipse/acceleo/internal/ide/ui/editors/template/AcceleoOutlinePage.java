@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -42,8 +41,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Item;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -178,7 +175,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		treeViewer = new AcceleoOutlineTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer.addSelectionChangedListener(this);
 		treeViewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
 		treeViewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
@@ -341,40 +338,4 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 		return treeViewer;
 	}
 
-	/**
-	 * This basic implementation of a tree viewer will allow us to collapse ModuleElements by default.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	class AcceleoOutlineTreeViewer extends TreeViewer {
-		/**
-		 * Simply delegates to the super constructor.
-		 * 
-		 * @param parent
-		 *            Parent of this composite.
-		 * @param style
-		 *            the SWT style bits used to create the tree.
-		 */
-		public AcceleoOutlineTreeViewer(Composite parent, int style) {
-			super(parent, style);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.jface.viewers.AbstractTreeViewer#internalExpandToLevel(org.eclipse.swt.widgets.Widget,
-		 *      int)
-		 */
-		@Override
-		protected void internalExpandToLevel(Widget widget, int level) {
-			if (widget instanceof Item) {
-				Item i = (Item)widget;
-				if (i.getData() instanceof ModuleElement) {
-					setExpanded(i, false);
-					return;
-				}
-			}
-			super.internalExpandToLevel(widget, level);
-		}
-	}
 }

@@ -85,11 +85,6 @@ public class AcceleoSourceContent {
 	private static final String DEFAULT_EMTL_URI = "http://acceleo.eclipse.org/default.emtl"; //$NON-NLS-1$
 
 	/**
-	 * Name of the extension point to parse for template locations.
-	 */
-	private static final String DYNAMIC_TEMPLATES_EXTENSION_POINT = "org.eclipse.acceleo.engine.dynamic.templates"; //$NON-NLS-1$
-
-	/**
 	 * The Acceleo file. It can be null if the file hasn't been specified.
 	 */
 	private IFile file;

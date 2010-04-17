@@ -1330,9 +1330,6 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			mainTagText = ""; //$NON-NLS-1$
 		}
 		String replacementStringBefore = mainTagText + '[' + IAcceleoConstants.FILE + ' ' + "(${path}"; //$NON-NLS-1$
-		// FIXME JMU this variable is never read. Is it really necessary?
-		org.eclipse.acceleo.parser.cst.ModuleElement cstModuleElement = (org.eclipse.acceleo.parser.cst.ModuleElement)content
-				.getCSTParent(cstNode, org.eclipse.acceleo.parser.cst.ModuleElement.class);
 		String defaultEncoding;
 		try {
 			if (content != null && content.getFile() != null) {
