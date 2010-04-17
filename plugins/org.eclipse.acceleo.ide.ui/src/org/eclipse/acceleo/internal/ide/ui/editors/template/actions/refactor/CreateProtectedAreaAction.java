@@ -46,14 +46,50 @@ public class CreateProtectedAreaAction extends AbstractRefactoringWithVariableCo
 		CSTNode currentNode = content.getCSTNode(b, e);
 		String paramName = getCurrentVariableName(currentNode, "e"); //$NON-NLS-1$
 		try {
-			String prefix = "[protected (" + paramName + ".name)]\n"; //$NON-NLS-1$ //$NON-NLS-2$
-			String suffix = "\n[/protected]\n"; //$NON-NLS-1$
+			String indent = getIndent(content, offset);
+			String commentBeginLine;
+			String commentEndLine;
+			String text = content.getText();
+			if (text.contains(".java")) { //$NON-NLS-1$
+				commentBeginLine = "// "; //$NON-NLS-1$
+				commentEndLine = ""; //$NON-NLS-1$
+			} else if (text.contains(".xml")) { //$NON-NLS-1$
+				commentBeginLine = "<!-- "; //$NON-NLS-1$
+				commentEndLine = " -->"; //$NON-NLS-1$
+			} else {
+				commentBeginLine = ""; //$NON-NLS-1$
+				commentEndLine = ""; //$NON-NLS-1$
+			}
+			String prefix = commentBeginLine
+					+ "[protected (" + paramName + ".name)]" + commentEndLine + '\n' + indent; //$NON-NLS-1$ //$NON-NLS-2$ 
+			String suffix = "\n" + indent + commentBeginLine + "[/protected]" + commentEndLine + '\n'; //$NON-NLS-1$ //$NON-NLS-2$ 
 			document.replace(e, 0, suffix);
 			document.replace(b, 0, prefix);
 			return b + prefix.length();
 		} catch (BadLocationException ex) {
 			return offset;
 		}
+	}
+
+	/**
+	 * Gets the indentation text at the given offset. It means the whitespace characters since the beginning
+	 * of the line.
+	 * 
+	 * @param content
+	 *            is the current template content
+	 * @param offset
+	 *            is the current offset
+	 * @return the indentation text
+	 */
+	private String getIndent(AcceleoSourceContent content, int offset) {
+		String text = content.getText();
+		StringBuffer tabBuffer = new StringBuffer();
+		int i = offset;
+		while (i > 0 && Character.isWhitespace(text.charAt(i - 1)) && text.charAt(i - 1) != '\n') {
+			tabBuffer.insert(0, text.charAt(i - 1));
+			i--;
+		}
+		return tabBuffer.toString();
 	}
 
 }
