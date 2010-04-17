@@ -42,6 +42,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -318,15 +319,23 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 	 */
 	private void refreshContainer(final Object element) {
 		if (element instanceof Module) {
-			getTreeViewer().setInput(element);
-		} else {
-			Object[] elements = getTreeViewer().getExpandedElements();
+			int selection = -1;
+			if (getTreeViewer().getControl() instanceof Scrollable
+					&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
+				selection = ((Scrollable)getTreeViewer().getControl()).getVerticalBar().getSelection();
+			}
 			TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
-			getTreeViewer().refresh();
-			getTreeViewer().setExpandedElements(elements);
+			getTreeViewer().setInput(element);
+			getTreeViewer().setExpandedTreePaths(treePaths);
+			if (selection > -1 && getTreeViewer().getControl() instanceof Scrollable
+					&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
+				((Scrollable)getTreeViewer().getControl()).getVerticalBar().setSelection(selection);
+			}
+		} else {
+			TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
+			getTreeViewer().refresh(element);
 			getTreeViewer().setExpandedTreePaths(treePaths);
 		}
-		getTreeViewer().expandToLevel(element, 2);
 	}
 
 	/**
