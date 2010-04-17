@@ -17,8 +17,6 @@ import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoOutlinePageItemProviderAdapterFactory;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoOutlinePageLabelProvider;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Macro;
 import org.eclipse.acceleo.parser.cst.Query;

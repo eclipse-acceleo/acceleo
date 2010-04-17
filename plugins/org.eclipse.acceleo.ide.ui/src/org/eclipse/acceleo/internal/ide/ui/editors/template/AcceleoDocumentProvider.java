@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;

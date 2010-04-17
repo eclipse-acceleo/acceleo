@@ -19,6 +19,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;

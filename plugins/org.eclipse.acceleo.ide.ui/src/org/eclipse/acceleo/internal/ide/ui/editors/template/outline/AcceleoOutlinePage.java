@@ -8,13 +8,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.editors.template;
+package org.eclipse.acceleo.internal.ide.ui.editors.template.outline;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
