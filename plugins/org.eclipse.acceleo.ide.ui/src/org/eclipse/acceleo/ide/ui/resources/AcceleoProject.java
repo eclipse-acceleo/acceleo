@@ -505,29 +505,49 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * Gets all the accessible Acceleo projects. It means that the current project is included.
+	 * Gets all the accessible Acceleo projects of the workspace. It means that the current project is
+	 * included.
 	 * 
 	 * @return the accessible Acceleo projects
 	 */
 	public List<AcceleoProject> getRecursivelyAccessibleAcceleoProjects() {
 		List<AcceleoProject> result = new ArrayList<AcceleoProject>();
-		computeAccessibleAcceleoProjects(result, this);
+		for (IProject aProject : getRecursivelyAccessibleProjects()) {
+			try {
+				if (aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+					result.add(new AcceleoProject(aProject));
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
 		return result;
 	}
 
 	/**
-	 * Computes all the accessible Acceleo projects.
+	 * Gets all the accessible projects of the workspace. It means that the current project is included.
 	 * 
-	 * @param accessibleAcceleoProjects
+	 * @return the accessible projects
+	 * @since 3.0
+	 */
+	public List<IProject> getRecursivelyAccessibleProjects() {
+		List<IProject> result = new ArrayList<IProject>();
+		computeAccessibleProjects(result, project);
+		return result;
+	}
+
+	/**
+	 * Computes all the accessible projects.
+	 * 
+	 * @param accessibleProjects
 	 *            is the output list that will contain all the accessible projects
 	 * @param current
-	 *            is the current Acceleo project
+	 *            is the current project
 	 */
-	private void computeAccessibleAcceleoProjects(List<AcceleoProject> accessibleAcceleoProjects,
-			AcceleoProject current) {
-		if (!accessibleAcceleoProjects.contains(current)) {
-			accessibleAcceleoProjects.add(current);
-			IPluginModelBase plugin = PluginRegistry.findModel(current.project);
+	private void computeAccessibleProjects(List<IProject> accessibleProjects, IProject current) {
+		if (!accessibleProjects.contains(current)) {
+			accessibleProjects.add(current);
+			IPluginModelBase plugin = PluginRegistry.findModel(current);
 			if (plugin != null) {
 				BundleDescription[] requiredPlugins = plugin.getBundleDescription().getResolvedRequires();
 				for (int i = 0; i < requiredPlugins.length; i++) {
@@ -535,12 +555,11 @@ public class AcceleoProject {
 					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 							requiredSymbolicName);
 					if (requiredProject != null && requiredProject.isAccessible()) {
-						AcceleoProject requiredAcceleoProject = new AcceleoProject(requiredProject);
-						computeAccessibleAcceleoProjects(accessibleAcceleoProjects, requiredAcceleoProject);
+						computeAccessibleProjects(accessibleProjects, requiredProject);
 					}
 				}
 			}
-			final IJavaProject javaProject = JavaCore.create(current.project);
+			final IJavaProject javaProject = JavaCore.create(current);
 			IClasspathEntry[] entries;
 			try {
 				entries = javaProject.getResolvedClasspath(true);
@@ -553,8 +572,7 @@ public class AcceleoProject {
 					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 							entry.getPath().toString());
 					if (requiredProject != null && requiredProject.exists()) {
-						AcceleoProject requiredAcceleoProject = new AcceleoProject(requiredProject);
-						computeAccessibleAcceleoProjects(accessibleAcceleoProjects, requiredAcceleoProject);
+						computeAccessibleProjects(accessibleProjects, requiredProject);
 					}
 				}
 			}

@@ -137,21 +137,32 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			});
-			// TODO JMU : Builder temporary fix
-			// The full build is able to register all the ecore files of the workspace
-			List<IFile> ecoreFiles = new ArrayList<IFile>();
-			for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-				if (project.isAccessible()) {
-					members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
-				}
-			}
-			for (IFile ecoreFile : ecoreFiles) {
-				registerEcore(ecoreFile.getFullPath().toString());
-			}
+			registerWorkspaceEcoreFiles();
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
 			validateAcceleoBuildFile(monitor);
+		}
+	}
+
+	/**
+	 * Register the accessible workspace ecore files.
+	 * 
+	 * @throws CoreException
+	 *             when an issue occurs
+	 */
+	private void registerWorkspaceEcoreFiles() throws CoreException {
+		// TODO JMU : Builder temporary fix
+		// The full build is able to register all the ecore files of the workspace
+		List<IFile> ecoreFiles = new ArrayList<IFile>();
+		AcceleoProject acceleoProject = new AcceleoProject(getProject());
+		for (IProject project : acceleoProject.getRecursivelyAccessibleProjects()) {
+			if (project.isAccessible()) {
+				members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
+			}
+		}
+		for (IFile ecoreFile : ecoreFiles) {
+			registerEcore(ecoreFile.getFullPath().toString());
 		}
 	}
 
@@ -325,6 +336,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			});
+			registerWorkspaceEcoreFiles();
 			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
