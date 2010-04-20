@@ -70,6 +70,19 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_COLLECTION_REVERSE = "reverse"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;select&quot; non-standard operation accessible on collections. Note that depending on
+	 * the source collection, the returned collection will be of different types.
+	 * <p>
+	 * <b>filter( type ) : Collection</b><br/>
+	 * Filters out of the collection all elements that are not instance of the given type. The returned
+	 * collection is typed according to <em>type</em>.
+	 * </p>
+	 * 
+	 * @since 3.0
+	 */
+	public static final String OPERATION_COLLECTION_FILTER = "filter"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;sep&quot; non-standard operation accessible on collections. Note that depending on
 	 * the source collection, the returned collection will be of different types.
 	 * <table>
