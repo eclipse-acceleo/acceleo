@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoStackFrame extends AbstractDebugElement implements IStackFrame {
+	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
+	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
 	/**
 	 * The current Acceleo thread.
@@ -70,12 +72,17 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 	 */
 	public IVariable[] getVariables() throws DebugException {
 		IVariable[] ret = new AcceleoVariable[stackInfo.getVariables().keySet().size()];
-		int i = 0;
+		// Start at 1, index 0 will be used by self.
+		int i = 1;
 		for (Iterator<String> iterator = stackInfo.getVariables().keySet().iterator(); iterator.hasNext();) {
 			String name = iterator.next();
 			Object value = stackInfo.getVariables().get(name);
-			ret[i] = new AcceleoVariable(this, name, value, AcceleoVariable.DEFAULT_TYPE);
-			++i;
+			AcceleoVariable var = new AcceleoVariable(this, name, value, AcceleoVariable.DEFAULT_TYPE);
+			if (SELF_VARIABLE_NAME.equals(name)) {
+				ret[0] = var;
+			} else {
+				ret[i++] = var;
+			}
 		}
 		return ret;
 	}
