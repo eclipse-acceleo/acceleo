@@ -12,7 +12,6 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 
 import java.util.List;
 
-import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.acceleo.model.mtl.impl.QueryImpl;
 import org.eclipse.ocl.ecore.Variable;
 
@@ -29,23 +28,18 @@ public class QuerySpec extends QueryImpl {
 	 */
 	@Override
 	public String toString() {
-		final VisibilityKind visibilityKind = getVisibility();
 		final List<Variable> params = getParameter();
 
-		final StringBuilder toString = new StringBuilder("query"); //$NON-NLS-1$
-		toString.append(' ');
-		toString.append(visibilityKind.getLiteral());
-		toString.append(' ');
-		toString.append(getName());
+		final StringBuilder toString = new StringBuilder(getName());
 		toString.append('(');
 		for (int i = 0; i < params.size(); i++) {
-			toString.append(params.get(i).toString());
+			toString.append(params.get(i).getType().getName());
 			if (i + 1 < params.size()) {
 				toString.append(',');
 			}
 		}
-		toString.append(')').append(' ').append(':').append(' ');
-		toString.append(getType().getName());
+		toString.append(')');
+
 		return toString.toString();
 	}
 }

@@ -163,6 +163,10 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
+    <eOperations name="filter" eType="ocl.ecore:CollectionType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)">
     <eOperations name="reverse" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)">
