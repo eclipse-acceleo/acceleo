@@ -275,6 +275,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					"AcceleoEvaluationVisitor.CollectionFileURL", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
+		} else if (!(fileURLResult instanceof String)) {
+			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+					"AcceleoEvaluationVisitor.NotStringFileURL", getEvaluationEnvironment() //$NON-NLS-1$
+							.getValueOf(SELF_VARIABLE_NAME));
+			throw exception;
 		}
 		final String filePath = String.valueOf(fileURLResult).trim();
 
