@@ -444,7 +444,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
-	 * This will return the map of currently available variables.
+	 * This will return the map of currently available variables. Take note that this is not meant to be used
+	 * to alter the variables (which won't work since what we return is a copy of the variable map) but more
+	 * to query the variable state.
 	 * 
 	 * @return The map of currently available variables.
 	 */
