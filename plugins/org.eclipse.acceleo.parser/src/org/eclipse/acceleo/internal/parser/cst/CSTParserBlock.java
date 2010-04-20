@@ -89,7 +89,7 @@ public class CSTParserBlock {
 	protected SequenceBlock pLet;
 
 	/**
-	 *To parse a 'else let' block in the text.
+	 * To parse a 'else let' block in the text.
 	 */
 	protected SequenceBlock pElseLet;
 

@@ -178,6 +178,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTENTS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
+						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName);
+				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS.equals(operationName);
@@ -189,6 +191,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				isParameterizedCollection = isParameterizedCollection
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_FOLLOWINGSIBLINGS
 								.equals(operationName);
+
 				if (isParameterizedCollection) {
 					final org.eclipse.ocl.ecore.CollectionType alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil
 							.copy(type);
