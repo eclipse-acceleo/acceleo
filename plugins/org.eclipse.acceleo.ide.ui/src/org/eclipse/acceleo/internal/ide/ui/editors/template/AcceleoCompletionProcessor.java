@@ -1731,5 +1731,4 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 	// CHECKSTYLE:ON
-
 }

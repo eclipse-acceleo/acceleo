@@ -21,6 +21,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.debug.core.AcceleoDebugger;
 import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoDebugTarget;
+import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoProcess;
 import org.eclipse.acceleo.internal.ide.ui.launching.AcceleoLaunchOperation;
 import org.eclipse.acceleo.internal.ide.ui.launching.IAcceleoLaunchConfigurationConstants;
 import org.eclipse.acceleo.profiler.Profiler;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 
 /**
@@ -63,12 +65,18 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			Profiler profiler = null;
 			if ("debug".equals(mode)) { //$NON-NLS-1$
 				debugger = new AcceleoDebugger(project);
+				for (IDebugTarget target : launch.getDebugTargets()) {
+					launch.removeDebugTarget(target);
+				}
 				launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
 				AcceleoEvaluationVisitor.setDebug(debugger);
 				debugger.start();
 			} else if ("profile".equals(mode)) { //$NON-NLS-1$
 				profiler = new Profiler();
 				AcceleoEvaluationVisitor.setProfile(profiler);
+				launch.addProcess(new AcceleoProcess(launch));
+			} else {
+				launch.addProcess(new AcceleoProcess(launch));
 			}
 			try {
 				String model = getModelPath(configuration);

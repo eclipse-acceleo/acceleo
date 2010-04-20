@@ -24,7 +24,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * Acceleo implementation of a line breakpoint.
@@ -71,7 +71,7 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 	 * @throws CoreException
 	 *             when an issue occurs
 	 */
-	public AcceleoLineBreakpoint(final EObject astNode, final IResource resource, final int lineNumber,
+	public AcceleoLineBreakpoint(final ASTNode astNode, final IResource resource, final int lineNumber,
 			final int offset, final int length) throws CoreException {
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
@@ -83,12 +83,11 @@ public class AcceleoLineBreakpoint extends LineBreakpoint {
 				marker.setAttribute(IMarker.CHAR_START, offset);
 				marker.setAttribute(IMarker.CHAR_END, offset + length);
 				marker.setAttribute(AST_FRAGMENT, new ASTFragment(astNode).toString());
-				marker
-						.setAttribute(
-								IMarker.MESSAGE,
-								AcceleoUIMessages
-										.getString(
-												"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), resource.getName(), Integer.toString(lineNumber), })); //$NON-NLS-1$
+				marker.setAttribute(
+						IMarker.MESSAGE,
+						AcceleoUIMessages
+								.getString(
+										"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), resource.getName(), Integer.toString(lineNumber), })); //$NON-NLS-1$
 			}
 		};
 		run(getMarkerRule(resource), runnable);

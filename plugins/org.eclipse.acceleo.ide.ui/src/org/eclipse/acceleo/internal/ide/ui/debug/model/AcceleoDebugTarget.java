@@ -44,7 +44,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 	/**
 	 * The process.
 	 */
-	private AcceleoProcess process;
+	private AcceleoDebugProcess process;
 
 	/**
 	 * The thread.
@@ -159,7 +159,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 		super(null);
 		launch = aLaunch;
 		debugger = aTemplateDebugger;
-		process = new AcceleoProcess(this);
+		process = new AcceleoDebugProcess(this);
 		launch.addProcess(process);
 		thread = new AcceleoThread(this);
 		IBreakpointManager breakpointManager = getBreakpointManager();

@@ -109,9 +109,8 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 				if (filePath.lastIndexOf(File.separatorChar) != -1) {
 					filePath = filePath.substring(filePath.lastIndexOf(File.separatorChar) + 1);
 				}
-				vRet = AcceleoUIMessages
-						.getString(
-								"AcceleoModelPresentation.BreakpointText", new Object[] {filePath, Integer.toString(breakPoint.getLineNumber()), }); //$NON-NLS-1$
+				vRet = AcceleoUIMessages.getString("AcceleoModelPresentation.BreakpointText", new Object[] { //$NON-NLS-1$
+						filePath, Integer.toString(breakPoint.getLineNumber()), });
 			} catch (CoreException e) {
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
@@ -124,10 +123,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 		} else if (element instanceof AcceleoStackFrame) {
 			AcceleoStackFrame stackFrame = (AcceleoStackFrame)element;
 			try {
-				String sourceName = stackFrame.getSourceName();
-				if (sourceName != null && sourceName.length() > 0) {
-					vRet = sourceName + ' ' + (stackFrame.getLineNumber());
-				}
+				vRet = stackFrame.getASTNodeDisplayString() + " line : " + (stackFrame.getLineNumber()); //$NON-NLS-1$
 			} catch (DebugException e) {
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}

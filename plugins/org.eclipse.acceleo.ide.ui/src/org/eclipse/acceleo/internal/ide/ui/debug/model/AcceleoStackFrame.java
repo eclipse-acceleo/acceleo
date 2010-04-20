@@ -13,11 +13,14 @@ package org.eclipse.acceleo.internal.ide.ui.debug.model;
 import java.util.Iterator;
 
 import org.eclipse.acceleo.internal.ide.ui.debug.core.StackInfo;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * The Acceleo stack frame. A stack frame represents an execution context in a suspended thread. A stack frame
@@ -286,6 +289,21 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 		} else {
 			return ""; //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * Returns a displayable String for the stack's AST node.
+	 * 
+	 * @return A displayable String for the stack's AST node
+	 */
+	public String getASTNodeDisplayString() {
+		EObject containingModuleElement = stackInfo.getASTNode();
+		while (!(containingModuleElement instanceof ModuleElement)) {
+			containingModuleElement = containingModuleElement.eContainer();
+		}
+		Module containingModule = (Module)containingModuleElement.eContainer();
+
+		return containingModule.getName() + '.' + containingModuleElement.toString();
 	}
 
 	/**

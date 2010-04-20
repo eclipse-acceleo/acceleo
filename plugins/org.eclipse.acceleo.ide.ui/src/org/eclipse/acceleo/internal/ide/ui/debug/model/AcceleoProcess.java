@@ -10,28 +10,40 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.debug.model;
 
+import java.util.Map;
+
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamsProxy;
 
 /**
- * The process of the debug target.
+ * Standard Acceleo launch process.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoProcess extends AbstractDebugElement implements IProcess {
+public class AcceleoProcess implements IProcess {
+	/** Table of client defined attributes. */
+	private Map<String, String> attributes;
+
+	/** This will be set to true if this process is terminated. */
+	private boolean terminated;
+
+	/** Launch around which to wrap this process. */
+	private final ILaunch launch;
 
 	/**
-	 * Constructor.
+	 * Constructs a process for the given launch.
 	 * 
-	 * @param target
-	 *            is the debug target
+	 * @param launch
+	 *            Launch around which this process will be wrapped.
 	 */
-	public AcceleoProcess(IDebugTarget target) {
-		super(target);
+	public AcceleoProcess(ILaunch launch) {
+		this.launch = launch;
 	}
 
 	/**
@@ -40,7 +52,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * @see org.eclipse.debug.core.model.IProcess#getAttribute(java.lang.String)
 	 */
 	public String getAttribute(String key) {
-		return getDebugTarget().getLaunch().getAttribute(key);
+		return attributes.get(key);
 	}
 
 	/**
@@ -58,17 +70,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * @see org.eclipse.debug.core.model.IProcess#getLabel()
 	 */
 	public String getLabel() {
-		return AcceleoUIMessages.getString("AcceleoProcess.Label"); //$NON-NLS-1$
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getLaunch()
-	 */
-	@Override
-	public ILaunch getLaunch() {
-		return getDebugTarget().getLaunch();
+		return AcceleoUIMessages.getString("AcceleoProcess.Label.Running"); //$NON-NLS-1$
 	}
 
 	/**
@@ -86,26 +88,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * @see org.eclipse.debug.core.model.IProcess#setAttribute(java.lang.String, java.lang.String)
 	 */
 	public void setAttribute(String key, String value) {
-		getDebugTarget().getLaunch().setAttribute(key, value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getAdapter(java.lang.Class)
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public Object getAdapter(Class adapter) {
-		Object ret = null;
-		if (adapter.equals(IProcess.class)) {
-			ret = this;
-		} else if (adapter.equals(IDebugTarget.class)) {
-			ret = getLaunch().getDebugTarget();
-		} else if (adapter.equals(ILaunch.class)) {
-			ret = getLaunch();
-		}
-		return ret;
+		attributes.put(key, value);
 	}
 
 	/**
@@ -123,7 +106,7 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * @see org.eclipse.debug.core.model.ITerminate#isTerminated()
 	 */
 	public boolean isTerminated() {
-		return getDebugTarget().isTerminated();
+		return terminated;
 	}
 
 	/**
@@ -132,7 +115,39 @@ public class AcceleoProcess extends AbstractDebugElement implements IProcess {
 	 * @see org.eclipse.debug.core.model.ITerminate#terminate()
 	 */
 	public void terminate() throws DebugException {
-		getDebugTarget().terminate();
+		terminated = true;
+		if (attributes != null) {
+			attributes.clear();
+			attributes = null;
+		}
+		DebugPlugin.getDefault().fireDebugEventSet(
+				new DebugEvent[] {new DebugEvent(this, DebugEvent.TERMINATE) });
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	public Object getAdapter(Class adapter) {
+		Object ret = null;
+		if (adapter.equals(IProcess.class)) {
+			ret = this;
+		} else if (adapter.equals(IDebugTarget.class)) {
+			ret = getLaunch().getDebugTarget();
+		} else if (adapter.equals(ILaunch.class)) {
+			ret = getLaunch();
+		}
+		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.core.model.IProcess#getLaunch()
+	 */
+	public ILaunch getLaunch() {
+		return launch;
 	}
 
 }

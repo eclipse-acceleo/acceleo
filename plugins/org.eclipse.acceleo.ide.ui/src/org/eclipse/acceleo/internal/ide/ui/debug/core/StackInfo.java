@@ -14,6 +14,8 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.ocl.utilities.ASTNode;
+
 /**
  * Item of the debugger execution stack. The debugger stack is shown in the "Launch View". Each item is
  * characterized by a line in an Acceleo file and a set of variables.
@@ -21,6 +23,8 @@ import java.util.Map;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class StackInfo {
+	/** AST node this stack element points to. */
+	private ASTNode node;
 
 	/**
 	 * The current Acceleo file.
@@ -47,6 +51,25 @@ public class StackInfo {
 	 * contains the variable names and their values.
 	 */
 	private Map<String, Object> variables = new LinkedHashMap<String, Object>();
+
+	/**
+	 * Gets the current AST node.
+	 * 
+	 * @return the AST node.
+	 */
+	public ASTNode getASTNode() {
+		return node;
+	}
+
+	/**
+	 * Sets the current AST node.
+	 * 
+	 * @param node
+	 *            is the AST node
+	 */
+	public void setNode(ASTNode node) {
+		this.node = node;
+	}
 
 	/**
 	 * Gets the current Acceleo file.

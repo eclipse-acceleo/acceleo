@@ -167,7 +167,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 				while (eAllContents.hasNext()) {
 					EObject eObject = eAllContents.next();
 					if (eObject instanceof ASTNode) {
-						ASTFragment fragment = new ASTFragment(eObject);
+						ASTFragment fragment = new ASTFragment((ASTNode)eObject);
 						if (!conflicts.contains(fragment)) {
 							conflicts.add(fragment);
 							int start = ((ASTNode)eObject).getStartPosition();
@@ -254,29 +254,14 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.internal.debug.IDebugAST#stepDebugInput(org.eclipse.acceleo.engine.internal.debug.ASTFragment,
-	 *      java.lang.Object)
+	 *      java.util.Map)
 	 */
-	public void stepDebugInput(ASTFragment astFragment, Object input) {
+	public void stepDebugInput(ASTFragment astFragment, Map<String, Object> variables) {
 		if (isBreakpoint(astFragment, false)) {
-			final Map<String, Object> map = getInputVariables(input);
-			waitForEvent(map);
+			waitForEvent(variables);
 		} else {
-			final Map<String, Object> map = getInputVariables(input);
-			updateVariables(map);
+			updateVariables(variables);
 		}
-	}
-
-	/**
-	 * Gets the variables to show in the "Variables View" before a new step.
-	 * 
-	 * @param input
-	 *            is the current object to evaluate
-	 * @return a map that contains the variable names and their values
-	 */
-	private Map<String, Object> getInputVariables(Object input) {
-		final Map<String, Object> map = new HashMap<String, Object>();
-		map.put("input", input); //$NON-NLS-1$
-		return map;
 	}
 
 	/**
@@ -657,6 +642,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 		FileRegion fileRegion = allASTFragments.get(astFragment);
 		if (fileRegion != null) {
 			StackInfo stackInfo = new StackInfo();
+			stackInfo.setNode(astFragment.getASTNode());
 			stackInfo.setFile(fileRegion.file);
 			stackInfo.setLine(fileRegion.line);
 			stackInfo.setCharStart(fileRegion.start);

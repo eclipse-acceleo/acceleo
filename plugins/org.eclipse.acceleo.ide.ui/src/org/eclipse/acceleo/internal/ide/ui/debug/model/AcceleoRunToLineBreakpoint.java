@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * A run to line breakpoint. The breakpoint for a "run to line" operation.
@@ -45,7 +45,7 @@ public class AcceleoRunToLineBreakpoint extends AcceleoLineBreakpoint {
 	 * @exception DebugException
 	 *                if unable to create the breakpoint
 	 */
-	public AcceleoRunToLineBreakpoint(final EObject astNode, final IFile resource, final int lineNumber,
+	public AcceleoRunToLineBreakpoint(final ASTNode astNode, final IFile resource, final int lineNumber,
 			final int offset, final int length) throws DebugException {
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
@@ -57,12 +57,9 @@ public class AcceleoRunToLineBreakpoint extends AcceleoLineBreakpoint {
 				marker.setAttribute(IMarker.CHAR_START, offset);
 				marker.setAttribute(IMarker.CHAR_END, offset + length);
 				marker.setAttribute(AST_FRAGMENT, new ASTFragment(astNode).toString());
-				marker
-						.setAttribute(
-								IMarker.MESSAGE,
-								AcceleoUIMessages
-										.getString(
-												"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), resource.getName(), Integer.toString(lineNumber),})); //$NON-NLS-1$
+				marker.setAttribute(IMarker.MESSAGE, AcceleoUIMessages.getString(
+						"AcceleoLineBreakpoint.HoverText", new Object[] {astNode.eClass().getName(), //$NON-NLS-1$
+								resource.getName(), Integer.toString(lineNumber), }));
 				setRegistered(false);
 			}
 		};

@@ -44,12 +44,18 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 	@Override
 	public void launch(final ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		IAcceleoLaunchingStrategy strategy = getLaunchingStrategy(configuration);
-		if (strategy instanceof AcceleoJavaLaunchingStrategy) {
-			super.launch(configuration, mode, launch, monitor);
-		} else if (strategy != null) {
-			// Launches the given configuration in the current Eclipse thread.
-			strategy.launch(configuration, mode, launch, monitor);
+		try {
+			IAcceleoLaunchingStrategy strategy = getLaunchingStrategy(configuration);
+			if (strategy instanceof AcceleoJavaLaunchingStrategy) {
+				super.launch(configuration, mode, launch, monitor);
+			} else if (strategy != null) {
+				// Launches the given configuration in the current Eclipse thread.
+				strategy.launch(configuration, mode, launch, monitor);
+			}
+		} finally {
+			if (!launch.isTerminated()) {
+				launch.terminate();
+			}
 		}
 	}
 
