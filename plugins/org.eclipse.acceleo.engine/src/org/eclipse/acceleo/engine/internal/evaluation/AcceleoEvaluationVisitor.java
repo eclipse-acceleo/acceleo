@@ -102,9 +102,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** This instance will be used as the cached result of a query when it is null. */
 	private static final Object NULL_QUERY_RESULT = new Object();
 
-	/**
-	 * To profile an AST evaluation. TODO JMU : Put this profiler instance in the evaluation context
-	 */
+	/** To profile an AST evaluation. */
 	private static Profiler profile;
 
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
@@ -836,6 +834,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (invocation.getAfter() != null) {
 			visitExpression((OCLExpression<C>)invocation.getAfter());
 		}
+		// Close the invoked template's variable scope now
+		((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).removeVariableScope();
 		String invocationResult = context.closeContext();
 		if (evaluatingInitSection) {
 			return invocationResult;
@@ -1310,6 +1310,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (applicableCandidates.size() > 0) {
 				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 						.getMostSpecificTemplate(applicableCandidates, argValues);
+
+				// This is the actual template that will be called. We now need to create its variable scope
+				((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
+
 				// Determine argument values and context
 				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
 					Variable var = actualTemplate.getParameter().get(i);

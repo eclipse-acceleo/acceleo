@@ -529,7 +529,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return Removes and return the last variable scope.
 	 */
 	public Map<String, LinkedList<Object>> removeVariableScope() {
-		return scopedVariableMap.remove();
+		return scopedVariableMap.removeLast();
 	}
 
 	/**
