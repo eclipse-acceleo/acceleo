@@ -1264,11 +1264,31 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			boolean fireEvents = fireGenerationEvent;
 			fireGenerationEvent = false;
+
+			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
+				/*
+				 * We'll create a temporary var beforehand for each parameter to avoid scoping issues with the
+				 * variables context (temporary vars are global). This shouldn't be too much overhead in terms
+				 * of raw performance.
+				 */
+				final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
+				tempVar.setName(TEMPORARY_INVOCATION_ARG_PREFIX + i);
+				final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
+				init.setReferredVariable(containingTemplate.getParameter().get(i));
+				tempVar.setInitExpression(init);
+				temporaryArgVars.add(tempVar);
+				// Evaluate the value of this new variable
+				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
+			}
+
+			// The actual template that will be called is known ; create its variable scope
+			((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
+
 			// Determine argument values and context
 			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
 				Variable var = actualTemplate.getParameter().get(i);
 				final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
-				init.setReferredVariable(containingTemplate.getParameter().get(i));
+				init.setReferredVariable(temporaryArgVars.get(i));
 				var.setInitExpression(init);
 				// Evaluate the value of this new variable
 				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
@@ -1306,13 +1326,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			final List<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 					.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), template, argValues);
 			evaluateGuards(applicableCandidates, temporaryArgVars);
-			// We now know the actual template that's to be called
+			// We now know the actual template that's to be called ; create its variable scope
+			((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
+
 			if (applicableCandidates.size() > 0) {
 				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 						.getMostSpecificTemplate(applicableCandidates, argValues);
-
-				// This is the actual template that will be called. We now need to create its variable scope
-				((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
 
 				// Determine argument values and context
 				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
