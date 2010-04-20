@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.debug;
 
+import java.util.Map;
+
 /**
  * The interface to implement to be able to debug an AST evaluation.
  * 
@@ -30,10 +32,10 @@ public interface IDebugAST {
 	 * 
 	 * @param astFragment
 	 *            is the fragment of the AST node to debug
-	 * @param input
-	 *            is the new input
+	 * @param variables
+	 *            Variables accessible at the time.
 	 */
-	void stepDebugInput(ASTFragment astFragment, Object input);
+	void stepDebugInput(ASTFragment astFragment, Map<String, Object> variables);
 
 	/**
 	 * Update the output of the debugger for the current AST node.

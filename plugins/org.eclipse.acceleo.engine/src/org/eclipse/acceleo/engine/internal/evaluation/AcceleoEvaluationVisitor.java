@@ -93,9 +93,7 @@ import org.eclipse.ocl.utilities.PredefinedType;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
-	/**
-	 * To debug an AST evaluation. TODO JMU : Put this debugger instance in the evaluation context
-	 */
+	/** This will be set by launch configs to debug AST evaluations. */
 	private static IDebugAST debug;
 
 	/** We'll use this to store the value of the iteration count. */
@@ -111,6 +109,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
+
+	/** Holds the prefix we'll use for the temporary context variables created to hold context values. */
+	private static final String TEMPORARY_CONTEXT_VAR_PREFIX = "context$"; //$NON-NLS-1$
 
 	/** Holds the prefix we'll use for the temporary variables created to hold argument values. */
 	private static final String TEMPORARY_INVOCATION_ARG_PREFIX = "temporaryInvocationVariable$"; //$NON-NLS-1$
@@ -860,8 +861,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		if (debug != null && !(expression instanceof StringLiteralExp)) {
-			// TODO JMU see new object "lastSourceExpressionResult". this could be interesting.
-			// FIXME add variables in input
 			debugInput = lastEObjectSelfValue;
 			astFragment = new ASTFragment(expression);
 			if (debugInput != null && debugInput.eClass().getEStructuralFeature("name") != null) { //$NON-NLS-1$
@@ -871,7 +870,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				}
 			}
 			debug.startDebug(astFragment);
-			debug.stepDebugInput(astFragment, debugInput);
+			Map<String, Object> vars;
+			if (getEvaluationEnvironment() instanceof AcceleoEvaluationEnvironment) {
+				vars = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).getCurrentVariables();
+			} else {
+				vars = new HashMap<String, Object>();
+			}
+			debug.stepDebugInput(astFragment, vars);
 		}
 		if (profile != null && profileExpression(expression)) {
 			profile.start(expression);
@@ -1030,9 +1035,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @return Name of the newly created variable.
 	 */
 	private String addContextVariableFor(Object contextValue) {
-		String variableName = "context" + currentContextIndex++; //$NON-NLS-1$
+		String variableName = TEMPORARY_CONTEXT_VAR_PREFIX + currentContextIndex++;
 		while (getEvaluationEnvironment().getValueOf(variableName) != null) {
-			variableName = "context" + currentContextIndex++; //$NON-NLS-1$
+			variableName = TEMPORARY_CONTEXT_VAR_PREFIX + currentContextIndex++;
 		}
 		getEvaluationEnvironment().add(variableName, contextValue);
 		return variableName;

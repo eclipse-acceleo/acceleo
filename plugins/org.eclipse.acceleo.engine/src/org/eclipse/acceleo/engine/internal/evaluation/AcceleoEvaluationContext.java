@@ -37,10 +37,10 @@ import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.expressions.OCLExpression;
@@ -260,11 +260,9 @@ public class AcceleoEvaluationContext<C> {
 			} else {
 				moduleFile = containingModule.getName() + '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
 			}
-			String expressionDescription;
-			if (expression instanceof ENamedElement && ((ENamedElement)expression).getName() != null) {
-				expressionDescription = ((ENamedElement)expression).getName();
-			} else {
-				expressionDescription = expression.eClass().getName();
+			EObject containingModuleElement = expression;
+			while (!(containingModuleElement instanceof ModuleElement)) {
+				containingModuleElement = containingModuleElement.eContainer();
 			}
 			Adapter adapter = EcoreUtil.getAdapter(expression.eAdapters(), AcceleoASTNodeAdapter.class);
 			int line = 0;
@@ -272,7 +270,7 @@ public class AcceleoEvaluationContext<C> {
 				line = ((AcceleoASTNodeAdapter)adapter).getLine();
 			}
 			stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(containingModule.getName(),
-					expressionDescription, moduleFile, line);
+					containingModuleElement.toString(), moduleFile, line);
 		}
 		return stackTrace;
 	}

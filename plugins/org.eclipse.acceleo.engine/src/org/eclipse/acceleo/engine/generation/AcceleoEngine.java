@@ -45,7 +45,7 @@ import org.eclipse.ocl.ecore.Variable;
  */
 public class AcceleoEngine implements IAcceleoEngine {
 	/** Externalized name of the "self" context variable to avoid too many distinct uses. */
-	private static final String SELF_CONTEXT_VARIABLE_NAME = "context0"; //$NON-NLS-1$
+	private static final String SELF_CONTEXT_VARIABLE_NAME = "context$0"; //$NON-NLS-1$
 
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$

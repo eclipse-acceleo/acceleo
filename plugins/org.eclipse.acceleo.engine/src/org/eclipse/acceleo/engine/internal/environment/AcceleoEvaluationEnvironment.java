@@ -78,6 +78,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/** This will be used as a place holder so that library operations call can return null. */
 	private static final Object OPERATION_CALL_FAILED = new Object();
 
+	/** Holds the prefix we'll use for the temporary context variables created to hold context values. */
+	private static final String TEMPORARY_CONTEXT_VAR_PREFIX = "context$"; //$NON-NLS-1$
+
+	/** Holds the prefix we'll use for the temporary variables created to hold argument values. */
+	private static final String TEMPORARY_INVOCATION_ARG_PREFIX = "temporaryInvocationVariable$"; //$NON-NLS-1$
+
 	/** This will allow the environment to know of the modules currently in the generation context. */
 	private final Set<Module> currentModules = new HashSet<Module>();
 
@@ -109,7 +115,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
 	 * multiple bindings against the same variable name.
 	 */
-	private final Map<String, LinkedList<Object>> variableMap = new HashMap<String, LinkedList<Object>>();
+	private final LinkedList<Map<String, LinkedList<Object>>> scopedVariableMap = new LinkedList<Map<String, LinkedList<Object>>>();
+
+	/**
+	 * This will contain variables that are global to a generation module.
+	 */
+	private final Map<String, LinkedList<Object>> globalVariableMap = new HashMap<String, LinkedList<Object>>();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -126,6 +137,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent,
 			Module module, List<Properties> props) {
 		super(parent);
+		scopedVariableMap.add(new HashMap<String, LinkedList<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
@@ -143,6 +155,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	public AcceleoEvaluationEnvironment(Module module, List<Properties> props) {
 		super();
+		scopedVariableMap.add(new HashMap<String, LinkedList<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
@@ -156,6 +169,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void add(String name, Object value) {
+		Map<String, LinkedList<Object>> variableMap;
+		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
+			variableMap = globalVariableMap;
+		} else {
+			variableMap = scopedVariableMap.getLast();
+		}
 		LinkedList<Object> values = variableMap.get(name);
 		if (values == null) {
 			values = new LinkedList<Object>();
@@ -340,7 +359,16 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	@Override
 	public void clear() {
 		super.clear();
-		variableMap.clear();
+		scopedVariableMap.clear();
+		globalVariableMap.clear();
+	}
+
+	/**
+	 * Creates a new variable scope. This will typically be called when we enter a new TemplateInvocation or
+	 * QueryInvocation.
+	 */
+	public void createVariableScope() {
+		scopedVariableMap.add(new HashMap<String, LinkedList<Object>>());
 	}
 
 	/**
@@ -416,16 +444,36 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	}
 
 	/**
+	 * This will return the map of currently available variables.
+	 * 
+	 * @return The map of currently available variables.
+	 */
+	public Map<String, Object> getCurrentVariables() {
+		Map<String, LinkedList<Object>> variableMap = scopedVariableMap.getLast();
+		Map<String, Object> availableVariables = new HashMap<String, Object>();
+		for (Map.Entry<String, LinkedList<Object>> var : variableMap.entrySet()) {
+			if (!var.getValue().isEmpty()) {
+				availableVariables.put(var.getKey(), var.getValue().getLast());
+			}
+		}
+		return availableVariables;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#getValueOf(java.lang.String)
 	 */
 	@Override
 	public Object getValueOf(String name) {
+		Object value = null;
+		Map<String, LinkedList<Object>> variableMap = scopedVariableMap.getLast();
 		if (variableMap.containsKey(name)) {
-			return variableMap.get(name).getLast();
+			value = variableMap.get(name).getLast();
+		} else if (globalVariableMap.containsKey(name)) {
+			value = globalVariableMap.get(name).getLast();
 		}
-		return null;
+		return value;
 	}
 
 	/**
@@ -459,14 +507,29 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public Object remove(String name) {
-		if (!variableMap.containsKey(name)) {
+		Map<String, LinkedList<Object>> variableMap;
+		if (scopedVariableMap.getLast().containsKey(name)) {
+			variableMap = scopedVariableMap.getLast();
+		} else if (globalVariableMap.containsKey(name)) {
+			variableMap = globalVariableMap;
+		} else {
 			return null;
 		}
+
 		final Object removedValue = variableMap.get(name).removeLast();
 		if (variableMap.get(name).size() == 0) {
 			variableMap.remove(name);
 		}
 		return removedValue;
+	}
+
+	/**
+	 * This will remove and return the last variable scope.
+	 * 
+	 * @return Removes and return the last variable scope.
+	 */
+	public Map<String, LinkedList<Object>> removeVariableScope() {
+		return scopedVariableMap.remove();
 	}
 
 	/**
@@ -476,6 +539,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void replace(String name, Object value) {
+		Map<String, LinkedList<Object>> variableMap;
+		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
+			variableMap = globalVariableMap;
+		} else {
+			variableMap = scopedVariableMap.getLast();
+		}
+
 		if (variableMap.containsKey(name)) {
 			variableMap.get(name).removeLast();
 		}
@@ -489,6 +559,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public String toString() {
+		Map<String, LinkedList<Object>> variableMap = scopedVariableMap.getLast();
 		return variableMap.toString();
 	}
 
@@ -564,6 +635,16 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				temp.add(sourceIterator.next());
 				if (sourceIterator.hasNext()) {
 					temp.add(args[0]);
+				}
+			}
+			result = temp;
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName)) {
+			final List<Object> temp = new ArrayList<Object>(source.size());
+			final Iterator<?> sourceIterator = source.iterator();
+			while (sourceIterator.hasNext()) {
+				final Object next = sourceIterator.next();
+				if (((EClassifier)args[0]).isInstance(next)) {
+					temp.add(next);
 				}
 			}
 			result = temp;
@@ -1003,14 +1084,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return Result of the invocation.
 	 */
 	private Object getContext(Object[] args) {
-		final String iteratorPrefix = "context"; //$NON-NLS-1$
 		final Object soughtValue;
 		final List<Object> allIterators = new ArrayList<Object>();
 		int index = 0;
-		Object value = getValueOf(iteratorPrefix + index++);
+		Object value = getValueOf(TEMPORARY_CONTEXT_VAR_PREFIX + index++);
 		while (value != null) {
 			allIterators.add(value);
-			value = getValueOf(iteratorPrefix + index++);
+			value = getValueOf(TEMPORARY_CONTEXT_VAR_PREFIX + index++);
 		}
 
 		if (args[0] instanceof Integer) {

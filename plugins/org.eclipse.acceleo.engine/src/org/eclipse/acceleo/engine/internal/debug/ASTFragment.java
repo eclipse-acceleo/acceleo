@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.debug;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * The fragment URI of an AST node.
@@ -28,6 +28,9 @@ public class ASTFragment {
 	 * The generic pattern used to specify that every object name is valid.
 	 */
 	private static final String ALL_NAMES_FILTER = "*"; //$NON-NLS-1$
+
+	/** AST node this fragments wraps. */
+	private final ASTNode astNode;
 
 	/**
 	 * Short name of the file, it means the name of the file without extension.
@@ -55,8 +58,9 @@ public class ASTFragment {
 	 * @param astNode
 	 *            is the AST node
 	 */
-	public ASTFragment(EObject astNode) {
+	public ASTFragment(ASTNode astNode) {
 		super();
+		this.astNode = astNode;
 		if (astNode == null) {
 			this.fileShortName = ""; //$NON-NLS-1$
 			this.fragmentURI = ""; //$NON-NLS-1$
@@ -90,6 +94,7 @@ public class ASTFragment {
 	 */
 	public ASTFragment(String string) {
 		super();
+		this.astNode = null;
 		if (string == null) {
 			this.fileShortName = ""; //$NON-NLS-1$
 			this.fragmentURI = ""; //$NON-NLS-1$
@@ -115,6 +120,15 @@ public class ASTFragment {
 				this.eObjectNameFilter = ""; //$NON-NLS-1$
 			}
 		}
+	}
+
+	/**
+	 * Returns the AST node this fragments represents (can be null).
+	 * 
+	 * @return AST node this fragments represents.
+	 */
+	public ASTNode getASTNode() {
+		return astNode;
 	}
 
 	/**

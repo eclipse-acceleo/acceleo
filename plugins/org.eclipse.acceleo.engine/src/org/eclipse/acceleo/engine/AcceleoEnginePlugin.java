@@ -111,6 +111,7 @@ public class AcceleoEnginePlugin extends Plugin {
 		if (getDefault() != null) {
 			getDefault().getLog().log(status);
 		} else {
+			// We are out of eclipse. Prints the message on standard error.
 			// CHECKSTYLE:OFF
 			System.err.println(status.getMessage());
 			status.getException().printStackTrace();
