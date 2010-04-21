@@ -78,6 +78,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/** This will be used as a place holder so that library operations call can return null. */
 	private static final Object OPERATION_CALL_FAILED = new Object();
 
+	/** This will hold mapping from primitive types names to their Class instance. */
+	private static final Map<String, Class<?>> PRIMITIVE_TYPES;
+
 	/** Holds the prefix we'll use for the temporary context variables created to hold context values. */
 	private static final String TEMPORARY_CONTEXT_VAR_PREFIX = "context$"; //$NON-NLS-1$
 
@@ -121,6 +124,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * This will contain variables that are global to a generation module.
 	 */
 	private final Map<String, LinkedList<Object>> globalVariableMap = new HashMap<String, LinkedList<Object>>();
+
+	static {
+		PRIMITIVE_TYPES = new HashMap<String, Class<?>>();
+		PRIMITIVE_TYPES.put("boolean", boolean.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("byte", byte.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("char", char.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("short", short.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("int", int.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("long", long.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("float", float.class); //$NON-NLS-1$
+		PRIMITIVE_TYPES.put("double", double.class); //$NON-NLS-1$
+	}
 
 	/**
 	 * This constructor is needed by the factory.
@@ -1315,7 +1330,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					while (nextCommaIndex != -1) {
 						final String parameterType = parameterTypesString.substring(previousComma,
 								nextCommaIndex).trim();
-						if (serviceInstance.getClass().getClassLoader() != null) {
+						if (PRIMITIVE_TYPES.containsKey(parameterType)) {
+							parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
+						} else if (serviceInstance.getClass().getClassLoader() != null) {
 							parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
 									parameterType));
 						} else {
@@ -1330,7 +1347,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					 */
 					final String parameterType = parameterTypesString.substring(previousComma,
 							parameterTypesString.length()).trim();
-					if (serviceInstance.getClass().getClassLoader() != null) {
+					if (PRIMITIVE_TYPES.containsKey(parameterType)) {
+						parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
+					} else if (serviceInstance.getClass().getClassLoader() != null) {
 						parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
 								parameterType));
 					} else {
