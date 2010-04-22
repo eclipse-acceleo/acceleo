@@ -54,6 +54,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jdt.internal.debug.ui.LocalFileStorageEditorInput;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -82,6 +84,7 @@ import org.osgi.framework.Bundle;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class OpenDeclarationUtils {
+
 	/**
 	 * Utility classes don't need to be instantiated.
 	 */
@@ -668,4 +671,58 @@ public final class OpenDeclarationUtils {
 			viewer.getControl().getDisplay().asyncExec(runnable);
 		}
 	}
+
+	/**
+	 * The region of the found word.
+	 * 
+	 * @param document
+	 *            the current document
+	 * @param offset
+	 *            the given offset
+	 * @return the region of the word at the given offset
+	 */
+	public static IRegion findIdentifierRegion(final IDocument document, final int offset) {
+		final int startValue = -2;
+		int start = startValue;
+		int end = -1;
+		try {
+			int pos = offset;
+			char c;
+			while (pos >= 0) {
+				c = document.getChar(pos);
+				if (!Character.isJavaIdentifierPart(c)) {
+					break;
+				}
+				--pos;
+			}
+			start = pos;
+			pos = offset;
+			int length = document.getLength();
+
+			while (pos < length) {
+				c = document.getChar(pos);
+				if (!Character.isJavaIdentifierPart(c)) {
+					break;
+				}
+				++pos;
+			}
+			end = pos;
+		} catch (BadLocationException x) {
+			// do nothing
+		}
+		if (start >= -1 && end > -1) {
+			IRegion region = null;
+			if (start == offset && end == offset) {
+				region = new Region(offset, 0);
+			} else if (start == offset) {
+				region = new Region(start, end - start);
+			} else {
+				region = new Region(start + 1, end - start - 1);
+			}
+			return region;
+		}
+		return null;
+
+	}
+
 }

@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
@@ -171,7 +172,9 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		ResourceSet newResourceSet = new ResourceSetImpl();
 		for (URI uri : allURIs) {
 			try {
-				ModelUtils.load(uri, newResourceSet);
+				if (this.resourceAtURIExist(uri)) {
+					ModelUtils.load(uri, newResourceSet);
+				}
 			} catch (IOException e) {
 				// do nothing
 			}
@@ -185,6 +188,25 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		for (Resource resource : newResourceSet.getResources()) {
 			resource.unload();
 		}
+	}
+
+	/**
+	 * Test if the resource at the given URI exist.
+	 * 
+	 * @param uri
+	 *            The URI.
+	 * @return true if the resource exist.
+	 */
+	private boolean resourceAtURIExist(final URI uri) {
+		boolean result = true;
+
+		try {
+			result = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(uri.toString()).exists();
+		} catch (IOException e) {
+			// do nothing
+		}
+
+		return result;
 	}
 
 	/**

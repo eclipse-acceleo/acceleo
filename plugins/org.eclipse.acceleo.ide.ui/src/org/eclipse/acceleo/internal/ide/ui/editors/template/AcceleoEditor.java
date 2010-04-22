@@ -19,10 +19,12 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -35,19 +37,24 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -59,11 +66,14 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -123,14 +133,32 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	/** Allows us to enable folding support on this editor. */
 	private ProjectionSupport projectionSupport;
 
-	/** This will allow us to update the folding strucutre of the document. */
+	/** This will allow us to update the folding structure of the document. */
 	private ProjectionAnnotationModel annotationModel;
 
 	/**
 	 * Keeps a reference to the object last updated in the outline through a double-click on the editor. This
-	 * allows us to ignore the feedback &quot;updateSelection&quot; event from the outline.
+	 * allows us to ignore the feedback &quot;updateSelection&quot; event from the outline. It identifies an
+	 * EObject without keeping the real reference on this EObject.
 	 */
-	private EObject updatingOutline;
+	private String updatingOutlineURI = ""; //$NON-NLS-1$
+
+	/**
+	 * Keeps a reference to the last selected AST node in the editor through a simple-click on the editor. It
+	 * identifies an EObject without keeping the real reference on this EObject.
+	 */
+	private String offsetASTNodeURI = ""; //$NON-NLS-1$
+
+	/**
+	 * The decorate job to highlight all the occurrences of the current selection in the editor.
+	 */
+	private AcceleoOccurrencesFinderJob occurrencesFinderJob;
+
+	/**
+	 * Listener which is notified when the post selection changes on the page. It is used to highlight in the
+	 * editor the occurrences of the current selected region.
+	 */
+	private ISelectionListener findOccurrencesPostSelectionListener;
 
 	/**
 	 * Constructor.
@@ -245,6 +273,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (selectionChangedListener != null) {
 			getContentOutlinePage().removeSelectionChangedListener(selectionChangedListener);
 			selectionChangedListener = null;
+		}
+		if (findOccurrencesPostSelectionListener != null) {
+			this.getSite().getPage().removePostSelectionListener(findOccurrencesPostSelectionListener);
+			findOccurrencesPostSelectionListener = null;
 		}
 		if (content != null && content.getFile() != null) {
 			try {
@@ -397,9 +429,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	protected void selectionChangedDetected(SelectionChangedEvent event) {
 		ISelection selection = event.getSelection();
 		Object selectedElement = ((IStructuredSelection)selection).getFirstElement();
-		if (selectedElement == updatingOutline) {
+		String selectedElementURI = getFragmentURI(selectedElement);
+		if (selectedElementURI.equals(updatingOutlineURI)) {
 			// Simply ignore the event
-			updatingOutline = null;
+			updatingOutlineURI = ""; //$NON-NLS-1$
 		} else if (selectedElement instanceof CSTNode) {
 			int b = ((CSTNode)selectedElement).getStartPosition();
 			int e = ((CSTNode)selectedElement).getEndPosition();
@@ -407,6 +440,29 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				selectRange(b, e);
 			}
 		}
+	}
+
+	/**
+	 * Returns the EMF fragment URI of the given object. The result cannot be null. The default value is an
+	 * empty string. It is useful in this class to identify an EObject without keeping the real reference on
+	 * this EObject.
+	 * 
+	 * @param object
+	 *            is the object
+	 * @return the EMF fragment URI, the default value is an empty string
+	 */
+	private String getFragmentURI(Object object) {
+		String fragmentURI = null;
+		if (object instanceof EObject) {
+			Resource eResource = ((EObject)object).eResource();
+			if (eResource != null) {
+				fragmentURI = eResource.getURIFragment((EObject)object);
+			}
+		}
+		if (fragmentURI == null) {
+			fragmentURI = ""; //$NON-NLS-1$
+		}
+		return fragmentURI;
 	}
 
 	/**
@@ -431,7 +487,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			if (source != null) {
 				EObject object = source.getCSTNode(posBegin, e);
 				if (object != null) {
-					updatingOutline = object;
+					updatingOutlineURI = getFragmentURI(object);
 					getContentOutlinePage().setSelection(new StructuredSelection(object));
 				}
 			}
@@ -570,8 +626,102 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 
 		// turn projection mode on
 		viewer.doOperation(ProjectionViewer.TOGGLE);
+		if (findOccurrencesPostSelectionListener == null) {
+			findOccurrencesPostSelectionListener = new ISelectionListener() {
+				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+					findOccurrences();
+				}
+			};
+			this.getSite().getPage().addPostSelectionListener(findOccurrencesPostSelectionListener);
+		}
 
 		annotationModel = viewer.getProjectionAnnotationModel();
+	}
+
+	/**
+	 * Find all the occurrences of the selected element and highlight them.
+	 */
+	@SuppressWarnings("unchecked")
+	private void findOccurrences() {
+		if (occurrencesFinderJob != null) {
+			occurrencesFinderJob.cancel();
+		}
+		final EObject selectedElement = this.findDeclaration();
+		String selectedElementURI = getFragmentURI(selectedElement);
+		if (!selectedElementURI.equals(offsetASTNodeURI)) {
+			offsetASTNodeURI = selectedElementURI;
+			final IAnnotationModel model = this.getDocumentProvider().getAnnotationModel(
+					this.getEditorInput());
+			if (model != null) {
+				Iterator<Annotation> annotations = model.getAnnotationIterator();
+				while (annotations.hasNext()) {
+					Annotation annotation = (Annotation)annotations.next();
+					if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
+							.getType())) {
+						model.removeAnnotation(annotation);
+					}
+				}
+			}
+			if (selectedElement != null) {
+				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement);
+				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(this, AcceleoUIMessages
+						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery); //$NON-NLS-1$
+				occurrencesFinderJob.setSystem(true);
+				occurrencesFinderJob.setPriority(Job.DECORATE);
+				occurrencesFinderJob.schedule();
+			}
+		}
+	}
+
+	/**
+	 * Find the declaration of the text selected in the given editor.
+	 * 
+	 * @return the EObject corresponding to the declaration of the selected element
+	 */
+	private EObject findDeclaration() {
+		EObject res = null;
+		int offset;
+		final ISelection selection = this.getSelectionProvider().getSelection();
+		if (selection instanceof TextSelection) {
+			offset = ((TextSelection)selection).getOffset();
+		} else {
+			offset = -1;
+		}
+		final ASTNode astNode = this.getContent().getASTNode(offset, offset);
+		if (astNode != null) {
+			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+		}
+		if (res == null) {
+			final CSTNode cstNode = this.getContent().getCSTNode(offset, offset);
+			if (cstNode != null) {
+				res = OpenDeclarationUtils.findDeclarationFromCST(this, astNode, cstNode);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Compute the whole line of the current offset.
+	 * 
+	 * @param document
+	 *            the current document
+	 * @param offset
+	 *            the current offset
+	 * @return the line containing the offset, ended with the offset
+	 */
+	public String getCurrentLine(final IDocument document, final int offset) {
+		String result = null;
+		try {
+			if (offset >= 0) {
+				final int lineNumber = document.getLineOfOffset(offset);
+				final int lineOffset = document.getLineOffset(lineNumber);
+				result = document.get(lineOffset, offset - lineOffset);
+			}
+			return result;
+		} catch (BadLocationException ble) {
+			result = null;
+		}
+		return result;
 	}
 
 	/**
@@ -590,4 +740,5 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 
 		return viewer;
 	}
+
 }
