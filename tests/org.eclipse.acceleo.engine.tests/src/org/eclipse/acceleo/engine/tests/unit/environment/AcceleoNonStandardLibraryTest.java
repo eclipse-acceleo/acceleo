@@ -25,6 +25,7 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoLibraryOperationVisitor;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -54,6 +55,9 @@ import org.eclipse.ocl.ecore.OCL;
 public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	/** The evaluation environment to call for non standard operations on. */
 	private AcceleoEvaluationEnvironment evaluationEnvironment;
+
+	/** This will be created at setUp and disposed of at tearDown time. */
+	private AcceleoEnvironmentFactory factory;
 
 	/** EOperations defined in the non standard lib. */
 	private final Map<String, List<EOperation>> nonStdLib = new HashMap<String, List<EOperation>>();
@@ -100,7 +104,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		super.setUp();
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("NonStdLib"));
-		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
+		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(),
 				previewStrategy, new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
@@ -129,6 +133,16 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#tearDown()
+	 */
+	@Override
+	protected void tearDown() {
+		factory.dispose();
+	}
+
+	/**
 	 * Tests the behavior of the non standard "ancestors()" operation on OclAny.
 	 * <p>
 	 * Expects the result to contain all of the containers of the given object.
@@ -148,7 +162,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, attribute);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, attribute);
 		assertSame("Unexpected count of ancestors returned", 4, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The first container of the attribute should have been the class", clazz, children.next());
@@ -180,8 +195,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, attribute,
-				EcorePackage.eINSTANCE.getEPackage());
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, attribute, EcorePackage.eINSTANCE.getEPackage());
 		assertSame("Unexpected count of ancestors returned", 3, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The first container of the attribute should have been the second sub-package", subSub,
@@ -215,7 +230,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub2);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, root);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, root);
 		assertSame("Unexpected count of descendants returned", 5, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The first descendant of the root should have been the first sub-package", sub, children
@@ -252,8 +268,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub2);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, root,
-				EcorePackage.eINSTANCE.getEPackage());
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, root, EcorePackage.eINSTANCE.getEPackage());
 		assertSame("Unexpected count of descendants returned", 3, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The first descendant of the root should have been the first sub-package", sub, children
@@ -265,7 +281,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, root, (EObject)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, root,
+					(EObject)null);
 			fail("The non standard eAllContents(OclAny) operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -297,7 +314,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, clazz2);
 		assertSame("Unexpected count of inverse references returned", 2, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The first inverse reference on the second EClass should have been the first EClass",
@@ -332,8 +350,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2,
-				EcorePackage.eINSTANCE.getEGenericType());
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, clazz2, EcorePackage.eINSTANCE.getEGenericType());
 		assertSame("Unexpected count of inverse references returned", 1, ((Collection<?>)result).size());
 		final Iterator<?> children = ((Collection<?>)result).iterator();
 		assertTrue("The inverse reference on the second EClass should have been a GenericType", children
@@ -362,13 +380,15 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, clazz2);
 		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
 		Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The sibling should have been the first added EClass.", clazz1, children.next());
 		assertSame("The sibling should have been the third added EClass.", clazz3, children.next());
 
-		result = evaluationEnvironment.callNonStandardOperation(operation, clazz1);
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				clazz1);
 		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
 		children = ((Collection<?>)result).iterator();
 		assertSame("The sibling should have been the second added EClass.", clazz2, children.next());
@@ -406,23 +426,23 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		final List<Object> args = new ArrayList<Object>();
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, root, "java.lang.Object",
-				"toString()", args);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, root, "java.lang.Object", "toString()", args);
 		assertNotNull("A result should have been returned", result);
 		assertEquals("Unexpected result of invocation with Object.toString as target", root.toString(),
 				result);
 
 		args.add(root);
-		result = evaluationEnvironment.callNonStandardOperation(operation, root,
-				"org.eclipse.emf.ecore.util.EcoreUtil", "getURI(org.eclipse.emf.ecore.EObject)", args);
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				root, "org.eclipse.emf.ecore.util.EcoreUtil", "getURI(org.eclipse.emf.ecore.EObject)", args);
 		assertNotNull("A result should have been returned", result);
 		assertEquals("Unexpected result of invocation with Object.toString as target",
 				EcoreUtil.getURI(root), result);
 
 		// ClassNotFound
 		try {
-			result = evaluationEnvironment.callNonStandardOperation(operation, root, "inexisting.Object",
-					"method()", args);
+			result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+					operation, root, "inexisting.Object", "method()", args);
 			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
 					+ "when trying to invoke a method of an inexisting class.");
 		} catch (AcceleoEvaluationException e) {
@@ -431,8 +451,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// NoSuchMethod
 		try {
-			result = evaluationEnvironment.callNonStandardOperation(operation, root, "java.lang.Object",
-					"unknownMethod()", args);
+			result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+					operation, root, "java.lang.Object", "unknownMethod()", args);
 			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
 					+ "when trying to invoke an inexisting method.");
 		} catch (AcceleoEvaluationException e) {
@@ -443,8 +463,9 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		try {
 			args.clear();
 			args.add("test");
-			result = evaluationEnvironment.callNonStandardOperation(operation, root,
-					"org.eclipse.emf.ecore.util.EcoreUtil", "getURI(org.eclipse.emf.ecore.EObject)", args);
+			result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+					operation, root, "org.eclipse.emf.ecore.util.EcoreUtil",
+					"getURI(org.eclipse.emf.ecore.EObject)", args);
 			fail("The non-standard 'invoke' operation is expected to fail in AcceleoEvaluationException "
 					+ "when trying to invoke a method with illegal arguments.");
 		} catch (AcceleoEvaluationException e) {
@@ -477,14 +498,14 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		sub.getESubpackages().add(subSub);
 		root.getESubpackages().add(sub);
 
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, clazz2,
-				EcorePackage.eINSTANCE.getEEnum());
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, clazz2, EcorePackage.eINSTANCE.getEEnum());
 		assertSame("Unexpected count of siblings returned", 1, ((Collection<?>)result).size());
 		Iterator<?> children = ((Collection<?>)result).iterator();
 		assertSame("The sibling should have been the only eenum.", enumeration, children.next());
 
-		result = evaluationEnvironment.callNonStandardOperation(operation, enumeration,
-				EcorePackage.eINSTANCE.getEEnum());
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				enumeration, EcorePackage.eINSTANCE.getEEnum());
 		assertTrue("There shouldn't have been any sibling of type EEnum for the only EEnum of a package",
 				((Collection<?>)result).isEmpty());
 	}
@@ -518,16 +539,19 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		while (childrenIterator.hasNext()) {
 			final EObject child = childrenIterator.next();
 			assertEquals("Unexpected result of the non-standard toString operation on " + child, child
-					.toString(), evaluationEnvironment.callNonStandardOperation(operation, child));
+					.toString(), AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, child));
 		}
 
 		for (String value : stringValues) {
 			assertEquals("Unexpected result of the non-standard toString operation on a String", value,
-					evaluationEnvironment.callNonStandardOperation(operation, value));
+					AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+							value));
 		}
 
 		assertEquals("Unexpected result of the non-standard toString operation on an Integer", "0",
-				evaluationEnvironment.callNonStandardOperation(operation, Integer.valueOf(0)));
+				AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+						Integer.valueOf(0)));
 	}
 
 	/**
@@ -544,8 +568,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Taking random characters as the value : expecting contains to return false
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value,
-					uncontainedString);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, uncontainedString);
 			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been false.", Boolean.FALSE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -562,7 +586,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				final int offset2 = Double.valueOf(Math.random() * value.length()).intValue();
 				subString = value.substring(Math.min(offset1, offset2), Math.max(offset1, offset2));
 			}
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, subString);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, subString);
 			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -571,7 +596,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Checking if value "contains" itself : expecting contains to return true
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, value);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, value);
 			assertTrue("Result of contains should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -580,7 +606,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, stringValues[0], (Object)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (Object)null);
 			fail("The non standard String.contains operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -601,8 +628,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Taking random characters as the end value : expecting endsWith to return false
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value,
-					uncontainedString);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, uncontainedString);
 			assertTrue("Result of endsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been false.", Boolean.FALSE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -617,7 +644,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 			} else {
 				lastPart = value.substring(Math.max(value.length() / 2, 1));
 			}
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, lastPart);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, lastPart);
 			assertTrue("Result of endsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -626,7 +654,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Checking if value "endsWith" itself : expecting endsWith to return true
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, value);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, value);
 			assertTrue("Result of endsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -635,7 +664,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, stringValues[0], (Object)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (Object)null);
 			fail("The non standard String.endsWith operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -655,7 +685,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		final String value = "start .*abc.* - .*abc.* end";
 		String search = "(.*?)abc.*( end)";
 		String replace = "$1 -$2";
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, value, search, replace);
 		assertEquals("Non standard operation String.replace(String, String) didn't return the "
 				+ "expected result.", "start .* - end", result);
 		assertEquals("Non standard replace didn't yield the same result as String.replace().", value
@@ -663,7 +694,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		search = "not contained substring";
 		replace = "random replacement";
-		result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				value, search, replace);
 		assertEquals("standard operation String.replace(String, String) didn't return the "
 				+ "expected result.", "start .*abc.* - .*abc.* end", result);
 		assertEquals("Non standard replace didn't yield the same result as String.replace().", value
@@ -671,13 +703,15 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, (Object)null, "abc");
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					(Object)null, "abc");
 			fail("The non standard String.replace operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
 		}
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, "abc", (Object)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					"abc", (Object)null);
 			fail("The non standard String.replace operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -697,7 +731,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		final String value = "start .*abc.* - .*abc.* end";
 		String search = "(.*?)abc";
 		String replace = "$1def";
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, value, search, replace);
 		assertEquals("Non standard operation String.replaceAll(String, String) didn't return the "
 				+ "expected result.", "start .*def.* - .*def.* end", result);
 		assertEquals("Non standard replace didn't yield the same result as String.replaceAll().", value
@@ -705,7 +740,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		search = "not contained substring";
 		replace = "random replacement";
-		result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				value, search, replace);
 		assertEquals("standard operation String.replaceAll(String, String) didn't return the "
 				+ "expected result.", "start .*abc.* - .*abc.* end", result);
 		assertEquals("Non standard replaceAll didn't yield the same result as String.replaceAll().", value
@@ -713,13 +749,15 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, (Object)null, "abc");
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					(Object)null, "abc");
 			fail("The non standard String.replaceAll operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
 		}
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, "abc", (Object)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					"abc", (Object)null);
 			fail("The non standard String.replaceAll operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -740,8 +778,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Taking random characters as the end value : expecting startsWith to return false
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value,
-					uncontainedString);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, uncontainedString);
 			assertTrue("Result of startsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been false.", Boolean.FALSE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -756,7 +794,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 			} else {
 				firstPart = value.substring(0, Math.max(value.length() / 2, 1));
 			}
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, firstPart);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, firstPart);
 			assertTrue("Result of startsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -765,7 +804,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Checking if value "startsWith" itself : expecting startsWith to return true
 		for (String value : stringValues) {
-			final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, value);
+			final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+					evaluationEnvironment, operation, value, value);
 			assertTrue("Result of startsWith should have been a boolean", result instanceof Boolean);
 			assertEquals("Result should have been true.", Boolean.TRUE, result);
 			assertEquals("The non standard operation should have returned the same result as "
@@ -774,7 +814,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, stringValues[0], (Object)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (Object)null);
 			fail("The non standard String.startsWith operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -796,7 +837,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		final String value = "start .*abc.* - .*abc.* end";
 		String search = ".*abc.*";
 		String replace = "\\$1\\1def\\2$2\\";
-		Object result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, value, search, replace);
 		assertEquals("Non standard operation String.substituteAll(String, String) didn't return the "
 				+ "expected result.", "start \\$1\\1def\\2$2\\ - \\$1\\1def\\2$2\\ end", result);
 		assertEquals("Result of the non standard substituteAll should have been the same as calling"
@@ -804,19 +846,22 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		search = "not contained substring";
 		replace = "random replacement";
-		result = evaluationEnvironment.callNonStandardOperation(operation, value, search, replace);
+		result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+				value, search, replace);
 		assertEquals("Non standard operation String.substituteAll(String, String) didn't return the "
 				+ "expected result.", "start .*abc.* - .*abc.* end", result);
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, (EObject)null, "abc");
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					(EObject)null, "abc");
 			fail("The non standard String.substituteAll operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
 		}
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, "abc", (EObject)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					"abc", (EObject)null);
 			fail("The non standard String.substitute operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -836,8 +881,9 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		final String[] expected = {"this", "is", "a", "randomly", "delimited", "sentence", };
 		final String value = "this/is.a\\randomly_delimited^sentence";
-		final Object result = evaluationEnvironment.callNonStandardOperation(operation, value, "^/_.\\");
-		assertTrue("Result should have been a list.", result instanceof List);
+		final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, value, "^/_.\\");
+		assertTrue("Result should have been a list.", result instanceof List<?>);
 		assertSame("Result should have contained 6 words.", expected.length, ((List<String>)result).size());
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals("unexpected String in the tokenized list.", expected[i], ((List<String>)result)
@@ -846,7 +892,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, value, (EObject)null);
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation, value,
+					(EObject)null);
 			fail("The non standard String.tokenize operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -861,7 +908,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
 
 		final String value = "   abc   abc\nabc\n   ";
-		final Object result = evaluationEnvironment.callNonStandardOperation(operation, value.trim());
+		final Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, value.trim());
 		assertEquals("Unexpected result of the non standard String.trim operation.", "abc   abc\nabc", result);
 		assertEquals("Non standard String.trim did not yield the same result as java's String#trim().", value
 				.trim(), result);
@@ -882,7 +930,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		operation.getEAnnotations().add(acceleoAnnotation);
 
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, "source");
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+					"source");
 			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior
@@ -892,7 +941,8 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		}
 
 		try {
-			evaluationEnvironment.callNonStandardOperation(operation, "source", "arg1", "arg2");
+			AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment, operation,
+					"source", "arg1", "arg2");
 			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior

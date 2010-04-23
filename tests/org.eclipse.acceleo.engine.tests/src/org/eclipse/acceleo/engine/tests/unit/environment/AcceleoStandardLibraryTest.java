@@ -23,6 +23,7 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoLibraryOperationVisitor;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -42,6 +43,9 @@ import org.eclipse.ocl.ecore.OCL;
 public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	/** The evaluation environment to call for standard operations on. */
 	private AcceleoEvaluationEnvironment evaluationEnvironment;
+
+	/** This will be created at setUp and disposed of at tearDown time. */
+	private AcceleoEnvironmentFactory factory;
 
 	/** EOperations defined in the standard lib. */
 	private final Map<String, List<EOperation>> stdLib = new HashMap<String, List<EOperation>>();
@@ -91,7 +95,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		super.setUp();
 		// only used for initialization
 		generationRoot = new File(getGenerationRootPath("StdLib"));
-		final AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(generationRoot, module,
+		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new ArrayList<Properties>(),
 				previewStrategy, new BasicMonitor());
 		final OCL ocl = OCL.newInstance(factory);
@@ -122,6 +126,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#tearDown()
+	 */
+	@Override
+	protected void tearDown() {
+		factory.dispose();
+	}
+
+	/**
 	 * Tests the behavior of the standard "toString" operation on Integers. Expects the result to be that of
 	 * the source's toString method.
 	 */
@@ -137,7 +151,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		values.add(Integer.MAX_VALUE);
 		values.add(Long.MAX_VALUE);
 		for (Number value : values) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			assertEquals("Integer.toString() standard operation didn't evaluate to the accurate result.",
 					value.toString(), result);
 		}
@@ -159,7 +174,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		values.add(Float.MAX_VALUE);
 		values.add(Double.MAX_VALUE);
 		for (Number value : values) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			assertEquals("Real.toString() standard operation didn't evaluate to the accurate result.", value
 					.toString(), result);
 		}
@@ -174,14 +190,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_FIRST);
 
 		for (String value : stringValues) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value,
-					new Object[] {Integer.valueOf(-5), });
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value, new Object[] {Integer.valueOf(-5), });
 			assertEquals("Calling the standard operation String.first(int) with a negative "
 					+ "parameter should return self.", invalidObject, result);
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(0));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(0));
 			assertEquals("Calling the standard operation String.first(0) should return the empty String.",
 					"", result);
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(1));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(1));
 			if (value.length() == 0) {
 				assertEquals("calling the standard operation String.first(int) on the empty String "
 						+ "should return the empty String.", "", result);
@@ -189,7 +207,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				assertEquals("calling the standard operation String.first(1) should return the first "
 						+ "character of self.", String.valueOf(value.charAt(0)), result);
 			}
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(3));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(3));
 			if (value.length() == 0) {
 				assertEquals("calling the standard operation String.first(int) on the empty String should "
 						+ "return the empty String.", "", result);
@@ -205,7 +224,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null);
 			fail("The standard String.first operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -221,12 +241,13 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_INDEX);
 
 		for (String value : stringValues) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value, "jgfduigelgrkj");
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value, "jgfduigelgrkj");
 			assertEquals("Calling the standard operation String.index(String) with a String that is "
 					+ "not contained by self should have returned -1.", -1, result);
 			if (value.length() > 1) {
-				result = evaluationEnvironment.callStandardOperation(operation, value, value.substring(2,
-						value.length() - 1));
+				result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+						operation, value, value.substring(2, value.length() - 1));
 				assertEquals("Calling the standard operation String.index(String) with a String that is "
 						+ "contained by self should have had the same result as source.indexOf(String) + 1.",
 						value.indexOf(value.substring(2, value.length() - 1)), ((Integer)result - 1));
@@ -235,7 +256,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null);
 			fail("The standard String.index operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -252,7 +274,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
 
 		for (String value : stringValues) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			boolean isAlpha = true;
 			for (char c : value.toCharArray()) {
 				if (!Character.isLetter(c)) {
@@ -275,7 +298,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
 
 		for (String value : stringValues) {
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			boolean isAlphanum = true;
 			for (char c : value.toCharArray()) {
 				if (!Character.isLetterOrDigit(c)) {
@@ -297,14 +321,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_LAST);
 
 		for (String value : stringValues) {
-			Object result = evaluationEnvironment
-					.callStandardOperation(operation, value, Integer.valueOf(-5));
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value, Integer.valueOf(-5));
 			assertEquals("Calling the standard operation String.last(int) with a negative "
 					+ "parameter should return self.", invalidObject, result);
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(0));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(0));
 			assertEquals("Calling the standard operation String.last(0) should return the empty String.", "",
 					result);
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(1));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(1));
 			if (value.length() == 0) {
 				assertEquals("calling the standard operation String.last(int) on the empty String "
 						+ "should return the empty String.", "", result);
@@ -312,7 +338,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				assertEquals("calling the standard operation String.last(1) should return the last "
 						+ "character of self.", String.valueOf(value.charAt(value.length() - 1)), result);
 			}
-			result = evaluationEnvironment.callStandardOperation(operation, value, Integer.valueOf(3));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, Integer.valueOf(3));
 			if (value.length() == 0) {
 				assertEquals("calling the standard operation String.last(int) on the empty String should "
 						+ "return the empty String.", "", result);
@@ -328,7 +355,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null);
 			fail("The standard String.last operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -345,8 +373,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		for (int i = 0; i < stringValues.length; i++) {
 			for (int j = stringValues.length - 1; j >= 0; j--) {
-				Object result = evaluationEnvironment.callStandardOperation(operation, stringValues[i],
-						stringValues[j]);
+				Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+						operation, stringValues[i], stringValues[j]);
 				assertEquals("Unexpected result of the standard String.strcmp(String) operation.",
 						stringValues[i].compareTo(stringValues[j]), result);
 			}
@@ -354,7 +382,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null);
 			fail("The standard String.strcmp operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -371,7 +400,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		for (String value : stringValues) {
 			// string contains itself
-			Object result = evaluationEnvironment.callStandardOperation(operation, value, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value, value);
 			assertTrue("Standard String.strstr(String) operation reports source does not contain itself.",
 					result instanceof Boolean && ((Boolean)result).booleanValue());
 
@@ -382,20 +412,22 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 			} else if (value.length() > 1) {
 				search = value.substring(1, value.length() - 1);
 			}
-			result = evaluationEnvironment.callStandardOperation(operation, value, search);
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, search);
 			assertTrue("Standard String.strstr(String) operation reports source does not contain its "
 					+ "substring.", result instanceof Boolean && ((Boolean)result).booleanValue());
 
 			// not contained String
-			result = evaluationEnvironment.callStandardOperation(operation, value,
-					"This substring is not contained by any value");
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, "This substring is not contained by any value");
 			assertTrue("Standard String.strstr(String) operation reports source contains a random, "
 					+ "not contained string.", result instanceof Boolean && !((Boolean)result).booleanValue());
 		}
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null);
 			fail("The standard String.strstr operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -410,14 +442,15 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
 
 		final String value = "Standard english sentence with space-separated words.";
-		Object result = evaluationEnvironment
-				.callStandardOperation(operation, value, " ", Integer.valueOf(0));
+		Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+				operation, value, " ", Integer.valueOf(0));
 		assertEquals("Call to standard operation String.strtok(\" \", 0) did not return the first word "
 				+ "of self", "Standard", result);
 
 		final String[] words = value.split(" ");
 		for (int i = 1; i < words.length; i++) {
-			result = evaluationEnvironment.callStandardOperation(operation, value, " ", Integer.valueOf(1));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					value, " ", Integer.valueOf(1));
 			assertEquals("Subsequent call to standard operation String.strtok(\" \", 1) did not return the "
 					+ "next word of self", words[i], result);
 		}
@@ -426,7 +459,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		 * We've consumed all of the tokenizer's tokens. Any subsequent call is expected to return the empty
 		 * String.
 		 */
-		result = evaluationEnvironment.callStandardOperation(operation, value, " ", Integer.valueOf(1));
+		result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+				value, " ", Integer.valueOf(1));
 		assertEquals("Calling the standard operation String.strtok(\" \", 1) is expected to return the "
 				+ "empty String when all tokens have been consumed.", "", result);
 
@@ -434,20 +468,22 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		 * Calling strtok on a given String with the flag set to 0 a second time is expected to reset the
 		 * tokenizer and return the first word again.
 		 */
-		result = evaluationEnvironment.callStandardOperation(operation, value, " ", Integer.valueOf(0));
+		result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+				value, " ", Integer.valueOf(0));
 		assertEquals("Call to standard operation String.strtok(\" \", 0) did not return the first word "
 				+ "of self", "Standard", result);
 
 		// Calling strtok with its flag at 1 on a new String will have the same effect as a "0" flag
 		final String newValue = "test sentence.";
-		result = evaluationEnvironment.callStandardOperation(operation, newValue, " ", Integer.valueOf(1));
+		result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+				newValue, " ", Integer.valueOf(1));
 		assertEquals("Call to standard operation String.strtok(\" \", 1) on a new source did not return"
 				+ " the first word of self", "test", result);
 
 		// Calling strtok with an invalid flag fails
 		try {
-			result = evaluationEnvironment
-					.callStandardOperation(operation, newValue, " ", Integer.valueOf(5));
+			result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					newValue, " ", Integer.valueOf(5));
 			fail("The standard String.strtok operation should have failed with an invalid flag");
 		} catch (AcceleoEvaluationException e) {
 			// Expected behavior
@@ -455,14 +491,15 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null, Integer
-					.valueOf(0));
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null, Integer.valueOf(0));
 			fail("The standard String.strtok operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
 		}
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], " ", (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], " ", (EObject)null);
 			fail("The standard String.strtok operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -481,25 +518,27 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
 
 		final String value = "start .*abc.* - .*abc.* end";
-		Object result = evaluationEnvironment.callStandardOperation(operation, value, ".*abc.*",
-				"\\$1\\1def\\2$2\\");
+		Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+				operation, value, ".*abc.*", "\\$1\\1def\\2$2\\");
 		assertEquals("standard operation String.substitute(String, String) didn't return the "
 				+ "expected result.", "start \\$1\\1def\\2$2\\ - .*abc.* end", result);
 
-		result = evaluationEnvironment.callStandardOperation(operation, value, "not contained substring",
-				"random replacement");
+		result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+				value, "not contained substring", "random replacement");
 		assertEquals("standard operation String.substitute(String, String) didn't return the "
 				+ "expected result.", "start .*abc.* - .*abc.* end", result);
 
 		// Ensure the behavior when passing null as argument doesn't evolve
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], (EObject)null, "abc");
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], (EObject)null, "abc");
 			fail("The standard String.substitute operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
 		}
 		try {
-			evaluationEnvironment.callStandardOperation(operation, stringValues[0], "abc", (EObject)null);
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation,
+					stringValues[0], "abc", (EObject)null);
 			fail("The standard String.substitute operation previously threw NPEs when called with null argument");
 		} catch (NullPointerException e) {
 			// Expected behavior
@@ -521,7 +560,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 				expected = Character.toLowerCase(value.charAt(0)) + value.substring(1);
 			}
 			// string contains itself
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			assertEquals("Standard String.toLowerFirst() operation did not return the expect result.",
 					expected, result);
 		}
@@ -536,7 +576,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 
 		for (String value : stringValues) {
 			// string contains itself
-			Object result = evaluationEnvironment.callStandardOperation(operation, value);
+			Object result = AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment,
+					operation, value);
 			final String expected;
 			if (value.length() == 0) {
 				expected = value;
@@ -563,7 +604,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		operation.getEAnnotations().add(acceleoAnnotation);
 
 		try {
-			evaluationEnvironment.callStandardOperation(operation, "source");
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation, "source");
 			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior
@@ -573,7 +614,8 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 		}
 
 		try {
-			evaluationEnvironment.callStandardOperation(operation, "source", "arg1", "arg2");
+			AcceleoLibraryOperationVisitor.callStandardOperation(evaluationEnvironment, operation, "source",
+					"arg1", "arg2");
 			fail("Expected Unsupported Operation hasn't been thrown by the evaluation environment.");
 		} catch (UnsupportedOperationException e) {
 			// Expected behavior
