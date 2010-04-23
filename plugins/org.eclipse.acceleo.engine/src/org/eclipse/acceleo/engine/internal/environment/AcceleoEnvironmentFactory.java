@@ -160,6 +160,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	public void dispose() {
 		context.dispose();
 		properties.clear();
+		AcceleoLibraryOperationVisitor.dispose();
 	}
 
 	/**
