@@ -302,10 +302,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				List<org.eclipse.acceleo.model.mtl.Template> oOverrides = getExtendedTemplatesNamed(
 						getModule(oTemplate), ioNext.getName(), paramTypes);
 				if (oOverrides.size() == 0) {
-					log(
-							AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.MissingTemplate", ioNext.getName()), ioNext.getStartPosition(), ioNext //$NON-NLS-1$
-									.getEndPosition());
+					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingTemplate", //$NON-NLS-1$
+							ioNext.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 				} else {
 					oTemplate.getOverrides().addAll(oOverrides);
 				}
@@ -933,9 +931,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.ocl.ecore.OCLExpression oFileUrl = factory.getOrCreateOCLExpression(iFileUrl);
 			if (oFileUrl != null) {
 				oFileBlock.setFileUrl(oFileUrl);
-				if (!oFileUrl.getEType().getInstanceClass().equals(String.class)) {
+				if (oFileUrl.getEType() != null && !oFileUrl.getEType().equals(getOCL().getStringType())) {
 					log(AcceleoParserMessages.getString("IAcceleoParserProblemsConstants.InvalidUrlType", //$NON-NLS-1$
-							oFileUrl.getEType().getInstanceTypeName()), oFileUrl.getStartPosition(), oFileUrl
+							oFileUrl.getEType().getName()), oFileUrl.getStartPosition(), oFileUrl
 							.getEndPosition());
 				}
 			}
