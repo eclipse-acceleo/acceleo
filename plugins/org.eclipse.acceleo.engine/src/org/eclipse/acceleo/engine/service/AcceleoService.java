@@ -272,7 +272,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 * @since 3.0
 	 */
@@ -360,7 +360,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 * @since 3.0
 	 */
@@ -405,7 +405,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
@@ -474,7 +474,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 * @since 3.0
 	 */
@@ -544,7 +544,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 */
 	public Map<String, String> doGenerateTemplate(Module module, String templateName,
@@ -580,7 +580,7 @@ public final class AcceleoService {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
-	 *         mapping all file pathes to the potential content will be returned. This returned map will be
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
 	 *         empty otherwise.
 	 * @since 3.0
 	 */

@@ -53,16 +53,16 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	 * 
 	 * @param bundle
 	 *            The extending bundle.
-	 * @param pathes
-	 *            Pathes where dynamic modules are located.
+	 * @param paths
+	 *            Paths where dynamic modules are located.
 	 */
-	public static void addExtendingBundle(Bundle bundle, List<String> pathes) {
-		List<String> currentPathes = EXTENDING_BUNDLES.get(bundle);
-		if (currentPathes == null) {
-			currentPathes = new ArrayList<String>();
+	public static void addExtendingBundle(Bundle bundle, List<String> paths) {
+		List<String> currentPaths = EXTENDING_BUNDLES.get(bundle);
+		if (currentPaths == null) {
+			currentPaths = new ArrayList<String>();
 		}
-		currentPathes.addAll(pathes);
-		EXTENDING_BUNDLES.put(bundle, currentPathes);
+		currentPaths.addAll(paths);
+		EXTENDING_BUNDLES.put(bundle, currentPaths);
 	}
 
 	/**
