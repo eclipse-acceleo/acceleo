@@ -394,8 +394,8 @@ public class <%=content.getClassShortName()%> {
 	 */
 	private void addProperties() {
 		/*
-		 * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
-		 * relative or absolute pathes, or their path can represent a platform scheme URI. Make sure you remove
+		 * TODO : add file paths to the "propertiesFiles" field here. properties files can be added with
+		 * relative or absolute paths, or their path can represent a platform scheme URI. Make sure you remove
 		 * the @generated annotation or set it to "@generated NOT".
 		 */
 	}
