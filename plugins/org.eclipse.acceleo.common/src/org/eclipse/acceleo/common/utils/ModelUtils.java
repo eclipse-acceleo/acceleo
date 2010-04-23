@@ -255,7 +255,7 @@ public final class ModelUtils {
 	/**
 	 * Loads a model from the String representing the location of a model.
 	 * <p>
-	 * This can be called with pathes of the form
+	 * This can be called with paths of the form
 	 * <ul>
 	 * <li><code>/pluginID/path</code></li>
 	 * <li><code>platform:/plugin/pluginID/path</code></li>
