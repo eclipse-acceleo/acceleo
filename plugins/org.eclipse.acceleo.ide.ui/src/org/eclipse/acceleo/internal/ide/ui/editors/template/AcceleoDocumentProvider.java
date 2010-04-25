@@ -109,7 +109,6 @@ public class AcceleoDocumentProvider extends FileDocumentProvider {
 	protected void disconnected() {
 		super.disconnected();
 		if (positionUpdater != null && editor.getEditorInput() != null) {
-			// TODO VERIFY
 			IDocument document = getDocument(editor.getEditorInput());
 			if (document != null) {
 				document.removePositionUpdater(positionUpdater);
