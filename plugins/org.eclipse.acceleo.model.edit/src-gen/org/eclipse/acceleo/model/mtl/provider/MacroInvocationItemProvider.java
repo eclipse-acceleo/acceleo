@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: MacroInvocationItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: MacroInvocationItemProvider.java,v 1.2 2010/04/26 15:24:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -64,6 +64,7 @@ public class MacroInvocationItemProvider extends TemplateExpressionItemProvider 
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addDefinitionPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)

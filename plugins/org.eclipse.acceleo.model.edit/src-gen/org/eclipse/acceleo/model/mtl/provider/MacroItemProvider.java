@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: MacroItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: MacroItemProvider.java,v 1.2 2010/04/26 15:24:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -65,6 +65,7 @@ public class MacroItemProvider extends BlockItemProvider implements IEditingDoma
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addVisibilityPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(
@@ -82,6 +83,7 @@ public class MacroItemProvider extends BlockItemProvider implements IEditingDoma
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(), getString("_UI_Macro_type_feature"), //$NON-NLS-1$

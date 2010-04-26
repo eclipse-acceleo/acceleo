@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TemplateItemProvider.java,v 1.2 2010/04/01 14:58:01 lgoubet Exp $
+ * $Id: TemplateItemProvider.java,v 1.3 2010/04/26 15:24:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -67,6 +67,7 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addVisibilityPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(
@@ -85,6 +86,7 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addOverridesPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
@@ -101,6 +103,7 @@ public class TemplateItemProvider extends BlockItemProvider implements IEditingD
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addMainPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: MtlEditPlugin.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: MtlEditPlugin.java,v 1.2 2010/04/26 15:24:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -28,7 +28,7 @@ public final class MtlEditPlugin extends EMFPlugin {
 	 * 
 	 * @generated
 	 */
-	private static Implementation plugin;
+	protected static Implementation plugin;
 
 	/**
 	 * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->

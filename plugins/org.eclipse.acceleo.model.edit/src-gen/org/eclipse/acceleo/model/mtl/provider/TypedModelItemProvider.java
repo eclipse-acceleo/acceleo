@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TypedModelItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: TypedModelItemProvider.java,v 1.2 2010/04/26 15:24:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -61,6 +61,7 @@ public class TypedModelItemProvider extends ItemProviderAdapter implements IEdit
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addTakesTypesFromPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(

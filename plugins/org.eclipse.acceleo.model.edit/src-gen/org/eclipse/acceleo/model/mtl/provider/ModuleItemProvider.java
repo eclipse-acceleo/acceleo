@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ModuleItemProvider.java,v 1.3 2010/04/01 15:06:03 lgoubet Exp $
+ * $Id: ModuleItemProvider.java,v 1.4 2010/04/26 15:24:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -67,6 +67,7 @@ public class ModuleItemProvider extends EPackageItemProvider implements IEditing
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addExtendsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
@@ -83,6 +84,7 @@ public class ModuleItemProvider extends EPackageItemProvider implements IEditing
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addImportsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)

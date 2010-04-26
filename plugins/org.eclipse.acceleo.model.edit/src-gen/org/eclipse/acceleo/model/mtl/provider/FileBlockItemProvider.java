@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: FileBlockItemProvider.java,v 1.2 2009/09/29 12:57:07 lgoubet Exp $
+ * $Id: FileBlockItemProvider.java,v 1.3 2010/04/26 15:24:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -65,6 +65,7 @@ public class FileBlockItemProvider extends BlockItemProvider implements IEditing
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addOpenModePropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(

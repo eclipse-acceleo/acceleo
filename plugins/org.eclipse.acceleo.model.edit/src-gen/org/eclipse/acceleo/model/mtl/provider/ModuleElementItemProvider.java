@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ModuleElementItemProvider.java,v 1.1 2009/09/08 16:05:40 ylussaud Exp $
+ * $Id: ModuleElementItemProvider.java,v 1.2 2010/04/26 15:24:54 lgoubet Exp $
  */
 package org.eclipse.acceleo.model.mtl.provider;
 
@@ -67,6 +67,7 @@ public class ModuleElementItemProvider extends ENamedElementItemProvider impleme
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addStartPositionPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(
@@ -85,6 +86,7 @@ public class ModuleElementItemProvider extends ENamedElementItemProvider impleme
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addEndPositionPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(
@@ -103,6 +105,7 @@ public class ModuleElementItemProvider extends ENamedElementItemProvider impleme
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addVisibilityPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(
