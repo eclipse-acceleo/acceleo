@@ -182,7 +182,7 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	 * 
 	 * @see org.eclipse.ocl.utilities.UMLReflection#getConstrainedElements(java.lang.Object)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	/*
 	 * !Do not use generics on the return type of this override, API broke between OCL 1.2 and 3.0 and we
 	 * can't cope with both while maintaining a generic signature!
