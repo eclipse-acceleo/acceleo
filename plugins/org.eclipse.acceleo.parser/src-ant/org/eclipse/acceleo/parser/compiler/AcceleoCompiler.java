@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
@@ -54,6 +55,11 @@ public class AcceleoCompiler extends Task {
 		 * The absolute URI.
 		 */
 		private URI emtlAbsoluteURI;
+
+		/**
+		 * The full qualified module name.
+		 */
+		private String fullModuleName;
 
 		/**
 		 * Constructor.
@@ -102,22 +108,22 @@ public class AcceleoCompiler extends Task {
 				message.append('\n');
 			}
 		}
-		List<File> mtlFiles = new ArrayList<File>();
+		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
 		List<URI> emtlAbsoluteURIs = new ArrayList<URI>();
 		for (MTLFileInfo mtlFileInfo : fileInfos) {
-			mtlFiles.add(mtlFileInfo.mtlFile);
+			acceleoFiles.add(new AcceleoFile(mtlFileInfo.mtlFile, mtlFileInfo.fullModuleName));
 			emtlAbsoluteURIs.add(mtlFileInfo.emtlAbsoluteURI);
 		}
 		List<URI> dependenciesURIs = new ArrayList<URI>();
 		AcceleoParser parser = new AcceleoParser();
-		parser.parse(mtlFiles, emtlAbsoluteURIs, dependenciesURIs, new BasicMonitor());
-		for (Iterator<File> iterator = mtlFiles.iterator(); iterator.hasNext();) {
-			File mtlFile = iterator.next();
-			AcceleoParserProblems problems = parser.getProblems(mtlFile);
+		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, new BasicMonitor());
+		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
+			AcceleoFile acceleoFile = iterator.next();
+			AcceleoParserProblems problems = parser.getProblems(acceleoFile);
 			if (problems != null) {
 				List<AcceleoParserProblem> list = problems.getList();
 				if (!list.isEmpty()) {
-					message.append(mtlFile.getName());
+					message.append(acceleoFile.getMtlFile().getName());
 					message.append('\n');
 					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
 						AcceleoParserProblem problem = itProblems.next();
@@ -145,16 +151,25 @@ public class AcceleoCompiler extends Task {
 	private List<MTLFileInfo> computeFileInfos(File sourceFolder) {
 		List<MTLFileInfo> fileInfosOutput = new ArrayList<MTLFileInfo>();
 		if (sourceFolder.exists()) {
+			String sourceFolderAbsolutePath = sourceFolder.getAbsolutePath();
 			List<File> mtlFiles = new ArrayList<File>();
 			members(mtlFiles, sourceFolder, IAcceleoConstants.MTL_FILE_EXTENSION);
 			for (File mtlFile : mtlFiles) {
-				String absolutePath = mtlFile.getAbsolutePath();
-				if (absolutePath != null) {
-					URI emtlAbsoluteURI = URI.createFileURI(new Path(absolutePath).removeFileExtension()
-							.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString());
+				String mtlFileAbsolutePath = mtlFile.getAbsolutePath();
+				if (mtlFileAbsolutePath != null) {
+					String relativePath;
+					if (mtlFileAbsolutePath.startsWith(sourceFolderAbsolutePath)) {
+						relativePath = mtlFileAbsolutePath.substring(sourceFolderAbsolutePath.length());
+					} else {
+						relativePath = mtlFile.getName();
+					}
+					URI emtlAbsoluteURI = URI.createFileURI(new Path(mtlFileAbsolutePath)
+							.removeFileExtension().addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION)
+							.toString());
 					MTLFileInfo fileInfo = new MTLFileInfo();
 					fileInfo.mtlFile = mtlFile;
 					fileInfo.emtlAbsoluteURI = emtlAbsoluteURI;
+					fileInfo.fullModuleName = AcceleoFile.relativePathToFullModuleName(relativePath);
 					fileInfosOutput.add(fileInfo);
 				}
 			}

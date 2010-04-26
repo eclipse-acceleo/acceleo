@@ -60,7 +60,11 @@ public class AcceleoParser {
 	 *            URIs of the dependencies that need to be loaded before link resolution
 	 */
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs) {
-		parse(inputFiles, outputURIs, dependenciesURIs, new BasicMonitor());
+		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
+		for (File inputFile : inputFiles) {
+			acceleoFiles.add(new AcceleoFile(inputFile, AcceleoFile.simpleModuleName(inputFile)));
+		}
+		parse(acceleoFiles, outputURIs, dependenciesURIs, new BasicMonitor());
 	}
 
 	/**
@@ -68,8 +72,8 @@ public class AcceleoParser {
 	 * <p>
 	 * Assert inputFiles.size() == outputURIs.size()
 	 * 
-	 * @param inputFiles
-	 *            are the files to parse
+	 * @param acceleoFiles
+	 *            are the Acceleo files to parse
 	 * @param outputURIs
 	 *            are the URIs of the output files to create
 	 * @param dependenciesURIs
@@ -78,21 +82,22 @@ public class AcceleoParser {
 	 *            This will be used as the progress monitor for the parsing
 	 * @since 3.0
 	 */
-	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs, Monitor monitor) {
+	public void parse(List<AcceleoFile> acceleoFiles, List<URI> outputURIs, List<URI> dependenciesURIs,
+			Monitor monitor) {
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
-				new Object[] {inputFiles.size() }), inputFiles.size() * 3);
+				new Object[] {acceleoFiles.size() }), acceleoFiles.size() * 3);
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<Resource> newResources = new ArrayList<Resource>();
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
 		Iterator<URI> itOutputURIs = outputURIs.iterator();
 		Set<String> allImportedFiles = new HashSet<String>();
-		for (Iterator<File> itInputFiles = inputFiles.iterator(); !monitor.isCanceled()
-				&& itInputFiles.hasNext() && itOutputURIs.hasNext();) {
-			File inputFile = itInputFiles.next();
+		for (Iterator<AcceleoFile> itAcceleoFiles = acceleoFiles.iterator(); !monitor.isCanceled()
+				&& itAcceleoFiles.hasNext() && itOutputURIs.hasNext();) {
+			AcceleoFile acceleoFile = itAcceleoFiles.next();
 			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", //$NON-NLS-1$
-					new Object[] {inputFile.getName() }));
+					new Object[] {acceleoFile.getMtlFile().getName() }));
 			URI oURI = itOutputURIs.next();
-			AcceleoSourceBuffer source = new AcceleoSourceBuffer(inputFile);
+			AcceleoSourceBuffer source = new AcceleoSourceBuffer(acceleoFile);
 			sources.add(source);
 			Resource oResource = ModelUtils.createResource(oURI, oResourceSet);
 			newResources.add(oResource);
@@ -264,6 +269,22 @@ public class AcceleoParser {
 	public AcceleoParserProblems getProblems(File file) {
 		if (problems != null) {
 			return problems.get(file);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the parsing problems of the given file.
+	 * 
+	 * @param acceleoFile
+	 *            is the parsed file
+	 * @return the parsing problems, or null
+	 * @since 3.0
+	 */
+	public AcceleoParserProblems getProblems(AcceleoFile acceleoFile) {
+		if (problems != null && acceleoFile != null) {
+			return problems.get(acceleoFile.getMtlFile());
 		} else {
 			return null;
 		}

@@ -60,28 +60,6 @@ import org.eclipse.ocl.Environment;
 public class AcceleoSourceBuffer implements IASTProvider {
 
 	/**
-	 * The file to parse, can be null if the object is created with a buffer.
-	 */
-	protected final File file;
-
-	/**
-	 * The buffer to parse.
-	 */
-	protected final StringBuffer buffer;
-
-	/**
-	 * This list will be initialized with the beginning offset of all lines in the given source buffer.
-	 * 
-	 * @since 0.8
-	 */
-	protected final List<Integer> lines = new ArrayList<Integer>();
-
-	/**
-	 * Parsing problems.
-	 */
-	protected final AcceleoParserProblems problems;
-
-	/**
 	 * The AST model. It is created when you call the 'createAST' function.
 	 */
 	protected org.eclipse.acceleo.model.mtl.Module ast;
@@ -92,6 +70,28 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * @noreference This field is not intended to be referenced by clients.
 	 */
 	protected CST2ASTConverterWithResolver astCreator;
+
+	/**
+	 * The file to parse, can be null if the object is created with a buffer.
+	 */
+	private final AcceleoFile acceleoFile;
+
+	/**
+	 * The buffer to parse.
+	 */
+	private final StringBuffer buffer;
+
+	/**
+	 * This list will be initialized with the beginning offset of all lines in the given source buffer.
+	 * 
+	 * @since 0.8
+	 */
+	private final List<Integer> lines = new ArrayList<Integer>();
+
+	/**
+	 * Parsing problems.
+	 */
+	private final AcceleoParserProblems problems;
 
 	/**
 	 * The encoding of the buffer to parse.
@@ -106,15 +106,26 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	/**
 	 * Constructor.
 	 * 
+	 * @param acceleoFile
+	 *            is the Acceleo file to parse
+	 * @since 3.0
+	 */
+	public AcceleoSourceBuffer(AcceleoFile acceleoFile) {
+		this.acceleoFile = acceleoFile;
+		this.buffer = FileContent.getFileContent(getFile());
+		this.encoding = FileContent.getEncoding(buffer);
+		this.problems = new AcceleoParserProblems();
+		init();
+	}
+
+	/**
+	 * Constructor.
+	 * 
 	 * @param file
 	 *            is the file to parse
 	 */
 	public AcceleoSourceBuffer(File file) {
-		this.file = file;
-		this.buffer = FileContent.getFileContent(file);
-		this.encoding = FileContent.getEncoding(buffer);
-		this.problems = new AcceleoParserProblems();
-		init();
+		this(new AcceleoFile(file, AcceleoFile.simpleModuleName(file)));
 	}
 
 	/**
@@ -124,7 +135,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 *            is the buffer to parse, the file property will be null
 	 */
 	public AcceleoSourceBuffer(StringBuffer buffer) {
-		this.file = null;
+		this.acceleoFile = null;
 		this.buffer = buffer;
 		this.encoding = FileContent.getEncoding(buffer);
 		this.problems = new AcceleoParserProblems();
@@ -187,7 +198,12 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * @return the parsed file
 	 */
 	public File getFile() {
-		return file;
+		if (acceleoFile != null) {
+			return acceleoFile.getMtlFile();
+		} else {
+			return null;
+		}
+
 	}
 
 	/**
@@ -278,6 +294,9 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		if (resource.getContents().size() > 0
 				&& resource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
 			ast = (org.eclipse.acceleo.model.mtl.Module)resource.getContents().get(0);
+			if (ast != null && acceleoFile != null) {
+				ast.setNsURI(acceleoFile.getFullModuleName());
+			}
 		} else {
 			ast = null;
 		}
@@ -335,7 +354,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	public void log(String message, int posBegin, int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
 		int line = FileContent.lineNumber(buffer, pos[0]);
-		problems.addProblem(file, message, line, pos[0], pos[1]);
+		problems.addProblem(getFile(), message, line, pos[0], pos[1]);
 	}
 
 	/**
