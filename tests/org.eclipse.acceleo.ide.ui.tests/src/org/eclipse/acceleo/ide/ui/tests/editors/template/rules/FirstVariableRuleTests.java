@@ -12,10 +12,11 @@ package org.eclipse.acceleo.ide.ui.tests.editors.template.rules;
 
 import junit.framework.TestCase;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
 
+@SuppressWarnings("nls")
 public class FirstVariableRuleTests extends TestCase {
 
 	@Override
@@ -29,7 +30,7 @@ public class FirstVariableRuleTests extends TestCase {
 	}
 
 	public void testFirstVariableRuleTemplate() {
-		String[] previousWords = {"[", "template", "public", "name", "("};
+		String[] previousWords = {"[", "template", "public", "name", "(" };
 		String textBefore = "[template public name(";
 		String textRange = "a:Property";
 		String textAfter = ")]";
@@ -37,7 +38,7 @@ public class FirstVariableRuleTests extends TestCase {
 	}
 
 	public void testFirstVariableRuleTemplateWithSpaces() {
-		String[] previousWords = {"[", "template", "public", "name", "("};
+		String[] previousWords = {"[", "template", "public", "name", "(" };
 		String textBefore = "[   template   public   name   ( \t ";
 		String textRange = "a : Property";
 		String textAfter = " ) ] ";
@@ -45,7 +46,7 @@ public class FirstVariableRuleTests extends TestCase {
 	}
 
 	public void testFirstVariableRuleTemplateNotValid() {
-		String[] previousWords = {"[", "template", "public", "name", "("};
+		String[] previousWords = {"[", "template", "public", "name", "(" };
 		String textBefore = "[template public BAD_STRING name(";
 		String textRange = "a:Property";
 		String textAfter = ")]";
@@ -53,7 +54,7 @@ public class FirstVariableRuleTests extends TestCase {
 	}
 
 	public void testFirstVariableRuleTemplateWithUnknownParts() {
-		String[] previousWords = {"[", "template", "*", "*", "("};
+		String[] previousWords = {"[", "template", "*", "*", "(" };
 		String textBefore = "[template public name(";
 		String textRange = "a:Property";
 		String textAfter = ")]";

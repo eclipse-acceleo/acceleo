@@ -22,6 +22,7 @@ import org.eclipse.acceleo.ide.ui.tests.editors.template.rules.FirstVariableRule
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
+@SuppressWarnings("nls")
 public class AllTests {
 
 	/**
