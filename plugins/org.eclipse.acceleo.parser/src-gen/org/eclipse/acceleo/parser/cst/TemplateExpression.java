@@ -20,4 +20,5 @@ package org.eclipse.acceleo.parser.cst;
  * @since 3.0
  */
 public interface TemplateExpression extends CSTNode {
-} // TemplateExpression
+	// TemplateExpression
+}

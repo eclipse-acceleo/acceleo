@@ -438,7 +438,7 @@ public class OCLParser {
 	 *            indicates if we add the operations for which there is a default receiver, the first
 	 *            parameter isn't the receiver
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void addTemplateToScope(Template newTemplate, boolean operationWithReceiver,
 			boolean operationWithoutReceiver) {
 		EClassifier owner = EcorePackage.eINSTANCE.getEObject();
@@ -494,7 +494,7 @@ public class OCLParser {
 	 *            indicates if we add the operations for which there is a default receiver, the first
 	 *            parameter isn't the receiver
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void addQueryToScope(Query newQuery, boolean operationWithReceiver,
 			boolean operationWithoutReceiver) {
 		EClassifier owner = EcorePackage.eINSTANCE.getEObject();
@@ -569,7 +569,7 @@ public class OCLParser {
 	 *            indicates if we add the operations for which there is a default receiver, the first
 	 *            parameter isn't the receiver
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void addMacroToScope(Macro newMacro, boolean operationWithReceiver,
 			boolean operationWithoutReceiver) {
 		EClassifier owner = EcorePackage.eINSTANCE.getEObject();
@@ -640,6 +640,7 @@ public class OCLParser {
 	 * @param oModule
 	 *            is the current module
 	 */
+	@SuppressWarnings("unused")
 	public void removeRecursivelyBehavioralFeaturesToScope(org.eclipse.acceleo.model.mtl.Module oModule) {
 		/* Do nothing */
 	}
@@ -930,7 +931,7 @@ public class OCLParser {
 	 * @param out
 	 *            is the second list
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void move(List in, List out) {
 		out.addAll(in);
 	}

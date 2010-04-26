@@ -161,8 +161,7 @@ public class CSTParser {
 		Sequence literalEscape = new Sequence(IAcceleoConstants.LITERAL_ESCAPE);
 		pLiteral = new SequenceBlock(new Sequence(IAcceleoConstants.LITERAL_BEGIN), new Sequence(
 				IAcceleoConstants.LITERAL_END), literalEscape, false, null);
-		pComment = ParserUtils
-				.createAcceleoSequenceBlock(false, IAcceleoConstants.COMMENT, false, null, null);
+		pComment = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.COMMENT, null, null);
 		pParenthesis = new SequenceBlock(new Sequence(IAcceleoConstants.PARENTHESIS_BEGIN), new Sequence(
 				IAcceleoConstants.PARENTHESIS_END), null, true, new SequenceBlock[] {pLiteral });
 		pBrackets = new SequenceBlock(new Sequence(IAcceleoConstants.BRACKETS_BEGIN), new Sequence(
@@ -172,16 +171,16 @@ public class CSTParser {
 		pPipe = new Sequence(IAcceleoConstants.PIPE_SEPARATOR);
 		pGuard = new Sequence(IAcceleoConstants.GUARD);
 		pPost = new Sequence(IAcceleoConstants.POST);
-		pModule = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.MODULE, false,
+		pModule = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.MODULE,
 				new SequenceBlock[] {pLiteral }, null);
-		pImport = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.IMPORT, false,
+		pImport = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.IMPORT,
 				new SequenceBlock[] {pLiteral }, null);
-		pTemplate = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TEMPLATE, false,
+		pTemplate = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TEMPLATE,
 				new SequenceBlock[] {pLiteral, pParenthesis }, new SequenceBlock[] {pComment });
-		pMacro = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.MACRO, true,
-				new SequenceBlock[] {pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
-		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, false,
-				new SequenceBlock[] {pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
+		pMacro = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.MACRO, new SequenceBlock[] {
+				pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
+		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, new SequenceBlock[] {
+				pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
 		pBlock = new CSTParserBlock(this);
 	}
 
@@ -362,7 +361,7 @@ public class CSTParser {
 					try {
 						ePackageKey = registerEcore(ePackageKey);
 					} catch (WrappedException ex) {
-						ePackage = null;
+						// swallow exception
 					}
 					ePackage = ModelUtils.getEPackage(ePackageKey);
 					if (ePackage == null) {
@@ -801,8 +800,7 @@ public class CSTParser {
 			if (eH.b() == -1) {
 				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
-				Module eModule = getModule(eTemplate);
-				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b(), eModule);
+				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
 					Variable eVariable = eVariables[i];
 					if (eVariable != null) {
@@ -1069,7 +1067,6 @@ public class CSTParser {
 	 */
 	private boolean shiftInitSectionBodyCreatesVariables(int posBegin, int posEnd, InitSection eInitSection) {
 		List<Region> positions = pSemicolon.split(source.getBuffer(), posBegin, posEnd, true, null, null);
-		Module eModule = getModule(eInitSection);
 		boolean semicolonFound = false;
 		for (int i = 0; i < positions.size(); i++) {
 			Region variablePos = positions.get(i);
@@ -1079,7 +1076,7 @@ public class CSTParser {
 					semicolonFound = true;
 				}
 			} else if (text.length() > 0) {
-				Variable eVariable = createVariable(variablePos.b(), variablePos.e(), eModule);
+				Variable eVariable = createVariable(variablePos.b(), variablePos.e());
 				if (eVariable != null) {
 					eInitSection.getVariable().add(eVariable);
 				}
@@ -1096,17 +1093,15 @@ public class CSTParser {
 	 *            is the beginning index
 	 * @param posEnd
 	 *            is the ending index
-	 * @param eModule
-	 *            is the module of the CST model, it is used to get the model types...
 	 * @return the new variables
 	 */
-	protected Variable[] createVariablesCommaSeparator(int posBegin, int posEnd, Module eModule) {
+	protected Variable[] createVariablesCommaSeparator(int posBegin, int posEnd) {
 		List<Region> positions = pComma.split(source.getBuffer(), posBegin, posEnd, false, null, null);
 		Variable[] eVariables = new Variable[positions.size()];
 		List<String> variableNames = new ArrayList<String>();
 		for (int i = 0; i < eVariables.length; i++) {
 			Region variablePos = positions.get(i);
-			Variable eVariable = createVariable(variablePos.b(), variablePos.e(), eModule);
+			Variable eVariable = createVariable(variablePos.b(), variablePos.e());
 			eVariables[i] = eVariable;
 			if (eVariable != null) {
 				if (!variableNames.contains(eVariable.getName())) {
@@ -1128,11 +1123,9 @@ public class CSTParser {
 	 *            is the beginning index
 	 * @param posEnd
 	 *            is the ending index
-	 * @param eModule
-	 *            is the module of the CST model, it is used to get the model types...
 	 * @return the new variable
 	 */
-	public Variable createVariable(int posBegin, int posEnd, Module eModule) {
+	public Variable createVariable(int posBegin, int posEnd) {
 		String variableBuffer = source.getBuffer().substring(posBegin, posEnd);
 		Variable eVariable;
 		int bDot = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR);
@@ -1232,8 +1225,7 @@ public class CSTParser {
 			if (eH.b() == -1) {
 				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
-				Module eModule = getModule(eQuery);
-				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b(), eModule);
+				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
 					Variable eVariable = eVariables[i];
 					if (eVariable != null) {
@@ -1300,8 +1292,7 @@ public class CSTParser {
 			if (eH.b() == -1) {
 				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
-				Module eModule = getModule(eMacro);
-				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b(), eModule);
+				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
 					Variable eVariable = eVariables[i];
 					if (eVariable != null) {

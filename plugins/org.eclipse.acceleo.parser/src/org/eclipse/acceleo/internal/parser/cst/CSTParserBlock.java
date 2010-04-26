@@ -118,14 +118,13 @@ public class CSTParserBlock {
 		super();
 		this.pAcceleo = pAcceleo;
 		this.source = pAcceleo.source;
-		pTrace = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TRACE, false,
+		pTrace = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.TRACE,
 				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
-		pFile = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FILE, true,
+		pFile = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FILE,
 				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
-		pFor = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FOR, true,
-				new SequenceBlock[] {pAcceleo.pLiteral, pAcceleo.pParenthesis, },
-				new SequenceBlock[] {pAcceleo.pComment, });
-		pIf = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.IF, true,
+		pFor = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.FOR, new SequenceBlock[] {
+				pAcceleo.pLiteral, pAcceleo.pParenthesis, }, new SequenceBlock[] {pAcceleo.pComment, });
+		pIf = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.IF,
 				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pElseIfBeginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE_IF);
 		Sequence pElseIfEndHeader = new Sequence(IAcceleoConstants.DEFAULT_END);
@@ -133,7 +132,7 @@ public class CSTParserBlock {
 				new SequenceBlock[] {pAcceleo.pLiteral });
 		pElse = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.ELSE,
 				IAcceleoConstants.DEFAULT_END);
-		pLet = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.LET, true,
+		pLet = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.LET,
 				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pElseLetBeginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.ELSE_LET);
@@ -141,7 +140,7 @@ public class CSTParserBlock {
 		pElseLet = new SequenceBlock(pElseLetBeginHeader, pElseLetEndHeader, null, false,
 				new SequenceBlock[] {pAcceleo.pLiteral });
 		pProtectedArea = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.PROTECTED_AREA,
-				false, new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
+				new SequenceBlock[] {pAcceleo.pLiteral }, new SequenceBlock[] {pAcceleo.pComment });
 		Sequence pBegin = new Sequence(IAcceleoConstants.DEFAULT_BEGIN);
 		Sequence pEnd = new Sequence(IAcceleoConstants.DEFAULT_END);
 		SequenceBlock pBeginEnd = new SequenceBlock(pBegin, pEnd, null, true,
@@ -475,7 +474,7 @@ public class CSTParserBlock {
 				int e = eH.b();
 				Region pipe = pAcceleo.pPipe.search(source.getBuffer(), b, eH.b());
 				if (pipe.b() != -1) {
-					Variable eVariable = pAcceleo.createVariable(b, pipe.b(), pAcceleo.getModule(eFor));
+					Variable eVariable = pAcceleo.createVariable(b, pipe.b());
 					eFor.setLoopVariable(eVariable);
 					b = pipe.e();
 				}
@@ -748,7 +747,7 @@ public class CSTParserBlock {
 	 *            is the current object of the CST model, it will be modified in this method
 	 */
 	public void parseLetHeader(int posBegin, int posEnd, LetBlock eLet) {
-		Variable eVariable = pAcceleo.createVariable(posBegin, posEnd, pAcceleo.getModule(eLet));
+		Variable eVariable = pAcceleo.createVariable(posBegin, posEnd);
 		if (eVariable != null) {
 			eLet.setLetVariable(eVariable);
 		}

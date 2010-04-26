@@ -240,9 +240,9 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		}
 
 		/**
-		 * Gets rid of caches.
+		 * Gets rid of caches. This is set as protected to be accessible from the enclosing environment.
 		 */
-		private void dispose() {
+		protected void dispose() {
 			for (Set<EClassifier> alteredTypesValuesSet : alteredTypes.values()) {
 				alteredTypesValuesSet.clear();
 			}

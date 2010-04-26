@@ -109,260 +109,332 @@ public class CstSwitch<T> {
 			case CstPackage.CST_NODE: {
 				CSTNode cstNode = (CSTNode)theEObject;
 				T result = caseCSTNode(cstNode);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MODULE: {
 				Module module = (Module)theEObject;
 				T result = caseModule(module);
-				if (result == null)
+				if (result == null) {
 					result = caseEPackage(module);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(module);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseENamedElement(module);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseEModelElement(module);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MODULE_EXTENDS_VALUE: {
 				ModuleExtendsValue moduleExtendsValue = (ModuleExtendsValue)theEObject;
 				T result = caseModuleExtendsValue(moduleExtendsValue);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(moduleExtendsValue);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MODULE_IMPORTS_VALUE: {
 				ModuleImportsValue moduleImportsValue = (ModuleImportsValue)theEObject;
 				T result = caseModuleImportsValue(moduleImportsValue);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(moduleImportsValue);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TYPED_MODEL: {
 				TypedModel typedModel = (TypedModel)theEObject;
 				T result = caseTypedModel(typedModel);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(typedModel);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MODULE_ELEMENT: {
 				ModuleElement moduleElement = (ModuleElement)theEObject;
 				T result = caseModuleElement(moduleElement);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(moduleElement);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.COMMENT: {
 				Comment comment = (Comment)theEObject;
 				T result = caseComment(comment);
-				if (result == null)
+				if (result == null) {
 					result = caseModuleElement(comment);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(comment);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(comment);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TEMPLATE: {
 				Template template = (Template)theEObject;
 				T result = caseTemplate(template);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(template);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseModuleElement(template);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(template);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(template);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TEMPLATE_OVERRIDES_VALUE: {
 				TemplateOverridesValue templateOverridesValue = (TemplateOverridesValue)theEObject;
 				T result = caseTemplateOverridesValue(templateOverridesValue);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(templateOverridesValue);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.VARIABLE: {
 				Variable variable = (Variable)theEObject;
 				T result = caseVariable(variable);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(variable);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TEMPLATE_EXPRESSION: {
 				TemplateExpression templateExpression = (TemplateExpression)theEObject;
 				T result = caseTemplateExpression(templateExpression);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(templateExpression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MODEL_EXPRESSION: {
 				ModelExpression modelExpression = (ModelExpression)theEObject;
 				T result = caseModelExpression(modelExpression);
-				if (result == null)
+				if (result == null) {
 					result = caseTemplateExpression(modelExpression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(modelExpression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TEXT_EXPRESSION: {
 				TextExpression textExpression = (TextExpression)theEObject;
 				T result = caseTextExpression(textExpression);
-				if (result == null)
+				if (result == null) {
 					result = caseTemplateExpression(textExpression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(textExpression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.BLOCK: {
 				Block block = (Block)theEObject;
 				T result = caseBlock(block);
-				if (result == null)
+				if (result == null) {
 					result = caseTemplateExpression(block);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(block);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.INIT_SECTION: {
 				InitSection initSection = (InitSection)theEObject;
 				T result = caseInitSection(initSection);
-				if (result == null)
+				if (result == null) {
 					result = caseCSTNode(initSection);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.PROTECTED_AREA_BLOCK: {
 				ProtectedAreaBlock protectedAreaBlock = (ProtectedAreaBlock)theEObject;
 				T result = caseProtectedAreaBlock(protectedAreaBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(protectedAreaBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(protectedAreaBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(protectedAreaBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.FOR_BLOCK: {
 				ForBlock forBlock = (ForBlock)theEObject;
 				T result = caseForBlock(forBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(forBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(forBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(forBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.IF_BLOCK: {
 				IfBlock ifBlock = (IfBlock)theEObject;
 				T result = caseIfBlock(ifBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(ifBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(ifBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(ifBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.LET_BLOCK: {
 				LetBlock letBlock = (LetBlock)theEObject;
 				T result = caseLetBlock(letBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(letBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(letBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(letBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.FILE_BLOCK: {
 				FileBlock fileBlock = (FileBlock)theEObject;
 				T result = caseFileBlock(fileBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(fileBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(fileBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(fileBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.TRACE_BLOCK: {
 				TraceBlock traceBlock = (TraceBlock)theEObject;
 				T result = caseTraceBlock(traceBlock);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(traceBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(traceBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(traceBlock);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.MACRO: {
 				Macro macro = (Macro)theEObject;
 				T result = caseMacro(macro);
-				if (result == null)
+				if (result == null) {
 					result = caseBlock(macro);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseModuleElement(macro);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseTemplateExpression(macro);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(macro);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CstPackage.QUERY: {
 				Query query = (Query)theEObject;
 				T result = caseQuery(query);
-				if (result == null)
+				if (result == null) {
 					result = caseModuleElement(query);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseCSTNode(query);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -381,6 +453,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseCSTNode(CSTNode object) {
 		return null;
 	}
@@ -396,6 +469,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModule(Module object) {
 		return null;
 	}
@@ -411,6 +485,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModuleExtendsValue(ModuleExtendsValue object) {
 		return null;
 	}
@@ -426,6 +501,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModuleImportsValue(ModuleImportsValue object) {
 		return null;
 	}
@@ -441,6 +517,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTypedModel(TypedModel object) {
 		return null;
 	}
@@ -456,6 +533,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModuleElement(ModuleElement object) {
 		return null;
 	}
@@ -471,6 +549,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseComment(Comment object) {
 		return null;
 	}
@@ -486,6 +565,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplate(Template object) {
 		return null;
 	}
@@ -501,6 +581,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplateOverridesValue(TemplateOverridesValue object) {
 		return null;
 	}
@@ -516,6 +597,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseVariable(Variable object) {
 		return null;
 	}
@@ -531,6 +613,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplateExpression(TemplateExpression object) {
 		return null;
 	}
@@ -546,6 +629,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModelExpression(ModelExpression object) {
 		return null;
 	}
@@ -561,6 +645,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTextExpression(TextExpression object) {
 		return null;
 	}
@@ -576,6 +661,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBlock(Block object) {
 		return null;
 	}
@@ -591,6 +677,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseInitSection(InitSection object) {
 		return null;
 	}
@@ -606,6 +693,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseProtectedAreaBlock(ProtectedAreaBlock object) {
 		return null;
 	}
@@ -621,6 +709,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseForBlock(ForBlock object) {
 		return null;
 	}
@@ -636,6 +725,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseIfBlock(IfBlock object) {
 		return null;
 	}
@@ -651,6 +741,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLetBlock(LetBlock object) {
 		return null;
 	}
@@ -666,6 +757,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseFileBlock(FileBlock object) {
 		return null;
 	}
@@ -681,6 +773,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTraceBlock(TraceBlock object) {
 		return null;
 	}
@@ -696,6 +789,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseMacro(Macro object) {
 		return null;
 	}
@@ -711,6 +805,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseQuery(Query object) {
 		return null;
 	}
@@ -726,6 +821,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEModelElement(EModelElement object) {
 		return null;
 	}
@@ -741,6 +837,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseENamedElement(ENamedElement object) {
 		return null;
 	}
@@ -756,6 +853,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEPackage(EPackage object) {
 		return null;
 	}
@@ -771,6 +869,7 @@ public class CstSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

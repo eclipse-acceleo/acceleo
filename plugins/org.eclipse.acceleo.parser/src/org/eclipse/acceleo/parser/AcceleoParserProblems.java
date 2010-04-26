@@ -56,6 +56,8 @@ public class AcceleoParserProblems {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
+	@SuppressWarnings("unused")
+	// TODO JMU "file" isn't used
 	public void addProblem(File file, String message, int line, int posBegin, int posEnd) {
 		Integer newLine = new Integer(line);
 		if (!lines.contains(newLine)) {

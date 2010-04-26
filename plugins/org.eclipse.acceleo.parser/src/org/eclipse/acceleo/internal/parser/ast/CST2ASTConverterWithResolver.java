@@ -147,7 +147,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				}
 				factory.getOCL().addRecursivelyBehavioralFeaturesToScope(oModule);
 				try {
-					transformStepResolveOwnedModuleElement(iModule, oModule);
+					transformStepResolveOwnedModuleElement(iModule);
 				} finally {
 					factory.getOCL().removeRecursivelyBehavioralFeaturesToScope(oModule);
 				}
@@ -334,7 +334,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iTemplate.getInit();
 				transformStepResolveAddVariables(iInit);
 
-				transformStepResolveBody(iTemplate, oTemplate);
+				transformStepResolveBody(iTemplate);
 
 				transformStepResolveRemoveVariables(iInit);
 
@@ -617,7 +617,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param iTextExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TextExpression'
 	 */
+	@SuppressWarnings("unused")
 	private void transformStepResolve(org.eclipse.acceleo.parser.cst.TextExpression iTextExpression) {
+		// Nothing to do here
 	}
 
 	/**
@@ -633,7 +635,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iBlock.getInit();
 			transformStepResolveAddVariables(iInit);
 
-			transformStepResolveBody(iBlock, oBlock);
+			transformStepResolveBody(iBlock);
 
 			transformStepResolveRemoveVariables(iInit);
 		}
@@ -702,7 +704,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iProtectedAreaBlock.getInit();
 			transformStepResolveAddVariables(iInit);
 
-			transformStepResolveBody(iProtectedAreaBlock, oProtectedAreaBlock);
+			transformStepResolveBody(iProtectedAreaBlock);
 
 			transformStepResolveRemoveVariables(iInit);
 		}
@@ -783,7 +785,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iForBlock.getInit();
 				transformStepResolveAddVariables(iInit);
 
-				transformStepResolveBody(iForBlock, oForBlock);
+				transformStepResolveBody(iForBlock);
 
 				transformStepResolveRemoveVariables(iInit);
 			} finally {
@@ -818,7 +820,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iIfBlock.getInit();
 			transformStepResolveAddVariables(iInit);
 
-			transformStepResolveBody(iIfBlock, oIfBlock);
+			transformStepResolveBody(iIfBlock);
 
 			transformStepResolveRemoveVariables(iInit);
 
@@ -877,7 +879,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iLetBlock.getInit();
 				transformStepResolveAddVariables(iInit);
 
-				transformStepResolveBody(iLetBlock, oLetBlock);
+				transformStepResolveBody(iLetBlock);
 
 				transformStepResolveRemoveVariables(iInit);
 			} finally {
@@ -950,7 +952,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iFileBlock.getInit();
 			transformStepResolveAddVariables(iInit);
 
-			transformStepResolveBody(iFileBlock, oFileBlock);
+			transformStepResolveBody(iFileBlock);
 
 			transformStepResolveRemoveVariables(iInit);
 		}
@@ -977,7 +979,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iTraceBlock.getInit();
 			transformStepResolveAddVariables(iInit);
 
-			transformStepResolveBody(iTraceBlock, oTraceBlock);
+			transformStepResolveBody(iTraceBlock);
 
 			transformStepResolveRemoveVariables(iInit);
 		}
@@ -1010,7 +1012,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iMacro.getInit();
 				transformStepResolveAddVariables(iInit);
 
-				transformStepResolveBody(iMacro, oMacro);
+				transformStepResolveBody(iMacro);
 
 				iParameterIt = iMacro.getParameter().iterator();
 				while (iParameterIt.hasNext()) {
@@ -1095,11 +1097,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * 
 	 * @param iModule
 	 *            is the input module
-	 * @param oModule
-	 *            is the output module
 	 */
-	private void transformStepResolveOwnedModuleElement(org.eclipse.acceleo.parser.cst.Module iModule,
-			org.eclipse.acceleo.model.mtl.Module oModule) {
+	private void transformStepResolveOwnedModuleElement(org.eclipse.acceleo.parser.cst.Module iModule) {
 		if (!isCanceled) {
 			Iterator<org.eclipse.acceleo.parser.cst.ModuleElement> iOwnedModuleElementIt = iModule
 					.getOwnedModuleElement().iterator();
@@ -1123,11 +1122,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * 
 	 * @param iBlock
 	 *            is the input block
-	 * @param oBlock
-	 *            is the output block
 	 */
-	private void transformStepResolveBody(org.eclipse.acceleo.parser.cst.Block iBlock,
-			org.eclipse.acceleo.model.mtl.Block oBlock) {
+	private void transformStepResolveBody(org.eclipse.acceleo.parser.cst.Block iBlock) {
 		if (!isCanceled) {
 			Iterator<org.eclipse.acceleo.parser.cst.TemplateExpression> iBodyIt = iBlock.getBody().iterator();
 			while (iBodyIt.hasNext()) {

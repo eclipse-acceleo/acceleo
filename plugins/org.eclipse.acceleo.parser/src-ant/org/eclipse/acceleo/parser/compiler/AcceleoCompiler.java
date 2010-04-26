@@ -49,22 +49,23 @@ public class AcceleoCompiler extends Task {
 		/**
 		 * The IO file.
 		 */
-		private File mtlFile;
+		protected File mtlFile;
 
 		/**
 		 * The absolute URI.
 		 */
-		private URI emtlAbsoluteURI;
+		protected URI emtlAbsoluteURI;
 
 		/**
 		 * The full qualified module name.
 		 */
-		private String fullModuleName;
+		protected String fullModuleName;
 
 		/**
 		 * Constructor.
 		 */
-		private MTLFileInfo() {
+		protected MTLFileInfo() {
+			// Hides constructor from anything other than AcceleoCompiler
 		}
 
 	}

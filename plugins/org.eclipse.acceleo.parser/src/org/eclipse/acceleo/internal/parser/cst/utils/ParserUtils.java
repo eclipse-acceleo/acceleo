@@ -34,8 +34,6 @@ public final class ParserUtils {
 	 *            indicates if it parses the header only, the body is ignored
 	 * @param name
 	 *            is the name of the block
-	 * @param recursiveBody
-	 *            indicates if the block cans contain the same block
 	 * @param inhibsHeader
 	 *            are the ignored sequences on the header part
 	 * @param inhibsBody
@@ -43,7 +41,7 @@ public final class ParserUtils {
 	 * @return the Acceleo block analyzer
 	 */
 	public static SequenceBlock createAcceleoSequenceBlock(boolean headerOnly, String name,
-			boolean recursiveBody, SequenceBlock[] inhibsHeader, SequenceBlock[] inhibsBody) {
+			SequenceBlock[] inhibsHeader, SequenceBlock[] inhibsBody) {
 		Sequence beginHeader = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, name);
 		Sequence endHeaderOnly = new Sequence(IAcceleoConstants.DEFAULT_END);
 		Sequence endHeaderBody = new Sequence(IAcceleoConstants.DEFAULT_END_BODY_CHAR,

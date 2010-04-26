@@ -81,6 +81,7 @@ public class AcceleoUMLReflectionHelios extends AcceleoUMLReflection {
 	 * @see org.eclipse.ocl.utilities.UMLReflection#addConstrainedElement(java.lang.Object,
 	 *      org.eclipse.emf.ecore.EObject)
 	 */
+	@Override
 	public void addConstrainedElement(Constraint constraint, EObject constrainedElement) {
 		delegate.addConstrainedElement(constraint, constrainedElement);
 	}

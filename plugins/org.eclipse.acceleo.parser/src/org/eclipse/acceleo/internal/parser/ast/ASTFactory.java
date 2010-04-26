@@ -126,12 +126,6 @@ public class ASTFactory {
 	private Map<org.eclipse.acceleo.parser.cst.Query, org.eclipse.acceleo.model.mtl.Query> ioQuery = new HashMap<org.eclipse.acceleo.parser.cst.Query, org.eclipse.acceleo.model.mtl.Query>();
 
 	/**
-	 * Constructor.
-	 */
-	public ASTFactory() {
-	}
-
-	/**
 	 * Initializes the OCL environment.
 	 * 
 	 * @param resourceOCL
