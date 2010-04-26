@@ -3,7 +3,7 @@
     <local-check-config name="Acceleo" location="/org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration.xml" type="project" description="">
         <additional-data name="protect-config-file" value="false"/>
     </local-check-config>
-    <fileset name="all" enabled="true" check-config-name="Acceleo" local="true">
+    <fileset name="tous" enabled="true" check-config-name="Acceleo" local="true">
         <file-match-pattern match-pattern="." include-pattern="true"/>
     </fileset>
     <filter name="FilesFromPackage" enabled="true">

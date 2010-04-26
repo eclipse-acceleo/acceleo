@@ -29,6 +29,7 @@ public class LoopProfileEntrySpec extends LoopProfileEntryImpl {
 	 * 
 	 * @see org.eclipse.acceleo.profiler.impl.ProfileEntryImpl#start()
 	 */
+	@Override
 	public void start() {
 		++count;
 		lastStart = System.currentTimeMillis();
@@ -39,6 +40,7 @@ public class LoopProfileEntrySpec extends LoopProfileEntryImpl {
 	 * 
 	 * @see org.eclipse.acceleo.profiler.impl.ProfileEntryImpl#stop()
 	 */
+	@Override
 	public void stop() {
 		duration += System.currentTimeMillis() - lastStart;
 	}

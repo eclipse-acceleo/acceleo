@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerSwitch.java,v 1.1 2009/09/08 16:10:04 ylussaud Exp $
+ * $Id: ProfilerSwitch.java,v 1.2 2010/04/26 15:24:18 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.util;
 
@@ -83,31 +83,36 @@ public class ProfilerSwitch<T> {
 			case ProfilerPackage.PROFILE_ENTRY: {
 				ProfileEntry profileEntry = (ProfileEntry)theEObject;
 				T result = caseProfileEntry(profileEntry);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ProfilerPackage.LOOP_PROFILE_ENTRY: {
 				LoopProfileEntry loopProfileEntry = (LoopProfileEntry)theEObject;
 				T result = caseLoopProfileEntry(loopProfileEntry);
-				if (result == null)
+				if (result == null) {
 					result = caseProfileEntry(loopProfileEntry);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ProfilerPackage.PROFILE_RESOURCE: {
 				ProfileResource profileResource = (ProfileResource)theEObject;
 				T result = caseProfileResource(profileResource);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ProfilerPackage.INTERNAL: {
 				Internal internal = (Internal)theEObject;
 				T result = caseInternal(internal);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -126,6 +131,7 @@ public class ProfilerSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseProfileEntry(ProfileEntry object) {
 		return null;
 	}
@@ -141,6 +147,7 @@ public class ProfilerSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLoopProfileEntry(LoopProfileEntry object) {
 		return null;
 	}
@@ -156,6 +163,7 @@ public class ProfilerSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseProfileResource(ProfileResource object) {
 		return null;
 	}
@@ -171,6 +179,7 @@ public class ProfilerSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseInternal(Internal object) {
 		return null;
 	}
@@ -186,6 +195,7 @@ public class ProfilerSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

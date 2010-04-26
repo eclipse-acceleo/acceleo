@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: Internal.java,v 1.1 2009/09/08 16:10:04 ylussaud Exp $
+ * $Id: Internal.java,v 1.2 2010/04/26 15:24:17 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler;
 
@@ -17,4 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Internal extends EObject {
-} // Internal
+	// Internal
+}

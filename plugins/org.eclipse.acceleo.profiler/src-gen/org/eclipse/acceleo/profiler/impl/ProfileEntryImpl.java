@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileEntryImpl.java,v 1.2 2010/04/12 09:35:22 lgoubet Exp $
+ * $Id: ProfileEntryImpl.java,v 1.3 2010/04/26 15:24:18 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.impl;
 
@@ -225,7 +225,7 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 		if (newCaller != eInternalContainer()
 				|| (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER && newCaller != null)) {
 			if (EcoreUtil.isAncestor(this, newCaller))
-				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
