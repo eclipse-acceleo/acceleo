@@ -24,38 +24,38 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings( {"unchecked", "nls",})
+@SuppressWarnings({"unchecked", "nls", })
 public class MessagesTest extends TestCase {
 	/** Expected result of the parameterisable keys (only used if locale is en). */
 	private final String[] expectedForParameterisable = {"Operation {0}({1}) is undefined on type {2}.",
 			"Could not create lost file for {0}. Lost content : {1}",
-			"Could not find public template {0} in module {1}.",};
+			"Could not find public template {0} in module {1}.", };
 
 	/** Contains the expected results for the valid keys (only used if locale is en). */
 	private final String[] expectedForValidKeys = {"Start of user code", "Could not dispose open buffers.",
-			"Cannot invoke non-public template for generation.", "Arguments of a generation cannot be null.",};
+			"Cannot invoke non-public template for generation.", "Arguments of a generation cannot be null.", };
 
 	/** These will be used when testing message retrieval with invalid keys. */
 	private final String[] invalidKeys = {"invalidKey", "AcceleoEvaluationContext.CleanUpError1", "",
-			"\u00ec",};
+			"\u00ec", };
 
 	/** Contains possible parameters for the messages. */
-	private final Object[] messageParameters = {null, "", "Foehn", -1, new Long(10), '\u0043', new HashSet(),
-			"0x6c9a.^\\/",};
+	private final Object[] messageParameters = {null, "", "Foehn", -1, new Long(10), '\u0043',
+			new HashSet<Object>(), "0x6c9a.^\\/", };
 
 	/**
 	 * These two are valid, parameterisable keys. See
 	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties.
 	 */
 	private final String[] parameterisableKeys = {"AcceleoEvaluationEnvironment.UndefinedOperation",
-			"AcceleoEvaluationContext.LostContent", "AcceleoService.UndefinedTemplate",};
+			"AcceleoEvaluationContext.LostContent", "AcceleoService.UndefinedTemplate", };
 
 	/**
 	 * These are valid, un-parameterisable keys. See
 	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties.
 	 */
 	private final String[] validKeys = {"usercode.start", "AcceleoEvaluationContext.CleanUpError",
-			"AcceleoEngine.IllegalTemplateInvocation", "AcceleoService.NullArguments",};
+			"AcceleoEngine.IllegalTemplateInvocation", "AcceleoService.NullArguments", };
 
 	/**
 	 * Tests {@link AcceleoEngineMessages#getString(String, Object...)} with an invalid key. Expects the

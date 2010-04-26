@@ -23,6 +23,7 @@ import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -91,6 +92,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a protected block when the marker has changed.
 	 */
+	@SuppressWarnings("unchecked")
 	public void testProtectedBlockLostArea() {
 		final ProtectedAreaBlock protectedBlock = getDummyProtectedAreaBlock();
 
@@ -113,7 +115,8 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		try {
 			Field field = AcceleoEvaluationVisitor.class.getDeclaredField("context"); //$NON-NLS-1$
 			field.setAccessible(true);
-			AcceleoEvaluationContext context = (AcceleoEvaluationContext)field.get(evaluationVisitor);
+			AcceleoEvaluationContext<EClassifier> context = (AcceleoEvaluationContext<EClassifier>)field
+					.get(evaluationVisitor);
 			context.awaitCompletion();
 		} catch (NoSuchFieldException e) {
 			fail("name of the context field from the AcceleoEvaluationVisitor changed"); //$NON-NLS-1$
