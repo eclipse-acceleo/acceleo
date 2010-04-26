@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public class ExtlibraryPackageImpl extends EPackageImpl implements ExtlibraryPackage {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -916,10 +917,10 @@ public class ExtlibraryPackageImpl extends EPackageImpl implements ExtlibraryPac
 	 */
 	protected void createExtendedMetaDataAnnotations() {
 		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";
-		addAnnotation(getLibrary_Writers(), source, new String[] {"group", "#people"});
-		addAnnotation(getLibrary_Employees(), source, new String[] {"group", "#people"});
-		addAnnotation(getLibrary_Borrowers(), source, new String[] {"group", "#people"});
-		addAnnotation(getLibrary_People(), source, new String[] {"kind", "group"});
+		addAnnotation(getLibrary_Writers(), source, new String[] {"group", "#people" });
+		addAnnotation(getLibrary_Employees(), source, new String[] {"group", "#people" });
+		addAnnotation(getLibrary_Borrowers(), source, new String[] {"group", "#people" });
+		addAnnotation(getLibrary_People(), source, new String[] {"kind", "group" });
 	}
 
 } // ExtlibraryPackageImpl

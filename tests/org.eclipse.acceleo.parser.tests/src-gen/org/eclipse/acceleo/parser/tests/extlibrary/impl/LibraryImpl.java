@@ -56,6 +56,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public class LibraryImpl extends EObjectImpl implements Library {
 	/**
 	 * The default value of the '{@link #getAddress() <em>Address</em>}' attribute. <!-- begin-user-doc -->

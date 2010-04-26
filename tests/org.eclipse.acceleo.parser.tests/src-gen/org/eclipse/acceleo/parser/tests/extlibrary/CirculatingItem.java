@@ -19,4 +19,5 @@ package org.eclipse.acceleo.parser.tests.extlibrary;
  * @generated
  */
 public interface CirculatingItem extends Item, Lendable {
-} // CirculatingItem
+	// CirculatingItem
+}

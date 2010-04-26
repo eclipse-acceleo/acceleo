@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * @model
  * @generated
  */
+@SuppressWarnings("nls")
 public enum BookCategory implements Enumerator {
 	/**
 	 * The '<em><b>Mystery</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -104,7 +105,7 @@ public enum BookCategory implements Enumerator {
 	 * @generated
 	 */
 	private static final BookCategory[] VALUES_ARRAY = new BookCategory[] {MYSTERY, SCIENCE_FICTION,
-			BIOGRAPHY,};
+			BIOGRAPHY, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Book Category</b></em>' enumerators. <!-- begin-user-doc -->

@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public abstract class PeriodicalImpl extends ItemImpl implements Periodical {
 	/**
 	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute. <!-- begin-user-doc --> <!--

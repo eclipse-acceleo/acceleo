@@ -16,6 +16,7 @@ import org.eclipse.acceleo.internal.parser.cst.utils.Region;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
 
+@SuppressWarnings("nls")
 public class SequenceTests extends TestCase {
 
 	@Override

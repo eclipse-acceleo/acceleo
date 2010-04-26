@@ -89,8 +89,10 @@ public class CstSwitchTest extends TestCase {
 	public void testCaseModuleElement() {
 		CstSwitch<?> cstswitch = new CstSwitch<Object>();
 		assertNull(cstswitch.caseModuleElement(new org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl() {
+			// Empty implementation
 		}));
 		assertNull(cstswitch.doSwitch(new org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl() {
+			// Empty implementation
 		}));
 	}
 

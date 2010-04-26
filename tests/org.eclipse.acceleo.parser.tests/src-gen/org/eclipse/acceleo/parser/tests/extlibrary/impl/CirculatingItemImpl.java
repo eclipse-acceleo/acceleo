@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public abstract class CirculatingItemImpl extends ItemImpl implements CirculatingItem {
 	/**
 	 * The default value of the '{@link #getCopies() <em>Copies</em>}' attribute. <!-- begin-user-doc --> <!--

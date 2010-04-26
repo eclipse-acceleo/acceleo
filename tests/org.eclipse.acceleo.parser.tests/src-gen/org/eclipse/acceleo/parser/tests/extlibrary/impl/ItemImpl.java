@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public abstract class ItemImpl extends EObjectImpl implements Item {
 	/**
 	 * The default value of the '{@link #getPublicationDate() <em>Publication Date</em>}' attribute. <!--

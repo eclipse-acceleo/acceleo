@@ -101,6 +101,7 @@ public class CstAdapterFactoryTest extends TestCase {
 		CstAdapterFactory adapterFactory = new CstAdapterFactory();
 		assertNull(adapterFactory.createModuleElementAdapter());
 		assertNull(adapterFactory.createAdapter(new org.eclipse.acceleo.parser.cst.impl.ModuleElementImpl() {
+			// Empty implementation
 		}));
 	}
 

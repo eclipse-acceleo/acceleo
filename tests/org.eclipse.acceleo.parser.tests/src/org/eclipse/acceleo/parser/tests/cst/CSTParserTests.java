@@ -12,13 +12,10 @@ package org.eclipse.acceleo.parser.tests.cst;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.internal.parser.ast.CST2ASTConverter;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CstFactory;
@@ -26,13 +23,9 @@ import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.ocl.helper.Choice;
 import org.osgi.framework.Bundle;
 
+@SuppressWarnings("nls")
 public class CSTParserTests extends TestCase {
 
 	private Bundle bundle;
@@ -219,26 +212,25 @@ public class CSTParserTests extends TestCase {
 	// List<Choice> choices = getSyntaxHelp(bufferBefore + bufferAfter, bufferBefore.length());
 	// assertTrue(choices.size() > 40);
 	// }
-
-	private List<Choice> getSyntaxHelp(String buffer, int offset) {
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(buffer));
-		CSTParser parser = new CSTParser(source);
-		Module cst = parser.parse();
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = ModelUtils.createResource(URI
-				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
-		CST2ASTConverter astConverter = new CST2ASTConverter();
-		astConverter.createAST(cst, resource);
-		if (resource.getContents().size() > 0
-				&& resource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
-			org.eclipse.acceleo.model.mtl.Module ast = (org.eclipse.acceleo.model.mtl.Module)resource
-					.getContents().get(0);
-			astConverter.getOCL().addRecursivelyMetamodelsToScope(ast);
-			astConverter.getOCL().addRecursivelyBehavioralFeaturesToScope(ast);
-			assertNotNull(astConverter.getOCL().addRecursivelyVariablesToScopeAndGetContextClassifierAt(ast,
-					offset));
-		}
-		return astConverter.getOCL().getSyntaxHelp("");
-	}
+	// private List<Choice> getSyntaxHelp(String buffer, int offset) {
+	// AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(buffer));
+	// CSTParser parser = new CSTParser(source);
+	// Module cst = parser.parse();
+	// ResourceSet resourceSet = new ResourceSetImpl();
+	// Resource resource = ModelUtils.createResource(URI
+	// .createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
+	// CST2ASTConverter astConverter = new CST2ASTConverter();
+	// astConverter.createAST(cst, resource);
+	// if (resource.getContents().size() > 0
+	// && resource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
+	// org.eclipse.acceleo.model.mtl.Module ast = (org.eclipse.acceleo.model.mtl.Module)resource
+	// .getContents().get(0);
+	// astConverter.getOCL().addRecursivelyMetamodelsToScope(ast);
+	// astConverter.getOCL().addRecursivelyBehavioralFeaturesToScope(ast);
+	// assertNotNull(astConverter.getOCL().addRecursivelyVariablesToScopeAndGetContextClassifierAt(ast,
+	// offset));
+	// }
+	// return astConverter.getOCL().getSyntaxHelp("");
+	// }
 
 }

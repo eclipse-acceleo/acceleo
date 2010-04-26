@@ -297,6 +297,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBook(Book object) {
 		return null;
 	}
@@ -312,6 +313,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLibrary(Library object) {
 		return null;
 	}
@@ -327,6 +329,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseWriter(Writer object) {
 		return null;
 	}
@@ -342,6 +345,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseItem(Item object) {
 		return null;
 	}
@@ -357,6 +361,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLendable(Lendable object) {
 		return null;
 	}
@@ -372,6 +377,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseCirculatingItem(CirculatingItem object) {
 		return null;
 	}
@@ -387,6 +393,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T casePeriodical(Periodical object) {
 		return null;
 	}
@@ -402,6 +409,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseAudioVisualItem(AudioVisualItem object) {
 		return null;
 	}
@@ -417,6 +425,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBookOnTape(BookOnTape object) {
 		return null;
 	}
@@ -432,6 +441,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseVideoCassette(VideoCassette object) {
 		return null;
 	}
@@ -447,6 +457,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBorrower(Borrower object) {
 		return null;
 	}
@@ -462,6 +473,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T casePerson(Person object) {
 		return null;
 	}
@@ -477,6 +489,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEmployee(Employee object) {
 		return null;
 	}
@@ -492,6 +505,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseAddressable(Addressable object) {
 		return null;
 	}
@@ -507,6 +521,7 @@ public class ExtlibrarySwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

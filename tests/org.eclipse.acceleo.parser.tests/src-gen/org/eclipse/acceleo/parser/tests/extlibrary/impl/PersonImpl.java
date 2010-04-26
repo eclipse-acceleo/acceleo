@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public class PersonImpl extends EObjectImpl implements Person {
 	/**
 	 * The default value of the '{@link #getAddress() <em>Address</em>}' attribute. <!-- begin-user-doc -->

@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public class ExtlibraryFactoryImpl extends EFactoryImpl implements ExtlibraryFactory {
 	/**
 	 * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -222,6 +223,7 @@ public class ExtlibraryFactoryImpl extends EFactoryImpl implements ExtlibraryFac
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public String convertBookCategoryToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}

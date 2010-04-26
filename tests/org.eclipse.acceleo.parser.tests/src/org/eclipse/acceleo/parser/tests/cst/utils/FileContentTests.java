@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
+@SuppressWarnings("nls")
 public class FileContentTests extends TestCase {
 
 	private Bundle bundle;

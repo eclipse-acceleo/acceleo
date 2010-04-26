@@ -25,6 +25,7 @@ import org.eclipse.acceleo.parser.tests.cst.utils.SequenceTests;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
+@SuppressWarnings("nls")
 public class AllTests {
 
 	/**

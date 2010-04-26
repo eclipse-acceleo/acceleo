@@ -24,6 +24,7 @@ import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TraceBlock;
 
+@SuppressWarnings("nls")
 public class CSTParserBlockTests extends TestCase {
 
 	@Override

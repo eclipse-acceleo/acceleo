@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * 
  * @generated
  */
+@SuppressWarnings("nls")
 public class BookImpl extends CirculatingItemImpl implements Book {
 	/**
 	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute. <!-- begin-user-doc --> <!--
