@@ -108,6 +108,12 @@ import org.eclipse.ocl.utilities.PredefinedType;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
+	/**
+	 * This will be set as soon as we enter the evaluation of a protected area, and reset to <code>null</code>
+	 * as soon as we exit this area. It will be used to shortcut all input recorded inside of such an area.
+	 */
+	protected InputElement protectedAreaSource;
+
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
 
@@ -164,12 +170,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private LinkedList<EObject> scopeEObjects = new LinkedList<EObject>();
-
-	/**
-	 * This will be set as soon as we enter the evaluation of a protected area, and reset to <code>null</code>
-	 * as soon as we exit this area. It will be used to shortcut all input recorded inside of such an area.
-	 */
-	private InputElement protectedAreaSource;
 
 	/**
 	 * Default constructor.
@@ -1061,9 +1061,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					scopeValue = (EObject)value;
 					break;
 				}
-			} else if (scope instanceof VariableExp) {
+			} else if (scope instanceof VariableExp<?, ?>) {
 				final Object value = getEvaluationEnvironment().getValueOf(
-						(((VariableExp)scope).getReferredVariable()).getName());
+						(((VariableExp<C, PM>)scope).getReferredVariable()).getName());
 				if (value instanceof EObject) {
 					scopeValue = (EObject)value;
 					break;
@@ -1125,6 +1125,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            Operation that is to be evaluated.
 	 * @return result of the invocation.
 	 */
+	@SuppressWarnings("unchecked")
 	private Object internalVisitOperationCallExp(OperationCallExp<C, O> callExp) {
 		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
 		final Object result;
@@ -1545,6 +1546,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					lastEntry = entry;
 				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
 					// lastEntry cannot be null once we get here
+					assert lastEntry != null;
 					lastEntry.getValue().remove(lastRegion);
 					lastRegion = text;
 					lastEntry = entry;
@@ -1559,8 +1561,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else {
 			length = 5;
 		}
-		lastRegion.setStartOffset(0);
-		lastRegion.setStartOffset(length);
+		if (lastRegion != null) {
+			lastRegion.setStartOffset(0);
+			lastRegion.setStartOffset(length);
+		}
 		trace.setOffset(length);
 	}
 
@@ -1671,18 +1675,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean isPropertyCallSource(OCLExpression<C> expression) {
 		return expression == propertyCallSourceExpression;
-	}
-
-	/**
-	 * Returns <code>true</code> if the value is equal to the OCL standard library's OCLInvalid object.
-	 * 
-	 * @param value
-	 *            Value we need to test.
-	 * @return <code>true</code> if the value is equal to the OCL standard library's OCLInvalid object,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isInvalid(Object value) {
-		return value == invalid;
 	}
 
 	/**

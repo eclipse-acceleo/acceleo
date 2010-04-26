@@ -72,8 +72,8 @@ public class AcceleoTraceabilityEnvironmentFactory extends AcceleoEnvironmentFac
 			IAcceleoGenerationStrategy strategy, Monitor monitor, TraceabilityModel trace) {
 		super(generationRoot, module, listeners, props, strategy, monitor);
 		evaluationTrace = trace;
-		context = new AcceleoTraceabilityEvaluationContext(generationRoot, listeners, strategy, monitor,
-				evaluationTrace);
+		context = new AcceleoTraceabilityEvaluationContext<EClassifier>(generationRoot, listeners, strategy,
+				monitor, evaluationTrace);
 	}
 
 	/**

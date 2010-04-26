@@ -36,9 +36,6 @@ public class AcceleoTraceabilityEngine extends AcceleoEngine {
 	/** All traceability information for this session will be saved in this instance. */
 	private TraceabilityModel evaluationTrace = TraceabilityFactory.eINSTANCE.createTraceabilityModel();
 
-	/** holds a reference to the current generation root. */
-	private File generationRoot;
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -50,7 +47,6 @@ public class AcceleoTraceabilityEngine extends AcceleoEngine {
 	@Override
 	protected AbstractAcceleoEnvironmentFactory createEnvironmentFactory(File genRoot, Module rootModule,
 			IAcceleoGenerationStrategy strategy, Monitor monitor) {
-		generationRoot = genRoot;
 		final List<IAcceleoTextGenerationListener> listenersCopy = new ArrayList<IAcceleoTextGenerationListener>(
 				listeners);
 		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
@@ -84,7 +80,6 @@ public class AcceleoTraceabilityEngine extends AcceleoEngine {
 	@Override
 	public void reset() {
 		super.reset();
-		generationRoot = null;
 		evaluationTrace = null;
 	}
 }
