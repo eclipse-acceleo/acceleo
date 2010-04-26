@@ -355,6 +355,7 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public String convertVisibilityKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
@@ -378,6 +379,7 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public String convertOpenModeKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}

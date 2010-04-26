@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.model.mtl;
 
 import org.eclipse.ocl.ecore.OCLExpression;
-import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object ' <em><b>Template Expression</b></em>'. <!--
@@ -21,5 +20,6 @@ import org.eclipse.ocl.utilities.ASTNode;
  * @model
  * @generated
  */
-public interface TemplateExpression extends OCLExpression, ASTNode {
-} // TemplateExpression
+public interface TemplateExpression extends OCLExpression {
+	// TemplateExpression
+}

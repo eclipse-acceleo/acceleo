@@ -227,12 +227,12 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 */
 	private EAnnotation getPositions(boolean create) {
 		EAnnotation positions = null;
-		Iterator<EObject> contents = getContents().iterator();
-		while (positions == null && contents.hasNext()) {
-			EObject content = contents.next();
-			if (content instanceof EAnnotation) {
-				if (POSITIONS_ANNOTATION_NAME.equals(((EAnnotation)content).getSource())) {
-					positions = (EAnnotation)content;
+		Iterator<EObject> children = getContents().iterator();
+		while (positions == null && children.hasNext()) {
+			EObject child = children.next();
+			if (child instanceof EAnnotation) {
+				if (POSITIONS_ANNOTATION_NAME.equals(((EAnnotation)child).getSource())) {
+					positions = (EAnnotation)child;
 				}
 			}
 		}

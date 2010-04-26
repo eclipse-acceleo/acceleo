@@ -22,7 +22,7 @@
     <eLiterals name="Protected" value="1"/>
     <eLiterals name="Public" value="2"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TemplateExpression" eSuperTypes="platform:/plugin/org.eclipse.ocl.ecore/model/OCLEcore.ecore#//ecore/OCLExpression platform:/plugin/org.eclipse.ocl/model/OCL.ecore#//utilities/ASTNode"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TemplateExpression" eSuperTypes="platform:/plugin/org.eclipse.ocl.ecore/model/OCLEcore.ecore#//ecore/OCLExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//TemplateExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="init" eType="#//InitSection"
         containment="true"/>

@@ -678,6 +678,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModule(Module object) {
 		return null;
 	}
@@ -693,6 +694,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseModuleElement(ModuleElement object) {
 		return null;
 	}
@@ -708,6 +710,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplateExpression(TemplateExpression object) {
 		return null;
 	}
@@ -723,6 +726,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBlock(Block object) {
 		return null;
 	}
@@ -738,6 +742,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseInitSection(InitSection object) {
 		return null;
 	}
@@ -753,6 +758,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplate(Template object) {
 		return null;
 	}
@@ -768,6 +774,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplateInvocation(TemplateInvocation object) {
 		return null;
 	}
@@ -783,6 +790,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseQuery(Query object) {
 		return null;
 	}
@@ -798,6 +806,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseQueryInvocation(QueryInvocation object) {
 		return null;
 	}
@@ -813,6 +822,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseProtectedAreaBlock(ProtectedAreaBlock object) {
 		return null;
 	}
@@ -828,6 +838,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseForBlock(ForBlock object) {
 		return null;
 	}
@@ -843,6 +854,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseIfBlock(IfBlock object) {
 		return null;
 	}
@@ -858,6 +870,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLetBlock(LetBlock object) {
 		return null;
 	}
@@ -873,6 +886,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseFileBlock(FileBlock object) {
 		return null;
 	}
@@ -888,6 +902,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTraceBlock(TraceBlock object) {
 		return null;
 	}
@@ -903,6 +918,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseMacro(Macro object) {
 		return null;
 	}
@@ -918,6 +934,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseMacroInvocation(MacroInvocation object) {
 		return null;
 	}
@@ -933,6 +950,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTypedModel(TypedModel object) {
 		return null;
 	}
@@ -948,6 +966,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEModelElement(EModelElement object) {
 		return null;
 	}
@@ -963,6 +982,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseENamedElement(ENamedElement object) {
 		return null;
 	}
@@ -978,6 +998,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEPackage(EPackage object) {
 		return null;
 	}
@@ -993,6 +1014,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -1008,6 +1030,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseETypedElement(ETypedElement object) {
 		return null;
 	}
@@ -1023,6 +1046,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public <C> T caseTypedElement(TypedElement<C> object) {
 		return null;
 	}
@@ -1038,6 +1062,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseVisitable(Visitable object) {
 		return null;
 	}
@@ -1053,6 +1078,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public <C> T caseOCLExpression(OCLExpression<C> object) {
 		return null;
 	}
@@ -1068,6 +1094,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseEcore_OCLExpression(org.eclipse.ocl.ecore.OCLExpression object) {
 		return null;
 	}
@@ -1083,6 +1110,7 @@ public class MtlSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}
