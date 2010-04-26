@@ -13,7 +13,6 @@ package org.eclipse.acceleo.traceability.tests.unit;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -66,15 +65,18 @@ public class TraceabilityTest extends AbstractTraceabilityTest {
 		templateNames.add("traceability");
 		templateNames.add("traceabilityAttributes");
 		generateFor.put(module, templateNames);
-		Map<String, String> preview = new AcceleoService(defaultStrategy).doGenerate(generateFor, inputModel, generationRoot, new BasicMonitor());
+		Map<String, String> preview = new AcceleoService(defaultStrategy)
+				.doGenerate(generateFor, inputModel, generationRoot,
+						new BasicMonitor());
 		assertSame(2, preview.size());
 		Map.Entry<String, String> entry = preview.entrySet().iterator().next();
-		assertEquals(generationRoot.getPath() + File.separatorChar + "MyClass.java", entry.getKey());
+		assertEquals(generationRoot.getPath() + File.separatorChar
+				+ "MyClass.java", entry.getKey());
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
 	@Override
