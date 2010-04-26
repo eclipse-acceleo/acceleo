@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements;
 
-import org.eclipse.acceleo.compatibility.model.mt.core.Template;
 import org.eclipse.acceleo.compatibility.model.mt.statements.Comment;
 import org.eclipse.acceleo.compatibility.model.mt.statements.StatementsFactory;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
@@ -39,13 +38,11 @@ public final class CommentParser {
 	 *            is the buffer
 	 * @param range
 	 *            is the region of the buffer that contains the new comment to create
-	 * @param template
-	 *            is the current template where to put the new object
 	 * @return the new comment
 	 * @throws TemplateSyntaxException
 	 *             if a syntax issue occurs
 	 */
-	public static Comment createComment(int offset, String buffer, Region range, Template template)
+	public static Comment createComment(int offset, String buffer, Region range)
 			throws TemplateSyntaxException {
 		Comment comment = StatementsFactory.eINSTANCE.createComment();
 		comment.setValue(buffer.substring(range.b(), range.e()));

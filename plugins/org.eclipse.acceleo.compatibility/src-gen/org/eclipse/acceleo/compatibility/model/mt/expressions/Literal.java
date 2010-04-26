@@ -19,4 +19,5 @@ package org.eclipse.acceleo.compatibility.model.mt.expressions;
  * @generated
  */
 public interface Literal extends Expression {
-} // Literal
+	// Literal
+}

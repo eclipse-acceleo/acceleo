@@ -21,7 +21,7 @@ public final class Conventions {
 	 * Private Constructor. Utility class should not have default or public constructor.
 	 */
 	private Conventions() {
-
+		// Hides constructor
 	}
 
 	/**

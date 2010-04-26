@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements;
 
-import org.eclipse.acceleo.compatibility.model.mt.core.Template;
 import org.eclipse.acceleo.compatibility.model.mt.statements.StatementsFactory;
 import org.eclipse.acceleo.compatibility.model.mt.statements.Text;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
@@ -39,14 +38,11 @@ public final class TextParser {
 	 *            is the buffer
 	 * @param range
 	 *            is the region of the buffer that contains the text section to create
-	 * @param template
-	 *            is the current template where to put the new object
 	 * @return the text object
 	 * @throws TemplateSyntaxException
 	 *             if a syntax issue occurs
 	 */
-	public static Text createText(int offset, String buffer, Region range, Template template)
-			throws TemplateSyntaxException {
+	public static Text createText(int offset, String buffer, Region range) throws TemplateSyntaxException {
 		Text text = StatementsFactory.eINSTANCE.createText();
 		text.setValue(buffer.substring(range.b(), range.e()));
 		text.setBegin(offset + range.b());

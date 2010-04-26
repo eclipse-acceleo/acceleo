@@ -85,15 +85,17 @@ public class MtSwitch<T> {
 			case MtPackage.RESOURCE_SET: {
 				ResourceSet resourceSet = (ResourceSet)theEObject;
 				T result = caseResourceSet(resourceSet);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case MtPackage.RESOURCE: {
 				Resource resource = (Resource)theEObject;
 				T result = caseResource(resource);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -112,6 +114,7 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseResourceSet(ResourceSet object) {
 		return null;
 	}
@@ -127,6 +130,7 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseResource(Resource object) {
 		return null;
 	}
@@ -142,6 +146,7 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

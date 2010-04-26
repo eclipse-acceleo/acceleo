@@ -44,14 +44,12 @@ public final class ScriptParser {
 	 *            is the current offset of the whole buffer, it is often 0
 	 * @param buffer
 	 *            is the buffer
-	 * @param range
-	 *            is the region of the buffer that contains the script descriptor to create
 	 * @param template
 	 *            is the current template where to put the new script descriptor
 	 * @param problems
 	 *            are the syntax problems
 	 */
-	public static void parseScripts(int offset, String buffer, Region range, Template template,
+	public static void parseScripts(int offset, String buffer, Template template,
 			List<TemplateSyntaxException> problems) {
 		ScriptDescriptor descriptor = null;
 		Region end = new Region(0, 0);

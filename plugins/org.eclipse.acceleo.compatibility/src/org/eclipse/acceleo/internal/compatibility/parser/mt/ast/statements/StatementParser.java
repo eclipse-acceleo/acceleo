@@ -225,7 +225,7 @@ public final class StatementParser {
 							template);
 				} else { // -1
 					Region posText = new Region(i, range.e());
-					block.add(TextParser.createText(offset, buffer, posText, null));
+					block.add(TextParser.createText(offset, buffer, posText));
 					i = range.e();
 				}
 			}
@@ -291,7 +291,7 @@ public final class StatementParser {
 					&& isLastSignificantOfLine(buffer, end.e());
 			if (begin.b() > range.b()) {
 				Region posText = new Region(range.b(), getIEndPos(buffer, untab, begin.b(), range.b()));
-				block.add(TextParser.createText(offset, buffer, posText, null));
+				block.add(TextParser.createText(offset, buffer, posText));
 			}
 			if (tagBegin == TemplateConstants.getDefault().getIfBegin()) {
 				block.add(IfParser.createIf(offset, buffer, new Region(begin.e(), end.b()), template));
@@ -304,8 +304,7 @@ public final class StatementParser {
 						template));
 			}
 			if (tagBegin == TemplateConstants.getDefault().getCommentBegin()) {
-				block.add(CommentParser.createComment(offset, buffer, new Region(begin.e(), end.b()),
-						template));
+				block.add(CommentParser.createComment(offset, buffer, new Region(begin.e(), end.b())));
 			}
 			if (untab) {
 				// Delete (\s|\t)*\n after <%}%>
@@ -319,7 +318,7 @@ public final class StatementParser {
 			}
 			return end.e();
 		} else {
-			block.add(TextParser.createText(offset, buffer, range, null));
+			block.add(TextParser.createText(offset, buffer, range));
 			throw new TemplateSyntaxException(
 					AcceleoCompatibilityMessages.getString(
 							"TemplateSyntaxError.UnclosedTag", new Object[] {tagEnd, tagBegin, }), template, new Region(begin.b(), range.e())); //$NON-NLS-1$

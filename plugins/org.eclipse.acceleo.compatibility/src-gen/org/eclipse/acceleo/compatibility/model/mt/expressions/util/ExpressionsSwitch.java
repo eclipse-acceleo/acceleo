@@ -96,139 +96,178 @@ public class ExpressionsSwitch<T> {
 			case ExpressionsPackage.EXPRESSION: {
 				Expression expression = (Expression)theEObject;
 				T result = caseExpression(expression);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(expression);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.CALL_SET: {
 				CallSet callSet = (CallSet)theEObject;
 				T result = caseCallSet(callSet);
-				if (result == null)
+				if (result == null) {
 					result = caseExpression(callSet);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(callSet);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.CALL: {
 				Call call = (Call)theEObject;
 				T result = caseCall(call);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(call);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.NOT: {
 				Not not = (Not)theEObject;
 				T result = caseNot(not);
-				if (result == null)
+				if (result == null) {
 					result = caseExpression(not);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(not);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.OPERATOR: {
 				Operator operator = (Operator)theEObject;
 				T result = caseOperator(operator);
-				if (result == null)
+				if (result == null) {
 					result = caseExpression(operator);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(operator);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.PARENTHESIS: {
 				Parenthesis parenthesis = (Parenthesis)theEObject;
 				T result = caseParenthesis(parenthesis);
-				if (result == null)
+				if (result == null) {
 					result = caseExpression(parenthesis);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(parenthesis);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.LITERAL: {
 				Literal literal = (Literal)theEObject;
 				T result = caseLiteral(literal);
-				if (result == null)
+				if (result == null) {
 					result = caseExpression(literal);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(literal);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.STRING_LITERAL: {
 				StringLiteral stringLiteral = (StringLiteral)theEObject;
 				T result = caseStringLiteral(stringLiteral);
-				if (result == null)
+				if (result == null) {
 					result = caseLiteral(stringLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseExpression(stringLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(stringLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.INTEGER_LITERAL: {
 				IntegerLiteral integerLiteral = (IntegerLiteral)theEObject;
 				T result = caseIntegerLiteral(integerLiteral);
-				if (result == null)
+				if (result == null) {
 					result = caseLiteral(integerLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseExpression(integerLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(integerLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.DOUBLE_LITERAL: {
 				DoubleLiteral doubleLiteral = (DoubleLiteral)theEObject;
 				T result = caseDoubleLiteral(doubleLiteral);
-				if (result == null)
+				if (result == null) {
 					result = caseLiteral(doubleLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseExpression(doubleLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(doubleLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.BOOLEAN_LITERAL: {
 				BooleanLiteral booleanLiteral = (BooleanLiteral)theEObject;
 				T result = caseBooleanLiteral(booleanLiteral);
-				if (result == null)
+				if (result == null) {
 					result = caseLiteral(booleanLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseExpression(booleanLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(booleanLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case ExpressionsPackage.NULL_LITERAL: {
 				NullLiteral nullLiteral = (NullLiteral)theEObject;
 				T result = caseNullLiteral(nullLiteral);
-				if (result == null)
+				if (result == null) {
 					result = caseLiteral(nullLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseExpression(nullLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(nullLiteral);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -247,6 +286,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseExpression(Expression object) {
 		return null;
 	}
@@ -262,6 +302,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseCallSet(CallSet object) {
 		return null;
 	}
@@ -277,6 +318,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseCall(Call object) {
 		return null;
 	}
@@ -292,6 +334,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseNot(Not object) {
 		return null;
 	}
@@ -307,6 +350,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseOperator(Operator object) {
 		return null;
 	}
@@ -322,6 +366,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseParenthesis(Parenthesis object) {
 		return null;
 	}
@@ -337,6 +382,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseLiteral(Literal object) {
 		return null;
 	}
@@ -352,6 +398,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseStringLiteral(StringLiteral object) {
 		return null;
 	}
@@ -367,6 +414,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseIntegerLiteral(IntegerLiteral object) {
 		return null;
 	}
@@ -382,6 +430,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseDoubleLiteral(DoubleLiteral object) {
 		return null;
 	}
@@ -397,6 +446,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseBooleanLiteral(BooleanLiteral object) {
 		return null;
 	}
@@ -412,6 +462,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseNullLiteral(NullLiteral object) {
 		return null;
 	}
@@ -427,6 +478,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -442,6 +494,7 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

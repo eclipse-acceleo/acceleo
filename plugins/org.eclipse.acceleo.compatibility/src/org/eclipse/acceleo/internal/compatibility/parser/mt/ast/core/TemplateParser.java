@@ -62,14 +62,12 @@ public final class TemplateParser {
 		template.setBeginTag(TemplateConstants.getDefault().getFeatureBegin());
 		template.setEndTag(TemplateConstants.getDefault().getFeatureEnd());
 		if (text != null && text.length() > 0) {
-			if (file != null) {
-				Service service = ServiceParser.createImplicitService(file, root);
-				if (service != null) {
-					template.getImports().add(service);
-				}
+			Service service = ServiceParser.createImplicitService(file, root);
+			if (service != null) {
+				template.getImports().add(service);
 			}
-			parseImports(file, text, template, root, problems);
-			ScriptParser.parseScripts(0, text, new Region(0, text.length()), template, problems);
+			parseImports(text, template, root, problems);
+			ScriptParser.parseScripts(0, text, template, problems);
 		}
 
 	}
@@ -77,8 +75,6 @@ public final class TemplateParser {
 	/**
 	 * Parse the import section of the file and fill the template.
 	 * 
-	 * @param file
-	 *            is the file to parse
 	 * @param text
 	 *            is the text to parse
 	 * @param template
@@ -88,7 +84,7 @@ public final class TemplateParser {
 	 * @param problems
 	 *            are the problems
 	 */
-	private static void parseImports(IFile file, String text, Template template, ResourceSet root,
+	private static void parseImports(String text, Template template, ResourceSet root,
 			List<TemplateSyntaxException> problems) {
 		final List<String> importValues = new ArrayList<String>();
 		int end = TextSearch.indexIn(text, TemplateConstants.getDefault().getScriptBegin(),
@@ -124,7 +120,7 @@ public final class TemplateParser {
 						Region importPos = imports[i];
 						importPos = TextSearch.trim(text, importPos.b(), importPos.e());
 						if (importPos.b() > -1 && importPos.e() > importPos.b()) {
-							parseImport(file, text, importPos, template, root, problems, importValues);
+							parseImport(text, importPos, template, root, problems, importValues);
 						}
 					}
 					pos = eImports.e();
@@ -142,8 +138,6 @@ public final class TemplateParser {
 	/**
 	 * Parse one import value of the file and fill the template. It checks the duplicated import values.
 	 * 
-	 * @param file
-	 *            is the file to parse
 	 * @param text
 	 *            is the text to parse
 	 * @param range
@@ -157,8 +151,8 @@ public final class TemplateParser {
 	 * @param importValuesFound
 	 *            is the import values already found
 	 */
-	private static void parseImport(IFile file, String text, Region range, Template template,
-			ResourceSet root, List<TemplateSyntaxException> problems, final List<String> importValuesFound) {
+	private static void parseImport(String text, Region range, Template template, ResourceSet root,
+			List<TemplateSyntaxException> problems, final List<String> importValuesFound) {
 		if (TextSearch.indexIn(text, TemplateConstants.getDefault().getImportWord(), range).b() == range.b()) {
 			final Region valuePos = TextSearch.trim(text, range.b()
 					+ TemplateConstants.getDefault().getImportWord().length(), range.e());
@@ -171,7 +165,7 @@ public final class TemplateParser {
 				} else {
 					importValuesFound.add(value);
 					try {
-						parseImport(file, value, valuePos, importValuesFound.size(), template, root);
+						parseImport(value, valuePos, importValuesFound.size(), template, root);
 					} catch (final TemplateSyntaxException e) {
 						problems.add(e);
 					}
@@ -194,7 +188,7 @@ public final class TemplateParser {
 				} else {
 					importValuesFound.add(value);
 					try {
-						parseImport(file, value, valuePos, importValuesFound.size(), template, root);
+						parseImport(value, valuePos, importValuesFound.size(), template, root);
 					} catch (final TemplateSyntaxException e) {
 						problems.add(e);
 					}
@@ -213,8 +207,6 @@ public final class TemplateParser {
 	/**
 	 * Parse one import value of the file and fill the template.
 	 * 
-	 * @param file
-	 *            is the file to parse
 	 * @param value
 	 *            is the import value
 	 * @param valuePos
@@ -228,9 +220,9 @@ public final class TemplateParser {
 	 * @throws TemplateSyntaxException
 	 *             when a syntax issue occurs
 	 */
-	private static void parseImport(IFile file, String value, Region valuePos, int num, Template template,
+	private static void parseImport(String value, Region valuePos, int num, Template template,
 			ResourceSet root) throws TemplateSyntaxException {
-		if (!parseMetamodelImport(value, valuePos, num, template, root)) {
+		if (!parseMetamodelImport(value, num, template, root)) {
 			Template importedTemplate = null;
 			Iterator<Resource> resources = root.getResources().iterator();
 			while (importedTemplate == null && resources.hasNext()) {
@@ -261,8 +253,6 @@ public final class TemplateParser {
 	 * 
 	 * @param value
 	 *            is the import value
-	 * @param valuePos
-	 *            is the position of the value in the script
 	 * @param num
 	 *            is the number of the import
 	 * @param template
@@ -273,8 +263,8 @@ public final class TemplateParser {
 	 * @throws TemplateSyntaxException
 	 *             when a syntax issue occurs
 	 */
-	private static boolean parseMetamodelImport(String value, Region valuePos, int num, Template template,
-			ResourceSet root) throws TemplateSyntaxException {
+	private static boolean parseMetamodelImport(String value, int num, Template template, ResourceSet root)
+			throws TemplateSyntaxException {
 		if (num == 1) {
 			String uri = value.trim();
 			Metamodel importedMetamodel = null;

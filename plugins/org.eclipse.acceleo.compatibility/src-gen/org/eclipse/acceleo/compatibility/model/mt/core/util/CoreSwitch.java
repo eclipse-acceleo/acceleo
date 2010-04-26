@@ -93,76 +93,91 @@ public class CoreSwitch<T> {
 			case CorePackage.AST_NODE: {
 				ASTNode astNode = (ASTNode)theEObject;
 				T result = caseASTNode(astNode);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.TEMPLATE: {
 				Template template = (Template)theEObject;
 				T result = caseTemplate(template);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(template);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.SCRIPT: {
 				Script script = (Script)theEObject;
 				T result = caseScript(script);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(script);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.SCRIPT_DESCRIPTOR: {
 				ScriptDescriptor scriptDescriptor = (ScriptDescriptor)theEObject;
 				T result = caseScriptDescriptor(scriptDescriptor);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(scriptDescriptor);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.FILE_PATH: {
 				FilePath filePath = (FilePath)theEObject;
 				T result = caseFilePath(filePath);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(filePath);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.METAMODEL: {
 				Metamodel metamodel = (Metamodel)theEObject;
 				T result = caseMetamodel(metamodel);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(metamodel);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.SERVICE: {
 				Service service = (Service)theEObject;
 				T result = caseService(service);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(service);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.METHOD: {
 				Method method = (Method)theEObject;
 				T result = caseMethod(method);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case CorePackage.PARAMETER: {
 				Parameter parameter = (Parameter)theEObject;
 				T result = caseParameter(parameter);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -181,6 +196,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -196,6 +212,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseTemplate(Template object) {
 		return null;
 	}
@@ -211,6 +228,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseScript(Script object) {
 		return null;
 	}
@@ -226,6 +244,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseScriptDescriptor(ScriptDescriptor object) {
 		return null;
 	}
@@ -241,6 +260,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseFilePath(FilePath object) {
 		return null;
 	}
@@ -256,6 +276,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseMetamodel(Metamodel object) {
 		return null;
 	}
@@ -271,6 +292,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseService(Service object) {
 		return null;
 	}
@@ -286,6 +308,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseMethod(Method object) {
 		return null;
 	}
@@ -301,6 +324,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseParameter(Parameter object) {
 		return null;
 	}
@@ -316,6 +340,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseResource(Resource object) {
 		return null;
 	}
@@ -331,6 +356,7 @@ public class CoreSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

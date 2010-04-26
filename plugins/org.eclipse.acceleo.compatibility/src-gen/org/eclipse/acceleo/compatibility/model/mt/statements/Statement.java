@@ -21,4 +21,5 @@ import org.eclipse.acceleo.compatibility.model.mt.core.ASTNode;
  * @generated
  */
 public interface Statement extends ASTNode {
-} // Statement
+	// Statement
+}

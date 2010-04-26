@@ -90,65 +90,82 @@ public class StatementsSwitch<T> {
 			case StatementsPackage.STATEMENT: {
 				Statement statement = (Statement)theEObject;
 				T result = caseStatement(statement);
-				if (result == null)
+				if (result == null) {
 					result = caseASTNode(statement);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case StatementsPackage.COMMENT: {
 				Comment comment = (Comment)theEObject;
 				T result = caseComment(comment);
-				if (result == null)
+				if (result == null) {
 					result = caseStatement(comment);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(comment);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case StatementsPackage.IF: {
 				If if_ = (If)theEObject;
 				T result = caseIf(if_);
-				if (result == null)
+				if (result == null) {
 					result = caseStatement(if_);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(if_);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case StatementsPackage.FOR: {
 				For for_ = (For)theEObject;
 				T result = caseFor(for_);
-				if (result == null)
+				if (result == null) {
 					result = caseStatement(for_);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(for_);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case StatementsPackage.FEATURE: {
 				Feature feature = (Feature)theEObject;
 				T result = caseFeature(feature);
-				if (result == null)
+				if (result == null) {
 					result = caseStatement(feature);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(feature);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case StatementsPackage.TEXT: {
 				Text text = (Text)theEObject;
 				T result = caseText(text);
-				if (result == null)
+				if (result == null) {
 					result = caseStatement(text);
-				if (result == null)
+				}
+				if (result == null) {
 					result = caseASTNode(text);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
@@ -167,6 +184,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseStatement(Statement object) {
 		return null;
 	}
@@ -182,6 +200,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseComment(Comment object) {
 		return null;
 	}
@@ -197,6 +216,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseIf(If object) {
 		return null;
 	}
@@ -212,6 +232,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseFor(For object) {
 		return null;
 	}
@@ -227,6 +248,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseFeature(Feature object) {
 		return null;
 	}
@@ -242,6 +264,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseText(Text object) {
 		return null;
 	}
@@ -257,6 +280,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -272,6 +296,7 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

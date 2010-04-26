@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.compatibility.model.mt.impl;
 
-import static org.eclipse.acceleo.compatibility.model.mt.MtPackage.RESOURCE;
-
 import org.eclipse.acceleo.compatibility.model.mt.MtFactory;
 import org.eclipse.acceleo.compatibility.model.mt.MtPackage;
 import org.eclipse.acceleo.compatibility.model.mt.Resource;
@@ -198,7 +196,7 @@ public class MtPackageImpl extends EPackageImpl implements MtPackage {
 		resourceSetEClass = createEClass(RESOURCE_SET);
 		createEReference(resourceSetEClass, RESOURCE_SET__RESOURCES);
 
-		resourceEClass = createEClass(RESOURCE);
+		resourceEClass = createEClass(MtPackage.RESOURCE);
 		createEAttribute(resourceEClass, RESOURCE__NAME);
 	}
 
