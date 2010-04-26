@@ -46,7 +46,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ProfilerEditor extends EcoreEditor {
+public final class ProfilerEditor extends EcoreEditor {
 
 	/**
 	 * Initialize the Profiler metamodele.
@@ -55,7 +55,7 @@ public class ProfilerEditor extends EcoreEditor {
 	private static final ProfilerPackage PKG = ProfilerPackage.eINSTANCE;
 
 	/** The current sort status of the view. */
-	private ProfilerSortStatus sortStatus = new ProfilerSortStatus();
+	protected ProfilerSortStatus sortStatus = new ProfilerSortStatus();
 
 	/**
 	 * Constructor.
@@ -143,6 +143,7 @@ public class ProfilerEditor extends EcoreEditor {
 			 * 
 			 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 			 */
+			@SuppressWarnings("synthetic-access")
 			class MyContentOutlinePage extends ContentOutlinePage {
 				/**
 				 * {@inheritDoc}
@@ -297,6 +298,7 @@ public class ProfilerEditor extends EcoreEditor {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
+	@SuppressWarnings("synthetic-access")
 	private final class ChangementListener implements ISelectionChangedListener {
 		/**
 		 * {@inheritDoc}
@@ -322,6 +324,7 @@ public class ProfilerEditor extends EcoreEditor {
 	 * 
 	 * @see org.eclipse.emf.ecore.presentation.EcoreEditor#setCurrentViewer(org.eclipse.jface.viewers.Viewer)
 	 */
+	@SuppressWarnings("synthetic-access")
 	@Override
 	public void setCurrentViewer(Viewer viewer) {
 		// If it is changing...

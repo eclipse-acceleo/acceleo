@@ -28,7 +28,7 @@ public final class ProfilerEditorPlugin extends EMFPlugin {
 	/**
 	 * Keep track of the singleton.
 	 */
-	private static Implementation plugin;
+	protected static Implementation plugin;
 
 	/**
 	 * Create the instance.

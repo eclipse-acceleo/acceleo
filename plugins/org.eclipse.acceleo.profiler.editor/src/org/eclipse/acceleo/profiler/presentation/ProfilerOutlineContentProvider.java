@@ -41,6 +41,7 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 	 * 
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren(Object object) {
 		if (object instanceof LoopProfileEntry) {
 			final Set<ProfileEntry> sorted = new TreeSet<ProfileEntry>(new Comparator<ProfileEntry>() {
@@ -66,6 +67,7 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 	 * 
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#hasChildren(java.lang.Object)
 	 */
+	@Override
 	public boolean hasChildren(Object object) {
 		return object instanceof LoopProfileEntry && ((LoopProfileEntry)object).getLoopElements().size() > 0;
 	}
@@ -75,6 +77,7 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 	 * 
 	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements(Object object) {
 		return getChildren(object);
 	}
