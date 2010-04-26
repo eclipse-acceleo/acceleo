@@ -979,6 +979,7 @@ public final class AcceleoWorkspaceUtil {
 						break;
 					}
 					// Fall through to the incremental build handling otherwise
+					//$FALL-THROUGH$
 				case IncrementalProjectBuilder.INCREMENTAL_BUILD:
 					final AcceleoDeltaVisitor visitor = new AcceleoDeltaVisitor();
 					try {

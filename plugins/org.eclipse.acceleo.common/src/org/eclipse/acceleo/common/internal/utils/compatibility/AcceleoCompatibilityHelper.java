@@ -58,5 +58,5 @@ public final class AcceleoCompatibilityHelper {
 	 */
 	public static OCLVersion getCurrentVersion() {
 		return CURRENT_VERSION;
-	};
+	}
 }
