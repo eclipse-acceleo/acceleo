@@ -86,7 +86,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected IProject[] build(int kind, Map arguments, IProgressMonitor monitor) throws CoreException {
 		if (getProject() == null || !getProject().isAccessible()) {
 			return new IProject[] {};

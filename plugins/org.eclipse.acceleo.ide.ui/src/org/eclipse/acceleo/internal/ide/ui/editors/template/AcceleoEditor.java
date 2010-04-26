@@ -311,7 +311,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
 		if (type.equals(IContentOutlinePage.class)) {
 			return getContentOutlinePage();

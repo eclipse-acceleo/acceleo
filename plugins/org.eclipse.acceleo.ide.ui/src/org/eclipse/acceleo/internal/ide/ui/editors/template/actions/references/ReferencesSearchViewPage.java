@@ -110,7 +110,7 @@ public class ReferencesSearchViewPage extends AbstractTextSearchViewPage impleme
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		if (IShowInTargetList.class.equals(adapter)) {
 			return SHOW_IN_TARGET_LIST;

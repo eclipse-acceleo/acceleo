@@ -563,7 +563,7 @@ public class AcceleoSourceContent {
 			tempModule.getInput().addAll(EcoreUtil.copyAll(getCST().getInput()));
 		}
 		Variable newVariable = cstParser.createVariable(oldVariable.getStartPosition(), oldVariable
-				.getEndPosition(), tempModule);
+				.getEndPosition());
 		if (newVariable != null) {
 			try {
 				EcoreUtil.replace(oldVariable, newVariable);
@@ -692,7 +692,7 @@ public class AcceleoSourceContent {
 	 *            is the class which represents the type of the parent to search
 	 * @return the CST parent, or null if it doesn't exist
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public CSTNode getCSTParent(CSTNode node, Class c) {
 		CSTNode eContainer = (CSTNode)node.eContainer();
 		while (eContainer != null) {

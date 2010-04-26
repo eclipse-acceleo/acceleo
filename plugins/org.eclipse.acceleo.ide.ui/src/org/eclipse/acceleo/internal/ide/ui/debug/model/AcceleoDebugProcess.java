@@ -95,7 +95,7 @@ public class AcceleoDebugProcess extends AbstractDebugElement implements IProces
 	 * @see org.eclipse.acceleo.ide.ui.debug.model.AbstractDebugElement#getAdapter(java.lang.Class)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		Object ret = null;
 		if (adapter.equals(IProcess.class)) {

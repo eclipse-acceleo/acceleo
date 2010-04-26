@@ -83,7 +83,7 @@ public class ReferenceEntry implements IAdaptable {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		if (IResource.class.equals(adapter)) {
 			return templateFile;

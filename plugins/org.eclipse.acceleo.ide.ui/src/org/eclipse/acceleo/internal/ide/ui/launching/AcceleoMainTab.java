@@ -255,14 +255,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				handleBrowseProfileModelButton();
 			}
 		});
-		fMainText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!"".equals(fMainText.getText().trim()) && "".equals(profileModelText.getText().trim())) { //$NON-NLS-1$ //$NON-NLS-2$
-					profileModelText.setText(fMainText.getText().trim() + ".profiler"); //$NON-NLS-1$
-				}
-				updateLaunchConfigurationDialog();
-			}
-		});
 	}
 
 	/**

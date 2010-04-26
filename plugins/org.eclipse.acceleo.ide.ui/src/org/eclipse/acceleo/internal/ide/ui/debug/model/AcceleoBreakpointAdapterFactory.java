@@ -29,7 +29,7 @@ public class AcceleoBreakpointAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		Object adapter = null;
 		if (adaptableObject instanceof ITextEditor) {
@@ -52,7 +52,7 @@ public class AcceleoBreakpointAdapterFactory implements IAdapterFactory {
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
 	 */
 	public Class<?>[] getAdapterList() {
-		return new Class[] {IToggleBreakpointsTarget.class};
+		return new Class[] {IToggleBreakpointsTarget.class };
 	}
 
 }

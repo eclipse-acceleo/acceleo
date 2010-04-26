@@ -78,7 +78,7 @@ public abstract class AbstractDebugElement extends PlatformObject implements IDe
 	 * @see org.eclipse.core.runtime.PlatformObject#getAdapter(java.lang.Class)
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		Object result;
 		if (adapter == IDebugElement.class) {

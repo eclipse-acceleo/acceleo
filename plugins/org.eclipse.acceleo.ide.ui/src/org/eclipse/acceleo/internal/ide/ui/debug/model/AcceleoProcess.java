@@ -129,6 +129,7 @@ public class AcceleoProcess implements IProcess {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		Object ret = null;
 		if (adapter.equals(IProcess.class)) {
