@@ -19,6 +19,7 @@ import junit.textui.TestRunner;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
+@SuppressWarnings("nls")
 public class AllTests {
 
 	/**
@@ -38,7 +39,8 @@ public class AllTests {
 	 */
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("Acceleo test suite");
-		suite.addTest(org.eclipse.acceleo.compatibility.tests.suite.AllTests.suite());
+		suite.addTest(org.eclipse.acceleo.compatibility.tests.suite.AllTests
+				.suite());
 		suite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
 		suite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		suite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
