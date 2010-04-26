@@ -2,49 +2,37 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ModuleElementImpl.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: ModuleElementImpl.java,v 1.2 2010/04/26 15:24:11 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
-import java.util.Collection;
-
-import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module Element</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl#getModuleElement <em>Module Element</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl#getModuleElement <em>Module Element
+ * </em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	/**
-	 * The cached value of the '{@link #getModuleElement() <em>Module Element</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getModuleElement() <em>Module Element</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getModuleElement()
 	 * @generated
 	 * @ordered
@@ -52,8 +40,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	protected EObject moduleElement;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleElementImpl() {
@@ -61,8 +49,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -71,8 +59,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EObject getModuleElement() {
@@ -80,16 +68,19 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 			InternalEObject oldModuleElement = (InternalEObject)moduleElement;
 			moduleElement = eResolveProxy(oldModuleElement);
 			if (moduleElement != oldModuleElement) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
+				if (eNotificationRequired()) {
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement,
+							moduleElement));
+				}
 			}
 		}
 		return moduleElement;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EObject basicGetModuleElement() {
@@ -97,38 +88,41 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setModuleElement(EObject newModuleElement) {
 		EObject oldModuleElement = moduleElement;
 		moduleElement = newModuleElement;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
+		if (eNotificationRequired()) {
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
+		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT:
-				if (resolve) return getModuleElement();
+				if (resolve) {
+					return getModuleElement();
+				}
 				return basicGetModuleElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -140,8 +134,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -155,8 +149,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -168,4 +162,4 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 		return super.eIsSet(featureID);
 	}
 
-} //ModuleElementImpl
+} // ModuleElementImpl

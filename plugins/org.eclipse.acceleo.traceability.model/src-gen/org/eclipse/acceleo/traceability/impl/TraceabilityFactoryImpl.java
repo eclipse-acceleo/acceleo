@@ -2,11 +2,10 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TraceabilityFactoryImpl.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: TraceabilityFactoryImpl.java,v 1.2 2010/04/26 15:24:11 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
-import org.eclipse.acceleo.traceability.*;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
@@ -30,30 +29,31 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * 
  * @generated
  */
 public class TraceabilityFactoryImpl extends EFactoryImpl implements TraceabilityFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static TraceabilityFactory init() {
 		try {
-			TraceabilityFactory theTraceabilityFactory = (TraceabilityFactory)EPackage.Registry.INSTANCE.getEFactory("traceability"); //$NON-NLS-1$ 
+			TraceabilityFactory theTraceabilityFactory = (TraceabilityFactory)EPackage.Registry.INSTANCE
+					.getEFactory("traceability"); //$NON-NLS-1$ 
 			if (theTraceabilityFactory != null) {
 				return theTraceabilityFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new TraceabilityFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TraceabilityFactoryImpl() {
@@ -62,26 +62,37 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case TraceabilityPackage.TRACEABILITY_MODEL: return createTraceabilityModel();
-			case TraceabilityPackage.RESOURCE: return createResource();
-			case TraceabilityPackage.MODEL_FILE: return createModelFile();
-			case TraceabilityPackage.MODULE_FILE: return createModuleFile();
-			case TraceabilityPackage.GENERATED_FILE: return createGeneratedFile();
-			case TraceabilityPackage.INPUT_ELEMENT: return createInputElement();
-			case TraceabilityPackage.MODULE_ELEMENT: return createModuleElement();
-			case TraceabilityPackage.GENERATED_TEXT: return createGeneratedText();
+			case TraceabilityPackage.TRACEABILITY_MODEL:
+				return createTraceabilityModel();
+			case TraceabilityPackage.RESOURCE:
+				return createResource();
+			case TraceabilityPackage.MODEL_FILE:
+				return createModelFile();
+			case TraceabilityPackage.MODULE_FILE:
+				return createModuleFile();
+			case TraceabilityPackage.GENERATED_FILE:
+				return createGeneratedFile();
+			case TraceabilityPackage.INPUT_ELEMENT:
+				return createInputElement();
+			case TraceabilityPackage.MODULE_ELEMENT:
+				return createModuleElement();
+			case TraceabilityPackage.GENERATED_TEXT:
+				return createGeneratedText();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException(
+						"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -90,12 +101,14 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 			case TraceabilityPackage.PATH:
 				return createpathFromString(eDataType, initialValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException(
+						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,7 +117,8 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 			case TraceabilityPackage.PATH:
 				return convertpathToString(eDataType, instanceValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException(
+						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -120,6 +134,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Resource createResource() {
@@ -129,6 +144,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ModelFile createModelFile() {
@@ -138,6 +154,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ModuleFile createModuleFile() {
@@ -147,6 +164,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	public GeneratedFile createGeneratedFile() {
@@ -166,6 +184,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ModuleElement createModuleElement() {
@@ -175,6 +194,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	public GeneratedText createGeneratedText() {
@@ -183,8 +203,8 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String createpathFromString(EDataType eDataType, String initialValue) {
@@ -192,8 +212,8 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertpathToString(EDataType eDataType, Object instanceValue) {
@@ -202,6 +222,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TraceabilityPackage getTraceabilityPackage() {
@@ -210,6 +231,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */

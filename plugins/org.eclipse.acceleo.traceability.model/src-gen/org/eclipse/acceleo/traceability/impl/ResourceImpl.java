@@ -2,40 +2,36 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ResourceImpl.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: ResourceImpl.java,v 1.2 2010/04/26 15:24:10 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
 import org.eclipse.acceleo.traceability.Resource;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Resource</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Resource</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getPath <em>Path</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getCharset <em>Charset</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getPath <em>Path</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.ResourceImpl#getCharset <em>Charset</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class ResourceImpl extends EObjectImpl implements Resource {
 	/**
-	 * The default value of the '{@link #getPath() <em>Path</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getPath() <em>Path</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getPath()
 	 * @generated
 	 * @ordered
@@ -43,9 +39,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected static final String PATH_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getPath() <em>Path</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPath() <em>Path</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getPath()
 	 * @generated
 	 * @ordered
@@ -53,9 +49,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected String path = PATH_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -63,9 +59,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -73,9 +69,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getCharset() <em>Charset</em>}' attribute.
-	 * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getCharset() <em>Charset</em>}' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getCharset()
 	 * @generated
 	 * @ordered
@@ -83,9 +79,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected static final String CHARSET_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' attribute.
-	 * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCharset() <em>Charset</em>}' attribute. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getCharset()
 	 * @generated
 	 * @ordered
@@ -93,8 +89,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	protected String charset = CHARSET_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ResourceImpl() {
@@ -102,8 +98,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -112,8 +108,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getPath() {
@@ -121,20 +117,21 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPath(String newPath) {
 		String oldPath = path;
 		path = newPath;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__PATH, oldPath, path));
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__PATH,
+					oldPath, path));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
@@ -142,20 +139,21 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__NAME,
+					oldName, name));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getCharset() {
@@ -163,20 +161,21 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setCharset(String newCharset) {
 		String oldCharset = charset;
 		charset = newCharset;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__CHARSET, oldCharset, charset));
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__CHARSET,
+					oldCharset, charset));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -193,8 +192,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -214,8 +213,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -235,8 +234,8 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -253,13 +252,14 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (path: "); //$NON-NLS-1$
@@ -272,4 +272,4 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 		return result.toString();
 	}
 
-} //ResourceImpl
+} // ResourceImpl

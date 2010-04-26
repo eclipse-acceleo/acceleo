@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: GeneratedFileImpl.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: GeneratedFileImpl.java,v 1.2 2010/04/26 15:24:11 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
@@ -13,44 +13,40 @@ import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Generated File</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Generated File</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getGeneratedRegions <em>Generated Regions</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getSourceElements <em>Source Elements</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getNameRegions <em>Name Regions</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getFileBlock <em>File Block</em>}</li>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getLength <em>Length</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getGeneratedRegions <em>Generated
+ * Regions</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getSourceElements <em>Source Elements
+ * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getNameRegions <em>Name Regions</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getFileBlock <em>File Block</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl#getLength <em>Length</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	/**
-	 * The cached value of the '{@link #getGeneratedRegions() <em>Generated Regions</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getGeneratedRegions() <em>Generated Regions</em>}' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getGeneratedRegions()
 	 * @generated
 	 * @ordered
@@ -58,9 +54,9 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	protected EList<GeneratedText> generatedRegions;
 
 	/**
-	 * The cached value of the '{@link #getSourceElements() <em>Source Elements</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getSourceElements() <em>Source Elements</em>}' reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSourceElements()
 	 * @generated
 	 * @ordered
@@ -69,8 +65,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 
 	/**
 	 * The cached value of the '{@link #getNameRegions() <em>Name Regions</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getNameRegions()
 	 * @generated
 	 * @ordered
@@ -78,9 +74,9 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	protected EList<GeneratedText> nameRegions;
 
 	/**
-	 * The cached value of the '{@link #getFileBlock() <em>File Block</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getFileBlock() <em>File Block</em>}' reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getFileBlock()
 	 * @generated
 	 * @ordered
@@ -88,9 +84,9 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	protected ModuleElement fileBlock;
 
 	/**
-	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getLength()
 	 * @generated
 	 * @ordered
@@ -98,9 +94,9 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	protected static final int LENGTH_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLength() <em>Length</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #getLength()
 	 * @generated
 	 * @ordered
@@ -108,8 +104,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	protected int length = LENGTH_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected GeneratedFileImpl() {
@@ -117,8 +113,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -127,44 +123,48 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<GeneratedText> getGeneratedRegions() {
 		if (generatedRegions == null) {
-			generatedRegions = new EObjectContainmentWithInverseEList<GeneratedText>(GeneratedText.class, this, TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE);
+			generatedRegions = new EObjectContainmentWithInverseEList<GeneratedText>(GeneratedText.class,
+					this, TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS,
+					TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE);
 		}
 		return generatedRegions;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<InputElement> getSourceElements() {
 		if (sourceElements == null) {
-			sourceElements = new EObjectResolvingEList<InputElement>(InputElement.class, this, TraceabilityPackage.GENERATED_FILE__SOURCE_ELEMENTS);
+			sourceElements = new EObjectResolvingEList<InputElement>(InputElement.class, this,
+					TraceabilityPackage.GENERATED_FILE__SOURCE_ELEMENTS);
 		}
 		return sourceElements;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<GeneratedText> getNameRegions() {
 		if (nameRegions == null) {
-			nameRegions = new EObjectContainmentEList<GeneratedText>(GeneratedText.class, this, TraceabilityPackage.GENERATED_FILE__NAME_REGIONS);
+			nameRegions = new EObjectContainmentEList<GeneratedText>(GeneratedText.class, this,
+					TraceabilityPackage.GENERATED_FILE__NAME_REGIONS);
 		}
 		return nameRegions;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ModuleElement getFileBlock() {
@@ -172,16 +172,18 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 			InternalEObject oldFileBlock = (InternalEObject)fileBlock;
 			fileBlock = (ModuleElement)eResolveProxy(oldFileBlock);
 			if (fileBlock != oldFileBlock) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.GENERATED_FILE__FILE_BLOCK, oldFileBlock, fileBlock));
+				if (eNotificationRequired()) {
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							TraceabilityPackage.GENERATED_FILE__FILE_BLOCK, oldFileBlock, fileBlock));
+				}
 			}
 		}
 		return fileBlock;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ModuleElement basicGetFileBlock() {
@@ -189,20 +191,22 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFileBlock(ModuleElement newFileBlock) {
 		ModuleElement oldFileBlock = fileBlock;
 		fileBlock = newFileBlock;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_FILE__FILE_BLOCK, oldFileBlock, fileBlock));
+		if (eNotificationRequired()) {
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					TraceabilityPackage.GENERATED_FILE__FILE_BLOCK, oldFileBlock, fileBlock));
+		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getLength() {
@@ -210,20 +214,22 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setLength(int newLength) {
 		int oldLength = length;
 		length = newLength;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_FILE__LENGTH, oldLength, length));
+		if (eNotificationRequired()) {
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_FILE__LENGTH,
+					oldLength, length));
+		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -231,14 +237,15 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getGeneratedRegions()).basicAdd(otherEnd, msgs);
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getGeneratedRegions()).basicAdd(
+						otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -253,8 +260,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -267,7 +274,9 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 			case TraceabilityPackage.GENERATED_FILE__NAME_REGIONS:
 				return getNameRegions();
 			case TraceabilityPackage.GENERATED_FILE__FILE_BLOCK:
-				if (resolve) return getFileBlock();
+				if (resolve) {
+					return getFileBlock();
+				}
 				return basicGetFileBlock();
 			case TraceabilityPackage.GENERATED_FILE__LENGTH:
 				return getLength();
@@ -276,8 +285,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -307,8 +316,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -334,8 +343,8 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -356,13 +365,15 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy()) {
+			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (length: "); //$NON-NLS-1$
@@ -371,4 +382,4 @@ public class GeneratedFileImpl extends ResourceImpl implements GeneratedFile {
 		return result.toString();
 	}
 
-} //GeneratedFileImpl
+} // GeneratedFileImpl

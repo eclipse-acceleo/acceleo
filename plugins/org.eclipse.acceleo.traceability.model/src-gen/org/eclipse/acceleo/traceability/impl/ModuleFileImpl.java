@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ModuleFileImpl.java,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ * $Id: ModuleFileImpl.java,v 1.2 2010/04/26 15:24:10 lgoubet Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
@@ -11,35 +11,31 @@ import java.util.Collection;
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.ModuleFile;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Module File</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Module File</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl#getModuleElements <em>Module Elements</em>}</li>
+ * <li>{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl#getModuleElements <em>Module Elements</em>}
+ * </li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	/**
-	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference
+	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getModuleElements()
 	 * @generated
 	 * @ordered
@@ -47,8 +43,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	protected EList<ModuleElement> moduleElements;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ModuleFileImpl() {
@@ -56,8 +52,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -66,20 +62,21 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<ModuleElement> getModuleElements() {
 		if (moduleElements == null) {
-			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this, TraceabilityPackage.MODULE_FILE__MODULE_ELEMENTS);
+			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this,
+					TraceabilityPackage.MODULE_FILE__MODULE_ELEMENTS);
 		}
 		return moduleElements;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -92,8 +89,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -106,8 +103,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -123,8 +120,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -138,8 +135,8 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -151,4 +148,4 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 		return super.eIsSet(featureID);
 	}
 
-} //ModuleFileImpl
+} // ModuleFileImpl
