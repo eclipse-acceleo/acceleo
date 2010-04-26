@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileEntryItemProvider.java,v 1.2 2010/04/12 09:35:59 lgoubet Exp $
+ * $Id: ProfileEntryItemProvider.java,v 1.3 2010/04/26 15:23:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -72,6 +72,7 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addDurationPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
@@ -86,6 +87,7 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addCountPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(), getString("_UI_ProfileEntry_count_feature"), //$NON-NLS-1$
@@ -100,6 +102,7 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addPercentagePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
@@ -115,6 +118,7 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addCreateTimePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),
@@ -130,6 +134,7 @@ public class ProfileEntryItemProvider extends ItemProviderAdapter implements IEd
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	protected void addMonitoredPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory)
 				.getRootAdapterFactory(), getResourceLocator(),

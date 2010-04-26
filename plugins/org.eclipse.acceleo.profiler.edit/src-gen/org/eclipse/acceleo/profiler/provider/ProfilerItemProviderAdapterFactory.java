@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerItemProviderAdapterFactory.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: ProfilerItemProviderAdapterFactory.java,v 1.2 2010/04/26 15:23:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -190,7 +190,7 @@ public class ProfilerItemProviderAdapterFactory extends ProfilerAdapterFactory i
 	public Object adapt(Object object, Object type) {
 		if (isFactoryForType(type)) {
 			Object adapter = super.adapt(object, type);
-			if (!(type instanceof Class) || (((Class<?>)type).isInstance(adapter))) {
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter))) {
 				return adapter;
 			}
 		}
@@ -237,12 +237,15 @@ public class ProfilerItemProviderAdapterFactory extends ProfilerAdapterFactory i
 	 * @generated
 	 */
 	public void dispose() {
-		if (profileEntryItemProvider != null)
+		if (profileEntryItemProvider != null) {
 			profileEntryItemProvider.dispose();
-		if (loopProfileEntryItemProvider != null)
+		}
+		if (loopProfileEntryItemProvider != null) {
 			loopProfileEntryItemProvider.dispose();
-		if (profileResourceItemProvider != null)
+		}
+		if (profileResourceItemProvider != null) {
 			profileResourceItemProvider.dispose();
+		}
 	}
 
 }

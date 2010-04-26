@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerEditPlugin.java,v 1.1 2009/09/08 16:13:08 ylussaud Exp $
+ * $Id: ProfilerEditPlugin.java,v 1.2 2010/04/26 15:23:57 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.provider;
 
@@ -36,7 +36,7 @@ public final class ProfilerEditPlugin extends EMFPlugin {
 	 * 
 	 * @generated
 	 */
-	private static Implementation plugin;
+	protected static Implementation plugin;
 
 	/**
 	 * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
