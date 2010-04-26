@@ -28,7 +28,7 @@ public class CommentParserTest extends AbstractAcceleoTest {
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
-			Comment comment = CommentParser.createComment(0, buffer, new Region(0, buffer.length()), null);
+			Comment comment = CommentParser.createComment(0, buffer, new Region(0, buffer.length()));
 			assertEquals("Should be an empty string.", "", comment.getValue()); //$NON-NLS-1$ 
 			assertEquals("Call should begin at 0 index.", 0, comment.getBegin());
 			assertEquals("Call should end at buffer.length() index.", buffer.length(), comment.getEnd());
@@ -40,7 +40,7 @@ public class CommentParserTest extends AbstractAcceleoTest {
 	public void testString() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {
-			Comment comment = CommentParser.createComment(0, buffer, new Region(0, buffer.length()), null);
+			Comment comment = CommentParser.createComment(0, buffer, new Region(0, buffer.length()));
 			assertEquals("Should be \"call\".", "call", comment.getValue()); //$NON-NLS-1$ 
 			assertEquals("Call should begin at 0 index.", 0, comment.getBegin());
 			assertEquals("Call should end at buffer.length() index.", buffer.length(), comment.getEnd());

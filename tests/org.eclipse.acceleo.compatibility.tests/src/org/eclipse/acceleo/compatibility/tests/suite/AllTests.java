@@ -17,6 +17,11 @@ import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
 
+/**
+ * Allows us to launch all of the Parser tests at once.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 @SuppressWarnings("nls")
 public class AllTests extends TestCase {
 	/**

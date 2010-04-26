@@ -28,7 +28,7 @@ public class TextParserTest extends AbstractAcceleoTest {
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
-			Text text = TextParser.createText(0, buffer, new Region(0, buffer.length()), null);
+			Text text = TextParser.createText(0, buffer, new Region(0, buffer.length()));
 			assertEquals("Should be an empty string.", "", text.getValue()); //$NON-NLS-1$ 
 			assertEquals("Should begin at 0 index.", 0, text.getBegin());
 			assertEquals("Should end at buffer.length() index.", buffer.length(), text.getEnd());
@@ -40,7 +40,7 @@ public class TextParserTest extends AbstractAcceleoTest {
 	public void testString() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {
-			Text text = TextParser.createText(0, buffer, new Region(0, buffer.length()), null);
+			Text text = TextParser.createText(0, buffer, new Region(0, buffer.length()));
 			assertEquals("Should be \"call\".", "call", text.getValue()); //$NON-NLS-1$ 
 			assertEquals("Should begin at 0 index.", 0, text.getBegin());
 			assertEquals("Should end at buffer.length() index.", buffer.length(), text.getEnd());
