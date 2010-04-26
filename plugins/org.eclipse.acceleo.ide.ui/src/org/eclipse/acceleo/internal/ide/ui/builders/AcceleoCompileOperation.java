@@ -25,6 +25,7 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
+import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
@@ -150,7 +151,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					IAcceleoConstants.MTL_FILE_EXTENSION).lastSegment());
 		}
 		AcceleoParser parser = new AcceleoParser();
-		List<File> iFiles = new ArrayList<File>();
+		List<AcceleoFile> iFiles = new ArrayList<AcceleoFile>();
 		List<URI> oURIs = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
 			if (acceleoProject.getOutputFilePath(files[i]) != null) {
@@ -162,18 +163,22 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 				IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
 				if (outputPath != null) {
-					iFiles.add(files[i].getLocation().toFile());
+					String javaPackageName = acceleoProject.getPackageName(files[i]);
+					AcceleoFile acceleoFile = new AcceleoFile(files[i].getLocation().toFile(), AcceleoFile
+							.javaPackageToFullModuleName(javaPackageName, new Path(files[i].getName())
+									.removeFileExtension().lastSegment()));
+					iFiles.add(acceleoFile);
 					oURIs.add(URI.createPlatformResourceURI(outputPath.toString(), false));
 				}
 			}
 		}
 		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
-		for (Iterator<File> iterator = iFiles.iterator(); iterator.hasNext();) {
-			File iFile = iterator.next();
+		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
+			AcceleoFile iFile = iterator.next();
 			AcceleoParserProblems problems = parser.getProblems(iFile);
 			if (problems != null) {
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-						new Path(iFile.getAbsolutePath()));
+						new Path(iFile.getMtlFile().getAbsolutePath()));
 				if (workspaceFile != null && workspaceFile.isAccessible()) {
 					List<AcceleoParserProblem> list = problems.getList();
 					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
@@ -186,10 +191,10 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		}
 		if (!monitor.isCanceled()) {
 			List<IFile> filesWithMainTag = new ArrayList<IFile>();
-			for (Iterator<File> iterator = iFiles.iterator(); iterator.hasNext();) {
-				File iFile = iterator.next();
+			for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
+				AcceleoFile iFile = iterator.next();
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-						new Path(iFile.getAbsolutePath()));
+						new Path(iFile.getMtlFile().getAbsolutePath()));
 				if (workspaceFile != null && workspaceFile.isAccessible() && hasMainTag(workspaceFile)) {
 					filesWithMainTag.add(workspaceFile);
 				}
@@ -200,12 +205,12 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		}
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		if (AcceleoBuilderSettings.BUILD_FULL_OMG_COMPLIANCE == settings.getCompliance()) {
-			Iterator<File> itFiles = iFiles.iterator();
+			Iterator<AcceleoFile> itFiles = iFiles.iterator();
 			for (Iterator<URI> itURIs = oURIs.iterator(); !monitor.isCanceled() && itURIs.hasNext()
 					&& itFiles.hasNext();) {
-				File iFile = itFiles.next();
+				AcceleoFile iFile = itFiles.next();
 				URI oURI = itURIs.next();
-				checkFullOMGCompliance(iFile, oURI);
+				checkFullOMGCompliance(iFile.getMtlFile(), oURI);
 			}
 		}
 	}
