@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.parser.AcceleoFile;
@@ -138,8 +139,9 @@ public class AcceleoCompiler extends Task {
 			}
 		}
 		if (message.length() > 0) {
-			System.out.println(message.toString());
-			throw new BuildException(message.toString());
+			String log = message.toString();
+			log(log, Project.MSG_ERR);
+			throw new BuildException(log);
 		}
 	}
 
