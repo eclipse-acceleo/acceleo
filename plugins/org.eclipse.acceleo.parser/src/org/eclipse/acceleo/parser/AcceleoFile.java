@@ -65,7 +65,7 @@ public final class AcceleoFile {
 	 */
 	public static String javaPackageToFullModuleName(String javaPackageName, String moduleName) {
 		if (javaPackageName != null && javaPackageName.length() > 0) {
-			return javaPackageName.replaceAll("\\.", IAcceleoConstants.NAMESPACE_SEPARATOR)
+			return javaPackageName.replaceAll("\\.", IAcceleoConstants.NAMESPACE_SEPARATOR) //$NON-NLS-1$
 					+ IAcceleoConstants.NAMESPACE_SEPARATOR + moduleName;
 		} else {
 			return moduleName;
