@@ -576,7 +576,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void addOCLOperationChoice(List<ICompletionProposal> proposals, Choice nextOperationChoice,
 			String start, Set<String> duplicated) {
-		String fullModuleDescription = ""; //$NON-NLS-1$
+		String description = ""; //$NON-NLS-1$
 		Image image;
 		if (nextOperationChoice instanceof AcceleoCompletionChoice) {
 			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template) {
@@ -597,7 +597,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						.eContainer();
 				if (eContainer instanceof org.eclipse.acceleo.model.mtl.Module
 						&& ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI() != null) {
-					fullModuleDescription = "\nModule Name :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName() + "\n\nModule Full Name ID :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI(); //$NON-NLS-1$ //$NON-NLS-2$
+					description = "\nModule Name :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName() + "\n\nModule Full Name ID :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		} else {
@@ -618,19 +618,20 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 			replacementStringWithArgsAfter += ')';
-			String description;
-			if (eOperation.getEContainingClass() != null) {
-				description = eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$
-						+ nextOperationChoice.getDescription();
-			} else {
-				description = nextOperationChoice.getDescription();
+			if (description.length() == 0) {
+				if (eOperation.getEContainingClass() != null) {
+					description = eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$
+							+ nextOperationChoice.getDescription();
+				} else {
+					description = nextOperationChoice.getDescription();
+				}
 			}
 			if (!duplicated.contains(nextOperationChoice.getDescription())) {
 				duplicated.add(nextOperationChoice.getDescription());
 				proposals.add(createTemplateProposal(replacementStringWithArgsBefore
 						+ replacementStringWithArgsAfter, offset - start.length(), start.length(),
 						replacementStringWithArgsBefore.length(), image,
-						nextOperationChoice.getDescription(), null, fullModuleDescription));
+						nextOperationChoice.getDescription(), null, description));
 			}
 		} else {
 			if (!duplicated.contains(nextOperationChoice.getDescription())) {
@@ -642,7 +643,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
 						.length(), replacementString.length(), image, nextOperationChoice.getDescription(),
-						null, nextOperationChoice.getDescription() + fullModuleDescription));
+						null, nextOperationChoice.getDescription() + description));
 			}
 		}
 	}
