@@ -161,7 +161,7 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 	 */
 	public String getAdditionalProposalInfo() {
-		return getModuleProjectName();
+		return getModuleProjectName() + "\n" + getModulePackage(); //$NON-NLS-1$
 	}
 
 	/**
@@ -190,6 +190,32 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 			}
 		} else {
 			result = "[others]"; //$NON-NLS-1$
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the module package for the EMTL file URI.
+	 * 
+	 * @return the module package
+	 */
+	private String getModulePackage() {
+		String result;
+		String path = emtlURI.toString();
+		String prefix = "platform:/resource/"; //$NON-NLS-1$
+		if (path.startsWith(prefix)) {
+			path = path.substring(prefix.length());
+		} else {
+			prefix = "platform:/plugin/"; //$NON-NLS-1$
+			if (path.startsWith(prefix)) {
+				path = path.substring(prefix.length());
+			}
+		}
+		IPath relativePath = new Path(path);
+		if (relativePath.segmentCount() > 2) {
+			result = relativePath.removeFirstSegments(1).removeLastSegments(1).toString();
+		} else {
+			result = ""; //$NON-NLS-1$
 		}
 		return result;
 	}

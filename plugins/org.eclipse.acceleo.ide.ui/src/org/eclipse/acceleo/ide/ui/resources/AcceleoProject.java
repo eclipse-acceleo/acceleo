@@ -400,24 +400,28 @@ public class AcceleoProject {
 	 *            is the folder to browse
 	 */
 	private static void computeAccessibleOutputFilesInFolder(List<URI> outputURIs, IContainer folder) {
-		if (folder != null) {
-			try {
-				IResource[] members = folder.members();
-				for (int i = 0; i < members.length; i++) {
-					IResource member = members[i];
-					if (member instanceof IFile) {
-						if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(((IFile)member).getFileExtension())) {
-							outputURIs.add(URI.createPlatformResourceURI(((IFile)member).getFullPath()
-									.toString(), false));
+		if (folder == null) {
+			return;
+		}
+		try {
+			IResource[] members = folder.members();
+			for (int i = 0; i < members.length; i++) {
+				IResource member = members[i];
+				if (member instanceof IFile) {
+					if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(((IFile)member).getFileExtension())) {
+						URI uri = URI.createPlatformResourceURI(((IFile)member).getFullPath().toString(),
+								false);
+						if (!outputURIs.contains(uri)) {
+							outputURIs.add(uri);
 						}
-					} else if (member instanceof IContainer) {
-						computeAccessibleOutputFilesInFolder(outputURIs, (IContainer)member);
 					}
+				} else if (member instanceof IContainer) {
+					computeAccessibleOutputFilesInFolder(outputURIs, (IContainer)member);
 				}
-			} catch (CoreException e) {
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 	}
 
@@ -453,7 +457,11 @@ public class AcceleoProject {
 				}
 			}
 		}
-		outputURIs.addAll(outputFilesWithManifest);
+		for (URI uri : outputFilesWithManifest) {
+			if (!outputURIs.contains(uri)) {
+				outputURIs.add(uri);
+			}
+		}
 	}
 
 	/**

@@ -686,11 +686,11 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		Iterator<URI> dependencies = content.getAccessibleOutputFiles().iterator();
 		while (dependencies.hasNext()) {
 			URI uri = dependencies.next();
-			String replacementString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
-			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
+			String displayString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
+			if (displayString.toLowerCase().startsWith(start.toLowerCase())) {
 				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
 						.length(), AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Module.gif"), replacementString)); //$NON-NLS-1$
+						"icons/template-editor/completion/Module.gif"), displayString)); //$NON-NLS-1$
 			}
 		}
 	}
