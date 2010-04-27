@@ -620,6 +620,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	@SuppressWarnings("unused")
 	private void transformStepResolve(org.eclipse.acceleo.parser.cst.TextExpression iTextExpression) {
+		// Nothing to do here
 	}
 
 	/**
