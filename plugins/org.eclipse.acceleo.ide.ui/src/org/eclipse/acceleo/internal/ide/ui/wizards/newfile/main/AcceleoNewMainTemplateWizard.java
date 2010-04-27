@@ -348,9 +348,10 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 						}
 					}
 				}
-				String moduleName = module.getName();
-				if (moduleName != null) {
-					imports.add(moduleName);
+				if (module.getNsURI() != null && module.getNsURI().length() > 0) {
+					imports.add(module.getNsURI());
+				} else if (module.getName() != null) {
+					imports.add(module.getName());
 				}
 			}
 		}
