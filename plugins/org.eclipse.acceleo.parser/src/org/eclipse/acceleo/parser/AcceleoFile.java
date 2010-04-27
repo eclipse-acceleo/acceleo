@@ -97,7 +97,7 @@ public final class AcceleoFile {
 	 */
 	public static String relativePathToFullModuleName(String relativePath) {
 		StringBuilder fullModuleName = new StringBuilder();
-		String[] segments = new Path(relativePath).segments();
+		String[] segments = new Path(relativePath).removeFileExtension().segments();
 		for (int i = 0; i < segments.length; i++) {
 			if (i != 0) {
 				fullModuleName.append(IAcceleoConstants.NAMESPACE_SEPARATOR);
