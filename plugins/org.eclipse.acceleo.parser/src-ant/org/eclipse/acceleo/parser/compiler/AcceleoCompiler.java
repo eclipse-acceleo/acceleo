@@ -140,8 +140,8 @@ public class AcceleoCompiler extends Task {
 		}
 		if (message.length() > 0) {
 			String log = message.toString();
-			setDescription(log);
 			log(log, Project.MSG_ERR);
+			throw new BuildException(log, getLocation());
 		}
 	}
 
