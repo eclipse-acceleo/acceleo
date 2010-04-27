@@ -155,10 +155,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		List<URI> oURIs = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
 			if (acceleoProject.getOutputFilePath(files[i]) != null) {
-				if (conflicts.contains(files[i].getName())) {
-					reportError(files[i], 0, 0, 0, AcceleoUIMessages.getString(
-							"AcceleoCompileOperation.NameConflict", files[i].getName())); //$NON-NLS-1$
-				} else {
+				if (!conflicts.contains(files[i].getName())) {
 					conflicts.add(files[i].getName());
 				}
 				IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
