@@ -1,5 +1,7 @@
 [module mtlParserEcore(http://www.eclipse.org/emf/2002/Ecore) extends mtlParserEcoreCommon /]
 [import mtlParserEcoreCommon/]
+[import prefix::mtlParserEcoreCommon/]
+
 [template public classToJava(p:EPackage)]
 
 	[for (c:EClassifier | p.eClassifiers) {count : Integer = 0; }]
