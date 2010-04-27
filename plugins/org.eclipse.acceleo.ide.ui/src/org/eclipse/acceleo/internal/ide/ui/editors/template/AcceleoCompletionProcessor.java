@@ -620,10 +620,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			replacementStringWithArgsAfter += ')';
 			if (description.length() == 0) {
 				if (eOperation.getEContainingClass() != null) {
-					description = eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$
+					description = "\n" + eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$ //$NON-NLS-2$
 							+ nextOperationChoice.getDescription();
 				} else {
-					description = nextOperationChoice.getDescription();
+					description = "\n" + nextOperationChoice.getDescription(); //$NON-NLS-1$
 				}
 			}
 			if (!duplicated.contains(nextOperationChoice.getDescription())) {
