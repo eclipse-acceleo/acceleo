@@ -138,7 +138,8 @@ public class AcceleoCompiler extends Task {
 			}
 		}
 		if (message.length() > 0) {
-			throw new RuntimeException(message.toString());
+			System.out.println(message.toString());
+			throw new BuildException(message.toString());
 		}
 	}
 
