@@ -64,8 +64,13 @@ public final class AcceleoFile {
 	 * @return a valid full qualified module name that you can use to create an AcceleoFile instance
 	 */
 	public static String javaPackageToFullModuleName(String javaPackageName, String moduleName) {
-		return javaPackageName.replaceAll("\\.", IAcceleoConstants.NAMESPACE_SEPARATOR)
-				+ IAcceleoConstants.NAMESPACE_SEPARATOR + moduleName;
+		if (javaPackageName != null && javaPackageName.length() > 0) {
+			return javaPackageName.replaceAll("\\.", IAcceleoConstants.NAMESPACE_SEPARATOR)
+					+ IAcceleoConstants.NAMESPACE_SEPARATOR + moduleName;
+		} else {
+			return moduleName;
+		}
+
 	}
 
 	/**

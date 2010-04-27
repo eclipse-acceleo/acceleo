@@ -116,8 +116,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				Iterator<ModuleImportsValue> iImportsIt = iModule.getImports().iterator();
 				while (iImportsIt.hasNext()) {
 					ModuleImportsValue ioNext = iImportsIt.next();
-					org.eclipse.acceleo.model.mtl.Module oImportedModule = getModuleNamed(
-							oModule.eResource(), ioNext.getName());
+					org.eclipse.acceleo.model.mtl.Module oImportedModule = getModule(oModule.eResource(),
+							ioNext.getName());
 					if (oImportedModule == null) {
 						log(AcceleoParserMessages.getString(
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
@@ -129,8 +129,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
 				while (iExtendsIt.hasNext()) {
 					ModuleExtendsValue ioNext = iExtendsIt.next();
-					org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModuleNamed(
-							oModule.eResource(), ioNext.getName());
+					org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModule(oModule.eResource(),
+							ioNext.getName());
 					if (oExtendedModule == null) {
 						log(AcceleoParserMessages.getString(
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
@@ -189,16 +189,16 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
-	 * Gets the module that matches with the given name, in the resource set.
+	 * Gets the module that matches with the given qualified name, in the resource set.
 	 * 
 	 * @param oResource
 	 *            is the current resource
-	 * @param name
-	 *            is the name of the module to search
+	 * @param fullModuleName
+	 *            is the qualified name of the module to search ('org::eclipse::myGen')
 	 * @return an AST module (i.e the root element of another AST)
 	 */
-	private org.eclipse.acceleo.model.mtl.Module getModuleNamed(Resource oResource, String name) {
-		if (oResource != null && name != null) {
+	private org.eclipse.acceleo.model.mtl.Module getModule(Resource oResource, String fullModuleName) {
+		if (oResource != null && fullModuleName != null) {
 			Iterator<Resource> itOtherResources = oResource.getResourceSet().getResources().iterator();
 			while (itOtherResources.hasNext()) {
 				Resource otherResource = itOtherResources.next();
@@ -206,7 +206,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						&& otherResource.getContents().get(0) instanceof org.eclipse.acceleo.model.mtl.Module) {
 					org.eclipse.acceleo.model.mtl.Module otherModule = (org.eclipse.acceleo.model.mtl.Module)otherResource
 							.getContents().get(0);
-					if (name.equals(otherModule.getName())) {
+					if (fullModuleName.equals(otherModule.getNsURI())
+							|| fullModuleName.equals(otherModule.getName())) {
 						return otherModule;
 					}
 				}
@@ -619,7 +620,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	@SuppressWarnings("unused")
 	private void transformStepResolve(org.eclipse.acceleo.parser.cst.TextExpression iTextExpression) {
-		// Nothing to do here
 	}
 
 	/**
