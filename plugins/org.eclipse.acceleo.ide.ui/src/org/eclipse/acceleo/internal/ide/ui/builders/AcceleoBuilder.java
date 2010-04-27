@@ -27,6 +27,7 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateBuildAcceleoWriter;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
+import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -353,54 +354,74 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *             contains a status object describing the cause of the exception
 	 */
 	private void computeOtherFilesToBuild(List<IFile> deltaFiles) throws CoreException {
+		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		List<IFile> otherTemplates = new ArrayList<IFile>();
 		members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
 		List<Sequence> importSequencesToSearch = new ArrayList<Sequence>();
 		for (int i = 0; i < deltaFiles.size(); i++) {
 			IFile deltaFile = deltaFiles.get(i);
 			if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(deltaFile.getFileExtension())) {
-				String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
-						new Path(deltaFile.getName()).removeFileExtension().lastSegment(), };
-				importSequencesToSearch.add(new Sequence(tokens));
-				tokens = new String[] {IAcceleoConstants.EXTENDS,
-						new Path(deltaFile.getName()).removeFileExtension().lastSegment(), };
-				importSequencesToSearch.add(new Sequence(tokens));
+				importSequencesToSearch.addAll(getImportSequencesToSearch(acceleoProject, deltaFile));
 				otherTemplates.remove(deltaFile);
 			}
 		}
-		List<IFile> otherTemplatesToBuild = getOtherTemplatesToBuild(otherTemplates, importSequencesToSearch);
+		List<IFile> otherTemplatesToBuild = getOtherTemplatesToBuild(acceleoProject, otherTemplates,
+				importSequencesToSearch);
 		while (otherTemplatesToBuild.size() > 0) {
 			for (int i = 0; i < otherTemplatesToBuild.size(); i++) {
 				IFile otherTemplateToBuild = otherTemplatesToBuild.get(i);
 				otherTemplates.remove(otherTemplateToBuild);
 				if (!deltaFiles.contains(otherTemplateToBuild)) {
 					deltaFiles.add(otherTemplateToBuild);
-					String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-							IAcceleoConstants.IMPORT,
-							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(), };
-					importSequencesToSearch.add(new Sequence(tokens));
-					tokens = new String[] {IAcceleoConstants.EXTENDS,
-							new Path(otherTemplateToBuild.getName()).removeFileExtension().lastSegment(), };
-					importSequencesToSearch.add(new Sequence(tokens));
-
+					importSequencesToSearch.addAll(getImportSequencesToSearch(acceleoProject,
+							otherTemplateToBuild));
 				}
 			}
-			otherTemplatesToBuild = getOtherTemplatesToBuild(otherTemplates, importSequencesToSearch);
+			otherTemplatesToBuild = getOtherTemplatesToBuild(acceleoProject, otherTemplates,
+					importSequencesToSearch);
 		}
+	}
+
+	/**
+	 * Gets all the possible sequences to search when we use the given file in other files : '[import myGen',
+	 * '[import org::eclipse::myGen', 'extends myGen', 'extends org::eclipse::myGen'...
+	 * 
+	 * @param acceleoProject
+	 *            is the project
+	 * @param file
+	 *            is the MTL file
+	 * @return all the possible sequences to search for the given file
+	 */
+	private List<Sequence> getImportSequencesToSearch(AcceleoProject acceleoProject, IFile file) {
+		List<Sequence> result = new ArrayList<Sequence>();
+		String simpleModuleName = new Path(file.getName()).removeFileExtension().lastSegment();
+		String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
+				simpleModuleName, };
+		result.add(new Sequence(tokens));
+		tokens = new String[] {IAcceleoConstants.EXTENDS, simpleModuleName, };
+		result.add(new Sequence(tokens));
+		String javaPackageName = acceleoProject.getPackageName(file);
+		String fullModuleName = AcceleoFile.javaPackageToFullModuleName(javaPackageName, simpleModuleName);
+		tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT, fullModuleName, };
+		result.add(new Sequence(tokens));
+		tokens = new String[] {IAcceleoConstants.EXTENDS, fullModuleName, };
+		result.add(new Sequence(tokens));
+		return result;
 	}
 
 	/**
 	 * Gets the files that import the given dependencies.
 	 * 
+	 * @param acceleoProject
+	 *            is the project
 	 * @param otherTemplates
 	 *            are the other templates that we can decide to build
 	 * @param importSequencesToSearch
 	 *            are the dependencies to detect in the "import" section of the other templates
 	 * @return the other templates to build
 	 */
-	private List<IFile> getOtherTemplatesToBuild(List<IFile> otherTemplates,
+	private List<IFile> getOtherTemplatesToBuild(AcceleoProject acceleoProject, List<IFile> otherTemplates,
 			List<Sequence> importSequencesToSearch) {
-		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		List<IFile> result = new ArrayList<IFile>();
 		for (int i = 0; i < otherTemplates.size(); i++) {
 			IFile otherTemplate = otherTemplates.get(i);

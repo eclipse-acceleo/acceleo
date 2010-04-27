@@ -688,9 +688,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			URI uri = dependencies.next();
 			String replacementString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
 			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
-				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
-						.length(), replacementString.length(), AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Module.gif"), replacementString, null, uri.path())); //$NON-NLS-1$
+				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
+						.length(), AcceleoUIActivator.getDefault().getImage(
+						"icons/template-editor/completion/Module.gif"), replacementString)); //$NON-NLS-1$
 			}
 		}
 	}

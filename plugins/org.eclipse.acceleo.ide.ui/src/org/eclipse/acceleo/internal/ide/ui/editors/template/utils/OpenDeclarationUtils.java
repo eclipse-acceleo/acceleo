@@ -237,7 +237,8 @@ public final class OpenDeclarationUtils {
 				Iterator<Module> eModules = editor.getContent().getAST().getImports().iterator();
 				while (res == null && eModules.hasNext()) {
 					Module eModule = eModules.next();
-					if (importName.equalsIgnoreCase(eModule.getName())) {
+					if (importName.equalsIgnoreCase(eModule.getNsURI())
+							|| importName.equalsIgnoreCase(eModule.getName())) {
 						res = eModule;
 					}
 				}
@@ -248,7 +249,8 @@ public final class OpenDeclarationUtils {
 				Iterator<Module> eModules = editor.getContent().getAST().getExtends().iterator();
 				while (res == null && eModules.hasNext()) {
 					Module eModule = eModules.next();
-					if (extendsName.equalsIgnoreCase(eModule.getName())) {
+					if (extendsName.equalsIgnoreCase(eModule.getNsURI())
+							|| extendsName.equalsIgnoreCase(eModule.getName())) {
 						res = eModule;
 					}
 				}

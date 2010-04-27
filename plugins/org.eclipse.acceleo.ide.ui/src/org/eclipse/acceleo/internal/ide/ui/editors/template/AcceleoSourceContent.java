@@ -922,10 +922,15 @@ public class AcceleoSourceContent {
 			Iterator<ModuleImportsValue> values = getCST().getImports().iterator();
 			while (values.hasNext()) {
 				ModuleImportsValue moduleImportsValue = values.next();
-				if (moduleImportsValue != null && oName.equals(moduleImportsValue.getName())) {
+				if (moduleImportsValue != null
+						&& moduleImportsValue.getName() != null
+						&& (IAcceleoConstants.NAMESPACE_SEPARATOR + moduleImportsValue.getName())
+								.endsWith(IAcceleoConstants.NAMESPACE_SEPARATOR + oName)) {
 					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource()
 							.getResourceSet(), oURI);
-					if (otherModule != null && oName.equals(otherModule.getName())
+					if (otherModule != null
+							&& (moduleImportsValue.getName().equals(otherModule.getNsURI()) || moduleImportsValue
+									.getName().equals(otherModule.getName()))
 							&& !vAST.getImports().contains(otherModule)) {
 						vAST.getImports().add(otherModule);
 					}
@@ -951,10 +956,15 @@ public class AcceleoSourceContent {
 			Iterator<ModuleExtendsValue> values = getCST().getExtends().iterator();
 			while (values.hasNext()) {
 				ModuleExtendsValue moduleExtendsValue = values.next();
-				if (moduleExtendsValue != null && oName.equals(moduleExtendsValue.getName())) {
+				if (moduleExtendsValue != null
+						&& moduleExtendsValue.getName() != null
+						&& (IAcceleoConstants.NAMESPACE_SEPARATOR + moduleExtendsValue.getName())
+								.endsWith(IAcceleoConstants.NAMESPACE_SEPARATOR + oName)) {
 					org.eclipse.acceleo.model.mtl.Module otherModule = getModule(vAST.eResource()
 							.getResourceSet(), oURI);
-					if (otherModule != null && oName.equals(otherModule.getName())
+					if (otherModule != null
+							&& (moduleExtendsValue.getName().equals(otherModule.getNsURI()) || moduleExtendsValue
+									.getName().equals(otherModule.getName()))
 							&& !vAST.getExtends().contains(otherModule)) {
 						vAST.getExtends().add(otherModule);
 					}

@@ -193,7 +193,7 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	private boolean isRelevant(String expression, int offset) {
 		char character = expression.charAt(offset);
 		// shortcut
-		if (Character.isLetter(character)) {
+		if (Character.isJavaIdentifierPart(character)) {
 			return true;
 		}
 
@@ -216,11 +216,12 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 */
 		if (Character.isWhitespace(character)) {
 			int curOffset = offset;
-			while (curOffset < expression.length() - 2 && !Character.isLetter(next) && next != ':') {
+			while (curOffset < expression.length() - 2 && !Character.isJavaIdentifierPart(next)
+					&& next != ':') {
 				next = expression.charAt(++curOffset);
 			}
 			curOffset = offset;
-			while (curOffset > 1 && !Character.isLetter(previous) && previous != ':') {
+			while (curOffset > 1 && !Character.isJavaIdentifierPart(previous) && previous != ':') {
 				previous = expression.charAt(--curOffset);
 			}
 			if (previous == ':' || next == ':') {

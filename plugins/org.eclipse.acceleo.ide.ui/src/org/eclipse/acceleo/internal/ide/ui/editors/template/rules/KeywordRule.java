@@ -141,7 +141,7 @@ public class KeywordRule implements ISequenceRule {
 		}
 		scanner.unread();
 		int c = scanner.read();
-		return !Character.isJavaIdentifierPart(c);
+		return !Character.isJavaIdentifierPart(c) && c != ':';
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class KeywordRule implements ISequenceRule {
 		int c = scanner.read();
 		boolean result = (c == ICharacterScanner.EOF) || (!Character.isJavaIdentifierPart(c));
 		scanner.unread();
-		return result;
+		return result && c != ':';
 	}
 
 	/**

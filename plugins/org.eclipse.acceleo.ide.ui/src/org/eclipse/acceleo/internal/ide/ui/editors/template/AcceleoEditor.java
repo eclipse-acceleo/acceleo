@@ -38,8 +38,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -429,7 +430,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	protected void selectionChangedDetected(SelectionChangedEvent event) {
 		ISelection selection = event.getSelection();
 		Object selectedElement = ((IStructuredSelection)selection).getFirstElement();
-		String selectedElementURI = getFragmentURI(selectedElement);
+		String selectedElementURI = getFragmentID(selectedElement);
 		if (selectedElementURI.equals(updatingOutlineURI)) {
 			// Simply ignore the event
 			updatingOutlineURI = ""; //$NON-NLS-1$
@@ -451,16 +452,16 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 *            is the object
 	 * @return the EMF fragment URI, the default value is an empty string
 	 */
-	private String getFragmentURI(Object object) {
+	private String getFragmentID(Object object) {
 		String fragmentURI = null;
 		if (object instanceof EObject) {
-			Resource eResource = ((EObject)object).eResource();
-			if (eResource != null) {
-				fragmentURI = eResource.getURIFragment((EObject)object);
+			URI uri = EcoreUtil.getURI((EObject)object);
+			if (uri != null) {
+				fragmentURI = uri.toString();
 			}
 		}
 		if (fragmentURI == null) {
-			fragmentURI = ""; //$NON-NLS-1$
+			fragmentURI = String.valueOf(object);
 		}
 		return fragmentURI;
 	}
@@ -487,7 +488,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			if (source != null) {
 				EObject object = source.getCSTNode(posBegin, e);
 				if (object != null) {
-					updatingOutlineURI = getFragmentURI(object);
+					updatingOutlineURI = getFragmentID(object);
 					getContentOutlinePage().setSelection(new StructuredSelection(object));
 				}
 			}
@@ -647,7 +648,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			occurrencesFinderJob.cancel();
 		}
 		final EObject selectedElement = this.findDeclaration();
-		String selectedElementURI = getFragmentURI(selectedElement);
+		String selectedElementURI = getFragmentID(selectedElement);
 		if (!selectedElementURI.equals(offsetASTNodeURI)) {
 			offsetASTNodeURI = selectedElementURI;
 			final IAnnotationModel model = this.getDocumentProvider().getAnnotationModel(
