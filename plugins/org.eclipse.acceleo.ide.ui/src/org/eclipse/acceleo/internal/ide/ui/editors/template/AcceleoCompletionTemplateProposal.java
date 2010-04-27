@@ -25,6 +25,11 @@ import org.eclipse.swt.graphics.Image;
 public class AcceleoCompletionTemplateProposal extends TemplateProposal {
 
 	/**
+	 * The additional proposal info.
+	 */
+	private String info;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param template
@@ -38,7 +43,27 @@ public class AcceleoCompletionTemplateProposal extends TemplateProposal {
 	 */
 	public AcceleoCompletionTemplateProposal(Template template, TemplateContext context, IRegion region,
 			Image image) {
+		this(template, context, region, image, null);
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param template
+	 *            the template
+	 * @param context
+	 *            the context in which the template was requested
+	 * @param region
+	 *            the region this proposal is applied to
+	 * @param image
+	 *            the icon of the proposal
+	 * @param info
+	 *            the additional proposal info
+	 */
+	public AcceleoCompletionTemplateProposal(Template template, TemplateContext context, IRegion region,
+			Image image, String info) {
 		super(template, context, region, image);
+		this.info = info;
 	}
 
 	/**
@@ -49,6 +74,25 @@ public class AcceleoCompletionTemplateProposal extends TemplateProposal {
 	@Override
 	public String getDisplayString() {
 		return getTemplate().getDescription();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.templates.TemplateProposal#getAdditionalProposalInfo()
+	 */
+	@Override
+	public String getAdditionalProposalInfo() {
+		String text = super.getAdditionalProposalInfo();
+		if (text != null && text.length() > 0) {
+			if (info != null && info.length() > 0) {
+				text = text + "\n" + info; //$NON-NLS-1$
+			}
+
+		} else {
+			text = info;
+		}
+		return text;
 	}
 
 }

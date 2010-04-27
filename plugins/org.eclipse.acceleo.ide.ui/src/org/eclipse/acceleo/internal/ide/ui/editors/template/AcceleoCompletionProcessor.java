@@ -56,6 +56,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -575,6 +576,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void addOCLOperationChoice(List<ICompletionProposal> proposals, Choice nextOperationChoice,
 			String start, Set<String> duplicated) {
+		String fullModuleDescription = ""; //$NON-NLS-1$
 		Image image;
 		if (nextOperationChoice instanceof AcceleoCompletionChoice) {
 			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template) {
@@ -589,6 +591,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			} else {
 				image = AcceleoUIActivator.getDefault().getImage(
 						"icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
+			}
+			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() != null) {
+				EObject eContainer = ((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement()
+						.eContainer();
+				if (eContainer instanceof org.eclipse.acceleo.model.mtl.Module
+						&& ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI() != null) {
+					fullModuleDescription = "\nModule Name :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName() + "\n\nModule Full Name ID :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI(); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 			}
 		} else {
 			image = AcceleoUIActivator.getDefault()
@@ -620,7 +630,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				proposals.add(createTemplateProposal(replacementStringWithArgsBefore
 						+ replacementStringWithArgsAfter, offset - start.length(), start.length(),
 						replacementStringWithArgsBefore.length(), image,
-						nextOperationChoice.getDescription(), null, description));
+						nextOperationChoice.getDescription(), null, fullModuleDescription));
 			}
 		} else {
 			if (!duplicated.contains(nextOperationChoice.getDescription())) {
@@ -632,7 +642,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
 						.length(), replacementString.length(), image, nextOperationChoice.getDescription(),
-						null, nextOperationChoice.getDescription()));
+						null, nextOperationChoice.getDescription() + fullModuleDescription));
 			}
 		}
 	}
@@ -1724,7 +1734,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			TemplateContext context = new DocumentTemplateContext(type, textViewer.getDocument(),
 					replacementOffset, replacementLength);
 			Region region = new Region(replacementOffset, replacementLength);
-			return new AcceleoCompletionTemplateProposal(template, context, region, image);
+			return new AcceleoCompletionTemplateProposal(template, context, region, image,
+					additionalProposalInfo);
 		} else {
 			return new CompletionProposal(replacementString, replacementOffset, replacementLength,
 					cursorPosition, image, displayString, contextInformation, additionalProposalInfo);
