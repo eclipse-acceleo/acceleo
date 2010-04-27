@@ -96,49 +96,53 @@ public class AcceleoCompiler extends Task {
 	@Override
 	public void execute() throws BuildException {
 		StringBuffer message = new StringBuffer();
-		List<MTLFileInfo> fileInfos = new ArrayList<MTLFileInfo>();
-		for (File sourceFolder : sourceFolders) {
-			if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory()) {
-				fileInfos.addAll(computeFileInfos(sourceFolder));
-			} else if (sourceFolder != null) {
-				// The ANT Task localization doesn't work.
-				message.append("The folder '"); //$NON-NLS-1$
-				message.append(sourceFolder.getName());
-				message.append('\'');
-				message.append(" doesn't exist."); //$NON-NLS-1$
-				message.append('\n');
-			}
-		}
-		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
-		List<URI> emtlAbsoluteURIs = new ArrayList<URI>();
-		for (MTLFileInfo mtlFileInfo : fileInfos) {
-			acceleoFiles.add(new AcceleoFile(mtlFileInfo.mtlFile, mtlFileInfo.fullModuleName));
-			emtlAbsoluteURIs.add(mtlFileInfo.emtlAbsoluteURI);
-		}
-		List<URI> dependenciesURIs = new ArrayList<URI>();
-		AcceleoParser parser = new AcceleoParser();
-		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, new BasicMonitor());
-		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
-			AcceleoFile acceleoFile = iterator.next();
-			AcceleoParserProblems problems = parser.getProblems(acceleoFile);
-			if (problems != null) {
-				List<AcceleoParserProblem> list = problems.getList();
-				if (!list.isEmpty()) {
-					message.append(acceleoFile.getMtlFile().getName());
-					message.append('\n');
-					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
-						AcceleoParserProblem problem = itProblems.next();
-						message.append(problem.getLine());
-						message.append(':');
-						message.append(problem.getMessage());
-						message.append('\n');
-					}
+		try {
+			List<MTLFileInfo> fileInfos = new ArrayList<MTLFileInfo>();
+			for (File sourceFolder : sourceFolders) {
+				if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory()) {
+					fileInfos.addAll(computeFileInfos(sourceFolder));
+				} else if (sourceFolder != null) {
+					// The ANT Task localization doesn't work.
+					message.append("The folder '"); //$NON-NLS-1$
+					message.append(sourceFolder.getName());
+					message.append('\'');
+					message.append(" doesn't exist."); //$NON-NLS-1$
 					message.append('\n');
 				}
 			}
-		}
-		if (message.length() > 0) {
-			throw new BuildException(message.toString());
+			List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
+			List<URI> emtlAbsoluteURIs = new ArrayList<URI>();
+			for (MTLFileInfo mtlFileInfo : fileInfos) {
+				acceleoFiles.add(new AcceleoFile(mtlFileInfo.mtlFile, mtlFileInfo.fullModuleName));
+				emtlAbsoluteURIs.add(mtlFileInfo.emtlAbsoluteURI);
+			}
+			List<URI> dependenciesURIs = new ArrayList<URI>();
+			AcceleoParser parser = new AcceleoParser();
+			parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, new BasicMonitor());
+			for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
+				AcceleoFile acceleoFile = iterator.next();
+				AcceleoParserProblems problems = parser.getProblems(acceleoFile);
+				if (problems != null) {
+					List<AcceleoParserProblem> list = problems.getList();
+					if (!list.isEmpty()) {
+						message.append(acceleoFile.getMtlFile().getName());
+						message.append('\n');
+						for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems
+								.hasNext();) {
+							AcceleoParserProblem problem = itProblems.next();
+							message.append(problem.getLine());
+							message.append(':');
+							message.append(problem.getMessage());
+							message.append('\n');
+						}
+						message.append('\n');
+					}
+				}
+			}
+		} catch (BuildException e) {
+			if (message.length() > 0) {
+				throw new BuildException(message.toString() + "\n" + e.getMessage()); //$NON-NLS-1$
+			}
 		}
 	}
 
