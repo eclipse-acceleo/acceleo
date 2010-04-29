@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.parser.cst;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,14 +44,9 @@ import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.acceleo.parser.cst.VisibilityKind;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
  * The main class of the CST creator. Creates a CST model from a Acceleo file. You just have to launch the
@@ -359,7 +353,7 @@ public class CSTParser {
 				ePackage = ModelUtils.getEPackage(ePackageKey);
 				if (ePackage == null) {
 					try {
-						ePackageKey = registerEcore(ePackageKey);
+						ePackageKey = ModelUtils.registerEcorePackages(ePackageKey);
 					} catch (WrappedException ex) {
 						// swallow exception
 					}
@@ -379,90 +373,6 @@ public class CSTParser {
 				typedModel.getTakesTypesFrom().addAll(getAllSubpackages(ePackage));
 			}
 			eModule.getInput().add(typedModel);
-		}
-	}
-
-	/**
-	 * Register the given ecore file. It loads the ecore file and browses the elements, it means the root
-	 * EPackage and its descendants.
-	 * 
-	 * @param pathName
-	 *            is the path of the ecore file
-	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
-	 *         corresponding NsURI
-	 */
-	private String registerEcore(String pathName) {
-		EObject eObject;
-		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://")) { //$NON-NLS-1$ //$NON-NLS-2$
-			ResourceSet resourceSet = new ResourceSetImpl();
-			URI metaURI = URI.createURI(pathName, false);
-			try {
-				eObject = ModelUtils.load(metaURI, resourceSet);
-			} catch (IOException e) {
-				eObject = null;
-			} catch (WrappedException e) {
-				eObject = null;
-			}
-			if (!(eObject instanceof EPackage)) {
-				resourceSet = new ResourceSetImpl();
-				metaURI = URI.createPlatformResourceURI(pathName, false);
-				try {
-					eObject = ModelUtils.load(metaURI, resourceSet);
-				} catch (IOException e) {
-					eObject = null;
-				} catch (WrappedException e) {
-					eObject = null;
-				}
-				if (!(eObject instanceof EPackage)) {
-					resourceSet = new ResourceSetImpl();
-					metaURI = URI.createPlatformPluginURI(pathName, false);
-					try {
-						eObject = ModelUtils.load(metaURI, resourceSet);
-					} catch (IOException e) {
-						eObject = null;
-					} catch (WrappedException e) {
-						eObject = null;
-					}
-				}
-			}
-		} else {
-			eObject = null;
-		}
-		if (eObject instanceof EPackage) {
-			EPackage ePackage = (EPackage)eObject;
-			registerEcorePackageHierarchy(ePackage);
-			return ePackage.getNsURI();
-		} else {
-			return pathName;
-		}
-
-	}
-
-	/**
-	 * Register the given EPackage and its descendants.
-	 * 
-	 * @param ePackage
-	 *            is the root package to register
-	 */
-	private void registerEcorePackageHierarchy(EPackage ePackage) {
-		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
-			if (eClassifier instanceof EClass) {
-				try {
-					ePackage.getEFactoryInstance().create((EClass)eClassifier);
-				} catch (IllegalArgumentException e) {
-					// continue
-				}
-				break;
-			}
-		}
-		if (ePackage.getNsURI() != null) {
-			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
-			}
-			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
-		}
-		for (EPackage subPackage : ePackage.getESubpackages()) {
-			registerEcorePackageHierarchy(subPackage);
 		}
 	}
 

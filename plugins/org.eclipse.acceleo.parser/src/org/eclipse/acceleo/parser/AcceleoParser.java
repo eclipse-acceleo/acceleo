@@ -70,7 +70,7 @@ public class AcceleoParser {
 	/**
 	 * Creates an AST from a list of Acceleo files, using a CST step.
 	 * <p>
-	 * Assert inputFiles.size() == outputURIs.size()
+	 * Assert acceleoFiles.size() == outputURIs.size()
 	 * 
 	 * @param acceleoFiles
 	 *            are the Acceleo files to parse
@@ -84,6 +84,38 @@ public class AcceleoParser {
 	 */
 	public void parse(List<AcceleoFile> acceleoFiles, List<URI> outputURIs, List<URI> dependenciesURIs,
 			Monitor monitor) {
+		parse(acceleoFiles, outputURIs, dependenciesURIs, null, monitor);
+	}
+
+	/**
+	 * Creates an AST from a list of Acceleo files, using a CST step, and using an advanced resolution
+	 * mechanism.
+	 * <p>
+	 * Assert acceleoFiles.size() == outputURIs.size().
+	 * </p>
+	 * There is sometimes a difference between how you want to load/save an EMTL resource and how you want to
+	 * make this resource reusable. Let's take a simple example : we need to manage a file named
+	 * 'myNewModule.emtl'. The file URI 'c:/myProject/myNewModule.emtl' would be used to load/save this EMTL
+	 * model at the good location, but you would prefer to import this EMTL model in another EMF context with
+	 * a platform plugin URI more portable like 'plugin:/resource/myProject/myNewModule.emtl'. The 'mapURIs'
+	 * map will help you to define how to load and use the dependencies...
+	 * 
+	 * @param acceleoFiles
+	 *            are the Acceleo files to parse
+	 * @param outputURIs
+	 *            are the URIs of the output files to create
+	 * @param dependenciesURIs
+	 *            URIs of the dependencies that need to be loaded before link resolution
+	 * @param mapURIs
+	 *            Advanced mapping mechanism for the URIs that need to be loaded before link resolution, the
+	 *            map key is the loading URI, the map value is the proxy URI (the real way to reuse this
+	 *            dependency)
+	 * @param monitor
+	 *            This will be used as the progress monitor for the parsing
+	 * @since 3.0
+	 */
+	public void parse(List<AcceleoFile> acceleoFiles, List<URI> outputURIs, List<URI> dependenciesURIs,
+			Map<URI, URI> mapURIs, Monitor monitor) {
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
 				new Object[] {acceleoFiles.size() }), acceleoFiles.size() * 3);
 		ResourceSet oResourceSet = new ResourceSetImpl();
@@ -152,6 +184,17 @@ public class AcceleoParser {
 			}
 			source.resolveAST();
 			monitor.worked(1);
+		}
+		if (mapURIs != null) {
+			for (Resource resource : oResourceSet.getResources()) {
+				URI resourceURI = resource.getURI();
+				if (resourceURI != null) {
+					URI reusableURI = mapURIs.get(resourceURI);
+					if (reusableURI != null) {
+						resource.setURI(reusableURI);
+					}
+				}
+			}
 		}
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
 				&& itSources.hasNext();) {
