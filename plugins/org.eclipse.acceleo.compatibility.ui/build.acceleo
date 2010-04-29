@@ -17,11 +17,12 @@
 	<!--   build.result.folder - folder containing the build results       -->
 	<!--   target.folder - destination folder                              -->
 	<!-- ================================================================= -->
+
 	<target name="post.gather.bin.parts">
-		<eclipse.incrementalBuild 
-		  project="org.eclipse.acceleo.compatibility.ui"
-		  kind="full" />
-		<copydir dest="${target.folder}" src="${basedir}/bin"></copydir>
-	</target>
+		<acceleoCompiler 
+			sourceFolders="${target.folder}" 
+			dependencies="">
+		</acceleoCompiler>
+	</target>	
 
 </project>
