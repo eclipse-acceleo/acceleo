@@ -132,11 +132,15 @@ public class AcceleoOccurrencesFinderJob extends Job {
 		final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
 				this.editor.getEditorInput());
 
-		synchronized(getLockObject(annotationModel)) {
-			final Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
-			while (iter.hasNext()) {
-				final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter.next();
-				annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry.getValue());
+		if (annotationModel != null) {
+			synchronized(getLockObject(annotationModel)) {
+				final Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
+				while (iter.hasNext()) {
+					final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
+							.next();
+					annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry
+							.getValue());
+				}
 			}
 		}
 
