@@ -13,12 +13,12 @@ package org.eclipse.acceleo.internal.traceability.environment;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityEvaluationContext;
 import org.eclipse.acceleo.internal.traceability.engine.AcceleoTraceabilityVisitor;
@@ -58,8 +58,8 @@ public class AcceleoTraceabilityEnvironmentFactory extends AcceleoEnvironmentFac
 	 *            The module for which this factory is to be created.
 	 * @param listeners
 	 *            The list of all listeners that are to be notified for text generation from this context.
-	 * @param props
-	 *            The list of Properties that can be accessed from the context.
+	 * @param propertiesLookup
+	 *            The class allowing for properties lookup for this generation.
 	 * @param strategy
 	 *            The generation strategy that's to be used by this factory's context.
 	 * @param monitor
@@ -68,9 +68,9 @@ public class AcceleoTraceabilityEnvironmentFactory extends AcceleoEnvironmentFac
 	 *            Model in which evaluation traces are to be recorded.
 	 */
 	public AcceleoTraceabilityEnvironmentFactory(File generationRoot, Module module,
-			List<IAcceleoTextGenerationListener> listeners, List<Properties> props,
+			List<IAcceleoTextGenerationListener> listeners, AcceleoPropertiesLookup propertiesLookup,
 			IAcceleoGenerationStrategy strategy, Monitor monitor, TraceabilityModel trace) {
-		super(generationRoot, module, listeners, props, strategy, monitor);
+		super(generationRoot, module, listeners, propertiesLookup, strategy, monitor);
 		evaluationTrace = trace;
 		context = new AcceleoTraceabilityEvaluationContext<EClassifier>(generationRoot, listeners, strategy,
 				monitor, evaluationTrace);

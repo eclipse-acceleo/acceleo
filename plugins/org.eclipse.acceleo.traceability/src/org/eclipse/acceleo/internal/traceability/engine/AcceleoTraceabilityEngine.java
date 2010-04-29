@@ -13,7 +13,6 @@ package org.eclipse.acceleo.internal.traceability.engine;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -49,10 +48,8 @@ public class AcceleoTraceabilityEngine extends AcceleoEngine {
 			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		final List<IAcceleoTextGenerationListener> listenersCopy = new ArrayList<IAcceleoTextGenerationListener>(
 				listeners);
-		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
-		propertiesCopy.add(0, customProperties);
-		return new AcceleoTraceabilityEnvironmentFactory(genRoot, rootModule, listenersCopy, propertiesCopy,
-				strategy, monitor, evaluationTrace);
+		return new AcceleoTraceabilityEnvironmentFactory(genRoot, rootModule, listenersCopy,
+				propertiesLookup, strategy, monitor, evaluationTrace);
 	}
 
 	/**
@@ -70,16 +67,5 @@ public class AcceleoTraceabilityEngine extends AcceleoEngine {
 				listener.generationEnd(new AcceleoTextGenerationEvent(null, null, null, evaluationTrace));
 			}
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.engine.generation.AcceleoEngine#reset()
-	 */
-	@Override
-	public void reset() {
-		super.reset();
-		evaluationTrace = null;
 	}
 }
