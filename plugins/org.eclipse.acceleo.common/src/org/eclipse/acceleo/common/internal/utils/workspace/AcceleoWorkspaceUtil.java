@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,6 +22,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
@@ -195,15 +200,15 @@ public final class AcceleoWorkspaceUtil {
 		}
 
 		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-			final IPluginModelBase model = entry.getKey();
-
-			String packageName = ""; //$NON-NLS-1$
-			final int end = qualifiedName.lastIndexOf('.');
-			if (end != -1) {
-				packageName = qualifiedName.substring(0, end);
-			}
-
 			if (honorOSGiVisibility) {
+				final IPluginModelBase model = entry.getKey();
+
+				String packageName = ""; //$NON-NLS-1$
+				final int end = qualifiedName.lastIndexOf('.');
+				if (end != -1) {
+					packageName = qualifiedName.substring(0, end);
+				}
+
 				boolean packageFound = false;
 				for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
 					if (packageName.startsWith(exported.getName())) {
@@ -336,6 +341,79 @@ public final class AcceleoWorkspaceUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This will try and load a ResourceBundle for the given qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            Name if the resource bundle we need to load.
+	 * @return The loaded resource bundle.
+	 */
+	public synchronized ResourceBundle getResourceBundle(String qualifiedName) {
+		MissingResourceException originalException = null;
+
+		// shortcut evaluation in case this properties file can be found in the current classloader.
+		try {
+			ResourceBundle bundle = ResourceBundle.getBundle(qualifiedName);
+			return bundle;
+		} catch (MissingResourceException e) {
+			originalException = e;
+		}
+
+		if (changedContributions.size() > 0) {
+			refreshContributions();
+		}
+
+		/*
+		 * We'll iterate over the bundles that have been installed from the workspace, search for one that
+		 * exports a package of the name we're looking for, then try and load the properties file from this
+		 * bundle's class loader (bundle.getResource()). If the resource couldn't be found in that bundle, we
+		 * loop over to the next.
+		 */
+		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+			final IPluginModelBase model = entry.getKey();
+
+			String packageName = ""; //$NON-NLS-1$
+			final int end = qualifiedName.lastIndexOf('.');
+			if (end != -1) {
+				packageName = qualifiedName.substring(0, end);
+			}
+
+			boolean packageFound = false;
+			for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
+				if (packageName.startsWith(exported.getName())) {
+					packageFound = true;
+					break;
+				}
+			}
+			if (!packageFound) {
+				continue;
+			}
+
+			final Bundle bundle = entry.getValue();
+			URL propertiesResource = bundle.getResource(qualifiedName.replace('.', '/') + ".properties"); //$NON-NLS-1$
+			if (propertiesResource != null) {
+				InputStream stream = null;
+				try {
+					stream = propertiesResource.openStream();
+					// make sure this stream is buffered
+					stream = new BufferedInputStream(stream);
+					return new PropertyResourceBundle(stream);
+				} catch (IOException e) {
+					// Swallow this, we'll throw the original MissingResourceException
+				} finally {
+					try {
+						if (stream != null) {
+							stream.close();
+						}
+					} catch (IOException e) {
+						// Swallow this, we'll throw the original MissingResourceException
+					}
+				}
+			}
+		}
+		throw originalException;
 	}
 
 	/**
@@ -657,30 +735,8 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This will check through the dependencies of <code>model</code> and install the necessary workspace
-	 * plugins if they are required.
-	 * 
-	 * @param model
-	 *            The model of which we wish the dependencies checked.
-	 */
-	private void checkRequireBundleDependencies(IPluginModelBase model) {
-		final BundleDescription desc = model.getBundleDescription();
-		if (desc == null) {
-			return;
-		}
-		for (BundleSpecification requiredBundle : desc.getRequiredBundles()) {
-			for (IPluginModelBase workspaceModel : PluginRegistry.getWorkspaceModels()) {
-				if (requiredBundle.isSatisfiedBy(workspaceModel.getBundleDescription())) {
-					installBundle(workspaceModel);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
 	 * This will check the indirect dependencies of <code>model</code> and install the necessary workspace
-	 * plugins if we need to import some of its packages.
+	 * plugins if we need to import some of their packages.
 	 * 
 	 * @param model
 	 *            The model of which we wish the dependencies checked.
@@ -698,6 +754,28 @@ public final class AcceleoWorkspaceUtil {
 						installBundle(workspaceModel);
 						break;
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This will check through the dependencies of <code>model</code> and install the necessary workspace
+	 * plugins if they are required.
+	 * 
+	 * @param model
+	 *            The model of which we wish the dependencies checked.
+	 */
+	private void checkRequireBundleDependencies(IPluginModelBase model) {
+		final BundleDescription desc = model.getBundleDescription();
+		if (desc == null) {
+			return;
+		}
+		for (BundleSpecification requiredBundle : desc.getRequiredBundles()) {
+			for (IPluginModelBase workspaceModel : PluginRegistry.getWorkspaceModels()) {
+				if (requiredBundle.isSatisfiedBy(workspaceModel.getBundleDescription())) {
+					installBundle(workspaceModel);
+					break;
 				}
 			}
 		}
