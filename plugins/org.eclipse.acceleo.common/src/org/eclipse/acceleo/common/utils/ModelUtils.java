@@ -23,6 +23,8 @@ import java.util.Map;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -403,6 +405,92 @@ public final class ModelUtils {
 			return EPackage.Registry.INSTANCE.getEPackage(nsURI);
 		} catch (WrappedException e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Register the given ecore file in the EMF Package Registry. It loads the ecore file and browses the
+	 * elements, it means the root EPackage and its descendants.
+	 * 
+	 * @param pathName
+	 *            is the path of the ecore file to register
+	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
+	 *         corresponding NsURI
+	 * @since 3.0
+	 */
+	public static String registerEcorePackages(String pathName) {
+		EObject eObject;
+		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://")) { //$NON-NLS-1$ //$NON-NLS-2$
+			ResourceSet resourceSet = new ResourceSetImpl();
+			URI metaURI = URI.createURI(pathName, false);
+			try {
+				eObject = ModelUtils.load(metaURI, resourceSet);
+			} catch (IOException e) {
+				eObject = null;
+			} catch (WrappedException e) {
+				eObject = null;
+			}
+			if (!(eObject instanceof EPackage)) {
+				resourceSet = new ResourceSetImpl();
+				metaURI = URI.createPlatformResourceURI(pathName, false);
+				try {
+					eObject = ModelUtils.load(metaURI, resourceSet);
+				} catch (IOException e) {
+					eObject = null;
+				} catch (WrappedException e) {
+					eObject = null;
+				}
+				if (!(eObject instanceof EPackage)) {
+					resourceSet = new ResourceSetImpl();
+					metaURI = URI.createPlatformPluginURI(pathName, false);
+					try {
+						eObject = ModelUtils.load(metaURI, resourceSet);
+					} catch (IOException e) {
+						eObject = null;
+					} catch (WrappedException e) {
+						eObject = null;
+					}
+				}
+			}
+		} else {
+			eObject = null;
+		}
+		if (eObject instanceof EPackage) {
+			EPackage ePackage = (EPackage)eObject;
+			registerEcorePackageHierarchy(ePackage);
+			return ePackage.getNsURI();
+		} else {
+			return pathName;
+		}
+
+	}
+
+	/**
+	 * Register the given EPackage and its descendants.
+	 * 
+	 * @param ePackage
+	 *            is the root package to register
+	 */
+	private static void registerEcorePackageHierarchy(EPackage ePackage) {
+		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
+			if (eClassifier instanceof EClass) {
+				try {
+					// very useful to delegate to the EMF mechanism
+					ePackage.getEFactoryInstance().create((EClass)eClassifier);
+				} catch (IllegalArgumentException e) {
+					// continue
+				}
+				break;
+			}
+		}
+		if (ePackage.getNsURI() != null) {
+			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
+				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
+			}
+			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
+		}
+		for (EPackage subPackage : ePackage.getESubpackages()) {
+			registerEcorePackageHierarchy(subPackage);
 		}
 	}
 }
