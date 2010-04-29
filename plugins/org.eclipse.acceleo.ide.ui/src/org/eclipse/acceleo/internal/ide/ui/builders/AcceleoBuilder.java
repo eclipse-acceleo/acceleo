@@ -144,8 +144,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *             when an issue occurs
 	 */
 	private void registerAccessibleEcoreFiles() throws CoreException {
-		// TODO JMU : Builder temporary fix
-		// The full build is able to register all the ecore files of the workspace
 		List<IFile> ecoreFiles = new ArrayList<IFile>();
 		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		for (IProject project : acceleoProject.getRecursivelyAccessibleProjects()) {

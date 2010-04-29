@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.model.mtl.Macro;
@@ -519,6 +520,12 @@ public final class OpenDeclarationUtils {
 							result = URI.createURI(targetURI, false);
 						}
 					}
+				}
+			}
+			if (result == null) {
+				String ecorePath = ModelUtils.getRegisteredEcorePackagePath(fileURI.toString());
+				if (ecorePath != null) {
+					result = URI.createPlatformResourceURI(ecorePath, false);
 				}
 			}
 			return result;

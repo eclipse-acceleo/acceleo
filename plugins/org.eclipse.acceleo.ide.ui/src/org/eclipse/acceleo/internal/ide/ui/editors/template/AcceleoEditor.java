@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
@@ -26,8 +28,10 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutline
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.parser.cst.CSTNode;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -201,9 +205,61 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		super.doSetInput(input);
 		IDocumentProvider provider = getDocumentProvider();
 		if (provider != null) {
+			registerAccessibleEcoreFiles();
 			IFile file = getFile();
 			IDocument document = provider.getDocument(getEditorInput());
 			initializeContent(document, file);
+		}
+	}
+
+	/**
+	 * Register the accessible workspace ecore files.
+	 * 
+	 * @throws CoreException
+	 *             when an issue occurs
+	 */
+	private void registerAccessibleEcoreFiles() throws CoreException {
+		IFile file = getFile();
+		if (file != null) {
+			List<IFile> ecoreFiles = new ArrayList<IFile>();
+			AcceleoProject acceleoProject = new AcceleoProject(file.getProject());
+			for (IProject project : acceleoProject.getRecursivelyAccessibleProjects()) {
+				if (project.isAccessible()) {
+					members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
+				}
+			}
+			for (IFile ecoreFile : ecoreFiles) {
+				ModelUtils.registerEcorePackages(ecoreFile.getFullPath().toString());
+			}
+		}
+	}
+
+	/**
+	 * Returns a list of existing member files (that validate the file extension) in this resource.
+	 * 
+	 * @param filesOutput
+	 *            an output parameter to get all the files
+	 * @param container
+	 *            is the container to browse
+	 * @param extension
+	 *            is the extension
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void members(List<IFile> filesOutput, IContainer container, String extension)
+			throws CoreException {
+		if (container != null) {
+			IResource[] children = container.members();
+			if (children != null) {
+				for (int i = 0; i < children.length; ++i) {
+					IResource resource = children[i];
+					if (resource instanceof IFile && extension.equals(((IFile)resource).getFileExtension())) {
+						filesOutput.add((IFile)resource);
+					} else if (resource instanceof IContainer) {
+						members(filesOutput, (IContainer)resource, extension);
+					}
+				}
+			}
 		}
 	}
 
