@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -45,8 +46,9 @@ import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
  * Entry point of the 'Mt2mtl' generation module.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @generated
  */
-public class Mt2mtl {
+public class Mt2mtl extends AbstractAcceleoGenerator {
 
 	/**
 	 * The name of the module.
@@ -63,40 +65,24 @@ public class Mt2mtl {
 	public static final String[] TEMPLATE_NAMES = { "convertToModule", };
 
 	/**
-	 * The root element of the module.
-	 */
-	private Module module;
+   * Allows the public constructor to be used. Note that a generator created
+   * this way cannot be used to launch generations before one of
+   * {@link #initialize(EObject, File, List)} or
+   * {@link #initialize(URI, File, List)} is called.
+   * <p>
+   * The main reason for this constructor is to allow clients of this
+   * generation to call it from another Java file, as it allows for the
+   * retrieval of {@link #getProperties()} and
+   * {@link #getGenerationListeners()}.
+   * </p>
+   *
+   * @generated
+   */
+  public Mt2mtl() {
+    // Empty implementation
+  }
 
-	/**
-	 * The model.
-	 */
-	private EObject model;
-
-	/**
-	 * The output folder.
-	 */
-	private File targetFolder;
-
-	/**
-	 * The other arguments.
-	 */
-	private List<? extends Object> arguments;
-
-	/**
-	 * This will hold the list of generation listeners that are to be notified when text is generated.
-	 * 
-	 * @generated
-	 */
-	private List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>();
-
-	/**
-	 * This will hold the list of properties files that are to be added to the generation context.
-	 * 
-	 * @generated
-	 */
-	private List<String> propertiesFiles = new ArrayList<String>();
-
-	/**
+  /**
 	 * Constructor.
 	 * 
 	 * @param modelURI
@@ -110,31 +96,7 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public Mt2mtl(URI modelURI, File targetFolder, List<? extends Object> arguments) throws IOException {
-    ResourceSet resourceSet = new ResourceSetImpl();
-    registerResourceFactories(resourceSet);
-    registerPackages(resourceSet);
-    addListeners();
-    addProperties();
-    final URL templateURL;
-    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      URL resourceURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-      if (resourceURL != null) {
-        templateURL = FileLocator.toFileURL(resourceURL);
-      } else {
-        templateURL = null;
-      }
-    } else {
-      templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-    }
-    if (templateURL == null) {
-      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-    } else {
-      URI templateURI = createTemplateURI(templateURL.toString());
-      module = (Module)load(templateURI, resourceSet);
-      model = load(modelURI, resourceSet);
-      this.targetFolder = targetFolder;
-      this.arguments = arguments;
-    }
+    initialize(modelURI, targetFolder, arguments);
   }
 
 	/**
@@ -151,55 +113,8 @@ public class Mt2mtl {
 	 * @generated
 	 */
 	public Mt2mtl(EObject model, File targetFolder, List<? extends Object> arguments) throws IOException {
-    ResourceSet resourceSet = model.eResource().getResourceSet();
-    registerResourceFactories(resourceSet);
-    registerPackages(resourceSet);
-    addListeners();
-    addProperties();
-    final URL templateURL;
-    if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-      URL resourceURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-      if (resourceURL != null) {
-        templateURL = FileLocator.toFileURL(resourceURL);
-      } else {
-        templateURL = null;
-      }
-    } else {
-      templateURL = Mt2mtl.class.getResource(MODULE_FILE_NAME + ".emtl");
-    }
-    if (templateURL == null) {
-      throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-    } else {
-      URI templateURI = createTemplateURI(templateURL.toString());
-      module = (Module)load(templateURI, resourceSet);
-      this.model = model;
-      this.targetFolder = targetFolder;
-      this.arguments = arguments;
-    }
+    initialize(model, targetFolder, arguments);
   }
-
-	/**
-	 * Creates the template URI.
-	 * 
-	 * @param entry
-	 *            is the local path of the EMTL file
-	 * @return the template URI
-	 * @generated
-	 */
-	protected URI createTemplateURI(String entry) {
-    if (entry.startsWith("file") || entry.startsWith("jar"))
-           return URI.createURI(URI.decode(entry));
-       return URI.createFileURI(URI.decode(entry));
-  }
-
-	/**
-	 * Gets the model.
-	 * 
-	 * @return the model root element
-	 */
-	public EObject getModel() {
-		return model;
-	}
 
 	/**
 	 * Updates the registry used for looking up a package based namespace, in the resource set.
@@ -208,27 +123,15 @@ public class Mt2mtl {
 	 *            is the resource set
 	 * @generated
 	 */
-	private void registerPackages(ResourceSet resourceSet) {
+	@Override
+  public void registerPackages(ResourceSet resourceSet) {
+    super.registerPackages(resourceSet);
     resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.MtPackage.eINSTANCE);
     resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.core.CorePackage.eINSTANCE);
     resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.expressions.ExpressionsPackage.eINSTANCE);
     resourceSet.getPackageRegistry().put(org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE.getNsURI(), org.eclipse.acceleo.compatibility.model.mt.statements.StatementsPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
-    resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", getOCLStdLibPackage());
-  }
-
-	/**
-	 * Returns the package containing the OCL standard library.
-	 * 
-	 * @return The package containing the OCL standard library.
-	 * @generated
-	 */
-	private EPackage getOCLStdLibPackage() {
-    EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
-    EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
-    return (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary().getBag());
+    // TODO Uncomment the following line if generating from UML models
+    // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
   }
 
 	/**
@@ -238,10 +141,9 @@ public class Mt2mtl {
 	 *            The resource set that is to be updated.
 	 * @generated
 	 */
-	private void registerResourceFactories(ResourceSet resourceSet) {
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emtl", new org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl());
-    resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+	@Override
+  public void registerResourceFactories(ResourceSet resourceSet) {
+    super.registerResourceFactories(resourceSet);
     // TODO Uncomment the following line if generating from UML models
     // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
   }
@@ -264,7 +166,8 @@ public class Mt2mtl {
         for (int i = 2; i < args.length; i++) {
           arguments.add(args[i]);
         }
-        Mt2mtl generator = new Mt2mtl(modelURI, folder, arguments);
+        Mt2mtl generator = new Mt2mtl();
+        generator.initialize(modelURI, folder, arguments);
         generator.doGenerate(new BasicMonitor());
       }
     } catch (IOException e) {
@@ -281,144 +184,103 @@ public class Mt2mtl {
 	 *             Thrown when the output cannot be saved.
 	 * @generated
 	 */
-	public void doGenerate(Monitor monitor) throws IOException {
-    if (!targetFolder.exists()) {
-      targetFolder.mkdirs();
-    }
-    AcceleoService service = new AcceleoService(getGenerationStrategy());
-    registerListeners(service);
-    registerProperties(service);
-    for (int i = 0; i < TEMPLATE_NAMES.length; i++) {
-      service.doGenerate(module, TEMPLATE_NAMES[i], model, arguments, targetFolder, monitor);
-    }
-    service.dispose();
+	@Override
+  public void doGenerate(Monitor monitor) throws IOException {
+    /*
+     * TODO if you wish to change the generation as a whole, override this.
+     * The default behavior should be sufficient in most cases.
+     */
+    super.doGenerate(monitor);
   }
 
 	/**
-   * If you need to change the way files are generated, this is your entry point.
-   * <p>
-   * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates
-   * files on the fly. If you only need to preview the results, return a new
-   * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware
-   * of the running Eclipse and can be used standalone.
-   * </p>
-   * <p>
-   * If you need the file generation to be aware of the workspace (A typical example is when you wanna override
-   * files that are under clear case or any other VCS that could forbid the overriding), then return a new
-   * {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}. <b>Note</b>, however, that
-   * this <b>cannot</b> be used standalone.
-   * </p>
-   * <p>
-   * All three of these default strategies support merging through JMerge.
-   * </p>
+   * If this generator needs to listen to text generation events, listeners can be returned from here.
+   * 
+   * @return List of listeners that are to be notified when text is generated through this launch.
+   * @generated
    */
-  public IAcceleoGenerationStrategy getGenerationStrategy() {
-    return new DefaultStrategy();
+  @Override
+  public List<IAcceleoTextGenerationListener> getGenerationListeners() {
+    List<IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();
+    // TODO if you need to listen to generation event, add listeners to the list here
+    return listeners;
   }
 
   /**
-	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
+	 * If you need to change the way files are generated, this is your entry point.
 	 * <p>
-	 * This will return the first root of the loaded model, other roots can be accessed via the resource's
-	 * content.
+	 * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates
+	 * files on the fly. If you only need to preview the results, return a new
+	 * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of
+	 * the running Eclipse and can be used standalone.
+	 * </p>
+	 * <p>
+	 * If you need the file generation to be aware of the workspace (A typical example is when you wanna
+	 * override files that are under clear case or any other VCS that could forbid the overriding), then
+	 * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.
+	 * <b>Note</b>, however, that this <b>cannot</b> be used standalone.
+	 * </p>
+	 * <p>
+	 * All three of these default strategies support merging through JMerge.
 	 * </p>
 	 * 
-	 * @param modelURI
-	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
-	 * @param resourceSet
-	 *            The {@link ResourceSet} to load the model in.
-	 * @return The model loaded from the URI.
-	 * @throws IOException
-	 *             If the given file does not exist.
 	 * @generated
 	 */
-	private EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-    EObject result = null;
-    final Resource modelResource = createResource(modelURI, resourceSet);
-    final Map<String, String> options = new HashMap<String, String>();
-    options.put(XMLResource.OPTION_ENCODING, System.getProperty("file.encoding"));
-    modelResource.load(options);
-    if (modelResource.getContents().size() > 0) {
-      result = modelResource.getContents().get(0);
-    }
-    return result;
+	public IAcceleoGenerationStrategy getGenerationStrategy() {
+    return super.getGenerationStrategy();
   }
 
 	/**
-	 * This will create a {@link Resource} given the model extension it is intended for and a ResourceSet.
-	 * 
-	 * @param modelURI
-	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
-	 * @param resourceSet
-	 *            The {@link ResourceSet} to load the model in.
-	 * @return The {@link Resource} given the model extension it is intended for.
-	 * @generated
-	 */
-	private Resource createResource(URI modelURI, ResourceSet resourceSet) {
-    String fileExtension = modelURI.fileExtension();
-       if (fileExtension == null || fileExtension.length() == 0) {
-           fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-       }
-       Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(fileExtension);
-       if (resourceFactory == null) {
-           resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().get(fileExtension);
-           if (resourceFactory != null) {
-               resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory);
-           }
-       }
-       return resourceSet.createResource(modelURI);
+   * This will be called in order to find and load the module that will be launched through this launcher.
+   * We expect this name not to contain file extension, and the module to be located beside the launcher.
+   * 
+   * @return The name of the module that is to be launched.
+   * @generated
+   */
+  @Override
+  public String getModuleName() {
+    return MODULE_FILE_NAME;
   }
 
-	/**
-	 * Generation listeners can be added for notification through this.
-	 * 
-	 * @generated
-	 */
-	private void addListeners() {
+  /**
+   * If the module(s) called by this launcher require properties files, return their qualified path from
+   * here.Take note that the first added properties files will take precedence over subsequent ones if they
+   * contain conflicting keys.
+   * <p>
+   * Properties need to be in source folders, the path that we expect to get as a result of this call are of
+   * the form &lt;package>.&lt;properties file name without extension>. For example, if you have a file
+   * named "messages.properties" in package "org.eclipse.acceleo.sample", the path that needs be returned by
+   * a call to {@link #getProperties()} is "org.eclipse.acceleo.sample.messages".
+   * </p>
+   * 
+   * @return The list of properties file we need to add to the generation context.
+   * @see java.util.ResourceBundle#getBundle(String)
+   * @generated
+   */
+  @Override
+  public List<String> getProperties() {
+    List<String> propertiesFiles = super.getProperties();
     /*
-     * TODO : add listeners to the "generationListener" field here. Make sure you remove the
-     * @generated annotation or set it to "@generated NOT".
+     * TODO if your generation module requires access to properties files,
+     * add their qualified path to the list here. Properties files are
+     * expected to be in source folders, and the path here to be the
+     * qualified path as if referring to a Java class. For example, if you
+     * have a file named "messages.properties" in package
+     * "org.eclipse.acceleo.sample", the path that needs be added to this
+     * list is "org.eclipse.acceleo.sample.messages".
      */
+    return propertiesFiles;
   }
 
-	/**
-	 * If the generation modules need properties files, this is where to add them. Take note that the first
-	 * added properties files will take precedence over subsequent ones if they contain conflicting keys.
-	 * 
-	 * @generated
-	 */
-	private void addProperties() {
-    /*
-     * TODO : add file pathes to the "propertiesFiles" field here. properties files can be added with
-     * relative or absolute pathes, or their path can represent a platform scheme URI. Make sure you remove
-     * the @generated annotation or set it to "@generated NOT".
-     */
-  }
-
-	/**
-	 * This is in charge of registering all listeners against the given service instance.
-	 * 
-	 * @generated
-	 */
-	private void registerListeners(AcceleoService service) {
-    for (IAcceleoTextGenerationListener listener : generationListeners) {
-      service.addListener(listener);
-    }
-  }
-
-	/**
-	 * This will register all properties files against the given service instance.
-	 * 
-	 * @generated
-	 */
-	private void registerProperties(AcceleoService service) {
-    try {
-      for (String propertyFile : propertiesFiles) {
-        service.addPropertiesFile(propertyFile);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  /**
+   * This will be used to get the list of templates that are to be launched by this launcher.
+   * 
+   * @return The list of templates to call on the module {@link #getModuleName()}.
+   * @generated
+   */
+  @Override
+  public String[] getTemplateNames() {
+    return TEMPLATE_NAMES;
   }
 
 }
