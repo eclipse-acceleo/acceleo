@@ -142,22 +142,13 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	 *             contains a status object describing the cause of the exception
 	 */
 	private void doCompileResources(IProgressMonitor monitor) throws CoreException {
-		List<String> conflicts = new ArrayList<String>();
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		List<URI> dependenciesURIs = acceleoProject.getAccessibleOutputFiles();
-		for (Iterator<URI> iterator = dependenciesURIs.iterator(); iterator.hasNext();) {
-			URI uri = iterator.next();
-			conflicts.add(new Path(uri.toString()).removeFileExtension().addFileExtension(
-					IAcceleoConstants.MTL_FILE_EXTENSION).lastSegment());
-		}
 		AcceleoParser parser = new AcceleoParser();
 		List<AcceleoFile> iFiles = new ArrayList<AcceleoFile>();
 		List<URI> oURIs = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
 			if (acceleoProject.getOutputFilePath(files[i]) != null) {
-				if (!conflicts.contains(files[i].getName())) {
-					conflicts.add(files[i].getName());
-				}
 				IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
 				if (outputPath != null) {
 					String javaPackageName = acceleoProject.getPackageName(files[i]);
@@ -165,7 +156,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 							.javaPackageToFullModuleName(javaPackageName, new Path(files[i].getName())
 									.removeFileExtension().lastSegment()));
 					iFiles.add(acceleoFile);
-					oURIs.add(URI.createPlatformResourceURI(outputPath.toString(), false));
+					URI platformURI = URI.createPlatformResourceURI(outputPath.toString(), false);
+					oURIs.add(platformURI);
+
 				}
 			}
 		}

@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,14 +42,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -138,7 +129,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			});
-			registerWorkspaceEcoreFiles();
+			registerAccessibleEcoreFiles();
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
@@ -152,7 +143,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 * @throws CoreException
 	 *             when an issue occurs
 	 */
-	private void registerWorkspaceEcoreFiles() throws CoreException {
+	private void registerAccessibleEcoreFiles() throws CoreException {
 		// TODO JMU : Builder temporary fix
 		// The full build is able to register all the ecore files of the workspace
 		List<IFile> ecoreFiles = new ArrayList<IFile>();
@@ -163,91 +154,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 		for (IFile ecoreFile : ecoreFiles) {
-			registerEcore(ecoreFile.getFullPath().toString());
-		}
-	}
-
-	/**
-	 * Register the given ecore file. It loads the ecore file and browses the elements, it means the root
-	 * EPackage and its descendants.
-	 * 
-	 * @param pathName
-	 *            is the path of the ecore file
-	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
-	 *         corresponding NsURI
-	 */
-	private String registerEcore(String pathName) {
-		EObject eObject;
-		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://")) { //$NON-NLS-1$ //$NON-NLS-2$
-			ResourceSet resourceSet = new ResourceSetImpl();
-			URI metaURI = URI.createURI(pathName, false);
-			try {
-				eObject = ModelUtils.load(metaURI, resourceSet);
-			} catch (IOException e) {
-				eObject = null;
-			} catch (WrappedException e) {
-				eObject = null;
-			}
-			if (!(eObject instanceof EPackage)) {
-				resourceSet = new ResourceSetImpl();
-				metaURI = URI.createPlatformResourceURI(pathName, false);
-				try {
-					eObject = ModelUtils.load(metaURI, resourceSet);
-				} catch (IOException e) {
-					eObject = null;
-				} catch (WrappedException e) {
-					eObject = null;
-				}
-				if (!(eObject instanceof EPackage)) {
-					resourceSet = new ResourceSetImpl();
-					metaURI = URI.createPlatformPluginURI(pathName, false);
-					try {
-						eObject = ModelUtils.load(metaURI, resourceSet);
-					} catch (IOException e) {
-						eObject = null;
-					} catch (WrappedException e) {
-						eObject = null;
-					}
-				}
-			}
-		} else {
-			eObject = null;
-		}
-		if (eObject instanceof EPackage) {
-			EPackage ePackage = (EPackage)eObject;
-			registerEcorePackageHierarchy(ePackage);
-			return ePackage.getNsURI();
-		} else {
-			return pathName;
-		}
-
-	}
-
-	/**
-	 * Register the given EPackage and its descendants.
-	 * 
-	 * @param ePackage
-	 *            is the root package to register
-	 */
-	private void registerEcorePackageHierarchy(EPackage ePackage) {
-		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
-			if (eClassifier instanceof EClass) {
-				try {
-					ePackage.getEFactoryInstance().create((EClass)eClassifier);
-				} catch (IllegalArgumentException e) {
-					// continue
-				}
-				break;
-			}
-		}
-		if (ePackage.getNsURI() != null) {
-			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
-			}
-			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
-		}
-		for (EPackage subPackage : ePackage.getESubpackages()) {
-			registerEcorePackageHierarchy(subPackage);
+			ModelUtils.registerEcorePackages(ecoreFile.getFullPath().toString());
 		}
 	}
 
@@ -264,9 +171,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
 		if (buildProperties.exists() && outputFolder != null && outputFolder.segmentCount() > 1) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
+			AcceleoProject project = new AcceleoProject(getProject());
+			List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
+			dependencies.remove(getProject());
 			CreateBuildAcceleoWriter buildWriter = new CreateBuildAcceleoWriter();
-			String buildText = buildWriter.generate(new String[] {getProject().getName(),
-					outputFolder.removeFirstSegments(1).toString(), });
+			String buildText = buildWriter.generate(new Object[] {dependencies, });
 			if (!buildAcceleo.exists()
 					|| !buildText.equals(FileContent.getFileContent(buildAcceleo.getLocation().toFile())
 							.toString())) {
@@ -337,10 +246,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			});
-			registerWorkspaceEcoreFiles();
+			registerAccessibleEcoreFiles();
 			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
+			validateAcceleoBuildFile(monitor);
 		}
 
 	}
