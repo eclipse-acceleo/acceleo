@@ -44,6 +44,13 @@ public final class ModelUtils {
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
 
 	/**
+	 * For dynamic ecore files only. To get the ecore file path of the registered nsURI. Dynamic packages are
+	 * registered in the EMF Registry by using the 'registerEcorePackages' method. The map key is the dynamic
+	 * nsURI of an EPackage and the value is the ecore file path used to register this nsURI.
+	 */
+	private static Map<String, String> dynamicEcorePackagePaths = new HashMap<String, String>();
+
+	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
 	 */
 	private ModelUtils() {
@@ -484,6 +491,9 @@ public final class ModelUtils {
 			}
 		}
 		if (ePackage.getNsURI() != null) {
+			if (ePackage.eResource() != null) {
+				dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI().toString());
+			}
 			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
 				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
 			}
@@ -492,5 +502,20 @@ public final class ModelUtils {
 		for (EPackage subPackage : ePackage.getESubpackages()) {
 			registerEcorePackageHierarchy(subPackage);
 		}
+	}
+
+	/**
+	 * To get the ecore file path of the registered nsURI. Dynamic packages are registered in the EMF EPackage
+	 * Registry by using the 'registerEcorePackages' method. The result is not null when the EPackage has been
+	 * registered in the EMF Registry with the 'registerEcorePackages' method.
+	 * 
+	 * @param nsURI
+	 *            the NsURI of an EPackage
+	 * @return the ecore file path that contains the given EPackage, or null if it hasn't been registered in
+	 *         the EMF Registry with the 'registerEcorePackages' method
+	 * @since 3.0
+	 */
+	public static String getRegisteredEcorePackagePath(String nsURI) {
+		return dynamicEcorePackagePaths.get(nsURI);
 	}
 }
