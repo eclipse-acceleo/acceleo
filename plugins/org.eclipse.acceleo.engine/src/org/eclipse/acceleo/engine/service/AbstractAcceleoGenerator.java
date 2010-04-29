@@ -10,6 +10,37 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.MissingResourceException;
+
+import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
+import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.ExpressionsPackage;
 
 /**
  * This will be used as the base class for all generated launchers (the java classes generated beside mtl
@@ -24,168 +55,362 @@ package org.eclipse.acceleo.engine.service;
  * @since 3.0
  */
 public abstract class AbstractAcceleoGenerator {
-	// /**
-	// * This will hold the list of generation listeners that are to be notified when text is generated.
-	// *
-	// * @deprecated return a list of generation listeners directly through {@link #getListeners()} instead.
-	// */
-	// @Deprecated
-	// protected List<IAcceleoTextGenerationListener> generationListeners = new
-	// ArrayList<IAcceleoTextGenerationListener>(
-	// 1);
-	//
-	// /**
-	// * Instantiates an Acceleo generator for a model located at a given URI.
-	// *
-	// * @param modelURI
-	// * URI where the model on which this generator will be used is located.
-	// * @param targetFolder
-	// * This will be used as the output folder for this generation : it will be the base path
-	// * against which all file block URLs will be resolved.
-	// * @param arguments
-	// * If the template which will be called requires more than one argument taken from the model,
-	// * pass them here.
-	// * @throws IOException
-	// * Will be thrown if an output file cannot be saved.
-	// */
-	// public AbstractAcceleoGenerator(URI modelURI, File targetFolder, List<?> arguments) throws IOException
-	// {
-	// ResourceSet resourceSet = new ResourceSetImpl();
-	// registerResourceFactories(resourceSet);
-	// registerPackages(resourceSet);
-	// addListeners();
-	// addProperties();
-	// final URL templateURL;
-	// if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-	// URL resourceURL = Generate.class.getResource(MODULE_FILE_NAME + ".emtl");
-	// if (resourceURL != null) {
-	// templateURL = FileLocator.toFileURL(resourceURL);
-	// } else {
-	// templateURL = null;
-	// }
-	// } else {
-	// templateURL = Generate.class.getResource(MODULE_FILE_NAME + ".emtl");
-	// }
-	// if (templateURL == null) {
-	// throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-	// } else {
-	// URI templateURI = createTemplateURI(templateURL.toString());
-	// module = (Module)load(templateURI, resourceSet);
-	// model = load(modelURI, resourceSet);
-	// this.targetFolder = targetFolder;
-	// this.arguments = arguments;
-	// }
-	// }
-	//
-	// /**
-	// * Instantiates an Acceleo generator for the given EObject.
-	// *
-	// * @param element
-	// * We'll iterate over the content of this element to find Objects matching the first parameter
-	// * of the template we need to call.
-	// * @param targetFolder
-	// * This will be used as the output folder for this generation : it will be the base path
-	// * against which all file block URLs will be resolved.
-	// * @param arguments
-	// * If the template which will be called requires more than one argument taken from the model,
-	// * pass them here.
-	// * @throws IOException
-	// * Will be thrown if an output file cannot be saved.
-	// */
-	// public AbstractAcceleoGenerator(EObject element, File targetFolder, List<? extends Object> arguments)
-	// throws IOException {
-	// ResourceSet resourceSet = element.eResource().getResourceSet();
-	// registerResourceFactories(resourceSet);
-	// registerPackages(resourceSet);
-	// addListeners();
-	// addProperties();
-	// final URL templateURL;
-	// if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-	// URL resourceURL = Generate.class.getResource(MODULE_FILE_NAME + ".emtl");
-	// if (resourceURL != null) {
-	// templateURL = FileLocator.toFileURL(resourceURL);
-	// } else {
-	// templateURL = null;
-	// }
-	// } else {
-	// templateURL = Generate.class.getResource(MODULE_FILE_NAME + ".emtl");
-	// }
-	// if (templateURL == null) {
-	// throw new IOException("'" + MODULE_FILE_NAME + ".emtl' not found");
-	// } else {
-	// URI templateURI = createTemplateURI(templateURL.toString());
-	// module = (Module)load(templateURI, resourceSet);
-	// this.model = element;
-	// this.targetFolder = targetFolder;
-	// this.arguments = arguments;
-	// }
-	// }
-	//
-	// /**
-	// * If this generator needs to listen to text generation events, listeners can be returned from here.
-	// *
-	// * @return List of listeners that are to be notified when text is generated through this launch.
-	// */
-	// public List<IAcceleoTextGenerationListener> getListeners() {
-	// return new ArrayList<IAcceleoTextGenerationListener>(generationListeners);
-	// }
-	//
-	// /**
-	// * If the generation modules need properties files, this is where to add them. Take note that the first
-	// * added properties files will take precedence over subsequent ones if they contain conflicting keys.
-	// *
-	// * @deprecated return a list of generation listeners directly through {@link #getListeners()} instead.
-	// */
-	// @Deprecated
-	// protected void addProperties() {
-	// // empty implementation
-	// }
-	//
-	// /**
-	// * This will update the resource set's package registry with all usual EPackages.
-	// *
-	// * @param resourceSet
-	// * The resource set which registry has to be updated.
-	// */
-	// protected void registerPackages(ResourceSet resourceSet) {
-	// resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-	// resourceSet.getPackageRegistry().put(GenModelPackage.eINSTANCE.getNsURI(), GenModelPackage.eINSTANCE);
-	//
-	// resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
-	// org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
-	// resourceSet.getPackageRegistry().put(ExpressionsPackage.eINSTANCE.getNsURI(),
-	// ExpressionsPackage.eINSTANCE);
-	//
-	// resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
-	//
-	//		resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
-	// getOCLStdLibPackage());
-	// }
-	//
-	// /**
-	// * This will update the resource set's resource factory registry with all usual factories.
-	// *
-	// * @param resourceSet
-	// * The resource set which registry has to be updated.
-	// */
-	// protected void registerResourceFactories(ResourceSet resourceSet) {
-	//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", //$NON-NLS-1$
-	// new EcoreResourceFactoryImpl());
-	// resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-	// IAcceleoConstants.EMTL_FILE_EXTENSION, new EMtlResourceFactoryImpl());
-	// }
-	//
-	// /**
-	// * Returns the package containing the OCL standard library.
-	// *
-	// * @return The package containing the OCL standard library.
-	// */
-	// private EPackage getOCLStdLibPackage() {
-	// EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
-	// EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
-	// EPackage oclStdLibPackage = (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary()
-	// .getBag());
-	// environment.dispose();
-	// return oclStdLibPackage;
-	// }
+	/** If the generation requires any additional arguments, they'll be stored here. */
+	protected List<? extends Object> generationArguments;
+
+	/**
+	 * This will hold the list of generation listeners that are to be notified when text is generated.
+	 * 
+	 * @deprecated return a list of generation listeners directly through {@link #getGenerationListeners()}
+	 *             instead.
+	 */
+	@Deprecated
+	protected List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>(
+			1);
+
+	/** The model on which to iterate for this generation. */
+	protected EObject model;
+
+	/** The root element of the generation module for this launcher. */
+	protected Module module;
+
+	/**
+	 * This will hold the list of properties files that are to be added to the generation context.
+	 * 
+	 * @deprected return a list of properties files directly through {@link #getProperties()} instead.
+	 */
+	@Deprecated
+	protected List<String> propertiesFiles = new ArrayList<String>(1);
+
+	/** The folder that will be considered "root" of the generated files. */
+	protected File targetFolder;
+
+	/**
+	 * Launches the generation described by this instance.
+	 * 
+	 * @param monitor
+	 *            This will be used to display progress information to the user.
+	 * @throws IOException
+	 *             This will be thrown if any of the output files cannot be saved to disk.
+	 */
+	public void doGenerate(Monitor monitor) throws IOException {
+		File target = getTargetFolder();
+		if (!target.exists() && !target.mkdirs()) {
+			throw new IOException("target directory " + target + " couldn't be created."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		AcceleoService service = createAcceleoService();
+		String[] templateNames = getTemplateNames();
+		for (int i = 0; i < templateNames.length; i++) {
+			service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(), target, monitor);
+		}
+	}
+
+	/**
+	 * If the generation template called from this launcher needs any additional arguments, and you wish to
+	 * change what was given the constructor, you can alter them here.
+	 * 
+	 * @return The list of additional arguments for this generation.
+	 */
+	public List<? extends Object> getArguments() {
+		return generationArguments;
+	}
+
+	/**
+	 * If this generator needs to listen to text generation events, listeners can be returned from here.
+	 * 
+	 * @return List of listeners that are to be notified when text is generated through this launch.
+	 */
+	public List<IAcceleoTextGenerationListener> getGenerationListeners() {
+		return new ArrayList<IAcceleoTextGenerationListener>();
+	}
+
+	/**
+	 * If you need to change the way files are generated, this is your entry point.
+	 * <p>
+	 * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates
+	 * files on the fly. If you only need to preview the results, return a new
+	 * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of
+	 * the running Eclipse and can be used standalone.
+	 * </p>
+	 * <p>
+	 * If you need the file generation to be aware of the workspace (A typical example is when you wanna
+	 * override files that are under clear case or any other VCS that could forbid the overriding), then
+	 * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.
+	 * <b>Note</b>, however, that this <b>cannot</b> be used standalone.
+	 * </p>
+	 * <p>
+	 * All three of these default strategies support merging through JMerge.
+	 * </p>
+	 * 
+	 * @return The generation strategy that is to be used for generations launched through this launcher.
+	 */
+	public IAcceleoGenerationStrategy getGenerationStrategy() {
+		return new DefaultStrategy();
+	}
+
+	/**
+	 * If you wish to launch the generation on something else than {@link #model}, alter it here.
+	 * 
+	 * @return The root EObject on which to iterate for this generation.
+	 */
+	public EObject getModel() {
+		return model;
+	}
+
+	/**
+	 * If you wish to launch the generation on another module than {@link #module}, alter it here.
+	 * 
+	 * @return The module on which we'll seek the generation templates to launch.
+	 */
+	public Module getModule() {
+		return module;
+	}
+
+	/**
+	 * This will be called in order to find and load the module that will be launched through this launcher.
+	 * We expect this name not to contain file extension, and the module to be located beside the launcher.
+	 * 
+	 * @return The name of the module that is to be launched.
+	 */
+	public abstract String getModuleName();
+
+	/**
+	 * If the module(s) called by this launcher require properties files, return their qualified path from
+	 * here.Take note that the first added properties files will take precedence over subsequent ones if they
+	 * contain conflicting keys.
+	 * <p>
+	 * Properties need to be in source folders, the path that we expect to get as a result of this call are of
+	 * the form &lt;package>.&lt;properties file name without extension>. For example, if you have a file
+	 * named "messages.properties" in package "org.eclipse.acceleo.sample", the path that needs be returned by
+	 * a call to {@link #getProperties()} is "org.eclipse.acceleo.sample.messages".
+	 * </p>
+	 * 
+	 * @return The list of properties file we need to add to the generation context.
+	 */
+	public List<String> getProperties() {
+		return new ArrayList<String>();
+	}
+
+	/**
+	 * If you wish to generate files in another folder than {@link #targetFolder}, alter it here.
+	 * 
+	 * @return The root directory in which to generate files.
+	 */
+	public File getTargetFolder() {
+		return targetFolder;
+	}
+
+	/**
+	 * This will be used to get the list of templates that are to be launched by this launcher.
+	 * 
+	 * @return The list of templates to call on the module {@link #getModuleName()}.
+	 */
+	public abstract String[] getTemplateNames();
+
+	/**
+	 * This will initialize all required information for this generator.
+	 * 
+	 * @param element
+	 *            We'll iterate over the content of this element to find Objects matching the first parameter
+	 *            of the template we need to call.
+	 * @param folder
+	 *            This will be used as the output folder for this generation : it will be the base path
+	 *            against which all file block URLs will be resolved.
+	 * @param arguments
+	 *            If the template which will be called requires more than one argument taken from the model,
+	 *            pass them here.
+	 * @throws IOException
+	 *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
+	 */
+	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
+		ResourceSet resourceSet = element.eResource().getResourceSet();
+
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
+
+		addListeners();
+		addProperties();
+
+		String moduleName = getModuleName();
+		if (moduleName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+			moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+		}
+		if (!moduleName.endsWith('.' + IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+			moduleName += '.' + IAcceleoConstants.EMTL_FILE_EXTENSION;
+		}
+
+		URL templateURL = getClass().getResource(moduleName);
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && templateURL != null) {
+			templateURL = FileLocator.toFileURL(templateURL);
+		}
+
+		if (templateURL == null) {
+			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		URI templateURI = createTemplateURI(templateURL.toString());
+		module = (Module)ModelUtils.load(templateURI, resourceSet);
+		model = element;
+		targetFolder = folder;
+		generationArguments = arguments;
+	}
+
+	/**
+	 * This will initialize all required information for this generator.
+	 * 
+	 * @param modelURI
+	 *            URI where the model on which this generator will be used is located.
+	 * @param folder
+	 *            This will be used as the output folder for this generation : it will be the base path
+	 *            against which all file block URLs will be resolved.
+	 * @param arguments
+	 *            If the template which will be called requires more than one argument taken from the model,
+	 *            pass them here.
+	 * @throws IOException
+	 *             This can be thrown in three scenarios : the module cannot be found, it cannot be loaded, or
+	 *             the model cannot be loaded.
+	 */
+	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
+		ResourceSet resourceSet = new ResourceSetImpl();
+
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
+
+		addListeners();
+		addProperties();
+
+		String moduleName = getModuleName();
+		if (moduleName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+			moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+		}
+		if (!moduleName.endsWith('.' + IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+			moduleName += '.' + IAcceleoConstants.EMTL_FILE_EXTENSION;
+		}
+
+		URL templateURL = getClass().getResource(moduleName);
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && templateURL != null) {
+			templateURL = FileLocator.toFileURL(templateURL);
+		}
+
+		if (templateURL == null) {
+			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		final URI templateURI = createTemplateURI(templateURL.toString());
+		module = (Module)ModelUtils.load(templateURI, resourceSet);
+		model = ModelUtils.load(modelURI, resourceSet);
+		targetFolder = folder;
+		generationArguments = arguments;
+	}
+
+	/**
+	 * This will update the resource set's package registry with all usual EPackages.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 */
+	public void registerPackages(ResourceSet resourceSet) {
+		resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(GenModelPackage.eINSTANCE.getNsURI(), GenModelPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
+				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(ExpressionsPackage.eINSTANCE.getNsURI(),
+				ExpressionsPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
+				getOCLStdLibPackage());
+	}
+
+	/**
+	 * This will update the resource set's resource factory registry with all usual factories.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 */
+	public void registerResourceFactories(ResourceSet resourceSet) {
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", //$NON-NLS-1$
+				new EcoreResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
+				IAcceleoConstants.EMTL_FILE_EXTENSION, new EMtlResourceFactoryImpl());
+	}
+
+	/**
+	 * If you need to listen to generation events, generation listeners can be added for notification through
+	 * this.Listeners can be added to the {@link #generationListeners} list.
+	 * 
+	 * @deprecated return a list of generation listeners directly through {@link #getGenerationListeners()}
+	 *             instead.
+	 */
+	@Deprecated
+	protected void addListeners() {
+		// empty implementation
+	}
+
+	/**
+	 * If the generation modules need properties files, this is where to add them. Take note that the first
+	 * added properties files will take precedence over subsequent ones if they contain conflicting keys.
+	 * 
+	 * @deprecated return a list of properties files path directly through {@link #getProperties()} instead.
+	 */
+	@Deprecated
+	protected void addProperties() {
+		// empty implementation
+	}
+
+	/**
+	 * This will be used prior to each generation to create the instance of {@link AcceleoService} that will
+	 * be used to interface with the generation engine.
+	 * <p>
+	 * This default implementation should be sufficient for all cases, it will delegate creation of the
+	 * generation strategy to {@link #getGenerationStrategy()}, register the generation listeners as returned
+	 * by {@link #getGenerationListeners()}, then register all properties as returned by [@link
+	 * #getProperties()} in the generation context.
+	 * </p>
+	 * 
+	 * @return The Acceleo service that is to be used for generations launched through this launcher.
+	 */
+	protected AcceleoService createAcceleoService() {
+		AcceleoService service = new AcceleoService(getGenerationStrategy());
+		for (IAcceleoTextGenerationListener listener : getGenerationListeners()) {
+			service.addListener(listener);
+		}
+		for (String propertyFile : getProperties()) {
+			try {
+				service.addPropertiesFile(propertyFile);
+			} catch (MissingResourceException e) {
+				AcceleoEnginePlugin.log(e, false);
+			}
+		}
+		return service;
+	}
+
+	/**
+	 * Creates the URI that will be used to resolve the template that is to be launched.
+	 * 
+	 * @param entry
+	 *            The path towards the template file. Could be a jar or file scheme URI, or we'll assume it
+	 *            represents a relative path.
+	 * @return The actual URI from which the template file can be resolved.
+	 */
+	protected URI createTemplateURI(String entry) {
+		if (entry.startsWith("file:/") || entry.startsWith("jar:/")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+			return URI.createURI(URI.decode(entry));
+		}
+		return URI.createFileURI(URI.decode(entry));
+	}
+
+	/**
+	 * Returns the package containing the OCL standard library.
+	 * 
+	 * @return The package containing the OCL standard library.
+	 */
+	protected EPackage getOCLStdLibPackage() {
+		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+		EPackage oclStdLibPackage = (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary()
+				.getBag());
+		environment.dispose();
+		return oclStdLibPackage;
+	}
 }
