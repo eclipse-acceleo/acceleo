@@ -11,18 +11,12 @@
 package org.eclipse.acceleo.engine.generation;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.MissingResourceException;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -30,6 +24,7 @@ import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
@@ -41,6 +36,7 @@ import org.eclipse.ocl.ecore.Variable;
  * This class can be used to launch the generation of an Acceleo template.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @noextend This class is not intended to be subclassed by clients.
  * @since 3.0
  */
 public class AcceleoEngine implements IAcceleoEngine {
@@ -51,19 +47,13 @@ public class AcceleoEngine implements IAcceleoEngine {
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
 	/**
-	 * This will contain the custom properties for this engine, properties that will always take precedence
-	 * over those contained within {@link #loadedProperties} no matter what.
-	 */
-	protected final Properties customProperties = new Properties();
-
-	/**
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
 	 */
 	protected final List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
 
-	/** This will hold the list of properties accessible from the generation context for this engine instance. */
-	protected final Map<File, Properties> loadedProperties = new LinkedHashMap<File, Properties>();
+	/** This will hold a reference to the properties manager for a given generation. */
+	protected AcceleoPropertiesLookup propertiesLookup = new AcceleoPropertiesLookup();
 
 	/**
 	 * This will be set to true if one of the registered generation listener is interested in generation end
@@ -95,16 +85,8 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(java.io.File)
 	 * @since 3.0
 	 */
-	public void addProperties(File propertiesHolder) throws IOException {
-		final Properties property = new Properties();
-		final InputStream stream = new FileInputStream(propertiesHolder);
-		try {
-			property.load(stream);
-		} finally {
-			stream.close();
-		}
-		property.put(IAcceleoConstants.PROPERTY_KEY_FILE_NAME, propertiesHolder.getName());
-		loadedProperties.put(propertiesHolder, property);
+	public void addProperties(String propertiesHolder) throws MissingResourceException {
+		propertiesLookup.addProperties(propertiesHolder);
 	}
 
 	/**
@@ -114,7 +96,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * @since 3.0
 	 */
 	public void addProperties(Map<String, String> customProps) {
-		customProperties.putAll(customProps);
+		propertiesLookup.addProperties(customProps);
 	}
 
 	/**
@@ -164,45 +146,11 @@ public class AcceleoEngine implements IAcceleoEngine {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeCustomProperties(java.util.Set)
-	 * @since 3.0
-	 */
-	public void removeCustomProperties(Set<String> customPropertyKeys) {
-		for (String key : customPropertyKeys) {
-			customProperties.remove(key);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeListener(org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener)
 	 * @since 0.8
 	 */
 	public void removeListener(IAcceleoTextGenerationListener listener) {
 		listeners.remove(listener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeProperties(java.io.File)
-	 * @since 3.0
-	 */
-	public void removeProperties(File propertiesHolder) {
-		loadedProperties.remove(propertiesHolder);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#reset()
-	 * @since 3.0
-	 */
-	public void reset() {
-		listeners.clear();
-		loadedProperties.clear();
-		customProperties.clear();
 	}
 
 	/**
@@ -223,9 +171,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 			Module rootModule, IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		final List<IAcceleoTextGenerationListener> listenersCopy = new ArrayList<IAcceleoTextGenerationListener>(
 				listeners);
-		final List<Properties> propertiesCopy = new ArrayList<Properties>(loadedProperties.values());
-		propertiesCopy.add(0, customProperties);
-		return new AcceleoEnvironmentFactory(generationRoot, rootModule, listenersCopy, propertiesCopy,
+		return new AcceleoEnvironmentFactory(generationRoot, rootModule, listenersCopy, propertiesLookup,
 				strategy, monitor);
 	}
 

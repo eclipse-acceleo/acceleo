@@ -11,10 +11,8 @@
 package org.eclipse.acceleo.engine.internal.environment;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
@@ -55,8 +53,8 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	/** Module for which this environment factory has been created. */
 	private final Module module;
 
-	/** This will hold the list of properties accessible from the generation context. */
-	private final List<Properties> properties = new ArrayList<Properties>();
+	/** This will hold a reference to the class allowing for properties lookup. */
+	private AcceleoPropertiesLookup propertiesLookup;
 
 	/**
 	 * Default constructor. Packages will be looked up into the global EMF registry.
@@ -67,19 +65,19 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	 *            The module for which this factory is to be created.
 	 * @param listeners
 	 *            The list of all listeners that are to be notified for text generation from this context.
-	 * @param props
-	 *            The list of Properties that can be accessed from the context.
+	 * @param properties
+	 *            The class allowing for properties lookup for this generation.
 	 * @param strategy
 	 *            The generation strategy that's to be used by this factory's context.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation.
 	 */
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
-			List<IAcceleoTextGenerationListener> listeners, List<Properties> props,
+			List<IAcceleoTextGenerationListener> listeners, AcceleoPropertiesLookup properties,
 			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		super(EPackage.Registry.INSTANCE);
 		context = new AcceleoEvaluationContext<EClassifier>(generationRoot, listeners, strategy, monitor);
-		properties.addAll(props);
+		propertiesLookup = properties;
 		this.module = module;
 	}
 
@@ -122,7 +120,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	 */
 	@Override
 	public EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> createEvaluationEnvironment() {
-		return new AcceleoEvaluationEnvironment(module, properties);
+		return new AcceleoEvaluationEnvironment(module, propertiesLookup);
 	}
 
 	/**
@@ -133,7 +131,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	@Override
 	public EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> createEvaluationEnvironment(
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent) {
-		return new AcceleoEvaluationEnvironment(parent, module, properties);
+		return new AcceleoEvaluationEnvironment(parent, module, propertiesLookup);
 	}
 
 	/**
@@ -159,7 +157,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	@Override
 	public void dispose() {
 		context.dispose();
-		properties.clear();
+		propertiesLookup = null;
 		AcceleoLibraryOperationVisitor.dispose();
 	}
 

@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -713,7 +712,7 @@ public final class AcceleoLibraryOperationVisitor {
 	/**
 	 * This will return the value of the property corresponding to the given key. Precedence rules for the
 	 * properties can be found in the javadoc of
-	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(String)}.
 	 * 
 	 * @param env
 	 *            The environment that asked for this evaluation.
@@ -722,17 +721,13 @@ public final class AcceleoLibraryOperationVisitor {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private static String getProperty(AcceleoEvaluationEnvironment env, String key) {
-		String propertyValue = null;
-		for (Properties propertiesHolder : env.getProperties()) {
-			final String property = propertiesHolder.getProperty(key);
-			if (property != null) {
-				/*
-				 * Pass through MessageFormat so that we're consistent in the handling of special chars such
-				 * as the apostrophe.
-				 */
-				propertyValue = MessageFormat.format(property, new Object[] {});
-				break;
-			}
+		String propertyValue = env.getPropertiesLookup().getProperty(key);
+		/*
+		 * Pass through MessageFormat so that we're consistent in the handling of special chars such as the
+		 * apostrophe.
+		 */
+		if (propertyValue != null) {
+			propertyValue = MessageFormat.format(propertyValue, new Object[] {});
 		}
 		return propertyValue;
 	}
@@ -740,7 +735,7 @@ public final class AcceleoLibraryOperationVisitor {
 	/**
 	 * This will return the value of the property corresponding to the given key, with parameters substituted
 	 * as needed. Precedence rules for the properties can be found in the javadoc of
-	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(String)}.
 	 * 
 	 * @param env
 	 *            The environment that asked for this evaluation.
@@ -751,13 +746,9 @@ public final class AcceleoLibraryOperationVisitor {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private static String getProperty(AcceleoEvaluationEnvironment env, String key, Object[] arguments) {
-		String propertyValue = null;
-		for (Properties propertiesHolder : env.getProperties()) {
-			final String property = propertiesHolder.getProperty(key);
-			if (property != null) {
-				propertyValue = MessageFormat.format(property, arguments);
-				break;
-			}
+		String propertyValue = env.getPropertiesLookup().getProperty(key);
+		if (propertyValue != null) {
+			propertyValue = MessageFormat.format(propertyValue, arguments);
 		}
 		return propertyValue;
 	}
@@ -765,7 +756,7 @@ public final class AcceleoLibraryOperationVisitor {
 	/**
 	 * This will return the value of the property corresponding to the given key from the first properties
 	 * holder of the given name. Precedence rules for the properties can be found in the javadoc of
-	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(String)}.
 	 * 
 	 * @param env
 	 *            The environment that asked for this evaluation.
@@ -776,25 +767,13 @@ public final class AcceleoLibraryOperationVisitor {
 	 * @return The value of the property corresponding to the given key.
 	 */
 	private static String getProperty(AcceleoEvaluationEnvironment env, String propertiesFileName, String key) {
-		String propertyValue = null;
-		for (Properties propertiesHolder : env.getProperties()) {
-			String soughtPropertiesFile = propertiesFileName;
-			String propertiesExtension = ".properties"; //$NON-NLS-1$
-			if (!propertiesFileName.endsWith(propertiesExtension)) {
-				soughtPropertiesFile += propertiesExtension;
-			}
-			String fileName = propertiesHolder.getProperty(IAcceleoConstants.PROPERTY_KEY_FILE_NAME);
-			if (soughtPropertiesFile.equals(fileName)) {
-				final String property = propertiesHolder.getProperty(key);
-				if (property != null) {
-					/*
-					 * Pass through MessageFormat so that we're consistent in the handling of special chars
-					 * such as the apostrophe.
-					 */
-					propertyValue = MessageFormat.format(property, new Object[] {});
-					break;
-				}
-			}
+		String propertyValue = env.getPropertiesLookup().getProperty(propertiesFileName, key);
+		/*
+		 * Pass through MessageFormat so that we're consistent in the handling of special chars such as the
+		 * apostrophe.
+		 */
+		if (propertyValue != null) {
+			propertyValue = MessageFormat.format(propertyValue, new Object[] {});
 		}
 		return propertyValue;
 	}
@@ -803,7 +782,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 * This will return the value of the property corresponding to the given key from the first properties
 	 * holder of the given name, with parameters substituted as needed. Precedence rules for the properties
 	 * can be found in the javadoc of
-	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(Properties)}.
+	 * {@link org.eclipse.acceleo.engine.generation.IAcceleoEngine#addProperties(String)}.
 	 * 
 	 * @param env
 	 *            The environment that asked for this evaluation.
@@ -817,21 +796,9 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static String getProperty(AcceleoEvaluationEnvironment env, String propertiesFileName,
 			String key, Object[] arguments) {
-		String propertyValue = null;
-		for (Properties propertiesHolder : env.getProperties()) {
-			String soughtPropertiesFile = propertiesFileName;
-			String propertiesExtension = ".properties"; //$NON-NLS-1$
-			if (!propertiesFileName.endsWith(propertiesExtension)) {
-				soughtPropertiesFile += propertiesExtension;
-			}
-			String fileName = propertiesHolder.getProperty(IAcceleoConstants.PROPERTY_KEY_FILE_NAME);
-			if (soughtPropertiesFile.equals(fileName)) {
-				final String property = propertiesHolder.getProperty(key);
-				if (property != null) {
-					propertyValue = MessageFormat.format(property, arguments);
-					break;
-				}
-			}
+		String propertyValue = env.getPropertiesLookup().getProperty(propertiesFileName, key);
+		if (propertyValue != null) {
+			propertyValue = MessageFormat.format(propertyValue, arguments);
 		}
 		return propertyValue;
 	}

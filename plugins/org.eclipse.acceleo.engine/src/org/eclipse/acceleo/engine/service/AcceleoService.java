@@ -11,15 +11,14 @@
 package org.eclipse.acceleo.engine.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -144,47 +143,6 @@ public final class AcceleoService {
 	 * ones.
 	 * </p>
 	 * <p>
-	 * For example, if plugin A adds "a.properties" which contains a key "a.b.c" and calls a launcher
-	 * contained by a second plugin B which itself contains "b.properties" containing key "a.b.c" :
-	 * 
-	 * <pre>
-	 * getProperty('a.b.c')
-	 * </pre>
-	 * 
-	 * will result in the value from a.properties being printed, whereas
-	 * 
-	 * <pre>
-	 * getProperty('b.properties', 'a.b.c')
-	 * </pre>
-	 * 
-	 * will return the value from b.properties.
-	 * </p>
-	 * <p>
-	 * Take note that properties added through {@link #addProperties(Map)} will always take precedence over
-	 * properties defined in a file.
-	 * </p>
-	 * 
-	 * @param propertiesFile
-	 *            The properties file that is to be added to the generation context.
-	 * @throws IOException
-	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
-	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
-	 * @since 3.0
-	 */
-	public void addPropertiesFile(File propertiesFile) throws IOException {
-		if (propertiesFile.exists()) {
-			generationEngine.addProperties(propertiesFile);
-		}
-	}
-
-	/**
-	 * Adds the given properties file to the generation context so that its key/value pairs can be accessed
-	 * through the getProperty() services at generation time.
-	 * <p>
-	 * <b>Note</b> that the first properties file added to this list will take precedence over subsequent
-	 * ones.
-	 * </p>
-	 * <p>
 	 * The given path can be either absolute or relative. If it represent an URI of platform scheme, we'll
 	 * resolve this path against the current workspace.
 	 * </p>
@@ -209,32 +167,25 @@ public final class AcceleoService {
 	 * properties defined in a file.
 	 * </p>
 	 * 
-	 * @param propertiesFilePath
-	 *            Path to the properties file that is to be added to the generation context.
-	 * @throws IOException
-	 *             This will be thrown if an unexpected IOException occured while reading the file. It will
-	 *             <em>not</em> be thrown if the file doesn't exist : these will be silently discarded.
+	 * @param propertiesFile
+	 *            Qualified path to the properties file that is to be added to the generation context.
+	 * @throws MissingResourceException
+	 *             This will be thrown if we cannot locate the properties file in the current classpath.
 	 * @since 3.0
 	 */
-	public void addPropertiesFile(String propertiesFilePath) throws IOException {
-		final File propertiesFile;
-		if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
-			propertiesFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(propertiesFilePath);
-		} else if (propertiesFilePath.startsWith("file:/")) { //$NON-NLS-1$
-			propertiesFile = new File(propertiesFilePath.substring(6));
-		} else {
-			propertiesFile = new File(propertiesFilePath);
-		}
-		addPropertiesFile(propertiesFile);
+	public void addPropertiesFile(String propertiesFile) throws MissingResourceException {
+		generationEngine.addProperties(propertiesFile);
 	}
 
 	/**
 	 * Properly disposes of everything that could have been loaded from this service.
 	 * 
+	 * @deprecated This has no real use.
 	 * @since 3.0
 	 */
+	@Deprecated
 	public void dispose() {
-		generationEngine.reset();
+		// empty implementation
 	}
 
 	/**
@@ -607,65 +558,6 @@ public final class AcceleoService {
 	 */
 	public void removeListener(IAcceleoTextGenerationListener listener) {
 		generationEngine.removeListener(listener);
-	}
-
-	/**
-	 * Removes a set of custom properties from the generation context.
-	 * 
-	 * @param customPropertyKeys
-	 *            Keys of the custom property pairs that are to be removed from the context.
-	 * @since 3.0
-	 */
-	public void removeProperties(Set<String> customPropertyKeys) {
-		generationEngine.removeCustomProperties(customPropertyKeys);
-	}
-
-	/**
-	 * Removes the properties holder corresponding to the given file.
-	 * 
-	 * @param propertiesFile
-	 *            File from which has been created the properties holder that is to be removed from the
-	 *            generation context.
-	 * @since 3.0
-	 */
-	public void removePropertiesFile(File propertiesFile) {
-		generationEngine.removeProperties(propertiesFile);
-	}
-
-	/**
-	 * Removes the properties holder that's been loaded from the given file path.
-	 * 
-	 * @param propertiesFilePath
-	 *            Path from which has been loaded the properties file that is to be removed from the
-	 *            generation context.
-	 * @since 3.0
-	 */
-	public void removePropertiesFile(String propertiesFilePath) {
-		try {
-			final File propertiesFile;
-			if (propertiesFilePath.startsWith("platform:/")) { //$NON-NLS-1$
-				propertiesFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(propertiesFilePath);
-			} else {
-				propertiesFile = new File(propertiesFilePath);
-			}
-			generationEngine.removeProperties(propertiesFile);
-		} catch (IOException e) {
-			// silently discard
-		}
-	}
-
-	/**
-	 * Removes a single property from the generation context. This is a shortcut for
-	 * {@link #removeProperties(Set)}.
-	 * 
-	 * @param customPropertyKey
-	 *            Key of the custom property pair that is to be removed from the context.
-	 * @since 3.0
-	 */
-	public void removeProperty(String customPropertyKey) {
-		final Set<String> properties = new HashSet<String>();
-		properties.add(customPropertyKey);
-		generationEngine.removeCustomProperties(properties);
 	}
 
 	/**

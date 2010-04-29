@@ -11,10 +11,9 @@
 package org.eclipse.acceleo.engine.generation;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.MissingResourceException;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
@@ -38,23 +37,6 @@ public interface IAcceleoEngine {
 	void addListener(IAcceleoTextGenerationListener listener);
 
 	/**
-	 * Registers properties so that their key/value pairs can be accessed through the getProperty() services
-	 * at generation time.
-	 * <p>
-	 * When we search for a given pair, the properties holders will be iterated through in order of addition :
-	 * the very first pair of the sought key will be returned. In other words, the <em>first</em> added
-	 * properties holder takes precedence over all subsequent ones.
-	 * </p>
-	 * 
-	 * @param propertiesFile
-	 *            The properties catalog that is to be added to the generation context.
-	 * @throws IOException
-	 *             This will be thrown if any exception occurs while reading the file.
-	 * @since 3.0
-	 */
-	void addProperties(File propertiesFile) throws IOException;
-
-	/**
 	 * This can be used to add custom properties to the engine. These will be available through the
 	 * getProperty() services, <em>note</em> however that there can only be a single pair with a given key,
 	 * and these properties will <em>always</em> take precedence over properties file-defined pairs.
@@ -64,6 +46,23 @@ public interface IAcceleoEngine {
 	 * @since 3.0
 	 */
 	void addProperties(Map<String, String> customProperties);
+
+	/**
+	 * Registers properties files so that their key/value pairs can be accessed through the getProperty()
+	 * services at generation time.
+	 * <p>
+	 * When we search for a given pair, the properties holders will be iterated through in order of addition :
+	 * the very first pair of the sought key will be returned. In other words, the <em>first</em> added
+	 * properties holder takes precedence over all subsequent ones.
+	 * </p>
+	 * 
+	 * @param resourcePath
+	 *            Qualified path to the properties file that is to be added to the generation context.
+	 * @throws MissingResourceException
+	 *             This will be thrown if we cannot locate the properties file in the current classpath.
+	 * @since 3.0
+	 */
+	void addProperties(String resourcePath) throws MissingResourceException;
 
 	/**
 	 * Evaluates the given Acceleo Template with the given arguments.
@@ -100,15 +99,6 @@ public interface IAcceleoEngine {
 			IAcceleoGenerationStrategy strategy, Monitor monitor);
 
 	/**
-	 * Removes the given keys' pairs from the custom properties of the generation context.
-	 * 
-	 * @param customPropertyKeys
-	 *            Keys which pairs are to be removed from the context.
-	 * @since 3.0
-	 */
-	void removeCustomProperties(Set<String> customPropertyKeys);
-
-	/**
 	 * Removes a listener from the notification loops.
 	 * 
 	 * @param listener
@@ -116,20 +106,4 @@ public interface IAcceleoEngine {
 	 * @since 0.8
 	 */
 	void removeListener(IAcceleoTextGenerationListener listener);
-
-	/**
-	 * Removes a property holder from the generation context.
-	 * 
-	 * @param propertiesFile
-	 *            Properties fiel that is to be removed from the stack.
-	 * @since 3.0
-	 */
-	void removeProperties(File propertiesFile);
-
-	/**
-	 * This can be used to reset all contextual information from this engine.
-	 * 
-	 * @since 3.0
-	 */
-	void reset();
 }

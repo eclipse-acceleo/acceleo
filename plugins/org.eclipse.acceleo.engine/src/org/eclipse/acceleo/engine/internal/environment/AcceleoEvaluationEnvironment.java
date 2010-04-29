@@ -23,7 +23,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -75,8 +74,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	/** Maps all overriding templates to their <code>super</code>. */
 	private final Map<Template, Set<Template>> overridingTemplates = new HashMap<Template, Set<Template>>();
 
-	/** This will hold the list of properties accessible from this generation. */
-	private final List<Properties> properties = new ArrayList<Properties>();
+	/** This will hold a reference to the class allowing for properties lookup. */
+	private AcceleoPropertiesLookup propertiesLookup;
 
 	/** This will allow us to map all accessible templates to their name. */
 	private final Map<String, Set<Template>> templates = new HashMap<String, Set<Template>>();
@@ -100,18 +99,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @param module
 	 *            We will resolve dependencies for this module and keep references to all accessible
 	 *            templates.
-	 * @param props
-	 *            The list of Properties that can be accessed from this generation.
+	 * @param properties
+	 *            The class allowing for properties lookup for this generation.
 	 */
 	public AcceleoEvaluationEnvironment(
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent,
-			Module module, List<Properties> props) {
+			Module module, AcceleoPropertiesLookup properties) {
 		super(parent);
 		scopedVariableMap.add(new HashMap<String, LinkedList<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
-		properties.addAll(props);
+		propertiesLookup = properties;
 	}
 
 	/**
@@ -120,16 +119,16 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @param module
 	 *            We will resolve dependencies for this module and keep references to all accessible
 	 *            templates.
-	 * @param props
-	 *            The list of Properties that can be accessed from this generation.
+	 * @param properties
+	 *            The class allowing for properties lookup for this generation.
 	 */
-	public AcceleoEvaluationEnvironment(Module module, List<Properties> props) {
+	public AcceleoEvaluationEnvironment(Module module, AcceleoPropertiesLookup properties) {
 		super();
 		scopedVariableMap.add(new HashMap<String, LinkedList<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
-		properties.addAll(props);
+		propertiesLookup = properties;
 	}
 
 	/**
@@ -270,8 +269,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @return The list of available properties files.
 	 */
-	public List<Properties> getProperties() {
-		return new ArrayList<Properties>(properties);
+	public AcceleoPropertiesLookup getPropertiesLookup() {
+		return propertiesLookup;
 	}
 
 	/**
