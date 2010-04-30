@@ -1,0 +1,31 @@
+[module genTestSelect('http://www.eclipse.org/uml2/2.0.0/UML')/]
+
+[template public generate(class : Class)]
+[comment @main/]
+[file ('test.txt', false))]
+== Sample of text ==
+
+=Start=
+
+[for (attribute->select(name.startsWith('a')))]
+[name/]
+[/for]
+
+[for (attribute->select(name = 'aName'))]
+[name/]
+[/for]
+
+[for (attribute->select(name.startsWith('a')))]
+[name/]
+[/for]
+
+[attribute->select(name = 'aName')->sep(',')/]
+
+[attribute->select(name = 'aName')->sep(',')/]
+
+
+=End=
+[/file]
+[/template]
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestPostTrim" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="348">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="201" end="218">
+        <expression xsi:type="expressions:CallSet" begin="201" end="218">
+          <calls begin="201" end="218" name="testSimpleScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="220" end="224" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="226" end="266">
+        <expression xsi:type="expressions:CallSet" begin="226" end="266">
+          <calls begin="226" end="266" name="testParameterScript1" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="247" end="255" value="Param1"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="257" end="265" value="Param2"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="268" end="272" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="274" end="291">
+        <expression xsi:type="expressions:CallSet" begin="274" end="291">
+          <calls begin="274" end="291" name="testSimpleScript2" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="293" end="297" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="299" end="339">
+        <expression xsi:type="expressions:CallSet" begin="299" end="339">
+          <calls begin="299" end="339" name="testParameterScript2" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="320" end="328" value="Param1"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="330" end="338" value="Param2"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="341" end="348" value="&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="414" end="442">
+      <descriptor begin="361" end="410" name="testSimpleScript1" type="Class">
+        <file/>
+        <post xsi:type="expressions:CallSet" begin="405" end="409">
+          <calls begin="405" end="409" name="trim" prefix=""/>
+        </post>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="414" end="442" value="Text of testSimpleScript&#xD;&#xA;&#xD;&#xA;"/>
+    </scripts>
+    <scripts begin="511" end="610">
+      <descriptor begin="455" end="507" name="testParameterScript1" type="Class">
+        <file/>
+        <post xsi:type="expressions:CallSet" begin="502" end="506">
+          <calls begin="502" end="506" name="trim" prefix=""/>
+        </post>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="511" end="558" value="Text of testParameterScript with parameter 1 : "/>
+      <statements xsi:type="statements:Feature" begin="560" end="567">
+        <expression xsi:type="expressions:CallSet" begin="560" end="567">
+          <calls begin="560" end="567" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="565" end="566"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="569" end="588" value=" and parameter 2 : "/>
+      <statements xsi:type="statements:Feature" begin="590" end="597">
+        <expression xsi:type="expressions:CallSet" begin="590" end="597">
+          <calls begin="590" end="597" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="595" end="596" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="599" end="610" value="&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;"/>
+    </scripts>
+    <scripts begin="678" end="714">
+      <descriptor begin="623" end="674" name="testSimpleScript2" type="Class">
+        <file/>
+        <post xsi:type="expressions:CallSet" begin="667" end="673">
+          <calls begin="667" end="673" name="trim" prefix=""/>
+        </post>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="678" end="714" value="Text of testSimpleScript&#xD;&#xA;&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;&#xD;&#xA;"/>
+    </scripts>
+    <scripts begin="785" end="873">
+      <descriptor begin="727" end="781" name="testParameterScript2" type="Class">
+        <file/>
+        <post xsi:type="expressions:CallSet" begin="774" end="780">
+          <calls begin="774" end="780" name="trim" prefix=""/>
+        </post>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="785" end="832" value="Text of testParameterScript with parameter 1 : "/>
+      <statements xsi:type="statements:Feature" begin="834" end="841">
+        <expression xsi:type="expressions:CallSet" begin="834" end="841">
+          <calls begin="834" end="841" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="839" end="840"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="843" end="862" value=" and parameter 2 : "/>
+      <statements xsi:type="statements:Feature" begin="864" end="871">
+        <expression xsi:type="expressions:CallSet" begin="864" end="871">
+          <calls begin="864" end="871" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="869" end="870" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

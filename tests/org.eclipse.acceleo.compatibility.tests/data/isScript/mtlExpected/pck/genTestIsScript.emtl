@@ -1,0 +1,2928 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
+  <mtl:Module name="genTestIsScript" nsURI="genTestIsScript">
+    <input>
+      <takesTypesFrom href="http://www.eclipse.org/uml2/3.0.0/UML#/"/>
+    </input>
+    <ownedModuleElement xsi:type="mtl:Template" name="generate" visibility="Public" main="true">
+      <body xsi:type="mtl:FileBlock" openMode="OverWrite">
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+        <body xsi:type="mtl:TemplateInvocation" definition="/0/testSimpleScript">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          <argument xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/7">
+            <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+          </argument>
+        </body>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;&#xD;&#xA;"/>
+        <body xsi:type="mtl:TemplateInvocation" definition="/0/testParameterScript">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Param1">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          </argument>
+          <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Param2">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+          </argument>
+        </body>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;&#xD;&#xA;=End=&#xA;"/>
+        <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="test.txt">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </fileUrl>
+      </body>
+      <parameter name="class">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+      </parameter>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Template" name="testSimpleScript" visibility="Public">
+      <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Text of testSimpleScript"/>
+      <parameter name="class">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+      </parameter>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Template" name="testParameterScript" visibility="Public">
+      <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Text of testParameterScript with parameter 1 : "/>
+      <body xsi:type="ocl.ecore:VariableExp" name="args0" referredVariable="/0/testParameterScript/args0.1">
+        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      </body>
+      <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" and parameter 2 : "/>
+      <body xsi:type="ocl.ecore:VariableExp" name="args1" referredVariable="/0/testParameterScript/args1.1">
+        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      </body>
+      <parameter name="class">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+      </parameter>
+      <parameter name="args0">
+        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      </parameter>
+      <parameter name="args1">
+        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      </parameter>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeSimple" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/21">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/21">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/21">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeUnElseIf" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:IfExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <condition xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/24">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean1">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </condition>
+          <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </thenExpression>
+          <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </elseExpression>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeTroisElseIF" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:IfExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <condition xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean1">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </condition>
+          <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </thenExpression>
+          <elseExpression xsi:type="ocl.ecore:IfExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <condition xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer2">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </source>
+                <argument xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float2">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean2">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </condition>
+            <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            </thenExpression>
+            <elseExpression xsi:type="ocl.ecore:IfExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <condition xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:OperationCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                    <source xsi:type="ocl.ecore:PropertyCallExp">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                      </source>
+                      <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                    </source>
+                    <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer3">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    </argument>
+                    <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:OperationCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                    <source xsi:type="ocl.ecore:PropertyCallExp">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                      </source>
+                      <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                    </source>
+                    <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float3">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    </argument>
+                    <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+                </source>
+                <argument xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/27">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean3">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+              </condition>
+              <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </thenExpression>
+              <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </elseExpression>
+            </elseExpression>
+          </elseExpression>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeSimpleMultiligne" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/30">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/30">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/30">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeUnElseIfMultiligne" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:IfExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <condition xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/33">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean1">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </condition>
+          <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </thenExpression>
+          <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </elseExpression>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isJavaPrimitiveTypeTroisElseIFMultiligne" visibility="Public">
+      <parameter name="type">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:IfExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <condition xsi:type="ocl.ecore:OperationCallExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <source xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </source>
+          <argument xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:PropertyCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+            </source>
+            <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+          </argument>
+          <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+        </condition>
+        <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        </thenExpression>
+        <elseExpression xsi:type="ocl.ecore:IfExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <condition xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float1">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </source>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+              </source>
+              <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean1">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+          </condition>
+          <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          </thenExpression>
+          <elseExpression xsi:type="ocl.ecore:IfExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <condition xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer2">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </source>
+                <argument xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float2">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+              </source>
+              <argument xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                </source>
+                <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean2">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+            </condition>
+            <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            </thenExpression>
+            <elseExpression xsi:type="ocl.ecore:IfExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <condition xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:OperationCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                    <source xsi:type="ocl.ecore:PropertyCallExp">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                      </source>
+                      <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                    </source>
+                    <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Integer3">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    </argument>
+                    <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:OperationCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                    <source xsi:type="ocl.ecore:PropertyCallExp">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                      </source>
+                      <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                    </source>
+                    <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Float3">
+                      <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    </argument>
+                    <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+                </source>
+                <argument xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/36">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/uml2/3.0.0/UML#//NamedElement/name"/>
+                  </source>
+                  <argument xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Boolean3">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String_Class/="/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
+              </condition>
+              <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </thenExpression>
+              <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </elseExpression>
+            </elseExpression>
+          </elseExpression>
+        </elseExpression>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+  </mtl:Module>
+  <ecore:EPackage name="additions">
+    <eClassifiers xsi:type="ecore:EClass" name="String_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eAnnotations>
+      <eOperations name="substitute">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="r">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="t">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="index">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="r">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="first">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="n">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="last">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="n">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="strstr">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="r">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="strtok">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="s1">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="flag">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="strcmp">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="s1">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isAlpha">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isAlphanum">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="toUpperFirst">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="toLowerFirst">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="replace">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="replacement">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="replaceAll">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="replacement">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="substituteAll">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="replacement">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="startsWith">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="endsWith">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="trim">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="tokenize">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(String)"/>
+        <eParameters name="delimiters">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="contains">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="matches">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="regex">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="lastIndex">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="substring">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="equalsIgnoreCase">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="other">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="substring">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="startIndex">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="+">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="other">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Integer_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+      </eAnnotations>
+      <eOperations name="toString">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Real_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
+      </eAnnotations>
+      <eOperations name="toString">
+        <eAnnotations source="MTL"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EObject_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eAnnotations>
+      <eOperations name="eAllContents">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+      </eOperations>
+      <eOperations name="eAllContents">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="ancestors">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+      </eOperations>
+      <eOperations name="ancestors">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="siblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+      </eOperations>
+      <eOperations name="siblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="eInverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OrderedSet(OclAny)"/>
+      </eOperations>
+      <eOperations name="eInverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OrderedSet(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="precedingSiblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+      </eOperations>
+      <eOperations name="precedingSiblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="followingSiblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+      </eOperations>
+      <eOperations name="followingSiblings">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="eContainer">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="eContents">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="eGet">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        <eParameters name="featureName">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="generate">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/generate"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="class">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="testSimpleScript">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/testSimpleScript"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="class">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="testParameterScript">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/testParameterScript"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="class">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+        </eParameters>
+        <eParameters name="args0">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        </eParameters>
+        <eParameters name="args1">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeSimple">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeSimple"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeUnElseIf">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeUnElseIf"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeTroisElseIF">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeTroisElseIF"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeSimpleMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeSimpleMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeUnElseIfMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeTroisElseIFMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="type">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OclAny_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+      </eAnnotations>
+      <eOperations name="toString">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="invoke">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        <eParameters name="class">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="method">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="arguments">
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="current">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eParameters name="index">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="current">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="getProperty">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="key">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="getProperty">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="key">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="arguments">
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="getProperty">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="propertiesFileName">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="key">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="getProperty">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="propertiesFileName">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="key">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+        <eParameters name="arguments">
+          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="+">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="other">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Collection(T)_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)"/>
+      </eAnnotations>
+      <eOperations name="sep">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
+        <eParameters name="separatorString">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="filter">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:CollectionType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)"/>
+        <eParameters name="filter">
+          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+      </eAnnotations>
+      <eOperations name="reverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+      </eOperations>
+      <eOperations name="lastIndexOf">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="element">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+      </eAnnotations>
+      <eOperations name="reverse">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+      </eOperations>
+      <eOperations name="lastIndexOf">
+        <eAnnotations source="MTL non-standard"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+        <eParameters name="element">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Class_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+      </eAnnotations>
+      <eOperations name="generate">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/generate"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="testSimpleScript">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/testSimpleScript"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      </eOperations>
+      <eOperations name="testParameterScript">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/testParameterScript"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <eParameters name="args0">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        </eParameters>
+        <eParameters name="args1">
+          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
+        </eParameters>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Type_Class">
+      <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+        <references href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+      </eAnnotations>
+      <eOperations name="isJavaPrimitiveTypeSimple">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeSimple"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeUnElseIf">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeUnElseIf"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeTroisElseIF">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeTroisElseIF"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeSimpleMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeSimpleMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeUnElseIfMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+      <eOperations name="isJavaPrimitiveTypeTroisElseIFMultiligne">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
+    </eClassifiers>
+  </ecore:EPackage>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Class"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/uml2/3.0.0/UML#//Type"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ecore:EAnnotation source="positions">
+    <eAnnotations source="positions.0" references="/0/generate">
+      <details key="start" value="68"/>
+      <details key="end" value="286"/>
+      <details key="line" value="3"/>
+    </eAnnotations>
+    <eAnnotations source="positions.1" references="/0/generate/@body.0">
+      <details key="start" value="127"/>
+      <details key="end" value="274"/>
+      <details key="line" value="5"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2" references="/0/generate/@body.0/@body.0">
+      <details key="start" value="155"/>
+      <details key="end" value="190"/>
+      <details key="line" value="6"/>
+    </eAnnotations>
+    <eAnnotations source="positions.3" references="/0/generate/@body.0/@body.1">
+      <details key="start" value="191"/>
+      <details key="end" value="209"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.4" references="/0/generate/@body.0/@body.1/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.5" references="/0/generate/@body.0/@body.2">
+      <details key="start" value="211"/>
+      <details key="end" value="215"/>
+      <details key="line" value="11"/>
+    </eAnnotations>
+    <eAnnotations source="positions.6" references="/0/generate/@body.0/@body.3">
+      <details key="start" value="216"/>
+      <details key="end" value="255"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.7" references="/0/generate/@body.0/@body.3/@argument.0">
+      <details key="start" value="236"/>
+      <details key="end" value="244"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.8" references="/0/generate/@body.0/@body.3/@argument.1">
+      <details key="start" value="246"/>
+      <details key="end" value="254"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.9" references="/0/generate/@body.0/@body.4">
+      <details key="start" value="257"/>
+      <details key="end" value="267"/>
+      <details key="line" value="13"/>
+    </eAnnotations>
+    <eAnnotations source="positions.10" references="/0/generate/@body.0/@fileUrl">
+      <details key="start" value="134"/>
+      <details key="end" value="144"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.11" references="/0/generate/class">
+      <details key="start" value="94"/>
+      <details key="end" value="107"/>
+      <details key="line" value="3"/>
+    </eAnnotations>
+    <eAnnotations source="positions.12" references="/0/testSimpleScript">
+      <details key="start" value="288"/>
+      <details key="end" value="374"/>
+      <details key="line" value="18"/>
+    </eAnnotations>
+    <eAnnotations source="positions.13" references="/0/testSimpleScript/@body.0">
+      <details key="start" value="338"/>
+      <details key="end" value="362"/>
+      <details key="line" value="19"/>
+    </eAnnotations>
+    <eAnnotations source="positions.14" references="/0/testSimpleScript/class">
+      <details key="start" value="322"/>
+      <details key="end" value="335"/>
+      <details key="line" value="18"/>
+    </eAnnotations>
+    <eAnnotations source="positions.15" references="/0/testParameterScript">
+      <details key="start" value="376"/>
+      <details key="end" value="555"/>
+      <details key="line" value="22"/>
+    </eAnnotations>
+    <eAnnotations source="positions.16" references="/0/testParameterScript/@body.0">
+      <details key="start" value="461"/>
+      <details key="end" value="508"/>
+      <details key="line" value="23"/>
+    </eAnnotations>
+    <eAnnotations source="positions.17" references="/0/testParameterScript/args0">
+      <details key="start" value="509"/>
+      <details key="end" value="514"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.18" references="/0/testParameterScript/@body.2">
+      <details key="start" value="516"/>
+      <details key="end" value="535"/>
+      <details key="line" value="23"/>
+    </eAnnotations>
+    <eAnnotations source="positions.19" references="/0/testParameterScript/args1">
+      <details key="start" value="536"/>
+      <details key="end" value="541"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.20" references="/0/testParameterScript/class">
+      <details key="start" value="413"/>
+      <details key="end" value="426"/>
+      <details key="line" value="22"/>
+    </eAnnotations>
+    <eAnnotations source="positions.21" references="/0/testParameterScript/args0.1">
+      <details key="start" value="428"/>
+      <details key="end" value="442"/>
+      <details key="line" value="22"/>
+    </eAnnotations>
+    <eAnnotations source="positions.22" references="/0/testParameterScript/args1.1">
+      <details key="start" value="444"/>
+      <details key="end" value="458"/>
+      <details key="line" value="22"/>
+    </eAnnotations>
+    <eAnnotations source="positions.23" references="/0/isJavaPrimitiveTypeSimple">
+      <details key="start" value="557"/>
+      <details key="end" value="711"/>
+      <details key="line" value="26"/>
+    </eAnnotations>
+    <eAnnotations source="positions.24" references="/0/isJavaPrimitiveTypeSimple/type">
+      <details key="start" value="597"/>
+      <details key="end" value="608"/>
+      <details key="line" value="26"/>
+    </eAnnotations>
+    <eAnnotations source="positions.25" references="/0/isJavaPrimitiveTypeSimple/@expression">
+      <details key="start" value="622"/>
+      <details key="end" value="708"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.26" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition">
+      <details key="start" value="625"/>
+      <details key="end" value="681"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.27" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source">
+      <details key="start" value="626"/>
+      <details key="end" value="660"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.28" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@source">
+      <details key="start" value="626"/>
+      <details key="end" value="642"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.29" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@source/@source">
+      <details key="start" value="626"/>
+      <details key="end" value="630"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.30" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.31" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="633"/>
+      <details key="end" value="642"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.32" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@argument.0">
+      <details key="start" value="646"/>
+      <details key="end" value="660"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.33" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="646"/>
+      <details key="end" value="650"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.34" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.35" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="653"/>
+      <details key="end" value="660"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.36" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@argument.0">
+      <details key="start" value="664"/>
+      <details key="end" value="680"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.37" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@argument.0/@source">
+      <details key="start" value="664"/>
+      <details key="end" value="668"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.38" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.39" references="/0/isJavaPrimitiveTypeSimple/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="671"/>
+      <details key="end" value="680"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.40" references="/0/isJavaPrimitiveTypeSimple/@expression/@thenExpression">
+      <details key="start" value="687"/>
+      <details key="end" value="691"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.41" references="/0/isJavaPrimitiveTypeSimple/@expression/@elseExpression">
+      <details key="start" value="697"/>
+      <details key="end" value="702"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.42" references="/0/isJavaPrimitiveTypeUnElseIf">
+      <details key="start" value="713"/>
+      <details key="end" value="954"/>
+      <details key="line" value="30"/>
+    </eAnnotations>
+    <eAnnotations source="positions.43" references="/0/isJavaPrimitiveTypeUnElseIf/type">
+      <details key="start" value="755"/>
+      <details key="end" value="766"/>
+      <details key="line" value="30"/>
+    </eAnnotations>
+    <eAnnotations source="positions.44" references="/0/isJavaPrimitiveTypeUnElseIf/@expression">
+      <details key="start" value="780"/>
+      <details key="end" value="951"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.45" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition">
+      <details key="start" value="783"/>
+      <details key="end" value="839"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.46" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source">
+      <details key="start" value="784"/>
+      <details key="end" value="818"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.47" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@source">
+      <details key="start" value="784"/>
+      <details key="end" value="800"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.48" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@source/@source">
+      <details key="start" value="784"/>
+      <details key="end" value="788"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.49" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.50" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="791"/>
+      <details key="end" value="800"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.51" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@argument.0">
+      <details key="start" value="804"/>
+      <details key="end" value="818"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.52" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="804"/>
+      <details key="end" value="808"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.53" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.54" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="811"/>
+      <details key="end" value="818"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.55" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@argument.0">
+      <details key="start" value="822"/>
+      <details key="end" value="838"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.56" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@argument.0/@source">
+      <details key="start" value="822"/>
+      <details key="end" value="826"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.57" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.58" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="829"/>
+      <details key="end" value="838"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.59" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@thenExpression">
+      <details key="start" value="845"/>
+      <details key="end" value="849"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.60" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression">
+      <details key="start" value="855"/>
+      <details key="end" value="945"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.61" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition">
+      <details key="start" value="858"/>
+      <details key="end" value="917"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.62" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source">
+      <details key="start" value="859"/>
+      <details key="end" value="895"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.63" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="859"/>
+      <details key="end" value="876"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.64" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="859"/>
+      <details key="end" value="863"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.65" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.66" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="866"/>
+      <details key="end" value="876"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.67" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="880"/>
+      <details key="end" value="895"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.68" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="880"/>
+      <details key="end" value="884"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.69" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.70" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="887"/>
+      <details key="end" value="895"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.71" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="899"/>
+      <details key="end" value="916"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.72" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="899"/>
+      <details key="end" value="903"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.73" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.74" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="906"/>
+      <details key="end" value="916"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.75" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@thenExpression">
+      <details key="start" value="923"/>
+      <details key="end" value="928"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.76" references="/0/isJavaPrimitiveTypeUnElseIf/@expression/@elseExpression/@elseExpression">
+      <details key="start" value="934"/>
+      <details key="end" value="939"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.77" references="/0/isJavaPrimitiveTypeTroisElseIF">
+      <details key="start" value="956"/>
+      <details key="end" value="1370"/>
+      <details key="line" value="34"/>
+    </eAnnotations>
+    <eAnnotations source="positions.78" references="/0/isJavaPrimitiveTypeTroisElseIF/type">
+      <details key="start" value="1001"/>
+      <details key="end" value="1012"/>
+      <details key="line" value="34"/>
+    </eAnnotations>
+    <eAnnotations source="positions.79" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression">
+      <details key="start" value="1026"/>
+      <details key="end" value="1367"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.80" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition">
+      <details key="start" value="1029"/>
+      <details key="end" value="1085"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.81" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source">
+      <details key="start" value="1030"/>
+      <details key="end" value="1064"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.82" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@source">
+      <details key="start" value="1030"/>
+      <details key="end" value="1046"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.83" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@source/@source">
+      <details key="start" value="1030"/>
+      <details key="end" value="1034"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.84" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.85" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1037"/>
+      <details key="end" value="1046"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.86" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@argument.0">
+      <details key="start" value="1050"/>
+      <details key="end" value="1064"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.87" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1050"/>
+      <details key="end" value="1054"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.88" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.89" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1057"/>
+      <details key="end" value="1064"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.90" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@argument.0">
+      <details key="start" value="1068"/>
+      <details key="end" value="1084"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.91" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@argument.0/@source">
+      <details key="start" value="1068"/>
+      <details key="end" value="1072"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.92" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.93" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1075"/>
+      <details key="end" value="1084"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.94" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@thenExpression">
+      <details key="start" value="1091"/>
+      <details key="end" value="1095"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.95" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression">
+      <details key="start" value="1101"/>
+      <details key="end" value="1361"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.96" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition">
+      <details key="start" value="1104"/>
+      <details key="end" value="1163"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.97" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source">
+      <details key="start" value="1105"/>
+      <details key="end" value="1141"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.98" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="1105"/>
+      <details key="end" value="1122"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.99" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="1105"/>
+      <details key="end" value="1109"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.100" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.101" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1112"/>
+      <details key="end" value="1122"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.102" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="1126"/>
+      <details key="end" value="1141"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.103" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1126"/>
+      <details key="end" value="1130"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.104" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.105" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1133"/>
+      <details key="end" value="1141"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.106" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="1145"/>
+      <details key="end" value="1162"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.107" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="1145"/>
+      <details key="end" value="1149"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.108" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.109" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1152"/>
+      <details key="end" value="1162"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.110" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@thenExpression">
+      <details key="start" value="1169"/>
+      <details key="end" value="1174"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.111" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression">
+      <details key="start" value="1180"/>
+      <details key="end" value="1355"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.112" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition">
+      <details key="start" value="1183"/>
+      <details key="end" value="1242"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.113" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source">
+      <details key="start" value="1184"/>
+      <details key="end" value="1220"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.114" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="1184"/>
+      <details key="end" value="1201"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.115" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="1184"/>
+      <details key="end" value="1188"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.116" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.117" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1191"/>
+      <details key="end" value="1201"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.118" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="1205"/>
+      <details key="end" value="1220"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.119" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1205"/>
+      <details key="end" value="1209"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.120" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.121" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1212"/>
+      <details key="end" value="1220"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.122" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="1224"/>
+      <details key="end" value="1241"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.123" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="1224"/>
+      <details key="end" value="1228"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.124" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.125" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1231"/>
+      <details key="end" value="1241"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.126" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@thenExpression">
+      <details key="start" value="1248"/>
+      <details key="end" value="1253"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.127" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression">
+      <details key="start" value="1259"/>
+      <details key="end" value="1349"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.128" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition">
+      <details key="start" value="1262"/>
+      <details key="end" value="1321"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.129" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source">
+      <details key="start" value="1263"/>
+      <details key="end" value="1299"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.130" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="1263"/>
+      <details key="end" value="1280"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.131" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="1263"/>
+      <details key="end" value="1267"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.132" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.133" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1270"/>
+      <details key="end" value="1280"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.134" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="1284"/>
+      <details key="end" value="1299"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.135" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1284"/>
+      <details key="end" value="1288"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.136" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.137" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1291"/>
+      <details key="end" value="1299"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.138" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="1303"/>
+      <details key="end" value="1320"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.139" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="1303"/>
+      <details key="end" value="1307"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.140" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.141" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1310"/>
+      <details key="end" value="1320"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.142" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@thenExpression">
+      <details key="start" value="1327"/>
+      <details key="end" value="1332"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.143" references="/0/isJavaPrimitiveTypeTroisElseIF/@expression/@elseExpression/@elseExpression/@elseExpression/@elseExpression">
+      <details key="start" value="1338"/>
+      <details key="end" value="1343"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.144" references="/0/isJavaPrimitiveTypeSimpleMultiligne">
+      <details key="start" value="1372"/>
+      <details key="end" value="1536"/>
+      <details key="line" value="38"/>
+    </eAnnotations>
+    <eAnnotations source="positions.145" references="/0/isJavaPrimitiveTypeSimpleMultiligne/type">
+      <details key="start" value="1422"/>
+      <details key="end" value="1433"/>
+      <details key="line" value="38"/>
+    </eAnnotations>
+    <eAnnotations source="positions.146" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression">
+      <details key="start" value="1447"/>
+      <details key="end" value="1533"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.147" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition">
+      <details key="start" value="1450"/>
+      <details key="end" value="1506"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.148" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source">
+      <details key="start" value="1451"/>
+      <details key="end" value="1485"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.149" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@source">
+      <details key="start" value="1451"/>
+      <details key="end" value="1467"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.150" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@source/@source">
+      <details key="start" value="1451"/>
+      <details key="end" value="1455"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.151" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.152" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1458"/>
+      <details key="end" value="1467"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.153" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@argument.0">
+      <details key="start" value="1471"/>
+      <details key="end" value="1485"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.154" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1471"/>
+      <details key="end" value="1475"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.155" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.156" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1478"/>
+      <details key="end" value="1485"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.157" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@argument.0">
+      <details key="start" value="1489"/>
+      <details key="end" value="1505"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.158" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@argument.0/@source">
+      <details key="start" value="1489"/>
+      <details key="end" value="1493"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.159" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.160" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1496"/>
+      <details key="end" value="1505"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.161" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@thenExpression">
+      <details key="start" value="1512"/>
+      <details key="end" value="1516"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.162" references="/0/isJavaPrimitiveTypeSimpleMultiligne/@expression/@elseExpression">
+      <details key="start" value="1522"/>
+      <details key="end" value="1527"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.163" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne">
+      <details key="start" value="1538"/>
+      <details key="end" value="1789"/>
+      <details key="line" value="42"/>
+    </eAnnotations>
+    <eAnnotations source="positions.164" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/type">
+      <details key="start" value="1590"/>
+      <details key="end" value="1601"/>
+      <details key="line" value="42"/>
+    </eAnnotations>
+    <eAnnotations source="positions.165" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression">
+      <details key="start" value="1615"/>
+      <details key="end" value="1786"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.166" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition">
+      <details key="start" value="1618"/>
+      <details key="end" value="1674"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.167" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source">
+      <details key="start" value="1619"/>
+      <details key="end" value="1653"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.168" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@source">
+      <details key="start" value="1619"/>
+      <details key="end" value="1635"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.169" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@source/@source">
+      <details key="start" value="1619"/>
+      <details key="end" value="1623"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.170" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.171" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1626"/>
+      <details key="end" value="1635"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.172" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@argument.0">
+      <details key="start" value="1639"/>
+      <details key="end" value="1653"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.173" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1639"/>
+      <details key="end" value="1643"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.174" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.175" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1646"/>
+      <details key="end" value="1653"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.176" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@argument.0">
+      <details key="start" value="1657"/>
+      <details key="end" value="1673"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.177" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@argument.0/@source">
+      <details key="start" value="1657"/>
+      <details key="end" value="1661"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.178" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.179" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1664"/>
+      <details key="end" value="1673"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.180" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@thenExpression">
+      <details key="start" value="1680"/>
+      <details key="end" value="1684"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.181" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression">
+      <details key="start" value="1690"/>
+      <details key="end" value="1780"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.182" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition">
+      <details key="start" value="1693"/>
+      <details key="end" value="1752"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.183" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source">
+      <details key="start" value="1694"/>
+      <details key="end" value="1730"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.184" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="1694"/>
+      <details key="end" value="1711"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.185" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="1694"/>
+      <details key="end" value="1698"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.186" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.187" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1701"/>
+      <details key="end" value="1711"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.188" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="1715"/>
+      <details key="end" value="1730"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.189" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1715"/>
+      <details key="end" value="1719"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.190" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.191" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1722"/>
+      <details key="end" value="1730"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.192" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="1734"/>
+      <details key="end" value="1751"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.193" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="1734"/>
+      <details key="end" value="1738"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.194" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.195" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1741"/>
+      <details key="end" value="1751"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.196" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@thenExpression">
+      <details key="start" value="1758"/>
+      <details key="end" value="1763"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.197" references="/0/isJavaPrimitiveTypeUnElseIfMultiligne/@expression/@elseExpression/@elseExpression">
+      <details key="start" value="1769"/>
+      <details key="end" value="1774"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.198" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne">
+      <details key="start" value="1791"/>
+      <details key="end" value="2215"/>
+      <details key="line" value="46"/>
+    </eAnnotations>
+    <eAnnotations source="positions.199" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/type">
+      <details key="start" value="1846"/>
+      <details key="end" value="1857"/>
+      <details key="line" value="46"/>
+    </eAnnotations>
+    <eAnnotations source="positions.200" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression">
+      <details key="start" value="1871"/>
+      <details key="end" value="2212"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.201" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition">
+      <details key="start" value="1874"/>
+      <details key="end" value="1930"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.202" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source">
+      <details key="start" value="1875"/>
+      <details key="end" value="1909"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.203" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@source">
+      <details key="start" value="1875"/>
+      <details key="end" value="1891"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.204" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@source/@source">
+      <details key="start" value="1875"/>
+      <details key="end" value="1879"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.205" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.206" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1882"/>
+      <details key="end" value="1891"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.207" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@argument.0">
+      <details key="start" value="1895"/>
+      <details key="end" value="1909"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.208" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1895"/>
+      <details key="end" value="1899"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.209" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.210" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1902"/>
+      <details key="end" value="1909"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.211" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@argument.0">
+      <details key="start" value="1913"/>
+      <details key="end" value="1929"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.212" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@argument.0/@source">
+      <details key="start" value="1913"/>
+      <details key="end" value="1917"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.213" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.214" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1920"/>
+      <details key="end" value="1929"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.215" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@thenExpression">
+      <details key="start" value="1936"/>
+      <details key="end" value="1940"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.216" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression">
+      <details key="start" value="1946"/>
+      <details key="end" value="2206"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.217" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition">
+      <details key="start" value="1949"/>
+      <details key="end" value="2008"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.218" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source">
+      <details key="start" value="1950"/>
+      <details key="end" value="1986"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.219" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="1950"/>
+      <details key="end" value="1967"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.220" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="1950"/>
+      <details key="end" value="1954"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.221" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.222" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="1957"/>
+      <details key="end" value="1967"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.223" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="1971"/>
+      <details key="end" value="1986"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.224" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="1971"/>
+      <details key="end" value="1975"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.225" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.226" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="1978"/>
+      <details key="end" value="1986"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.227" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="1990"/>
+      <details key="end" value="2007"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.228" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="1990"/>
+      <details key="end" value="1994"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.229" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.230" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="1997"/>
+      <details key="end" value="2007"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.231" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@thenExpression">
+      <details key="start" value="2014"/>
+      <details key="end" value="2019"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.232" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression">
+      <details key="start" value="2025"/>
+      <details key="end" value="2200"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.233" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition">
+      <details key="start" value="2028"/>
+      <details key="end" value="2087"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.234" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source">
+      <details key="start" value="2029"/>
+      <details key="end" value="2065"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.235" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="2029"/>
+      <details key="end" value="2046"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.236" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="2029"/>
+      <details key="end" value="2033"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.237" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.238" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="2036"/>
+      <details key="end" value="2046"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.239" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="2050"/>
+      <details key="end" value="2065"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.240" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="2050"/>
+      <details key="end" value="2054"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.241" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.242" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="2057"/>
+      <details key="end" value="2065"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.243" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="2069"/>
+      <details key="end" value="2086"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.244" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="2069"/>
+      <details key="end" value="2073"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.245" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.246" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="2076"/>
+      <details key="end" value="2086"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.247" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@thenExpression">
+      <details key="start" value="2093"/>
+      <details key="end" value="2098"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.248" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression">
+      <details key="start" value="2104"/>
+      <details key="end" value="2194"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.249" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition">
+      <details key="start" value="2107"/>
+      <details key="end" value="2166"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.250" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source">
+      <details key="start" value="2108"/>
+      <details key="end" value="2144"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.251" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source">
+      <details key="start" value="2108"/>
+      <details key="end" value="2125"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.252" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@source">
+      <details key="start" value="2108"/>
+      <details key="end" value="2112"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.253" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.254" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@source/@argument.0">
+      <details key="start" value="2115"/>
+      <details key="end" value="2125"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.255" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="2129"/>
+      <details key="end" value="2144"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.256" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source">
+      <details key="start" value="2129"/>
+      <details key="end" value="2133"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.257" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.258" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@source/@argument.0/@argument.0">
+      <details key="start" value="2136"/>
+      <details key="end" value="2144"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.259" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0">
+      <details key="start" value="2148"/>
+      <details key="end" value="2165"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.260" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="2148"/>
+      <details key="end" value="2152"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.261" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@source/self">
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.262" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@condition/@argument.0/@argument.0">
+      <details key="start" value="2155"/>
+      <details key="end" value="2165"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.263" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@thenExpression">
+      <details key="start" value="2172"/>
+      <details key="end" value="2177"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.264" references="/0/isJavaPrimitiveTypeTroisElseIFMultiligne/@expression/@elseExpression/@elseExpression/@elseExpression/@elseExpression">
+      <details key="start" value="2183"/>
+      <details key="end" value="2188"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+  </ecore:EAnnotation>
+</xmi:XMI>

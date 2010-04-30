@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.acceleo.compatibility.tests.suite.migration.MigrationTests;
 import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
 
 /**
@@ -44,6 +45,8 @@ public class AllTests extends TestCase {
 
 		// Parser
 		suite.addTest(ParserTests.suite());
+		// Migration
+		suite.addTest(MigrationTests.suite());
 
 		return suite;
 	}

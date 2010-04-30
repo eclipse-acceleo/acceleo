@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genGetProperty" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="356">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="201" end="220">
+        <expression xsi:type="expressions:CallSet" begin="201" end="220">
+          <calls begin="201" end="220" name="getProperty" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="213" end="219" value="find"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="222" end="226" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="228" end="254">
+        <expression xsi:type="expressions:CallSet" begin="228" end="254">
+          <calls begin="228" end="254" name="getProperty" prefix="">
+            <arguments xsi:type="expressions:Operator" begin="240" end="253" operator="+">
+              <operands xsi:type="expressions:CallSet" begin="240" end="244">
+                <calls begin="240" end="244" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="247" end="253" value="find"/>
+            </arguments>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="256" end="260" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="262" end="296">
+        <expression xsi:type="expressions:CallSet" begin="262" end="296">
+          <calls begin="262" end="296" name="getProperty" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="274" end="288" value="propertyName"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="289" end="295" value="find"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="298" end="302" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="304" end="345">
+        <expression xsi:type="expressions:CallSet" begin="304" end="345">
+          <calls begin="304" end="345" name="getProperty" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="316" end="330" value="propertyName"/>
+            <arguments xsi:type="expressions:Operator" begin="331" end="344" operator="+">
+              <operands xsi:type="expressions:CallSet" begin="331" end="335">
+                <calls begin="331" end="335" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="338" end="344" value="find"/>
+            </arguments>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="347" end="356" value="&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="410" end="469">
+      <descriptor begin="369" end="406" name="hasStereotype" type="Operation">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="415" end="464">
+        <condition xsi:type="expressions:Parenthesis" begin="415" end="434">
+          <expression xsi:type="expressions:Operator" begin="416" end="433" operator="==">
+            <operands xsi:type="expressions:CallSet" begin="416" end="423">
+              <calls begin="416" end="423" name="args" prefix="">
+                <arguments xsi:type="expressions:IntegerLiteral" begin="421" end="422"/>
+              </calls>
+            </operands>
+            <operands xsi:type="expressions:StringLiteral" begin="427" end="433" value="true"/>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Feature" begin="439" end="443">
+          <expression xsi:type="expressions:BooleanLiteral" begin="439" end="443" value="true"/>
+        </thenStatements>
+        <elseStatements xsi:type="statements:Feature" begin="457" end="462">
+          <expression xsi:type="expressions:BooleanLiteral" begin="457" end="462"/>
+        </elseStatements>
+      </statements>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

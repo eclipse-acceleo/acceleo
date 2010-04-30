@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestFilter" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="303">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="201" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:For" begin="207" end="251">
+        <iterator xsi:type="expressions:Parenthesis" begin="207" end="237">
+          <expression xsi:type="expressions:CallSet" begin="208" end="236">
+            <calls begin="208" end="217" name="attribute" prefix=""/>
+            <calls begin="218" end="236" name="filter" prefix="">
+              <arguments xsi:type="expressions:StringLiteral" begin="225" end="235" value="Property"/>
+            </calls>
+          </expression>
+        </iterator>
+        <statements xsi:type="statements:Feature" begin="244" end="248">
+          <expression xsi:type="expressions:CallSet" begin="244" end="248">
+            <calls begin="244" end="248" name="name" prefix=""/>
+          </expression>
+        </statements>
+        <statements xsi:type="statements:Text" begin="250" end="251" value="&#xA;"/>
+      </statements>
+      <statements xsi:type="statements:Text" begin="258" end="260" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="262" end="290">
+        <expression xsi:type="expressions:CallSet" begin="262" end="290">
+          <calls begin="262" end="269" name="feature" prefix=""/>
+          <calls begin="270" end="285" name="filter" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="277" end="284" value="Class"/>
+          </calls>
+          <calls begin="286" end="290" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="292" end="303" value="&#xD;&#xA;&#xD;&#xA;=End=&#xD;&#xA;"/>
+    </scripts>
+    <scripts begin="350" end="389">
+      <descriptor begin="316" end="346" name="getClass" type="Package">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Feature" begin="352" end="387">
+        <expression xsi:type="expressions:CallSet" begin="352" end="387">
+          <calls begin="352" end="366" name="eAllContents" prefix=""/>
+          <calls begin="367" end="382" name="filter" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="374" end="381" value="Class"/>
+          </calls>
+          <calls begin="383" end="387" name="name" prefix=""/>
+        </expression>
+      </statements>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

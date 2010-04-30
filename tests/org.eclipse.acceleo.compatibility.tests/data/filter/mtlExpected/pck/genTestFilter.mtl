@@ -1,0 +1,26 @@
+[module genTestFilter('http://www.eclipse.org/uml2/2.0.0/UML')/]
+
+[template public generate(class : Class)]
+[comment @main/]
+[file ('test.txt', false))]
+== Sample of text ==
+
+=Start=
+
+
+[for (attribute->select(oclIsKindOf(Property)).oclAsType(Property))]
+[name/]
+[/for]
+
+[feature->select(oclIsKindOf(Class)).oclAsType(Class).name/]
+
+=End=
+
+[/file]
+[/template]
+
+[template public getClass(package : Package)]
+[eAllContents()->select(oclIsKindOf(Class)).oclAsType(Class).name/]
+[/template]
+
+

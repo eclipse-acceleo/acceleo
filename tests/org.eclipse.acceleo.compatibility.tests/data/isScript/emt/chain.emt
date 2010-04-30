@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestIsScript" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="275">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="201" end="217">
+        <expression xsi:type="expressions:CallSet" begin="201" end="217">
+          <calls begin="201" end="217" name="testSimpleScript" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="219" end="223" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="225" end="264">
+        <expression xsi:type="expressions:CallSet" begin="225" end="264">
+          <calls begin="225" end="264" name="testParameterScript" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="245" end="253" value="Param1"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="255" end="263" value="Param2"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="266" end="275" value="&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="328" end="352">
+      <descriptor begin="288" end="324" name="testSimpleScript" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="328" end="352" value="Text of testSimpleScript"/>
+    </scripts>
+    <scripts begin="408" end="496">
+      <descriptor begin="365" end="404" name="testParameterScript" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="408" end="455" value="Text of testParameterScript with parameter 1 : "/>
+      <statements xsi:type="statements:Feature" begin="457" end="464">
+        <expression xsi:type="expressions:CallSet" begin="457" end="464">
+          <calls begin="457" end="464" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="462" end="463"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="466" end="485" value=" and parameter 2 : "/>
+      <statements xsi:type="statements:Feature" begin="487" end="494">
+        <expression xsi:type="expressions:CallSet" begin="487" end="494">
+          <calls begin="487" end="494" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="492" end="493" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+    <scripts begin="557" end="647">
+      <descriptor begin="509" end="553" name="isJavaPrimitiveTypeSimple" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="562" end="642">
+        <condition xsi:type="expressions:Parenthesis" begin="562" end="620">
+          <expression xsi:type="expressions:Operator" begin="563" end="619" operator="||">
+            <operands xsi:type="expressions:Operator" begin="563" end="580" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="563" end="567">
+                <calls begin="563" end="567" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="571" end="580" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="584" end="598" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="584" end="588">
+                <calls begin="584" end="588" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="591" end="598" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="602" end="619" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="602" end="606">
+                <calls begin="602" end="606" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="610" end="619" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="623" end="627" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="637" end="642" value="false"/>
+      </statements>
+    </scripts>
+    <scripts begin="710" end="879">
+      <descriptor begin="660" end="706" name="isJavaPrimitiveTypeUnElseIf" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="715" end="874">
+        <condition xsi:type="expressions:Parenthesis" begin="715" end="773">
+          <expression xsi:type="expressions:Operator" begin="716" end="772" operator="||">
+            <operands xsi:type="expressions:Operator" begin="716" end="733" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="716" end="720">
+                <calls begin="716" end="720" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="724" end="733" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="737" end="751" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="737" end="741">
+                <calls begin="737" end="741" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="744" end="751" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="755" end="772" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="755" end="759">
+                <calls begin="755" end="759" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="763" end="772" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="776" end="780" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="869" end="874" value="false"/>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="790" end="851">
+            <expression xsi:type="expressions:Operator" begin="791" end="850" operator="||">
+              <operands xsi:type="expressions:Operator" begin="791" end="809" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="791" end="795">
+                  <calls begin="791" end="795" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="799" end="809" value="Integer1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="813" end="828" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="813" end="817">
+                  <calls begin="813" end="817" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="820" end="828" value="Float1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="832" end="850" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="832" end="836">
+                  <calls begin="832" end="836" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="840" end="850" value="Boolean1"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="854" end="859" value="false"/>
+        </elseIf>
+      </statements>
+    </scripts>
+    <scripts begin="945" end="1272">
+      <descriptor begin="892" end="941" name="isJavaPrimitiveTypeTroisElseIF" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="950" end="1267">
+        <condition xsi:type="expressions:Parenthesis" begin="950" end="1008">
+          <expression xsi:type="expressions:Operator" begin="951" end="1007" operator="||">
+            <operands xsi:type="expressions:Operator" begin="951" end="968" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="951" end="955">
+                <calls begin="951" end="955" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="959" end="968" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="972" end="986" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="972" end="976">
+                <calls begin="972" end="976" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="979" end="986" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="990" end="1007" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="990" end="994">
+                <calls begin="990" end="994" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="998" end="1007" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="1011" end="1015" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="1262" end="1267" value="false"/>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1025" end="1086">
+            <expression xsi:type="expressions:Operator" begin="1026" end="1085" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1026" end="1044" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1026" end="1030">
+                  <calls begin="1026" end="1030" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1034" end="1044" value="Integer1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1048" end="1063" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1048" end="1052">
+                  <calls begin="1048" end="1052" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1055" end="1063" value="Float1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1067" end="1085" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1067" end="1071">
+                  <calls begin="1067" end="1071" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1075" end="1085" value="Boolean1"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1089" end="1094" value="false"/>
+        </elseIf>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1104" end="1165">
+            <expression xsi:type="expressions:Operator" begin="1105" end="1164" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1105" end="1123" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1105" end="1109">
+                  <calls begin="1105" end="1109" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1113" end="1123" value="Integer2"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1127" end="1142" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1127" end="1131">
+                  <calls begin="1127" end="1131" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1134" end="1142" value="Float2"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1146" end="1164" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1146" end="1150">
+                  <calls begin="1146" end="1150" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1154" end="1164" value="Boolean2"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1168" end="1173" value="false"/>
+        </elseIf>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1183" end="1244">
+            <expression xsi:type="expressions:Operator" begin="1184" end="1243" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1184" end="1202" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1184" end="1188">
+                  <calls begin="1184" end="1188" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1192" end="1202" value="Integer3"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1206" end="1221" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1206" end="1210">
+                  <calls begin="1206" end="1210" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1213" end="1221" value="Float3"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1225" end="1243" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1225" end="1229">
+                  <calls begin="1225" end="1229" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1233" end="1243" value="Boolean3"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1247" end="1252" value="false"/>
+        </elseIf>
+      </statements>
+    </scripts>
+    <scripts begin="1343" end="1437">
+      <descriptor begin="1285" end="1339" name="isJavaPrimitiveTypeSimpleMultiligne" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="1348" end="1432">
+        <condition xsi:type="expressions:Parenthesis" begin="1348" end="1406">
+          <expression xsi:type="expressions:Operator" begin="1349" end="1405" operator="||">
+            <operands xsi:type="expressions:Operator" begin="1349" end="1366" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1349" end="1353">
+                <calls begin="1349" end="1353" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1357" end="1366" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1370" end="1384" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1370" end="1374">
+                <calls begin="1370" end="1374" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1377" end="1384" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1388" end="1405" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1388" end="1392">
+                <calls begin="1388" end="1392" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1396" end="1405" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="1411" end="1415" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="1427" end="1432" value="false"/>
+      </statements>
+    </scripts>
+    <scripts begin="1510" end="1685">
+      <descriptor begin="1450" end="1506" name="isJavaPrimitiveTypeUnElseIfMultiligne" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="1515" end="1680">
+        <condition xsi:type="expressions:Parenthesis" begin="1515" end="1573">
+          <expression xsi:type="expressions:Operator" begin="1516" end="1572" operator="||">
+            <operands xsi:type="expressions:Operator" begin="1516" end="1533" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1516" end="1520">
+                <calls begin="1516" end="1520" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1524" end="1533" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1537" end="1551" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1537" end="1541">
+                <calls begin="1537" end="1541" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1544" end="1551" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1555" end="1572" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1555" end="1559">
+                <calls begin="1555" end="1559" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1563" end="1572" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="1578" end="1582" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="1675" end="1680" value="false"/>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1592" end="1653">
+            <expression xsi:type="expressions:Operator" begin="1593" end="1652" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1593" end="1611" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1593" end="1597">
+                  <calls begin="1593" end="1597" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1601" end="1611" value="Integer1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1615" end="1630" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1615" end="1619">
+                  <calls begin="1615" end="1619" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1622" end="1630" value="Float1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1634" end="1652" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1634" end="1638">
+                  <calls begin="1634" end="1638" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1642" end="1652" value="Boolean1"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1658" end="1663" value="false"/>
+        </elseIf>
+      </statements>
+    </scripts>
+    <scripts begin="1761" end="2098">
+      <descriptor begin="1698" end="1757" name="isJavaPrimitiveTypeTroisElseIFMultiligne" type="Type">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:If" begin="1766" end="2093">
+        <condition xsi:type="expressions:Parenthesis" begin="1766" end="1824">
+          <expression xsi:type="expressions:Operator" begin="1767" end="1823" operator="||">
+            <operands xsi:type="expressions:Operator" begin="1767" end="1784" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1767" end="1771">
+                <calls begin="1767" end="1771" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1775" end="1784" value="Integer"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1788" end="1802" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1788" end="1792">
+                <calls begin="1788" end="1792" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1795" end="1802" value="Float"/>
+            </operands>
+            <operands xsi:type="expressions:Operator" begin="1806" end="1823" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="1806" end="1810">
+                <calls begin="1806" end="1810" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="1814" end="1823" value="Boolean"/>
+            </operands>
+          </expression>
+        </condition>
+        <thenStatements xsi:type="statements:Text" begin="1829" end="1833" value="true"/>
+        <elseStatements xsi:type="statements:Text" begin="2088" end="2093" value="false"/>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1843" end="1904">
+            <expression xsi:type="expressions:Operator" begin="1844" end="1903" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1844" end="1862" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1844" end="1848">
+                  <calls begin="1844" end="1848" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1852" end="1862" value="Integer1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1866" end="1881" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1866" end="1870">
+                  <calls begin="1866" end="1870" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1873" end="1881" value="Float1"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1885" end="1903" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1885" end="1889">
+                  <calls begin="1885" end="1889" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1893" end="1903" value="Boolean1"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1909" end="1914" value="false"/>
+        </elseIf>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="1924" end="1985">
+            <expression xsi:type="expressions:Operator" begin="1925" end="1984" operator="||">
+              <operands xsi:type="expressions:Operator" begin="1925" end="1943" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1925" end="1929">
+                  <calls begin="1925" end="1929" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1933" end="1943" value="Integer2"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1947" end="1962" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1947" end="1951">
+                  <calls begin="1947" end="1951" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1954" end="1962" value="Float2"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="1966" end="1984" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="1966" end="1970">
+                  <calls begin="1966" end="1970" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="1974" end="1984" value="Boolean2"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="1990" end="1995" value="false"/>
+        </elseIf>
+        <elseIf>
+          <condition xsi:type="expressions:Parenthesis" begin="2005" end="2066">
+            <expression xsi:type="expressions:Operator" begin="2006" end="2065" operator="||">
+              <operands xsi:type="expressions:Operator" begin="2006" end="2024" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="2006" end="2010">
+                  <calls begin="2006" end="2010" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="2014" end="2024" value="Integer3"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="2028" end="2043" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="2028" end="2032">
+                  <calls begin="2028" end="2032" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="2035" end="2043" value="Float3"/>
+              </operands>
+              <operands xsi:type="expressions:Operator" begin="2047" end="2065" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="2047" end="2051">
+                  <calls begin="2047" end="2051" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="2055" end="2065" value="Boolean3"/>
+              </operands>
+            </expression>
+          </condition>
+          <thenStatements xsi:type="statements:Text" begin="2071" end="2076" value="false"/>
+        </elseIf>
+      </statements>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

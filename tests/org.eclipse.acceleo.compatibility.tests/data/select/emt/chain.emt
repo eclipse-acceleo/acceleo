@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestSelect" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="488">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:For" begin="205" end="252">
+        <iterator xsi:type="expressions:Parenthesis" begin="205" end="238">
+          <expression xsi:type="expressions:CallSet" begin="206" end="237">
+            <calls begin="206" end="215" name="attribute" prefix="">
+              <filter xsi:type="expressions:CallSet" begin="216" end="236">
+                <calls begin="216" end="220" name="name" prefix=""/>
+                <calls begin="221" end="236" name="startsWith" prefix="">
+                  <arguments xsi:type="expressions:StringLiteral" begin="232" end="235" value="a"/>
+                </calls>
+              </filter>
+            </calls>
+          </expression>
+        </iterator>
+        <statements xsi:type="statements:Feature" begin="245" end="249">
+          <expression xsi:type="expressions:CallSet" begin="245" end="249">
+            <calls begin="245" end="249" name="name" prefix=""/>
+          </expression>
+        </statements>
+        <statements xsi:type="statements:Text" begin="251" end="252" value="&#xA;"/>
+      </statements>
+      <statements xsi:type="statements:Text" begin="258" end="260" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:For" begin="266" end="309">
+        <iterator xsi:type="expressions:Parenthesis" begin="266" end="294">
+          <expression xsi:type="expressions:CallSet" begin="267" end="293">
+            <calls begin="267" end="276" name="attribute" prefix="">
+              <filter xsi:type="expressions:Operator" begin="277" end="292" operator="==">
+                <operands xsi:type="expressions:CallSet" begin="277" end="281">
+                  <calls begin="277" end="281" name="name" prefix=""/>
+                </operands>
+                <operands xsi:type="expressions:StringLiteral" begin="285" end="292" value="aName"/>
+              </filter>
+            </calls>
+          </expression>
+        </iterator>
+        <statements xsi:type="statements:Feature" begin="301" end="305">
+          <expression xsi:type="expressions:CallSet" begin="301" end="305">
+            <calls begin="301" end="305" name="name" prefix=""/>
+          </expression>
+        </statements>
+        <statements xsi:type="statements:Text" begin="307" end="309" value="&#xD;&#xA;"/>
+      </statements>
+      <statements xsi:type="statements:Text" begin="316" end="318" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:For" begin="324" end="379">
+        <iterator xsi:type="expressions:Parenthesis" begin="324" end="364">
+          <expression xsi:type="expressions:CallSet" begin="325" end="363">
+            <calls begin="325" end="334" name="attribute" prefix=""/>
+            <calls begin="335" end="363" name="select" prefix="">
+              <arguments xsi:type="expressions:CallSet" begin="342" end="362">
+                <calls begin="342" end="346" name="name" prefix=""/>
+                <calls begin="347" end="362" name="startsWith" prefix="">
+                  <arguments xsi:type="expressions:StringLiteral" begin="358" end="361" value="a"/>
+                </calls>
+              </arguments>
+            </calls>
+          </expression>
+        </iterator>
+        <statements xsi:type="statements:Feature" begin="371" end="375">
+          <expression xsi:type="expressions:CallSet" begin="371" end="375">
+            <calls begin="371" end="375" name="name" prefix=""/>
+          </expression>
+        </statements>
+        <statements xsi:type="statements:Text" begin="377" end="379" value="&#xD;&#xA;"/>
+      </statements>
+      <statements xsi:type="statements:Text" begin="386" end="388" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="390" end="425">
+        <expression xsi:type="expressions:CallSet" begin="390" end="425">
+          <calls begin="390" end="399" name="attribute" prefix="">
+            <filter xsi:type="expressions:Operator" begin="400" end="415" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="400" end="404">
+                <calls begin="400" end="404" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="408" end="415" value="aName"/>
+            </filter>
+          </calls>
+          <calls begin="417" end="425" name="sep" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="421" end="424" value=","/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="427" end="431" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="433" end="475">
+        <expression xsi:type="expressions:CallSet" begin="433" end="475">
+          <calls begin="433" end="442" name="attribute" prefix=""/>
+          <calls begin="443" end="466" name="select" prefix="">
+            <arguments xsi:type="expressions:Operator" begin="450" end="465" operator="==">
+              <operands xsi:type="expressions:CallSet" begin="450" end="454">
+                <calls begin="450" end="454" name="name" prefix=""/>
+              </operands>
+              <operands xsi:type="expressions:StringLiteral" begin="458" end="465" value="aName"/>
+            </arguments>
+          </calls>
+          <calls begin="467" end="475" name="sep" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="471" end="474" value=","/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="477" end="488" value="&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

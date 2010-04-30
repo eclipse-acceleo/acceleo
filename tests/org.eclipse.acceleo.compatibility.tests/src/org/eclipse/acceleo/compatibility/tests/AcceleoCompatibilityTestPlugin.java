@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
  */
 public class AcceleoCompatibilityTestPlugin extends Plugin {
 	/** The plug-in ID. */
-	public static final String PLUGIN_ID = "org.eclipse.acceleo.engine.tests"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.acceleo.compatibility.tests"; //$NON-NLS-1$
 
 	/** This plug-in's shared instance. */
 	private static AcceleoCompatibilityTestPlugin plugin;
