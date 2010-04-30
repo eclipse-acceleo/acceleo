@@ -132,8 +132,7 @@ public class <%=content.getClassShortName()%> extends AbstractAcceleoGenerator {
 				for (int i = 2; i < args.length; i++) {
 					arguments.add(args[i]);
 				}
-				<%=content.getClassShortName()%> generator = new <%=content.getClassShortName()%>();
-				generator.initialize(modelURI, folder, arguments);
+				<%=content.getClassShortName()%> generator = new <%=content.getClassShortName()%>(modelURI, folder, arguments);
 				generator.doGenerate(new BasicMonitor());
 			}
 		} catch (IOException e) {
@@ -261,7 +260,7 @@ public class <%=content.getClassShortName()%> extends AbstractAcceleoGenerator {
 	public void registerPackages(ResourceSet resourceSet) {
 		super.registerPackages(resourceSet);<%for (int i = 0; i < content.getPackages().size(); i++) {%>
 		resourceSet.getPackageRegistry().put(<%=content.getPackages().get(i)%>.eINSTANCE.getNsURI(), <%=content.getPackages().get(i)%>.eINSTANCE);<%}%>
-		// TODO Uncomment the following line if generating from UML models
+		// TODO If you need additional package registrations, do them here. The following line is an example for UML.
 		// resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 	}
 
@@ -275,7 +274,7 @@ public class <%=content.getClassShortName()%> extends AbstractAcceleoGenerator {
 	@Override
 	public void registerResourceFactories(ResourceSet resourceSet) {
 		super.registerResourceFactories(resourceSet);
-		// TODO Uncomment the following line if generating from UML models
+		// TODO If you need additional resource factories registrations, do them here. The following line is an example for UML.
 		// resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
 	}
 	
