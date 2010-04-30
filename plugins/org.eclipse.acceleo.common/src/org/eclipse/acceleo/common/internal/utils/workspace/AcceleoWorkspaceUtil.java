@@ -426,15 +426,7 @@ public final class AcceleoWorkspaceUtil {
 	 * @return The resolved IFile if any, <code>null</code> otherwise.
 	 */
 	public IFile getWorkspaceFile(File file) {
-		final IPath workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		IPath filePath = new Path(file.getAbsolutePath());
-		if (workspaceLocation.isPrefixOf(filePath)) {
-			filePath = filePath.removeFirstSegments(workspaceLocation.segmentCount());
-			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(filePath);
-			return soughtIFile;
-		} else {
-			return null;
-		}
+		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
 	}
 
 	/**
