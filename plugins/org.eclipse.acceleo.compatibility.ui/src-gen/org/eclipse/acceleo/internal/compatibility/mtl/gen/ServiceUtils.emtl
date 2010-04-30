@@ -103,8 +103,8 @@
                     </source>
                     <argument xsi:type="mtl:QueryInvocation" definition="/0/isENodeService">
                       <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-                      <argument xsi:type="ocl.ecore:VariableExp" name="callName" referredVariable="/0/isOperationCall/@expression/@elseExpression/callName">
-                        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                      <argument xsi:type="ocl.ecore:VariableExp" name="call" referredVariable="/0/isOperationCall/call">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
                       </argument>
                     </argument>
                     <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/or"/>
@@ -820,6 +820,245 @@
       <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
     </ownedModuleElement>
     <ownedModuleElement xsi:type="mtl:Query" name="isENodeService" visibility="Public">
+      <parameter name="call">
+        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+      </parameter>
+      <expression xsi:type="ocl.ecore:LetExp">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <in xsi:type="ocl.ecore:LetExp">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+          <in xsi:type="ocl.ecore:IfExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <condition xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:VariableExp" name="serviceNamesNoArg" eType="/3/Sequence(String)" referredVariable="/0/isENodeService/@expression/serviceNamesNoArg"/>
+              <argument xsi:type="ocl.ecore:PropertyCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <source xsi:type="ocl.ecore:VariableExp" name="call" referredVariable="/0/isENodeService/call">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call/name"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/includes"/>
+            </condition>
+            <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            </thenExpression>
+            <elseExpression xsi:type="ocl.ecore:IfExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <condition xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                <source xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:VariableExp" name="serviceNamesArg" eType="/3/Sequence(String)" referredVariable="/0/isENodeService/@expression/@in/serviceNamesArg"/>
+                  <argument xsi:type="ocl.ecore:PropertyCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                    <source xsi:type="ocl.ecore:VariableExp" name="call" referredVariable="/0/isENodeService/call">
+                      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+                    </source>
+                    <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call/name"/>
+                  </argument>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/includes"/>
+                </source>
+                <argument xsi:type="ocl.ecore:OperationCallExp">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                  <source xsi:type="ocl.ecore:OperationCallExp">
+                    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+                    <source xsi:type="ocl.ecore:PropertyCallExp" eType="/3/OrderedSet(Expression)">
+                      <source xsi:type="ocl.ecore:VariableExp" name="call" referredVariable="/0/isENodeService/call">
+                        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+                      </source>
+                      <referredProperty xsi:type="ecore:EReference" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call/arguments"/>
+                    </source>
+                    <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)_Class/isEmpty"/>
+                  </source>
+                  <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/not"/>
+                </argument>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/and"/>
+              </condition>
+              <thenExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="true">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </thenExpression>
+              <elseExpression xsi:type="ocl.ecore:BooleanLiteralExp" booleanSymbol="false">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              </elseExpression>
+            </elseExpression>
+          </in>
+          <variable xsi:type="ocl.ecore:Variable" name="serviceNamesArg" eType="/3/Sequence(String)">
+            <initExpression xsi:type="ocl.ecore:CollectionLiteralExp" eType="/3/Sequence(String)" kind="Sequence">
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="adapt">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="cast">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="filter">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nContains">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nGet">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="sep">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="sepStr">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+              <part xsi:type="ocl.ecore:CollectionItem">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="until">
+                  <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+                </item>
+              </part>
+            </initExpression>
+          </variable>
+        </in>
+        <variable xsi:type="ocl.ecore:Variable" name="serviceNamesNoArg" eType="/3/Sequence(String)">
+          <initExpression xsi:type="ocl.ecore:CollectionLiteralExp" eType="/3/Sequence(String)" kind="Sequence">
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="current">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="debug">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="trace">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nPut">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nPeek">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nPop">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nPush">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nMinimize">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="minimize">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nFirst">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nLast">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nReverse">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="reverse">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nSize">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="nSort">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="sort">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="sep">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="sepStr">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+            <part xsi:type="ocl.ecore:CollectionItem">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              <item xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="toString">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+              </item>
+            </part>
+          </initExpression>
+        </variable>
+      </expression>
+      <type xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+    </ownedModuleElement>
+    <ownedModuleElement xsi:type="mtl:Query" name="isENodeServiceStr" visibility="Public">
       <parameter name="callName">
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
       </parameter>
@@ -827,8 +1066,8 @@
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
         <in xsi:type="ocl.ecore:OperationCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-          <source xsi:type="ocl.ecore:VariableExp" name="serviceNames" eType="/3/Sequence(String)" referredVariable="/0/isENodeService/@expression/serviceNames"/>
-          <argument xsi:type="ocl.ecore:VariableExp" name="callName" referredVariable="/0/isENodeService/callName">
+          <source xsi:type="ocl.ecore:VariableExp" name="serviceNames" eType="/3/Sequence(String)" referredVariable="/0/isENodeServiceStr/@expression/serviceNames"/>
+          <argument xsi:type="ocl.ecore:VariableExp" name="callName" referredVariable="/0/isENodeServiceStr/callName">
             <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           </argument>
           <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)_Class/includes"/>
@@ -1290,11 +1529,11 @@
         <eAnnotations source="MTL" references="/0/isXPathService"/>
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
       </eOperations>
-      <eOperations name="isENodeService">
+      <eOperations name="isENodeServiceStr">
         <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
           <contents xsi:type="ocl.ecore:Constraint"/>
         </eAnnotations>
-        <eAnnotations source="MTL" references="/0/isENodeService"/>
+        <eAnnotations source="MTL" references="/0/isENodeServiceStr"/>
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
       </eOperations>
       <eOperations name="isContextService">
@@ -1565,6 +1804,16 @@
         </eAnnotations>
         <eAnnotations source="MTL" references="/0/isENodeService"/>
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+        <eParameters name="call">
+          <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+        </eParameters>
+      </eOperations>
+      <eOperations name="isENodeServiceStr">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isENodeServiceStr"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
         <eParameters name="callName">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
@@ -1768,6 +2017,13 @@
         <eAnnotations source="MTL" references="/0/getTargetService"/>
         <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//core/Service"/>
       </eOperations>
+      <eOperations name="isENodeService">
+        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
+          <contents xsi:type="ocl.ecore:Constraint"/>
+        </eAnnotations>
+        <eAnnotations source="MTL" references="/0/isENodeService"/>
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Method_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
@@ -1956,6 +2212,15 @@
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mt/2.6.0#//expressions/Call"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
@@ -1985,7 +2250,7 @@
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/isOperationCall">
       <details key="start" value="69"/>
-      <details key="end" value="556"/>
+      <details key="end" value="597"/>
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/isOperationCall/call">
@@ -1994,268 +2259,268 @@
       <details key="line" value="3"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/isOperationCall/@expression">
-      <details key="start" value="124"/>
-      <details key="end" value="554"/>
+      <details key="start" value="127"/>
+      <details key="end" value="595"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/isOperationCall/@expression/@condition">
-      <details key="start" value="127"/>
-      <details key="end" value="153"/>
+      <details key="start" value="130"/>
+      <details key="end" value="156"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/isOperationCall/@expression/@condition/@source">
-      <details key="start" value="127"/>
-      <details key="end" value="149"/>
+      <details key="start" value="130"/>
+      <details key="end" value="152"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/isOperationCall/@expression/@condition/@source/@source">
-      <details key="start" value="127"/>
-      <details key="end" value="141"/>
+      <details key="start" value="130"/>
+      <details key="end" value="144"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/isOperationCall/@expression/@condition/@source/@source/call">
-      <details key="start" value="127"/>
-      <details key="end" value="131"/>
+      <details key="start" value="130"/>
+      <details key="end" value="134"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/isOperationCall/@expression/@condition/@argument.0">
-      <details key="start" value="152"/>
-      <details key="end" value="153"/>
+      <details key="start" value="155"/>
+      <details key="end" value="156"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/isOperationCall/@expression/@thenExpression">
-      <details key="start" value="159"/>
-      <details key="end" value="163"/>
+      <details key="start" value="166"/>
+      <details key="end" value="170"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.9" references="/0/isOperationCall/@expression/@elseExpression">
-      <details key="start" value="169"/>
-      <details key="end" value="548"/>
+      <details key="start" value="183"/>
+      <details key="end" value="589"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.10" references="/0/isOperationCall/@expression/@elseExpression/@in">
-      <details key="start" value="208"/>
-      <details key="end" value="548"/>
+      <details key="start" value="233"/>
+      <details key="end" value="589"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.11" references="/0/isOperationCall/@expression/@elseExpression/@in/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="522"/>
+      <details key="start" value="233"/>
+      <details key="end" value="561"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.12" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="497"/>
+      <details key="start" value="233"/>
+      <details key="end" value="534"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.13" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="461"/>
+      <details key="start" value="233"/>
+      <details key="end" value="496"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.14" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="428"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.15" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="397"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.16" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="366"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.17" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="334"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.18" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="302"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.19" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="268"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.20" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@source">
-      <details key="start" value="208"/>
-      <details key="end" value="235"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.21" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@source/callName">
-      <details key="start" value="208"/>
-      <details key="end" value="216"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.22" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="241"/>
-      <details key="end" value="268"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.23" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="241"/>
-      <details key="end" value="249"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.24" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="274"/>
-      <details key="end" value="302"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.25" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="274"/>
-      <details key="end" value="282"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.26" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="308"/>
-      <details key="end" value="334"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.27" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="308"/>
-      <details key="end" value="316"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.28" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="340"/>
-      <details key="end" value="366"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.29" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="340"/>
-      <details key="end" value="348"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.30" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="372"/>
-      <details key="end" value="397"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.31" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="372"/>
-      <details key="end" value="380"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.32" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@argument.0">
-      <details key="start" value="403"/>
-      <details key="end" value="428"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.33" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="403"/>
-      <details key="end" value="411"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.34" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@argument.0">
-      <details key="start" value="434"/>
+      <details key="start" value="233"/>
       <details key="end" value="461"/>
       <details key="line" value="0"/>
     </eAnnotations>
+    <eAnnotations source="positions.15" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="432"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.16" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="399"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.17" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="365"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.18" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="331"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.19" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="295"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.20" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@source">
+      <details key="start" value="233"/>
+      <details key="end" value="260"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.21" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@source/callName">
+      <details key="start" value="233"/>
+      <details key="end" value="241"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.22" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="268"/>
+      <details key="end" value="295"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.23" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
+      <details key="start" value="268"/>
+      <details key="end" value="276"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.24" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="303"/>
+      <details key="end" value="331"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.25" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
+      <details key="start" value="303"/>
+      <details key="end" value="311"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.26" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="339"/>
+      <details key="end" value="365"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.27" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@source/@argument.0/callName">
+      <details key="start" value="339"/>
+      <details key="end" value="347"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.28" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="373"/>
+      <details key="end" value="399"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.29" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@source/@argument.0/callName">
+      <details key="start" value="373"/>
+      <details key="end" value="381"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.30" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="407"/>
+      <details key="end" value="432"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.31" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@source/@argument.0/callName">
+      <details key="start" value="407"/>
+      <details key="end" value="415"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.32" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@argument.0">
+      <details key="start" value="440"/>
+      <details key="end" value="461"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.33" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@source/@argument.0/call">
+      <details key="start" value="440"/>
+      <details key="end" value="444"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.34" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@argument.0">
+      <details key="start" value="469"/>
+      <details key="end" value="496"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
     <eAnnotations source="positions.35" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@source/@argument.0/callName">
-      <details key="start" value="434"/>
-      <details key="end" value="442"/>
+      <details key="start" value="469"/>
+      <details key="end" value="477"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.36" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@argument.0">
-      <details key="start" value="467"/>
-      <details key="end" value="497"/>
+      <details key="start" value="504"/>
+      <details key="end" value="534"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.37" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@source/@argument.0/callName">
-      <details key="start" value="467"/>
-      <details key="end" value="475"/>
+      <details key="start" value="504"/>
+      <details key="end" value="512"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.38" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@argument.0">
-      <details key="start" value="503"/>
-      <details key="end" value="522"/>
+      <details key="start" value="542"/>
+      <details key="end" value="561"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.39" references="/0/isOperationCall/@expression/@elseExpression/@in/@source/@argument.0/call">
-      <details key="start" value="503"/>
-      <details key="end" value="507"/>
+      <details key="start" value="542"/>
+      <details key="end" value="546"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.40" references="/0/isOperationCall/@expression/@elseExpression/@in/@argument.0">
-      <details key="start" value="528"/>
-      <details key="end" value="548"/>
+      <details key="start" value="569"/>
+      <details key="end" value="589"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.41" references="/0/isOperationCall/@expression/@elseExpression/@in/@argument.0/call">
-      <details key="start" value="528"/>
-      <details key="end" value="532"/>
+      <details key="start" value="569"/>
+      <details key="end" value="573"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.42" references="/0/isOperationCall/@expression/@elseExpression/callName">
-      <details key="start" value="173"/>
-      <details key="end" value="202"/>
+      <details key="start" value="187"/>
+      <details key="end" value="221"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.43" references="/0/isOperationCall/@expression/@elseExpression/callName/@initExpression">
-      <details key="start" value="193"/>
-      <details key="end" value="202"/>
+      <details key="start" value="212"/>
+      <details key="end" value="221"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.44" references="/0/isOperationCall/@expression/@elseExpression/callName/@initExpression/call">
-      <details key="start" value="193"/>
-      <details key="end" value="197"/>
+      <details key="start" value="212"/>
+      <details key="end" value="216"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.45" references="/0/isScriptCall">
-      <details key="start" value="561"/>
-      <details key="end" value="700"/>
-      <details key="line" value="16"/>
+      <details key="start" value="602"/>
+      <details key="end" value="747"/>
+      <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.46" references="/0/isScriptCall/call">
-      <details key="start" value="589"/>
-      <details key="end" value="600"/>
-      <details key="line" value="16"/>
+      <details key="start" value="630"/>
+      <details key="end" value="641"/>
+      <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.47" references="/0/isScriptCall/@expression">
-      <details key="start" value="614"/>
-      <details key="end" value="698"/>
+      <details key="start" value="657"/>
+      <details key="end" value="745"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.48" references="/0/isScriptCall/@expression/collect">
-      <details key="start" value="614"/>
-      <details key="end" value="677"/>
+      <details key="start" value="657"/>
+      <details key="end" value="724"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.49" references="/0/isScriptCall/@expression/collect/@source">
-      <details key="start" value="614"/>
-      <details key="end" value="651"/>
+      <details key="start" value="657"/>
+      <details key="end" value="694"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.50" references="/0/isScriptCall/@expression/collect/@source/@argument.0">
-      <details key="start" value="614"/>
-      <details key="end" value="638"/>
+      <details key="start" value="657"/>
+      <details key="end" value="681"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.51" references="/0/isScriptCall/@expression/collect/@source/@argument.0/@source">
-      <details key="start" value="614"/>
-      <details key="end" value="630"/>
+      <details key="start" value="657"/>
+      <details key="end" value="673"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.52" references="/0/isScriptCall/@expression/collect/@source/@argument.0/@source/call">
-      <details key="start" value="614"/>
-      <details key="end" value="618"/>
+      <details key="start" value="657"/>
+      <details key="end" value="661"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.53" references="/0/isScriptCall/@expression/collect/@body">
-      <details key="start" value="661"/>
-      <details key="end" value="676"/>
+      <details key="start" value="708"/>
+      <details key="end" value="723"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.54" references="/0/isScriptCall/@expression/collect/@body/@source">
-      <details key="start" value="661"/>
-      <details key="end" value="671"/>
+      <details key="start" value="708"/>
+      <details key="end" value="718"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.55" references="/0/isScriptCall/@expression/collect/@body/@source/temp1">
@@ -2269,58 +2534,58 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.57" references="/0/isScriptCall/@expression/@argument.0">
-      <details key="start" value="688"/>
-      <details key="end" value="697"/>
+      <details key="start" value="735"/>
+      <details key="end" value="744"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.58" references="/0/isScriptCall/@expression/@argument.0/call">
-      <details key="start" value="688"/>
-      <details key="end" value="692"/>
+      <details key="start" value="735"/>
+      <details key="end" value="739"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.59" references="/0/isServiceCall">
-      <details key="start" value="702"/>
-      <details key="end" value="830"/>
-      <details key="line" value="17"/>
+      <details key="start" value="749"/>
+      <details key="end" value="883"/>
+      <details key="line" value="25"/>
     </eAnnotations>
     <eAnnotations source="positions.60" references="/0/isServiceCall/call">
-      <details key="start" value="730"/>
-      <details key="end" value="741"/>
-      <details key="line" value="17"/>
+      <details key="start" value="777"/>
+      <details key="end" value="788"/>
+      <details key="line" value="25"/>
     </eAnnotations>
     <eAnnotations source="positions.61" references="/0/isServiceCall/@expression">
-      <details key="start" value="755"/>
-      <details key="end" value="828"/>
+      <details key="start" value="804"/>
+      <details key="end" value="881"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.62" references="/0/isServiceCall/@expression/collect">
-      <details key="start" value="755"/>
-      <details key="end" value="807"/>
+      <details key="start" value="804"/>
+      <details key="end" value="856"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.63" references="/0/isServiceCall/@expression/collect/@source">
-      <details key="start" value="755"/>
-      <details key="end" value="792"/>
+      <details key="start" value="804"/>
+      <details key="end" value="841"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.64" references="/0/isServiceCall/@expression/collect/@source/@argument.0">
-      <details key="start" value="755"/>
-      <details key="end" value="779"/>
+      <details key="start" value="804"/>
+      <details key="end" value="828"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.65" references="/0/isServiceCall/@expression/collect/@source/@argument.0/@source">
-      <details key="start" value="755"/>
-      <details key="end" value="771"/>
+      <details key="start" value="804"/>
+      <details key="end" value="820"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.66" references="/0/isServiceCall/@expression/collect/@source/@argument.0/@source/call">
-      <details key="start" value="755"/>
-      <details key="end" value="759"/>
+      <details key="start" value="804"/>
+      <details key="end" value="808"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.67" references="/0/isServiceCall/@expression/collect/@body">
-      <details key="start" value="802"/>
-      <details key="end" value="806"/>
+      <details key="start" value="851"/>
+      <details key="end" value="855"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.68" references="/0/isServiceCall/@expression/collect/@body/temp1">
@@ -2334,63 +2599,63 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.70" references="/0/isServiceCall/@expression/@argument.0">
-      <details key="start" value="818"/>
-      <details key="end" value="827"/>
+      <details key="start" value="871"/>
+      <details key="end" value="880"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.71" references="/0/isServiceCall/@expression/@argument.0/call">
-      <details key="start" value="818"/>
-      <details key="end" value="822"/>
+      <details key="start" value="871"/>
+      <details key="end" value="875"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.72" references="/0/getTargetService">
-      <details key="start" value="834"/>
-      <details key="end" value="964"/>
-      <details key="line" value="19"/>
+      <details key="start" value="887"/>
+      <details key="end" value="1023"/>
+      <details key="line" value="29"/>
     </eAnnotations>
     <eAnnotations source="positions.73" references="/0/getTargetService/call">
-      <details key="start" value="865"/>
-      <details key="end" value="876"/>
-      <details key="line" value="19"/>
+      <details key="start" value="918"/>
+      <details key="end" value="929"/>
+      <details key="line" value="29"/>
     </eAnnotations>
     <eAnnotations source="positions.74" references="/0/getTargetService/@expression">
-      <details key="start" value="890"/>
-      <details key="end" value="962"/>
+      <details key="start" value="945"/>
+      <details key="end" value="1021"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.75" references="/0/getTargetService/@expression/select">
-      <details key="start" value="890"/>
-      <details key="end" value="953"/>
+      <details key="start" value="945"/>
+      <details key="end" value="1012"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.76" references="/0/getTargetService/@expression/select/@source">
-      <details key="start" value="890"/>
-      <details key="end" value="927"/>
+      <details key="start" value="945"/>
+      <details key="end" value="982"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.77" references="/0/getTargetService/@expression/select/@source/@argument.0">
-      <details key="start" value="890"/>
-      <details key="end" value="914"/>
+      <details key="start" value="945"/>
+      <details key="end" value="969"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.78" references="/0/getTargetService/@expression/select/@source/@argument.0/@source">
-      <details key="start" value="890"/>
-      <details key="end" value="906"/>
+      <details key="start" value="945"/>
+      <details key="end" value="961"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.79" references="/0/getTargetService/@expression/select/@source/@argument.0/@source/call">
-      <details key="start" value="890"/>
-      <details key="end" value="894"/>
+      <details key="start" value="945"/>
+      <details key="end" value="949"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.80" references="/0/getTargetService/@expression/select/@body">
-      <details key="start" value="936"/>
-      <details key="end" value="952"/>
+      <details key="start" value="995"/>
+      <details key="end" value="1011"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.81" references="/0/getTargetService/@expression/select/@body/@source">
-      <details key="start" value="936"/>
-      <details key="end" value="940"/>
+      <details key="start" value="995"/>
+      <details key="end" value="999"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.82" references="/0/getTargetService/@expression/select/@body/@source/temp1">
@@ -2399,13 +2664,13 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.83" references="/0/getTargetService/@expression/select/@body/@argument.0">
-      <details key="start" value="943"/>
-      <details key="end" value="952"/>
+      <details key="start" value="1002"/>
+      <details key="end" value="1011"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.84" references="/0/getTargetService/@expression/select/@body/@argument.0/call">
-      <details key="start" value="943"/>
-      <details key="end" value="947"/>
+      <details key="start" value="1002"/>
+      <details key="end" value="1006"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.85" references="/0/getTargetService/@expression/select/temp3">
@@ -2414,98 +2679,98 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.86" references="/0/allScripts">
-      <details key="start" value="1047"/>
-      <details key="end" value="1146"/>
-      <details key="line" value="22"/>
+      <details key="start" value="1106"/>
+      <details key="end" value="1207"/>
+      <details key="line" value="34"/>
     </eAnnotations>
     <eAnnotations source="positions.87" references="/0/allScripts/root">
-      <details key="start" value="1073"/>
-      <details key="end" value="1086"/>
-      <details key="line" value="22"/>
+      <details key="start" value="1132"/>
+      <details key="end" value="1145"/>
+      <details key="line" value="34"/>
     </eAnnotations>
     <eAnnotations source="positions.88" references="/0/allScripts/@expression">
-      <details key="start" value="1109"/>
-      <details key="end" value="1144"/>
+      <details key="start" value="1170"/>
+      <details key="end" value="1205"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.89" references="/0/allScripts/@expression/root">
-      <details key="start" value="1109"/>
-      <details key="end" value="1113"/>
+      <details key="start" value="1170"/>
+      <details key="end" value="1174"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.90" references="/0/allScripts/@expression/@argument.0">
-      <details key="start" value="1127"/>
-      <details key="end" value="1143"/>
+      <details key="start" value="1188"/>
+      <details key="end" value="1204"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.91" references="/0/allMethods">
-      <details key="start" value="1148"/>
-      <details key="end" value="1247"/>
-      <details key="line" value="23"/>
+      <details key="start" value="1209"/>
+      <details key="end" value="1310"/>
+      <details key="line" value="36"/>
     </eAnnotations>
     <eAnnotations source="positions.92" references="/0/allMethods/root">
-      <details key="start" value="1174"/>
-      <details key="end" value="1187"/>
-      <details key="line" value="23"/>
+      <details key="start" value="1235"/>
+      <details key="end" value="1248"/>
+      <details key="line" value="36"/>
     </eAnnotations>
     <eAnnotations source="positions.93" references="/0/allMethods/@expression">
-      <details key="start" value="1210"/>
-      <details key="end" value="1245"/>
+      <details key="start" value="1273"/>
+      <details key="end" value="1308"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.94" references="/0/allMethods/@expression/root">
-      <details key="start" value="1210"/>
-      <details key="end" value="1214"/>
+      <details key="start" value="1273"/>
+      <details key="end" value="1277"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.95" references="/0/allMethods/@expression/@argument.0">
-      <details key="start" value="1228"/>
-      <details key="end" value="1244"/>
+      <details key="start" value="1291"/>
+      <details key="end" value="1307"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.96" references="/0/signature">
-      <details key="start" value="1251"/>
-      <details key="end" value="1370"/>
-      <details key="line" value="25"/>
+      <details key="start" value="1314"/>
+      <details key="end" value="1435"/>
+      <details key="line" value="39"/>
     </eAnnotations>
     <eAnnotations source="positions.97" references="/0/signature/method">
-      <details key="start" value="1275"/>
-      <details key="end" value="1290"/>
-      <details key="line" value="25"/>
+      <details key="start" value="1338"/>
+      <details key="end" value="1353"/>
+      <details key="line" value="39"/>
     </eAnnotations>
     <eAnnotations source="positions.98" references="/0/signature/@expression">
-      <details key="start" value="1303"/>
-      <details key="end" value="1368"/>
+      <details key="start" value="1368"/>
+      <details key="end" value="1433"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.99" references="/0/signature/@expression/@source">
-      <details key="start" value="1303"/>
-      <details key="end" value="1356"/>
+      <details key="start" value="1368"/>
+      <details key="end" value="1421"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.100" references="/0/signature/@expression/@source/@source">
-      <details key="start" value="1303"/>
-      <details key="end" value="1326"/>
+      <details key="start" value="1368"/>
+      <details key="end" value="1391"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.101" references="/0/signature/@expression/@source/@source/@source">
-      <details key="start" value="1303"/>
-      <details key="end" value="1314"/>
+      <details key="start" value="1368"/>
+      <details key="end" value="1379"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.102" references="/0/signature/@expression/@source/@source/@source/method">
-      <details key="start" value="1303"/>
-      <details key="end" value="1309"/>
+      <details key="start" value="1368"/>
+      <details key="end" value="1374"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.103" references="/0/signature/@expression/@source/@source/@argument.0">
-      <details key="start" value="1322"/>
-      <details key="end" value="1325"/>
+      <details key="start" value="1387"/>
+      <details key="end" value="1390"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.104" references="/0/signature/@expression/@source/@argument.0">
-      <details key="start" value="1334"/>
-      <details key="end" value="1355"/>
+      <details key="start" value="1399"/>
+      <details key="end" value="1420"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.105" references="/0/signature/@expression/@source/@argument.0/self">
@@ -2514,98 +2779,98 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.106" references="/0/signature/@expression/@argument.0">
-      <details key="start" value="1364"/>
-      <details key="end" value="1367"/>
+      <details key="start" value="1429"/>
+      <details key="end" value="1432"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.107" references="/0/parametersSignature">
-      <details key="start" value="1374"/>
-      <details key="end" value="1604"/>
-      <details key="line" value="27"/>
+      <details key="start" value="1439"/>
+      <details key="end" value="1673"/>
+      <details key="line" value="42"/>
     </eAnnotations>
     <eAnnotations source="positions.108" references="/0/parametersSignature/method">
-      <details key="start" value="1409"/>
-      <details key="end" value="1424"/>
-      <details key="line" value="27"/>
+      <details key="start" value="1474"/>
+      <details key="end" value="1489"/>
+      <details key="line" value="42"/>
     </eAnnotations>
     <eAnnotations source="positions.109" references="/0/parametersSignature/@expression">
-      <details key="start" value="1440"/>
-      <details key="end" value="1599"/>
+      <details key="start" value="1504"/>
+      <details key="end" value="1668"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.110" references="/0/parametersSignature/@expression/iterate">
-      <details key="start" value="1534"/>
-      <details key="end" value="1599"/>
+      <details key="start" value="1603"/>
+      <details key="end" value="1668"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.111" references="/0/parametersSignature/@expression/iterate/parameters">
-      <details key="start" value="1534"/>
-      <details key="end" value="1544"/>
+      <details key="start" value="1603"/>
+      <details key="end" value="1613"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.112" references="/0/parametersSignature/@expression/iterate/@body">
-      <details key="start" value="1581"/>
-      <details key="end" value="1598"/>
+      <details key="start" value="1650"/>
+      <details key="end" value="1667"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.113" references="/0/parametersSignature/@expression/iterate/@body/res">
-      <details key="start" value="1581"/>
-      <details key="end" value="1584"/>
+      <details key="start" value="1650"/>
+      <details key="end" value="1653"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.114" references="/0/parametersSignature/@expression/iterate/@body/param">
-      <details key="start" value="1592"/>
-      <details key="end" value="1597"/>
+      <details key="start" value="1661"/>
+      <details key="end" value="1666"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.115" references="/0/parametersSignature/@expression/iterate/param">
-      <details key="start" value="1554"/>
-      <details key="end" value="1559"/>
+      <details key="start" value="1623"/>
+      <details key="end" value="1628"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.116" references="/0/parametersSignature/@expression/iterate/res">
-      <details key="start" value="1561"/>
-      <details key="end" value="1578"/>
+      <details key="start" value="1630"/>
+      <details key="end" value="1647"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.117" references="/0/parametersSignature/@expression/iterate/res/@initExpression">
-      <details key="start" value="1576"/>
-      <details key="end" value="1578"/>
+      <details key="start" value="1645"/>
+      <details key="end" value="1647"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.118" references="/0/parametersSignature/@expression/parameters">
-      <details key="start" value="1444"/>
-      <details key="end" value="1527"/>
+      <details key="start" value="1508"/>
+      <details key="end" value="1594"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.119" references="/0/parametersSignature/@expression/parameters/collect">
-      <details key="start" value="1476"/>
-      <details key="end" value="1527"/>
+      <details key="start" value="1543"/>
+      <details key="end" value="1594"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.120" references="/0/parametersSignature/@expression/parameters/collect/@source">
-      <details key="start" value="1476"/>
-      <details key="end" value="1509"/>
+      <details key="start" value="1543"/>
+      <details key="end" value="1576"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.121" references="/0/parametersSignature/@expression/parameters/collect/@source/collect">
-      <details key="start" value="1476"/>
-      <details key="end" value="1498"/>
+      <details key="start" value="1543"/>
+      <details key="end" value="1565"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.122" references="/0/parametersSignature/@expression/parameters/collect/@source/collect/@source">
-      <details key="start" value="1476"/>
-      <details key="end" value="1493"/>
+      <details key="start" value="1543"/>
+      <details key="end" value="1560"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.123" references="/0/parametersSignature/@expression/parameters/collect/@source/collect/@source/method">
-      <details key="start" value="1476"/>
-      <details key="end" value="1482"/>
+      <details key="start" value="1543"/>
+      <details key="end" value="1549"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.124" references="/0/parametersSignature/@expression/parameters/collect/@source/collect/@body">
-      <details key="start" value="1494"/>
-      <details key="end" value="1498"/>
+      <details key="start" value="1561"/>
+      <details key="end" value="1565"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.125" references="/0/parametersSignature/@expression/parameters/collect/@source/collect/@body/temp1">
@@ -2619,8 +2884,8 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.127" references="/0/parametersSignature/@expression/parameters/collect/@source/@argument.0">
-      <details key="start" value="1504"/>
-      <details key="end" value="1508"/>
+      <details key="start" value="1571"/>
+      <details key="end" value="1575"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.128" references="/0/parametersSignature/@expression/parameters/collect/@body">
@@ -2634,8 +2899,8 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.130" references="/0/parametersSignature/@expression/parameters/collect/@body/@argument.0">
-      <details key="start" value="1520"/>
-      <details key="end" value="1526"/>
+      <details key="start" value="1587"/>
+      <details key="end" value="1593"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.131" references="/0/parametersSignature/@expression/parameters/collect/temp5">
@@ -2644,753 +2909,1018 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.132" references="/0/isEObjectService">
-      <details key="start" value="1608"/>
-      <details key="end" value="1954"/>
-      <details key="line" value="32"/>
+      <details key="start" value="1677"/>
+      <details key="end" value="2030"/>
+      <details key="line" value="49"/>
     </eAnnotations>
     <eAnnotations source="positions.133" references="/0/isEObjectService/callName">
-      <details key="start" value="1639"/>
-      <details key="end" value="1656"/>
-      <details key="line" value="32"/>
+      <details key="start" value="1708"/>
+      <details key="end" value="1725"/>
+      <details key="line" value="49"/>
     </eAnnotations>
     <eAnnotations source="positions.134" references="/0/isEObjectService/@expression">
-      <details key="start" value="1670"/>
-      <details key="end" value="1952"/>
+      <details key="start" value="1741"/>
+      <details key="end" value="2025"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.135" references="/0/isEObjectService/@expression/@in">
-      <details key="start" value="1920"/>
-      <details key="end" value="1952"/>
+      <details key="start" value="1993"/>
+      <details key="end" value="2025"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.136" references="/0/isEObjectService/@expression/@in/serviceNames">
-      <details key="start" value="1920"/>
-      <details key="end" value="1932"/>
+      <details key="start" value="1993"/>
+      <details key="end" value="2005"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.137" references="/0/isEObjectService/@expression/@in/callName">
-      <details key="start" value="1943"/>
-      <details key="end" value="1951"/>
+      <details key="start" value="2016"/>
+      <details key="end" value="2024"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.138" references="/0/isEObjectService/@expression/serviceNames">
-      <details key="start" value="1674"/>
-      <details key="end" value="1916"/>
+      <details key="start" value="1745"/>
+      <details key="end" value="1984"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.139" references="/0/isEObjectService/@expression/serviceNames/@initExpression">
-      <details key="start" value="1708"/>
-      <details key="end" value="1916"/>
+      <details key="start" value="1782"/>
+      <details key="end" value="1984"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.140" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="1720"/>
-      <details key="end" value="1734"/>
+      <details key="start" value="1791"/>
+      <details key="end" value="1805"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.141" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="1739"/>
-      <details key="end" value="1747"/>
+      <details key="start" value="1807"/>
+      <details key="end" value="1815"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.142" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="1751"/>
-      <details key="end" value="1763"/>
+      <details key="start" value="1823"/>
+      <details key="end" value="1835"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.143" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.3/@item">
-      <details key="start" value="1767"/>
-      <details key="end" value="1787"/>
+      <details key="start" value="1836"/>
+      <details key="end" value="1856"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.144" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.4/@item">
-      <details key="start" value="1791"/>
-      <details key="end" value="1812"/>
+      <details key="start" value="1864"/>
+      <details key="end" value="1885"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.145" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.5/@item">
-      <details key="start" value="1816"/>
-      <details key="end" value="1827"/>
+      <details key="start" value="1886"/>
+      <details key="end" value="1897"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.146" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.6/@item">
-      <details key="start" value="1831"/>
-      <details key="end" value="1849"/>
+      <details key="start" value="1905"/>
+      <details key="end" value="1923"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.147" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.7/@item">
-      <details key="start" value="1853"/>
-      <details key="end" value="1864"/>
+      <details key="start" value="1924"/>
+      <details key="end" value="1935"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.148" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.8/@item">
-      <details key="start" value="1868"/>
-      <details key="end" value="1883"/>
+      <details key="start" value="1942"/>
+      <details key="end" value="1957"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.149" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.9/@item">
-      <details key="start" value="1887"/>
-      <details key="end" value="1905"/>
+      <details key="start" value="1958"/>
+      <details key="end" value="1976"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.150" references="/0/isEObjectService/@expression/serviceNames/@initExpression/@part.10/@item">
-      <details key="start" value="1909"/>
-      <details key="end" value="1915"/>
+      <details key="start" value="1977"/>
+      <details key="end" value="1983"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.151" references="/0/isRequestService">
-      <details key="start" value="1959"/>
-      <details key="end" value="2144"/>
-      <details key="line" value="45"/>
+      <details key="start" value="2034"/>
+      <details key="end" value="2223"/>
+      <details key="line" value="60"/>
     </eAnnotations>
     <eAnnotations source="positions.152" references="/0/isRequestService/callName">
-      <details key="start" value="1990"/>
-      <details key="end" value="2007"/>
-      <details key="line" value="45"/>
+      <details key="start" value="2065"/>
+      <details key="end" value="2082"/>
+      <details key="line" value="60"/>
     </eAnnotations>
     <eAnnotations source="positions.153" references="/0/isRequestService/@expression">
-      <details key="start" value="2021"/>
-      <details key="end" value="2142"/>
+      <details key="start" value="2098"/>
+      <details key="end" value="2218"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.154" references="/0/isRequestService/@expression/@in">
-      <details key="start" value="2110"/>
-      <details key="end" value="2142"/>
+      <details key="start" value="2186"/>
+      <details key="end" value="2218"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.155" references="/0/isRequestService/@expression/@in/serviceNames">
-      <details key="start" value="2110"/>
-      <details key="end" value="2122"/>
+      <details key="start" value="2186"/>
+      <details key="end" value="2198"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.156" references="/0/isRequestService/@expression/@in/callName">
-      <details key="start" value="2133"/>
-      <details key="end" value="2141"/>
+      <details key="start" value="2209"/>
+      <details key="end" value="2217"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.157" references="/0/isRequestService/@expression/serviceNames">
-      <details key="start" value="2025"/>
-      <details key="end" value="2106"/>
+      <details key="start" value="2102"/>
+      <details key="end" value="2177"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.158" references="/0/isRequestService/@expression/serviceNames/@initExpression">
-      <details key="start" value="2059"/>
-      <details key="end" value="2106"/>
+      <details key="start" value="2139"/>
+      <details key="end" value="2177"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.159" references="/0/isRequestService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="2071"/>
-      <details key="end" value="2079"/>
+      <details key="start" value="2148"/>
+      <details key="end" value="2156"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.160" references="/0/isRequestService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="2083"/>
-      <details key="end" value="2091"/>
+      <details key="start" value="2157"/>
+      <details key="end" value="2165"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.161" references="/0/isRequestService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="2095"/>
-      <details key="end" value="2105"/>
+      <details key="start" value="2166"/>
+      <details key="end" value="2176"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.162" references="/0/isResourceService">
-      <details key="start" value="2149"/>
-      <details key="end" value="2335"/>
-      <details key="line" value="50"/>
+      <details key="start" value="2228"/>
+      <details key="end" value="2421"/>
+      <details key="line" value="67"/>
     </eAnnotations>
     <eAnnotations source="positions.163" references="/0/isResourceService/callName">
-      <details key="start" value="2181"/>
-      <details key="end" value="2198"/>
-      <details key="line" value="50"/>
+      <details key="start" value="2260"/>
+      <details key="end" value="2277"/>
+      <details key="line" value="67"/>
     </eAnnotations>
     <eAnnotations source="positions.164" references="/0/isResourceService/@expression">
-      <details key="start" value="2212"/>
-      <details key="end" value="2333"/>
+      <details key="start" value="2293"/>
+      <details key="end" value="2416"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.165" references="/0/isResourceService/@expression/@in">
-      <details key="start" value="2301"/>
-      <details key="end" value="2333"/>
+      <details key="start" value="2384"/>
+      <details key="end" value="2416"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.166" references="/0/isResourceService/@expression/@in/serviceNames">
-      <details key="start" value="2301"/>
-      <details key="end" value="2313"/>
+      <details key="start" value="2384"/>
+      <details key="end" value="2396"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.167" references="/0/isResourceService/@expression/@in/callName">
-      <details key="start" value="2324"/>
-      <details key="end" value="2332"/>
+      <details key="start" value="2407"/>
+      <details key="end" value="2415"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.168" references="/0/isResourceService/@expression/serviceNames">
-      <details key="start" value="2216"/>
-      <details key="end" value="2297"/>
+      <details key="start" value="2297"/>
+      <details key="end" value="2375"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.169" references="/0/isResourceService/@expression/serviceNames/@initExpression">
-      <details key="start" value="2250"/>
-      <details key="end" value="2297"/>
+      <details key="start" value="2334"/>
+      <details key="end" value="2375"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.170" references="/0/isResourceService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="2262"/>
-      <details key="end" value="2278"/>
+      <details key="start" value="2343"/>
+      <details key="end" value="2359"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.171" references="/0/isResourceService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="2282"/>
-      <details key="end" value="2296"/>
+      <details key="start" value="2360"/>
+      <details key="end" value="2374"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.172" references="/0/isStringService">
-      <details key="start" value="2340"/>
-      <details key="end" value="2769"/>
-      <details key="line" value="54"/>
+      <details key="start" value="2425"/>
+      <details key="end" value="2840"/>
+      <details key="line" value="74"/>
     </eAnnotations>
     <eAnnotations source="positions.173" references="/0/isStringService/callName">
-      <details key="start" value="2370"/>
-      <details key="end" value="2387"/>
-      <details key="line" value="54"/>
+      <details key="start" value="2455"/>
+      <details key="end" value="2472"/>
+      <details key="line" value="74"/>
     </eAnnotations>
     <eAnnotations source="positions.174" references="/0/isStringService/@expression">
-      <details key="start" value="2401"/>
-      <details key="end" value="2767"/>
+      <details key="start" value="2488"/>
+      <details key="end" value="2835"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.175" references="/0/isStringService/@expression/@in">
-      <details key="start" value="2735"/>
-      <details key="end" value="2767"/>
+      <details key="start" value="2803"/>
+      <details key="end" value="2835"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.176" references="/0/isStringService/@expression/@in/serviceNames">
-      <details key="start" value="2735"/>
-      <details key="end" value="2747"/>
+      <details key="start" value="2803"/>
+      <details key="end" value="2815"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.177" references="/0/isStringService/@expression/@in/callName">
-      <details key="start" value="2758"/>
-      <details key="end" value="2766"/>
+      <details key="start" value="2826"/>
+      <details key="end" value="2834"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.178" references="/0/isStringService/@expression/serviceNames">
-      <details key="start" value="2405"/>
-      <details key="end" value="2731"/>
+      <details key="start" value="2492"/>
+      <details key="end" value="2794"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.179" references="/0/isStringService/@expression/serviceNames/@initExpression">
-      <details key="start" value="2439"/>
-      <details key="end" value="2731"/>
+      <details key="start" value="2529"/>
+      <details key="end" value="2794"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.180" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="2451"/>
-      <details key="end" value="2459"/>
+      <details key="start" value="2538"/>
+      <details key="end" value="2546"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.181" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="2463"/>
-      <details key="end" value="2476"/>
+      <details key="start" value="2547"/>
+      <details key="end" value="2560"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.182" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="2480"/>
-      <details key="end" value="2493"/>
+      <details key="start" value="2561"/>
+      <details key="end" value="2574"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.183" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.3/@item">
-      <details key="start" value="2497"/>
-      <details key="end" value="2507"/>
+      <details key="start" value="2581"/>
+      <details key="end" value="2591"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.184" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.4/@item">
-      <details key="start" value="2511"/>
-      <details key="end" value="2521"/>
+      <details key="start" value="2592"/>
+      <details key="end" value="2602"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.185" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.5/@item">
-      <details key="start" value="2525"/>
-      <details key="end" value="2536"/>
+      <details key="start" value="2603"/>
+      <details key="end" value="2614"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.186" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.6/@item">
-      <details key="start" value="2540"/>
-      <details key="end" value="2552"/>
+      <details key="start" value="2621"/>
+      <details key="end" value="2633"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.187" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.7/@item">
-      <details key="start" value="2556"/>
-      <details key="end" value="2570"/>
+      <details key="start" value="2634"/>
+      <details key="end" value="2648"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.188" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.8/@item">
-      <details key="start" value="2574"/>
-      <details key="end" value="2580"/>
+      <details key="start" value="2649"/>
+      <details key="end" value="2655"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.189" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.9/@item">
-      <details key="start" value="2584"/>
-      <details key="end" value="2596"/>
+      <details key="start" value="2662"/>
+      <details key="end" value="2674"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.190" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.10/@item">
-      <details key="start" value="2600"/>
-      <details key="end" value="2610"/>
+      <details key="start" value="2675"/>
+      <details key="end" value="2685"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.191" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.11/@item">
-      <details key="start" value="2614"/>
-      <details key="end" value="2632"/>
+      <details key="start" value="2686"/>
+      <details key="end" value="2704"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.192" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.12/@item">
-      <details key="start" value="2636"/>
-      <details key="end" value="2645"/>
+      <details key="start" value="2711"/>
+      <details key="end" value="2720"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.193" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.13/@item">
-      <details key="start" value="2649"/>
-      <details key="end" value="2657"/>
+      <details key="start" value="2721"/>
+      <details key="end" value="2729"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.194" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.14/@item">
-      <details key="start" value="2661"/>
-      <details key="end" value="2670"/>
+      <details key="start" value="2730"/>
+      <details key="end" value="2739"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.195" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.15/@item">
-      <details key="start" value="2674"/>
-      <details key="end" value="2687"/>
+      <details key="start" value="2740"/>
+      <details key="end" value="2753"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.196" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.16/@item">
-      <details key="start" value="2691"/>
-      <details key="end" value="2698"/>
+      <details key="start" value="2760"/>
+      <details key="end" value="2767"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.197" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.17/@item">
-      <details key="start" value="2702"/>
-      <details key="end" value="2715"/>
+      <details key="start" value="2768"/>
+      <details key="end" value="2781"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.198" references="/0/isStringService/@expression/serviceNames/@initExpression/@part.18/@item">
-      <details key="start" value="2719"/>
-      <details key="end" value="2730"/>
+      <details key="start" value="2782"/>
+      <details key="end" value="2793"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.199" references="/0/isSystemService">
-      <details key="start" value="2774"/>
-      <details key="end" value="2937"/>
-      <details key="line" value="75"/>
+      <details key="start" value="2844"/>
+      <details key="end" value="3014"/>
+      <details key="line" value="86"/>
     </eAnnotations>
     <eAnnotations source="positions.200" references="/0/isSystemService/callName">
-      <details key="start" value="2804"/>
-      <details key="end" value="2821"/>
-      <details key="line" value="75"/>
+      <details key="start" value="2874"/>
+      <details key="end" value="2891"/>
+      <details key="line" value="86"/>
     </eAnnotations>
     <eAnnotations source="positions.201" references="/0/isSystemService/@expression">
-      <details key="start" value="2835"/>
-      <details key="end" value="2935"/>
+      <details key="start" value="2907"/>
+      <details key="end" value="3009"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.202" references="/0/isSystemService/@expression/@in">
-      <details key="start" value="2903"/>
-      <details key="end" value="2935"/>
+      <details key="start" value="2977"/>
+      <details key="end" value="3009"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.203" references="/0/isSystemService/@expression/@in/serviceNames">
-      <details key="start" value="2903"/>
-      <details key="end" value="2915"/>
+      <details key="start" value="2977"/>
+      <details key="end" value="2989"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.204" references="/0/isSystemService/@expression/@in/callName">
-      <details key="start" value="2926"/>
-      <details key="end" value="2934"/>
+      <details key="start" value="3000"/>
+      <details key="end" value="3008"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.205" references="/0/isSystemService/@expression/serviceNames">
-      <details key="start" value="2839"/>
-      <details key="end" value="2899"/>
+      <details key="start" value="2911"/>
+      <details key="end" value="2968"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.206" references="/0/isSystemService/@expression/serviceNames/@initExpression">
-      <details key="start" value="2873"/>
-      <details key="end" value="2899"/>
+      <details key="start" value="2948"/>
+      <details key="end" value="2968"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.207" references="/0/isSystemService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="2885"/>
-      <details key="end" value="2888"/>
+      <details key="start" value="2957"/>
+      <details key="end" value="2960"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.208" references="/0/isSystemService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="2892"/>
-      <details key="end" value="2898"/>
+      <details key="start" value="2961"/>
+      <details key="end" value="2967"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.209" references="/0/isXPathService">
-      <details key="start" value="2942"/>
-      <details key="end" value="3224"/>
-      <details key="line" value="79"/>
+      <details key="start" value="3018"/>
+      <details key="end" value="3292"/>
+      <details key="line" value="93"/>
     </eAnnotations>
     <eAnnotations source="positions.210" references="/0/isXPathService/callName">
-      <details key="start" value="2971"/>
-      <details key="end" value="2988"/>
-      <details key="line" value="79"/>
+      <details key="start" value="3047"/>
+      <details key="end" value="3064"/>
+      <details key="line" value="93"/>
     </eAnnotations>
     <eAnnotations source="positions.211" references="/0/isXPathService/@expression">
-      <details key="start" value="3002"/>
-      <details key="end" value="3222"/>
+      <details key="start" value="3080"/>
+      <details key="end" value="3287"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.212" references="/0/isXPathService/@expression/@in">
-      <details key="start" value="3190"/>
-      <details key="end" value="3222"/>
+      <details key="start" value="3255"/>
+      <details key="end" value="3287"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.213" references="/0/isXPathService/@expression/@in/serviceNames">
-      <details key="start" value="3190"/>
-      <details key="end" value="3202"/>
+      <details key="start" value="3255"/>
+      <details key="end" value="3267"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.214" references="/0/isXPathService/@expression/@in/callName">
-      <details key="start" value="3213"/>
-      <details key="end" value="3221"/>
+      <details key="start" value="3278"/>
+      <details key="end" value="3286"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.215" references="/0/isXPathService/@expression/serviceNames">
-      <details key="start" value="3006"/>
-      <details key="end" value="3186"/>
+      <details key="start" value="3084"/>
+      <details key="end" value="3246"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.216" references="/0/isXPathService/@expression/serviceNames/@initExpression">
-      <details key="start" value="3040"/>
-      <details key="end" value="3186"/>
+      <details key="start" value="3121"/>
+      <details key="end" value="3246"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.217" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="3052"/>
-      <details key="end" value="3062"/>
+      <details key="start" value="3130"/>
+      <details key="end" value="3140"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.218" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="3066"/>
-      <details key="end" value="3074"/>
+      <details key="start" value="3141"/>
+      <details key="end" value="3149"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.219" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="3078"/>
-      <details key="end" value="3084"/>
+      <details key="start" value="3150"/>
+      <details key="end" value="3156"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.220" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.3/@item">
-      <details key="start" value="3088"/>
-      <details key="end" value="3095"/>
+      <details key="start" value="3157"/>
+      <details key="end" value="3164"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.221" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.4/@item">
-      <details key="start" value="3099"/>
-      <details key="end" value="3111"/>
+      <details key="start" value="3165"/>
+      <details key="end" value="3177"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.222" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.5/@item">
-      <details key="start" value="3115"/>
-      <details key="end" value="3133"/>
+      <details key="start" value="3184"/>
+      <details key="end" value="3202"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.223" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.6/@item">
-      <details key="start" value="3137"/>
-      <details key="end" value="3148"/>
+      <details key="start" value="3203"/>
+      <details key="end" value="3214"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.224" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.7/@item">
-      <details key="start" value="3152"/>
-      <details key="end" value="3170"/>
+      <details key="start" value="3215"/>
+      <details key="end" value="3233"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.225" references="/0/isXPathService/@expression/serviceNames/@initExpression/@part.8/@item">
-      <details key="start" value="3174"/>
-      <details key="end" value="3185"/>
+      <details key="start" value="3234"/>
+      <details key="end" value="3245"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.226" references="/0/isENodeService">
-      <details key="start" value="3229"/>
-      <details key="end" value="3666"/>
-      <details key="line" value="90"/>
+      <details key="start" value="3296"/>
+      <details key="end" value="3915"/>
+      <details key="line" value="101"/>
     </eAnnotations>
-    <eAnnotations source="positions.227" references="/0/isENodeService/callName">
-      <details key="start" value="3258"/>
-      <details key="end" value="3275"/>
-      <details key="line" value="90"/>
+    <eAnnotations source="positions.227" references="/0/isENodeService/call">
+      <details key="start" value="3325"/>
+      <details key="end" value="3336"/>
+      <details key="line" value="101"/>
     </eAnnotations>
     <eAnnotations source="positions.228" references="/0/isENodeService/@expression">
-      <details key="start" value="3289"/>
-      <details key="end" value="3664"/>
+      <details key="start" value="3352"/>
+      <details key="end" value="3910"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.229" references="/0/isENodeService/@expression/@in">
-      <details key="start" value="3632"/>
-      <details key="end" value="3664"/>
+      <details key="start" value="-1"/>
+      <details key="end" value="-1"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.230" references="/0/isENodeService/@expression/@in/serviceNames">
-      <details key="start" value="3632"/>
-      <details key="end" value="3644"/>
+    <eAnnotations source="positions.230" references="/0/isENodeService/@expression/@in/@in">
+      <details key="start" value="3720"/>
+      <details key="end" value="3910"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.231" references="/0/isENodeService/@expression/@in/callName">
-      <details key="start" value="3655"/>
-      <details key="end" value="3663"/>
+    <eAnnotations source="positions.231" references="/0/isENodeService/@expression/@in/@in/@condition">
+      <details key="start" value="3723"/>
+      <details key="end" value="3761"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.232" references="/0/isENodeService/@expression/serviceNames">
-      <details key="start" value="3293"/>
-      <details key="end" value="3628"/>
+    <eAnnotations source="positions.232" references="/0/isENodeService/@expression/@in/@in/@condition/serviceNamesNoArg">
+      <details key="start" value="3723"/>
+      <details key="end" value="3740"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.233" references="/0/isENodeService/@expression/serviceNames/@initExpression">
-      <details key="start" value="3327"/>
-      <details key="end" value="3628"/>
+    <eAnnotations source="positions.233" references="/0/isENodeService/@expression/@in/@in/@condition/@argument.0">
+      <details key="start" value="3751"/>
+      <details key="end" value="3760"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.234" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="3339"/>
-      <details key="end" value="3346"/>
+    <eAnnotations source="positions.234" references="/0/isENodeService/@expression/@in/@in/@condition/@argument.0/call">
+      <details key="start" value="3751"/>
+      <details key="end" value="3755"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.235" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="3350"/>
-      <details key="end" value="3356"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.236" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="3360"/>
-      <details key="end" value="3368"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.237" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.3/@item">
-      <details key="start" value="3372"/>
-      <details key="end" value="3381"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.238" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.4/@item">
-      <details key="start" value="3385"/>
-      <details key="end" value="3392"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.239" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.5/@item">
-      <details key="start" value="3396"/>
-      <details key="end" value="3403"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.240" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.6/@item">
-      <details key="start" value="3407"/>
-      <details key="end" value="3413"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.241" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.7/@item">
-      <details key="start" value="3417"/>
-      <details key="end" value="3423"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.242" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.8/@item">
-      <details key="start" value="3427"/>
-      <details key="end" value="3434"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.243" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.9/@item">
-      <details key="start" value="3438"/>
-      <details key="end" value="3444"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.244" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.10/@item">
-      <details key="start" value="3448"/>
-      <details key="end" value="3455"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.245" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.11/@item">
-      <details key="start" value="3459"/>
-      <details key="end" value="3470"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.246" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.12/@item">
-      <details key="start" value="3474"/>
-      <details key="end" value="3484"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.247" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.13/@item">
-      <details key="start" value="3488"/>
-      <details key="end" value="3499"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.248" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.14/@item">
-      <details key="start" value="3503"/>
-      <details key="end" value="3511"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.249" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.15/@item">
-      <details key="start" value="3515"/>
-      <details key="end" value="3522"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.250" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.16/@item">
-      <details key="start" value="3526"/>
-      <details key="end" value="3536"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.251" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.17/@item">
-      <details key="start" value="3540"/>
-      <details key="end" value="3549"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.252" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.18/@item">
-      <details key="start" value="3553"/>
-      <details key="end" value="3560"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.253" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.19/@item">
-      <details key="start" value="3564"/>
-      <details key="end" value="3571"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.254" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.20/@item">
-      <details key="start" value="3575"/>
-      <details key="end" value="3581"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.255" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.21/@item">
-      <details key="start" value="3585"/>
-      <details key="end" value="3590"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.256" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.22/@item">
-      <details key="start" value="3594"/>
-      <details key="end" value="3602"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.257" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.23/@item">
-      <details key="start" value="3606"/>
-      <details key="end" value="3616"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.258" references="/0/isENodeService/@expression/serviceNames/@initExpression/@part.24/@item">
-      <details key="start" value="3620"/>
-      <details key="end" value="3627"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.259" references="/0/isContextService">
-      <details key="start" value="3671"/>
-      <details key="end" value="3865"/>
-      <details key="line" value="117"/>
-    </eAnnotations>
-    <eAnnotations source="positions.260" references="/0/isContextService/callName">
-      <details key="start" value="3702"/>
-      <details key="end" value="3719"/>
-      <details key="line" value="117"/>
-    </eAnnotations>
-    <eAnnotations source="positions.261" references="/0/isContextService/@expression">
-      <details key="start" value="3733"/>
-      <details key="end" value="3863"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.262" references="/0/isContextService/@expression/@in">
-      <details key="start" value="3831"/>
-      <details key="end" value="3863"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.263" references="/0/isContextService/@expression/@in/serviceNames">
-      <details key="start" value="3831"/>
-      <details key="end" value="3843"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.264" references="/0/isContextService/@expression/@in/callName">
-      <details key="start" value="3854"/>
-      <details key="end" value="3862"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.265" references="/0/isContextService/@expression/serviceNames">
-      <details key="start" value="3737"/>
-      <details key="end" value="3827"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.266" references="/0/isContextService/@expression/serviceNames/@initExpression">
+    <eAnnotations source="positions.235" references="/0/isENodeService/@expression/@in/@in/@thenExpression">
       <details key="start" value="3771"/>
-      <details key="end" value="3827"/>
+      <details key="end" value="3775"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.267" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.0/@item">
-      <details key="start" value="3783"/>
-      <details key="end" value="3788"/>
+    <eAnnotations source="positions.236" references="/0/isENodeService/@expression/@in/@in/@elseExpression">
+      <details key="start" value="3784"/>
+      <details key="end" value="3904"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.268" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="3792"/>
-      <details key="end" value="3798"/>
+    <eAnnotations source="positions.237" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition">
+      <details key="start" value="3787"/>
+      <details key="end" value="3863"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.269" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.2/@item">
-      <details key="start" value="3802"/>
-      <details key="end" value="3807"/>
+    <eAnnotations source="positions.238" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@source">
+      <details key="start" value="3787"/>
+      <details key="end" value="3823"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.270" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.3/@item">
-      <details key="start" value="3811"/>
+    <eAnnotations source="positions.239" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@source/serviceNamesArg">
+      <details key="start" value="3787"/>
+      <details key="end" value="3802"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.240" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@source/@argument.0">
+      <details key="start" value="3813"/>
+      <details key="end" value="3822"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.241" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@source/@argument.0/call">
+      <details key="start" value="3813"/>
       <details key="end" value="3817"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.271" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.4/@item">
-      <details key="start" value="3821"/>
-      <details key="end" value="3826"/>
+    <eAnnotations source="positions.242" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@argument.0">
+      <details key="start" value="3834"/>
+      <details key="end" value="3863"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.272" references="/0/isPropertiesService">
-      <details key="start" value="3869"/>
-      <details key="end" value="4057"/>
-      <details key="line" value="124"/>
-    </eAnnotations>
-    <eAnnotations source="positions.273" references="/0/isPropertiesService/callName">
-      <details key="start" value="3903"/>
-      <details key="end" value="3920"/>
-      <details key="line" value="124"/>
-    </eAnnotations>
-    <eAnnotations source="positions.274" references="/0/isPropertiesService/@expression">
-      <details key="start" value="3934"/>
-      <details key="end" value="4055"/>
+    <eAnnotations source="positions.243" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@argument.0/@source">
+      <details key="start" value="3838"/>
+      <details key="end" value="3863"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.275" references="/0/isPropertiesService/@expression/@in">
-      <details key="start" value="4023"/>
-      <details key="end" value="4055"/>
+    <eAnnotations source="positions.244" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@argument.0/@source/@source">
+      <details key="start" value="3838"/>
+      <details key="end" value="3852"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.276" references="/0/isPropertiesService/@expression/@in/serviceNames">
-      <details key="start" value="4023"/>
-      <details key="end" value="4035"/>
+    <eAnnotations source="positions.245" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@condition/@argument.0/@source/@source/call">
+      <details key="start" value="3838"/>
+      <details key="end" value="3842"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.277" references="/0/isPropertiesService/@expression/@in/callName">
-      <details key="start" value="4046"/>
-      <details key="end" value="4054"/>
+    <eAnnotations source="positions.246" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@thenExpression">
+      <details key="start" value="3873"/>
+      <details key="end" value="3877"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.278" references="/0/isPropertiesService/@expression/serviceNames">
-      <details key="start" value="3938"/>
-      <details key="end" value="4019"/>
+    <eAnnotations source="positions.247" references="/0/isENodeService/@expression/@in/@in/@elseExpression/@elseExpression">
+      <details key="start" value="3890"/>
+      <details key="end" value="3895"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.279" references="/0/isPropertiesService/@expression/serviceNames/@initExpression">
-      <details key="start" value="3972"/>
-      <details key="end" value="4019"/>
+    <eAnnotations source="positions.248" references="/0/isENodeService/@expression/@in/serviceNamesArg">
+      <details key="start" value="3590"/>
+      <details key="end" value="3711"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.280" references="/0/isPropertiesService/@expression/serviceNames/@initExpression/@part.0/@item">
+    <eAnnotations source="positions.249" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression">
+      <details key="start" value="3630"/>
+      <details key="end" value="3711"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.250" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.0/@item">
+      <details key="start" value="3639"/>
+      <details key="end" value="3646"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.251" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.1/@item">
+      <details key="start" value="3647"/>
+      <details key="end" value="3653"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.252" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.2/@item">
+      <details key="start" value="3654"/>
+      <details key="end" value="3662"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.253" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.3/@item">
+      <details key="start" value="3663"/>
+      <details key="end" value="3674"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.254" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.4/@item">
+      <details key="start" value="3675"/>
+      <details key="end" value="3681"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.255" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.5/@item">
+      <details key="start" value="3682"/>
+      <details key="end" value="3687"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.256" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.6/@item">
+      <details key="start" value="3688"/>
+      <details key="end" value="3696"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.257" references="/0/isENodeService/@expression/@in/serviceNamesArg/@initExpression/@part.7/@item">
+      <details key="start" value="3703"/>
+      <details key="end" value="3710"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.258" references="/0/isENodeService/@expression/serviceNamesNoArg">
+      <details key="start" value="3356"/>
+      <details key="end" value="3585"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.259" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression">
+      <details key="start" value="3398"/>
+      <details key="end" value="3585"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.260" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.0/@item">
+      <details key="start" value="3407"/>
+      <details key="end" value="3416"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.261" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.1/@item">
+      <details key="start" value="3417"/>
+      <details key="end" value="3424"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.262" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.2/@item">
+      <details key="start" value="3425"/>
+      <details key="end" value="3432"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.263" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.3/@item">
+      <details key="start" value="3433"/>
+      <details key="end" value="3439"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.264" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.4/@item">
+      <details key="start" value="3440"/>
+      <details key="end" value="3447"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.265" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.5/@item">
+      <details key="start" value="3448"/>
+      <details key="end" value="3454"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.266" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.6/@item">
+      <details key="start" value="3455"/>
+      <details key="end" value="3462"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.267" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.7/@item">
+      <details key="start" value="3469"/>
+      <details key="end" value="3480"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.268" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.8/@item">
+      <details key="start" value="3481"/>
+      <details key="end" value="3491"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.269" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.9/@item">
+      <details key="start" value="3492"/>
+      <details key="end" value="3500"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.270" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.10/@item">
+      <details key="start" value="3501"/>
+      <details key="end" value="3508"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.271" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.11/@item">
+      <details key="start" value="3509"/>
+      <details key="end" value="3519"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.272" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.12/@item">
+      <details key="start" value="3520"/>
+      <details key="end" value="3529"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.273" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.13/@item">
+      <details key="start" value="3536"/>
+      <details key="end" value="3543"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.274" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.14/@item">
+      <details key="start" value="3544"/>
+      <details key="end" value="3551"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.275" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.15/@item">
+      <details key="start" value="3552"/>
+      <details key="end" value="3558"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.276" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.16/@item">
+      <details key="start" value="3559"/>
+      <details key="end" value="3564"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.277" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.17/@item">
+      <details key="start" value="3565"/>
+      <details key="end" value="3573"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.278" references="/0/isENodeService/@expression/serviceNamesNoArg/@initExpression/@part.18/@item">
+      <details key="start" value="3574"/>
+      <details key="end" value="3584"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.279" references="/0/isENodeServiceStr">
+      <details key="start" value="3919"/>
+      <details key="end" value="4315"/>
+      <details key="line" value="120"/>
+    </eAnnotations>
+    <eAnnotations source="positions.280" references="/0/isENodeServiceStr/callName">
+      <details key="start" value="3951"/>
+      <details key="end" value="3968"/>
+      <details key="line" value="120"/>
+    </eAnnotations>
+    <eAnnotations source="positions.281" references="/0/isENodeServiceStr/@expression">
       <details key="start" value="3984"/>
-      <details key="end" value="4001"/>
+      <details key="end" value="4310"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.281" references="/0/isPropertiesService/@expression/serviceNames/@initExpression/@part.1/@item">
-      <details key="start" value="4005"/>
-      <details key="end" value="4018"/>
+    <eAnnotations source="positions.282" references="/0/isENodeServiceStr/@expression/@in">
+      <details key="start" value="4278"/>
+      <details key="end" value="4310"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.283" references="/0/isENodeServiceStr/@expression/@in/serviceNames">
+      <details key="start" value="4278"/>
+      <details key="end" value="4290"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.284" references="/0/isENodeServiceStr/@expression/@in/callName">
+      <details key="start" value="4301"/>
+      <details key="end" value="4309"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.285" references="/0/isENodeServiceStr/@expression/serviceNames">
+      <details key="start" value="3988"/>
+      <details key="end" value="4269"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.286" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression">
+      <details key="start" value="4025"/>
+      <details key="end" value="4269"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.287" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.0/@item">
+      <details key="start" value="4034"/>
+      <details key="end" value="4041"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.288" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.1/@item">
+      <details key="start" value="4042"/>
+      <details key="end" value="4048"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.289" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.2/@item">
+      <details key="start" value="4049"/>
+      <details key="end" value="4057"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.290" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.3/@item">
+      <details key="start" value="4058"/>
+      <details key="end" value="4067"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.291" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.4/@item">
+      <details key="start" value="4068"/>
+      <details key="end" value="4075"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.292" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.5/@item">
+      <details key="start" value="4076"/>
+      <details key="end" value="4083"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.293" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.6/@item">
+      <details key="start" value="4084"/>
+      <details key="end" value="4090"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.294" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.7/@item">
+      <details key="start" value="4097"/>
+      <details key="end" value="4103"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.295" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.8/@item">
+      <details key="start" value="4104"/>
+      <details key="end" value="4111"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.296" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.9/@item">
+      <details key="start" value="4112"/>
+      <details key="end" value="4118"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.297" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.10/@item">
+      <details key="start" value="4119"/>
+      <details key="end" value="4126"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.298" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.11/@item">
+      <details key="start" value="4127"/>
+      <details key="end" value="4138"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.299" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.12/@item">
+      <details key="start" value="4139"/>
+      <details key="end" value="4149"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.300" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.13/@item">
+      <details key="start" value="4156"/>
+      <details key="end" value="4167"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.301" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.14/@item">
+      <details key="start" value="4168"/>
+      <details key="end" value="4176"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.302" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.15/@item">
+      <details key="start" value="4177"/>
+      <details key="end" value="4184"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.303" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.16/@item">
+      <details key="start" value="4185"/>
+      <details key="end" value="4195"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.304" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.17/@item">
+      <details key="start" value="4196"/>
+      <details key="end" value="4205"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.305" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.18/@item">
+      <details key="start" value="4206"/>
+      <details key="end" value="4213"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.306" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.19/@item">
+      <details key="start" value="4220"/>
+      <details key="end" value="4227"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.307" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.20/@item">
+      <details key="start" value="4228"/>
+      <details key="end" value="4234"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.308" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.21/@item">
+      <details key="start" value="4235"/>
+      <details key="end" value="4240"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.309" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.22/@item">
+      <details key="start" value="4241"/>
+      <details key="end" value="4249"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.310" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.23/@item">
+      <details key="start" value="4250"/>
+      <details key="end" value="4260"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.311" references="/0/isENodeServiceStr/@expression/serviceNames/@initExpression/@part.24/@item">
+      <details key="start" value="4261"/>
+      <details key="end" value="4268"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.312" references="/0/isContextService">
+      <details key="start" value="4319"/>
+      <details key="end" value="4511"/>
+      <details key="line" value="130"/>
+    </eAnnotations>
+    <eAnnotations source="positions.313" references="/0/isContextService/callName">
+      <details key="start" value="4350"/>
+      <details key="end" value="4367"/>
+      <details key="line" value="130"/>
+    </eAnnotations>
+    <eAnnotations source="positions.314" references="/0/isContextService/@expression">
+      <details key="start" value="4383"/>
+      <details key="end" value="4506"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.315" references="/0/isContextService/@expression/@in">
+      <details key="start" value="4474"/>
+      <details key="end" value="4506"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.316" references="/0/isContextService/@expression/@in/serviceNames">
+      <details key="start" value="4474"/>
+      <details key="end" value="4486"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.317" references="/0/isContextService/@expression/@in/callName">
+      <details key="start" value="4497"/>
+      <details key="end" value="4505"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.318" references="/0/isContextService/@expression/serviceNames">
+      <details key="start" value="4387"/>
+      <details key="end" value="4465"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.319" references="/0/isContextService/@expression/serviceNames/@initExpression">
+      <details key="start" value="4424"/>
+      <details key="end" value="4465"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.320" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.0/@item">
+      <details key="start" value="4433"/>
+      <details key="end" value="4438"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.321" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.1/@item">
+      <details key="start" value="4439"/>
+      <details key="end" value="4445"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.322" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.2/@item">
+      <details key="start" value="4446"/>
+      <details key="end" value="4451"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.323" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.3/@item">
+      <details key="start" value="4452"/>
+      <details key="end" value="4458"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.324" references="/0/isContextService/@expression/serviceNames/@initExpression/@part.4/@item">
+      <details key="start" value="4459"/>
+      <details key="end" value="4464"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.325" references="/0/isPropertiesService">
+      <details key="start" value="4515"/>
+      <details key="end" value="4710"/>
+      <details key="line" value="137"/>
+    </eAnnotations>
+    <eAnnotations source="positions.326" references="/0/isPropertiesService/callName">
+      <details key="start" value="4549"/>
+      <details key="end" value="4566"/>
+      <details key="line" value="137"/>
+    </eAnnotations>
+    <eAnnotations source="positions.327" references="/0/isPropertiesService/@expression">
+      <details key="start" value="4582"/>
+      <details key="end" value="4705"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.328" references="/0/isPropertiesService/@expression/@in">
+      <details key="start" value="4673"/>
+      <details key="end" value="4705"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.329" references="/0/isPropertiesService/@expression/@in/serviceNames">
+      <details key="start" value="4673"/>
+      <details key="end" value="4685"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.330" references="/0/isPropertiesService/@expression/@in/callName">
+      <details key="start" value="4696"/>
+      <details key="end" value="4704"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.331" references="/0/isPropertiesService/@expression/serviceNames">
+      <details key="start" value="4586"/>
+      <details key="end" value="4664"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.332" references="/0/isPropertiesService/@expression/serviceNames/@initExpression">
+      <details key="start" value="4623"/>
+      <details key="end" value="4664"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.333" references="/0/isPropertiesService/@expression/serviceNames/@initExpression/@part.0/@item">
+      <details key="start" value="4632"/>
+      <details key="end" value="4649"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.334" references="/0/isPropertiesService/@expression/serviceNames/@initExpression/@part.1/@item">
+      <details key="start" value="4650"/>
+      <details key="end" value="4663"/>
       <details key="line" value="0"/>
     </eAnnotations>
   </ecore:EAnnotation>
