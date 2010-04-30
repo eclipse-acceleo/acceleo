@@ -387,6 +387,8 @@ public final class AcceleoWorkspaceUtil {
 					break;
 				}
 			}
+			// If we didn't find a corresponding package in this bundle, break this iteration and switch to
+			// the next bundle
 			if (!packageFound) {
 				continue;
 			}
