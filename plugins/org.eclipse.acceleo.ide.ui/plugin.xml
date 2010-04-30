@@ -455,7 +455,7 @@ Contributors:
        <wizard
              category="org.eclipse.acceleo.ide.ui"
              class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.main.AcceleoNewMainTemplateWizard"
-             icon="icons/AcceleoEditor.gif"
+             icon="icons/AcceleoEditorMain.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newfile.main.AcceleoNewMainTemplateWizard"
              name="%AcceleoMainWizardName"
              finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective">

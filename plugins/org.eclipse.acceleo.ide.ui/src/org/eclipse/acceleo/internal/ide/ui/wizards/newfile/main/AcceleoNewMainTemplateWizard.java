@@ -258,19 +258,17 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 			buffer.append("[import " + importsIt.next() + "/]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		buffer.append("\n"); //$NON-NLS-1$
-		buffer.append("[template public " + moduleName + "(element : OclAny)]\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		buffer.append("\t\n"); //$NON-NLS-1$
-		buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 		if (templates.length > 0) {
 			buffer.append("\n"); //$NON-NLS-1$
-			computeTemplateCalls(buffer, templates);
+			computeTemplateCalls(buffer, moduleName, templates);
 		} else {
+			buffer.append("[template public " + moduleName + "(element : OclAny)]\n\t\n"); //$NON-NLS-1$ //$NON-NLS-2$ 
+			buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 			buffer.append("\t[file (element.name.concat('.java'), false, '" + defaultEncoding + "')]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			buffer.append("\t\t\n"); //$NON-NLS-1$
-			buffer.append("\t[/file]\n"); //$NON-NLS-1$
+			buffer.append("\t[/file]\n\t\n"); //$NON-NLS-1$
+			buffer.append("[/template]\n"); //$NON-NLS-1$
 		}
-		buffer.append("\t\n"); //$NON-NLS-1$
-		buffer.append("[/template]\n"); //$NON-NLS-1$
 		return buffer.toString();
 	}
 
@@ -279,10 +277,12 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 	 * 
 	 * @param buffer
 	 *            is the buffer to fill
+	 * @param moduleName
+	 *            is the module name
 	 * @param templates
 	 *            are the selected templates
 	 */
-	private void computeTemplateCalls(StringBuilder buffer, Template[] templates) {
+	private void computeTemplateCalls(StringBuilder buffer, String moduleName, Template[] templates) {
 		Set<String> receiverTypes = new TreeSet<String>();
 		for (Template template : templates) {
 			receiverTypes.add(getTemplateReceiverType(template));
@@ -294,10 +294,13 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 			} else {
 				var = 'v';
 			}
-			buffer.append("\t[let " + var + " : " + receiverType + " = element]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			buffer
+					.append("[template public " + moduleName + receiverType + "(" + var + " : " + receiverType + ")]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			buffer.append("\t\n"); //$NON-NLS-1$
+			buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 			for (Template template : templates) {
 				if (receiverType.equals(getTemplateReceiverType(template))) {
-					buffer.append("\t\t[" + var + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					buffer.append("\t[" + var + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					buffer.append(template.getName());
 					buffer.append('(');
 					for (Iterator<String> argumentTypesIt = getTemplateArgumentTypes(template).iterator(); argumentTypesIt
@@ -310,7 +313,9 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 					buffer.append(")/]\n"); //$NON-NLS-1$
 				}
 			}
-			buffer.append("\t[/let]\n\n"); //$NON-NLS-1$
+			buffer.append("\t\n"); //$NON-NLS-1$
+			buffer.append("[/template]\n"); //$NON-NLS-1$
+
 		}
 	}
 
