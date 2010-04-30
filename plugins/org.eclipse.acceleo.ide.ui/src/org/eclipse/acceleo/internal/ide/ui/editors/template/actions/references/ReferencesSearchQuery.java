@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
+import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
@@ -80,6 +81,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	public ReferencesSearchQuery(AcceleoEditor editor, EObject declaration) {
 		this.declaration = declaration;
 		this.editor = editor;
+		this.searchResult = new ReferencesSearchResult(this);
 	}
 
 	/**
@@ -115,9 +117,6 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 * @see org.eclipse.search.ui.ISearchQuery#getSearchResult()
 	 */
 	public ISearchResult getSearchResult() {
-		if (searchResult == null) {
-			searchResult = new ReferencesSearchResult(this);
-		}
 		return searchResult;
 	}
 
@@ -258,6 +257,24 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 *            is the current AST node
 	 */
 	private void addASTNode(IFile mtlFile, StringBuffer acceleoText, EObject astNode) {
+
+		/*
+		 * If the astNode is formed like this : myVariable.myAttribute.mySuperTemplate(). It is interpreted by
+		 * OCL as an implicit collect : myVariable.myAttribute->collect(a|a.mySuperTemplate()) but there is a
+		 * problem with the parsing of the implicit collect. Therefore in order to have a valid result we will
+		 * here correct the error with an additional small parsing. The error is that OCL sees an implicit
+		 * collect and creates its body but the body doesn't have any start or end position and because of
+		 * that we cannot precisely determine where to start/end the highlighting of all the occurrences of a
+		 * template or where to start/end the renaming of all occurrences of a template during the
+		 * refactoring.
+		 */
+
+		if (astNode instanceof IteratorExp && (((IteratorExp)astNode).getBody().getStartPosition() == -1)
+				&& (((IteratorExp)astNode).getBody().getEndPosition() == -1)) {
+			((IteratorExp)astNode).getBody().setStartPosition(((IteratorExp)astNode).getStartPosition());
+			((IteratorExp)astNode).getBody().setEndPosition(((IteratorExp)astNode).getEndPosition());
+		}
+
 		boolean isRef = isMatching(astNode, declaration);
 		if (!isRef) {
 			for (EObject eObj : astNode.eCrossReferences()) {

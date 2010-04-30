@@ -36,7 +36,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.compare,
  org.eclipse.acceleo.profiler,
- org.eclipse.acceleo.traceability.model
+ org.eclipse.acceleo.traceability.model,
+ org.eclipse.ltk.core.refactoring,
+ org.eclipse.ltk.ui.refactoring
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

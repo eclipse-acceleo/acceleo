@@ -49,12 +49,12 @@ import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
@@ -71,7 +71,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
@@ -108,6 +107,13 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * Preference key for matching brackets color.
 	 */
 	private static final String MATCHING_BRACKETS_COLOR = PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
+
+	/**
+	 * TODO JMU/SBE : We should use a clear method to clear the current AST selection. Keeps a reference to
+	 * the last selected AST node in the editor through a simple-click on the editor. It identifies an EObject
+	 * without keeping the real reference on this EObject.
+	 */
+	protected String offsetASTNodeURI = ""; //$NON-NLS-1$
 
 	/**
 	 * The source content (The semantic content for this editor). It is used to create a CST model and is able
@@ -149,15 +155,14 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private String updatingOutlineURI = ""; //$NON-NLS-1$
 
 	/**
-	 * Keeps a reference to the last selected AST node in the editor through a simple-click on the editor. It
-	 * identifies an EObject without keeping the real reference on this EObject.
-	 */
-	private String offsetASTNodeURI = ""; //$NON-NLS-1$
-
-	/**
 	 * The decorate job to highlight all the occurrences of the current selection in the editor.
 	 */
 	private AcceleoOccurrencesFinderJob occurrencesFinderJob;
+
+	/**
+	 * The job that will supress the annotation when the user type some text.
+	 */
+	private AcceleoRemoveAnnotationJob removeAnnotationJob;
 
 	/**
 	 * Listener which is notified when the post selection changes on the page. It is used to highlight in the
@@ -692,6 +697,25 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			this.getSite().getPage().addPostSelectionListener(findOccurrencesPostSelectionListener);
 		}
 
+		// if the editor is dirty, we suppress the annotations
+		this.getSourceViewer().addTextListener(new ITextListener() {
+			public void textChanged(TextEvent event) {
+				if (removeAnnotationJob != null) {
+					removeAnnotationJob.cancel();
+				}
+				if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
+						&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+								.getActiveEditor() instanceof AcceleoEditor) {
+					AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+
+					removeAnnotationJob = new AcceleoRemoveAnnotationJob(editor);
+					removeAnnotationJob.schedule();
+				}
+
+			}
+		});
+
 		annotationModel = viewer.getProjectionAnnotationModel();
 	}
 
@@ -703,9 +727,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (occurrencesFinderJob != null) {
 			occurrencesFinderJob.cancel();
 		}
-		final EObject selectedElement = this.findDeclaration();
+		final EObject selectedElement = OpenDeclarationUtils.findDeclaration(this);
 		String selectedElementURI = getFragmentID(selectedElement);
-		if (!selectedElementURI.equals(offsetASTNodeURI)) {
+		if (!selectedElementURI.equals(offsetASTNodeURI) && !this.isDirty()) {
 			offsetASTNodeURI = selectedElementURI;
 			final IAnnotationModel model = this.getDocumentProvider().getAnnotationModel(
 					this.getEditorInput());
@@ -722,63 +746,12 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			if (selectedElement != null) {
 				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement);
 				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(this, AcceleoUIMessages
-						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery); //$NON-NLS-1$
+						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery, selectedElement); //$NON-NLS-1$
 				occurrencesFinderJob.setSystem(true);
 				occurrencesFinderJob.setPriority(Job.DECORATE);
 				occurrencesFinderJob.schedule();
 			}
 		}
-	}
-
-	/**
-	 * Find the declaration of the text selected in the given editor.
-	 * 
-	 * @return the EObject corresponding to the declaration of the selected element
-	 */
-	private EObject findDeclaration() {
-		EObject res = null;
-		int offset;
-		final ISelection selection = this.getSelectionProvider().getSelection();
-		if (selection instanceof TextSelection) {
-			offset = ((TextSelection)selection).getOffset();
-		} else {
-			offset = -1;
-		}
-		final ASTNode astNode = this.getContent().getASTNode(offset, offset);
-		if (astNode != null) {
-			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
-		}
-		if (res == null) {
-			final CSTNode cstNode = this.getContent().getCSTNode(offset, offset);
-			if (cstNode != null) {
-				res = OpenDeclarationUtils.findDeclarationFromCST(this, astNode, cstNode);
-			}
-		}
-		return res;
-	}
-
-	/**
-	 * Compute the whole line of the current offset.
-	 * 
-	 * @param document
-	 *            the current document
-	 * @param offset
-	 *            the current offset
-	 * @return the line containing the offset, ended with the offset
-	 */
-	public String getCurrentLine(final IDocument document, final int offset) {
-		String result = null;
-		try {
-			if (offset >= 0) {
-				final int lineNumber = document.getLineOfOffset(offset);
-				final int lineOffset = document.getLineOffset(lineNumber);
-				result = document.get(lineOffset, offset - lineOffset);
-			}
-			return result;
-		} catch (BadLocationException ble) {
-			result = null;
-		}
-		return result;
 	}
 
 	/**

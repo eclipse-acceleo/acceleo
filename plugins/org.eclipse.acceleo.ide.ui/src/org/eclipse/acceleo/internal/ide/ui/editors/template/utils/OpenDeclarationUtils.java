@@ -13,6 +13,7 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,9 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchResult;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -42,6 +46,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
@@ -58,6 +63,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ocl.Environment;
@@ -68,6 +75,7 @@ import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
+import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -157,7 +165,18 @@ public final class OpenDeclarationUtils {
 			EClassifier eClassifier = ((TypeExp)astNode).getReferredType();
 			res = eClassifier;
 		} else if (astNode instanceof IteratorExp) {
-			res = astNode;
+			if ((((IteratorExp)astNode).getBody().getStartPosition() == -1)
+					&& (((IteratorExp)astNode).getBody().getEndPosition() == -1)) {
+				res = findDeclarationFromAST(((IteratorExp)astNode).getBody());
+			} else {
+				res = astNode;
+			}
+		} else if (astNode instanceof Template) {
+			Template template = (Template)astNode;
+			res = template;
+		} else if (astNode instanceof Query) {
+			Query query = (Query)astNode;
+			res = query;
 		}
 		return res;
 	}
@@ -733,4 +752,227 @@ public final class OpenDeclarationUtils {
 
 	}
 
+	/**
+	 * Find the element selected in the given editor.
+	 * 
+	 * @param editor
+	 *            The editor.
+	 * @return The EObject corresponding to the selected element in the editor.
+	 */
+	public static EObject findDeclaration(final AcceleoEditor editor) {
+		EObject res = null;
+		int offset;
+		final ISelection selection = editor.getSelectionProvider().getSelection();
+		if (selection instanceof TextSelection) {
+			offset = ((TextSelection)selection).getOffset();
+		} else {
+			offset = -1;
+		}
+		final ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+		if (astNode != null) {
+			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+		}
+		if (res == null) {
+			final CSTNode cstNode = editor.getContent().getCSTNode(offset, offset);
+			if (cstNode != null) {
+				res = OpenDeclarationUtils.findDeclarationFromCST(editor, astNode, cstNode);
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Find all the occurrences of the element in the editor.
+	 * 
+	 * @param editor
+	 *            The editor.
+	 * @param object
+	 *            The element.
+	 * @return The list of all the matches.
+	 */
+	public static List<Match> findOccurrences(final AcceleoEditor editor, final EObject object) {
+		final List<Match> list = new ArrayList<Match>();
+
+		final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(editor, object);
+		searchQuery.run(new NullProgressMonitor());
+
+		final ReferencesSearchResult result = (ReferencesSearchResult)searchQuery.getSearchResult();
+		final Object[] array = result.getElements();
+
+		for (int i = 0; i < array.length; i++) {
+			if (((ReferenceEntry)array[i]).getRegion() != null) {
+				list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
+						((ReferenceEntry)array[i]).getRegion().getLength()));
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * This method will find all the occurrences of a variable within the variable's template. With this
+	 * method, we will consider variable and variable exp that's why the variable parameter is an EObject, but
+	 * if the parameter has another type the result will be an empty list. We will analyze the list of matches
+	 * and find matches from the current file that are within the same template.
+	 * 
+	 * @param variable
+	 *            The variable for which we seek occurrences
+	 * @param matches
+	 *            The matches from the finOccurrences method.
+	 * @param file
+	 *            The current file.
+	 * @return The list of all matching variable and variable exp within the same template as our variable.
+	 */
+	public static List<Match> findOccurrencesInTemplate(final EObject variable,
+			final List<Match> matches, final IFile file) {
+		final List<Match> list = new ArrayList<Match>();
+
+		Template templateVariable = findContainingTemplateOf(variable);
+
+		if (variable instanceof Variable) {
+			for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
+				Match match = (Match)iterator.next();
+				EObject object = ((ReferenceEntry)match.getElement()).getMatch();
+				Template templateMatch = findContainingTemplateOf(((ReferenceEntry)match.getElement())
+						.getMatch());
+
+				if (checkTemplateEqual(templateVariable, templateMatch)
+						&& typeEqualsVariable((Variable)variable, object)) {
+					list.add(match);
+				}
+			}
+		}
+
+		if (variable instanceof VariableExp) {
+			for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
+				Match match = (Match)iterator.next();
+				EObject object = ((ReferenceEntry)match.getElement()).getMatch();
+				Template templateMatch = findContainingTemplateOf(((ReferenceEntry)match.getElement())
+						.getMatch());
+
+				if (checkTemplateEqual(templateVariable, templateMatch)
+						&& typeEqualsVariableExp((VariableExp)variable, object)) {
+					list.add(match);
+				}
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Check if the variable and the current object have the same type. In this method, we are only interested
+	 * in two cases : if object is a variable or a variable exp, if object is an instance of another class we
+	 * don't need any result so even if object is in the same template as elem, if it has another type than
+	 * variable or variable exp, the result will be false.
+	 * 
+	 * @param elem
+	 *            The variable.
+	 * @param object
+	 *            The current object.
+	 * @return True if they have the same type.
+	 */
+	private static boolean typeEqualsVariable(final Variable elem, final EObject object) {
+		boolean result = false;
+
+		if (object instanceof Variable) {
+			result = elem.getEType().getName().equals(((Variable)object).getEType().getName());
+		} else if (object instanceof VariableExp) {
+			result = elem.getEType().getName().equals(
+					((Variable)((VariableExp)object).getReferredVariable()).getEType().getName());
+		} else {
+			result = false;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Check if the variable exp and the current object have the same type. In this method, we are only
+	 * interested in two cases : if object is a variable or a variable exp, if object is an instance of
+	 * another class we don't need any result so even if object is in the same template as elem, if it has
+	 * another type than variable or variable exp, the result will be false.
+	 * 
+	 * @param elem
+	 *            The variable exp.
+	 * @param object
+	 *            The current object.
+	 * @return True if they have the same type.
+	 */
+	private static boolean typeEqualsVariableExp(final VariableExp elem, final EObject object) {
+		boolean result = false;
+
+		if (object instanceof Variable) {
+			result = ((Variable)elem.getReferredVariable()).getEType().getName().equals(
+					((Variable)object).getEType().getName());
+		} else if (object instanceof VariableExp) {
+			result = ((Variable)elem.getReferredVariable()).getEType().getName().equals(
+					((Variable)((VariableExp)object).getReferredVariable()).getEType().getName());
+		} else {
+			result = false;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Select the matches from a list of matches that are in the same file as the given file and that have a
+	 * valid region.
+	 * 
+	 * @param matches
+	 *            The list of matches to filter.
+	 * @param file
+	 *            The given file.
+	 * @return The new list of matches.
+	 */
+	public static List<Match> getMatchesFromTheFile(final List<Match> matches, final IFile file) {
+		final List<Match> list = new ArrayList<Match>();
+
+		for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
+			Match match = (Match)iterator.next();
+			if (((ReferenceEntry)match.getElement()).getTemplateFile().equals(file)) {
+				list.add(match);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Check if two templates have the same name and the same position.
+	 * 
+	 * @param t1
+	 *            The first template.
+	 * @param t2
+	 *            The second template.
+	 * @return True if the two templates are equals following our criteria.
+	 */
+	public static boolean checkTemplateEqual(final Template t1, final Template t2) {
+		boolean result;
+		if (t1 != null && t2 != null) {
+			result = t1.getName().equals(t2.getName());
+			result &= t1.getStartPosition() == t2.getStartPosition();
+			result &= t1.getEndPosition() == t2.getEndPosition();
+		} else {
+			result = false;
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the template containing the element or null if there isn't one.
+	 * 
+	 * @param object
+	 *            The object.
+	 * @return The template containing the element.
+	 */
+	public static Template findContainingTemplateOf(final EObject object) {
+		EObject temp = object;
+		while (temp != null && !(temp instanceof Template)) {
+			temp = temp.eContainer();
+		}
+
+		return (Template)temp;
+	}
 }

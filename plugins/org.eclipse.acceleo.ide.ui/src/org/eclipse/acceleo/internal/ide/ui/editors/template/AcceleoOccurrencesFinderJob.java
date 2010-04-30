@@ -20,15 +20,20 @@ import java.util.Map.Entry;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchResult;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.ocl.ecore.Variable;
+import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
 import org.eclipse.search.ui.text.Match;
 
@@ -57,6 +62,11 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	private ReferencesSearchQuery query;
 
 	/**
+	 * The element that is selected in the editor.
+	 */
+	private EObject element;
+
+	/**
 	 * The constructor.
 	 * 
 	 * @param editor
@@ -65,12 +75,15 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 *            The name of the job
 	 * @param query
 	 *            The search query.
+	 * @param selectedElement
+	 *            the selectedElement.
 	 */
 	public AcceleoOccurrencesFinderJob(final AcceleoEditor editor, final String name,
-			final ReferencesSearchQuery query) {
+			final ReferencesSearchQuery query, final EObject selectedElement) {
 		super(name);
 		this.editor = editor;
 		this.query = query;
+		this.element = selectedElement;
 	}
 
 	/**
@@ -80,7 +93,6 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 */
 	@Override
 	protected IStatus run(final IProgressMonitor monitor) {
-		// At this moment the result is empty but it's necessary for the initialization of the search result.
 		final ReferencesSearchResult result = (ReferencesSearchResult)query.getSearchResult();
 
 		IStatus status = null;
@@ -174,20 +186,23 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 *         file.
 	 */
 	private List<Match> listOfTheOccurencesInTheCurrentFile(final AbstractTextSearchResult result) {
-		final List<Match> list = new ArrayList<Match>();
+		List<Match> list = new ArrayList<Match>();
 		final Object[] array = result.getElements();
-
+		
 		for (int i = 0; i < array.length; i++) {
-			// if the file mentioned in the result is equal to the current file in the editor, we add that
-			// value to our list.
-			if (((ReferenceEntry)array[i]).getTemplateFile().equals(((AcceleoEditor)editor).getFile())) {
-				if (((ReferenceEntry)array[i]).getRegion() != null) {
-					list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
-							((ReferenceEntry)array[i]).getRegion().getLength()));
-				}
+			if (((ReferenceEntry)array[i]).getRegion() != null) {
+				list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
+						((ReferenceEntry)array[i]).getRegion().getLength()));
 			}
 		}
 
+		final IFile file = ((AcceleoEditor)editor).getFile();
+
+		list = OpenDeclarationUtils.getMatchesFromTheFile(list, file);
+
+		if (element instanceof Variable || element instanceof VariableExp) {
+			list = OpenDeclarationUtils.findOccurrencesInTemplate(element, list, file);
+		}
 		return list;
 	}
 
