@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionTemplateProposal;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
@@ -776,10 +777,20 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 				String templateName = ((org.eclipse.acceleo.model.mtl.Template)element).getName();
 				EObject eObject = ((org.eclipse.acceleo.model.mtl.Template)element).eContainer();
 				if (eObject instanceof Module) {
-					String newComment = "[comment @Override " + ((Module)eObject).getName() + "." //$NON-NLS-1$ //$NON-NLS-2$
-							+ templateName + " /]\n"; //$NON-NLS-1$
-					content.insert(0, newComment);
-					iBeginParenth += newComment.length();
+					StringBuilder comment = new StringBuilder();
+					comment.append("[comment]\n\t"); //$NON-NLS-1$
+					comment.append(AcceleoUIMessages.getString(
+							"OverridesBrowser.SelectedOverridesComment1", ((Module)eObject).getName())); //$NON-NLS-1$
+					comment.append("\n\t"); //$NON-NLS-1$
+					comment.append(AcceleoUIMessages.getString("OverridesBrowser.SelectedOverridesComment2")); //$NON-NLS-1$
+					comment.append("\n[/comment]\n"); //$NON-NLS-1$
+					comment.append("[comment @Override "); //$NON-NLS-1$
+					comment.append(((Module)eObject).getName());
+					comment.append("."); //$NON-NLS-1$
+					comment.append(templateName);
+					comment.append(" /]\n"); //$NON-NLS-1$
+					content.insert(0, comment.toString());
+					iBeginParenth += comment.length();
 				}
 				int iEndParenth = content.indexOf(IAcceleoConstants.PARENTHESIS_END, iBeginParenth);
 				if (iEndParenth > -1
