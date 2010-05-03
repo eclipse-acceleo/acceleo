@@ -26,11 +26,14 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoMacro
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoProtectedAreaScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoQueryScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoTemplateScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -143,6 +146,15 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 					int posEnd = point.y;
 					editor.updateSelection(posBegin, posEnd);
 				}
+			}
+
+			@Override
+			protected IRegion findExtendedDoubleClickSelection(IDocument document, int offset) {
+				IRegion region = super.findExtendedDoubleClickSelection(document, offset);
+				if (region == null) {
+					region = OpenDeclarationUtils.findIdentifierRegion(document, offset);
+				}
+				return region;
 			}
 		};
 	}
