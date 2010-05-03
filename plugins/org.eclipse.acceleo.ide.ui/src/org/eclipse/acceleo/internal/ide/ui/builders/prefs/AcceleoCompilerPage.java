@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 
 /**
  * The preference page to configure the Acceleo compiler. We can define for instance the standard compliance
- * mode : full or pragmatic.
+ * mode : strict or pragmatic.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
@@ -41,9 +41,9 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	private IAdaptable element;
 
 	/**
-	 * The widget to check or not the pragmatic compliant mode (opposite of the fully OMG compliant mode).
+	 * The widget to check or not the strict compliance mode (opposite of the pragmatic compliance mode).
 	 */
-	private Button pragmaticCompliance;
+	private Button strictCompliance;
 
 	/**
 	 * Constructor.
@@ -72,10 +72,10 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-			if (pragmaticCompliance.getSelection()) {
-				settings.setCompliance(AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE);
+			if (strictCompliance.getSelection()) {
+				settings.setCompliance(AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE);
 			} else {
-				settings.setCompliance(AcceleoBuilderSettings.BUILD_FULL_OMG_COMPLIANCE);
+				settings.setCompliance(AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE);
 			}
 			try {
 				settings.save();
@@ -126,22 +126,22 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	 *            is the parent composite
 	 */
 	private void createComplianceGroup(Composite parent) {
-		pragmaticCompliance = new Button(parent, SWT.CHECK);
-		pragmaticCompliance.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.PragmaticCompliance")); //$NON-NLS-1$
+		strictCompliance = new Button(parent, SWT.CHECK);
+		strictCompliance.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.StrictMTLCompliance")); //$NON-NLS-1$
 		GridData gridData = new GridData();
-		pragmaticCompliance.setLayoutData(gridData);
+		strictCompliance.setLayoutData(gridData);
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-			if (AcceleoBuilderSettings.BUILD_FULL_OMG_COMPLIANCE == settings.getCompliance()) {
-				pragmaticCompliance.setSelection(false);
+			if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
+				strictCompliance.setSelection(true);
 			} else if (AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE == settings.getCompliance()) {
-				pragmaticCompliance.setSelection(true);
+				strictCompliance.setSelection(false);
 			} else {
-				pragmaticCompliance.setSelection(true);
+				strictCompliance.setSelection(false);
 			}
 		} else {
-			pragmaticCompliance.setSelection(true);
+			strictCompliance.setSelection(false);
 		}
 	}
 }

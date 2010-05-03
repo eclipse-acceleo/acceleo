@@ -27,9 +27,9 @@ import org.eclipse.core.runtime.CoreException;
 public class AcceleoBuilderSettings {
 
 	/**
-	 * Full OMG build compliance mode.
+	 * Strict MTL build compliance mode.
 	 */
-	public static final String BUILD_FULL_OMG_COMPLIANCE = "full"; //$NON-NLS-1$
+	public static final String BUILD_STRICT_MTL_COMPLIANCE = "strict"; //$NON-NLS-1$
 
 	/**
 	 * Pragmatic build compliance mode which allows more useful operations than the 'Full OMG' one.
@@ -47,7 +47,7 @@ public class AcceleoBuilderSettings {
 	private IProject project;
 
 	/**
-	 * The build compliance mode of the project : BUILD_FULL_OMG_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE.
+	 * The build compliance mode of the project : BUILD_STRICT_MTL_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE.
 	 */
 	private String compliance;
 
@@ -65,8 +65,8 @@ public class AcceleoBuilderSettings {
 			ICommand command = getCommand(commands);
 			if (command != null) {
 				Object arg = command.getArguments().get(BUILD_COMPLIANCE_KEYWORD);
-				if (BUILD_FULL_OMG_COMPLIANCE.equals(arg)) {
-					compliance = BUILD_FULL_OMG_COMPLIANCE;
+				if (BUILD_STRICT_MTL_COMPLIANCE.equals(arg)) {
+					compliance = BUILD_STRICT_MTL_COMPLIANCE;
 				} else {
 					compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				}
@@ -97,7 +97,7 @@ public class AcceleoBuilderSettings {
 	}
 
 	/**
-	 * Gets the build compliance mode : BUILD_FULL_OMG_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE.
+	 * Gets the build compliance mode : BUILD_STRICT_MTL_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE.
 	 * 
 	 * @return the build compliance mode
 	 */
@@ -106,7 +106,7 @@ public class AcceleoBuilderSettings {
 	}
 
 	/**
-	 * Sets the build compliance mode : BUILD_FULL_OMG_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE. You have to
+	 * Sets the build compliance mode : BUILD_STRICT_MTL_COMPLIANCE or BUILD_PRAGMATIC_COMPLIANCE. You have to
 	 * call the save method if you want to write the new compliance mode in the '.project' file.
 	 * 
 	 * @param compliance

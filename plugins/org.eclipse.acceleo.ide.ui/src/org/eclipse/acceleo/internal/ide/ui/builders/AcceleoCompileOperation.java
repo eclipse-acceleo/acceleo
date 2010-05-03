@@ -194,7 +194,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			createRunnableAcceleoOperation.run(monitor);
 		}
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-		if (AcceleoBuilderSettings.BUILD_FULL_OMG_COMPLIANCE == settings.getCompliance()) {
+		if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
 			Iterator<AcceleoFile> itFiles = iFiles.iterator();
 			for (Iterator<URI> itURIs = oURIs.iterator(); !monitor.isCanceled() && itURIs.hasNext()
 					&& itFiles.hasNext();) {
