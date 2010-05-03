@@ -103,12 +103,18 @@ public final class DynamicTemplatesRegistryListener implements IRegistryEventLis
 		final List<String> paths = new ArrayList<String>(configElements.length);
 		for (IConfigurationElement elem : configElements) {
 			if (DYNAMIC_TEMPLATES_TAG_TEMPLATES.equals(elem.getName())) {
-				paths.add(elem.getAttribute(DYNAMIC_TEMPLATES_ATTRIBUTE_PATH));
+				String path = elem.getAttribute(DYNAMIC_TEMPLATES_ATTRIBUTE_PATH);
+				if (path != null) {
+					paths.add(path);
+				}
 			}
 		}
 		final Bundle bundle = Platform.getBundle(extension.getContributor().getName());
 		// If bundle is null, the bundle id is different than its name.
 		if (bundle != null) {
+			if (paths.size() == 0) {
+				paths.add("/"); //$NON-NLS-1$
+			}
 			AcceleoDynamicTemplatesEclipseUtil.addExtendingBundle(bundle, paths);
 		}
 	}

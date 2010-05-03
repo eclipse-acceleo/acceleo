@@ -103,7 +103,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				if (actualPath.charAt(0) != '/') {
 					actualPath = '/' + actualPath;
 				}
-				if (actualPath.charAt(actualPath.length() - 1) == '/') {
+				if (actualPath.length() > 1 && actualPath.charAt(actualPath.length() - 1) == '/') {
 					actualPath = actualPath.substring(0, actualPath.length() - 1);
 				}
 				if (actualPath.startsWith("/src") || actualPath.startsWith("/bin")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -115,6 +115,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					}
 				}
 				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
+				// We'll seek in the whole bundle and filter out later
 				Enumeration<URL> emtlFiles = entry.getKey().findEntries(pathSeparator, filePattern, true);
 				// no dynamic templates in this bundle
 				if (emtlFiles == null) {
