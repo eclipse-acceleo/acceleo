@@ -337,8 +337,12 @@ public class AcceleoResultView extends ResourceNavigator {
 						} else {
 							file = null;
 						}
-						if (file != null) {
-							expandElementsAt(file, ((TextSelection)selection).getOffset());
+						// Best user experience : We propagate the current selection in the tree viewer only
+						// if the text length is strictly greater than 0
+						if (file != null && ((TextSelection)selection).getLength() > 0) {
+							int offset = ((TextSelection)selection).getOffset()
+									+ ((TextSelection)selection).getLength() - 1;
+							expandElementsAt(file, offset);
 						}
 					}
 				}
@@ -461,7 +465,9 @@ public class AcceleoResultView extends ResourceNavigator {
 				ITextEditor editor = (ITextEditor)part;
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
-					editor.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(), true);
+					editor
+							.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(),
+									true);
 				} else if (element instanceof TraceabilityTemplate) {
 					int b = getMin((TraceabilityTemplate)element);
 					int e = getMax((TraceabilityTemplate)element);
@@ -575,11 +581,12 @@ public class AcceleoResultView extends ResourceNavigator {
 			}
 			current = current.getParent();
 		}
-		map.put(
-				IMarker.MESSAGE,
-				AcceleoUIMessages
-						.getString(
-								"AcceleoResultView.ActiveRegionMarkerMessage", new Object[] {objectToString, featureToString, templateToString, })); //$NON-NLS-1$
+		map
+				.put(
+						IMarker.MESSAGE,
+						AcceleoUIMessages
+								.getString(
+										"AcceleoResultView.ActiveRegionMarkerMessage", new Object[] {objectToString, featureToString, templateToString, })); //$NON-NLS-1$
 		map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_INFO));
 		map.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
 		int begin = region.getTargetFileOffset();
