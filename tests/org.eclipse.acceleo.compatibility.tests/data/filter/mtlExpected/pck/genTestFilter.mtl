@@ -8,11 +8,11 @@
 =Start=
 
 
-[for (attribute->select(oclIsKindOf(Property)).oclAsType(Property))]
+[for (attribute->filter(Property))]
 [name/]
 [/for]
 
-[feature->select(oclIsKindOf(Class)).oclAsType(Class).name/]
+[feature->filter(Class).name/]
 
 =End=
 
@@ -20,7 +20,7 @@
 [/template]
 
 [template public getClass(package : Package)]
-[eAllContents()->select(oclIsKindOf(Class)).oclAsType(Class).name/]
+[eAllContents()->filter(Class).name/]
 [/template]
 
 
