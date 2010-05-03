@@ -141,17 +141,19 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			annotationMap.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false, description), position);
 		}
 
-		final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
-				this.editor.getEditorInput());
+		if (this.editor.getDocumentProvider() != null && this.editor.getEditorInput() != null) {
+			final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
+					this.editor.getEditorInput());
 
-		if (annotationModel != null) {
-			synchronized(getLockObject(annotationModel)) {
-				final Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
-				while (iter.hasNext()) {
-					final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
-							.next();
-					annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry
-							.getValue());
+			if (annotationModel != null) {
+				synchronized(getLockObject(annotationModel)) {
+					final Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
+					while (iter.hasNext()) {
+						final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
+								.next();
+						annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry
+								.getValue());
+					}
 				}
 			}
 		}
@@ -188,7 +190,7 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	private List<Match> listOfTheOccurencesInTheCurrentFile(final AbstractTextSearchResult result) {
 		List<Match> list = new ArrayList<Match>();
 		final Object[] array = result.getElements();
-		
+
 		for (int i = 0; i < array.length; i++) {
 			if (((ReferenceEntry)array[i]).getRegion() != null) {
 				list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
