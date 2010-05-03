@@ -611,7 +611,7 @@ ___________________________________________________________________________
    ``oclIsKindOf(oclType)`` evaluates to **true**.
    The returned element is typed with the expected type (so there's no need to invoke ``oclAsType(oclType)`` on it).
    
-   **Important:** user of Acceleo 2.x should note that, contrary to what took place in acceleo 2.x,
+   **Important:** users of Acceleo 2.x should note that, contrary to what took place in acceleo 2.x,
    this operation **never** returns *self* even when ``self.oclIsKindOf(oclType)`` is true.
 
    examples:
@@ -630,7 +630,7 @@ ___________________________________________________________________________
 
 back to Contents_
 
-eContents (OclType oclType) : oclType
+eContents (OclType oclType) : Sequence(oclType)
 ___________________________________________________________________________
    Returns a sequence of the direct children of *self* that are of the given type, i.e. the direct children for which
    ``oclIsKindOf(oclType)`` evaluates to **true**.
@@ -641,11 +641,11 @@ ___________________________________________________________________________
 
    .. class:: exampletable
 
-   +------------------------------+----------------------+
-   | Expression                   | Result               |
-   +==============================+======================+
-   | package1.eContents(Class)    | {Class1b, Class 1a}  |
-   +------------------------------+----------------------+
+   +------------------------------+------------------------------+
+   | Expression                   | Result                       |
+   +==============================+==============================+
+   | package1.eContents(Class)    | Sequence{Class1b, Class 1a}  |
+   +------------------------------+------------------------------+
 
 back to Contents_
 
@@ -726,7 +726,7 @@ back to Contents_
 
 followingSiblings (OclType oclType) : Sequence(oclType)
 ___________________________________________________________________________
-   Returns the elements of the given type (or a subtype) from the set of the receiver's following siblings as a Sequence.
+   Returns the elements of the given type from the set of the receiver's following siblings as a Sequence.
    The returned sequence's elements are typed with the expected type
    (so there's no need to invoke ``oclAsType(oclType)`` on the sequence or its elements).
 
@@ -768,7 +768,7 @@ back to Contents_
 
 precedingSiblings (OclType oclType) : Sequence(oclType)
 ___________________________________________________________________________
-   Returns the elements of the given type (or a subtype) from the set of the receiver's preceding siblings as a Sequence.
+   Returns the elements of the given type from the set of the receiver's preceding siblings as a Sequence.
    The returned sequence's elements are typed with the expected type
    (so there's no need to invoke ``oclAsType(oclType)`` on the sequence or its elements).
 
@@ -806,7 +806,7 @@ back to Contents_
 
 siblings (OclType oclType) : Sequence(oclType)
 ___________________________________________________________________________
-   Returns the elements of the given type (or a subtype) from the set of the receiver's siblings as a Sequence.
+   Returns the elements of the given type from the set of the receiver's siblings as a Sequence.
    The returned sequence's elements are typed with the expected type
    (so there's no need to invoke ``oclAsType(oclType)`` on the sequence or its elements).
 
@@ -829,7 +829,7 @@ Non-standard *OclAny* operations
  
  **A note on properties**: properties can be accessed only if they've been added through the API. For this
  purpose, a number of facilities is provided. You can either override the generated launcher's *addProperties*
- method and add new pathes to properties files there, call manually one of the methods
+ method and add new paths to properties files there, call manually one of the methods
  **AcceleoService#addPropertiesFile()** or manually add key/value pairs through **AcceleoService#addProperties()**.
  Take note that the key/value pairs manually added will *always* take precedence over the properties taken from
  *.properties* files; and the *first* added property file will always take precedence over subsequently added
@@ -990,8 +990,9 @@ back to Contents_
 
 invoke (String class, String method, Sequence(OclAny) arguments ) : OclAny
 __________________________________________________________________________
-   Invokes the method *method* of class *class* with the given arguments. This will return OclInvalid if the method
-   cannot be called in any way (bad arguments, mispelled name, mispelled signature, encapsulation errors, ...).
+   Invokes the Java method *method* of class *class* with the given arguments. This will return OclInvalid if the method
+   cannot be called in any way (bad arguments, mispelled name, mispelled signature, encapsulation errors, ...). This is
+   only intended to be used to call Java methods for now.
 
    examples:
 
@@ -1040,6 +1041,68 @@ ___________________________________________________________________________
    +---------------------------------------+-------------------------------------------------------------+
    | package1.eContents().sep('2009')      | Sequence{Package11, '2009', Class1a, '2009', Class1b}       |
    +---------------------------------------+-------------------------------------------------------------+
+
+back to Contents_
+
+filter (OclType type) : Sequence(OclType)
+___________________________________________________________________________
+   Filters out of the collection all elements that are not instances
+   of the given type or any of its subtypes.
+   The returned collection is typed according to *type*.
+   Makes it easier to write ``select(e | e.oclIsKindOf(type)).oclAsType(type)``.
+   
+   examples:
+
+   .. class:: exampletable
+
+   +---------------------------------------+------------------------------------+
+   | Expression                            | Result                             |
+   +=======================================+====================================+
+   | package1.eContents().filter(Class)    | Sequence{Class1b, Class1a}         |
+   +---------------------------------------+------------------------------------+
+
+back to Contents_
+
+reverse () (Only on ordered collections)
+___________________________________________________________________________
+   Reverses the order of the collection: the last element becomes the first and
+   vice-versa.
+   Only available on **ordered collections** (Sequence and OrderedSet).
+   
+   examples:
+
+   .. class:: exampletable
+
+   +---------------------------------------+-------------------------------------------------------------+
+   | Expression                            | Result                                                      |
+   +=======================================+=============================================================+
+   | OrderedSet {1, 2, 3}                  | OrderedSet {3, 2, 1}                                        |
+   +---------------------------------------+-------------------------------------------------------------+
+   | Sequence {1, 2, 3}                    | Sequence {3, 2, 1}                                          |
+   +---------------------------------------+-------------------------------------------------------------+
+
+back to Contents_
+
+lastIndexOf (T elt) : Integer (Only on ordered collections)
+___________________________________________________________________________
+   Returns the position of the given element in the collection it is applied to.
+   Only available on **ordered collections** (Sequence and OrderedSet).
+   
+   examples:
+
+   .. class:: exampletable
+
+   +---------------------------------------+------------------------------+
+   | Expression                            | Result                       |
+   +=======================================+==============================+
+   | OrderedSet {1, 2, 1}->lastIndexOf(1)  | 3                            |
+   +---------------------------------------+------------------------------+
+   | Sequence {1, 2, 3}->lastIndexOf(4)    | -1                           |
+   +---------------------------------------+------------------------------+
+   | Sequence {1, null}->lastIndexOf(null) | 2                            |
+   +---------------------------------------+------------------------------+
+   | Sequence {1, 2, 3}->lastIndexOf(null) | -1                           |
+   +---------------------------------------+------------------------------+
 
 back to Contents_
 
