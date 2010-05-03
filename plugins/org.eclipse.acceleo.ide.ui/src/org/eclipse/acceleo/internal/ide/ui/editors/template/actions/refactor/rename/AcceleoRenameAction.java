@@ -30,7 +30,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.Saveable;
-import org.eclipse.ui.internal.SaveablesList;
+import org.eclipse.ui.SaveablesLifecycleEvent;
 
 /**
  * This class will launch the refactoring action.
@@ -38,7 +38,6 @@ import org.eclipse.ui.internal.SaveablesList;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
-
 	/**
 	 * Action's name.
 	 */
@@ -132,15 +131,20 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	 */
 	private boolean allRessourceSaved(final AcceleoEditor editor) {
 		if (editor.isDirty()) {
-			SaveablesList modelManager = (SaveablesList)editor.getSite().getWorkbenchWindow().getService(
-					ISaveablesLifecycleListener.class);
+			ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)editor.getSite()
+					.getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
 			Saveable[] saveableArray = editor.getSaveables();
 			List<Saveable> list = new ArrayList<Saveable>();
 			for (int i = 0; i < saveableArray.length; i++) {
 				list.add(saveableArray[i]);
 			}
-			boolean canceled = modelManager.promptForSaving(list, fWindow, fWindow, true, false);
-			return !canceled;
+
+			// Fires a "pre close" event so that the editors prompts us to save the dirty files.
+			// None will really be closed.
+			SaveablesLifecycleEvent event = new SaveablesLifecycleEvent(editor,
+					SaveablesLifecycleEvent.PRE_CLOSE, saveableArray, false);
+			modelManager.handleLifecycleEvent(event);
+			return !event.isVeto();
 		} else {
 			return true;
 		}
