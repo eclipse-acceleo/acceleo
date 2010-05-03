@@ -13,9 +13,9 @@ Copyright |copy| 2008, 2010 Obeo\ |trade|.
 New Acceleo UI project
 ======================
 
-Once your templates are ready, you may want to have some wizards to launch the generation from within eclipse. You can
+Once your templates are ready, you may want to have some wizards to launch the generation from within Eclipse. You can
 use the ant tasks or the java code, but you can also use the **New Acceleo UI project** wizard. This wizard will create a
-new eclipse ui project which will allow the user to launch the generation with a right-click action.
+new Eclipse ui project which will allow the user to launch the generation with a right-click action.
 
 The example below shows the default result of this plugin, a *Generate Sample* action on the *.uml* files.
 
