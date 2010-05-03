@@ -2,8 +2,11 @@
  Acceleo Tutorial
 =================
 
-:Authors: Laurent Goubet
-:Contact: laurent.goubet@obeo.fr
+:Authors:
+	Laurent Goubet,
+	Laurent Delaigue
+:Contact:
+	laurent.goubet@obeo.fr
 
 Copyright |copy| 2008, 2010 Obeo\ |trade|.
 
@@ -36,7 +39,7 @@ This wizard's page allows you to initialize the project by creating one or sever
 - Then, select the metamodel from which your generation file will take its types (in this example, UML)
 - Finally, choose the metaclass that will be used to generate the file (in this example, Class). This can be modified later at any time directly in the module files.
 
-**Note:** Other options are available to initialize the new module with exiting content. These options will be discussed later.
+**Note:** Other options are available to initialize the new module with existing content. These options will be discussed later.
 
 .. image:: ../images/new_acceleo_module_project_2.png
 
@@ -60,7 +63,7 @@ The module editor provides the following features:
 - Dynamic outline
 - Quick outline (ctrl + O)
 - Code folding
-- Open declaration (either with 'ctrl + left click' or 'F3')
+- Open declaration (either with 'ctrl + left click' or 'F3' on selection)
 - Search references (ctrl + shift + G)
 
 .. image:: ../images/acceleo_editor.png
@@ -121,11 +124,13 @@ The above module produces the following code:
 
 .. image:: ../images/acceleo_usercode_1_generated.png
 
-The second way, which is specific to generators that target the java language, is to add ``@generated`` annotations on elements that must be generated.
-Other elements (those that do not have such annotations) are considered not to be modified by subsequent generations.
+The second way, which is specific to generators that target the java language, is to add ``@generated`` annotations on the javadoc of elements that must be generated.
+Other elements (those that do not have such annotations in their javadoc, or in which the annotation has been slightly modified (i.e: ``@generated NOT`` or
+``@not-generated`` ... or whatever you fancy)) are considered not to be modified by subsequent generations.
 
 If a file contains at least one annotation ``@generated``, the merge of the former java file and the newly generated one is delegated to JMerge_.
-``@generated`` annotations can be added on any java element which can have modifiers (attributes, methods, inner classes, and so on).
+``@generated`` annotations must be added in the javadoc of the relevant java elements.
+They are **not** JDK5 annotations.
 
 .. image:: ../images/acceleo_usercode_2_editor.png
 
@@ -138,16 +143,15 @@ back to Contents_
 Java services wrappers
 ======================
 
-As mentioned earlier, it is possible to iniialize the content of a new Acceleo module file with content that comes from
+As mentioned earlier, it is possible to initialize the content of a new Acceleo module file with content that comes from
 
 - An existing Acceleo module file (a copy of this file is made)
 - Some java code that you need to access from your Acceleo templates
-- Acceleo 2.x templates (please note that at the time of writing these lines, the Acceleo 2.X to Accelo 3 translator is not complete yet)
 
 We will detail here the second possibility which makes it possible to execute standard java code from any Acceleo template or query.
 
 Let's suppose you have a class UML2Services in which you have implemented some specific behavior that you'd like
-to access from your generators. A good idea would be to put this class in a package ``services``.
+to access from your generators. A good idea would be to put this class in a package ``*services``.
 
 Right-click on the package and select *New > Acceleo Module File*.
 
@@ -192,7 +196,7 @@ The ant task
 
 **Note:** This feature may evolve in future releases.
 
-If you create a ``tasks`` folder at the root of our project, an ant file will be generated which can be used
+If you create a ``tasks`` folder at the root of your project, an ant file will be generated which can be used
 to launch a generation with the specified template. In order to use this build file, copy it inside the project
 containing the model to generate from, rename it to ``build.xml`` for example, then change the *MODEL* and *TARGET*
 properties accordingly. Launch the build via *External Tools > Run As > Ant Build*.
