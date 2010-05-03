@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.acceleo.compatibility.tests.suite.migration.MigrationTests;
 import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
 
 /**
@@ -23,7 +24,7 @@ import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class AllTests extends TestCase {
+public class CompatibilityTestSuite extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -46,7 +47,7 @@ public class AllTests extends TestCase {
 		suite.addTest(ParserTests.suite());
 		// Migration
 		// For some reason, these fail on the build machine
-		// suite.addTest(MigrationTests.suite());
+		suite.addTest(MigrationTests.suite());
 
 		return suite;
 	}
