@@ -1013,14 +1013,10 @@ type : name of the type we need a variable for.
 		'adaptTo'.concat(call.arguments->first()
 		.convertExpressionToOCL().replaceAll('\'', '')).concat('()')
 	else if call.name = 'cast' then
-		'select(oclIsKindOf('.concat(call.arguments->first()
-			.convertExpressionToOCL().replaceAll('\'', ''))
-			.concat(')).oclAsType(').concat(call.arguments->first()
+		'filter('.concat(call.arguments->first()
 			.convertExpressionToOCL().replaceAll('\'', '')).concat(')')
 	else if call.name = 'filter' then
-		'select(oclIsKindOf('.concat(call.arguments->first()
-		.convertExpressionToOCL().replaceAll('\'', ''))
-		.concat(')).oclAsType(').concat(call.arguments->first()
+		'filter('.concat(call.arguments->first()
 		.convertExpressionToOCL().replaceAll('\'', '')).concat(')')
 	else if call.name = 'current'
 			and call.arguments->size() = 0 then
