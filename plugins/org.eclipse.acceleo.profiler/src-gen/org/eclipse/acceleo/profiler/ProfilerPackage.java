@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerPackage.java,v 1.3 2010/04/12 09:35:24 lgoubet Exp $
+ * $Id: ProfilerPackage.java,v 1.4 2010/05/04 07:38:00 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler;
 
@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EReference;
  * @see org.eclipse.acceleo.profiler.ProfilerFactory
  * @model kind="package"
  * @generated
+ * @since 3.0
  */
 public interface ProfilerPackage extends EPackage {
 	/**

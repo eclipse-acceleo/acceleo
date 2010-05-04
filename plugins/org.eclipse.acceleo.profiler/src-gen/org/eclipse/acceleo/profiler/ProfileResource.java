@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfileResource.java,v 1.1 2009/09/08 16:10:04 ylussaud Exp $
+ * $Id: ProfileResource.java,v 1.2 2010/05/04 07:38:00 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler;
 
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.eclipse.acceleo.profiler.ProfilerPackage#getProfileResource()
  * @model
  * @generated
+ * @since 3.0
  */
 public interface ProfileResource extends EObject {
 	/**

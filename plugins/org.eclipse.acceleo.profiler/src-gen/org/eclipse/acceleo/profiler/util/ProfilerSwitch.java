@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: ProfilerSwitch.java,v 1.2 2010/04/26 15:24:18 lgoubet Exp $
+ * $Id: ProfilerSwitch.java,v 1.3 2010/05/04 07:37:59 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler.util;
 
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @see org.eclipse.acceleo.profiler.ProfilerPackage
  * @generated
+ * @since 3.0
  */
 public class ProfilerSwitch<T> {
 	/**

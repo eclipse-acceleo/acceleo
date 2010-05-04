@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: LoopProfileEntry.java,v 1.1 2009/09/08 16:10:04 ylussaud Exp $
+ * $Id: LoopProfileEntry.java,v 1.2 2010/05/04 07:38:00 lgoubet Exp $
  */
 package org.eclipse.acceleo.profiler;
 
@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.profiler.ProfilerPackage#getLoopProfileEntry()
  * @model
  * @generated
+ * @since 3.0
  */
 public interface LoopProfileEntry extends ProfileEntry {
 	/**
