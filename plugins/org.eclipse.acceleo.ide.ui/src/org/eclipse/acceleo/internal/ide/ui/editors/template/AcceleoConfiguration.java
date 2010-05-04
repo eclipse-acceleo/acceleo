@@ -148,12 +148,9 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 				}
 			}
 
-			@Override
+			// FIXME JMU doesn't compile in 3.4
 			protected IRegion findExtendedDoubleClickSelection(IDocument document, int offset) {
-				IRegion region = super.findExtendedDoubleClickSelection(document, offset);
-				if (region == null) {
-					region = OpenDeclarationUtils.findIdentifierRegion(document, offset);
-				}
+				IRegion region = OpenDeclarationUtils.findIdentifierRegion(document, offset);
 				return region;
 			}
 		};
