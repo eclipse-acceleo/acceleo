@@ -301,11 +301,10 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentQuery.size(); j++) {
-						if (listOfParametersOfTheCurrentQuery.get(j).getEType().equals(
+						if (!listOfParametersOfTheCurrentQuery.get(j).getEType().equals(
 								listOfParametersOfTheQueryWithTheSameName.get(j).getEType())) {
-							overloadingError &= true;
-						} else {
-							overloadingError &= false;
+							overloadingError = false;
+							break;
 						}
 					}
 

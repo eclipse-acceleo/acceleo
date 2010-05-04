@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -25,6 +26,7 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISaveablesLifecycleListener;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -49,6 +51,11 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow fWindow;
 
 	/**
+	 * the acceleo editor.
+	 */
+	private AcceleoEditor editor;
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
@@ -63,88 +70,167 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(final IAction action) {
-		final AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
-		if (fWindow != null && allRessourceSaved(editor) && !editor.isDirty()) {
-			final EObject obj = OpenDeclarationUtils.findDeclaration(editor);
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
+				|| PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null
+				|| !(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof AcceleoEditor)) {
+			return;
+		}
 
-			if (obj instanceof Template) {
-				final AcceleoRenameTemplateRefactoring refactoring = new AcceleoRenameTemplateRefactoring();
-				refactoring.setFileName(editor.getFile().getName());
-				AcceleoPositionedTemplate.computePartialInput();
-				AcceleoPositionedTemplate.setAcceleoEditor(editor);
+		this.editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActiveEditor();
 
-				final AcceleoPositionedTemplate[] array = AcceleoPositionedTemplate.getInput();
-				for (int i = 0; i < array.length; i++) {
-					AcceleoPositionedTemplate positionedTemplate = array[i];
-					if (((Template)obj).getName().equals(positionedTemplate.getTemplateName())) {
-						refactoring.setTemplate(positionedTemplate);
-					}
-				}
-				runWizard(new AcceleoRenameTemplateWizard(refactoring, name), fWindow.getShell(), name);
-			} else if (obj instanceof Query) {
-				final AcceleoRenameQueryRefactoring refactoring = new AcceleoRenameQueryRefactoring();
-				refactoring.setFileName(editor.getFile().getName());
-				AcceleoPositionedQuery.computePartialInput();
-				AcceleoPositionedQuery.setAcceleoEditor(editor);
+		if (fWindow != null && allRessourceSaved() && !this.editor.isDirty()) {
+			final EObject object = OpenDeclarationUtils.findDeclaration(this.editor);
 
-				final AcceleoPositionedQuery[] array = AcceleoPositionedQuery.getInput();
-				if (array.length > 0) {
-					refactoring.setQuery(array[0]);
-					runWizard(new AcceleoRenameQueryWizard(refactoring, name), fWindow.getShell(), name);
-				}
-			} else if (obj instanceof Variable) {
-				final AcceleoRenameVariableRefactoring refactoring = new AcceleoRenameVariableRefactoring();
-				refactoring.setFileName(editor.getFile().getName());
-				AcceleoPositionedVariable apv = new AcceleoPositionedVariable((Variable)obj, editor);
-
-				refactoring.setVariable(apv);
-				runWizard(new AcceleoRenameVariableWizard(refactoring, name), fWindow.getShell(), name);
-			} else if (obj instanceof VariableExp) {
-				final AcceleoRenameVariableRefactoring refactoring = new AcceleoRenameVariableRefactoring();
-				AcceleoPositionedVariable apv = new AcceleoPositionedVariable((VariableExp)obj, editor);
-
-				refactoring.setVariable(apv);
-				runWizard(new AcceleoRenameVariableWizard(refactoring, name), fWindow.getShell(), name);
+			if (object instanceof Template) {
+				this.launchRefactoringRenameTemplate((Template)object);
+			} else if (object instanceof Query) {
+				this.launchRefactoringRenameQuery((Query)object);
+			} else if (object instanceof Variable) {
+				this.launchRefactoringRenameVariable((Variable)object);
+			} else if (object instanceof VariableExp) {
+				this.launchRefactoringRenameVariable((VariableExp)object);
 			} else {
-				// by default, we will show the rename template refactoring.
-				final AcceleoRenameTemplateRefactoring refactoring = new AcceleoRenameTemplateRefactoring();
-				refactoring.setFileName(editor.getFile().getName());
-				AcceleoPositionedTemplate.computePartialInput();
-				AcceleoPositionedTemplate.setAcceleoEditor(editor);
-
-				final AcceleoPositionedTemplate[] array = AcceleoPositionedTemplate.getInput();
-				if (array.length > 0) {
-					refactoring.setTemplate(array[0]);
-					runWizard(new AcceleoRenameTemplateWizard(refactoring, name), fWindow.getShell(), name);
-				}
+				// if there is no element selected we will show the rename template refactoring.
+				this.launchRefactorRenameTemplate();
 			}
 		}
 	}
 
 	/**
+	 * Launch the refactoring of a template.
+	 */
+	private void launchRefactorRenameTemplate() {
+		this.launchRefactoringRenameTemplate(null);
+	}
+
+	/**
+	 * Launch the refactoring of a template.
+	 * 
+	 * @param template
+	 *            The template to refactor.
+	 */
+	private void launchRefactoringRenameTemplate(final Template template) {
+		final AcceleoRenameTemplateRefactoring refactoring = new AcceleoRenameTemplateRefactoring();
+		refactoring.setFileName(this.editor.getFile().getName());
+		AcceleoPositionedTemplate.setAcceleoEditor(this.editor);
+		AcceleoPositionedTemplate.computePartialInput(template);
+
+		final AcceleoPositionedTemplate[] array = AcceleoPositionedTemplate.getInput();
+		if (array.length > 0) {
+			refactoring.setTemplate(array[0]);
+			if (template != null) {
+				for (int i = 0; i < array.length; i++) {
+					AcceleoPositionedTemplate positionedTemplate = array[i];
+					if (template.getName().equals(positionedTemplate.getTemplateName())) {
+						refactoring.setTemplate(positionedTemplate);
+					}
+				}
+			}
+			runWizard(new AcceleoRenameTemplateWizard(refactoring, name), fWindow.getShell(), name);
+		}
+	}
+
+	/**
+	 * Launch the refactoring of a query.
+	 * 
+	 * @param query
+	 *            the query to refactor.
+	 */
+	private void launchRefactoringRenameQuery(final Query query) {
+		final AcceleoRenameQueryRefactoring refactoring = new AcceleoRenameQueryRefactoring();
+		refactoring.setFileName(this.editor.getFile().getName());
+		AcceleoPositionedQuery.setAcceleoEditor(this.editor);
+		AcceleoPositionedQuery.computePartialInput(query);
+
+		final AcceleoPositionedQuery[] array = AcceleoPositionedQuery.getInput();
+		if (array.length > 0) {
+			refactoring.setQuery(array[0]);
+			for (int i = 0; i < array.length; i++) {
+				AcceleoPositionedQuery positionedQuery = array[i];
+				if (query.getName().equals(positionedQuery.getQueryName())) {
+					refactoring.setQuery(positionedQuery);
+				}
+			}
+			runWizard(new AcceleoRenameQueryWizard(refactoring, name), fWindow.getShell(), name);
+		}
+	}
+
+	/**
+	 * Launch the refactoring of a variable.
+	 * 
+	 * @param variable
+	 *            The variable to refactor.
+	 */
+	private void launchRefactoringRenameVariable(final Variable variable) {
+		final AcceleoRenameVariableRefactoring refactoring = new AcceleoRenameVariableRefactoring();
+		refactoring.setFileName(this.editor.getFile().getName());
+		AcceleoPositionedVariable apv = new AcceleoPositionedVariable(variable, this.editor);
+
+		refactoring.setVariable(apv);
+		runWizard(new AcceleoRenameVariableWizard(refactoring, name), fWindow.getShell(), name);
+	}
+
+	/**
+	 * Launch the refactoring of a variable.
+	 * 
+	 * @param variable
+	 *            The variable to refactor.
+	 */
+	private void launchRefactoringRenameVariable(final VariableExp variable) {
+		final AcceleoRenameVariableRefactoring refactoring = new AcceleoRenameVariableRefactoring();
+		AcceleoPositionedVariable apv = new AcceleoPositionedVariable(variable, editor);
+
+		refactoring.setVariable(apv);
+		runWizard(new AcceleoRenameVariableWizard(refactoring, name), fWindow.getShell(), name);
+	}
+
+	/**
 	 * Force the editor to save to perform the refactoring.
 	 * 
-	 * @param editor
-	 *            The editor.
 	 * @return If the editor has saved.
 	 */
-	private boolean allRessourceSaved(final AcceleoEditor editor) {
-		if (editor.isDirty()) {
-			ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)editor.getSite()
-					.getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
-			Saveable[] saveableArray = editor.getSaveables();
-			List<Saveable> list = new ArrayList<Saveable>();
-			for (int i = 0; i < saveableArray.length; i++) {
-				list.add(saveableArray[i]);
+	private boolean allRessourceSaved() {
+		final List<AcceleoEditor> dirtyEditorList = new ArrayList<AcceleoEditor>();
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
+			IEditorPart[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.getDirtyEditors();
+			for (int i = 0; i < editors.length; i++) {
+				if (editors[i] instanceof AcceleoEditor) {
+					dirtyEditorList.add((AcceleoEditor)editors[i]);
+				}
+			}
+		}
+
+		if (dirtyEditorList.size() > 0) {
+			for (Iterator<AcceleoEditor> iterator = dirtyEditorList.iterator(); iterator.hasNext();) {
+				AcceleoEditor acceleoEditor = (AcceleoEditor)iterator.next();
+				ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)acceleoEditor
+						.getSite().getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
+				Saveable[] saveableArray = acceleoEditor.getSaveables();
+				List<Saveable> list = new ArrayList<Saveable>();
+				for (int i = 0; i < saveableArray.length; i++) {
+					list.add(saveableArray[i]);
+				}
+
+				// Fires a "pre close" event so that the editors prompts us to save the dirty files.
+				// None will really be closed.
+				SaveablesLifecycleEvent event = new SaveablesLifecycleEvent(acceleoEditor,
+						SaveablesLifecycleEvent.PRE_CLOSE, saveableArray, false);
+				modelManager.handleLifecycleEvent(event);
 			}
 
-			// Fires a "pre close" event so that the editors prompts us to save the dirty files.
-			// None will really be closed.
-			SaveablesLifecycleEvent event = new SaveablesLifecycleEvent(editor,
-					SaveablesLifecycleEvent.PRE_CLOSE, saveableArray, false);
-			modelManager.handleLifecycleEvent(event);
-			return !event.isVeto();
+			boolean allSaved = true;
+			for (Iterator<AcceleoEditor> iterator = dirtyEditorList.iterator(); iterator.hasNext();) {
+				AcceleoEditor acceleoEditor = (AcceleoEditor)iterator.next();
+				if (acceleoEditor.isDirty()) {
+					allSaved = false;
+					break;
+				}
+			}
+
+			return allSaved;
 		} else {
 			return true;
 		}

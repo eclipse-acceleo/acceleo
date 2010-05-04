@@ -20,7 +20,6 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.search.ui.text.Match;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * This class is a data object class used to store a query and its positions in a mtl file.
@@ -69,22 +68,21 @@ public class AcceleoPositionedQuery {
 	 * getInput will provide the list of all queries and all their positions.
 	 */
 	public static void computeCompleteInput() {
-		final AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
-		final List<AcceleoPositionedQuery> list = findAllPositionedQueries(editor);
+		final List<AcceleoPositionedQuery> list = findAllPositionedQueries(acceleoEditor);
 		input = list.toArray(new AcceleoPositionedQuery[list.size()]);
 	}
 
 	/**
 	 * Compute a partial input. The partial input contains the list of all the Acceleo positioned query but
 	 * without their positions. Use computeOccurrencesOfQuery to compute the positions of the given query.
+	 * 
+	 * @param query
+	 *            The selected query.
 	 */
-	public static void computePartialInput() {
+	public static void computePartialInput(final Query query) {
 		final List<AcceleoPositionedQuery> positionedQueryList = new ArrayList<AcceleoPositionedQuery>();
-		final AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
 
-		final Module astModule = editor.getContent().getAST();
+		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
 		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
@@ -94,7 +92,43 @@ public class AcceleoPositionedQuery {
 			}
 		}
 
+		boolean isInTheList = false;
+
+		for (Iterator<AcceleoPositionedQuery> iterator = positionedQueryList.iterator(); iterator.hasNext();) {
+			AcceleoPositionedQuery acceleoPositionedQuery = (AcceleoPositionedQuery)iterator.next();
+			if (checkQueryEqual(acceleoPositionedQuery.getQuery(), query)) {
+				isInTheList = true;
+				break;
+			}
+		}
+
+		if (!isInTheList) {
+			positionedQueryList.add(new AcceleoPositionedQuery(query));
+		}
+
 		input = positionedQueryList.toArray(new AcceleoPositionedQuery[positionedQueryList.size()]);
+	}
+
+	/**
+	 * Check if two queries have the same name and positions.
+	 * 
+	 * @param q1
+	 *            The first query.
+	 * @param q2
+	 *            The second query.
+	 * @return True if the two queries are equal according to our criteria.
+	 */
+	private static boolean checkQueryEqual(final Query q1, final Query q2) {
+		boolean result;
+		// We cannot have both null
+		if (q1 != null && q2 != null) {
+			result = q1.getName().equals(q2.getName());
+			result = result && (q1.getStartPosition() == q2.getStartPosition());
+			result = result && (q1.getEndPosition() == q2.getEndPosition());
+		} else {
+			result = false;
+		}
+		return result;
 	}
 
 	/**

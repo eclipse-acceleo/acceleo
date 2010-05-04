@@ -310,19 +310,17 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentTemplate.size(); j++) {
-						if (listOfParametersOfTheCurrentTemplate.get(j).getEType().equals(
+						if (!listOfParametersOfTheCurrentTemplate.get(j).getEType().equals(
 								listOfParametersOfTheTemplateWithTheSameName.get(j).getEType())) {
-							overloadingError &= true;
-						} else {
-							overloadingError &= false;
+							overloadingError = false;
+							break;
 						}
 					}
 
 					if (overloadingError) {
-						status
-								.merge(RefactoringStatus
-										.createErrorStatus(AcceleoUIMessages
-												.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
+						status.merge(RefactoringStatus
+								.createErrorStatus(AcceleoUIMessages
+										.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
 					}
 				}
 			}

@@ -28,7 +28,7 @@ public class AcceleoRenameQueryRefactoringContribution extends RefactoringContri
 	 * @see org.eclipse.ltk.core.refactoring.RefactoringContribution#createDescriptor(java.lang.String,
 	 *      java.lang.String, java.lang.String, java.lang.String, java.util.Map, int)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	@Override
 	public RefactoringDescriptor createDescriptor(final String id, final String project,
 			final String description, final String comment, final Map arguments, final int flags)
@@ -41,7 +41,7 @@ public class AcceleoRenameQueryRefactoringContribution extends RefactoringContri
 	 * 
 	 * @see org.eclipse.ltk.core.refactoring.RefactoringContribution#retrieveArgumentMap(org.eclipse.ltk.core.refactoring.RefactoringDescriptor)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Map retrieveArgumentMap(final RefactoringDescriptor descriptor) {
 		if (descriptor instanceof AcceleoRenameQueryDescriptor) {

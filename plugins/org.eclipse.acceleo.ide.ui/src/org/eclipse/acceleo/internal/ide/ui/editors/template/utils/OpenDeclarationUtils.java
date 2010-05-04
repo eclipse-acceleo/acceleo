@@ -824,8 +824,8 @@ public final class OpenDeclarationUtils {
 	 *            The current file.
 	 * @return The list of all matching variable and variable exp within the same template as our variable.
 	 */
-	public static List<Match> findOccurrencesInTemplate(final EObject variable,
-			final List<Match> matches, final IFile file) {
+	public static List<Match> findOccurrencesInTemplate(final EObject variable, final List<Match> matches,
+			final IFile file) {
 		final List<Match> list = new ArrayList<Match>();
 
 		Template templateVariable = findContainingTemplateOf(variable);
@@ -952,8 +952,8 @@ public final class OpenDeclarationUtils {
 		boolean result;
 		if (t1 != null && t2 != null) {
 			result = t1.getName().equals(t2.getName());
-			result &= t1.getStartPosition() == t2.getStartPosition();
-			result &= t1.getEndPosition() == t2.getEndPosition();
+			result = result && (t1.getStartPosition() == t2.getStartPosition());
+			result = result && (t1.getEndPosition() == t2.getEndPosition());
 		} else {
 			result = false;
 		}

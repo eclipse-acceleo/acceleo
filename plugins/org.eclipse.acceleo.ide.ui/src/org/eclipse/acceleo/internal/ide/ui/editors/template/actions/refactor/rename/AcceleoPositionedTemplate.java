@@ -20,7 +20,6 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.search.ui.text.Match;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * This class is a data object class used to store a template and its positions in a mtl file.
@@ -70,9 +69,7 @@ public final class AcceleoPositionedTemplate {
 	 * getInput will provide the list of all templates and all their positions.
 	 */
 	public static void computeCompleteInput() {
-		final AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
-		final List<AcceleoPositionedTemplate> list = findAllPositionedTemplates(editor);
+		final List<AcceleoPositionedTemplate> list = findAllPositionedTemplates();
 		input = list.toArray(new AcceleoPositionedTemplate[list.size()]);
 	}
 
@@ -80,13 +77,14 @@ public final class AcceleoPositionedTemplate {
 	 * Compute a partial input. The partial input contains the list of all the Acceleo positioned template but
 	 * without their positions. Use computeOccurrencesOfTemplate to compute the positions of the given
 	 * template.
+	 * 
+	 * @param template
+	 *            The selected template.
 	 */
-	public static void computePartialInput() {
+	public static void computePartialInput(final Template template) {
 		final List<AcceleoPositionedTemplate> positionedTemplatesList = new ArrayList<AcceleoPositionedTemplate>();
-		final AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor();
 
-		final Module astModule = editor.getContent().getAST();
+		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
 		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
@@ -94,6 +92,21 @@ public final class AcceleoPositionedTemplate {
 			if (moduleElement instanceof Template) {
 				positionedTemplatesList.add(new AcceleoPositionedTemplate((Template)moduleElement));
 			}
+		}
+
+		boolean isInTheList = false;
+
+		for (Iterator<AcceleoPositionedTemplate> iterator = positionedTemplatesList.iterator(); iterator
+				.hasNext();) {
+			AcceleoPositionedTemplate acceleoPositionedTemplate = (AcceleoPositionedTemplate)iterator.next();
+			if (OpenDeclarationUtils.checkTemplateEqual(acceleoPositionedTemplate.getTemplate(), template)) {
+				isInTheList = true;
+				break;
+			}
+		}
+
+		if (!isInTheList) {
+			positionedTemplatesList.add(new AcceleoPositionedTemplate(template));
 		}
 
 		input = positionedTemplatesList
@@ -188,17 +201,15 @@ public final class AcceleoPositionedTemplate {
 	/**
 	 * Returns all the acceleo positioned template from the current editor.
 	 * 
-	 * @param editor
-	 *            The acceleo editor.
 	 * @return All the acceleo positioned template from the current editor.
 	 */
-	private static List<AcceleoPositionedTemplate> findAllPositionedTemplates(final AcceleoEditor editor) {
+	private static List<AcceleoPositionedTemplate> findAllPositionedTemplates() {
 		final List<AcceleoPositionedTemplate> positionedTemplatesList = new ArrayList<AcceleoPositionedTemplate>();
 
 		// step 1 : look for all templates
 		final List<Template> templateList = new ArrayList<Template>();
 
-		final Module astModule = editor.getContent().getAST();
+		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
 		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
@@ -214,7 +225,7 @@ public final class AcceleoPositionedTemplate {
 			final AcceleoPositionedTemplate positionedTemplate = new AcceleoPositionedTemplate(template);
 
 			// We find all the occurrences of the current template in the workspace
-			final List<Match> list = OpenDeclarationUtils.findOccurrences(editor, template);
+			final List<Match> list = OpenDeclarationUtils.findOccurrences(acceleoEditor, template);
 			positionedTemplate.setTemplateMatches(list);
 
 			// step 3 : find the position definition of the current template
