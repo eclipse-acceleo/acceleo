@@ -42,10 +42,11 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 * @generated
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
-    super.start(context);
-    plugin = this;
-  }
+		super.start(context);
+		plugin = this;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -53,10 +54,11 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 * @generated
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-    plugin = null;
-    super.stop(context);
-  }
+		plugin = null;
+		super.stop(context);
+	}
 
 	/**
 	 * Returns the shared instance.
