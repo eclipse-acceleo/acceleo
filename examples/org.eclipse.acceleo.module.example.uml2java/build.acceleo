@@ -2,7 +2,14 @@
 <!-- Custom targets.                                                       -->
 <!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
 <!-- ===================================================================== -->
-<project name="Build Acceleo Module" default="run">
+<project name="Build Acceleo Module" default="noDefault">
+
+	<!-- ================================================================= -->
+	<!-- Default target                                                    -->
+	<!-- ================================================================= -->
+	<target name="noDefault">
+		<echo message="This file must be called with explicit targets" />
+	</target>
 
 	<!-- ================================================================= -->
 	<!-- Steps to do after the target gather.bin.parts                     -->
@@ -12,7 +19,10 @@
 	<!-- ================================================================= -->
 
 	<target name="post.gather.bin.parts">
-		<acceleoCompiler sourceFolders="${target.folder}"/>
-	</target>
+		<acceleoCompiler 
+			sourceFolders="${target.folder}" 
+			dependencies="">
+		</acceleoCompiler>
+	</target>	
 
 </project>

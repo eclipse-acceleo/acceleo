@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.eclipse.acceleo.module.example.uml2java
 Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.example.uml2java.Uml2JavaPlugin
 Bundle-Vendor: Eclipse Modeling Project
-Require-Bundle: org.eclipse.core.runtime, 
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.uml2.uml,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
