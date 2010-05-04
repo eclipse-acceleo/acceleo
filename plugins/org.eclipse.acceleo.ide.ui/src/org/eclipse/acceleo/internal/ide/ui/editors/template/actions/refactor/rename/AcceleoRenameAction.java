@@ -14,10 +14,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -25,6 +31,7 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizardOpenOperation;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISaveablesLifecycleListener;
@@ -79,7 +86,15 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		this.editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor();
 
-		if (fWindow != null && allRessourceSaved() && !this.editor.isDirty()) {
+		if (this.containsAcceleoError(this.editor.getFile())) {
+			MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+			box.setMessage(AcceleoUIMessages
+					.getString("AcceleoEditorRenameRefactoring.ErrorInTheCurrentFile")); //$NON-NLS-1$
+			box.open();
+			return;
+		}
+
+		if (fWindow != null && allResourceSaved() && !this.editor.isDirty()) {
 			final EObject object = OpenDeclarationUtils.findDeclaration(this.editor);
 
 			if (object instanceof Template) {
@@ -190,7 +205,7 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	 * 
 	 * @return If the editor has saved.
 	 */
-	private boolean allRessourceSaved() {
+	private boolean allResourceSaved() {
 		final List<AcceleoEditor> dirtyEditorList = new ArrayList<AcceleoEditor>();
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
@@ -234,6 +249,27 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Check that there is no acceleo error in the file.
+	 * 
+	 * @param file
+	 *            The current file.
+	 * @return true if there is no error.
+	 */
+	private boolean containsAcceleoError(final IFile file) {
+		boolean result = false;
+		try {
+			IMarker[] markers = file
+					.findMarkers(AcceleoMarker.PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
+			if (markers.length > 0) {
+				result = true;
+			}
+		} catch (CoreException e) {
+			result = true;
+		}
+		return result;
 	}
 
 	/**
