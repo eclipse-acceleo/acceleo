@@ -39,8 +39,8 @@ Requirements
 
 Acceleo depends on:
 
-#. EMF runtime ( 2.4.X )
-#. OCL runtime ( 1.2.X )
+#. EMF runtime ( 2.4.X and later )
+#. OCL runtime ( 1.2.X and later )
 
 back to Contents_
 
@@ -148,10 +148,10 @@ back to Contents_
 Open Declaration
 ----------------
 
-The Acceleo editor also support the "Open Declaration" feature (*F3* by default, or *Ctrl+left click* on any element),
-which allows an easy navigation from any element to its definition. This works for most if not all elements you can find
-in Acceleo module files: variables, modules, templates, queries, types, features and operations of metamodel elements,
-even the metamodel themselves from their URI.
+The Acceleo editor also supports the "Open Declaration" feature (*F3* on selection, or *Ctrl+left click* on any
+element), which allows you to easily navigate from any element to its definition. This works for most if not all
+elements you can find in Acceleo module files: variables, modules, templates, queries, types, features and operations
+of metamodel elements, even the metamodel themselves from their URI.
 
 back to Contents_
 
