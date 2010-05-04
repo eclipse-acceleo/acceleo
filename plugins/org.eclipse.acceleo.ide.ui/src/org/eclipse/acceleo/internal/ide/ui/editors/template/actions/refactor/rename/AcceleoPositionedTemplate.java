@@ -94,19 +94,23 @@ public final class AcceleoPositionedTemplate {
 			}
 		}
 
-		boolean isInTheList = false;
+		if (template != null) {
+			boolean isInTheList = false;
 
-		for (Iterator<AcceleoPositionedTemplate> iterator = positionedTemplatesList.iterator(); iterator
-				.hasNext();) {
-			AcceleoPositionedTemplate acceleoPositionedTemplate = (AcceleoPositionedTemplate)iterator.next();
-			if (OpenDeclarationUtils.checkTemplateEqual(acceleoPositionedTemplate.getTemplate(), template)) {
-				isInTheList = true;
-				break;
+			for (Iterator<AcceleoPositionedTemplate> iterator = positionedTemplatesList.iterator(); iterator
+					.hasNext();) {
+				AcceleoPositionedTemplate acceleoPositionedTemplate = (AcceleoPositionedTemplate)iterator
+						.next();
+				if (OpenDeclarationUtils
+						.checkTemplateEqual(acceleoPositionedTemplate.getTemplate(), template)) {
+					isInTheList = true;
+					break;
+				}
 			}
-		}
 
-		if (!isInTheList) {
-			positionedTemplatesList.add(new AcceleoPositionedTemplate(template));
+			if (!isInTheList) {
+				positionedTemplatesList.add(new AcceleoPositionedTemplate(template));
+			}
 		}
 
 		input = positionedTemplatesList
