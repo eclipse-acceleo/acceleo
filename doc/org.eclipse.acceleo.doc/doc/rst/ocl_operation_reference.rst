@@ -2,8 +2,11 @@
 OCL operations reference
 ========================
 
-:Authors: Laurent Goubet
-:Contact: laurent.goubet@obeo.fr
+:Authors:
+  Laurent Goubet,
+  Laurent Delaigue
+:Contact:
+	laurent.goubet@obeo.fr
 
 Copyright |copy| 2009, 2010 Obeo\ |trade|.
 
