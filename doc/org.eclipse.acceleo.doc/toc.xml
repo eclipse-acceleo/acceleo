@@ -10,13 +10,19 @@
  <topic href="doc/overview.html" label="User Guide">
     <topic href="doc/html/plugin_overview.html" label="Plugin overview">
     </topic>
+    <topic href="doc/html/acceleo_quickstart.html" label="Quick Start">
+    </topic>
+    <topic href="doc/html/acceleo_userguide.html" label="User Guide">
+    </topic>
     <topic href="doc/html/new_acceleo_project.html" label="Create a new Acceleo project">
     </topic>
     <topic href="doc/html/new_acceleo_ui_project.html" label="Create a new Acceleo UI project">
     </topic>
     <topic href="doc/html/ocl_operation_reference.html" label="OCL operations reference">
     </topic>
-    <topic href="doc/html/acceleo_operation_reference.html" label="MTL operations reference">
+    <topic href="doc/html/acceleo_operation_reference.html" label="Acceleo operations reference">
+    </topic>
+    <topic href="doc/html/acceleo_text_production_rules.html" label="Text Production Rules">
     </topic>
  </topic>
  <topic href="doc/Legal.html" label="Legal">
