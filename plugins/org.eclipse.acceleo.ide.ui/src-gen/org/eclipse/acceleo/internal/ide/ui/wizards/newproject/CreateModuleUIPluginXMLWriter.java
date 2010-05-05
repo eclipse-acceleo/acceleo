@@ -14,7 +14,7 @@ public class CreateModuleUIPluginXMLWriter
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NL + "<?eclipse version=\"3.2\"?>" + NL + "<plugin>" + NL + "   <extension point=\"org.eclipse.ui.popupMenus\">" + NL + "      <objectContribution" + NL + "            adaptable=\"true\"" + NL + "            objectClass=\"org.eclipse.core.resources.IFile\"" + NL + "            nameFilter=\"";
   protected final String TEXT_2 = "\"" + NL + "            id=\"";
-  protected final String TEXT_3 = ".popupMenus.contribution.IFile\">" + NL + "         <menu id=\"org.eclipse.acceleo.module.menu\" label=\"Model to Text Transformation\" path=\"additionsAcceleo\">" + NL + "               <groupMarker name=\"acceleo\"/> " + NL + "         </menu>" + NL + "         <action" + NL + "               class=\"";
+  protected final String TEXT_3 = ".popupMenus.contribution.IFile\">" + NL + "         <menu id=\"org.eclipse.acceleo.module.menu\" label=\"Acceleo Model to Text\" path=\"additionsAcceleo\">" + NL + "               <groupMarker name=\"acceleo\"/> " + NL + "         </menu>" + NL + "         <action" + NL + "               class=\"";
   protected final String TEXT_4 = ".popupMenus.AcceleoGenerate";
   protected final String TEXT_5 = "Action\"" + NL + "               enablesFor=\"+\"" + NL + "               id=\"";
   protected final String TEXT_6 = ".popupMenus.acceleoGenerate";
