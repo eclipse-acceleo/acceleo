@@ -15,7 +15,7 @@
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="<%=content.getModelNameFilter()%>"
             id="<%=content.getProjectName()%>.popupMenus.contribution.IFile">
-         <menu id="org.eclipse.acceleo.module.menu" label="Model to Text Transformation" path="additionsAcceleo">
+         <menu id="org.eclipse.acceleo.module.menu" label="Acceleo Model to Text" path="additionsAcceleo">
                <groupMarker name="acceleo"/> 
          </menu>
          <action
