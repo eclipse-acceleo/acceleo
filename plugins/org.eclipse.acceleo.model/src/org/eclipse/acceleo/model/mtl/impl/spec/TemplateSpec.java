@@ -33,7 +33,11 @@ public class TemplateSpec extends TemplateImpl {
 		final StringBuilder toString = new StringBuilder(getName());
 		toString.append('(');
 		for (int i = 0; i < params.size(); i++) {
-			toString.append(params.get(i).getType().getName());
+			if (params.get(i).getType() != null) {
+				toString.append(params.get(i).getType().getName());
+			} else {
+				toString.append(""); //$NON-NLS-1$
+			}
 			if (i + 1 < params.size()) {
 				toString.append(',');
 			}
