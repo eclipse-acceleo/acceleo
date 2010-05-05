@@ -16,14 +16,13 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.compatibility.tests.suite.migration.MigrationTests;
-import org.eclipse.acceleo.compatibility.tests.suite.parser.ParserTests;
 
 /**
- * Allows us to launch all of the Parser tests at once.
+ * Allows us to launch all of the Parser tests at once. This suite will launch each and every possible test,
+ * including those we need to disable on the eclipse build server.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings("nls")
 public class CompatibilityTestSuite extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
@@ -41,12 +40,10 @@ public class CompatibilityTestSuite extends TestCase {
 	 * @return The testsuite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo Compatibility Test Suite");
+		// use the same test suite as what's launched on the build server, but add disabled tests to it.
+		final TestSuite suite = (TestSuite)AllTests.suite();
 
-		// Parser
-		suite.addTest(ParserTests.suite());
 		// Migration
-		// For some reason, these fail on the build machine
 		suite.addTest(MigrationTests.suite());
 
 		return suite;
