@@ -157,6 +157,9 @@ public class ReferencesSearchQuery implements ISearchQuery {
 
 	/**
 	 * Compute the references in the workspace of the current declaration.
+	 * 
+	 * @param monitor
+	 *            Progress monitor on which we'll display progress information to the user.
 	 */
 	private void findReferencesForFile(IProgressMonitor monitor) {
 		List<URI> allURIs = new ArrayList<URI>();
