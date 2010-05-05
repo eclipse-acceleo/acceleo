@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.compatibility.tests.suite.CompatibilityTestSuite;
+import org.eclipse.acceleo.tests.suite.utils.TraceabilityActivationTest;
 
 /**
  * This suite will launch all the tests defined for the Acceleo project.
@@ -41,10 +42,22 @@ public class AllTests {
 	 */
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("Acceleo test suite");
-		suite.addTest(CompatibilityTestSuite.suite());
-		suite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
-		suite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
-		suite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+
+		final TestSuite classicSuite = new TestSuite("Testing Acceleo With Traceability Disabled");
+		classicSuite.addTest(CompatibilityTestSuite.suite());
+		classicSuite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
+		classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+
+		final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
+		traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
+		traceabilitySuite.addTest(CompatibilityTestSuite.suite());
+		traceabilitySuite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
+		traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+
+		suite.addTest(classicSuite);
+		suite.addTest(traceabilitySuite);
 		return suite;
 	}
 
