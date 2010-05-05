@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.compatibility.tests.suite.CompatibilityTestSuite;
+import org.eclipse.acceleo.engine.tests.suite.EngineTestSuite;
 import org.eclipse.acceleo.tests.suite.utils.TraceabilityActivationTest;
 
 /**
@@ -45,14 +46,14 @@ public class AllTests {
 
 		final TestSuite classicSuite = new TestSuite("Testing Acceleo With Traceability Disabled");
 		classicSuite.addTest(CompatibilityTestSuite.suite());
-		classicSuite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
+		classicSuite.addTest(EngineTestSuite.suite());
 		classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 
 		final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
 		traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
 		traceabilitySuite.addTest(CompatibilityTestSuite.suite());
-		traceabilitySuite.addTest(org.eclipse.acceleo.engine.tests.suite.AllTests.suite());
+		classicSuite.addTest(EngineTestSuite.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 
