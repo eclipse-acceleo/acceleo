@@ -283,15 +283,15 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {
-					MessageDialog.openError(getSite().getShell(), AcceleoUIMessages
-							.getString("AcceleoEditor.MissingNatureTitle"), //$NON-NLS-1$
+					MessageDialog.openError(getSite().getShell(),
+							AcceleoUIMessages.getString("AcceleoEditor.MissingNatureTitle"), //$NON-NLS-1$
 							AcceleoUIMessages.getString("AcceleoEditor.MissingNatureDescription")); //$NON-NLS-1$
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				}
 			} catch (CoreException e) {
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				AcceleoUIActivator.getDefault().getLog()
+						.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 			}
 		}
 	}
@@ -339,6 +339,12 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (findOccurrencesPostSelectionListener != null) {
 			this.getSite().getPage().removePostSelectionListener(findOccurrencesPostSelectionListener);
 			findOccurrencesPostSelectionListener = null;
+		}
+		if (this.removeAnnotationJob != null) {
+			this.removeAnnotationJob.cancel();
+		}
+		if (this.occurrencesFinderJob != null) {
+			this.occurrencesFinderJob.cancel();
 		}
 		if (content != null && content.getFile() != null) {
 			try {
@@ -411,8 +417,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				try {
 					init(getEditorSite(), getEditorInput());
 				} catch (PartInitException e) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					AcceleoUIActivator.getDefault().getLog()
+							.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 				}
 			}
 		}
@@ -744,9 +750,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				}
 			}
 			if (selectedElement != null) {
-				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement);
-				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(this, AcceleoUIMessages
-						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery, selectedElement); //$NON-NLS-1$
+				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement,
+						false);
+				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(
+						this,
+						AcceleoUIMessages.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery, selectedElement); //$NON-NLS-1$
 				occurrencesFinderJob.setSystem(true);
 				occurrencesFinderJob.setPriority(Job.DECORATE);
 				occurrencesFinderJob.schedule();

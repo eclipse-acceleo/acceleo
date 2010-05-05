@@ -71,6 +71,11 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	private AcceleoEditor editor;
 
 	/**
+	 * Indicates if we have to search outside of the current file.
+	 */
+	private boolean searchOutsideOfCurrentFile;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param editor
@@ -82,6 +87,24 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		this.declaration = declaration;
 		this.editor = editor;
 		this.searchResult = new ReferencesSearchResult(this);
+		this.searchOutsideOfCurrentFile = true;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param editor
+	 *            the Acceleo editor
+	 * @param declaration
+	 *            the declaration for which we seek references
+	 * @param searchOutsideCurrentFile
+	 *            Indicates if we have to search outside of the current file.
+	 */
+	public ReferencesSearchQuery(AcceleoEditor editor, EObject declaration, boolean searchOutsideCurrentFile) {
+		this.declaration = declaration;
+		this.editor = editor;
+		this.searchResult = new ReferencesSearchResult(this);
+		this.searchOutsideOfCurrentFile = searchOutsideCurrentFile;
 	}
 
 	/**
@@ -127,7 +150,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 */
 	public IStatus run(IProgressMonitor monitor) throws OperationCanceledException {
 		if (declaration != null) {
-			findReferencesForFile();
+			findReferencesForFile(monitor);
 		}
 		return Status.OK_STATUS;
 	}
@@ -135,53 +158,57 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	/**
 	 * Compute the references in the workspace of the current declaration.
 	 */
-	private void findReferencesForFile() {
+	private void findReferencesForFile(IProgressMonitor monitor) {
 		List<URI> allURIs = new ArrayList<URI>();
-		IProject project;
+		IProject project = null;
 		if (editor.getContent().getFile() != null && editor.getFile() != null) {
 			URI newResourceURI = URI.createPlatformResourceURI(new AcceleoProject(editor.getContent()
 					.getFile().getProject()).getOutputFilePath(editor.getContent().getFile()).toString(),
 					false);
 			allURIs.add(newResourceURI);
-			project = editor.getFile().getProject();
-			for (URI uri : new AcceleoProject(project).getOutputFiles()) {
-				if (!allURIs.contains(uri)) {
-					allURIs.add(uri);
-				}
-			}
-		} else {
-			project = null;
-		}
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		for (int i = 0; i < projects.length; i++) {
-			try {
-				if (projects[i] != project && projects[i].isAccessible()
-						&& projects[i].hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
-					AcceleoProject acceleoProject = new AcceleoProject(projects[i]);
-					for (URI uri : acceleoProject.getOutputFiles()) {
-						if (!allURIs.contains(uri)) {
-							allURIs.add(uri);
-						}
+			if (this.searchOutsideOfCurrentFile) {
+				project = editor.getFile().getProject();
+				for (URI uri : new AcceleoProject(project).getOutputFiles()) {
+					if (!allURIs.contains(uri)) {
+						allURIs.add(uri);
 					}
 				}
-			} catch (CoreException e) {
-				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
+		if (this.searchOutsideOfCurrentFile) {
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			for (int i = 0; i < projects.length; i++) {
+				try {
+					if (!monitor.isCanceled() && projects[i] != project && projects[i].isAccessible()
+							&& projects[i].hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						AcceleoProject acceleoProject = new AcceleoProject(projects[i]);
+						for (URI uri : acceleoProject.getOutputFiles()) {
+							if (!allURIs.contains(uri)) {
+								allURIs.add(uri);
+							}
+						}
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+				}
 			}
 		}
 		ResourceSet newResourceSet = new ResourceSetImpl();
 		for (URI uri : allURIs) {
 			try {
-				if (this.resourceAtURIExist(uri)) {
+				if (!monitor.isCanceled() && this.resourceAtURIExist(uri)) {
 					ModelUtils.load(uri, newResourceSet);
 				}
 			} catch (IOException e) {
 				// do nothing
 			}
 		}
-		EcoreUtil.resolveAll(newResourceSet);
-		for (Resource resource : newResourceSet.getResources()) {
-			if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
-				scanModuleForDeclaration((Module)resource.getContents().get(0));
+		if (!monitor.isCanceled()) {
+			EcoreUtil.resolveAll(newResourceSet);
+			for (Resource resource : newResourceSet.getResources()) {
+				if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
+					scanModuleForDeclaration((Module)resource.getContents().get(0));
+				}
 			}
 		}
 		for (Resource resource : newResourceSet.getResources()) {
