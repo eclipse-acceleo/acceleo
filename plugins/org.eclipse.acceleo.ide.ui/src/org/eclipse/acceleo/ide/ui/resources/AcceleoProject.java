@@ -619,9 +619,10 @@ public class AcceleoProject {
 			URI oURI = itOutputURIs.next();
 			try {
 				ModelUtils.load(oURI, oResourceSet);
+			} catch (WrappedException e) {
+				// continue and do nothing because it occurs when the EMTL file has been deleted
 			} catch (IOException e) {
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				// continue and do nothing because it occurs when the EMTL file has been deleted
 			}
 		}
 		return oResourceSet;
@@ -697,12 +698,9 @@ public class AcceleoProject {
 				try {
 					ModelUtils.load(oURI, oResourceSet);
 				} catch (WrappedException e) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, oURI.toString()
-									+ " : " + e.getMessage(), e)); //$NON-NLS-1$
+					// continue and do nothing because it occurs when the EMTL file has been deleted
 				} catch (IOException e) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					// continue and do nothing because it occurs when the EMTL file has been deleted
 				}
 			}
 		}

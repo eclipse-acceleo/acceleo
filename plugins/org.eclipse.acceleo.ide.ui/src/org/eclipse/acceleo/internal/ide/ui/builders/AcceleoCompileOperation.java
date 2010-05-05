@@ -113,7 +113,12 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			if (outputPath != null) {
 				IFile outputFile = project.getFile(outputPath.removeFirstSegments(1));
 				if (outputFile != null && outputFile.exists()) {
-					outputFile.delete(true, monitor);
+					try {
+						outputFile.delete(true, monitor);
+					} catch (CoreException e) {
+						// continue
+						// do nothing because it occurs when we have locked the file to write it again
+					}
 				}
 			}
 		}
