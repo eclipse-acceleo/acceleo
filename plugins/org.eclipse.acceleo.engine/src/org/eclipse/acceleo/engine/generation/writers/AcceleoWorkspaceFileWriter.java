@@ -194,9 +194,9 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 	 */
 	public boolean hasChanged() throws IOException {
 		boolean hasChanged = false;
+		final File target = new File(targetPath);
 		if (shouldMerge && EMFPlugin.IS_ECLIPSE_RUNNING) {
 			try {
-				final File target = new File(targetPath);
 				if (target.exists() && target.canRead()) {
 					Class.forName("org.eclipse.emf.codegen.merge.java.JMerger"); //$NON-NLS-1$
 					final String mergedContent = JMergeUtil.mergeFileContent(target, toString(),
@@ -205,6 +205,8 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 					if (!mergedContent.equals(oldContent)) {
 						hasChanged = true;
 					}
+				} else {
+					hasChanged = true;
 				}
 			} catch (ClassNotFoundException e) {
 				/*
@@ -212,6 +214,16 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 				 * found as a dependency of the generator plugin. This shouldn't happen since it is a
 				 * reexported dependency of the engine.
 				 */
+			}
+		} else {
+			if (target.exists() && target.canRead()) {
+				final String oldContent = readOldContent(target, selectedCharset);
+				final String newContent = toString();
+				if (!newContent.equals(oldContent)) {
+					hasChanged = true;
+				}
+			} else {
+				hasChanged = true;
 			}
 		}
 		return hasChanged;

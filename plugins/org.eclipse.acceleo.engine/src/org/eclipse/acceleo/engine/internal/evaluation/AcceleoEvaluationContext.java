@@ -465,7 +465,7 @@ public class AcceleoEvaluationContext<C> {
 
 	/**
 	 * This will be called by the generation engine once all evaluations are finished for this generation. It
-	 * will be used to call for the current genertion strategy's global handlers.
+	 * will be used to call for the current generation strategy's global handlers.
 	 */
 	public void hookGenerationEnd() {
 		final Map<String, Map<String, String>> lostCode = new HashMap<String, Map<String, String>>();

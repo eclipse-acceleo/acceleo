@@ -78,7 +78,7 @@ public final class DynamicTemplatesRegistryListener implements IRegistryEventLis
 	 */
 	public void removed(IExtension[] extensions) {
 		/*
-		 * Etensions will be removed on the fly by AcceleoDynamicTemplatesEclipseUtil when trying to access
+		 * Extensions will be removed on the fly by AcceleoDynamicTemplatesEclipseUtil when trying to access
 		 * uninstalled bundles
 		 */
 	}
