@@ -162,14 +162,27 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 			refreshPackages(null);
 			if (dynamicOverridesBundle.getState() == Bundle.UNINSTALLED) {
 				dynamicOverridesBundle = context.installBundle(dynamicOverridesBundle.getLocation());
+				refreshPackages(new Bundle[] {dynamicOverridesBundle, });
 			}
-			refreshPackages(new Bundle[] {dynamicOverridesBundle, });
 		} catch (BundleException e) {
 			fail("Couldn't stop dynamic overrides plugin");
 		}
 		while (true) {
 			if (dynamicOverridesBundle.getState() == Bundle.RESOLVED) {
 				break;
+			}
+		}
+
+		/*
+		 * We could use a registry listener to make sure the contribution gets refreshed ... For the purpose
+		 * of unit tests we'll simply wait for some seconds.
+		 */
+		final Object lock = new Object();
+		synchronized(lock) {
+			try {
+				lock.wait(1000L);
+			} catch (InterruptedException e) {
+				// Shouldn't happen. Either way, this was just a "waiting" block
 			}
 		}
 
