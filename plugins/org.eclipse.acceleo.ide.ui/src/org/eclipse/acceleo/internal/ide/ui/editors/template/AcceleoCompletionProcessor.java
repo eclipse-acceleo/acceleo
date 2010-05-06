@@ -78,6 +78,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -329,18 +330,20 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 *            are the completion proposals (in out parameter)
 	 */
 	private void computeProposalsBrowserView(List<ICompletionProposal> proposals) {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (page != null) {
-			IViewReference[] references = page.getViewReferences();
-			for (int i = 0; i < references.length; i++) {
-				IViewReference viewReference = references[i];
-				IViewPart view = viewReference.getView(false);
-				if (view instanceof ProposalsBrowser && page.isPartVisible(view) && textViewer != null) {
-					List<ICompletionProposal> advancedCompletionProposals = ((ProposalsBrowser)view)
-							.getPatternCompletionProposals(textViewer.getDocument(), text, offset, cstNode);
-					if (advancedCompletionProposals.size() > 0) {
-						proposals.addAll(0, advancedCompletionProposals);
-					}
+		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (activeWindow == null || activeWindow.getActivePage() == null) {
+			return;
+		}
+		IWorkbenchPage page = activeWindow.getActivePage();
+		IViewReference[] references = page.getViewReferences();
+		for (int i = 0; i < references.length; i++) {
+			IViewReference viewReference = references[i];
+			IViewPart view = viewReference.getView(false);
+			if (view instanceof ProposalsBrowser && page.isPartVisible(view) && textViewer != null) {
+				List<ICompletionProposal> advancedCompletionProposals = ((ProposalsBrowser)view)
+						.getPatternCompletionProposals(textViewer.getDocument(), text, offset, cstNode);
+				if (advancedCompletionProposals.size() > 0) {
+					proposals.addAll(0, advancedCompletionProposals);
 				}
 			}
 		}
@@ -353,18 +356,20 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 *            are the completion proposals (in out parameter)
 	 */
 	private void computeOverridesBrowserView(List<ICompletionProposal> proposals) {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (page != null) {
-			IViewReference[] references = page.getViewReferences();
-			for (int i = 0; i < references.length; i++) {
-				IViewReference viewReference = references[i];
-				IViewPart view = viewReference.getView(false);
-				if (view instanceof OverridesBrowser && page.isPartVisible(view) && textViewer != null) {
-					List<ICompletionProposal> advancedCompletionProposals = ((OverridesBrowser)view)
-							.getExtendCompletionProposals(textViewer.getDocument(), text, offset);
-					if (advancedCompletionProposals.size() > 0) {
-						proposals.addAll(0, advancedCompletionProposals);
-					}
+		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (activeWindow == null || activeWindow.getActivePage() == null) {
+			return;
+		}
+		IWorkbenchPage page = activeWindow.getActivePage();
+		IViewReference[] references = page.getViewReferences();
+		for (int i = 0; i < references.length; i++) {
+			IViewReference viewReference = references[i];
+			IViewPart view = viewReference.getView(false);
+			if (view instanceof OverridesBrowser && page.isPartVisible(view) && textViewer != null) {
+				List<ICompletionProposal> advancedCompletionProposals = ((OverridesBrowser)view)
+						.getExtendCompletionProposals(textViewer.getDocument(), text, offset);
+				if (advancedCompletionProposals.size() > 0) {
+					proposals.addAll(0, advancedCompletionProposals);
 				}
 			}
 		}
