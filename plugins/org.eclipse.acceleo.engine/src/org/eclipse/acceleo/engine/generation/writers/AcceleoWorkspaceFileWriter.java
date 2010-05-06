@@ -128,10 +128,12 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 				final InputStreamReader fileReader = new InputStreamReader(fileInputStream, charset);
 				reader = new BufferedReader(fileReader);
 			}
-			String line = reader.readLine();
-			while (line != null) {
-				oldContent.append(line);
-				line = reader.readLine();
+			final int bufferLength = 1024;
+			char[] buf = new char[bufferLength];
+			int length = reader.read(buf);
+			while (length > 0) {
+				oldContent.append(buf, 0, length);
+				length = reader.read(buf);
 			}
 		} finally {
 			if (reader != null) {
