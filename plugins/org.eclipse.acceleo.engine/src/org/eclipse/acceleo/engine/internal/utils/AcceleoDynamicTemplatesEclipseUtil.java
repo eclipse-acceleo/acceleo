@@ -25,6 +25,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 /**
@@ -94,9 +95,18 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 		final String pathSeparator = "/"; //$NON-NLS-1$
 		for (java.util.Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
 				EXTENDING_BUNDLES.entrySet())) {
-			if (entry.getKey().getState() == Bundle.UNINSTALLED) {
-				uninstalledBundles.add(entry.getKey());
-				continue;
+			Bundle bundle = entry.getKey();
+			if (bundle.getState() == Bundle.UNINSTALLED) {
+				// Has it been reinstalled since?
+				Bundle reinstalled = Platform.getBundle(bundle.getSymbolicName());
+				if (reinstalled != null) {
+					bundle = reinstalled;
+					EXTENDING_BUNDLES.remove(bundle);
+					EXTENDING_BUNDLES.put(reinstalled, entry.getValue());
+				} else {
+					uninstalledBundles.add(bundle);
+					continue;
+				}
 			}
 			for (String path : entry.getValue()) {
 				String actualPath = path;
@@ -116,11 +126,11 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				}
 				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
 				// We'll seek in the whole bundle and filter out later
-				Enumeration<URL> emtlFiles = entry.getKey().findEntries(pathSeparator, filePattern, true);
+				Enumeration<URL> emtlFiles = bundle.findEntries(pathSeparator, filePattern, true);
 				// no dynamic templates in this bundle
 				if (emtlFiles == null) {
 					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
-							"AcceleoDynamicTemplatesEclipseUtil.MissingDynamicTemplates", entry.getKey() //$NON-NLS-1$
+							"AcceleoDynamicTemplatesEclipseUtil.MissingDynamicTemplates", bundle //$NON-NLS-1$
 									.getSymbolicName(), path), false);
 					return;
 				}
