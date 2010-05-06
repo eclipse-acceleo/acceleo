@@ -25,7 +25,6 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 /**
@@ -97,16 +96,8 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 				EXTENDING_BUNDLES.entrySet())) {
 			Bundle bundle = entry.getKey();
 			if (bundle.getState() == Bundle.UNINSTALLED) {
-				// Has it been reinstalled since?
-				Bundle reinstalled = Platform.getBundle(bundle.getSymbolicName());
-				if (reinstalled != null) {
-					bundle = reinstalled;
-					EXTENDING_BUNDLES.remove(bundle);
-					EXTENDING_BUNDLES.put(reinstalled, entry.getValue());
-				} else {
-					uninstalledBundles.add(bundle);
-					continue;
-				}
+				uninstalledBundles.add(bundle);
+				continue;
 			}
 			for (String path : entry.getValue()) {
 				String actualPath = path;
