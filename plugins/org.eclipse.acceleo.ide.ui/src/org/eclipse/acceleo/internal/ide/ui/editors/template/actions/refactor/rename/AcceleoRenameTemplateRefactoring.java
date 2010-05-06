@@ -117,23 +117,31 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 	 * Find the change that are <b>not</b> in the current file and put them in the map.
 	 */
 	private void putChangesNotInTheCurrentFile() {
-		final MultiTextEdit edit = new MultiTextEdit();
 		for (Iterator<Match> iterator = this.fTemplate.getTemplateMatches().iterator(); iterator.hasNext();) {
 			final Match match = (Match)iterator.next();
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (!entry.getTemplateFile().getName().equals(fileName)) {
 				final IFile file = ((ReferenceEntry)match.getElement()).getTemplateFile();
-				final TextFileChange tfc = new TextFileChange("Refactoring: Rename Template", file); //$NON-NLS-1$
+
+				TextFileChange tfc = null;
+				MultiTextEdit edit = null;
+
+				if (this.fChanges.containsKey(file)
+						&& this.fChanges.get(file).getEdit() instanceof MultiTextEdit) {
+					tfc = this.fChanges.get(file);
+					edit = (MultiTextEdit)this.fChanges.get(file).getEdit();
+				} else {
+					tfc = new TextFileChange("Refactoring: Rename Template", file); //$NON-NLS-1$
+					edit = new MultiTextEdit();
+					tfc.setEdit(edit);
+					tfc.setTextType("mtl"); //$NON-NLS-1$
+				}
 
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
 				int offset = str.indexOf(this.fTemplate.getTemplateName());
 
 				edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fTemplate.getTemplateName()
 						.length(), this.fNewTemplateName));
-				tfc.setEdit(edit);
-
-				// TODO set texttype !!!
-				tfc.setTextType("mtl"); //$NON-NLS-1$
 
 				this.fChanges.put(file, tfc);
 			}
@@ -144,24 +152,31 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 	 * Find the change that are in the current file and put them in the map.
 	 */
 	private void putChangesOfTheCurrentFile() {
-		final MultiTextEdit edit = new MultiTextEdit();
 		for (Iterator<Match> iterator = this.fTemplate.getTemplateMatches().iterator(); iterator.hasNext();) {
 			final Match match = (Match)iterator.next();
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (entry.getTemplateFile().getName().equals(fileName)) {
 				final IFile file = ((ReferenceEntry)match.getElement()).getTemplateFile();
-				final TextFileChange tfc = new TextFileChange("Refactoring: Rename Template", file); //$NON-NLS-1$
+
+				TextFileChange tfc = null;
+				MultiTextEdit edit = null;
+
+				if (this.fChanges.containsKey(file)
+						&& this.fChanges.get(file).getEdit() instanceof MultiTextEdit) {
+					tfc = this.fChanges.get(file);
+					edit = (MultiTextEdit)this.fChanges.get(file).getEdit();
+				} else {
+					tfc = new TextFileChange("Refactoring: Rename Template", file); //$NON-NLS-1$
+					edit = new MultiTextEdit();
+					tfc.setEdit(edit);
+					tfc.setTextType("mtl"); //$NON-NLS-1$
+				}
 
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
 				int offset = str.indexOf(this.fTemplate.getTemplateName());
 
 				edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fTemplate.getTemplateName()
 						.length(), this.fNewTemplateName));
-				tfc.setEdit(edit);
-
-				// TODO set texttype !!!
-				tfc.setTextType("mtl"); //$NON-NLS-1$
-
 				this.fChanges.put(file, tfc);
 			}
 		}
@@ -310,17 +325,16 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentTemplate.size(); j++) {
-						if (!listOfParametersOfTheCurrentTemplate.get(j).getEType().equals(
-								listOfParametersOfTheTemplateWithTheSameName.get(j).getEType())) {
+						if (!listOfParametersOfTheCurrentTemplate.get(j).getEType()
+								.equals(listOfParametersOfTheTemplateWithTheSameName.get(j).getEType())) {
 							overloadingError = false;
 							break;
 						}
 					}
 
 					if (overloadingError) {
-						status.merge(RefactoringStatus
-								.createErrorStatus(AcceleoUIMessages
-										.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
+						status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
+								.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
 					}
 				}
 			}

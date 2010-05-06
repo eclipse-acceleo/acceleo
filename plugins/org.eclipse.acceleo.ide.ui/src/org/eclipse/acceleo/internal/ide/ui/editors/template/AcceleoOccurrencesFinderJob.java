@@ -151,8 +151,8 @@ public class AcceleoOccurrencesFinderJob extends Job {
 					while (iter.hasNext()) {
 						final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
 								.next();
-						annotationModel.addAnnotation((Annotation)mapEntry.getKey(), (Position)mapEntry
-								.getValue());
+						annotationModel.addAnnotation((Annotation)mapEntry.getKey(),
+								(Position)mapEntry.getValue());
 					}
 				}
 			}
@@ -198,7 +198,7 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
-		final IFile file = ((AcceleoEditor)editor).getFile();
+		final IFile file = editor.getFile();
 
 		list = OpenDeclarationUtils.getMatchesFromTheFile(list, file);
 

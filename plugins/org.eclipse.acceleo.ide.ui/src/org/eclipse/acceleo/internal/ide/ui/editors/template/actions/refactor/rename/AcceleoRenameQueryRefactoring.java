@@ -117,23 +117,31 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 	 * Find the change that are <b>not</b> in the current file and put them in the map.
 	 */
 	private void putChangesNotInTheCurrentFile() {
-		final MultiTextEdit edit = new MultiTextEdit();
 		for (Iterator<Match> iterator = this.fQuery.getQueryMatches().iterator(); iterator.hasNext();) {
 			final Match match = (Match)iterator.next();
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (!entry.getTemplateFile().getName().equals(fileName)) {
 				final IFile file = ((ReferenceEntry)match.getElement()).getTemplateFile();
-				final TextFileChange tfc = new TextFileChange("Refactoring: Rename Query", file); //$NON-NLS-1$
+
+				TextFileChange tfc = null;
+				MultiTextEdit edit = null;
+
+				if (this.fChanges.containsKey(file)
+						&& this.fChanges.get(file).getEdit() instanceof MultiTextEdit) {
+					tfc = this.fChanges.get(file);
+					edit = (MultiTextEdit)this.fChanges.get(file).getEdit();
+				} else {
+					tfc = new TextFileChange("Refactoring: Rename Query", file); //$NON-NLS-1$
+					edit = new MultiTextEdit();
+					tfc.setEdit(edit);
+					tfc.setTextType("mtl"); //$NON-NLS-1$
+				}
 
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
 				int offset = str.indexOf(this.fQuery.getQueryName());
 
 				edit.addChild(new ReplaceEdit(match.getOffset() + offset,
 						this.fQuery.getQueryName().length(), this.fNewQueryName));
-				tfc.setEdit(edit);
-
-				// TODO set texttype !!!
-				tfc.setTextType("mtl"); //$NON-NLS-1$
 
 				this.fChanges.put(file, tfc);
 			}
@@ -144,23 +152,31 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 	 * Find the change that are in the current file and put them in the map.
 	 */
 	private void putChangesOfTheCurrentFile() {
-		final MultiTextEdit edit = new MultiTextEdit();
 		for (Iterator<Match> iterator = this.fQuery.getQueryMatches().iterator(); iterator.hasNext();) {
 			final Match match = (Match)iterator.next();
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (entry.getTemplateFile().getName().equals(fileName)) {
 				final IFile file = ((ReferenceEntry)match.getElement()).getTemplateFile();
-				final TextFileChange tfc = new TextFileChange("Refactoring: Rename Query", file); //$NON-NLS-1$
+
+				TextFileChange tfc = null;
+				MultiTextEdit edit = null;
+
+				if (this.fChanges.containsKey(file)
+						&& this.fChanges.get(file).getEdit() instanceof MultiTextEdit) {
+					tfc = this.fChanges.get(file);
+					edit = (MultiTextEdit)this.fChanges.get(file).getEdit();
+				} else {
+					tfc = new TextFileChange("Refactoring: Rename Query", file); //$NON-NLS-1$
+					edit = new MultiTextEdit();
+					tfc.setEdit(edit);
+					tfc.setTextType("mtl"); //$NON-NLS-1$
+				}
 
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
 				int offset = str.indexOf(this.fQuery.getQueryName());
 
 				edit.addChild(new ReplaceEdit(match.getOffset() + offset,
 						this.fQuery.getQueryName().length(), this.fNewQueryName));
-				tfc.setEdit(edit);
-
-				// TODO set texttype !!!
-				tfc.setTextType("mtl"); //$NON-NLS-1$
 
 				this.fChanges.put(file, tfc);
 			}
@@ -301,8 +317,8 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentQuery.size(); j++) {
-						if (!listOfParametersOfTheCurrentQuery.get(j).getEType().equals(
-								listOfParametersOfTheQueryWithTheSameName.get(j).getEType())) {
+						if (!listOfParametersOfTheCurrentQuery.get(j).getEType()
+								.equals(listOfParametersOfTheQueryWithTheSameName.get(j).getEType())) {
 							overloadingError = false;
 							break;
 						}
