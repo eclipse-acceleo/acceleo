@@ -34,11 +34,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * This generation strategy can be used to generate files while being aware of those present in the workspace.
  * It will create ask the workspace if these files can be created/overriden beforehand. This is the most
- * memory-expansive strategy; however it can be used with strict VCSs like clearcase that require this
+ * memory-expensive strategy; however it can be used with strict VCSs like clearcase that require this
  * workspace check.
  * <p>
  * <b>Note</b> That this <u>cannot</u> be used in standalone mode.
@@ -127,13 +128,30 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 			}
 		}
 
-		final IFile[] validateFiles = needsValidation.keySet().toArray(new IFile[needsValidation.size()]);
-		final IStatus validationStatus = ResourcesPlugin.getWorkspace().validateEdit(validateFiles,
-				IWorkspace.VALIDATE_PROMPT);
-		if (validationStatus.isOK()) {
-			for (Writer writer : needsValidation.values()) {
-				writer.close();
+		final List<IOException> exceptions = new ArrayList<IOException>();
+		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				final IFile[] validateFiles = needsValidation.keySet().toArray(
+						new IFile[needsValidation.size()]);
+				final IStatus validationStatus = workspace.validateEdit(validateFiles,
+						IWorkspace.VALIDATE_PROMPT);
+				if (validationStatus.isOK()) {
+					for (Writer writer : needsValidation.values()) {
+						try {
+							writer.close();
+						} catch (IOException e) {
+							exceptions.add(e);
+						}
+					}
+				}
 			}
+		});
+
+		if (exceptions.size() == 1) {
+			throw exceptions.get(0);
+		} else if (exceptions.size() > 1) {
+			throw createException(exceptions);
 		}
 	}
 
@@ -216,5 +234,21 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Creates an exception wrapper given the list of root exceptions.
+	 * 
+	 * @param causes
+	 *            The exceptions that are to be wrapped in this instance.
+	 * @return The created exception wrapper.
+	 */
+	public IOException createException(List<IOException> causes) {
+		StringBuilder message = new StringBuilder(AcceleoEngineMessages
+				.getString("AcceleoEvaluationContext.MultipleExceptions")); //$NON-NLS-1$
+		for (IOException ioe : causes) {
+			message.append(ioe.getLocalizedMessage());
+		}
+		return new IOException(message.toString());
 	}
 }
