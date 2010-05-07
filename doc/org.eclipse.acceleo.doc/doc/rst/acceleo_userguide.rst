@@ -610,17 +610,16 @@ The name of Acceleo projects should follow the following pattern:
 For example, a project to generate .NET code from a UML model, developed by
 Obeo, will be called ``fr.obeo.uml.gen.dotnet``.
 
-Module file names and module names should start by a lowercase letter.
+Module file names and module names should start with a lowercase letter.
 
 Module files should be located in packages with the same prefix as the project,
 but feel free to create subpackages.
 
-Template and query names should start by a lowercase letter, and use the
+Template and query names should start with a lowercase letter, and use the
 ``camelCase`` convention just like methods in java (uppercase letters are used
 to separate words).
-It goes the same for queries.
 
-Design your module as APIs
+Design your module as you would for APIs
 --------------------------------------------------------------------------------
 
 The usual design principles apply when designing Acceleo modules:
@@ -633,9 +632,9 @@ To reach them, organize your modules carefully:
   your design;
 - Document your modules, templates and queries!
   Use ``[comment]`` tags in the module's header to describe the module and
-  before each template or query to describe them;
+  before each template and query to describe them;
 - Queries and templates should be small. Templates more than one page high
-  should be refactored whenever possible;
+  should be refactored as soon as possible;
 - Modules should be organized in a sensible way:
 
   - One module per kind of file to generate, all located in a ``main`` package;
@@ -651,7 +650,7 @@ To reach them, organize your modules carefully:
   
 Why this last one?
 Because when you generate a piece of text, it captures a generation rule.
-It often happens (espacially a the beginning of a module development) that
+It often happens (espacially at the beginning of a module development) that
 such rules are very simple, like "write the class name".
 
 And then the rule changes to become "write the class name but make sure that
@@ -671,7 +670,7 @@ Tests
 Of course, the importance of tests cannot be stressed enough.
 Each Acceleo project should be accompanied by a test project that contains:
 
-- Small models, each of them allowing to test some particular generation rule;
+- Small models, each of them allowing you to test some particular generation rule;
 - The expected result for each model;
 - A main java class that runs all generations and ensures that the result is as
   expected.
@@ -704,8 +703,8 @@ For example:
   [/template]
 
 This implementation makes sure that whenever you will invoke ``genJavaTypeName``
-on an element of typeClassifier or a subtype, you will produce text in the
-output file.
+on an element of type "Classifier" or one of its subtypes, you will produce text
+in the output file.
 This will contain a warning message if you forgot something in the generator.
 
 Do not implement each possible case of the different subtypes by testing the
@@ -747,7 +746,7 @@ specification accessible from `the official MTL Specification
 Editing modules
 --------------------------------------------------------------------------------
 
-The Acceleo editor is be default associated with the ``.mtl`` file extension.
+The Acceleo editor is by default associated with the ``.mtl`` file extension.
 
 Syntax Highlighting
 ________________________________________________________________________________
@@ -834,7 +833,7 @@ Rapid Text Replacement
 ________________________________________________________________________________
 
 Here is a very useful trick in Acceleo. Rapid text replacement allows you to
-quickly replace all occurrence of a chosen piecce of text by some template
+quickly replace all occurrence of a chosen piece of text by some template
 invocation. Case differences are inferred generating ``toUpper()`` or
 ``toUpperFirst()`` depending on what's needed.
 
@@ -883,24 +882,20 @@ ________________________________________________________________________________
 You will probably not use this feature every day, but it is important to know
 that it exists because it can bring you comfort from time to time.
 
- * * * * 
-
-TODO Find an interesting example and document the feature.
-
- * * * * 
+[PENDING Find a meaningful example and document the feature.]
 
 The Acceleo Views
 --------------------------------------------------------------------------------
 
 Acceleo provides a few specific views to improve productivity when working with
 templates.
-These views will be detailed later in the relevant chapters.
+These views will be detailed later on, in the relevant chapters.
 Let's just summarize their purpose to get the big picture.
 
 As usual, they can be opened by clicking on *Window > Show View* and selecting
 the appropriate view in the menu. Note that in the Acceleo perspective, Acceleo
 views are proposed by default directly in this menu, which will not be the case
-in another perspective.
+in another perspective where you'll have to find them in the *Other...* popup.
 
 The Generation Patterns View
 ________________________________________________________________________________
@@ -911,10 +906,10 @@ to implement some behavior on an interface and all or part of its subtypes.
 
 For example, let's imagine you are implementing a java generator from UML.
 What you want is to have a template called ``javaName`` which will generate the
-name of any classifier, with some default behavior and some specifi behavior on
+name of any classifier, with some default behavior and some specific behavior on
 classes and interfaces.
 
-This is where the **Generation Patterns view** comes into play:
+This is where the **Generation Patterns** view comes into play:
 
 - Locate the cursor in the template, at the position where you want to insert
   your ``javaName`` templates;
@@ -922,9 +917,9 @@ This is where the **Generation Patterns view** comes into play:
   the top part
 - Select the types for which you want to create ``javaName`` templates for.
 
-Note the the bottom part of the Generation Patterns views presents a
+Note the bottom part of the Generation Patterns views presents a
 hierarchical view of the metamodel you are using. Each node represents a type of
-the metamodel and contains all its subtypes. So, one type can appear several
+the metamodel and contains all of its subtypes. So, one type can appear several
 times in this view, one time for each of its super-classes or super-interfaces.
 When you select a node (by checking the combo-box before it), all its
 descendants are also selected by default, but you can uncheck those you don't
@@ -985,7 +980,7 @@ Otherwise, a red marker indicates that you need to import the project in yours
 to be able to override a template it contains.
 For example, in the screenshot below,
 ``org.eclipse.acceleo.module.other.sample`` needs be imported in your current
-project before you can successfully override on of its templates.
+project before you can successfully override one of its templates.
 
 .. image:: ../images/acceleo_overrides_view1.png
 
@@ -998,13 +993,13 @@ ________________________________________________________________________________
 Acceleo allows static overriding as described in the MTL specification.
 Acceleo also allows another kind of overriding, which is called "dynamic".
 
-Dynamic overriding allows you to override any template without extending its
-module.
+Dynamic overriding allows you to override any template called by a given module
+even if the launcher of this module knows nothing about your project.
 It takes precedence over any static template overriding.
 With dynamic overriding, you can make sure a specific template will be called
 while calling the original generator (the initial java class that launches the
 generation).
-Dynamic overriding only works inside of eclipse.
+Dynamic overriding only works "out-of-the-box" inside of eclipse.
 
 To activate dynamic overriding, you must place the overriding template on a
 plug-in which will extend the ``org.eclipse.acceleo.engine.dynamic.templates``
@@ -1043,7 +1038,7 @@ For each file, the view displays:
 You can double-click on any element to visualize the related portions of
 generated text.
 
-You can right-click on any element and choose *Open Declaration* to navigate
+You can right-click on any element and select *Open Declaration* to navigate
 to any atomic element used during the generation, be it a model element or an
 Acceleo element (template, query).
 
@@ -1057,7 +1052,7 @@ Outlines
 The Dynamic Outline
 ________________________________________________________________________________
 
-The traditional eclipse outline view is used be Acceleo to display the module's
+The traditional eclipse outline view is used by Acceleo to display the module's
 structure. imports, templates, queries can be seen there, and double-clicking on
 any of them places the cursor at the corresponding position in the module (in
 the editor).
@@ -1198,7 +1193,7 @@ on the *Preview >* button, or to make the changes immediately by clicking on
 .. image:: ../images/acceleo_rename.png
 
 The preview displays the files that will be modified and for each of them the
-changes of their content.
+changes that are to be applied to their content.
 
 .. image:: ../images/acceleo_rename_preview.png
 
@@ -1254,12 +1249,12 @@ them (we use java for this document's examples).
 .. image:: ../images/acceleo_mark_as_protected4.png
 
 **Note:** You may have to modify the id used to make sure the marker works like
-you want.
+you want, as ids have to be unique for a given file.
 
 Transform to For/If Block
 ________________________________________________________________________________
 
-TODO Describe this feature
+[PENDING]
 
 Other Facilities
 --------------------------------------------------------------------------------
@@ -1270,7 +1265,7 @@ ________________________________________________________________________________
 
 It is sometimes useful to invoke some java code from inside an Acceleo template.
 The acceleo non-standard library provides a service `invoke` which allows just
-that. The invoked java service is wrapped in an Acceleo query.
+that. The invoked java service can be wrapped in an Acceleo query.
 
 To facilitate the creation of such a wrapper, proceed like this:
 
@@ -1370,7 +1365,7 @@ ________________________________________________________________________________
 to successfully convert Acceleo 2.x projects or templates into Acceleo 3
 modules.**
 
-TODO Describe this feature
+[PENDING]
 
 Compilation
 ================================================================================
@@ -1380,7 +1375,7 @@ the ``bin/`` folder of Acceleo projects.
 
 Of course, Acceleo complies to eclipse settings for compilation, which means
 that compiled files are placed in the default output folder as defined in the
-Java Build Path settings of the project (usually the ``bin/`` folder).
+Java Build Path settings of the package (usually the ``bin/`` folder).
 
 Compilation Compliance Mode
 --------------------------------------------------------------------------------
@@ -1392,8 +1387,8 @@ The "strict" mode is 100% compliant with the OMG specification and guarantees
 that the compiled generators will work in any MTL-compilant engine. In this
 case, non-standard libraries are not allowed.
 
-The "pragmatic" mode is not 100% MTL-compliant since non-standard libaries are
-allowed, but this makes it easier to develop powerful modules.
+The "pragmatic" mode is not 100% MTL-compliant since non-standard libary operations
+are allowed, but this makes it way easier to develop powerful modules.
 
 This can be set project by project in each project's properties page:
 
@@ -1417,7 +1412,7 @@ examine how to generate code inside eclipse, then outside of eclipse.
 Launch Acceleo Application
 ________________________________________________________________________________
 
-Right-click on a ``.mtl`` Acceleo module file, then select *Run As > Launch
+Right-click on an Acceleo module (``.mtl``) file, then select *Run As > Launch
 Acceleo Application*.
 
 .. image:: ../images/acceleo_runas.png
@@ -1431,16 +1426,16 @@ If a launch configuration already exists, the generation is launched immediately
 
 **Note:** If an invalid launch configuration exists for the selected Acceleo
 module, it is used even if it produces no result or an error. So, if nothing
-happend when you follow the preceding steps, try and check whether a launch
+happened when following the preceding steps, try and check whether a launch
 configuration already exists for your template.
 
-Now, let's examine what information must or can be provided to Acceleo launch
+Now, let's examine what information must (or can) be provided to Acceleo launch
 configurations.
 
 Launch Configurations
 ________________________________________________________________________________
 
-Launch configurations for Acceleo can be created like described above, or by
+Launch configurations for Acceleo can be created as described above, or by
 opening the *Run Configurations* window, and then right-clicking on the *Acceleo
 Application* category to the left, and selecting *New* or *Duplicate*.
 
@@ -1452,7 +1447,8 @@ An acceleo launch configuration requires:
 
   .. image:: ../images/acceleo_launch_config2.png
 
-- An output folder (where every file will be generated)
+- An output folder (which will be the "root" from which to resolve relative paths
+of the files that are to be generated)
 
   .. image:: ../images/acceleo_launch_config3.png
 
@@ -1488,7 +1484,7 @@ eclipse. In this mode, the Acceleo engine uses only core java features, such as
 ``java.io.File`` for manipulating files.
 As for the generated files, they are not refreshed in eclipse, and the "Result"
 view is not populated:
-The generation is actually completely anaware of the running eclipse.
+The generation is actually completely unaware of the running eclipse.
 Contrary to the previous mode, breakpoints located in java services called from
 your templates are taken into account, but breakpoints located in Acceleo
 templates are not.
@@ -1498,21 +1494,21 @@ modules to make sure they behave as expected when run outside of eclipse.
 The Generated API
 ________________________________________________________________________________
 
-To help users, Acceleo creates an API able to launch an Acceleo template.
-This API can easily be customized to fit your specificities - if you have any.
+To help users, Acceleo creates an API that can launch an Acceleo template.
+This API can easily be customized to fit your specificities, if any.
 
-It is important to note that Acceleo inspects modules to look for ``@main``
+It is important to note that Acceleo inspects modules for ``@main``
 annotations in comments, and treats those templates specially.
 For every module containing at least one ``@main`` annotation, a java file
-is generated alongside the template. This class contains whatever plumbing code
+is generated alongside it. This class contains whatever plumbing code
 is needed to run the generator.
 
 **Note:**
 Templates marked with an ``@main`` annotation can be used to encapsulate the
 workflow logic of your generation.
 
-The generation can then be run by calling the main() of the class, or
-instantiating it and calling ``doGenerate()``.
+The generation can then be run by calling the main() method of the generated
+class, or instantiating it and calling ``doGenerate()``.
 
 +---------------------------------+---------------------------------------------------------------------+
 | API                             | Meaning                                                             |
@@ -1523,19 +1519,19 @@ instantiating it and calling ``doGenerate()``.
 |                                 |                                                                     |
 |                                 |   - The input model's URI;                                          |
 |                                 |   - The target folder (as a java.io.File);                          |
-|                                 |   - A list of arguments (ad a java.util.List);                      |
+|                                 |   - A list of arguments (as a java.util.List);                      |
 |                                 |                                                                     |
 |                                 | - Another which receives the model's root element instead of the    |
 |                                 |   model's URI                                                       |
 |                                 |                                                                     |
 |                                 | - A default one which just allows an easy instantiation, but        |
-|                                 |   requires one of the ``initialize`` methods to be callse before    |
+|                                 |   requires one of the ``initialize`` methods to be called before    |
 |                                 |   generating anything.                                              |
 +---------------------------------+---------------------------------------------------------------------+
 | ``main()``                      | A java entry point which can be used to launch a standalone         |
 |                                 | generation (outside of eclipse).                                    |
 +---------------------------------+---------------------------------------------------------------------+
-| ``doGenerate()``                | Launches the generation, using the given EMF task monitor.          |
+| ``doGenerate()``                | Launches the generation, using the given EMF progression monitor.   |
 +---------------------------------+---------------------------------------------------------------------+
 | ``getGenerationListeners()``    | Entry point that allows users to provide listeners of generation    |
 |                                 | events if needed.                                                   |
@@ -1558,7 +1554,8 @@ instantiating it and calling ``doGenerate()``.
 +---------------------------------+---------------------------------------------------------------------+
 | ``registerPackages()``          | Allows you to register EMF packages depending on the metamodels you |
 |                                 | need in your generators.                                            |
-|                                 | This will be necessary if you don't use UML.                        |
+|                                 | This is only useful when launching standalone generations.          |
+|                                 | This will be necessary if you use UML for example.                  |
 |                                 | You need to register every EMF package URI that is necessary to     |
 |                                 | load the models you use.                                            |
 |                                 | Refer to the EMF documentation if the meaning of this section is    |
@@ -1566,6 +1563,11 @@ instantiating it and calling ``doGenerate()``.
 +---------------------------------+---------------------------------------------------------------------+
 | ``registerResourcefactories()`` | Can be used to update the resource set's resource factopry registry |
 |                                 | with all needed  factories. For advanced users only!                |
+|                                 | This is only useful when launching standalone generations.          |
+|                                 | This will be necessary if you use UML or any other metamodel that   |
+|                                 | has its own resource factory.                                       |
+|                                 | Refer to the EMF documentation if the meaning of this section is    |
+|                                 | unclear.                                                            |
 +---------------------------------+---------------------------------------------------------------------+
 
 Customizing Acceleo Generations with Properties
@@ -1579,8 +1581,8 @@ This can also be used for internationalization.
 
 Properties must be provided via the ``getProperties()``API, which returns a
 ``java.util.List<String>``.
-The returned list must contain the qualified names of the resource bundles that
-will be used to read the properties from, without extensions.
+The returned list must contain the qualified names of the resource bundles from
+which the properties will be read, without extensions.
 
 For example, returning "org.eclipse.acceleo.module.sample.My" will
 have Acceleo looking for:
@@ -1590,7 +1592,8 @@ have Acceleo looking for:
 - A properties file named ``My.properties`` in the
   ``org/eclipse/acceleo/module/sample/`` source folder;
 - Properties files named ``My_en.properties``, ``My_fr.properties``, and so on
-  depending on possible locales.
+  depending on possible locales in the ``org/eclipse/acceleo/module/sample/``
+  source folder.
 
 The mechanism used by Acceleo is that of ``ResourceBundle``, which is a standard
 and widespread java mechanism. Please refer to your JDK's javadoc for more
@@ -1616,6 +1619,10 @@ For the time being, Acceleo proposes 3 generations strategies:
   
 Just use a new instance of the right strategy and return it in your
 implementation of the ``getGenerationStrategy()`` method.
+
+**Note**: The generation strategy mechanism is API and you can create your own
+subclasses in the unlikely case that the three Acceleo proposes aren't sufficient
+for your needs.
 
 Using the Result View
 ________________________________________________________________________________
@@ -1713,7 +1720,7 @@ To debug an Acceleo generation, two possibilities:
 .. image:: ../images/acceleo_debug_debugas_launch.png
 
 - If you have already run the generation you want to debug, click on the debug
-  icon dans select your generation.
+  icon and select your generation.
 
 Eclipse may display a pop-up window to ask you whether you want to open the
 debug perspective:
@@ -1761,9 +1768,9 @@ is an example of a deactivated breakpoint in this view:
 Profiling an Acceleo Generation
 --------------------------------------------------------------------------------
 
-Acceleo ships with a built-in profiler which allows to keep track of executions
-and see where time is consumed during generation, thus making it easier to
-identify (and hopefully correct) bottlenecks.
+Acceleo ships with a built-in profiler which allows you to keep track of
+executions and see where time is consumed during a generation, thus making it
+easier to identify (and hopefully fix) bottlenecks.
 
 Profile Configurations
 ________________________________________________________________________________
@@ -1792,8 +1799,8 @@ configuration cannot be saved.
 Acceleo Profile Files
 ________________________________________________________________________________
 
-Acceleo stores the result of a profiled execution in a file the extensions of
-which must be ``.mtlp``. This file is actually just a serialized EMF model.
+Acceleo stores the result of a profiled execution in a file which extension is
+``.mtlp``. This file is actually just a serialized EMF model.
 
 To profile an Accele generation, you have to launch it by right-clicking on the
 Acceleo module file and selecting *Profile As > Launch Acceleo Application*.
@@ -1807,7 +1814,7 @@ Let's take a closer look at it.
 
 .. image:: ../images/acceleo_profiling_file2.png
 
-The above image shows the content of a ``mtlp`` file, and correspondances
+The above image shows the content of an ``mtlp`` file, and correspondances
 between the generated files or the Acceleo template elements and the profiled
 data.
 
