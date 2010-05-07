@@ -134,8 +134,8 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 			public void run() {
 				final IFile[] validateFiles = needsValidation.keySet().toArray(
 						new IFile[needsValidation.size()]);
-				final IStatus validationStatus = workspace.validateEdit(validateFiles,
-						IWorkspace.VALIDATE_PROMPT);
+				final IStatus validationStatus = workspace.validateEdit(validateFiles, Display.getDefault()
+						.getActiveShell());
 				if (validationStatus.isOK()) {
 					for (Writer writer : needsValidation.values()) {
 						try {
