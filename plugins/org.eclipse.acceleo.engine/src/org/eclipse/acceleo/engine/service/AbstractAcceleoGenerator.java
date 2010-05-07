@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.MissingResourceException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -94,15 +96,31 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This will be thrown if any of the output files cannot be saved to disk.
 	 */
 	public void doGenerate(Monitor monitor) throws IOException {
+		generate(monitor);
+	}
+
+	/**
+	 * Launches the generation described by this instance.
+	 * 
+	 * @param monitor
+	 *            This will be used to display progress information to the user.
+	 * @return This will return a preview of the generation when the generation strategy feeds it to us.
+	 * @throws IOException
+	 *             This will be thrown if any of the output files cannot be saved to disk.
+	 */
+	public Map<String, String> generate(Monitor monitor) throws IOException {
 		File target = getTargetFolder();
 		if (!target.exists() && !target.mkdirs()) {
 			throw new IOException("target directory " + target + " couldn't be created."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		AcceleoService service = createAcceleoService();
 		String[] templateNames = getTemplateNames();
+		Map<String, String> result = new HashMap<String, String>();
 		for (int i = 0; i < templateNames.length; i++) {
-			service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(), target, monitor);
+			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
+					target, monitor));
 		}
+		return result;
 	}
 
 	/**
