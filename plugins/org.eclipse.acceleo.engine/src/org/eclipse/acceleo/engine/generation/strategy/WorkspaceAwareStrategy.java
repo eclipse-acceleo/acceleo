@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,6 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
 import org.eclipse.acceleo.engine.generation.writers.AcceleoWorkspaceFileWriter;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Display;
@@ -128,30 +128,31 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 			}
 		}
 
-		final List<IOException> exceptions = new ArrayList<IOException>();
-		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				final IFile[] validateFiles = needsValidation.keySet().toArray(
-						new IFile[needsValidation.size()]);
-				final IStatus validationStatus = workspace.validateEdit(validateFiles, Display.getDefault()
-						.getActiveShell());
-				if (validationStatus.isOK()) {
-					for (Writer writer : needsValidation.values()) {
-						try {
-							writer.close();
-						} catch (IOException e) {
-							exceptions.add(e);
-						}
-					}
+		final IFile[] validateFiles = needsValidation.keySet().toArray(new IFile[needsValidation.size()]);
+		EditValidator validator = new EditValidator(validateFiles);
+		// sync exec : we're waiting for the validation's result.
+		Display.getDefault().syncExec(validator);
+
+		if (validator.getValidationResult().isOK()) {
+			/*
+			 * The VCS has done its job, yet the user might have removed some files from the list. We'll
+			 * filter out those that are still read-only to handle this.
+			 */
+			final Iterator<Map.Entry<IFile, Writer>> iterator = needsValidation.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Map.Entry<IFile, Writer> next = iterator.next();
+				if (next.getKey().isReadOnly()) {
+					iterator.remove();
 				}
 			}
-		});
 
-		if (exceptions.size() == 1) {
-			throw exceptions.get(0);
-		} else if (exceptions.size() > 1) {
-			throw createException(exceptions);
+			for (Writer writer : needsValidation.values()) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					AcceleoEnginePlugin.log(e, false);
+				}
+			}
 		}
 	}
 
@@ -187,9 +188,23 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		}
 
 		final IFile[] validateFiles = needsValidation.toArray(new IFile[needsValidation.size()]);
-		final IStatus validationStatus = ResourcesPlugin.getWorkspace().validateEdit(validateFiles,
-				IWorkspace.VALIDATE_PROMPT);
-		if (validationStatus.isOK()) {
+		EditValidator validator = new EditValidator(validateFiles);
+		// sync exec : we're waiting for the validation's result.
+		Display.getDefault().syncExec(validator);
+
+		if (validator.getValidationResult().isOK()) {
+			/*
+			 * The VCS has done its job, yet the user might have removed some files from the list. We'll
+			 * filter out those that are still read-only to handle this.
+			 */
+			final Iterator<IFile> iterator = needsValidation.iterator();
+			while (iterator.hasNext()) {
+				IFile next = iterator.next();
+				if (next.isReadOnly()) {
+					iterator.remove();
+				}
+			}
+
 			for (Map.Entry<String, Map<String, String>> entry : validatedLostFiles.entrySet()) {
 				internalCreateLostFile(entry.getKey(), entry.getValue());
 			}
@@ -237,18 +252,44 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	}
 
 	/**
-	 * Creates an exception wrapper given the list of root exceptions.
+	 * This will be used to ask the workspace to validate file modifications.
 	 * 
-	 * @param causes
-	 *            The exceptions that are to be wrapped in this instance.
-	 * @return The created exception wrapper.
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	public IOException createException(List<IOException> causes) {
-		StringBuilder message = new StringBuilder(AcceleoEngineMessages
-				.getString("AcceleoEvaluationContext.MultipleExceptions")); //$NON-NLS-1$
-		for (IOException ioe : causes) {
-			message.append(ioe.getLocalizedMessage());
+	private class EditValidator implements Runnable {
+		/** This will contain the list of files which modification needs validation. */
+		private IFile[] files;
+
+		/** Result of the validation. */
+		private IStatus validationResult;
+
+		/**
+		 * Instantiates this runnable given the list of files we seek to modify.
+		 * 
+		 * @param files
+		 *            The files we seek to modify.
+		 */
+		public EditValidator(IFile[] files) {
+			this.files = files;
 		}
-		return new IOException(message.toString());
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			validationResult = ResourcesPlugin.getWorkspace().validateEdit(files,
+					Display.getDefault().getActiveShell());
+		}
+
+		/**
+		 * Returns the result of this validation.
+		 * 
+		 * @return The result of this validation.
+		 */
+		public IStatus getValidationResult() {
+			return validationResult;
+		}
 	}
 }
