@@ -44,7 +44,7 @@ public class AcceleoEnginePlugin extends Plugin {
 	 * Default constructor for the plugin.
 	 */
 	public AcceleoEnginePlugin() {
-		plugin = this;
+		// Empty implementation
 	}
 
 	/**
@@ -154,6 +154,7 @@ public class AcceleoEnginePlugin extends Plugin {
 	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
+		plugin = this;
 		super.start(context);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(dynamicTemplatesListener,
@@ -170,8 +171,8 @@ public class AcceleoEnginePlugin extends Plugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		plugin = null;
 		super.stop(context);
+		plugin = null;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.removeListener(dynamicTemplatesListener);
 		registry.removeListener(engineCreatorListener);
