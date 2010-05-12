@@ -1425,7 +1425,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			replacementLength -= endIndex - startIndex;
 			addedLength += replacementLength;
 
-			if (useInvocationTrace) {
+			// Note that we could be out of a file block's scope
+			if (useInvocationTrace && currentFiles.size() > 0) {
 				// We need the starting index of these traces
 				int offsetGap = -1;
 				for (ExpressionTrace trace : invocationTraces) {
