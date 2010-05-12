@@ -66,7 +66,7 @@
 </li>
 <li><a class="reference internal" href="#organizing-acceleo-modules" id="id26">Organizing Acceleo modules</a><ul>
 <li><a class="reference internal" href="#naming-conventions" id="id27">Naming conventions</a></li>
-<li><a class="reference internal" href="#design-your-module-as-apis" id="id28">Design your module as APIs</a></li>
+<li><a class="reference internal" href="#design-your-module-as-you-would-for-apis" id="id28">Design your module as you would for APIs</a></li>
 <li><a class="reference internal" href="#tests" id="id29">Tests</a></li>
 <li><a class="reference internal" href="#tips-and-tricks" id="id30">Tips and Tricks</a></li>
 </ul>
@@ -608,16 +608,15 @@ conventions also prevent name conflicts.</p>
 <p><em>&lt;namespace&gt;</em> <strong>.</strong> <em>&lt;input_metamodel&gt;</em> <strong>.gen.</strong> <em>&lt;target_architecture&gt;</em></p>
 <p>For example, a project to generate .NET code from a UML model, developed by
 Obeo, will be called <tt class="docutils literal">fr.obeo.uml.gen.dotnet</tt>.</p>
-<p>Module file names and module names should start by a lowercase letter.</p>
+<p>Module file names and module names should start with a lowercase letter.</p>
 <p>Module files should be located in packages with the same prefix as the project,
 but feel free to create subpackages.</p>
-<p>Template and query names should start by a lowercase letter, and use the
+<p>Template and query names should start with a lowercase letter, and use the
 <tt class="docutils literal">camelCase</tt> convention just like methods in java (uppercase letters are used
-to separate words).
-It goes the same for queries.</p>
+to separate words).</p>
 </div>
-<div class="section" id="design-your-module-as-apis">
-<h2><a class="toc-backref" href="#id28">Design your module as APIs</a></h2>
+<div class="section" id="design-your-module-as-you-would-for-apis">
+<h2><a class="toc-backref" href="#id28">Design your module as you would for APIs</a></h2>
 <p>The usual design principles apply when designing Acceleo modules:
 Maintainability, reusability, robustness are the objectives.
 To reach them, organize your modules carefully:</p>
@@ -628,9 +627,9 @@ your modules;</li>
 your design;</li>
 <li>Document your modules, templates and queries!
 Use <tt class="docutils literal">[comment]</tt> tags in the module's header to describe the module and
-before each template or query to describe them;</li>
+before each template and query to describe them;</li>
 <li>Queries and templates should be small. Templates more than one page high
-should be refactored whenever possible;</li>
+should be refactored as soon as possible;</li>
 <li>Modules should be organized in a sensible way:<ul>
 <li>One module per kind of file to generate, all located in a <tt class="docutils literal">main</tt> package;</li>
 <li>Shared modules used by several others should be in a package called
@@ -646,7 +645,7 @@ appropriate.</li>
 </ul>
 <p>Why this last one?
 Because when you generate a piece of text, it captures a generation rule.
-It often happens (espacially a the beginning of a module development) that
+It often happens (espacially at the beginning of a module development) that
 such rules are very simple, like &quot;write the class name&quot;.</p>
 <p>And then the rule changes to become &quot;write the class name but make sure that
 it starts with an uppercase letter, and that the resulting text is not a
@@ -663,7 +662,7 @@ one template and you're done.</p>
 <p>Of course, the importance of tests cannot be stressed enough.
 Each Acceleo project should be accompanied by a test project that contains:</p>
 <ul class="simple">
-<li>Small models, each of them allowing to test some particular generation rule;</li>
+<li>Small models, each of them allowing you to test some particular generation rule;</li>
 <li>The expected result for each model;</li>
 <li>A main java class that runs all generations and ensures that the result is as
 expected.</li>
@@ -694,8 +693,8 @@ implemented;</li>
 [/template]
 </pre>
 <p>This implementation makes sure that whenever you will invoke <tt class="docutils literal">genJavaTypeName</tt>
-on an element of typeClassifier or a subtype, you will produce text in the
-output file.
+on an element of type &quot;Classifier&quot; or one of its subtypes, you will produce text
+in the output file.
 This will contain a warning message if you forgot something in the generator.</p>
 <p>Do not implement each possible case of the different subtypes by testing the
 type of the template's parameter!
@@ -729,7 +728,7 @@ specification accessible from <a class="reference external" href="http://www.omg
 </div>
 <div class="section" id="editing-modules">
 <h2><a class="toc-backref" href="#id33">Editing modules</a></h2>
-<p>The Acceleo editor is be default associated with the <tt class="docutils literal">.mtl</tt> file extension.</p>
+<p>The Acceleo editor is by default associated with the <tt class="docutils literal">.mtl</tt> file extension.</p>
 <div class="section" id="syntax-highlighting">
 <h3><a class="toc-backref" href="#id34">Syntax Highlighting</a></h3>
 <p>The editor uses specific colors for Acceleo templates:</p>
@@ -796,7 +795,7 @@ margin in front of each of these elements.</p>
 <div class="section" id="rapid-text-replacement">
 <h3><a class="toc-backref" href="#id38">Rapid Text Replacement</a></h3>
 <p>Here is a very useful trick in Acceleo. Rapid text replacement allows you to
-quickly replace all occurrence of a chosen piecce of text by some template
+quickly replace all occurrence of a chosen piece of text by some template
 invocation. Case differences are inferred generating <tt class="docutils literal">toUpper()</tt> or
 <tt class="docutils literal">toUpperFirst()</tt> depending on what's needed.</p>
 <p>Here is an example:</p>
@@ -830,47 +829,19 @@ your type anymore!</p>
 <h3><a class="toc-backref" href="#id39">Rapid For/If Blocks</a></h3>
 <p>You will probably not use this feature every day, but it is important to know
 that it exists because it can bring you comfort from time to time.</p>
-<blockquote>
-<ul class="simple">
-<li><ul class="first">
-<li><ul class="first">
-<li><ul class="first">
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>TODO Find an interesting example and document the feature.</p>
-<blockquote>
-<ul class="simple">
-<li><ul class="first">
-<li><ul class="first">
-<li><ul class="first">
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
+<p>[PENDING Find a meaningful example and document the feature.]</p>
 </div>
 </div>
 <div class="section" id="the-acceleo-views">
 <h2><a class="toc-backref" href="#id40">The Acceleo Views</a></h2>
 <p>Acceleo provides a few specific views to improve productivity when working with
 templates.
-These views will be detailed later in the relevant chapters.
+These views will be detailed later on, in the relevant chapters.
 Let's just summarize their purpose to get the big picture.</p>
 <p>As usual, they can be opened by clicking on <em>Window &gt; Show View</em> and selecting
 the appropriate view in the menu. Note that in the Acceleo perspective, Acceleo
 views are proposed by default directly in this menu, which will not be the case
-in another perspective.</p>
+in another perspective where you'll have to find them in the <em>Other...</em> popup.</p>
 <div class="section" id="the-generation-patterns-view">
 <h3><a class="toc-backref" href="#id41">The Generation Patterns View</a></h3>
 <p>Generation patterns have been introduced in acceleo because we noticed that
@@ -878,9 +849,9 @@ something that happens really often when developing code generators is the need
 to implement some behavior on an interface and all or part of its subtypes.</p>
 <p>For example, let's imagine you are implementing a java generator from UML.
 What you want is to have a template called <tt class="docutils literal">javaName</tt> which will generate the
-name of any classifier, with some default behavior and some specifi behavior on
+name of any classifier, with some default behavior and some specific behavior on
 classes and interfaces.</p>
-<p>This is where the <strong>Generation Patterns view</strong> comes into play:</p>
+<p>This is where the <strong>Generation Patterns</strong> view comes into play:</p>
 <ul class="simple">
 <li>Locate the cursor in the template, at the position where you want to insert
 your <tt class="docutils literal">javaName</tt> templates;</li>
@@ -888,9 +859,9 @@ your <tt class="docutils literal">javaName</tt> templates;</li>
 the top part</li>
 <li>Select the types for which you want to create <tt class="docutils literal">javaName</tt> templates for.</li>
 </ul>
-<p>Note the the bottom part of the Generation Patterns views presents a
+<p>Note the bottom part of the Generation Patterns views presents a
 hierarchical view of the metamodel you are using. Each node represents a type of
-the metamodel and contains all its subtypes. So, one type can appear several
+the metamodel and contains all of its subtypes. So, one type can appear several
 times in this view, one time for each of its super-classes or super-interfaces.
 When you select a node (by checking the combo-box before it), all its
 descendants are also selected by default, but you can uncheck those you don't
@@ -937,7 +908,7 @@ Otherwise, a red marker indicates that you need to import the project in yours
 to be able to override a template it contains.
 For example, in the screenshot below,
 <tt class="docutils literal">org.eclipse.acceleo.module.other.sample</tt> needs be imported in your current
-project before you can successfully override on of its templates.</p>
+project before you can successfully override one of its templates.</p>
 <img alt="../images/acceleo_overrides_view1.png" src="../images/acceleo_overrides_view1.png" />
 <p>Nevertheless, you <strong>can</strong> declare the overriding, it will just <strong>not compile</strong>
 while you have not imported the relevant project (which is done in the
@@ -947,13 +918,13 @@ while you have not imported the relevant project (which is done in the
 <h3><a class="toc-backref" href="#id43">Dynamic overriding vs static overriding</a></h3>
 <p>Acceleo allows static overriding as described in the MTL specification.
 Acceleo also allows another kind of overriding, which is called &quot;dynamic&quot;.</p>
-<p>Dynamic overriding allows you to override any template without extending its
-module.
+<p>Dynamic overriding allows you to override any template called by a given module
+even if the launcher of this module knows nothing about your project.
 It takes precedence over any static template overriding.
 With dynamic overriding, you can make sure a specific template will be called
 while calling the original generator (the initial java class that launches the
 generation).
-Dynamic overriding only works inside of eclipse.</p>
+Dynamic overriding only works &quot;out-of-the-box&quot; inside of eclipse.</p>
 <p>To activate dynamic overriding, you must place the overriding template on a
 plug-in which will extend the <tt class="docutils literal">org.eclipse.acceleo.engine.dynamic.templates</tt>
 extension point.</p>
@@ -981,7 +952,7 @@ In each project, the files that have been generated (in their folders).</p>
 </ul>
 <p>You can double-click on any element to visualize the related portions of
 generated text.</p>
-<p>You can right-click on any element and choose <em>Open Declaration</em> to navigate
+<p>You can right-click on any element and select <em>Open Declaration</em> to navigate
 to any atomic element used during the generation, be it a model element or an
 Acceleo element (template, query).</p>
 <p>This view's behavior will be further detailed in chapter
@@ -992,7 +963,7 @@ Acceleo element (template, query).</p>
 <h2><a class="toc-backref" href="#id45">Outlines</a></h2>
 <div class="section" id="the-dynamic-outline">
 <h3><a class="toc-backref" href="#id46">The Dynamic Outline</a></h3>
-<p>The traditional eclipse outline view is used be Acceleo to display the module's
+<p>The traditional eclipse outline view is used by Acceleo to display the module's
 structure. imports, templates, queries can be seen there, and double-clicking on
 any of them places the cursor at the corresponding position in the module (in
 the editor).</p>
@@ -1099,7 +1070,7 @@ on the <em>Preview &gt;</em> button, or to make the changes immediately by click
 <em>OK</em>.</p>
 <img alt="../images/acceleo_rename.png" src="../images/acceleo_rename.png" />
 <p>The preview displays the files that will be modified and for each of them the
-changes of their content.</p>
+changes that are to be applied to their content.</p>
 <img alt="../images/acceleo_rename_preview.png" src="../images/acceleo_rename_preview.png" />
 <p>The left side of the preview displays the current state of the module, and the
 right side displays the future state of the module after the renaming takes
@@ -1138,11 +1109,11 @@ Since such comment markers depend on your target language, Acceleo cannot infer
 them (we use java for this document's examples).</p>
 <img alt="../images/acceleo_mark_as_protected4.png" src="../images/acceleo_mark_as_protected4.png" />
 <p><strong>Note:</strong> You may have to modify the id used to make sure the marker works like
-you want.</p>
+you want, as ids have to be unique for a given file.</p>
 </div>
 <div class="section" id="transform-to-for-if-block">
 <h3><a class="toc-backref" href="#id58">Transform to For/If Block</a></h3>
-<p>TODO Describe this feature</p>
+<p>[PENDING]</p>
 </div>
 </div>
 <div class="section" id="other-facilities">
@@ -1151,7 +1122,7 @@ you want.</p>
 <h3><a class="toc-backref" href="#id60">Wrapping Java Services</a></h3>
 <p>It is sometimes useful to invoke some java code from inside an Acceleo template.
 The acceleo non-standard library provides a service <cite>invoke</cite> which allows just
-that. The invoked java service is wrapped in an Acceleo query.</p>
+that. The invoked java service can be wrapped in an Acceleo query.</p>
 <p>To facilitate the creation of such a wrapper, proceed like this:</p>
 <ol class="arabic">
 <li><p class="first">Right-click on the package you want to create your Acceleo module in, and
@@ -1235,7 +1206,7 @@ well that ends well.</p>
 <p><strong>Important note: It is necessary to use a version of eclipse &gt;= 3.5 in order
 to successfully convert Acceleo 2.x projects or templates into Acceleo 3
 modules.</strong></p>
-<p>TODO Describe this feature</p>
+<p>[PENDING]</p>
 </div>
 </div>
 </div>
@@ -1245,7 +1216,7 @@ modules.</strong></p>
 the <tt class="docutils literal">bin/</tt> folder of Acceleo projects.</p>
 <p>Of course, Acceleo complies to eclipse settings for compilation, which means
 that compiled files are placed in the default output folder as defined in the
-Java Build Path settings of the project (usually the <tt class="docutils literal">bin/</tt> folder).</p>
+Java Build Path settings of the package (usually the <tt class="docutils literal">bin/</tt> folder).</p>
 <div class="section" id="compilation-compliance-mode">
 <h2><a class="toc-backref" href="#id64">Compilation Compliance Mode</a></h2>
 <p>The Acceleo compiler can be set to be &quot;strict&quot; or &quot;pragmatic&quot;, &quot;pragmatic&quot; being
@@ -1253,8 +1224,8 @@ the default mode.</p>
 <p>The &quot;strict&quot; mode is 100% compliant with the OMG specification and guarantees
 that the compiled generators will work in any MTL-compilant engine. In this
 case, non-standard libraries are not allowed.</p>
-<p>The &quot;pragmatic&quot; mode is not 100% MTL-compliant since non-standard libaries are
-allowed, but this makes it easier to develop powerful modules.</p>
+<p>The &quot;pragmatic&quot; mode is not 100% MTL-compliant since non-standard libary operations
+are allowed, but this makes it way easier to develop powerful modules.</p>
 <p>This can be set project by project in each project's properties page:</p>
 <img alt="../images/acceleo_compiler_compliance.png" src="../images/acceleo_compiler_compliance.png" />
 <p>Just select the project and click <em>Alt + Return</em>, or right-click on it and
@@ -1271,7 +1242,7 @@ off by default.</p>
 examine how to generate code inside eclipse, then outside of eclipse.</p>
 <div class="section" id="launch-acceleo-application">
 <h3><a class="toc-backref" href="#id67">Launch Acceleo Application</a></h3>
-<p>Right-click on a <tt class="docutils literal">.mtl</tt> Acceleo module file, then select <em>Run As &gt; Launch
+<p>Right-click on an Acceleo module (<tt class="docutils literal">.mtl</tt>) file, then select <em>Run As &gt; Launch
 Acceleo Application</em>.</p>
 <img alt="../images/acceleo_runas.png" src="../images/acceleo_runas.png" />
 <p>This opens a wizard to create a launch configuration if such a configuration
@@ -1280,14 +1251,14 @@ does not already exist for this file.</p>
 <p>If a launch configuration already exists, the generation is launched immediately.</p>
 <p><strong>Note:</strong> If an invalid launch configuration exists for the selected Acceleo
 module, it is used even if it produces no result or an error. So, if nothing
-happend when you follow the preceding steps, try and check whether a launch
+happened when following the preceding steps, try and check whether a launch
 configuration already exists for your template.</p>
-<p>Now, let's examine what information must or can be provided to Acceleo launch
+<p>Now, let's examine what information must (or can) be provided to Acceleo launch
 configurations.</p>
 </div>
 <div class="section" id="launch-configurations">
 <h3><a class="toc-backref" href="#id68">Launch Configurations</a></h3>
-<p>Launch configurations for Acceleo can be created like described above, or by
+<p>Launch configurations for Acceleo can be created as described above, or by
 opening the <em>Run Configurations</em> window, and then right-clicking on the <em>Acceleo
 Application</em> category to the left, and selecting <em>New</em> or <em>Duplicate</em>.</p>
 <p>An acceleo launch configuration requires:</p>
@@ -1299,7 +1270,8 @@ Application</em> category to the left, and selecting <em>New</em> or <em>Duplica
 <li><p class="first">An input model</p>
 <img alt="../images/acceleo_launch_config2.png" src="../images/acceleo_launch_config2.png" />
 </li>
-<li><p class="first">An output folder (where every file will be generated)</p>
+<li><p class="first">An output folder (which will be the &quot;root&quot; from which to resolve relative paths
+of the files that are to be generated)</p>
 <img alt="../images/acceleo_launch_config3.png" src="../images/acceleo_launch_config3.png" />
 </li>
 </ul>
@@ -1327,7 +1299,7 @@ eclipse. In this mode, the Acceleo engine uses only core java features, such as
 <tt class="docutils literal">java.io.File</tt> for manipulating files.
 As for the generated files, they are not refreshed in eclipse, and the &quot;Result&quot;
 view is not populated:
-The generation is actually completely anaware of the running eclipse.
+The generation is actually completely unaware of the running eclipse.
 Contrary to the previous mode, breakpoints located in java services called from
 your templates are taken into account, but breakpoints located in Acceleo
 templates are not.
@@ -1337,18 +1309,18 @@ modules to make sure they behave as expected when run outside of eclipse.</p>
 </div>
 <div class="section" id="the-generated-api">
 <h3><a class="toc-backref" href="#id70">The Generated API</a></h3>
-<p>To help users, Acceleo creates an API able to launch an Acceleo template.
-This API can easily be customized to fit your specificities - if you have any.</p>
-<p>It is important to note that Acceleo inspects modules to look for <tt class="docutils literal">&#64;main</tt>
+<p>To help users, Acceleo creates an API that can launch an Acceleo template.
+This API can easily be customized to fit your specificities, if any.</p>
+<p>It is important to note that Acceleo inspects modules for <tt class="docutils literal">&#64;main</tt>
 annotations in comments, and treats those templates specially.
 For every module containing at least one <tt class="docutils literal">&#64;main</tt> annotation, a java file
-is generated alongside the template. This class contains whatever plumbing code
+is generated alongside it. This class contains whatever plumbing code
 is needed to run the generator.</p>
 <p><strong>Note:</strong>
 Templates marked with an <tt class="docutils literal">&#64;main</tt> annotation can be used to encapsulate the
 workflow logic of your generation.</p>
-<p>The generation can then be run by calling the main() of the class, or
-instantiating it and calling <tt class="docutils literal">doGenerate()</tt>.</p>
+<p>The generation can then be run by calling the main() method of the generated
+class, or instantiating it and calling <tt class="docutils literal">doGenerate()</tt>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="32%" />
@@ -1366,13 +1338,13 @@ instantiating it and calling <tt class="docutils literal">doGenerate()</tt>.</p>
 <li>One which receives:<ul>
 <li>The input model's URI;</li>
 <li>The target folder (as a java.io.File);</li>
-<li>A list of arguments (ad a java.util.List);</li>
+<li>A list of arguments (as a java.util.List);</li>
 </ul>
 </li>
 <li>Another which receives the model's root element instead of the
 model's URI</li>
 <li>A default one which just allows an easy instantiation, but
-requires one of the <tt class="docutils literal">initialize</tt> methods to be callse before
+requires one of the <tt class="docutils literal">initialize</tt> methods to be called before
 generating anything.</li>
 </ul>
 </td>
@@ -1382,7 +1354,7 @@ generating anything.</li>
 generation (outside of eclipse).</td>
 </tr>
 <tr><td><tt class="docutils literal">doGenerate()</tt></td>
-<td>Launches the generation, using the given EMF task monitor.</td>
+<td>Launches the generation, using the given EMF progression monitor.</td>
 </tr>
 <tr><td><tt class="docutils literal">getGenerationListeners()</tt></td>
 <td>Entry point that allows users to provide listeners of generation
@@ -1411,7 +1383,8 @@ The default implementation should be convenient in most cases.</td>
 <tr><td><tt class="docutils literal">registerPackages()</tt></td>
 <td>Allows you to register EMF packages depending on the metamodels you
 need in your generators.
-This will be necessary if you don't use UML.
+This is only useful when launching standalone generations.
+This will be necessary if you use UML for example.
 You need to register every EMF package URI that is necessary to
 load the models you use.
 Refer to the EMF documentation if the meaning of this section is
@@ -1419,7 +1392,12 @@ unclear.</td>
 </tr>
 <tr><td><tt class="docutils literal">registerResourcefactories()</tt></td>
 <td>Can be used to update the resource set's resource factopry registry
-with all needed  factories. For advanced users only!</td>
+with all needed  factories. For advanced users only!
+This is only useful when launching standalone generations.
+This will be necessary if you use UML or any other metamodel that
+has its own resource factory.
+Refer to the EMF documentation if the meaning of this section is
+unclear.</td>
 </tr>
 </tbody>
 </table>
@@ -1432,8 +1410,8 @@ generated, making it easy to regenerate only a subset of files if required.
 This can also be used for internationalization.</p>
 <p>Properties must be provided via the <tt class="docutils literal"><span class="pre">getProperties()``API,</span> which returns a
 ``java.util.List&lt;String&gt;</tt>.
-The returned list must contain the qualified names of the resource bundles that
-will be used to read the properties from, without extensions.</p>
+The returned list must contain the qualified names of the resource bundles from
+which the properties will be read, without extensions.</p>
 <p>For example, returning &quot;org.eclipse.acceleo.module.sample.My&quot; will
 have Acceleo looking for:</p>
 <ul class="simple">
@@ -1442,7 +1420,8 @@ have Acceleo looking for:</p>
 <li>A properties file named <tt class="docutils literal">My.properties</tt> in the
 <tt class="docutils literal">org/eclipse/acceleo/module/sample/</tt> source folder;</li>
 <li>Properties files named <tt class="docutils literal">My_en.properties</tt>, <tt class="docutils literal">My_fr.properties</tt>, and so on
-depending on possible locales.</li>
+depending on possible locales in the <tt class="docutils literal">org/eclipse/acceleo/module/sample/</tt>
+source folder.</li>
 </ul>
 <p>The mechanism used by Acceleo is that of <tt class="docutils literal">ResourceBundle</tt>, which is a standard
 and widespread java mechanism. Please refer to your JDK's javadoc for more
@@ -1466,6 +1445,9 @@ well with, for instance, ClearCase).</li>
 </ul>
 <p>Just use a new instance of the right strategy and return it in your
 implementation of the <tt class="docutils literal">getGenerationStrategy()</tt> method.</p>
+<p><strong>Note</strong>: The generation strategy mechanism is API and you can create your own
+subclasses in the unlikely case that the three Acceleo proposes aren't sufficient
+for your needs.</p>
 </div>
 </div>
 <div class="section" id="using-the-result-view">
@@ -1536,7 +1518,7 @@ can enter your condition (using OCL).</p>
 <img alt="../images/acceleo_debug_debugas_launch.png" src="../images/acceleo_debug_debugas_launch.png" />
 <ul class="simple">
 <li>If you have already run the generation you want to debug, click on the debug
-icon dans select your generation.</li>
+icon and select your generation.</li>
 </ul>
 <p>Eclipse may display a pop-up window to ask you whether you want to open the
 debug perspective:</p>
@@ -1574,9 +1556,9 @@ is an example of a deactivated breakpoint in this view:</p>
 </div>
 <div class="section" id="profiling-an-acceleo-generation">
 <h2><a class="toc-backref" href="#id78">Profiling an Acceleo Generation</a></h2>
-<p>Acceleo ships with a built-in profiler which allows to keep track of executions
-and see where time is consumed during generation, thus making it easier to
-identify (and hopefully correct) bottlenecks.</p>
+<p>Acceleo ships with a built-in profiler which allows you to keep track of
+executions and see where time is consumed during a generation, thus making it
+easier to identify (and hopefully fix) bottlenecks.</p>
 <div class="section" id="profile-configurations">
 <h3><a class="toc-backref" href="#id79">Profile Configurations</a></h3>
 <p>The first thing to do to profile an Acceleo generation is to create a &quot;Profile
@@ -1596,8 +1578,8 @@ configuration cannot be saved.</p>
 </div>
 <div class="section" id="acceleo-profile-files">
 <h3><a class="toc-backref" href="#id80">Acceleo Profile Files</a></h3>
-<p>Acceleo stores the result of a profiled execution in a file the extensions of
-which must be <tt class="docutils literal">.mtlp</tt>. This file is actually just a serialized EMF model.</p>
+<p>Acceleo stores the result of a profiled execution in a file which extension is
+<tt class="docutils literal">.mtlp</tt>. This file is actually just a serialized EMF model.</p>
 <p>To profile an Accele generation, you have to launch it by right-clicking on the
 Acceleo module file and selecting <em>Profile As &gt; Launch Acceleo Application</em>.</p>
 <img alt="../images/acceleo_profiling_launch.png" src="../images/acceleo_profiling_launch.png" />
@@ -1605,7 +1587,7 @@ Acceleo module file and selecting <em>Profile As &gt; Launch Acceleo Application
 updated if it was already there).</p>
 <p>Let's take a closer look at it.</p>
 <img alt="../images/acceleo_profiling_file2.png" src="../images/acceleo_profiling_file2.png" />
-<p>The above image shows the content of a <tt class="docutils literal">mtlp</tt> file, and correspondances
+<p>The above image shows the content of an <tt class="docutils literal">mtlp</tt> file, and correspondances
 between the generated files or the Acceleo template elements and the profiled
 data.</p>
 <p>For each generated file, there is one entry in the root node of the profile (see

@@ -1448,7 +1448,7 @@ An acceleo launch configuration requires:
   .. image:: ../images/acceleo_launch_config2.png
 
 - An output folder (which will be the "root" from which to resolve relative paths
-of the files that are to be generated)
+ of the files that are to be generated)
 
   .. image:: ../images/acceleo_launch_config3.png
 

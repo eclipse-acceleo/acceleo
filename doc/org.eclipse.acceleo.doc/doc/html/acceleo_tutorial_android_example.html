@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
 <title>Acceleo Code Generation - Let's start with an Android example</title>
-<meta name="authors" content="Laurent GOUBET" />
+<meta name="authors" content="Laurent Goubet  Axel Richard  Jonathan Musset" />
 <link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
 </head>
 <body>
@@ -17,7 +17,8 @@
 <tbody valign="top">
 <tr><th class="docinfo-name">Authors:</th>
 <td>Laurent Goubet
-<br />Axel Richard</td></tr>
+<br />Axel Richard
+<br />Jonathan Musset</td></tr>
 <tr><th class="docinfo-name">Contact:</th>
 <td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a></td></tr>
 </tbody>
@@ -36,7 +37,7 @@ platform, Android and the java language.</p>
 with a different aspect of mastering Acceleo:</p>
 <ul class="simple">
 <li>Acceleo Operations Reference: description and explanation of each operation of the Acceleo script syntax;</li>
-<li>User Guide : documentation of Acceleo's functions;</li>
+<li>User Guide : documentation of Acceleo features;</li>
 <li>Acceleo Tutorial : how to create a new Acceleo project.</li>
 </ul>
 </div>
@@ -45,8 +46,8 @@ with a different aspect of mastering Acceleo:</p>
 <p>This is a quick tutorial.</p>
 <ul class="simple">
 <li>Beginners will see a simple but concrete case-study;</li>
-<li>Acceleo addicts will discover some new killing features;</li>
-<li>Android experts will learn enough of the basics to be able to create advanced code generator in few days.</li>
+<li>Acceleo addicts will discover some new killer features;</li>
+<li>Android experts will learn enough of the basics to be able to create advanced code generators in a few days.</li>
 </ul>
 </div>
 </div>
@@ -54,19 +55,19 @@ with a different aspect of mastering Acceleo:</p>
 <h1>Installation</h1>
 <div class="section" id="eclipse">
 <h2>Eclipse</h2>
-<p>This tutorial is performed on Eclipse 3.5 (Galileo) Modeling Tools Bundle.
-This bundle contains all the required components to realize the tutorial (EMF,
-Acceleo...). You can download the appropriate Eclipse Bundle here :
-<a class="reference external" href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>.</p>
+<p>This tutorial is performed on the Eclipse 3.5 (Galileo) Modeling Bundle.
+This bundle contains all of the required components to follow through the whole tutorial (EMF,
+Acceleo, OCL, ...). You can download the appropriate Eclipse Bundle on the
+<a class="reference external" href="http://www.eclipse.org/downloads/">Eclipse Download Page</a> .</p>
 </div>
 <div class="section" id="android">
 <h2>Android</h2>
 <p>Android works like Java. You need an Android Runtime in order to execute
 your Android applications.</p>
-<p>You can download Android SDK and Android Development Tool (ADT) Eclipse Plugin
-here : <a class="reference external" href="http://developer.android.com/sdk/index.html">http://developer.android.com/sdk/index.html</a>.</p>
-<p>For the installation, see the following instructions :
-<a class="reference external" href="http://developer.android.com/sdk/installing.html">http://developer.android.com/sdk/installing.html</a>.</p>
+<p>You can download Android SDK and the Android Development Tool (ADT) Eclipse Plugin
+on the <a class="reference external" href="http://developer.android.com/sdk/index.html">official download page</a>.</p>
+<p>For the installation, follow the
+<a class="reference external" href="http://developer.android.com/sdk/installing.html">official instructions</a>.</p>
 <p>For this tutorial, the Android SDK starter package version is the R05, and the
 SDK platform is the 2.1. The ADT Plugin version is the 0.9.6.</p>
 <p>The last step of installation is to link Eclipse with the SDK:</p>
@@ -74,7 +75,7 @@ SDK platform is the 2.1. The ADT Plugin version is the 0.9.6.</p>
 <li>In Eclipse, choose <em>Window &gt; Preferences</em>.</li>
 <li>Select <em>Android</em> in the left panel.</li>
 <li>Click <em>Browse</em> and navigate to where the SDK is installed.</li>
-<li>Click <em>Apply</em>. The list of SDK targets will be reload.</li>
+<li>Click <em>Apply</em>. The list of SDK targets will be reloaded.</li>
 <li>Click <em>OK</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Add_SDK.png" src="../images/android_tutorial/android_Add_SDK.png" />
@@ -107,7 +108,7 @@ but it also works on other domains...</p>
 <div class="section" id="the-android-meta-model">
 <h3>The Android meta-model</h3>
 <p>The Ecore meta-model describes what a simple Android application is with the
-Activity and the Widget concepts. For more informations about EMF and Ecore,
+<em>Activity</em> and <em>Widget</em> concepts. If you need more information about EMF and Ecore,
 visit : <a class="reference external" href="http://www.eclipse.org/modeling/emf/">http://www.eclipse.org/modeling/emf/</a>.</p>
 <div class="section" id="create-the-ecore-meta-model">
 <h4>Create the Ecore meta-model :</h4>
@@ -116,17 +117,17 @@ visit : <a class="reference external" href="http://www.eclipse.org/modeling/emf/
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel.png" src="../images/android_tutorial/android_Create_Metamodel.png" />
 <ol class="arabic simple" start="2">
-<li>Choose the source folder where the model will be create and name it. Click <em>Next</em>.</li>
+<li>Choose the source folder where the model will be created.</li>
+<li>Fill in an appropriate name for your model. Click <em>Next</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_2.png" src="../images/android_tutorial/android_Create_Metamodel_2.png" />
-<ol class="arabic simple" start="3">
+<ol class="arabic simple" start="4">
 <li>Select the Model Object and the encoding. Click <em>Finish</em></li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_3.png" src="../images/android_tutorial/android_Create_Metamodel_3.png" />
-</div>
-<div class="section" id="construct-the-ecore-meta-model">
-<h4>Construct the Ecore meta-model :</h4>
-<p>An Android application is made up of a Project, Activities and Widgets. A
+<p>Construct the Ecore meta-model :
+~~~~~~~~~~~~~~~~~~~~~~~~~~/images/android_tutorial/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
+<p>An Android application is made up of a <em>Project</em>, <em>Activities</em> and <em>Widgets</em>. A
 Project contains activities. An Activity contains widgets. Several kind of
 widgets exist like TextFields, Spinners, Buttons... In our case, the meta-model
 only contains concepts we need for the application. Add more widgets or other
@@ -134,51 +135,52 @@ concepts if needed.</p>
 <img alt="../images/android_tutorial/android_Metamodel.png" src="../images/android_tutorial/android_Metamodel.png" />
 <p>The root package must contains a Namespace URI (i.e. a unique identification) :</p>
 <img alt="../images/android_tutorial/android_Metamodel_2.png" src="../images/android_tutorial/android_Metamodel_2.png" />
-<p>A Project can contains 0 or an infinity of activities (representing by -1 in the
+<p>A Project can contains 0 or an infinity of activities (represented by <em>-1</em> in the
 <em>Upper Bound</em>) :</p>
 <img alt="../images/android_tutorial/android_Metamodel_3.png" src="../images/android_tutorial/android_Metamodel_3.png" />
-<p>The <em>Widget EClass</em> is an interface for the differnt widgets types :</p>
+<p>The <em>Widget EClass</em> is an interface for the different widget types :</p>
 <img alt="../images/android_tutorial/android_Metamodel_4.png" src="../images/android_tutorial/android_Metamodel_4.png" />
 <p>The <em>Text EClass</em> is a subclass of <em>Widget</em> :</p>
 <img alt="../images/android_tutorial/android_Metamodel_5.png" src="../images/android_tutorial/android_Metamodel_5.png" />
 </div>
 <div class="section" id="create-the-emf-generator-model">
 <h4>Create the EMF Generator model :</h4>
-<p>The EMF Generator model allows to generate the code representing the meta-model.</p>
+<p>The EMF Generator model will generate the code representing the meta-model.</p>
 <ol class="arabic simple">
 <li>Click <em>File &gt; New &gt; Other &gt; Eclipse Modeling Framework &gt; EMF Generator Model</em>. Click <em>Next</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_4.png" src="../images/android_tutorial/android_Create_Metamodel_4.png" />
 <ol class="arabic simple" start="2">
-<li>Choose the source folder where the generator model will be create and name it. Click <em>Next</em>.</li>
+<li>Choose the source folder where the generator model will be created.</li>
+<li>Fill in an appropriate name for the generator. Click <em>Next</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_5.png" src="../images/android_tutorial/android_Create_Metamodel_5.png" />
-<ol class="arabic simple" start="3">
-<li>Select a model importer. Click <em>Next</em>.</li>
+<ol class="arabic simple" start="4">
+<li>Select the Ecore model importer. Click <em>Next</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_6.png" src="../images/android_tutorial/android_Create_Metamodel_6.png" />
-<ol class="arabic simple" start="4">
+<ol class="arabic simple" start="5">
 <li>Import your Ecore meta-model. Click <em>Next</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_7.png" src="../images/android_tutorial/android_Create_Metamodel_7.png" />
-<ol class="arabic simple" start="5">
+<ol class="arabic simple" start="6">
 <li>Select the root package. Click <em>Finish</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_8.png" src="../images/android_tutorial/android_Create_Metamodel_8.png" />
-<ol class="arabic simple" start="6">
-<li>Open the <em>.genmodel</em> file and edit the <em>Base Package</em> in the <em>Property View</em> :</li>
+<ol class="arabic simple" start="7">
+<li>Open your new <em>.genmodel</em> file and edit the <em>Base Package</em> in the <em>Property View</em> as shown below :</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_9.png" src="../images/android_tutorial/android_Create_Metamodel_9.png" />
-<ol class="arabic simple" start="7">
-<li>Edit generation directories :</li>
+<ol class="arabic simple" start="8">
+<li>Likewise, edit the generation directories :</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_10.png" src="../images/android_tutorial/android_Create_Metamodel_10.png" />
-<ol class="arabic simple" start="8">
-<li>Right-click on the root element and click <em>Generate Model Code</em>, <em>Generate Edit Code</em>, and <em>Generate Editor Code</em>.</li>
+<ol class="arabic simple" start="9">
+<li>Right-click on the root element and select in order <em>Generate Model Code</em>, <em>Generate Edit Code</em>, and finally <em>Generate Editor Code</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_11.png" src="../images/android_tutorial/android_Create_Metamodel_11.png" />
-<ol class="arabic simple" start="9">
-<li>Your Package Explorer must look like this :</li>
+<ol class="arabic simple" start="10">
+<li>Your Package Explorer should look like this :</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_Metamodel_12.png" src="../images/android_tutorial/android_Create_Metamodel_12.png" />
 </div>
@@ -186,7 +188,7 @@ concepts if needed.</p>
 <div class="section" id="the-runtime-environment">
 <h3>The Runtime environment</h3>
 <p>Once the meta-model created, you have to create a <em>Run Configuration</em> that will
-allows you to use the meta-model (as a plugin).</p>
+allow you to use the meta-model (as a plugin).</p>
 <ol class="arabic simple">
 <li>Right-click and run: <em>Run &gt; Run Configuration</em>.</li>
 </ol>
@@ -204,16 +206,16 @@ Project.</p>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Android_Project.png" src="../images/android_tutorial/android_Create_New_Android_Project.png" />
 <ol class="arabic simple" start="2">
-<li>Fill in the project name an the package name fields.</li>
+<li>Fill in both the project name an the package name fields.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Android_Project_2.png" src="../images/android_tutorial/android_Create_New_Android_Project_2.png" />
 <ol class="arabic simple" start="3">
-<li>Your Package Explorer must look like this :</li>
+<li>Your Package Explorer now looks like this :</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Android_Project_3.png" src="../images/android_tutorial/android_Create_New_Android_Project_3.png" />
 <div class="section" id="the-prototype-sources">
 <h4>The prototype sources</h4>
-<p><strong>TODO INSERT the link to retrieve the source application</strong></p>
+<p>[PENDING Link to MyContacts zip]</p>
 </div>
 <div class="section" id="the-model-of-the-application-mycontacts">
 <h4>The model of the application <em>MyContacts</em></h4>
@@ -223,7 +225,7 @@ Project.</p>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Model.png" src="../images/android_tutorial/android_Create_New_Model.png" />
 <ol class="arabic simple" start="2">
-<li>Select the parent source folder and fill in the name of the model. Click <em>Next &gt;</em>.</li>
+<li>Select the parent source folder and fill in the name of the model as follows. Click <em>Next &gt;</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Model_2.png" src="../images/android_tutorial/android_Create_New_Model_2.png" />
 <ol class="arabic simple" start="3">
@@ -251,9 +253,10 @@ been created, we are going to create the code generation project:</p>
 </ol>
 <img alt="../images/android_tutorial/android_Create_New_Acceleo_Project.png" src="../images/android_tutorial/android_Create_New_Acceleo_Project.png" />
 <ol class="arabic simple" start="3">
-<li>Key in the Android meta-model in the <em>Metamodel URI</em> field or select it with the <em>Browse</em> button. Then, select the Activity type in the <em>Generate for type</em> list.</li>
-<li>In our case we are going to use the <em>Advanced</em> mode to use the <em>Initializing a Project with an Example</em> feature. Push the <em>Advanced</em> button and check the <em>Initialize contents</em> checkbox. Then choose <em>Copy example content</em> in the list, and browse the first java source file of the <em>MyAccounts</em> application.</li>
-<li>Key in the name of the template file.</li>
+<li>Fill in the Android meta-model's NsURI in the <em>Metamodel URI</em> field or select it with the <em>Browse</em> button. Then, select the Activity type in the <em>Generate for type</em> list.</li>
+<li>In our case we are going to use the <em>Advanced</em> mode to use the <em>Initializing a Project with an Example</em> feature. Push the <em>Advanced</em> button and check the <em>Initialize contents</em> checkbox.</li>
+<li>Then, choose <em>Copy example content</em> in the list, and browse the first java source file of the <em>MyAccounts</em> application.</li>
+<li>Fill in the name of the template file.</li>
 <li>Check the <em>This will generate a file</em> checkbox.</li>
 <li>Uncheck the <em>Create a main annotation &#64;main</em> checkbox (we will see what this checkbox means later).</li>
 <li>Repeat the operation for each kind of generated file.</li>
@@ -265,14 +268,14 @@ decorator will indicate that it is a generation project.</p>
 <p>The <em>This will generate a file</em> checkbox means that the file will generate text
 in a file. Concretely, a <em>File Tag</em> appears in the template. The first argument
 is the filepath.</p>
-<ol class="arabic simple" start="9">
-<li>Update filepath of each module in order that they generate in the right folders.</li>
+<ol class="arabic simple" start="10">
+<li>Update filepath of each module so that they generate in the right folders.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Update_Filepath.png" src="../images/android_tutorial/android_Update_Filepath.png" />
 </div>
 <div class="section" id="initialize-the-workflow-the-main-entry-point">
 <h2>Initialize the workflow - The main entry point</h2>
-<p>As mentioned in the OMG specification, an MTL file do calls the other ones.</p>
+<p>As mentioned in the OMG specification, MTL files (modules) can call for templates or queries defined in other MTL modules.</p>
 <ol class="arabic simple">
 <li>In the Acceleo perspective, in the modules package folder, right-clik and run: <em>New &gt; Acceleo Module File</em>. If you are not in the Acceleo perspective, right-click and run: <em>New &gt; Other &gt; Acceleo Model To Text &gt; Acceleo Module File</em>.</li>
 <li>Push the <em>Advanced</em> button and check the <em>Create a main annotation &#64;main</em> checkbox.</li>
@@ -288,44 +291,43 @@ is the filepath.</p>
 <div class="section" id="quick-replacement">
 <h3>Quick replacement</h3>
 <p>With Acceleo, you can select any part of a static text in a template and the
-completion will propose you to replace it by a dynamic Acceleo expression. It
-shows the number of occurrences will be replaced too. In our case, replace all
-the occurrences of the String <em>MyContacts</em> in the different modules by the
-<em>[a.name.toUpperFirst()]</em> Acceleo expression. In our case, note that the default
-Acceleo Expression proposed is <em>[name.toUpperFirst()]</em>, but you can write any
-expression you want.</p>
+completion will offer you to replace it by a dynamic Acceleo expression. It
+shows the number of occurrences that will be replaced along too. Here, we'll replace
+all the occurrences of the String <em>MyContacts</em> in the different modules by the
+<em>[a.name.toUpperFirst()/]</em> Acceleo expression. Take note that the default
+Acceleo Expression proposed is <em>[name.toUpperFirst()]</em> in this case, but you can
+write any expression you want.</p>
 <img alt="../images/android_tutorial/android_Quick_Replacment.png" src="../images/android_tutorial/android_Quick_Replacment.png" />
-<p>The expressions are automatically update.</p>
+<p>The expressions are automatically updated as you change the selected one.</p>
 <img alt="../images/android_tutorial/android_Quick_Replacment_2.png" src="../images/android_tutorial/android_Quick_Replacment_2.png" />
 </div>
 <div class="section" id="quick-hierarchy-tree">
 <h3>Quick hierarchy tree</h3>
 <div class="section" id="as-for-if">
 <h4>As For/If</h4>
-<p>In the Android meta-model, you have different type of Widgets, like Text,
+<p>In the Android meta-model, you have different types of Widgets, like Text,
 Spinner, Button... Acceleo provides a way to customize quickly your code,
 and manage the different possibilities. With the combo <em>For/If</em>, you can apply
-a specific traitment to each kind of Widgets.</p>
+a specific treatment to each kind of Widgets.</p>
 <ol class="arabic simple">
 <li>In the modules that contains Widgets declarations or calls, select them and then right-click and run: <em>Source &gt; As For/If</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_As_For_If.png" src="../images/android_tutorial/android_As_For_If.png" />
-<p>Each kind of Widget is separate.</p>
+<p>Each kind of Widget is isolated.</p>
 <img alt="../images/android_tutorial/android_As_For_If_2.png" src="../images/android_tutorial/android_As_For_If_2.png" />
 <ol class="arabic simple" start="2">
 <li>Then key in the appropriate type of Widget in each condition.</li>
 </ol>
 <img alt="../images/android_tutorial/android_As_For_If_3.png" src="../images/android_tutorial/android_As_For_If_3.png" />
 <ol class="arabic simple" start="3">
-<li>Let just one TextField declaration and delete the other ones. Complete by change the static name of Widgets with a dynamic Acceleo expression by using the <em>Quick replacement</em> tool.</li>
+<li>Leave just one TextField declaration and delete the other ones. Complete it by changing the static name of Widgets with a dynamic Acceleo expression by using the <em>Quick replacement</em> tool.</li>
 </ol>
 <img alt="../images/android_tutorial/android_As_For_If_4.png" src="../images/android_tutorial/android_As_For_If_4.png" />
 <ol class="arabic simple" start="4">
 <li>Repeat for the other files.</li>
 </ol>
 <img alt="../images/android_tutorial/android_As_For_If_5.png" src="../images/android_tutorial/android_As_For_If_5.png" />
-<p>Be careful with the <em>For Loop</em>. Inside the <em>For Loop</em>, use an explicit call to
-call the name of the Activity.</p>
+<p>Be careful with the <em>For Loop</em>. Inside of it, use an explicit call for the name of the Activity.</p>
 <img alt="../images/android_tutorial/android_As_For_If_6.png" src="../images/android_tutorial/android_As_For_If_6.png" />
 </div>
 <div class="section" id="extract-template">
@@ -338,14 +340,14 @@ right-click and run: <em>Refactor &gt; Extract Template...</em>.</p>
 </div>
 <div class="section" id="quick-fixes">
 <h4>Quick fixes</h4>
-<p>The Quick fixes allows you to create templates and queries easily. When you are
+<p>The Quick fixes allow you to create templates and queries easily. When you are
 in an Acceleo expression, write the name of the template/query you want to
 create and then right-click and run: <em>Quick Fix</em>. Then, you can choose the
 adapted operation you want, like <em>Create template - after last member</em>.</p>
 <img alt="../images/android_tutorial/android_Quick_Fix.png" src="../images/android_tutorial/android_Quick_Fix.png" />
-<p>Fill in the template.</p>
+<p>Fill in the template body.</p>
 <img alt="../images/android_tutorial/android_Quick_Fix_2.png" src="../images/android_tutorial/android_Quick_Fix_2.png" />
-<p>Use the new template.</p>
+<p>Use this new template.</p>
 <img alt="../images/android_tutorial/android_Quick_Fix_3.png" src="../images/android_tutorial/android_Quick_Fix_3.png" />
 </div>
 </div>
@@ -360,19 +362,20 @@ adapted operation you want, like <em>Create template - after last member</em>.</
 </ol>
 <img alt="../images/android_tutorial/android_Run_And_Test.png" src="../images/android_tutorial/android_Run_And_Test.png" />
 <ol class="arabic simple" start="2">
-<li>Create the generator <em>Run configuration</em>. Right-click on the main entry point module and run: <em>Run As &gt; Launch Acceleo Application</em>.</li>
+<li>We'll create the generator's <em>Run configuration</em>. Right-click on the main entry point module and run: <em>Run As &gt; Launch Acceleo Application</em>.</li>
 <li>Select the <em>MyContacts</em> model in the <em>Model</em> field.</li>
 <li>Select the target folder, where the new source files will be generated.</li>
 </ol>
 <img alt="../images/android_tutorial/android_Run_And_Test_2.png" src="../images/android_tutorial/android_Run_And_Test_2.png" />
 <ol class="arabic simple" start="5">
-<li>Push the <em>Run</em> button. The files have been generated in the Android project.</li>
+<li>Push the <em>Run</em> button.</li>
+<li>That's it! The files have been generated in the Android project.</li>
 </ol>
 </div>
 <div class="section" id="run-the-application">
 <h3>Run the application</h3>
 <ol class="arabic simple">
-<li>Create the Android application <em>Run configuration</em>. Right-click on the Android project and run: <em>Run As &gt; Run Configurations</em>.</li>
+<li>Now, let's create the Android application's <em>Run configuration</em>. Right-click on the Android project and run: <em>Run As &gt; Run Configurations</em>.</li>
 <li>Right-clik on the <em>Android Application</em> item in the list and select <em>New</em>.</li>
 <li>Change the configuration name.</li>
 <li>In the <em>Project</em> panel, click <em>Browse</em> to select the Android application.</li>
@@ -384,13 +387,13 @@ adapted operation you want, like <em>Create template - after last member</em>.</
 </ol>
 </div>
 </div>
-<div class="section" id="run-on-another-model-to-create-new-application">
-<h2>Run on another model to create new application...</h2>
+<div class="section" id="run-on-other-models-to-create-new-applications">
+<h2>Run on other models to create new applications...</h2>
 <p>Your generation project is reusable with another model. In a few clicks, you can
 create a model of an application that will count the OlympicGames medals and
 generate it !</p>
 <ol class="arabic simple">
-<li>Create the model.</li>
+<li>Create the model such as on :</li>
 </ol>
 <img alt="../images/android_tutorial/android_Run_With_Another_Model.png" src="../images/android_tutorial/android_Run_With_Another_Model.png" />
 <ol class="arabic simple" start="2">
@@ -413,13 +416,13 @@ generate it !</p>
 </div>
 <div class="section" id="a-little-bit-about-incremental-generation">
 <h2>A little bit about incremental generation</h2>
-<p>The incremental generation consist to define specific zones with user tags
+<p>The incremental generation consist in defining specific zones with user tags
 [protected] in order to keep you own code between the generations.</p>
 <ol class="arabic simple">
 <li>Select the code you want to keep, right-click and run: <em>Source &gt; As Protected Area</em>.</li>
 </ol>
 <img alt="../images/android_tutorial/android_User_Code_2.png" src="../images/android_tutorial/android_User_Code_2.png" />
-<p>User tags have been added around your code selection.</p>
+<p>User tags now surround your initial code selection.</p>
 <img alt="../images/android_tutorial/android_User_Code_3.png" src="../images/android_tutorial/android_User_Code_3.png" />
 <ol class="arabic simple" start="2">
 <li>Comment the <em>User tags</em>, and cut the code inside the tags.</li>
@@ -433,11 +436,11 @@ generate it !</p>
 <li>Paste the code inside the protected tags in the generated source file.</li>
 </ol>
 <img alt="../images/android_tutorial/android_User_Code_6.png" src="../images/android_tutorial/android_User_Code_6.png" />
-<p>From now on, the code inside the <em>User tags</em> will be keep by the future
-generations. The code outside the <em>User tags</em> will be ignored and overwritten at
-the next generation. In this example, the BAD CODE will not be there at the next
-generation, because it have been written outside the <em>User tags</em> in the
-generated file.</p>
+<p>From now on, the code inside the <em>User tags</em> will be kept by any subsequent
+generation. Manual code entered outside of the <em>User tags</em> will be ignored and
+overwritten on the next generation. In this example, the &quot;BAD CODE&quot; String will not
+be there after the next generation, because it has been written outside <em>User tags</em>
+in a generated file.</p>
 </div>
 <div class="section" id="workbench-acceleo-views">
 <h2>Workbench Acceleo views</h2>
@@ -446,12 +449,12 @@ generated file.</p>
 <h3>The <em>Result View</em></h3>
 <p>The <em>Result View</em> shows how the text, the templates, and the models are
 synchronized.
-After a generation, select any element in the <em>Result View</em> and the generated
-code associate will be highlighted. In the same way, select any piece of code in
-a generated file, and you will see the associate element in the <em>Result View</em>.</p>
+After a generation, select any element in the <em>Result View</em> and the associated
+generated code will be highlighted. Likewise, select any piece of code in a
+generated file, and you will see the associated element in the <em>Result View</em>.</p>
 <img alt="../images/android_tutorial/android_Result_View.png" src="../images/android_tutorial/android_Result_View.png" />
-<p>You can also right-click on element in the <em>Result View</em> and run:
-<em>Open declaration</em>. This will open the Acceleo expression associate to the
+<p>You can also right-click on an element in the <em>Result View</em> and run:
+<em>Open declaration</em>. This will open the Acceleo expression associated with the
 element.</p>
 <img alt="../images/android_tutorial/android_Result_View_2.png" src="../images/android_tutorial/android_Result_View_2.png" />
 </div>
@@ -471,7 +474,7 @@ the completion will propose the pattern you defined.</p>
 <p>The <em>Overrides View</em> is an entry point to easily override an existing template
 behavior.</p>
 <p>In the <em>Overrides View</em>, select the template you want to override. Then, in a
-module, the completion will propose to override the template you selected.</p>
+module, the completion will offer to override the template you selected.</p>
 <img alt="../images/android_tutorial/android_Overrides_View.png" src="../images/android_tutorial/android_Overrides_View.png" />
 <img alt="../images/android_tutorial/android_Overrides_View_2.png" src="../images/android_tutorial/android_Overrides_View_2.png" />
 </div>
@@ -480,9 +483,8 @@ module, the completion will propose to override the template you selected.</p>
 <div class="section" id="conclusion">
 <h1>Conclusion</h1>
 <p>Now you can make a complete Android code generator with more widgets...</p>
-<p>The original project sources : <strong>TODO INSERT THE SOURCES LINK HERE</strong></p>
-<p>This tutorial also exists in a slide-presentation version :
-<strong>TODO INSERT THE PRESENTATION LINK HERE</strong></p>
+<p>The original project sources : [PENDING sources of the original project]</p>
+<p>This tutorial also exists in a slide-presentation version : [PENDING original eCon presentation]</p>
 </div>
 </div>
 </body>
