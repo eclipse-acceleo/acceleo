@@ -24,6 +24,7 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -58,17 +59,16 @@ public class AcceleoRefactoringPreviewViewer extends TextMergeViewer {
 				return;
 			}
 
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() instanceof AcceleoEditor) {
-				AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().getActiveEditor();
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+			if (page.getActiveEditor() instanceof AcceleoEditor) {
+				AcceleoEditor editor = (AcceleoEditor)page.getActiveEditor();
 
 				((SourceViewer)textViewer).configure(new AcceleoConfiguration(editor, AcceleoUIActivator
 						.getDefault().getPreferenceStore()));
 			} else {
-				IEditorReference[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().getEditorReferences();
-				for (int i = 0; i < editors.length; i++) {
-					IEditorReference iEditorReference = editors[i];
+				IEditorReference[] editors = page.getEditorReferences();
+				for (IEditorReference iEditorReference : editors) {
 					if (iEditorReference.getEditor(false) instanceof AcceleoEditor) {
 						AcceleoEditor editor = (AcceleoEditor)iEditorReference.getEditor(false);
 						((SourceViewer)textViewer).configure(new AcceleoConfiguration(editor,

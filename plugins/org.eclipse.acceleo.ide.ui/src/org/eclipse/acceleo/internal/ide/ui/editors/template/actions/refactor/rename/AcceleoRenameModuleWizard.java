@@ -18,7 +18,7 @@ import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class AcceleoRenameTemplateWizard extends RefactoringWizard {
+public class AcceleoRenameModuleWizard extends RefactoringWizard {
 
 	/**
 	 * The constructor.
@@ -28,7 +28,7 @@ public class AcceleoRenameTemplateWizard extends RefactoringWizard {
 	 * @param name
 	 *            The name of the wizard.
 	 */
-	public AcceleoRenameTemplateWizard(AcceleoRenameTemplateRefactoring refactoring, String name) {
+	public AcceleoRenameModuleWizard(AcceleoRenameModuleRefactoring refactoring, String name) {
 		super(refactoring, DIALOG_BASED_USER_INTERFACE | PREVIEW_EXPAND_FIRST_NODE);
 		setDefaultPageTitle(name);
 	}
@@ -40,9 +40,8 @@ public class AcceleoRenameTemplateWizard extends RefactoringWizard {
 	 */
 	@Override
 	protected void addUserInputPages() {
-		addPage(new AcceleoRenameTemplateInputWizardPage(
+		addPage(new AcceleoRenameModuleInputWizardPage(
 				AcceleoUIMessages
-						.getString("AcceleoEditorRenameTemplateRefactoring.RenameTemplateInputWizardPage"))); //$NON-NLS-1$
+						.getString("AcceleoEditorRenameModuleRefactoring.RenameModuleInputWizardPage"))); //$NON-NLS-1$
 	}
-
 }

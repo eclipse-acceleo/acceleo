@@ -11,13 +11,13 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.core.resources.IFile;
@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
@@ -50,7 +51,8 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	/**
 	 * Action's name.
 	 */
-	private final String name = "Rename..."; //$NON-NLS-1$
+	private final String name = AcceleoUIMessages
+			.getString("AcceleoEditorRenameRefactoring.RefactoringTitle"); //$NON-NLS-1$
 
 	/**
 	 * The current workbench window.
@@ -105,9 +107,15 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 				this.launchRefactoringRenameVariable((Variable)object);
 			} else if (object instanceof VariableExp) {
 				this.launchRefactoringRenameVariable((VariableExp)object);
+			} else if (object instanceof Module) {
+				this.launchRefactoringRenameModule((Module)object);
 			} else {
-				// if there is no element selected we will show the rename template refactoring.
+				// We launch the rename template refactoring by default.
 				this.launchRefactorRenameTemplate();
+
+				// If we want to launch the rename module refactoring by default :
+				// Module mod = AcceleoRenameModuleUtils.getModuleFromFile(this.editor.getFile());
+				// this.launchRefactoringRenameModule(mod);
 			}
 		}
 	}
@@ -135,10 +143,9 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		if (array.length > 0) {
 			refactoring.setTemplate(array[0]);
 			if (template != null) {
-				for (int i = 0; i < array.length; i++) {
-					AcceleoPositionedTemplate positionedTemplate = array[i];
-					if (template.getName().equals(positionedTemplate.getTemplateName())) {
-						refactoring.setTemplate(positionedTemplate);
+				for (AcceleoPositionedTemplate acceleoPositionedTemplate : array) {
+					if (template.getName().equals(acceleoPositionedTemplate.getTemplateName())) {
+						refactoring.setTemplate(acceleoPositionedTemplate);
 					}
 				}
 			}
@@ -161,10 +168,9 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		final AcceleoPositionedQuery[] array = AcceleoPositionedQuery.getInput();
 		if (array.length > 0) {
 			refactoring.setQuery(array[0]);
-			for (int i = 0; i < array.length; i++) {
-				AcceleoPositionedQuery positionedQuery = array[i];
-				if (query.getName().equals(positionedQuery.getQueryName())) {
-					refactoring.setQuery(positionedQuery);
+			for (AcceleoPositionedQuery acceleoPositionedQuery : array) {
+				if (query.getName().equals(acceleoPositionedQuery.getQueryName())) {
+					refactoring.setQuery(acceleoPositionedQuery);
 				}
 			}
 			runWizard(new AcceleoRenameQueryWizard(refactoring, name), fWindow.getShell(), name);
@@ -201,6 +207,44 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	/**
+	 * Launch the refactoring of a module.
+	 * 
+	 * @param module
+	 *            The module to refactor.
+	 */
+	private void launchRefactoringRenameModule(final Module module) {
+		IFile file = AcceleoRenameModuleUtils.getFileFromModule(this.editor.getFile().getProject(), module);
+		if (file == null || !file.exists()) {
+			return;
+		}
+
+		IFile javaFile = AcceleoRenameModuleUtils.getJavaFileFromModuleFile(this.editor.getFile()
+				.getProject(), file);
+
+		try {
+			IMarker[] markers = javaFile.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
+					IResource.DEPTH_INFINITE);
+			if (markers.length > 0) {
+				MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getShell());
+				box.setMessage(AcceleoUIMessages
+						.getString("AcceleoEditorRenameRefactoring.ErrorInTheCurrentFile")); //$NON-NLS-1$
+				box.open();
+				return;
+			}
+		} catch (CoreException e) {
+			// do nothing
+		}
+
+		final AcceleoRenameModuleRefactoring refactoring = new AcceleoRenameModuleRefactoring();
+		refactoring.setModule(module);
+		refactoring.setFile(file);
+		refactoring.setProject(file.getProject());
+
+		runWizard(new AcceleoRenameModuleWizard(refactoring, name), fWindow.getShell(), name);
+	}
+
+	/**
 	 * Force the editor to save to perform the refactoring.
 	 * 
 	 * @return If the editor has saved.
@@ -211,16 +255,15 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
 			IEditorPart[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.getDirtyEditors();
-			for (int i = 0; i < editors.length; i++) {
-				if (editors[i] instanceof AcceleoEditor) {
-					dirtyEditorList.add((AcceleoEditor)editors[i]);
+			for (IEditorPart iEditorPart : editors) {
+				if (iEditorPart instanceof AcceleoEditor) {
+					dirtyEditorList.add((AcceleoEditor)iEditorPart);
 				}
 			}
 		}
 
 		if (dirtyEditorList.size() > 0) {
-			for (Iterator<AcceleoEditor> iterator = dirtyEditorList.iterator(); iterator.hasNext();) {
-				AcceleoEditor acceleoEditor = (AcceleoEditor)iterator.next();
+			for (AcceleoEditor acceleoEditor : dirtyEditorList) {
 				ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)acceleoEditor
 						.getSite().getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
 				Saveable[] saveableArray = acceleoEditor.getSaveables();
@@ -237,8 +280,7 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 			}
 
 			boolean allSaved = true;
-			for (Iterator<AcceleoEditor> iterator = dirtyEditorList.iterator(); iterator.hasNext();) {
-				AcceleoEditor acceleoEditor = (AcceleoEditor)iterator.next();
+			for (AcceleoEditor acceleoEditor : dirtyEditorList) {
 				if (acceleoEditor.isDirty()) {
 					allSaved = false;
 					break;
@@ -252,11 +294,11 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	/**
-	 * Check that there is no acceleo error in the file.
+	 * Check if there are any acceleo errors in the file.
 	 * 
 	 * @param file
 	 *            The current file.
-	 * @return true if there is no error.
+	 * @return true if there is an error.
 	 */
 	private boolean containsAcceleoError(final IFile file) {
 		boolean result = false;

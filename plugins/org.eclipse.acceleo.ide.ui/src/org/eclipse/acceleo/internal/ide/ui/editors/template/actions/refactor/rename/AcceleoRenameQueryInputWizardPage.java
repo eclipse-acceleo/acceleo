@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -72,12 +73,12 @@ public class AcceleoRenameQueryInputWizardPage extends UserInputWizardPage {
 		result.setLayout(layout);
 
 		Label label = new Label(result, SWT.NONE);
-		label.setText("&New name:"); //$NON-NLS-1$
+		label.setText(AcceleoUIMessages.getString("AcceleoEditorRenameQueryRefactoring.NewName")); //$NON-NLS-1$
 
 		this.fNameField = createNameField(result);
 
 		label = new Label(result, SWT.NONE);
-		label.setText("&Queries available:"); //$NON-NLS-1$
+		label.setText(AcceleoUIMessages.getString("AcceleoEditorRenameQueryRefactoring.QueriesAvailable")); //$NON-NLS-1$
 
 		final Composite composite = new Composite(result, SWT.NONE);
 		layout = new GridLayout();
@@ -91,7 +92,8 @@ public class AcceleoRenameQueryInputWizardPage extends UserInputWizardPage {
 		this.fComboViewer.getCombo().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Button referenceButton = new Button(result, SWT.CHECK);
-		referenceButton.setText("&Update references"); //$NON-NLS-1$
+		referenceButton.setText(AcceleoUIMessages
+				.getString("AcceleoEditorRenameRefactoring.UpdateReferences")); //$NON-NLS-1$
 		final GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		data.verticalIndent = 2;

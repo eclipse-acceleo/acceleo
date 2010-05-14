@@ -24,14 +24,14 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * This class will create the first page of the refactoring wizard in which the user will enter the new name
- * for the selected variable.
+ * for the selected module.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
+public class AcceleoRenameModuleInputWizardPage extends UserInputWizardPage {
 
 	/**
-	 * The text field for the new name of the variable.
+	 * The text field for the new name of the module.
 	 */
 	private Text fNameField;
 
@@ -41,7 +41,7 @@ public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
 	 * @param name
 	 *            The name of the wizard page.
 	 */
-	public AcceleoRenameVariableInputWizardPage(String name) {
+	public AcceleoRenameModuleInputWizardPage(String name) {
 		super(name);
 	}
 
@@ -59,12 +59,12 @@ public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
 		result.setLayout(layout);
 
 		Label label = new Label(result, SWT.NONE);
-		label.setText(AcceleoUIMessages.getString("AcceleoEditorRenameVariableRefactoring.NewName")); //$NON-NLS-1$
+		label.setText(AcceleoUIMessages.getString("AcceleoEditorRenameModuleRefactoring.NewName")); //$NON-NLS-1$
 
 		this.fNameField = createNameField(result);
 
-		final AcceleoRenameVariableRefactoring refactoring = this.getRenameVariableRefactoring();
-		fNameField.setText(refactoring.getVariable().getVariableName());
+		final AcceleoRenameModuleRefactoring refactoring = this.getRenameModuleRefactoring();
+		fNameField.setText(refactoring.getModule().getName());
 
 		fNameField.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent event) {
@@ -90,8 +90,8 @@ public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
 		return field;
 	}
 
-	private AcceleoRenameVariableRefactoring getRenameVariableRefactoring() {
-		return (AcceleoRenameVariableRefactoring)getRefactoring();
+	private AcceleoRenameModuleRefactoring getRenameModuleRefactoring() {
+		return (AcceleoRenameModuleRefactoring)getRefactoring();
 	}
 
 	/**
@@ -99,9 +99,9 @@ public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
 	 */
 	private void handleInputChanged() {
 		final RefactoringStatus status = new RefactoringStatus();
-		final AcceleoRenameVariableRefactoring refactoring = this.getRenameVariableRefactoring();
+		final AcceleoRenameModuleRefactoring refactoring = this.getRenameModuleRefactoring();
 
-		status.merge(refactoring.setNewVariableName(this.fNameField.getText()));
+		status.merge(refactoring.setNewModuleName(this.fNameField.getText()));
 
 		this.setPageComplete(!status.hasError());
 		final int severity = status.getSeverity();
@@ -112,5 +112,4 @@ public class AcceleoRenameVariableInputWizardPage extends UserInputWizardPage {
 			setMessage("", NONE); //$NON-NLS-1$
 		}
 	}
-
 }

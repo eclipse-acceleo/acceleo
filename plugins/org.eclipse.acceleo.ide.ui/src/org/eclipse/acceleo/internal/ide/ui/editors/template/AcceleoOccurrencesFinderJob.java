@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -112,11 +111,15 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
-		final List<Match> list = this.listOfTheOccurencesInTheCurrentFile(result);
-		final int length = list.size();
-
-		final Map<Annotation, Position> annotationMap = new HashMap<Annotation, Position>(length);
-		for (int i = 0; i < length; i++) {
+		List<Match> matches = this.listOfTheOccurencesInTheCurrentFile(result);
+		final Map<Annotation, Position> annotationMap = new HashMap<Annotation, Position>(matches.size());
+		for (Match match : matches) {
+			ReferenceEntry ref = null;
+			if (match.getElement() instanceof ReferenceEntry) {
+				ref = (ReferenceEntry)match.getElement();
+			} else {
+				continue;
+			}
 
 			if (monitor.isCanceled()) {
 				status = Status.CANCEL_STATUS;
@@ -131,13 +134,12 @@ public class AcceleoOccurrencesFinderJob extends Job {
 				return status;
 			}
 
-			final String description = ((ReferenceEntry)list.get(i).getElement()).getMatch().toString();
+			final String description = ref.getMatch().toString();
 
-			final IRegion region = ((ReferenceEntry)list.get(i).getElement()).getRegion();
+			final IRegion region = ref.getRegion();
 			final Position position = new Position(region.getOffset(), region.getLength());
 
 			// Existing marker of the JDT do not modify !
-
 			annotationMap.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false, description), position);
 		}
 
@@ -147,12 +149,8 @@ public class AcceleoOccurrencesFinderJob extends Job {
 
 			if (annotationModel != null) {
 				synchronized(getLockObject(annotationModel)) {
-					final Iterator<Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
-					while (iter.hasNext()) {
-						final Map.Entry<Annotation, Position> mapEntry = (Map.Entry<Annotation, Position>)iter
-								.next();
-						annotationModel.addAnnotation((Annotation)mapEntry.getKey(),
-								(Position)mapEntry.getValue());
+					for (Entry<Annotation, Position> entry : annotationMap.entrySet()) {
+						annotationModel.addAnnotation((Annotation)entry.getKey(), (Position)entry.getValue());
 					}
 				}
 			}
@@ -189,17 +187,14 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 */
 	private List<Match> listOfTheOccurencesInTheCurrentFile(final AbstractTextSearchResult result) {
 		List<Match> list = new ArrayList<Match>();
-		final Object[] array = result.getElements();
-
-		for (int i = 0; i < array.length; i++) {
-			if (((ReferenceEntry)array[i]).getRegion() != null) {
-				list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
-						((ReferenceEntry)array[i]).getRegion().getLength()));
+		for (Object object : result.getElements()) {
+			if (object instanceof ReferenceEntry && ((ReferenceEntry)object).getRegion() != null) {
+				ReferenceEntry ref = (ReferenceEntry)object;
+				list.add(new Match(ref, ref.getRegion().getOffset(), ref.getRegion().getLength()));
 			}
 		}
 
 		final IFile file = editor.getFile();
-
 		list = OpenDeclarationUtils.getMatchesFromTheFile(list, file);
 
 		if (element instanceof Variable || element instanceof VariableExp) {

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 
 /**
@@ -38,6 +39,8 @@ public class AcceleoRenameVariableWizard extends RefactoringWizard {
 	 */
 	@Override
 	protected void addUserInputPages() {
-		addPage(new AcceleoRenameVariableInputWizardPage("RenameVariableInputWizardPage")); //$NON-NLS-1$
+		addPage(new AcceleoRenameVariableInputWizardPage(
+				AcceleoUIMessages
+						.getString("AcceleoEditorRenameVariableRefactoring.RenameVariableInputWizardPage"))); //$NON-NLS-1$
 	}
 }

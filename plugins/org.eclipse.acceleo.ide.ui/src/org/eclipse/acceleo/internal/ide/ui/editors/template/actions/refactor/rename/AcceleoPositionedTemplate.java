@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -87,8 +86,7 @@ public final class AcceleoPositionedTemplate {
 		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
-		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
-			final ModuleElement moduleElement = (ModuleElement)iterator.next();
+		for (ModuleElement moduleElement : moduleElementList) {
 			if (moduleElement instanceof Template) {
 				positionedTemplatesList.add(new AcceleoPositionedTemplate((Template)moduleElement));
 			}
@@ -97,10 +95,7 @@ public final class AcceleoPositionedTemplate {
 		if (template != null) {
 			boolean isInTheList = false;
 
-			for (Iterator<AcceleoPositionedTemplate> iterator = positionedTemplatesList.iterator(); iterator
-					.hasNext();) {
-				AcceleoPositionedTemplate acceleoPositionedTemplate = (AcceleoPositionedTemplate)iterator
-						.next();
+			for (AcceleoPositionedTemplate acceleoPositionedTemplate : positionedTemplatesList) {
 				if (OpenDeclarationUtils
 						.checkTemplateEqual(acceleoPositionedTemplate.getTemplate(), template)) {
 					isInTheList = true;
@@ -128,9 +123,7 @@ public final class AcceleoPositionedTemplate {
 		this.setTemplateMatches(list);
 
 		// step 3 : find the position definition of the current template
-		for (Iterator<Match> iterator2 = list.iterator(); iterator2.hasNext();) {
-			final Match match = (Match)iterator2.next();
-
+		for (Match match : list) {
 			if (match.getLength() > this.getTemplate().getName().length()) {
 				this.setTemplateDefinitionMatch(match);
 			}
@@ -216,16 +209,14 @@ public final class AcceleoPositionedTemplate {
 		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
-		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
-			final ModuleElement moduleElement = (ModuleElement)iterator.next();
+		for (ModuleElement moduleElement : moduleElementList) {
 			if (moduleElement instanceof Template) {
 				templateList.add((Template)moduleElement);
 			}
 		}
 
 		// step 2 : for each templates, look for all occurrences
-		for (Iterator<Template> iterator = templateList.iterator(); iterator.hasNext();) {
-			final Template template = (Template)iterator.next();
+		for (Template template : templateList) {
 			final AcceleoPositionedTemplate positionedTemplate = new AcceleoPositionedTemplate(template);
 
 			// We find all the occurrences of the current template in the workspace
@@ -233,18 +224,13 @@ public final class AcceleoPositionedTemplate {
 			positionedTemplate.setTemplateMatches(list);
 
 			// step 3 : find the position definition of the current template
-			for (Iterator<Match> iterator2 = list.iterator(); iterator2.hasNext();) {
-				final Match match = (Match)iterator2.next();
-
+			for (Match match : list) {
 				if (match.getLength() > template.getName().length()) {
 					positionedTemplate.setTemplateDefinitionMatch(match);
 				}
-
 			}
-
 			positionedTemplatesList.add(positionedTemplate);
 		}
-
 		return positionedTemplatesList;
 	}
 

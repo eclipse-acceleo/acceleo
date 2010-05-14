@@ -838,6 +838,10 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameVariableRefactoringContribution"
              id="org.eclipse.acceleo.ide.ui.refactor.renamevariable">
        </contribution>
+       <contribution
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleRefactoringContribution"
+             id="org.eclipse.acceleo.ide.ui.refactor.renamemodule">
+       </contribution>
     </extension>
     <extension
           point="org.eclipse.compare.contentMergeViewers">
@@ -846,6 +850,22 @@ Contributors:
              extensions="mtl"
              id="org.eclipse.acceleo.ide.ui.editors.template.refactor">
        </viewer>
+    </extension>
+    <extension
+          point="org.eclipse.ltk.core.refactoring.renameParticipants">
+       <renameParticipant
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleParticipant"
+             id="org.eclipse.acceleo.ide.ui.refactor.renamemoduleparticipant"
+             name="%acceleoEditorRefactoring.Name">
+          <enablement>
+             <with
+                   variable="element">
+                <instanceof
+                      value="org.eclipse.core.resources.IFile">
+                </instanceof>
+             </with>
+          </enablement>
+       </renameParticipant>
     </extension>
 
 </plugin>

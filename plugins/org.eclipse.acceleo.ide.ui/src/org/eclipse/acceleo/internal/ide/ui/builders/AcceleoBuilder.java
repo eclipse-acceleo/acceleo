@@ -26,8 +26,6 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateBuildAcceleoWriter;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
-import org.eclipse.acceleo.parser.AcceleoFile;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -40,7 +38,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -116,7 +113,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	protected void fullBuild(IProgressMonitor monitor) throws CoreException {
 		List<IFile> filesOutput = new ArrayList<IFile>();
-		members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
+		AcceleoBuilderUtils.members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
+				outputFolder);
 		if (filesOutput.size() > 0) {
 			Collections.sort(filesOutput, new Comparator<IFile>() {
 				public int compare(IFile arg0, IFile arg1) {
@@ -148,7 +146,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		for (IProject project : acceleoProject.getRecursivelyAccessibleProjects()) {
 			if (project.isAccessible()) {
-				members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
+				AcceleoBuilderUtils.members(ecoreFiles, project, "ecore", outputFolder); //$NON-NLS-1$
 			}
 		}
 		for (IFile ecoreFile : ecoreFiles) {
@@ -185,8 +183,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						buildAcceleo.setContents(javaStream, true, false, monitor);
 					}
 				} catch (UnsupportedEncodingException e) {
-					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
-							.getMessage(), e));
+					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+							e.getMessage(), e));
 				}
 			}
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
@@ -194,13 +192,12 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				AcceleoUIActivator
 						.getDefault()
 						.getLog()
-						.log(
-								new Status(
-										IStatus.ERROR,
-										AcceleoUIActivator.PLUGIN_ID,
-										AcceleoUIMessages
-												.getString(
-														"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject().getName() }))); //$NON-NLS-1$
+						.log(new Status(
+								IStatus.ERROR,
+								AcceleoUIActivator.PLUGIN_ID,
+								AcceleoUIMessages
+										.getString(
+												"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject().getName() }))); //$NON-NLS-1$
 			}
 		}
 	}
@@ -225,7 +222,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 			if (containsManifest) {
 				deltaFilesOutput.clear();
-				members(deltaFilesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
+				AcceleoBuilderUtils.members(deltaFilesOutput, getProject(),
+						IAcceleoConstants.MTL_FILE_EXTENSION, outputFolder);
 			} else {
 				computeOtherFilesToBuild(deltaFilesOutput);
 			}
@@ -264,12 +262,14 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	private void computeOtherFilesToBuild(List<IFile> deltaFiles) throws CoreException {
 		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		List<IFile> otherTemplates = new ArrayList<IFile>();
-		members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
+		AcceleoBuilderUtils.members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
+				outputFolder);
 		List<Sequence> importSequencesToSearch = new ArrayList<Sequence>();
 		for (int i = 0; i < deltaFiles.size(); i++) {
 			IFile deltaFile = deltaFiles.get(i);
 			if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(deltaFile.getFileExtension())) {
-				importSequencesToSearch.addAll(getImportSequencesToSearch(acceleoProject, deltaFile));
+				importSequencesToSearch.addAll(AcceleoBuilderUtils.getImportSequencesToSearch(acceleoProject,
+						deltaFile));
 				otherTemplates.remove(deltaFile);
 			}
 		}
@@ -281,40 +281,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				otherTemplates.remove(otherTemplateToBuild);
 				if (!deltaFiles.contains(otherTemplateToBuild)) {
 					deltaFiles.add(otherTemplateToBuild);
-					importSequencesToSearch.addAll(getImportSequencesToSearch(acceleoProject,
-							otherTemplateToBuild));
+					importSequencesToSearch.addAll(AcceleoBuilderUtils.getImportSequencesToSearch(
+							acceleoProject, otherTemplateToBuild));
 				}
 			}
 			otherTemplatesToBuild = getOtherTemplatesToBuild(acceleoProject, otherTemplates,
 					importSequencesToSearch);
 		}
-	}
-
-	/**
-	 * Gets all the possible sequences to search when we use the given file in other files : '[import myGen',
-	 * '[import org::eclipse::myGen', 'extends myGen', 'extends org::eclipse::myGen'...
-	 * 
-	 * @param acceleoProject
-	 *            is the project
-	 * @param file
-	 *            is the MTL file
-	 * @return all the possible sequences to search for the given file
-	 */
-	private List<Sequence> getImportSequencesToSearch(AcceleoProject acceleoProject, IFile file) {
-		List<Sequence> result = new ArrayList<Sequence>();
-		String simpleModuleName = new Path(file.getName()).removeFileExtension().lastSegment();
-		String[] tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT,
-				simpleModuleName, };
-		result.add(new Sequence(tokens));
-		tokens = new String[] {IAcceleoConstants.EXTENDS, simpleModuleName, };
-		result.add(new Sequence(tokens));
-		String javaPackageName = acceleoProject.getPackageName(file);
-		String fullModuleName = AcceleoFile.javaPackageToFullModuleName(javaPackageName, simpleModuleName);
-		tokens = new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.IMPORT, fullModuleName, };
-		result.add(new Sequence(tokens));
-		tokens = new String[] {IAcceleoConstants.EXTENDS, fullModuleName, };
-		result.add(new Sequence(tokens));
-		return result;
 	}
 
 	/**
@@ -359,7 +332,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
 		List<IFile> filesOutput = new ArrayList<IFile>();
-		members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION);
+		AcceleoBuilderUtils.members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
+				outputFolder);
 		if (filesOutput.size() > 0) {
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, true);
@@ -420,36 +394,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		IResource outputFile = ResourcesPlugin.getWorkspace().getRoot().findMember(outputPath);
 		if (outputFile instanceof IFile && outputFile.isAccessible()) {
 			outputFile.delete(true, monitor);
-		}
-	}
-
-	/**
-	 * Returns a list of existing member files (that validate the file extension) in this resource.
-	 * 
-	 * @param filesOutput
-	 *            an output parameter to get all the files
-	 * @param container
-	 *            is the container to browse
-	 * @param extension
-	 *            is the extension
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void members(List<IFile> filesOutput, IContainer container, String extension)
-			throws CoreException {
-		if (container != null) {
-			IResource[] children = container.members();
-			if (children != null) {
-				for (int i = 0; i < children.length; ++i) {
-					IResource resource = children[i];
-					if (resource instanceof IFile && extension.equals(((IFile)resource).getFileExtension())) {
-						filesOutput.add((IFile)resource);
-					} else if (resource instanceof IContainer
-							&& (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath()))) {
-						members(filesOutput, (IContainer)resource, extension);
-					}
-				}
-			}
 		}
 	}
 

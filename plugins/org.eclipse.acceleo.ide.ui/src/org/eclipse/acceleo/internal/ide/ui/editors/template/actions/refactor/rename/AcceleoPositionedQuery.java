@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -85,8 +84,7 @@ public class AcceleoPositionedQuery {
 		final Module astModule = acceleoEditor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
-		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
-			final ModuleElement moduleElement = (ModuleElement)iterator.next();
+		for (ModuleElement moduleElement : moduleElementList) {
 			if (moduleElement instanceof Query) {
 				positionedQueryList.add(new AcceleoPositionedQuery((Query)moduleElement));
 			}
@@ -94,8 +92,7 @@ public class AcceleoPositionedQuery {
 
 		boolean isInTheList = false;
 
-		for (Iterator<AcceleoPositionedQuery> iterator = positionedQueryList.iterator(); iterator.hasNext();) {
-			AcceleoPositionedQuery acceleoPositionedQuery = (AcceleoPositionedQuery)iterator.next();
+		for (AcceleoPositionedQuery acceleoPositionedQuery : positionedQueryList) {
 			if (checkQueryEqual(acceleoPositionedQuery.getQuery(), query)) {
 				isInTheList = true;
 				break;
@@ -142,9 +139,7 @@ public class AcceleoPositionedQuery {
 		this.setQueryMatches(list);
 
 		// step 3 : find the position definition of the current query
-		for (Iterator<Match> iterator2 = list.iterator(); iterator2.hasNext();) {
-			final Match match = (Match)iterator2.next();
-
+		for (Match match : list) {
 			if (match.getLength() > this.getQuery().getName().length()) {
 				this.setQueryDefinitionMatch(match);
 			}
@@ -232,16 +227,14 @@ public class AcceleoPositionedQuery {
 		final Module astModule = editor.getContent().getAST();
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
-		for (Iterator<ModuleElement> iterator = moduleElementList.iterator(); iterator.hasNext();) {
-			final ModuleElement moduleElement = (ModuleElement)iterator.next();
+		for (ModuleElement moduleElement : moduleElementList) {
 			if (moduleElement instanceof Query) {
 				queryList.add((Query)moduleElement);
 			}
 		}
 
 		// step 2 : for each queries, look for all occurrences
-		for (Iterator<Query> iterator = queryList.iterator(); iterator.hasNext();) {
-			final Query query = (Query)iterator.next();
+		for (Query query : queryList) {
 			final AcceleoPositionedQuery positionedQuery = new AcceleoPositionedQuery(query);
 
 			// We find all the occurrences of the given query in the workspace.
@@ -250,18 +243,13 @@ public class AcceleoPositionedQuery {
 			positionedQuery.setQueryMatches(list);
 
 			// step 3 : find the position definition of the current query
-			for (Iterator<Match> iterator2 = list.iterator(); iterator2.hasNext();) {
-				final Match match = (Match)iterator2.next();
-
+			for (Match match : list) {
 				if (match.getLength() > query.getName().length()) {
 					positionedQuery.setQueryDefinitionMatch(match);
 				}
-
 			}
-
 			positionedQueriesList.add(positionedQuery);
 		}
-
 		return positionedQueriesList;
 	}
 

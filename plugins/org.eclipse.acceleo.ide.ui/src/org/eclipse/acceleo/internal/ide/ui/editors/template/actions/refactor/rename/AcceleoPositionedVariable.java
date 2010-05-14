@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -134,13 +133,10 @@ public class AcceleoPositionedVariable {
 	 */
 	private void findAllPositionedVariables(final AcceleoEditor editor) {
 		List<Match> list = OpenDeclarationUtils.findOccurrences(editor, this.fVariable);
-		list = OpenDeclarationUtils.findOccurrencesInTemplate(this.fVariable, list,
-				editor.getFile());
+		list = OpenDeclarationUtils.findOccurrencesInTemplate(this.fVariable, list, editor.getFile());
 		this.setVariableMatches(list);
 
-		for (Iterator<Match> iterator = list.iterator(); iterator.hasNext();) {
-			final Match match = (Match)iterator.next();
-
+		for (Match match : list) {
 			if (match.getLength() > this.fVariable.getName().length()) {
 				this.setVariableDefinitionMatch(match);
 			}

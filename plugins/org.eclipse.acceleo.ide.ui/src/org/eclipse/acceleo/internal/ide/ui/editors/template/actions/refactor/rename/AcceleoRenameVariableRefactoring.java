@@ -12,10 +12,10 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.re
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
 import org.eclipse.core.resources.IFile;
@@ -61,6 +61,12 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	private Map<IFile, TextFileChange> fChanges;
 
 	/**
+	 * The title of the refactoring.
+	 */
+	private final String title = AcceleoUIMessages
+			.getString("AcceleoEditorRenameVariableRefactoring.RenameVariableTitle"); //$NON-NLS-1$
+
+	/**
 	 * The current variable.
 	 */
 	private AcceleoPositionedVariable fVariable;
@@ -80,10 +86,12 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 			OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask("Checking preconditions...", 1); //$NON-NLS-1$
+			monitor.beginTask(
+					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
 
 			if (this.fVariable == null) {
-				status.merge(RefactoringStatus.createErrorStatus("No variable specified")); //$NON-NLS-1$
+				status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
+						.getString("AcceleoEditorRenameVariableRefactoring.NoVariableSpecified"))); //$NON-NLS-1$
 			}
 
 			fChanges = new LinkedHashMap<IFile, TextFileChange>();
@@ -99,11 +107,10 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	 * Find the change that are in the current file and put them in the map.
 	 */
 	private void putChangesOfTheCurrentFile() {
-		for (Iterator<Match> iterator = this.fVariable.getVariableMatches().iterator(); iterator.hasNext();) {
-			final Match match = (Match)iterator.next();
+		for (Match match : this.fVariable.getVariableMatches()) {
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (entry.getTemplateFile().getName().equals(fileName)) {
-				final IFile file = ((ReferenceEntry)match.getElement()).getTemplateFile();
+				final IFile file = entry.getTemplateFile();
 
 				TextFileChange tfc = null;
 				MultiTextEdit edit = null;
@@ -113,10 +120,10 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 					tfc = this.fChanges.get(file);
 					edit = (MultiTextEdit)this.fChanges.get(file).getEdit();
 				} else {
-					tfc = new TextFileChange("Refactoring: Rename Variable", file); //$NON-NLS-1$
+					tfc = new TextFileChange(this.title, file);
 					edit = new MultiTextEdit();
 					tfc.setEdit(edit);
-					tfc.setTextType("mtl"); //$NON-NLS-1$
+					tfc.setTextType(IAcceleoConstants.MTL_FILE_EXTENSION);
 				}
 
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
@@ -150,7 +157,8 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	public Change createChange(final IProgressMonitor monitor) throws CoreException,
 			OperationCanceledException {
 		try {
-			monitor.beginTask("Creating change...", 1); //$NON-NLS-1$
+			monitor.beginTask(
+					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CreatingChanges"), 1); //$NON-NLS-1$
 			final Collection<TextFileChange> changes = fChanges.values();
 			final CompositeChange change = new CompositeChange(getName(), changes.toArray(new Change[changes
 					.size()])) {
@@ -158,10 +166,15 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 				@Override
 				public ChangeDescriptor getDescriptor() {
 					Map<String, String> arguments = new HashMap<String, String>();
-					final String project = "Acceleo Rename Variable"; //$NON-NLS-1$
-					final String description = "Renaming variable " + fVariable.getVariableName(); //$NON-NLS-1$
-					final String comment = "Renaming variable " + fVariable.getVariableName() //$NON-NLS-1$
-							+ " with the new name: " + fNewVariableName; //$NON-NLS-1$
+					final String project = AcceleoUIMessages
+							.getString("AcceleoEditorRenameVariableRefactoring.RefactoringProjectName"); //$NON-NLS-1$
+					final String description = AcceleoUIMessages
+							.getString("AcceleoEditorRenameVariableRefactoring.RenamingVariable") //$NON-NLS-1$
+							+ " " //$NON-NLS-1$
+							+ fVariable.getVariableName();
+					final String comment = AcceleoUIMessages.getString(
+							"AcceleoEditorRenameVariableRefactoring.RenamingVariableWithNewName", //$NON-NLS-1$
+							fVariable.getVariableName(), fNewVariableName);
 					arguments.put(VARIABLE, fVariable.getVariableName());
 					arguments.put(NEWNAME, fNewVariableName);
 					return new RefactoringChangeDescriptor(new AcceleoRenameVariableDescriptor(project,
@@ -191,7 +204,7 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	 */
 	@Override
 	public String getName() {
-		return "Rename Variable"; //$NON-NLS-1$
+		return this.title;
 	}
 
 	/**
@@ -235,7 +248,7 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	private RefactoringStatus checkOverLoading() {
 		RefactoringStatus status = new RefactoringStatus();
 
-		// TODO !!!
+		// TODO SBE check if a variable in the template has the same name.
 
 		return status;
 	}
