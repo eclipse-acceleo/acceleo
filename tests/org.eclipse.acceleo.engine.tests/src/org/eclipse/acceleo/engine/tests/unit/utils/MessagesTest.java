@@ -185,7 +185,7 @@ public class MessagesTest extends TestCase {
 	}
 
 	/**
-	 * Tests {@link EMFCompareMessages#getString(String)} with <code>null</code> argument. Expects a
+	 * Tests {@link AcceleoEngineMessages#getString(String)} with <code>null</code> argument. Expects a
 	 * NullPointerException to be thrown.
 	 */
 	public void testUnFormattedGetStringNullKey() {
