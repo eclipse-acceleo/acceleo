@@ -38,7 +38,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.profiler,
  org.eclipse.acceleo.traceability.model,
  org.eclipse.ltk.core.refactoring,
- org.eclipse.ltk.ui.refactoring
+ org.eclipse.ltk.ui.refactoring,
+ org.eclipse.jdt.core.manipulation
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -51,5 +52,3 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.ide.ui.wizards.newfile.example,
  org.eclipse.acceleo.internal.ide.ui.editors.template;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template.rules;x-friends:="org.eclipse.acceleo.ide.ui.tests"
-Import-Package: org.eclipse.jdt.core.refactoring,
- org.eclipse.jdt.core.refactoring.descriptors
