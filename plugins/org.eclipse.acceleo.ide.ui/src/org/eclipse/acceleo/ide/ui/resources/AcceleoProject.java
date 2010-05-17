@@ -148,9 +148,8 @@ public class AcceleoProject {
 		if (!EPackage.Registry.INSTANCE.containsKey(MtlPackage.eINSTANCE.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
 					org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
-			EPackage.Registry.INSTANCE.put(
-					org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE.getNsURI(),
-					org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
+			EPackage.Registry.INSTANCE.put(org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE
+					.getNsURI(), org.eclipse.ocl.expressions.ExpressionsPackage.eINSTANCE);
 			EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
 					getOCLStdLibPackage());
 			EPackage.Registry.INSTANCE.put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
@@ -280,9 +279,9 @@ public class AcceleoProject {
 	public IPath getInputFilePath(IPath fileEMTL) {
 		IFolder folder = getOutputFolder(project);
 		if (folder != null && folder.getFullPath().isPrefixOf(fileEMTL)) {
-			IPath relativePath = fileEMTL.removeFileExtension()
-					.addFileExtension(IAcceleoConstants.MTL_FILE_EXTENSION)
-					.removeFirstSegments(folder.getFullPath().segmentCount());
+			IPath relativePath = fileEMTL.removeFileExtension().addFileExtension(
+					IAcceleoConstants.MTL_FILE_EXTENSION).removeFirstSegments(
+					folder.getFullPath().segmentCount());
 			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
 				IPath sourcePath = itSourceFolders.next().append(relativePath);
 				if (ResourcesPlugin.getWorkspace().getRoot().exists(sourcePath)) {
@@ -349,9 +348,8 @@ public class AcceleoProject {
 	 * @param aProject
 	 *            is a project of the workspace
 	 * @return the output folder of the project, or null if it doesn't exist
-	 * @see 
-	 *      org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleUtils
-	 *      .getOutputFolder(IProject aProject)
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleUtils#getOutputFolder(IProject
+	 *      aProject)
 	 */
 	private static IFolder getOutputFolder(IProject aProject) {
 		final IJavaProject javaProject = JavaCore.create(aProject);
@@ -424,8 +422,8 @@ public class AcceleoProject {
 				}
 			}
 		} catch (CoreException e) {
-			AcceleoUIActivator.getDefault().getLog()
-					.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+			AcceleoUIActivator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 	}
 
@@ -449,14 +447,14 @@ public class AcceleoProject {
 				BundleDescription[] requiredPlugins = plugin.getBundleDescription().getResolvedRequires();
 				for (int i = 0; i < requiredPlugins.length; i++) {
 					String requiredSymbolicName = requiredPlugins[i].getSymbolicName();
-					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot()
-							.getProject(requiredSymbolicName);
+					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+							requiredSymbolicName);
 					if (requiredProject != null && requiredProject.isAccessible()) {
 						computeAccessibleOutputFilesInFolder(outputFilesWithManifest,
 								getOutputFolder(requiredProject));
 					} else {
-						computeAccessibleOutputFilesWithBundle(outputFilesWithManifest,
-								Platform.getBundle(requiredSymbolicName));
+						computeAccessibleOutputFilesWithBundle(outputFilesWithManifest, Platform
+								.getBundle(requiredSymbolicName));
 					}
 				}
 			}
@@ -507,8 +505,8 @@ public class AcceleoProject {
 		for (int i = 0; i < entries.length; i++) {
 			IClasspathEntry entry = entries[i];
 			if (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-				IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot()
-						.getProject(entry.getPath().toString());
+				IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+						entry.getPath().toString());
 				if (requiredProject != null && requiredProject.exists()) {
 					computeAccessibleOutputFilesInFolder(outputURIs, getOutputFolder(requiredProject));
 				}
@@ -564,8 +562,8 @@ public class AcceleoProject {
 				BundleDescription[] requiredPlugins = plugin.getBundleDescription().getResolvedRequires();
 				for (int i = 0; i < requiredPlugins.length; i++) {
 					String requiredSymbolicName = requiredPlugins[i].getSymbolicName();
-					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot()
-							.getProject(requiredSymbolicName);
+					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+							requiredSymbolicName);
 					if (requiredProject != null && requiredProject.isAccessible()) {
 						computeAccessibleProjects(accessibleProjects, requiredProject);
 					}
@@ -581,8 +579,8 @@ public class AcceleoProject {
 			for (int i = 0; i < entries.length; i++) {
 				IClasspathEntry entry = entries[i];
 				if (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
-					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot()
-							.getProject(entry.getPath().toString());
+					IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+							entry.getPath().toString());
 					if (requiredProject != null && requiredProject.exists()) {
 						computeAccessibleProjects(accessibleProjects, requiredProject);
 					}
@@ -833,8 +831,8 @@ public class AcceleoProject {
 				if (entry != null) {
 					IPath path = new Path(entry.getPath());
 					if (path.segmentCount() > 0) {
-						savedURIs.add(URI.createPlatformPluginURI(
-								new Path(bundle.getSymbolicName()).append(path).toString(), false));
+						savedURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName()).append(
+								path).toString(), false));
 					}
 				}
 			}
@@ -852,11 +850,8 @@ public class AcceleoProject {
 						fileURL = FileLocator.toFileURL(entry);
 					} catch (IOException e) {
 						fileURL = null;
-						AcceleoUIActivator
-								.getDefault()
-								.getLog()
-								.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(),
-										e));
+						AcceleoUIActivator.getDefault().getLog().log(
+								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 					}
 					if (fileURL != null) {
 						IPath pathMTL = new Path(fileURL.getPath());
@@ -866,11 +861,9 @@ public class AcceleoProject {
 								.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString()));
 						testAbsoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension()
 								.addFileExtension(testExtension).toString()));
-						pluginOutputURIs.add(URI.createPlatformPluginURI(
-								new Path(bundle.getSymbolicName()).append(new Path(entry.getPath()))
-										.removeFileExtension()
-										.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString(),
-								false));
+						pluginOutputURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName())
+								.append(new Path(entry.getPath())).removeFileExtension().addFileExtension(
+										IAcceleoConstants.EMTL_FILE_EXTENSION).toString(), false));
 					}
 				}
 			}
@@ -885,8 +878,8 @@ public class AcceleoProject {
 					String message = problems.getMessage();
 					if (message != null && message.length() > 0) {
 						hasProblem = true;
-						AcceleoUIActivator.getDefault().getLog()
-								.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
+						AcceleoUIActivator.getDefault().getLog().log(
+								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
 					}
 				}
 				for (File file : inputFile.getParentFile().listFiles()) {
