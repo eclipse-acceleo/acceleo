@@ -122,8 +122,7 @@ public class AcceleoCommonPlugin extends Plugin {
 			if (blocker) {
 				severity = IStatus.ERROR;
 			}
-			log(new Status(severity, PLUGIN_ID, severity, AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.JavaException"), e)); //$NON-NLS-1$
+			log(new Status(severity, PLUGIN_ID, severity, e.getMessage(), e));
 		}
 	}
 
