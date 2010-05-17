@@ -183,21 +183,16 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						buildAcceleo.setContents(javaStream, true, false, monitor);
 					}
 				} catch (UnsupportedEncodingException e) {
-					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-							e.getMessage(), e));
+					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+							.getMessage(), e));
 				}
 			}
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
 					buildAcceleo.getName()) == -1) {
-				AcceleoUIActivator
-						.getDefault()
-						.getLog()
-						.log(new Status(
-								IStatus.ERROR,
-								AcceleoUIActivator.PLUGIN_ID,
-								AcceleoUIMessages
-										.getString(
-												"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject().getName() }))); //$NON-NLS-1$
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages.getString(
+								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
+										.getName(), })));
 			}
 		}
 	}
