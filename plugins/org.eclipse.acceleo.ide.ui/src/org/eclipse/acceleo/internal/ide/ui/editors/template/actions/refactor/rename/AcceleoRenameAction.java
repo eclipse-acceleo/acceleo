@@ -88,10 +88,18 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		this.editor = (AcceleoEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor();
 
-		if (this.containsAcceleoError(this.editor.getFile())) {
-			MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
-			box.setMessage(AcceleoUIMessages
-					.getString("AcceleoEditorRenameRefactoring.ErrorInTheCurrentFile")); //$NON-NLS-1$
+		MessageBox box = null;
+		if (this.editor.getFile() == null) {
+			box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+			box.setMessage(AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.NotInWorkspace")); //$NON-NLS-1$
+
+		} else if (this.containsAcceleoError(this.editor.getFile())) {
+			box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+			box.setMessage(AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.ErrorInFile", //$NON-NLS-1$
+					this.editor.getFile().getName()));
+		}
+
+		if (box != null) {
 			box.open();
 			return;
 		}
@@ -220,20 +228,21 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 
 		IFile javaFile = AcceleoRenameModuleUtils.getJavaFileFromModuleFile(this.editor.getFile()
 				.getProject(), file);
-
-		try {
-			IMarker[] markers = javaFile.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
-					IResource.DEPTH_INFINITE);
-			if (markers.length > 0) {
-				MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getShell());
-				box.setMessage(AcceleoUIMessages
-						.getString("AcceleoEditorRenameRefactoring.ErrorInTheCurrentFile")); //$NON-NLS-1$
-				box.open();
-				return;
+		if (javaFile != null && javaFile.exists()) {
+			try {
+				IMarker[] markers = javaFile.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true,
+						IResource.DEPTH_INFINITE);
+				if (markers.length > 0) {
+					MessageBox box = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getShell());
+					box.setMessage(AcceleoUIMessages.getString(
+							"AcceleoEditorRenameRefactoring.ErrorInFile", javaFile.getName())); //$NON-NLS-1$
+					box.open();
+					return;
+				}
+			} catch (CoreException e) {
+				// do nothing
 			}
-		} catch (CoreException e) {
-			// do nothing
 		}
 
 		final AcceleoRenameModuleRefactoring refactoring = new AcceleoRenameModuleRefactoring();

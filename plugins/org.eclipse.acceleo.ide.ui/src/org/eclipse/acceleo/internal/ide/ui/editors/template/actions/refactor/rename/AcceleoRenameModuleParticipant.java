@@ -122,11 +122,21 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ltk.core.refactoring.participants.RefactoringParticipant#createPreChange(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	@Override
+	public Change createPreChange(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
+		return this.refactoring.createChange(monitor);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ltk.core.refactoring.participants.RefactoringParticipant#createChange(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
 	public Change createChange(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
-		return this.refactoring.createChange(monitor);
+		return null;
 	}
 
 }

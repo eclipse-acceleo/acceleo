@@ -60,7 +60,7 @@ public final class AcceleoRenameModuleUtils {
 	 * @return the output folder of the project, or null if it doesn't exist
 	 * @see org.eclipse.acceleo.ide.ui.resources.AcceleoProject.getOutputFolder(IProject aProject)
 	 */
-	static IPath getOutputFolder(IProject aProject) {
+	public static IPath getOutputFolder(IProject aProject) {
 		final IJavaProject javaProject = JavaCore.create(aProject);
 		try {
 			IPath output = javaProject.getOutputLocation();
@@ -85,7 +85,7 @@ public final class AcceleoRenameModuleUtils {
 	 *            The module.
 	 * @return The file that defines the module.
 	 */
-	static IFile getFileFromModule(final IProject project, final Module module) {
+	public static IFile getFileFromModule(final IProject project, final Module module) {
 		final String uri = module.getNsURI();
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		IFile result = null;
@@ -116,7 +116,7 @@ public final class AcceleoRenameModuleUtils {
 	 *            The file of our module.
 	 * @return The java compilation unit corresponding to the module file.
 	 */
-	static ICompilationUnit getJavaCompilationUnitFromModuleFile(final IProject project,
+	public static ICompilationUnit getJavaCompilationUnitFromModuleFile(final IProject project,
 			final IFile moduleFile) {
 		ICompilationUnit compilationUnit = null;
 
@@ -146,7 +146,7 @@ public final class AcceleoRenameModuleUtils {
 	 *            The file of our module.
 	 * @return The java file corresponding to the module file.
 	 */
-	static IFile getJavaFileFromModuleFile(final IProject project, final IFile moduleFile) {
+	public static IFile getJavaFileFromModuleFile(final IProject project, final IFile moduleFile) {
 		IFile file = null;
 
 		IPath path = moduleFile.getProjectRelativePath().removeFileExtension();
@@ -164,7 +164,7 @@ public final class AcceleoRenameModuleUtils {
 	 *            The MTL file.
 	 * @return The matching module.
 	 */
-	static Module getModuleFromFile(final IFile moduleFile) {
+	public static Module getModuleFromFile(final IFile moduleFile) {
 		Module mod = null;
 
 		AcceleoProject acceleoProject = new AcceleoProject(moduleFile.getProject());
