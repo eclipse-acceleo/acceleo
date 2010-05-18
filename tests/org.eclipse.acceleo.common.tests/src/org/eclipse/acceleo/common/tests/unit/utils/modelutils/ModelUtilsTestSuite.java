@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2006, 2009 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,23 +8,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.common.tests.suite;
+package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.common.tests.unit.utils.AcceleoCommonPluginTest;
-import org.eclipse.acceleo.common.tests.unit.utils.MessagesTest;
-import org.eclipse.acceleo.common.tests.unit.utils.modelutils.ModelUtilsTestSuite;
+import org.eclipse.acceleo.common.utils.ModelUtils;
 
 /**
- * This suite will launch all the tests defined for the Acceleo common plugin.
+ * Launches all the JUnit tests for the {@link ModelUtils} class.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class CommonTestSuite extends TestCase {
+@SuppressWarnings("nls")
+public class ModelUtilsTestSuite extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -36,17 +35,18 @@ public class CommonTestSuite extends TestCase {
 	}
 
 	/**
-	 * Creates the {@link junit.framework.TestSuite TestSuite} for all the test.
+	 * Creates the {@link junit.framework.TestSuite TestSuite} for all the tests.
 	 * 
-	 * @return The test suite containing all the tests
+	 * @return The test suite containing all the tests.
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo common test suite"); //$NON-NLS-1$
-
-		suite.addTestSuite(MessagesTest.class);
-		suite.addTestSuite(AcceleoCommonPluginTest.class);
-		suite.addTest(ModelUtilsTestSuite.suite());
-
+		final TestSuite suite = new TestSuite("Tests for the ModelUtils behavior");
+		suite.addTestSuite(AttachResourceTest.class);
+		suite.addTestSuite(GetModelsFromTest.class);
+		suite.addTestSuite(LoadFromFileTest.class);
+		suite.addTestSuite(LoadFromInputStreamTest.class);
+		suite.addTestSuite(LoadFromStringTest.class);
+		suite.addTestSuite(SaveSerializeTest.class);
 		return suite;
 	}
 }

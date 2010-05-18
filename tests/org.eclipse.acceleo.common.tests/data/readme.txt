@@ -1,1 +1,0 @@
-Do not delete, this is used by the test suite for temporary files
