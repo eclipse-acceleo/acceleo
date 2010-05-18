@@ -1566,7 +1566,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			while (childrenIterator.hasNext()) {
 				buffer.append(toString(childrenIterator.next()));
 			}
-		} else {
+		} else if (object != null) {
 			buffer.append(object.toString());
 		}
 		return buffer.toString();
