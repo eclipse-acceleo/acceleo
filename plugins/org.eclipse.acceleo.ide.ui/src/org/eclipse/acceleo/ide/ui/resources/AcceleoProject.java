@@ -558,7 +558,7 @@ public class AcceleoProject {
 		if (!accessibleProjects.contains(current)) {
 			accessibleProjects.add(current);
 			IPluginModelBase plugin = PluginRegistry.findModel(current);
-			if (plugin != null) {
+			if (plugin != null && plugin.getBundleDescription() != null) {
 				BundleDescription[] requiredPlugins = plugin.getBundleDescription().getResolvedRequires();
 				for (int i = 0; i < requiredPlugins.length; i++) {
 					String requiredSymbolicName = requiredPlugins[i].getSymbolicName();
