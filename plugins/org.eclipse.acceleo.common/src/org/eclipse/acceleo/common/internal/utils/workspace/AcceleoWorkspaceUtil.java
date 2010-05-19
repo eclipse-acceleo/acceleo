@@ -30,7 +30,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -124,7 +123,7 @@ public final class AcceleoWorkspaceUtil {
 
 	/**
 	 * This will try and find a resource of the given name using the bundle from which was originally loaded
-	 * the given class so as to try and unjar its related files. If <code>clazz</code> hasn't been loaded from
+	 * the given class so as to try and detect if it is jarred. If <code>clazz</code> hasn't been loaded from
 	 * a bundle class loader, we'll resort to the default class loader mechanism. This will only return
 	 * <code>null</code> in the case where the resource at <code>resourcePath</code> cannot be located at all.
 	 * 
@@ -149,32 +148,14 @@ public final class AcceleoWorkspaceUtil {
 			Bundle bundle = packageAdmin.getBundle(clazz);
 			if (bundle != null) {
 				final String pathSeparator = "/"; //$NON-NLS-1$
-				// We found the appropriate bundle. Search for all of its "emtl" files so as to unjar them all
-				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
-				Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, filePattern, true);
-				String soughtResourceName = resourcePath;
-				if (soughtResourceName.contains(pathSeparator)) {
-					soughtResourceName = soughtResourceName.substring(
-							soughtResourceName.lastIndexOf('/') + 1, soughtResourceName.length());
+				// We found the appropriate bundle. We'll now try and determine whether the emtl is jarred
+				Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, resourcePath, true);
+				if (emtlFiles.hasMoreElements()) {
+					resourceURL = (URL)emtlFiles.nextElement();
 				}
-				do {
-					URL next = (URL)emtlFiles.nextElement();
-					if (resourcePath.equals(next.getPath())) {
-						resourceURL = next;
-						break;
-					}
-					String nextName = next.getPath();
-					if (nextName.contains(pathSeparator)) {
-						nextName = nextName.substring(nextName.lastIndexOf('/') + 1, nextName.length());
-					}
-					if (next.getPath().endsWith(resourcePath) && soughtResourceName.equals(nextName)) {
-						resourceURL = next;
-						break;
-					}
-				} while (emtlFiles.hasMoreElements());
-				// This can only be a bundle-scheme URL if we found the URL. Convert it to file scheme
+				// This can only be a bundle-scheme URL if we found the URL. Convert it to file or jar scheme
 				if (resourceURL != null) {
-					resourceURL = FileLocator.toFileURL(resourceURL);
+					resourceURL = transformURL(bundle, resourceURL);
 				}
 			}
 		}
@@ -258,8 +239,14 @@ public final class AcceleoWorkspaceUtil {
 	 */
 	public static String resolveAsPlatformPluginResource(String filePath) {
 		final String fileScheme = "file:/"; //$NON-NLS-1$
+		final String jarScheme = "jar:"; //$NON-NLS-1$
 
 		String actualPath = filePath;
+		if (actualPath.startsWith(jarScheme)) {
+			actualPath.substring(jarScheme.length());
+			// If the jar file has a qualifier, delete it along with the last "!"
+			actualPath.replaceFirst("/([^_]*?)_(.*)(\\.jar)!/", "$1$3"); //$NON-NLS-1$  //$NON-NLS-2$
+		}
 		if (actualPath.startsWith(fileScheme)) {
 			actualPath = actualPath.substring(fileScheme.length());
 		}
@@ -299,6 +286,36 @@ public final class AcceleoWorkspaceUtil {
 			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
 		}
 		return null;
+	}
+
+	/**
+	 * We'll use this to transform the <code>base</code> URL to a jar-scheme URL if the given bundle is
+	 * jarred.
+	 * 
+	 * @param bundle
+	 *            The bundle of which the URL represents a resource.
+	 * @param base
+	 *            URL we need to transform.
+	 * @return The transformed URL.
+	 * @throws IOException
+	 *             This will be thrown if we fail to convert bundle-scheme URIs into file-scheme URIs.
+	 */
+	public static URL transformURL(Bundle bundle, URL base) throws IOException {
+		String bundleLocation = bundle.getLocation();
+		if (!bundleLocation.endsWith(".jar")) { //$NON-NLS-1$
+			return FileLocator.toFileURL(base);
+		}
+		String transformedString = bundleLocation;
+		transformedString.replaceFirst("reference:", "jar:"); //$NON-NLS-1$ //$NON-NLS-2$
+		transformedString += '!' + base.toString();
+		URL transformedURL = null;
+		try {
+			transformedURL = new URL(transformedString);
+		} catch (MalformedURLException e) {
+			// fall back to default;
+			transformedURL = FileLocator.toFileURL(base);
+		}
+		return transformedURL;
 	}
 
 	/**
