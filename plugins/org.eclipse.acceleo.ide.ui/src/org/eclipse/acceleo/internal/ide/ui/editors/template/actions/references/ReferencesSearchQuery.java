@@ -230,7 +230,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		boolean result = true;
 
 		try {
-			result = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(uri.toString()).exists();
+			result = AcceleoWorkspaceUtil.getWorkspaceFile(uri.toString()).exists();
 		} catch (IOException e) {
 			// do nothing
 		}
