@@ -406,7 +406,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * @return The actual URI from which the template file can be resolved.
 	 */
 	protected URI createTemplateURI(String entry) {
-		if (entry.startsWith("file:/") || entry.startsWith("jar:/")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+		if (entry.startsWith("file:") || entry.startsWith("jar:")) { //$NON-NLS-1$ //$NON-NLS-2$ 
 			return URI.createURI(URI.decode(entry));
 		}
 		return URI.createFileURI(URI.decode(entry));
