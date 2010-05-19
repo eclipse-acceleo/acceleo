@@ -372,6 +372,37 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * This will iterate over the "Export-Package" manifest header of the given bundle and search a bundle
+	 * corresponding to the given qualified class name.
+	 * <p>
+	 * For example, if the qualified name we're given is "org.eclipse.acceleo.sample.Test", we'll search for a
+	 * bundle exporting the package "org.eclipse.acceleo.sample".
+	 * </p>
+	 * 
+	 * @param model
+	 *            The bundle model that is to be checked.
+	 * @param qualifiedName
+	 *            Qualified name of the class we search the exported package of.
+	 * @return <code>true</code> iff <code>model</code> has an entry for a package corresponding to
+	 *         <code>qualifiedName</code>.
+	 */
+	private static boolean hasCorrespondingExportPackage(IPluginModelBase model, String qualifiedName) {
+		String packageName = ""; //$NON-NLS-1$
+		final int end = qualifiedName.lastIndexOf('.');
+		if (end != -1) {
+			packageName = qualifiedName.substring(0, end);
+		}
+
+		for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
+			if (packageName.startsWith(exported.getName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * This will check if the given String represents an integer less than five digits long.
 	 * 
 	 * @param s
@@ -467,6 +498,8 @@ public final class AcceleoWorkspaceUtil {
 		if (changedContributions.size() > 0) {
 			refreshContributions();
 		}
+
+		// Has an instance of this class already been loaded?
 		Class<?> clazz = null;
 		final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(qualifiedName);
 		if (workspaceInstance != null) {
@@ -489,40 +522,27 @@ public final class AcceleoWorkspaceUtil {
 			return clazz;
 		}
 
-		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-			if (honorOSGiVisibility) {
-				final IPluginModelBase model = entry.getKey();
-
-				String packageName = ""; //$NON-NLS-1$
-				final int end = qualifiedName.lastIndexOf('.');
-				if (end != -1) {
-					packageName = qualifiedName.substring(0, end);
-				}
-
-				boolean packageFound = false;
-				for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
-					if (packageName.startsWith(exported.getName())) {
-						packageFound = true;
-						break;
-					}
-				}
-				if (!packageFound) {
-					continue;
+		// The class hasn't been instantiated yet ; search for the class without instantiating it
+		Iterator<Map.Entry<IPluginModelBase, Bundle>> iterator = workspaceInstalledBundles.entrySet()
+				.iterator();
+		while (clazz != null && iterator.hasNext()) {
+			Map.Entry<IPluginModelBase, Bundle> entry = iterator.next();
+			/*
+			 * If we're asked to honor OSGi package visibility, we'll first check the "Export-Package" header
+			 * of this bundle's MANIFEST.
+			 */
+			if (!honorOSGiVisibility || hasCorrespondingExportPackage(entry.getKey(), qualifiedName)) {
+				try {
+					clazz = entry.getValue().loadClass(qualifiedName);
+				} catch (ClassNotFoundException e) {
+					// Swallow this ; we'll log the issue later on if we cannot find the class at all
 				}
 			}
+		}
 
-			final Bundle bundle = entry.getValue();
-			try {
-				clazz = bundle.loadClass(qualifiedName);
-			} catch (ClassNotFoundException e) {
-				if (honorOSGiVisibility) {
-					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
-							qualifiedName, bundle.getSymbolicName()), e, false);
-				}
-			}
-			if (clazz != null) {
-				break;
-			}
+		if (clazz == null) {
+			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+					qualifiedName), false);
 		}
 
 		return clazz;
@@ -586,30 +606,14 @@ public final class AcceleoWorkspaceUtil {
 			return instance;
 		}
 
-		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-			final IPluginModelBase model = entry.getKey();
+		Iterator<Map.Entry<IPluginModelBase, Bundle>> iterator = workspaceInstalledBundles.entrySet()
+				.iterator();
+		while (instance == null && iterator.hasNext()) {
+			Map.Entry<IPluginModelBase, Bundle> entry = iterator.next();
 
-			String packageName = ""; //$NON-NLS-1$
-			final int end = qualifiedName.lastIndexOf('.');
-			if (end != -1) {
-				packageName = qualifiedName.substring(0, end);
-			}
-
-			boolean packageFound = false;
-			for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
-				if (packageName.startsWith(exported.getName())) {
-					packageFound = true;
-					break;
-				}
-			}
-			if (!packageFound) {
-				continue;
-			}
-
-			final Bundle bundle = entry.getValue();
-			instance = internalLoadClass(bundle, qualifiedName);
-			if (instance != null) {
-				break;
+			if (hasCorrespondingExportPackage(entry.getKey(), qualifiedName)) {
+				final Bundle bundle = entry.getValue();
+				instance = internalLoadClass(bundle, qualifiedName);
 			}
 		}
 
@@ -647,43 +651,26 @@ public final class AcceleoWorkspaceUtil {
 		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
 			final IPluginModelBase model = entry.getKey();
 
-			String packageName = ""; //$NON-NLS-1$
-			final int end = qualifiedName.lastIndexOf('.');
-			if (end != -1) {
-				packageName = qualifiedName.substring(0, end);
-			}
-
-			boolean packageFound = false;
-			for (ExportPackageDescription exported : model.getBundleDescription().getExportPackages()) {
-				if (packageName.startsWith(exported.getName())) {
-					packageFound = true;
-					break;
-				}
-			}
-			// If we didn't find a corresponding package in this bundle, break this iteration and switch to
-			// the next bundle
-			if (!packageFound) {
-				continue;
-			}
-
-			final Bundle bundle = entry.getValue();
-			URL propertiesResource = bundle.getResource(qualifiedName.replace('.', '/') + ".properties"); //$NON-NLS-1$
-			if (propertiesResource != null) {
-				InputStream stream = null;
-				try {
-					stream = propertiesResource.openStream();
-					// make sure this stream is buffered
-					stream = new BufferedInputStream(stream);
-					return new PropertyResourceBundle(stream);
-				} catch (IOException e) {
-					// Swallow this, we'll throw the original MissingResourceException
-				} finally {
+			if (hasCorrespondingExportPackage(model, qualifiedName)) {
+				final Bundle bundle = entry.getValue();
+				URL propertiesResource = bundle.getResource(qualifiedName.replace('.', '/') + ".properties"); //$NON-NLS-1$
+				if (propertiesResource != null) {
+					InputStream stream = null;
 					try {
-						if (stream != null) {
-							stream.close();
-						}
+						stream = propertiesResource.openStream();
+						// make sure this stream is buffered
+						stream = new BufferedInputStream(stream);
+						return new PropertyResourceBundle(stream);
 					} catch (IOException e) {
 						// Swallow this, we'll throw the original MissingResourceException
+					} finally {
+						try {
+							if (stream != null) {
+								stream.close();
+							}
+						} catch (IOException e) {
+							// Swallow this, we'll throw the original MissingResourceException
+						}
 					}
 				}
 			}
