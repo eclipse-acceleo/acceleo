@@ -104,7 +104,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 
 		for (Map.Entry<String, Writer> entry : preview.entrySet()) {
 			final File targetFile = new File(entry.getKey());
-			final IFile workspaceFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(targetFile);
+			final IFile workspaceFile = AcceleoWorkspaceUtil.getWorkspaceFile(targetFile);
 			if (!targetFile.getParentFile().exists()) {
 				if (!targetFile.getParentFile().mkdirs()) {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
@@ -170,7 +170,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		for (Map.Entry<String, Map<String, String>> entry : lostCode.entrySet()) {
 			final File targetFile = new File(entry.getKey().concat(
 					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final IFile workspaceFile = AcceleoWorkspaceUtil.INSTANCE.getWorkspaceFile(targetFile);
+			final IFile workspaceFile = AcceleoWorkspaceUtil.getWorkspaceFile(targetFile);
 			if (!targetFile.getParentFile().exists()) {
 				if (!targetFile.getParentFile().mkdirs()) {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(

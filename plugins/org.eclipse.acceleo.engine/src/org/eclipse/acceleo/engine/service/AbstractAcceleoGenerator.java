@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -28,7 +29,6 @@ import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
@@ -257,16 +257,13 @@ public abstract class AbstractAcceleoGenerator {
 			moduleName += '.' + IAcceleoConstants.EMTL_FILE_EXTENSION;
 		}
 
-		URL templateURL = getClass().getResource(moduleName);
-		if (EMFPlugin.IS_ECLIPSE_RUNNING && templateURL != null) {
-			templateURL = FileLocator.toFileURL(templateURL);
-		}
+		URL moduleURL = findModuleURL(moduleName);
 
-		if (templateURL == null) {
+		if (moduleURL == null) {
 			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		URI templateURI = createTemplateURI(templateURL.toString());
-		module = (Module)ModelUtils.load(templateURI, resourceSet);
+		URI moduleURI = createTemplateURI(moduleURL.toString());
+		module = (Module)ModelUtils.load(moduleURI, resourceSet);
 		model = element;
 		targetFolder = folder;
 		generationArguments = arguments;
@@ -304,16 +301,13 @@ public abstract class AbstractAcceleoGenerator {
 			moduleName += '.' + IAcceleoConstants.EMTL_FILE_EXTENSION;
 		}
 
-		URL templateURL = getClass().getResource(moduleName);
-		if (EMFPlugin.IS_ECLIPSE_RUNNING && templateURL != null) {
-			templateURL = FileLocator.toFileURL(templateURL);
-		}
+		URL moduleURL = findModuleURL(moduleName);
 
-		if (templateURL == null) {
+		if (moduleURL == null) {
 			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final URI templateURI = createTemplateURI(templateURL.toString());
-		module = (Module)ModelUtils.load(templateURI, resourceSet);
+		final URI moduleURI = createTemplateURI(moduleURL.toString());
+		module = (Module)ModelUtils.load(moduleURI, resourceSet);
 		model = ModelUtils.load(modelURI, resourceSet);
 		targetFolder = folder;
 		generationArguments = arguments;
@@ -416,6 +410,29 @@ public abstract class AbstractAcceleoGenerator {
 			return URI.createURI(URI.decode(entry));
 		}
 		return URI.createFileURI(URI.decode(entry));
+	}
+
+	/**
+	 * Clients can override this if the default behavior doesn't properly find the emtl module URL.
+	 * 
+	 * @param moduleName
+	 *            Name of the module we're searching for.
+	 * @return The template's URL. This will use Eclipse-specific behavior if possible, and use the class
+	 *         loader otherwise.
+	 */
+	protected URL findModuleURL(String moduleName) {
+		URL moduleURL = null;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			try {
+				moduleURL = AcceleoWorkspaceUtil.getResourceURL(getClass(), moduleName);
+			} catch (IOException e) {
+				// Swallow this, we'll try and locate the module through the class loader
+			}
+		}
+		if (moduleURL == null) {
+			moduleURL = getClass().getResource(moduleName);
+		}
+		return moduleURL;
 	}
 
 	/**

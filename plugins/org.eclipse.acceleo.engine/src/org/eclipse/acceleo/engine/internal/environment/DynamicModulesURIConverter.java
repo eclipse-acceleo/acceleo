@@ -88,8 +88,7 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 				if (uriToString.indexOf('#') > 0) {
 					uriToString = uriToString.substring(0, uriToString.indexOf('#'));
 				}
-				String resolvedPath = AcceleoWorkspaceUtil.INSTANCE
-						.resolveAsPlatformPluginResource(uriToString);
+				String resolvedPath = AcceleoWorkspaceUtil.resolveAsPlatformPluginResource(uriToString);
 				if (resolvedPath != null) {
 					normalized = URI.createURI(resolvedPath);
 				}
