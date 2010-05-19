@@ -6,7 +6,8 @@
   Laurent Goubet,
   Laurent Delaigue
 :Contact:
-	laurent.goubet@obeo.fr
+	laurent.goubet@obeo.fr,
+	laurent.delaigue@obeo.fr
 
 Copyright |copy| 2009, 2010 Obeo\ |trade|.
 

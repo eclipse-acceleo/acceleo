@@ -7,7 +7,9 @@ Acceleo Code Generation - Let's start with an Android example
 	Axel Richard,
 	Jonathan Musset
 :Contact:
-	laurent.goubet@obeo.fr
+	laurent.goubet@obeo.fr,
+	axel.richard@obeo.fr,
+	jonathan.musset@obeo.fr
 
 Copyright |copy| 2008, 2010 Obeo\ |trade|.
 
