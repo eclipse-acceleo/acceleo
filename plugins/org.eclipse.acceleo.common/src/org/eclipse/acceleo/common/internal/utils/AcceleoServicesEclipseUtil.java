@@ -146,7 +146,7 @@ public final class AcceleoServicesEclipseUtil {
 	 */
 	public static Object registerService(String bundleName, String qualifiedName) {
 		Object instance = null;
-		final IProject project = AcceleoWorkspaceUtil.INSTANCE.getProject(bundleName);
+		final IProject project = AcceleoWorkspaceUtil.getProject(bundleName);
 		if (project != null) {
 			instance = registerService(project, qualifiedName);
 		} else {
@@ -211,8 +211,7 @@ public final class AcceleoServicesEclipseUtil {
 	 */
 	private static Object workspaceSuffixWorkaround(URI uri, String qualifiedName) {
 		Object res = null;
-		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.INSTANCE.resolveAsPlatformPluginResource(uri
-				.toString()));
+		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.resolveAsPlatformPluginResource(uri.toString()));
 		if (platformURI != null) {
 			String bundleName = platformURI.segment(1);
 			Bundle bundle = Platform.getBundle(bundleName);

@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -101,6 +103,277 @@ public final class AcceleoWorkspaceUtil {
 	 */
 	private AcceleoWorkspaceUtil() {
 		// hides constructor
+	}
+
+	/**
+	 * This will search through the workspace for a plugin defined with the given symbolic name and return it
+	 * if any.
+	 * 
+	 * @param bundleName
+	 *            Symbolic name of the plugin we're searching a workspace project for.
+	 * @return The workspace project of the given symbolic name, <code>null</code> if none could be found.
+	 */
+	public static IProject getProject(String bundleName) {
+		for (IPluginModelBase model : PluginRegistry.getWorkspaceModels()) {
+			if (model.getBundleDescription().getSymbolicName().equals(bundleName)) {
+				return model.getUnderlyingResource().getProject();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * This will try and find a resource of the given name using the bundle from which was originally loaded
+	 * the given class so as to try and unjar its related files. If <code>clazz</code> hasn't been loaded from
+	 * a bundle class loader, we'll resort to the default class loader mechanism. This will only return
+	 * <code>null</code> in the case where the resource at <code>resourcePath</code> cannot be located at all.
+	 * 
+	 * @param clazz
+	 *            Class which class loader will be used to try and locate the resource.
+	 * @param resourcePath
+	 *            Path of the resource we seek, relative to the class.
+	 * @return The URL of the resource as we could locate it.
+	 * @throws IOException
+	 *             This will be thrown if we fail to convert bundle-scheme URIs into file-scheme URIs.
+	 */
+	public static URL getResourceURL(Class<?> clazz, String resourcePath) throws IOException {
+		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
+		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
+		PackageAdmin packageAdmin = null;
+		if (packageAdminReference != null) {
+			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
+		}
+
+		URL resourceURL = null;
+		if (packageAdmin != null) {
+			Bundle bundle = packageAdmin.getBundle(clazz);
+			if (bundle != null) {
+				final String pathSeparator = "/"; //$NON-NLS-1$
+				// We found the appropriate bundle. Search for all of its "emtl" files so as to unjar them all
+				final String filePattern = "*." + IAcceleoConstants.EMTL_FILE_EXTENSION; //$NON-NLS-1$
+				Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, filePattern, true);
+				String soughtResourceName = resourcePath;
+				if (soughtResourceName.contains(pathSeparator)) {
+					soughtResourceName = soughtResourceName.substring(
+							soughtResourceName.lastIndexOf('/') + 1, soughtResourceName.length());
+				}
+				do {
+					URL next = (URL)emtlFiles.nextElement();
+					if (resourcePath.equals(next.getPath())) {
+						resourceURL = next;
+						break;
+					}
+					String nextName = next.getPath();
+					if (nextName.contains(pathSeparator)) {
+						nextName = nextName.substring(nextName.lastIndexOf('/') + 1, nextName.length());
+					}
+					if (next.getPath().endsWith(resourcePath) && soughtResourceName.equals(nextName)) {
+						resourceURL = next;
+						break;
+					}
+				} while (emtlFiles.hasMoreElements());
+				// This can only be a bundle-scheme URL if we found the URL. Convert it to file scheme
+				if (resourceURL != null) {
+					resourceURL = FileLocator.toFileURL(resourceURL);
+				}
+			}
+		}
+		/*
+		 * We couldn't locate either the bundle which loaded the class or the resource. Resort to the class
+		 * loader and return null if it cannot locate the resource either.
+		 */
+		if (resourceURL == null) {
+			resourceURL = clazz.getResource(resourcePath);
+		}
+		return resourceURL;
+	}
+
+	/**
+	 * This will try and resolve the given {@link java.io.File} within the workspace and return it if found.
+	 * 
+	 * @param file
+	 *            The file we wish to find in the workspace.
+	 * @return The resolved IFile if any, <code>null</code> otherwise.
+	 */
+	public static IFile getWorkspaceFile(File file) {
+		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
+	}
+
+	/**
+	 * This will try and resolve the given path against a workspace file. The path can either be relative to
+	 * the workpace, an absolute path towards a workspace file or represent an uri of platform scheme.
+	 * 
+	 * @param path
+	 *            The path we seek a file for. Cannot be <code>null</code>.
+	 * @return The resolved file.
+	 * @throws IOException
+	 *             This will be throw if we cannot resolve a "platform://plugin" URI to an existing file.
+	 */
+	public static File getWorkspaceFile(String path) throws IOException {
+		final String platformResourcePrefix = "platform:/resource/"; //$NON-NLS-1$
+		final String platformPluginPrefix = "platform:/plugin/"; //$NON-NLS-1$
+
+		final File soughtFile;
+		if (path.startsWith(platformResourcePrefix)) {
+			final IPath relativePath = new Path(path.substring(platformResourcePrefix.length()));
+			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(relativePath);
+			soughtFile = soughtIFile.getLocation().toFile();
+		} else if (path.startsWith(platformPluginPrefix)) {
+			final int bundleNameEnd = path.indexOf('/', platformPluginPrefix.length() + 1);
+			final String bundleName = path.substring(platformPluginPrefix.length(), bundleNameEnd);
+			Bundle bundle = Platform.getBundle(bundleName);
+			if (bundle != null) {
+				final URL bundleFileURL = bundle.getEntry(path.substring(bundleNameEnd));
+				final URL fileURL = FileLocator.toFileURL(bundleFileURL);
+				soughtFile = new File(fileURL.getFile());
+			} else {
+				/*
+				 * Being here means that the bundle id is different than the bundle name. We could try and
+				 * find the corresponding bundle in the PluginRegistry.getActiveModels(false) list, but is it
+				 * worth the trouble? Most cases should be handled by the previous code and going through such
+				 * a loop would be extremely CPU intensive.
+				 */
+				soughtFile = null;
+			}
+		} else {
+			final IPath workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+			IPath fullPath = new Path(path);
+			if (workspaceLocation.isPrefixOf(fullPath)) {
+				fullPath = fullPath.removeFirstSegments(workspaceLocation.segmentCount());
+			}
+			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(fullPath);
+			soughtFile = soughtIFile.getLocation().toFile();
+		}
+		return soughtFile;
+	}
+
+	/**
+	 * This can be used to convert a file-scheme URI to a "platform:/plugin" scheme URI if it can be resolved
+	 * in the installed plugins.
+	 * 
+	 * @param filePath
+	 *            File scheme URI that is to be converted.
+	 * @return The converted URI if the file could be resolved in the installed plugins, <code>null</code>
+	 *         otherwise.
+	 */
+	public static String resolveAsPlatformPluginResource(String filePath) {
+		final String fileScheme = "file:/"; //$NON-NLS-1$
+
+		String actualPath = filePath;
+		if (actualPath.startsWith(fileScheme)) {
+			actualPath = actualPath.substring(fileScheme.length());
+		}
+
+		String[] segments = filePath.split("/"); //$NON-NLS-1$
+		Bundle bundle = null;
+		String bundlePath = null;
+		for (int i = segments.length - 1; i >= 0; i--) {
+			if (isBundleID(segments[i])) {
+				bundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(Long.valueOf(segments[i]));
+			} else {
+				bundle = Platform.getBundle(segments[i]);
+			}
+
+			if (bundle != null) {
+				bundlePath = ""; //$NON-NLS-1$
+
+				int pathStart = i + 1;
+				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
+					pathStart += 1;
+				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
+					pathStart += 2;
+				}
+
+				for (int j = pathStart; j < segments.length; j++) {
+					bundlePath += '/' + segments[j];
+				}
+				URL fileURL = bundle.getEntry(bundlePath);
+				if (fileURL != null) {
+					break;
+				}
+			}
+		}
+
+		if (bundle != null && bundlePath != null && !"".equals(bundlePath)) { //$NON-NLS-1$
+			// TODO check if this could be /resource/
+			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the bundle corresponding to the given location if any.
+	 * 
+	 * @param pluginLocation
+	 *            The location of the bundle we seek.
+	 * @return The bundle corresponding to the given location if any, <code>null</code> otherwise.
+	 */
+	private static Bundle getBundle(String pluginLocation) {
+		Bundle[] bundles = AcceleoCommonPlugin.getDefault().getContext().getBundles();
+		for (int i = 0; i < bundles.length; i++) {
+			if (pluginLocation.equals(bundles[i].getLocation())) {
+				return bundles[i];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * This will return the set of output folders name for the given (java) project.
+	 * <p>
+	 * For example, if a project has a source folder "src" with its output folder set as "bin" and a source
+	 * folder "src-gen" with its output folder set as "bin-gen", this will return a LinkedHashSet containing
+	 * both "bin" and "bin-gen".
+	 * </p>
+	 * 
+	 * @param project
+	 *            The project we seek the output folders of.
+	 * @return The set of output folders name for the given (java) project.
+	 */
+	private static Set<String> getOutputFolders(IProject project) {
+		final Set<String> classpathEntries = new LinkedHashSet<String>();
+		final IJavaProject javaProject = JavaCore.create(project);
+		try {
+			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+					final IPath output = entry.getOutputLocation();
+					if (output != null) {
+						classpathEntries.add(output.removeFirstSegments(1).toString());
+					}
+				}
+			}
+			/*
+			 * Add the default output location to the classpath anyway since source folders are not required
+			 * to have their own
+			 */
+			final IPath output = javaProject.getOutputLocation();
+			classpathEntries.add(output.removeFirstSegments(1).toString());
+		} catch (JavaModelException e) {
+			AcceleoCommonPlugin.log(e, false);
+		}
+		return classpathEntries;
+	}
+
+	/**
+	 * This will check if the given String represents an integer less than five digits long.
+	 * 
+	 * @param s
+	 *            The string we wish compared to an integer.
+	 * @return <code>true</code> if <code>s</code> is an integer comprised between 0 and 9999,
+	 *         <code>false</code> otherwise.
+	 */
+	private static boolean isBundleID(String s) {
+		if (s.length() == 0 || s.length() > 5) {
+			return false;
+		}
+
+		boolean isInteger = true;
+		for (char c : s.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				isInteger = false;
+			}
+		}
+		return isInteger;
 	}
 
 	/**
@@ -327,23 +600,6 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This will search through the workspace for a plugin defined with the given symbolic name and return it
-	 * if any.
-	 * 
-	 * @param bundleName
-	 *            Symbolic name of the plugin we're searching a workspace project for.
-	 * @return The workspace project of the given symbolic name, <code>null</code> if none could be found.
-	 */
-	public IProject getProject(String bundleName) {
-		for (IPluginModelBase model : PluginRegistry.getWorkspaceModels()) {
-			if (model.getBundleDescription().getSymbolicName().equals(bundleName)) {
-				return model.getUnderlyingResource().getProject();
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * This will try and load a ResourceBundle for the given qualified name.
 	 * 
 	 * @param qualifiedName
@@ -416,65 +672,6 @@ public final class AcceleoWorkspaceUtil {
 			}
 		}
 		throw originalException;
-	}
-
-	/**
-	 * This will try and resolve the given {@link java.io.File} within the workspace and return it if found.
-	 * 
-	 * @param file
-	 *            The file we wish to find in the workspace.
-	 * @return The resolved IFile if any, <code>null</code> otherwise.
-	 */
-	public IFile getWorkspaceFile(File file) {
-		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
-	}
-
-	/**
-	 * This will try and resolve the given path against a workspace file. The path can either be relative to
-	 * the workpace, an absolute path towards a workspace file or represent an uri of platform scheme.
-	 * 
-	 * @param path
-	 *            The path we seek a file for. Cannot be <code>null</code>.
-	 * @return The resolved file.
-	 * @throws IOException
-	 *             This will be throw if we cannot resolve a "platform://plugin" URI to an existing file.
-	 */
-	public File getWorkspaceFile(String path) throws IOException {
-		final String platformResourcePrefix = "platform:/resource/"; //$NON-NLS-1$
-		final String platformPluginPrefix = "platform:/plugin/"; //$NON-NLS-1$
-
-		final File soughtFile;
-		if (path.startsWith(platformResourcePrefix)) {
-			final IPath relativePath = new Path(path.substring(platformResourcePrefix.length()));
-			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(relativePath);
-			soughtFile = soughtIFile.getLocation().toFile();
-		} else if (path.startsWith(platformPluginPrefix)) {
-			final int bundleNameEnd = path.indexOf("/", platformPluginPrefix.length() + 1); //$NON-NLS-1$
-			final String bundleName = path.substring(platformPluginPrefix.length(), bundleNameEnd);
-			Bundle bundle = Platform.getBundle(bundleName);
-			if (bundle != null) {
-				final URL bundleFileURL = bundle.getEntry(path.substring(bundleNameEnd));
-				final URL fileURL = FileLocator.toFileURL(bundleFileURL);
-				soughtFile = new File(fileURL.getFile());
-			} else {
-				/*
-				 * Being here means that the bundle id is different than the bundle name. We could try and
-				 * find the corresponding bundle in the PluginRegistry.getActiveModels(false) list, but is it
-				 * worth the trouble? Most cases should be handled by the previous code and going through such
-				 * a loop would be extremely CPU intensive.
-				 */
-				soughtFile = null;
-			}
-		} else {
-			final IPath workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-			IPath fullPath = new Path(path);
-			if (workspaceLocation.isPrefixOf(fullPath)) {
-				fullPath = fullPath.removeFirstSegments(workspaceLocation.segmentCount());
-			}
-			final IFile soughtIFile = ResourcesPlugin.getWorkspace().getRoot().getFile(fullPath);
-			soughtFile = soughtIFile.getLocation().toFile();
-		}
-		return soughtFile;
 	}
 
 	/**
@@ -618,60 +815,6 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This can be used to convert a file-scheme URI to a "platform:/plugin" scheme URI if it can be resolved
-	 * in the installed plugins.
-	 * 
-	 * @param filePath
-	 *            File scheme URI that is to be converted.
-	 * @return The converted URI if the file could be resolved in the installed plugins, <code>null</code>
-	 *         otherwise.
-	 */
-	public String resolveAsPlatformPluginResource(String filePath) {
-		final String fileScheme = "file:/"; //$NON-NLS-1$
-
-		String actualPath = filePath;
-		if (actualPath.startsWith(fileScheme)) {
-			actualPath = actualPath.substring(fileScheme.length());
-		}
-
-		String[] segments = filePath.split("/"); //$NON-NLS-1$
-		Bundle bundle = null;
-		String bundlePath = null;
-		for (int i = segments.length - 1; i >= 0; i--) {
-			if (isBundleID(segments[i])) {
-				bundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(Long.valueOf(segments[i]));
-			} else {
-				bundle = Platform.getBundle(segments[i]);
-			}
-
-			if (bundle != null) {
-				bundlePath = ""; //$NON-NLS-1$
-
-				int pathStart = i + 1;
-				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
-					pathStart += 1;
-				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
-					pathStart += 2;
-				}
-
-				for (int j = pathStart; j < segments.length; j++) {
-					bundlePath += '/' + segments[j];
-				}
-				URL fileURL = bundle.getEntry(bundlePath);
-				if (fileURL != null) {
-					break;
-				}
-			}
-		}
-
-		if (bundle != null && bundlePath != null && !"".equals(bundlePath)) { //$NON-NLS-1$
-			// TODO check if this could be /resource/
-			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
-		}
-		return null;
-	}
-
-	/**
 	 * Refreshes all exported packages of the given bundles. This must be called after installing the bundle.
 	 * 
 	 * @param bundles
@@ -776,59 +919,6 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * Returns the bundle corresponding to the given location if any.
-	 * 
-	 * @param pluginLocation
-	 *            The location of the bundle we seek.
-	 * @return The bundle corresponding to the given location if any, <code>null</code> otherwise.
-	 */
-	private Bundle getBundle(String pluginLocation) {
-		Bundle[] bundles = AcceleoCommonPlugin.getDefault().getContext().getBundles();
-		for (int i = 0; i < bundles.length; i++) {
-			if (pluginLocation.equals(bundles[i].getLocation())) {
-				return bundles[i];
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * This will return the set of output folders name for the given (java) project.
-	 * <p>
-	 * For example, if a project has a source folder "src" with its output folder set as "bin" and a source
-	 * folder "src-gen" with its output folder set as "bin-gen", this will return a LinkedHashSet containing
-	 * both "bin" and "bin-gen".
-	 * </p>
-	 * 
-	 * @param project
-	 *            The project we seek the output folders of.
-	 * @return The set of output folders name for the given (java) project.
-	 */
-	private Set<String> getOutputFolders(IProject project) {
-		final Set<String> classpathEntries = new LinkedHashSet<String>();
-		final IJavaProject javaProject = JavaCore.create(project);
-		try {
-			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
-				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					final IPath output = entry.getOutputLocation();
-					if (output != null) {
-						classpathEntries.add(output.removeFirstSegments(1).toString());
-					}
-				}
-			}
-			/*
-			 * Add the default output location to the classpath anyway since source folders are not required
-			 * to have their own
-			 */
-			final IPath output = javaProject.getOutputLocation();
-			classpathEntries.add(output.removeFirstSegments(1).toString());
-		} catch (JavaModelException e) {
-			AcceleoCommonPlugin.log(e, false);
-		}
-		return classpathEntries;
-	}
-
-	/**
 	 * Installs the bundle corresponding to the model.
 	 * 
 	 * @param model
@@ -929,28 +1019,6 @@ public final class AcceleoWorkspaceUtil {
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return null;
-	}
-
-	/**
-	 * This will check if the given String represents an integer less than five digits long.
-	 * 
-	 * @param s
-	 *            The string we wish compared to an integer.
-	 * @return <code>true</code> if <code>s</code> is an integer comprised between 0 and 9999,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isBundleID(String s) {
-		if (s.length() == 0 || s.length() > 5) {
-			return false;
-		}
-
-		boolean isInteger = true;
-		for (char c : s.toCharArray()) {
-			if (!Character.isDigit(c)) {
-				isInteger = false;
-			}
-		}
-		return isInteger;
 	}
 
 	/**
