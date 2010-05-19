@@ -24,47 +24,40 @@ import org.eclipse.acceleo.common.AcceleoCommonMessages;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings({"unchecked", "nls",
-})
+@SuppressWarnings({"unchecked", "nls", })
 public class MessagesTest extends TestCase {
 	/** Expected result of the parameterisable keys (only used if locale is en). */
 	private final String[] expectedForParameterisable = {
-			"Couldn't find class {0} in bundle {1}. Check that its containing package is exported.",
+			"Couldn't load class {0}. Check that its containing package is exported.",
 			"No library connector to handle {0}",
-			"Unexpected exception while trying to install workspace-defined bundle {0} : {1}",
-	};
+			"Unexpected exception while trying to install workspace-defined bundle {0} : {1}", };
 
 	/** Contains the expected results for the valid keys (only used if locale is en). */
 	private final String[] expectedForValidKeys = {"Required element not found.",
 			"Status to be logged cannot be null.", "Path cannot be null or empty.",
-			"Couldn't load the Acceleo standard library.",
-	};
+			"Couldn't load the Acceleo standard library.", };
 
 	/** These will be used when testing message retrieval with invalid keys. */
 	private final String[] invalidKeys = {"invalidKey", "AcceleoEvaluationContext.CleanUpError1", "",
-			"\u00ec",
-	};
+			"\u00ec", };
 
 	/** Contains possible parameters for the messages. */
 	private final Object[] messageParameters = {null, "", "Foehn", -1, new Long(10), '\u0043',
-			new HashSet<Object>(), "0x6c9a.^\\/",
-	};
+			new HashSet<Object>(), "0x6c9a.^\\/", };
 
 	/**
 	 * These two are valid, parameterisable keys. See
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties.
 	 */
 	private final String[] parameterisableKeys = {"BundleClassLookupFailure",
-			"AcceleoCommonPlugin.MissingHandle", "WorkspaceUtil.InstallationFailure",
-	};
+			"AcceleoCommonPlugin.MissingHandle", "WorkspaceUtil.InstallationFailure", };
 
 	/**
 	 * These are valid, un-parameterisable keys. See
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties.
 	 */
 	private final String[] validKeys = {"AcceleoCommonPlugin.ElementNotFound",
-			"AcceleoCommonPlugin.LogNullStatus", "ModelUtils.NullPath", "AcceleoStandardLibrary.LoadFailure",
-	};
+			"AcceleoCommonPlugin.LogNullStatus", "ModelUtils.NullPath", "AcceleoStandardLibrary.LoadFailure", };
 
 	/**
 	 * Tests {@link AcceleoCommonMessages#getString(String, Object...)} with an invalid key. Expects the
