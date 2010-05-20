@@ -474,7 +474,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			transformStepResolve(iInitExpression);
 			factory.getOCL().addVariableToScope(oVariable);
-			if (!ParserUtils.isIdentifier(oVariable.getName())) {
+			if (!ParserUtils.isIdentifier(iVariable.getName())) {
 				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(), iVariable
 						.getStartPosition(), iVariable.getEndPosition());
 			}

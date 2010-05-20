@@ -270,13 +270,18 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	}
 
 	/**
-	 * Returns the environment instance that was used under the covers by the ocl parser.
+	 * Returns the environment instance that was used under the covers by the ocl parser. It returns null when
+	 * we don't know the OCL environment.
 	 * 
-	 * @return The environment instance that was used under the covers by the ocl parser.
+	 * @return The environment instance that was used under the covers by the ocl parser, can be null
 	 * @since 3.0
 	 */
 	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
-		return astCreator.getOCL().getOCLEnvironment();
+		if (astCreator != null && astCreator.getOCL() != null) {
+			return astCreator.getOCL().getOCLEnvironment();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -315,7 +320,9 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * @see org.eclipse.acceleo.parser.ast.IASTProvider#resolveAST()
 	 */
 	public void resolveAST() {
-		astCreator.resolveAST(cst);
+		if (astCreator != null) {
+			astCreator.resolveAST(cst);
+		}
 	}
 
 	/**
@@ -329,7 +336,9 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 *            is the upper bound
 	 */
 	public void resolveAST(int posBegin, int posEnd) {
-		astCreator.resolveAST(cst, posBegin, posEnd);
+		if (astCreator != null) {
+			astCreator.resolveAST(cst, posBegin, posEnd);
+		}
 	}
 
 	/**
