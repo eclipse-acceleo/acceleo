@@ -12,9 +12,12 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.re
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -68,14 +71,33 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 				&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)element).getFileExtension())
 				&& ((IFile)element).exists()) {
 
-			this.file = (IFile)element;
-			this.project = this.file.getProject();
-			this.module = AcceleoRenameModuleUtils.getModuleFromFile(file);
+			boolean result = true;
+			String newName = this.getArguments().getNewName();
 
-			// We don't rename the file of the module because the main refactoring process will do it
-			this.refactoring = new AcceleoRenameModuleRefactoring(false);
+			if (newName.length() > 0
+					&& newName.endsWith("." + IAcceleoConstants.MTL_FILE_EXTENSION) //$NON-NLS-1$
+					&& this.getArguments().getUpdateReferences()) {
+				this.file = (IFile)element;
+				this.project = this.file.getProject();
+				this.module = AcceleoRenameModuleUtils.getModuleFromFile(file);
 
-			return true;
+				try {
+					IMarker[] markers = file.findMarkers(AcceleoMarker.PROBLEM_MARKER, true,
+							IResource.DEPTH_INFINITE);
+					if (markers.length > 0) {
+						result = false;
+					} else {
+						// We don't rename the file of the module because the main refactoring process will do
+						// it
+						this.refactoring = new AcceleoRenameModuleRefactoring(false);
+					}
+				} catch (CoreException e) {
+					result = false;
+				}
+			} else {
+				result = false;
+			}
+			return result;
 		}
 		return false;
 	}
@@ -107,10 +129,10 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 
 		try {
 			status.merge(this.refactoring.checkInitialConditions(monitor));
-			String newNameVithoutExtension = this.getArguments().getNewName();
-			newNameVithoutExtension = newNameVithoutExtension.substring(0,
-					newNameVithoutExtension.lastIndexOf(".")); //$NON-NLS-1$
-			this.refactoring.setNewModuleName(newNameVithoutExtension);
+			String newNameWithoutExtension = this.getArguments().getNewName();
+			newNameWithoutExtension = newNameWithoutExtension.substring(0,
+					newNameWithoutExtension.lastIndexOf(".")); //$NON-NLS-1$
+			this.refactoring.setNewModuleName(newNameWithoutExtension);
 			status.merge(this.refactoring.checkFinalConditions(monitor));
 		} catch (CoreException e) {
 			// do nothing
