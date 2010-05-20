@@ -42,7 +42,7 @@ public class AcceleoPositionedTemplateLabelProvider extends LabelProvider {
 
 		if (element instanceof AcceleoPositionedTemplate) {
 			final AcceleoPositionedTemplate apt = (AcceleoPositionedTemplate)element;
-			str = apt.getTemplateName();
+			str = apt.getTemplateName() + apt.getTemplate().getParameter();
 		}
 
 		return str;

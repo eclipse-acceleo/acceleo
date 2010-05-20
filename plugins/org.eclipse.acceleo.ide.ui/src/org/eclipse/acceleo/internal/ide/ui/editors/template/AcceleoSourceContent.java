@@ -329,7 +329,8 @@ public class AcceleoSourceContent {
 	}
 
 	/**
-	 * Gets the current AST model. It creates the AST if <code>createAST</code> hasn't been called.
+	 * Gets the current AST model. It creates the AST if <code>createAST</code> hasn't been called. The AST
+	 * that will be returned, will not be resolved unless if it has been resolved earlier.
 	 * 
 	 * @return the current AST model
 	 */
@@ -1119,7 +1120,7 @@ public class AcceleoSourceContent {
 	}
 
 	/**
-	 * Gets the nearest AST node at the given position.
+	 * Gets the nearest AST node at the given position. The AST will be resolved at that position.
 	 * 
 	 * @param posBegin
 	 *            is the beginning index
@@ -1127,7 +1128,7 @@ public class AcceleoSourceContent {
 	 *            is the ending index
 	 * @return the nearest AST node
 	 */
-	public ASTNode getASTNode(int posBegin, int posEnd) {
+	public ASTNode getResolvedASTNode(int posBegin, int posEnd) {
 		if (posBegin > -1) {
 			org.eclipse.acceleo.model.mtl.Module vAST = getAST();
 			if (vAST != null) {

@@ -42,7 +42,7 @@ public class AcceleoPositionedQueryLabelProvider extends LabelProvider {
 
 		if (element instanceof AcceleoPositionedQuery) {
 			final AcceleoPositionedQuery apt = (AcceleoPositionedQuery)element;
-			str = apt.getQueryName();
+			str = apt.getQueryName() + apt.getQuery().getParameter();
 		}
 
 		return str;

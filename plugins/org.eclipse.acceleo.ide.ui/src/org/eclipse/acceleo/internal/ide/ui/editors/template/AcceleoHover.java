@@ -162,7 +162,7 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 	 */
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		if (hoverRegion != null && editor != null && editor.getContent() != null) {
-			ASTNode astNode = editor.getContent().getASTNode(hoverRegion.getOffset(),
+			ASTNode astNode = editor.getContent().getResolvedASTNode(hoverRegion.getOffset(),
 					hoverRegion.getOffset() + hoverRegion.getLength());
 			if (astNode != null) {
 				EObject eObject = OpenDeclarationUtils.findDeclarationFromAST(astNode);

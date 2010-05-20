@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jface.action.IAction;
@@ -152,7 +153,9 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 			refactoring.setTemplate(array[0]);
 			if (template != null) {
 				for (AcceleoPositionedTemplate acceleoPositionedTemplate : array) {
-					if (template.getName().equals(acceleoPositionedTemplate.getTemplateName())) {
+					if (template.getName().equals(acceleoPositionedTemplate.getTemplateName())
+							&& checkEquals(template.getParameter(), acceleoPositionedTemplate.getTemplate()
+									.getParameter())) {
 						refactoring.setTemplate(acceleoPositionedTemplate);
 					}
 				}
@@ -177,7 +180,8 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		if (array.length > 0) {
 			refactoring.setQuery(array[0]);
 			for (AcceleoPositionedQuery acceleoPositionedQuery : array) {
-				if (query.getName().equals(acceleoPositionedQuery.getQueryName())) {
+				if (query.getName().equals(acceleoPositionedQuery.getQueryName())
+						&& checkEquals(query.getParameter(), acceleoPositionedQuery.getQuery().getParameter())) {
 					refactoring.setQuery(acceleoPositionedQuery);
 				}
 			}
@@ -212,6 +216,40 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 
 		refactoring.setVariable(apv);
 		runWizard(new AcceleoRenameVariableWizard(refactoring, name), fWindow.getShell(), name);
+	}
+
+	/**
+	 * Check if the two list of parameters are equal.
+	 * 
+	 * @param paramList1
+	 *            The first list of parameter.
+	 * @param paramList2
+	 *            The second list of parameter.
+	 * @return If the two list are equal.
+	 */
+	private boolean checkEquals(EList<Variable> paramList1, EList<Variable> paramList2) {
+		boolean result = true;
+
+		if (paramList1.size() == paramList2.size()) {
+			for (int i = 0; i < paramList1.size(); i++) {
+				final Variable var1 = paramList1.get(i);
+				final Variable var2 = paramList2.get(i);
+				if (var1.getName().equals(var2.getName())) {
+					if ((var1.getType() != null && var2.getType() != null)
+							&& !var1.getType().getName().equals(var2.getType().getName())) {
+						result = false;
+						break;
+					}
+				} else {
+					result = false;
+					break;
+				}
+			}
+		} else {
+			result = false;
+		}
+
+		return result;
 	}
 
 	/**

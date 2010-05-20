@@ -100,7 +100,7 @@ public class OpenDeclarationAction extends Action implements IWorkbenchWindowAct
 		} else {
 			offset = -1;
 		}
-		ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+		ASTNode astNode = editor.getContent().getResolvedASTNode(offset, offset);
 		if (astNode != null) {
 			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
 		}

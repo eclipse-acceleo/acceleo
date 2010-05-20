@@ -81,7 +81,11 @@ public class AcceleoPositionedQuery {
 	public static void computePartialInput(final Query query) {
 		final List<AcceleoPositionedQuery> positionedQueryList = new ArrayList<AcceleoPositionedQuery>();
 
+		acceleoEditor.getContent().getResolvedASTNode(0, acceleoEditor.getContent().getText().length());
 		final Module astModule = acceleoEditor.getContent().getAST();
+
+		// This is another alternative to resolve all the OCL expressions of the AST.
+		// final Module astModule = AcceleoRenameModuleUtils.getModuleFromFile(acceleoEditor.getFile());
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
 		for (ModuleElement moduleElement : moduleElementList) {

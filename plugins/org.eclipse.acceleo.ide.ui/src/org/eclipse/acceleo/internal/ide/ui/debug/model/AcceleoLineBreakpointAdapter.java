@@ -102,7 +102,7 @@ public class AcceleoLineBreakpointAdapter implements IToggleBreakpointsTarget {
 				i++;
 			}
 		}
-		ASTNode astNode = content.getASTNode(i, i);
+		ASTNode astNode = content.getResolvedASTNode(i, i);
 		if (astNode != null) {
 			while (astNode.eContainer() instanceof ASTNode
 					&& ((ASTNode)astNode.eContainer()).getStartPosition() == astNode.getStartPosition()) {

@@ -83,7 +83,11 @@ public final class AcceleoPositionedTemplate {
 	public static void computePartialInput(final Template template) {
 		final List<AcceleoPositionedTemplate> positionedTemplatesList = new ArrayList<AcceleoPositionedTemplate>();
 
+		acceleoEditor.getContent().getResolvedASTNode(0, acceleoEditor.getContent().getText().length());
 		final Module astModule = acceleoEditor.getContent().getAST();
+
+		// This is another alternative to resolve all the OCL expressions of the AST.
+		// final Module astModule = AcceleoRenameModuleUtils.getModuleFromFile(acceleoEditor.getFile());
 		final List<ModuleElement> moduleElementList = astModule.getOwnedModuleElement();
 
 		for (ModuleElement moduleElement : moduleElementList) {

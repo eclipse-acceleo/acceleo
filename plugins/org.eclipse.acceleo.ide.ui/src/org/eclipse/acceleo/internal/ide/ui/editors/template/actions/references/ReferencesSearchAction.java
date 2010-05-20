@@ -62,7 +62,7 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 				ISelection selection = editor.getSelectionProvider().getSelection();
 				if (selection instanceof TextSelection) {
 					offset = ((TextSelection)selection).getOffset();
-					declaration = editor.getContent().getASTNode(offset, offset);
+					declaration = editor.getContent().getResolvedASTNode(offset, offset);
 				}
 			}
 			if (declaration != null) {

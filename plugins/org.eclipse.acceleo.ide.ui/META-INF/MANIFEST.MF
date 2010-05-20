@@ -50,5 +50,7 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.ide.ui.resources,
  org.eclipse.acceleo.ide.ui.views.proposals.patterns,
  org.eclipse.acceleo.ide.ui.wizards.newfile.example,
+ org.eclipse.acceleo.internal.ide.ui.builders;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template;x-friends:="org.eclipse.acceleo.ide.ui.tests",
+ org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template.rules;x-friends:="org.eclipse.acceleo.ide.ui.tests"

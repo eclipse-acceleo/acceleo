@@ -362,8 +362,15 @@ public class AcceleoResultView extends ResourceNavigator {
 		refreshUIJob = new UIJob("Acceleo") { //$NON-NLS-1$
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				getViewer().refresh();
-				return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
+				// if eclipse is closing the tree can be disposed
+				final TreeViewer treeViewer = getViewer();
+				final Status status = new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
+				if (treeViewer == null || treeViewer.getTree() == null || treeViewer.getTree().isDisposed()) {
+					return status;
+				}
+
+				treeViewer.refresh();
+				return status;
 			}
 		};
 		refreshUIJob.setPriority(Job.DECORATE);

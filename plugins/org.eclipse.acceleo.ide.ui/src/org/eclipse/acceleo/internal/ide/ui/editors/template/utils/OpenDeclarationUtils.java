@@ -769,7 +769,7 @@ public final class OpenDeclarationUtils {
 		} else {
 			offset = -1;
 		}
-		final ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+		final ASTNode astNode = editor.getContent().getResolvedASTNode(offset, offset);
 		if (astNode != null) {
 			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
 		}

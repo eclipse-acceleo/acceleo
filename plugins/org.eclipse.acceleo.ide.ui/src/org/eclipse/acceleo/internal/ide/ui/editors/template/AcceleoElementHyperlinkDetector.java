@@ -77,7 +77,7 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 * carried on by the AST/CST node.
 		 */
 		boolean inferWordRegion = true;
-		ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+		ASTNode astNode = editor.getContent().getResolvedASTNode(offset, offset);
 		if (astNode != null) {
 			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
 			if (res instanceof IteratorExp && editor.getContent().getOCLEnvironment() != null) {

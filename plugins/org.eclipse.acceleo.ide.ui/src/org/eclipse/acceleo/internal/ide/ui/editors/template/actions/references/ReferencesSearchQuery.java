@@ -25,6 +25,8 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Query;
+import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -35,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -44,6 +47,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.ocl.ecore.IteratorExp;
+import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
@@ -343,7 +347,15 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	private boolean isMatching(EObject o1, EObject o2) {
 		boolean result;
 		if (o1.eClass().getName().equals(o2.eClass().getName())) {
-			if (o1 instanceof ModuleElement && o2 instanceof ModuleElement) {
+			if (o1 instanceof Template && o2 instanceof Template) {
+				final Template t1 = (Template)o1;
+				final Template t2 = (Template)o2;
+				result = this.isMatchingTemplate(t1, t2);
+			} else if (o1 instanceof Query && o2 instanceof Query) {
+				final Query q1 = (Query)o1;
+				final Query q2 = (Query)o2;
+				result = this.isMatchingQuery(q1, q2);
+			} else if (o1 instanceof ModuleElement && o2 instanceof ModuleElement) {
 				result = ((ModuleElement)o1).getName().equals(((ModuleElement)o2).getName());
 			} else if (o1 instanceof org.eclipse.ocl.ecore.Variable
 					&& o2 instanceof org.eclipse.ocl.ecore.Variable) {
@@ -355,6 +367,82 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		} else {
 			result = EcoreUtil.equals(o1, o2);
 		}
+		return result;
+	}
+
+	/**
+	 * Indicates if the given AST objects are matching.
+	 * 
+	 * @param t1
+	 *            is the first template
+	 * @param t2
+	 *            is the second template
+	 * @return true if the element names are the same and if they have the same parameters.
+	 */
+	private boolean isMatchingTemplate(final Template t1, final Template t2) {
+		boolean result = t1.getName().equals(t2.getName());
+
+		final EList<Variable> t1Parameters = t1.getParameter();
+		final EList<Variable> t2Parameters = t2.getParameter();
+
+		if (t1Parameters.size() == t2Parameters.size()) {
+			for (int i = 0; i < t1Parameters.size(); i++) {
+				Variable var1 = t1Parameters.get(i);
+				Variable var2 = t2Parameters.get(i);
+
+				if (!var1.getName().equals(var2.getName())) {
+					result = false;
+					break;
+				} else {
+					if ((var1.getType() != null && var2.getType() != null)
+							&& (!var1.getType().getName().equals(var2.getType().getName()))) {
+						result = false;
+						break;
+					}
+				}
+			}
+		} else {
+			result = false;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Indicates if the given AST objects are matching.
+	 * 
+	 * @param q1
+	 *            is the first query
+	 * @param q2
+	 *            is the second query
+	 * @return true if the element names are the same and if they have the same parameters.
+	 */
+	private boolean isMatchingQuery(final Query q1, final Query q2) {
+		boolean result = q1.getName().equals(q2.getName());
+
+		final EList<Variable> q1Parameters = q1.getParameter();
+		final EList<Variable> q2Parameters = q2.getParameter();
+
+		if (q1Parameters.size() == q2Parameters.size()) {
+			for (int i = 0; i < q1Parameters.size(); i++) {
+				Variable var1 = q1Parameters.get(i);
+				Variable var2 = q2Parameters.get(i);
+
+				if (!var1.getName().equals(var2.getName())) {
+					result = false;
+					break;
+				} else {
+					if ((var1.getType() != null && var2.getType() != null)
+							&& (!var1.getType().getName().equals(var2.getType().getName()))) {
+						result = false;
+						break;
+					}
+				}
+			}
+		} else {
+			result = false;
+		}
+
 		return result;
 	}
 
