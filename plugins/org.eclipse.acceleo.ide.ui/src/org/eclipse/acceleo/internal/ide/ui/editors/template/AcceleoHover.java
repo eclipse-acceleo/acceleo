@@ -166,7 +166,7 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 					hoverRegion.getOffset() + hoverRegion.getLength());
 			if (astNode != null) {
 				EObject eObject = OpenDeclarationUtils.findDeclarationFromAST(astNode);
-				if (eObject instanceof IteratorExp) {
+				if (eObject instanceof IteratorExp && editor.getContent().getOCLEnvironment() != null) {
 					eObject = OpenDeclarationUtils.findIteratorEOperation(editor.getContent()
 							.getOCLEnvironment(), (IteratorExp)eObject);
 				}

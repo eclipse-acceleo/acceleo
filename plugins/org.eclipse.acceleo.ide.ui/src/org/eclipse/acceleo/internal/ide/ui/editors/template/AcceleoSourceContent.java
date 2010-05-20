@@ -705,9 +705,10 @@ public class AcceleoSourceContent {
 	}
 
 	/**
-	 * Returns the environment instance that was used under the covers by the ocl parser.
+	 * Returns the environment instance that was used under the covers by the ocl parser. It returns null when
+	 * we don't know the OCL environment.
 	 * 
-	 * @return The environment instance that was used under the covers by the ocl parser.
+	 * @return The environment instance that was used under the covers by the ocl parser, can be null
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {

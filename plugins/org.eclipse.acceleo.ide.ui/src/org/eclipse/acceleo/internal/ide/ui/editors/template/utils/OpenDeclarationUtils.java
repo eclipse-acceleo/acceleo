@@ -223,7 +223,8 @@ public final class OpenDeclarationUtils {
 		final String operationName = iteratorExp.getName();
 
 		EOperation referredOperation = null;
-		for (EObject child : operationHolder.eContents()) {
+		// Thread safe copy
+		for (EObject child : new ArrayList<EObject>(operationHolder.eContents())) {
 			if (child instanceof EOperation && operationName.equals(((EOperation)child).getName())) {
 				referredOperation = (EOperation)child;
 				break;

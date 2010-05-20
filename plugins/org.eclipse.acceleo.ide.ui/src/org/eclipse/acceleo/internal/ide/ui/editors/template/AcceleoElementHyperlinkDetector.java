@@ -80,7 +80,7 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		ASTNode astNode = editor.getContent().getASTNode(offset, offset);
 		if (astNode != null) {
 			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
-			if (res instanceof IteratorExp) {
+			if (res instanceof IteratorExp && editor.getContent().getOCLEnvironment() != null) {
 				res = OpenDeclarationUtils.findIteratorEOperation(editor.getContent().getOCLEnvironment(),
 						(IteratorExp)res);
 			}
