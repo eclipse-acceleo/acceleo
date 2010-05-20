@@ -1223,7 +1223,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (IAcceleoConstants.LET.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.LET).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.LET + ' ';
-			String replacementStringAfter = "${e}" + " : ${" + defaultVariableType + "}]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String replacementStringAfter = "${e}" + " : ${" + defaultVariableType + "} = ${self}]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ '\n' + tab + '[' + '/' + IAcceleoConstants.LET + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
