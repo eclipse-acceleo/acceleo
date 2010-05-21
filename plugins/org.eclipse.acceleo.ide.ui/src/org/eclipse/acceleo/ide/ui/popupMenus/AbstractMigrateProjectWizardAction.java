@@ -104,7 +104,7 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 					AcceleoNewTemplatesWizardController first = wizard.getTemplatePage().getControllers()
 							.get(0);
 					CreateTemplateData data = first.getModel();
-					data.setTemplateShortName("chain"); //$NON-NLS-1$
+					data.setTemplateShortName("main"); //$NON-NLS-1$
 					data.setTemplateHasFileBlock(false);
 					data.setTemplateIsInitialized(false);
 					browseTemplates(projects.toArray(new IProject[projects.size()]));
