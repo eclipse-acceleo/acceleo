@@ -715,7 +715,9 @@ public class AcceleoSourceContent {
 
 	/**
 	 * Returns the environment instance that was used under the covers by the ocl parser. It returns null when
-	 * we don't know the OCL environment.
+	 * we don't know the OCL environment. Be careful when you manipulate this OCL environment because the
+	 * content can be modified at any time by the background jobs of this class. You musn't modify the
+	 * environment and you must have a thread safe implementation.
 	 * 
 	 * @return The environment instance that was used under the covers by the ocl parser, can be null
 	 * @noreference This method is not intended to be referenced by clients.
