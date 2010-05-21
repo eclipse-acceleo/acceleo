@@ -409,6 +409,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
 	 */
 	public void resourceChanged(final IResourceChangeEvent event) {
+		if (content != null) {
+			content.resetAccessibleOutputFilesCache();
+		}
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor() != this) {

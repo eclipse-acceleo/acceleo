@@ -121,6 +121,14 @@ public class AcceleoSourceContent {
 	private SyntaxHelpJob syntaxHelpUnloadJob = new SyntaxHelpJob();
 
 	/**
+	 * You can use the method 'getAccessibleOutputFiles' to get all the accessible output files (EMTL) of the
+	 * current project (It means the files of the current project and the files of the required plugins). This
+	 * is the cache of this method. You can clear the cache by using the method
+	 * 'resetAccessibleOutputFilesCache'.
+	 */
+	private List<URI> accessibleOutputFiles;
+
+	/**
 	 * The job class to unload the syntax help information.
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
@@ -1078,11 +1086,25 @@ public class AcceleoSourceContent {
 	 * @return the URIs of the output files, there are 'plugin' URIs and 'workspace' URIs...
 	 */
 	public List<URI> getAccessibleOutputFiles() {
-		if (acceleoProject != null) {
-			return acceleoProject.getAccessibleOutputFiles();
+		if (accessibleOutputFiles == null) {
+			if (acceleoProject != null) {
+				accessibleOutputFiles = acceleoProject.getAccessibleOutputFiles();
+			}
+		}
+		if (accessibleOutputFiles != null) {
+			return new ArrayList<URI>(accessibleOutputFiles);
 		} else {
 			return new ArrayList<URI>();
 		}
+	}
+
+	/**
+	 * You can use the method 'getAccessibleOutputFiles' to get all the accessible output files (EMTL) of the
+	 * current project (It means the files of the current project and the files of the required plugins).
+	 * There is a cache on 'getAccessibleOutputFiles'. This is a way to clear this cache.
+	 */
+	protected void resetAccessibleOutputFilesCache() {
+		accessibleOutputFiles = null;
 	}
 
 	/**
