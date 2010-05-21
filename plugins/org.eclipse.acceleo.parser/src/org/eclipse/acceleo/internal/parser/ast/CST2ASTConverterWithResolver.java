@@ -68,11 +68,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            is the root element of the input module (CST)
 	 */
 	public void resolveAST(org.eclipse.acceleo.parser.cst.Module rootCST) {
-		if (rootCST != null) {
-			resolveBeginPosition = -1;
-			resolveEndPosition = -1;
-			transformStepResolve(rootCST);
-		}
+		resolveAST(rootCST, -1, -1);
 	}
 
 	/**
@@ -88,7 +84,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param endPosition
 	 *            is the upper bound
 	 */
-	public void resolveAST(org.eclipse.acceleo.parser.cst.Module rootCST, int beginPosition, int endPosition) {
+	public synchronized void resolveAST(org.eclipse.acceleo.parser.cst.Module rootCST, int beginPosition,
+			int endPosition) {
 		if (rootCST != null) {
 			resolveBeginPosition = beginPosition;
 			resolveEndPosition = endPosition;
