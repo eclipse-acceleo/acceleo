@@ -224,6 +224,8 @@ configuration, choose a location, and run it.
 
 .. image:: ../images/android_tutorial/android_Eclipse_Runtime_2.png
 
+Note that it's also possible to identify the ecore metamodel with its URI even though it is defined in the same eclipse workspace.
+
 The Android Project
 ________________________________________________________________________________
 
