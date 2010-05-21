@@ -141,7 +141,15 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 				}
 				buffer.delete(start, end);
 				StringBuffer newImportContent = new StringBuffer();
-				StringBuffer newTemplateContent = new StringBuffer('\n');
+				StringBuffer newTemplateContent = new StringBuffer("\n\t"); //$NON-NLS-1$
+				newTemplateContent.append(IAcceleoConstants.DEFAULT_BEGIN);
+				newTemplateContent.append(IAcceleoConstants.COMMENT);
+				newTemplateContent.append(" "); //$NON-NLS-1$
+				newTemplateContent.append(IAcceleoConstants.TAG_MAIN);
+				newTemplateContent.append(" "); //$NON-NLS-1$
+				newTemplateContent.append(IAcceleoConstants.DEFAULT_END_BODY_CHAR);
+				newTemplateContent.append(IAcceleoConstants.DEFAULT_END);
+				newTemplateContent.append("\n"); //$NON-NLS-1$
 				for (Resource resource : root.getResources()) {
 					if (resource instanceof Template) {
 						Template template = (Template)resource;
@@ -194,7 +202,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 			}
 			newImportContent.append(shortName);
 			newImportContent.append(" /]\n"); //$NON-NLS-1$
-			newTemplateContent.append("\t[comment call the file block in '"); //$NON-NLS-1$
+			newTemplateContent.append("\n\t[comment call the file block in '"); //$NON-NLS-1$
 			newTemplateContent.append(shortName);
 			newTemplateContent.append("' /]\n"); //$NON-NLS-1$
 			newTemplateContent.append("\t[ "); //$NON-NLS-1$
