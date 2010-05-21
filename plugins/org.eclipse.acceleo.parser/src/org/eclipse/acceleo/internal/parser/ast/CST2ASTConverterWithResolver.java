@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.CollectionType;
+import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
  * The main class used to transform a CST model to an AST model. This class is able to run the 'Resolve' step.
@@ -869,8 +870,13 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} else {
 				oLetVariable = null;
 			}
+			OCLExpression<EClassifier> saveInitExpression = null;
 			if (iLetVariable != null && oLetVariable != null) {
 				transformStepResolveAddVariable(iLetVariable);
+				saveInitExpression = oLetVariable.getInitExpression();
+				if (saveInitExpression != null) {
+					oLetVariable.setInitExpression(null);
+				}
 				factory.getOCL().pushContext(oLetVariable.getType());
 			}
 			try {
@@ -883,6 +889,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} finally {
 				if (iLetVariable != null && oLetVariable != null) {
 					transformStepResolveRemoveVariable(iLetVariable);
+					if (saveInitExpression != null) {
+						oLetVariable.setInitExpression(saveInitExpression);
+					}
 					factory.getOCL().popContext();
 				}
 			}
