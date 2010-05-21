@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestNavigation" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="681">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="218" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;getRootContainer : "/>
+      <statements xsi:type="statements:Feature" begin="220" end="258">
+        <expression xsi:type="expressions:CallSet" begin="220" end="258">
+          <calls begin="220" end="238" name="getRootContainer" prefix=""/>
+          <calls begin="239" end="250" name="eContents" prefix=""/>
+          <calls begin="251" end="258" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="260" end="283" value="&#xD;&#xA;&#xD;&#xA;precedingSibling : "/>
+      <statements xsi:type="statements:Feature" begin="285" end="311">
+        <expression xsi:type="expressions:CallSet" begin="285" end="311">
+          <calls begin="285" end="303" name="precedingSibling" prefix=""/>
+          <calls begin="304" end="311" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="313" end="336" value="&#xD;&#xA;&#xD;&#xA;followingSibling : "/>
+      <statements xsi:type="statements:Feature" begin="338" end="364">
+        <expression xsi:type="expressions:CallSet" begin="338" end="364">
+          <calls begin="338" end="356" name="followingSibling" prefix=""/>
+          <calls begin="357" end="364" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="366" end="384" value="&#xA;&#xD;&#xA;eAllContents : "/>
+      <statements xsi:type="statements:Feature" begin="386" end="408">
+        <expression xsi:type="expressions:CallSet" begin="386" end="408">
+          <calls begin="386" end="400" name="eAllContents" prefix=""/>
+          <calls begin="401" end="408" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="410" end="454" value="&#xD;&#xA;&#xD;&#xA;eAllContents(&quot;type&quot;) + nLast + nFirst : "/>
+      <statements xsi:type="statements:Feature" begin="456" end="494">
+        <expression xsi:type="expressions:CallSet" begin="456" end="494">
+          <calls begin="456" end="481" name="eAllContents" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="469" end="480" value="Operation"/>
+          </calls>
+          <calls begin="482" end="489" name="nLast" prefix=""/>
+          <calls begin="490" end="494" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="496" end="499" value=" / "/>
+      <statements xsi:type="statements:Feature" begin="501" end="540">
+        <expression xsi:type="expressions:CallSet" begin="501" end="540">
+          <calls begin="501" end="526" name="eAllContents" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="514" end="525" value="Operation"/>
+          </calls>
+          <calls begin="527" end="535" name="nFirst" prefix=""/>
+          <calls begin="536" end="540" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="542" end="559" value="&#xD;&#xA;&#xD;&#xA;eContainer : "/>
+      <statements xsi:type="statements:Feature" begin="561" end="581">
+        <expression xsi:type="expressions:CallSet" begin="561" end="581">
+          <calls begin="561" end="573" name="eContainer" prefix=""/>
+          <calls begin="574" end="581" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="583" end="608" value="&#xD;&#xA;&#xD;&#xA;eContainer(&quot;Type&quot;) : "/>
+      <statements xsi:type="statements:Feature" begin="610" end="636">
+        <expression xsi:type="expressions:CallSet" begin="610" end="636">
+          <calls begin="610" end="631" name="eContainer" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="621" end="630" value="Package"/>
+          </calls>
+          <calls begin="632" end="636" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="638" end="653" value="&#xD;&#xA;&#xD;&#xA;ancestor : "/>
+      <statements xsi:type="statements:Feature" begin="655" end="673">
+        <expression xsi:type="expressions:CallSet" begin="655" end="673">
+          <calls begin="655" end="665" name="ancestor" prefix=""/>
+          <calls begin="666" end="673" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="675" end="681" value="&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;"/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

@@ -27,6 +27,10 @@ Text of testParameterScript with parameter 1 : [args0/] and parameter 2 : [args1
 if (name = 'Integer' or name = 'Float' or name = 'Boolean') then true else false endif
 /]
 
+[template public checkJavaPrimitiveTypeSimple(type : Type)]
+[if (name = 'Integer' or name = 'Float' or name = 'Boolean')]true[else]false[/if]
+[/template]
+
 [query public isJavaPrimitiveTypeUnElseIf(type : Type) : Boolean =
 if (name = 'Integer' or name = 'Float' or name = 'Boolean') then true else if (name = 'Integer1' or name = 'Float1' or name = 'Boolean1') then false else false endif endif
 /]

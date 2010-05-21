@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestService" imports="//@resources.1 //@resources.2" beginTag="&lt;%" endTag="%>">
+    <scripts begin="196" end="301">
+      <descriptor begin="148" end="192" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="183" end="191" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="196" end="246" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;Package name : "/>
+      <statements xsi:type="statements:Feature" begin="248" end="258">
+        <expression xsi:type="expressions:CallSet" begin="248" end="258">
+          <calls begin="248" end="258" name="getPackage" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="260" end="271" value="&#xD;&#xA;&#xD;&#xA;Path : "/>
+      <statements xsi:type="statements:Feature" begin="273" end="291">
+        <expression xsi:type="expressions:CallSet" begin="273" end="291">
+          <calls begin="273" end="291" name="toPath" prefix="">
+            <arguments xsi:type="expressions:CallSet" begin="280" end="290">
+              <calls begin="280" end="290" name="getPackage" prefix=""/>
+            </arguments>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="293" end="301" value="&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="348" end="360">
+      <descriptor begin="314" end="344" name="getPackage" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="348" end="360" value="fr.obeo.test"/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+  <resources xsi:type="core:Service" name="services.StringServices">
+    <methods name="toPath" return="java.lang.String">
+      <parameters type="fr.obeo.acceleo.gen.template.eval.ENode"/>
+      <parameters type="java.lang.String"/>
+    </methods>
+    <methods name="uniqueCode" return="int">
+      <parameters type="java.lang.String"/>
+    </methods>
+  </resources>
+</mt:ResourceSet>

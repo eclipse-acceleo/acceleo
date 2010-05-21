@@ -1,0 +1,31 @@
+[module genTestNavigation('http://www.eclipse.org/uml2/2.0.0/UML')/]
+
+[template public generate(class : Class)]
+[comment @main/]
+[file ('test.txt', false))]
+== Sample of text ==
+
+=Start=
+
+getRootContainer : [ancestors()->last().eContents()->size()/]
+
+precedingSibling : [precedingSiblings()->size()/]
+
+followingSibling : [followingSiblings()->size()/]
+
+eAllContents : [eAllContents()->size()/]
+
+eAllContents("type") + nLast + nFirst : [eAllContents(Operation)->last().name/] / [eAllContents(Operation)->first().name/]
+
+eContainer : [eContainer()->size()/]
+
+eContainer("Type") : [ancestors(Package)->first().name/]
+
+ancestor : [ancestors()->size()/]
+
+
+
+[/file]
+[/template]
+
+

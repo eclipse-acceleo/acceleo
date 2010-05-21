@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.compatibility.tests.unit.migration;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -31,53 +30,13 @@ public class getPropertyTest extends AbstractAcceleoTest {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.compatibility.gen.tests.unit.tests.unit.AbstractAcceleoTest#getResultPath()
-	 */
-	@Override
-	public String getResultPath() {
-		return "/data/" + getTestName() + "/mtlGenerated";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.compatibility.gen.tests.unit.tests.unit.AbstractAcceleoTest#getReferencePath()
-	 */
-	@Override
-	public String getMtlExpectedPath() {
-		return "/data/" + getTestName() + "/mtlExpected";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.compatibility.gen.tests.unit.tests.unit.AbstractAcceleoTest#getEmtlModelPath()
-	 */
-	@Override
-	public String getEmtlModelPath() {
-		return "/data/" + getTestName() + "/emt/chain.emt";
-	}
-
-	/**
-	 * Test file script translate.
+	 * Test file script GetProperty.
 	 * 
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
 	public void testGetProperty() throws IOException {
-
-		generationRoot = new File(getMtlTargetRootPath());
-		// emtlModelRoot = new File(getEmtlModelPath());
-		mtlExpectedRoot = new File(getMtlExpectedRootPath());
-
-		cleanMtlGenerationRoot();
-		try {
-			generateEmt();
-			compareDirectories(mtlExpectedRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		// launch test
+		genericTest();
 	}
 }

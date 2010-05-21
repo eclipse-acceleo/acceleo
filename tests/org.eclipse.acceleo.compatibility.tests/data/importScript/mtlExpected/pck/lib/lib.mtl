@@ -1,0 +1,9 @@
+[module lib('http://www.eclipse.org/uml2/2.0.0/UML')/]
+
+[template public myScript(class : Class)]
+== Sample of imported Script ==
+
+=End=
+[/template]
+
+

@@ -154,25 +154,31 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	public abstract String getTestName();
 
 	/**
-	 * This must be overriden to return the emtl model location.
+	 * Get the folder where files are generated.
 	 * 
-	 * @return emtl model location of the results.
+	 * @return the folder path.
 	 */
-	public abstract String getEmtlModelPath();
+	public String getResultPath() {
+		return "/data/" + getTestName() + "/mtlGenerated";
+	}
 
 	/**
-	 * This must be overriden to return the save location for the test reference and generation results.
+	 * Get the folder where are located expected mtl file.
 	 * 
-	 * @return Save location of the results.
+	 * @return the folder path.
 	 */
-	public abstract String getResultPath();
+	public String getMtlExpectedPath() {
+		return "/data/" + getTestName() + "/mtlExpected";
+	}
 
 	/**
-	 * This must be overriden to return the reference location for the test reference and generation results.
+	 * Get the path of emt model file.
 	 * 
-	 * @return reference location.
+	 * @return the emt path file.
 	 */
-	public abstract String getMtlExpectedPath();
+	public String getEmtlModelPath() {
+		return "/data/" + getTestName() + "/emt/chain.emt";
+	}
 
 	/**
 	 * This should be called by each test to empty its target generation root prior to the test.
@@ -212,6 +218,26 @@ public abstract class AbstractAcceleoTest extends TestCase {
 			mt2mtl.doGenerate(null);
 		} catch (IOException e) {
 			fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * Generic Test launcher.
+	 * 
+	 * @throws IOException
+	 *             Thrown when the output cannot be saved.
+	 */
+	public void genericTest() throws IOException {
+
+		generationRoot = new File(getMtlTargetRootPath());
+		mtlExpectedRoot = new File(getMtlExpectedRootPath());
+
+		cleanMtlGenerationRoot();
+		try {
+			generateEmt();
+			compareDirectories(mtlExpectedRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
 		}
 	}
 

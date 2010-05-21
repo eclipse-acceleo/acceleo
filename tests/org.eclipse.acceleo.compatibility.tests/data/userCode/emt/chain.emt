@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestUserCode" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="900">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="201" end="214">
+        <expression xsi:type="expressions:CallSet" begin="201" end="214">
+          <calls begin="201" end="214" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="216" end="226" value=" UCText1&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="228" end="238">
+        <expression xsi:type="expressions:CallSet" begin="228" end="238">
+          <calls begin="228" end="238" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="240" end="241" value="&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="243" end="254">
+        <expression xsi:type="expressions:CallSet" begin="243" end="254">
+          <calls begin="243" end="254" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="256" end="261" value="&#xA;&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="263" end="276">
+        <expression xsi:type="expressions:CallSet" begin="263" end="276">
+          <calls begin="263" end="276" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="278" end="295" value=" UCText2 UCText2&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="297" end="307">
+        <expression xsi:type="expressions:CallSet" begin="297" end="307">
+          <calls begin="297" end="307" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="309" end="310" value="&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="312" end="323">
+        <expression xsi:type="expressions:CallSet" begin="312" end="323">
+          <calls begin="312" end="323" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="325" end="328" value="&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="330" end="343">
+        <expression xsi:type="expressions:CallSet" begin="330" end="343">
+          <calls begin="330" end="343" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="345" end="370" value=" UCText3 UCText3 UCText3&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="372" end="382">
+        <expression xsi:type="expressions:CallSet" begin="372" end="382">
+          <calls begin="372" end="382" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="384" end="385" value="&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="387" end="398">
+        <expression xsi:type="expressions:CallSet" begin="387" end="398">
+          <calls begin="387" end="398" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="400" end="403" value="&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="405" end="418">
+        <expression xsi:type="expressions:CallSet" begin="405" end="418">
+          <calls begin="405" end="418" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="420" end="421" value=" "/>
+      <statements xsi:type="statements:Feature" begin="423" end="432">
+        <expression xsi:type="expressions:CallSet" begin="423" end="432">
+          <calls begin="423" end="432" name="ucScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="434" end="436" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="438" end="448">
+        <expression xsi:type="expressions:CallSet" begin="438" end="448">
+          <calls begin="438" end="448" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="450" end="452" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="454" end="465">
+        <expression xsi:type="expressions:CallSet" begin="454" end="465">
+          <calls begin="454" end="465" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="467" end="471" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="473" end="486">
+        <expression xsi:type="expressions:CallSet" begin="473" end="486">
+          <calls begin="473" end="486" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="488" end="498" value=" UCText1  "/>
+      <statements xsi:type="statements:Feature" begin="500" end="509">
+        <expression xsi:type="expressions:CallSet" begin="500" end="509">
+          <calls begin="500" end="509" name="ucScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="511" end="513" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="515" end="525">
+        <expression xsi:type="expressions:CallSet" begin="515" end="525">
+          <calls begin="515" end="525" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="527" end="529" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="531" end="542">
+        <expression xsi:type="expressions:CallSet" begin="531" end="542">
+          <calls begin="531" end="542" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="544" end="548" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="550" end="563">
+        <expression xsi:type="expressions:CallSet" begin="550" end="563">
+          <calls begin="550" end="563" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="565" end="566" value=" "/>
+      <statements xsi:type="statements:Feature" begin="568" end="577">
+        <expression xsi:type="expressions:CallSet" begin="568" end="577">
+          <calls begin="568" end="577" name="ucScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="579" end="580" value=" "/>
+      <statements xsi:type="statements:Feature" begin="582" end="591">
+        <expression xsi:type="expressions:CallSet" begin="582" end="591">
+          <calls begin="582" end="591" name="ucScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="593" end="595" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="597" end="607">
+        <expression xsi:type="expressions:CallSet" begin="597" end="607">
+          <calls begin="597" end="607" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="609" end="611" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="613" end="624">
+        <expression xsi:type="expressions:CallSet" begin="613" end="624">
+          <calls begin="613" end="624" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="626" end="630" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="632" end="645">
+        <expression xsi:type="expressions:CallSet" begin="632" end="645">
+          <calls begin="632" end="645" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="647" end="648" value=" "/>
+      <statements xsi:type="statements:Feature" begin="650" end="659">
+        <expression xsi:type="expressions:CallSet" begin="650" end="659">
+          <calls begin="650" end="659" name="ucScript1" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="661" end="662" value=" "/>
+      <statements xsi:type="statements:Feature" begin="664" end="673">
+        <expression xsi:type="expressions:CallSet" begin="664" end="673">
+          <calls begin="664" end="673" name="ucScript2" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="675" end="677" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="679" end="689">
+        <expression xsi:type="expressions:CallSet" begin="679" end="689">
+          <calls begin="679" end="689" name="scriptText" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="691" end="693" value="&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="695" end="706">
+        <expression xsi:type="expressions:CallSet" begin="695" end="706">
+          <calls begin="695" end="706" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="708" end="714" value="&#xD;&#xA;&#xD;&#xA;//"/>
+      <statements xsi:type="statements:Feature" begin="716" end="729">
+        <expression xsi:type="expressions:CallSet" begin="716" end="729">
+          <calls begin="716" end="729" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="731" end="752" value=" Comment user code&#xA;//"/>
+      <statements xsi:type="statements:Feature" begin="754" end="765">
+        <expression xsi:type="expressions:CallSet" begin="754" end="765">
+          <calls begin="754" end="765" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="767" end="791" value=" Comment user code&#xA;&#xD;&#xA;// "/>
+      <statements xsi:type="statements:Feature" begin="793" end="806">
+        <expression xsi:type="expressions:CallSet" begin="793" end="806">
+          <calls begin="793" end="806" name="startUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="808" end="821" value=" TextStartUC "/>
+      <statements xsi:type="statements:Feature" begin="823" end="827">
+        <expression xsi:type="expressions:CallSet" begin="823" end="827">
+          <calls begin="823" end="827" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="829" end="845" value=" TextEndUC&#xA; &#xA;// "/>
+      <statements xsi:type="statements:Feature" begin="847" end="858">
+        <expression xsi:type="expressions:CallSet" begin="847" end="858">
+          <calls begin="847" end="858" name="endUserCode" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="860" end="873" value=" TextStartUC "/>
+      <statements xsi:type="statements:Feature" begin="875" end="879">
+        <expression xsi:type="expressions:CallSet" begin="875" end="879">
+          <calls begin="875" end="879" name="name" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="881" end="900" value=" TextEndUC&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="946" end="955">
+      <descriptor begin="913" end="942" name="ucScript1" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="946" end="955" value="UCScript1"/>
+    </scripts>
+    <scripts begin="1001" end="1010">
+      <descriptor begin="968" end="997" name="ucScript2" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="1001" end="1010" value="UCScript2"/>
+    </scripts>
+    <scripts begin="1057" end="1112">
+      <descriptor begin="1023" end="1053" name="scriptText" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="1057" end="1112" value="blaBlaBlaBlaBlaBlaBla&#xD;&#xA;BlaBlaBlaBlaBlaBlaBlaBlaBla&#xD;&#xA;..."/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

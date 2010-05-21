@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestArgs" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="348">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="199" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="201" end="227">
+        <expression xsi:type="expressions:CallSet" begin="201" end="227">
+          <calls begin="201" end="227" name="argScript1" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="212" end="218" value="arg0"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="220" end="226" value="arg1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="229" end="233" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="235" end="261">
+        <expression xsi:type="expressions:CallSet" begin="235" end="261">
+          <calls begin="235" end="261" name="argScript2" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="246" end="252" value="arg0"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="254" end="260" value="arg1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="263" end="267" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="269" end="303">
+        <expression xsi:type="expressions:CallSet" begin="269" end="303">
+          <calls begin="269" end="303" name="argScript3" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="280" end="286" value="arg0"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="288" end="294" value="arg1"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="296" end="302" value="arg2"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="305" end="309" value="&#xD;&#xA;&#xD;&#xA;"/>
+      <statements xsi:type="statements:Feature" begin="311" end="337">
+        <expression xsi:type="expressions:CallSet" begin="311" end="337">
+          <calls begin="311" end="337" name="argScript4" prefix="">
+            <arguments xsi:type="expressions:StringLiteral" begin="322" end="328" value="arg0"/>
+            <arguments xsi:type="expressions:StringLiteral" begin="330" end="336" value="arg1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="339" end="348" value="&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+    <scripts begin="395" end="434">
+      <descriptor begin="361" end="391" name="argScript1" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="395" end="402" value="arg 0: "/>
+      <statements xsi:type="statements:Feature" begin="404" end="411">
+        <expression xsi:type="expressions:CallSet" begin="404" end="411">
+          <calls begin="404" end="411" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="409" end="410"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="413" end="423" value=" / arg 1: "/>
+      <statements xsi:type="statements:Feature" begin="425" end="432">
+        <expression xsi:type="expressions:CallSet" begin="425" end="432">
+          <calls begin="425" end="432" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="430" end="431" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+    <scripts begin="480" end="519">
+      <descriptor begin="446" end="476" name="argScript2" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="480" end="487" value="arg 1: "/>
+      <statements xsi:type="statements:Feature" begin="489" end="496">
+        <expression xsi:type="expressions:CallSet" begin="489" end="496">
+          <calls begin="489" end="496" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="494" end="495" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="498" end="508" value=" / arg 0: "/>
+      <statements xsi:type="statements:Feature" begin="510" end="517">
+        <expression xsi:type="expressions:CallSet" begin="510" end="517">
+          <calls begin="510" end="517" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="515" end="516"/>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+    <scripts begin="566" end="626">
+      <descriptor begin="532" end="562" name="argScript3" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="566" end="573" value="arg 0: "/>
+      <statements xsi:type="statements:Feature" begin="575" end="582">
+        <expression xsi:type="expressions:CallSet" begin="575" end="582">
+          <calls begin="575" end="582" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="580" end="581"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="584" end="594" value=" / arg 1: "/>
+      <statements xsi:type="statements:Feature" begin="596" end="603">
+        <expression xsi:type="expressions:CallSet" begin="596" end="603">
+          <calls begin="596" end="603" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="601" end="602" value="1"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="605" end="615" value=" / arg 2: "/>
+      <statements xsi:type="statements:Feature" begin="617" end="624">
+        <expression xsi:type="expressions:CallSet" begin="617" end="624">
+          <calls begin="617" end="624" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="622" end="623" value="2"/>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+    <scripts begin="673" end="724">
+      <descriptor begin="639" end="669" name="argScript4" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="673" end="685" value="first arg : "/>
+      <statements xsi:type="statements:Feature" begin="687" end="694">
+        <expression xsi:type="expressions:CallSet" begin="687" end="694">
+          <calls begin="687" end="694" name="args" prefix="">
+            <arguments xsi:type="expressions:IntegerLiteral" begin="692" end="693"/>
+          </calls>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="696" end="711" value="  second arg : "/>
+      <statements xsi:type="statements:Feature" begin="713" end="722">
+        <expression xsi:type="expressions:CallSet" begin="713" end="722">
+          <calls begin="713" end="722" name="args" prefix="">
+            <arguments xsi:type="expressions:CallSet" begin="718" end="721">
+              <calls begin="718" end="721" name="one" prefix=""/>
+            </arguments>
+          </calls>
+        </expression>
+      </statements>
+    </scripts>
+    <scripts begin="764" end="765">
+      <descriptor begin="737" end="760" name="one" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="764" end="765" value="1"/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestSize" imports="//@resources.1" beginTag="&lt;%" endTag="%>">
+    <scripts begin="164" end="359">
+      <descriptor begin="116" end="160" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="151" end="159" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="164" end="211" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;=Start=&#xD;&#xA;&#xD;&#xA;List size : "/>
+      <statements xsi:type="statements:Feature" begin="213" end="225">
+        <expression xsi:type="expressions:CallSet" begin="213" end="225">
+          <calls begin="213" end="217" name="name" prefix=""/>
+          <calls begin="218" end="225" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="227" end="256" value="&#xD;&#xA;&#xD;&#xA;Nb char in classe name : "/>
+      <statements xsi:type="statements:Feature" begin="258" end="271">
+        <expression xsi:type="expressions:CallSet" begin="258" end="271">
+          <calls begin="258" end="262" name="name" prefix=""/>
+          <calls begin="263" end="271" name="length" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="273" end="292" value="&#xD;&#xA;&#xD;&#xA;Nb attribute : "/>
+      <statements xsi:type="statements:Feature" begin="294" end="311">
+        <expression xsi:type="expressions:CallSet" begin="294" end="311">
+          <calls begin="294" end="303" name="attribute" prefix=""/>
+          <calls begin="304" end="311" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="313" end="333" value="&#xA;&#xD;&#xA;&#xD;&#xA;Nb operation : "/>
+      <statements xsi:type="statements:Feature" begin="335" end="357">
+        <expression xsi:type="expressions:CallSet" begin="335" end="357">
+          <calls begin="335" end="349" name="ownedOperation" prefix=""/>
+          <calls begin="350" end="357" name="nSize" prefix=""/>
+        </expression>
+      </statements>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+</mt:ResourceSet>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mt:ResourceSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.eclipse.org/acceleo/mt/2.6.0/core" xmlns:expressions="http://www.eclipse.org/acceleo/mt/2.6.0/expressions" xmlns:mt="http://www.eclipse.org/acceleo/mt/2.6.0" xmlns:statements="http://www.eclipse.org/acceleo/mt/2.6.0/statements">
+  <resources xsi:type="core:Template" name="pck.genTestImport" imports="//@resources.2 //@resources.1 //@resources.3" beginTag="&lt;%" endTag="%>">
+    <scripts begin="212" end="345">
+      <descriptor begin="164" end="208" name="generate" type="Class">
+        <file>
+          <statements xsi:type="statements:Text" begin="199" end="207" value="test.txt"/>
+        </file>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="212" end="268" value="== Sample of text ==&#xD;&#xA;&#xD;&#xA;Launch script in same project : "/>
+      <statements xsi:type="statements:Feature" begin="270" end="278">
+        <expression xsi:type="expressions:CallSet" begin="270" end="278">
+          <calls begin="270" end="278" name="myScript" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="280" end="316" value="&#xA;&#xD;&#xA;Launch script in other project : "/>
+      <statements xsi:type="statements:Feature" begin="318" end="332">
+        <expression xsi:type="expressions:CallSet" begin="318" end="332">
+          <calls begin="318" end="332" name="mySelectScript" prefix=""/>
+        </expression>
+      </statements>
+      <statements xsi:type="statements:Text" begin="334" end="345" value="&#xD;&#xA;&#xD;&#xA;=End=&#xD;&#xA;"/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Template" name="pck.lib.lib" imports="//@resources.2" beginTag="&lt;%" endTag="%>">
+    <scripts begin="150" end="190">
+      <descriptor begin="118" end="146" name="myScript" type="Class">
+        <file/>
+      </descriptor>
+      <statements xsi:type="statements:Text" begin="150" end="190" value="== Sample of imported Script ==&#xD;&#xA;&#xD;&#xA;=End="/>
+    </scripts>
+  </resources>
+  <resources xsi:type="core:Metamodel" name="http://www.eclipse.org/uml2/2.0.0/UML"/>
+  <resources xsi:type="core:Service" name="pck.GenTestSelect">
+    <methods name="main" return="void">
+      <parameters type="[Ljava.lang.String;"/>
+    </methods>
+    <methods name="getProperties" return="java.util.List"/>
+    <methods name="getModuleName" return="java.lang.String"/>
+    <methods name="getTemplateNames" return="[Ljava.lang.String;"/>
+    <methods name="registerPackages" return="void">
+      <parameters type="org.eclipse.emf.ecore.resource.ResourceSet"/>
+    </methods>
+    <methods name="doGenerate" return="void">
+      <parameters type="org.eclipse.emf.common.util.Monitor"/>
+    </methods>
+    <methods name="registerResourceFactories" return="void">
+      <parameters type="org.eclipse.emf.ecore.resource.ResourceSet"/>
+    </methods>
+    <methods name="getGenerationListeners" return="java.util.List"/>
+    <methods name="getGenerationStrategy" return="org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy"/>
+  </resources>
+</mt:ResourceSet>

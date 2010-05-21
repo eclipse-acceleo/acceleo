@@ -24,6 +24,9 @@ Text of testParameterScript with parameter 1 : <%args(0)%> and parameter 2 : <%a
 <%script type="Type" name="isJavaPrimitiveTypeSimple"%>
 <%if (name == "Integer" || name =="Float" || name == "Boolean"){%>true<%}else{%>false<%}%>
 
+<%script type="Type" name="checkJavaPrimitiveTypeSimple"%>
+<%if (name == "Integer" || name =="Float" || name == "Boolean"){%>true<%}else{%>false<%}%>
+
 <%script type="Type" name="isJavaPrimitiveTypeUnElseIf"%>
 <%if (name == "Integer" || name =="Float" || name == "Boolean"){%>true<%}else if(name == "Integer1" || name =="Float1" || name == "Boolean1"){%>false<%}else{%>false<%}%>
 
