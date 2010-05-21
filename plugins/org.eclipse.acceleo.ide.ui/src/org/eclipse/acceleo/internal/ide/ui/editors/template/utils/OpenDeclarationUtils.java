@@ -502,8 +502,13 @@ public final class OpenDeclarationUtils {
 	 * @return platform URI
 	 */
 	private static URI formatURI(URI fileURI) {
-		if (fileURI.toString().startsWith("http")) { //$NON-NLS-1$
-			URI result = null;
+		URI result = null;
+		String fileURIString = fileURI.toString();
+		String ecorePath = ModelUtils.getRegisteredEcorePackagePath(fileURIString);
+		if (ecorePath != null) {
+			result = URI.createPlatformResourceURI(ecorePath, false);
+		}
+		if (result == null && fileURIString.startsWith("http")) { //$NON-NLS-1$
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
 					.getExtensionPoint("org.eclipse.emf.ecore.generated_package"); //$NON-NLS-1$
@@ -517,7 +522,7 @@ public final class OpenDeclarationUtils {
 						String mURI = member.getAttribute("uri"); //$NON-NLS-1$
 						String genModelPath = member.getAttribute("genModel"); //$NON-NLS-1$
 						String bundleID = member.getNamespaceIdentifier();
-						if (mURI != null && mURI.equals(fileURI.toString())
+						if (mURI != null && mURI.equals(fileURIString)
 								&& Platform.getBundle(bundleID) != null && genModelPath != null) {
 							String ecoreName = new Path(genModelPath).removeFileExtension().addFileExtension(
 									"ecore").lastSegment(); //$NON-NLS-1$
@@ -536,21 +541,18 @@ public final class OpenDeclarationUtils {
 						IConfigurationElement member = members[j];
 						String sourceURI = member.getAttribute("source"); //$NON-NLS-1$
 						String targetURI = member.getAttribute("target"); //$NON-NLS-1$
-						if (sourceURI != null && sourceURI.equals(fileURI.toString()) && targetURI != null) {
+						if (sourceURI != null && sourceURI.equals(fileURIString) && targetURI != null) {
 							result = URI.createURI(targetURI, false);
 						}
 					}
 				}
 			}
-			if (result == null) {
-				String ecorePath = ModelUtils.getRegisteredEcorePackagePath(fileURI.toString());
-				if (ecorePath != null) {
-					result = URI.createPlatformResourceURI(ecorePath, false);
-				}
-			}
-			return result;
 		}
-		return fileURI;
+		if (result != null) {
+			return result;
+		} else {
+			return fileURI;
+		}
 	}
 
 	/**
