@@ -316,9 +316,13 @@ As mentioned in the OMG specification, MTL files (modules) can call for template
 
 .. image:: ../images/android_tutorial/android_New_Module_File.png
 
-3. This template will call all the other modules that generate text. Import all the modules and call their templates that generate text.
+3. This template should call all the other modules that generate text. Import all the modules and call their templates that generate text.
 
 .. image:: ../images/android_tutorial/android_Workflow.png
+
+There is another way to create automatically this main module file by following the different steps of the wizard : *New > Other > Acceleo Model To Text > Acceleo Main Module File*.
+
+.. image:: ../images/acceleo_new_main_module.png
 
 Editing the code generator
 --------------------------------------------------------------------------------
