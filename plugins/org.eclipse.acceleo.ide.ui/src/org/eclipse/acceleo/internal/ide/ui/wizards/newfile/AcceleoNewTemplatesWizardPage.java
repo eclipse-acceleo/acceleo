@@ -38,7 +38,7 @@ public class AcceleoNewTemplatesWizardPage extends WizardPage {
 	/**
 	 * Default text in the 'Metamodel URI' text widget.
 	 */
-	public static final String DEFAULT_METAMODEL_URI = "http://www.eclipse.org/uml2/2.1.0/UML"; //$NON-NLS-1$
+	public static final String DEFAULT_METAMODEL_URI = "http://www.eclipse.org/emf/2002/Ecore"; //$NON-NLS-1$
 
 	/**
 	 * Default text in the "Template Name" text widget.
