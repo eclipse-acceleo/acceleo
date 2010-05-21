@@ -850,8 +850,7 @@ public class AcceleoProject {
 						fileURL = FileLocator.toFileURL(entry);
 					} catch (IOException e) {
 						fileURL = null;
-						AcceleoUIActivator.getDefault().getLog().log(
-								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+						// Remark : We don't log if there is a syntax error.
 					}
 					if (fileURL != null) {
 						IPath pathMTL = new Path(fileURL.getPath());
@@ -878,8 +877,7 @@ public class AcceleoProject {
 					String message = problems.getMessage();
 					if (message != null && message.length() > 0) {
 						hasProblem = true;
-						AcceleoUIActivator.getDefault().getLog().log(
-								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
+						// Remark : We don't log if there is a syntax error.
 					}
 				}
 				for (File file : inputFile.getParentFile().listFiles()) {
