@@ -149,7 +149,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 				newTemplateContent.append(" "); //$NON-NLS-1$
 				newTemplateContent.append(IAcceleoConstants.DEFAULT_END_BODY_CHAR);
 				newTemplateContent.append(IAcceleoConstants.DEFAULT_END);
-				newTemplateContent.append("\n"); //$NON-NLS-1$
+				newTemplateContent.append('\n');
 				for (Resource resource : root.getResources()) {
 					if (resource instanceof Template) {
 						Template template = (Template)resource;
@@ -157,6 +157,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 					}
 				}
 				newImportContent.append('\n');
+				newTemplateContent.append('\n');
 				buffer.insert(start, newTemplateContent.toString());
 				buffer.insert(iImport, newImportContent.toString());
 				try {
@@ -202,7 +203,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 			}
 			newImportContent.append(shortName);
 			newImportContent.append(" /]\n"); //$NON-NLS-1$
-			newTemplateContent.append("\n\t[comment call the file block in '"); //$NON-NLS-1$
+			newTemplateContent.append("\n\t[comment Call the file block in '"); //$NON-NLS-1$
 			newTemplateContent.append(shortName);
 			newTemplateContent.append("' /]\n"); //$NON-NLS-1$
 			newTemplateContent.append("\t[ "); //$NON-NLS-1$
