@@ -32,6 +32,7 @@ import org.eclipse.acceleo.internal.compatibility.mtl.gen.Mt2mtl;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core.ProjectParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -194,14 +195,17 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 		}
 		if (fileTemplateName != null) {
 			newImportContent.append("[import "); //$NON-NLS-1$
+			String javaPackageName;
 			String shortName;
 			int iDot = template.getName().lastIndexOf('.');
 			if (iDot > -1) {
+				javaPackageName = template.getName().substring(0, iDot);
 				shortName = template.getName().substring(iDot + 1);
 			} else {
+				javaPackageName = ""; //$NON-NLS-1$
 				shortName = template.getName();
 			}
-			newImportContent.append(shortName);
+			newImportContent.append(AcceleoFile.javaPackageToFullModuleName(javaPackageName, shortName));
 			newImportContent.append(" /]\n"); //$NON-NLS-1$
 			newTemplateContent.append("\n\t[comment Call the file block in '"); //$NON-NLS-1$
 			newTemplateContent.append(shortName);
