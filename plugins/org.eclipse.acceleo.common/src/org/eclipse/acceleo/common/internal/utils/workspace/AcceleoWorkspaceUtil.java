@@ -525,7 +525,7 @@ public final class AcceleoWorkspaceUtil {
 		// The class hasn't been instantiated yet ; search for the class without instantiating it
 		Iterator<Map.Entry<IPluginModelBase, Bundle>> iterator = workspaceInstalledBundles.entrySet()
 				.iterator();
-		while (clazz != null && iterator.hasNext()) {
+		while (clazz == null && iterator.hasNext()) {
 			Map.Entry<IPluginModelBase, Bundle> entry = iterator.next();
 			/*
 			 * If we're asked to honor OSGi package visibility, we'll first check the "Export-Package" header
