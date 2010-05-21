@@ -101,7 +101,7 @@ script : Acceleo script that will be converted to an Acceleo MTL template.
 [template public convertToTemplate(script : Script)]
 ['['/]template public [genTemplateHeader()/][']'/]
 [if (script.descriptor.file.statements->size() > 0)]
-['['/]comment @main/]
+['['/]comment This template is called by the main module file /]
 ['['/]file ([genFileName()/], false))]
 [/if]
 [script.statements.convertStatement()/]
