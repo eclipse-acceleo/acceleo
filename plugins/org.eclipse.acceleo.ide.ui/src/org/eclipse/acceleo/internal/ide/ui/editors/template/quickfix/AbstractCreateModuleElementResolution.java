@@ -13,6 +13,8 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
+import org.eclipse.acceleo.parser.cst.CSTNode;
+import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -76,7 +78,8 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 					paramType = message.substring(message.lastIndexOf('(') + 1, message.length() - 1).trim();
 				}
 				if (paramType.length() == 0) {
-					paramType = "E"; //$NON-NLS-1$
+					CSTNode currentNode = content.getCSTNode(posBegin, posBegin);
+					paramType = getCurrentVariableTypeName(currentNode, "E"); //$NON-NLS-1$
 				}
 				String paramName = Character.toLowerCase(paramType.charAt(0)) + paramType.substring(1);
 				StringBuilder newText = new StringBuilder();
@@ -103,6 +106,48 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		return -1;
+	}
+
+	/**
+	 * Gets the name of the current variable type.
+	 * 
+	 * @param currentNode
+	 *            is the current CST node, it means the node at the current position
+	 * @param defaultType
+	 *            the default value if there isn't any variable at the given position
+	 * @return the type name, or the given default value
+	 */
+	private String getCurrentVariableTypeName(CSTNode currentNode, String defaultType) {
+		Variable eContext = null;
+		if (currentNode instanceof org.eclipse.acceleo.parser.cst.Template) {
+			org.eclipse.acceleo.parser.cst.Template iTemplate = (org.eclipse.acceleo.parser.cst.Template)currentNode;
+			if (iTemplate.getParameter().size() > 0) {
+				eContext = iTemplate.getParameter().get(0);
+			}
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Query) {
+			org.eclipse.acceleo.parser.cst.Query iQuery = (org.eclipse.acceleo.parser.cst.Query)currentNode;
+			if (iQuery.getParameter().size() > 0) {
+				eContext = iQuery.getParameter().get(0);
+			}
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.Macro) {
+			org.eclipse.acceleo.parser.cst.Macro iMacro = (org.eclipse.acceleo.parser.cst.Macro)currentNode;
+			if (iMacro.getParameter().size() > 0) {
+				eContext = iMacro.getParameter().get(0);
+			}
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.ForBlock) {
+			eContext = ((org.eclipse.acceleo.parser.cst.ForBlock)currentNode).getLoopVariable();
+		} else if (currentNode instanceof org.eclipse.acceleo.parser.cst.LetBlock) {
+			eContext = ((org.eclipse.acceleo.parser.cst.LetBlock)currentNode).getLetVariable();
+		}
+		String res;
+		if (eContext != null && eContext.getType() != null) {
+			res = eContext.getType();
+		} else if (currentNode != null && currentNode.eContainer() instanceof CSTNode) {
+			res = getCurrentVariableTypeName((CSTNode)currentNode.eContainer(), defaultType);
+		} else {
+			res = defaultType;
+		}
+		return res;
 	}
 
 	/**
