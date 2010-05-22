@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.popupMenus;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,7 @@ import org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectW
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -122,10 +119,6 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 				}
 			} catch (CoreException e) {
 				AcceleoCommonPlugin.log(e.getStatus());
-			} catch (IOException e) {
-				Status status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage()
-						.toString(), e);
-				AcceleoCommonPlugin.log(status);
 			}
 		}
 	}
@@ -173,13 +166,8 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 	 *            is the target folder
 	 * @param mainTemplate
 	 *            is the main template path in the workspace
-	 * @throws IOException
-	 *             when the model cannot be saved
-	 * @throws CoreException
-	 *             when a workspace issue occurs
 	 */
-	protected abstract void generateMTL(IPath baseFolder, IPath mainTemplate) throws IOException,
-			CoreException;
+	protected abstract void generateMTL(IPath baseFolder, IPath mainTemplate);
 
 	/**
 	 * Computes the metamodel URIs.
