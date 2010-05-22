@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,10 +41,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * An action to create automatically a new Acceleo module from an old Acceleo module (with MT files).
@@ -102,7 +106,47 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 	 *      org.eclipse.core.runtime.IPath)
 	 */
 	@Override
-	protected void generateMTL(IPath baseFolder, IPath mainTemplate) throws IOException, CoreException {
+	protected void generateMTL(final IPath baseFolder, final IPath mainTemplate) {
+		IRunnableWithProgress operation = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) {
+				try {
+					generateMTLWithProgress(baseFolder, mainTemplate, monitor);
+				} catch (CoreException e) {
+					AcceleoCommonPlugin.log(e.getStatus());
+				} catch (IOException e) {
+					Status status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage()
+							.toString(), e);
+					AcceleoCommonPlugin.log(status);
+				}
+			}
+		};
+		try {
+			PlatformUI.getWorkbench().getProgressService().run(true, true, operation);
+		} catch (InvocationTargetException e) {
+			IStatus status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage(), e);
+			AcceleoCommonPlugin.getDefault().getLog().log(status);
+		} catch (InterruptedException e) {
+			IStatus status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage(), e);
+			AcceleoCommonPlugin.getDefault().getLog().log(status);
+		}
+	}
+
+	/**
+	 * Generate the output MTL files.
+	 * 
+	 * @param baseFolder
+	 *            is the target folder
+	 * @param mainTemplate
+	 *            is the main template path in the workspace
+	 * @param monitor
+	 *            is the monitor
+	 * @throws IOException
+	 *             when the model cannot be saved
+	 * @throws CoreException
+	 *             when a workspace issue occurs
+	 */
+	private void generateMTLWithProgress(IPath baseFolder, IPath mainTemplate, IProgressMonitor monitor)
+			throws IOException, CoreException {
 		if (baseFolder.segmentCount() > 0
 				&& ResourcesPlugin.getWorkspace().getRoot().getProject(baseFolder.segment(0)).isAccessible()) {
 			IFile emtFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
@@ -121,7 +165,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 			}
 			File targetFolder = targetContainer.getLocation().toFile();
 			Mt2mtl mt2mtl = new Mt2mtl(root, targetFolder, new ArrayList<Object>());
-			mt2mtl.doGenerate(new BasicMonitor());
+			mt2mtl.doGenerate(BasicMonitor.toMonitor(monitor));
 			if (targetContainer.isAccessible()) {
 				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			}
