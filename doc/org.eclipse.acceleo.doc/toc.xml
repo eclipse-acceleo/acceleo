@@ -2,11 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Acceleo Model To Text Transformation Language (MTL)">
- <topic label="Developer Guide">
-	<topic label="Javadoc">
-	    <link toc="topics_Reference.xml"/>
-	</topic>
- </topic>
  <topic href="doc/overview.html" label="User Guide">
     <topic href="doc/html/plugin_overview.html" label="Plugin overview">
     </topic>
