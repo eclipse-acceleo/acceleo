@@ -34,12 +34,10 @@ import org.eclipse.core.runtime.Status;
 public class AcceleoCommonPluginTest extends TestCase {
 	/** Error messages to use for these tests. */
 	private static final String[] ERROR_MESSAGES = {"NullPointerException has been thrown.",
-			"failed to build.", "\u00ec", "test",
-	};
+			"failed to build.", "\u00ec", "test", };
 
 	/** Possible severities for an exception. */
-	private static final int[] ERROR_SEVERITIES = {IStatus.WARNING, IStatus.ERROR, IStatus.INFO,
-	};
+	private static final int[] ERROR_SEVERITIES = {IStatus.WARNING, IStatus.ERROR, IStatus.INFO, };
 
 	/** This will keep track of the last {@link IStatus} that has been logged. */
 	protected IStatus loggedStatus;
