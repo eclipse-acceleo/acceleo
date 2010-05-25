@@ -6,11 +6,17 @@
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
-   <description>%description</description>
+   <description>
+      %description
+   </description>
 
-   <copyright url="%copyrightURL">%copyright</copyright>
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
 
-   <license url="%licenseURL">%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
    <requires>
       <import plugin="org.eclipse.help"/>
@@ -21,6 +27,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="true"/>
+         unpack="false"/>
 
 </feature>
