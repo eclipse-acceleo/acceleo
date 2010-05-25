@@ -383,9 +383,7 @@ public class CSTParserBlock {
 				}
 			}
 		} else {
-			log(
-					AcceleoParserMessages.getString(
-							"Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), eH.b(), eH.b()); //$NON-NLS-1$
+			log(AcceleoParserMessages.getString("Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), eH.b(), eH.b()); //$NON-NLS-1$
 		}
 	}
 
@@ -998,8 +996,7 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pExpression.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(
-					AcceleoParserMessages.getString("CSTParserBlock.InvalidInvocation"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
+			log(AcceleoParserMessages.getString("CSTParserBlock.InvalidInvocation"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
 			posBegin = -1;
 		} else {
 			posBegin = eH.e();

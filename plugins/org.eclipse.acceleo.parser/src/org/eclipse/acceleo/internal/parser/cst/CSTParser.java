@@ -286,8 +286,7 @@ public class CSTParser {
 			String name = source.getBuffer().substring(posBegin, bH.b()).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(
-						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
+				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -456,8 +455,7 @@ public class CSTParser {
 				SequenceBlock pModuleElement = pModuleElements[i];
 				Region bH = positions[i];
 				if (source.getBuffer().substring(currentPosBegin, bH.b()).trim().length() > 0) {
-					log(
-							AcceleoParserMessages.getString("CSTParser.InvalidModuleElement"), currentPosBegin, bH.b()); //$NON-NLS-1$
+					log(AcceleoParserMessages.getString("CSTParser.InvalidModuleElement"), currentPosBegin, bH.b()); //$NON-NLS-1$
 				}
 				if (pModuleElement == pComment) {
 					currentPosBegin = parseCommentEnding(bH, posEnd, eModule);
@@ -663,8 +661,7 @@ public class CSTParser {
 			} else {
 				Region eB = pQuery.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(
-							AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
+					log(AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
 					posBegin = -1;
 				} else {
 					log(AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), eB.e()); //$NON-NLS-1$
@@ -942,8 +939,7 @@ public class CSTParser {
 					.searchEndHeaderAtBeginHeader(source.getBuffer(), bHBrackets, posEnd);
 			int posResult;
 			if (eHBrackets.b() == -1) {
-				log(
-						AcceleoParserMessages.getString("CSTParser.MissingClosingBracket"), bHBrackets.b(), bHBrackets.e()); //$NON-NLS-1$
+				log(AcceleoParserMessages.getString("CSTParser.MissingClosingBracket"), bHBrackets.b(), bHBrackets.e()); //$NON-NLS-1$
 				posResult = posEnd;
 			} else {
 				InitSection eInitSection = CstFactory.eINSTANCE.createInitSection();
@@ -1017,9 +1013,8 @@ public class CSTParser {
 				if (!variableNames.contains(eVariable.getName())) {
 					variableNames.add(eVariable.getName());
 				} else {
-					log(
-							AcceleoParserMessages.getString(
-									"CSTParser.DuplicatedVariable", new Object[] {eVariable.getName() }), variablePos.b(), variablePos.e()); //$NON-NLS-1$
+					log(AcceleoParserMessages.getString(
+							"CSTParser.DuplicatedVariable", new Object[] {eVariable.getName() }), variablePos.b(), variablePos.e()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1040,8 +1035,7 @@ public class CSTParser {
 		Variable eVariable;
 		int bDot = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR);
 		if (bDot == -1) {
-			log(
-					AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
+			log(AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
 					posEnd);
 			eVariable = null;
 		} else {

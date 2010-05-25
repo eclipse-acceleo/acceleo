@@ -580,11 +580,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		if (oTemplateInvocation.isSuper() && oTemplateInvocation.getDefinition() == null) {
 			org.eclipse.acceleo.model.mtl.Template oTemplate = getTemplate(oTemplateInvocation);
 			if (oTemplate != null && oTemplate.getOverrides().size() == 0) {
-				log(
-						AcceleoParserMessages
-								.getString(
-										"CST2ASTConverterWithResolver.InvalidClause", IAcceleoConstants.SUPER, IAcceleoConstants.OVERRIDES), //$NON-NLS-1$
-						iModelExpression.getStartPosition(), iModelExpression.getEndPosition());
+				log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.InvalidClause", //$NON-NLS-1$
+						IAcceleoConstants.SUPER, IAcceleoConstants.OVERRIDES), iModelExpression
+						.getStartPosition(), iModelExpression.getEndPosition());
 			} else {
 				oTemplateInvocation.setDefinition(oTemplate);
 			}
