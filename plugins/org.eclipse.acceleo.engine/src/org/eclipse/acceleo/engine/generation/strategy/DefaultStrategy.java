@@ -210,8 +210,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 				writer = new BufferedWriter(new FileWriter(lostFile, true));
 				writer.append(LINE_SEPARATOR).append(Calendar.getInstance().getTime().toString()).append(
 						LINE_SEPARATOR);
-				writer
-						.append("================================================================================"); //$NON-NLS-1$
+				writer.append("================================================================================"); //$NON-NLS-1$
 				writer.append(LINE_SEPARATOR);
 				writer.append(lostContent);
 			} catch (final IOException e) {
