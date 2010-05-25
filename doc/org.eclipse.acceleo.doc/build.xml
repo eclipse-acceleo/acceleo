@@ -8,7 +8,7 @@
 	<property name="plugin" value="org.eclipse.acceleo.common"/>
 	<property name="docPlugin" value="org.eclipse.acceleo.doc"/>
 
-	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,doc.zip,*.xml,index/**,doc/**,references/**"/>
+	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,*.xml,index/**,doc/**,references/**"/>
 	<property name="filesToExclude" value="**/*.dnx"/>
 
 	<!-- Compiler settings. -->
@@ -71,14 +71,6 @@
 		<!--
 		<antcall target="build.index"/>
 		-->
-		
-		<!-- Zip up all of the documentation artifacts - references(including javadoc), images, tutorials, etc. -->
-			<zip destfile="doc.zip" compress="true">
-				<!-- Add new folders for documentation zip here. -->
-				<zipfileset dir="references" prefix="references" excludes="**/impl,**/impl/**"/>
-				<zipfileset dir="doc" prefix="doc"/>
-				<zipfileset dir="index" prefix="index"/>
-			</zip>
 	</target>
 
 	<target name="build.index" depends="init" description="Builds search index for the plug-in" if="eclipse.running">
