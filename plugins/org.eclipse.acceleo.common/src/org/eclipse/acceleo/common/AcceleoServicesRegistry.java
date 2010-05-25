@@ -122,7 +122,7 @@ public final class AcceleoServicesRegistry {
 	}
 
 	/**
-	 *This will attempt to register the service corresponding to the given information within the registry.
+	 * This will attempt to register the service corresponding to the given information within the registry.
 	 * <p>
 	 * If Eclipse is currently running, it will try and find a workspace plugin which symbolic name is equal
 	 * to <code>bundleName</code> and install it, then load the class <code>qualifiedName</code> in this
@@ -168,7 +168,7 @@ public final class AcceleoServicesRegistry {
 	}
 
 	/**
-	 *This will attempt to register the service corresponding to the given information within the registry.
+	 * This will attempt to register the service corresponding to the given information within the registry.
 	 * <p>
 	 * If Eclipse is currently running, it will try and find a workspace plugin corresponding to the given URI
 	 * and install it, then load the class <code>qualifiedName</code> in this workspace defined bundle. When
