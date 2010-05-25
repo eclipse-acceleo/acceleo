@@ -18,13 +18,15 @@ public class ModuleTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>input</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testInput() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModule_Input();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.TypedModel inputValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createTypedModel();
-		List<org.eclipse.acceleo.parser.cst.TypedModel> listInput = new ArrayList<org.eclipse.acceleo.parser.cst.TypedModel>(1);
+		org.eclipse.acceleo.parser.cst.TypedModel inputValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createTypedModel();
+		List<org.eclipse.acceleo.parser.cst.TypedModel> listInput = new ArrayList<org.eclipse.acceleo.parser.cst.TypedModel>(
+				1);
 		listInput.add(inputValue);
 
 		assertFalse(module.eIsSet(feature));
@@ -59,13 +61,16 @@ public class ModuleTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>ownedModuleElement</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testOwnedModuleElement() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModule_OwnedModuleElement();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getModule_OwnedModuleElement();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModuleElement ownedModuleElementValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createComment();
-		List<org.eclipse.acceleo.parser.cst.ModuleElement> listOwnedModuleElement = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleElement>(1);
+		org.eclipse.acceleo.parser.cst.ModuleElement ownedModuleElementValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createComment();
+		List<org.eclipse.acceleo.parser.cst.ModuleElement> listOwnedModuleElement = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleElement>(
+				1);
 		listOwnedModuleElement.add(ownedModuleElementValue);
 
 		assertFalse(module.eIsSet(feature));
@@ -100,13 +105,15 @@ public class ModuleTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>extends</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testExtends() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModule_Extends();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModuleExtendsValue extendsValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createModuleExtendsValue();
-		List<org.eclipse.acceleo.parser.cst.ModuleExtendsValue> listExtends = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleExtendsValue>(1);
+		org.eclipse.acceleo.parser.cst.ModuleExtendsValue extendsValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createModuleExtendsValue();
+		List<org.eclipse.acceleo.parser.cst.ModuleExtendsValue> listExtends = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleExtendsValue>(
+				1);
 		listExtends.add(extendsValue);
 
 		assertFalse(module.eIsSet(feature));
@@ -141,13 +148,15 @@ public class ModuleTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>imports</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testImports() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModule_Imports();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModuleImportsValue importsValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createModuleImportsValue();
-		List<org.eclipse.acceleo.parser.cst.ModuleImportsValue> listImports = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleImportsValue>(1);
+		org.eclipse.acceleo.parser.cst.ModuleImportsValue importsValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createModuleImportsValue();
+		List<org.eclipse.acceleo.parser.cst.ModuleImportsValue> listImports = new ArrayList<org.eclipse.acceleo.parser.cst.ModuleImportsValue>(
+				1);
 		listImports.add(importsValue);
 
 		assertFalse(module.eIsSet(feature));
@@ -178,47 +187,54 @@ public class ModuleTest extends AbstractCstTest {
 		assertTrue(module.eIsSet(feature));
 	}
 
-
 	/**
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(module.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition())
+				.intValue());
 
 		module.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)module.getStartPosition()).intValue());
-		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertTrue(module.eIsSet(feature));
 
 		module.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition()).intValue());
-		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertFalse(module.eIsSet(feature));
 
 		module.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)module.getStartPosition()).intValue());
-		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertTrue(module.eIsSet(feature));
 
 		module.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition()).intValue());
-		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)module.getStartPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertFalse(module.eIsSet(feature));
 	}
 
@@ -226,44 +242,51 @@ public class ModuleTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		Module module = CstFactory.eINSTANCE.createModule();
 		module.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(module.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition())
+				.intValue());
 
 		module.setEndPosition(endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)module.getEndPosition()).intValue());
-		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertTrue(module.eIsSet(feature));
 
 		module.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition()).intValue());
-		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertFalse(module.eIsSet(feature));
 
 		module.eSet(feature, endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)module.getEndPosition()).intValue());
-		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertTrue(module.eIsSet(feature));
 
 		module.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition()).intValue());
-		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)module.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)module.getEndPosition()).intValue(), ((Integer)module.eGet(feature))
+				.intValue());
 		assertFalse(module.eIsSet(feature));
 	}
-	
-}
 
+}

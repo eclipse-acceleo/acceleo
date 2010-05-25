@@ -18,13 +18,15 @@ public class BlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>body</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testBody() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Body();
 		Block block = CstFactory.eINSTANCE.createBlock();
 		block.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createTemplateExpression();
-		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(1);
+		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createTemplateExpression();
+		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(
+				1);
 		listBody.add(bodyValue);
 
 		assertFalse(block.eIsSet(feature));
@@ -59,12 +61,13 @@ public class BlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>init</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testInit() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Init();
 		Block block = CstFactory.eINSTANCE.createBlock();
 		block.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createInitSection();
+		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createInitSection();
 
 		assertFalse(block.eIsSet(feature));
 		assertNull(block.getInit());
@@ -115,42 +118,50 @@ public class BlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		Block block = CstFactory.eINSTANCE.createBlock();
 		block.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(block.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition())
+				.intValue());
 
 		block.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)block.getStartPosition()).intValue());
-		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
+		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature))
+				.intValue());
 		assertTrue(block.eIsSet(feature));
 
 		block.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition()).intValue());
-		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature))
+				.intValue());
 		assertFalse(block.eIsSet(feature));
 
 		block.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)block.getStartPosition()).intValue());
-		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
+		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature))
+				.intValue());
 		assertTrue(block.eIsSet(feature));
 
 		block.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition()).intValue());
-		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)block.getStartPosition()).intValue(), ((Integer)block.eGet(feature))
+				.intValue());
 		assertFalse(block.eIsSet(feature));
 	}
 
@@ -158,15 +169,17 @@ public class BlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		Block block = CstFactory.eINSTANCE.createBlock();
 		block.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(block.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition())
+				.intValue());
 
 		block.setEndPosition(endPositionValue);
 		assertTrue(notified);
@@ -178,7 +191,8 @@ public class BlockTest extends AbstractCstTest {
 		block.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition())
+				.intValue());
 		assertEquals(((Integer)block.getEndPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
 		assertFalse(block.eIsSet(feature));
 
@@ -192,10 +206,10 @@ public class BlockTest extends AbstractCstTest {
 		block.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)block.getEndPosition())
+				.intValue());
 		assertEquals(((Integer)block.getEndPosition()).intValue(), ((Integer)block.eGet(feature)).intValue());
 		assertFalse(block.eIsSet(feature));
 	}
-	
-}
 
+}

@@ -18,13 +18,16 @@ public class TypedModelTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>takesTypesFrom</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testTakesTypesFrom() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getTypedModel_TakesTypesFrom();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getTypedModel_TakesTypesFrom();
 		TypedModel typedModel = CstFactory.eINSTANCE.createTypedModel();
 		typedModel.eAdapters().add(new MockEAdapter());
-		org.eclipse.emf.ecore.EPackage takesTypesFromValue = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEPackage();
-		List<org.eclipse.emf.ecore.EPackage> listTakesTypesFrom = new ArrayList<org.eclipse.emf.ecore.EPackage>(1);
+		org.eclipse.emf.ecore.EPackage takesTypesFromValue = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE
+				.createEPackage();
+		List<org.eclipse.emf.ecore.EPackage> listTakesTypesFrom = new ArrayList<org.eclipse.emf.ecore.EPackage>(
+				1);
 		listTakesTypesFrom.add(takesTypesFromValue);
 
 		assertFalse(typedModel.eIsSet(feature));
@@ -55,47 +58,54 @@ public class TypedModelTest extends AbstractCstTest {
 		assertTrue(typedModel.eIsSet(feature));
 	}
 
-
 	/**
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		TypedModel typedModel = CstFactory.eINSTANCE.createTypedModel();
 		typedModel.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(typedModel.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)typedModel.getStartPosition()).intValue());
 
 		typedModel.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)typedModel.getStartPosition()).intValue());
-		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertTrue(typedModel.eIsSet(feature));
 
 		typedModel.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getStartPosition()).intValue());
-		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)typedModel.getStartPosition()).intValue());
+		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertFalse(typedModel.eIsSet(feature));
 
 		typedModel.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)typedModel.getStartPosition()).intValue());
-		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertTrue(typedModel.eIsSet(feature));
 
 		typedModel.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getStartPosition()).intValue());
-		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)typedModel.getStartPosition()).intValue());
+		assertEquals(((Integer)typedModel.getStartPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertFalse(typedModel.eIsSet(feature));
 	}
 
@@ -103,44 +113,51 @@ public class TypedModelTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		TypedModel typedModel = CstFactory.eINSTANCE.createTypedModel();
 		typedModel.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(typedModel.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition())
+				.intValue());
 
 		typedModel.setEndPosition(endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)typedModel.getEndPosition()).intValue());
-		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertTrue(typedModel.eIsSet(feature));
 
 		typedModel.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition()).intValue());
-		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertFalse(typedModel.eIsSet(feature));
 
 		typedModel.eSet(feature, endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)typedModel.getEndPosition()).intValue());
-		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertTrue(typedModel.eIsSet(feature));
 
 		typedModel.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition()).intValue());
-		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)typedModel.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)typedModel.getEndPosition()).intValue(), ((Integer)typedModel.eGet(feature))
+				.intValue());
 		assertFalse(typedModel.eIsSet(feature));
 	}
-	
-}
 
+}

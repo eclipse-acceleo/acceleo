@@ -35,14 +35,14 @@ import org.eclipse.acceleo.parser.cst.OpenModeKind;
 
 /**
  * Tests the behavior of the {@link CstFactory generated factory} for package cst.
- *
+ * 
  * @generated
  */
 @SuppressWarnings("nls")
 public class CstFactoryTest extends TestCase {
 	/**
 	 * Ensures that creating {@link Module} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateModule() {
@@ -57,7 +57,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link ModuleExtendsValue} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateModuleExtendsValue() {
@@ -72,7 +72,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link ModuleImportsValue} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateModuleImportsValue() {
@@ -87,7 +87,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link TypedModel} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTypedModel() {
@@ -102,7 +102,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Comment} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateComment() {
@@ -117,7 +117,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Template} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTemplate() {
@@ -132,7 +132,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link TemplateOverridesValue} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTemplateOverridesValue() {
@@ -147,7 +147,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Variable} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateVariable() {
@@ -162,7 +162,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link TemplateExpression} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTemplateExpression() {
@@ -177,7 +177,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link ModelExpression} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateModelExpression() {
@@ -192,7 +192,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link TextExpression} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTextExpression() {
@@ -207,7 +207,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Block} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateBlock() {
@@ -222,7 +222,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link InitSection} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateInitSection() {
@@ -237,7 +237,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link ProtectedAreaBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateProtectedAreaBlock() {
@@ -252,7 +252,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link ForBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateForBlock() {
@@ -267,7 +267,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link IfBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateIfBlock() {
@@ -282,7 +282,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link LetBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateLetBlock() {
@@ -297,7 +297,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link FileBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateFileBlock() {
@@ -312,7 +312,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link TraceBlock} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateTraceBlock() {
@@ -327,7 +327,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Macro} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateMacro() {
@@ -342,7 +342,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that creating {@link Query} can be done through the factory.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateQuery() {
@@ -357,7 +357,7 @@ public class CstFactoryTest extends TestCase {
 
 	/**
 	 * Ensures that trying to create an {@link EClass} from another package yields the expected exception.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateUnknownEClass() {
@@ -372,8 +372,8 @@ public class CstFactoryTest extends TestCase {
 	}
 
 	/**
-	 * Ensures that converting {@link VisibilityKind} to String can be done through the factory. 
-	 *
+	 * Ensures that converting {@link VisibilityKind} to String can be done through the factory.
+	 * 
 	 * @generated
 	 */
 	public void testConvertVisibilityKindToString() {
@@ -385,8 +385,8 @@ public class CstFactoryTest extends TestCase {
 	}
 
 	/**
-	 * Ensures that converting {@link OpenModeKind} to String can be done through the factory. 
-	 *
+	 * Ensures that converting {@link OpenModeKind} to String can be done through the factory.
+	 * 
 	 * @generated
 	 */
 	public void testConvertOpenModeKindToString() {
@@ -400,7 +400,7 @@ public class CstFactoryTest extends TestCase {
 	/**
 	 * Ensures that trying to convert an {@link EEnum} from another package to String yields the expected
 	 * exception.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testConvertUnknownEEnumToString() {
@@ -415,18 +415,20 @@ public class CstFactoryTest extends TestCase {
 	}
 
 	/**
-	 * Ensures that creating {@link VisibilityKind} from String can be done through the factory. 
-	 *
+	 * Ensures that creating {@link VisibilityKind} from String can be done through the factory.
+	 * 
 	 * @generated
 	 */
 	public void testCreateVisibilityKindFromString() {
 		for (VisibilityKind value : VisibilityKind.VALUES) {
-			Object result = CstFactory.eINSTANCE.createFromString(CstPackage.Literals.VISIBILITY_KIND, value.getLiteral());
+			Object result = CstFactory.eINSTANCE.createFromString(CstPackage.Literals.VISIBILITY_KIND, value
+					.getLiteral());
 			assertNotNull(result);
 			assertSame(value, result);
 
 			try {
-				CstFactory.eINSTANCE.createFromString(CstPackage.Literals.VISIBILITY_KIND, "ThisShouldntBeAKnownEEnumLiteral");
+				CstFactory.eINSTANCE.createFromString(CstPackage.Literals.VISIBILITY_KIND,
+						"ThisShouldntBeAKnownEEnumLiteral");
 				fail("Expected IllegalArgumentException hasn't been thrown");
 			} catch (IllegalArgumentException e) {
 				// Expected behavior
@@ -435,18 +437,20 @@ public class CstFactoryTest extends TestCase {
 	}
 
 	/**
-	 * Ensures that creating {@link OpenModeKind} from String can be done through the factory. 
-	 *
+	 * Ensures that creating {@link OpenModeKind} from String can be done through the factory.
+	 * 
 	 * @generated
 	 */
 	public void testCreateOpenModeKindFromString() {
 		for (OpenModeKind value : OpenModeKind.VALUES) {
-			Object result = CstFactory.eINSTANCE.createFromString(CstPackage.Literals.OPEN_MODE_KIND, value.getLiteral());
+			Object result = CstFactory.eINSTANCE.createFromString(CstPackage.Literals.OPEN_MODE_KIND, value
+					.getLiteral());
 			assertNotNull(result);
 			assertSame(value, result);
 
 			try {
-				CstFactory.eINSTANCE.createFromString(CstPackage.Literals.OPEN_MODE_KIND, "ThisShouldntBeAKnownEEnumLiteral");
+				CstFactory.eINSTANCE.createFromString(CstPackage.Literals.OPEN_MODE_KIND,
+						"ThisShouldntBeAKnownEEnumLiteral");
 				fail("Expected IllegalArgumentException hasn't been thrown");
 			} catch (IllegalArgumentException e) {
 				// Expected behavior
@@ -457,7 +461,7 @@ public class CstFactoryTest extends TestCase {
 	/**
 	 * Ensures that trying to create an {@link EEnum} from another package from String yields the expected
 	 * exception.
-	 *
+	 * 
 	 * @generated
 	 */
 	public void testCreateUnknownEEnumFromString() {
@@ -471,4 +475,3 @@ public class CstFactoryTest extends TestCase {
 		}
 	}
 }
-

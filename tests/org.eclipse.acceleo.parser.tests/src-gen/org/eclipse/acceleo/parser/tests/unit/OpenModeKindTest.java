@@ -15,7 +15,7 @@ public class OpenModeKindTest extends TestCase {
 	 * Tests the behavior of the {@link OpenModeKind#get(int)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetInt() {
 		int highestValue = -1;
 		for (OpenModeKind value : OpenModeKind.VALUES) {
@@ -31,7 +31,7 @@ public class OpenModeKindTest extends TestCase {
 	 * Tests the behavior of the {@link OpenModeKind#get(java.lang.String)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetString() {
 		for (OpenModeKind value : OpenModeKind.VALUES) {
 			assertSame(OpenModeKind.get(value.getLiteral()), value);
@@ -43,7 +43,7 @@ public class OpenModeKindTest extends TestCase {
 	 * Tests the behavior of the {@link OpenModeKind#getByName(java.lang.String)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetByName() {
 		for (OpenModeKind value : OpenModeKind.VALUES) {
 			assertSame(OpenModeKind.getByName(value.getName()), value);
@@ -51,4 +51,3 @@ public class OpenModeKindTest extends TestCase {
 		assertNull(OpenModeKind.getByName("ThisIsNotTheNameOfAValueFromTheTestedEnum"));
 	}
 }
-

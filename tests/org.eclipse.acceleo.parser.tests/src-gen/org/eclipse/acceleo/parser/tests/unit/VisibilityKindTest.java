@@ -15,7 +15,7 @@ public class VisibilityKindTest extends TestCase {
 	 * Tests the behavior of the {@link VisibilityKind#get(int)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetInt() {
 		int highestValue = -1;
 		for (VisibilityKind value : VisibilityKind.VALUES) {
@@ -31,7 +31,7 @@ public class VisibilityKindTest extends TestCase {
 	 * Tests the behavior of the {@link VisibilityKind#get(java.lang.String)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetString() {
 		for (VisibilityKind value : VisibilityKind.VALUES) {
 			assertSame(VisibilityKind.get(value.getLiteral()), value);
@@ -43,7 +43,7 @@ public class VisibilityKindTest extends TestCase {
 	 * Tests the behavior of the {@link VisibilityKind#getByName(java.lang.String)} method.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testGetByName() {
 		for (VisibilityKind value : VisibilityKind.VALUES) {
 			assertSame(VisibilityKind.getByName(value.getName()), value);
@@ -51,4 +51,3 @@ public class VisibilityKindTest extends TestCase {
 		assertNull(VisibilityKind.getByName("ThisIsNotTheNameOfAValueFromTheTestedEnum"));
 	}
 }
-

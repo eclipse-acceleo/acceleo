@@ -18,13 +18,15 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>body</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testBody() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Body();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createTemplateExpression();
-		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(1);
+		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createTemplateExpression();
+		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(
+				1);
 		listBody.add(bodyValue);
 
 		assertFalse(macro.eIsSet(feature));
@@ -59,13 +61,15 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>parameter</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testParameter() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getMacro_Parameter();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.Variable parameterValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createVariable();
-		List<org.eclipse.acceleo.parser.cst.Variable> listParameter = new ArrayList<org.eclipse.acceleo.parser.cst.Variable>(1);
+		org.eclipse.acceleo.parser.cst.Variable parameterValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createVariable();
+		List<org.eclipse.acceleo.parser.cst.Variable> listParameter = new ArrayList<org.eclipse.acceleo.parser.cst.Variable>(
+				1);
 		listParameter.add(parameterValue);
 
 		assertFalse(macro.eIsSet(feature));
@@ -100,12 +104,13 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>init</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testInit() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Init();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createInitSection();
+		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createInitSection();
 
 		assertFalse(macro.eIsSet(feature));
 		assertNull(macro.getInit());
@@ -156,42 +161,50 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(macro.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition())
+				.intValue());
 
 		macro.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)macro.getStartPosition()).intValue());
-		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
+		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature))
+				.intValue());
 		assertTrue(macro.eIsSet(feature));
 
 		macro.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition()).intValue());
-		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature))
+				.intValue());
 		assertFalse(macro.eIsSet(feature));
 
 		macro.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)macro.getStartPosition()).intValue());
-		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
+		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature))
+				.intValue());
 		assertTrue(macro.eIsSet(feature));
 
 		macro.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition()).intValue());
-		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)macro.getStartPosition()).intValue(), ((Integer)macro.eGet(feature))
+				.intValue());
 		assertFalse(macro.eIsSet(feature));
 	}
 
@@ -199,15 +212,17 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(macro.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition())
+				.intValue());
 
 		macro.setEndPosition(endPositionValue);
 		assertTrue(notified);
@@ -219,7 +234,8 @@ public class MacroTest extends AbstractCstTest {
 		macro.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition())
+				.intValue());
 		assertEquals(((Integer)macro.getEndPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
 		assertFalse(macro.eIsSet(feature));
 
@@ -233,7 +249,8 @@ public class MacroTest extends AbstractCstTest {
 		macro.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)macro.getEndPosition())
+				.intValue());
 		assertEquals(((Integer)macro.getEndPosition()).intValue(), ((Integer)macro.eGet(feature)).intValue());
 		assertFalse(macro.eIsSet(feature));
 	}
@@ -242,9 +259,10 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>name</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testName() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModuleElement_Name();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getModuleElement_Name();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
 		java.lang.String nameValue = (java.lang.String)getValueDistinctFromDefault(feature);
@@ -285,12 +303,14 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>visibility</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testVisibility() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getModuleElement_Visibility();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getModuleElement_Visibility();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
 		macro.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.VisibilityKind visibilityValue = (org.eclipse.acceleo.parser.cst.VisibilityKind)feature.getDefaultValue();
+		org.eclipse.acceleo.parser.cst.VisibilityKind visibilityValue = (org.eclipse.acceleo.parser.cst.VisibilityKind)feature
+				.getDefaultValue();
 		for (org.eclipse.acceleo.parser.cst.VisibilityKind aVisibilityKind : org.eclipse.acceleo.parser.cst.VisibilityKind.VALUES) {
 			if (visibilityValue.getValue() != aVisibilityKind.getValue()) {
 				visibilityValue = aVisibilityKind;
@@ -334,7 +354,7 @@ public class MacroTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>type</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testType() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getMacro_Type();
 		Macro macro = CstFactory.eINSTANCE.createMacro();
@@ -372,6 +392,5 @@ public class MacroTest extends AbstractCstTest {
 		assertEquals(macro.getType(), macro.eGet(feature));
 		assertFalse(macro.eIsSet(feature));
 	}
-	
-}
 
+}

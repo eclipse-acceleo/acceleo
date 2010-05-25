@@ -12,18 +12,18 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 /**
  * This class defines utility methods and will be used as the superclass of all {@link TestCase} for
  * "class-related" tests.
- *
+ * 
  * @generated
  */
 @SuppressWarnings("nls")
 public class AbstractCstTest extends TestCase {
 	/**
 	 * Will hold <code>true</code> if the mock adapter has been notified of a changes.
-	 *
+	 * 
 	 * @generated
 	 */
 	protected boolean notified;
-	
+
 	/**
 	 * This will return a boolean that is distinct from the given <code>feature</code>'s default value.
 	 * Namely, <code>true</code> if the default is <code>false</code>, <code>false</code> otherwise.
@@ -38,8 +38,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return an int that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
+	 * This will return an int that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -52,8 +52,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a byte that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
+	 * This will return a byte that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -66,8 +66,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a char that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>'b'</code> if the default is <code>'a'</code>, <code>'a'</code> otherwise.
+	 * This will return a char that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>'b'</code> if the default is <code>'a'</code>, <code>'a'</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -80,8 +80,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a double that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1d</code> if the default is <code>0d</code>, <code>0d</code> otherwise.
+	 * This will return a double that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1d</code> if the default is <code>0d</code>, <code>0d</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -94,8 +94,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a float that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1f</code> if the default is <code>0f</code>, <code>0f</code> otherwise.
+	 * This will return a float that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1f</code> if the default is <code>0f</code>, <code>0f</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -108,8 +108,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a long that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1L</code> if the default is <code>0L</code>, <code>0L</code> otherwise.
+	 * This will return a long that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1L</code> if the default is <code>0L</code>, <code>0L</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -122,8 +122,8 @@ public class AbstractCstTest extends TestCase {
 	}
 
 	/**
-	 * This will return a short that is distinct from the given <code>feature</code>'s default value.
-	 * Namely, <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
+	 * This will return a short that is distinct from the given <code>feature</code>'s default value. Namely,
+	 * <code>-1</code> if the default is <code>0</code>, <code>0</code> otherwise.
 	 * 
 	 * @param feature
 	 *            Feature which default value is to be considered.
@@ -211,7 +211,8 @@ public class AbstractCstTest extends TestCase {
 		} else if (feature.getEType() == EcorePackage.Literals.ELONG_OBJECT) {
 			return defaultValue == Long.valueOf(0) ? Long.valueOf(-1) : Long.valueOf(0);
 		} else if (feature.getEType() == EcorePackage.Literals.ESHORT_OBJECT) {
-			return defaultValue == Short.valueOf((short)0) ? Short.valueOf((short)-1) : Short.valueOf((short)0);
+			return defaultValue == Short.valueOf((short)0) ? Short.valueOf((short)-1) : Short
+					.valueOf((short)0);
 		} else if (feature.getEType() == EcorePackage.Literals.ESTRING) {
 			return "".equals(defaultValue) ? "notdefault" : "";
 		} else if (feature.getEType() == EcorePackage.Literals.EDATE) {
@@ -243,4 +244,3 @@ public class AbstractCstTest extends TestCase {
 		}
 	}
 }
-

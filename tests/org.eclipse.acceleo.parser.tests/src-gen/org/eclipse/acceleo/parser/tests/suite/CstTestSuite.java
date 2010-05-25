@@ -32,13 +32,13 @@ import org.eclipse.acceleo.parser.tests.unit.CstSwitchTest;
 
 /**
  * This test suite allows clients to launch all tests generated for package cst at once.
- *
+ * 
  * @generated
  */
 public class CstTestSuite extends TestCase {
 	/**
 	 * Standalone launcher for package cst's tests.
-	 *
+	 * 
 	 * @generated
 	 */
 	public static void main(String[] args) {
@@ -47,7 +47,7 @@ public class CstTestSuite extends TestCase {
 
 	/**
 	 * This will return a suite populated with all generated tests for package cst.
-	 *
+	 * 
 	 * @generated
 	 */
 	public static Test suite() {
@@ -82,4 +82,3 @@ public class CstTestSuite extends TestCase {
 		return suite;
 	}
 }
-

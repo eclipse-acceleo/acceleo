@@ -18,13 +18,15 @@ public class TraceBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>body</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testBody() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Body();
 		TraceBlock traceBlock = CstFactory.eINSTANCE.createTraceBlock();
 		traceBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createTemplateExpression();
-		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(1);
+		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createTemplateExpression();
+		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(
+				1);
 		listBody.add(bodyValue);
 
 		assertFalse(traceBlock.eIsSet(feature));
@@ -59,12 +61,13 @@ public class TraceBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>init</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testInit() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Init();
 		TraceBlock traceBlock = CstFactory.eINSTANCE.createTraceBlock();
 		traceBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createInitSection();
+		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createInitSection();
 
 		assertFalse(traceBlock.eIsSet(feature));
 		assertNull(traceBlock.getInit());
@@ -115,12 +118,14 @@ public class TraceBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>modelElement</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testModelElement() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getTraceBlock_ModelElement();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getTraceBlock_ModelElement();
 		TraceBlock traceBlock = CstFactory.eINSTANCE.createTraceBlock();
 		traceBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModelExpression modelElementValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createModelExpression();
+		org.eclipse.acceleo.parser.cst.ModelExpression modelElementValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createModelExpression();
 
 		assertFalse(traceBlock.eIsSet(feature));
 		assertNull(traceBlock.getModelElement());
@@ -171,42 +176,50 @@ public class TraceBlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		TraceBlock traceBlock = CstFactory.eINSTANCE.createTraceBlock();
 		traceBlock.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(traceBlock.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)traceBlock.getStartPosition()).intValue());
 
 		traceBlock.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)traceBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertTrue(traceBlock.eIsSet(feature));
 
 		traceBlock.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)traceBlock.getStartPosition()).intValue());
+		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertFalse(traceBlock.eIsSet(feature));
 
 		traceBlock.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)traceBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertTrue(traceBlock.eIsSet(feature));
 
 		traceBlock.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(),
+				((Integer)traceBlock.getStartPosition()).intValue());
+		assertEquals(((Integer)traceBlock.getStartPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertFalse(traceBlock.eIsSet(feature));
 	}
 
@@ -214,44 +227,51 @@ public class TraceBlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		TraceBlock traceBlock = CstFactory.eINSTANCE.createTraceBlock();
 		traceBlock.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(traceBlock.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition())
+				.intValue());
 
 		traceBlock.setEndPosition(endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)traceBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertTrue(traceBlock.eIsSet(feature));
 
 		traceBlock.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertFalse(traceBlock.eIsSet(feature));
 
 		traceBlock.eSet(feature, endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)traceBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertTrue(traceBlock.eIsSet(feature));
 
 		traceBlock.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)traceBlock.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)traceBlock.getEndPosition()).intValue(), ((Integer)traceBlock.eGet(feature))
+				.intValue());
 		assertFalse(traceBlock.eIsSet(feature));
 	}
-	
-}
 
+}

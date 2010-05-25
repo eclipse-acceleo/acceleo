@@ -18,13 +18,15 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>body</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testBody() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Body();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createTemplateExpression();
-		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(1);
+		org.eclipse.acceleo.parser.cst.TemplateExpression bodyValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createTemplateExpression();
+		List<org.eclipse.acceleo.parser.cst.TemplateExpression> listBody = new ArrayList<org.eclipse.acceleo.parser.cst.TemplateExpression>(
+				1);
 		listBody.add(bodyValue);
 
 		assertFalse(fileBlock.eIsSet(feature));
@@ -59,12 +61,13 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>init</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testInit() {
 		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getBlock_Init();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createInitSection();
+		org.eclipse.acceleo.parser.cst.InitSection initValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createInitSection();
 
 		assertFalse(fileBlock.eIsSet(feature));
 		assertNull(fileBlock.getInit());
@@ -115,12 +118,14 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>fileUrl</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testFileUrl() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getFileBlock_FileUrl();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getFileBlock_FileUrl();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModelExpression fileUrlValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createModelExpression();
+		org.eclipse.acceleo.parser.cst.ModelExpression fileUrlValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createModelExpression();
 
 		assertFalse(fileBlock.eIsSet(feature));
 		assertNull(fileBlock.getFileUrl());
@@ -171,12 +176,14 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>uniqId</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testUniqId() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getFileBlock_UniqId();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getFileBlock_UniqId();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.ModelExpression uniqIdValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createModelExpression();
+		org.eclipse.acceleo.parser.cst.ModelExpression uniqIdValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createModelExpression();
 
 		assertFalse(fileBlock.eIsSet(feature));
 		assertNull(fileBlock.getUniqId());
@@ -227,42 +234,50 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(fileBlock.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition())
+				.intValue());
 
 		fileBlock.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)fileBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertTrue(fileBlock.eIsSet(feature));
 
 		fileBlock.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertFalse(fileBlock.eIsSet(feature));
 
 		fileBlock.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)fileBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertTrue(fileBlock.eIsSet(feature));
 
 		fileBlock.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getStartPosition())
+				.intValue());
+		assertEquals(((Integer)fileBlock.getStartPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertFalse(fileBlock.eIsSet(feature));
 	}
 
@@ -270,42 +285,50 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(fileBlock.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition())
+				.intValue());
 
 		fileBlock.setEndPosition(endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)fileBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertTrue(fileBlock.eIsSet(feature));
 
 		fileBlock.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertFalse(fileBlock.eIsSet(feature));
 
 		fileBlock.eSet(feature, endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)fileBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertTrue(fileBlock.eIsSet(feature));
 
 		fileBlock.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition()).intValue());
-		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)fileBlock.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)fileBlock.getEndPosition()).intValue(), ((Integer)fileBlock.eGet(feature))
+				.intValue());
 		assertFalse(fileBlock.eIsSet(feature));
 	}
 
@@ -313,12 +336,14 @@ public class FileBlockTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>openMode</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testOpenMode() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getFileBlock_OpenMode();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getFileBlock_OpenMode();
 		FileBlock fileBlock = CstFactory.eINSTANCE.createFileBlock();
 		fileBlock.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.OpenModeKind openModeValue = (org.eclipse.acceleo.parser.cst.OpenModeKind)feature.getDefaultValue();
+		org.eclipse.acceleo.parser.cst.OpenModeKind openModeValue = (org.eclipse.acceleo.parser.cst.OpenModeKind)feature
+				.getDefaultValue();
 		for (org.eclipse.acceleo.parser.cst.OpenModeKind aOpenModeKind : org.eclipse.acceleo.parser.cst.OpenModeKind.VALUES) {
 			if (openModeValue.getValue() != aOpenModeKind.getValue()) {
 				openModeValue = aOpenModeKind;
@@ -357,6 +382,5 @@ public class FileBlockTest extends AbstractCstTest {
 		assertEquals(fileBlock.getOpenMode(), fileBlock.eGet(feature));
 		assertFalse(fileBlock.eIsSet(feature));
 	}
-	
-}
 
+}

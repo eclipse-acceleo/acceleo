@@ -18,13 +18,16 @@ public class InitSectionTest extends AbstractCstTest {
 	 * Tests the behavior of reference <code>variable</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testVariable() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getInitSection_Variable();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getInitSection_Variable();
 		InitSection initSection = CstFactory.eINSTANCE.createInitSection();
 		initSection.eAdapters().add(new MockEAdapter());
-		org.eclipse.acceleo.parser.cst.Variable variableValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE.createVariable();
-		List<org.eclipse.acceleo.parser.cst.Variable> listVariable = new ArrayList<org.eclipse.acceleo.parser.cst.Variable>(1);
+		org.eclipse.acceleo.parser.cst.Variable variableValue = org.eclipse.acceleo.parser.cst.CstFactory.eINSTANCE
+				.createVariable();
+		List<org.eclipse.acceleo.parser.cst.Variable> listVariable = new ArrayList<org.eclipse.acceleo.parser.cst.Variable>(
+				1);
 		listVariable.add(variableValue);
 
 		assertFalse(initSection.eIsSet(feature));
@@ -55,47 +58,54 @@ public class InitSectionTest extends AbstractCstTest {
 		assertTrue(initSection.eIsSet(feature));
 	}
 
-
 	/**
 	 * Tests the behavior of attribute <code>startPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testStartPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_StartPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_StartPosition();
 		InitSection initSection = CstFactory.eINSTANCE.createInitSection();
 		initSection.eAdapters().add(new MockEAdapter());
 		int startPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(initSection.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getStartPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection
+				.getStartPosition()).intValue());
 
 		initSection.setStartPosition(startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)initSection.getStartPosition()).intValue());
-		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection
+				.eGet(feature)).intValue());
 		assertTrue(initSection.eIsSet(feature));
 
 		initSection.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getStartPosition()).intValue());
-		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection
+				.getStartPosition()).intValue());
+		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection
+				.eGet(feature)).intValue());
 		assertFalse(initSection.eIsSet(feature));
 
 		initSection.eSet(feature, startPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(startPositionValue, ((Integer)initSection.getStartPosition()).intValue());
-		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection
+				.eGet(feature)).intValue());
 		assertTrue(initSection.eIsSet(feature));
 
 		initSection.setStartPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getStartPosition()).intValue());
-		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection
+				.getStartPosition()).intValue());
+		assertEquals(((Integer)initSection.getStartPosition()).intValue(), ((Integer)initSection
+				.eGet(feature)).intValue());
 		assertFalse(initSection.eIsSet(feature));
 	}
 
@@ -103,44 +113,51 @@ public class InitSectionTest extends AbstractCstTest {
 	 * Tests the behavior of attribute <code>endPosition</code>'s accessors.
 	 * 
 	 * @generated
- 	 */
+	 */
 	public void testEndPosition() {
-		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE.getCSTNode_EndPosition();
+		EStructuralFeature feature = org.eclipse.acceleo.parser.cst.CstPackage.eINSTANCE
+				.getCSTNode_EndPosition();
 		InitSection initSection = CstFactory.eINSTANCE.createInitSection();
 		initSection.eAdapters().add(new MockEAdapter());
 		int endPositionValue = getIntDistinctFromDefault(feature);
 
 		assertFalse(initSection.eIsSet(feature));
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition()).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition())
+				.intValue());
 
 		initSection.setEndPosition(endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)initSection.getEndPosition()).intValue());
-		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature))
+				.intValue());
 		assertTrue(initSection.eIsSet(feature));
 
 		initSection.eUnset(feature);
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition()).intValue());
-		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature))
+				.intValue());
 		assertFalse(initSection.eIsSet(feature));
 
 		initSection.eSet(feature, endPositionValue);
 		assertTrue(notified);
 		notified = false;
 		assertEquals(endPositionValue, ((Integer)initSection.getEndPosition()).intValue());
-		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature))
+				.intValue());
 		assertTrue(initSection.eIsSet(feature));
 
 		initSection.setEndPosition(((Integer)feature.getDefaultValue()).intValue());
 		assertTrue(notified);
 		notified = false;
-		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition()).intValue());
-		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature)).intValue());
+		assertEquals(((Integer)feature.getDefaultValue()).intValue(), ((Integer)initSection.getEndPosition())
+				.intValue());
+		assertEquals(((Integer)initSection.getEndPosition()).intValue(), ((Integer)initSection.eGet(feature))
+				.intValue());
 		assertFalse(initSection.eIsSet(feature));
 	}
-	
-}
 
+}
