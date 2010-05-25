@@ -491,13 +491,19 @@ public final class ModelUtils {
 			}
 		}
 		if (ePackage.getNsURI() != null) {
-			if (ePackage.eResource() != null) {
-				dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI().toString());
+			// The MTL ecore file mustn't be dynamic!!!
+			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
+			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix())
+					&& !"mtlstdlib".equals(ePackage.getNsPrefix())) {
+				if (ePackage.eResource() != null) {
+					dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI()
+							.toString());
+				}
+				if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
+					ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
+				}
+				EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 			}
-			if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-				ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
-			}
-			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 		}
 		for (EPackage subPackage : ePackage.getESubpackages()) {
 			registerEcorePackageHierarchy(subPackage);
