@@ -155,7 +155,7 @@ public final class AcceleoWorkspaceUtil {
 				}
 				// This can only be a bundle-scheme URL if we found the URL. Convert it to file or jar scheme
 				if (resourceURL != null) {
-					resourceURL = transformURL(bundle, resourceURL);
+					resourceURL = FileLocator.resolve(resourceURL);
 				}
 			}
 		}
@@ -244,8 +244,8 @@ public final class AcceleoWorkspaceUtil {
 		String actualPath = filePath;
 		if (actualPath.startsWith(jarScheme)) {
 			actualPath.substring(jarScheme.length());
-			// If the jar file has a qualifier, delete it along with the last "!"
-			actualPath.replaceFirst("/([^_]*?)_(.*)(\\.jar)!/", "$1$3"); //$NON-NLS-1$  //$NON-NLS-2$
+			// If the jar file has a qualifier, delete it along with the last ".jar!"
+			actualPath.replaceFirst("/([^_]*?)_(.*)(\\.jar!)/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		if (actualPath.startsWith(fileScheme)) {
 			actualPath = actualPath.substring(fileScheme.length());
@@ -286,36 +286,6 @@ public final class AcceleoWorkspaceUtil {
 			return "platform:/plugin/" + bundle.getSymbolicName() + bundlePath; //$NON-NLS-1$
 		}
 		return null;
-	}
-
-	/**
-	 * We'll use this to transform the <code>base</code> URL to a jar-scheme URL if the given bundle is
-	 * jarred.
-	 * 
-	 * @param bundle
-	 *            The bundle of which the URL represents a resource.
-	 * @param base
-	 *            URL we need to transform.
-	 * @return The transformed URL.
-	 * @throws IOException
-	 *             This will be thrown if we fail to convert bundle-scheme URIs into file-scheme URIs.
-	 */
-	public static URL transformURL(Bundle bundle, URL base) throws IOException {
-		String bundleLocation = bundle.getLocation();
-		if (!bundleLocation.endsWith(".jar")) { //$NON-NLS-1$
-			return FileLocator.toFileURL(base);
-		}
-		String transformedString = bundleLocation;
-		transformedString.replaceFirst("reference:", "jar:"); //$NON-NLS-1$ //$NON-NLS-2$
-		transformedString += '!' + base.toString();
-		URL transformedURL = null;
-		try {
-			transformedURL = new URL(transformedString);
-		} catch (MalformedURLException e) {
-			// fall back to default;
-			transformedURL = FileLocator.toFileURL(base);
-		}
-		return transformedURL;
 	}
 
 	/**
