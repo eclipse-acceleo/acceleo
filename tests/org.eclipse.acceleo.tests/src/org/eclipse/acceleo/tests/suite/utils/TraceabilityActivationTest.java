@@ -16,8 +16,7 @@ import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
 /**
- * This test's only purpose is to enable the traceability visitor for all
- * subsequent tests.
+ * This test's only purpose is to enable the traceability visitor for all subsequent tests.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
