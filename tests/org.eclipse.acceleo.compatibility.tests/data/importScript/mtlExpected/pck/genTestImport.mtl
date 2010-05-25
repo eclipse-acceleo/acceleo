@@ -3,7 +3,7 @@
 [import pck::genTestSelect/]
 
 [template public generate(class : Class)]
-[comment @main/]
+[comment This template is called by the main module file /]
 [file ('test.txt', false))]
 == Sample of text ==
 
