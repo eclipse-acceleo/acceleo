@@ -5,15 +5,17 @@
       version="3.0.0.qualifier"
       provider-name="%providerName">
 
-   <description>%description</description>
+   <description>
+      %description
+   </description>
 
-   <copyright url="%copyrightURL">%copyright</copyright>
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
 
-   <license url="%licenseURL">%license</license>
-
-   <includes
-         id="org.eclipse.acceleo.doc"
-         version="0.0.0"/>
+   <license url="%licenseURL">
+      %license
+   </license>
 
    <requires>
       <import feature="org.eclipse.emf" version="2.4.0.v200806091234"/>
