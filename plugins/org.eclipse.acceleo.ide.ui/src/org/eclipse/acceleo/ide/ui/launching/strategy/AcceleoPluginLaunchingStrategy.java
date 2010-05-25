@@ -156,12 +156,11 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 						AcceleoUIActivator
 								.getDefault()
 								.getLog()
-								.log(
-										new Status(
-												IStatus.WARNING,
-												AcceleoUIActivator.PLUGIN_ID,
-												AcceleoUIMessages
-														.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
+								.log(new Status(
+										IStatus.WARNING,
+										AcceleoUIActivator.PLUGIN_ID,
+										AcceleoUIMessages
+												.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
 					}
 				} else {
 					AcceleoUIActivator.getDefault().getLog().log(

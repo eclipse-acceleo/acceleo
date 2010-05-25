@@ -141,17 +141,13 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.TEMPLATE,
 				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_TEMPLATE)));
-		rules
-				.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.QUERY), new KeywordRule(
-						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-						ACCELEO_QUERY)));
+		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.QUERY), new KeywordRule(
+				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(ACCELEO_QUERY)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.QUERY,
 				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_QUERY)));
-		rules
-				.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.MACRO), new KeywordRule(
-						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-						ACCELEO_MACRO)));
+		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.MACRO), new KeywordRule(
+				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(ACCELEO_MACRO)));
 		rules.add(new SequenceRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
 				IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.MACRO,
 				IAcceleoConstants.DEFAULT_END, }, new Token(ACCELEO_MACRO)));
@@ -240,10 +236,8 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	 *            is the 'literal' rule
 	 */
 	private void computeBlockRules(List<IRule> rules, SequenceBlockRule literal) {
-		rules
-				.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.DEFAULT_BEGIN), new KeywordRule(
-						IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(
-						ACCELEO_BLOCK)));
+		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.DEFAULT_BEGIN), new KeywordRule(
+				IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {literal }, new Token(ACCELEO_BLOCK)));
 	}
 
 	/**

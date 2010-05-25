@@ -101,8 +101,8 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 			OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask(
-					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
+			monitor.beginTask(AcceleoUIMessages
+					.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
 
 			if (this.fQuery == null) {
 				status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
@@ -410,8 +410,8 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentQuery.size(); j++) {
-						if (!listOfParametersOfTheCurrentQuery.get(j).getEType()
-								.equals(listOfParametersOfTheQueryWithTheSameName.get(j).getEType())) {
+						if (!listOfParametersOfTheCurrentQuery.get(j).getEType().equals(
+								listOfParametersOfTheQueryWithTheSameName.get(j).getEType())) {
 							overloadingError = false;
 							break;
 						}

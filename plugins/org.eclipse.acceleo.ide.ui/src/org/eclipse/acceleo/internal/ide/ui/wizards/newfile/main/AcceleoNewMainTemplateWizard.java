@@ -180,11 +180,9 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
 						templatePath.segment(0));
 				if (project.isAccessible()) {
-					monitor
-							.beginTask(
-									AcceleoUIMessages
-											.getString(
-													"AcceleoNewMainTemplateWizard.Task.CreateTemplate", templatePath.lastSegment()), 2); //$NON-NLS-1$
+					monitor.beginTask(AcceleoUIMessages.getString(
+							"AcceleoNewMainTemplateWizard.Task.CreateTemplate", templatePath.lastSegment()), //$NON-NLS-1$
+							2);
 					IPath projectRelativePath = templatePath.removeFirstSegments(1);
 					ByteArrayInputStream javaStream = new ByteArrayInputStream(createTemplateContent(
 							templatePage.getTemplateName()).getBytes("UTF8")); //$NON-NLS-1$
@@ -294,8 +292,7 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 			} else {
 				var = 'v';
 			}
-			buffer
-					.append("[template public " + moduleName + receiverType + "(" + var + " : " + receiverType + ")]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			buffer.append("[template public " + moduleName + receiverType + "(" + var + " : " + receiverType + ")]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			buffer.append("\t\n"); //$NON-NLS-1$
 			buffer.append("\t[comment @main /]\n"); //$NON-NLS-1$
 			for (Template template : templates) {

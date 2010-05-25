@@ -40,9 +40,8 @@ public class AcceleoRenameTemplateWizard extends RefactoringWizard {
 	 */
 	@Override
 	protected void addUserInputPages() {
-		addPage(new AcceleoRenameTemplateInputWizardPage(
-				AcceleoUIMessages
-						.getString("AcceleoEditorRenameTemplateRefactoring.RenameTemplateInputWizardPage"))); //$NON-NLS-1$
+		addPage(new AcceleoRenameTemplateInputWizardPage(AcceleoUIMessages
+				.getString("AcceleoEditorRenameTemplateRefactoring.RenameTemplateInputWizardPage"))); //$NON-NLS-1$
 	}
 
 }

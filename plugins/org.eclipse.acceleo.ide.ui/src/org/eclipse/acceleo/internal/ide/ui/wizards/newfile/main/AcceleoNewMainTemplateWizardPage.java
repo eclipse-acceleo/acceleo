@@ -148,8 +148,7 @@ public class AcceleoNewMainTemplateWizardPage extends WizardPage {
 	 */
 	private void createTemplateContainerComposite(Composite templateGroup) {
 		Label label = new Label(templateGroup, SWT.NULL);
-		label
-				.setText(AcceleoUIMessages.getString("AcceleoNewMainTemplateWizardPage.TemplateContainer") + ':'); //$NON-NLS-1$
+		label.setText(AcceleoUIMessages.getString("AcceleoNewMainTemplateWizardPage.TemplateContainer") + ':'); //$NON-NLS-1$
 
 		templateContainer = new Text(templateGroup, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

@@ -35,7 +35,7 @@ public class ReferencesSearchViewPage extends AbstractTextSearchViewPage impleme
 	/**
 	 * The show in target constant.
 	 */
-	private static final String[] SHOW_IN_TARGETS = new String[] {IPageLayout.ID_RES_NAV};
+	private static final String[] SHOW_IN_TARGETS = new String[] {IPageLayout.ID_RES_NAV };
 
 	/**
 	 * The show in target list constant.

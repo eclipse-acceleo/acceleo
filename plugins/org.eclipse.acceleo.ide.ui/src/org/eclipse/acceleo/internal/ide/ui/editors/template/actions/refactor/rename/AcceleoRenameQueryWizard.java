@@ -40,7 +40,7 @@ public class AcceleoRenameQueryWizard extends RefactoringWizard {
 	 */
 	@Override
 	protected void addUserInputPages() {
-		addPage(new AcceleoRenameQueryInputWizardPage(
-				AcceleoUIMessages.getString("AcceleoEditorRenameQueryRefactoring.RenameQueryInputWizardPage"))); //$NON-NLS-1$
+		addPage(new AcceleoRenameQueryInputWizardPage(AcceleoUIMessages
+				.getString("AcceleoEditorRenameQueryRefactoring.RenameQueryInputWizardPage"))); //$NON-NLS-1$
 	}
 }

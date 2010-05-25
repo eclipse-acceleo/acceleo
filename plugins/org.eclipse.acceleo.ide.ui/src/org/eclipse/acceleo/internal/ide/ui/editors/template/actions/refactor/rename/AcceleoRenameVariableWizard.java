@@ -39,8 +39,7 @@ public class AcceleoRenameVariableWizard extends RefactoringWizard {
 	 */
 	@Override
 	protected void addUserInputPages() {
-		addPage(new AcceleoRenameVariableInputWizardPage(
-				AcceleoUIMessages
-						.getString("AcceleoEditorRenameVariableRefactoring.RenameVariableInputWizardPage"))); //$NON-NLS-1$
+		addPage(new AcceleoRenameVariableInputWizardPage(AcceleoUIMessages
+				.getString("AcceleoEditorRenameVariableRefactoring.RenameVariableInputWizardPage"))); //$NON-NLS-1$
 	}
 }

@@ -101,8 +101,8 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 			OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask(
-					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
+			monitor.beginTask(AcceleoUIMessages
+					.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
 
 			if (this.fTemplate == null) {
 				status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
@@ -416,16 +416,17 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 					boolean overloadingError = true;
 
 					for (int j = 0; j < listOfParametersOfTheCurrentTemplate.size(); j++) {
-						if (!listOfParametersOfTheCurrentTemplate.get(j).getEType()
-								.equals(listOfParametersOfTheTemplateWithTheSameName.get(j).getEType())) {
+						if (!listOfParametersOfTheCurrentTemplate.get(j).getEType().equals(
+								listOfParametersOfTheTemplateWithTheSameName.get(j).getEType())) {
 							overloadingError = false;
 							break;
 						}
 					}
 
 					if (overloadingError) {
-						status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
-								.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
+						status.merge(RefactoringStatus
+								.createErrorStatus(AcceleoUIMessages
+										.getString("AcceleoEditorRenameTemplateRefactoring.TemplateOverloadingError"))); //$NON-NLS-1$
 					}
 				}
 			}

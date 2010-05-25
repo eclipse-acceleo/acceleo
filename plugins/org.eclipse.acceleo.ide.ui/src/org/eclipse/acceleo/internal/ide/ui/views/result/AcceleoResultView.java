@@ -472,9 +472,7 @@ public class AcceleoResultView extends ResourceNavigator {
 				ITextEditor editor = (ITextEditor)part;
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
-					editor
-							.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(),
-									true);
+					editor.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(), true);
 				} else if (element instanceof TraceabilityTemplate) {
 					int b = getMin((TraceabilityTemplate)element);
 					int e = getMax((TraceabilityTemplate)element);
@@ -588,12 +586,8 @@ public class AcceleoResultView extends ResourceNavigator {
 			}
 			current = current.getParent();
 		}
-		map
-				.put(
-						IMarker.MESSAGE,
-						AcceleoUIMessages
-								.getString(
-										"AcceleoResultView.ActiveRegionMarkerMessage", new Object[] {objectToString, featureToString, templateToString, })); //$NON-NLS-1$
+		map.put(IMarker.MESSAGE, AcceleoUIMessages.getString("AcceleoResultView.ActiveRegionMarkerMessage", //$NON-NLS-1$
+				new Object[] {objectToString, featureToString, templateToString, }));
 		map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_INFO));
 		map.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
 		int begin = region.getTargetFileOffset();

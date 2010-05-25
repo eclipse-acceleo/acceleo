@@ -74,8 +74,7 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 			boolean result = true;
 			String newName = this.getArguments().getNewName();
 
-			if (newName.length() > 0
-					&& newName.endsWith("." + IAcceleoConstants.MTL_FILE_EXTENSION) //$NON-NLS-1$
+			if (newName.length() > 0 && newName.endsWith("." + IAcceleoConstants.MTL_FILE_EXTENSION) //$NON-NLS-1$
 					&& this.getArguments().getUpdateReferences()) {
 				this.file = (IFile)element;
 				this.project = this.file.getProject();
@@ -130,8 +129,8 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 		try {
 			status.merge(this.refactoring.checkInitialConditions(monitor));
 			String newNameWithoutExtension = this.getArguments().getNewName();
-			newNameWithoutExtension = newNameWithoutExtension.substring(0,
-					newNameWithoutExtension.lastIndexOf(".")); //$NON-NLS-1$
+			newNameWithoutExtension = newNameWithoutExtension.substring(0, newNameWithoutExtension
+					.lastIndexOf(".")); //$NON-NLS-1$
 			this.refactoring.setNewModuleName(newNameWithoutExtension);
 			status.merge(this.refactoring.checkFinalConditions(monitor));
 		} catch (CoreException e) {

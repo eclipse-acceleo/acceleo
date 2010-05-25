@@ -153,15 +153,16 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 			OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask(
-					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
+			monitor.beginTask(AcceleoUIMessages
+					.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
 
 			fChanges = new LinkedHashMap<IFile, TextFileChange>();
 			this.putChangesFromWorkspace(monitor);
 
 			if (this.renameJavaFile) {
 				this.javaCompUnitRefactoringDescriptor.setNewName(this.fNewModuleName.substring(0, 1)
-						.toUpperCase() + this.fNewModuleName.substring(1));
+						.toUpperCase()
+						+ this.fNewModuleName.substring(1));
 				this.javaCompUnitRenameRefactoring = this.javaCompUnitRefactoringDescriptor
 						.createRefactoring(status);
 				status.merge(this.javaCompUnitRenameRefactoring.checkInitialConditions(monitor));
@@ -391,9 +392,8 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 					}
 				}
 
-				final RenameResourceChange changeRenameModule = new RenameResourceChange(
-						this.file.getFullPath(), this.fNewModuleName
-								+ "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
+				final RenameResourceChange changeRenameModule = new RenameResourceChange(this.file
+						.getFullPath(), this.fNewModuleName + "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
 				moduleFileChange.add(changeRenameModule);
 
 				change.add(moduleFileChange);

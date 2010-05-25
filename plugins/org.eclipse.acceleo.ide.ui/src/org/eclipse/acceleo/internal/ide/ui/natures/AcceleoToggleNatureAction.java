@@ -111,9 +111,8 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 							file.deleteMarkers(AcceleoMarker.PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
 						} catch (CoreException e) {
 							AcceleoUIActivator.getDefault().getLog()
-									.log(
-											new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
-													.getMessage(), e));
+									.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
+											.getMessage(), e));
 						}
 					}
 					return;

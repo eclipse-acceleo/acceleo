@@ -86,8 +86,8 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 			OperationCanceledException {
 		final RefactoringStatus status = new RefactoringStatus();
 		try {
-			monitor.beginTask(
-					AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
+			monitor.beginTask(AcceleoUIMessages
+					.getString("AcceleoEditorRenameRefactoring.CheckingPreconditions"), 1); //$NON-NLS-1$
 
 			if (this.fVariable == null) {
 				status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages

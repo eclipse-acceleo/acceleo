@@ -46,8 +46,8 @@ public class AcceleoRenameTemplateDescriptor extends RefactoringDescriptor {
 	 * @param arguments
 	 *            The arguments.
 	 */
-	protected AcceleoRenameTemplateDescriptor(final String project, final String description, final String comment,
-			final Map<String, String> arguments) {
+	protected AcceleoRenameTemplateDescriptor(final String project, final String description,
+			final String comment, final Map<String, String> arguments) {
 		super(REFACTORING_ID, project, description, comment, RefactoringDescriptor.STRUCTURAL_CHANGE
 				| RefactoringDescriptor.MULTI_CHANGE);
 		fArguments = arguments;
