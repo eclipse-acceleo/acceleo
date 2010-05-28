@@ -519,7 +519,9 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 					Object typeCheckedElement = typeCheckedElements[j];
 					if (typeCheckedElement instanceof EClassHandler) {
 						EClass eClass = ((EClassHandler)typeCheckedElement).getEClass();
-						types.add(eClass);
+						if (!types.contains(eClass)) {
+							types.add(eClass);
+						}
 					}
 				}
 				if (types.size() == 0) {
