@@ -383,16 +383,20 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	private void asyncUpdateViewTemplates(final List<ModuleProjectHandler> projects) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				Object[] checkedElements = templatesViewer.getCheckedElements();
-				templatesViewer.setInput(projects.toArray());
-				for (Object checkedElement : checkedElements) {
-					if (checkedElement instanceof EObject && ((EObject)checkedElement).eResource() != null) {
-						EObject eObject = (EObject)checkedElement;
-						URI fileURI = eObject.eResource().getURI();
-						if (fileURI != null) {
-							String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-							EObject newEObject = expandFragment(fileURI, eObjectFragmentURI);
-							templatesViewer.setChecked(newEObject, true);
+				if (templatesViewer != null && templatesViewer.getTree() != null
+						&& !templatesViewer.getTree().isDisposed()) {
+					Object[] checkedElements = templatesViewer.getCheckedElements();
+					templatesViewer.setInput(projects.toArray());
+					for (Object checkedElement : checkedElements) {
+						if (checkedElement instanceof EObject
+								&& ((EObject)checkedElement).eResource() != null) {
+							EObject eObject = (EObject)checkedElement;
+							URI fileURI = eObject.eResource().getURI();
+							if (fileURI != null) {
+								String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+								EObject newEObject = expandFragment(fileURI, eObjectFragmentURI);
+								templatesViewer.setChecked(newEObject, true);
+							}
 						}
 					}
 				}
