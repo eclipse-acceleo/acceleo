@@ -395,7 +395,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 					break;
 				} else {
 					if ((var1.getType() != null && var2.getType() != null)
-							&& (!var1.getType().getName().equals(var2.getType().getName()))) {
+							&& (var1.getType().getName() != null && !var1.getType().getName().equals(
+									var2.getType().getName()))) {
 						result = false;
 						break;
 					}
@@ -433,7 +434,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 					break;
 				} else {
 					if ((var1.getType() != null && var2.getType() != null)
-							&& (!var1.getType().getName().equals(var2.getType().getName()))) {
+							&& (var1.getType().getName() != null && !var1.getType().getName().equals(
+									var2.getType().getName()))) {
 						result = false;
 						break;
 					}
