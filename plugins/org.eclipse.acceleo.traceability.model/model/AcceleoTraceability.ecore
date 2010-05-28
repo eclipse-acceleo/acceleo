@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="traceability"
-    nsURI="traceability" nsPrefix="traceability">
+    nsURI="http://www.eclipse.org/acceleo/traceability/1.0" nsPrefix="traceability">
   <eClassifiers xsi:type="ecore:EClass" name="TraceabilityModel">
     <eOperations name="getGeneratedFile" eType="#//GeneratedFile">
       <eParameters name="filePath" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>

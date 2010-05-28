@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TraceabilityFactoryImpl.java,v 1.2 2010/04/26 15:24:11 lgoubet Exp $
+ * $Id: TraceabilityFactoryImpl.java,v 1.3 2010/05/28 14:34:36 jmusset Exp $
  */
 package org.eclipse.acceleo.traceability.impl;
 
@@ -41,7 +41,7 @@ public class TraceabilityFactoryImpl extends EFactoryImpl implements Traceabilit
 	public static TraceabilityFactory init() {
 		try {
 			TraceabilityFactory theTraceabilityFactory = (TraceabilityFactory)EPackage.Registry.INSTANCE
-					.getEFactory("traceability"); //$NON-NLS-1$ 
+					.getEFactory("http://www.eclipse.org/acceleo/traceability/1.0"); //$NON-NLS-1$ 
 			if (theTraceabilityFactory != null) {
 				return theTraceabilityFactory;
 			}

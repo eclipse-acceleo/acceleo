@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: TraceabilityPackage.java,v 1.3 2010/04/26 15:24:12 lgoubet Exp $
+ * $Id: TraceabilityPackage.java,v 1.4 2010/05/28 14:34:35 jmusset Exp $
  */
 package org.eclipse.acceleo.traceability;
 
@@ -40,7 +40,7 @@ public interface TraceabilityPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	String eNS_URI = "traceability"; //$NON-NLS-1$
+	String eNS_URI = "http://www.eclipse.org/acceleo/traceability/1.0"; //$NON-NLS-1$
 
 	/**
 	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->

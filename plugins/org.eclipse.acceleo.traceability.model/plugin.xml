@@ -5,14 +5,14 @@
  <copyright>
  </copyright>
 
- $Id: plugin.xml,v 1.1 2010/01/20 14:30:08 lgoubet Exp $
+ $Id: plugin.xml,v 1.2 2010/05/28 14:34:36 jmusset Exp $
 -->
 
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="traceability"
+            uri="http://www.eclipse.org/acceleo/traceability/1.0"
             class="org.eclipse.acceleo.traceability.TraceabilityPackage"
             genModel="model/AcceleoTraceability.genmodel"/>
    </extension>
