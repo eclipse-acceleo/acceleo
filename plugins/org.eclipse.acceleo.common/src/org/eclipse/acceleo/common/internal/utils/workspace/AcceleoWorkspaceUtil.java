@@ -245,13 +245,17 @@ public final class AcceleoWorkspaceUtil {
 		if (actualPath.startsWith(jarScheme)) {
 			actualPath = actualPath.substring(jarScheme.length());
 			// If the jar file has a qualifier, delete it along with the last ".jar!"
-			actualPath = actualPath.replaceFirst("/([^_]*?)_(.*)(\\.jar!)/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
+			if (actualPath.contains("_")) { //$NON-NLS-1$
+				actualPath = actualPath.replaceFirst("/([^.]*?)_[^_]*\\.jar!/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
+			} else {
+				actualPath = actualPath.replaceFirst("\\.jar!", ""); //$NON-NLS-1$  //$NON-NLS-2$
+			}
 		}
 		if (actualPath.startsWith(fileScheme)) {
 			actualPath = actualPath.substring(fileScheme.length());
 		}
 
-		String[] segments = filePath.split("/"); //$NON-NLS-1$
+		String[] segments = actualPath.split("/"); //$NON-NLS-1$
 		Bundle bundle = null;
 		String bundlePath = null;
 		for (int i = segments.length - 1; i >= 0; i--) {
