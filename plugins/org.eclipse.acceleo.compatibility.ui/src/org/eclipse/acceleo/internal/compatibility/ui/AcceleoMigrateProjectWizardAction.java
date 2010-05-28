@@ -43,7 +43,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -167,7 +166,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 			Mt2mtl mt2mtl = new Mt2mtl(root, targetFolder, new ArrayList<Object>());
 			mt2mtl.doGenerate(BasicMonitor.toMonitor(monitor));
 			if (targetContainer.isAccessible()) {
-				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+				targetContainer.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			}
 			IFile mainFile = ResourcesPlugin.getWorkspace().getRoot().getFile(mainTemplate);
 			if (mainFile.exists()) {
@@ -208,7 +207,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 				try {
 					ByteArrayInputStream javaStream = new ByteArrayInputStream(buffer.toString().getBytes(
 							"UTF8")); //$NON-NLS-1$
-					mainFile.setContents(javaStream, true, false, new NullProgressMonitor());
+					mainFile.setContents(javaStream, true, false, monitor);
 				} catch (UnsupportedEncodingException e) {
 					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
 							.getMessage(), e));
