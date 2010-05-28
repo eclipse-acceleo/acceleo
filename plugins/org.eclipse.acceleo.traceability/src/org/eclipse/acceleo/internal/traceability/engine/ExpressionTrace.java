@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.traceability.engine;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.eclipse.acceleo.traceability.GeneratedText;
+import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -31,6 +37,23 @@ public final class ExpressionTrace<C> extends AbstractTrace {
 	 */
 	public ExpressionTrace(OCLExpression<C> expression) {
 		referredExpression = expression;
+	}
+
+	/**
+	 * Allows for the copy of an expression trace. This will be a partial copy as the referenced GeneratedText
+	 * and InputElement instances will be the same.
+	 * 
+	 * @param other
+	 *            The trace that is to be copied.
+	 */
+	public ExpressionTrace(ExpressionTrace<C> other) {
+		referredExpression = other.getReferredExpression();
+		currentOffset = other.currentOffset;
+		LinkedHashMap<InputElement, Set<GeneratedText>> temp = other.getTraces();
+		// We need to replace the Set instance
+		for (InputElement key : temp.keySet()) {
+			traces.put(key, new LinkedHashSet<GeneratedText>(temp.get(key)));
+		}
 	}
 
 	/**

@@ -237,9 +237,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			if (startsWithZeroGroupRef) {
 				startIndex = endIndex;
 			}
-			int replacementLength = startIndex;
 			sourceMatcher.appendReplacement(result, replacement);
-			replacementLength = result.length() - startIndex;
+			int replacementLength = result.length() - startIndex;
 			// We now remove from the replacementLength the length of the replaced substring
 			replacementLength -= endIndex - startIndex;
 			addedLength += replacementLength;
@@ -272,6 +271,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
 						generatedFile.getGeneratedRegions().add(copy);
+						for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
+							insertTextInTrace(trace, copy);
+						}
 					}
 				}
 				generatedFile.setLength(fileLength + replacementLength);
@@ -459,9 +461,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				 * starts with a replaced substring, 3) the text contains a replaced substring, 4) the text is
 				 * contained within a replaced substring or 5) The text starts after the replacement
 				 */
-				if (text.getStartOffset() < startIndex && text.getEndOffset() <= endIndex) {
+				if (text.getStartOffset() < startIndex && text.getEndOffset() == endIndex) {
 					text.setEndOffset(startIndex);
-				} else if (text.getStartOffset() >= startIndex && text.getEndOffset() > endIndex) {
+				} else if (text.getStartOffset() == startIndex && text.getEndOffset() > endIndex) {
 					text.setStartOffset(startIndex + replacementLength);
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
@@ -522,6 +524,34 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						text.setEndOffset(text.getEndOffset() - startIndex);
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * This will be used to insert the given <code>text</code> in the given <code>trace</code> iff the indices
+	 * of this text correspond to one of the trace's texts start or end index.
+	 * 
+	 * @param trace
+	 *            The trace in which we should insert <code>text</code>.
+	 * @param text
+	 *            The text that is to be inserted if it matches the trace.
+	 */
+	private void insertTextInTrace(ExpressionTrace<C> trace, GeneratedText text) {
+		boolean insert = false;
+		final Iterator<Set<GeneratedText>> setIterator = trace.getTraces().values().iterator();
+		while (setIterator.hasNext() && !insert) {
+			Set<GeneratedText> candidate = setIterator.next();
+			final Iterator<GeneratedText> iterator = candidate.iterator();
+			while (iterator.hasNext() && !insert) {
+				GeneratedText next = iterator.next();
+				if (next.getStartOffset() == text.getEndOffset()
+						|| next.getEndOffset() == text.getStartOffset()) {
+					insert = true;
+				}
+			}
+			if (insert) {
+				candidate.add(text);
 			}
 		}
 	}

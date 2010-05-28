@@ -28,7 +28,6 @@ import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator;
 import org.eclipse.acceleo.model.mtl.Block;
@@ -120,10 +119,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/** Keeps track of the variable currently being initialized. */
 	private Variable<C, PM> initializingVariable;
-
-	/** Retrieve invalid once and for all. */
-	private final Object invalid = ((AcceleoEnvironment)getEnvironment()).getOCLStandardLibraryReflection()
-			.getInvalid();
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
 	private LinkedList<ExpressionTrace<C>> invocationTraces;
@@ -217,6 +212,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				}
 				final int fileLength = generatedFile.getLength();
 				int addedLength = 0;
+
+				// We no longer need to refer to the same trace instance, copy its current state.
+				if (invocationTraces != null && invocationTraces.contains(trace)) {
+					invocationTraces.remove(trace);
+					invocationTraces.add(new ExpressionTrace<C>(trace));
+				}
+
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 					for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
 						int startingOffset = addedLength;
@@ -228,7 +230,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					}
 				}
 				generatedFile.setLength(fileLength + addedLength);
-				if (disposeTrace && (invocationTraces == null || !invocationTraces.contains(trace))) {
+				if (disposeTrace) {
 					trace.dispose();
 				}
 			}
@@ -430,7 +432,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final Object result = super.visitAcceleoTemplateInvocation(invocation);
 
 		for (ExpressionTrace<C> trace : invocationTraces) {
-			trace.dispose();
+			if (oldTraces != null) {
+				oldTraces.add(trace);
+			} else {
+				trace.dispose();
+			}
 		}
 		invocationTraces = oldTraces;
 		if (invocation.getArgument().size() > 0) {
