@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.views.proposals.patterns.IAcceleoPatternProposal;
 import org.eclipse.acceleo.parser.cst.Module;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.graphics.Image;
@@ -67,10 +66,8 @@ public class NewTemplateForeachType implements IAcceleoPatternProposal {
 		for (EClass eClass : types) {
 			buffer.append("[template public ${name}(${e} : "); //$NON-NLS-1$
 			buffer.append(eClass.getName());
-			buffer.append(") ?(${true}) ]\n"); //$NON-NLS-1$
-			for (EAttribute eAttribute : eClass.getEAllAttributes()) {
-				buffer.append("\t[${e}." + eAttribute.getName() + "/]\n"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			buffer.append(") ]\n"); //$NON-NLS-1$
+			buffer.append("\t[comment TODO Auto-generated template stub/]\n"); //$NON-NLS-1$
 			buffer.append("[/template]\n\n"); //$NON-NLS-1$
 		}
 		return buffer.toString();
