@@ -211,7 +211,7 @@ public final class AcceleoServicesEclipseUtil {
 	 */
 	private static Object workspaceSuffixWorkaround(URI uri, String qualifiedName) {
 		Object res = null;
-		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.resolveAsPlatformPluginResource(uri.toString()));
+		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.resolveAsPlatformPlugin(uri.toString()));
 		if (platformURI != null) {
 			String bundleName = platformURI.segment(1);
 			Bundle bundle = Platform.getBundle(bundleName);
