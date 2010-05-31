@@ -114,6 +114,11 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	private Button targetButton;
 
 	/**
+	 * Checkbox button that indicates if we would like to compute the traceability information.
+	 */
+	private Button computeTraceability;
+
+	/**
 	 * The arguments text widget.
 	 */
 	private Text argumentsText;
@@ -181,7 +186,12 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		createAcceleoArgumentsEditor(compAcceleo);
 		new Label(mainComposite, SWT.NONE);
-		createAcceleoLaunchingStrategyEditor(mainComposite);
+		Composite endCompositeLeft = createComposite(mainComposite, parent.getFont(), 4, 2,
+				GridData.VERTICAL_ALIGN_END | GridData.HORIZONTAL_ALIGN_BEGINNING, 0, 0);
+		createAcceleoLaunchingStrategyEditor(endCompositeLeft);
+		Composite endCompositeRight = createComposite(mainComposite, parent.getFont(), 4, 2,
+				GridData.VERTICAL_ALIGN_END | GridData.HORIZONTAL_ALIGN_END, 0, 0);
+		createAcceleoTraceabilityEditor(endCompositeRight);
 	}
 
 	/**
@@ -197,6 +207,32 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		Composite notVisibleComposite = new Composite(mainTypeShell, SWT.NONE);
 		super.createMainTypeExtensions(notVisibleComposite);
 		notVisibleComposite.setVisible(false);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#updateLaunchConfigurationDialog()
+	 */
+	@Override
+	protected void updateLaunchConfigurationDialog() {
+		super.updateLaunchConfigurationDialog();
+		updateTraceabilitySettingsVisibility();
+	}
+
+	/**
+	 * Marks the traceability widget as invisible if the launching strategy is 'Java Application', and marks
+	 * it visible otherwise.
+	 */
+	private void updateTraceabilitySettingsVisibility() {
+		if (computeTraceability != null && launchingStrategyCombo != null) {
+			if ("Java Application".equals(launchingStrategyCombo.getText())) { //$NON-NLS-1$
+				computeTraceability.setSelection(false);
+				computeTraceability.setVisible(false);
+			} else {
+				computeTraceability.setVisible(true);
+			}
+		}
 	}
 
 	/**
@@ -399,6 +435,32 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	}
 
 	/**
+	 * Creates the widgets for specifying if we compute the traceability information.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createAcceleoTraceabilityEditor(Composite parent) {
+		Font font = parent.getFont();
+		Composite comp = createComposite(parent, font, 2, 2, GridData.HORIZONTAL_ALIGN_END, 0, 0);
+		computeTraceability = new Button(comp, SWT.CHECK);
+		computeTraceability.setFont(parent.getFont());
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		gd.horizontalSpan = 1;
+		computeTraceability.setLayoutData(gd);
+		computeTraceability.setText(AcceleoUIMessages.getString("AcceleoMainTab.ComputeTraceability")); //$NON-NLS-1$
+		computeTraceability.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+	}
+
+	/**
 	 * Creates the widgets for specifying the launching strategy.
 	 * 
 	 * @param parent
@@ -406,11 +468,11 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	protected void createAcceleoLaunchingStrategyEditor(Composite parent) {
 		Font font = parent.getFont();
-		Composite comp = createComposite(parent, font, 2, 2, GridData.VERTICAL_ALIGN_END, 0, 0);
+		Composite comp = createComposite(parent, font, 2, 2, GridData.HORIZONTAL_ALIGN_BEGINNING, 0, 0);
 		Label label = new Label(comp, SWT.NONE);
 		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.LaunchingStrategy")); //$NON-NLS-1$
 		launchingStrategyCombo = new Combo(comp, SWT.READ_ONLY);
-		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.horizontalSpan = 1;
 		launchingStrategyCombo.setLayoutData(gridData);
 		launchingStrategyCombo.addSelectionListener(new SelectionListener() {
@@ -564,8 +626,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			updateAcceleoProfileModelFromConfig(config);
 		}
 		updateAcceleoTargetFromConfig(config);
+		updateAcceleoTraceabilityFromConfig(config);
 		updateAcceleoArgumentsFromConfig(config);
 		updateAcceleoLaunchingStrategyFromConfig(config);
+		updateTraceabilitySettingsVisibility();
 	}
 
 	/**
@@ -614,6 +678,23 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		targetText.setText(target);
+	}
+
+	/**
+	 * Loads the traceability status from the launch configuration's preference store.
+	 * 
+	 * @param config
+	 *            the configuration to load the target path
+	 */
+	protected void updateAcceleoTraceabilityFromConfig(ILaunchConfiguration config) {
+		boolean traceability = false;
+		try {
+			traceability = config.getAttribute(
+					IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_TRACEABILITY, false);
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		computeTraceability.setSelection(traceability);
 	}
 
 	/**
@@ -723,6 +804,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, targetText.getText()
 				.trim());
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_TRACEABILITY,
+				computeTraceability.getSelection());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, argumentsText.getText());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION,
 				launchingStrategyCombo.getText());
@@ -741,6 +824,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH, ""); //$NON-NLS-1$
 		}
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, ""); //$NON-NLS-1$
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_TRACEABILITY, false);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, ""); //$NON-NLS-1$
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION, ""); //$NON-NLS-1$
 	}

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -36,6 +37,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -78,6 +80,10 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			} else {
 				launch.addProcess(new AcceleoProcess(launch));
 			}
+			boolean traceability = computeTraceability(configuration);
+			if (traceability) {
+				switchTraceability(true);
+			}
 			try {
 				String model = getModelPath(configuration);
 				String target = getTargetPath(configuration);
@@ -119,6 +125,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 					}
 				}
 			} finally {
+				if (traceability) {
+					switchTraceability(false);
+				}
 				if ("debug".equals(mode)) { //$NON-NLS-1$
 					AcceleoEvaluationVisitor.setDebug(null);
 					if (debugger != null) {
@@ -129,6 +138,17 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 				}
 			}
 		}
+	}
+
+	/**
+	 * To switch the traceability status.
+	 * 
+	 * @param activate
+	 *            indicates that we would like to compute the traceability information
+	 */
+	private void switchTraceability(boolean activate) {
+		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
+				"org.eclipse.acceleo.traceability.activation", activate); //$NON-NLS-1$
 	}
 
 	/**
@@ -156,11 +176,12 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 						AcceleoUIActivator
 								.getDefault()
 								.getLog()
-								.log(new Status(
-										IStatus.WARNING,
-										AcceleoUIActivator.PLUGIN_ID,
-										AcceleoUIMessages
-												.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
+								.log(
+										new Status(
+												IStatus.WARNING,
+												AcceleoUIActivator.PLUGIN_ID,
+												AcceleoUIMessages
+														.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
 					}
 				} else {
 					AcceleoUIActivator.getDefault().getLog().log(
@@ -302,6 +323,26 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		return target;
+	}
+
+	/**
+	 * Returns the traceability status specified by the given launch configuration, or false if none.
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * @return true if we would like to compute the traceability information
+	 * @since 3.0
+	 */
+	protected boolean computeTraceability(final ILaunchConfiguration configuration) {
+		boolean traceability = false;
+		try {
+			traceability = configuration.getAttribute(
+					IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_TRACEABILITY, false);
+		} catch (CoreException e) {
+			traceability = false;
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		return traceability;
 	}
 
 	/**

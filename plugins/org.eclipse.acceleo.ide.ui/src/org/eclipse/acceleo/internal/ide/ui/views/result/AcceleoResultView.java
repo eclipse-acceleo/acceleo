@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -35,7 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -310,9 +308,6 @@ public class AcceleoResultView extends ResourceNavigator {
 			AcceleoService.removeStaticListener(content);
 		}
 		content = new AcceleoResultContent();
-		// FIXME Change this
-		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
-				"org.eclipse.acceleo.traceability.activation", true); //$NON-NLS-1$
 		AcceleoService.addStaticListener(content);
 		if (resourceChangeListener == null) {
 			resourceChangeListener = new IResourceChangeListener() {
@@ -472,7 +467,9 @@ public class AcceleoResultView extends ResourceNavigator {
 				ITextEditor editor = (ITextEditor)part;
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
-					editor.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(), true);
+					editor
+							.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(),
+									true);
 				} else if (element instanceof TraceabilityTemplate) {
 					int b = getMin((TraceabilityTemplate)element);
 					int e = getMax((TraceabilityTemplate)element);

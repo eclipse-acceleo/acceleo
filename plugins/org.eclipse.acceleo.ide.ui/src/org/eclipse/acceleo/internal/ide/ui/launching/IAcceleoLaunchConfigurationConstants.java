@@ -42,6 +42,12 @@ public interface IAcceleoLaunchConfigurationConstants {
 	String ATTR_TARGET_PATH = AcceleoUIActivator.PLUGIN_ID + ".TARGET_PATH"; //$NON-NLS-1$
 
 	/**
+	 * Launch configuration attribute key. The value is true if we would like to compute the traceability
+	 * information.
+	 */
+	String ATTR_COMPUTE_TRACEABILITY = AcceleoUIActivator.PLUGIN_ID + ".COMPUTE_TRACEABILITY"; //$NON-NLS-1$
+
+	/**
 	 * Launch configuration attribute key. This is the value of the code generation arguments.
 	 */
 	String ATTR_ARGUMENTS = AcceleoUIActivator.PLUGIN_ID + ".ARGUMENTS"; //$NON-NLS-1$
