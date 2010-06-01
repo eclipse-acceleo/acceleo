@@ -1,3 +1,1 @@
 We have to put in this file all the UI items, the standard and non-standard services which are not documented in this plug-in.
-
-- The new checkbox in the launch configuration to contribute traceability information or not

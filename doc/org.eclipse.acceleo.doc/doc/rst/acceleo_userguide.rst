@@ -1463,6 +1463,9 @@ simply text arguments passed to the java class that handles the generation.
 
 .. image:: ../images/acceleo_launch_config5.png
 
+**Note**: Select "Contribute traceability information to Result View" to display 
+the generated files in the Result View.
+
 Execution environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1630,6 +1633,9 @@ ________________________________________________________________________________
 
 As mentioned above, the Result View displays the result of the latest Acceleo
 generation run.
+
+**Note**: You have to enable the traceability option in the run configuration 
+main page by selecting ``Contribute traceability information to Result View``.
 
 Let's suppose we have the following Acceleo module to generate a class:
 
