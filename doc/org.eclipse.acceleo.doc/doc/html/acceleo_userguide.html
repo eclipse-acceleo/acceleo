@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
 <title>Acceleo User Guide</title>
 <meta name="authors" content="Laurent Goubet  Laurent Delaigue" />
 <link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
@@ -19,8 +19,8 @@
 <td>Laurent Goubet
 <br />Laurent Delaigue</td></tr>
 <tr><th class="docinfo-name">Contact:</th>
-<td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a>
-<br /><a class="first last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
+<td><a class="first reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a>,
+<a class="last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
 </tbody>
 </table>
 <p>Copyright © 2008, 2010 Obeo™.</p>
@@ -1271,17 +1271,26 @@ Application</em> category to the left, and selecting <em>New</em> or <em>Duplica
 <li><p class="first">An input model</p>
 <img alt="../images/acceleo_launch_config2.png" src="../images/acceleo_launch_config2.png" />
 </li>
-<li><p class="first">An output folder (which will be the &quot;root&quot; from which to resolve relative paths
-of the files that are to be generated)</p>
-<img alt="../images/acceleo_launch_config3.png" src="../images/acceleo_launch_config3.png" />
+<li><p class="first">An output folder (which will be the &quot;root&quot; from which to resolve relative paths</p>
 </li>
 </ul>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">rst\acceleo_userguide.rst</tt>, line 1452)</p>
+Bullet list ends without a blank line; unexpected unindent.</div>
+<blockquote>
+<p>of the files that are to be generated)</p>
+<blockquote>
+<img alt="../images/acceleo_launch_config3.png" src="../images/acceleo_launch_config3.png" />
+</blockquote>
+</blockquote>
 <p>Optionally, properties can be specified directly in the launch configuration.
 Here is what a ready launch configuration looks like:</p>
 <img alt="../images/acceleo_launch_config4.png" src="../images/acceleo_launch_config4.png" />
 <p><strong>Note:</strong> The &quot;Arguments&quot; tab shows that the model and target arguments are
 simply text arguments passed to the java class that handles the generation.</p>
 <img alt="../images/acceleo_launch_config5.png" src="../images/acceleo_launch_config5.png" />
+<p><strong>Note</strong>: Select &quot;Contribute traceability information to Result View&quot; to display
+the generated files in the Result View.</p>
 <div class="section" id="execution-environment">
 <h4><a class="toc-backref" href="#id69">Execution environment</a></h4>
 <p>There are two ways to run an Acceleo generation in eclipse.
@@ -1409,8 +1418,8 @@ or even generation rules.
 For example, properties can be used to parameterize which elements need be
 generated, making it easy to regenerate only a subset of files if required.
 This can also be used for internationalization.</p>
-<p>Properties must be provided via the <tt class="docutils literal"><span class="pre">getProperties()``API,</span> which returns a
-``java.util.List&lt;String&gt;</tt>.
+<p>Properties must be provided via the <tt class="docutils literal">getProperties()</tt> API, which returns a
+<tt class="docutils literal">java.util.List&lt;String&gt;</tt> .
 The returned list must contain the qualified names of the resource bundles from
 which the properties will be read, without extensions.</p>
 <p>For example, returning &quot;org.eclipse.acceleo.module.sample.My&quot; will
@@ -1455,6 +1464,8 @@ for your needs.</p>
 <h3><a class="toc-backref" href="#id73">Using the Result View</a></h3>
 <p>As mentioned above, the Result View displays the result of the latest Acceleo
 generation run.</p>
+<p><strong>Note</strong>: You have to enable the traceability option in the run configuration
+main page by selecting <tt class="docutils literal">Contribute traceability information to Result View</tt>.</p>
 <p>Let's suppose we have the following Acceleo module to generate a class:</p>
 <img alt="../images/acceleo_result_view0.png" src="../images/acceleo_result_view0.png" />
 <p>Let's run this on a UML model that contains two classes <tt class="docutils literal">User</tt> and

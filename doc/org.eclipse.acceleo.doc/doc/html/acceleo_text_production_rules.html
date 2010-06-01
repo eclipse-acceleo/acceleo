@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
 <title>Acceleo Text Production Rules</title>
 <meta name="authors" content="Laurent Goubet  Laurent Delaigue" />
 <link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
@@ -19,8 +19,8 @@
 <td>Laurent Goubet
 <br />Laurent Delaigue</td></tr>
 <tr><th class="docinfo-name">Contact:</th>
-<td><a class="first last reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a>
-<br /><a class="first last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
+<td><a class="first reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a>,
+<a class="last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
 </tbody>
 </table>
 <p>Copyright © 2008, 2010 Obeo™.</p>
@@ -53,7 +53,6 @@
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#complete-example" id="id20">Complete Example</a></li>
 </ul>
 </div>
 <div class="section" id="overview">
@@ -84,9 +83,11 @@ and tail occur.</li>
 &quot;embedded&quot; block.</p>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id6">Examples</a></h2>
-<p>[PENDING - formatting of the section]</p>
 <div class="section" id="stand-alone-single-line-blocks">
 <h3><a class="toc-backref" href="#id7">Stand-alone single-line blocks</a></h3>
+<p>Nothing relevant for generation between the line start and the block head, nothing
+relevant between the block tail and the line end; both head and tail on the same line.
+All of the following are in this category.</p>
 <pre class="literal-block">
 [for (Sequence{false, false, false})][self/][/for]
 </pre>
@@ -109,6 +110,8 @@ and tail occur.</li>
 </div>
 <div class="section" id="embedded-single-line-blocks">
 <h3><a class="toc-backref" href="#id8">Embedded single-line blocks</a></h3>
+<p>Head and tail of the block are on the same line, but there is something relevant to
+the generation other than the block on that same line.</p>
 <pre class="literal-block">
 Some text[for (Sequence{false, false, false})]output[/for]
 </pre>
@@ -123,6 +126,8 @@ Some text[for (Sequence{false, false, false})]output[/for]
 </div>
 <div class="section" id="stand-alone-multi-line-blocks">
 <h3><a class="toc-backref" href="#id9">Stand-alone multi-line blocks</a></h3>
+<p>Nothing relevant for generation between the line start and the block head, nothing
+relevant between the block tail and the line end; head and tail on different lines.</p>
 <pre class="literal-block">
 [for (Sequence{false, false, false})]
     [self/]
@@ -152,6 +157,8 @@ Some text[for (Sequence{false, false, false})]output[/for]
 </div>
 <div class="section" id="embedded-multi-line-blocks">
 <h3><a class="toc-backref" href="#id10">Embedded multi-line blocks</a></h3>
+<p>Head and tail of the block are on different lines, but there is something relevant
+to the generation other than the block on that same line.</p>
 <pre class="literal-block">
 text[for (Sequence{false, false, false})]
     [self/]
@@ -407,10 +414,6 @@ not even a new line character will be present in the resulting text.</li>
 </blockquote>
 </div>
 </div>
-</div>
-<div class="section" id="complete-example">
-<h1><a class="toc-backref" href="#id20">Complete Example</a></h1>
-<p>[PENDING - write a complete and meaningful generation module highlighting the most frequently used rules]</p>
 </div>
 </div>
 </body>

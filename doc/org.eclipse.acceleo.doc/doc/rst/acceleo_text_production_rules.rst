@@ -49,10 +49,12 @@ Any block that does not fall into these categories will be considered an
 Examples
 -------------------------------------------
 
-[PENDING - formatting of the section]
-
 Stand-alone single-line blocks
 ___________________________________________
+
+Nothing relevant for generation between the line start and the block head, nothing
+relevant between the block tail and the line end; both head and tail on the same line.
+All of the following are in this category.
 
 ::
 
@@ -85,6 +87,9 @@ ___________________________________________
 Embedded single-line blocks
 ___________________________________________
 
+Head and tail of the block are on the same line, but there is something relevant to
+the generation other than the block on that same line.
+
 ::
 
   Some text[for (Sequence{false, false, false})]output[/for]
@@ -103,6 +108,9 @@ ___________________________________________
 
 Stand-alone multi-line blocks
 ___________________________________________
+
+Nothing relevant for generation between the line start and the block head, nothing
+relevant between the block tail and the line end; head and tail on different lines.
 
 ::
 
@@ -141,6 +149,9 @@ ___________________________________________
 
 Embedded multi-line blocks
 ___________________________________________
+
+Head and tail of the block are on different lines, but there is something relevant
+to the generation other than the block on that same line.
 
 ::
 
@@ -443,8 +454,3 @@ produces:
   ``false`` |return|
 
   ``false`` |return|
-
-Complete Example
-===========================================
-
-[PENDING - write a complete and meaningful generation module highlighting the most frequently used rules]

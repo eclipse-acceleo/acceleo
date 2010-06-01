@@ -19,6 +19,8 @@
     </topic>
     <topic href="doc/html/acceleo_operation_reference.html" label="Acceleo operations reference">
     </topic>
+    <topic href="doc/html/acceleo_equivalence.html" label="Acceleo migration equivalences">
+    </topic>
     <topic href="doc/html/acceleo_text_production_rules.html" label="Text Production Rules">
     </topic>
  </topic>

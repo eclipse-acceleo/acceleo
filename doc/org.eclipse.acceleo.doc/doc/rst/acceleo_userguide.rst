@@ -1449,7 +1449,7 @@ An acceleo launch configuration requires:
   .. image:: ../images/acceleo_launch_config2.png
 
 - An output folder (which will be the "root" from which to resolve relative paths
- of the files that are to be generated)
+  of the files that are to be generated)
 
   .. image:: ../images/acceleo_launch_config3.png
 
@@ -1583,8 +1583,8 @@ For example, properties can be used to parameterize which elements need be
 generated, making it easy to regenerate only a subset of files if required.
 This can also be used for internationalization.
 
-Properties must be provided via the ``getProperties()``API, which returns a
-``java.util.List<String>``.
+Properties must be provided via the ``getProperties()`` API, which returns a
+``java.util.List<String>`` .
 The returned list must contain the qualified names of the resource bundles from
 which the properties will be read, without extensions.
 
