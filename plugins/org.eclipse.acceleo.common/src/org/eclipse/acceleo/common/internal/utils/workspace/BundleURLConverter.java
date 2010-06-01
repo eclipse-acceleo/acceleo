@@ -139,7 +139,7 @@ public class BundleURLConverter {
 			actualPath = actualPath.substring(JAR_PROTOCOL.length());
 			// If the jar file has a qualifier, delete it along with the last ".jar!"
 			if (actualPath.contains("_")) { //$NON-NLS-1$
-				actualPath = actualPath.replaceFirst("/([^.]*?)_[^_]*\\.jar!/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
+				actualPath = actualPath.replaceFirst("/([^/]*?)_[^_]*\\.jar!/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
 			} else {
 				actualPath = actualPath.replaceFirst("\\.jar!", ""); //$NON-NLS-1$  //$NON-NLS-2$
 			}
