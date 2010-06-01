@@ -247,7 +247,8 @@ Project.
 The prototype sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[PENDING Link to MyContacts zip]
+The source of the "MyContacts" android application can be retrieved `here <../zip/MyContacts.zip>`_.
+It contains an Eclipse projects with the necessary classes and models.
 
 The model of the application *MyContacts*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -561,7 +562,6 @@ Conclusion
 
 Now you can make a complete Android code generator with more widgets...
 
-The original project sources : [PENDING sources of the original project]
-
-This tutorial also exists in a slide-presentation version : [PENDING original eCon presentation]
-
+The end result of this tutorial should be 5 projects; you can retrieve them
+`in this zip <../zip/AndroidApplication.zip>`_ if you wish to compare your result with
+the original.
