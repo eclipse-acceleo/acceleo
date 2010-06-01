@@ -240,8 +240,6 @@ as follows:
 Examples
 ===========================================
 
-[PENDING - formatting of the section]
-
 In the following examples, invisible characters have been materialized:
 
 +------------+--------------------------------------+
@@ -258,7 +256,9 @@ Blocks
 Embedded Blocks
 ______________________________________
 
-The template code:
+Example 1
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``Some`` |inter| ``text`` |inter| ``[for`` |inter| ``(Sequence{false,`` |inter|
   ``false,`` |inter| ``false})`` |inter| ``separator`` |inter| ``('`` |inter|
@@ -268,10 +268,12 @@ produces the following result:
 
   ``Some`` |inter| ``text`` |inter| ``output`` |inter| ``-`` |inter| ``output``
   |inter| ``-`` |inter| ``output``
-
+  
 ----
 
-The template code:
+Example 2
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[if`` |inter| ``(true)]output[/if]`` |inter| ``and`` |inter| ``some``
   |inter| ``text``
@@ -282,19 +284,23 @@ produces:
 
 ----
 
-The template code:
+Example 3
+~~~~~~~~~~~~
+The Acceleo code:
 
   |tab| ``[for`` |inter| ``(Sequence{false,`` |inter| ``false})]`` |inter|
   ``[self/][/for]`` |inter| ``and`` |inter| ``some`` |inter| ``text``
 
 produces:
 
-  |tab| ``false`` |inter| ``false`` |inter| ``and`` |inter| ``some``
+  |tab| |inter| ``false`` |inter| ``false`` |inter| ``and`` |inter| ``some``
   |inter| ``text``
 
 ----
 
-The template code:
+Example 4
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``text[for`` |inter| ``(Sequence{false,`` |inter| ``false})]`` |return|
 
@@ -312,7 +318,9 @@ produces:
 
 ----
 
-The template code:
+Example 5
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``text[for`` |inter| ``(Sequence{false,`` |inter| ``false})]`` |return|
 
@@ -326,7 +334,9 @@ produces:
 Stand-alone single-line blocks
 ___________________________________________
 
-The template code:
+Example 1
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[for`` |inter| ``(Sequence{false,`` |inter| ``false,`` |inter|
   ``false})][self/][/for]``
@@ -337,7 +347,9 @@ produces:
 
 ----
 
-The template code:
+Example 2
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[if`` |inter| ``(true)]output[/if]``
 
@@ -347,7 +359,9 @@ produces:
 
 ----
 
-The template code:
+Example 3
+~~~~~~~~~~~~
+The Acceleo code:
 
   |tab| ``[for`` |inter| ``(Sequence{false,`` |inter| ``false,`` |inter|
   ``false})][self/][/for]``
@@ -358,7 +372,9 @@ produces:
 
 ----
 
-The template code:
+Example 4
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[/if]`` |tab| |tab| ``[if`` |inter| ``(true)]output[/if]``
 
@@ -368,18 +384,22 @@ produces:
 
 ----
 
-The template code:
+Example 5
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[/if]`` |inter| ``[comment .../]`` |tab| ``[if`` |inter| ``(true)]output[/if]``
 
 produces:
 
-  |tab| |tab| ``output``
+  |inter| |tab| ``output``
 
 Stand-alone multi-line blocks
 ___________________________________________
 
-The template code:
+Example 1
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[for`` |inter| ``(Sequence{false,`` |inter| ``false,`` |inter| ``false})]`` |return|
 
@@ -398,17 +418,21 @@ produces:
 
 ----
 
-The template code:
+Example 2
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[if`` |inter| ``(false)]output`` |return|
 
   ``[/if]``
 
-produces an empty chain "".
+produces nothing, neither whitespace nor empty line.
 
 ----
 
-The template code:
+Example 3
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[if`` |inter| ``(true)]`` |return|
 
@@ -416,11 +440,13 @@ The template code:
 
 produces:
 
-  ``output``
+  |tab| ``output``
 
 ----
 
-The template code:
+Example 4
+~~~~~~~~~~~~
+The Acceleo code:
 
   ``[comment]for`` |inter| ``loop[/comment][for`` |inter|
   ``(Sequence{false,`` |inter| ``false})]`` |return|
@@ -433,11 +459,13 @@ The template code:
 	
   ``[/for]``
 
-produces an empty chain "".
+produces nothing, neither whitespace nor empty line.
 
 ----
 
-The template code:
+Example 5
+~~~~~~~~~~~~
+The Acceleo code:
 
   |tab| ``[for`` |inter| ``(Sequence{false,`` |inter| ``false,`` |inter|
   ``false})]`` |return|
