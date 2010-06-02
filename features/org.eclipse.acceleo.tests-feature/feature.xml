@@ -10,6 +10,11 @@
    <copyright url="%copyrightURL">%copyright</copyright>
 
    <license url="%licenseURL">%license</license>
+   
+   <url>
+      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+   </url>
 
    <requires>
       <import feature="org.eclipse.acceleo" version="3.0.0.qualifier"/>
