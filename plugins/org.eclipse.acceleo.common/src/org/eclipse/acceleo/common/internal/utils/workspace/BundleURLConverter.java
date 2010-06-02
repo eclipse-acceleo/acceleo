@@ -151,6 +151,7 @@ public class BundleURLConverter {
 		Bundle tempBundle = null;
 		String tempPath = null;
 		String[] segments = actualPath.split("/"); //$NON-NLS-1$
+		// Note : this loop will be broken as soon as we find the bundle
 		for (int i = segments.length - 1; i >= 0 && bundle == null; i--) {
 			if (isBundleIDCandidate(segments[i])) {
 				tempBundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(
