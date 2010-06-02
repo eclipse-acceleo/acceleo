@@ -811,6 +811,11 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.ocl.ecore.OCLExpression oIfExpr = factory.getOrCreateOCLExpression(iIfExpr);
 			if (oIfExpr != null) {
 				oIfBlock.setIfExpr(oIfExpr);
+				// FIXME 313931 check condition's type (should be boolean)
+				// String display = oIfExpr.getType();
+				// if (oIfExpr.getType() != null) {
+				// display = oIfExpr.getType().getn
+				// }
 			}
 			transformStepResolve(iIfExpr);
 
