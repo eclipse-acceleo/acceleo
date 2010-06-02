@@ -462,7 +462,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					"AcceleoEvaluationVisitor.UndefinedCondition", currentSelf); //$NON-NLS-1$
 			throw exception;
 		}
-		// FIXME the condition could be something other than a boolean. throw exception
+
+		if (conditionValue != null && !(conditionValue instanceof Boolean)) {
+			throw context.createAcceleoException(ifBlock, condition,
+					"AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
+		}
 
 		if (conditionValue != null && ((Boolean)conditionValue).booleanValue()) {
 			for (final org.eclipse.ocl.ecore.OCLExpression nested : ifBlock.getBody()) {
@@ -482,6 +486,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 								"AcceleoEvaluationVisitor.UndefinedElseCondition", currentSelf); //$NON-NLS-1$
 						throw exception;
 					}
+
+					if (elseValue != null && !(elseValue instanceof Boolean)) {
+						throw context.createAcceleoException(ifBlock, (OCLExpression<C>)elseif.getIfExpr(),
+								"AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
+					}
+
 					if (elseValue != null && ((Boolean)elseValue).booleanValue()) {
 						temp = elseif;
 						break;
@@ -1182,6 +1192,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				continue;
 			}
 
+			// FIXME could be other than Boolean
 			if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
 				candidates.remove(candidate);
 			}
