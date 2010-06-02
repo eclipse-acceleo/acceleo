@@ -21,6 +21,11 @@ Contributors:
    <copyright url="%copyrightURL">%copyright</copyright>
 
    <license url="%licenseURL">%license</license>
+   
+   <url>
+      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+   </url>
 
    <plugin
          id="org.eclipse.acceleo.engine"
