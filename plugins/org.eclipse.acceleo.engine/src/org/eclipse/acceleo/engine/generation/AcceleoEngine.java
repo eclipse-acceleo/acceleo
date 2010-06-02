@@ -181,7 +181,6 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * 
 	 * @param factory
 	 *            {@link AbstractAcceleoEnvironmentFactory} that's been used for this generation.
-	 * @nooverride This method is not intended to be re-implemented or extended by clients.
 	 */
 	protected void hookGenerationEnd(AbstractAcceleoEnvironmentFactory factory) {
 		factory.hookGenerationEnd();
