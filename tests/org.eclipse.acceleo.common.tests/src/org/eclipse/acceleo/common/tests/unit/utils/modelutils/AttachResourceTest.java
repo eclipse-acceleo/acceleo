@@ -38,7 +38,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 @SuppressWarnings("nls")
 public class AttachResourceTest extends TestCase {
 	/** Full path to the directory containing the models. */
-	private static final String INPUT_DIRECTORY = "/data/modelUtils/testModels";
+	private static final String INPUT_DIRECTORY = "/data/modelutils/testModels";
 
 	/** This contains the models loaded from {@link INPUT_DIRECTORY}. */
 	private static final List<EObject> INPUT_MODELS;
