@@ -36,8 +36,6 @@ Acceleo is fully compatible with the `Eclipse Modeling Framework
 <http://www.eclipse.org/modeling/emf/>`_. Consequently, Acceleo is compatible
 with any editor using EMF metamodels, like the eclipse UML implementations.
 
-[PENDING - Links towards general MDA documentations]
-
 Installation
 --------------------------------------------------------------------------------
 The simplest way of installing Acceleo is to use a version of eclipse where it
@@ -883,7 +881,25 @@ ________________________________________________________________________________
 You will probably not use this feature every day, but it is important to know
 that it exists because it can bring you comfort from time to time.
 
-[PENDING Find a meaningful example and document the feature.]
+For example, you might have multiple widget types : Text, Spinner, Button,...
+and, starting from an example, want to customize the generation module for each
+of these widgets.
+
+The example below shows a sample of a place where we want to implement a
+behavior for each widget:
+
+.. image:: ../images/android_tutorial/android_As_For_If.png
+
+Once the action executed, we end up with this:
+
+.. image:: ../images/android_tutorial/android_As_For_If_2.png
+
+Of course, this means we still need to change the conditions of these if
+statements; but it simplifies the transformation of the template into what we
+need:
+
+.. image:: ../images/android_tutorial/android_As_For_If_4.png
+
 
 The Acceleo Views
 --------------------------------------------------------------------------------
@@ -1252,11 +1268,6 @@ them (we use java for this document's examples).
 **Note:** You may have to modify the id used to make sure the marker works like
 you want, as ids have to be unique for a given file.
 
-Transform to For/If Block
-________________________________________________________________________________
-
-[PENDING]
-
 Other Facilities
 --------------------------------------------------------------------------------
 
@@ -1356,17 +1367,6 @@ marked with an error marker to remind you that.
 
 Declaring the package as exported by the plug-in removes the error marker, all is
 well that ends well.
-
-Migrating Acceleo 2.x templates
-________________________________________________________________________________
-
-**Warning: This feature will probably evolve in future versions.**
-
-**Important note: It is necessary to use a version of eclipse >= 3.5 in order
-to successfully convert Acceleo 2.x projects or templates into Acceleo 3
-modules.**
-
-[PENDING]
 
 Compilation
 ================================================================================
