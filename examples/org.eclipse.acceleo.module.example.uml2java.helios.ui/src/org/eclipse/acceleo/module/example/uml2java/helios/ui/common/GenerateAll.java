@@ -79,14 +79,15 @@ public class GenerateAll {
       targetFolder.mkdirs();
     }
     
-    final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.uml2java", new Path("/org/eclipse/acceleo/module/example/uml2java/generateJava.emtl"));
-    org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava gen0 = new org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava(modelURI, targetFolder, arguments) {
-      protected URI createTemplateURI(String entry) {
-        return template0;
-      }
-    };
-    gen0.doGenerate(BasicMonitor.toMonitor(monitor));
-      
+//    final URI template0 = getTemplateURI("org.eclipse.acceleo.module.example.uml2java", new Path("/org/eclipse/acceleo/module/example/uml2java/generateJava.emtl"));
+//    org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava gen0 = new org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava(modelURI, targetFolder, arguments) {
+//      protected URI createTemplateURI(String entry) {
+//        return template0;
+//      }
+//    };
+//    gen0.doGenerate(BasicMonitor.toMonitor(monitor));
+     org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava gen0 = new org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava(modelURI, targetFolder, arguments);
+     gen0.doGenerate(BasicMonitor.toMonitor(monitor));
     
   }
 
