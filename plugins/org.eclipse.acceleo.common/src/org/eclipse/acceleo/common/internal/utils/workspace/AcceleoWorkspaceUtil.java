@@ -150,7 +150,7 @@ public final class AcceleoWorkspaceUtil {
 				final String pathSeparator = "/"; //$NON-NLS-1$
 				// We found the appropriate bundle. We'll now try and determine whether the emtl is jarred
 				Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, resourcePath, true);
-				if (emtlFiles.hasMoreElements()) {
+				if (emtlFiles != null && emtlFiles.hasMoreElements()) {
 					resourceURL = (URL)emtlFiles.nextElement();
 				}
 				// This can only be a bundle-scheme URL if we found the URL. Convert it to file or jar scheme
