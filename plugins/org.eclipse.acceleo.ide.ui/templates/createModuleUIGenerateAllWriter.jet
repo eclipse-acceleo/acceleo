@@ -88,23 +88,27 @@ public class GenerateAll {
 			targetFolder.mkdirs();
 		}
 		<%if (content.getModuleJavaClasses().size() > 0) {%>
-		final URI template0 = getTemplateURI("<%=content.getModuleTemplatesPlugins().get(0)%>", new Path("<%=content.getModuleTemplates().get(0)%>"));
-		<%=content.getModuleJavaClasses().get(0)%> gen0 = new <%=content.getModuleJavaClasses().get(0)%>(modelURI, targetFolder, arguments) {
-			protected URI createTemplateURI(String entry) {
-				return template0;
-			}
-		};
+		// final URI template0 = getTemplateURI("<%=content.getModuleTemplatesPlugins().get(0)%>", new Path("<%=content.getModuleTemplates().get(0)%>"));
+		// <%=content.getModuleJavaClasses().get(0)%> gen0 = new <%=content.getModuleJavaClasses().get(0)%>(modelURI, targetFolder, arguments) {
+		//	protected URI createTemplateURI(String entry) {
+		//		return template0;
+		//	}
+		//};
+		//gen0.doGenerate(BasicMonitor.toMonitor(monitor));
+		<%=content.getModuleJavaClasses().get(0)%> gen0 = new <%=content.getModuleJavaClasses().get(0)%>(modelURI, targetFolder, arguments);
 		gen0.doGenerate(BasicMonitor.toMonitor(monitor));
 			<%if (content.getModuleJavaClasses().size() > 1) {%>
 		EObject model = gen0.getModel();
 		if (model != null) {
 				<%for (int i = 1; i < content.getModuleJavaClasses().size(); i++) {%>
-			final URI template<%=i%> = getTemplateURI("<%=content.getModuleTemplatesPlugins().get(i)%>", new Path("<%=content.getModuleTemplates().get(i)%>"));
-			<%=content.getModuleJavaClasses().get(i)%> gen<%=i%> = new <%=content.getModuleJavaClasses().get(i)%>(model, targetFolder, arguments) {
-				protected URI createTemplateURI(String entry) {
-					return template<%=i%>;
-				}
-			};
+			//final URI template<%=i%> = getTemplateURI("<%=content.getModuleTemplatesPlugins().get(i)%>", new Path("<%=content.getModuleTemplates().get(i)%>"));
+			//<%=content.getModuleJavaClasses().get(i)%> gen<%=i%> = new <%=content.getModuleJavaClasses().get(i)%>(model, targetFolder, arguments) {
+			//	protected URI createTemplateURI(String entry) {
+			//		return template<%=i%>;
+			//	}
+			//};
+			//gen<%=i%>.doGenerate(BasicMonitor.toMonitor(monitor));
+			<%=content.getModuleJavaClasses().get(i)%> gen<%=i%> = new <%=content.getModuleJavaClasses().get(i)%>(model, targetFolder, arguments);
 			gen<%=i%>.doGenerate(BasicMonitor.toMonitor(monitor));<%}%>
 		}
 			<%}%>
