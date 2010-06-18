@@ -130,6 +130,9 @@ public final class ModelUtils {
 			if (resourceFactory != null) {
 				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
 						resourceFactory);
+			} else {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						new XMIResourceFactoryImpl());
 			}
 		}
 		return resourceSet.createResource(modelURI);
