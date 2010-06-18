@@ -25,14 +25,17 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * The Acceleo Compiler ANT Task.
@@ -152,6 +155,9 @@ public class AcceleoCompiler extends Task {
 	 */
 	@Override
 	public void execute() throws BuildException {
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+			standaloneInit();
+		}
 		StringBuffer message = new StringBuffer();
 		List<MTLFileInfo> fileInfos = new ArrayList<MTLFileInfo>();
 		for (File sourceFolder : sourceFolders) {
@@ -315,4 +321,15 @@ public class AcceleoCompiler extends Task {
 		}
 	}
 
+	/**
+	 * We may be calling for the compilation in standalone mode. In such a case we need a little more
+	 * initialization.
+	 */
+	private void standaloneInit() {
+		Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
+		if (registry.getExtensionToFactoryMap().get(IAcceleoConstants.EMTL_FILE_EXTENSION) == null) {
+			registry.getExtensionToFactoryMap().put(IAcceleoConstants.EMTL_FILE_EXTENSION,
+					new EMtlResourceFactoryImpl());
+		}
+	}
 }
