@@ -531,6 +531,8 @@ public final class OpenDeclarationUtils {
 					}
 				}
 			}
+			// FIXME : This could be done through URIConverter.URI_MAP. We shouldn't reparse the extension
+			// point
 			extensionPoint = registry.getExtensionPoint("org.eclipse.emf.ecore.uri_mapping"); //$NON-NLS-1$
 			if (result == null && extensionPoint != null && extensionPoint.getExtensions().length > 0) {
 				IExtension[] extensions = extensionPoint.getExtensions();
