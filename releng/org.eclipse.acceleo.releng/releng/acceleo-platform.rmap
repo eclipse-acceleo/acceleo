@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rmap xmlns="http://www.eclipse.org/buckminster/RMap-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0"
+>
+	<locator pattern="^org\.eclipse\.acceleo\.releng\.buckminster$" searchPathRef="local.releng" />
+	<locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf" />
+	<locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl" />
+	<locator pattern="^lpg\.runtime\.java$" searchPathRef="ocl" />
+	<locator searchPathRef="platform" />
+
+	<searchPath name="local.releng">
+		<provider componentTypes="buckminster" readerType="local" source="true" mutable="false">
+			<uri format="{0}{1}">
+				<bc:propertyRef key="checkout.location" />
+				<bc:propertyRef key="buckminster.component" />
+			</uri>
+		</provider>
+	</searchPath>
+
+	<searchPath name="emf">
+		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+			<uri format="{0}/modeling/emf/emf/updates/2.6milestones">
+				<bc:propertyRef key="eclipse.download" />
+			</uri>
+		</provider>
+	</searchPath>
+
+	<searchPath name="ocl">
+		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+			<uri format="{0}/modeling/mdt/ocl/3_0/updates/milestones">
+				<bc:propertyRef key="eclipse.download" />
+			</uri>
+		</provider>
+	</searchPath>
+
+	<searchPath name="platform">
+		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+			<uri format="{0}/eclipse/updates/3.6milestones">
+				<bc:propertyRef key="eclipse.download" />
+			</uri>
+		</provider>
+	</searchPath>
+
+	<property key="checkout.location" value="${workspace.root}/" />
+	<property key="eclipse.download" value="http://download.eclipse.org" />
+</rmap>
