@@ -4,5 +4,5 @@
 	<mspec:property key="target.arch" value="*"/>
 	<mspec:property key="target.ws" value="*"/>
 
-	<mspec:mspecNode namePattern="^org\.eclipse\.acceleo\.releng\.buckminster$" exclude="true"/>
+	<mspec:mspecNode namePattern="^org\.eclipse\.acceleo\.releng$" exclude="true"/>
 </mspec:mspec>
