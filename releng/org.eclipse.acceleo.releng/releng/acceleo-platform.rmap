@@ -2,7 +2,7 @@
 <rmap xmlns="http://www.eclipse.org/buckminster/RMap-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0"
 >
-	<locator pattern="^org\.eclipse\.acceleo\.releng\.buckminster$" searchPathRef="local.releng" />
+	<locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng" />
 	<locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf" />
 	<locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl" />
 	<locator pattern="^lpg\.runtime\.java$" searchPathRef="ocl" />
