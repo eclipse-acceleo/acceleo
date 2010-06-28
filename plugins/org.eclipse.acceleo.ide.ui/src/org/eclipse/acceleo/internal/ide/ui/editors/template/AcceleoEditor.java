@@ -53,6 +53,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.information.IInformationPresenter;
@@ -700,7 +701,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (findOccurrencesPostSelectionListener == null) {
 			findOccurrencesPostSelectionListener = new ISelectionListener() {
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-					findOccurrences();
+					// 318142 filter out selections that are not "text" selections
+					if (selection instanceof ITextSelection) {
+						findOccurrences();
+					}
 				}
 			};
 			this.getSite().getPage().addPostSelectionListener(findOccurrencesPostSelectionListener);
