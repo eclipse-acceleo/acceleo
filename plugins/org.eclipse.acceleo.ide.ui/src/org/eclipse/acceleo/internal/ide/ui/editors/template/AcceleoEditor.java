@@ -702,7 +702,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			findOccurrencesPostSelectionListener = new ISelectionListener() {
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 					// 318142 filter out selections that are not "text" selections
-					if (selection instanceof ITextSelection) {
+					if (selection instanceof ITextSelection && part == AcceleoEditor.this) {
 						findOccurrences();
 					}
 				}
