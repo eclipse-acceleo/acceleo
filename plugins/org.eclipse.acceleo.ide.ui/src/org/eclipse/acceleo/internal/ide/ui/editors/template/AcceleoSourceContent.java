@@ -1192,9 +1192,10 @@ public class AcceleoSourceContent {
 				ASTNode astNode = (ASTNode)eContent;
 				int startPosition = astNode.getStartPosition();
 				int endPosition = astNode.getEndPosition();
-				assert startPosition > -1 && endPosition > -1;
-				if (startPosition <= posBegin && endPosition >= posEnd) {
-					return astNode;
+				if (startPosition > -1 && endPosition > -1) {
+					if (startPosition <= posBegin && endPosition >= posEnd) {
+						return astNode;
+					}
 				}
 			}
 		}

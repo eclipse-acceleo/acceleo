@@ -169,9 +169,14 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		List<URI> allURIs = new ArrayList<URI>();
 		IProject project = null;
 		if (editor.getContent().getFile() != null && editor.getFile() != null) {
-			URI newResourceURI = URI.createPlatformResourceURI(new AcceleoProject(editor.getContent()
-					.getFile().getProject()).getOutputFilePath(editor.getContent().getFile()).toString(),
-					false);
+			final AcceleoProject acceleoProject = new AcceleoProject(editor.getContent().getFile()
+					.getProject());
+			final IPath outputFilePath = acceleoProject.getOutputFilePath(editor.getContent().getFile());
+			if (outputFilePath == null) {
+				return;
+			}
+			final String path = outputFilePath.toString();
+			URI newResourceURI = URI.createPlatformResourceURI(path, false);
 			allURIs.add(newResourceURI);
 			if (this.searchOutsideOfCurrentFile) {
 				project = editor.getFile().getProject();
