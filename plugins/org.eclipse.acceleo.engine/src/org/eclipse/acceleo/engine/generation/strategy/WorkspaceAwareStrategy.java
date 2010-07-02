@@ -74,6 +74,11 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		final AbstractAcceleoWriter writer;
 		boolean fileExisted = file.exists();
 
+		if (file.isDirectory()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FileNameIsDirectory", file.getParentFile())); //$NON-NLS-1$
+		}
+
 		if (charset != null) {
 			if (Charset.isSupported(charset)) {
 				writer = new AcceleoWorkspaceFileWriter(file, appendMode, hasJMergeTags, charset);
