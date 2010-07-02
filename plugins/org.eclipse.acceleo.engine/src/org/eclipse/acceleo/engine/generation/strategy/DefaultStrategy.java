@@ -114,6 +114,11 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 			}
 		}
 
+		if (file.isDirectory()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FileNameIsDirectory", file.getParentFile())); //$NON-NLS-1$
+		}
+
 		boolean fileExisted = file.exists();
 
 		if (!hasJMergeTags || appendMode) {

@@ -24,6 +24,7 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
 import org.eclipse.acceleo.engine.generation.writers.AcceleoStringWriter;
 
@@ -110,6 +111,12 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 	public AbstractAcceleoWriter createWriterFor(File file, AbstractAcceleoWriter previous,
 			boolean appendMode, boolean hasJMergeTags, String charset) throws IOException {
 		final AbstractAcceleoWriter writer;
+
+		if (file.isDirectory()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FileNameIsDirectory", file.getParentFile())); //$NON-NLS-1$
+		}
+
 		if (appendMode && previous != null) {
 			writer = previous;
 			writer.append(LINE_SEPARATOR);
