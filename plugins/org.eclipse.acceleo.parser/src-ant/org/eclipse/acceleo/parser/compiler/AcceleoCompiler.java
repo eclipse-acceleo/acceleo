@@ -24,7 +24,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
@@ -315,7 +315,7 @@ public class AcceleoCompiler extends Task {
 				members(ecoreFiles, requiredFolder, "ecore"); //$NON-NLS-1$
 				for (File ecoreFile : ecoreFiles) {
 					URI ecoreURI = URI.createFileURI(ecoreFile.getAbsolutePath());
-					ModelUtils.registerEcorePackages(ecoreURI.toString());
+					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreURI.toString());
 				}
 			}
 		}

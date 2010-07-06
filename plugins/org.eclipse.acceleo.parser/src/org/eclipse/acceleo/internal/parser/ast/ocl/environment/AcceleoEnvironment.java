@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
@@ -97,7 +98,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 *            resource used to keep the OCL environment.
 	 */
 	public AcceleoEnvironment(Resource oclEnvironmentResource) {
-		super(EPackage.Registry.INSTANCE, oclEnvironmentResource);
+		super(AcceleoPackageRegistry.INSTANCE, oclEnvironmentResource);
 		addAdditionalOperations();
 	}
 
