@@ -476,7 +476,8 @@ public class AcceleoCommonPlugin extends Plugin {
 					}
 					break;
 				case IResourceChangeEvent.POST_CHANGE:
-					if (event.getResource().getFileExtension().endsWith("ecore")) {
+					if (event.getResource() != null
+							&& event.getResource().getFileExtension().endsWith("ecore")) {
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(event.getResource()
 								.getFullPath().toString());
 					}
