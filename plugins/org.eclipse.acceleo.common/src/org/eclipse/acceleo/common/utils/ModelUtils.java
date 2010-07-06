@@ -21,10 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -42,13 +41,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 public final class ModelUtils {
 	/** Constant for the file encoding system property. */
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
-
-	/**
-	 * For dynamic ecore files only. To get the ecore file path of the registered nsURI. Dynamic packages are
-	 * registered in the EMF Registry by using the 'registerEcorePackages' method. The map key is the dynamic
-	 * nsURI of an EPackage and the value is the ecore file path used to register this nsURI.
-	 */
-	private static Map<String, String> dynamicEcorePackagePaths = new HashMap<String, String>();
 
 	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
@@ -412,7 +404,7 @@ public final class ModelUtils {
 	 */
 	public static EPackage getEPackage(String nsURI) {
 		try {
-			return EPackage.Registry.INSTANCE.getEPackage(nsURI);
+			return AcceleoPackageRegistry.INSTANCE.getEPackage(nsURI);
 		} catch (WrappedException e) {
 			return null;
 		}
@@ -427,90 +419,11 @@ public final class ModelUtils {
 	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
 	 *         corresponding NsURI
 	 * @since 3.0
+	 * @deprecated
 	 */
+	@Deprecated
 	public static String registerEcorePackages(String pathName) {
-		EObject eObject;
-		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://")) { //$NON-NLS-1$ //$NON-NLS-2$
-			ResourceSet resourceSet = new ResourceSetImpl();
-			URI metaURI = URI.createURI(pathName, false);
-			try {
-				eObject = ModelUtils.load(metaURI, resourceSet);
-			} catch (IOException e) {
-				eObject = null;
-			} catch (WrappedException e) {
-				eObject = null;
-			}
-			if (!(eObject instanceof EPackage)) {
-				resourceSet = new ResourceSetImpl();
-				metaURI = URI.createPlatformResourceURI(pathName, false);
-				try {
-					eObject = ModelUtils.load(metaURI, resourceSet);
-				} catch (IOException e) {
-					eObject = null;
-				} catch (WrappedException e) {
-					eObject = null;
-				}
-				if (!(eObject instanceof EPackage)) {
-					resourceSet = new ResourceSetImpl();
-					metaURI = URI.createPlatformPluginURI(pathName, false);
-					try {
-						eObject = ModelUtils.load(metaURI, resourceSet);
-					} catch (IOException e) {
-						eObject = null;
-					} catch (WrappedException e) {
-						eObject = null;
-					}
-				}
-			}
-		} else {
-			eObject = null;
-		}
-		if (eObject instanceof EPackage) {
-			EPackage ePackage = (EPackage)eObject;
-			registerEcorePackageHierarchy(ePackage);
-			return ePackage.getNsURI();
-		} else {
-			return pathName;
-		}
-
-	}
-
-	/**
-	 * Register the given EPackage and its descendants.
-	 * 
-	 * @param ePackage
-	 *            is the root package to register
-	 */
-	private static void registerEcorePackageHierarchy(EPackage ePackage) {
-		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
-			if (eClassifier instanceof EClass) {
-				try {
-					// very useful to delegate to the EMF mechanism
-					ePackage.getEFactoryInstance().create((EClass)eClassifier);
-				} catch (IllegalArgumentException e) {
-					// continue
-				}
-				break;
-			}
-		}
-		if (ePackage.getNsURI() != null) {
-			// The MTL ecore file mustn't be dynamic!!!
-			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
-			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix())
-					&& !"mtlstdlib".equals(ePackage.getNsPrefix())) {
-				if (ePackage.eResource() != null) {
-					dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI()
-							.toString());
-				}
-				if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-					ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
-				}
-				EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
-			}
-		}
-		for (EPackage subPackage : ePackage.getESubpackages()) {
-			registerEcorePackageHierarchy(subPackage);
-		}
+		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName);
 	}
 
 	/**
@@ -523,8 +436,10 @@ public final class ModelUtils {
 	 * @return the ecore file path that contains the given EPackage, or null if it hasn't been registered in
 	 *         the EMF Registry with the 'registerEcorePackages' method
 	 * @since 3.0
+	 * @deprecated
 	 */
+	@Deprecated
 	public static String getRegisteredEcorePackagePath(String nsURI) {
-		return dynamicEcorePackagePaths.get(nsURI);
+		return AcceleoPackageRegistry.INSTANCE.getRegisteredEcorePackagePath(nsURI);
 	}
 }
