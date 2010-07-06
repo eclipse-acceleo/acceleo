@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AbstractAcceleoEnvironmentFactory;
@@ -75,7 +76,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 	public AcceleoEnvironmentFactory(File generationRoot, Module module,
 			List<IAcceleoTextGenerationListener> listeners, AcceleoPropertiesLookup properties,
 			IAcceleoGenerationStrategy strategy, Monitor monitor) {
-		super(EPackage.Registry.INSTANCE);
+		super(AcceleoPackageRegistry.INSTANCE);
 		context = new AcceleoEvaluationContext<EClassifier>(generationRoot, listeners, strategy, monitor);
 		propertiesLookup = properties;
 		this.module = module;
