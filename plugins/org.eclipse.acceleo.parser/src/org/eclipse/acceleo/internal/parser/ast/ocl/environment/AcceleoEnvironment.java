@@ -224,10 +224,27 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	@Override
 	public List<EOperation> getAdditionalOperations(EClassifier classifier) {
 		List<EOperation> result = new ArrayList<EOperation>();
+
+		// we ask ocl for its completion proposals
 		result.addAll(super.getAdditionalOperations(classifier));
-		if (!(classifier instanceof PrimitiveType)) {
+
+		AcceleoNonStandardLibrary nonStandardLibrary = new AcceleoNonStandardLibrary();
+		if (classifier instanceof CollectionType) {
+			result.addAll(nonStandardLibrary
+					.getExistingOperations(AcceleoNonStandardLibrary.TYPE_COLLECTION_NAME));
+		}
+
+		// we add the non standard operations of the sequence type and the ordered set type
+		if (classifier instanceof SequenceType) {
+			result.addAll(nonStandardLibrary
+					.getExistingOperations(AcceleoNonStandardLibrary.TYPE_SEQUENCE_NAME));
+		} else if (classifier instanceof OrderedSetType) {
+			result.addAll(nonStandardLibrary
+					.getExistingOperations(AcceleoNonStandardLibrary.TYPE_ORDEREDSET_NAME));
+		} else if (!(classifier instanceof PrimitiveType) && !(classifier instanceof CollectionType)) {
 			result.addAll(super.getAdditionalOperations(EcorePackage.eINSTANCE.getEObject()));
 		}
+
 		return result;
 	}
 
@@ -549,5 +566,4 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 		}
 		super.analyzerError(problemMessage, problemContext, problemObjects);
 	}
-
 }
