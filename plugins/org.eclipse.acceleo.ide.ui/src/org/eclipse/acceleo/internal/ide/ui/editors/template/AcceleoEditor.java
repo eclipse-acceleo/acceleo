@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -235,7 +235,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				}
 			}
 			for (IFile ecoreFile : ecoreFiles) {
-				ModelUtils.registerEcorePackages(ecoreFile.getFullPath().toString());
+				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreFile.getFullPath().toString());
 			}
 		}
 	}

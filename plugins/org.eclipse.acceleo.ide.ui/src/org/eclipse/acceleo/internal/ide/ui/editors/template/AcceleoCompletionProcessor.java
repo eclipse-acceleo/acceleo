@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -724,7 +725,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			i--;
 		}
 		String start = text.substring(i, offset);
-		Iterator<String> entries = new LinkedHashSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
+		Iterator<String> entries = new LinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet())
+				.iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
 			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
@@ -733,7 +735,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		if (start.length() > 0) {
-			entries = new LinkedHashSet<String>(EPackage.Registry.INSTANCE.keySet()).iterator();
+			entries = new LinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet()).iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
 				EPackage ePackage = ModelUtils.getEPackage(pURI);

@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
@@ -504,7 +504,7 @@ public final class OpenDeclarationUtils {
 	private static URI formatURI(URI fileURI) {
 		URI result = null;
 		String fileURIString = fileURI.toString();
-		String ecorePath = ModelUtils.getRegisteredEcorePackagePath(fileURIString);
+		String ecorePath = AcceleoPackageRegistry.INSTANCE.getRegisteredEcorePackagePath(fileURIString);
 		if (ecorePath != null) {
 			result = URI.createPlatformResourceURI(ecorePath, false);
 		}
