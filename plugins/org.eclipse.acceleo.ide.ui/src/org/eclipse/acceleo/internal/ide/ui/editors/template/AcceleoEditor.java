@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -67,6 +68,8 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
+import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -74,10 +77,13 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -170,6 +176,16 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * editor the occurrences of the current selected region.
 	 */
 	private ISelectionListener findOccurrencesPostSelectionListener;
+
+	/**
+	 * The error title image, this image will be shown in the editor's tab.
+	 */
+	private Image errorTitleImage;
+
+	/**
+	 * The original title image, this image will be shown in the editor's tab.
+	 */
+	private Image originalTitleImage;
 
 	/**
 	 * Constructor.
@@ -372,6 +388,12 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			blockMatcher.dispose();
 			blockMatcher = null;
 		}
+		if (errorTitleImage != null) {
+			errorTitleImage.dispose();
+		}
+		if (originalTitleImage != null) {
+			originalTitleImage.dispose();
+		}
 	}
 
 	/**
@@ -426,6 +448,20 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				}
 			}
 		}
+
+		// if there are marker on the file, we show a marker on the editors tab
+		IResourceDelta delta = event.getDelta();
+		if (delta != null) {
+			IResource resource = delta.getResource();
+			try {
+				IMarker[] markers = resource.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
+				if (markers.length > 0) {
+					markersChanged();
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
 	}
 
 	/**
@@ -448,6 +484,56 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			files.addAll(deltaMembers(children[i]));
 		}
 		return files;
+	}
+
+	/**
+	 * This method will draw or delete the marker on the editor's tab.
+	 */
+	private void markersChanged() {
+		// draws an error decorator on the editor's tab
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				AcceleoEditor.this.changeErrorImage();
+			}
+		});
+	}
+
+	/**
+	 * Change the error image in the editor's tab.
+	 */
+	private void changeErrorImage() {
+		final AcceleoEditor editor = this;
+		Image currentImage = editor.getTitleImage();
+		if (originalTitleImage == null) {
+			// make a copy because the original image will be disposed
+			originalTitleImage = new Image(Display.getDefault(), currentImage.getImageData());
+		}
+
+		try {
+			IMarker[] markers = getFile().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			boolean hasMarkers = markers.length > 0;
+			if (hasMarkers) {
+				if (errorTitleImage == null) {
+					ImageDescriptor errorDescriptor = PlatformUI.getWorkbench().getSharedImages()
+							.getImageDescriptor(ISharedImages.IMG_DEC_FIELD_ERROR);
+					errorTitleImage = new DecorationOverlayIcon(originalTitleImage, errorDescriptor,
+							IDecoration.BOTTOM_LEFT).createImage();
+				}
+				if (currentImage != errorTitleImage) {
+					editor.setTitleImage(errorTitleImage);
+				}
+			} else {
+				if (currentImage != originalTitleImage) {
+					editor.setTitleImage(originalTitleImage);
+				}
+			}
+			if (AcceleoEditor.this.getSourceViewer() instanceof ProjectionViewer) {
+				ProjectionViewer viewer = (ProjectionViewer)AcceleoEditor.this.getSourceViewer();
+				viewer.getControl().redraw();
+			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
 	}
 
 	/**
