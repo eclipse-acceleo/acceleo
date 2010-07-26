@@ -1368,6 +1368,56 @@ marked with an error marker to remind you that.
 Declaring the package as exported by the plug-in removes the error marker, all is
 well that ends well.
 
+Escaping Keywords
+________________________________________________________________________________
+If you need to generate text corresponding to Acceleo or OCL keywords, you might
+need to escape them. This is done by inserting these keywords or symbols within
+an Acceleo block and using an OCL String. For example, generating the opening
+bracket symbol would require :
+
+*[ '[' /]*
+
+The same applies for the closing bracket :
+
+*[ ']' /]*
+
+Operation names conflicting with keywords
+________________________________________________________________________________
+It may happen that you're using a metamodel which operations or features conflict
+with reserved OCL keywords. For example, this happens a lot with UML : if your
+metamodel has a class *Operation* with a feature named *body*, then writing
+**myClass.body** in OCL will result in a somewhat cryptic error : *invalid token
+'body'*.
+
+The trick to access such features in OCL is to prefix the feature name with an
+underscore. For this example, you should have written *myClass._body*.
+
+For the record, the full list of OCL reserved keywords as per the current OCL
+version, 3.0, is as follows :
+
+ * and
+ * body
+ * context
+ * def
+ * derive
+ * else
+ * endif
+ * endpackage
+ * if
+ * implies
+ * in
+ * init
+ * inv
+ * let
+ * not
+ * or
+ * package
+ * post
+ * pre
+ * static
+ * then
+ * xor
+
 Compilation
 ================================================================================
 
