@@ -42,6 +42,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
@@ -54,6 +56,32 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This specific override allows us to find the Java element corresponding to a given mtl file when
+	 * launched from right click -> run as -> launch acceleo application from within the template editor.
+	 * </p>
+	 * 
+	 * @see org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchShortcut#launch(org.eclipse.ui.IEditorPart,
+	 *      java.lang.String)
+	 */
+	@Override
+	public void launch(IEditorPart editor, String mode) {
+		IEditorInput input = editor.getEditorInput();
+		IJavaElement je = (IJavaElement)input.getAdapter(IJavaElement.class);
+		if (je != null) {
+			super.launch(editor, mode);
+		} else {
+			// Acceleo specific
+			IFile mtlFile = (IFile)input.getAdapter(IFile.class);
+			IFile javaFile = findJavaFileForMTLFile(mtlFile);
+			if (javaFile != null) {
+				IStructuredSelection selection = new StructuredSelection(javaFile);
+				launch(selection, mode);
+			}
+		}
+	}
 
 	/**
 	 * Returns the Java elements corresponding to the given objects.
@@ -68,30 +96,7 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 			Object object = objects[i];
 			if (object instanceof IFile
 					&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)object).getFileExtension())) {
-				try {
-					String name1 = new Path(((IFile)object).getName()).removeFileExtension().lastSegment()
-							.toLowerCase();
-					IResource[] members = ((IFile)object).getParent().members();
-					for (int j = 0; j < members.length; j++) {
-						IResource resource = members[j];
-						if (resource != object && resource instanceof IFile
-								&& "java".equals(((IFile)resource).getFileExtension())) { //$NON-NLS-1$
-							String name2 = new Path(((IFile)resource).getName()).removeFileExtension()
-									.lastSegment().toLowerCase();
-							if (name1.equals(name2)) {
-								object = resource;
-								break;
-							}
-						}
-					}
-				} catch (CoreException e) {
-					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-				}
-				IFile javaFile = ((IFile)object).getParent().getFile(
-						new Path(((IFile)object).getName()).removeFileExtension().addFileExtension("java")); //$NON-NLS-1$
-				if (javaFile.exists()) {
-					object = javaFile;
-				}
+				object = findJavaFileForMTLFile((IFile)object);
 			}
 			if (object instanceof IAdaptable) {
 				IJavaElement element = (IJavaElement)((IAdaptable)object).getAdapter(IJavaElement.class);
@@ -104,6 +109,45 @@ public class AcceleoApplicationLaunchShortcut extends JavaLaunchShortcut {
 			}
 		}
 		return list.toArray(new IJavaElement[list.size()]);
+	}
+
+	/**
+	 * This will try and find the associated java file for an mtl file with a main annotation.
+	 * 
+	 * @param mtlFile
+	 *            The module file we need the generated java class for.
+	 * @return The associated java launcher.
+	 */
+	private IFile findJavaFileForMTLFile(IFile mtlFile) {
+		if (!IAcceleoConstants.MTL_FILE_EXTENSION.equals(mtlFile.getFileExtension())) {
+			throw new IllegalArgumentException();
+		}
+		try {
+			String name1 = new Path(mtlFile.getName()).removeFileExtension().lastSegment().toLowerCase();
+			IResource[] members = mtlFile.getParent().members();
+			IFile javaFile = null;
+			for (int j = 0; j < members.length && javaFile == null; j++) {
+				IResource resource = members[j];
+				if (resource != mtlFile && resource instanceof IFile
+						&& "java".equals(((IFile)resource).getFileExtension())) { //$NON-NLS-1$
+					String name2 = new Path(((IFile)resource).getName()).removeFileExtension().lastSegment()
+							.toLowerCase();
+					if (name1.equals(name2)) {
+						javaFile = (IFile)resource;
+					}
+				}
+			}
+			if (javaFile == null) {
+				javaFile = mtlFile.getParent().getFile(
+						new Path(mtlFile.getName()).removeFileExtension().addFileExtension("java")); //$NON-NLS-1$
+			}
+			if (javaFile != null && javaFile.exists()) {
+				return javaFile;
+			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+		}
+		return null;
 	}
 
 	/**
