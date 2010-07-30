@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
@@ -69,7 +71,7 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * @see org.eclipse.search.ui.ISearchResult#getImageDescriptor()
 	 */
 	public ImageDescriptor getImageDescriptor() {
-		return ImageDescriptor.getMissingImageDescriptor();
+		return AcceleoUIActivator.getImageDescriptor("icons/AcceleoEditor.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -78,7 +80,9 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * @see org.eclipse.search.ui.ISearchResult#getLabel()
 	 */
 	public String getLabel() {
-		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label"); //$NON-NLS-1$
+		int matchCount = this.getMatchCount();
+		EObject declaration = this.query.getDeclaration();
+		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label", declaration, matchCount); //$NON-NLS-1$
 	}
 
 	/**

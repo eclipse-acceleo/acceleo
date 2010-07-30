@@ -477,4 +477,13 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			return new Region(0, 0);
 		}
 	}
+
+	/**
+	 * Returns the declaration.
+	 * 
+	 * @return The declaration.
+	 */
+	public EObject getDeclaration() {
+		return this.declaration;
+	}
 }
