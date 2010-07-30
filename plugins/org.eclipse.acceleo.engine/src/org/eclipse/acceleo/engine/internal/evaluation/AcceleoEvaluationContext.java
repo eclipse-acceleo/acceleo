@@ -686,6 +686,11 @@ public class AcceleoEvaluationContext<C> {
 				}
 				// Everything preceding the start of user code doesn't need to be saved
 				areaContent.append(line.substring(line.indexOf(usercodeStart)));
+
+				/*
+				 * TODO If there is no "end of user code", or if the protected content is too large, this will
+				 * fail in OutOfMemoryErrors. Could we use a temp File (java.nio?) instead of a StringBuffer?
+				 */
 				line = reader.readLine();
 				while (line != null) {
 					areaContent.append(LINE_SEPARATOR);
