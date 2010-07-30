@@ -20,9 +20,13 @@ import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
+import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
+import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -691,6 +695,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.ProtectedAreaBlock oProtectedAreaBlock = factory
 				.getOrCreateProtectedAreaBlock(iProtectedAreaBlock);
 		if (iProtectedAreaBlock != null && oProtectedAreaBlock != null) {
+
+			// checks conflicts with the name of another protected area block
+			this.checkNameConflict(iProtectedAreaBlock);
+
 			org.eclipse.acceleo.parser.cst.ModelExpression iMarker = iProtectedAreaBlock.getMarker();
 			org.eclipse.ocl.ecore.OCLExpression oMarker = factory.getOrCreateOCLExpression(iMarker);
 			if (oMarker != null) {
@@ -705,6 +713,69 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 			transformStepResolveRemoveVariables(iInit);
 		}
+	}
+
+	/**
+	 * This method will determine if there is a conflict between the name of the protected block and the name
+	 * of another protected block within the module.
+	 * 
+	 * @param iProtectedArea
+	 *            the protected area.
+	 */
+	private void checkNameConflict(final org.eclipse.acceleo.parser.cst.ProtectedAreaBlock iProtectedArea) {
+		if (iProtectedArea.getMarker() == null) {
+			return;
+		}
+		final String protectedAreaName = iProtectedArea.getMarker().getBody();
+
+		// we find the scope of the current block.
+		EObject scopeContainer = this.getScopeContainer(iProtectedArea);
+
+		// we find all the protected areas in the module.
+		List<org.eclipse.acceleo.parser.cst.ProtectedAreaBlock> protectedAreas = new ArrayList<org.eclipse.acceleo.parser.cst.ProtectedAreaBlock>();
+		TreeIterator<EObject> children = scopeContainer.eAllContents();
+		while (children.hasNext()) {
+			EObject child = children.next();
+			if (child instanceof org.eclipse.acceleo.parser.cst.ProtectedAreaBlock) {
+				org.eclipse.acceleo.parser.cst.ProtectedAreaBlock protectedAreaBlock = (org.eclipse.acceleo.parser.cst.ProtectedAreaBlock)child;
+				if (this.getScopeContainer(protectedAreaBlock).equals(scopeContainer)) {
+					protectedAreas.add(protectedAreaBlock);
+				}
+			}
+		}
+
+		// we find all the conflicts.
+		List<org.eclipse.acceleo.parser.cst.ProtectedAreaBlock> conflictList = new ArrayList<org.eclipse.acceleo.parser.cst.ProtectedAreaBlock>();
+		for (org.eclipse.acceleo.parser.cst.ProtectedAreaBlock protectedAreaBlock : protectedAreas) {
+			if (!protectedAreaBlock.equals(iProtectedArea) && protectedAreaBlock.getMarker() != null
+					&& protectedAreaBlock.getMarker().getBody().equals(protectedAreaName)) {
+				conflictList.add(protectedAreaBlock);
+			}
+		}
+
+		// for all conflict we log an error.
+		if (!conflictList.isEmpty()) {
+			for (ProtectedAreaBlock protectedAreaBlock : conflictList) {
+				this.log(AcceleoParserMessages
+						.getString("CST2ASTConverterWithResolver.ProtectedAreaConflict"), protectedAreaBlock //$NON-NLS-1$
+						.getMarker().getStartPosition(), protectedAreaBlock.getMarker().getEndPosition());
+			}
+		}
+	}
+
+	/**
+	 * Returns the container of the scope of the protected area.
+	 * 
+	 * @param iProtectedArea
+	 *            the protected area
+	 * @return The container of the scope of the protected area
+	 */
+	private EObject getScopeContainer(final org.eclipse.acceleo.parser.cst.ProtectedAreaBlock iProtectedArea) {
+		EObject container = iProtectedArea.eContainer();
+		while (!(container instanceof Template) && !(container instanceof FileBlock)) {
+			container = container.eContainer();
+		}
+		return container;
 	}
 
 	/**
