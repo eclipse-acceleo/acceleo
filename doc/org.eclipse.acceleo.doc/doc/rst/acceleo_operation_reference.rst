@@ -1048,7 +1048,7 @@ ___________________________________________________________________________
 
 back to Contents_
 
-filter (OclType type) : Sequence(OclType)
+filter (OclType type) : Collection(OclType)
 ___________________________________________________________________________
    Filters out of the collection all elements that are not instances
    of the given type or any of its subtypes.
