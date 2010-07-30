@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
+import org.eclipse.ocl.util.CollectionUtil;
 
 /**
  * The purpose of this Utility class is to allow execution of Standard and non standard Acceleo operations.
@@ -282,7 +283,19 @@ public final class AcceleoLibraryOperationVisitor {
 			}
 			result = temp;
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName)) {
-			final List<Object> temp = new ArrayList<Object>(source.size());
+			final Collection<Object> temp;
+
+			// Determine return type
+			if (source instanceof ArrayList) {
+				temp = CollectionUtil.createNewSequence();
+			} else if (source instanceof LinkedHashSet) {
+				temp = CollectionUtil.createNewOrderedSet();
+			} else if (source instanceof Set) {
+				temp = CollectionUtil.createNewSet();
+			} else {
+				temp = CollectionUtil.createNewBag();
+			}
+
 			final Iterator<?> sourceIterator = source.iterator();
 			while (sourceIterator.hasNext()) {
 				final Object next = sourceIterator.next();
