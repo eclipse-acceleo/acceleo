@@ -98,6 +98,16 @@ public class AcceleoNewProjectWizard extends AcceleoNewTemplatesWizard {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
+	 */
+	@Override
+	public boolean canFinish() {
+		return newProjectPage.isPageComplete();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard#performFinish()
 	 */
 	@Override
