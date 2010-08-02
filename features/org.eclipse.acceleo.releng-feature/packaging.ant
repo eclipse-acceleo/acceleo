@@ -8,7 +8,7 @@
 	</target>
 
 	<target name="-define.package.qualifier">
-		<property name="incubation.qualifier" value="-incubation" />
+		<property name="incubation.qualifier" value="" />
 
 		<!-- if the build.alias is non-empty then use it in preference -->
 		<condition property="package.qualifier" value="${incubation.qualifier}-${build.alias}">
