@@ -138,7 +138,7 @@
       </body>
       <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xD;&#xA;&#xD;&#xA;"/>
       <body xsi:type="mtl:ProtectedAreaBlock">
-        <marker xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="identifier">
+        <marker xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="alternate identifier">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </marker>
       </body>
@@ -750,7 +750,7 @@
   <ecore:EAnnotation source="positions">
     <eAnnotations source="positions.0" references="/0/bookToText">
       <details key="start" value="195"/>
-      <details key="end" value="703"/>
+      <details key="end" value="713"/>
       <details key="line" value="10"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/bookToText/@body.0">
@@ -1030,17 +1030,17 @@
     </eAnnotations>
     <eAnnotations source="positions.56" references="/0/bookToText/@body.15">
       <details key="start" value="661"/>
-      <details key="end" value="688"/>
+      <details key="end" value="698"/>
       <details key="line" value="42"/>
     </eAnnotations>
     <eAnnotations source="positions.57" references="/0/bookToText/@body.15/@marker">
       <details key="start" value="673"/>
-      <details key="end" value="685"/>
+      <details key="end" value="695"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.58" references="/0/bookToText/@body.16">
-      <details key="start" value="688"/>
-      <details key="end" value="690"/>
+      <details key="start" value="698"/>
+      <details key="end" value="700"/>
       <details key="line" value="43"/>
     </eAnnotations>
     <eAnnotations source="positions.59" references="/0/bookToText/b">
@@ -1054,43 +1054,43 @@
       <details key="line" value="10"/>
     </eAnnotations>
     <eAnnotations source="positions.61" references="/0/toLowerCase">
-      <details key="start" value="707"/>
-      <details key="end" value="782"/>
+      <details key="start" value="717"/>
+      <details key="end" value="792"/>
       <details key="line" value="46"/>
     </eAnnotations>
     <eAnnotations source="positions.62" references="/0/toLowerCase/@body.0">
-      <details key="start" value="746"/>
-      <details key="end" value="753"/>
+      <details key="start" value="756"/>
+      <details key="end" value="763"/>
       <details key="line" value="47"/>
     </eAnnotations>
     <eAnnotations source="positions.63" references="/0/toLowerCase/s">
-      <details key="start" value="754"/>
-      <details key="end" value="755"/>
+      <details key="start" value="764"/>
+      <details key="end" value="765"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.64" references="/0/toLowerCase/@body.2">
-      <details key="start" value="757"/>
-      <details key="end" value="774"/>
+      <details key="start" value="767"/>
+      <details key="end" value="784"/>
       <details key="line" value="47"/>
     </eAnnotations>
     <eAnnotations source="positions.65" references="/0/toLowerCase/s.1">
-      <details key="start" value="726"/>
-      <details key="end" value="734"/>
+      <details key="start" value="736"/>
+      <details key="end" value="744"/>
       <details key="line" value="46"/>
     </eAnnotations>
     <eAnnotations source="positions.66" references="/0/myQuery">
-      <details key="start" value="786"/>
-      <details key="end" value="825"/>
+      <details key="start" value="796"/>
+      <details key="end" value="835"/>
       <details key="line" value="50"/>
     </eAnnotations>
     <eAnnotations source="positions.67" references="/0/myQuery/s">
-      <details key="start" value="801"/>
-      <details key="end" value="809"/>
+      <details key="start" value="811"/>
+      <details key="end" value="819"/>
       <details key="line" value="50"/>
     </eAnnotations>
     <eAnnotations source="positions.68" references="/0/myQuery/s.1">
-      <details key="start" value="822"/>
-      <details key="end" value="823"/>
+      <details key="start" value="832"/>
+      <details key="end" value="833"/>
       <details key="line" value="0"/>
     </eAnnotations>
   </ecore:EAnnotation>
