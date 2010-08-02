@@ -116,6 +116,13 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private static final String MATCHING_BRACKETS_COLOR = PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
 
 	/**
+	 * [320692] We wish to show the "missing nature dialog" only once. This boolean will be updated to true
+	 * once the dialog has been displayed and will never change state again until the user next relaunches its
+	 * Eclipse instance.
+	 */
+	private static boolean natureDialogShown;
+
+	/**
 	 * TODO JMU/SBE : We should use a clear method to clear the current AST selection. Keeps a reference to
 	 * the last selected AST node in the editor through a simple-click on the editor. It identifies an EObject
 	 * without keeping the real reference on this EObject.
@@ -296,13 +303,16 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private void initializeContent(IDocument document, IFile file) {
 		if (document != null) {
 			try {
-				if (file == null || file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+				if (file == null || natureDialogShown
+						|| file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {
 					MessageDialog.openError(getSite().getShell(), AcceleoUIMessages
-							.getString("AcceleoEditor.MissingNatureTitle"), //$NON-NLS-1$
-							AcceleoUIMessages.getString("AcceleoEditor.MissingNatureDescription")); //$NON-NLS-1$
+							.getString("AcceleoEditor.MissingNatureTitle"), AcceleoUIMessages //$NON-NLS-1$
+							.getString("AcceleoEditor.MissingNatureDescription", file.getProject() //$NON-NLS-1$
+									.getName()));
+					natureDialogShown = true;
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				}
