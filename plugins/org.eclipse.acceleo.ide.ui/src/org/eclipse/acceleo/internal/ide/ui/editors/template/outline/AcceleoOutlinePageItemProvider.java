@@ -23,11 +23,19 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Module;
+import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
+import org.eclipse.acceleo.parser.cst.Query;
 import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.VisibilityKind;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
+import org.eclipse.jface.viewers.IDecoration;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Specific item provider for the outline view.
@@ -53,10 +61,40 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	 */
 	@Override
 	public Object getImage(Object object) {
+		Object result = null;
+
 		EObject eObject = (EObject)object;
 		if (eObject instanceof Template) {
+			Template template = (Template)eObject;
+			result = this.computeImage(template);
+		} else if (eObject instanceof Query) {
+			Query query = (Query)eObject;
+			result = this.computeImage(query);
+		} else {
+			result = AcceleoUIActivator.getDefault().getImage(
+					"icons/template-editor/" + eObject.eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		return result;
+	}
+
+	/**
+	 * Computes the image of the template that should appears in the outline view.
+	 * 
+	 * @param template
+	 *            The template
+	 * @return The image that will illustrate the template in the outline view
+	 */
+	private Object computeImage(final Template template) {
+		Object result = null;
+
+		if (template.getVisibility().getValue() == VisibilityKind.PROTECTED_VALUE) {
+			result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_protected.gif"); //$NON-NLS-1$
+		} else if (template.getVisibility().getValue() == VisibilityKind.PRIVATE_VALUE) {
+			result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_private.gif"); //$NON-NLS-1$
+		} else {
 			boolean isMain = false;
-			Iterator<EObject> iChildren = eObject.eAllContents();
+			Iterator<EObject> iChildren = template.eAllContents();
 			while (!isMain && iChildren.hasNext()) {
 				EObject iChild = iChildren.next();
 				if (iChild instanceof Comment && ((Comment)iChild).getBody() != null
@@ -65,11 +103,42 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 				}
 			}
 			if (isMain) {
-				return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_main.gif"); //$NON-NLS-1$
+				result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template_main.gif"); //$NON-NLS-1$
+			} else {
+				result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Template.gif"); //$NON-NLS-1$
 			}
 		}
-		return AcceleoUIActivator.getDefault().getImage(
-				"icons/template-editor/" + eObject.eClass().getName() + ".gif"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		if (template.getOverrides().size() > 0 && result instanceof Image) {
+			Image image = AcceleoUIActivator.getDefault().getImage(
+					"icons/template-editor/Override_overlay.gif"); //$NON-NLS-1$
+			ImageDescriptor descriptor = ImageDescriptor.createFromImage(image);
+			result = new DecorationOverlayIcon((Image)result, descriptor, IDecoration.TOP_RIGHT)
+					.createImage();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Computes the image of the query that should appears in the outline view.
+	 * 
+	 * @param query
+	 *            The query
+	 * @return The image that will illustrate the query in the outline view
+	 */
+	private Object computeImage(final Query query) {
+		Object result = null;
+
+		if (query.getVisibility().getValue() == VisibilityKind.PROTECTED_VALUE) {
+			result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Query_protected.gif"); //$NON-NLS-1$
+		} else if (query.getVisibility().getValue() == VisibilityKind.PRIVATE_VALUE) {
+			result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Query_private.gif"); //$NON-NLS-1$
+		} else {
+			result = AcceleoUIActivator.getDefault().getImage("icons/template-editor/Query.gif"); //$NON-NLS-1$
+		}
+
+		return result;
 	}
 
 	/**
@@ -255,6 +324,30 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 			}
 		}
 		Collections.sort(orderedCollection, cstNodeComparator);
+
+		List<Object> result = new ArrayList<Object>();
+		if (object instanceof Module) {
+			Module module = (Module)object;
+			if (module.getImports().size() > 0) {
+				for (CSTNode cstNode : orderedCollection) {
+					if (!(cstNode instanceof ModuleImportsValue)) {
+						result.add(cstNode);
+					}
+				}
+
+				for (int i = 0; i < result.size(); i++) {
+					CSTNode node = (CSTNode)result.get(i);
+					if (node instanceof Template || node instanceof Query) {
+						result.add(i, new AcceleoOutlineImportContainer(module));
+						break;
+					}
+				}
+			}
+		}
+
+		if (result.size() > 0) {
+			return result;
+		}
 		return orderedCollection;
 	}
 }

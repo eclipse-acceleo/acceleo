@@ -16,6 +16,10 @@ import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.HideNonPublicAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.HideQueriesAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.HideTemplatesAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.SortElementAction;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -32,6 +36,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -43,6 +48,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scrollable;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -182,6 +188,22 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 		treeViewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
 		treeViewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
 		setInput(editor.getContent().getCST());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.Page#setActionBars(org.eclipse.ui.IActionBars)
+	 */
+	@Override
+	public void setActionBars(IActionBars actionBars) {
+		super.setActionBars(actionBars);
+		IToolBarManager toolBarManager = actionBars.getToolBarManager();
+		toolBarManager.add(new SortElementAction(this.treeViewer));
+		toolBarManager.add(new HideNonPublicAction(this.treeViewer));
+		toolBarManager.add(new HideQueriesAction(this.treeViewer));
+		toolBarManager.add(new HideTemplatesAction(this.treeViewer));
+		actionBars.updateActionBars();
 	}
 
 	/**

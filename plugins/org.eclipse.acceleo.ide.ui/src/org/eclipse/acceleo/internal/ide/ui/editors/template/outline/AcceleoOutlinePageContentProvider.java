@@ -16,8 +16,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.acceleo.parser.cst.CSTNode;
+import org.eclipse.acceleo.parser.cst.Module;
+import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
+import org.eclipse.acceleo.parser.cst.Query;
+import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
 /**
@@ -44,6 +49,7 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 	 */
 	@Override
 	public Object[] getElements(Object object) {
+		Object[] result = null;
 		if (object instanceof List<?>) {
 			final Comparator<CSTNode> cstNodeComparator = new Comparator<CSTNode>() {
 				public int compare(CSTNode n0, CSTNode n1) {
@@ -63,10 +69,68 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 				}
 			}
 			Collections.sort(orderedCollection, cstNodeComparator);
-			return orderedCollection.toArray();
+			result = orderedCollection.toArray();
+
+			EObject obj = null;
+			if (orderedCollection.size() > 0) {
+				obj = orderedCollection.get(0).eContainer();
+				while (obj != null && !(obj instanceof Module)) {
+					obj = obj.eContainer();
+				}
+			}
+
+			if (obj != null && ((Module)obj).getImports().size() > 0) {
+				Module module = (Module)obj;
+				List<Object> resultTmp = new ArrayList<Object>();
+				for (CSTNode cstNode : orderedCollection) {
+					if (!(cstNode instanceof ModuleImportsValue)) {
+						resultTmp.add(cstNode);
+					}
+				}
+
+				for (int i = 0; i < resultTmp.size(); i++) {
+					CSTNode node = (CSTNode)resultTmp.get(i);
+					if (node instanceof Template || node instanceof Query) {
+						resultTmp.add(i, new AcceleoOutlineImportContainer(module));
+						break;
+					}
+				}
+				if (resultTmp.size() > 0) {
+					result = resultTmp.toArray();
+				}
+			}
 		} else {
-			return super.getElements(object);
+			result = super.getElements(object);
 		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#hasChildren(java.lang.Object)
+	 */
+	@Override
+	public boolean hasChildren(Object object) {
+		if (object instanceof AcceleoOutlineImportContainer) {
+			AcceleoOutlineImportContainer imports = (AcceleoOutlineImportContainer)object;
+			return imports.getImports().size() > 0;
+		}
+		return super.hasChildren(object);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getChildren(java.lang.Object)
+	 */
+	@Override
+	public Object[] getChildren(Object object) {
+		if (object instanceof AcceleoOutlineImportContainer) {
+			AcceleoOutlineImportContainer imports = (AcceleoOutlineImportContainer)object;
+			return imports.getImports().toArray();
+		}
+		return super.getChildren(object);
 	}
 
 	/**
@@ -76,7 +140,6 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
-
+		// Disables inherited behavior
 	}
-
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.outline;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -38,7 +39,9 @@ public class AcceleoOutlinePageLabelProvider extends AdapterFactoryLabelProvider
 	 */
 	@Override
 	public Image getImage(Object object) {
+		if (object instanceof AcceleoOutlineImportContainer) {
+			return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Import_declaration.gif"); //$NON-NLS-1$
+		}
 		return super.getImage(object);
 	}
-
 }
