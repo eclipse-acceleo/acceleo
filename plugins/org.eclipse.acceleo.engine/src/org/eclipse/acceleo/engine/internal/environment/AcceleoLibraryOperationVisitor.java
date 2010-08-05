@@ -851,7 +851,7 @@ public final class AcceleoLibraryOperationVisitor {
 							parameterTypes.add(Class.forName(parameterType));
 						}
 						previousComma = nextCommaIndex + 1;
-						nextCommaIndex = parameterTypesString.indexOf(nextCommaIndex, ',');
+						nextCommaIndex = parameterTypesString.indexOf(',', previousComma);
 					}
 					/*
 					 * The last (or only) parameter type is not followed by a comma and not handled in the
