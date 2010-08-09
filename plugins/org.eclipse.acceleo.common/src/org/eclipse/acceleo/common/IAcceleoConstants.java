@@ -374,17 +374,93 @@ public interface IAcceleoConstants {
 	String SUPER = "super"; //$NON-NLS-1$
 
 	/**
-	 * Comment : The 'main' tag.
-	 */
-	String TAG_MAIN = "@main"; //$NON-NLS-1$
-
-	/**
-	 * Comment : Encoding keyword.
+	 * Comment/Documentation : Encoding keyword.
 	 * <p>
-	 * [comment encoding = UTF-8 /]
+	 * [comment encoding = UTF-8 /] or [**encoding = UTF-8 /]
 	 * 
 	 * @since 0.8
 	 */
 	String ENCODING = "encoding"; //$NON-NLS-1$
 
+	/**
+	 * Comment : The 'main' tag.
+	 */
+	String TAG_MAIN = "@main"; //$NON-NLS-1$
+
+	/**
+	 * Comment : The 'fixme' tag.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_FIXME = "@FIXME"; //$NON-NLS-1$
+
+	/**
+	 * Comment : The 'todo' tag.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_TODO = "@TODO"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'author'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_AUTHOR = "@author"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'deprecated'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_DEPRECATED = "@deprecated"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'inheritDoc'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_INHERITDOC = "@inheritDoc"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'param'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_PARAM = "@param"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'since'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_SINCE = "@since"; //$NON-NLS-1$
+
+	/**
+	 * Documentation : The tag 'version'.
+	 * 
+	 * @since 3.0
+	 */
+	String TAG_VERSION = "@version"; //$NON-NLS-1$
+
+	/**
+	 * Beginning delimiter of a documentation area.
+	 * <p>
+	 * [<b>**</b> ...
+	 * 
+	 * @since 3.0
+	 */
+	String DOCUMENTATION_BEGIN = "**";
+
+	/**
+	 * Delimiter of the beginning of the indentation of a new line.
+	 * <p>
+	 * [**<br/>
+	 * <b>*<br/>
+	 * *<br/>
+	 * *</b> ...
+	 * 
+	 * @since 3.0
+	 */
+	String DOCUMENTATION_NEW_LINE = "*";
 }
