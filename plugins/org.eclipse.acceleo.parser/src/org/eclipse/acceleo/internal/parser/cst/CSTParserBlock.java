@@ -47,7 +47,7 @@ public class CSTParserBlock {
 	private static final String INVALID_BLOCK_HEADER = "CSTParserBlock.InvalidBlockHeader"; //$NON-NLS-1$
 
 	/** Key of the error message that should be logged when a block isn't closed. */
-	private static final String INVALID_BLOCK = "CSTParser.InvalidBlock"; //$NON-NLS-1$
+	private static final String INVALID_BLOCK = "CSTParserBlock.InvalidBlock"; //$NON-NLS-1$
 
 	/**
 	 * The main parser.
