@@ -169,6 +169,57 @@ public interface MtlFactory extends EFactory {
 	TypedModel createTypedModel();
 
 	/**
+	 * Returns a new object of class '<em>Comment</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Comment</em>'.
+	 * @generated
+	 */
+	Comment createComment();
+
+	/**
+	 * Returns a new object of class '<em>Documentation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Documentation</em>'.
+	 * @generated
+	 */
+	Documentation createDocumentation();
+
+	/**
+	 * Returns a new object of class '<em>Comment Body</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Comment Body</em>'.
+	 * @generated
+	 */
+	CommentBody createCommentBody();
+
+	/**
+	 * Returns a new object of class '<em>Module Documentation</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Module Documentation</em>'.
+	 * @generated
+	 */
+	ModuleDocumentation createModuleDocumentation();
+
+	/**
+	 * Returns a new object of class '<em>Module Element Documentation</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Module Element Documentation</em>'.
+	 * @generated
+	 */
+	ModuleElementDocumentation createModuleElementDocumentation();
+
+	/**
+	 * Returns a new object of class '<em>Parameter Documentation</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Parameter Documentation</em>'.
+	 * @generated
+	 */
+	ParameterDocumentation createParameterDocumentation();
+
+	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the package supported by this factory.

@@ -144,13 +144,33 @@ public interface MtlPackage extends EPackage {
 	int MODULE__ESUPER_PACKAGE = EcorePackage.EPACKAGE__ESUPER_PACKAGE;
 
 	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE__DOCUMENTATION = EcorePackage.EPACKAGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE__DEPRECATED = EcorePackage.EPACKAGE_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Input</b></em>' containment reference list. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__INPUT = EcorePackage.EPACKAGE_FEATURE_COUNT + 0;
+	int MODULE__INPUT = EcorePackage.EPACKAGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Extends</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -159,7 +179,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__EXTENDS = EcorePackage.EPACKAGE_FEATURE_COUNT + 1;
+	int MODULE__EXTENDS = EcorePackage.EPACKAGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Imports</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -168,7 +188,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__IMPORTS = EcorePackage.EPACKAGE_FEATURE_COUNT + 2;
+	int MODULE__IMPORTS = EcorePackage.EPACKAGE_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Owned Module Element</b></em>' containment reference list. <!--
@@ -177,7 +197,27 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__OWNED_MODULE_ELEMENT = EcorePackage.EPACKAGE_FEATURE_COUNT + 3;
+	int MODULE__OWNED_MODULE_ELEMENT = EcorePackage.EPACKAGE_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Start Header Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE__START_HEADER_POSITION = EcorePackage.EPACKAGE_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>End Header Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE__END_HEADER_POSITION = EcorePackage.EPACKAGE_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Module</em>' class. <!-- begin-user-doc --> <!--
@@ -186,7 +226,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = EcorePackage.EPACKAGE_FEATURE_COUNT + 4;
+	int MODULE_FEATURE_COUNT = EcorePackage.EPACKAGE_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
@@ -706,13 +746,33 @@ public interface MtlPackage extends EPackage {
 	int TEMPLATE__VISIBILITY = BLOCK_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int TEMPLATE__DOCUMENTATION = BLOCK_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int TEMPLATE__DEPRECATED = BLOCK_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Overrides</b></em>' reference list. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__OVERRIDES = BLOCK_FEATURE_COUNT + 1;
+	int TEMPLATE__OVERRIDES = BLOCK_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -721,7 +781,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__PARAMETER = BLOCK_FEATURE_COUNT + 2;
+	int TEMPLATE__PARAMETER = BLOCK_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Guard</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -730,7 +790,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__GUARD = BLOCK_FEATURE_COUNT + 3;
+	int TEMPLATE__GUARD = BLOCK_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Main</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -738,7 +798,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__MAIN = BLOCK_FEATURE_COUNT + 4;
+	int TEMPLATE__MAIN = BLOCK_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Post</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -746,9 +806,8 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
 	 */
-	int TEMPLATE__POST = BLOCK_FEATURE_COUNT + 5;
+	int TEMPLATE__POST = BLOCK_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Template</em>' class. <!-- begin-user-doc --> <!--
@@ -757,7 +816,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 6;
+	int TEMPLATE_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.TemplateInvocationImpl
@@ -991,13 +1050,33 @@ public interface MtlPackage extends EPackage {
 	int QUERY__VISIBILITY = MODULE_ELEMENT__VISIBILITY;
 
 	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int QUERY__DOCUMENTATION = MODULE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int QUERY__DEPRECATED = MODULE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__PARAMETER = MODULE_ELEMENT_FEATURE_COUNT + 0;
+	int QUERY__PARAMETER = MODULE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1006,7 +1085,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__EXPRESSION = MODULE_ELEMENT_FEATURE_COUNT + 1;
+	int QUERY__EXPRESSION = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1014,7 +1093,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY__TYPE = MODULE_ELEMENT_FEATURE_COUNT + 2;
+	int QUERY__TYPE = MODULE_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Query</em>' class. <!-- begin-user-doc --> <!--
@@ -1023,7 +1102,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 3;
+	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.QueryInvocationImpl
@@ -2325,13 +2404,33 @@ public interface MtlPackage extends EPackage {
 	int MACRO__VISIBILITY = BLOCK_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MACRO__DOCUMENTATION = BLOCK_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MACRO__DEPRECATED = BLOCK_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MACRO__PARAMETER = BLOCK_FEATURE_COUNT + 1;
+	int MACRO__PARAMETER = BLOCK_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2339,7 +2438,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MACRO__TYPE = BLOCK_FEATURE_COUNT + 2;
+	int MACRO__TYPE = BLOCK_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Macro</em>' class. <!-- begin-user-doc --> <!--
@@ -2348,7 +2447,7 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MACRO_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 3;
+	int MACRO_FEATURE_COUNT = BLOCK_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.MacroInvocationImpl
@@ -2521,6 +2620,566 @@ public interface MtlPackage extends EPackage {
 	int TYPED_MODEL_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.CommentImpl <em>Comment</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.CommentImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getComment()
+	 * @generated
+	 * @since 3.0
+	 */
+	int COMMENT = 18;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__EANNOTATIONS = MODULE_ELEMENT__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__NAME = MODULE_ELEMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__START_POSITION = MODULE_ELEMENT__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__END_POSITION = MODULE_ELEMENT__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__VISIBILITY = MODULE_ELEMENT__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT__BODY = MODULE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Comment</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
+	 * <em>Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	int DOCUMENTATION = 19;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__EANNOTATIONS = COMMENT__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__NAME = COMMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__BODY = COMMENT__BODY;
+
+	/**
+	 * The feature id for the '<em><b>Documented Element</b></em>' container reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__DOCUMENTED_ELEMENT = COMMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Documentation</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * <em>Documented Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentedElement()
+	 * @generated
+	 * @since 3.0
+	 */
+	int DOCUMENTED_ELEMENT = 20;
+
+	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTED_ELEMENT__DOCUMENTATION = 0;
+
+	/**
+	 * The feature id for the '<em><b>Deprecated</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTED_ELEMENT__DEPRECATED = 1;
+
+	/**
+	 * The number of structural features of the '<em>Documented Element</em>' class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTED_ELEMENT_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
+	 * <em>Comment Body</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getCommentBody()
+	 * @generated
+	 * @since 3.0
+	 */
+	int COMMENT_BODY = 21;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT_BODY__START_POSITION = 0;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT_BODY__END_POSITION = 1;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT_BODY__VALUE = 2;
+
+	/**
+	 * The number of structural features of the '<em>Comment Body</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int COMMENT_BODY_FEATURE_COUNT = 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
+	 * <em>Module Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION = 22;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__EANNOTATIONS = DOCUMENTATION__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__NAME = DOCUMENTATION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__VISIBILITY = DOCUMENTATION__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
+
+	/**
+	 * The feature id for the '<em><b>Documented Element</b></em>' container reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = DOCUMENTATION__DOCUMENTED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Author</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__AUTHOR = DOCUMENTATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__VERSION = DOCUMENTATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Since</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION__SINCE = DOCUMENTATION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Module Documentation</em>' class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_DOCUMENTATION_FEATURE_COUNT = DOCUMENTATION_FEATURE_COUNT + 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
+	 * <em>Module Element Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleElementDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION = 23;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__EANNOTATIONS = DOCUMENTATION__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__NAME = DOCUMENTATION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__VISIBILITY = DOCUMENTATION__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
+
+	/**
+	 * The feature id for the '<em><b>Documented Element</b></em>' container reference. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = DOCUMENTATION__DOCUMENTED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Parameters Documentation</b></em>' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION__PARAMETERS_DOCUMENTATION = DOCUMENTATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Module Element Documentation</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = DOCUMENTATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
+	 * <em>Parameter Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
+	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getParameterDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION = 24;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__EANNOTATIONS = COMMENT__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__NAME = COMMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION__BODY = COMMENT__BODY;
+
+	/**
+	 * The number of structural features of the '<em>Parameter Documentation</em>' class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int PARAMETER_DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.VisibilityKind
 	 * <em>Visibility Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2528,7 +3187,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 18;
+	int VISIBILITY_KIND = 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.model.mtl.OpenModeKind <em>Open Mode Kind</em>}'
@@ -2538,7 +3197,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 19;
+	int OPEN_MODE_KIND = 26;
 
 	/**
 	 * Returns the meta object for class ' {@link org.eclipse.acceleo.model.mtl.Module <em>Module</em>}'. <!--
@@ -2595,6 +3254,32 @@ public interface MtlPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getModule_OwnedModuleElement();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.Module#getStartHeaderPosition <em>Start Header Position</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Start Header Position</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Module#getStartHeaderPosition()
+	 * @see #getModule()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getModule_StartHeaderPosition();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.Module#getEndHeaderPosition <em>End Header Position</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>End Header Position</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Module#getEndHeaderPosition()
+	 * @see #getModule()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getModule_EndHeaderPosition();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ModuleElement
@@ -3281,6 +3966,225 @@ public interface MtlPackage extends EPackage {
 	EReference getTypedModel_TakesTypesFrom();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Comment <em>Comment</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Comment</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Comment
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getComment();
+
+	/**
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Comment#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Body</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Comment#getBody()
+	 * @see #getComment()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getComment_Body();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.Documentation
+	 * <em>Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Documentation
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getDocumentation();
+
+	/**
+	 * Returns the meta object for the container reference '
+	 * {@link org.eclipse.acceleo.model.mtl.Documentation#getDocumentedElement <em>Documented Element</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the container reference '<em>Documented Element</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.Documentation#getDocumentedElement()
+	 * @see #getDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getDocumentation_DocumentedElement();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * <em>Documented Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Documented Element</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getDocumentedElement();
+
+	/**
+	 * Returns the meta object for the reference '
+	 * {@link org.eclipse.acceleo.model.mtl.DocumentedElement#getDocumentation <em>Documentation</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement#getDocumentation()
+	 * @see #getDocumentedElement()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getDocumentedElement_Documentation();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.DocumentedElement#isDeprecated <em>Deprecated</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Deprecated</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement#isDeprecated()
+	 * @see #getDocumentedElement()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getDocumentedElement_Deprecated();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.CommentBody
+	 * <em>Comment Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Comment Body</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.CommentBody
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getCommentBody();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.CommentBody#getStartPosition <em>Start Position</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Start Position</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getStartPosition()
+	 * @see #getCommentBody()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getCommentBody_StartPosition();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.CommentBody#getEndPosition <em>End Position</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>End Position</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getEndPosition()
+	 * @see #getCommentBody()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getCommentBody_EndPosition();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.model.mtl.CommentBody#getValue
+	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getValue()
+	 * @see #getCommentBody()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getCommentBody_Value();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ModuleDocumentation
+	 * <em>Module Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Module Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getModuleDocumentation();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleDocumentation#getAuthor <em>Author</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Author</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getAuthor()
+	 * @see #getModuleDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getModuleDocumentation_Author();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleDocumentation#getVersion <em>Version</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Version</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getVersion()
+	 * @see #getModuleDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getModuleDocumentation_Version();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleDocumentation#getSince <em>Since</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Since</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getSince()
+	 * @see #getModuleDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	EAttribute getModuleDocumentation_Since();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ModuleElementDocumentation
+	 * <em>Module Element Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Module Element Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getModuleElementDocumentation();
+
+	/**
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleElementDocumentation#getParametersDocumentation
+	 * <em>Parameters Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference list '<em>Parameters Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation#getParametersDocumentation()
+	 * @see #getModuleElementDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getModuleElementDocumentation_ParametersDocumentation();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.model.mtl.ParameterDocumentation
+	 * <em>Parameter Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Parameter Documentation</em>'.
+	 * @see org.eclipse.acceleo.model.mtl.ParameterDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getParameterDocumentation();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.model.mtl.VisibilityKind
 	 * <em>Visibility Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -3363,6 +4267,24 @@ public interface MtlPackage extends EPackage {
 		 * @generated
 		 */
 		EReference MODULE__OWNED_MODULE_ELEMENT = eINSTANCE.getModule_OwnedModuleElement();
+
+		/**
+		 * The meta object literal for the '<em><b>Start Header Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute MODULE__START_HEADER_POSITION = eINSTANCE.getModule_StartHeaderPosition();
+
+		/**
+		 * The meta object literal for the '<em><b>End Header Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute MODULE__END_HEADER_POSITION = eINSTANCE.getModule_EndHeaderPosition();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleElementImpl
@@ -3879,6 +4801,185 @@ public interface MtlPackage extends EPackage {
 		 * @generated
 		 */
 		EReference TYPED_MODEL__TAKES_TYPES_FROM = eINSTANCE.getTypedModel_TakesTypesFrom();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.CommentImpl
+		 * <em>Comment</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.CommentImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getComment()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass COMMENT = eINSTANCE.getComment();
+
+		/**
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference COMMENT__BODY = eINSTANCE.getComment_Body();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
+		 * <em>Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentation()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass DOCUMENTATION = eINSTANCE.getDocumentation();
+
+		/**
+		 * The meta object literal for the '<em><b>Documented Element</b></em>' reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference DOCUMENTATION__DOCUMENTED_ELEMENT = eINSTANCE.getDocumentation_DocumentedElement();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.DocumentedElement
+		 * <em>Documented Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentedElement()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass DOCUMENTED_ELEMENT = eINSTANCE.getDocumentedElement();
+
+		/**
+		 * The meta object literal for the '<em><b>Documentation</b></em>' reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference DOCUMENTED_ELEMENT__DOCUMENTATION = eINSTANCE.getDocumentedElement_Documentation();
+
+		/**
+		 * The meta object literal for the '<em><b>Deprecated</b></em>' attribute feature. <!-- begin-user-doc
+		 * --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute DOCUMENTED_ELEMENT__DEPRECATED = eINSTANCE.getDocumentedElement_Deprecated();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
+		 * <em>Comment Body</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getCommentBody()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass COMMENT_BODY = eINSTANCE.getCommentBody();
+
+		/**
+		 * The meta object literal for the '<em><b>Start Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute COMMENT_BODY__START_POSITION = eINSTANCE.getCommentBody_StartPosition();
+
+		/**
+		 * The meta object literal for the '<em><b>End Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute COMMENT_BODY__END_POSITION = eINSTANCE.getCommentBody_EndPosition();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute COMMENT_BODY__VALUE = eINSTANCE.getCommentBody_Value();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
+		 * <em>Module Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleDocumentation()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass MODULE_DOCUMENTATION = eINSTANCE.getModuleDocumentation();
+
+		/**
+		 * The meta object literal for the '<em><b>Author</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute MODULE_DOCUMENTATION__AUTHOR = eINSTANCE.getModuleDocumentation_Author();
+
+		/**
+		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature. <!-- begin-user-doc
+		 * --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute MODULE_DOCUMENTATION__VERSION = eINSTANCE.getModuleDocumentation_Version();
+
+		/**
+		 * The meta object literal for the '<em><b>Since</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EAttribute MODULE_DOCUMENTATION__SINCE = eINSTANCE.getModuleDocumentation_Since();
+
+		/**
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
+		 * <em>Module Element Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleElementDocumentation()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass MODULE_ELEMENT_DOCUMENTATION = eINSTANCE.getModuleElementDocumentation();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters Documentation</b></em>' containment reference
+		 * list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference MODULE_ELEMENT_DOCUMENTATION__PARAMETERS_DOCUMENTATION = eINSTANCE
+				.getModuleElementDocumentation_ParametersDocumentation();
+
+		/**
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
+		 * <em>Parameter Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
+		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getParameterDocumentation()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass PARAMETER_DOCUMENTATION = eINSTANCE.getParameterDocumentation();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.model.mtl.VisibilityKind

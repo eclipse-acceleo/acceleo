@@ -13,6 +13,10 @@ package org.eclipse.acceleo.model.mtl.util;
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.Comment;
+import org.eclipse.acceleo.model.mtl.CommentBody;
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
@@ -21,8 +25,11 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleDocumentation;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.ParameterDocumentation;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -112,6 +119,9 @@ public class MtlSwitch<T> {
 				T result = caseModule(module);
 				if (result == null) {
 					result = caseEPackage(module);
+				}
+				if (result == null) {
+					result = caseDocumentedElement(module);
 				}
 				if (result == null) {
 					result = caseENamedElement(module);
@@ -229,6 +239,9 @@ public class MtlSwitch<T> {
 					result = caseModuleElement(template);
 				}
 				if (result == null) {
+					result = caseDocumentedElement(template);
+				}
+				if (result == null) {
 					result = caseTemplateExpression(template);
 				}
 				if (result == null) {
@@ -300,6 +313,9 @@ public class MtlSwitch<T> {
 				T result = caseQuery(query);
 				if (result == null) {
 					result = caseModuleElement(query);
+				}
+				if (result == null) {
+					result = caseDocumentedElement(query);
 				}
 				if (result == null) {
 					result = caseENamedElement(query);
@@ -588,6 +604,9 @@ public class MtlSwitch<T> {
 					result = caseModuleElement(macro);
 				}
 				if (result == null) {
+					result = caseDocumentedElement(macro);
+				}
+				if (result == null) {
 					result = caseTemplateExpression(macro);
 				}
 				if (result == null) {
@@ -657,6 +676,140 @@ public class MtlSwitch<T> {
 			case MtlPackage.TYPED_MODEL: {
 				TypedModel typedModel = (TypedModel)theEObject;
 				T result = caseTypedModel(typedModel);
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.COMMENT: {
+				Comment comment = (Comment)theEObject;
+				T result = caseComment(comment);
+				if (result == null) {
+					result = caseModuleElement(comment);
+				}
+				if (result == null) {
+					result = caseENamedElement(comment);
+				}
+				if (result == null) {
+					result = caseASTNode(comment);
+				}
+				if (result == null) {
+					result = caseEModelElement(comment);
+				}
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.DOCUMENTATION: {
+				Documentation documentation = (Documentation)theEObject;
+				T result = caseDocumentation(documentation);
+				if (result == null) {
+					result = caseComment(documentation);
+				}
+				if (result == null) {
+					result = caseModuleElement(documentation);
+				}
+				if (result == null) {
+					result = caseENamedElement(documentation);
+				}
+				if (result == null) {
+					result = caseASTNode(documentation);
+				}
+				if (result == null) {
+					result = caseEModelElement(documentation);
+				}
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.DOCUMENTED_ELEMENT: {
+				DocumentedElement documentedElement = (DocumentedElement)theEObject;
+				T result = caseDocumentedElement(documentedElement);
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.COMMENT_BODY: {
+				CommentBody commentBody = (CommentBody)theEObject;
+				T result = caseCommentBody(commentBody);
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.MODULE_DOCUMENTATION: {
+				ModuleDocumentation moduleDocumentation = (ModuleDocumentation)theEObject;
+				T result = caseModuleDocumentation(moduleDocumentation);
+				if (result == null) {
+					result = caseDocumentation(moduleDocumentation);
+				}
+				if (result == null) {
+					result = caseComment(moduleDocumentation);
+				}
+				if (result == null) {
+					result = caseModuleElement(moduleDocumentation);
+				}
+				if (result == null) {
+					result = caseENamedElement(moduleDocumentation);
+				}
+				if (result == null) {
+					result = caseASTNode(moduleDocumentation);
+				}
+				if (result == null) {
+					result = caseEModelElement(moduleDocumentation);
+				}
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.MODULE_ELEMENT_DOCUMENTATION: {
+				ModuleElementDocumentation moduleElementDocumentation = (ModuleElementDocumentation)theEObject;
+				T result = caseModuleElementDocumentation(moduleElementDocumentation);
+				if (result == null) {
+					result = caseDocumentation(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = caseComment(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = caseModuleElement(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = caseENamedElement(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = caseASTNode(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = caseEModelElement(moduleElementDocumentation);
+				}
+				if (result == null) {
+					result = defaultCase(theEObject);
+				}
+				return result;
+			}
+			case MtlPackage.PARAMETER_DOCUMENTATION: {
+				ParameterDocumentation parameterDocumentation = (ParameterDocumentation)theEObject;
+				T result = caseParameterDocumentation(parameterDocumentation);
+				if (result == null) {
+					result = caseComment(parameterDocumentation);
+				}
+				if (result == null) {
+					result = caseModuleElement(parameterDocumentation);
+				}
+				if (result == null) {
+					result = caseENamedElement(parameterDocumentation);
+				}
+				if (result == null) {
+					result = caseASTNode(parameterDocumentation);
+				}
+				if (result == null) {
+					result = caseEModelElement(parameterDocumentation);
+				}
 				if (result == null) {
 					result = defaultCase(theEObject);
 				}
@@ -952,6 +1105,126 @@ public class MtlSwitch<T> {
 	 */
 	@SuppressWarnings("unused")
 	public T caseTypedModel(TypedModel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Comment</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseComment(Comment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Documentation</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Documentation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseDocumentation(Documentation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Documented Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Documented Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseDocumentedElement(DocumentedElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Comment Body</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Comment Body</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseCommentBody(CommentBody object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Module Documentation</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Module Documentation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseModuleDocumentation(ModuleDocumentation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Module Element Documentation</em>
+	 * '. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Module Element Documentation</em>
+	 *         '.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseModuleElementDocumentation(ModuleElementDocumentation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Parameter Documentation</em>'.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Parameter Documentation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unused")
+	public T caseParameterDocumentation(ParameterDocumentation object) {
 		return null;
 	}
 

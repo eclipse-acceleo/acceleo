@@ -12,6 +12,8 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -60,6 +62,36 @@ public class MacroImpl extends BlockImpl implements Macro {
 	 * @ordered
 	 */
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
+
+	/**
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEPRECATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deprecated = DEPRECATED_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getParameter() <em>Parameter</em>}' containment reference list. <!--
@@ -127,6 +159,78 @@ public class MacroImpl extends BlockImpl implements Macro {
 	 * 
 	 * @generated
 	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					MtlPackage.MACRO__DOCUMENTATION, oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						MtlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						MtlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MACRO__DOCUMENTATION,
+					newDocumentation, newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setDeprecated(boolean newDeprecated) {
+		boolean oldDeprecated = deprecated;
+		deprecated = newDeprecated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.MACRO__DEPRECATED,
+					oldDeprecated, deprecated));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EList<Variable> getParameter() {
 		if (parameter == null) {
 			parameter = new EObjectContainmentEList<Variable>(Variable.class, this,
@@ -182,8 +286,27 @@ public class MacroImpl extends BlockImpl implements Macro {
 	 * @generated
 	 */
 	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case MtlPackage.MACRO__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- MtlPackage.MACRO__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case MtlPackage.MACRO__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
 			case MtlPackage.MACRO__PARAMETER:
 				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 		}
@@ -200,6 +323,10 @@ public class MacroImpl extends BlockImpl implements Macro {
 		switch (featureID) {
 			case MtlPackage.MACRO__VISIBILITY:
 				return getVisibility();
+			case MtlPackage.MACRO__DOCUMENTATION:
+				return getDocumentation();
+			case MtlPackage.MACRO__DEPRECATED:
+				return isDeprecated();
 			case MtlPackage.MACRO__PARAMETER:
 				return getParameter();
 			case MtlPackage.MACRO__TYPE:
@@ -221,6 +348,12 @@ public class MacroImpl extends BlockImpl implements Macro {
 		switch (featureID) {
 			case MtlPackage.MACRO__VISIBILITY:
 				setVisibility((VisibilityKind)newValue);
+				return;
+			case MtlPackage.MACRO__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case MtlPackage.MACRO__DEPRECATED:
+				setDeprecated((Boolean)newValue);
 				return;
 			case MtlPackage.MACRO__PARAMETER:
 				getParameter().clear();
@@ -244,6 +377,12 @@ public class MacroImpl extends BlockImpl implements Macro {
 			case MtlPackage.MACRO__VISIBILITY:
 				setVisibility(VISIBILITY_EDEFAULT);
 				return;
+			case MtlPackage.MACRO__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case MtlPackage.MACRO__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
 			case MtlPackage.MACRO__PARAMETER:
 				getParameter().clear();
 				return;
@@ -264,6 +403,10 @@ public class MacroImpl extends BlockImpl implements Macro {
 		switch (featureID) {
 			case MtlPackage.MACRO__VISIBILITY:
 				return visibility != VISIBILITY_EDEFAULT;
+			case MtlPackage.MACRO__DOCUMENTATION:
+				return documentation != null;
+			case MtlPackage.MACRO__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
 			case MtlPackage.MACRO__PARAMETER:
 				return parameter != null && !parameter.isEmpty();
 			case MtlPackage.MACRO__TYPE:
@@ -287,6 +430,16 @@ public class MacroImpl extends BlockImpl implements Macro {
 					return -1;
 			}
 		}
+		if (baseClass == DocumentedElement.class) {
+			switch (derivedFeatureID) {
+				case MtlPackage.MACRO__DOCUMENTATION:
+					return MtlPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case MtlPackage.MACRO__DEPRECATED:
+					return MtlPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -301,6 +454,16 @@ public class MacroImpl extends BlockImpl implements Macro {
 			switch (baseFeatureID) {
 				case MtlPackage.MODULE_ELEMENT__VISIBILITY:
 					return MtlPackage.MACRO__VISIBILITY;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == DocumentedElement.class) {
+			switch (baseFeatureID) {
+				case MtlPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return MtlPackage.MACRO__DOCUMENTATION;
+				case MtlPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return MtlPackage.MACRO__DEPRECATED;
 				default:
 					return -1;
 			}
@@ -321,6 +484,8 @@ public class MacroImpl extends BlockImpl implements Macro {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (visibility: "); //$NON-NLS-1$
 		result.append(visibility);
+		result.append(", deprecated: "); //$NON-NLS-1$
+		result.append(deprecated);
 		result.append(')');
 		return result.toString();
 	}

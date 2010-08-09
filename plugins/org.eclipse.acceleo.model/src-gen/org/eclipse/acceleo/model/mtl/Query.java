@@ -31,7 +31,7 @@ import org.eclipse.ocl.ecore.Variable;
  * @model
  * @generated
  */
-public interface Query extends ModuleElement {
+public interface Query extends ModuleElement, DocumentedElement {
 	/**
 	 * Returns the value of the '<em><b>Parameter</b></em>' containment reference list. The list contents are
 	 * of type {@link org.eclipse.ocl.ecore.Variable}. <!-- begin-user-doc -->

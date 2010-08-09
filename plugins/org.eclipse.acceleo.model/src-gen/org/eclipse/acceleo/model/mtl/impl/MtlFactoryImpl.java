@@ -11,6 +11,9 @@
 package org.eclipse.acceleo.model.mtl.impl;
 
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.Comment;
+import org.eclipse.acceleo.model.mtl.CommentBody;
+import org.eclipse.acceleo.model.mtl.Documentation;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
@@ -19,9 +22,12 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleDocumentation;
+import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
+import org.eclipse.acceleo.model.mtl.ParameterDocumentation;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -31,6 +37,9 @@ import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.TraceBlock;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.acceleo.model.mtl.impl.spec.CommentBodySpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.CommentSpec;
+import org.eclipse.acceleo.model.mtl.impl.spec.DocumentationSpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.FileBlockSpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.ForBlockSpec;
 import org.eclipse.acceleo.model.mtl.impl.spec.IfBlockSpec;
@@ -124,6 +133,18 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 				return createMacroInvocation();
 			case MtlPackage.TYPED_MODEL:
 				return createTypedModel();
+			case MtlPackage.COMMENT:
+				return createComment();
+			case MtlPackage.DOCUMENTATION:
+				return createDocumentation();
+			case MtlPackage.COMMENT_BODY:
+				return createCommentBody();
+			case MtlPackage.MODULE_DOCUMENTATION:
+				return createModuleDocumentation();
+			case MtlPackage.MODULE_ELEMENT_DOCUMENTATION:
+				return createModuleElementDocumentation();
+			case MtlPackage.PARAMETER_DOCUMENTATION:
+				return createParameterDocumentation();
 			default:
 				throw new IllegalArgumentException(
 						"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -334,6 +355,66 @@ public class MtlFactoryImpl extends EFactoryImpl implements MtlFactory {
 	public TypedModel createTypedModel() {
 		TypedModelImpl typedModel = new TypedModelImpl();
 		return typedModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public Comment createComment() {
+		CommentImpl comment = new CommentSpec();
+		return comment;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public Documentation createDocumentation() {
+		DocumentationImpl documentation = new DocumentationSpec();
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public CommentBody createCommentBody() {
+		CommentBodyImpl commentBody = new CommentBodySpec();
+		return commentBody;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ModuleDocumentation createModuleDocumentation() {
+		ModuleDocumentationImpl moduleDocumentation = new ModuleDocumentationImpl();
+		return moduleDocumentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ModuleElementDocumentation createModuleElementDocumentation() {
+		ModuleElementDocumentationImpl moduleElementDocumentation = new ModuleElementDocumentationImpl();
+		return moduleElementDocumentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ParameterDocumentation createParameterDocumentation() {
+		ParameterDocumentationImpl parameterDocumentation = new ParameterDocumentationImpl();
+		return parameterDocumentation;
 	}
 
 	/**

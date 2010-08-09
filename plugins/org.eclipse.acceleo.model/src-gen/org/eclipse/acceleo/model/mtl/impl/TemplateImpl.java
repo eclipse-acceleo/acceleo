@@ -12,6 +12,8 @@ package org.eclipse.acceleo.model.mtl.impl;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Template;
@@ -35,6 +37,8 @@ import org.eclipse.ocl.ecore.Variable;
  * The following features are implemented:
  * <ul>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getDocumentation <em>Documentation</em>}</li>
+ * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#isDeprecated <em>Deprecated</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getOverrides <em>Overrides</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getParameter <em>Parameter</em>}</li>
  * <li>{@link org.eclipse.acceleo.model.mtl.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
@@ -65,6 +69,36 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 * @ordered
 	 */
 	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
+
+	/**
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEPRECATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deprecated = DEPRECATED_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOverrides() <em>Overrides</em>}' reference list. <!--
@@ -165,6 +199,78 @@ public class TemplateImpl extends BlockImpl implements Template {
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__VISIBILITY,
 					oldVisibility, visibility));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					MtlPackage.TEMPLATE__DOCUMENTATION, oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						MtlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						MtlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__DOCUMENTATION,
+					newDocumentation, newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setDeprecated(boolean newDeprecated) {
+		boolean oldDeprecated = deprecated;
+		deprecated = newDeprecated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MtlPackage.TEMPLATE__DEPRECATED,
+					oldDeprecated, deprecated));
 	}
 
 	/**
@@ -319,8 +425,27 @@ public class TemplateImpl extends BlockImpl implements Template {
 	 * @generated
 	 */
 	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- MtlPackage.TEMPLATE__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
 			case MtlPackage.TEMPLATE__PARAMETER:
 				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 			case MtlPackage.TEMPLATE__GUARD:
@@ -341,6 +466,10 @@ public class TemplateImpl extends BlockImpl implements Template {
 		switch (featureID) {
 			case MtlPackage.TEMPLATE__VISIBILITY:
 				return getVisibility();
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				return getDocumentation();
+			case MtlPackage.TEMPLATE__DEPRECATED:
+				return isDeprecated();
 			case MtlPackage.TEMPLATE__OVERRIDES:
 				return getOverrides();
 			case MtlPackage.TEMPLATE__PARAMETER:
@@ -366,6 +495,12 @@ public class TemplateImpl extends BlockImpl implements Template {
 		switch (featureID) {
 			case MtlPackage.TEMPLATE__VISIBILITY:
 				setVisibility((VisibilityKind)newValue);
+				return;
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case MtlPackage.TEMPLATE__DEPRECATED:
+				setDeprecated((Boolean)newValue);
 				return;
 			case MtlPackage.TEMPLATE__OVERRIDES:
 				getOverrides().clear();
@@ -399,6 +534,12 @@ public class TemplateImpl extends BlockImpl implements Template {
 			case MtlPackage.TEMPLATE__VISIBILITY:
 				setVisibility(VISIBILITY_EDEFAULT);
 				return;
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case MtlPackage.TEMPLATE__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
 			case MtlPackage.TEMPLATE__OVERRIDES:
 				getOverrides().clear();
 				return;
@@ -428,6 +569,10 @@ public class TemplateImpl extends BlockImpl implements Template {
 		switch (featureID) {
 			case MtlPackage.TEMPLATE__VISIBILITY:
 				return visibility != VISIBILITY_EDEFAULT;
+			case MtlPackage.TEMPLATE__DOCUMENTATION:
+				return documentation != null;
+			case MtlPackage.TEMPLATE__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
 			case MtlPackage.TEMPLATE__OVERRIDES:
 				return overrides != null && !overrides.isEmpty();
 			case MtlPackage.TEMPLATE__PARAMETER:
@@ -457,6 +602,16 @@ public class TemplateImpl extends BlockImpl implements Template {
 					return -1;
 			}
 		}
+		if (baseClass == DocumentedElement.class) {
+			switch (derivedFeatureID) {
+				case MtlPackage.TEMPLATE__DOCUMENTATION:
+					return MtlPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case MtlPackage.TEMPLATE__DEPRECATED:
+					return MtlPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -471,6 +626,16 @@ public class TemplateImpl extends BlockImpl implements Template {
 			switch (baseFeatureID) {
 				case MtlPackage.MODULE_ELEMENT__VISIBILITY:
 					return MtlPackage.TEMPLATE__VISIBILITY;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == DocumentedElement.class) {
+			switch (baseFeatureID) {
+				case MtlPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return MtlPackage.TEMPLATE__DOCUMENTATION;
+				case MtlPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return MtlPackage.TEMPLATE__DEPRECATED;
 				default:
 					return -1;
 			}
@@ -491,6 +656,8 @@ public class TemplateImpl extends BlockImpl implements Template {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (visibility: "); //$NON-NLS-1$
 		result.append(visibility);
+		result.append(", deprecated: "); //$NON-NLS-1$
+		result.append(deprecated);
 		result.append(", main: "); //$NON-NLS-1$
 		result.append(main);
 		result.append(')');

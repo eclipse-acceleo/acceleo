@@ -30,7 +30,7 @@ import org.eclipse.ocl.ecore.Variable;
  * @model
  * @generated
  */
-public interface Template extends Block, ModuleElement {
+public interface Template extends Block, ModuleElement, DocumentedElement {
 	/**
 	 * Returns the value of the '<em><b>Overrides</b></em>' reference list. The list contents are of type
 	 * {@link org.eclipse.acceleo.model.mtl.Template}. <!-- begin-user-doc -->
@@ -131,7 +131,6 @@ public interface Template extends Block, ModuleElement {
 	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getTemplate_Post()
 	 * @model containment="true"
 	 * @generated
-	 * @since 3.0
 	 */
 	OCLExpression getPost();
 
@@ -143,7 +142,6 @@ public interface Template extends Block, ModuleElement {
 	 *            the new value of the '<em>Post</em>' containment reference.
 	 * @see #getPost()
 	 * @generated
-	 * @since 3.0
 	 */
 	void setPost(OCLExpression value);
 

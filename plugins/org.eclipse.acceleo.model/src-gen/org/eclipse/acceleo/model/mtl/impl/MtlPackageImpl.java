@@ -11,6 +11,10 @@
 package org.eclipse.acceleo.model.mtl.impl;
 
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.Comment;
+import org.eclipse.acceleo.model.mtl.CommentBody;
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
@@ -19,10 +23,13 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleDocumentation;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
+import org.eclipse.acceleo.model.mtl.ParameterDocumentation;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -178,6 +185,55 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * 
 	 * @generated
 	 */
+	private EClass commentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass documentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass documentedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass commentBodyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass moduleDocumentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass moduleElementDocumentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass parameterDocumentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	private EEnum visibilityKindEEnum = null;
 
 	/**
@@ -299,6 +355,24 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 */
 	public EReference getModule_OwnedModuleElement() {
 		return (EReference)moduleEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getModule_StartHeaderPosition() {
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getModule_EndHeaderPosition() {
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -846,6 +920,168 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getComment() {
+		return commentEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getComment_Body() {
+		return (EReference)commentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getDocumentation() {
+		return documentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getDocumentation_DocumentedElement() {
+		return (EReference)documentationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getDocumentedElement() {
+		return documentedElementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getDocumentedElement_Documentation() {
+		return (EReference)documentedElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getDocumentedElement_Deprecated() {
+		return (EAttribute)documentedElementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getCommentBody() {
+		return commentBodyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getCommentBody_StartPosition() {
+		return (EAttribute)commentBodyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getCommentBody_EndPosition() {
+		return (EAttribute)commentBodyEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getCommentBody_Value() {
+		return (EAttribute)commentBodyEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getModuleDocumentation() {
+		return moduleDocumentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getModuleDocumentation_Author() {
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getModuleDocumentation_Version() {
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getModuleDocumentation_Since() {
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getModuleElementDocumentation() {
+		return moduleElementDocumentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getModuleElementDocumentation_ParametersDocumentation() {
+		return (EReference)moduleElementDocumentationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getParameterDocumentation() {
+		return parameterDocumentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getVisibilityKind() {
 		return visibilityKindEEnum;
 	}
@@ -892,6 +1128,8 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 		createEReference(moduleEClass, MODULE__EXTENDS);
 		createEReference(moduleEClass, MODULE__IMPORTS);
 		createEReference(moduleEClass, MODULE__OWNED_MODULE_ELEMENT);
+		createEAttribute(moduleEClass, MODULE__START_HEADER_POSITION);
+		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
 
 		moduleElementEClass = createEClass(MODULE_ELEMENT);
 		createEAttribute(moduleElementEClass, MODULE_ELEMENT__VISIBILITY);
@@ -970,6 +1208,32 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 		typedModelEClass = createEClass(TYPED_MODEL);
 		createEReference(typedModelEClass, TYPED_MODEL__TAKES_TYPES_FROM);
 
+		commentEClass = createEClass(COMMENT);
+		createEReference(commentEClass, COMMENT__BODY);
+
+		documentationEClass = createEClass(DOCUMENTATION);
+		createEReference(documentationEClass, DOCUMENTATION__DOCUMENTED_ELEMENT);
+
+		documentedElementEClass = createEClass(DOCUMENTED_ELEMENT);
+		createEReference(documentedElementEClass, DOCUMENTED_ELEMENT__DOCUMENTATION);
+		createEAttribute(documentedElementEClass, DOCUMENTED_ELEMENT__DEPRECATED);
+
+		commentBodyEClass = createEClass(COMMENT_BODY);
+		createEAttribute(commentBodyEClass, COMMENT_BODY__START_POSITION);
+		createEAttribute(commentBodyEClass, COMMENT_BODY__END_POSITION);
+		createEAttribute(commentBodyEClass, COMMENT_BODY__VALUE);
+
+		moduleDocumentationEClass = createEClass(MODULE_DOCUMENTATION);
+		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__AUTHOR);
+		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__VERSION);
+		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__SINCE);
+
+		moduleElementDocumentationEClass = createEClass(MODULE_ELEMENT_DOCUMENTATION);
+		createEReference(moduleElementDocumentationEClass,
+				MODULE_ELEMENT_DOCUMENTATION__PARAMETERS_DOCUMENTATION);
+
+		parameterDocumentationEClass = createEClass(PARAMETER_DOCUMENTATION);
+
 		// Create enums
 		visibilityKindEEnum = createEEnum(VISIBILITY_KIND);
 		openModeKindEEnum = createEEnum(OPEN_MODE_KIND);
@@ -1012,16 +1276,18 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 
 		// Add supertypes to classes
 		moduleEClass.getESuperTypes().add(theEcorePackage_1.getEPackage());
+		moduleEClass.getESuperTypes().add(this.getDocumentedElement());
 		moduleElementEClass.getESuperTypes().add(theEcorePackage_1.getENamedElement());
 		moduleElementEClass.getESuperTypes().add(theUtilitiesPackage.getASTNode());
 		templateExpressionEClass.getESuperTypes().add(theEcorePackage.getOCLExpression());
-		templateExpressionEClass.getESuperTypes().add(theUtilitiesPackage.getASTNode());
 		blockEClass.getESuperTypes().add(this.getTemplateExpression());
 		initSectionEClass.getESuperTypes().add(theUtilitiesPackage.getASTNode());
 		templateEClass.getESuperTypes().add(this.getBlock());
 		templateEClass.getESuperTypes().add(this.getModuleElement());
+		templateEClass.getESuperTypes().add(this.getDocumentedElement());
 		templateInvocationEClass.getESuperTypes().add(this.getTemplateExpression());
 		queryEClass.getESuperTypes().add(this.getModuleElement());
+		queryEClass.getESuperTypes().add(this.getDocumentedElement());
 		queryInvocationEClass.getESuperTypes().add(this.getTemplateExpression());
 		protectedAreaBlockEClass.getESuperTypes().add(this.getBlock());
 		forBlockEClass.getESuperTypes().add(this.getBlock());
@@ -1031,7 +1297,13 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 		traceBlockEClass.getESuperTypes().add(this.getBlock());
 		macroEClass.getESuperTypes().add(this.getBlock());
 		macroEClass.getESuperTypes().add(this.getModuleElement());
+		macroEClass.getESuperTypes().add(this.getDocumentedElement());
 		macroInvocationEClass.getESuperTypes().add(this.getTemplateExpression());
+		commentEClass.getESuperTypes().add(this.getModuleElement());
+		documentationEClass.getESuperTypes().add(this.getComment());
+		moduleDocumentationEClass.getESuperTypes().add(this.getDocumentation());
+		moduleElementDocumentationEClass.getESuperTypes().add(this.getDocumentation());
+		parameterDocumentationEClass.getESuperTypes().add(this.getComment());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(moduleEClass, Module.class,
@@ -1056,6 +1328,14 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 				this.getModuleElement(),
 				null,
 				"ownedModuleElement", null, 1, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getModule_StartHeaderPosition(),
+				theEcorePackage_1.getEInt(),
+				"startHeaderPosition", null, 1, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getModule_EndHeaderPosition(),
+				theEcorePackage_1.getEInt(),
+				"endHeaderPosition", null, 1, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(moduleElementEClass, ModuleElement.class,
 				"ModuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1318,6 +1598,75 @@ public class MtlPackageImpl extends EPackageImpl implements MtlPackage {
 				theEcorePackage_1.getEPackage(),
 				null,
 				"takesTypesFrom", null, 1, -1, TypedModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(commentEClass, Comment.class,
+				"Comment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(
+				getComment_Body(),
+				this.getCommentBody(),
+				null,
+				"body", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(documentationEClass, Documentation.class,
+				"Documentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(
+				getDocumentation_DocumentedElement(),
+				this.getDocumentedElement(),
+				this.getDocumentedElement_Documentation(),
+				"documentedElement", null, 0, 1, Documentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(documentedElementEClass, DocumentedElement.class,
+				"DocumentedElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(
+				getDocumentedElement_Documentation(),
+				this.getDocumentation(),
+				this.getDocumentation_DocumentedElement(),
+				"documentation", null, 0, 1, DocumentedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getDocumentedElement_Deprecated(),
+				theEcorePackage_1.getEBoolean(),
+				"deprecated", "", 1, 1, DocumentedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+
+		initEClass(commentBodyEClass, CommentBody.class,
+				"CommentBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getCommentBody_StartPosition(),
+				theEcorePackage_1.getEInt(),
+				"startPosition", null, 0, 1, CommentBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getCommentBody_EndPosition(),
+				theEcorePackage_1.getEInt(),
+				"endPosition", null, 0, 1, CommentBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getCommentBody_Value(),
+				theEcorePackage_1.getEString(),
+				"value", null, 0, 1, CommentBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(moduleDocumentationEClass, ModuleDocumentation.class,
+				"ModuleDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getModuleDocumentation_Author(),
+				theEcorePackage_1.getEString(),
+				"author", null, 0, 1, ModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getModuleDocumentation_Version(),
+				theEcorePackage_1.getEString(),
+				"version", null, 0, 1, ModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getModuleDocumentation_Since(),
+				theEcorePackage_1.getEString(),
+				"since", null, 0, 1, ModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(moduleElementDocumentationEClass, ModuleElementDocumentation.class,
+				"ModuleElementDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(
+				getModuleElementDocumentation_ParametersDocumentation(),
+				this.getParameterDocumentation(),
+				null,
+				"parametersDocumentation", null, 0, -1, ModuleElementDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(parameterDocumentationEClass, ParameterDocumentation.class,
+				"ParameterDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		// Initialize enums and add enum literals
 		initEEnum(visibilityKindEEnum, VisibilityKind.class, "VisibilityKind"); //$NON-NLS-1$

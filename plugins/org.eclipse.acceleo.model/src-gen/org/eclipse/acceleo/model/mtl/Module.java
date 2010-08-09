@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @model
  * @generated
  */
-public interface Module extends EPackage {
+public interface Module extends EPackage, DocumentedElement {
 	/**
 	 * Returns the value of the '<em><b>Input</b></em>' containment reference list. The list contents are of
 	 * type {@link org.eclipse.acceleo.model.mtl.TypedModel}. <!-- begin-user-doc -->
@@ -94,5 +94,63 @@ public interface Module extends EPackage {
 	 * @generated
 	 */
 	EList<ModuleElement> getOwnedModuleElement();
+
+	/**
+	 * Returns the value of the '<em><b>Start Header Position</b></em>' attribute. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Start Header Position</em>' attribute isn't clear, there really should be
+	 * more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Start Header Position</em>' attribute.
+	 * @see #setStartHeaderPosition(int)
+	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getModule_StartHeaderPosition()
+	 * @model required="true"
+	 * @generated
+	 * @since 3.0
+	 */
+	int getStartHeaderPosition();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Module#getStartHeaderPosition
+	 * <em>Start Header Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Start Header Position</em>' attribute.
+	 * @see #getStartHeaderPosition()
+	 * @generated
+	 * @since 3.0
+	 */
+	void setStartHeaderPosition(int value);
+
+	/**
+	 * Returns the value of the '<em><b>End Header Position</b></em>' attribute. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>End Header Position</em>' attribute isn't clear, there really should be more
+	 * of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>End Header Position</em>' attribute.
+	 * @see #setEndHeaderPosition(int)
+	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getModule_EndHeaderPosition()
+	 * @model required="true"
+	 * @generated
+	 * @since 3.0
+	 */
+	int getEndHeaderPosition();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.model.mtl.Module#getEndHeaderPosition
+	 * <em>End Header Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>End Header Position</em>' attribute.
+	 * @see #getEndHeaderPosition()
+	 * @generated
+	 * @since 3.0
+	 */
+	void setEndHeaderPosition(int value);
 
 } // Module

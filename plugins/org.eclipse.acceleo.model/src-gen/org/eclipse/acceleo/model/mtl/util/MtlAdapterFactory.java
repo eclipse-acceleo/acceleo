@@ -11,6 +11,10 @@
 package org.eclipse.acceleo.model.mtl.util;
 
 import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.Comment;
+import org.eclipse.acceleo.model.mtl.CommentBody;
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
@@ -19,8 +23,11 @@ import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleDocumentation;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.ModuleElementDocumentation;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.ParameterDocumentation;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
@@ -183,6 +190,41 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseTypedModel(TypedModel object) {
 			return createTypedModelAdapter();
+		}
+
+		@Override
+		public Adapter caseComment(Comment object) {
+			return createCommentAdapter();
+		}
+
+		@Override
+		public Adapter caseDocumentation(Documentation object) {
+			return createDocumentationAdapter();
+		}
+
+		@Override
+		public Adapter caseDocumentedElement(DocumentedElement object) {
+			return createDocumentedElementAdapter();
+		}
+
+		@Override
+		public Adapter caseCommentBody(CommentBody object) {
+			return createCommentBodyAdapter();
+		}
+
+		@Override
+		public Adapter caseModuleDocumentation(ModuleDocumentation object) {
+			return createModuleDocumentationAdapter();
+		}
+
+		@Override
+		public Adapter caseModuleElementDocumentation(ModuleElementDocumentation object) {
+			return createModuleElementDocumentationAdapter();
+		}
+
+		@Override
+		public Adapter caseParameterDocumentation(ParameterDocumentation object) {
+			return createParameterDocumentationAdapter();
 		}
 
 		@Override
@@ -498,6 +540,111 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTypedModelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Comment
+	 * <em>Comment</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.Comment
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createCommentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.Documentation
+	 * <em>Documentation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.Documentation
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createDocumentationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * <em>Documented Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createDocumentedElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.CommentBody
+	 * <em>Comment Body</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.CommentBody
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createCommentBodyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.model.mtl.ModuleDocumentation
+	 * <em>Module Documentation</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createModuleDocumentationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.model.mtl.ModuleElementDocumentation <em>Module Element Documentation</em>}
+	 * '. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createModuleElementDocumentationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.model.mtl.ParameterDocumentation <em>Parameter Documentation</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.model.mtl.ParameterDocumentation
+	 * @generated
+	 * @since 3.0
+	 */
+	public Adapter createParameterDocumentationAdapter() {
 		return null;
 	}
 
