@@ -18,6 +18,8 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
+import org.eclipse.acceleo.model.mtl.MacroInvocation;
+import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.acceleo.parser.cst.FileBlock;
@@ -42,6 +44,11 @@ import org.eclipse.ocl.expressions.OCLExpression;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class CST2ASTConverterWithResolver extends CST2ASTConverter {
+
+	/** The message for depreciated elements. */
+	protected static final String DEPRECATED_MESSAGE = AcceleoParserMessages
+			.getString("CST2ASTConverterWithResolver.Deprecated"); //$NON-NLS-1$
+
 	/** Key of the error message for an unavailable clause. */
 	private static final String UNAVAILABLE_CLAUSE_KEY = "CST2ASTConverterWithResolver.UnavailableClause"; //$NON-NLS-1$
 
@@ -121,11 +128,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					org.eclipse.acceleo.model.mtl.Module oImportedModule = getModule(oModule.eResource(),
 							ioNext.getName());
 					if (oImportedModule == null) {
-						log(AcceleoParserMessages.getString(
+						logProblem(AcceleoParserMessages.getString(
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
 						oModule.getImports().add(oImportedModule);
+						if (oImportedModule.isDeprecated()) {
+							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
+						}
 					}
 				}
 				Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
@@ -134,16 +144,19 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					org.eclipse.acceleo.model.mtl.Module oExtendedModule = getModule(oModule.eResource(),
 							ioNext.getName());
 					if (oExtendedModule == null) {
-						log(AcceleoParserMessages.getString(
+						logProblem(AcceleoParserMessages.getString(
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
 						oModule.getExtends().add(oExtendedModule);
 						if (isRecursiveExtends(oModule, oExtendedModule)) {
-							log(AcceleoParserMessages.getString(
+							logProblem(AcceleoParserMessages.getString(
 									"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
 									oModule.getName(), oExtendedModule.getName(), }), ioNext
 									.getStartPosition(), ioNext.getEndPosition());
+						}
+						if (oExtendedModule.isDeprecated()) {
+							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
 						}
 					}
 				}
@@ -305,12 +318,20 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				List<org.eclipse.acceleo.model.mtl.Template> oOverrides = getExtendedTemplatesNamed(
 						getModule(oTemplate), ioNext.getName(), paramTypes);
 				if (oOverrides.size() == 0) {
-					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingTemplate", //$NON-NLS-1$
+					logProblem(AcceleoParserMessages.getString(
+							"CST2ASTConverterWithResolver.MissingTemplate", //$NON-NLS-1$
 							ioNext.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 				} else {
+					for (org.eclipse.acceleo.model.mtl.Template template : oOverrides) {
+						if (template.isDeprecated()) {
+							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
+							break;
+						}
+					}
 					oTemplate.getOverrides().addAll(oOverrides);
 				}
 			}
+
 			if (oFirst != null && oFirst.getType() != null) {
 				factory.getOCL().pushContext(oFirst.getType());
 			}
@@ -477,15 +498,15 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			transformStepResolve(iInitExpression);
 			factory.getOCL().addVariableToScope(oVariable);
 			if (!ParserUtils.isIdentifier(iVariable.getName())) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(), iVariable
-						.getStartPosition(), iVariable.getEndPosition());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(),
+						iVariable.getStartPosition(), iVariable.getEndPosition());
 			}
 			if (oVariable.getType() == null || oVariable.getType() == factory.getOCL().getInvalidType()) {
 				EClassifier eClassifier = factory.getOCL().lookupClassifier(iVariable.getType());
 				if (eClassifier != null) {
 					oVariable.setType(eClassifier);
 				} else {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iVariable.getType(),
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iVariable.getType(),
 							iVariable.getStartPosition(), iVariable.getEndPosition());
 				}
 			}
@@ -540,8 +561,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setBefore(oBefore);
 					transformStepResolve(iBefore);
 				} else {
-					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.BEFORE),
-							iBefore.getStartPosition(), iBefore.getEndPosition());
+					logProblem(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY,
+							IAcceleoConstants.BEFORE), iBefore.getStartPosition(), iBefore.getEndPosition());
 				}
 			}
 			org.eclipse.acceleo.parser.cst.ModelExpression iEach = iModelExpression.getEach();
@@ -551,8 +572,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setEach(oEach);
 					transformStepResolve(iEach);
 				} else {
-					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.SEPARATOR),
-							iEach.getStartPosition(), iEach.getEndPosition());
+					logProblem(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY,
+							IAcceleoConstants.SEPARATOR), iEach.getStartPosition(), iEach.getEndPosition());
 				}
 			}
 			org.eclipse.acceleo.parser.cst.ModelExpression iAfter = iModelExpression.getAfter();
@@ -562,8 +583,29 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					((TemplateInvocation)oOCLExpression).setAfter(oAfter);
 					transformStepResolve(iAfter);
 				} else {
-					log(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY, IAcceleoConstants.AFTER),
-							iAfter.getStartPosition(), iAfter.getEndPosition());
+					logProblem(AcceleoParserMessages.getString(UNAVAILABLE_CLAUSE_KEY,
+							IAcceleoConstants.AFTER), iAfter.getStartPosition(), iAfter.getEndPosition());
+				}
+			}
+
+			if (oOCLExpression instanceof TemplateInvocation) {
+				TemplateInvocation templateInvocation = (TemplateInvocation)oOCLExpression;
+				if (templateInvocation.getDefinition() != null
+						&& templateInvocation.getDefinition().isDeprecated()) {
+					logWarning(DEPRECATED_MESSAGE, templateInvocation.getStartPosition(), templateInvocation
+							.getEndPosition());
+				}
+			} else if (oOCLExpression instanceof QueryInvocation) {
+				QueryInvocation queryInvocation = (QueryInvocation)oOCLExpression;
+				if (queryInvocation.getDefinition() != null && queryInvocation.getDefinition().isDeprecated()) {
+					logWarning(DEPRECATED_MESSAGE, queryInvocation.getStartPosition(), queryInvocation
+							.getEndPosition());
+				}
+			} else if (oOCLExpression instanceof MacroInvocation) {
+				MacroInvocation macroInvocation = (MacroInvocation)oOCLExpression;
+				if (macroInvocation.getDefinition() != null && macroInvocation.getDefinition().isDeprecated()) {
+					logWarning(DEPRECATED_MESSAGE, macroInvocation.getStartPosition(), macroInvocation
+							.getEndPosition());
 				}
 			}
 		}
@@ -584,7 +626,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		if (oTemplateInvocation.isSuper() && oTemplateInvocation.getDefinition() == null) {
 			org.eclipse.acceleo.model.mtl.Template oTemplate = getTemplate(oTemplateInvocation);
 			if (oTemplate != null && oTemplate.getOverrides().size() == 0) {
-				log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.InvalidClause", //$NON-NLS-1$
+				logProblem(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.InvalidClause", //$NON-NLS-1$
 						IAcceleoConstants.SUPER, IAcceleoConstants.OVERRIDES), iModelExpression
 						.getStartPosition(), iModelExpression.getEndPosition());
 			} else {
@@ -756,7 +798,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		// for all conflict we log an error.
 		if (!conflictList.isEmpty()) {
 			for (ProtectedAreaBlock protectedAreaBlock : conflictList) {
-				this.log(AcceleoParserMessages
+				this.logProblem(AcceleoParserMessages
 						.getString("CST2ASTConverterWithResolver.ProtectedAreaConflict"), protectedAreaBlock //$NON-NLS-1$
 						.getMarker().getStartPosition(), protectedAreaBlock.getMarker().getEndPosition());
 			}
@@ -885,7 +927,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (oIfExpr.getType() != null
 						&& !(oIfExpr.getType() == getOCL().getOCLEnvironment().getOCLStandardLibrary()
 								.getBoolean())) {
-					log(AcceleoParserMessages.getString("IAcceleoParserProblemsConstants.InvalidExprType", //$NON-NLS-1$
+					logProblem(AcceleoParserMessages.getString(
+							"IAcceleoParserProblemsConstants.InvalidExprType", //$NON-NLS-1$
 							oIfExpr.getType().getName()), oIfExpr.getStartPosition(), oIfExpr
 							.getEndPosition());
 				}
@@ -1017,7 +1060,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			if (oFileUrl != null) {
 				oFileBlock.setFileUrl(oFileUrl);
 				if (oFileUrl.getEType() != null && !oFileUrl.getEType().equals(getOCL().getStringType())) {
-					log(AcceleoParserMessages.getString("IAcceleoParserProblemsConstants.InvalidUrlType", //$NON-NLS-1$
+					logProblem(AcceleoParserMessages.getString(
+							"IAcceleoParserProblemsConstants.InvalidUrlType", //$NON-NLS-1$
 							oFileUrl.getEType().getName()), oFileUrl.getStartPosition(), oFileUrl
 							.getEndPosition());
 				}
@@ -1114,9 +1158,12 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (eClassifier != null) {
 					oMacro.setType(eClassifier);
 				} else {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iMacro.getType(), iMacro
-							.getStartPosition(), iMacro.getEndPosition());
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iMacro.getType(),
+							iMacro.getStartPosition(), iMacro.getEndPosition());
 				}
+			}
+			if (oMacro.isDeprecated()) {
+				logWarning(DEPRECATED_MESSAGE, oMacro.getStartPosition(), oMacro.getEndPosition());
 			}
 		}
 	}
@@ -1167,8 +1214,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (eClassifier != null) {
 					oQuery.setType(eClassifier);
 				} else {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iQuery.getType(), iQuery
-							.getStartPosition(), iQuery.getEndPosition());
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iQuery.getType(),
+							iQuery.getStartPosition(), iQuery.getEndPosition());
 				}
 			}
 		}
@@ -1235,7 +1282,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Block) {
 						transformStepResolve((org.eclipse.acceleo.parser.cst.Block)iNext);
 					} else if (!(iNext instanceof org.eclipse.acceleo.parser.cst.Comment)) {
-						log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID + ' '
+						logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID + ' '
 								+ iNext.getClass().getName(), iNext.getStartPosition(), iNext
 								.getEndPosition());
 					}

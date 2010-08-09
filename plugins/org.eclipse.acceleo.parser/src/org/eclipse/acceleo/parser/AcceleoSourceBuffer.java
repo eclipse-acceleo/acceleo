@@ -14,11 +14,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.internal.parser.ast.CST2ASTConverterWithResolver;
+import org.eclipse.acceleo.internal.parser.ast.CST2ASTConverterWithDocumentationResolver;
 import org.eclipse.acceleo.internal.parser.ast.IASTProvider;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.acceleo.internal.parser.documentation.IDocumentationProvider;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
@@ -57,7 +58,7 @@ import org.eclipse.ocl.Environment;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoSourceBuffer implements IASTProvider {
+public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider {
 
 	/**
 	 * The AST model. It is created when you call the 'createAST' function.
@@ -69,7 +70,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * 
 	 * @noreference This field is not intended to be referenced by clients.
 	 */
-	protected CST2ASTConverterWithResolver astCreator;
+	protected CST2ASTConverterWithDocumentationResolver astCreator;
 
 	/**
 	 * The file to parse, can be null if the object is created with a buffer.
@@ -94,6 +95,16 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	private final AcceleoParserProblems problems;
 
 	/**
+	 * Parsing warnings.
+	 */
+	private final AcceleoParserWarnings warnings;
+
+	/**
+	 * Parsing informations.
+	 */
+	private final AcceleoParserInfos infos;
+
+	/**
 	 * The encoding of the buffer to parse.
 	 */
 	private final String encoding;
@@ -115,6 +126,8 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		this.buffer = FileContent.getFileContent(getFile());
 		this.encoding = FileContent.getEncoding(buffer);
 		this.problems = new AcceleoParserProblems();
+		this.warnings = new AcceleoParserWarnings();
+		this.infos = new AcceleoParserInfos();
 		init();
 	}
 
@@ -139,6 +152,8 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		this.buffer = buffer;
 		this.encoding = FileContent.getEncoding(buffer);
 		this.problems = new AcceleoParserProblems();
+		this.warnings = new AcceleoParserWarnings();
+		this.infos = new AcceleoParserInfos();
 		init();
 	}
 
@@ -293,7 +308,7 @@ public class AcceleoSourceBuffer implements IASTProvider {
 		if (cst == null) {
 			createCST();
 		}
-		astCreator = new CST2ASTConverterWithResolver();
+		astCreator = new CST2ASTConverterWithDocumentationResolver();
 		astCreator.setASTProvider(this);
 		astCreator.createAST(cst, resource);
 		if (resource.getContents().size() > 0
@@ -359,11 +374,67 @@ public class AcceleoSourceBuffer implements IASTProvider {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider#log(java.lang.String, int, int)
+	 * @deprecated Use {@link #logProblem(String, int, int)} instead.
 	 */
+	@Deprecated
 	public void log(String message, int posBegin, int posEnd) {
+		this.logProblem(message, posBegin, posEnd);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logProblem(java.lang.String, int, int)
+	 * @since 3.0
+	 */
+	public void logProblem(final String message, final int posBegin, final int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
 		int line = FileContent.lineNumber(buffer, pos[0]);
 		problems.addProblem(getFile(), message, line, pos[0], pos[1]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logWarning(java.lang.String, int, int)
+	 * @since 3.0
+	 */
+	public void logWarning(final String message, final int posBegin, final int posEnd) {
+		int[] pos = trim(posBegin, posEnd);
+		int line = FileContent.lineNumber(this.buffer, pos[0]);
+		this.warnings.addWarning(message, line, pos[0], pos[1]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logInfo(java.lang.String, int, int)
+	 * @since 3.0
+	 */
+	public void logInfo(final String message, final int posBegin, final int posEnd) {
+		int[] pos = trim(posBegin, posEnd);
+		int line = FileContent.lineNumber(this.buffer, pos[0]);
+		this.infos.addInfo(message, line, pos[0], pos[1]);
+	}
+
+	/**
+	 * Returns the warnings.
+	 * 
+	 * @return the warnings
+	 * @since 3.0
+	 */
+	public AcceleoParserWarnings getWarnings() {
+		return this.warnings;
+	}
+
+	/**
+	 * Returns the infos.
+	 * 
+	 * @return the infos
+	 * @since 3.0
+	 */
+	public AcceleoParserInfos getInfos() {
+		return this.infos;
 	}
 
 	/**
@@ -400,5 +471,17 @@ public class AcceleoSourceBuffer implements IASTProvider {
 			}
 		}
 		return new int[] {b, e };
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.parser.documentation.IDocumentationProvider#resolveASTDocumentation()
+	 * @since 3.0
+	 */
+	public void resolveASTDocumentation() {
+		if (this.astCreator != null && this.ast != null) {
+			this.astCreator.resolveASTDocumentation(this.ast, this.buffer);
+		}
 	}
 }

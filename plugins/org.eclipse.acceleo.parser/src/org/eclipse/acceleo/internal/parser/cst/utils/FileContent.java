@@ -93,8 +93,33 @@ public final class FileContent {
 	 * @return the found encoding code or null
 	 */
 	public static String getEncoding(StringBuffer buffer) {
+		String result = null;
+
 		Sequence bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.COMMENT,
 				IAcceleoConstants.ENCODING, IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
+		result = getEncoding(buffer, bSequence);
+		// if we didn't find any encoding in a comment block, we will look for an encoding in a documentation
+		// block. Going through the whole file twice to find the encoding may not be the most efficient
+		// solution
+		if (result == null) {
+			bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.DOCUMENTATION_BEGIN,
+					IAcceleoConstants.ENCODING, IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
+			result = getEncoding(buffer, bSequence);
+		}
+		return result;
+	}
+
+	/**
+	 * Gets the encoding of the current buffer, or null if the encoding tag doesn't exist.
+	 * 
+	 * @param buffer
+	 *            buffer in which we want to look for an encoding code
+	 * @param bSequence
+	 *            The sequence used to search the encoding (This will determine if we will search the encoding
+	 *            in the starting comment block or in the starting documentation block)
+	 * @return the found encoding code or null
+	 */
+	private static String getEncoding(StringBuffer buffer, Sequence bSequence) {
 		Region b = bSequence.search(buffer);
 		if (b.e() != -1) {
 			int bEncoding = b.e();

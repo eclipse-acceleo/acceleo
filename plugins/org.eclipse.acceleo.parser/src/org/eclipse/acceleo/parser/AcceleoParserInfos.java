@@ -10,58 +10,54 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * All the syntax problems of the parsing.
+ * All the syntax infos of the parsing.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.0
  */
-public class AcceleoParserProblems implements AcceleoParserMessages {
+public class AcceleoParserInfos implements AcceleoParserMessages {
 
 	/**
-	 * List of problems.
+	 * List of infos.
 	 */
-	private List<AcceleoParserProblem> list;
+	private List<AcceleoParserInfo> list;
 
 	/**
 	 * Constructor.
 	 */
-	public AcceleoParserProblems() {
-		list = new ArrayList<AcceleoParserProblem>();
+	public AcceleoParserInfos() {
+		list = new ArrayList<AcceleoParserInfo>();
 	}
 
 	/**
-	 * The way to add a new problem.
+	 * The way to add a new info.
 	 * 
-	 * @param file
-	 *            is the file, can be null if the parser has been created with a buffer
 	 * @param message
 	 *            is the message
 	 * @param line
-	 *            is the line of the problem
+	 *            is the line of the info
 	 * @param posBegin
-	 *            is the beginning index of the problem
+	 *            is the beginning index of the info
 	 * @param posEnd
-	 *            is the ending index of the problem
+	 *            is the ending index of the info
 	 */
-	@SuppressWarnings("unused")
-	// TODO JMU "file" isn't used
-	public void addProblem(File file, String message, int line, int posBegin, int posEnd) {
-		list.add(new AcceleoParserProblem(message, line, posBegin, posEnd));
+	public void addInfo(String message, int line, int posBegin, int posEnd) {
+		list.add(new AcceleoParserInfo(message, line, posBegin, posEnd));
 	}
 
 	/**
-	 * gets the list of problems.
+	 * gets the list of infos.
 	 * 
-	 * @return the list of problems
+	 * @return the list of infos
 	 */
-	public List<AcceleoParserProblem> getList() {
-		// We copy the problems list to prevent concurrent thread access...
-		return new ArrayList<AcceleoParserProblem>(list);
+	public List<AcceleoParserInfo> getList() {
+		// We copy the infos list to prevent concurrent thread access...
+		return new ArrayList<AcceleoParserInfo>(list);
 	}
 
 	/**
@@ -80,9 +76,9 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserProblem> problemsIt = list.iterator(); problemsIt.hasNext();) {
-			result.append(problemsIt.next().getMessage());
-			if (problemsIt.hasNext()) {
+		for (Iterator<AcceleoParserInfo> infosIt = list.iterator(); infosIt.hasNext();) {
+			result.append(infosIt.next().getMessage());
+			if (infosIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$
 			}
 		}
@@ -98,5 +94,4 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	public String toString() {
 		return getMessage();
 	}
-
 }

@@ -14,6 +14,7 @@ import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.IfBlock;
@@ -207,6 +208,11 @@ public class CstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseQuery(Query object) {
 			return createQueryAdapter();
+		}
+
+		@Override
+		public Adapter caseDocumentation(Documentation object) {
+			return createDocumentationAdapter();
 		}
 
 		@Override
@@ -562,6 +568,20 @@ public class CstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createQueryAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.parser.cst.Documentation
+	 * <em>Documentation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.parser.cst.Documentation
+	 * @generated
+	 */
+	public Adapter createDocumentationAdapter() {
 		return null;
 	}
 

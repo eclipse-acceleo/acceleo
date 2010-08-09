@@ -10,12 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.cst;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -26,11 +31,14 @@ import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.Region;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
+import org.eclipse.acceleo.internal.parser.documentation.utils.DocumentationUtils;
+import org.eclipse.acceleo.internal.parser.documentation.utils.DocumentationUtils.CommentType;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstFactory;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.InitSection;
 import org.eclipse.acceleo.parser.cst.Macro;
 import org.eclipse.acceleo.parser.cst.ModelExpression;
@@ -141,6 +149,11 @@ public class CSTParser {
 	protected final SequenceBlock pQuery;
 
 	/**
+	 * To parse a 'documentation' block in the text.
+	 */
+	protected final SequenceBlock pDocumentation;
+
+	/**
 	 * To parse a block statement in the text : 'for', 'if'...
 	 */
 	protected final CSTParserBlock pBlock;
@@ -176,6 +189,8 @@ public class CSTParser {
 				pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
 		pQuery = ParserUtils.createAcceleoSequenceBlock(false, IAcceleoConstants.QUERY, new SequenceBlock[] {
 				pLiteral, pParenthesis, }, new SequenceBlock[] {pComment });
+		pDocumentation = ParserUtils.createAcceleoSequenceBlock(true, IAcceleoConstants.DOCUMENTATION_BEGIN,
+				null, null);
 		pBlock = new CSTParserBlock(this);
 	}
 
@@ -230,19 +245,21 @@ public class CSTParser {
 	 */
 	public Module parse() {
 		if (source.getBuffer() == null || source.getBuffer().length() == 0) {
-			log(AcceleoParserMessages.getString("CSTParser.EmptyBuffer"), 0, -1); //$NON-NLS-1$
+			logProblem(AcceleoParserMessages.getString("CSTParser.EmptyBuffer"), 0, -1); //$NON-NLS-1$
 		} else {
 			Region bH = pModule.searchBeginHeader(source.getBuffer(), 0, source.getBuffer().length());
 			if (bH.b() == -1) {
-				log(AcceleoParserMessages.getString("CSTParser.MissingModule"), 0, -1); //$NON-NLS-1$
+				logProblem(AcceleoParserMessages.getString("CSTParser.MissingModule"), 0, -1); //$NON-NLS-1$
 			} else {
 				Region eH = pModule.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, source.getBuffer()
 						.length());
 				if (eH.b() == -1) {
-					log(AcceleoParserMessages.getString("CSTParser.MissingModuleEnd"), bH.b(), bH.e()); //$NON-NLS-1$
+					logProblem(AcceleoParserMessages.getString("CSTParser.MissingModuleEnd"), bH.b(), bH.e()); //$NON-NLS-1$
 				} else {
 					Module eModule = CstFactory.eINSTANCE.createModule();
 					setPositions(eModule, bH.b(), source.getBuffer().length());
+					List<Comment> commentsBeforeModule = parseBeforeModule(eModule);
+					computeModuleDocumentation(commentsBeforeModule, eModule);
 					parseModuleHeader(bH.e(), eH.b(), eModule);
 					parseModuleBody(eH.e(), source.getBuffer().length(), eModule);
 					return eModule;
@@ -250,6 +267,229 @@ public class CSTParser {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Find the documentation of the module in the list of all the documentation placed before the module's
+	 * header.
+	 * 
+	 * @param commentsBeforeModule
+	 *            The list of the comments before the header.
+	 * @param eModule
+	 *            The module which maay be modified to include its documentation
+	 */
+	private void computeModuleDocumentation(List<Comment> commentsBeforeModule, Module eModule) {
+		if (commentsBeforeModule.size() > 0) {
+			Comment comment = commentsBeforeModule.get(commentsBeforeModule.size() - 1);
+			if (comment instanceof Documentation) {
+				Documentation documentation = (Documentation)comment;
+
+				Sequence bSequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN,
+						IAcceleoConstants.DOCUMENTATION_BEGIN, IAcceleoConstants.ENCODING,
+						IAcceleoConstants.VARIABLE_INIT_SEPARATOR);
+				StringBuffer documentationBody = new StringBuffer(documentation.getBody());
+				Region b = bSequence.search(documentationBody);
+
+				// If we found an ending position for the encoding area of '-1', it means that this
+				// documentation block does not have any encoding, therefore we can use it as the module
+				// documentation
+				if (b.e() == -1) {
+					eModule.setDocumentation(documentation);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Reads the text before the module declaration to find the starting comment of documentation and to log
+	 * an error if there is something else before the module.
+	 * 
+	 * @param eModule
+	 *            The module.
+	 * @return The list of all comments before the module header.
+	 */
+	private List<Comment> parseBeforeModule(Module eModule) {
+		int currentPosition = 0;
+		List<Comment> commentBeforeModuleHeader = new ArrayList<Comment>();
+		while (currentPosition < eModule.getStartPosition() && currentPosition != -1) {
+			Region docBH = pDocumentation.searchBeginHeader(source.getBuffer(), currentPosition, eModule
+					.getStartPosition());
+			Region comBH = pComment.searchBeginHeader(source.getBuffer(), currentPosition, eModule
+					.getStartPosition());
+
+			if (docBH.b() == -1 && comBH.b() == -1) {
+				parseWhitespaceArea(currentPosition, eModule.getStartPosition());
+				currentPosition = -1;
+			} else if (docBH.b() != -1 && comBH.b() != -1) {
+				if (docBH.b() < comBH.b()) {
+					// We found a documentation block first
+					Documentation eDocumentation = parseDocumentationBeforeModule(docBH, eModule
+							.getEndPosition());
+					commentBeforeModuleHeader.add(eDocumentation);
+					parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
+					currentPosition = eDocumentation.getEndPosition();
+				} else if (docBH.b() > comBH.b()) {
+					// We found a comment block first
+					Comment eComment = parseCommentBeforeModule(comBH, eModule.getEndPosition());
+					commentBeforeModuleHeader.add(eComment);
+					parseWhitespaceArea(currentPosition, eComment.getStartPosition());
+					currentPosition = eComment.getEndPosition();
+				}
+			} else if (docBH.b() != -1 && comBH.b() == -1) {
+				// We found only a documentation block
+				Documentation eDocumentation = parseDocumentationBeforeModule(docBH, eModule.getEndPosition());
+				commentBeforeModuleHeader.add(eDocumentation);
+				parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
+				currentPosition = eDocumentation.getEndPosition();
+			} else if (docBH.b() == -1 && comBH.b() != -1) {
+				// We found only a comment block
+				Comment eComment = parseCommentBeforeModule(comBH, eModule.getEndPosition());
+				commentBeforeModuleHeader.add(eComment);
+				parseWhitespaceArea(currentPosition, eComment.getStartPosition());
+				currentPosition = eComment.getEndPosition();
+			}
+		}
+		return commentBeforeModuleHeader;
+	}
+
+	/**
+	 * Parses the text between the starting comment/documentation blocks and the module to see if there is
+	 * anything except whitespace, if yes we log an error.
+	 * 
+	 * @param startPosition
+	 *            The ending position of the supposed whitespace area
+	 * @param endPosition
+	 *            The beginning position of the supposed whitespace area
+	 */
+	private void parseWhitespaceArea(int startPosition, int endPosition) {
+		String substring = source.getBuffer().substring(startPosition, endPosition);
+
+		// This regex will detect everything that is not a whitespace
+		Pattern p = Pattern.compile("\\S"); //$NON-NLS-1$
+		Matcher matcher = p.matcher(substring);
+		boolean found = matcher.find();
+
+		if (found) {
+			this.logWarning(AcceleoParserMessages
+					.getString("AcceleoParser.Warning.TextBetweenCommentAndModule"), startPosition, //$NON-NLS-1$
+					endPosition);
+
+		}
+	}
+
+	/**
+	 * Parses the comment block before the module. This method will return a Documentation node in order to
+	 * manipulate the starting comment has the documentation of the module without having to force users to
+	 * use the new documentation system.
+	 * 
+	 * @param beginHeader
+	 *            The begin header
+	 * @param moduleStartPosition
+	 *            The start position of the module
+	 * @return The documentation parsed
+	 */
+	private Comment parseCommentBeforeModule(Region beginHeader, int moduleStartPosition) {
+		Comment comment;
+		Region eH = pComment.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader,
+				moduleStartPosition);
+		if (eH.b() == -1) {
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.COMMENT),
+					beginHeader.b(), beginHeader.e());
+			comment = null;
+		} else {
+			if (eH.getSequence() == pComment.getEndHeaderBody()) {
+				Comment eComment = CstFactory.eINSTANCE.createComment();
+				setPositions(eComment, beginHeader.b(), eH.e());
+
+				eComment.setBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
+				DocumentationUtils.parseToDoFixMe(this.source, eComment.getStartPosition(), eComment
+						.getEndPosition(), CommentType.COMMENT_IN_HEADER);
+
+				comment = eComment;
+			} else {
+				Region eB = pComment.searchEndBodyAtEndHeader(source.getBuffer(), eH, moduleStartPosition);
+				if (eB.b() == -1) {
+					logProblem(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.COMMENT),
+							beginHeader.b(), beginHeader.e());
+					comment = null;
+				} else {
+					Comment eComment = CstFactory.eINSTANCE.createComment();
+					setPositions(eComment, beginHeader.b(), eB.e());
+
+					eComment.setBody(source.getBuffer().substring(eH.e(), eB.b()));
+					DocumentationUtils.parseToDoFixMe(this.source, eComment.getStartPosition(), eComment
+							.getEndPosition(), CommentType.COMMENT_WITH_END_HEADER);
+
+					comment = eComment;
+				}
+			}
+		}
+		return comment;
+	}
+
+	/**
+	 * Parses the documentation block before the module.
+	 * 
+	 * @param beginHeader
+	 *            The begin header
+	 * @param moduleStartPosition
+	 *            The start position of the module
+	 * @return The documentation parsed
+	 */
+	private Documentation parseDocumentationBeforeModule(Region beginHeader, int moduleStartPosition) {
+		Documentation eDocumentation;
+		Region eH = pDocumentation.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader,
+				moduleStartPosition);
+		if (eH.b() == -1) {
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER,
+					IAcceleoConstants.DOCUMENTATION_BEGIN), beginHeader.b(), beginHeader.e());
+			eDocumentation = null;
+		} else {
+			eDocumentation = CstFactory.eINSTANCE.createDocumentation();
+			setPositions(eDocumentation, beginHeader.b(), eH.e());
+
+			String body = parseDocumentationBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
+			eDocumentation.setBody(body);
+
+			DocumentationUtils.parseToDoFixMe(this.source, eDocumentation.getStartPosition(), eDocumentation
+					.getEndPosition(), CommentType.DOCUMENTATION);
+		}
+		return eDocumentation;
+	}
+
+	/**
+	 * Parses the body of the documentation and suppress all the '*'.
+	 * 
+	 * @param documentationBody
+	 *            the body of the documentation
+	 * @return the documentation text
+	 */
+	private String parseDocumentationBody(String documentationBody) {
+		final String lineseparator = "line.separator"; //$NON-NLS-1$
+
+		StringBuffer buffer = new StringBuffer();
+
+		String str = ""; //$NON-NLS-1$
+		BufferedReader reader = new BufferedReader(new StringReader(documentationBody));
+		try {
+			while ((str = reader.readLine()) != null) {
+				if (str.trim().startsWith(IAcceleoConstants.DOCUMENTATION_NEW_LINE)) {
+					str = str.substring(str.indexOf(IAcceleoConstants.DOCUMENTATION_NEW_LINE) + 1)
+							+ System.getProperty(lineseparator);
+					buffer.append(str.trim());
+				} else if (str.endsWith(IAcceleoConstants.DOCUMENTATION_NEW_LINE)) {
+					str = str.substring(0, str.lastIndexOf(IAcceleoConstants.DOCUMENTATION_NEW_LINE))
+							+ System.getProperty(lineseparator);
+					buffer.append(str.trim());
+				} else {
+					buffer.append(str + System.getProperty(lineseparator));
+				}
+			}
+		} catch (IOException e) {
+			// do nothing
+		}
+
+		return buffer.toString();
 	}
 
 	/**
@@ -266,28 +506,30 @@ public class CSTParser {
 	public void parseModuleHeader(int posBegin, int posEnd, Module eModule) {
 		Region bH = pParenthesis.searchBeginHeader(source.getBuffer(), posBegin, posEnd);
 		if (bH.b() == -1) {
-			log(AcceleoParserMessages.getString("CSTParser.MissingMetamodel"), posBegin, posEnd); //$NON-NLS-1$
+			logProblem(AcceleoParserMessages.getString("CSTParser.MissingMetamodel"), posBegin, posEnd); //$NON-NLS-1$
 			String name = source.getBuffer().substring(posBegin, posEnd).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, //$NON-NLS-1$
+				logProblem(
+						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, //$NON-NLS-1$
 						posEnd);
 			}
 		} else {
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				parseModuleHeaderTypedModels(bH.e(), eH.b(), eModule);
 				int eExtend = parseModuleHeaderExtends(eH.e(), posEnd, eModule);
 				if (source.getBuffer().substring(eExtend, posEnd).trim().length() > 0) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, eExtend, posEnd);
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, eExtend, posEnd);
 				}
 			}
 			String name = source.getBuffer().substring(posBegin, bH.b()).trim();
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
-				log(AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
+				logProblem(
+						AcceleoParserMessages.getString("CSTParser.InvalidModuleDefinition", name), posBegin, bH.b()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -359,7 +601,8 @@ public class CSTParser {
 					}
 					ePackage = ModelUtils.getEPackage(ePackageKey);
 					if (ePackage == null) {
-						log(AcceleoParserMessages.getString("CSTParser.MetamodelNotFound"), currentPos, e); //$NON-NLS-1$
+						logProblem(
+								AcceleoParserMessages.getString("CSTParser.MetamodelNotFound"), currentPos, e); //$NON-NLS-1$
 					}
 				}
 			}
@@ -442,21 +685,24 @@ public class CSTParser {
 	 */
 	public void parseModuleBody(int posBegin, int posEnd, Module eModule) {
 		int currentPosBegin = posBegin;
-		SequenceBlock[] pModuleElements = new SequenceBlock[] {pComment, pImport, pTemplate, pMacro, pQuery };
+		SequenceBlock[] pModuleElements = new SequenceBlock[] {pComment, pImport, pTemplate, pMacro, pQuery,
+				pDocumentation, };
 		Region[] positions = Region.createPositions(pModuleElements.length);
 		while (currentPosBegin > -1 && currentPosBegin < posEnd) {
 			int i = ParserUtils.getNextSequence(source.getBuffer(), currentPosBegin, posEnd, pModuleElements,
 					positions);
 			if (i == -1) {
 				if (source.getBuffer().substring(currentPosBegin, posEnd).trim().length() > 0) {
-					log(AcceleoParserMessages.getString("CSTParser.InvalidModel"), currentPosBegin, posEnd); //$NON-NLS-1$
+					logProblem(
+							AcceleoParserMessages.getString("CSTParser.InvalidModel"), currentPosBegin, posEnd); //$NON-NLS-1$
 				}
 				currentPosBegin = -1;
 			} else {
 				SequenceBlock pModuleElement = pModuleElements[i];
 				Region bH = positions[i];
 				if (source.getBuffer().substring(currentPosBegin, bH.b()).trim().length() > 0) {
-					log(AcceleoParserMessages.getString("CSTParser.InvalidModuleElement"), currentPosBegin, bH.b()); //$NON-NLS-1$
+					logProblem(
+							AcceleoParserMessages.getString("CSTParser.InvalidModuleElement"), currentPosBegin, bH.b()); //$NON-NLS-1$
 				}
 				if (pModuleElement == pComment) {
 					currentPosBegin = parseCommentEnding(bH, posEnd, eModule);
@@ -468,11 +714,47 @@ public class CSTParser {
 					currentPosBegin = parseMacroEnding(bH, posEnd, eModule);
 				} else if (pModuleElement == pQuery) {
 					currentPosBegin = parseQueryEnding(bH, posEnd, eModule);
+				} else if (pModuleElement == pDocumentation) {
+					currentPosBegin = parseDocumentationEnding(bH, posEnd, eModule);
 				} else {
 					currentPosBegin = -1; // never
 				}
 			}
 		}
+	}
+
+	/**
+	 * Reads the following text as a new 'documentation' (header and body) in the CST model.
+	 * 
+	 * @param beginHeader
+	 *            is the beginning index
+	 * @param posEnd
+	 *            is the ending index
+	 * @param eModule
+	 *            is the current object of the CST model, it will be modified in this method
+	 * @return the ending index of the element to parse
+	 */
+	private int parseDocumentationEnding(Region beginHeader, int posEnd, Module eModule) {
+		int posBegin;
+		Region eH = pDocumentation.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
+		if (eH.b() == -1) {
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT),
+					beginHeader.b(), beginHeader.e());
+			posBegin = -1;
+		} else {
+			Documentation eDocumentation = CstFactory.eINSTANCE.createDocumentation();
+			setPositions(eDocumentation, beginHeader.b(), eH.e());
+
+			String body = parseDocumentationBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
+			eDocumentation.setBody(body);
+
+			DocumentationUtils.parseToDoFixMe(this.source, eDocumentation.getStartPosition(), eDocumentation
+					.getEndPosition(), CommentType.DOCUMENTATION);
+
+			eModule.getOwnedModuleElement().add(eDocumentation);
+			posBegin = eH.e();
+		}
+		return posBegin;
 	}
 
 	/**
@@ -490,27 +772,39 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pComment.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.COMMENT), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.COMMENT),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pComment.getEndHeaderBody()) {
 				Comment eComment = CstFactory.eINSTANCE.createComment();
 				setPositions(eComment, beginHeader.b(), eH.e());
+
 				eComment.setBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
+
+				DocumentationUtils.parseToDoFixMe(this.source, eComment.getStartPosition(), eComment
+						.getEndPosition(), CommentType.COMMENT_IN_HEADER);
+
 				eModule.getOwnedModuleElement().add(eComment);
+
 				posBegin = eH.e();
 			} else {
 				Region eB = pComment.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.COMMENT), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.COMMENT),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					Comment eComment = CstFactory.eINSTANCE.createComment();
 					setPositions(eComment, beginHeader.b(), eB.e());
+
 					eComment.setBody(source.getBuffer().substring(eH.e(), eB.b()));
+
+					DocumentationUtils.parseToDoFixMe(this.source, eComment.getStartPosition(), eComment
+							.getEndPosition(), CommentType.COMMENT_WITH_END_HEADER);
+
 					eModule.getOwnedModuleElement().add(eComment);
+
 					posBegin = eB.e();
 				}
 			}
@@ -533,8 +827,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pImport.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			ModuleImportsValue eModuleImportsValue = CstFactory.eINSTANCE.createModuleImportsValue();
@@ -561,8 +855,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pTemplate.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.TEMPLATE), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.TEMPLATE),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pTemplate.getEndHeaderBody()) {
@@ -574,7 +868,7 @@ public class CSTParser {
 			} else {
 				Region eB = pTemplate.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.TEMPLATE),
+					logProblem(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.TEMPLATE),
 							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
@@ -605,8 +899,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pMacro.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.MACRO), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.MACRO),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pMacro.getEndHeaderBody()) {
@@ -618,8 +912,8 @@ public class CSTParser {
 			} else {
 				Region eB = pMacro.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.MACRO), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_STMT, IAcceleoConstants.MACRO),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -649,8 +943,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pQuery.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.QUERY), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.QUERY),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pQuery.getEndHeaderBody()) {
@@ -662,10 +956,12 @@ public class CSTParser {
 			} else {
 				Region eB = pQuery.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
+					logProblem(
+							AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
 					posBegin = -1;
 				} else {
-					log(AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), eB.e()); //$NON-NLS-1$
+					logProblem(
+							AcceleoParserMessages.getString("CSTParser.InvalidQuery"), beginHeader.b(), eB.e()); //$NON-NLS-1$
 					posBegin = eB.e();
 					Query eQuery = CstFactory.eINSTANCE.createQuery();
 					setPositions(eQuery, beginHeader.b(), eB.e());
@@ -692,21 +988,21 @@ public class CSTParser {
 		int posShift = shiftVisibility(posBegin, posEnd, eTemplate);
 		Region bH = pParenthesis.searchBeginHeader(source.getBuffer(), posShift, posEnd);
 		if (bH.b() == -1) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eTemplate.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
 			eTemplate.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
@@ -723,7 +1019,7 @@ public class CSTParser {
 				currentPosBegin = parseTemplateHeaderPost(currentPosBegin, currentPosEnd, posEnd, eTemplate);
 				currentPosBegin = shiftInitSectionBody(currentPosBegin, currentPosEnd, eTemplate);
 				if (source.getBuffer().substring(currentPosBegin, posEnd).trim().length() > 0) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
 				}
 			}
 		}
@@ -823,15 +1119,16 @@ public class CSTParser {
 			currentPos = bGuard;
 			if (ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
 					IAcceleoConstants.PARENTHESIS_BEGIN, false) == currentPos) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos,
+						posEnd);
 				currentPos = headerPosEnd;
 			} else {
 				Region bHParenthesis = pParenthesis.searchBeginHeader(source.getBuffer(), currentPos, posEnd);
 				Region eHParenthesis = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
 						bHParenthesis, posEnd);
 				if (eHParenthesis.b() == -1) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bHParenthesis.b(),
-							bHParenthesis.e());
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED,
+							bHParenthesis.b(), bHParenthesis.e());
 					currentPos = headerPosEnd;
 				} else {
 					ModelExpression eGuard = CstFactory.eINSTANCE.createModelExpression();
@@ -866,15 +1163,16 @@ public class CSTParser {
 			currentPos = bPost;
 			if (ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
 					IAcceleoConstants.PARENTHESIS_BEGIN, false) == currentPos) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos,
+						posEnd);
 				currentPos = headerPosEnd;
 			} else {
 				Region bHParenthesis = pParenthesis.searchBeginHeader(source.getBuffer(), currentPos, posEnd);
 				Region eHParenthesis = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
 						bHParenthesis, posEnd);
 				if (eHParenthesis.b() == -1) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bHParenthesis.b(),
-							bHParenthesis.e());
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED,
+							bHParenthesis.b(), bHParenthesis.e());
 					currentPos = headerPosEnd;
 				} else {
 					ModelExpression ePost = CstFactory.eINSTANCE.createModelExpression();
@@ -940,7 +1238,8 @@ public class CSTParser {
 					.searchEndHeaderAtBeginHeader(source.getBuffer(), bHBrackets, posEnd);
 			int posResult;
 			if (eHBrackets.b() == -1) {
-				log(AcceleoParserMessages.getString("CSTParser.MissingClosingBracket"), bHBrackets.b(), bHBrackets.e()); //$NON-NLS-1$
+				logProblem(
+						AcceleoParserMessages.getString("CSTParser.MissingClosingBracket"), bHBrackets.b(), bHBrackets.e()); //$NON-NLS-1$
 				posResult = posEnd;
 			} else {
 				InitSection eInitSection = CstFactory.eINSTANCE.createInitSection();
@@ -949,7 +1248,7 @@ public class CSTParser {
 				boolean semicolonFound = shiftInitSectionBodyCreatesVariables(bHBrackets.e(), eHBrackets.b(),
 						eInitSection);
 				if (!semicolonFound) {
-					log(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
+					logProblem(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
 							IAcceleoConstants.SEMICOLON_SEPARATOR), bHBrackets.e(), eHBrackets.b());
 				}
 				posResult = eHBrackets.e();
@@ -1014,8 +1313,9 @@ public class CSTParser {
 				if (!variableNames.contains(eVariable.getName())) {
 					variableNames.add(eVariable.getName());
 				} else {
-					log(AcceleoParserMessages.getString(
-							"CSTParser.DuplicatedVariable", new Object[] {eVariable.getName() }), variablePos.b(), variablePos.e()); //$NON-NLS-1$
+					logProblem(
+							AcceleoParserMessages.getString(
+									"CSTParser.DuplicatedVariable", new Object[] {eVariable.getName() }), variablePos.b(), variablePos.e()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1036,7 +1336,8 @@ public class CSTParser {
 		Variable eVariable;
 		int bDot = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR);
 		if (bDot == -1) {
-			log(AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
+			logProblem(
+					AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
 					posEnd);
 			eVariable = null;
 		} else {
@@ -1114,21 +1415,21 @@ public class CSTParser {
 		int posShift = shiftVisibility(posBegin, posEnd, eQuery);
 		Region bH = pParenthesis.searchBeginHeader(source.getBuffer(), posShift, posEnd);
 		if (bH.b() == -1) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eQuery.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
 			eQuery.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
@@ -1141,7 +1442,7 @@ public class CSTParser {
 				int eDot = ParserUtils.shiftKeyword(source.getBuffer(), currentPosBegin, posEnd,
 						IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, false);
 				if (eDot == currentPosBegin) {
-					log(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
+					logProblem(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
 							IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR), currentPosBegin, posEnd);
 				}
 				String bodyText = source.getBuffer().substring(eDot, posEnd);
@@ -1159,7 +1460,7 @@ public class CSTParser {
 					pBlock.parseExpressionHeader(eDot + bInit
 							+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(), posEnd, eExpression);
 				} else {
-					log(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
+					logProblem(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
 							IAcceleoConstants.VARIABLE_INIT_SEPARATOR), currentPosBegin, posEnd);
 				}
 			}
@@ -1181,21 +1482,21 @@ public class CSTParser {
 		int posShift = shiftVisibility(posBegin, posEnd, eMacro);
 		Region bH = pParenthesis.searchBeginHeader(source.getBuffer(), posShift, posEnd);
 		if (bH.b() == -1) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posShift, posEnd);
 			String name = source.getBuffer().substring(posShift, posEnd).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eMacro.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
 			eMacro.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
 				for (int i = 0; eVariables != null && i < eVariables.length; i++) {
@@ -1208,7 +1509,7 @@ public class CSTParser {
 				int eDot = ParserUtils.shiftKeyword(source.getBuffer(), currentPosBegin, posEnd,
 						IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, false);
 				if (eDot == currentPosBegin) {
-					log(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
+					logProblem(AcceleoParserMessages.getString(MISSING_CHARACTER_KEY,
 							IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR), currentPosBegin, posEnd);
 				}
 				String type = source.getBuffer().substring(eDot, posEnd).trim();
@@ -1242,8 +1543,37 @@ public class CSTParser {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	private void log(String message, int posBegin, int posEnd) {
-		source.log(message, posBegin, posEnd);
+	private void logProblem(String message, int posBegin, int posEnd) {
+		source.logProblem(message, posBegin, posEnd);
+	}
+
+	/**
+	 * To log a new warning.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	private void logWarning(String message, int posBegin, int posEnd) {
+		source.logWarning(message, posBegin, posEnd);
+	}
+
+	/**
+	 * To log a new information.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	@SuppressWarnings("unused")
+	private void logInfo(String message, int posBegin, int posEnd) {
+		source.logInfo(message, posBegin, posEnd);
 	}
 
 }

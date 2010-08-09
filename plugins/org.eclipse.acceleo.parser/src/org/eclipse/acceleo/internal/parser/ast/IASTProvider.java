@@ -58,7 +58,44 @@ public interface IASTProvider {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	void log(String message, int posBegin, int posEnd);
+	@Deprecated
+	void log(final String message, final int posBegin, final int posEnd);
+
+	/**
+	 * To log a new problem.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	void logProblem(final String message, final int posBegin, final int posEnd);
+
+	/**
+	 * To log a new warning.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the warning
+	 * @param posEnd
+	 *            is the ending index of the warning
+	 */
+	void logWarning(final String message, final int posBegin, final int posEnd);
+
+	/**
+	 * To log a new info.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the info
+	 * @param posEnd
+	 *            is the ending index of the info
+	 */
+	void logInfo(final String message, final int posBegin, final int posEnd);
 
 	/***
 	 * Returns the line number of the given offset.

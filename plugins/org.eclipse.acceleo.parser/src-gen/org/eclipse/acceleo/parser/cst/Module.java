@@ -96,4 +96,33 @@ public interface Module extends EPackage, CSTNode {
 	 */
 	EList<ModuleImportsValue> getImports();
 
+	/**
+	 * Returns the value of the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Documentation</em>' containment reference isn't clear, there really should
+	 * be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Documentation</em>' containment reference.
+	 * @see #setDocumentation(Documentation)
+	 * @see org.eclipse.acceleo.parser.cst.CstPackage#getModule_Documentation()
+	 * @model containment="true"
+	 * @generated
+	 * @since 3.0
+	 */
+	Documentation getDocumentation();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.parser.cst.Module#getDocumentation
+	 * <em>Documentation</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Documentation</em>' containment reference.
+	 * @see #getDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	void setDocumentation(Documentation value);
+
 } // Module

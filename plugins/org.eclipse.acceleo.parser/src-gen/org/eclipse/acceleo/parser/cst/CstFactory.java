@@ -203,6 +203,15 @@ public interface CstFactory extends EFactory {
 	Query createQuery();
 
 	/**
+	 * Returns a new object of class '<em>Documentation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Documentation</em>'.
+	 * @generated
+	 * @since 3.0
+	 */
+	Documentation createDocumentation();
+
+	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the package supported by this factory.

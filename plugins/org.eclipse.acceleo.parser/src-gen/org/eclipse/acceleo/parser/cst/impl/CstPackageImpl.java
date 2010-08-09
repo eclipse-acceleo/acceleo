@@ -15,6 +15,7 @@ import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.IfBlock;
@@ -217,6 +218,13 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * 
 	 * @generated
 	 */
+	private EClass documentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	private EEnum visibilityKindEEnum = null;
 
 	/**
@@ -365,6 +373,15 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 */
 	public EReference getModule_Imports() {
 		return (EReference)moduleEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getModule_Documentation() {
+		return (EReference)moduleEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -966,6 +983,15 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getDocumentation() {
+		return documentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getVisibilityKind() {
 		return visibilityKindEEnum;
 	}
@@ -1016,6 +1042,7 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 		createEReference(moduleEClass, MODULE__OWNED_MODULE_ELEMENT);
 		createEReference(moduleEClass, MODULE__EXTENDS);
 		createEReference(moduleEClass, MODULE__IMPORTS);
+		createEReference(moduleEClass, MODULE__DOCUMENTATION);
 
 		moduleExtendsValueEClass = createEClass(MODULE_EXTENDS_VALUE);
 		createEAttribute(moduleExtendsValueEClass, MODULE_EXTENDS_VALUE__NAME);
@@ -1104,6 +1131,8 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 		createEAttribute(queryEClass, QUERY__TYPE);
 		createEReference(queryEClass, QUERY__EXPRESSION);
 
+		documentationEClass = createEClass(DOCUMENTATION);
+
 		// Create enums
 		visibilityKindEEnum = createEEnum(VISIBILITY_KIND);
 		openModeKindEEnum = createEEnum(OPEN_MODE_KIND);
@@ -1167,6 +1196,7 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 		macroEClass.getESuperTypes().add(this.getBlock());
 		macroEClass.getESuperTypes().add(this.getModuleElement());
 		queryEClass.getESuperTypes().add(this.getModuleElement());
+		documentationEClass.getESuperTypes().add(this.getComment());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(cstNodeEClass, CSTNode.class,
@@ -1202,6 +1232,11 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 				this.getModuleImportsValue(),
 				null,
 				"imports", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(
+				getModule_Documentation(),
+				this.getDocumentation(),
+				null,
+				"documentation", null, 0, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(moduleExtendsValueEClass, ModuleExtendsValue.class,
 				"ModuleExtendsValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1477,6 +1512,9 @@ public class CstPackageImpl extends EPackageImpl implements CstPackage {
 				this.getModelExpression(),
 				null,
 				"expression", null, 0, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(documentationEClass, Documentation.class,
+				"Documentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		// Initialize enums and add enum literals
 		initEEnum(visibilityKindEEnum, VisibilityKind.class, "VisibilityKind"); //$NON-NLS-1$

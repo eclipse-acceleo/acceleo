@@ -235,13 +235,23 @@ public interface CstPackage extends EPackage {
 	int MODULE__IMPORTS = EcorePackage.EPACKAGE_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int MODULE__DOCUMENTATION = EcorePackage.EPACKAGE_FEATURE_COUNT + 6;
+
+	/**
 	 * The number of structural features of the '<em>Module</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = EcorePackage.EPACKAGE_FEATURE_COUNT + 6;
+	int MODULE_FEATURE_COUNT = EcorePackage.EPACKAGE_FEATURE_COUNT + 7;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleExtendsValueImpl
@@ -1627,6 +1637,75 @@ public interface CstPackage extends EPackage {
 	int QUERY_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
+	 * <em>Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
+	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getDocumentation()
+	 * @generated
+	 * @since 3.0
+	 */
+	int DOCUMENTATION = 23;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__NAME = COMMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION__BODY = COMMENT__BODY;
+
+	/**
+	 * The number of structural features of the '<em>Documentation</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 * @since 3.0
+	 */
+	int DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.VisibilityKind
 	 * <em>Visibility Kind</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1634,7 +1713,7 @@ public interface CstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 23;
+	int VISIBILITY_KIND = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.parser.cst.OpenModeKind <em>Open Mode Kind</em>}
@@ -1644,7 +1723,7 @@ public interface CstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 24;
+	int OPEN_MODE_KIND = 25;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.CSTNode <em>CST Node</em>}'.
@@ -1737,6 +1816,19 @@ public interface CstPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getModule_Imports();
+
+	/**
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.parser.cst.Module#getDocumentation <em>Documentation</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Documentation</em>'.
+	 * @see org.eclipse.acceleo.parser.cst.Module#getDocumentation()
+	 * @see #getModule()
+	 * @generated
+	 * @since 3.0
+	 */
+	EReference getModule_Documentation();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.ModuleExtendsValue
@@ -2482,6 +2574,17 @@ public interface CstPackage extends EPackage {
 	EReference getQuery_Expression();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.parser.cst.Documentation
+	 * <em>Documentation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Documentation</em>'.
+	 * @see org.eclipse.acceleo.parser.cst.Documentation
+	 * @generated
+	 * @since 3.0
+	 */
+	EClass getDocumentation();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.parser.cst.VisibilityKind
 	 * <em>Visibility Kind</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2590,6 +2693,15 @@ public interface CstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference MODULE__IMPORTS = eINSTANCE.getModule_Imports();
+
+		/**
+		 * The meta object literal for the '<em><b>Documentation</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 * @since 3.0
+		 */
+		EReference MODULE__DOCUMENTATION = eINSTANCE.getModule_Documentation();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.ModuleExtendsValueImpl
@@ -3161,6 +3273,17 @@ public interface CstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference QUERY__EXPRESSION = eINSTANCE.getQuery_Expression();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
+		 * <em>Documentation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
+		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getDocumentation()
+		 * @generated
+		 * @since 3.0
+		 */
+		EClass DOCUMENTATION = eINSTANCE.getDocumentation();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.parser.cst.VisibilityKind

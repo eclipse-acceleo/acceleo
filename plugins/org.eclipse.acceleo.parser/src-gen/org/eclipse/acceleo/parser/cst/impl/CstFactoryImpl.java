@@ -14,6 +14,7 @@ import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.IfBlock;
@@ -125,6 +126,8 @@ public class CstFactoryImpl extends EFactoryImpl implements CstFactory {
 				return createMacro();
 			case CstPackage.QUERY:
 				return createQuery();
+			case CstPackage.DOCUMENTATION:
+				return createDocumentation();
 			default:
 				throw new IllegalArgumentException(
 						"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -375,6 +378,16 @@ public class CstFactoryImpl extends EFactoryImpl implements CstFactory {
 	public Query createQuery() {
 		QueryImpl query = new QueryImpl();
 		return query;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Documentation createDocumentation() {
+		DocumentationImpl documentation = new DocumentationImpl();
+		return documentation;
 	}
 
 	/**

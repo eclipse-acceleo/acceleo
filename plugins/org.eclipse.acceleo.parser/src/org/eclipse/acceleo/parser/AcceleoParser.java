@@ -48,6 +48,16 @@ public class AcceleoParser {
 	private Map<File, AcceleoParserProblems> problems;
 
 	/**
+	 * To store the warnings of each file.
+	 */
+	private Map<File, AcceleoParserWarnings> warnings;
+
+	/**
+	 * To store the infos of each file.
+	 */
+	private Map<File, AcceleoParserInfos> infos;
+
+	/**
 	 * Creates an AST from a list of Acceleo files, using a CST step.
 	 * <p>
 	 * Assert inputFiles.size() == outputURIs.size()
@@ -167,7 +177,7 @@ public class AcceleoParser {
 					ModelUtils.load(oURI, oResourceSet);
 				} catch (IOException e) {
 					for (Iterator<AcceleoSourceBuffer> iterator = sources.iterator(); iterator.hasNext();) {
-						iterator.next().log(
+						iterator.next().logProblem(
 								AcceleoParserMessages.getString("AcceleoParser" + ".Error.InvalidAST", oURI //$NON-NLS-1$ //$NON-NLS-2$
 										.lastSegment()), 0, -1);
 
@@ -183,6 +193,7 @@ public class AcceleoParser {
 						new Object[] {source.getFile().getName() }));
 			}
 			source.resolveAST();
+			source.resolveASTDocumentation();
 			monitor.worked(1);
 		}
 		if (mapURIs != null) {
@@ -215,23 +226,47 @@ public class AcceleoParser {
 				try {
 					newResource.save(options);
 				} catch (IOException e) {
-					source.log(AcceleoParserMessages.getString("AcceleoParser.Error.FileSaving", newResource //$NON-NLS-1$
-							.getURI().lastSegment(), e.getMessage()), 0, -1);
+					source.logProblem(AcceleoParserMessages.getString(
+							"AcceleoParser.Error.FileSaving", newResource //$NON-NLS-1$
+									.getURI().lastSegment(), e.getMessage()), 0, -1);
 				}
 			} else {
-				source.log(AcceleoParserMessages.getString("AcceleoParser.Error.InvalidAST", source.getFile() //$NON-NLS-1$
-						.getName()), 0, -1);
+				source.logProblem(AcceleoParserMessages.getString(
+						"AcceleoParser.Error.InvalidAST", source.getFile() //$NON-NLS-1$
+								.getName()), 0, -1);
 			}
 			monitor.worked(1);
 		}
+
+		this.manageParsingResult(sources);
+
+		Iterator<Resource> resources = oResourceSet.getResources().iterator();
+		while (resources.hasNext()) {
+			resources.next().unload();
+		}
+	}
+
+	/**
+	 * Manages the result of the parsing.
+	 * 
+	 * @param sources
+	 *            The list of source buffers.
+	 */
+	private void manageParsingResult(List<AcceleoSourceBuffer> sources) {
 		problems = new HashMap<File, AcceleoParserProblems>(sources.size());
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			problems.put(source.getFile(), source.getProblems());
 		}
-		Iterator<Resource> resources = oResourceSet.getResources().iterator();
-		while (resources.hasNext()) {
-			resources.next().unload();
+		warnings = new HashMap<File, AcceleoParserWarnings>(sources.size());
+		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
+			AcceleoSourceBuffer source = itSources.next();
+			warnings.put(source.getFile(), source.getWarnings());
+		}
+		infos = new HashMap<File, AcceleoParserInfos>(sources.size());
+		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
+			AcceleoSourceBuffer source = itSources.next();
+			infos.put(source.getFile(), source.getInfos());
 		}
 	}
 
@@ -288,7 +323,7 @@ public class AcceleoParser {
 					try {
 						ModelUtils.load(oURI, resource.getResourceSet());
 					} catch (IOException e) {
-						source.log(AcceleoParserMessages.getString(
+						source.logProblem(AcceleoParserMessages.getString(
 								"AcceleoParser.Error.InvalidAST", oURI.lastSegment()), 0, -1); //$NON-NLS-1$
 
 					}
@@ -296,9 +331,16 @@ public class AcceleoParser {
 			}
 		}
 		source.resolveAST();
+		source.resolveASTDocumentation();
 		if (source.getFile() != null) {
 			problems = new HashMap<File, AcceleoParserProblems>(1);
 			problems.put(source.getFile(), source.getProblems());
+
+			warnings = new HashMap<File, AcceleoParserWarnings>(1);
+			warnings.put(source.getFile(), source.getWarnings());
+
+			infos = new HashMap<File, AcceleoParserInfos>(1);
+			infos.put(source.getFile(), source.getInfos());
 		}
 	}
 
@@ -333,4 +375,65 @@ public class AcceleoParser {
 		}
 	}
 
+	/**
+	 * Gets the parsing warnings of the given file.
+	 * 
+	 * @param file
+	 *            is the parsed file
+	 * @return the parsing warnings, or null
+	 */
+	public AcceleoParserWarnings getWarnings(File file) {
+		if (warnings != null) {
+			return warnings.get(file);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the parsing warnings of the given file.
+	 * 
+	 * @param acceleoFile
+	 *            is the parsed file
+	 * @return the parsing warnings, or null
+	 * @since 3.1
+	 */
+	public AcceleoParserWarnings getWarnings(AcceleoFile acceleoFile) {
+		if (warnings != null && acceleoFile != null) {
+			return warnings.get(acceleoFile.getMtlFile());
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the parsing infos of the given file.
+	 * 
+	 * @param file
+	 *            is the parsed file
+	 * @return the parsing infos, or null
+	 */
+	public AcceleoParserInfos getInfos(File file) {
+		if (infos != null) {
+			return infos.get(file);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the parsing infos of the given file.
+	 * 
+	 * @param acceleoFile
+	 *            is the parsed file
+	 * @return the parsing infos, or null
+	 * @since 3.1
+	 */
+	public AcceleoParserInfos getInfos(AcceleoFile acceleoFile) {
+		if (infos != null && acceleoFile != null) {
+			return infos.get(acceleoFile.getMtlFile());
+		} else {
+			return null;
+		}
+	}
 }

@@ -123,6 +123,16 @@ public class ASTFactory {
 	private Map<org.eclipse.acceleo.parser.cst.Query, org.eclipse.acceleo.model.mtl.Query> ioQuery = new HashMap<org.eclipse.acceleo.parser.cst.Query, org.eclipse.acceleo.model.mtl.Query>();
 
 	/**
+	 * To get an AST Query corresponding to a CST Comment.
+	 */
+	private Map<org.eclipse.acceleo.parser.cst.Comment, org.eclipse.acceleo.model.mtl.Comment> ioComment = new HashMap<org.eclipse.acceleo.parser.cst.Comment, org.eclipse.acceleo.model.mtl.Comment>();
+
+	/**
+	 * To get an AST Query corresponding to a CST Documentation.
+	 */
+	private Map<org.eclipse.acceleo.parser.cst.Documentation, org.eclipse.acceleo.model.mtl.Documentation> ioDocumentation = new HashMap<org.eclipse.acceleo.parser.cst.Documentation, org.eclipse.acceleo.model.mtl.Documentation>();
+
+	/**
 	 * Initializes the OCL environment.
 	 * 
 	 * @param resourceOCL
@@ -302,14 +312,16 @@ public class ASTFactory {
 					ioModelExpression.put(iModelExpression, oOCLExpression);
 				} catch (WrappedOCLException e) {
 					if (e.getStartPosition() > -1 && e.getEndPosition() > -1) {
-						log(e.getMessage(), iModelExpression.getStartPosition() + e.getStartPosition(),
-								iModelExpression.getStartPosition() + e.getEndPosition());
+						logProblem(e.getMessage(),
+								iModelExpression.getStartPosition() + e.getStartPosition(), iModelExpression
+										.getStartPosition()
+										+ e.getEndPosition());
 					} else {
-						log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
+						logProblem(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
 								.getEndPosition());
 					}
 				} catch (ParserException e) {
-					log(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
+					logProblem(e.getMessage(), iModelExpression.getStartPosition(), iModelExpression
 							.getEndPosition());
 				}
 			}
@@ -550,6 +562,48 @@ public class ASTFactory {
 	}
 
 	/**
+	 * Gets or creates an AST Comment corresponding to a CST Comment.
+	 * 
+	 * @param iComment
+	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Comment'
+	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.Comment'
+	 */
+	protected org.eclipse.acceleo.model.mtl.Comment getOrCreateComment(
+			org.eclipse.acceleo.parser.cst.Comment iComment) {
+		if (iComment != null) {
+			org.eclipse.acceleo.model.mtl.Comment oComment = ioComment.get(iComment);
+			if (oComment == null) {
+				oComment = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE.createComment();
+				ioComment.put(iComment, oComment);
+			}
+			return oComment;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets or creates an AST Documentation corresponding to a CST Documentation.
+	 * 
+	 * @param iDocumentation
+	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Documentation'
+	 * @return the output object of type 'org.eclipse.acceleo.model.mtl.Documentation'
+	 */
+	protected org.eclipse.acceleo.model.mtl.Documentation getOrCreateDocumentation(
+			org.eclipse.acceleo.parser.cst.Documentation iDocumentation) {
+		if (iDocumentation != null) {
+			org.eclipse.acceleo.model.mtl.Documentation oDocumentation = ioDocumentation.get(iDocumentation);
+			if (oDocumentation == null) {
+				oDocumentation = org.eclipse.acceleo.model.mtl.MtlFactory.eINSTANCE.createDocumentation();
+				ioDocumentation.put(iDocumentation, oDocumentation);
+			}
+			return oDocumentation;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * To log a new problem.
 	 * 
 	 * @param message
@@ -559,9 +613,9 @@ public class ASTFactory {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	protected void log(String message, int posBegin, int posEnd) {
+	protected void logProblem(String message, int posBegin, int posEnd) {
 		if (logHandler != null) {
-			logHandler.log(message, posBegin, posEnd);
+			logHandler.logProblem(message, posBegin, posEnd);
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.Region;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
+import org.eclipse.acceleo.internal.parser.documentation.utils.DocumentationUtils;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.CSTNode;
@@ -228,8 +229,8 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pAcceleo.pComment.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.COMMENT), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.COMMENT),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pAcceleo.pComment.getEndHeaderBody()) {
@@ -238,10 +239,15 @@ public class CSTParserBlock {
 				eComment.setBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
 				eBlock.getBody().add(eComment);
 				posBegin = eH.e();
+
+				DocumentationUtils.checkKeyword(eComment.getBody(), IAcceleoConstants.TAG_TODO, source,
+						beginHeader.e(), eH.b());
+				DocumentationUtils.checkKeyword(eComment.getBody(), IAcceleoConstants.TAG_FIXME, source,
+						beginHeader.e(), eH.b());
 			} else {
 				Region eB = pAcceleo.pComment.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.COMMENT),
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.COMMENT),
 							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
@@ -250,6 +256,10 @@ public class CSTParserBlock {
 					eComment.setBody(source.getBuffer().substring(eH.e(), eB.b()));
 					eBlock.getBody().add(eComment);
 					posBegin = eB.e();
+					DocumentationUtils.checkKeyword(eComment.getBody(), IAcceleoConstants.TAG_TODO, source,
+							eH.e(), eB.b());
+					DocumentationUtils.checkKeyword(eComment.getBody(), IAcceleoConstants.TAG_FIXME, source,
+							eH.e(), eB.b());
 				}
 			}
 		}
@@ -271,8 +281,8 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pFile.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.FILE), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.FILE),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pFile.getEndHeaderBody()) {
@@ -284,8 +294,8 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pFile.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.FILE), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.FILE),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -314,12 +324,12 @@ public class CSTParserBlock {
 	public void parseFileHeader(int posBegin, int posEnd, FileBlock eFile) {
 		if (ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd,
 				IAcceleoConstants.PARENTHESIS_BEGIN, false) == posBegin) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
 		} else {
 			Region bH = pAcceleo.pParenthesis.searchBeginHeader(source.getBuffer(), posBegin, posEnd);
 			Region eH = pAcceleo.pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				// File URL
 				parseFileHeaderParenthesis(bH, eH, eFile);
@@ -366,7 +376,8 @@ public class CSTParserBlock {
 				}
 			}
 			if (!openModeFound) {
-				log(AcceleoParserMessages.getString("CSTParserBlock.MissingFileMode"), comma.b(), eH.b()); //$NON-NLS-1$
+				logProblem(
+						AcceleoParserMessages.getString("CSTParserBlock.MissingFileMode"), comma.b(), eH.b()); //$NON-NLS-1$
 			} else {
 				// For now, simply ignore the specification's "unique ID"
 				int eComma = ParserUtils.shiftKeyword(source.getBuffer(), b, eH.b(),
@@ -378,12 +389,13 @@ public class CSTParserBlock {
 					eFile.setCharset(eFileCharset);
 					parseExpressionHeader(b, eH.b(), eFileCharset);
 				} else if (source.getBuffer().substring(b, eH.b()).trim().length() > 0) {
-					log(AcceleoParserMessages.getString(
+					logProblem(AcceleoParserMessages.getString(
 							"Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), b, eH.b()); //$NON-NLS-1$
 				}
 			}
 		} else {
-			log(AcceleoParserMessages.getString("Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), eH.b(), eH.b()); //$NON-NLS-1$
+			logProblem(AcceleoParserMessages.getString(
+					"Parser.MissingCharacter", IAcceleoConstants.COMMA_SEPARATOR), eH.b(), eH.b()); //$NON-NLS-1$
 		}
 	}
 
@@ -417,7 +429,7 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pFor.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.FOR),
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.FOR),
 					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
@@ -430,8 +442,8 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pFor.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.FOR), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.FOR),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -460,12 +472,12 @@ public class CSTParserBlock {
 	public void parseForHeader(int posBegin, int posEnd, ForBlock eFor) {
 		if (ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd,
 				IAcceleoConstants.PARENTHESIS_BEGIN, false) == posBegin) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
 		} else {
 			Region bH = pAcceleo.pParenthesis.searchBeginHeader(source.getBuffer(), posBegin, posEnd);
 			Region eH = pAcceleo.pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				// File URL
 				int b = bH.e();
@@ -491,7 +503,7 @@ public class CSTParserBlock {
 						IAcceleoConstants.GUARD, false, eFor, CstPackage.eINSTANCE.getForBlock_Guard());
 				currentPosBegin = pAcceleo.shiftInitSectionBody(currentPosBegin, posEnd, eFor);
 				if (source.getBuffer().substring(currentPosBegin, posEnd).trim().length() > 0) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
 				}
 			}
 		}
@@ -528,7 +540,8 @@ public class CSTParserBlock {
 			currentPos = b;
 			if (ParserUtils.shiftKeyword(source.getBuffer(), currentPos, posEnd,
 					IAcceleoConstants.PARENTHESIS_BEGIN, false) == currentPos) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, currentPos,
+						posEnd);
 				currentPos = posEnd;
 			} else {
 				Region bHParenthesis = pAcceleo.pParenthesis.searchBeginHeader(source.getBuffer(),
@@ -536,8 +549,8 @@ public class CSTParserBlock {
 				Region eHParenthesis = pAcceleo.pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
 						bHParenthesis, posEnd);
 				if (eHParenthesis.b() == -1) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bHParenthesis.b(),
-							bHParenthesis.e());
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED,
+							bHParenthesis.b(), bHParenthesis.e());
 					currentPos = posEnd;
 				} else {
 					ModelExpression eModelExpression = CstFactory.eINSTANCE.createModelExpression();
@@ -580,8 +593,8 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pIf.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.IF), beginHeader.b(),
-					beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.IF),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pIf.getEndHeaderBody()) {
@@ -593,7 +606,7 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pIf.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.IF),
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.IF),
 							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
@@ -663,8 +676,8 @@ public class CSTParserBlock {
 				Region eH = pElseIf.searchEndHeaderAtBeginHeader(source.getBuffer(), pElementsPositions[i],
 						posEnd);
 				if (eH.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.ELSE_IF),
-							pElementsPositions[i].b(), pElementsPositions[i].e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER,
+							IAcceleoConstants.ELSE_IF), pElementsPositions[i].b(), pElementsPositions[i].e());
 					i = -1;
 				} else {
 					int bElseIf = pElementsPositions[i].b();
@@ -704,7 +717,7 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pLet.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.LET),
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.LET),
 					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
@@ -717,8 +730,8 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pLet.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.LET), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.LET),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -787,8 +800,8 @@ public class CSTParserBlock {
 				Region eH = pElseLet.searchEndHeaderAtBeginHeader(source.getBuffer(), pElementsPositions[i],
 						posEnd);
 				if (eH.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.ELSE_LET),
-							pElementsPositions[i].b(), pElementsPositions[i].e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER,
+							IAcceleoConstants.ELSE_LET), pElementsPositions[i].b(), pElementsPositions[i].e());
 					i = -1;
 				} else {
 					int bElseLet = pElementsPositions[i].b();
@@ -828,8 +841,8 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pTrace.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.TRACE), beginHeader
-					.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.TRACE),
+					beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pTrace.getEndHeaderBody()) {
@@ -841,8 +854,8 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pTrace.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.TRACE), beginHeader
-							.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.TRACE),
+							beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -905,8 +918,9 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pProtectedArea.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.PROTECTED_AREA),
-					beginHeader.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages
+					.getString(INVALID_BLOCK_HEADER, IAcceleoConstants.PROTECTED_AREA), beginHeader.b(),
+					beginHeader.e());
 			posBegin = -1;
 		} else {
 			if (eH.getSequence() == pProtectedArea.getEndHeaderBody()) {
@@ -918,8 +932,8 @@ public class CSTParserBlock {
 			} else {
 				Region eB = pProtectedArea.searchEndBodyAtEndHeader(source.getBuffer(), eH, posEnd);
 				if (eB.b() == -1) {
-					log(AcceleoParserMessages.getString(INVALID_BLOCK, IAcceleoConstants.PROTECTED_AREA),
-							beginHeader.b(), beginHeader.e());
+					logProblem(AcceleoParserMessages.getString(INVALID_BLOCK,
+							IAcceleoConstants.PROTECTED_AREA), beginHeader.b(), beginHeader.e());
 					posBegin = -1;
 				} else {
 					posBegin = eB.e();
@@ -948,19 +962,19 @@ public class CSTParserBlock {
 	public void parseProtectedAreaHeader(int posBegin, int posEnd, ProtectedAreaBlock eProtectedArea) {
 		if (ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd,
 				IAcceleoConstants.PARENTHESIS_BEGIN, false) == posBegin) {
-			log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
+			logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_ARE_REQUIRED, posBegin, posEnd);
 		} else {
 			Region bH = pAcceleo.pParenthesis.searchBeginHeader(source.getBuffer(), posBegin, posEnd);
 			Region eH = pAcceleo.pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				ModelExpression eModelExpression = CstFactory.eINSTANCE.createModelExpression();
 				setPositions(eModelExpression, bH.e(), eH.b());
 				eProtectedArea.setMarker(eModelExpression);
 				parseExpressionHeader(bH.e(), eH.b(), eModelExpression);
 				if (source.getBuffer().substring(eH.e(), posEnd).trim().length() > 0) {
-					log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, eH.e(), posEnd);
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, eH.e(), posEnd);
 				}
 			}
 		}
@@ -996,7 +1010,8 @@ public class CSTParserBlock {
 		int posBegin;
 		Region eH = pExpression.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			log(AcceleoParserMessages.getString("CSTParserBlock.InvalidInvocation"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
+			logProblem(
+					AcceleoParserMessages.getString("CSTParserBlock.InvalidInvocation"), beginHeader.b(), beginHeader.e()); //$NON-NLS-1$
 			posBegin = -1;
 		} else {
 			posBegin = eH.e();
@@ -1046,7 +1061,7 @@ public class CSTParserBlock {
 			currentPosBegin = shiftPrefixedOCLExpression(currentPosBegin, posEnd, IAcceleoConstants.AFTER,
 					true, eModelExpression, CstPackage.eINSTANCE.getModelExpression_After());
 			if (source.getBuffer().substring(currentPosBegin, posEnd).trim().length() > 0) {
-				log(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_TEXT_NOT_VALID, currentPosBegin, posEnd);
 			}
 		}
 	}
@@ -1080,8 +1095,8 @@ public class CSTParserBlock {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	private void log(String message, int posBegin, int posEnd) {
-		source.log(message, posBegin, posEnd);
+	private void logProblem(String message, int posBegin, int posEnd) {
+		source.logProblem(message, posBegin, posEnd);
 	}
 
 }

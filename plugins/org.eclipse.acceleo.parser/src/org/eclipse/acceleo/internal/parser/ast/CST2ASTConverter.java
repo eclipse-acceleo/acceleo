@@ -19,15 +19,24 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
+import org.eclipse.acceleo.model.mtl.CommentBody;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlFactory;
+import org.eclipse.acceleo.parser.AcceleoParserInfo;
 import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateExpression;
+import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
 import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.Variable;
+import org.eclipse.acceleo.parser.cst.VisibilityKind;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -106,9 +115,41 @@ public class CST2ASTConverter {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	protected void log(String message, int posBegin, int posEnd) {
+	protected void logProblem(String message, int posBegin, int posEnd) {
 		if (astProvider != null) {
-			astProvider.log(message, posBegin, posEnd);
+			astProvider.logProblem(message, posBegin, posEnd);
+		}
+	}
+
+	/**
+	 * To log a new warning.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	protected void logWarning(String message, int posBegin, int posEnd) {
+		if (astProvider != null) {
+			astProvider.logWarning(message, posBegin, posEnd);
+		}
+	}
+
+	/**
+	 * To log a new information.
+	 * 
+	 * @param message
+	 *            is the message
+	 * @param posBegin
+	 *            is the beginning index of the problem
+	 * @param posEnd
+	 *            is the ending index of the problem
+	 */
+	protected void logInfo(String message, int posBegin, int posEnd) {
+		if (astProvider != null) {
+			astProvider.logInfo(message, posBegin, posEnd);
 		}
 	}
 
@@ -141,7 +182,13 @@ public class CST2ASTConverter {
 		if (iModule != null && oModule != null) {
 			String ioName = iModule.getName();
 			oModule.setName(ioName);
-
+			// Now a module in the AST has a start and an end position for its header (we can't know the
+			// ending
+			// position of the header here, it will be resolved later)
+			oModule.setStartHeaderPosition(iModule.getStartPosition());
+			oModule.setEndHeaderPosition(-1);
+			// We copy the documentation of the module
+			transformStepCopyModuleDocumentation(iModule, oModule);
 			transformStepCopyOwnedModuleElement(iModule, oModule);
 			Iterator<org.eclipse.acceleo.parser.cst.TypedModel> iInputIt = iModule.getInput().iterator();
 			while (iInputIt.hasNext()) {
@@ -152,6 +199,43 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy(iNext);
 
+			}
+		}
+	}
+
+	/**
+	 * The step 'StepCopy' of the transformation for the 'org.eclipse.acceleo.parser.cst.Documentation' of the
+	 * module element of the input.
+	 * 
+	 * @param iModule
+	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Module'
+	 * @param oModule
+	 *            is the ouput object of type 'org.eclipse.acceleo.model.mtl.Module'
+	 */
+	private void transformStepCopyModuleDocumentation(org.eclipse.acceleo.parser.cst.Module iModule,
+			org.eclipse.acceleo.model.mtl.Module oModule) {
+		if (iModule.getDocumentation() != null) {
+			Documentation iDocumentation = iModule.getDocumentation();
+			org.eclipse.acceleo.model.mtl.Documentation oDocumentation = factory
+					.getOrCreateDocumentation(iDocumentation);
+			if (oDocumentation != null) {
+				org.eclipse.acceleo.model.mtl.CommentBody oCommentBody = MtlFactory.eINSTANCE
+						.createCommentBody();
+				oDocumentation.setName(iDocumentation.getName());
+				oDocumentation.setStartPosition(iDocumentation.getStartPosition());
+				oDocumentation.setEndPosition(iDocumentation.getEndPosition());
+
+				oCommentBody.setStartPosition(-1);
+				oCommentBody.setEndPosition(-1);
+				oCommentBody.setValue(iDocumentation.getBody());
+
+				oDocumentation.setBody(oCommentBody);
+				oModule.setDocumentation(oDocumentation);
+				oDocumentation.setDocumentedElement(oModule);
+
+				if (oDocumentation.getBody().getValue().contains(IAcceleoConstants.TAG_DEPRECATED)) {
+					oModule.setDeprecated(true);
+				}
 			}
 		}
 	}
@@ -216,17 +300,42 @@ public class CST2ASTConverter {
 				transformStepCopy(iNext);
 
 			}
-
+			// If the main annotation is in a template with a protected or private visibility we log an error
 			boolean isMain = false;
 			Iterator<EObject> iChildren = iTemplate.eAllContents();
 			while (!isMain && iChildren.hasNext()) {
 				EObject iChild = iChildren.next();
 				if (iChild instanceof Comment && ((Comment)iChild).getBody() != null
 						&& ((Comment)iChild).getBody().indexOf(IAcceleoConstants.TAG_MAIN) > -1) {
+					if (VisibilityKind.PUBLIC_VALUE != oTemplate.getVisibility().getValue()) {
+						this.logWarning(AcceleoParserMessages
+								.getString("CSTParser.InvalidVisibilityOfMainTemplate"), //$NON-NLS-1$
+								((Comment)iChild).getStartPosition(), ((Comment)iChild).getEndPosition());
+					}
 					isMain = true;
+					oTemplate.setMain(isMain);
 				}
 			}
-			oTemplate.setMain(isMain);
+			// We log a warning if there are multiple overrides.
+			if (iTemplate.getOverrides().size() > 1) {
+				List<TemplateOverridesValue> overrides = iTemplate.getOverrides();
+				this.logWarning(
+						AcceleoParserMessages.getString("AcceleoParser.Warning.MultipleOverrides"), overrides.get(0) //$NON-NLS-1$
+								.getStartPosition(), overrides.get(overrides.size() - 1).getEndPosition());
+			}
+			// We log an info if there is an override.
+			if (iTemplate.getOverrides().size() > 0) {
+				List<TemplateOverridesValue> overrides = iTemplate.getOverrides();
+				String message = AcceleoParserMessages.getString("AcceleoParser.Info.TemplateOverride", //$NON-NLS-1$
+						iTemplate.getName(), overrides.get(0).getName());
+				this.logInfo(AcceleoParserInfo.TEMPLATE_OVERRIDE + message, overrides.get(0)
+						.getStartPosition(), overrides.get(overrides.size() - 1).getEndPosition());
+			}
+
+			if (oTemplate.isDeprecated()) {
+				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.Deprecated"), //$NON-NLS-1$
+						oTemplate.getStartPosition(), oTemplate.getEndPosition());
+			}
 		}
 	}
 
@@ -1136,6 +1245,10 @@ public class CST2ASTConverter {
 			eAnnotation.getDetails().put(OCLParser.ANNOTATION_KEY_TYPE, ioType);
 			oQuery.getEAnnotations().add(eAnnotation);
 
+			if (oQuery.isDeprecated()) {
+				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.Deprecated"), oQuery //$NON-NLS-1$
+						.getStartPosition(), oQuery.getEndPosition());
+			}
 		}
 	}
 
@@ -1161,8 +1274,10 @@ public class CST2ASTConverter {
 					org.eclipse.acceleo.model.mtl.Template oNext = factory
 							.getOrCreateTemplate((org.eclipse.acceleo.parser.cst.Template)iNext);
 					if (oNext != null) {
+						computeDepreciation(oModule, oNext);
 						oModule.getOwnedModuleElement().add(oNext);
 					}
+
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iNext);
 					signature.append('(');
 					boolean first = true;
@@ -1183,9 +1298,12 @@ public class CST2ASTConverter {
 				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Macro) {
 					org.eclipse.acceleo.model.mtl.Macro oNext = factory
 							.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iNext);
+
 					if (oNext != null) {
+						computeDepreciation(oModule, oNext);
 						oModule.getOwnedModuleElement().add(oNext);
 					}
+
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Macro)iNext);
 					signature.append('(');
 					boolean first = true;
@@ -1202,6 +1320,7 @@ public class CST2ASTConverter {
 					org.eclipse.acceleo.model.mtl.Query oNext = factory
 							.getOrCreateQuery((org.eclipse.acceleo.parser.cst.Query)iNext);
 					if (oNext != null) {
+						computeDepreciation(oModule, oNext);
 						oModule.getOwnedModuleElement().add(oNext);
 					}
 					transformStepCopy((org.eclipse.acceleo.parser.cst.Query)iNext);
@@ -1216,10 +1335,24 @@ public class CST2ASTConverter {
 						signature.append(iVariable.getType());
 					}
 					signature.append(')');
+				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Documentation) {
+					org.eclipse.acceleo.model.mtl.Documentation oNext = factory
+							.getOrCreateDocumentation((org.eclipse.acceleo.parser.cst.Documentation)iNext);
+					if (oNext != null) {
+						oModule.getOwnedModuleElement().add(oNext);
+					}
+					transformStepCopy((org.eclipse.acceleo.parser.cst.Documentation)iNext);
+				} else if (iNext instanceof org.eclipse.acceleo.parser.cst.Comment) {
+					org.eclipse.acceleo.model.mtl.Comment oNext = factory
+							.getOrCreateComment((org.eclipse.acceleo.parser.cst.Comment)iNext);
+					if (oNext != null) {
+						oModule.getOwnedModuleElement().add(oNext);
+					}
+					transformStepCopy((org.eclipse.acceleo.parser.cst.Comment)iNext);
 				}
 				String sign = signature.toString();
 				if (allSignatures.contains(sign)) {
-					log(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict", //$NON-NLS-1$
+					this.logProblem(AcceleoParserMessages.getString("CST2ASTConverter.SignatureConflict", //$NON-NLS-1$
 							new Object[] {sign }), iNext.getStartPosition(), iNext.getEndPosition());
 				} else {
 					if (!(iNext instanceof Comment)) {
@@ -1227,6 +1360,82 @@ public class CST2ASTConverter {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Compute if the documented element should be marked as depreciated.
+	 * 
+	 * @param oModule
+	 *            The module
+	 * @param oNext
+	 *            the new module element
+	 */
+	private void computeDepreciation(Module oModule, org.eclipse.acceleo.model.mtl.DocumentedElement oNext) {
+		boolean depreciated = false;
+		depreciated = oModule.isDeprecated();
+		if (!depreciated) {
+			EList<ModuleElement> ownedModuleElement = oModule.getOwnedModuleElement();
+			if (ownedModuleElement.size() > 0) {
+				ModuleElement moduleElement = ownedModuleElement.get(ownedModuleElement.size() - 1);
+				org.eclipse.acceleo.model.mtl.Documentation documentation = null;
+				if (moduleElement instanceof org.eclipse.acceleo.model.mtl.Documentation) {
+					documentation = (org.eclipse.acceleo.model.mtl.Documentation)moduleElement;
+				}
+				if (documentation != null && documentation.getBody() != null
+						&& documentation.getBody().getValue() != null) {
+					depreciated = documentation.getBody().getValue().contains(
+							IAcceleoConstants.TAG_DEPRECATED);
+				}
+			}
+		}
+		oNext.setDeprecated(depreciated);
+	}
+
+	/**
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Comment' of the
+	 * input model.
+	 * 
+	 * @param iComment
+	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Comment'
+	 */
+	private void transformStepCopy(org.eclipse.acceleo.parser.cst.Comment iComment) {
+		org.eclipse.acceleo.model.mtl.Comment oComment = factory.getOrCreateComment(iComment);
+		if (oComment != null && iComment != null) {
+			oComment.setStartPosition(iComment.getStartPosition());
+			oComment.setEndPosition(iComment.getEndPosition());
+			oComment.setName(iComment.getName());
+
+			CommentBody oCommentBody = MtlFactory.eINSTANCE.createCommentBody();
+			oCommentBody.setValue(iComment.getBody());
+			oCommentBody.setStartPosition(-1);
+			oCommentBody.setEndPosition(-1);
+
+			oComment.setBody(oCommentBody);
+		}
+	}
+
+	/**
+	 * The step 'StepCopy' of the transformation for each 'org.eclipse.acceleo.parser.cst.Documentation' of
+	 * the input model.
+	 * 
+	 * @param iDocumentation
+	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.Documentation'
+	 */
+	private void transformStepCopy(org.eclipse.acceleo.parser.cst.Documentation iDocumentation) {
+		org.eclipse.acceleo.model.mtl.Documentation oDocumentation = factory
+				.getOrCreateDocumentation(iDocumentation);
+		if (oDocumentation != null && iDocumentation != null) {
+			oDocumentation.setStartPosition(iDocumentation.getStartPosition());
+			oDocumentation.setEndPosition(iDocumentation.getEndPosition());
+			oDocumentation.setName(iDocumentation.getName());
+
+			CommentBody oCommentBody = MtlFactory.eINSTANCE.createCommentBody();
+			oCommentBody.setValue(iDocumentation.getBody());
+			oCommentBody.setStartPosition(-1);
+			oCommentBody.setEndPosition(-1);
+
+			oDocumentation.setBody(oCommentBody);
 		}
 	}
 

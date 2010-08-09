@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.ModuleElement;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
@@ -125,6 +126,16 @@ public class ModuleImpl extends EPackageImpl implements Module {
 	 * @ordered
 	 */
 	protected EList<ModuleImportsValue> imports;
+
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -245,6 +256,56 @@ public class ModuleImpl extends EPackageImpl implements Module {
 	 * 
 	 * @generated
 	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					CstPackage.MODULE__DOCUMENTATION, oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.MODULE__DOCUMENTATION, null, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- CstPackage.MODULE__DOCUMENTATION, null, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CstPackage.MODULE__DOCUMENTATION,
+					newDocumentation, newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -256,6 +317,8 @@ public class ModuleImpl extends EPackageImpl implements Module {
 				return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
 			case CstPackage.MODULE__IMPORTS:
 				return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
+			case CstPackage.MODULE__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -280,6 +343,8 @@ public class ModuleImpl extends EPackageImpl implements Module {
 				return getExtends();
 			case CstPackage.MODULE__IMPORTS:
 				return getImports();
+			case CstPackage.MODULE__DOCUMENTATION:
+				return getDocumentation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -315,6 +380,9 @@ public class ModuleImpl extends EPackageImpl implements Module {
 				getImports().clear();
 				getImports().addAll((Collection<? extends ModuleImportsValue>)newValue);
 				return;
+			case CstPackage.MODULE__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -345,6 +413,9 @@ public class ModuleImpl extends EPackageImpl implements Module {
 			case CstPackage.MODULE__IMPORTS:
 				getImports().clear();
 				return;
+			case CstPackage.MODULE__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -369,6 +440,8 @@ public class ModuleImpl extends EPackageImpl implements Module {
 				return extends_ != null && !extends_.isEmpty();
 			case CstPackage.MODULE__IMPORTS:
 				return imports != null && !imports.isEmpty();
+			case CstPackage.MODULE__DOCUMENTATION:
+				return documentation != null;
 		}
 		return super.eIsSet(featureID);
 	}
