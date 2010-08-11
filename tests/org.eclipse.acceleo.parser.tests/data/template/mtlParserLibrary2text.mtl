@@ -39,7 +39,7 @@ Book : [b.title/]
 [protected ('identifier')]
 [/protected]
 
-[protected ('identifier')/]
+[protected ('alternate identifier')/]
 
 [/template]
 
