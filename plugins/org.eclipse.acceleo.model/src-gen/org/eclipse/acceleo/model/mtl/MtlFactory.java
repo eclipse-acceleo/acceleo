@@ -173,6 +173,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Comment</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	Comment createComment();
 
@@ -181,6 +182,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Documentation</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	Documentation createDocumentation();
 
@@ -189,6 +191,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Comment Body</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	CommentBody createCommentBody();
 
@@ -198,6 +201,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Module Documentation</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	ModuleDocumentation createModuleDocumentation();
 
@@ -207,6 +211,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Module Element Documentation</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	ModuleElementDocumentation createModuleElementDocumentation();
 
@@ -216,6 +221,7 @@ public interface MtlFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Parameter Documentation</em>'.
 	 * @generated
+	 * @since 3.0
 	 */
 	ParameterDocumentation createParameterDocumentation();
 
