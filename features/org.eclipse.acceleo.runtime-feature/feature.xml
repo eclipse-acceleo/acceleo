@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.runtime"
       label="%featureName"
-      version="3.0.0.qualifier"
+      version="3.0.1.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -16,7 +16,7 @@
    <license url="%licenseURL">
       %license
    </license>
-   
+
    <url>
       <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
