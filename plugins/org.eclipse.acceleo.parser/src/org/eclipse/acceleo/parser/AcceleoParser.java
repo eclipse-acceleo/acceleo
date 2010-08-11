@@ -381,6 +381,7 @@ public class AcceleoParser {
 	 * @param file
 	 *            is the parsed file
 	 * @return the parsing warnings, or null
+	 * @since 3.0
 	 */
 	public AcceleoParserWarnings getWarnings(File file) {
 		if (warnings != null) {
@@ -396,7 +397,7 @@ public class AcceleoParser {
 	 * @param acceleoFile
 	 *            is the parsed file
 	 * @return the parsing warnings, or null
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public AcceleoParserWarnings getWarnings(AcceleoFile acceleoFile) {
 		if (warnings != null && acceleoFile != null) {
@@ -412,6 +413,7 @@ public class AcceleoParser {
 	 * @param file
 	 *            is the parsed file
 	 * @return the parsing infos, or null
+	 * @since 3.0
 	 */
 	public AcceleoParserInfos getInfos(File file) {
 		if (infos != null) {
@@ -427,7 +429,7 @@ public class AcceleoParser {
 	 * @param acceleoFile
 	 *            is the parsed file
 	 * @return the parsing infos, or null
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public AcceleoParserInfos getInfos(AcceleoFile acceleoFile) {
 		if (infos != null && acceleoFile != null) {
