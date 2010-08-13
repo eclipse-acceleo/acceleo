@@ -390,56 +390,56 @@ public interface IAcceleoConstants {
 	/**
 	 * Comment : The 'fixme' tag.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_FIXME = "@FIXME"; //$NON-NLS-1$
 
 	/**
 	 * Comment : The 'todo' tag.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_TODO = "@TODO"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'author'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_AUTHOR = "@author"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'deprecated'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_DEPRECATED = "@deprecated"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'inheritDoc'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_INHERITDOC = "@inheritDoc"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'param'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_PARAM = "@param"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'since'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_SINCE = "@since"; //$NON-NLS-1$
 
 	/**
 	 * Documentation : The tag 'version'.
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String TAG_VERSION = "@version"; //$NON-NLS-1$
 
@@ -448,7 +448,7 @@ public interface IAcceleoConstants {
 	 * <p>
 	 * [<b>**</b> ...
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String DOCUMENTATION_BEGIN = "**";
 
@@ -460,7 +460,7 @@ public interface IAcceleoConstants {
 	 * *<br/>
 	 * *</b> ...
 	 * 
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	String DOCUMENTATION_NEW_LINE = "*";
 }
