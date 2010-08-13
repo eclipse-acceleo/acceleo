@@ -207,7 +207,7 @@ public interface CstFactory extends EFactory {
 	 * 
 	 * @return a new object of class '<em>Documentation</em>'.
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	Documentation createDocumentation();
 

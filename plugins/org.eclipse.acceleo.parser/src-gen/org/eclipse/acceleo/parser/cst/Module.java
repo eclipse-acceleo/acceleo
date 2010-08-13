@@ -109,7 +109,7 @@ public interface Module extends EPackage, CSTNode {
 	 * @see org.eclipse.acceleo.parser.cst.CstPackage#getModule_Documentation()
 	 * @model containment="true"
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	Documentation getDocumentation();
 
@@ -121,7 +121,7 @@ public interface Module extends EPackage, CSTNode {
 	 *            the new value of the '<em>Documentation</em>' containment reference.
 	 * @see #getDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	void setDocumentation(Documentation value);
 

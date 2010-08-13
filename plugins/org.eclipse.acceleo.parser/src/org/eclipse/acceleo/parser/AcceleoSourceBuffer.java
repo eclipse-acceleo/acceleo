@@ -385,7 +385,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logProblem(java.lang.String, int, int)
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void logProblem(final String message, final int posBegin, final int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
@@ -397,7 +397,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logWarning(java.lang.String, int, int)
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void logWarning(final String message, final int posBegin, final int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
@@ -409,7 +409,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.internal.parser.ast.IASTProvider2#logInfo(java.lang.String, int, int)
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void logInfo(final String message, final int posBegin, final int posEnd) {
 		int[] pos = trim(posBegin, posEnd);
@@ -421,7 +421,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * Returns the warnings.
 	 * 
 	 * @return the warnings
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public AcceleoParserWarnings getWarnings() {
 		return this.warnings;
@@ -431,7 +431,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * Returns the infos.
 	 * 
 	 * @return the infos
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public AcceleoParserInfos getInfos() {
 		return this.infos;
@@ -477,7 +477,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.internal.parser.documentation.IDocumentationProvider#resolveASTDocumentation()
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void resolveASTDocumentation() {
 		if (this.astCreator != null && this.ast != null) {

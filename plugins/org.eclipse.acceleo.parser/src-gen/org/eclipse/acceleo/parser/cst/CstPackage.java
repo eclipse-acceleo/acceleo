@@ -240,7 +240,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE__DOCUMENTATION = EcorePackage.EPACKAGE_FEATURE_COUNT + 6;
 
@@ -1643,7 +1643,7 @@ public interface CstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
 	 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION = 23;
 
@@ -1653,7 +1653,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
 
@@ -1663,7 +1663,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
 
@@ -1672,7 +1672,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__NAME = COMMENT__NAME;
 
@@ -1682,7 +1682,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
 
@@ -1691,7 +1691,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__BODY = COMMENT__BODY;
 
@@ -1701,7 +1701,7 @@ public interface CstPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 0;
 
@@ -1826,7 +1826,7 @@ public interface CstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.parser.cst.Module#getDocumentation()
 	 * @see #getModule()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EReference getModule_Documentation();
 
@@ -2580,7 +2580,7 @@ public interface CstPackage extends EPackage {
 	 * @return the meta object for class '<em>Documentation</em>'.
 	 * @see org.eclipse.acceleo.parser.cst.Documentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getDocumentation();
 
@@ -2699,7 +2699,7 @@ public interface CstPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EReference MODULE__DOCUMENTATION = eINSTANCE.getModule_Documentation();
 
@@ -3281,7 +3281,7 @@ public interface CstPackage extends EPackage {
 		 * @see org.eclipse.acceleo.parser.cst.impl.DocumentationImpl
 		 * @see org.eclipse.acceleo.parser.cst.impl.CstPackageImpl#getDocumentation()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass DOCUMENTATION = eINSTANCE.getDocumentation();
 

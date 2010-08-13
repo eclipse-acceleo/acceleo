@@ -18,7 +18,7 @@ import java.util.List;
  * All the syntax warnings of the parsing.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.0
+ * @since 3.1
  */
 public class AcceleoParserWarnings implements AcceleoParserMessages {
 	/**

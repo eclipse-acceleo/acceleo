@@ -14,7 +14,7 @@ package org.eclipse.acceleo.parser;
  * A common interface for all the message reporting system of the parser.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.0
+ * @since 3.1
  */
 public interface AcceleoParserMessages {
 
