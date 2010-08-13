@@ -1118,7 +1118,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseComment(Comment object) {
@@ -1135,7 +1135,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseDocumentation(Documentation object) {
@@ -1152,7 +1152,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Documented Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseDocumentedElement(DocumentedElement object) {
@@ -1169,7 +1169,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Comment Body</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseCommentBody(CommentBody object) {
@@ -1186,7 +1186,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Module Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseModuleDocumentation(ModuleDocumentation object) {
@@ -1204,7 +1204,7 @@ public class MtlSwitch<T> {
 	 *         '.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseModuleElementDocumentation(ModuleElementDocumentation object) {
@@ -1221,7 +1221,7 @@ public class MtlSwitch<T> {
 	 * @return the result of interpreting the object as an instance of '<em>Parameter Documentation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	@SuppressWarnings("unused")
 	public T caseParameterDocumentation(ParameterDocumentation object) {

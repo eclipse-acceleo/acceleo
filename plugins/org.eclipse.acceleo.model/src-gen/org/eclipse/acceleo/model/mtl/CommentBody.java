@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getCommentBody()
  * @model
  * @generated
- * @since 3.0
+ * @since 3.1
  */
 public interface CommentBody extends EObject {
 	/**

@@ -23,7 +23,7 @@ package org.eclipse.acceleo.model.mtl;
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getDocumentation()
  * @model
  * @generated
- * @since 3.0
+ * @since 3.1
  */
 public interface Documentation extends Comment {
 	/**

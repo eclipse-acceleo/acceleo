@@ -26,7 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getModuleElementDocumentation()
  * @model
  * @generated
- * @since 3.0
+ * @since 3.1
  */
 public interface ModuleElementDocumentation extends Documentation {
 	/**

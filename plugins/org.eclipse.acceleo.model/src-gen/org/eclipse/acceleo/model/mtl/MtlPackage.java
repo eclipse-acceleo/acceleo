@@ -149,7 +149,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE__DOCUMENTATION = EcorePackage.EPACKAGE_FEATURE_COUNT + 0;
 
@@ -159,7 +159,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE__DEPRECATED = EcorePackage.EPACKAGE_FEATURE_COUNT + 1;
 
@@ -205,7 +205,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE__START_HEADER_POSITION = EcorePackage.EPACKAGE_FEATURE_COUNT + 6;
 
@@ -215,7 +215,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE__END_HEADER_POSITION = EcorePackage.EPACKAGE_FEATURE_COUNT + 7;
 
@@ -751,7 +751,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int TEMPLATE__DOCUMENTATION = BLOCK_FEATURE_COUNT + 1;
 
@@ -761,7 +761,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int TEMPLATE__DEPRECATED = BLOCK_FEATURE_COUNT + 2;
 
@@ -1055,7 +1055,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int QUERY__DOCUMENTATION = MODULE_ELEMENT_FEATURE_COUNT + 0;
 
@@ -1065,7 +1065,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int QUERY__DEPRECATED = MODULE_ELEMENT_FEATURE_COUNT + 1;
 
@@ -2409,7 +2409,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MACRO__DOCUMENTATION = BLOCK_FEATURE_COUNT + 1;
 
@@ -2419,7 +2419,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MACRO__DEPRECATED = BLOCK_FEATURE_COUNT + 2;
 
@@ -2626,7 +2626,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.CommentImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getComment()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT = 18;
 
@@ -2636,7 +2636,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__EANNOTATIONS = MODULE_ELEMENT__EANNOTATIONS;
 
@@ -2645,7 +2645,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__NAME = MODULE_ELEMENT__NAME;
 
@@ -2655,7 +2655,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__START_POSITION = MODULE_ELEMENT__START_POSITION;
 
@@ -2665,7 +2665,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__END_POSITION = MODULE_ELEMENT__END_POSITION;
 
@@ -2675,7 +2675,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__VISIBILITY = MODULE_ELEMENT__VISIBILITY;
 
@@ -2685,7 +2685,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT__BODY = MODULE_ELEMENT_FEATURE_COUNT + 0;
 
@@ -2695,7 +2695,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 1;
 
@@ -2706,7 +2706,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION = 19;
 
@@ -2716,7 +2716,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__EANNOTATIONS = COMMENT__EANNOTATIONS;
 
@@ -2725,7 +2725,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__NAME = COMMENT__NAME;
 
@@ -2735,7 +2735,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
 
@@ -2745,7 +2745,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
 
@@ -2755,7 +2755,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
 
@@ -2765,7 +2765,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__BODY = COMMENT__BODY;
 
@@ -2775,7 +2775,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION__DOCUMENTED_ELEMENT = COMMENT_FEATURE_COUNT + 0;
 
@@ -2785,7 +2785,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 1;
 
@@ -2796,7 +2796,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentedElement()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTED_ELEMENT = 20;
 
@@ -2806,7 +2806,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTED_ELEMENT__DOCUMENTATION = 0;
 
@@ -2816,7 +2816,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTED_ELEMENT__DEPRECATED = 1;
 
@@ -2826,7 +2826,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int DOCUMENTED_ELEMENT_FEATURE_COUNT = 2;
 
@@ -2837,7 +2837,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getCommentBody()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_BODY = 21;
 
@@ -2847,7 +2847,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_BODY__START_POSITION = 0;
 
@@ -2857,7 +2857,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_BODY__END_POSITION = 1;
 
@@ -2866,7 +2866,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_BODY__VALUE = 2;
 
@@ -2876,7 +2876,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int COMMENT_BODY_FEATURE_COUNT = 3;
 
@@ -2887,7 +2887,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION = 22;
 
@@ -2897,7 +2897,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__EANNOTATIONS = DOCUMENTATION__EANNOTATIONS;
 
@@ -2906,7 +2906,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__NAME = DOCUMENTATION__NAME;
 
@@ -2916,7 +2916,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
 
@@ -2926,7 +2926,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
 
@@ -2936,7 +2936,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__VISIBILITY = DOCUMENTATION__VISIBILITY;
 
@@ -2946,7 +2946,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
 
@@ -2956,7 +2956,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = DOCUMENTATION__DOCUMENTED_ELEMENT;
 
@@ -2966,7 +2966,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__AUTHOR = DOCUMENTATION_FEATURE_COUNT + 0;
 
@@ -2976,7 +2976,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__VERSION = DOCUMENTATION_FEATURE_COUNT + 1;
 
@@ -2985,7 +2985,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION__SINCE = DOCUMENTATION_FEATURE_COUNT + 2;
 
@@ -2995,7 +2995,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_DOCUMENTATION_FEATURE_COUNT = DOCUMENTATION_FEATURE_COUNT + 3;
 
@@ -3006,7 +3006,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleElementDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION = 23;
 
@@ -3016,7 +3016,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__EANNOTATIONS = DOCUMENTATION__EANNOTATIONS;
 
@@ -3025,7 +3025,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__NAME = DOCUMENTATION__NAME;
 
@@ -3035,7 +3035,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__START_POSITION = DOCUMENTATION__START_POSITION;
 
@@ -3045,7 +3045,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__END_POSITION = DOCUMENTATION__END_POSITION;
 
@@ -3055,7 +3055,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__VISIBILITY = DOCUMENTATION__VISIBILITY;
 
@@ -3065,7 +3065,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__BODY = DOCUMENTATION__BODY;
 
@@ -3075,7 +3075,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = DOCUMENTATION__DOCUMENTED_ELEMENT;
 
@@ -3085,7 +3085,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION__PARAMETERS_DOCUMENTATION = DOCUMENTATION_FEATURE_COUNT + 0;
 
@@ -3095,7 +3095,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = DOCUMENTATION_FEATURE_COUNT + 1;
 
@@ -3106,7 +3106,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
 	 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getParameterDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION = 24;
 
@@ -3116,7 +3116,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__EANNOTATIONS = COMMENT__EANNOTATIONS;
 
@@ -3125,7 +3125,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__NAME = COMMENT__NAME;
 
@@ -3135,7 +3135,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__START_POSITION = COMMENT__START_POSITION;
 
@@ -3145,7 +3145,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__END_POSITION = COMMENT__END_POSITION;
 
@@ -3155,7 +3155,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__VISIBILITY = COMMENT__VISIBILITY;
 
@@ -3165,7 +3165,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION__BODY = COMMENT__BODY;
 
@@ -3175,7 +3175,7 @@ public interface MtlPackage extends EPackage {
 	 * 
 	 * @generated
 	 * @ordered
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int PARAMETER_DOCUMENTATION_FEATURE_COUNT = COMMENT_FEATURE_COUNT + 0;
 
@@ -3264,7 +3264,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.Module#getStartHeaderPosition()
 	 * @see #getModule()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getModule_StartHeaderPosition();
 
@@ -3277,7 +3277,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.Module#getEndHeaderPosition()
 	 * @see #getModule()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getModule_EndHeaderPosition();
 
@@ -3972,7 +3972,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Comment</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Comment
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getComment();
 
@@ -3985,7 +3985,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.Comment#getBody()
 	 * @see #getComment()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EReference getComment_Body();
 
@@ -3996,7 +3996,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Documentation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.Documentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getDocumentation();
 
@@ -4009,7 +4009,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.Documentation#getDocumentedElement()
 	 * @see #getDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EReference getDocumentation_DocumentedElement();
 
@@ -4020,7 +4020,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Documented Element</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getDocumentedElement();
 
@@ -4033,7 +4033,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement#getDocumentation()
 	 * @see #getDocumentedElement()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EReference getDocumentedElement_Documentation();
 
@@ -4046,7 +4046,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement#isDeprecated()
 	 * @see #getDocumentedElement()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getDocumentedElement_Deprecated();
 
@@ -4057,7 +4057,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Comment Body</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.CommentBody
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getCommentBody();
 
@@ -4070,7 +4070,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getStartPosition()
 	 * @see #getCommentBody()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getCommentBody_StartPosition();
 
@@ -4083,7 +4083,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getEndPosition()
 	 * @see #getCommentBody()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getCommentBody_EndPosition();
 
@@ -4095,7 +4095,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.CommentBody#getValue()
 	 * @see #getCommentBody()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getCommentBody_Value();
 
@@ -4106,7 +4106,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Module Documentation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getModuleDocumentation();
 
@@ -4119,7 +4119,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getAuthor()
 	 * @see #getModuleDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getModuleDocumentation_Author();
 
@@ -4132,7 +4132,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getVersion()
 	 * @see #getModuleDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getModuleDocumentation_Version();
 
@@ -4145,7 +4145,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation#getSince()
 	 * @see #getModuleDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EAttribute getModuleDocumentation_Since();
 
@@ -4156,7 +4156,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Module Element Documentation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getModuleElementDocumentation();
 
@@ -4169,7 +4169,7 @@ public interface MtlPackage extends EPackage {
 	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation#getParametersDocumentation()
 	 * @see #getModuleElementDocumentation()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EReference getModuleElementDocumentation_ParametersDocumentation();
 
@@ -4180,7 +4180,7 @@ public interface MtlPackage extends EPackage {
 	 * @return the meta object for class '<em>Parameter Documentation</em>'.
 	 * @see org.eclipse.acceleo.model.mtl.ParameterDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	EClass getParameterDocumentation();
 
@@ -4273,7 +4273,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute MODULE__START_HEADER_POSITION = eINSTANCE.getModule_StartHeaderPosition();
 
@@ -4282,7 +4282,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute MODULE__END_HEADER_POSITION = eINSTANCE.getModule_EndHeaderPosition();
 
@@ -4809,7 +4809,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.CommentImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getComment()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass COMMENT = eINSTANCE.getComment();
 
@@ -4818,7 +4818,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EReference COMMENT__BODY = eINSTANCE.getComment_Body();
 
@@ -4829,7 +4829,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.DocumentationImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentation()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass DOCUMENTATION = eINSTANCE.getDocumentation();
 
@@ -4838,7 +4838,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EReference DOCUMENTATION__DOCUMENTED_ELEMENT = eINSTANCE.getDocumentation_DocumentedElement();
 
@@ -4849,7 +4849,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getDocumentedElement()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass DOCUMENTED_ELEMENT = eINSTANCE.getDocumentedElement();
 
@@ -4858,7 +4858,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EReference DOCUMENTED_ELEMENT__DOCUMENTATION = eINSTANCE.getDocumentedElement_Documentation();
 
@@ -4867,7 +4867,7 @@ public interface MtlPackage extends EPackage {
 		 * --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute DOCUMENTED_ELEMENT__DEPRECATED = eINSTANCE.getDocumentedElement_Deprecated();
 
@@ -4878,7 +4878,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.CommentBodyImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getCommentBody()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass COMMENT_BODY = eINSTANCE.getCommentBody();
 
@@ -4887,7 +4887,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute COMMENT_BODY__START_POSITION = eINSTANCE.getCommentBody_StartPosition();
 
@@ -4896,7 +4896,7 @@ public interface MtlPackage extends EPackage {
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute COMMENT_BODY__END_POSITION = eINSTANCE.getCommentBody_EndPosition();
 
@@ -4905,7 +4905,7 @@ public interface MtlPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute COMMENT_BODY__VALUE = eINSTANCE.getCommentBody_Value();
 
@@ -4916,7 +4916,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleDocumentationImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleDocumentation()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass MODULE_DOCUMENTATION = eINSTANCE.getModuleDocumentation();
 
@@ -4925,7 +4925,7 @@ public interface MtlPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute MODULE_DOCUMENTATION__AUTHOR = eINSTANCE.getModuleDocumentation_Author();
 
@@ -4934,7 +4934,7 @@ public interface MtlPackage extends EPackage {
 		 * --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute MODULE_DOCUMENTATION__VERSION = eINSTANCE.getModuleDocumentation_Version();
 
@@ -4943,7 +4943,7 @@ public interface MtlPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EAttribute MODULE_DOCUMENTATION__SINCE = eINSTANCE.getModuleDocumentation_Since();
 
@@ -4955,7 +4955,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.ModuleElementDocumentationImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getModuleElementDocumentation()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass MODULE_ELEMENT_DOCUMENTATION = eINSTANCE.getModuleElementDocumentation();
 
@@ -4964,7 +4964,7 @@ public interface MtlPackage extends EPackage {
 		 * list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EReference MODULE_ELEMENT_DOCUMENTATION__PARAMETERS_DOCUMENTATION = eINSTANCE
 				.getModuleElementDocumentation_ParametersDocumentation();
@@ -4977,7 +4977,7 @@ public interface MtlPackage extends EPackage {
 		 * @see org.eclipse.acceleo.model.mtl.impl.ParameterDocumentationImpl
 		 * @see org.eclipse.acceleo.model.mtl.impl.MtlPackageImpl#getParameterDocumentation()
 		 * @generated
-		 * @since 3.0
+		 * @since 3.1
 		 */
 		EClass PARAMETER_DOCUMENTATION = eINSTANCE.getParameterDocumentation();
 

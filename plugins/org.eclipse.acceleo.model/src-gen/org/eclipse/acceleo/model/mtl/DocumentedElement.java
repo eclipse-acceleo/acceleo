@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.eclipse.acceleo.model.mtl.MtlPackage#getDocumentedElement()
  * @model interface="true" abstract="true"
  * @generated
- * @since 3.0
+ * @since 3.1
  */
 public interface DocumentedElement extends EObject {
 	/**

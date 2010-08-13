@@ -108,7 +108,7 @@ public interface Module extends EPackage, DocumentedElement {
 	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getModule_StartHeaderPosition()
 	 * @model required="true"
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int getStartHeaderPosition();
 
@@ -120,7 +120,7 @@ public interface Module extends EPackage, DocumentedElement {
 	 *            the new value of the '<em>Start Header Position</em>' attribute.
 	 * @see #getStartHeaderPosition()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	void setStartHeaderPosition(int value);
 
@@ -137,7 +137,7 @@ public interface Module extends EPackage, DocumentedElement {
 	 * @see org.eclipse.acceleo.model.mtl.MtlPackage#getModule_EndHeaderPosition()
 	 * @model required="true"
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	int getEndHeaderPosition();
 
@@ -149,7 +149,7 @@ public interface Module extends EPackage, DocumentedElement {
 	 *            the new value of the '<em>End Header Position</em>' attribute.
 	 * @see #getEndHeaderPosition()
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	void setEndHeaderPosition(int value);
 

@@ -552,7 +552,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.Comment
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createCommentAdapter() {
 		return null;
@@ -567,7 +567,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.Documentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createDocumentationAdapter() {
 		return null;
@@ -582,7 +582,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.DocumentedElement
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createDocumentedElementAdapter() {
 		return null;
@@ -597,7 +597,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.CommentBody
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createCommentBodyAdapter() {
 		return null;
@@ -612,7 +612,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createModuleDocumentationAdapter() {
 		return null;
@@ -627,7 +627,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.ModuleElementDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createModuleElementDocumentationAdapter() {
 		return null;
@@ -642,7 +642,7 @@ public class MtlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.model.mtl.ParameterDocumentation
 	 * @generated
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public Adapter createParameterDocumentationAdapter() {
 		return null;
