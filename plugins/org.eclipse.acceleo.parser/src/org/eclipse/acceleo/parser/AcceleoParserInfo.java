@@ -16,7 +16,7 @@ package org.eclipse.acceleo.parser;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
-public class AcceleoParserInfo {
+public class AcceleoParserInfo implements AcceleoParserMessage {
 
 	/**
 	 * The message for an information about a template that override another template.
@@ -78,36 +78,36 @@ public class AcceleoParserInfo {
 	}
 
 	/**
-	 * Gets the message.
+	 * {@inheritDoc}
 	 * 
-	 * @return the message
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getMessage()
 	 */
 	public String getMessage() {
 		return message;
 	}
 
 	/**
-	 * Gets the line of the info in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the line of the info in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getLine()
 	 */
 	public int getLine() {
 		return line;
 	}
 
 	/**
-	 * Gets the beginning index of the info in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the beginning index of the info in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getPosBegin()
 	 */
 	public int getPosBegin() {
 		return posBegin;
 	}
 
 	/**
-	 * Gets the ending index of the info in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the ending index of the info in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getPosEnd()
 	 */
 	public int getPosEnd() {
 		return posEnd;

@@ -15,7 +15,7 @@ package org.eclipse.acceleo.parser;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoParserProblem {
+public class AcceleoParserProblem implements AcceleoParserMessage {
 
 	/**
 	 * The message.
@@ -57,36 +57,36 @@ public class AcceleoParserProblem {
 	}
 
 	/**
-	 * Gets the message.
+	 * {@inheritDoc}
 	 * 
-	 * @return the message
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getMessage()
 	 */
 	public String getMessage() {
 		return message;
 	}
 
 	/**
-	 * Gets the line of the problem in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the line of the problem in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getLine()
 	 */
 	public int getLine() {
 		return line;
 	}
 
 	/**
-	 * Gets the beginning index of the problem in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the beginning index of the problem in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getPosBegin()
 	 */
 	public int getPosBegin() {
 		return posBegin;
 	}
 
 	/**
-	 * Gets the ending index of the problem in the file.
+	 * {@inheritDoc}
 	 * 
-	 * @return the ending index of the problem in the file
+	 * @see org.eclipse.acceleo.parser.AcceleoParserMessage#getPosEnd()
 	 */
 	public int getPosEnd() {
 		return posEnd;
