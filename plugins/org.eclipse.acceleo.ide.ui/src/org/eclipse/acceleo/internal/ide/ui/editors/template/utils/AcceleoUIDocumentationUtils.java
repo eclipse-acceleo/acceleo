@@ -113,7 +113,8 @@ public final class AcceleoUIDocumentationUtils {
 		/*
 		 * [Doc unloading] unloading resource loaded from AcceleoUIDocumentationUtils#getDocumentationFromFile
 		 */
-		if (documentation.eResource() != null && documentation.eResource() != element.eResource()) {
+		if (documentation != null && documentation.eResource() != null
+				&& documentation.eResource() != element.eResource()) {
 			documentation.eResource().unload();
 		}
 
