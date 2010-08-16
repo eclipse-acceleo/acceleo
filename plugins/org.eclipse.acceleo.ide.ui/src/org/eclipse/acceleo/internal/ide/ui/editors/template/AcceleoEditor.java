@@ -924,4 +924,13 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		return viewer;
 	}
 
+	/**
+	 * Returns the source viewer. Used by the ShowWhitespaceCharactersAction and the
+	 * AcceleoWhiteSpaceCharactersPainter to add the whitespace painter.
+	 * 
+	 * @return The source viewer
+	 */
+	/* package */ISourceViewer getAcceleoSourceViewer() {
+		return this.getSourceViewer();
+	}
 }

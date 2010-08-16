@@ -697,6 +697,19 @@ Contributors:
                actionID="RulerClick"
                id="org.eclipse.acceleo.ide.ui.debug.actions.clickBreakpointAction"/>
       </editorContribution>
+      <editorContribution
+            id="acceleo.showWhitespaceCharactersAction"
+            targetID="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor">
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.editors.template.ShowWhitespaceCharactersAction"
+               icon="icons/template-editor/actions/ShowWhitespaceCharactersAction.gif"
+               id="org.eclipse.acceleo.ide.ui.editors.template.showwhitespacecharacters"
+               label="%AcceleoWhitespaceCharactersActionLabel"
+               style="toggle"
+               toolbarPath="Normal/additions"
+               tooltip="%AcceleoWhitespaceCharactersActionTooltip">
+         </action>
+      </editorContribution>
    </extension>
    
    <extension
