@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.IAcceleoContantsImage;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -28,7 +29,7 @@ public class AcceleoPositionedQueryLabelProvider extends LabelProvider {
 	 */
 	@Override
 	public Image getImage(Object element) {
-		return AcceleoUIActivator.getDefault().getImage("icons/template-editor/Query.gif"); //$NON-NLS-1$
+		return AcceleoUIActivator.getDefault().getImage(IAcceleoContantsImage.TemplateEditor.QUERY_PUBLIC);
 	}
 
 	/**

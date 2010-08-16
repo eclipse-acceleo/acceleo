@@ -23,7 +23,7 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
@@ -31,7 +31,6 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -120,8 +119,9 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 					if (manifest.exists()
 							&& FileContent.getFileContent(manifest.getLocation().toFile()).indexOf(
 									packageName) == -1) {
-						reportError(fileAcceleo, 0, 0, 0, AcceleoUIMessages.getString(
-								"CreateRunnableAcceleoOperation.MissingExport", packageName)); //$NON-NLS-1$
+						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID, fileAcceleo, 0, 0, 0,
+								AcceleoUIMessages.getString(
+										"CreateRunnableAcceleoOperation.MissingExport", packageName)); //$NON-NLS-1$
 					}
 					URI moduleURI = URI.createPlatformResourceURI(acceleoProject.getOutputFilePath(
 							fileAcceleo).toString(), true);
@@ -341,32 +341,4 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 			}
 		}
 	}
-
-	/**
-	 * Creates an error marker on the given file.
-	 * 
-	 * @param file
-	 *            is the file that contains a syntax error
-	 * @param line
-	 *            is the line of the problem
-	 * @param posBegin
-	 *            is the beginning position of the problem
-	 * @param posEnd
-	 *            is the ending position of the problem
-	 * @param message
-	 *            is the message of the problem, it is the message displayed when you're hover the marker
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void reportError(IFile file, int line, int posBegin, int posEnd, String message)
-			throws CoreException {
-		IMarker m = file.createMarker(AcceleoMarker.PROBLEM_MARKER);
-		m.setAttribute(IMarker.LINE_NUMBER, line);
-		m.setAttribute(IMarker.CHAR_START, posBegin);
-		m.setAttribute(IMarker.CHAR_END, posEnd);
-		m.setAttribute(IMarker.MESSAGE, message);
-		m.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-		m.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-	}
-
 }

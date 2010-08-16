@@ -83,16 +83,7 @@ public class AcceleoCompletionTemplateProposal extends TemplateProposal {
 	 */
 	@Override
 	public String getAdditionalProposalInfo() {
-		String text = super.getAdditionalProposalInfo();
-		if (text != null && text.length() > 0) {
-			if (info != null && info.length() > 0) {
-				text = text + "\n" + info; //$NON-NLS-1$
-			}
-
-		} else {
-			text = info;
-		}
-		return text;
+		return this.info;
 	}
 
 }

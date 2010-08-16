@@ -22,6 +22,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AcceleoRefactoringUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Region;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
@@ -217,7 +218,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 			try {
 				// we find all the mtl files in the current project.
 				AcceleoBuilderUtils.members(fileList, project, IAcceleoConstants.MTL_FILE_EXTENSION,
-						AcceleoRenameModuleUtils.getOutputFolder(project));
+						AcceleoRefactoringUtils.getOutputFolder(project));
 			} catch (CoreException e) {
 				// do nothing
 			}
@@ -314,7 +315,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 
 		RefactoringStatus status = new RefactoringStatus();
 
-		ICompilationUnit element = AcceleoRenameModuleUtils.getJavaCompilationUnitFromModuleFile(
+		ICompilationUnit element = AcceleoRefactoringUtils.getJavaCompilationUnitFromModuleFile(
 				this.fProject, this.file);
 		if (element == null || !element.exists()) {
 			this.renameJavaFile = false;
@@ -473,7 +474,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 		List<IFile> fileList = new ArrayList<IFile>();
 		try {
 			AcceleoBuilderUtils.members(fileList, this.fProject, IAcceleoConstants.MTL_FILE_EXTENSION,
-					AcceleoRenameModuleUtils.getOutputFolder(this.fProject));
+					AcceleoRefactoringUtils.getOutputFolder(this.fProject));
 
 			// we are looking for all mtl files in the same package as the module file
 			// that have the name of the fNemModuleName + "." + mtl

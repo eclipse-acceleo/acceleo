@@ -348,7 +348,7 @@ public class AcceleoProject {
 	 * @param aProject
 	 *            is a project of the workspace
 	 * @return the output folder of the project, or null if it doesn't exist
-	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleUtils#getOutputFolder(IProject
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AcceleoRefactoringUtils#getOutputFolder(IProject
 	 *      aProject)
 	 */
 	private static IFolder getOutputFolder(IProject aProject) {

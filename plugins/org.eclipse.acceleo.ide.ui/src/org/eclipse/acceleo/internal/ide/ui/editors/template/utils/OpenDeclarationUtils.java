@@ -784,6 +784,13 @@ public final class OpenDeclarationUtils {
 			}
 		}
 
+		// If there is no result, we will try to see if what we are looking for is not the module header.
+		if (res == null && editor.getContent().isInModuleHeader(offset, offset, true)) {
+			res = editor.getContent().getAST();
+		} else if (res == null && editor.getContent().isInModuleHeader(offset, offset, false)) {
+			res = editor.getContent().getCST();
+		}
+
 		return res;
 	}
 

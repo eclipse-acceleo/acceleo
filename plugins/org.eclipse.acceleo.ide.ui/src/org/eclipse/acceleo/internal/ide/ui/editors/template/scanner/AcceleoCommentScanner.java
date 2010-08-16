@@ -32,8 +32,12 @@ public class AcceleoCommentScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 */
 	public AcceleoCommentScanner(ColorManager manager) {
-		IRule[] rules = new IRule[1];
-		rules[0] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
+		IRule[] rules = new IRule[3];
+		rules[0] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
+				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+		rules[1] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(
+				new TextAttribute(manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+		rules[2] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
 				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		setRules(rules);
 		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(IAcceleoColorConstants.COMMENT))));

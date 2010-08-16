@@ -8,18 +8,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
+package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -32,13 +36,18 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISaveablesLifecycleListener;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.Saveable;
+import org.eclipse.ui.SaveablesLifecycleEvent;
 
 /**
- * Utility class needed to perform the refactoring of a module.
+ * Utility class needed to perform the refactoring.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public final class AcceleoRenameModuleUtils {
+public final class AcceleoRefactoringUtils {
 
 	/**
 	 * Slash.
@@ -48,7 +57,7 @@ public final class AcceleoRenameModuleUtils {
 	/**
 	 * The constructor.
 	 */
-	private AcceleoRenameModuleUtils() {
+	private AcceleoRefactoringUtils() {
 		// hides constructor.
 	}
 
@@ -74,37 +83,6 @@ public final class AcceleoRenameModuleUtils {
 			// continue
 		}
 		return null;
-	}
-
-	/**
-	 * Returns the file that defines the module.
-	 * 
-	 * @param project
-	 *            The project.
-	 * @param module
-	 *            The module.
-	 * @return The file that defines the module.
-	 */
-	public static IFile getFileFromModule(final IProject project, final Module module) {
-		final String uri = module.getNsURI();
-		AcceleoProject acceleoProject = new AcceleoProject(project);
-		IFile result = null;
-
-		final String pathStr = uri.replaceAll(IAcceleoConstants.NAMESPACE_SEPARATOR, SLASH);
-		final IPath path = new Path(pathStr);
-
-		try {
-			for (IFile file : acceleoProject.getInputFiles()) {
-				IPath p = file.getProjectRelativePath().removeFileExtension();
-				if (p.removeFirstSegments(1).equals(path)) {
-					result = file;
-				}
-			}
-		} catch (CoreException e) {
-			// do nothing
-		}
-
-		return result;
 	}
 
 	/**
@@ -197,5 +175,75 @@ public final class AcceleoRenameModuleUtils {
 		}
 
 		return mod;
+	}
+
+	/**
+	 * Check if there are any acceleo errors in the file.
+	 * 
+	 * @param file
+	 *            The current file.
+	 * @return true if there is an error.
+	 */
+	public static boolean containsAcceleoError(final IFile file) {
+		boolean result = false;
+		try {
+			IMarker[] markers = file.findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true,
+					IResource.DEPTH_INFINITE);
+			if (markers.length > 0) {
+				result = true;
+			}
+		} catch (CoreException e) {
+			result = true;
+		}
+		return result;
+	}
+
+	/**
+	 * Force the editor to save to perform the refactoring.
+	 * 
+	 * @return If the editor has saved.
+	 */
+	public static boolean allResourceSaved() {
+		final List<AcceleoEditor> dirtyEditorList = new ArrayList<AcceleoEditor>();
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
+			IEditorPart[] editors = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.getDirtyEditors();
+			for (IEditorPart iEditorPart : editors) {
+				if (iEditorPart instanceof AcceleoEditor) {
+					dirtyEditorList.add((AcceleoEditor)iEditorPart);
+				}
+			}
+		}
+
+		if (dirtyEditorList.size() > 0) {
+			for (AcceleoEditor acceleoEditor : dirtyEditorList) {
+				ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)acceleoEditor
+						.getSite().getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
+				Saveable[] saveableArray = acceleoEditor.getSaveables();
+				List<Saveable> list = new ArrayList<Saveable>();
+				for (int i = 0; i < saveableArray.length; i++) {
+					list.add(saveableArray[i]);
+				}
+
+				// Fires a "pre close" event so that the editors prompts us to save the dirty files.
+				// None will really be closed.
+				SaveablesLifecycleEvent event = new SaveablesLifecycleEvent(acceleoEditor,
+						SaveablesLifecycleEvent.PRE_CLOSE, saveableArray, false);
+				modelManager.handleLifecycleEvent(event);
+			}
+
+			boolean allSaved = true;
+			for (AcceleoEditor acceleoEditor : dirtyEditorList) {
+				if (acceleoEditor.isDirty()) {
+					allSaved = false;
+					break;
+				}
+			}
+
+			return allSaved;
+		} else {
+			return true;
+		}
 	}
 }

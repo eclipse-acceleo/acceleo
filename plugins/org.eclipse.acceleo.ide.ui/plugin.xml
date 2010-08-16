@@ -248,6 +248,16 @@ Contributors:
               retarget="false"
               tooltip="%acceleoEditorCommandsRename.Tooltip">
         </action>
+        <action
+              allowLabelUpdate="true"
+              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.documentation.GenerateDocumentationAction"
+              definitionId="org.eclipse.acceleo.ide.ui.refactor.documentation"
+              enablesFor="*"
+              id="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.documentation"
+              label="%acceleoEditorCommandsDocumentation.Label"
+              retarget="false"
+              tooltip="%acceleoEditorCommandsDocumentation.Tooltip">
+        </action>
       </actionSet>
    </extension>
 
@@ -299,6 +309,11 @@ Contributors:
         description="%acceleoEditorCommandsRename.Description"
         id="org.eclipse.acceleo.ide.ui.refactor.rename"
         name="%acceleoEditorCommandsRename.Name">
+  </command>
+  <command
+        description="%acceleoEditorCommandsDocumentation.Description"
+        id="org.eclipse.acceleo.ide.ui.refactor.documentation"
+        name="%acceleoEditorCommandsDocumentation.Name">
   </command>
    </extension>
 
@@ -363,6 +378,12 @@ Contributors:
                      contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                      sequence="M3+M2+R">
+               </key>
+               <key
+                     commandId="org.eclipse.acceleo.ide.ui.refactor.documentation"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="M3+M2+J">
                </key>
     </extension>
 
@@ -866,6 +887,126 @@ Contributors:
              </with>
           </enablement>
        </renameParticipant>
+    </extension>
+    <extension
+          id="warning"
+          name="%AcceleoWarningLabel"
+          point="org.eclipse.core.resources.markers">
+       <super
+             type="org.eclipse.core.resources.problemmarker">
+       </super>
+       <persistent
+             value="true">
+       </persistent>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.annotationTypes">
+       <type
+             markerSeverity="1"
+             markerType="org.eclipse.acceleo.ide.ui.warning"
+             name="org.eclipse.acceleo.ide.ui.annotation.warning"
+             super="org.eclipse.ui.workbench.texteditor.warning">
+       </type>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.markerAnnotationSpecification">
+       <specification
+             annotationType="org.eclipse.acceleo.ide.ui.annotation.warning"
+             contributesToHeader="true"
+             includeOnPreferencePage="false"
+             isGoToNextNavigationTarget="true"
+             isGoToPreviousNavigationTarget="true"
+             label="%AcceleoWarningLabel"
+             overviewRulerPreferenceValue="true"
+             showInNextPrevDropdownToolbarAction="true"
+             symbolicIcon="warning"
+             textPreferenceValue="true"
+             verticalRulerPreferenceValue="true">
+       </specification>
+    </extension>
+    <extension
+          id="info"
+          name="%AcceleoInfoLabel"
+          point="org.eclipse.core.resources.markers">
+       <super
+             type="org.eclipse.core.resources.problemmarker">
+       </super>
+       <persistent
+             value="true">
+       </persistent>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.annotationTypes">
+       <type
+             markerSeverity="0"
+             markerType="org.eclipse.acceleo.ide.ui.info"
+             name="org.eclipse.acceleo.ide.ui.annotation.info"
+             super="org.eclipse.ui.workbench.texteditor.info">
+       </type>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.markerAnnotationSpecification">
+       <specification
+             annotationType="org.eclipse.acceleo.ide.ui.annotation.info"
+             contributesToHeader="false"
+             includeOnPreferencePage="false"
+             isGoToNextNavigationTarget="false"
+             isGoToPreviousNavigationTarget="false"
+             label="%AcceleoInfoLabel"
+             overviewRulerPreferenceValue="true"
+             showInNextPrevDropdownToolbarAction="false"
+             symbolicIcon="info"
+             textPreferenceValue="false"
+             verticalRulerPreferenceValue="true">
+       </specification>
+    </extension>
+    <extension
+          id="override"
+          name="%AcceleoOverrideIndicator"
+          point="org.eclipse.core.resources.markers">
+       <super
+             type="org.eclipse.core.resources.textmarker">
+       </super>
+       <persistent
+             value="false">
+       </persistent>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.annotationTypes">
+       <type
+             markerType="org.eclipse.acceleo.ide.ui.override"
+             name="org.eclipse.acceleo.ide.ui.decorator.overrideindicator"
+             super="org.eclipse.jdt.ui.overrideIndicator">
+       </type>
+    </extension>
+    <extension
+          point="org.eclipse.ui.editors.markerAnnotationSpecification">
+       <specification
+             annotationType="org.eclipse.acceleo.ide.ui.decorator.overrideindicator"
+             colorPreferenceKey="overrideIndicatorColor"
+             colorPreferenceValue="180,207,205"
+             contributesToHeader="false"
+             highlightPreferenceKey="overrideIndicatorHighlighting"
+             highlightPreferenceValue="false"
+             icon="icons/template-editor/Override_indicator.gif"
+             includeOnPreferencePage="false"
+             isGoToNextNavigationTarget="false"
+             isGoToNextNavigationTargetKey="isOverrideIndicatorGoToNextNavigationTarget"
+             isGoToPreviousNavigationTarget="false"
+             isGoToPreviousNavigationTargetKey="isOverrideIndicatorGoToPreviousNavigationTarget"
+             label="%AcceleoOverrideIndicator"
+             overviewRulerPreferenceKey="overrideIndicatorInOverviewRuler"
+             overviewRulerPreferenceValue="false"
+             presentationLayer="3"
+             showInNextPrevDropdownToolbarAction="false"
+             showInNextPrevDropdownToolbarActionKey="showoverrideIndicatorInNextPrevDropdownToolbarAction"
+             textPreferenceKey="overrideIndicator"
+             textPreferenceValue="false"
+             textStylePreferenceKey="overrideIndicatorTextStyle"
+             textStylePreferenceValue="SQUIGGLES"
+             verticalRulerPreferenceKey="overrideIndicatorInVerticalRuler"
+             verticalRulerPreferenceValue="true">
+       </specification>
     </extension>
 
 </plugin>

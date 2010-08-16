@@ -12,7 +12,8 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.re
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AcceleoRefactoringUtils;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -78,10 +79,10 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 					&& this.getArguments().getUpdateReferences()) {
 				this.file = (IFile)element;
 				this.project = this.file.getProject();
-				this.module = AcceleoRenameModuleUtils.getModuleFromFile(file);
+				this.module = AcceleoRefactoringUtils.getModuleFromFile(file);
 
 				try {
-					IMarker[] markers = file.findMarkers(AcceleoMarker.PROBLEM_MARKER, true,
+					IMarker[] markers = file.findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true,
 							IResource.DEPTH_INFINITE);
 					if (markers.length > 0) {
 						result = false;

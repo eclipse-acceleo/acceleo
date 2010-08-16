@@ -24,11 +24,14 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
-import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
-import org.eclipse.acceleo.parser.AcceleoParserProblem;
+import org.eclipse.acceleo.parser.AcceleoParserInfos;
+import org.eclipse.acceleo.parser.AcceleoParserMessage;
+import org.eclipse.acceleo.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
+import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.CstFactory;
@@ -83,6 +86,11 @@ public class AcceleoSourceContent {
 	 * Default URI of the EMTL file if it doesn't exist.
 	 */
 	private static final String DEFAULT_EMTL_URI = "http://acceleo.eclipse.org/default.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The separator of marker position.
+	 */
+	private static final String MARKER_POSITION_SEPARATOR = ","; //$NON-NLS-1$
 
 	/**
 	 * The Acceleo file. It can be null if the file hasn't been specified.
@@ -258,22 +266,18 @@ public class AcceleoSourceContent {
 		private void runCreateAST() {
 			IFile fileMTL = AcceleoSourceContent.this.file;
 			if (fileMTL != null && fileMTL.exists()) {
-				Map<String, IMarker> position2marker = new HashMap<String, IMarker>();
-				try {
-					IMarker[] markers = fileMTL.findMarkers(AcceleoMarker.PROBLEM_MARKER, false,
-							IResource.DEPTH_INFINITE);
-					for (IMarker marker : markers) {
-						String key = MarkerUtilities.getCharStart(marker)
-								+ "," + MarkerUtilities.getCharEnd(marker); //$NON-NLS-1$
-						if (position2marker.containsKey(key)) {
-							marker.delete();
-						} else {
-							position2marker.put(key, marker);
-						}
-					}
-				} catch (CoreException ex) {
-					AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
-				}
+				Map<String, IMarker> position2problemMarkers = new HashMap<String, IMarker>();
+				position2problemMarkers = initMarkers(position2problemMarkers, fileMTL,
+						AcceleoMarkerUtils.PROBLEM_MARKER_ID);
+
+				Map<String, IMarker> position2warningMarkers = new HashMap<String, IMarker>();
+				position2warningMarkers = initMarkers(position2warningMarkers, fileMTL,
+						AcceleoMarkerUtils.WARNING_MARKER_ID);
+
+				Map<String, IMarker> position2infoMarkers = new HashMap<String, IMarker>();
+				position2infoMarkers = initMarkers(position2infoMarkers, fileMTL,
+						AcceleoMarkerUtils.INFO_MARKER_ID);
+
 				AcceleoSourceContent.this.createAST();
 				org.eclipse.acceleo.model.mtl.Module vAST = getAST();
 				if (vAST != null) {
@@ -281,31 +285,20 @@ public class AcceleoSourceContent {
 					loadImportsDependencies(vAST, dependenciesURIs);
 					loadExtendsDependencies(vAST, dependenciesURIs);
 					source.resolveAST();
+					source.resolveASTDocumentation();
 				}
+
 				AcceleoParserProblems problems = source.getProblems();
-				if (problems != null) {
-					for (AcceleoParserProblem problem : problems.getList()) {
-						try {
-							String key = problem.getPosBegin() + "," + problem.getPosEnd(); //$NON-NLS-1$
-							if (!position2marker.containsKey(key)) {
-								reportError(fileMTL, problem.getLine(), problem.getPosBegin(), problem
-										.getPosEnd(), problem.getMessage());
-							} else {
-								position2marker.remove(key);
-							}
-						} catch (CoreException ex) {
-							AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
-						}
-					}
-				}
-				for (IMarker markerToDelete : position2marker.values()) {
-					try {
-						markerToDelete.delete();
-					} catch (CoreException e) {
-						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-					}
-				}
+				manageMarker(problems, position2problemMarkers, fileMTL);
 				source.getProblems().clear();
+
+				AcceleoParserWarnings warnings = source.getWarnings();
+				manageMarker(warnings, position2warningMarkers, fileMTL);
+				source.getWarnings().clear();
+
+				AcceleoParserInfos infos = source.getInfos();
+				manageMarker(infos, position2infoMarkers, fileMTL);
+				source.getInfos().clear();
 			}
 		}
 	}
@@ -317,6 +310,8 @@ public class AcceleoSourceContent {
 		if (source != null) {
 			source.cancel();
 			source.getProblems().clear();
+			source.getWarnings().clear();
+			source.getInfos().clear();
 		}
 	}
 
@@ -396,6 +391,8 @@ public class AcceleoSourceContent {
 	 */
 	public void createCST() {
 		source.getProblems().clear();
+		source.getWarnings().clear();
+		source.getInfos().clear();
 		source.createCST();
 	}
 
@@ -413,6 +410,8 @@ public class AcceleoSourceContent {
 	 */
 	public CSTNode updateCST(int posBegin, int posEnd, String newText) {
 		source.getProblems().clear();
+		source.getWarnings().clear();
+		source.getInfos().clear();
 		source.getBuffer().replace(posBegin, posEnd, newText);
 		CSTNode current = getCSTNode(posBegin, posEnd);
 		if (current instanceof TextExpression && newText.indexOf(IAcceleoConstants.DEFAULT_BEGIN) > -1) {
@@ -481,6 +480,8 @@ public class AcceleoSourceContent {
 		if (source != null) {
 			source.cancel();
 			source.getProblems().clear();
+			source.getWarnings().clear();
+			source.getInfos().clear();
 			source.createCST();
 		}
 	}
@@ -987,31 +988,102 @@ public class AcceleoSourceContent {
 	}
 
 	/**
-	 * Creates an error marker on the given file.
+	 * Initialize the handling of markers.
 	 * 
-	 * @param mtlFile
-	 *            is the file that contains a syntax error
-	 * @param line
-	 *            is the line of the problem
-	 * @param posBegin
-	 *            is the beginning position of the problem
-	 * @param posEnd
-	 *            is the ending position of the problem
-	 * @param message
-	 *            is the message of the problem, it is the message displayed when you're hover the marker
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
+	 * @param position2marker
+	 *            The map of position and markers
+	 * @param fileMTL
+	 *            The MTL file
+	 * @param markerID
+	 *            The ID of the marker
+	 * @return The initialized map of markers
 	 */
-	private void reportError(IFile mtlFile, int line, int posBegin, int posEnd, String message)
-			throws CoreException {
-		IMarker m = mtlFile.createMarker(AcceleoMarker.PROBLEM_MARKER);
-		m.setAttribute(IMarker.TRANSIENT, true);
-		m.setAttribute(IMarker.LINE_NUMBER, line);
-		m.setAttribute(IMarker.CHAR_START, posBegin);
-		m.setAttribute(IMarker.CHAR_END, posEnd);
-		m.setAttribute(IMarker.MESSAGE, message);
-		m.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-		m.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+	private Map<String, IMarker> initMarkers(final Map<String, IMarker> position2marker, final IFile fileMTL,
+			final String markerID) {
+		try {
+			IMarker[] markers = fileMTL.findMarkers(markerID, false, IResource.DEPTH_INFINITE);
+
+			if (AcceleoMarkerUtils.INFO_MARKER_ID.equals(markerID)) {
+				IMarker[] taskMarkers = fileMTL.findMarkers(AcceleoMarkerUtils.TASK_MARKER_ID, false,
+						IResource.DEPTH_INFINITE);
+				if (taskMarkers.length > 0) {
+					IMarker[] markersArray = new IMarker[markers.length + taskMarkers.length];
+					System.arraycopy(markers, 0, markersArray, 0, markers.length);
+					System.arraycopy(taskMarkers, 0, markersArray, markers.length, taskMarkers.length);
+				}
+			}
+
+			for (IMarker marker : markers) {
+				String key = MarkerUtilities.getCharStart(marker) + MARKER_POSITION_SEPARATOR
+						+ MarkerUtilities.getCharEnd(marker);
+				if (position2marker.containsKey(key)) {
+					marker.delete();
+				} else {
+					position2marker.put(key, marker);
+				}
+			}
+		} catch (CoreException ex) {
+			AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
+		}
+		return position2marker;
+	}
+
+	/**
+	 * Manages the Acceleo Parser Datas that appeared during the parsing.
+	 * 
+	 * @param acceleoParserDatas
+	 *            The datas
+	 * @param position2marker
+	 *            The map of the position and the markers
+	 * @param fileMTL
+	 *            The MTL file on which the marker should appeared
+	 */
+	private void manageMarker(final AcceleoParserMessages acceleoParserDatas,
+			final Map<String, IMarker> position2marker, final IFile fileMTL) {
+		if (acceleoParserDatas == null) {
+			return;
+		}
+
+		List<? extends AcceleoParserMessage> messageList = null;
+		String markerId = null;
+
+		if (acceleoParserDatas instanceof AcceleoParserProblems) {
+			AcceleoParserProblems acceleoParserProblems = (AcceleoParserProblems)acceleoParserDatas;
+			messageList = acceleoParserProblems.getList();
+			markerId = AcceleoMarkerUtils.PROBLEM_MARKER_ID;
+		} else if (acceleoParserDatas instanceof AcceleoParserWarnings) {
+			AcceleoParserWarnings acceleoParserWarnings = (AcceleoParserWarnings)acceleoParserDatas;
+			messageList = acceleoParserWarnings.getList();
+			markerId = AcceleoMarkerUtils.WARNING_MARKER_ID;
+		} else if (acceleoParserDatas instanceof AcceleoParserInfos) {
+			AcceleoParserInfos acceleoParserInfos = (AcceleoParserInfos)acceleoParserDatas;
+			messageList = acceleoParserInfos.getList();
+			markerId = AcceleoMarkerUtils.INFO_MARKER_ID;
+		} else {
+			return;
+		}
+
+		for (AcceleoParserMessage message : messageList) {
+			try {
+				String key = message.getPosBegin() + MARKER_POSITION_SEPARATOR + message.getPosEnd();
+				if (!position2marker.containsKey(key)) {
+					AcceleoMarkerUtils.createMarkerOnFile(markerId, fileMTL, message.getLine(), message
+							.getPosBegin(), message.getPosEnd(), message.getMessage());
+				} else {
+					position2marker.remove(key);
+				}
+			} catch (CoreException ex) {
+				AcceleoUIActivator.getDefault().getLog().log(ex.getStatus());
+			}
+		}
+
+		for (IMarker markerToDelete : position2marker.values()) {
+			try {
+				markerToDelete.delete();
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+		}
 	}
 
 	/**
@@ -1170,6 +1242,38 @@ public class AcceleoSourceContent {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Evaluates if the module is a valid candidate. The module is considered as a valid candidate if the
+	 * element we are looking for has its begin and end position within the module header.
+	 * 
+	 * @param posBegin
+	 *            The begin position
+	 * @param posEnd
+	 *            The end position
+	 * @param inAST
+	 *            Indicates if we search in the AST (true) or the CST (false).
+	 * @return true if the module is a valid candidate
+	 */
+	public boolean isInModuleHeader(int posBegin, int posEnd, boolean inAST) {
+		int beginHeaderModule = -1;
+		if (inAST) {
+			beginHeaderModule = this.getAST().getStartHeaderPosition();
+		} else {
+			beginHeaderModule = this.getCST().getStartPosition();
+		}
+		int endHeaderModule = this.source.getBuffer().indexOf(
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END, beginHeaderModule);
+
+		if (posBegin >= beginHeaderModule && posBegin <= endHeaderModule && posEnd >= beginHeaderModule
+				&& posEnd <= endHeaderModule) {
+			if (posBegin >= posEnd) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

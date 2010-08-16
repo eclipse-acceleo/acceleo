@@ -44,7 +44,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 			IAcceleoConstants.IF, IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE, IAcceleoConstants.LET,
 			IAcceleoConstants.ELSE_LET, IAcceleoConstants.TRACE, IAcceleoConstants.MACRO,
 			IAcceleoConstants.FILE, IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.SELF,
-			IAcceleoConstants.SUPER, };
+			IAcceleoConstants.SUPER, IAcceleoConstants.DOCUMENTATION_BEGIN, };
 
 	/**
 	 * All the delimiters sequences of the concrete syntax. <code>[, ], [/, /]</code>

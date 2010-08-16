@@ -27,6 +27,8 @@ import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.IAcceleoContantsImage;
 import org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser;
 import org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
@@ -498,15 +500,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						}
 						if (!duplicated.contains(displayProperty)) {
 							duplicated.add(displayProperty);
-							proposals
-									.add(new CompletionProposal(
-											replacement,
-											offset - start.length(),
-											start.length(),
-											replacement.length(),
-											AcceleoUIActivator.getDefault().getImage(
-													"icons/template-editor/completion/Property.gif"), displayProperty, //$NON-NLS-1$
-											null, descriptionProperty));
+							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
+									.length(), replacement.length(), AcceleoUIActivator.getDefault()
+									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.PROPERTY),
+									displayProperty, null, descriptionProperty));
 						}
 						break;
 					case ENUMERATION_LITERAL:
@@ -514,7 +511,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 							duplicated.add(choiceValue);
 							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
 									.length(), replacement.length(), AcceleoUIActivator.getDefault()
-									.getImage("icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
+									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.ENUM_LITERAL),
 									choiceValue, null, next.getDescription()));
 						}
 						break;
@@ -530,15 +527,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						}
 						if (!duplicated.contains(displayVariable)) {
 							duplicated.add(displayVariable);
-							proposals
-									.add(new CompletionProposal(
-											replacement,
-											offset - start.length(),
-											start.length(),
-											replacement.length(),
-											AcceleoUIActivator.getDefault().getImage(
-													"icons/template-editor/completion/Variable.gif"), displayVariable, //$NON-NLS-1$
-											null, description));
+							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
+									.length(), replacement.length(), AcceleoUIActivator.getDefault()
+									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.VARIABLE),
+									displayVariable, null, description));
 						}
 						break;
 					default:
@@ -585,30 +577,26 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		String description = ""; //$NON-NLS-1$
 		Image image;
 		if (nextOperationChoice instanceof AcceleoCompletionChoice) {
-			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Template) {
-				image = AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Template.gif"); //$NON-NLS-1$
-			} else if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Query) {
-				image = AcceleoUIActivator.getDefault()
-						.getImage("icons/template-editor/completion/Query.gif"); //$NON-NLS-1$
-			} else if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() instanceof org.eclipse.acceleo.model.mtl.Macro) {
-				image = AcceleoUIActivator.getDefault()
-						.getImage("icons/template-editor/completion/Macro.gif"); //$NON-NLS-1$
-			} else {
-				image = AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
-			}
-			if (((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement() != null) {
-				EObject eContainer = ((AcceleoCompletionChoice)nextOperationChoice).getAcceleoElement()
-						.eContainer();
+			AcceleoCompletionChoice acceleoCompletionChoice = (AcceleoCompletionChoice)nextOperationChoice;
+			org.eclipse.acceleo.model.mtl.ModuleElement acceleoElement = acceleoCompletionChoice
+					.getAcceleoElement();
+
+			image = this.computeImage(acceleoElement);
+			description = this.computeDescription(acceleoElement);
+
+			if (acceleoElement != null) {
+				EObject eContainer = acceleoElement.eContainer();
 				if (eContainer instanceof org.eclipse.acceleo.model.mtl.Module
 						&& ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI() != null) {
-					description = "\nModule Name :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName() + "\n\nModule Full Name ID :\n " + ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI(); //$NON-NLS-1$ //$NON-NLS-2$
+					description = "\nModule Name :\n " //$NON-NLS-1$
+							+ ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName()
+							+ "\n\nModule Full Name ID :\n " //$NON-NLS-1$
+							+ ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI();
 				}
 			}
 		} else {
-			image = AcceleoUIActivator.getDefault()
-					.getImage("icons/template-editor/completion/Operation.gif"); //$NON-NLS-1$
+			image = AcceleoUIActivator.getDefault().getImage(
+					IAcceleoContantsImage.TemplateEditor.Completion.OPERATION);
 		}
 		if (nextOperationChoice.getElement() instanceof EOperation) {
 			EOperation eOperation = (EOperation)nextOperationChoice.getElement();
@@ -652,6 +640,53 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						null, nextOperationChoice.getDescription() + description));
 			}
 		}
+	}
+
+	/**
+	 * Computes the description of the module element.
+	 * 
+	 * @param acceleoElement
+	 *            The module element
+	 * @return the description of the module element
+	 */
+	private String computeDescription(org.eclipse.acceleo.model.mtl.ModuleElement acceleoElement) {
+		String description = ""; //$NON-NLS-1$
+		if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Template) {
+			org.eclipse.acceleo.model.mtl.Template template = (org.eclipse.acceleo.model.mtl.Template)acceleoElement;
+			description = AcceleoUIDocumentationUtils.getDocumentation(template);
+		} else if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Query) {
+			org.eclipse.acceleo.model.mtl.Query query = (org.eclipse.acceleo.model.mtl.Query)acceleoElement;
+			description = AcceleoUIDocumentationUtils.getDocumentation(query);
+		} else if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Macro) {
+			org.eclipse.acceleo.model.mtl.Macro macro = (org.eclipse.acceleo.model.mtl.Macro)acceleoElement;
+			description = AcceleoUIDocumentationUtils.getDocumentation(macro);
+		}
+		return description;
+	}
+
+	/**
+	 * Computes the image of the module element.
+	 * 
+	 * @param acceleoElement
+	 *            The module element
+	 * @return The image of the module element
+	 */
+	private Image computeImage(org.eclipse.acceleo.model.mtl.ModuleElement acceleoElement) {
+		Image image = null;
+		if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Template) {
+			org.eclipse.acceleo.model.mtl.Template template = (org.eclipse.acceleo.model.mtl.Template)acceleoElement;
+			image = AcceleoUIDocumentationUtils.getCompletionImage(template);
+		} else if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Query) {
+			org.eclipse.acceleo.model.mtl.Query query = (org.eclipse.acceleo.model.mtl.Query)acceleoElement;
+			image = AcceleoUIDocumentationUtils.getCompletionImage(query);
+		} else if (acceleoElement instanceof org.eclipse.acceleo.model.mtl.Macro) {
+			image = AcceleoUIActivator.getDefault().getImage(
+					IAcceleoContantsImage.TemplateEditor.Completion.MACRO_PUBLIC);
+		} else {
+			image = AcceleoUIActivator.getDefault().getImage(
+					IAcceleoContantsImage.TemplateEditor.Completion.OPERATION);
+		}
+		return image;
 	}
 
 	/**
@@ -707,7 +742,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			if (displayString.toLowerCase().startsWith(start.toLowerCase())) {
 				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
 						.length(), AcceleoUIActivator.getDefault().getImage(
-						"icons/template-editor/completion/Module.gif"), displayString)); //$NON-NLS-1$
+						IAcceleoContantsImage.TemplateEditor.Completion.MODULE), displayString));
 			}
 		}
 	}
@@ -719,7 +754,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 *            are the completion proposals (in out parameter)
 	 */
 	private void computeEPackageProposals(List<ICompletionProposal> proposals) {
-		final String uriImagePath = "icons/template-editor/completion/URI.gif"; //$NON-NLS-1$
+		final String uriImagePath = IAcceleoContantsImage.TemplateEditor.Completion.URI;
 		int i = offset;
 		while (i > 0 && text.charAt(i - 1) != '(' && text.charAt(i - 1) != ',' && text.charAt(i - 1) != '\'') {
 			i--;
@@ -840,14 +875,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						name = name.replaceAll("\\)", "})"); //$NON-NLS-1$ //$NON-NLS-2$
 						proposals.add(createTemplateProposal(name, offset - start.length(), start.length(),
 								name.length(), AcceleoUIActivator.getDefault().getImage(
-										"icons/template-editor/completion/Type.gif"), eClassifier //$NON-NLS-1$
+										IAcceleoContantsImage.TemplateEditor.Completion.TYPE), eClassifier
 										.getName(), null, name));
 					} else {
 						proposals.add(new CompletionProposal(eClassifier.getName(), offset - start.length(),
-								start.length(), eClassifier.getName().length(),
-								AcceleoUIActivator.getDefault().getImage(
-										"icons/template-editor/completion/Type.gif"), eClassifier //$NON-NLS-1$
-										.getName(), null, eClassifier.getName()));
+								start.length(), eClassifier.getName().length(), AcceleoUIActivator
+										.getDefault().getImage(
+												IAcceleoContantsImage.TemplateEditor.Completion.TYPE),
+								eClassifier.getName(), null, eClassifier.getName()));
 					}
 
 				}
@@ -940,7 +975,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				String replacementString = replacementStringBefore + replacementStringAfter;
 				proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
 						.length(), replacementStringBefore.length(), AcceleoUIActivator.getDefault()
-						.getImage("icons/template-editor/completion/Pattern.gif"), //$NON-NLS-1$
+						.getImage(IAcceleoContantsImage.TemplateEditor.Completion.PATTERN),
 						'[' + IAcceleoConstants.MODULE + ']', null, replacementString));
 			}
 		}
@@ -968,7 +1003,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		String tab = tabBuffer.toString();
 		Image patternImage = AcceleoUIActivator.getDefault().getImage(
-				"icons/template-editor/completion/Pattern.gif"); //$NON-NLS-1$
+				IAcceleoContantsImage.TemplateEditor.Completion.PATTERN);
 		if (i > 0 && text.charAt(i - 1) == '\n') {
 			// We are not interested by the first line
 			if (content.getCSTParent(cstNode, org.eclipse.acceleo.parser.cst.ModuleElement.class) == null
@@ -1392,7 +1427,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				bHeaderText = ""; //$NON-NLS-1$
 			}
 			Image keywordImage = AcceleoUIActivator.getDefault().getImage(
-					"icons/template-editor/completion/Keyword.gif"); //$NON-NLS-1$
+					IAcceleoContantsImage.TemplateEditor.Completion.KEYWORD);
 			if (cstNode instanceof org.eclipse.acceleo.parser.cst.Module) {
 				if (isHeaderAfterParenthesis(bHeaderText)
 						&& ((org.eclipse.acceleo.parser.cst.Module)cstNode).getExtends().size() == 0) {
@@ -1729,7 +1764,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * @param additionalProposalInfo
 	 *            the additional information associated with this proposal
 	 */
-	// CHECKSTYLE:OFF
+	// CHECKSTYLE:OFF (8 parameters)
 	private ICompletionProposal createTemplateProposal(String replacementString, int replacementOffset,
 			int replacementLength, int cursorPosition, Image image, String displayString,
 			IContextInformation contextInformation, String additionalProposalInfo) {

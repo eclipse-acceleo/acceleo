@@ -20,7 +20,7 @@ import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
@@ -188,6 +188,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * The error title image, this image will be shown in the editor's tab.
 	 */
 	private Image errorTitleImage;
+
+	/**
+	 * The warning title image, this image will be shown in the editor's tab.
+	 */
+	private Image warningTitleImage;
 
 	/**
 	 * The original title image, this image will be shown in the editor's tab.
@@ -375,7 +380,21 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		}
 		if (content != null && content.getFile() != null) {
 			try {
-				IMarker[] markers = content.getFile().findMarkers(AcceleoMarker.PROBLEM_MARKER, false,
+				IMarker[] markers = content.getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false,
+						IResource.DEPTH_INFINITE);
+				for (IMarker marker : markers) {
+					if (marker.getAttribute(IMarker.TRANSIENT, false)) {
+						marker.delete();
+					}
+				}
+				markers = content.getFile().findMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, false,
+						IResource.DEPTH_INFINITE);
+				for (IMarker marker : markers) {
+					if (marker.getAttribute(IMarker.TRANSIENT, false)) {
+						marker.delete();
+					}
+				}
+				markers = content.getFile().findMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, false,
 						IResource.DEPTH_INFINITE);
 				for (IMarker marker : markers) {
 					if (marker.getAttribute(IMarker.TRANSIENT, false)) {
@@ -403,6 +422,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		}
 		if (originalTitleImage != null) {
 			originalTitleImage.dispose();
+		}
+		if (warningTitleImage != null) {
+			warningTitleImage.dispose();
 		}
 	}
 
@@ -459,9 +481,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			}
 		}
 
-		// if there are marker on the file, we show a marker on the editors tab
+		// if there are marker on the file, we show a marker on the editors tab if the file is in the
+		// workspace
 		IResourceDelta delta = event.getDelta();
-		if (delta != null) {
+		if (delta != null && this.getFile() != null) {
 			IResource resource = delta.getResource();
 			try {
 				IMarker[] markers = resource.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
@@ -515,14 +538,23 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		final AcceleoEditor editor = this;
 		Image currentImage = editor.getTitleImage();
 		if (originalTitleImage == null) {
+			// when closing Eclipse, the image could be disposed and we can still try to change the image
+			if (currentImage.isDisposed()) {
+				return;
+			}
+
 			// make a copy because the original image will be disposed
 			originalTitleImage = new Image(Display.getDefault(), currentImage.getImageData());
 		}
 
 		try {
-			IMarker[] markers = getFile().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-			boolean hasMarkers = markers.length > 0;
-			if (hasMarkers) {
+			IMarker[] problemMarkers = getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false,
+					IResource.DEPTH_INFINITE);
+			boolean hasProblemMarkers = problemMarkers.length > 0;
+			IMarker[] warningMarkers = getFile().findMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, false,
+					IResource.DEPTH_INFINITE);
+			boolean hasWarningMarkers = warningMarkers.length > 0;
+			if (hasProblemMarkers) {
 				if (errorTitleImage == null) {
 					ImageDescriptor errorDescriptor = PlatformUI.getWorkbench().getSharedImages()
 							.getImageDescriptor(ISharedImages.IMG_DEC_FIELD_ERROR);
@@ -531,6 +563,16 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				}
 				if (currentImage != errorTitleImage) {
 					editor.setTitleImage(errorTitleImage);
+				}
+			} else if (hasWarningMarkers) {
+				if (warningTitleImage == null) {
+					ImageDescriptor errorDescriptor = PlatformUI.getWorkbench().getSharedImages()
+							.getImageDescriptor(ISharedImages.IMG_DEC_FIELD_WARNING);
+					warningTitleImage = new DecorationOverlayIcon(originalTitleImage, errorDescriptor,
+							IDecoration.BOTTOM_LEFT).createImage();
+				}
+				if (currentImage != warningTitleImage) {
+					editor.setTitleImage(warningTitleImage);
 				}
 			} else {
 				if (currentImage != originalTitleImage) {
@@ -684,6 +726,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		informationPresenter.setInformationProvider(provider, IDocument.DEFAULT_CONTENT_TYPE);
 		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_BLOCK);
 		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_COMMENT);
+		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_DOCUMENTATION);
 		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_FOR);
 		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_IF);
 		informationPresenter.setInformationProvider(provider, AcceleoPartitionScanner.ACCELEO_LET);

@@ -84,11 +84,17 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 	public static final String ACCELEO_BLOCK = "__ACCELEO_block"; //$NON-NLS-1$
 
 	/**
+	 * Legal content type for a 'documentation' part in the text. This data is attached to a 'documentation'
+	 * token, by the scanner.
+	 */
+	public static final String ACCELEO_DOCUMENTATION = "__ACCELEO_documentation"; //$NON-NLS-1$
+
+	/**
 	 * All legal content types.
 	 */
 	public static final String[] LEGAL_CONTENT_TYPES = new String[] {ACCELEO_COMMENT, ACCELEO_TEMPLATE,
 			ACCELEO_QUERY, ACCELEO_MACRO, ACCELEO_PROTECTED_AREA, ACCELEO_IF, ACCELEO_LET, ACCELEO_FOR,
-			ACCELEO_BLOCK, };
+			ACCELEO_BLOCK, ACCELEO_DOCUMENTATION, };
 
 	/**
 	 * Constructor.
@@ -99,6 +105,7 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 				new KeywordRule(IAcceleoConstants.LITERAL_END), new KeywordRule(
 						IAcceleoConstants.LITERAL_ESCAPE), new Token(IDocument.DEFAULT_CONTENT_TYPE));
 		computeCommentRules(rules);
+		computeDocumentationRules(rules);
 		computeBehavioralFeatureRules(rules, literal);
 		computeProtectedAreaRules(rules, literal);
 		computeIfRules(rules, literal);
@@ -106,6 +113,18 @@ public class AcceleoPartitionScanner extends RuleBasedPartitionScanner {
 		computeForRules(rules, literal);
 		computeBlockRules(rules, literal);
 		setPredicateRules(rules.toArray(new IPredicateRule[rules.size()]));
+	}
+
+	/**
+	 * Adds the 'documentation' rule.
+	 * 
+	 * @param rules
+	 *            is the list of rules (output parameter)
+	 */
+	private void computeDocumentationRules(List<IRule> rules) {
+		rules.add(new SequenceBlockRule(beginSequence(IAcceleoConstants.DOCUMENTATION_BEGIN),
+				new KeywordRule(IAcceleoConstants.DEFAULT_END), new SequenceBlockRule[] {}, new Token(
+						ACCELEO_DOCUMENTATION)));
 	}
 
 	/**

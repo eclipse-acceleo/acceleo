@@ -14,11 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoHover;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoHoverInformationControl;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoTextHover;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoQuickFixProcessor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoBlockScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoCommentScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoDefaultScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoDocumentationScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoForScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoIfScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoLetScanner;
@@ -105,6 +109,7 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 			list.add(new AcceleoLetScanner(editor.getColorManager()));
 			list.add(new AcceleoProtectedAreaScanner(editor.getColorManager()));
 			list.add(new AcceleoCommentScanner(editor.getColorManager()));
+			list.add(new AcceleoDocumentationScanner(editor.getColorManager()));
 			list.add(new AcceleoBlockScanner(editor.getColorManager()));
 			list.add(new AcceleoDefaultScanner(editor.getColorManager()));
 			scanners = list.toArray(new AbstractAcceleoScanner[list.size()]);
@@ -187,7 +192,8 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		AbstractAcceleoScanner[] acceleoScanners = getScanners();
 		for (int i = 0; i < acceleoScanners.length; i++) {
 			AbstractAcceleoScanner scanner = acceleoScanners[i];
-			if (!(scanner instanceof AcceleoCommentScanner)) {
+			if (!(scanner instanceof AcceleoCommentScanner)
+					|| !(scanner instanceof AcceleoDocumentationScanner)) {
 				assistant.setContentAssistProcessor(processor, scanner.getConfiguredContentType());
 			}
 		}
@@ -242,7 +248,7 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	@Override
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-		return new AcceleoHover(editor);
+		return new AcceleoTextHover(editor);
 	}
 
 	/**
@@ -266,5 +272,19 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
 		targets.put("org.eclipse.acceleo.ide.ui.AcceleoTemplateSource", editor); //$NON-NLS-1$
 		return targets;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getInformationControlCreator(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	@Override
+	public IInformationControlCreator getInformationControlCreator(ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				return new AcceleoHoverInformationControl(parent);
+			}
+		};
 	}
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarker;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -108,7 +108,9 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 					for (Iterator<IFile> itFiles = files.iterator(); itFiles.hasNext();) {
 						IFile file = itFiles.next();
 						try {
-							file.deleteMarkers(AcceleoMarker.PROBLEM_MARKER, false, IResource.DEPTH_ZERO);
+							file.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false, IResource.DEPTH_ZERO);
+							file.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, false, IResource.DEPTH_ZERO);
+							file.deleteMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, false, IResource.DEPTH_ZERO);
 						} catch (CoreException e) {
 							AcceleoUIActivator.getDefault().getLog()
 									.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e

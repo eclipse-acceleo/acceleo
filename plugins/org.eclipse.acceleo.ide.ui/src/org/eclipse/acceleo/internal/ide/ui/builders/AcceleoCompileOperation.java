@@ -27,8 +27,12 @@ import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
+import org.eclipse.acceleo.parser.AcceleoParserInfo;
+import org.eclipse.acceleo.parser.AcceleoParserInfos;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserProblems;
+import org.eclipse.acceleo.parser.AcceleoParserWarning;
+import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -75,7 +79,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	/**
 	 * The compilation messages.
 	 */
-	private StringBuilder messages;
+	private StringBuilder messages = new StringBuilder();
 
 	/**
 	 * Constructor.
@@ -93,7 +97,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		this.project = project;
 		this.files = files;
 		this.isClean = isClean;
-		this.messages = new StringBuilder();
 	}
 
 	/**
@@ -109,6 +112,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			monitor.subTask(AcceleoUIMessages.getString(
 					"AcceleoCompileOperation.Task.Clean", files[0].getFullPath().toString())); //$NON-NLS-1$
 			files[i].deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			files[i].deleteMarkers(IMarker.TASK, true, IResource.DEPTH_INFINITE);
+			files[i].deleteMarkers(AcceleoMarkerUtils.OVERRIDE_MARKER_ID, true, IResource.DEPTH_INFINITE);
 			IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
 			if (outputPath != null) {
 				IFile outputFile = project.getFile(outputPath.removeFirstSegments(1));
@@ -170,16 +175,40 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile iFile = iterator.next();
+
 			AcceleoParserProblems problems = parser.getProblems(iFile);
-			if (problems != null) {
-				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-						new Path(iFile.getMtlFile().getAbsolutePath()));
-				if (workspaceFile != null && workspaceFile.isAccessible()) {
+			AcceleoParserWarnings warnings = parser.getWarnings(iFile);
+			AcceleoParserInfos infos = parser.getInfos(iFile);
+
+			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+					new Path(iFile.getMtlFile().getAbsolutePath()));
+
+			if (workspaceFile != null && workspaceFile.isAccessible()) {
+				if (problems != null) {
 					List<AcceleoParserProblem> list = problems.getList();
 					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
 						AcceleoParserProblem problem = itProblems.next();
-						reportError(workspaceFile, problem.getLine(), problem.getPosBegin(), problem
-								.getPosEnd(), problem.getMessage());
+						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+								workspaceFile, problem.getLine(), problem.getPosBegin(), problem.getPosEnd(),
+								problem.getMessage()));
+					}
+				}
+				if (warnings != null) {
+					List<AcceleoParserWarning> list = warnings.getList();
+					for (Iterator<AcceleoParserWarning> itWarnings = list.iterator(); itWarnings.hasNext();) {
+						AcceleoParserWarning warning = itWarnings.next();
+						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.WARNING_MARKER_ID,
+								workspaceFile, warning.getLine(), warning.getPosBegin(), warning.getPosEnd(),
+								warning.getMessage()));
+					}
+				}
+				if (infos != null) {
+					List<AcceleoParserInfo> list = infos.getList();
+					for (Iterator<AcceleoParserInfo> itInfos = list.iterator(); itInfos.hasNext();) {
+						AcceleoParserInfo info = itInfos.next();
+						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.INFO_MARKER_ID,
+								workspaceFile, info.getLine(), info.getPosBegin(), info.getPosEnd(), info
+										.getMessage()));
 					}
 				}
 			}
@@ -236,14 +265,16 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 						if (workspaceFile != null && workspaceFile.isAccessible()
 								&& oOperationCallExp.getStartPosition() > -1) {
 							int line = buffer.getLineOfOffset(oOperationCallExp.getStartPosition());
-							reportError(
-									workspaceFile,
-									line,
-									oOperationCallExp.getStartPosition(),
-									oOperationCallExp.getEndPosition(),
-									AcceleoUIMessages
-											.getString(
-													"AcceleoCompileOperation.NotFullyCompliant", oOperationCallExp.getReferredOperation().getName())); //$NON-NLS-1$
+							this.messages
+									.append(AcceleoMarkerUtils
+											.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+													workspaceFile,
+													line,
+													oOperationCallExp.getStartPosition(),
+													oOperationCallExp.getEndPosition(),
+													AcceleoUIMessages
+															.getString(
+																	"AcceleoCompileOperation.NotFullyCompliant", oOperationCallExp.getReferredOperation().getName()))); //$NON-NLS-1$
 						}
 					}
 				}
@@ -282,39 +313,5 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 		return false;
-	}
-
-	/**
-	 * Creates an error marker on the given file.
-	 * 
-	 * @param file
-	 *            is the file that contains a syntax error
-	 * @param line
-	 *            is the line of the problem
-	 * @param posBegin
-	 *            is the beginning position of the problem
-	 * @param posEnd
-	 *            is the ending position of the problem
-	 * @param message
-	 *            is the message of the problem, it is the message displayed when you're hover the marker
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void reportError(IFile file, int line, int posBegin, int posEnd, String message)
-			throws CoreException {
-		IMarker m = file.createMarker(AcceleoMarker.PROBLEM_MARKER);
-		m.setAttribute(IMarker.LINE_NUMBER, line);
-		m.setAttribute(IMarker.CHAR_START, posBegin);
-		m.setAttribute(IMarker.CHAR_END, posEnd);
-		m.setAttribute(IMarker.MESSAGE, message);
-		m.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-		m.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-		messages.append(file.getFullPath().toString());
-		messages.append(" line "); //$NON-NLS-1$
-		messages.append(line);
-		messages.append('\n');
-		messages.append(message);
-		messages.append('\n');
-		messages.append('\n');
 	}
 }
