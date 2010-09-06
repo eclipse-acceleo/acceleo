@@ -69,12 +69,11 @@ public final class AcceleoMarkerUtils {
 	 *            is the ending position of the data
 	 * @param message
 	 *            Message of the data, it is the message displayed when you hover on the marker.
-	 * @return The message
 	 * @throws CoreException
 	 *             This will be thrown if we couldn't set marker attributes.
 	 */
-	public static StringBuilder createMarkerOnFile(String markerId, IFile file, int line, int posBegin,
-			int posEnd, String message) throws CoreException {
+	public static void createMarkerOnFile(String markerId, IFile file, int line, int posBegin, int posEnd,
+			String message) throws CoreException {
 		IMarker marker = createMarker(markerId, file, message);
 		int priority = determinePriority(markerId, message);
 
@@ -107,16 +106,6 @@ public final class AcceleoMarkerUtils {
 						.length()));
 			}
 		}
-
-		StringBuilder result = new StringBuilder();
-		result.append(file.getFullPath().toString());
-		result.append(" line "); //$NON-NLS-1$
-		result.append(line);
-		result.append('\n');
-		result.append(message);
-		result.append('\n');
-		result.append('\n');
-		return result;
 	}
 
 	/**

@@ -77,11 +77,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	private boolean isClean;
 
 	/**
-	 * The compilation messages.
-	 */
-	private StringBuilder messages = new StringBuilder();
-
-	/**
 	 * Constructor.
 	 * 
 	 * @param project
@@ -105,7 +100,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	 * @see org.eclipse.core.resources.IWorkspaceRunnable#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void run(IProgressMonitor monitor) throws CoreException {
-		messages = new StringBuilder();
 		monitor.beginTask(AcceleoUIMessages.getString("AcceleoCompileOperation.Task.Compile"), files.length); //$NON-NLS-1$
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		for (int i = 0; i < files.length; i++) {
@@ -131,15 +125,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			doCompileResources(monitor);
 		}
 		monitor.done();
-	}
-
-	/**
-	 * Gets the compilation messages.
-	 * 
-	 * @return the compilation messages
-	 */
-	public String getMessages() {
-		return messages.toString();
 	}
 
 	/**
@@ -188,27 +173,27 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					List<AcceleoParserProblem> list = problems.getList();
 					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
 						AcceleoParserProblem problem = itProblems.next();
-						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
 								workspaceFile, problem.getLine(), problem.getPosBegin(), problem.getPosEnd(),
-								problem.getMessage()));
+								problem.getMessage());
 					}
 				}
 				if (warnings != null) {
 					List<AcceleoParserWarning> list = warnings.getList();
 					for (Iterator<AcceleoParserWarning> itWarnings = list.iterator(); itWarnings.hasNext();) {
 						AcceleoParserWarning warning = itWarnings.next();
-						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.WARNING_MARKER_ID,
+						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.WARNING_MARKER_ID,
 								workspaceFile, warning.getLine(), warning.getPosBegin(), warning.getPosEnd(),
-								warning.getMessage()));
+								warning.getMessage());
 					}
 				}
 				if (infos != null) {
 					List<AcceleoParserInfo> list = infos.getList();
 					for (Iterator<AcceleoParserInfo> itInfos = list.iterator(); itInfos.hasNext();) {
 						AcceleoParserInfo info = itInfos.next();
-						this.messages.append(AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.INFO_MARKER_ID,
+						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.INFO_MARKER_ID,
 								workspaceFile, info.getLine(), info.getPosBegin(), info.getPosEnd(), info
-										.getMessage()));
+										.getMessage());
 					}
 				}
 			}
@@ -265,16 +250,11 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 						if (workspaceFile != null && workspaceFile.isAccessible()
 								&& oOperationCallExp.getStartPosition() > -1) {
 							int line = buffer.getLineOfOffset(oOperationCallExp.getStartPosition());
-							this.messages
-									.append(AcceleoMarkerUtils
-											.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
-													workspaceFile,
-													line,
-													oOperationCallExp.getStartPosition(),
-													oOperationCallExp.getEndPosition(),
-													AcceleoUIMessages
-															.getString(
-																	"AcceleoCompileOperation.NotFullyCompliant", oOperationCallExp.getReferredOperation().getName()))); //$NON-NLS-1$
+							AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+									workspaceFile, line, oOperationCallExp.getStartPosition(),
+									oOperationCallExp.getEndPosition(), AcceleoUIMessages.getString(
+											"AcceleoCompileOperation.NotFullyCompliant", oOperationCallExp //$NON-NLS-1$
+													.getReferredOperation().getName()));
 						}
 					}
 				}
