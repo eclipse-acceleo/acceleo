@@ -504,7 +504,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static Object eContainer(EObject source, EClassifier filter) {
 		EObject container = source.eContainer();
-		while (!filter.isInstance(container)) {
+		while (container != null && !filter.isInstance(container)) {
 			container = container.eContainer();
 		}
 		return container;

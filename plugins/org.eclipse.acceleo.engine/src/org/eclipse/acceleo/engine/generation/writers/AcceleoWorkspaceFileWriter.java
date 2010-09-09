@@ -25,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.internal.evaluation.JMergeUtil;
 import org.eclipse.emf.common.EMFPlugin;
 
@@ -175,6 +176,7 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 					 * be found as a dependency of the generator plugin. This shouldn't happen since it is a
 					 * reexported dependency of the engine.
 					 */
+					AcceleoEnginePlugin.log(e, true);
 				}
 			}
 		} finally {
@@ -215,6 +217,7 @@ public class AcceleoWorkspaceFileWriter extends AbstractAcceleoWriter {
 				 * found as a dependency of the generator plugin. This shouldn't happen since it is a
 				 * reexported dependency of the engine.
 				 */
+				AcceleoEnginePlugin.log(e, true);
 			}
 		} else {
 			if (target.exists() && target.canRead()) {
