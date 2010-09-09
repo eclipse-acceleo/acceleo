@@ -180,7 +180,7 @@ public class BundleURLConverter {
 					try {
 						nativeProtocolURL = FileLocator.resolve(fileURL).toString();
 					} catch (IOException e) {
-						// FIXME log this
+						AcceleoCommonPlugin.log(e, true);
 					}
 				}
 			}
