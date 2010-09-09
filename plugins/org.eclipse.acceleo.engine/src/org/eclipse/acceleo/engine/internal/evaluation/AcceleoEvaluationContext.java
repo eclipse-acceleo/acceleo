@@ -30,6 +30,7 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -732,6 +733,7 @@ public class AcceleoEvaluationContext<C> {
 			protectedAreas = internalSaveProtectedAreas(reader);
 		} catch (final FileNotFoundException e) {
 			// cannot be thrown here, we were called after testing that the file indeed existed.
+			AcceleoEnginePlugin.log(e, true);
 		} finally {
 			if (reader != null) {
 				reader.close();
@@ -756,12 +758,14 @@ public class AcceleoEvaluationContext<C> {
 			protectedAreas = internalSaveProtectedAreas(reader);
 		} catch (IOException e) {
 			// Cannot happen here
+			AcceleoEnginePlugin.log(e, true);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
 					// This should never happen with a String Reader
+					AcceleoEnginePlugin.log(e, true);
 				}
 			}
 		}
@@ -796,6 +800,7 @@ public class AcceleoEvaluationContext<C> {
 				flush();
 			} catch (IOException e) {
 				// Ignored exception
+				AcceleoEnginePlugin.log(e, true);
 			}
 			if (out != System.out) {
 				out.close();

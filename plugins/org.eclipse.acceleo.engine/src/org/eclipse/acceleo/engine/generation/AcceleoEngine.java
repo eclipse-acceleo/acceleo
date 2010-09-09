@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
@@ -130,6 +131,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 			doEvaluate(template, arguments);
 		} catch (AcceleoEvaluationCancelledException e) {
 			// All necessary disposal should have been made
+			AcceleoEnginePlugin.log(e, true);
 		}
 
 		hookGenerationEnd(factory);

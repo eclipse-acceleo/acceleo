@@ -64,6 +64,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 					task.get();
 				} catch (ExecutionException e) {
 					// LostFileWriters cannot throw exceptions
+					AcceleoEnginePlugin.log(e, true);
 				}
 			}
 			lostCreationTasks.remove(task);

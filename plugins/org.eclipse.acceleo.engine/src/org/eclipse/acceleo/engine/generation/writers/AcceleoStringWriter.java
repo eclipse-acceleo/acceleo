@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.internal.evaluation.JMergeUtil;
 import org.eclipse.emf.common.EMFPlugin;
 
@@ -85,6 +86,7 @@ public class AcceleoStringWriter extends AbstractAcceleoWriter {
 			}
 		} catch (IOException e) {
 			// preview mode. Discard this.
+			AcceleoEnginePlugin.log(e, true);
 		}
 	}
 
@@ -110,6 +112,7 @@ public class AcceleoStringWriter extends AbstractAcceleoWriter {
 				 * found as a dependency of the generator plugin. This shouldn't happen since it is a
 				 * reexported dependency of the engine.
 				 */
+				AcceleoEnginePlugin.log(e, true);
 			}
 		}
 	}

@@ -73,6 +73,7 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 						lostFileReader.close();
 					} catch (IOException e) {
 						// discard
+						AcceleoEnginePlugin.log(e, true);
 					}
 				}
 			}
@@ -160,6 +161,7 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 				entry.getValue().flush();
 			} catch (IOException e) {
 				// We know this can't happen
+				AcceleoEnginePlugin.log(e, true);
 			}
 			preview.put(entry.getKey(), entry.getValue().toString());
 		}
