@@ -26,6 +26,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -1021,7 +1022,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						line = reader.readLine();
 					}
 				} catch (IOException e) {
-					// FIXME log warning : traceability may not be good on this one
+					// traceability may not be good on this one
+					AcceleoEnginePlugin.log(e, false);
 				}
 				soughtFile.setLength(length);
 			}
