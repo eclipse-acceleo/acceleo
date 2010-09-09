@@ -68,8 +68,10 @@ public class AcceleoOCLReflection {
 				AcceleoCommonPlugin.log(e, true);
 			} catch (InvocationTargetException e) {
 				// cannot happen
+				AcceleoCommonPlugin.log(e, true);
 			} catch (IllegalAccessException e) {
 				// We know this method is public
+				AcceleoCommonPlugin.log(e, true);
 			}
 		}
 		return invalid;
@@ -95,8 +97,10 @@ public class AcceleoOCLReflection {
 				AcceleoCommonPlugin.log(e, true);
 			} catch (InvocationTargetException e) {
 				// cannot happen
+				AcceleoCommonPlugin.log(e, true);
 			} catch (IllegalAccessException e) {
 				// We know this method is public
+				AcceleoCommonPlugin.log(e, true);
 			}
 		}
 		return oclInvalid;
