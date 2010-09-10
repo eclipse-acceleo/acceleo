@@ -183,8 +183,7 @@ public class CST2ASTConverter {
 			String ioName = iModule.getName();
 			oModule.setName(ioName);
 			// Now a module in the AST has a start and an end position for its header (we can't know the
-			// ending
-			// position of the header here, it will be resolved later)
+			// ending position of the header here, it will be resolved later)
 			oModule.setStartHeaderPosition(iModule.getStartPosition());
 			oModule.setEndHeaderPosition(-1);
 			// We copy the documentation of the module
