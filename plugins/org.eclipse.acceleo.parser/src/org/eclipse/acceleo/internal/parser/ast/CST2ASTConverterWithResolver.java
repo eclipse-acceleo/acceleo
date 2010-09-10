@@ -424,7 +424,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			EObject eObject = itObjects.next();
 			if (eObject instanceof org.eclipse.acceleo.model.mtl.Template) {
 				org.eclipse.acceleo.model.mtl.Template otherTemplate = (org.eclipse.acceleo.model.mtl.Template)eObject;
-				if (name.equals(otherTemplate.getName())
+				if (checksName(name, otherTemplate.getName(), oModule.getNsURI())
 						&& paramTypes.size() == otherTemplate.getParameter().size()
 						&& otherTemplate.getVisibility().getValue() >= VisibilityKind.PROTECTED_VALUE) {
 					boolean parameterMatches = true;
@@ -448,6 +448,33 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					}
 				}
 			}
+		}
+		return result;
+	}
+
+	/**
+	 * Checks the name of the current overridden template with the name of the other template and with the
+	 * qualified version of the other template name.
+	 * 
+	 * @param name
+	 *            The name of the current overridden template
+	 * @param otherTemplateName
+	 *            The other template name
+	 * @param moduleNameSpace
+	 *            The NSURI of the module of the other template
+	 * @return true if the two names are equals or if the name esquals the qualified name of the other
+	 *         template
+	 */
+	private boolean checksName(String name, String otherTemplateName, String moduleNameSpace) {
+		boolean result = name.equals(otherTemplateName);
+		// If the result is false, we will check the qualified name of the other template
+		if (!result && moduleNameSpace != null
+				&& moduleNameSpace.contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+			String namespace = moduleNameSpace.substring(0, moduleNameSpace
+					.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR));
+			String otherTemplateQualifiedName = namespace + IAcceleoConstants.NAMESPACE_SEPARATOR
+					+ otherTemplateName;
+			result = name.equals(otherTemplateQualifiedName);
 		}
 		return result;
 	}
