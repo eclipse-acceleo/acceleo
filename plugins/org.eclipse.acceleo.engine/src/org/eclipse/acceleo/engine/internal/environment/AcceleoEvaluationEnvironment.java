@@ -252,7 +252,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		for (final Object arg : arguments) {
 			if (arg instanceof EObject) {
 				argumentTypes.add(((EObject)arg).eClass());
-			} else {
+			} else if (arg != null) {
 				argumentTypes.add(arg.getClass());
 			}
 		}
