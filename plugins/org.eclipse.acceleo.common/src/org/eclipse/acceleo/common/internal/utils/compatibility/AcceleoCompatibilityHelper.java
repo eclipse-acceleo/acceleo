@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.compatibility;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -34,7 +33,6 @@ public final class AcceleoCompatibilityHelper {
 				temp = OCLVersion.HELIOS;
 			} catch (ClassNotFoundException e) {
 				// This can only be prior to Helios
-				AcceleoCommonPlugin.log(e, true);
 			}
 			if (temp == OCLVersion.GANYMEDE) {
 				try {
@@ -42,7 +40,6 @@ public final class AcceleoCompatibilityHelper {
 					temp = OCLVersion.GALILEO;
 				} catch (ClassNotFoundException e) {
 					// This can only be prior to Galileo
-					AcceleoCommonPlugin.log(e, true);
 				}
 			}
 		}
