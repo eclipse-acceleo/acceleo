@@ -691,6 +691,17 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.ProtectedAreaBlock oProtectedAreaBlock = factory
 				.getOrCreateProtectedAreaBlock(iProtectedAreaBlock);
 		if (iProtectedAreaBlock != null && oProtectedAreaBlock != null) {
+			// checks if the identifier of the protected area is valid
+			if (iProtectedAreaBlock.getMarker() != null && iProtectedAreaBlock.getMarker().getBody() != null) {
+				String body = iProtectedAreaBlock.getMarker().getBody();
+				if ("".equals(body) || "''".equals(body)) { //$NON-NLS-1$ //$NON-NLS-2$
+					log(AcceleoParserMessages
+							.getString("CST2ASTConverterWithResolver.ProtectedAreaMissingIdentifier"), //$NON-NLS-1$
+							iProtectedAreaBlock.getMarker().getStartPosition(), iProtectedAreaBlock
+									.getMarker().getEndPosition());
+				}
+			}
+
 			org.eclipse.acceleo.parser.cst.ModelExpression iMarker = iProtectedAreaBlock.getMarker();
 			org.eclipse.ocl.ecore.OCLExpression oMarker = factory.getOrCreateOCLExpression(iMarker);
 			if (oMarker != null) {
