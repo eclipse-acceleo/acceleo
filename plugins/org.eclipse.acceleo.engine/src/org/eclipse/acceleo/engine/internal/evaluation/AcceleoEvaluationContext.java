@@ -805,7 +805,6 @@ public class AcceleoEvaluationContext<C> {
 				flush();
 			} catch (IOException e) {
 				// Ignored exception
-				AcceleoEnginePlugin.log(e, true);
 			}
 			if (out != System.out) {
 				out.close();
