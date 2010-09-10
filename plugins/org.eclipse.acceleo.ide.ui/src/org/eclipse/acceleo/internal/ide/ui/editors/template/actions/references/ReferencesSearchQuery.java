@@ -378,24 +378,29 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	/**
 	 * Indicates if the given AST objects are matching.
 	 * 
-	 * @param t1
+	 * @param template1
 	 *            is the first template
-	 * @param t2
+	 * @param template2
 	 *            is the second template
 	 * @return true if the element names are the same and if they have the same parameters.
 	 */
-	private boolean isMatchingTemplate(final Template t1, final Template t2) {
-		boolean result = t1.getName().equals(t2.getName());
+	private boolean isMatchingTemplate(final Template template1, final Template template2) {
+		boolean result = false;
 
-		final EList<Variable> t1Parameters = t1.getParameter();
-		final EList<Variable> t2Parameters = t2.getParameter();
+		if (template1.getName() != null) {
+			result = template1.getName().equals(template2.getName());
+		}
+
+		final EList<Variable> t1Parameters = template1.getParameter();
+		final EList<Variable> t2Parameters = template2.getParameter();
 
 		if (t1Parameters.size() == t2Parameters.size()) {
 			for (int i = 0; i < t1Parameters.size(); i++) {
 				Variable var1 = t1Parameters.get(i);
 				Variable var2 = t2Parameters.get(i);
 
-				if (!var1.getName().equals(var2.getName())) {
+				if (var1.getName() != null && var2.getName() != null
+						&& !var1.getName().equals(var2.getName())) {
 					result = false;
 					break;
 				} else {
@@ -407,6 +412,14 @@ public class ReferencesSearchQuery implements ISearchQuery {
 					}
 				}
 			}
+
+			URI uri1 = EcoreUtil.getURI(template1);
+			URI uri2 = EcoreUtil.getURI(template2);
+			if (result && uri1 != null && uri2 != null) {
+				result = uri1.equals(uri2);
+				result = result && (template1.getStartPosition() == template2.getStartPosition())
+						&& (template1.getEndPosition() == template2.getEndPosition());
+			}
 		} else {
 			result = false;
 		}
@@ -417,24 +430,29 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	/**
 	 * Indicates if the given AST objects are matching.
 	 * 
-	 * @param q1
+	 * @param query1
 	 *            is the first query
-	 * @param q2
+	 * @param query2
 	 *            is the second query
 	 * @return true if the element names are the same and if they have the same parameters.
 	 */
-	private boolean isMatchingQuery(final Query q1, final Query q2) {
-		boolean result = q1.getName().equals(q2.getName());
+	private boolean isMatchingQuery(final Query query1, final Query query2) {
+		boolean result = false;
 
-		final EList<Variable> q1Parameters = q1.getParameter();
-		final EList<Variable> q2Parameters = q2.getParameter();
+		if (query1.getName() != null) {
+			result = query1.getName().equals(query2.getName());
+		}
+
+		final EList<Variable> q1Parameters = query1.getParameter();
+		final EList<Variable> q2Parameters = query2.getParameter();
 
 		if (q1Parameters.size() == q2Parameters.size()) {
 			for (int i = 0; i < q1Parameters.size(); i++) {
 				Variable var1 = q1Parameters.get(i);
 				Variable var2 = q2Parameters.get(i);
 
-				if (!var1.getName().equals(var2.getName())) {
+				if (var1.getName() != null && var2.getName() != null
+						&& !var1.getName().equals(var2.getName())) {
 					result = false;
 					break;
 				} else {
@@ -445,6 +463,14 @@ public class ReferencesSearchQuery implements ISearchQuery {
 						break;
 					}
 				}
+			}
+
+			URI uri1 = EcoreUtil.getURI(query1);
+			URI uri2 = EcoreUtil.getURI(query2);
+			if (result && uri1 != null && uri2 != null) {
+				result = uri1.equals(uri2);
+				result = result && (query1.getStartPosition() == query2.getStartPosition())
+						&& (query1.getEndPosition() == query2.getEndPosition());
 			}
 		} else {
 			result = false;
