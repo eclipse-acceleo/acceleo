@@ -89,7 +89,7 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 		gridData = new GridData(GridData.FILL_BOTH);
 		final int heightHint = 350;
 		gridData.heightHint = heightHint;
-		final int widthHint = 110;
+		final int widthHint = 130;
 		gridData.widthHint = widthHint;
 		treeViewer.getTree().setLayoutData(gridData);
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -120,7 +120,7 @@ public abstract class AbstractAcceleoNewTemplatesMasterComposite extends Composi
 			}
 		});
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		final int widthHint = 70;
+		final int widthHint = 100;
 		gridData.widthHint = widthHint;
 		gridData.verticalAlignment = SWT.TOP;
 		addButton.setLayoutData(gridData);

@@ -345,7 +345,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		templateIsInitializeButtonState.setText(AcceleoUIMessages
 				.getString("AcceleoNewTemplateWizardPage.TemplateOutput")); //$NON-NLS-1$
 		gridData = new GridData();
-		final int widthHintInitializeButton = 120;
+		final int widthHintInitializeButton = 140;
 		gridData.widthHint = widthHintInitializeButton;
 		templateIsInitializeButtonState.setLayoutData(gridData);
 
