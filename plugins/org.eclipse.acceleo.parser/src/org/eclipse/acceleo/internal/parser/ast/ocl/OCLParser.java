@@ -858,7 +858,7 @@ public class OCLParser {
 			eTemplateInvocation.setDefinition(eTemplate);
 			eTemplateInvocation.setStartPosition(eCall.getStartPosition());
 			eTemplateInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall)) {
+			if (receiverIsArgument(eCall, eTemplate.getParameter())) {
 				eTemplateInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eTemplateInvocation.setType(eCall.getType());
@@ -872,7 +872,7 @@ public class OCLParser {
 			eQueryInvocation.setDefinition(eQuery);
 			eQueryInvocation.setStartPosition(eCall.getStartPosition());
 			eQueryInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall)) {
+			if (receiverIsArgument(eCall, eQuery.getParameter())) {
 				eQueryInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eQueryInvocation.setType(eCall.getType());
@@ -886,7 +886,7 @@ public class OCLParser {
 			eMacroInvocation.setDefinition(eMacro);
 			eMacroInvocation.setStartPosition(eCall.getStartPosition());
 			eMacroInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall)) {
+			if (receiverIsArgument(eCall, eMacro.getParameter())) {
 				eMacroInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eMacroInvocation.setType(eCall.getType());
@@ -904,16 +904,23 @@ public class OCLParser {
 	 * 
 	 * @param eCall
 	 *            is an operation call
+	 * @param variables
+	 *            The list of variables of the template, query or macro called.
 	 * @return true if the receiver of the given operation call should be added to the arguments
 	 */
-	private boolean receiverIsArgument(OperationCallExp eCall) {
+	private boolean receiverIsArgument(OperationCallExp eCall, List<Variable> variables) {
 		boolean result;
 		if (eCall.getSource() != null) {
 			if (eCall.getSource() instanceof VariableExp
 					&& ((VariableExp)eCall.getSource()).getReferredVariable() != null) {
-				result = !IAcceleoConstants.SELF.equals(((VariableExp)eCall.getSource())
-						.getReferredVariable().getName())
-						|| eCall.getArgument().size() == 0;
+
+				if (eCall.getArgument().size() == 0) {
+					result = true;
+				} else {
+					result = eCall.getArgument().size() < variables.size();
+					result = result && variables.size() != 0;
+				}
+
 			} else {
 				result = true;
 			}
