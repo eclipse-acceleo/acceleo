@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
@@ -24,13 +23,11 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
@@ -42,6 +39,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * Text hover for an annotation in the template editor.
@@ -93,11 +91,10 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 			Annotation annotation = annotations.next();
 			String msg = null;
 			if (annotation instanceof MarkerAnnotation) {
-				try {
-					msg = (String)((MarkerAnnotation)annotation).getMarker().getAttribute(IMarker.MESSAGE);
-				} catch (CoreException e) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				MarkerAnnotation markerAnnotation = (MarkerAnnotation)annotation;
+				IMarker marker = markerAnnotation.getMarker();
+				if (marker != null) {
+					msg = MarkerUtilities.getMessage(marker);
 				}
 			}
 			if (msg != null) {
@@ -137,19 +134,38 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 			annotationModel = model;
 		}
 		if (annotationModel != null) {
-			for (Iterator<?> it = annotationModel.getAnnotationIterator(); it.hasNext();) {
-				Annotation annotation = (Annotation)it.next();
-				Position position = annotationModel.getPosition(annotation);
-				try {
-					if (document != null && document.getLineOfOffset(position.offset) == lineNumber) {
-						annotations.add(annotation);
+			synchronized(getLockObject(annotationModel)) {
+				for (Iterator<?> it = annotationModel.getAnnotationIterator(); it.hasNext();) {
+					Annotation annotation = (Annotation)it.next();
+					Position position = annotationModel.getPosition(annotation);
+					try {
+						if (document != null && document.getLineOfOffset(position.offset) == lineNumber) {
+							annotations.add(annotation);
+						}
+					} catch (BadLocationException e) {
+						// continue
 					}
-				} catch (BadLocationException e) {
-					// continue
 				}
 			}
 		}
 		return annotations;
+	}
+
+	/**
+	 * Returns the lock object for the given annotation model.
+	 * 
+	 * @param annotationModel
+	 *            the annotation model
+	 * @return the annotation model's lock object
+	 */
+	private Object getLockObject(final IAnnotationModel annotationModel) {
+		if (annotationModel instanceof ISynchronizable) {
+			final Object lock = ((ISynchronizable)annotationModel).getLockObject();
+			if (lock != null) {
+				return lock;
+			}
+		}
+		return annotationModel;
 	}
 
 	/**
