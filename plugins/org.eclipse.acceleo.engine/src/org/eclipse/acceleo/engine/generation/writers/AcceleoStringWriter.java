@@ -86,7 +86,6 @@ public class AcceleoStringWriter extends AbstractAcceleoWriter {
 			}
 		} catch (IOException e) {
 			// preview mode. Discard this.
-			AcceleoEnginePlugin.log(e, true);
 		}
 	}
 
