@@ -10,3 +10,7 @@ Support for informations (green arrow on the left of a template that overrides a
 New icons in the outline and the autocompletion popup to show the visibility of a template or a query
 New actions in the outline to filter or modify the visible elements in the outline
 Support for the @deprecated tag
+The search view creates markers for search result
+The user can delete a result in the search view or clear all search results with their markers
+Improved parser with lots of warnings and errors detected.
+Refactoring text occurrences.
