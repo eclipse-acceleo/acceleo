@@ -19,9 +19,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.Bundle;
@@ -107,17 +105,11 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 							Class<IAcceleoLaunchingStrategy> c = bundle.loadClass(strategyClass);
 							return c.newInstance();
 						} catch (ClassNotFoundException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-									IStatus.OK, e.getMessage(), e);
-							AcceleoUIActivator.getDefault().getLog().log(status);
+							AcceleoUIActivator.log(e, true);
 						} catch (InstantiationException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-									IStatus.OK, e.getMessage(), e);
-							AcceleoUIActivator.getDefault().getLog().log(status);
+							AcceleoUIActivator.log(e, true);
 						} catch (IllegalAccessException e) {
-							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-									IStatus.OK, e.getMessage(), e);
-							AcceleoUIActivator.getDefault().getLog().log(status);
+							AcceleoUIActivator.log(e, true);
 						}
 					}
 				}

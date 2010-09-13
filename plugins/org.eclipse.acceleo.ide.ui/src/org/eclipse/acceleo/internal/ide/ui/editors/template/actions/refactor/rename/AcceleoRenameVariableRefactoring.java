@@ -18,6 +18,10 @@ import java.util.Map;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
+import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
+import org.eclipse.acceleo.model.mtl.Documentation;
+import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -107,13 +111,13 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	 * Find the change that are in the current file and put them in the map.
 	 */
 	private void putChangesOfTheCurrentFile() {
+		TextFileChange tfc = null;
+		MultiTextEdit edit = null;
+		IFile file = null;
 		for (Match match : this.fVariable.getVariableMatches()) {
 			final ReferenceEntry entry = (ReferenceEntry)match.getElement();
 			if (entry.getTemplateFile().getName().equals(fileName)) {
-				final IFile file = entry.getTemplateFile();
-
-				TextFileChange tfc = null;
-				MultiTextEdit edit = null;
+				file = entry.getTemplateFile();
 
 				if (this.fChanges.containsKey(file)
 						&& this.fChanges.get(file).getEdit() instanceof MultiTextEdit) {
@@ -131,8 +135,31 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 
 				edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fVariable.getVariableName()
 						.length(), this.fNewVariableName));
-
 				this.fChanges.put(file, tfc);
+			}
+		}
+
+		if (this.fVariable.getVariable().eContainer() != null
+				&& this.fVariable.getVariable().eContainer() instanceof DocumentedElement) {
+			DocumentedElement documentedElement = (DocumentedElement)this.fVariable.getVariable()
+					.eContainer();
+			Documentation documentation = AcceleoUIDocumentationUtils
+					.getDocumentationFromFile(documentedElement);
+			if (documentation != null
+					&& documentation.getBody().getValue().indexOf(
+							IAcceleoConstants.TAG_PARAM + ' ' + this.fVariable.getVariableName()) != -1
+					&& edit != null) {
+
+				if (file != null) {
+					StringBuffer content = FileContent.getFileContent(file.getLocation().toFile());
+					int index = content.indexOf(IAcceleoConstants.TAG_PARAM + ' '
+							+ this.fVariable.getVariableName(), documentation.getBody().getStartPosition());
+					int length = (IAcceleoConstants.TAG_PARAM + ' ' + this.fVariable.getVariableName())
+							.length();
+					edit.addChild(new ReplaceEdit(index, length, IAcceleoConstants.TAG_PARAM + ' '
+							+ this.fNewVariableName));
+					this.fChanges.put(file, tfc);
+				}
 			}
 		}
 	}

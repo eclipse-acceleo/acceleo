@@ -18,9 +18,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
@@ -61,9 +59,7 @@ public class AcceleoLaunchDelegateStandalone extends org.eclipse.jdt.launching.J
 								Thread.sleep(100);
 							}
 						} catch (InterruptedException e) {
-							AcceleoUIActivator.getDefault().getLog()
-									.log(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
-											.getMessage(), e));
+							AcceleoUIActivator.log(e, true);
 						}
 						if (container.getProject() != null) {
 							container.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);

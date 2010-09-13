@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderUtils;
@@ -220,7 +221,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 				AcceleoBuilderUtils.members(fileList, project, IAcceleoConstants.MTL_FILE_EXTENSION,
 						AcceleoRefactoringUtils.getOutputFolder(project));
 			} catch (CoreException e) {
-				// do nothing
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
 
@@ -489,7 +490,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 				}
 			}
 		} catch (CoreException e) {
-			// do nothing
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 
 		return status;

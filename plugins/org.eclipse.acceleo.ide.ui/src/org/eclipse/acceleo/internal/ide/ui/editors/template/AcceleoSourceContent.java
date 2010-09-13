@@ -506,8 +506,10 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldModuleElement, newModuleElement);
 				return newModuleElement;
 			} catch (ClassCastException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
@@ -552,8 +554,10 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldExpression, newExpression);
 				return newExpression;
 			} catch (ClassCastException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
@@ -579,8 +583,10 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldVariable, newVariable);
 				return newVariable;
 			} catch (ClassCastException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
+				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
@@ -710,6 +716,28 @@ public class AcceleoSourceContent {
 				return eContainer;
 			}
 			eContainer = (CSTNode)eContainer.eContainer();
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the AST parent of the given type. It browses the ancestors of the given node and returns the
+	 * nearest valid parent if it exists.
+	 * 
+	 * @param node
+	 *            is the current node
+	 * @param c
+	 *            is the class which represents the type of the parent to search
+	 * @return the AST parent, or null if it doesn't exist
+	 */
+	@SuppressWarnings("rawtypes")
+	public ASTNode getASTParent(ASTNode node, Class c) {
+		ASTNode eContainer = (ASTNode)node.eContainer();
+		while (eContainer != null) {
+			if (c.isInstance(eContainer)) {
+				return eContainer;
+			}
+			eContainer = (ASTNode)eContainer.eContainer();
 		}
 		return null;
 	}

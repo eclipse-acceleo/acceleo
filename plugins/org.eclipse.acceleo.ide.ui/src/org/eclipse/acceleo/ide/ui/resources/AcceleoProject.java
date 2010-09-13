@@ -305,6 +305,7 @@ public class AcceleoProject {
 		try {
 			entries = javaProject.getResolvedClasspath(true);
 		} catch (JavaModelException e1) {
+			AcceleoUIActivator.getDefault().getLog().log(e1.getStatus());
 			entries = new IClasspathEntry[] {};
 		}
 		for (int i = 0; i < entries.length; i++) {
@@ -363,6 +364,7 @@ public class AcceleoProject {
 			}
 		} catch (JavaModelException e) {
 			// continue
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		return null;
 	}
@@ -500,6 +502,7 @@ public class AcceleoProject {
 		try {
 			entries = javaProject.getResolvedClasspath(true);
 		} catch (JavaModelException e1) {
+			AcceleoUIActivator.getDefault().getLog().log(e1.getStatus());
 			entries = new IClasspathEntry[] {};
 		}
 		for (int i = 0; i < entries.length; i++) {
@@ -574,6 +577,7 @@ public class AcceleoProject {
 			try {
 				entries = javaProject.getResolvedClasspath(true);
 			} catch (JavaModelException e1) {
+				AcceleoUIActivator.getDefault().getLog().log(e1.getStatus());
 				entries = new IClasspathEntry[] {};
 			}
 			for (int i = 0; i < entries.length; i++) {

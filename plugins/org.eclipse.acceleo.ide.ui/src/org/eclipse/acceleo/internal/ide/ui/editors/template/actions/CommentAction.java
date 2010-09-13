@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
@@ -93,7 +94,7 @@ public class CommentAction extends Action implements IWorkbenchWindowActionDeleg
 			try {
 				document.replace(b, e - b, newText);
 			} catch (BadLocationException ex) {
-				// continue
+				AcceleoUIActivator.log(ex, true);
 			}
 		}
 	}

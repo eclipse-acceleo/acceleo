@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
@@ -330,6 +331,7 @@ public final class OpenDeclarationUtils {
 						selectAndReveal(newEditor, region, eObject);
 					} catch (PartInitException e) {
 						// Do nothing
+						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					}
 				}
 			}
@@ -367,6 +369,7 @@ public final class OpenDeclarationUtils {
 					selectAndReveal(newEditor, region, eObject);
 				} catch (PartInitException e) {
 					// Do nothing
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 				}
 			} else if (file != null) {
 				try {
@@ -383,6 +386,7 @@ public final class OpenDeclarationUtils {
 					}
 				} catch (PartInitException e) {
 					// Do nothing
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 				}
 			}
 		}
@@ -461,6 +465,7 @@ public final class OpenDeclarationUtils {
 					absoluteFile = null;
 				}
 			} catch (IOException e1) {
+				AcceleoUIActivator.log(e1, true);
 				absoluteFile = null;
 			}
 		} else {
@@ -609,6 +614,7 @@ public final class OpenDeclarationUtils {
 					try {
 						newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
 					} catch (IllegalArgumentException e) {
+						AcceleoUIActivator.log(e, true);
 						newEObject = eObject;
 					}
 					// Remark : We must be sure to get the positions of the new EObject
@@ -741,6 +747,7 @@ public final class OpenDeclarationUtils {
 			end = pos;
 		} catch (BadLocationException x) {
 			// do nothing
+			AcceleoUIActivator.log(x, true);
 		}
 		if (start >= -1 && end > -1) {
 			IRegion region = null;

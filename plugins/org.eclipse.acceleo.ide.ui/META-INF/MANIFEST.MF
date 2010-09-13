@@ -53,4 +53,5 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.internal.ide.ui.builders;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template;x-friends:="org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;x-friends:="org.eclipse.acceleo.ide.ui.tests",
- org.eclipse.acceleo.internal.ide.ui.editors.template.rules;x-friends:="org.eclipse.acceleo.ide.ui.tests"
+ org.eclipse.acceleo.internal.ide.ui.editors.template.rules;x-friends:="org.eclipse.acceleo.ide.ui.tests",
+ org.eclipse.acceleo.internal.ide.ui.wizards.newproject;x-friends:="org.eclipse.acceleo.parser.tests"

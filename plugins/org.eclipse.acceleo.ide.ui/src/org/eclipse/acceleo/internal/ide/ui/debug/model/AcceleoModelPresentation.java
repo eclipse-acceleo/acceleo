@@ -74,6 +74,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 			try {
 				isEnabled = ((AcceleoLineBreakpoint)element).isEnabled();
 			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 				isEnabled = true;
 			}
 			ASTFragment astFragment = ((AcceleoLineBreakpoint)element).getASTFragment();
@@ -143,6 +144,7 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 			detail = value.getValueString();
 		} catch (DebugException e) {
 			// continue
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		listener.detailComputed(value, detail);
 	}

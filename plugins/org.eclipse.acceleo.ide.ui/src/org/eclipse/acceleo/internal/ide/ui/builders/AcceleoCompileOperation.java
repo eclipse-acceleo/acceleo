@@ -117,6 +117,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					} catch (CoreException e) {
 						// continue
 						// do nothing because it occurs when we have locked the file to write it again
+						AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					}
 				}
 			}

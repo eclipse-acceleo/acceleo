@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.jface.text.BadLocationException;
@@ -67,6 +68,7 @@ public class CreateProtectedAreaAction extends AbstractRefactoringWithVariableCo
 			document.replace(b, 0, prefix);
 			return b + prefix.length();
 		} catch (BadLocationException ex) {
+			AcceleoUIActivator.log(ex, true);
 			return offset;
 		}
 	}

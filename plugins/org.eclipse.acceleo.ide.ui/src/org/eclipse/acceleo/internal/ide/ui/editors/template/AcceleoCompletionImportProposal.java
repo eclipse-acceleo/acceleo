@@ -116,6 +116,7 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 			document.replace(replacementOffset, replacementLength, dynamicReplacementString);
 		} catch (BadLocationException x) {
 			// ignore
+			AcceleoUIActivator.log(x, true);
 		}
 	}
 

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AbstractRefactoringAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AcceleoRefactoringUtils;
@@ -24,8 +25,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaModelMarker;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ocl.ecore.LiteralExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
+import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 
@@ -66,12 +72,16 @@ public class AcceleoRenameAction extends AbstractRefactoringAction {
 			} else if (object instanceof Module) {
 				this.launchRefactoringRenameModule((Module)object);
 			} else {
-				// We launch the rename template refactoring by default.
-				this.launchRefactorRenameTemplate();
-
-				// If we want to launch the rename module refactoring by default :
-				// Module mod = AcceleoRenameModuleUtils.getModuleFromFile(this.editor.getFile());
-				// this.launchRefactoringRenameModule(mod);
+				ISelection iSelection = this.editor.getSelectionProvider().getSelection();
+				if (iSelection instanceof ITextSelection && ((ITextSelection)iSelection).getLength() > 0) {
+					// If we have a text selection, that is NOT a template, a query, a variable, a variable
+					// exp or a module. Then we will try to rename all the occurrences of the text in the
+					// given module element.
+					this.launchRefactorRenameTextOccurrences((ITextSelection)iSelection);
+				} else {
+					// We launch the rename template refactoring by default.
+					this.launchRefactorRenameTemplate();
+				}
 			}
 		}
 	}
@@ -226,7 +236,7 @@ public class AcceleoRenameAction extends AbstractRefactoringAction {
 					return;
 				}
 			} catch (CoreException e) {
-				// do nothing
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
 
@@ -236,5 +246,30 @@ public class AcceleoRenameAction extends AbstractRefactoringAction {
 		refactoring.setProject(file.getProject());
 
 		runWizard(new AcceleoRenameModuleWizard(refactoring, name), fWindow.getShell(), name);
+	}
+
+	/**
+	 * Launch the refactoring of the text selection.
+	 * 
+	 * @param selection
+	 *            The text selection
+	 */
+	private void launchRefactorRenameTextOccurrences(ITextSelection selection) {
+		ASTNode astNode = this.editor.getContent().getASTNode(selection.getOffset() + selection.getLength(),
+				selection.getOffset() + selection.getLength());
+		if (selection != null && selection.getLength() > 0 && astNode instanceof LiteralExp) {
+			Template template = (Template)this.editor.getContent().getASTParent(astNode,
+					org.eclipse.acceleo.model.mtl.Template.class);
+			IDocument document = this.editor.getDocumentProvider().getDocument(this.editor.getEditorInput());
+			String text = document.get();
+			if (template != null && template.getEndPosition() > -1
+					&& template.getEndPosition() <= text.length()) {
+				AcceleoRenameTextRefactoring refactoring = new AcceleoRenameTextRefactoring();
+				refactoring.setParent(template);
+				refactoring.setSourceContent(this.editor.getContent());
+				refactoring.setSelection(selection);
+				runWizard(new AcceleoRenameTextWizard(refactoring, name), fWindow.getShell(), name);
+			}
+		}
 	}
 }

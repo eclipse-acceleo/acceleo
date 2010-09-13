@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -80,7 +81,7 @@ public final class AcceleoRefactoringUtils {
 				}
 			}
 		} catch (JavaModelException e) {
-			// continue
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		return null;
 	}
@@ -169,7 +170,7 @@ public final class AcceleoRefactoringUtils {
 						}
 					}
 				} catch (IOException e) {
-					// do nothing
+					AcceleoUIActivator.log(e, true);
 				}
 			}
 		}

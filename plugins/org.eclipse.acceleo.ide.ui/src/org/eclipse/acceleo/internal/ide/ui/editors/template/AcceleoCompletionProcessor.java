@@ -428,7 +428,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					case OPERATION:
 						if (next.getElement() instanceof EOperation) {
 							Image image = AcceleoUIActivator.getDefault().getImage(
-									"icons/template-editor/completion/Template.gif"); //$NON-NLS-1$
+									IAcceleoContantsImage.TemplateEditor.Completion.TEMPLATE_PUBLIC);
 							EOperation eOperation = (EOperation)next.getElement();
 							String description;
 							if (eOperation.getEContainingClass() != null) {
@@ -1391,6 +1391,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
 			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
 		}
 		String replacementStringAfter = ", ${false}, '${" + defaultEncoding //$NON-NLS-1$
@@ -1768,6 +1769,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	private ICompletionProposal createTemplateProposal(String replacementString, int replacementOffset,
 			int replacementLength, int cursorPosition, Image image, String displayString,
 			IContextInformation contextInformation, String additionalProposalInfo) {
+		String info = additionalProposalInfo;
+
 		if (textViewer != null && textViewer.getDocument() != null) {
 			org.eclipse.jface.text.templates.Template template = new org.eclipse.jface.text.templates.Template(
 					displayString, displayString, AcceleoPartitionScanner.ACCELEO_BLOCK, replacementString,
@@ -1777,11 +1780,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			TemplateContext context = new DocumentTemplateContext(type, textViewer.getDocument(),
 					replacementOffset, replacementLength);
 			Region region = new Region(replacementOffset, replacementLength);
-			return new AcceleoCompletionTemplateProposal(template, context, region, image,
-					additionalProposalInfo);
+			return new AcceleoCompletionTemplateProposal(template, context, region, image, info);
 		} else {
 			return new CompletionProposal(replacementString, replacementOffset, replacementLength,
-					cursorPosition, image, displayString, contextInformation, additionalProposalInfo);
+					cursorPosition, image, displayString, contextInformation, info);
 		}
 	}
 	// CHECKSTYLE:ON

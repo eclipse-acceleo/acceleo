@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
@@ -128,6 +129,7 @@ public class JavaServicesWrapperStrategy implements IAcceleoExampleStrategy {
 			try {
 				types = classFile.getTypes();
 			} catch (JavaModelException e) {
+				AcceleoUIActivator.log(e, true);
 				types = new IType[0];
 			}
 			for (int i = 0; i < types.length; i++) {

@@ -411,6 +411,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		} catch (JavaModelException e) {
 			// continue
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		return null;
 	}

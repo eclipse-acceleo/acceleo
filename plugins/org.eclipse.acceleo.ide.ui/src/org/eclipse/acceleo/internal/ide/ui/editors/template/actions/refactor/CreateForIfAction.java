@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.parser.cst.Block;
 import org.eclipse.acceleo.parser.cst.CSTNode;
@@ -134,6 +135,7 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 			document.replace(b, e - b, newBuffer.toString());
 			return outputIndex;
 		} catch (BadLocationException ex) {
+			AcceleoUIActivator.log(ex, true);
 			return offset;
 		}
 	}

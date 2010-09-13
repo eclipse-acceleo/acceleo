@@ -108,6 +108,25 @@ public interface IAcceleoContantsImage {
 		String QUERY_PRIVATE = TEMPLATE_EDITOR + "Query_private.gif"; //$NON-NLS-1$
 
 		/**
+		 * The list of the image available for the actions.
+		 * 
+		 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+		 * @noextend This interface is not intended to be extended by clients.
+		 * @noimplement This interface is not intended to be implemented by clients.
+		 */
+		public interface Actions {
+			/**
+			 * The root directory for all icons of the actions.
+			 */
+			String ACTIONS = TEMPLATE_EDITOR + "actions/"; //$NON-NLS-1$
+
+			/**
+			 * The 'show whitespace characters action' icon.
+			 */
+			String SHOW_WHITESPACE_CHARACTERS_ACTION = "ShowWhitespaceCharactersAction.gif"; //$NON-NLS-1$
+		}
+
+		/**
 		 * The list of the image available for the completion.
 		 * 
 		 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>

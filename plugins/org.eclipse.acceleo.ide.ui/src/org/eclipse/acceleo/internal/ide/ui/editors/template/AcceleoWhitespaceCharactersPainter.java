@@ -14,6 +14,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IPaintPositionManager;
@@ -159,6 +160,7 @@ public class AcceleoWhitespaceCharactersPainter implements IPainter, PaintListen
 				}
 			} catch (BadLocationException e) {
 				// ignore
+				AcceleoUIActivator.log(e, true);
 			}
 		}
 	}
@@ -267,6 +269,7 @@ public class AcceleoWhitespaceCharactersPainter implements IPainter, PaintListen
 					startOffset = lineOffset;
 				}
 			} catch (IllegalArgumentException iae) {
+				AcceleoUIActivator.log(iae, true);
 				startOffset = lineOffset;
 			}
 			// compute last visible char offset
@@ -281,6 +284,7 @@ public class AcceleoWhitespaceCharactersPainter implements IPainter, PaintListen
 						endOffset = lineEndOffset;
 					}
 				} catch (IllegalArgumentException iae) {
+					AcceleoUIActivator.log(iae, true);
 					endOffset = lineEndOffset;
 				}
 			}

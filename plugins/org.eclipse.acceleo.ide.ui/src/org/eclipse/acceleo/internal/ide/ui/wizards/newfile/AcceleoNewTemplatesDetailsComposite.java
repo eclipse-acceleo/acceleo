@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AcceleoExampleStrategyUtils;
@@ -640,6 +641,7 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 				} catch (WrappedException e) {
 					// It catches an EMF WrappedException.
 					// It is very useful if the EMF registry is corrupted by other contributions.
+					AcceleoUIActivator.log(e, true);
 				}
 				String textURI = uris.toString();
 				if (textURI.endsWith(",")) { //$NON-NLS-1$

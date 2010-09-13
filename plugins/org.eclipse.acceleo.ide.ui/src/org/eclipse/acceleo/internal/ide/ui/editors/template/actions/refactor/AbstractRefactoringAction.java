@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.jface.action.IAction;
@@ -128,7 +129,7 @@ public abstract class AbstractRefactoringAction implements IWorkbenchWindowActio
 			final RefactoringWizardOpenOperation operation = new RefactoringWizardOpenOperation(wizard);
 			operation.run(parent, dialogTitle);
 		} catch (InterruptedException exception) {
-			// Do nothing
+			AcceleoUIActivator.log(exception, true);
 		}
 	}
 

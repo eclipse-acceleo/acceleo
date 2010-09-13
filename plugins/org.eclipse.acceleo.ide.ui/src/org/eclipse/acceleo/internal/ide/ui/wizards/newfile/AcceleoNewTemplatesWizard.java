@@ -248,6 +248,7 @@ public class AcceleoNewTemplatesWizard extends Wizard implements INewWizard {
 								IDE.openEditor(aPage, file, true);
 							} catch (PartInitException e) {
 								// continue
+								AcceleoUIActivator.log(e, true);
 							}
 						}
 					});

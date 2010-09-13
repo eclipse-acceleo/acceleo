@@ -11,22 +11,13 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
-import org.eclipse.acceleo.model.mtl.Documentation;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.text.AbstractInformationControl;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IInformationControlExtension2;
 import org.eclipse.jface.text.IInformationControlExtension3;
-import org.eclipse.jface.text.TextPresentation;
-import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +33,7 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	/**
 	 * Indicates if there is a documentation in input.
 	 */
-	private boolean inputIsDocumentation;
+	private static boolean inputIsDocumentation;
 
 	/**
 	 * Indicates if we should have scrolling in our viewer.
@@ -53,16 +44,6 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	 * The text area.
 	 */
 	private AcceleoDocViewer viewer;
-
-	/**
-	 * The text presentation.
-	 */
-	private TextPresentation presentation;
-
-	/**
-	 * The text without the HTML.
-	 */
-	private String computedText;
 
 	/**
 	 * Creates a AcceleoHoverInformationControl with the given shell as parent.
@@ -96,14 +77,16 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	 */
 	private static ToolBarManager initToolBarManager() {
 		ToolBarManager toolBarManager = new ToolBarManager();
-		// TODO SBE Actions in the documentation popup will be put later
-		// IAction openDeclaration = new OpenDeclarationAction();
-		// IAction openInAcceleoDocView = new OpenInAcceleoDocViewAction();
-		// IAction openInBrowser = new OpenInBrowserAction();
-		//
-		// toolBarManager.add(openDeclaration);
-		// toolBarManager.add(openInAcceleoDocView);
-		// toolBarManager.add(openInBrowser);
+		if (inputIsDocumentation) {
+			// TODO SBE Actions in the documentation popup will be put later
+			// IAction openDeclaration = new OpenDeclarationAction();
+			// IAction openInAcceleoDocView = new OpenInAcceleoDocViewAction();
+			// IAction openInBrowser = new OpenInBrowserAction();
+			//
+			// toolBarManager.add(openDeclaration);
+			// toolBarManager.add(openInAcceleoDocView);
+			// toolBarManager.add(openInBrowser);
+		}
 		return toolBarManager;
 	}
 
@@ -115,6 +98,7 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	@Override
 	protected void createContent(Composite parent) {
 		int styles = SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION;
+		styles = styles | SWT.WRAP;
 		if (this.withScrolling) {
 			styles = styles | SWT.V_SCROLL | SWT.H_SCROLL;
 		}
@@ -147,58 +131,7 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	 */
 	@Override
 	public void setInformation(String content) {
-		this.computeTextPresentation(content);
-		this.viewer.setDocument(this.createDocument(this.computedText));
-		TextPresentation.applyTextPresentation(this.presentation, this.viewer.getTextWidget());
-	}
-
-	/**
-	 * Computes the text presentation and the final text that will be displayed.
-	 * 
-	 * @param content
-	 *            The input text.
-	 */
-	private void computeTextPresentation(String content) {
-		int startBoldIndex = -1;
-		int endBoldIndex = -1;
-
-		this.presentation = new TextPresentation();
-		String strTmp = content;
-
-		startBoldIndex = strTmp.indexOf(AcceleoUIDocumentationUtils.HTML_BOLD_BEGIN);
-		endBoldIndex = strTmp.indexOf(AcceleoUIDocumentationUtils.HTML_BOLD_END);
-		while (startBoldIndex != -1 && endBoldIndex != -1 && startBoldIndex < endBoldIndex) {
-			int start = startBoldIndex;
-			int length = endBoldIndex
-					- (startBoldIndex + AcceleoUIDocumentationUtils.HTML_BOLD_BEGIN.length());
-			StyleRange styleRange = new StyleRange(start, length, null, null, SWT.BOLD);
-			strTmp = strTmp.substring(0, startBoldIndex)
-					+ strTmp.substring(startBoldIndex + AcceleoUIDocumentationUtils.HTML_BOLD_BEGIN.length(),
-							endBoldIndex)
-					+ strTmp.substring(endBoldIndex + AcceleoUIDocumentationUtils.HTML_BOLD_END.length());
-			this.presentation.addStyleRange(styleRange);
-
-			startBoldIndex = strTmp.indexOf(AcceleoUIDocumentationUtils.HTML_BOLD_BEGIN);
-			endBoldIndex = strTmp.indexOf(AcceleoUIDocumentationUtils.HTML_BOLD_END);
-		}
-
-		this.computedText = strTmp;
-	}
-
-	/**
-	 * Create a document from a string.
-	 * 
-	 * @param content
-	 *            The content
-	 * @return The document
-	 */
-	private IDocument createDocument(final String content) {
-		IDocument document = new Document(content);
-		IDocumentPartitioner partitioner = new FastPartitioner(new AcceleoDocPartitionScanner(),
-				AcceleoDocPartitionScanner.TYPES);
-		partitioner.connect(document);
-		document.setDocumentPartitioner(partitioner);
-		return document;
+		// do nothing
 	}
 
 	/**
@@ -217,11 +150,7 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	 * @see org.eclipse.jface.text.IInformationControlExtension#hasContents()
 	 */
 	public boolean hasContents() {
-		if (this.viewer.getDocument() != null) {
-			return this.viewer.getDocument().getLength() > 0;
-		} else {
-			return this.viewer.getTextWidget().getText().length() > 0;
-		}
+		return this.viewer.hasContent();
 	}
 
 	/**
@@ -233,13 +162,8 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	public IInformationControlCreator getInformationPresenterControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				if (inputIsDocumentation) {
-					// when we have the focus, show the toolbar
-					return new AcceleoHoverInformationControl(parent, true);
-				} else {
-					return new AcceleoHoverInformationControl(parent);
-				}
-
+				// when we have the focus, show the toolbar
+				return new AcceleoHoverInformationControl(parent, true);
 			}
 		};
 	}
@@ -250,16 +174,7 @@ public class AcceleoHoverInformationControl extends AbstractInformationControl i
 	 * @see org.eclipse.jface.text.IInformationControlExtension2#setInput(java.lang.Object)
 	 */
 	public void setInput(Object input) {
-		if (input instanceof Documentation) {
-			// TODO this might be dead code, to be checked
-			this.inputIsDocumentation = true;
-			this.setInformation(AcceleoUIDocumentationUtils.getTextFrom((Documentation)input));
-		} else if (input instanceof EObject) {
-			this.inputIsDocumentation = false;
-			this.setInformation(AcceleoUIDocumentationUtils.getSignatureFrom((EObject)input));
-		} else if (input instanceof String) {
-			this.setInformation((String)input);
-		}
+		this.viewer.setInput(input);
+		inputIsDocumentation = this.viewer.inputIsDocumentation();
 	}
-
 }

@@ -13,6 +13,7 @@ package org.eclipse.acceleo.internal.ide.ui.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -109,6 +110,7 @@ public class FileTreeContentProvider implements ITreeContentProvider {
 					res = children.toArray();
 				} catch (CoreException e) {
 					// this should never happen because we call #isAccessible before invoking #members
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 				}
 			}
 		}

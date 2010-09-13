@@ -12,6 +12,7 @@ package org.eclipse.acceleo.internal.ide.ui.debug.model;
 
 import java.util.Iterator;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.debug.core.StackInfo;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -327,6 +328,7 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 						&& sf.getCharStart() == getCharStart() && sf.getCharEnd() == getCharEnd();
 			} catch (DebugException e) {
 				// continue
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 		}
 		return false;

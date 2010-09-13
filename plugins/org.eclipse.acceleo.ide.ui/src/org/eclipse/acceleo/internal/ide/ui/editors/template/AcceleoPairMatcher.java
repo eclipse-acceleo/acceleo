@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -52,6 +53,7 @@ public class AcceleoPairMatcher extends DefaultCharacterPairMatcher {
 		try {
 			return performMatch(document, offset);
 		} catch (BadLocationException ble) {
+			AcceleoUIActivator.log(ble, true);
 			return null;
 		}
 	}

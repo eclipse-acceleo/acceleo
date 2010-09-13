@@ -76,12 +76,12 @@ public final class AcceleoUIDocumentationUtils {
 	/**
 	 * A tabulation.
 	 */
-	public static final String TAB = "\t"; //$NON-NLS-1$
+	public static final String TAB = "<dd>"; //$NON-NLS-1$
 
 	/**
 	 * The end of line.
 	 */
-	public static final String EOL = "\n"; //$NON-NLS-1$
+	public static final String EOL = "<br/>"; //$NON-NLS-1$
 
 	/**
 	 * The constructor.
@@ -211,9 +211,10 @@ public final class AcceleoUIDocumentationUtils {
 					}
 				}
 			} catch (IOException e) {
-				// The emtl file does not exist, we will return null
+				// The emtl file does not exist, we will return null it is not a problem, do not log anything
 			} catch (WrappedException e) {
-				// The file has an invalid URI, or if there is another problem with it, we will return null
+				// The file has an invalid URI, or if there is another EMF problem with it, we return null
+				AcceleoUIActivator.log(e, true);
 			}
 		}
 		return documentation;
@@ -272,7 +273,7 @@ public final class AcceleoUIDocumentationUtils {
 	private static String getTextFrom(final ModuleElementDocumentation templateDocumentation) {
 		StringBuffer res = new StringBuffer();
 		res.append(HTML_BOLD_BEGIN + getSignatureFrom(templateDocumentation.getDocumentedElement())
-				+ HTML_BOLD_END + EOL);
+				+ HTML_BOLD_END + EOL + EOL);
 		res.append(computeDescriptionFrom(templateDocumentation) + EOL);
 
 		EList<ParameterDocumentation> parametersDocumentation = templateDocumentation
@@ -286,8 +287,12 @@ public final class AcceleoUIDocumentationUtils {
 			Template template = (Template)element;
 			EList<Template> overrides = template.getOverrides();
 			for (Template override : overrides) {
-				res.append(HTML_BOLD_BEGIN + "Overrides:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
-				res.append(TAB + override.getName() + EOL);
+				res.append(EOL + HTML_BOLD_BEGIN + "Overrides:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
+				if (override.eContainer() instanceof Module) {
+					Module module = (Module)override.eContainer();
+					res.append(TAB + "Template " + override.getName() + " in Module " + module.getName() //$NON-NLS-1$ //$NON-NLS-2$
+							+ EOL);
+				}
 			}
 		}
 
@@ -322,9 +327,9 @@ public final class AcceleoUIDocumentationUtils {
 
 		if (parameters != null) {
 			if (parameters.size() == 1) {
-				res.append(HTML_BOLD_BEGIN + "Parameter:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
+				res.append(EOL + HTML_BOLD_BEGIN + "Parameter:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
 			} else {
-				res.append(HTML_BOLD_BEGIN + "Parameters:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
+				res.append(EOL + HTML_BOLD_BEGIN + "Parameters:" + HTML_BOLD_END + EOL); //$NON-NLS-1$
 			}
 			for (ParameterDocumentation parameterDocumentation : moduleElementDocumentation
 					.getParametersDocumentation()) {

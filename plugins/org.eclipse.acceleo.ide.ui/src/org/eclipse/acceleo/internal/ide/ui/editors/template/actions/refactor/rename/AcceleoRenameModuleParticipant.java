@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.AcceleoRefactoringUtils;
@@ -92,6 +93,7 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 						this.refactoring = new AcceleoRenameModuleRefactoring(false);
 					}
 				} catch (CoreException e) {
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					result = false;
 				}
 			} else {
@@ -135,7 +137,7 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 			this.refactoring.setNewModuleName(newNameWithoutExtension);
 			status.merge(this.refactoring.checkFinalConditions(monitor));
 		} catch (CoreException e) {
-			// do nothing
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 
 		return status;
@@ -148,7 +150,9 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 	 */
 	@Override
 	public Change createPreChange(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
-		return this.refactoring.createChange(monitor);
+		Change change = this.refactoring.createChange(monitor);
+		this.module.eResource().unload();
+		return change;
 	}
 
 	/**
