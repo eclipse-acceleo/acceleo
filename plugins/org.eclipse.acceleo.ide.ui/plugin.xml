@@ -258,6 +258,16 @@ Contributors:
               retarget="false"
               tooltip="%acceleoEditorCommandsDocumentation.Tooltip">
         </action>
+        <action
+              allowLabelUpdate="true"
+              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.ExtractAsQueryAction"
+              definitionId="org.eclipse.acceleo.ide.ui.extractAsQuery"
+              enablesFor="*"
+              id="org.eclipse.acceleo.ide.ui.editors.template.actions.refactor.extractAsQuery"
+              label="%acceleoEditorCommandsExtractAsQuery.Label"
+              style="push"
+              tooltip="%acceleoEditorCommandsExtractAsQuery.Tooltip">
+        </action>
       </actionSet>
    </extension>
 
@@ -305,16 +315,22 @@ Contributors:
 				id="org.eclipse.acceleo.ide.ui.createForIf"
 				name="%acceleoEditorCommandsCreateForIf.Name">
 		</command>
-  <command
-        description="%acceleoEditorCommandsRename.Description"
-        id="org.eclipse.acceleo.ide.ui.refactor.rename"
-        name="%acceleoEditorCommandsRename.Name">
-  </command>
-  <command
-        description="%acceleoEditorCommandsDocumentation.Description"
-        id="org.eclipse.acceleo.ide.ui.refactor.documentation"
-        name="%acceleoEditorCommandsDocumentation.Name">
-  </command>
+		<command
+        	    description="%acceleoEditorCommandsRename.Description"
+                id="org.eclipse.acceleo.ide.ui.refactor.rename"
+                name="%acceleoEditorCommandsRename.Name">
+  		</command>
+  		<command
+                description="%acceleoEditorCommandsDocumentation.Description"
+                id="org.eclipse.acceleo.ide.ui.refactor.documentation"
+                name="%acceleoEditorCommandsDocumentation.Name">
+  		</command>
+  		<command
+        		categoryId="org.eclipse.ui.category.edit"
+        		description="%acceleoEditorCommandsExtractAsQuery.Description"
+        		id="org.eclipse.acceleo.ide.ui.extractAsQuery"
+        		name="%acceleoEditorCommandsExtractAsQuery.Name">
+		</command>
    </extension>
 
    <extension
@@ -385,6 +401,12 @@ Contributors:
                      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                      sequence="M3+M2+J">
                </key>
+               <key
+                     commandId="org.eclipse.acceleo.ide.ui.extractAsQuery"
+                     contextId="org.eclipse.acceleo.ide.ui.editors.template.editor"
+                     schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                     sequence="M3+M2+Y">
+               </key>
     </extension>
 
     <extension point="org.eclipse.ui.menus">
@@ -427,14 +449,16 @@ Contributors:
 	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
 	            </visibleWhen>
 	         </command>
-          <command
-                commandId="org.eclipse.acceleo.ide.ui.refactor.rename">
-             <visibleWhen>
-                <reference
-                      definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet">
-                </reference>
-             </visibleWhen>
-          </command>       
+             <command commandId="org.eclipse.acceleo.ide.ui.extractAsQuery" style="push">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>
+             <command commandId="org.eclipse.acceleo.ide.ui.refactor.rename">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>       
          </menu>
       </menuContribution>
     </extension>
