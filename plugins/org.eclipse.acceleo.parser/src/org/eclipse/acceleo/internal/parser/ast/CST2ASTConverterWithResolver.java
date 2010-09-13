@@ -833,10 +833,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 		}
 
-		// for all conflict we log an error.
+		// for all conflict we log a warning.
 		if (!conflictList.isEmpty()) {
 			for (ProtectedAreaBlock protectedAreaBlock : conflictList) {
-				this.logProblem(AcceleoParserMessages
+				this.logWarning(AcceleoParserMessages
 						.getString("CST2ASTConverterWithResolver.ProtectedAreaConflict"), protectedAreaBlock //$NON-NLS-1$
 						.getMarker().getStartPosition(), protectedAreaBlock.getMarker().getEndPosition());
 			}
