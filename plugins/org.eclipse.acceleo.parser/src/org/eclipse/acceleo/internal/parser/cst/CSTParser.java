@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
@@ -72,6 +74,20 @@ public class CSTParser {
 
 	/** Key of the error message that should be logged when a statement isn't closed. */
 	private static final String INVALID_STMT = "CSTParser.InvalidStatement"; //$NON-NLS-1$
+
+	/**
+	 * A Set of all Acceleo keywords.
+	 */
+	private static final List<String> ACCELEO_KEYWORDS = Arrays.asList(new String[] {IAcceleoConstants.AFTER,
+			IAcceleoConstants.BEFORE, IAcceleoConstants.COMMENT, IAcceleoConstants.ELSE,
+			IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE_LET, IAcceleoConstants.ENCODING,
+			IAcceleoConstants.EXTENDS, IAcceleoConstants.FILE, IAcceleoConstants.FOR, IAcceleoConstants.IF,
+			IAcceleoConstants.IMPORT, IAcceleoConstants.LET, IAcceleoConstants.MACRO,
+			IAcceleoConstants.MODULE, IAcceleoConstants.OVERRIDES, IAcceleoConstants.POST,
+			IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.QUERY, IAcceleoConstants.SELF,
+			IAcceleoConstants.SUPER, IAcceleoConstants.TEMPLATE, IAcceleoConstants.TRACE,
+			IAcceleoConstants.VISIBILITY_KIND_PRIVATE, IAcceleoConstants.VISIBILITY_KIND_PROTECTED,
+			IAcceleoConstants.VISIBILITY_KIND_PUBLIC, });
 
 	/**
 	 * The source buffer to parse.
@@ -324,29 +340,52 @@ public class CSTParser {
 				if (docBH.b() < comBH.b()) {
 					// We found a documentation block first
 					Documentation eDocumentation = parseDocumentationBeforeModule(docBH, eModule
-							.getEndPosition());
-					commentBeforeModuleHeader.add(eDocumentation);
-					parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
-					currentPosition = eDocumentation.getEndPosition();
+							.getStartPosition());
+					if (eDocumentation != null) {
+						commentBeforeModuleHeader.add(eDocumentation);
+						parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
+						currentPosition = eDocumentation.getEndPosition();
+					} else {
+						// never
+						currentPosition = source.getBuffer().indexOf(IAcceleoConstants.DEFAULT_BEGIN,
+								docBH.e() + 1);
+					}
 				} else if (docBH.b() > comBH.b()) {
 					// We found a comment block first
-					Comment eComment = parseCommentBeforeModule(comBH, eModule.getEndPosition());
-					commentBeforeModuleHeader.add(eComment);
-					parseWhitespaceArea(currentPosition, eComment.getStartPosition());
-					currentPosition = eComment.getEndPosition();
+					Comment eComment = parseCommentBeforeModule(comBH, eModule.getStartPosition());
+					if (eComment != null) {
+						commentBeforeModuleHeader.add(eComment);
+						parseWhitespaceArea(currentPosition, eComment.getStartPosition());
+						currentPosition = eComment.getEndPosition();
+					} else {
+						// never
+						currentPosition = source.getBuffer().indexOf(IAcceleoConstants.DEFAULT_BEGIN,
+								comBH.e() + 1);
+					}
 				}
 			} else if (docBH.b() != -1 && comBH.b() == -1) {
 				// We found only a documentation block
-				Documentation eDocumentation = parseDocumentationBeforeModule(docBH, eModule.getEndPosition());
-				commentBeforeModuleHeader.add(eDocumentation);
-				parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
-				currentPosition = eDocumentation.getEndPosition();
+				Documentation eDocumentation = parseDocumentationBeforeModule(docBH, eModule
+						.getStartPosition());
+				if (eDocumentation != null) {
+					commentBeforeModuleHeader.add(eDocumentation);
+					parseWhitespaceArea(currentPosition, eDocumentation.getStartPosition());
+					currentPosition = eDocumentation.getEndPosition();
+				} else {
+					currentPosition = source.getBuffer().indexOf(IAcceleoConstants.DEFAULT_BEGIN,
+							docBH.e() + 1);
+				}
 			} else if (docBH.b() == -1 && comBH.b() != -1) {
 				// We found only a comment block
-				Comment eComment = parseCommentBeforeModule(comBH, eModule.getEndPosition());
-				commentBeforeModuleHeader.add(eComment);
-				parseWhitespaceArea(currentPosition, eComment.getStartPosition());
-				currentPosition = eComment.getEndPosition();
+				Comment eComment = parseCommentBeforeModule(comBH, eModule.getStartPosition());
+				if (eComment != null) {
+					commentBeforeModuleHeader.add(eComment);
+					parseWhitespaceArea(currentPosition, eComment.getStartPosition());
+					currentPosition = eComment.getEndPosition();
+				} else {
+					currentPosition = source.getBuffer().indexOf(IAcceleoConstants.DEFAULT_BEGIN,
+							comBH.e() + 1);
+				}
 			}
 		}
 		return commentBeforeModuleHeader;
@@ -445,14 +484,21 @@ public class CSTParser {
 					IAcceleoConstants.DOCUMENTATION_BEGIN), beginHeader.b(), beginHeader.e());
 			eDocumentation = null;
 		} else {
-			eDocumentation = CstFactory.eINSTANCE.createDocumentation();
-			setPositions(eDocumentation, beginHeader.b(), eH.e());
+			if (eH.getSequence() == pDocumentation.getEndHeaderBody()) {
+				eDocumentation = CstFactory.eINSTANCE.createDocumentation();
+				setPositions(eDocumentation, beginHeader.b(), eH.e());
 
-			String body = parseDocumentationBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
-			eDocumentation.setBody(body);
+				String body = parseDocumentationBody(source.getBuffer().substring(beginHeader.e(), eH.b()));
+				eDocumentation.setBody(body);
 
-			DocumentationUtils.parseToDoFixMe(this.source, eDocumentation.getStartPosition(), eDocumentation
-					.getEndPosition(), CommentType.DOCUMENTATION);
+				DocumentationUtils.parseToDoFixMe(this.source, eDocumentation.getStartPosition(),
+						eDocumentation.getEndPosition(), CommentType.DOCUMENTATION);
+			} else {
+				logProblem(AcceleoParserMessages.getString(INVALID_STMT,
+						IAcceleoConstants.DOCUMENTATION_BEGIN), beginHeader.b(), beginHeader.e());
+				eDocumentation = null;
+			}
+
 		}
 		return eDocumentation;
 	}
@@ -476,11 +522,11 @@ public class CSTParser {
 				if (str.trim().startsWith(IAcceleoConstants.DOCUMENTATION_NEW_LINE)) {
 					str = str.substring(str.indexOf(IAcceleoConstants.DOCUMENTATION_NEW_LINE) + 1)
 							+ System.getProperty(lineseparator);
-					buffer.append(str.trim());
+					buffer.append(str.trim() + System.getProperty(lineseparator));
 				} else if (str.endsWith(IAcceleoConstants.DOCUMENTATION_NEW_LINE)) {
 					str = str.substring(0, str.lastIndexOf(IAcceleoConstants.DOCUMENTATION_NEW_LINE))
 							+ System.getProperty(lineseparator);
-					buffer.append(str.trim());
+					buffer.append(str.trim() + System.getProperty(lineseparator));
 				} else {
 					buffer.append(str + System.getProperty(lineseparator));
 				}
@@ -508,6 +554,10 @@ public class CSTParser {
 		if (bH.b() == -1) {
 			logProblem(AcceleoParserMessages.getString("CSTParser.MissingMetamodel"), posBegin, posEnd); //$NON-NLS-1$
 			String name = source.getBuffer().substring(posBegin, posEnd).trim();
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidModuleName"), posBegin, posEnd); //$NON-NLS-1$
+			}
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
 				logProblem(
@@ -526,6 +576,11 @@ public class CSTParser {
 				}
 			}
 			String name = source.getBuffer().substring(posBegin, bH.b()).trim();
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(
+						AcceleoParserMessages.getString("CSTParser.InvalidModuleName", name), posBegin, bH.b()); //$NON-NLS-1$
+			}
 			eModule.setName(name);
 			if (source.getFile() != null && !checkModuleDefinition(name, source.getFile())) {
 				logProblem(
@@ -574,6 +629,12 @@ public class CSTParser {
 	 */
 	private void parseModuleHeaderTypedModels(int posBegin, int posEnd, Module eModule) {
 		int currentPos = posBegin;
+		String substring = source.getBuffer().substring(posBegin, posEnd);
+		if ("".equals(substring.trim())) { //$NON-NLS-1$
+			logProblem(AcceleoParserMessages.getString("CSTParser.MissingMetamodel"), eModule //$NON-NLS-1$
+					.getStartPosition(), eModule.getEndPosition());
+		}
+
 		while (currentPos != posEnd) {
 			Region comma = pComma.search(source.getBuffer(), currentPos, posEnd, null,
 					new SequenceBlock[] {pLiteral });
@@ -633,16 +694,30 @@ public class CSTParser {
 	private int parseModuleHeaderExtends(int posBegin, int posEnd, Module eModule) {
 		int bExtend = ParserUtils.shiftKeyword(source.getBuffer(), posBegin, posEnd,
 				IAcceleoConstants.EXTENDS, true);
+		boolean errorFound = false;
 		if (bExtend != posBegin) {
-			while (bExtend != posEnd) {
+			while (bExtend != posEnd && !errorFound) {
 				Region comma = pComma.search(source.getBuffer(), bExtend, posEnd, null,
 						new SequenceBlock[] {pLiteral });
 				if (comma.b() == -1) {
 					ModuleExtendsValue eModuleExtendsValue = CstFactory.eINSTANCE.createModuleExtendsValue();
-					setPositions(eModuleExtendsValue, bExtend, posEnd);
-					eModuleExtendsValue.setName(source.getBuffer().substring(bExtend, posEnd).trim());
-					eModule.getExtends().add(eModuleExtendsValue);
-					bExtend = posEnd;
+					String trimmedText = source.getBuffer().substring(bExtend, posEnd).trim();
+					int indexOfSpace = trimmedText.indexOf(" "); //$NON-NLS-1$
+					if (indexOfSpace == -1) {
+						eModuleExtendsValue.setName(trimmedText);
+						eModule.getExtends().add(eModuleExtendsValue);
+						setPositions(eModuleExtendsValue, bExtend, posEnd);
+						bExtend = posEnd;
+					} else {
+						int indexOfSpaceInTrimmedText = source.getBuffer().indexOf(trimmedText, bExtend)
+								+ indexOfSpace;
+						eModuleExtendsValue.setName(source.getBuffer().substring(bExtend,
+								indexOfSpaceInTrimmedText).trim());
+						eModule.getExtends().add(eModuleExtendsValue);
+						setPositions(eModuleExtendsValue, bExtend, indexOfSpaceInTrimmedText);
+						bExtend = indexOfSpaceInTrimmedText;
+						errorFound = true;
+					}
 				} else {
 					ModuleExtendsValue eModuleExtendsValue = CstFactory.eINSTANCE.createModuleExtendsValue();
 					setPositions(eModuleExtendsValue, bExtend, comma.b());
@@ -738,8 +813,8 @@ public class CSTParser {
 		int posBegin;
 		Region eH = pDocumentation.searchEndHeaderAtBeginHeader(source.getBuffer(), beginHeader, posEnd);
 		if (eH.b() == -1) {
-			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER, IAcceleoConstants.IMPORT),
-					beginHeader.b(), beginHeader.e());
+			logProblem(AcceleoParserMessages.getString(INVALID_STMT_HEADER,
+					IAcceleoConstants.DOCUMENTATION_BEGIN), beginHeader.b(), beginHeader.e());
 			posBegin = -1;
 		} else {
 			Documentation eDocumentation = CstFactory.eINSTANCE.createDocumentation();
@@ -994,14 +1069,25 @@ public class CSTParser {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eTemplate.setName(name);
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(
+						AcceleoParserMessages.getString("CSTParser.InvalidTemplateName", name), posShift, posEnd); //$NON-NLS-1$
+			}
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(
+						AcceleoParserMessages.getString("CSTParser.InvalidTemplateName", name), posShift, bH.b()); //$NON-NLS-1$
+			}
 			eTemplate.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
+				// never
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
@@ -1127,6 +1213,7 @@ public class CSTParser {
 				Region eHParenthesis = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
 						bHParenthesis, posEnd);
 				if (eHParenthesis.b() == -1) {
+					// never
 					logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED,
 							bHParenthesis.b(), bHParenthesis.e());
 					currentPos = headerPosEnd;
@@ -1171,6 +1258,7 @@ public class CSTParser {
 				Region eHParenthesis = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(),
 						bHParenthesis, posEnd);
 				if (eHParenthesis.b() == -1) {
+					// never
 					logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED,
 							bHParenthesis.b(), bHParenthesis.e());
 					currentPos = headerPosEnd;
@@ -1361,7 +1449,18 @@ public class CSTParser {
 				pBlock.parseExpressionHeader(posBegin + bInit
 						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(), posEnd, eInitExpression);
 			}
+
 			eVariable.setName(name.trim());
+			if (!ParserUtils.isIdentifier(name.trim())) {
+				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name.trim(), posBegin,
+						posEnd);
+			}
+			if (ACCELEO_KEYWORDS.contains(name.trim())
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name.trim())) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidVariableName", name), posBegin, //$NON-NLS-1$
+						posEnd);
+			}
+
 			eVariable.setType(type.trim());
 		}
 		return eVariable;
@@ -1420,15 +1519,26 @@ public class CSTParser {
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidQueryName", name), posShift, //$NON-NLS-1$
+						posEnd);
+			}
 			eQuery.setName(name);
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidQueryName", name), posShift, bH //$NON-NLS-1$
+						.b());
+			}
 			eQuery.setName(name);
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
+				// never
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());
@@ -1488,14 +1598,25 @@ public class CSTParser {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eMacro.setName(name);
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidMacroName", name), posShift, //$NON-NLS-1$
+						posEnd);
+			}
 		} else {
 			String name = source.getBuffer().substring(posShift, bH.b()).trim();
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
 			eMacro.setName(name);
+			if (ACCELEO_KEYWORDS.contains(name)
+					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidMacroName", name), posShift, //$NON-NLS-1$
+						bH.b());
+			}
 			Region eH = pParenthesis.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, posEnd);
 			if (eH.b() == -1) {
+				// never
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_PARENTHESIS_NOT_TERMINATED, bH.b(), bH.e());
 			} else {
 				Variable[] eVariables = createVariablesCommaSeparator(bH.e(), eH.b());

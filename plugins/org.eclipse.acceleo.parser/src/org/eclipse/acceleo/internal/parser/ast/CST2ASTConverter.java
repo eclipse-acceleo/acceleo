@@ -181,7 +181,9 @@ public class CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Module oModule = factory.getOrCreateModule(iModule);
 		if (iModule != null && oModule != null) {
 			String ioName = iModule.getName();
-			oModule.setName(ioName);
+			if (ioName != null && !"".equals(ioName)) { //$NON-NLS-1$
+				oModule.setName(ioName);
+			}
 			// Now a module in the AST has a start and an end position for its header (we can't know the
 			// ending position of the header here, it will be resolved later)
 			oModule.setStartHeaderPosition(iModule.getStartPosition());
@@ -273,7 +275,9 @@ public class CST2ASTConverter {
 			oTemplate.setVisibility(oVisibility);
 			transformStepCopyPositions(iTemplate, oTemplate);
 			String ioName = iTemplate.getName();
-			oTemplate.setName(ioName);
+			if (ioName != null && !"".equals(ioName)) { //$NON-NLS-1$
+				oTemplate.setName(ioName);
+			}
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iTemplate.getInit();
 			org.eclipse.acceleo.model.mtl.InitSection oInit = factory.getOrCreateInitSection(iInit);
 			if (oInit != null) {
@@ -332,8 +336,8 @@ public class CST2ASTConverter {
 			}
 
 			if (oTemplate.isDeprecated()) {
-				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.Deprecated"), //$NON-NLS-1$
-						oTemplate.getStartPosition(), oTemplate.getEndPosition());
+				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.DeprecatedTemplate", //$NON-NLS-1$
+						oTemplate.getName()), oTemplate.getStartPosition(), oTemplate.getEndPosition());
 			}
 		}
 	}
@@ -350,7 +354,9 @@ public class CST2ASTConverter {
 		if (iVariable != null && oVariable != null) {
 			transformStepCopyPositions(iVariable, oVariable);
 			String ioName = iVariable.getName();
-			oVariable.setName(ioName);
+			if (ioName != null && !"".equals(ioName)) { //$NON-NLS-1$
+				oVariable.setName(ioName);
+			}
 			String ioType = iVariable.getType();
 			EAnnotation eAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
 			eAnnotation.setSource(OCLParser.ANNOTATION_SOURCE);
@@ -1179,7 +1185,9 @@ public class CST2ASTConverter {
 			oMacro.setVisibility(oVisibility);
 			transformStepCopyPositions(iMacro, oMacro);
 			String ioName = iMacro.getName();
-			oMacro.setName(ioName);
+			if (ioName != null && !"".equals(ioName)) { //$NON-NLS-1$
+				oMacro.setName(ioName);
+			}
 			org.eclipse.acceleo.parser.cst.InitSection iInit = iMacro.getInit();
 			org.eclipse.acceleo.model.mtl.InitSection oInit = factory.getOrCreateInitSection(iInit);
 			if (oInit != null) {
@@ -1204,6 +1212,10 @@ public class CST2ASTConverter {
 			eAnnotation.setSource(OCLParser.ANNOTATION_SOURCE);
 			eAnnotation.getDetails().put(OCLParser.ANNOTATION_KEY_TYPE, ioType);
 			oMacro.getEAnnotations().add(eAnnotation);
+			if (oMacro.isDeprecated()) {
+				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.DeprecatedMacro", //$NON-NLS-1$
+						oMacro.getName()), oMacro.getStartPosition(), oMacro.getEndPosition());
+			}
 		}
 	}
 
@@ -1223,8 +1235,9 @@ public class CST2ASTConverter {
 			oQuery.setVisibility(oVisibility);
 			transformStepCopyPositions(iQuery, oQuery);
 			String ioName = iQuery.getName();
-			oQuery.setName(ioName);
-
+			if (ioName != null && !"".equals(ioName)) { //$NON-NLS-1$
+				oQuery.setName(ioName);
+			}
 			org.eclipse.acceleo.parser.cst.ModelExpression iExpression = iQuery.getExpression();
 			transformStepCopy(iExpression);
 
@@ -1245,8 +1258,8 @@ public class CST2ASTConverter {
 			oQuery.getEAnnotations().add(eAnnotation);
 
 			if (oQuery.isDeprecated()) {
-				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.Deprecated"), oQuery //$NON-NLS-1$
-						.getStartPosition(), oQuery.getEndPosition());
+				logWarning(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.DeprecatedQuery", //$NON-NLS-1$
+						oQuery.getName()), oQuery.getStartPosition(), oQuery.getEndPosition());
 			}
 		}
 	}

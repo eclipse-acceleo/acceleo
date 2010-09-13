@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.Region;
 import org.eclipse.acceleo.internal.parser.cst.utils.SequenceBlock;
@@ -63,7 +64,8 @@ public class CST2ASTConverterWithDocumentationResolver extends CST2ASTConverterW
 				+ IAcceleoConstants.DEFAULT_END, module.getStartHeaderPosition());
 		module.setEndHeaderPosition(endHeaderPosition);
 		if (module.isDeprecated()) {
-			logWarning(DEPRECATED_MESSAGE, module.getStartHeaderPosition(), module.getEndHeaderPosition());
+			logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, module.getName()), module
+					.getStartHeaderPosition(), module.getEndHeaderPosition());
 		}
 
 		transformStepResolveModuleDocumentation(module, buffer);
@@ -151,7 +153,7 @@ public class CST2ASTConverterWithDocumentationResolver extends CST2ASTConverterW
 			DocumentationPositionedKeyword k = keywordOrder.get(i);
 			String value = null;
 			if ((i + 1) < keywordOrder.size()) {
-				// If we are not at the and of the list of tags in the documentation, we parse the text
+				// If we are not at the end of the list of tags in the documentation, we parse the text
 				// between the current tag and the next one
 				value = this.computeDocumentationValue(moduleElementDocumentation.getBody().getValue(), k
 						.getKeyword(), k.getOffset(), keywordOrder.get(i + 1).getOffset());

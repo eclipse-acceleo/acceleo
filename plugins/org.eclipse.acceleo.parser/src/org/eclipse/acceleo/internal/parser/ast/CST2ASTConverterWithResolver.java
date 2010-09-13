@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
-import org.eclipse.acceleo.internal.parser.cst.utils.ParserUtils;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
@@ -36,6 +35,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.CollectionType;
+import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -45,9 +45,17 @@ import org.eclipse.ocl.expressions.OCLExpression;
  */
 public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
-	/** The message for depreciated elements. */
-	protected static final String DEPRECATED_MESSAGE = AcceleoParserMessages
-			.getString("CST2ASTConverterWithResolver.Deprecated"); //$NON-NLS-1$
+	/** The message for depreciated queries. */
+	protected static final String DEPRECATED_QUERY_MESSAGE = "CST2ASTConverterWithResolver.DeprecatedQuery"; //$NON-NLS-1$
+
+	/** The message for depreciated templates. */
+	protected static final String DEPRECATED_TEMPLATE_MESSAGE = "CST2ASTConverterWithResolver.DeprecatedTemplate"; //$NON-NLS-1$
+
+	/** The message for depreciated modules. */
+	protected static final String DEPRECATED_MODULE_MESSAGE = "CST2ASTConverterWithResolver.DeprecatedModule"; //$NON-NLS-1$
+
+	/** The message for depreciated macros. */
+	protected static final String DEPRECATED_MACRO_MESSAGE = "CST2ASTConverterWithResolver.DeprecatedMacro"; //$NON-NLS-1$
 
 	/** Key of the error message for an unavailable clause. */
 	private static final String UNAVAILABLE_CLAUSE_KEY = "CST2ASTConverterWithResolver.UnavailableClause"; //$NON-NLS-1$
@@ -116,10 +124,21 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		org.eclipse.acceleo.model.mtl.Module oModule = factory.getOrCreateModule(iModule);
 		if (iModule != null && oModule != null && factory.getOCL() != null) {
 			Iterator<org.eclipse.acceleo.parser.cst.TypedModel> iInputIt = iModule.getInput().iterator();
+			List<org.eclipse.acceleo.parser.cst.TypedModel> iInputList = new ArrayList<org.eclipse.acceleo.parser.cst.TypedModel>();
 			while (iInputIt.hasNext()) {
 				org.eclipse.acceleo.parser.cst.TypedModel iNext = iInputIt.next();
 				transformStepResolveAddEPackage(iNext);
 
+				boolean found = false;
+				for (org.eclipse.acceleo.parser.cst.TypedModel typedModel : iInputList) {
+					found = typedModel.getTakesTypesFrom().equals(iNext.getTakesTypesFrom());
+				}
+				if (found) {
+					logWarning(AcceleoParserMessages
+							.getString("CST2ASTConverterWithResolver.ModuleAlreadyUsesMetaModels"), iNext //$NON-NLS-1$
+							.getStartPosition(), iNext.getEndPosition());
+				}
+				iInputList.add(iNext);
 			}
 			try {
 				Iterator<ModuleImportsValue> iImportsIt = iModule.getImports().iterator();
@@ -132,9 +151,22 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
+						if (oModule.getImports().contains(oImportedModule)) {
+							logWarning(AcceleoParserMessages.getString(
+									"CST2ASTConverterWithResolver.ModuleAlreadyImports", oImportedModule //$NON-NLS-1$
+											.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
+						}
 						oModule.getImports().add(oImportedModule);
 						if (oImportedModule.isDeprecated()) {
-							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
+							logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE,
+									oImportedModule.getName()), ioNext.getStartPosition(), ioNext
+									.getEndPosition());
+						}
+						if (isRecursiveImports(oModule, oImportedModule)) {
+							logProblem(AcceleoParserMessages.getString(
+									"CST2ASTConverterWithResolver.RecursiveModuleImports", new Object[] { //$NON-NLS-1$
+									oModule.getName(), oImportedModule.getName(), }), ioNext
+									.getStartPosition(), ioNext.getEndPosition());
 						}
 					}
 				}
@@ -148,7 +180,18 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
+						if (oModule.getExtends().contains(oExtendedModule)) {
+							logWarning(AcceleoParserMessages.getString(
+									"CST2ASTConverterWithResolver.ModuleAlreadyExtends", oExtendedModule //$NON-NLS-1$
+											.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
+						}
 						oModule.getExtends().add(oExtendedModule);
+						if (!isExtendsCompatible(oModule, oExtendedModule)) {
+							logWarning(AcceleoParserMessages.getString(
+									"CST2ASTConverterWithResolver.ModuleExtendssIncompatibleModule", //$NON-NLS-1$
+									oExtendedModule.getName()), ioNext.getStartPosition(), ioNext
+									.getEndPosition());
+						}
 						if (isRecursiveExtends(oModule, oExtendedModule)) {
 							logProblem(AcceleoParserMessages.getString(
 									"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
@@ -156,7 +199,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 									.getStartPosition(), ioNext.getEndPosition());
 						}
 						if (oExtendedModule.isDeprecated()) {
-							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
+							logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE,
+									oExtendedModule.getName()), ioNext.getStartPosition(), ioNext
+									.getEndPosition());
 						}
 					}
 				}
@@ -177,6 +222,38 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	}
 
 	/**
+	 * Indicates if the extended module has a common input with the current module.
+	 * 
+	 * @param oModule
+	 *            The module
+	 * @param oExtendedModule
+	 *            The extended module
+	 * @return true if they have a common input
+	 */
+	private boolean isExtendsCompatible(org.eclipse.acceleo.model.mtl.Module oModule,
+			org.eclipse.acceleo.model.mtl.Module oExtendedModule) {
+		List<org.eclipse.acceleo.model.mtl.TypedModel> extendInput = oExtendedModule.getInput();
+		List<org.eclipse.acceleo.model.mtl.TypedModel> moduleInput = oModule.getInput();
+
+		boolean hasCommonInput = false;
+		for (org.eclipse.acceleo.model.mtl.TypedModel typedModel : moduleInput) {
+			for (org.eclipse.acceleo.model.mtl.TypedModel extendTypedModel : extendInput) {
+				List<EPackage> takesTypesFrom = typedModel.getTakesTypesFrom();
+				List<EPackage> extendedTakesTypesFrom = extendTypedModel.getTakesTypesFrom();
+
+				for (EPackage ePackage : takesTypesFrom) {
+					for (EPackage extendEPackage : extendedTakesTypesFrom) {
+						hasCommonInput = hasCommonInput
+								|| ePackage.getNsURI().equals(extendEPackage.getNsURI());
+					}
+				}
+			}
+		}
+
+		return hasCommonInput;
+	}
+
+	/**
 	 * Check for recursive extends.
 	 * 
 	 * @param module
@@ -189,11 +266,42 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.model.mtl.Module extendedModule) {
 		boolean res = false;
 		if (module != null && extendedModule != null) {
-			if (module == extendedModule) {
+			if (module == extendedModule
+					|| (EcoreUtil.getURI(module) != null && (EcoreUtil.getURI(module).equals(EcoreUtil
+							.getURI(extendedModule))))) {
 				res = true;
 			} else {
 				for (org.eclipse.acceleo.model.mtl.Module extended : extendedModule.getExtends()) {
 					if (isRecursiveExtends(module, extended)) {
+						res = true;
+						break;
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Check for recursive imports.
+	 * 
+	 * @param module
+	 *            the module
+	 * @param importedModule
+	 *            the imported module
+	 * @return true if there is a recursive extend
+	 */
+	private boolean isRecursiveImports(org.eclipse.acceleo.model.mtl.Module module,
+			org.eclipse.acceleo.model.mtl.Module importedModule) {
+		boolean res = false;
+		if (module != null && importedModule != null) {
+			if (module == importedModule
+					|| (EcoreUtil.getURI(module) != null && (EcoreUtil.getURI(module).equals(EcoreUtil
+							.getURI(importedModule))))) {
+				res = true;
+			} else {
+				for (org.eclipse.acceleo.model.mtl.Module imported : importedModule.getImports()) {
+					if (isRecursiveImports(module, imported)) {
 						res = true;
 						break;
 					}
@@ -324,7 +432,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				} else {
 					for (org.eclipse.acceleo.model.mtl.Template template : oOverrides) {
 						if (template.isDeprecated()) {
-							logWarning(DEPRECATED_MESSAGE, ioNext.getStartPosition(), ioNext.getEndPosition());
+							logWarning(AcceleoParserMessages.getString(DEPRECATED_TEMPLATE_MESSAGE, template
+									.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 							break;
 						}
 					}
@@ -524,10 +633,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			transformStepResolve(iInitExpression);
 			factory.getOCL().addVariableToScope(oVariable);
-			if (!ParserUtils.isIdentifier(iVariable.getName())) {
-				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + iVariable.getName(),
-						iVariable.getStartPosition(), iVariable.getEndPosition());
-			}
 			if (oVariable.getType() == null || oVariable.getType() == factory.getOCL().getInvalidType()) {
 				EClassifier eClassifier = factory.getOCL().lookupClassifier(iVariable.getType());
 				if (eClassifier != null) {
@@ -577,6 +682,30 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					EcoreUtil.replace(oTemplateExpression, oOCLExpression);
 				}
 			}
+			if (oOCLExpression instanceof OperationCallExp
+					&& ((OperationCallExp)oOCLExpression).getOperationCode() == org.eclipse.ocl.utilities.PredefinedType.EQUAL) {
+				OperationCallExp oOperationCallExp = (OperationCallExp)oOCLExpression;
+				List<OCLExpression<EClassifier>> argument = oOperationCallExp.getArgument();
+				OCLExpression<EClassifier> source = oOperationCallExp.getSource();
+
+				boolean sourceIsCollection = false;
+				boolean argumentIsCollection = false;
+				if (argument.size() > 0) {
+					OCLExpression<EClassifier> expression = argument.get(0);
+					sourceIsCollection = CollectionType.class.isInstance(source.getType());
+					argumentIsCollection = CollectionType.class.isInstance(expression.getType());
+				}
+
+				// 'source = argument'
+				// if source or argument is a collection but not both, we log a warning
+				if ((sourceIsCollection && !argumentIsCollection)
+						|| (argumentIsCollection && !sourceIsCollection)) {
+					logWarning(AcceleoParserMessages.getString(
+							"CST2ASTConverterWithResolver.IncompatibleAffectation", source.getType() //$NON-NLS-1$
+									.getName(), argument.get(0).getType().getName()), oOCLExpression
+							.getStartPosition(), oOCLExpression.getEndPosition());
+				}
+			}
 			if (oOCLExpression instanceof TemplateInvocation) {
 				TemplateInvocation oTemplateInvocation = (TemplateInvocation)oOCLExpression;
 				transformStepResolveSuperTemplateInvocation(iModelExpression, oTemplateInvocation);
@@ -619,19 +748,22 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				TemplateInvocation templateInvocation = (TemplateInvocation)oOCLExpression;
 				if (templateInvocation.getDefinition() != null
 						&& templateInvocation.getDefinition().isDeprecated()) {
-					logWarning(DEPRECATED_MESSAGE, templateInvocation.getStartPosition(), templateInvocation
-							.getEndPosition());
+					logWarning(AcceleoParserMessages.getString(DEPRECATED_TEMPLATE_MESSAGE,
+							templateInvocation.getDefinition().getName()), templateInvocation
+							.getStartPosition(), templateInvocation.getEndPosition());
 				}
 			} else if (oOCLExpression instanceof QueryInvocation) {
 				QueryInvocation queryInvocation = (QueryInvocation)oOCLExpression;
 				if (queryInvocation.getDefinition() != null && queryInvocation.getDefinition().isDeprecated()) {
-					logWarning(DEPRECATED_MESSAGE, queryInvocation.getStartPosition(), queryInvocation
+					logWarning(AcceleoParserMessages.getString(DEPRECATED_QUERY_MESSAGE, queryInvocation
+							.getDefinition().getName()), queryInvocation.getStartPosition(), queryInvocation
 							.getEndPosition());
 				}
 			} else if (oOCLExpression instanceof MacroInvocation) {
 				MacroInvocation macroInvocation = (MacroInvocation)oOCLExpression;
 				if (macroInvocation.getDefinition() != null && macroInvocation.getDefinition().isDeprecated()) {
-					logWarning(DEPRECATED_MESSAGE, macroInvocation.getStartPosition(), macroInvocation
+					logWarning(AcceleoParserMessages.getString(DEPRECATED_MACRO_MESSAGE, macroInvocation
+							.getDefinition().getName()), macroInvocation.getStartPosition(), macroInvocation
 							.getEndPosition());
 				}
 			}
@@ -833,7 +965,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 		}
 
-		// for all conflict we log a warning.
+		// for all conflicts we log a warning.
 		if (!conflictList.isEmpty()) {
 			for (ProtectedAreaBlock protectedAreaBlock : conflictList) {
 				this.logWarning(AcceleoParserMessages
@@ -852,7 +984,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	private EObject getScopeContainer(final org.eclipse.acceleo.parser.cst.ProtectedAreaBlock iProtectedArea) {
 		EObject container = iProtectedArea.eContainer();
-		while (!(container instanceof Template) && !(container instanceof FileBlock)) {
+		while (container != null && !(container instanceof Template) && !(container instanceof FileBlock)) {
 			container = container.eContainer();
 		}
 		return container;
@@ -1050,6 +1182,16 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						oLetVariable.setInitExpression(saveInitExpression);
 					}
 					factory.getOCL().popContext();
+
+					if (oLetVariable.getInitExpression() != null
+							&& !oLetVariable.getType().equals(oLetVariable.getInitExpression().getType())
+							&& !oLetVariable.getType().isInstance(oLetVariable.getInitExpression().getType())) {
+						logWarning(AcceleoParserMessages.getString(
+								"CST2ASTConverterWithResolver.PossibleIncompatibleLet", oLetVariable //$NON-NLS-1$
+										.getType().getName(), oLetVariable.getInitExpression().getType()
+										.getName()), oLetVariable.getStartPosition(), oLetVariable
+								.getInitExpression().getEndPosition());
+					}
 				}
 			}
 
@@ -1199,9 +1341,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iMacro.getType(),
 							iMacro.getStartPosition(), iMacro.getEndPosition());
 				}
-			}
-			if (oMacro.isDeprecated()) {
-				logWarning(DEPRECATED_MESSAGE, oMacro.getStartPosition(), oMacro.getEndPosition());
 			}
 		}
 	}
