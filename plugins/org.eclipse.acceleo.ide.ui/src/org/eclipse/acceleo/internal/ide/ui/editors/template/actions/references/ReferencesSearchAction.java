@@ -12,11 +12,13 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.OpenDeclarationAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.search.ui.ISearchQuery;
+import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
@@ -56,7 +58,7 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 		}
 		if (part instanceof AcceleoEditor && ((AcceleoEditor)part).getContent() != null) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			declaration = findDeclaration(editor);
+			declaration = OpenDeclarationUtils.findDeclaration(editor);
 			if (declaration == null) {
 				int offset;
 				ISelection selection = editor.getSelectionProvider().getSelection();
@@ -66,9 +68,32 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 				}
 			}
 			if (declaration != null) {
-				ISearchQuery query = new ReferencesSearchQuery(editor, declaration);
+				ISearchQuery query = new ReferencesSearchQuery(editor, declaration, true, true);
 				NewSearchUI.runQueryInBackground(query);
+
+				ISearchQuery[] queries = NewSearchUI.getQueries();
+				for (ISearchQuery iSearchQuery : queries) {
+					// We delete all queries except the current one
+					if (iSearchQuery instanceof ReferencesSearchQuery && query != iSearchQuery) {
+						ReferencesSearchQuery refSearchQuery = (ReferencesSearchQuery)iSearchQuery;
+						this.clearPreviousQuery(refSearchQuery);
+					}
+				}
 			}
+		}
+	}
+
+	/**
+	 * Clears the previous search query.
+	 * 
+	 * @param refSearchQuery
+	 *            The previous search query
+	 */
+	private void clearPreviousQuery(ReferencesSearchQuery refSearchQuery) {
+		ISearchResult searchResult = refSearchQuery.getSearchResult();
+		if (searchResult instanceof ReferencesSearchResult) {
+			ReferencesSearchResult refSearchResult = (ReferencesSearchResult)searchResult;
+			refSearchResult.removeAll();
 		}
 	}
 }

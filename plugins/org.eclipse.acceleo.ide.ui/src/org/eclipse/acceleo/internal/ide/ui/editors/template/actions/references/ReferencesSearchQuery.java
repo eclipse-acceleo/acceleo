@@ -28,6 +28,7 @@ import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -51,6 +52,7 @@ import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
+import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.search.ui.text.Match;
 
 /**
@@ -80,6 +82,11 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	private boolean searchOutsideOfCurrentFile;
 
 	/**
+	 * Indicates if we should show the result in the Acceleo editor with a search marker.
+	 */
+	private boolean showInEditor;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param editor
@@ -92,6 +99,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		this.editor = editor;
 		this.searchResult = new ReferencesSearchResult(this);
 		this.searchOutsideOfCurrentFile = true;
+		this.showInEditor = false;
 	}
 
 	/**
@@ -109,6 +117,28 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		this.editor = editor;
 		this.searchResult = new ReferencesSearchResult(this);
 		this.searchOutsideOfCurrentFile = searchOutsideCurrentFile;
+		this.showInEditor = false;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param editor
+	 *            the Acceleo editor
+	 * @param declaration
+	 *            the declaration for which we seek references
+	 * @param searchOutsideCurrentFile
+	 *            Indicates if we have to search outside of the current file.
+	 * @param showResultInEditor
+	 *            Indicates if we should show the result in the Acceleo editor with a search marker.
+	 */
+	public ReferencesSearchQuery(AcceleoEditor editor, EObject declaration, boolean searchOutsideCurrentFile,
+			boolean showResultInEditor) {
+		this.declaration = declaration;
+		this.editor = editor;
+		this.searchResult = new ReferencesSearchResult(this);
+		this.searchOutsideOfCurrentFile = searchOutsideCurrentFile;
+		this.showInEditor = showResultInEditor;
 	}
 
 	/**
@@ -337,6 +367,17 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			}
 			searchResult.addMatch(new Match(new ReferenceEntry(mtlFile, astNode, editor, message), region
 					.getOffset(), region.getLength()));
+
+			if (this.showInEditor) {
+				// create a marker in the acceleo editor to show the result.
+				try {
+					IMarker marker = mtlFile.createMarker(NewSearchUI.SEARCH_MARKER);
+					marker.setAttribute(IMarker.CHAR_START, region.getOffset());
+					marker.setAttribute(IMarker.CHAR_END, region.getOffset() + region.getLength());
+				} catch (CoreException e) {
+					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+				}
+			}
 		}
 	}
 

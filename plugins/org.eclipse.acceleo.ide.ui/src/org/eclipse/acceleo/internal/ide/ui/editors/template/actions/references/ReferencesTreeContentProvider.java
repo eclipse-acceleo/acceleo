@@ -103,6 +103,7 @@ public class ReferencesTreeContentProvider implements ITreeContentProvider {
 	 * Refresh the tree viewer.
 	 */
 	public void clear() {
+		viewer.setInput(null);
 		viewer.refresh();
 	}
 
