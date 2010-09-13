@@ -268,6 +268,17 @@ Contributors:
               style="push"
               tooltip="%acceleoEditorCommandsExtractAsQuery.Tooltip">
         </action>
+        <action
+              allowLabelUpdate="true"
+              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.pullup.AcceleoPullUpAction"
+              definitionId="org.eclipse.acceleo.ide.ui.refactor.pullup"
+              enablesFor="*"
+              id="org.eclipse.acceleo.ide.ui.editors.template.actions.refactor.pullUp"
+              label="%acceleoEditorCommandsPullUp.Label"
+              retarget="false"
+              style="push"
+              tooltip="%acceleoEditorCommandsPullUp.Tooltip">
+        </action>
       </actionSet>
    </extension>
 
@@ -331,6 +342,11 @@ Contributors:
         		id="org.eclipse.acceleo.ide.ui.extractAsQuery"
         		name="%acceleoEditorCommandsExtractAsQuery.Name">
 		</command>
+		<command
+                description="%acceleoEditorCommandsPullUp.Description"
+                id="org.eclipse.acceleo.ide.ui.refactor.pullup"
+                name="%acceleoEditorCommandsPullUp.Name">
+        </command>
    </extension>
 
    <extension
@@ -455,6 +471,11 @@ Contributors:
                 </visibleWhen>
              </command>
              <command commandId="org.eclipse.acceleo.ide.ui.refactor.rename">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>
+             <command commandId="org.eclipse.acceleo.ide.ui.refactor.pullup" style="push">
                 <visibleWhen>
                    <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
                 </visibleWhen>
@@ -899,6 +920,10 @@ Contributors:
        <contribution
              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.rename.AcceleoRenameModuleRefactoringContribution"
              id="org.eclipse.acceleo.ide.ui.refactor.renamemodule">
+       </contribution>
+       <contribution
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.pullup.AcceleoPullUpRefactoringContribution"
+             id="org.eclipse.acceleo.ide.ui.refactor.pullup">
        </contribution>
     </extension>
     <extension
