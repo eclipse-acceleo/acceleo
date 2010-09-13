@@ -27,6 +27,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoForSc
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoIfScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoLetScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoMacroScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoProtectedAreaScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoQueryScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoTemplateScanner;
@@ -34,6 +35,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclaratio
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
@@ -286,5 +288,19 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 				return new AcceleoHoverInformationControl(parent);
 			}
 		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
+	 */
+	@Override
+	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer, String contentType) {
+		if (AcceleoPartitionScanner.ACCELEO_DOCUMENTATION.equals(contentType)) {
+			return new IAutoEditStrategy[] {new AcceleoDocAutoIndentStrategy(), };
+		}
+		return null;
 	}
 }
