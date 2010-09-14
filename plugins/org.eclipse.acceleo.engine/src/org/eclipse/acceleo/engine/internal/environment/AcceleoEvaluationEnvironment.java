@@ -480,9 +480,34 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			// Only supports single inheritance
 			Module extended = module.getExtends().get(0);
 			scope.add(extended);
-			scope.addAll(getScopeOf(extended));
+			scope.addAll(getExtendedScope(extended));
 		}
-		scope.addAll(module.getImports());
+
+		List<Module> imports = module.getImports();
+		scope.addAll(imports);
+		for (Module importedModule : imports) {
+			scope.addAll(getExtendedScope(importedModule));
+		}
+
+		return scope;
+	}
+
+	/**
+	 * Returns the whole scope of modules visible thanks to an extends.
+	 * 
+	 * @param module
+	 *            Module of which we need the scope.
+	 * @return The whole scope of modules visible thanks to an extends.
+	 */
+	private Set<Module> getExtendedScope(Module module) {
+		Set<Module> scope = new HashSet<Module>();
+
+		if (module.getExtends().size() > 0) {
+			// Only supports single inheritance
+			Module extended = module.getExtends().get(0);
+			scope.add(extended);
+			scope.addAll(getExtendedScope(extended));
+		}
 
 		return scope;
 	}
@@ -867,6 +892,20 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				if (candidate.eContainer() == imported) {
 					reorderedList.add(candidate);
 					candidates.remove(candidate);
+				}
+			}
+		}
+
+		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+			for (final Module imported : origin.getImports()) {
+				Module myImportedModule = imported;
+
+				while (myImportedModule.getExtends().size() > 0) {
+					if (myImportedModule.getExtends().get(0) == candidate.eContainer()) {
+						reorderedList.add(candidate);
+						candidates.remove(candidate);
+					}
+					myImportedModule = myImportedModule.getExtends().get(0);
 				}
 			}
 		}
