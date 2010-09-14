@@ -114,7 +114,7 @@ public class PreviewStrategy extends AbstractGenerationStrategy {
 
 		if (file.isDirectory()) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationContext.FileNameIsDirectory", file.getParentFile())); //$NON-NLS-1$
+					"AcceleoEvaluationContext.FileNameIsDirectory", file)); //$NON-NLS-1$
 		}
 
 		if (appendMode && previous != null) {
