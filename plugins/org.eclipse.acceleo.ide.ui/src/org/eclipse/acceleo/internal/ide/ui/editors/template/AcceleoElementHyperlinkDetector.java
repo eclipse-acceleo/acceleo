@@ -107,7 +107,9 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 			} else {
 				wordRegion = new Region(wordStart, wordLength);
 			}
-			links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
+			if (wordRegion != null) {
+				links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
+			}
 		}
 		return links;
 	}
@@ -140,6 +142,10 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	 */
 	private IRegion getWordRegion(AcceleoEditor currentEditor, int cursorOffset, int expressionStart,
 			int expressionLength) {
+		if ((expressionStart + expressionLength) > currentEditor.getContent().getText().length()) {
+			return null;
+		}
+
 		// Creates a new String to avoid keeping the whole document in memory
 		final String expression = new String(currentEditor.getContent().getText().substring(expressionStart,
 				expressionStart + expressionLength));
