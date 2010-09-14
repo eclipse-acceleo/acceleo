@@ -235,6 +235,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public void createFileWriter(File generatedFile, Block fileBlock, EObject source, boolean appendMode,
 			String charset) throws AcceleoEvaluationException {
+		if (generatedFile.getName().endsWith(File.separator) || generatedFile.isDirectory()) {
+			return;
+		}
 		context.openNested(generatedFile, fileBlock, source, appendMode, charset);
 	}
 

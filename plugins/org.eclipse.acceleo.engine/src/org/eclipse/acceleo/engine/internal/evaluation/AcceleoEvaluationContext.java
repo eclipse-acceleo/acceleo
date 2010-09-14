@@ -165,10 +165,15 @@ public class AcceleoEvaluationContext<C> {
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent)
 			throws AcceleoEvaluationException {
 		try {
-			final Writer currentWriter = writers.getLast();
-			currentWriter.append(string);
-			if (fireEvent && string.length() > 0) {
-				fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
+			if (writers.size() > 0) {
+				final Writer currentWriter = writers.getLast();
+				currentWriter.append(string);
+				if (fireEvent && string.length() > 0) {
+					fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
+				}
+			} else {
+				AcceleoEnginePlugin.log(AcceleoEngineMessages
+						.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"), false); //$NON-NLS-1$
 			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
@@ -301,6 +306,12 @@ public class AcceleoEvaluationContext<C> {
 	 *             This will be thrown if the last writer of the stack cannot be flushed and closed.
 	 */
 	public String closeContext(Block sourceBlock, EObject source) throws AcceleoEvaluationException {
+		if (writers.size() == 0) {
+			AcceleoEnginePlugin.log(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"), false); //$NON-NLS-1$
+			return ""; //$NON-NLS-1$
+		}
+
 		final Writer last = writers.removeLast();
 		final String result;
 		try {
