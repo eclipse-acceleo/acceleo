@@ -56,8 +56,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 
 	/**
 	 * For dynamic ecore files only. To get the ecore file path of the registered nsURI. Dynamic packages are
-	 * registered in the EMF Registry by using the 'registerEcorePackages' method. The map key is the dynamic
-	 * nsURI of an EPackage and the value is the ecore file path used to register this nsURI.
+	 * registered in the EMF Registry by using the {@link #registerEcorePackages(String)} method. The map key
+	 * is the dynamic nsURI of an EPackage and the value is the ecore file path used to register this nsURI.
 	 */
 	private Map<String, String> dynamicEcorePackagePaths = new HashMap<String, String>();
 
