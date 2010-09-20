@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateOverrideDeprecated('http://www.eclipse.org/emf/2002/Ecore') extends templateDocumentationDeprecated/]
+
+[template public templateOverrideDeprecated(eClass : EClass) overrides templateDocumentationDeprecated]
+
+[/template]

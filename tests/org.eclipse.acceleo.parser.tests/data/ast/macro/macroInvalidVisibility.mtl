@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module macroInvalidVisibility('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[macro InvalidVisibility macroInvalidVisibility(eClass : EClass) : String]
+
+[/macro]

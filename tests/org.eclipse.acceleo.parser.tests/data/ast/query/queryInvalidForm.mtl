@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module queryInvalidForm('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public queryInvalidForm(eClass : EClass) : String = eClass.name][/query]

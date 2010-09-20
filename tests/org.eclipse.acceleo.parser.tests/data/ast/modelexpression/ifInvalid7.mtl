@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module ifInvalid7('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public ifInvalid7(eClass : EClass)]
+
+[if (true)]
+[elseif]
+[/if]
+
+[/template]
+

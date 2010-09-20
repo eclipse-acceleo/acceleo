@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module queryDocumentationFIXME('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**This is my @FIXME do something !!/]
+[query public queryDocumentationFIXME(eClass : EClass) : String = eClass.name/]

@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module queryMissingParameterType('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public queryMissingParameterType(eClass : ) : String = eClass.name/]

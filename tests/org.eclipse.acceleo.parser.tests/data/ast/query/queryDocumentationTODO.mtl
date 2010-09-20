@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module queryDocumentationTODO('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**This is my @TODO do something !!/]
+[query public queryDocumentationTODO(eClass : EClass) : String = eClass.name/]

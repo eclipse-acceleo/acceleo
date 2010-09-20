@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateMissingGuardParenthesis('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateMissingGuardParenthesis(eClass : EClass) ? (true]
+
+[/template]

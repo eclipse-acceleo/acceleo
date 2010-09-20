@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module queryMissingParenthesis3('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public ljqsjé"__çèç'-"__ eClass : EClass : String = eClass.name/]

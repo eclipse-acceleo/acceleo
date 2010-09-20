@@ -1,0 +1,9 @@
+[comment encoding = UTF-8 /]
+[module fileInvalid3('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public fileInvalid3(eClass : EClass)]
+
+[file ('file.txt' false 'UTF-8')][/file]
+
+[/template]
+

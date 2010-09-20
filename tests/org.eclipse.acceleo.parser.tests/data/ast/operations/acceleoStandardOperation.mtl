@@ -1,0 +1,24 @@
+[comment encoding = UTF-8 /]
+[module acceleoStandardOperation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generate(eClass : EClass)]
+
+['e'.first(1)/]
+['e'.index('e')/]
+['e'.isAlpha()/]
+['e'.isAlphanum()/]
+['e'.last(1)/]
+['e'.strcmp('e')/]
+['e'.strstr('e')/]
+['e'.strtok('e', 1)/]
+['e'.substitute('e', 'a')/]
+['e'.toLowerFirst()/]
+['e'.toUpperFirst()/]
+['e'/]
+
+[1.toString()/]
+
+[1.5.toString()/]
+
+[/template]
+

@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module macroMissingParamName('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[macro public macroMissingParamName( : EClass) : String]
+
+[/macro]

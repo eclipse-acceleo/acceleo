@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module forInvalid('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public forInvalid(eClass : EClass)]
+
+[for (eAttribute : EAttribute | eClass.eAllAttributes)
+
+[/for]
+
+[/template]
+

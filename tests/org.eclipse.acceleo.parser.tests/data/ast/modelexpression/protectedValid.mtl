@@ -1,0 +1,9 @@
+[comment encoding = UTF-8 /]
+[module protectedValid('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public protectedValid(eClass : EClass)]
+
+[protected ('protected') /]
+
+[/template]
+

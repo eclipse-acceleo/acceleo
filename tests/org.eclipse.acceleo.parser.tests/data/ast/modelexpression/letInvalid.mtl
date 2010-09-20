@@ -1,0 +1,9 @@
+[comment encoding = UTF-8 /]
+[module letInvalid('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public letInvalid(eClass : EClass)]
+
+[let name : String = eClass.name[/let]
+
+[/template]
+

@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateMissingSemiColon('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateMissingSemiColon(eClass : EClass) {javaName : String = 'javaName'}]
+
+[/template]

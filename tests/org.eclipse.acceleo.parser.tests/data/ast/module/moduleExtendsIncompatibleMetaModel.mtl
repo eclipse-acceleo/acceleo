@@ -1,0 +1,3 @@
+[comment encoding = UTF-8 /]
+[module moduleExtendsIncompatibleMetaModel('http://www.eclipse.org/uml2/2.1.0/UML') extends moduleValid/]
+

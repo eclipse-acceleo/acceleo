@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.cst;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
 
 import org.eclipse.acceleo.internal.parser.cst.CSTParser;
 import org.eclipse.acceleo.internal.parser.cst.CSTParserBlock;
@@ -23,52 +23,47 @@ import org.eclipse.acceleo.parser.cst.LetBlock;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TraceBlock;
+import org.junit.Test;
 
-@SuppressWarnings("nls")
-public class CSTParserBlockTests extends TestCase {
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+public class CSTParserBlockTests {
+	@Test
 	public void testParseIf() {
-		StringBuffer buffer = new StringBuffer("[if(true)] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 0);
 	}
 
+	@Test
 	public void testParseIfElse() {
-		StringBuffer buffer = new StringBuffer("[if(true)] [else] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] [else] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 0);
 	}
 
+	@Test
 	public void testParseIfElseIf() {
-		StringBuffer buffer = new StringBuffer("[if(true)] [elseif(true)] [else] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] [elseif(true)] [else] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 0);
 	}
 
+	@Test
 	public void testParseIfWithOwnedIf() {
-		StringBuffer buffer = new StringBuffer("[if(true)] [if(true)] [elseif(true)] [else] [/if] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] [if(true)] [elseif(true)] [else] [/if] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 0);
 	}
 
+	@Test
 	public void testParseIfBadSyntaxValidateQuotes() {
-		StringBuffer buffer = new StringBuffer("[if(true)] \" [if(true)] \" [elseif(true)] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] \" [if(true)] \" [elseif(true)] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 1);
 	}
 
+	@Test
 	public void testParseIfValidateQuotes() {
-		StringBuffer buffer = new StringBuffer("[if(true)] \" [elseif(true)] [else] [/if]");
+		StringBuffer buffer = new StringBuffer("[if(true)] \" [elseif(true)] [else] [/if]"); //$NON-NLS-1$
 		testParseIf(buffer, 0);
 	}
 
 	private void testParseIf(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
+		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)"); //$NON-NLS-1$
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
 		CSTParser pAcceleomodule = new CSTParser(moduleSource);
 		Module eModule = CstFactory.eINSTANCE.createModule();
@@ -82,50 +77,57 @@ public class CSTParserBlockTests extends TestCase {
 		CSTParserBlock parser = new CSTParserBlock(pAcceleo);
 		parser.parse(0, buffer.length(), eIf);
 		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
+			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	@Test
 	public void testParseFor() {
-		StringBuffer buffer = new StringBuffer("[for (c : Class | null)] [/for]");
+		StringBuffer buffer = new StringBuffer("[for (c : Class | null)] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithOwnedFor() {
 		StringBuffer buffer = new StringBuffer(
-				"[for (c : Class | null)] [for(a : Property | null)] [/for] [/for]");
+				"[for (c : Class | null)] [for(a : Property | null)] [/for] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithBefore() {
-		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null)] [/for]");
+		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null)] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithBeforeSeparator() {
 		StringBuffer buffer = new StringBuffer(
-				"[for (c : Class | null) before (null) separator (',')] [/for]");
+				"[for (c : Class | null) before (null) separator (',')] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithBeforeAfter() {
-		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null)] after (null)] [/for]");
+		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null)] after (null)] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithBeforeGuard() {
-		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null) ? (null)] [/for]");
+		StringBuffer buffer = new StringBuffer("[for (c : Class | null) before (null) ? (null)] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
+	@Test
 	public void testParseForWithBeforeGuardInitSection() {
 		StringBuffer buffer = new StringBuffer(
-				"[for (c1 : Class | null) before (null) ? (null) {c2:Class;} ] [/for]");
+				"[for (c1 : Class | null) before (null) ? (null) {c2:Class;} ] [/for]"); //$NON-NLS-1$
 		testParseFor(buffer, 0);
 	}
 
 	private void testParseFor(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
+		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)"); //$NON-NLS-1$
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
 		Module eModule = CstFactory.eINSTANCE.createModule();
 		CSTParser pAcceleomodule = new CSTParser(moduleSource);
@@ -139,38 +141,43 @@ public class CSTParserBlockTests extends TestCase {
 		CSTParserBlock parser = new CSTParserBlock(pAcceleo);
 		parser.parse(0, buffer.length(), eFor);
 		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
+			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	@Test
 	public void testParseLetWithVariable() {
-		StringBuffer buffer = new StringBuffer("[let c1 : Class] [/let]");
+		StringBuffer buffer = new StringBuffer("[let c1 : Class] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
+	@Test
 	public void testParseLetWithoutVariable() {
-		StringBuffer buffer = new StringBuffer("[let ] [/let]");
+		StringBuffer buffer = new StringBuffer("[let ] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 1);
 	}
 
+	@Test
 	public void testParseLetElse() {
-		StringBuffer buffer = new StringBuffer("[let c:Class] [else] [/let]");
+		StringBuffer buffer = new StringBuffer("[let c:Class] [else] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
+	@Test
 	public void testParseLetElseLet() {
-		StringBuffer buffer = new StringBuffer("[let c1:Class] [elselet c2:Class] [else] [/let]");
+		StringBuffer buffer = new StringBuffer("[let c1:Class] [elselet c2:Class] [else] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
+	@Test
 	public void testParseLetWithOwnedLet() {
 		StringBuffer buffer = new StringBuffer(
-				"[let c1:Class] [let c2:Class] [elselet c3:Class] [else] [/let] [/let]");
+				"[let c1:Class] [let c2:Class] [elselet c3:Class] [else] [/let] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
 	private void testParseLet(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
+		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)"); //$NON-NLS-1$
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
 		Module eModule = CstFactory.eINSTANCE.createModule();
 		CSTParser pAcceleomodule = new CSTParser(moduleSource);
@@ -184,22 +191,24 @@ public class CSTParserBlockTests extends TestCase {
 		CSTParserBlock parser = new CSTParserBlock(pAcceleo);
 		parser.parse(0, buffer.length(), eLet);
 		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
+			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	@Test
 	public void testParseTrace() {
-		StringBuffer buffer = new StringBuffer("[trace ('')] [/trace]");
+		StringBuffer buffer = new StringBuffer("[trace ('')] [/trace]"); //$NON-NLS-1$
 		testParseTrace(buffer, 0);
 	}
 
+	@Test
 	public void testParseTraceWithOwnedTrace() {
-		StringBuffer buffer = new StringBuffer("[trace ('1')] [trace ('2')] [/trace] [/trace]");
+		StringBuffer buffer = new StringBuffer("[trace ('1')] [trace ('2')] [/trace] [/trace]"); //$NON-NLS-1$
 		testParseTrace(buffer, 0);
 	}
 
 	private void testParseTrace(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
+		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)"); //$NON-NLS-1$
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
 		Module eModule = CstFactory.eINSTANCE.createModule();
 		CSTParser pAcceleomodule = new CSTParser(moduleSource);
@@ -213,38 +222,43 @@ public class CSTParserBlockTests extends TestCase {
 		CSTParserBlock parser = new CSTParserBlock(pAcceleo);
 		parser.parse(0, buffer.length(), eTrace);
 		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
+			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	@Test
 	public void testParseFileWithOverwriteMode() {
-		StringBuffer buffer = new StringBuffer("[file ('file.txt', false)] [/file]");
+		StringBuffer buffer = new StringBuffer("[file ('file.txt', false)] [/file]"); //$NON-NLS-1$
 		testParseFile(buffer, 0);
 	}
 
+	@Test
 	public void testParseFileWithAppendMode() {
-		StringBuffer buffer = new StringBuffer("[file ('file.txt', true)] [/file]");
+		StringBuffer buffer = new StringBuffer("[file ('file.txt', true)] [/file]"); //$NON-NLS-1$
 		testParseFile(buffer, 0);
 	}
 
+	@Test
 	public void testParseFileWithBadOpenMode() {
-		StringBuffer buffer = new StringBuffer("[file ('file.txt', badmode)] [/file]");
+		StringBuffer buffer = new StringBuffer("[file ('file.txt', badmode)] [/file]"); //$NON-NLS-1$
 		testParseFile(buffer, 1);
 	}
 
+	@Test
 	public void testParseFileWithOpenModeAndUniqueId() {
-		StringBuffer buffer = new StringBuffer("[file ('file.txt', true, 'ID')] [/file]");
+		StringBuffer buffer = new StringBuffer("[file ('file.txt', true, 'ID')] [/file]"); //$NON-NLS-1$
 		testParseFile(buffer, 0);
 	}
 
+	@Test
 	public void testParseFileWithOwnedFile() {
 		StringBuffer buffer = new StringBuffer(
-				"[file ('file.txt', false)] [file ('file.txt', false)] [/file] [/file]");
+				"[file ('file.txt', false)] [file ('file.txt', false)] [/file] [/file]"); //$NON-NLS-1$
 		testParseFile(buffer, 0);
 	}
 
 	private void testParseFile(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
+		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)"); //$NON-NLS-1$
 		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
 		Module eModule = CstFactory.eINSTANCE.createModule();
 		CSTParser pAcceleomodule = new CSTParser(moduleSource);
@@ -258,7 +272,7 @@ public class CSTParserBlockTests extends TestCase {
 		CSTParserBlock parser = new CSTParserBlock(pAcceleo);
 		parser.parse(0, buffer.length(), eFile);
 		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
+			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

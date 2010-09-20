@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateMultipleVariable('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateMultipleVariable(v1 : String, v2 : String, v3 : String, v4 : String, v5 : String, v6 : String, v7 : String, v8 : String, v9 : String, v10 : String)]
+
+[/template]

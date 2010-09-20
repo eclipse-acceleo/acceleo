@@ -1,0 +1,4 @@
+[module moduleInvalidComment4('http://www.eclipse.org/emf/2002/Ecore')/]
+[comment this is a comment
+
+[/comment]

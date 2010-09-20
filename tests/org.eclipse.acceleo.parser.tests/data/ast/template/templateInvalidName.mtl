@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateInvalidName('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateInvalidName$ù$$ù*é"&"(eClass : EClass)]
+
+[/template]

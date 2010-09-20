@@ -1,0 +1,58 @@
+[comment encoding = UTF-8 /]
+[module acceleoNonStandardOperation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generate(eClass : EClass)]
+
+Non-standard String operations
+['e'.contains('e')/]
+['e'.endsWith('e')/]
+['e'.equalsIgnoreCase('e')/]
+['e'.lastIndex('e')/]
+['e'.matches('.')/]
+['e'.replace('e', 'i')/]
+['e'.replaceAll('e', 'i')/]
+['e'.startsWith('e')/]
+['e'.substituteAll('e', 'i')/]
+['e'.substring(1)/]
+['e'.tokenize('e')/]
+['e'.trim()/]
+
+Non-standard EObject operations
+[eClass.ancestors()/]
+[eClass.ancestors(EClass)/]
+[eClass.eAllContents()/]
+[eClass.eAllContents(EClass)/]
+[eClass.eContainer(EClass)/]
+[eClass.eContents(EClass)/]
+[eClass.eGet('e')/]
+[eClass.eInverse()/]
+[eClass.eInverse(EClass)/]
+[eClass.followingSiblings()/]
+[eClass.followingSiblings(EClass)/]
+[eClass.precedingSiblings()/]
+[eClass.precedingSiblings(EClass)/]
+[eClass.siblings()/]
+[eClass.siblings(EClass)/]
+
+Non-standard OclAny operations
+[eClass.current(1)/]
+[eClass.current(EClass)/]
+[eClass.getProperty('')/]
+[eClass.getProperty('e', Sequence{})/]
+[eClass.getProperty('e', 'i')/]
+[eClass.invoke('e', 'i', Sequence{})/]
+[eClass.toString()/]
+
+Non-standard Collection operations
+[OrderedSet{'a', 'e', 'i', 'o', 'u', 'y'}->sep(', ')/]
+[OrderedSet{'a', 'e', 'i', 'o', 'u', 'y'}->filter(String)/]
+[OrderedSet{'a', 'e', 'i', 'o', 'u', 'y'}->reverse()/]
+[OrderedSet{'a', 'e', 'i', 'o', 'u', 'y'}->lastIndexOf('e')/]
+
+[Sequence{'a'}->sep(', ')/]
+[Sequence{'a'}->filter(String)/]
+[Sequence{'a'}->reverse()/]
+[Sequence{'a'}->lastIndexOf('a')/]
+
+[/template]
+

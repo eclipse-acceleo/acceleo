@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[**this is my documentation
+[module moduleInvalidDocumentation('http://www.eclipse.org/emf/2002/Ecore')/]
+

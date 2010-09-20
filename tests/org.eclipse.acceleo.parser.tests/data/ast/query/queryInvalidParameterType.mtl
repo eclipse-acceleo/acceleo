@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module queryInvalidParameterType('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public queryInvalidParameterType(eClass : InvalidType) : String = eClass.name/]

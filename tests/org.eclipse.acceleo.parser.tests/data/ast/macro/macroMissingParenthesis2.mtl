@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module macroMissingParenthesis2('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[macro public sjdhqjkè_'-è_"é' eClass : EClass : String]
+
+[/macro]

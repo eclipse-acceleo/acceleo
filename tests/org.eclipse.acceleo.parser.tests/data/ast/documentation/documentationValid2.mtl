@@ -1,0 +1,34 @@
+[**
+ * This is a documentation
+ * @author sbegaudeau
+ * @since 1.0
+ * @version 1.0
+ * @deprecated
+ */]
+[module documentationValid2('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**
+ * This is my template
+ * @inheritedDoc doc
+ * @param eClass my EClass object
+ */]
+[template protected myTemplate(eClass : EClass)][/template]
+
+[**This is some documentation*/]
+[template protected myOtherTemplate(eClass : EClass)][/template]
+
+[**
+ * This is my template
+ * @inheritedDoc doc
+ * @param eClass*/]
+[template protected myOtherTemplateAgain(eClass : EClass)][/template]
+
+[**
+ * This is my documentation
+ * @param var1 myVar1
+ * @param var2 myVar2
+ * @param var3 myVar3
+ */]
+[template protected myTestTemplate(var1 : EClass, var2 : EClass, var3 : EClass)][/template]
+
+

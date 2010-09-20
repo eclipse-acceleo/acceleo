@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
@@ -34,22 +37,22 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.osgi.framework.Bundle;
 
-@SuppressWarnings("nls")
-public class AcceleoParserTests extends TestCase {
+public class AcceleoParserTests {
 
-	private Bundle bundle;
+	private static Bundle bundle;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests");
+	@BeforeClass
+	public static void setUp() throws Exception {
+		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests"); //$NON-NLS-1$
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@AfterClass
+	public static void tearDown() throws Exception {
 		bundle = null;
 	}
 
@@ -58,14 +61,14 @@ public class AcceleoParserTests extends TestCase {
 			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
 			return new File(fileLocation);
 		} catch (IOException e) {
-			throw new AssertionFailedError(e.getMessage());
+			fail(e.getMessage());
 		} catch (NullPointerException e) {
 			/*
 			 * on the server the unit test fails with an NPE :S
 			 */
-			throw new AssertionFailedError(e.getMessage());
+			fail(e.getMessage());
 		}
-
+		return null;
 	}
 
 	private URI createFileURI(String pathName) {
@@ -73,19 +76,24 @@ public class AcceleoParserTests extends TestCase {
 			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
 			return URI.createFileURI(fileLocation);
 		} catch (IOException e) {
-			throw new AssertionFailedError(e.getMessage());
+			fail(e.getMessage());
 		}
+		return null;
 	}
 
+	@Test
 	public void testCompileSourceBufferEcoreAcceleoWithImport() {
-		File file = createFile("/data/template/mtlParserEcore.mtl");
+		File file = createFile("/data/template/mtlParserEcore.mtl"); //$NON-NLS-1$
+		if (file == null) {
+			return;
+		}
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = ModelUtils.createResource(URI
-				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
 		List<URI> dependencies = new ArrayList<URI>();
-		dependencies.add(createFileURI("/data/template/mtlParserEcoreCommon.emtl"));
+		dependencies.add(createFileURI("/data/template/mtlParserEcoreCommon.emtl")); //$NON-NLS-1$
 		parser.parse(source, resource, dependencies);
 		assertNotNull(source.getAST());
 		if (source.getProblems().getList().size() > 0
@@ -95,16 +103,17 @@ public class AcceleoParserTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testCompileRecursiveModuleExtend() {
 		List<File> files = new ArrayList<File>();
-		files.add(createFile("/data/template/RecursiveModule1.mtl"));
-		files.add(createFile("/data/template/RecursiveModule2.mtl"));
-		File problemFile = createFile("/data/template/RecursiveModule3.mtl");
+		files.add(createFile("/data/template/RecursiveModule1.mtl")); //$NON-NLS-1$
+		files.add(createFile("/data/template/RecursiveModule2.mtl")); //$NON-NLS-1$
+		File problemFile = createFile("/data/template/RecursiveModule3.mtl"); //$NON-NLS-1$
 		files.add(problemFile);
 		List<URI> resources = new ArrayList<URI>();
-		resources.add(createFileURI("/data/template/RecursiveModule1.emtl"));
-		resources.add(createFileURI("/data/template/RecursiveModule2.emtl"));
-		resources.add(createFileURI("/data/template/RecursiveModule3.emtl"));
+		resources.add(createFileURI("/data/template/RecursiveModule1.emtl")); //$NON-NLS-1$
+		resources.add(createFileURI("/data/template/RecursiveModule2.emtl")); //$NON-NLS-1$
+		resources.add(createFileURI("/data/template/RecursiveModule3.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
 		List<URI> dependencies = new ArrayList<URI>();
 		parser.parse(files, resources, dependencies);
@@ -118,13 +127,14 @@ public class AcceleoParserTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testCompileSourceBufferLibrary2textAcceleo() {
-		File file = createFile("/data/template/mtlParserLibrary2text.mtl");
+		File file = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = ModelUtils.createResource(URI
-				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
 		parser.parse(source, resource, new ArrayList<URI>());
 		assertNotNull(source.getAST());
 		if (source.getProblems().getList().size() > 0) {
@@ -132,15 +142,17 @@ public class AcceleoParserTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testCompileFileLibrary2textAcceleo() {
-		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl");
-		URI oURI = createFileURI("/data/template/mtlParserLibrary2text.emtl");
+		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
+		URI oURI = createFileURI("/data/template/mtlParserLibrary2text.emtl"); //$NON-NLS-1$
 		testCompileFile(iFile, oURI, 0);
 	}
 
+	@Test
 	public void testCompileFileLibrary2textAcceleoWithBadOutputURI() {
-		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl");
-		URI oURI = URI.createURI("http://acceleo.eclipse.org");
+		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
+		URI oURI = URI.createURI("http://acceleo.eclipse.org"); //$NON-NLS-1$
 		testCompileFile(iFile, oURI, 1);
 	}
 
@@ -153,12 +165,12 @@ public class AcceleoParserTests extends TestCase {
 		assertNull(parser.getProblems(iFile));
 		parser.parse(iFiles, oURIs, new ArrayList<URI>());
 		if (parser.getProblems(iFile).getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : "
+			fail("You must have " + problemsCount + " syntax errors : " //$NON-NLS-1$ //$NON-NLS-2$
 					+ parser.getProblems(iFile).getMessage());
 		}
 		if (problemsCount == 0) {
-			assertEquals(parser.getProblems(iFile).getMessage(), "");
-			assertEquals(parser.getProblems(iFile).toString(), "");
+			assertEquals(parser.getProblems(iFile).getMessage(), ""); //$NON-NLS-1$
+			assertEquals(parser.getProblems(iFile).toString(), ""); //$NON-NLS-1$
 		} else {
 			assertTrue(parser.getProblems(iFile).getMessage() != null);
 			Iterator<AcceleoParserProblem> it = parser.getProblems(iFile).getList().iterator();
@@ -174,21 +186,22 @@ public class AcceleoParserTests extends TestCase {
 		parser.getProblems(iFile).clear();
 	}
 
+	@Test
 	public void testIndentStrategy() {
-		File file = createFile("/data/template/mtlIndentStrategy.mtl");
+		File file = createFile("/data/template/mtlIndentStrategy.mtl"); //$NON-NLS-1$
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
 		AcceleoParser parser = new AcceleoParser();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = ModelUtils.createResource(URI
-				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet);
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
 		List<URI> dependencies = new ArrayList<URI>();
 		parser.parse(source, resource, dependencies);
 		assertNotNull(source.getAST());
 		if (source.getProblems().getList().size() > 0) {
 			fail(source.getProblems().getMessage());
 		}
-		String[] results = {"\n", "\n", "\t\t", "\n", "\t\t", "\n", "\n", "\t", "\n", "\t\t", "\n", "\t\t\t",
-				"\n", "\t\t\t", "\n", "\n", "\n\t\t", "\n", "\n" };
+		String[] results = {"\n", "\n", "\t\t", "\n", "\t\t", "\n", "\n", "\t", "\n", "\t\t", "\n", "\t\t\t", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+				"\n", "\t\t\t", "\n", "\n", "\n\t\t", "\n", "\n" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		int i = -1;
 		StringBuffer report = new StringBuffer();
 		Iterator<EObject> it = resource.getContents().get(0).eAllContents();
@@ -199,10 +212,10 @@ public class AcceleoParserTests extends TestCase {
 							.getIfBlock_IfExpr())) {
 				i++;
 				org.eclipse.ocl.ecore.StringLiteralExp literal = (org.eclipse.ocl.ecore.StringLiteralExp)eObject;
-				String symbol = literal.getStringSymbol().replaceAll("\r", "");
+				String symbol = literal.getStringSymbol().replaceAll("\r", ""); //$NON-NLS-1$ //$NON-NLS-2$
 				if (i >= results.length || !results[i].equals(symbol)) {
 					int line = FileContent.lineNumber(source.getBuffer(), literal.getStartPosition());
-					report.append("New value at line " + line + " [" + i + "] = '" + symbol + "'\n");
+					report.append("New value at line " + line + " [" + i + "] = '" + symbol + "'\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				}
 			}
 		}

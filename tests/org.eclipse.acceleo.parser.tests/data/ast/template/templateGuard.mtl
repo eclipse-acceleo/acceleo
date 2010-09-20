@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateGuard('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateGuard(eClass : EClass) ? (true)]
+
+[/template]

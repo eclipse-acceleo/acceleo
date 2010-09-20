@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module macroInvalidReturnType('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[macro public macroInvalidReturnType(eClass : EClass) : Invalidtype]
+
+[/macro]

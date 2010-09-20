@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module queryDocumentationDeprecated('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**This is my documentation@deprecated/]
+[query public queryDocumentationDeprecated(eClass : EClass) : String = eClass.name/]

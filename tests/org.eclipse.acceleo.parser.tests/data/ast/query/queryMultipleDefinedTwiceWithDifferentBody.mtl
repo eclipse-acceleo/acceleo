@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryMultipleDefinedTwiceWithDifferentBody('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public queryMultipleDefinedTwiceWithDifferentBody(eClass : EClass) : String = eClass.name/]
+
+[query public queryMultipleDefinedTwiceWithDifferentBody(eClass : EClass) : String = ''/]

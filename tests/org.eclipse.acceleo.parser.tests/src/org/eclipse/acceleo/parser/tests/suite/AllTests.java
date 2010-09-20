@@ -10,22 +10,40 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.suite;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.parser.tests.AcceleoParserTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTDocumentationTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTModelExpressionsTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTOperationTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTParserMacroTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTParserModuleTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTParserQueryTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTParserTemplateTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserBlockTests;
+import org.eclipse.acceleo.parser.tests.cst.CSTParserModuleTests;
+import org.eclipse.acceleo.parser.tests.cst.CSTParserQueryTests;
+import org.eclipse.acceleo.parser.tests.cst.CSTParserTemplateTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserTests;
 import org.eclipse.acceleo.parser.tests.cst.utils.FileContentTests;
 import org.eclipse.acceleo.parser.tests.cst.utils.SequenceTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo parser.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-@SuppressWarnings("nls")
+@RunWith(Suite.class)
+@SuiteClasses({AcceleoParserTests.class, CSTParserBlockTests.class, CSTParserModuleTests.class,
+		CSTParserQueryTests.class, CSTParserTemplateTests.class, CSTParserTests.class,
+		FileContentTests.class, SequenceTests.class, ASTParserModuleTests.class, ASTOperationTests.class,
+		ASTParserQueryTests.class, ASTParserTemplateTests.class, ASTParserMacroTests.class,
+		ASTModelExpressionsTests.class, ASTDocumentationTests.class })
 public class AllTests {
 
 	/**
@@ -44,17 +62,7 @@ public class AllTests {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo parser test suite");
-		suite.addTestSuite(AcceleoParserTests.class);
-		suite.addTestSuite(CSTParserBlockTests.class);
-		suite.addTestSuite(CSTParserTests.class);
-		suite.addTestSuite(FileContentTests.class);
-		suite.addTestSuite(SequenceTests.class);
-
-		// generated tests
-		suite.addTest(CstTestSuite.suite());
-
-		return suite;
+		return new JUnit4TestAdapter(AllTests.class);
 	}
 
 }

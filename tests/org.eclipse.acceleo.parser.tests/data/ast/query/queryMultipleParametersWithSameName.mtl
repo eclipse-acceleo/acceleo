@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module queryMultipleParametersWithSameName('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public queryMultipleParametersWithSameName(eClass : EClass, eClass : EPackage) : String = eClass.name/]
+

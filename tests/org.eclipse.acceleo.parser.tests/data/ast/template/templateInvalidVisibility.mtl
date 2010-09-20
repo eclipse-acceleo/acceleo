@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateInvalidVisibility('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template InvalidVisibility templateInvalidVisibility(eClass : EClass)]
+
+[/template]

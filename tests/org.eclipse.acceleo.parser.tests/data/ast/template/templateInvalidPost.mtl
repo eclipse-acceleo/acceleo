@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateInvalidPost('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateInvalidPost(eClass : EClass) post(qslkdjqslkjhdqhdq)]
+
+[/template]

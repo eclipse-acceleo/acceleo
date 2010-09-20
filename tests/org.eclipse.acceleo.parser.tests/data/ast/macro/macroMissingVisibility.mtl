@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module macroMissingVisibility('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[macro macroMissingVisibility(eClass : EClass) : String]
+
+[/macro]

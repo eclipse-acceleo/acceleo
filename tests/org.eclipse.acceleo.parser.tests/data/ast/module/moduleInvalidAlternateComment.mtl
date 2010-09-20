@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 
+[/comment]
+[module moduleInvalidAlternateComment('http://www.eclipse.org/emf/2002/Ecore')/]
+

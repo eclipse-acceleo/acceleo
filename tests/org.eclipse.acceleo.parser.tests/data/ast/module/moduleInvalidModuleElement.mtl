@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module moduleInvalidModuleElement('http://www.eclipse.org/emf/2002/Ecore')/]
+
+InvalidModuleElement
+[template public myTemplate(eClass : EClass)][/template]

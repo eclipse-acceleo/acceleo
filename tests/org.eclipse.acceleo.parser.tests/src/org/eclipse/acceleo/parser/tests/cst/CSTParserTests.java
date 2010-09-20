@@ -14,31 +14,25 @@ import java.io.File;
 import java.io.IOException;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
-import org.eclipse.acceleo.internal.parser.cst.CSTParser;
-import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
-import org.eclipse.acceleo.parser.cst.CstFactory;
-import org.eclipse.acceleo.parser.cst.Module;
-import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.osgi.framework.Bundle;
 
-@SuppressWarnings("nls")
-public class CSTParserTests extends TestCase {
+public class CSTParserTests extends AbstractCSTParserTests {
 
-	private Bundle bundle;
+	private static Bundle bundle;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests");
+	@BeforeClass
+	public static void setUp() throws Exception {
+		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests"); //$NON-NLS-1$
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@AfterClass
+	public static void tearDown() throws Exception {
 		bundle = null;
 	}
 
@@ -57,151 +51,16 @@ public class CSTParserTests extends TestCase {
 
 	}
 
+	@Test
 	public void testParseFileLibrary2textAcceleo() {
-		File file = createFile("/data/template/cstParserLibrary2text.mtl");
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
-		CSTParser parser = new CSTParser(source);
-		assertNotNull(parser.parse());
-		if (source.getProblems().getList().size() > 0) {
-			fail(source.getProblems().getMessage());
-		}
+		File file = createFile("/data/template/cstParserLibrary2text.mtl"); //$NON-NLS-1$
+		checkCSTParsing(file, 0, 0, 0);
 	}
 
+	@Test
 	public void testParseEmptyBuffer() {
-		StringBuffer buffer = new StringBuffer("");
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(buffer);
-		CSTParser parser = new CSTParser(source);
-		assertNull(parser.parse());
-		checkProblems(source, 1);
-	}
-
-	public void testParseBufferModuleIsMissing() {
-		StringBuffer buffer = new StringBuffer("[template name()][/template]");
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(buffer);
-		CSTParser parser = new CSTParser(source);
-		assertNull(parser.parse());
-		checkProblems(source, 1);
-	}
-
-	public void testParseBufferModuleIsNotTerminated() {
-		StringBuffer buffer = new StringBuffer(
-				"[module library2text(http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0)/]");
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(buffer);
-		CSTParser parser = new CSTParser(source);
-		assertNotNull(parser.parse());
-		checkProblems(source, 0);
-
-		buffer = new StringBuffer(
-				"[module library2text(http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0)");
-		source = new AcceleoSourceBuffer(buffer);
-		parser = new CSTParser(source);
-		assertNull(parser.parse());
-		checkProblems(source, 1);
-	}
-
-	private void checkProblems(AcceleoSourceBuffer source, int problemsCount) {
-		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
-		}
-	}
-
-	public void testParseModuleHeaderUML() {
-		StringBuffer buffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
-		testParseModuleHeader(buffer);
-	}
-
-	public void testParseModuleHeaderUMLExtendsOneModule() {
-		StringBuffer buffer = new StringBuffer(
-				"mymodule(http://www.eclipse.org/uml2/2.1.0/UML) extends mymodule1");
-		testParseModuleHeader(buffer);
-	}
-
-	public void testParseModuleHeaderUMLExtendsTwoModules() {
-		StringBuffer buffer = new StringBuffer(
-				"mymodule(http://www.eclipse.org/uml2/2.1.0/UML) extends mymodule1, mymodule2");
-		testParseModuleHeader(buffer);
-	}
-
-	private void testParseModuleHeader(StringBuffer buffer) {
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(buffer);
-		CSTParser parser = new CSTParser(source);
-		Module eModule = CstFactory.eINSTANCE.createModule();
-		parser.parseModuleHeader(0, buffer.length(), eModule);
-		if (source.getProblems().getList().size() > 0) {
-			fail(source.getProblems().getMessage());
-		}
-	}
-
-	public void testParseTemplateHeaderWithOneParameter() {
-		StringBuffer buffer = new StringBuffer("public class2Java(c : Class)");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithTwoParameters() {
-		StringBuffer buffer = new StringBuffer("public class2Java(c1 : Class, c2 : Class)");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithDuplicatedParameters() {
-		StringBuffer buffer = new StringBuffer("public class2Java(dup : Class, dup : Class)");
-		testParseTemplateHeader(buffer, 1);
-	}
-
-	public void testParseTemplateHeaderWithBadParameter() {
-		StringBuffer buffer = new StringBuffer("public class2Java(c1 : Class, c2 - Class)");
-		testParseTemplateHeader(buffer, 1);
-	}
-
-	public void testParseTemplateHeaderWithOverrides() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) overrides class2Java, class2Java");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithOverridesGuard() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) overrides class2Java ? (c1.name = '')");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithOverridesGuardParenthesisAreRequired() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) overrides class2Java ? c1.name = ''");
-		testParseTemplateHeader(buffer, 1);
-	}
-
-	public void testParseTemplateHeaderWithOverridesGuardInitSection() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) overrides class2Java ? (c1.name = '') {c2:Class;}");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithOverridesGuardPostInitSection() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) overrides class2Java ? (c1.name = '') post (trim()) {c2:Class;}");
-		testParseTemplateHeader(buffer, 0);
-	}
-
-	public void testParseTemplateHeaderWithPostGuardBadSequence() {
-		StringBuffer buffer = new StringBuffer(
-				"public class2Java(c1 : Class) post (trim()) ? (c1.name = '') ");
-		testParseTemplateHeader(buffer, 1);
-	}
-
-	private void testParseTemplateHeader(StringBuffer buffer, int problemsCount) {
-		StringBuffer moduleBuffer = new StringBuffer("mymodule(http://www.eclipse.org/uml2/2.1.0/UML)");
-		AcceleoSourceBuffer moduleSource = new AcceleoSourceBuffer(moduleBuffer);
-		Module eModule = CstFactory.eINSTANCE.createModule();
-		CSTParser moduleParser = new CSTParser(moduleSource);
-		moduleParser.parseModuleHeader(0, moduleBuffer.length(), eModule);
-		Template eTemplate = CstFactory.eINSTANCE.createTemplate();
-		eModule.getOwnedModuleElement().add(eTemplate);
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(buffer);
-		CSTParser parser = new CSTParser(source);
-		parser.parseTemplateHeader(0, buffer.length(), eTemplate);
-		if (source.getProblems().getList().size() != problemsCount) {
-			fail("You must have " + problemsCount + " syntax errors : " + source.getProblems().getMessage());
-		}
+		StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
+		checkCSTInvalidParsing(buffer, 0, 0, 1);
 	}
 
 	// TODO JMU : OCL context should work

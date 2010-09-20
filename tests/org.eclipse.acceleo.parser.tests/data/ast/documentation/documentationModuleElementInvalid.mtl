@@ -1,0 +1,12 @@
+[**
+ * This is a documentation
+ * @author sbegaudeau
+ * @since 1.0
+ * @version 1.0
+ */]
+[module documentationModuleElementInvalid('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**
+ * This is my template
+ * @inheritedDoc doc
+ * @param eClass my EClass object
