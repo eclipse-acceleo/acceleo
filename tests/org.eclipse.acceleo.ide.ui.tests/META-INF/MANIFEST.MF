@@ -12,11 +12,21 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl.ecore,
  org.junit,
+ org.junit4,
  org.eclipse.acceleo.common,
  org.eclipse.acceleo.ide.ui,
  org.eclipse.jface.text,
  org.eclipse.acceleo.parser,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.swtbot.eclipse.core,
+ org.eclipse.swtbot.eclipse.finder,
+ org.eclipse.swtbot.eclipse.junit3.headless,
+ org.eclipse.swtbot.eclipse.junit4.headless,
+ org.eclipse.swtbot.eclipse.spy,
+ org.eclipse.swtbot.eclipse.ui,
+ org.eclipse.swtbot.go,
+ org.eclipse.swtbot.junit4_x,
+ org.eclipse.swtbot.swt.finder
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.ide.ui.tests.editors.template,
