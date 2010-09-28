@@ -111,22 +111,7 @@ public final class ModelUtils {
 	 */
 	public static Resource createResource(URI modelURI, ResourceSet resourceSet) {
 		String fileExtension = modelURI.fileExtension();
-		if (fileExtension == null || fileExtension.length() == 0) {
-			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-		}
-		Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(
-				fileExtension);
-		if (resourceFactory == null) {
-			resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
-					.get(fileExtension);
-			if (resourceFactory != null) {
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-						resourceFactory);
-			} else {
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-						new XMIResourceFactoryImpl());
-			}
-		}
+		ensureResourceFactoryPresent(resourceSet, fileExtension);
 		return resourceSet.createResource(modelURI);
 	}
 
@@ -325,18 +310,8 @@ public final class ModelUtils {
 	 */
 	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
 		String fileExtension = modelURI.fileExtension();
-		if (fileExtension == null || fileExtension.length() == 0) {
-			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-		}
-		final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-		final Object resourceFactory = registry.getExtensionToFactoryMap().get(fileExtension);
-		if (resourceFactory != null) {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					resourceFactory);
-		} else {
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-					new XMIResourceFactoryImpl());
-		}
+		ensureResourceFactoryPresent(resourceSet, fileExtension);
+
 		EObject result = null;
 		final Resource modelResource = resourceSet.getResource(modelURI, true);
 		if (modelResource.getContents().size() > 0) {
@@ -441,5 +416,42 @@ public final class ModelUtils {
 	@Deprecated
 	public static String getRegisteredEcorePackagePath(String nsURI) {
 		return AcceleoPackageRegistry.INSTANCE.getRegisteredEcorePackagePath(nsURI);
+	}
+
+	/**
+	 * This will make sure that a resource factory is registered in the ResourceSet for the given file
+	 * extension.
+	 * <p>
+	 * We'll first search the resource set to check that a resource factory exists. If not, we'll search
+	 * within the global factory registry for one. If found, we'll register this factory in the resource set;
+	 * if not, we'll register a new XMI resource factory in the resource set. A call to
+	 * resourceSet#createResource() will never fail in {@link NullPointerException} after a call to this
+	 * method.
+	 * </p>
+	 * 
+	 * @param resourceSet
+	 *            The resource set in which to make sure a resource factory for extension
+	 *            <code>extension</code> exists.
+	 * @param extension
+	 *            The file extension for which to register a factory.
+	 */
+	private static void ensureResourceFactoryPresent(ResourceSet resourceSet, String extension) {
+		String fileExtension = extension;
+		if (fileExtension == null || fileExtension.length() == 0) {
+			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
+		}
+		Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(
+				fileExtension);
+		if (resourceFactory == null) {
+			resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+					.get(fileExtension);
+			if (resourceFactory != null) {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						resourceFactory);
+			} else {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						new XMIResourceFactoryImpl());
+			}
+		}
 	}
 }
