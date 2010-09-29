@@ -71,27 +71,34 @@ public final class MTFileContent {
 	 */
 	private static StringBuffer getEncodedFileContent(File file, String encodingCode) {
 		StringBuffer buffer = new StringBuffer();
-		FileInputStream input;
+		FileInputStream input = null;
+		InputStreamReader reader = null;
 		try {
 			input = new FileInputStream(file);
-			InputStreamReader reader;
 			if (encodingCode != null) {
 				reader = new InputStreamReader(input, encodingCode);
 			} else {
 				reader = new InputStreamReader(input);
 			}
-			try {
-				int size = 0;
-				final int buffLength = 512;
-				char[] buff = new char[buffLength];
-				while ((size = reader.read(buff)) >= 0) {
-					buffer.append(buff, 0, size);
-				}
-			} finally {
-				reader.close();
+			int size = 0;
+			final int buffLength = 512;
+			char[] buff = new char[buffLength];
+			while ((size = reader.read(buff)) >= 0) {
+				buffer.append(buff, 0, size);
 			}
 		} catch (IOException e) {
 			// continue and return an empty string
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (input != null) {
+					input.close();
+				}
+			} catch (IOException e) {
+				// same punition
+			}
 		}
 		return buffer;
 	}
