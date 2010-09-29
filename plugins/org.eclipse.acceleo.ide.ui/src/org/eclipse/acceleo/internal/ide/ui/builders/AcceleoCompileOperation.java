@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.builders;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -265,21 +264,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	 */
 	private boolean hasMainTag(IFile file) {
 		Sequence pattern = new Sequence(IAcceleoConstants.TAG_MAIN);
-		try {
-			InputStream inputStream = file.getContents();
-			int available = inputStream.available();
-			byte[] bytes = new byte[available];
-			inputStream.read(bytes);
-			StringBuffer contents = FileContent.getFileContent(file.getLocation().toFile());
-			if (pattern.search(contents).b() > -1) {
-				return true;
-			}
-		} catch (CoreException e) {
-			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
-		} catch (IOException e) {
-			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+		StringBuffer contents = FileContent.getFileContent(file.getLocation().toFile());
+		if (pattern.search(contents).b() > -1) {
+			return true;
 		}
 		return false;
 	}
