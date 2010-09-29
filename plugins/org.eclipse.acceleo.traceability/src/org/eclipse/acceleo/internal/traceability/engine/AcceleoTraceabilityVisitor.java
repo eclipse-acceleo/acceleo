@@ -1013,8 +1013,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			soughtFile.setName(stripFileNameFrom(generatedFile.getPath()));
 			if (appendMode && generatedFile.exists() && generatedFile.canRead()) {
 				int length = 0;
+				BufferedReader reader = null;
 				try {
-					BufferedReader reader = new BufferedReader(new FileReader(generatedFile));
+					reader = new BufferedReader(new FileReader(generatedFile));
 					String line = reader.readLine();
 					while (line != null) {
 						// add 1 for the carriage return
@@ -1024,6 +1025,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} catch (IOException e) {
 					// traceability may not be good on this one
 					AcceleoEnginePlugin.log(e, true);
+				} finally {
+					try {
+						if (reader != null) {
+							reader.close();
+						}
+					} catch (IOException e) {
+						AcceleoEnginePlugin.log(e, true);
+					}
 				}
 				soughtFile.setLength(length);
 			}
