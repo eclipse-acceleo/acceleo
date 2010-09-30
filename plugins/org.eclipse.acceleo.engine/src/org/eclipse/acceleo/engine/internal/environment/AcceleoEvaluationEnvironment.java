@@ -533,7 +533,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			final Set<Template> candidates = overridingTemplates.get(overriden);
 			if (candidates != null) {
 				final Set<Template> applicableCandidates = applicableTemplates(candidates, argumentTypes);
-				candidateOverriding.addAll(applicableCandidates);
+				for (Template template : applicableCandidates) {
+					EObject eContainer = template.eContainer();
+					if (eContainer instanceof Module
+							&& (getScopeOf(origin).contains((Module)eContainer) || ((Module)eContainer)
+									.equals(origin))) {
+						candidateOverriding.add(template);
+					}
+				}
 				// no need to order this, it'll be ordered later on
 				candidateOverriding.addAll(getAllCandidateOverriding(origin, new ArrayList<Template>(
 						applicableCandidates), argumentTypes));
