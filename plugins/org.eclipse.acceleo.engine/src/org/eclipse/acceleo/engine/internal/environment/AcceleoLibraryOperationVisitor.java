@@ -879,10 +879,15 @@ public final class AcceleoLibraryOperationVisitor {
 			assert method != null;
 			final List<Object> invocationArguments = (List<Object>)args[2];
 			if (method.getParameterTypes().length == 0) {
-				if (invocationArguments.size() == 0) {
-					result = method.invoke(source);
+				// If we can use the method from the Java service on the current EObject we do it
+				if (serviceInstance.getClass().isInstance(source)) {
+					if (invocationArguments.size() == 0) {
+						result = method.invoke(source);
+					} else {
+						result = method.invoke(invocationArguments.get(0));
+					}
 				} else {
-					result = method.invoke(invocationArguments.get(0));
+					result = method.invoke(serviceInstance);
 				}
 			} else {
 				if (method.getParameterTypes().length - invocationArguments.size() == 1) {
