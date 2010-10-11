@@ -23,7 +23,6 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.debug.core.AcceleoDebugger;
 import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoDebugTarget;
 import org.eclipse.acceleo.internal.ide.ui.debug.model.AcceleoProcess;
-import org.eclipse.acceleo.internal.ide.ui.launching.AcceleoLaunchOperation;
 import org.eclipse.acceleo.internal.ide.ui.launching.IAcceleoLaunchConfigurationConstants;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.core.resources.IContainer;
@@ -146,7 +145,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @param activate
 	 *            indicates that we would like to compute the traceability information
 	 */
-	private void switchTraceability(boolean activate) {
+	protected void switchTraceability(boolean activate) {
 		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
 				"org.eclipse.acceleo.traceability.activation", activate); //$NON-NLS-1$
 	}
@@ -176,12 +175,11 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 						AcceleoUIActivator
 								.getDefault()
 								.getLog()
-								.log(
-										new Status(
-												IStatus.WARNING,
-												AcceleoUIActivator.PLUGIN_ID,
-												AcceleoUIMessages
-														.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
+								.log(new Status(
+										IStatus.WARNING,
+										AcceleoUIActivator.PLUGIN_ID,
+										AcceleoUIMessages
+												.getString("AcceleoLaunchDelegate.UnableToRefreshProfileModelContainer"))); //$NON-NLS-1$
 					}
 				} else {
 					AcceleoUIActivator.getDefault().getLog().log(
