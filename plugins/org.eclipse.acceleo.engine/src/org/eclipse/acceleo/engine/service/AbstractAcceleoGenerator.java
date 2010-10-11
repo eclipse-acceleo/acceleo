@@ -62,11 +62,7 @@ public abstract class AbstractAcceleoGenerator {
 
 	/**
 	 * This will hold the list of generation listeners that are to be notified when text is generated.
-	 * 
-	 * @deprecated return a list of generation listeners directly through {@link #getGenerationListeners()}
-	 *             instead.
 	 */
-	@Deprecated
 	protected List<IAcceleoTextGenerationListener> generationListeners = new ArrayList<IAcceleoTextGenerationListener>(
 			1);
 
@@ -86,6 +82,16 @@ public abstract class AbstractAcceleoGenerator {
 
 	/** The folder that will be considered "root" of the generated files. */
 	protected File targetFolder;
+
+	/**
+	 * Allows clients to add a generation listener to this generator instance.
+	 * 
+	 * @param listener
+	 *            The listener that is to be registered for this generator.
+	 */
+	public void addGenerationListener(IAcceleoTextGenerationListener listener) {
+		generationListeners.add(listener);
+	}
 
 	/**
 	 * Launches the generation described by this instance.
@@ -385,6 +391,9 @@ public abstract class AbstractAcceleoGenerator {
 	protected AcceleoService createAcceleoService() {
 		AcceleoService service = new AcceleoService(getGenerationStrategy());
 		for (IAcceleoTextGenerationListener listener : getGenerationListeners()) {
+			service.addListener(listener);
+		}
+		for (IAcceleoTextGenerationListener listener : generationListeners) {
 			service.addListener(listener);
 		}
 		for (String propertyFile : getProperties()) {
