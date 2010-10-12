@@ -1241,7 +1241,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *         <code>false</code> otherwise.
 	 */
 	private boolean isInvalid(Object value) {
-		return value == invalid;
+		boolean result = true;
+		if (value instanceof ArrayList<?>) {
+			@SuppressWarnings("unchecked")
+			ArrayList<Object> list = (ArrayList<Object>)value;
+			for (Object object : list) {
+				result = result && object == invalid;
+			}
+		} else {
+			result = value == invalid;
+		}
+		return result;
 	}
 
 	/**
