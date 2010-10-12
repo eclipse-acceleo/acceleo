@@ -269,7 +269,7 @@ public class AcceleoWhitespaceCharactersPainter implements IPainter, PaintListen
 					startOffset = lineOffset;
 				}
 			} catch (IllegalArgumentException iae) {
-				AcceleoUIActivator.log(iae, true);
+				// Indicates that there is no character at the given line, should not be logged.
 				startOffset = lineOffset;
 			}
 			// compute last visible char offset
