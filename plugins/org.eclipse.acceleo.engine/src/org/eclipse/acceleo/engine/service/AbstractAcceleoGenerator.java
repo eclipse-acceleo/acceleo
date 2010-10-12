@@ -88,6 +88,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * 
 	 * @param listener
 	 *            The listener that is to be registered for this generator.
+	 * @since 3.0
 	 */
 	public void addGenerationListener(IAcceleoTextGenerationListener listener) {
 		generationListeners.add(listener);
