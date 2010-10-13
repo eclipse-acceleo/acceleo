@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rmap xmlns="http://www.eclipse.org/buckminster/RMap-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0"
->
-	<locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng" />
-	<locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf" />
-	<locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl" />
-	<locator pattern="^lpg\.runtime\.java$" searchPathRef="ocl" />
-	<locator searchPathRef="platform" />
-
-	<searchPath name="local.releng">
-		<provider componentTypes="buckminster" readerType="local" source="true" mutable="false">
-			<uri format="{0}{1}">
-				<bc:propertyRef key="checkout.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<searchPath name="emf">
-		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-			<uri format="{0}/modeling/emf/emf/updates/2.6milestones">
-				<bc:propertyRef key="eclipse.download" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<searchPath name="ocl">
-		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-			<uri format="{0}/modeling/mdt/ocl/3_0/updates/milestones">
-				<bc:propertyRef key="eclipse.download" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<searchPath name="platform">
-		<provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-			<uri format="{0}/eclipse/updates/3.6milestones">
-				<bc:propertyRef key="eclipse.download" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<property key="checkout.location" value="${workspace.root}/" />
-	<property key="eclipse.download" value="http://download.eclipse.org" />
-</rmap>
+<rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+  <rm:property key="checkout.location" value="${workspace.root}/"/>
+  <rm:property key="eclipse.download" value="http://download.eclipse.org"/>
+  <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
+  <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
+  <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl"/>
+  <rm:locator pattern="^lpg\.runtime\.java$" searchPathRef="ocl"/>
+  <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
+  <rm:locator searchPathRef="platform"/>
+  <rm:searchPath name="local.releng">
+    <rm:provider componentTypes="buckminster" readerType="local" mutable="false">
+      <rm:uri format="{0}{1}">
+        <bc:propertyRef key="checkout.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="emf">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/modeling/emf/emf/updates/2.6milestones">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="ocl">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/modeling/mdt/ocl/3_0/updates/milestones">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="swtbot">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/technology/swtbot/helios/dev-build/update-site">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="platform">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/eclipse/updates/3.6milestones">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+</rm:rmap>

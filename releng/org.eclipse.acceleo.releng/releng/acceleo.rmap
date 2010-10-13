@@ -1,73 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rmap xmlns="http://www.eclipse.org/buckminster/RMap-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0"
->
-	<locator pattern="^org\.eclipse\.acceleo\.releng(?:\..+)?$" searchPathRef="releng" />
-	<locator pattern="^org\.eclipse\.acceleo(?:\..+)?$" searchPathRef="acceleo" />
-
-	<locator pattern="^org\.eclipse\.test$" searchPathRef="eclipse.test" />
-	<locator pattern="^org\.eclipse\.ant\.optional\.junit$" searchPathRef="eclipse.test" />
-
-	<searchPath name="acceleo">
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/plugins/{1}">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="eclipse.feature" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/features/{1}-feature">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/doc/{1}">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/examples/{1}">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/tests/{1}">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<searchPath name="releng">
-		<provider componentTypes="buckminster" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/releng/{1}">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="eclipse.feature" readerType="cvs" source="true" mutable="false">
-			<uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/features/{1}-feature">
-				<bc:propertyRef key="source.repository.location" />
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<searchPath name="eclipse.test">
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}">
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="eclipse.feature" readerType="cvs" source="true" mutable="false">
-			<uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}-feature">
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-	</searchPath>
-
-	<property key="source.repository.location" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/modeling" />
-</rmap>
+<rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
+  <rm:property key="source.repository.location" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/modeling"/>
+  <rm:locator pattern="^org\.eclipse\.acceleo\.releng(?:\..+)?$" searchPathRef="releng"/>
+  <rm:locator pattern="^org\.eclipse\.acceleo(?:\..+)?$" searchPathRef="acceleo"/>
+  <rm:locator pattern="^org\.eclipse\.test$" searchPathRef="eclipse.test"/>
+  <rm:locator pattern="^org\.eclipse\.ant\.optional\.junit$" searchPathRef="eclipse.test"/>
+  <rm:searchPath name="acceleo">
+    <rm:provider componentTypes="osgi.bundle" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/plugins/{1}">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="eclipse.feature" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/features/{1}-feature">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="osgi.bundle" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/doc/{1}">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="osgi.bundle" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/examples/{1}">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="osgi.bundle" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/tests/{1}">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="releng">
+    <rm:provider componentTypes="buckminster" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/releng/{1}">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="eclipse.feature" readerType="cvs" mutable="false">
+      <rm:uri format="{0},org.eclipse.m2t/org.eclipse.acceleo/features/{1}-feature">
+        <bc:propertyRef key="source.repository.location"/>
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="eclipse.test">
+    <rm:provider componentTypes="osgi.bundle" readerType="cvs" mutable="false">
+      <rm:uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}">
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+    <rm:provider componentTypes="eclipse.feature" readerType="cvs" mutable="false">
+      <rm:uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}-feature">
+        <bc:propertyRef key="buckminster.component"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+</rm:rmap>
