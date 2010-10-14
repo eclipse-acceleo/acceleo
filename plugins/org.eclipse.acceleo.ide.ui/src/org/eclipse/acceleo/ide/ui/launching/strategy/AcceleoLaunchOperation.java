@@ -112,6 +112,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 			if (generator != null) {
 				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getLocation()
 						.append(model).toString());
+				modelURI = URI.createURI(URI.decode(modelURI.toString()));
 				generator.initialize(modelURI, targetFolder, args);
 				generator.doGenerate(BasicMonitor.toMonitor(monitor));
 			} else {
