@@ -66,12 +66,15 @@ public class AcceleoTraceabilityEvaluationContext<C> extends AcceleoEvaluationCo
 	@Override
 	protected void fireFileGenerated(String filePath, Block fileBlock, EObject source) {
 		GeneratedFile file = evaluationTrace.getGeneratedFile(filePath);
-		AcceleoTextGenerationEvent event = new AcceleoTextGenerationEvent(filePath, fileBlock, source, file);
-		for (IAcceleoTextGenerationListener listener : listeners) {
-			if (!notifyOnGenerationEnd) {
-				EcoreUtil.remove(file);
+		if (file != null) {
+			AcceleoTextGenerationEvent event = new AcceleoTextGenerationEvent(filePath, fileBlock, source,
+					file);
+			for (IAcceleoTextGenerationListener listener : listeners) {
+				if (!notifyOnGenerationEnd) {
+					EcoreUtil.remove(file);
+				}
+				listener.fileGenerated(event);
 			}
-			listener.fileGenerated(event);
 		}
 	}
 }
