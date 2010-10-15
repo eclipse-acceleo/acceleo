@@ -15,8 +15,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * Base class of the writers that need be returned by the various generation strategies. Clients can override
- * {@link AcceleoWriterDecorator} instead.
+ * Base class of the writers that need be returned by the various generation strategies.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @since 3.0
