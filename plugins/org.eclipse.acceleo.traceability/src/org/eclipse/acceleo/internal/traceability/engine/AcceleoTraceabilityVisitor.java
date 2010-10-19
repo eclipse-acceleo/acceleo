@@ -1127,7 +1127,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		ModelFile soughtModel = evaluationTrace.getInputModel(modelURI.path());
 		if (soughtModel == null) {
 			soughtModel = TraceabilityFactory.eINSTANCE.createModelFile();
-			soughtModel.setPath(modelURI.toString());
+			soughtModel.setPath(modelURI.path());
 			soughtModel.setName(name);
 			evaluationTrace.getModelFiles().add(soughtModel);
 		}
