@@ -214,7 +214,6 @@ public final class AcceleoUIDocumentationUtils {
 				// The emtl file does not exist, we will return null it is not a problem, do not log anything
 			} catch (WrappedException e) {
 				// The file has an invalid URI, or if there is another EMF problem with it, we return null
-				AcceleoUIActivator.log(e, true);
 			}
 		}
 		return documentation;
