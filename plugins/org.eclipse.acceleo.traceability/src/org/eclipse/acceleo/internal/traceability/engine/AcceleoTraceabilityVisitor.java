@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
@@ -48,6 +50,7 @@ import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.ModuleFile;
 import org.eclipse.acceleo.traceability.TraceabilityFactory;
 import org.eclipse.acceleo.traceability.TraceabilityModel;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -1124,10 +1127,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private ModelFile getModelFile(EObject modelElement) {
 		final URI modelURI = modelElement.eResource().getURI();
 		final String name = modelURI.lastSegment();
-		ModelFile soughtModel = evaluationTrace.getInputModel(modelURI.path());
+		String path = modelURI.toString();
+
+		if (path.startsWith("http://") && EMFPlugin.IS_ECLIPSE_RUNNING) { //$NON-NLS-1$
+			EPackage pack = EPackage.Registry.INSTANCE.getEPackage(path);
+			try {
+				URL ecoreURL = AcceleoWorkspaceUtil.getResourceURL(pack.getClass(), "*.ecore"); //$NON-NLS-1$
+				if (ecoreURL != null) {
+					path = ecoreURL.toString();
+				}
+			} catch (IOException e) {
+				AcceleoEnginePlugin.log(e, false);
+			}
+		}
+
+		ModelFile soughtModel = evaluationTrace.getInputModel(path);
 		if (soughtModel == null) {
 			soughtModel = TraceabilityFactory.eINSTANCE.createModelFile();
-			soughtModel.setPath(modelURI.path());
+			soughtModel.setPath(path);
 			soughtModel.setName(name);
 			evaluationTrace.getModelFiles().add(soughtModel);
 		}
@@ -1164,12 +1181,26 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * @return {@link ModuleFile} contained in the {@link #evaluationTrace} model.
 	 */
 	private ModuleFile getModuleFile(EObject moduleElement) {
-		final String moduleURI = moduleElement.eResource().getURI().toString();
-		ModuleFile soughtModule = evaluationTrace.getGenerationModule(moduleURI);
+		final URI moduleURI = moduleElement.eResource().getURI();
+		String path = moduleURI.toString();
+
+		if (path.startsWith("http://") && EMFPlugin.IS_ECLIPSE_RUNNING) { //$NON-NLS-1$
+			EPackage pack = EPackage.Registry.INSTANCE.getEPackage(path);
+			try {
+				URL emtlURL = AcceleoWorkspaceUtil.getResourceURL(pack.getClass(), stripPathFrom(path));
+				if (emtlURL != null) {
+					path = emtlURL.toString();
+				}
+			} catch (IOException e) {
+				AcceleoEnginePlugin.log(e, false);
+			}
+		}
+
+		ModuleFile soughtModule = evaluationTrace.getGenerationModule(path);
 		if (soughtModule == null) {
 			soughtModule = TraceabilityFactory.eINSTANCE.createModuleFile();
-			soughtModule.setPath(moduleURI);
-			soughtModule.setName(stripFileNameFrom(moduleURI));
+			soughtModule.setPath(path);
+			soughtModule.setName(stripFileNameFrom(path));
 			evaluationTrace.getModules().add(soughtModule);
 		}
 		return soughtModule;
@@ -1520,5 +1551,28 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
 		}
 		return fileName;
+	}
+
+	/**
+	 * This will return the "path" section of a given uri, ignoring the protocol as well as the project name
+	 * if said protocol is "platform".
+	 * 
+	 * @param fileURI
+	 *            The URI from which to retrieve a path.
+	 * @return The path section of the given URI.
+	 */
+	private String stripPathFrom(String fileURI) {
+		URI fileEMFURI = URI.createURI(fileURI);
+		String filePath = fileEMFURI.path();
+		if (fileEMFURI.isPlatform()) {
+			int slashIndex = filePath.indexOf('/');
+			if (slashIndex > 0) {
+				slashIndex = filePath.indexOf('/', slashIndex + 1);
+			}
+			if (slashIndex > 0) {
+				filePath.substring(slashIndex + 1);
+			}
+		}
+		return filePath;
 	}
 }
