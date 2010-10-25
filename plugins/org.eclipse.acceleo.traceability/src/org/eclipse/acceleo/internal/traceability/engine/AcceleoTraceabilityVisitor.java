@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
@@ -405,7 +406,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
-		scopeEObjects.add(invocation.getArgument().get(0));
+		scopeEObjects.add(invocation.getDefinition().getParameter().get(0));
 
 		final Object result = super.visitAcceleoQueryInvocation(invocation);
 
@@ -422,14 +423,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#visitAcceleoTemplate(org.eclipse.acceleo.model.mtl.Template)
+	 */
+	@Override
+	public String visitAcceleoTemplate(Template template) {
+		if (template.getParameter().size() > 0) {
+			scopeEObjects.add(template.getParameter().get(0));
+		}
+		return super.visitAcceleoTemplate(template);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#visitAcceleoTemplateInvocation(org.eclipse.acceleo.model.mtl.TemplateInvocation)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		if (invocation.getArgument().size() > 0) {
-			scopeEObjects.add(invocation.getArgument().get(0));
-		}
 		LinkedList<ExpressionTrace<C>> oldTraces = invocationTraces;
 		invocationTraces = new LinkedList<ExpressionTrace<C>>();
 
@@ -1434,6 +1445,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				}
 			} else {
 				scopeValue = scope;
+				if (scope instanceof OCLExpression<?>) {
+					Object self = getEvaluationEnvironment().getValueOf(IAcceleoConstants.SELF);
+					if (self instanceof EObject) {
+						scopeValue = (EObject)self;
+					}
+				}
 				break;
 			}
 		}
