@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -113,6 +115,9 @@ import org.eclipse.ocl.utilities.PredefinedType;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
+	/** Initial size of our "cache" maps. */
+	private static final int INITIAL_CACHE_SIZE = 128;
+
 	/** Traceability needs to kno what expression is being processed at all times. */
 	private OCLExpression<C> currentExpression;
 
@@ -127,6 +132,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
 	private LinkedList<ExpressionTrace<C>> invocationTraces;
+
+	/** This will be used to keep pointers towards the input elements created for the current trace. */
+	private Map<EObject, Set<InputElement>> cachedInputElements = new HashMap<EObject, Set<InputElement>>(
+			INITIAL_CACHE_SIZE);
+
+	/** This will be used to keep pointers towards the module elements created for the current trace. */
+	private Map<EObject, ModuleElement> cachedModuleElements = new HashMap<EObject, ModuleElement>(
+			INITIAL_CACHE_SIZE);
 
 	/**
 	 * We'll use this to record accurate trace information for the library's traceability-impacting
@@ -225,13 +238,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				}
 
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-					for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+					while (textIterator.hasNext()) {
+						GeneratedText text = textIterator.next();
 						int startingOffset = addedLength;
 						addedLength += text.getEndOffset() - text.getStartOffset();
 						text.setStartOffset(fileLength + startingOffset);
 						text.setEndOffset(fileLength + addedLength);
 						generatedFile.getGeneratedRegions().add(text);
-						entry.getValue().remove(text);
+						textIterator.remove();
 					}
 				}
 				generatedFile.setLength(fileLength + addedLength);
@@ -1066,15 +1081,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private InputElement getInputElement(EObject modelElement) {
 		ModelFile soughtModel = getModelFile(modelElement);
-		for (InputElement input : soughtModel.getInputElements()) {
-			if (input.getFeature() == null && input.getModelElement() == modelElement) {
+
+		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
+		if (candidateInputs == null) {
+			candidateInputs = new HashSet<InputElement>();
+			cachedInputElements.put(modelElement, candidateInputs);
+		}
+		for (InputElement input : candidateInputs) {
+			if (input.getFeature() == null && input.getOperation() == null) {
 				return input;
 			}
 		}
+
 		// If we're here, such an InputElement does not already exist
 		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
 		soughtElement.setModelElement(modelElement);
 		soughtModel.getInputElements().add(soughtElement);
+		candidateInputs.add(soughtElement);
 		return soughtElement;
 	}
 
@@ -1090,16 +1113,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private InputElement getInputElement(EObject modelElement, EOperation operation) {
 		ModelFile soughtModel = getModelFile(modelElement);
-		for (InputElement input : soughtModel.getInputElements()) {
-			if (input.getOperation() == operation && input.getModelElement() == modelElement) {
+
+		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
+		if (candidateInputs == null) {
+			candidateInputs = new HashSet<InputElement>();
+			cachedInputElements.put(modelElement, candidateInputs);
+		}
+		for (InputElement input : candidateInputs) {
+			if (input.getOperation() == operation) {
 				return input;
 			}
 		}
+
 		// If we're here, such an InputElement does not already exist
 		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
 		soughtElement.setModelElement(modelElement);
 		soughtElement.setOperation(operation);
 		soughtModel.getInputElements().add(soughtElement);
+		candidateInputs.add(soughtElement);
 		return soughtElement;
 	}
 
@@ -1115,16 +1146,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private InputElement getInputElement(EObject modelElement, EStructuralFeature feature) {
 		ModelFile soughtModel = getModelFile(modelElement);
-		for (InputElement input : soughtModel.getInputElements()) {
-			if (input.getFeature() == feature && input.getModelElement() == modelElement) {
+
+		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
+		if (candidateInputs == null) {
+			candidateInputs = new HashSet<InputElement>();
+			cachedInputElements.put(modelElement, candidateInputs);
+		}
+		for (InputElement input : candidateInputs) {
+			if (input.getFeature() == feature) {
 				return input;
 			}
 		}
+
 		// If we're here, such an InputElement does not already exist
 		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
 		soughtElement.setModelElement(modelElement);
 		soughtElement.setFeature(feature);
 		soughtModel.getInputElements().add(soughtElement);
+		candidateInputs.add(soughtElement);
 		return soughtElement;
 	}
 
@@ -1172,15 +1211,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private ModuleElement getModuleElement(EObject moduleElement) {
 		ModuleFile soughtModule = getModuleFile(moduleElement);
-		for (ModuleElement element : soughtModule.getModuleElements()) {
-			if (element.getModuleElement() == moduleElement) {
-				return element;
-			}
+
+		ModuleElement element = cachedModuleElements.get(moduleElement);
+		if (element != null) {
+			return element;
 		}
+
 		// If we're here, such a ModuleElement does not already exist
 		ModuleElement soughtElement = TraceabilityFactory.eINSTANCE.createModuleElement();
 		soughtElement.setModuleElement(moduleElement);
 		soughtModule.getModuleElements().add(soughtElement);
+		cachedModuleElements.put(moduleElement, soughtElement);
 		return soughtElement;
 	}
 
