@@ -60,81 +60,84 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 */
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		IProject project = getProject(configuration);
-		if (project != null) {
-			AcceleoDebugger debugger = null;
-			Profiler profiler = null;
-			if ("debug".equals(mode)) { //$NON-NLS-1$
-				debugger = new AcceleoDebugger(project);
-				for (IDebugTarget target : launch.getDebugTargets()) {
-					launch.removeDebugTarget(target);
-				}
-				launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
-				AcceleoEvaluationVisitor.setDebug(debugger);
-				debugger.start();
-			} else if ("profile".equals(mode)) { //$NON-NLS-1$
-				profiler = new Profiler();
-				AcceleoEvaluationVisitor.setProfile(profiler);
-				launch.addProcess(new AcceleoProcess(launch));
+		final IProject project = getProject(configuration);
+		if (project == null) {
+			return;
+		}
+
+		AcceleoDebugger debugger = null;
+		Profiler profiler = null;
+		if ("debug".equals(mode)) { //$NON-NLS-1$
+			debugger = new AcceleoDebugger(project);
+			for (IDebugTarget target : launch.getDebugTargets()) {
+				launch.removeDebugTarget(target);
+			}
+			launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
+			AcceleoEvaluationVisitor.setDebug(debugger);
+			debugger.start();
+		} else if ("profile".equals(mode)) { //$NON-NLS-1$
+			profiler = new Profiler();
+			AcceleoEvaluationVisitor.setProfile(profiler);
+			launch.addProcess(new AcceleoProcess(launch));
+		} else {
+			launch.addProcess(new AcceleoProcess(launch));
+		}
+		boolean traceability = computeTraceability(configuration);
+		if (traceability) {
+			switchTraceability(true);
+		}
+		try {
+			final String model = getModelPath(configuration);
+			final String target = getTargetPath(configuration);
+			String message;
+			if (model.length() == 0) {
+				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingModel"); //$NON-NLS-1$
+			} else if (target.length() == 0) {
+				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingTarget"); //$NON-NLS-1$
 			} else {
-				launch.addProcess(new AcceleoProcess(launch));
+				message = null;
 			}
-			boolean traceability = computeTraceability(configuration);
+			if (message != null) {
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
+			} else {
+				IPath targetPath = new Path(target);
+				IContainer container;
+				if (targetPath.segmentCount() == 1) {
+					container = ResourcesPlugin.getWorkspace().getRoot().getProject(targetPath.lastSegment());
+				} else if (targetPath.segmentCount() > 1) {
+					container = ResourcesPlugin.getWorkspace().getRoot().getFolder(targetPath);
+				} else {
+					container = null;
+				}
+				if (container instanceof IFolder && !container.exists()) {
+					((IFolder)container).create(true, true, monitor);
+				} else if (container instanceof IProject && !container.exists()) {
+					((IProject)container).create(monitor);
+					((IProject)container).open(monitor);
+					container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+				}
+				if (container != null) {
+					final String qualifiedName = getMainType(configuration);
+					final File targetFolder = container.getLocation().toFile();
+					final List<String> args = getArguments(configuration);
+
+					launch(project, qualifiedName, model, targetFolder, args, monitor);
+
+					container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+				}
+			}
+		} finally {
 			if (traceability) {
-				switchTraceability(true);
+				switchTraceability(false);
 			}
-			try {
-				String model = getModelPath(configuration);
-				String target = getTargetPath(configuration);
-				String message;
-				if (model.length() == 0) {
-					message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingModel"); //$NON-NLS-1$
-				} else if (target.length() == 0) {
-					message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingTarget"); //$NON-NLS-1$
-				} else {
-					message = null;
+			if ("debug".equals(mode)) { //$NON-NLS-1$
+				AcceleoEvaluationVisitor.setDebug(null);
+				if (debugger != null) {
+					debugger.end();
 				}
-				if (message != null) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
-				} else {
-					IPath targetPath = new Path(target);
-					IContainer container;
-					if (targetPath.segmentCount() == 1) {
-						container = ResourcesPlugin.getWorkspace().getRoot().getProject(
-								targetPath.lastSegment());
-					} else if (targetPath.segmentCount() > 1) {
-						container = ResourcesPlugin.getWorkspace().getRoot().getFolder(targetPath);
-					} else {
-						container = null;
-					}
-					if (container instanceof IFolder && !container.exists()) {
-						((IFolder)container).create(true, true, monitor);
-					} else if (container instanceof IProject && !container.exists()) {
-						((IProject)container).create(monitor);
-						((IProject)container).open(monitor);
-						container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-					}
-					if (container != null) {
-						String qualifiedName = getMainType(configuration);
-						File targetFolder = container.getLocation().toFile();
-						List<String> args = getArguments(configuration);
-						launch(project, qualifiedName, model, targetFolder, args, monitor);
-						container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-					}
-				}
-			} finally {
-				if (traceability) {
-					switchTraceability(false);
-				}
-				if ("debug".equals(mode)) { //$NON-NLS-1$
-					AcceleoEvaluationVisitor.setDebug(null);
-					if (debugger != null) {
-						debugger.end();
-					}
-				} else if ("profile".equals(mode)) { //$NON-NLS-1$
-					saveProfileModel(configuration, profiler, monitor);
-				}
+			} else if ("profile".equals(mode)) { //$NON-NLS-1$
+				saveProfileModel(configuration, profiler, monitor);
 			}
 		}
 	}
@@ -216,9 +219,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 		AcceleoLaunchOperation operation = new AcceleoLaunchOperation(project, qualifiedName, model,
 				targetFolder, args);
 		try {
-			operation.run(monitor);
+			project.getWorkspace().run(operation, monitor);
 		} catch (CoreException e) {
-			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			AcceleoUIActivator.log(e, true);
 		}
 	}
 
