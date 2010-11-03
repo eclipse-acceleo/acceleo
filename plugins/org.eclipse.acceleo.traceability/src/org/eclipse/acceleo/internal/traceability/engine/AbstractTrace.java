@@ -67,13 +67,12 @@ public abstract class AbstractTrace {
 	}
 
 	/**
-	 * Returns this context's traces. Note that the returned Map will be a copy of the actual one. Use
-	 * {@link #dispose()} afterwards to clean up this context.
+	 * Returns this context's traces.
 	 * 
 	 * @return A copy of this context's traces.
 	 */
 	public LinkedHashMap<InputElement, Set<GeneratedText>> getTraces() {
-		return new LinkedHashMap<InputElement, Set<GeneratedText>>(traces);
+		return traces;
 	}
 
 	/**

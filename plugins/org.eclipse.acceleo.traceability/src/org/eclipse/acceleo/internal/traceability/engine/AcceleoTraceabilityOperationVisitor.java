@@ -107,9 +107,11 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		 */
 		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
 				if (text.getEndOffset() < result || text.getStartOffset() > result) {
-					entry.getValue().remove(text);
+					textIterator.remove();
 				} else {
 					text.setStartOffset(0);
 					text.setEndOffset(digitCount);
@@ -249,7 +251,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				int offsetGap = -1;
 				for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
 					for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-						for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+						for (GeneratedText text : entry.getValue()) {
 							if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
 								offsetGap = text.getStartOffset();
 							}
@@ -403,7 +405,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
 		GeneratedText lastRegion = null;
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
 				if (lastRegion == null) {
 					lastRegion = text;
 					lastEntry = entry;
@@ -414,7 +418,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					lastRegion = text;
 					lastEntry = entry;
 				} else {
-					entry.getValue().remove(text);
+					textIterator.remove();
 				}
 			}
 		}
@@ -451,8 +455,16 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	@SuppressWarnings("unchecked")
 	private void changeTraceabilityIndicesOfReplaceOperation(ExpressionTrace<C> trace, int startIndex,
 			int endIndex, int replacementLength) {
+		/*
+		 * Substrings that will be split in two by replaced substrings will need their own new GeneratedText
+		 * instance, this Set will keep track of those so that we can add them in the trace later.
+		 */
+		Set<GeneratedText> addedRegions = new LinkedHashSet<GeneratedText>();
+
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
 				if (text.getEndOffset() < startIndex) {
 					continue;
 				}
@@ -476,17 +488,20 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						// We know this is a list
 						((List<EObject>)text.eContainer().eGet(text.eContainingFeature())).add(endSubstring);
 					}
-					entry.getValue().add(endSubstring);
+					addedRegions.add(endSubstring);
 				} else if (text.getStartOffset() >= startIndex && text.getEndOffset() <= endIndex) {
 					if (text.eContainer() != null) {
 						EcoreUtil.remove(text);
 					}
-					entry.getValue().remove(text);
+					textIterator.remove();
 				} else {
 					text.setStartOffset(text.getStartOffset() + replacementLength);
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				}
 			}
+			// Insert all new regions in the trace
+			entry.getValue().addAll(addedRegions);
+			addedRegions.clear();
 		}
 	}
 
@@ -502,9 +517,11 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	private void changeTraceabilityIndicesSubstringReturn(int startIndex, int endIndex) {
 		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			for (GeneratedText text : new LinkedHashSet<GeneratedText>(entry.getValue())) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
 				if (text.getEndOffset() <= startIndex || text.getStartOffset() >= endIndex) {
-					entry.getValue().remove(text);
+					textIterator.remove();
 				} else {
 					/*
 					 * We have four cases : either 1) the region overlaps with the start index, 2) it overlaps
