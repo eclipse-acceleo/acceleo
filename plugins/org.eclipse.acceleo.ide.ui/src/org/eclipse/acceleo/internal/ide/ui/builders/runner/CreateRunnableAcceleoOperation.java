@@ -119,8 +119,8 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 					if (manifest.exists()
 							&& FileContent.getFileContent(manifest.getLocation().toFile()).indexOf(
 									packageName) == -1) {
-						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID, fileAcceleo, 0, 0, 0,
-								AcceleoUIMessages.getString(
+						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+								fileAcceleo, 0, 0, 0, AcceleoUIMessages.getString(
 										"CreateRunnableAcceleoOperation.MissingExport", packageName)); //$NON-NLS-1$
 					}
 					URI moduleURI = URI.createPlatformResourceURI(acceleoProject.getOutputFilePath(
@@ -287,9 +287,10 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 				JMerger jMerger = new JMerger(model);
 				try {
 					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(text));
+					// JMerge takes care of buffering our streams
 					jMerger.setTargetCompilationUnit(jMerger
 							.createCompilationUnitForInputStream(new FileInputStream(file.getLocation()
-									.toFile()))); // target=last generated code
+									.toFile())));
 					jMerger.merge();
 					text = jMerger.getTargetCompilationUnit().getContents();
 				} catch (FileNotFoundException e) {
