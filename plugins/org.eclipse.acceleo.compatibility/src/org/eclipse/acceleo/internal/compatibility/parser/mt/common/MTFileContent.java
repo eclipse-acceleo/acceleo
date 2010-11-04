@@ -81,7 +81,7 @@ public final class MTFileContent {
 				reader = new InputStreamReader(input);
 			}
 			int size = 0;
-			final int buffLength = 512;
+			final int buffLength = 8192;
 			char[] buff = new char[buffLength];
 			while ((size = reader.read(buff)) >= 0) {
 				buffer.append(buff, 0, size);
