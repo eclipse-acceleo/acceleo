@@ -66,6 +66,7 @@ public final class JMergeUtil {
 			if (model.canMerge()) {
 				JMerger jMerger = new JMerger(model);
 				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
+				// JMerge takes care of buffering the input stream we feed it
 				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
 						new FileInputStream(target), charset));
 				jMerger.merge();
