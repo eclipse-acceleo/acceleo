@@ -148,6 +148,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private ExpressionTrace<C> operationArgumentTrace;
 
 	/**
+	 * As we add and remove the "scope" object for templates at a different times, we need to remember whether
+	 * the template actually had a scope or not.
+	 */
+	private boolean addedTemplateScope;
+
+	/**
 	 * Along with {@link #operationCallSourceExpression}, this allows us to retrieve the source value of an
 	 * operation call.
 	 */
@@ -444,6 +450,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public String visitAcceleoTemplate(Template template) {
 		if (template.getParameter().size() > 0) {
 			scopeEObjects.add(template.getParameter().get(0));
+			addedTemplateScope = true;
 		}
 		return super.visitAcceleoTemplate(template);
 	}
@@ -457,6 +464,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
 		LinkedList<ExpressionTrace<C>> oldTraces = invocationTraces;
+		boolean oldTemplateHadScope = addedTemplateScope;
+		addedTemplateScope = false;
 		invocationTraces = new LinkedList<ExpressionTrace<C>>();
 
 		final Object result = super.visitAcceleoTemplateInvocation(invocation);
@@ -469,9 +478,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		invocationTraces = oldTraces;
-		if (invocation.getArgument().size() > 0) {
+		if (addedTemplateScope) {
 			scopeEObjects.removeLast();
 		}
+		addedTemplateScope = oldTemplateHadScope;
 
 		if (isPropertyCallSource((OCLExpression<C>)invocation)) {
 			propertyCallSource = (EObject)result;
@@ -1458,7 +1468,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Returne the scope value of the n-th scope of this evaluation. 0 being the EObject passed as argument of
+	 * Returns the scope value of the n-th scope of this evaluation. 0 being the EObject passed as argument of
 	 * the generation, <em>{@link #scopeEObjects}.size() - 1</em> the scope of the current expression.
 	 * 
 	 * @param index

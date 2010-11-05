@@ -455,6 +455,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	@SuppressWarnings("unchecked")
 	private void changeTraceabilityIndicesOfReplaceOperation(ExpressionTrace<C> trace, int startIndex,
 			int endIndex, int replacementLength) {
+		// FIXME Can't we find any shortcut for this?
 		/*
 		 * Substrings that will be split in two by replaced substrings will need their own new GeneratedText
 		 * instance, this Set will keep track of those so that we can add them in the trace later.
