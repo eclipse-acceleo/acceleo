@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -25,6 +23,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 public class ASTOperationTests extends AbstractASTParserTests {
 
@@ -94,6 +94,23 @@ public class ASTOperationTests extends AbstractASTParserTests {
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
 			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseOCLComparison() {
+		File file = this.getFileFromPath("/data/ast/operations/oclComparison.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/operations/files"), project, //$NON-NLS-1$
+				"oclComparison.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 4, 0);
+			checkASTDocumentationResolution(0, 4, 0);
 		} else {
 			fail();
 		}

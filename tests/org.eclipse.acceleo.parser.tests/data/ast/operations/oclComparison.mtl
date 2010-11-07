@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module oclComparison('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generate(eClass : EClass)]
+
+[Sequence{''} = ''/]
+[Bag{''} = ''/]
+[Set{''} = ''/]
+[OrderedSet{''} = ''/]
+
+[/template]
+

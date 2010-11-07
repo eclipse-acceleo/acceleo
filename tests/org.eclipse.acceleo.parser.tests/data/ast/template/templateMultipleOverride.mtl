@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateMultipleOverride('http://www.eclipse.org/emf/2002/Ecore') extends templateValid, templateDocumentation/]
+
+[template public templateMultipleOverride(eClass : EClass) overrides templateValid, templateDocumentation]
+
+[/template]

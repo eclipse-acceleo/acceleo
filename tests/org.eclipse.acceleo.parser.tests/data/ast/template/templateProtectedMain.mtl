@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateProtectedMain('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template protected templateProtectedMain(eClass : EClass)]
+[comment @main/]
+[/template]

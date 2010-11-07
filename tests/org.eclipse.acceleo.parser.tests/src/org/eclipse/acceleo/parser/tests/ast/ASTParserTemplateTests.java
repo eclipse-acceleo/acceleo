@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -25,6 +23,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 public class ASTParserTemplateTests extends AbstractASTParserTests {
 
@@ -111,6 +111,144 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 0);
 			checkASTDocumentationResolution(1, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateOverrideInSameModule() {
+		File file = this.getFileFromPath("/data/ast/template/templateOverrideInSameModule.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateOverrideInSameModule.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 0, 0);
+			checkASTResolution(1, 1, 0);
+			checkASTDocumentationResolution(1, 1, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateOverrideInSameModuleQualifiedName() {
+		File file = this.getFileFromPath("/data/ast/template/templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 0, 0);
+			checkASTResolution(1, 1, 0);
+			checkASTDocumentationResolution(1, 1, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverride() {
+		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverride.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverride.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 2, 0);
+			checkASTDocumentationResolution(1, 2, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverrideQualifiedName() {
+		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 2, 0);
+			checkASTDocumentationResolution(1, 2, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverrideSameValue() {
+		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 3, 0);
+			checkASTDocumentationResolution(1, 3, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverrideSameValueQualifiedName() {
+		File file = this
+				.getFileFromPath("/data/ast/template/templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 3, 0);
+			checkASTDocumentationResolution(1, 3, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverrideInSameModule() {
+		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 3, 0);
+			checkASTDocumentationResolution(1, 3, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateMultipleOverrideInSameModuleQualifiedName() {
+		File file = this
+				.getFileFromPath("/data/ast/template/templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 2, 0);
+			checkASTResolution(1, 3, 0);
+			checkASTDocumentationResolution(1, 3, 0);
 		} else {
 			fail();
 		}
@@ -809,6 +947,57 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
 			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplatePublicMain() {
+		File file = this.getFileFromPath("/data/ast/template/templatePublicMain.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templatePublicMain.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateProtectedMain() {
+		File file = this.getFileFromPath("/data/ast/template/templateProtectedMain.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateProtectedMain.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 1, 0);
+			checkASTResolution(0, 1, 0);
+			checkASTDocumentationResolution(0, 1, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplatePrivateMain() {
+		File file = this.getFileFromPath("/data/ast/template/templatePrivateMain.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templatePrivateMain.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 1, 0);
+			checkASTResolution(0, 1, 0);
+			checkASTDocumentationResolution(0, 1, 0);
 		} else {
 			fail();
 		}
