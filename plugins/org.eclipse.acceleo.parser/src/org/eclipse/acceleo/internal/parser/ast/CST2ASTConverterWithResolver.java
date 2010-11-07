@@ -447,6 +447,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 									.getString("CST2ASTConverterWithResolver.OverrideTemplateInSameModule"), //$NON-NLS-1$
 									ioNext.getStartPosition(), ioNext.getEndPosition());
 						} else {
+							checkSameValueInOverrides(oTemplate, template, ioNext.getStartPosition(), ioNext
+									.getEndPosition());
 							oTemplate.getOverrides().add(template);
 						}
 					}
@@ -495,6 +497,27 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					factory.getOCL().popContext();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Checks if the template is template that oTemplate already override.
+	 * 
+	 * @param oTemplate
+	 *            The current template
+	 * @param template
+	 *            A template that the current template overrides
+	 * @param posBegin
+	 *            The begin position of the overidden template
+	 * @param posEnd
+	 *            The end position of the overidden template
+	 */
+	private void checkSameValueInOverrides(org.eclipse.acceleo.model.mtl.Template oTemplate,
+			org.eclipse.acceleo.model.mtl.Template template, int posBegin, int posEnd) {
+		if (oTemplate.getOverrides() != null && oTemplate.getOverrides().contains(template)) {
+			logWarning(AcceleoParserMessages.getString(
+					"CST2ASTConverterWithResolver.TemplateAlreadyOverride", template //$NON-NLS-1$
+							.getName()), posBegin, posEnd);
 		}
 	}
 
@@ -713,7 +736,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if ((sourceIsCollection && !argumentIsCollection)
 						|| (argumentIsCollection && !sourceIsCollection)) {
 					logWarning(AcceleoParserMessages.getString(
-							"CST2ASTConverterWithResolver.IncompatibleAffectation", source.getType() //$NON-NLS-1$
+							"CST2ASTConverterWithResolver.IncompatibleComparison", source.getType() //$NON-NLS-1$
 									.getName(), argument.get(0).getType().getName()), oOCLExpression
 							.getStartPosition(), oOCLExpression.getEndPosition());
 				}

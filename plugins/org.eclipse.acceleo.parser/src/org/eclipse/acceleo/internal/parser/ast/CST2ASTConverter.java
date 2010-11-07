@@ -201,6 +201,13 @@ public class CST2ASTConverter {
 				transformStepCopy(iNext);
 
 			}
+
+			if (iModule.getExtends() != null && iModule.getExtends().size() > 1) {
+				int posBegin = iModule.getExtends().get(0).getStartPosition();
+				int posEnd = iModule.getExtends().get(iModule.getExtends().size() - 1).getEndPosition();
+				this.logWarning(AcceleoParserMessages.getString("AcceleoParser.Warning.MultipleExtends"), //$NON-NLS-1$
+						posBegin, posEnd);
+			}
 		}
 	}
 
