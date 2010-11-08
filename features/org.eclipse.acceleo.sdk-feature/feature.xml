@@ -27,9 +27,6 @@
          id="org.eclipse.acceleo"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.acceleo.source"
-         version="0.0.0"/>
 
    <includes
          id="org.eclipse.acceleo.examples"
