@@ -614,9 +614,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		// If the result is false, we will check the qualified name of the other template
 		if (!result && moduleNameSpace != null
 				&& moduleNameSpace.contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
-			String namespace = moduleNameSpace.substring(0, moduleNameSpace
-					.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR));
-			String otherTemplateQualifiedName = namespace + IAcceleoConstants.NAMESPACE_SEPARATOR
+			String otherTemplateQualifiedName = moduleNameSpace + IAcceleoConstants.NAMESPACE_SEPARATOR
 					+ otherTemplateName;
 			result = name.equals(otherTemplateQualifiedName);
 		}
