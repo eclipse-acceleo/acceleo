@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module queryCallQualifiedNameResolution('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateToLaunch(eClass : EClass)]
+[eClass.org::eclipse::acceleo::parser::tests::operations::files::queryCallQualifiedNameResolution::queryCalled()/]
+[/template]
+
+[query public queryToLaunch(eClass : EClass) : String = eClass.org::eclipse::acceleo::parser::tests::operations::files::queryCallQualifiedNameResolution::queryCalled()/]
+
+[query public queryCalled(eClass : EClass) : String = eClass.name/]

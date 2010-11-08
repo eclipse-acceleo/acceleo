@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module queryCallResolution('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public templateToLaunch(eClass : EClass)]
+[eClass.queryCalled()/]
+[queryCalled(eClass)/]
+[queryCalled()/]
+[/template]
+
+[query public queryToLaunch(eClass : EClass) : String = eClass.queryCalled() + queryCalled(eClass) + queryCalled()/]
+
+[query public queryCalled(eClass : EClass) : String = eClass.name/]

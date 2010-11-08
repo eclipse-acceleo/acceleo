@@ -5,6 +5,6 @@
 
 [/template]
 
-[template public templateOverride(eClass : EClass) overrides org::eclipse::acceleo::parser::tests::template::files::templateOverrideInSameModuleQualifiedName]
+[template public templateOverride(eClass : EClass) overrides org::eclipse::acceleo::parser::tests::template::files::templateOverrideInSameModuleQualifiedName::templateOverrideInSameModuleQualifiedName]
 
 [/template]

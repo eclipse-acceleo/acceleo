@@ -115,4 +115,73 @@ public class ASTOperationTests extends AbstractASTParserTests {
 			fail();
 		}
 	}
+
+	@Test
+	public void testParseQueryCallResolution() {
+		File file = this.getFileFromPath("/data/ast/operations/queryCallResolution.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/operations/files"), project, //$NON-NLS-1$
+				"queryCallResolution.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseQueryCallQualifiedNameResolution() {
+		File file = this.getFileFromPath("/data/ast/operations/queryCallQualifiedNameResolution.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/operations/files"), project, //$NON-NLS-1$
+				"queryCallQualifiedNameResolution.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateCallResolution() {
+		File file = this.getFileFromPath("/data/ast/operations/templateCallResolution.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/operations/files"), project, //$NON-NLS-1$
+				"templateCallResolution.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseTemplateCallQualifiedNameResolution() {
+		File file = this.getFileFromPath("/data/ast/operations/templateCallQualifiedNameResolution.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/operations/files"), project, //$NON-NLS-1$
+				"templateCallQualifiedNameResolution.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
 }
