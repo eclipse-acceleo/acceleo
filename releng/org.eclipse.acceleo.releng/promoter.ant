@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Promoter / Publisher" default="publish.build">
+<project name="Promoter-Publisher" default="publish.build">
 	<property name="promoter.properties.file.name" value="promote.properties" />
 	<property name="publisher.properties.file.name" value="publisher.properties" />
 
@@ -18,6 +18,9 @@
 			<entry key="eclipse.home" value="${eclipse.home}" />
 			<entry key="build.id" value="${build.id}" />
 			<entry key="hudson.build.id" value="${hudson.build.id}" />
+			<entry key="build.root" value="/shared/jobs/m2t-acceleo-3.0/lastSuccessful" />
+			<entry key="packages.base" value="Acceleo.downloads" />
+			<entry key="downloads.area" value="/home/data/httpd/download.eclipse.org/modeling/m2t/acceleo" />
 		</propertyfile>
 
 		<!-- diagnostics
@@ -42,8 +45,7 @@
 	<target name="setup.publisher">
 		<property environment="env." />
 
-		<fail message="WORKSPACE not present in the evironment, can't continue" unless="env.WORKSPACE" />
-		<fail message="PROMOTED_URL not present in the evironment, can't continue" unless="env.PROMOTED_URL" />
+		<fail message="WORKSPACE not present in the environment, can't continue" unless="env.WORKSPACE" />
 
 		<!-- default publisher root -->
 		<property name="publisher.root" location="${env.WORKSPACE}/publishroot" />
@@ -53,12 +55,12 @@
 
 		<copy tofile="${publisher.root}/publisher.ant" file="${ant.file}" />
 
-		<property name="promoter.properties.file.url" value="${env.PROMOTED_URL}/artifact/${promoter.properties.file.name}" />
+		<property name="promoter.properties.file" value="${env.WORKSPACE}/${promoter.properties.file.name}" />
 
 		<!-- load the promoter properties using the PROMOTED_URL supplied by Hudson -->
-		<property prefix="saved." url="${promoter.properties.file.url}" />
+		<property prefix="saved." file="${promoter.properties.file}" />
 
-		<fail message="hudson.build.id not defined in ${promoter.properties.file.url}, can't continue">
+		<fail message="hudson.build.id not defined in ${promoter.properties.file}, can't continue">
 			<condition>
 				<not>
 					<and>
@@ -69,7 +71,7 @@
 			</condition>
 		</fail>
 
-		<property name="build.root" location="${env.WORKSPACE}/../builds/${saved.hudson.build.id}" />
+		<property name="build.root" location="/opt/public/jobs/${env.JOB_NAME}/builds/${saved.hudson.build.id}" />
 
 		<echoproperties destfile="${publisher.root}/${publisher.properties.file.name}">
 			<propertyset>
@@ -81,6 +83,7 @@
 	</target>
 
 	<target name="publish.build">
+		<property file="${publisher.properties.file.name}" />
 		<fail message="build.root property must be defined" unless="build.root" />
 
 		<property name="property.file.location" location="${build.root}/archive/${promoter.properties.file.name}" />
@@ -129,11 +132,8 @@
 			somewhat more complicated than simple <delete dir="${publisher.workspace}" />
 			but this way it does not produce the "Deleting directory" message
 		-->
-		<delete dir="${publisher.workspace}" includeemptydirs="true" quiet="true">
-			<or>
-				<type type="dir" />
-				<type type="file" />
-			</or>
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${publisher.workspace}" includes="**/*"/>
 		</delete>
 	</target>
 
@@ -152,16 +152,16 @@
 				</not>
 			</condition>
 		</fail>
-		<fail message="build.root property must be defined" unless="build.root" />
-		<fail message="packages.base property must be defined" unless="packages.base" />
-		<fail message="downloads.area property must be defined" unless="downloads.area" />
+		<fail message="saved.build.root property must be defined" unless="saved.build.root" />
+		<fail message="saved.packages.base property must be defined" unless="saved.packages.base" />
+		<fail message="saved.downloads.area property must be defined" unless="saved.downloads.area" />
 
 		<!-- defaults -->
-		<property name="version" value="2.6.0" />
+		<property name="version" value="3.1.0" />
 
-		<property name="packages.directory" location="${build.root}/archive/${packages.base}" />
+		<property name="packages.directory" location="${saved.build.root}/archive/${saved.packages.base}" />
 
-		<property name="build.drop.directory" location="${downloads.area}/downloads/drops/${version}/${saved.build.id}" />
+		<property name="build.drop.directory" location="${saved.downloads.area}/downloads/drops/${version}/${saved.build.id}" />
 
 		<delete dir="${build.drop.directory}" />
 		<mkdir dir="${build.drop.directory}" />
@@ -177,7 +177,7 @@
 			<fileset dir="${build.drop.directory}" />
 		</checksum>
 		<!-- copy buildlog -->
-		<copy tofile="${build.drop.directory}/buildlog.txt" file="${build.root}/log" />
+		<copy tofile="${build.drop.directory}/buildlog.txt" file="${saved.build.root}/log" />
 
 		<fileset id="drop.resources" dir="${build.drop.directory}">
 			<or>
@@ -195,21 +195,23 @@
 		<buckminster.substitute value="${version}" pattern="^(\d+\.\d+)\.\d+.*$" replacement="$$1" property="base.version" />
 
 		<!-- setup composite.repository.base appropriate to the build type -->
-		<condition property="composite.repository.base" value="${base.version}-I-builds">
+		<condition property="composite.repository.base" value="interim/${base.version}">
 			<matches pattern="^I" string="${saved.build.id}" />
 		</condition>
-		<condition property="composite.repository.base" value="${base.version}milestones">
+		<condition property="composite.repository.base" value="milestones/${base.version}">
 			<matches pattern="^[MS]" string="${saved.build.id}" />
 		</condition>
-		<condition property="composite.repository.base" value="${base.version}">
+		<condition property="composite.repository.base" value="releases/${base.version}">
 			<matches pattern="^R" string="${saved.build.id}" />
 		</condition>
-
+		<condition property="composite.repository.base" value="nightly/${base.version}">
+			<matches pattern="^N" string="${saved.build.id}" />
+		</condition>
 		<antcall target="-publish.build.repository" inheritall="true" />
 	</target>
 
 	<target name="-publish.build.repository" if="composite.repository.base">
-		<property name="composite.repository.directory" location="${downloads.area}/updates/${composite.repository.base}" />
+		<property name="composite.repository.directory" location="${saved.downloads.area}/updates/${composite.repository.base}" />
 		<property name="composite.repository.url" value="file:/${composite.repository.directory}" />
 		<property name="build.repository.directory" location="${composite.repository.directory}/${saved.build.id}" />
 
@@ -218,7 +220,7 @@
 
 		<unzip dest="${build.repository.directory}">
 			<fileset dir="${packages.directory}">
-				<filename name="emf-xsd-Update*.zip" />
+				<filename name="m2t-acceleo-Update*.zip" />
 			</fileset>
 		</unzip>
 
