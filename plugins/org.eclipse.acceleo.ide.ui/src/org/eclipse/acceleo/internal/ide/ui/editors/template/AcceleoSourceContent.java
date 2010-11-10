@@ -167,6 +167,7 @@ public class AcceleoSourceContent {
 							while (resources.hasNext()) {
 								resources.next().unload();
 							}
+							resourceSet.getResources().clear();
 						}
 					}
 					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
@@ -784,6 +785,7 @@ public class AcceleoSourceContent {
 					Resource resource;
 					if (syntaxHelpResourceSet.getResources().size() > 0) {
 						resource = syntaxHelpResourceSet.getResources().get(0);
+						// FIXME ?
 						resource.unload();
 					} else {
 						resource = syntaxHelpResourceSet.createResource(uri);
