@@ -1410,7 +1410,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
 		if (operationEType == getEnvironment().getOCLStandardLibrary().getString()
-				|| operationEType.getName().equals(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME)) {
+				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationEType.getName())) {
 			// first, switch on the predefined OCL operations
 			if (operationCode > 0) {
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
