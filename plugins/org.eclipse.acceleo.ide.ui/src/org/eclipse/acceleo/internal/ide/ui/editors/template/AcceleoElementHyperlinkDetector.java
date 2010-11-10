@@ -100,7 +100,6 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		}
 		IHyperlink[] links = null;
 		if (res != null) {
-			links = new IHyperlink[1];
 			final IRegion wordRegion;
 			if (inferWordRegion) {
 				wordRegion = getWordRegion(editor, offset, wordStart, wordLength);
@@ -108,6 +107,7 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 				wordRegion = new Region(wordStart, wordLength);
 			}
 			if (wordRegion != null) {
+				links = new IHyperlink[1];
 				links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
 			}
 		}
