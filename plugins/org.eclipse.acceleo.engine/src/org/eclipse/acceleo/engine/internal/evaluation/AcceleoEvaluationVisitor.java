@@ -557,7 +557,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// This will hold the name of the variable which value we replaced
 		String varName = null;
 		try {
-			if (var.getType().isInstance(value)) {
+			if (var.getType().isInstance(value)
+					|| var.getType() == getEnvironment().getOCLStandardLibrary().getOclAny()) {
 				varName = var.getName();
 				getEvaluationEnvironment().add(varName, value);
 				for (final org.eclipse.ocl.ecore.OCLExpression nested : letBlock.getBody()) {
