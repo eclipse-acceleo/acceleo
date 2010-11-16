@@ -1216,9 +1216,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					}
 					factory.getOCL().popContext();
 
-					if (oLetVariable.getInitExpression() != null
-							&& !oLetVariable.getType().equals(oLetVariable.getInitExpression().getType())
-							&& !oLetVariable.getType().isInstance(oLetVariable.getInitExpression().getType())) {
+					if ((oLetVariable.getType() != null && oLetVariable.getInitExpression() != null)
+							&& oLetVariable.getInitExpression().getType() != null
+							&& !compatibleVariableType(oLetVariable)) {
 						logWarning(AcceleoParserMessages.getString(
 								"CST2ASTConverterWithResolver.PossibleIncompatibleLet", oLetVariable //$NON-NLS-1$
 										.getType().getName(), oLetVariable.getInitExpression().getType()
@@ -1256,6 +1256,25 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 			}
 		}
+	}
+
+	/**
+	 * Indicates if the type of the variable of the let is compatible with the type of the init expression of
+	 * the let.
+	 * 
+	 * @param oLetVariable
+	 *            The let variable
+	 * @return <code>true</code> if both type are compatible, <code>false</code> otherwise.
+	 */
+	private boolean compatibleVariableType(org.eclipse.ocl.ecore.Variable oLetVariable) {
+		boolean result = false;
+
+		if (oLetVariable.getInitExpression().getType().getInstanceClass() != null) {
+			result = oLetVariable.getInitExpression().getType().getInstanceClass().isAssignableFrom(
+					oLetVariable.getType().getInstanceClass());
+		}
+
+		return result;
 	}
 
 	/**
