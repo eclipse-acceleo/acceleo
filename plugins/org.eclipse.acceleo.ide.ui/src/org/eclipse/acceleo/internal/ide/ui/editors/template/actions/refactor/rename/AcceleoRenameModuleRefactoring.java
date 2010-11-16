@@ -277,29 +277,31 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 	 *            The content of the file.
 	 */
 	private void createChangesForModuleDefinition(final StringBuffer fileModuleContent) {
-		final Sequence sequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.MODULE,
-				this.fModule.getName());
-		Region region = sequence.search(fileModuleContent);
-		if (region.b() > -1) {
-			TextFileChange tfc = null;
-			MultiTextEdit edit = null;
+		if (this.fModule != null) {
+			final Sequence sequence = new Sequence(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.MODULE,
+					this.fModule.getName());
+			Region region = sequence.search(fileModuleContent);
+			if (region.b() > -1) {
+				TextFileChange tfc = null;
+				MultiTextEdit edit = null;
 
-			if (this.fChanges.containsKey(this.file)
-					&& this.fChanges.get(this.file).getEdit() instanceof MultiTextEdit) {
-				tfc = this.fChanges.get(this.file);
-				edit = (MultiTextEdit)this.fChanges.get(this.file).getEdit();
-			} else {
-				tfc = new TextFileChange(this.title, this.file);
-				edit = new MultiTextEdit();
-				tfc.setEdit(edit);
-				tfc.setTextType(IAcceleoConstants.MTL_FILE_EXTENSION);
+				if (this.fChanges.containsKey(this.file)
+						&& this.fChanges.get(this.file).getEdit() instanceof MultiTextEdit) {
+					tfc = this.fChanges.get(this.file);
+					edit = (MultiTextEdit)this.fChanges.get(this.file).getEdit();
+				} else {
+					tfc = new TextFileChange(this.title, this.file);
+					edit = new MultiTextEdit();
+					tfc.setEdit(edit);
+					tfc.setTextType(IAcceleoConstants.MTL_FILE_EXTENSION);
+				}
+
+				final int offset = region.e() - this.fModule.getName().length();
+				// final int offset = fileModuleContent.indexOf(this.fModule.getName(), publicRegion.b());
+				edit.addChild(new ReplaceEdit(offset, this.fModule.getName().length(), this.fNewModuleName));
+
+				this.fChanges.put(this.file, tfc);
 			}
-
-			final int offset = region.e() - this.fModule.getName().length();
-			// final int offset = fileModuleContent.indexOf(this.fModule.getName(), publicRegion.b());
-			edit.addChild(new ReplaceEdit(offset, this.fModule.getName().length(), this.fNewModuleName));
-
-			this.fChanges.put(this.file, tfc);
 		}
 	}
 
