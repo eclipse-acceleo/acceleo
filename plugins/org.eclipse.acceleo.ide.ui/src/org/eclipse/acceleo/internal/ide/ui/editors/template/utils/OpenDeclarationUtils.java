@@ -69,12 +69,16 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ocl.Environment;
+import org.eclipse.ocl.ecore.CollectionItem;
+import org.eclipse.ocl.ecore.CollectionLiteralExp;
 import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
+import org.eclipse.ocl.expressions.CollectionLiteralPart;
+import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorDescriptor;
@@ -780,9 +784,92 @@ public final class OpenDeclarationUtils {
 		} else {
 			offset = -1;
 		}
+		final ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+
+		if (astNode != null) {
+			res = OpenDeclarationUtils.computeEObject(astNode, offset);
+		}
+		if (res == null) {
+			final CSTNode cstNode = editor.getContent().getCSTNode(offset, offset);
+			if (cstNode != null) {
+				res = OpenDeclarationUtils.findDeclarationFromCST(editor, astNode, cstNode);
+			}
+		}
+
+		// If there is no result, we will try to see if what we are looking for is not the module header.
+		if (res == null && editor.getContent().isInModuleHeader(offset, offset, true)) {
+			res = editor.getContent().getAST();
+		} else if (res == null && editor.getContent().isInModuleHeader(offset, offset, false)) {
+			res = editor.getContent().getCST();
+		}
+
+		return res;
+	}
+
+	/**
+	 * Finds the EObject matching the given ASTNode at the given offset.
+	 * 
+	 * @param astNode
+	 *            The ASTNode
+	 * @param offset
+	 *            The offset
+	 * @return The EObject matching the given ASTNode at the given offset
+	 */
+	private static EObject computeEObject(ASTNode astNode, int offset) {
+		EObject res = null;
+		// If the user has selected the name of the variable
+		if (astNode instanceof Variable
+				&& ((Variable)astNode).getName() != null
+				&& (offset < (((Variable)astNode).getStartPosition() + ((Variable)astNode).getName().length()))) {
+			res = astNode;
+		} else if (astNode instanceof CollectionLiteralExp) {
+			// If the user has selected something in a collection
+			CollectionLiteralExp collectionLiteralExp = (CollectionLiteralExp)astNode;
+			List<CollectionLiteralPart<EClassifier>> part = collectionLiteralExp.getPart();
+			for (CollectionLiteralPart<EClassifier> collectionLiteralPart : part) {
+				if (collectionLiteralPart instanceof CollectionItem) {
+					CollectionItem item = (CollectionItem)collectionLiteralPart;
+					OCLExpression<EClassifier> expression = item.getItem();
+					if (expression.getStartPosition() <= offset && expression.getEndPosition() >= offset) {
+						res = expression;
+					}
+				}
+			}
+		} else {
+			// If the user has selected anything else...
+			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+		}
+		return res;
+	}
+
+	/**
+	 * Find the element selected in the given editor by resolving the AST on the selected Area.
+	 * 
+	 * @param editor
+	 *            The editor.
+	 * @return The EObject corresponding to the selected element in the editor.
+	 */
+	public static EObject findResolvedDeclaration(final AcceleoEditor editor) {
+		EObject res = null;
+		int offset;
+		final ISelection selection = editor.getSelectionProvider().getSelection();
+		if (selection instanceof TextSelection) {
+			offset = ((TextSelection)selection).getOffset();
+		} else {
+			offset = -1;
+		}
 		final ASTNode astNode = editor.getContent().getResolvedASTNode(offset, offset);
 		if (astNode != null) {
-			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+			// If the user has selected the name of the variable
+			if (astNode instanceof Variable
+					&& ((Variable)astNode).getName() != null
+					&& (offset < (((Variable)astNode).getStartPosition() + ((Variable)astNode).getName()
+							.length()))) {
+				res = astNode;
+			} else {
+				// If the user has selected the type of the variable or anything else...
+				res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+			}
 		}
 		if (res == null) {
 			final CSTNode cstNode = editor.getContent().getCSTNode(offset, offset);
@@ -827,112 +914,6 @@ public final class OpenDeclarationUtils {
 		}
 
 		return list;
-	}
-
-	/**
-	 * This method will find all the occurrences of a variable within the variable's template. With this
-	 * method, we will consider variable and variable exp that's why the variable parameter is an EObject, but
-	 * if the parameter has another type the result will be an empty list. We will analyze the list of matches
-	 * and find matches from the current file that are within the same template.
-	 * 
-	 * @param variable
-	 *            The variable for which we seek occurrences
-	 * @param matches
-	 *            The matches from the finOccurrences method.
-	 * @param file
-	 *            The current file.
-	 * @return The list of all matching variable and variable exp within the same template as our variable.
-	 */
-	public static List<Match> findOccurrencesInTemplate(final EObject variable, final List<Match> matches,
-			final IFile file) {
-		final List<Match> list = new ArrayList<Match>();
-
-		Template templateVariable = findContainingTemplateOf(variable);
-
-		if (variable instanceof Variable) {
-			for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
-				Match match = (Match)iterator.next();
-				EObject object = ((ReferenceEntry)match.getElement()).getMatch();
-				Template templateMatch = findContainingTemplateOf(((ReferenceEntry)match.getElement())
-						.getMatch());
-
-				if (checkTemplateEqual(templateVariable, templateMatch)
-						&& typeEqualsVariable((Variable)variable, object)) {
-					list.add(match);
-				}
-			}
-		}
-
-		if (variable instanceof VariableExp) {
-			for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
-				Match match = (Match)iterator.next();
-				EObject object = ((ReferenceEntry)match.getElement()).getMatch();
-				Template templateMatch = findContainingTemplateOf(((ReferenceEntry)match.getElement())
-						.getMatch());
-
-				if (checkTemplateEqual(templateVariable, templateMatch)
-						&& typeEqualsVariableExp((VariableExp)variable, object)) {
-					list.add(match);
-				}
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Check if the variable and the current object have the same type. In this method, we are only interested
-	 * in two cases : if object is a variable or a variable exp, if object is an instance of another class we
-	 * don't need any result so even if object is in the same template as elem, if it has another type than
-	 * variable or variable exp, the result will be false.
-	 * 
-	 * @param elem
-	 *            The variable.
-	 * @param object
-	 *            The current object.
-	 * @return True if they have the same type.
-	 */
-	private static boolean typeEqualsVariable(final Variable elem, final EObject object) {
-		boolean result = false;
-
-		if (object instanceof Variable) {
-			result = elem.getEType().getName().equals(((Variable)object).getEType().getName());
-		} else if (object instanceof VariableExp) {
-			result = elem.getEType().getName().equals(
-					((Variable)((VariableExp)object).getReferredVariable()).getEType().getName());
-		} else {
-			result = false;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Check if the variable exp and the current object have the same type. In this method, we are only
-	 * interested in two cases : if object is a variable or a variable exp, if object is an instance of
-	 * another class we don't need any result so even if object is in the same template as elem, if it has
-	 * another type than variable or variable exp, the result will be false.
-	 * 
-	 * @param elem
-	 *            The variable exp.
-	 * @param object
-	 *            The current object.
-	 * @return True if they have the same type.
-	 */
-	private static boolean typeEqualsVariableExp(final VariableExp elem, final EObject object) {
-		boolean result = false;
-
-		if (object instanceof Variable) {
-			result = ((Variable)elem.getReferredVariable()).getEType().getName().equals(
-					((Variable)object).getEType().getName());
-		} else if (object instanceof VariableExp) {
-			result = ((Variable)elem.getReferredVariable()).getEType().getName().equals(
-					((Variable)((VariableExp)object).getReferredVariable()).getEType().getName());
-		} else {
-			result = false;
-		}
-
-		return result;
 	}
 
 	/**

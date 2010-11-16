@@ -59,10 +59,10 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	@Override
 	protected void launchRefactoring() {
 		if (this.fWindow != null && AcceleoRefactoringUtils.allResourceSaved() && !this.editor.isDirty()) {
-			EObject container = OpenDeclarationUtils.findDeclaration(this.editor);
+			EObject container = OpenDeclarationUtils.findResolvedDeclaration(this.editor);
 
-			while (!(container instanceof Template) && !(container instanceof Query) && !(container instanceof Module)
-					&& container != null) {
+			while (!(container instanceof Template) && !(container instanceof Query)
+					&& !(container instanceof Module) && container != null) {
 				container = container.eContainer();
 			}
 

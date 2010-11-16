@@ -25,14 +25,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.ocl.ecore.Variable;
-import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
 import org.eclipse.search.ui.text.Match;
 
@@ -61,11 +58,6 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	private ReferencesSearchQuery query;
 
 	/**
-	 * The element that is selected in the editor.
-	 */
-	private EObject element;
-
-	/**
 	 * The constructor.
 	 * 
 	 * @param editor
@@ -74,15 +66,12 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 *            The name of the job
 	 * @param query
 	 *            The search query.
-	 * @param selectedElement
-	 *            the selectedElement.
 	 */
 	public AcceleoOccurrencesFinderJob(final AcceleoEditor editor, final String name,
-			final ReferencesSearchQuery query, final EObject selectedElement) {
+			final ReferencesSearchQuery query) {
 		super(name);
 		this.editor = editor;
 		this.query = query;
-		this.element = selectedElement;
 	}
 
 	/**
@@ -197,9 +186,6 @@ public class AcceleoOccurrencesFinderJob extends Job {
 		final IFile file = editor.getFile();
 		list = OpenDeclarationUtils.getMatchesFromTheFile(list, file);
 
-		if (element instanceof Variable || element instanceof VariableExp) {
-			list = OpenDeclarationUtils.findOccurrencesInTemplate(element, list, file);
-		}
 		return list;
 	}
 

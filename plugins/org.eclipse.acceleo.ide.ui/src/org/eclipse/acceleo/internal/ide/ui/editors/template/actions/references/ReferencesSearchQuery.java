@@ -40,7 +40,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -49,6 +51,7 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.ecore.Variable;
+import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
@@ -391,7 +394,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 * @return true if the element names are the same
 	 */
 	private boolean isMatching(EObject o1, EObject o2) {
-		boolean result;
+		boolean result = false;
 		if (o1.eClass().getName().equals(o2.eClass().getName())) {
 			if (o1 instanceof Template && o2 instanceof Template) {
 				final Template t1 = (Template)o1;
@@ -405,15 +408,85 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				result = ((ModuleElement)o1).getName().equals(((ModuleElement)o2).getName());
 			} else if (o1 instanceof org.eclipse.ocl.ecore.Variable
 					&& o2 instanceof org.eclipse.ocl.ecore.Variable) {
-				result = ((org.eclipse.ocl.ecore.Variable)o1).getName().equals(
-						((org.eclipse.ocl.ecore.Variable)o2).getName());
+				final Variable v1 = (Variable)o1;
+				final Variable v2 = (Variable)o2;
+				result = this.isMatchingVariable(v1, v2);
 			} else {
 				result = EcoreUtil.equals(o1, o2);
+			}
+		} else if (o1 instanceof VariableExp && o2 instanceof Variable) {
+			VariableExp vx = (VariableExp)o1;
+			org.eclipse.ocl.expressions.Variable<EClassifier, EParameter> referredVariable = vx
+					.getReferredVariable();
+			if (referredVariable instanceof Variable) {
+				Variable vTemp = (Variable)referredVariable;
+				Variable v2 = (Variable)o2;
+				result = isMatchingVariable(vTemp, v2);
+			}
+		} else if (o1 instanceof Variable && o2 instanceof VariableExp) {
+			VariableExp vx = (VariableExp)o2;
+			org.eclipse.ocl.expressions.Variable<EClassifier, EParameter> referredVariable = vx
+					.getReferredVariable();
+			if (referredVariable instanceof Variable) {
+				Variable vTemp = (Variable)referredVariable;
+				Variable v1 = (Variable)o1;
+				result = isMatchingVariable(v1, vTemp);
 			}
 		} else {
 			result = EcoreUtil.equals(o1, o2);
 		}
 		return result;
+	}
+
+	/**
+	 * Indicates if the given AST objects are matching.
+	 * 
+	 * @param v1
+	 *            is the first variable
+	 * @param v2
+	 *            is the second variable
+	 * @return true if the element names are the same and if they are in the same module element
+	 */
+	private boolean isMatchingVariable(final Variable v1, final Variable v2) {
+		boolean result = false;
+
+		if (v1.getName() != null) {
+			result = v1.getName().equals(v2.getName());
+		}
+
+		// If the two variables have the same name, check their container
+		if (result) {
+			ModuleElement container1 = getContainingModuleElement(v1);
+			ModuleElement container2 = getContainingModuleElement(v2);
+			if (container1 != null && container2 != null) {
+				result = result && container1.getStartPosition() == container2.getStartPosition()
+						&& container1.getEndPosition() == container2.getEndPosition();
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Returns the containing module element of the given variable.
+	 * 
+	 * @param v
+	 *            The variable
+	 * @return The containing module element of the given variable
+	 */
+	private ModuleElement getContainingModuleElement(Variable v) {
+		ModuleElement moduleElement = null;
+
+		EObject eContainer = v.eContainer();
+		while (!(eContainer != null) || !(eContainer instanceof ModuleElement)) {
+			eContainer = eContainer.eContainer();
+		}
+
+		if (eContainer instanceof ModuleElement) {
+			moduleElement = (ModuleElement)eContainer;
+		}
+
+		return moduleElement;
 	}
 
 	/**

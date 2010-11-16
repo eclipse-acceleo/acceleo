@@ -380,8 +380,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		}
 		if (content != null && content.getFile() != null) {
 			try {
-				IMarker[] markers = content.getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false,
-						IResource.DEPTH_INFINITE);
+				IMarker[] markers = content.getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+						false, IResource.DEPTH_INFINITE);
 				for (IMarker marker : markers) {
 					if (marker.getAttribute(IMarker.TRANSIENT, false)) {
 						marker.delete();
@@ -899,7 +899,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement,
 						false);
 				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(this, AcceleoUIMessages
-						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery, selectedElement); //$NON-NLS-1$
+						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery); //$NON-NLS-1$
 				occurrencesFinderJob.setSystem(true);
 				occurrencesFinderJob.setPriority(Job.DECORATE);
 				occurrencesFinderJob.schedule();

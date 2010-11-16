@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.expressions.VariableExp;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.NewSearchUI;
@@ -68,7 +70,13 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 				}
 			}
 			if (declaration != null) {
-				ISearchQuery query = new ReferencesSearchQuery(editor, declaration, true, true);
+				ISearchQuery query = null;
+				// If we are looking for a variable, there is no need to look in other files
+				if (declaration instanceof Variable || declaration instanceof VariableExp) {
+					query = new ReferencesSearchQuery(editor, declaration, false, true);
+				} else {
+					query = new ReferencesSearchQuery(editor, declaration, true, true);
+				}
 				NewSearchUI.runQueryInBackground(query);
 
 				ISearchQuery[] queries = NewSearchUI.getQueries();

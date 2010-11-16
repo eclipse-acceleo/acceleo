@@ -26,6 +26,7 @@ import org.eclipse.jface.text.ITextHoverExtension2;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.ocl.ecore.IteratorExp;
+import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.swt.graphics.Point;
 
@@ -108,7 +109,19 @@ public class AcceleoTextHover implements ITextHover, ITextHoverExtension2 {
 			ASTNode astNode = editor.getContent().getResolvedASTNode(hoverRegion.getOffset(),
 					hoverRegion.getOffset() + hoverRegion.getLength());
 			if (astNode != null) {
-				EObject eObject = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+				EObject eObject = null;
+
+				// If the user has selected the name of the variable
+				if (astNode instanceof Variable
+						&& ((Variable)astNode).getName() != null
+						&& (hoverRegion.getOffset() < (((Variable)astNode).getStartPosition() + ((Variable)astNode)
+								.getName().length()))) {
+					eObject = astNode;
+				} else {
+					// If the user has selected the type of the variable or anything else...
+					eObject = OpenDeclarationUtils.findDeclarationFromAST(astNode);
+				}
+
 				if (eObject instanceof IteratorExp && editor.getContent().getOCLEnvironment() != null) {
 					eObject = OpenDeclarationUtils.findIteratorEOperation(editor.getContent()
 							.getOCLEnvironment(), (IteratorExp)eObject);

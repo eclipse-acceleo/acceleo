@@ -59,7 +59,7 @@ public class AcceleoRenameAction extends AbstractRefactoringAction {
 		this.name = AcceleoUIMessages.getString("AcceleoEditorRenameRefactoring.RefactoringTitle"); //$NON-NLS-1$
 
 		if (this.fWindow != null && AcceleoRefactoringUtils.allResourceSaved() && !this.editor.isDirty()) {
-			final EObject object = OpenDeclarationUtils.findDeclaration(this.editor);
+			final EObject object = OpenDeclarationUtils.findResolvedDeclaration(this.editor);
 
 			if (object instanceof Template) {
 				this.launchRefactoringRenameTemplate((Template)object);
