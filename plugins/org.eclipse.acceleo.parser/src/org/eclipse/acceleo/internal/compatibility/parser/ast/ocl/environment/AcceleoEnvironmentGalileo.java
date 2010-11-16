@@ -48,6 +48,7 @@ import org.eclipse.ocl.options.ParsingOptions;
 import org.eclipse.ocl.types.CollectionType;
 import org.eclipse.ocl.types.TupleType;
 import org.eclipse.ocl.utilities.TypedElement;
+import org.eclipse.ocl.utilities.UMLReflection;
 
 /**
  * This class will not compile under Eclipse Ganymede with OCL 1.2 installed. It requires OCL 1.3 and
@@ -145,6 +146,38 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		/**
 		 * {@inheritDoc}
 		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#commonSuperType(java.lang.Object, java.lang.Object,
+		 *      java.lang.Object)
+		 */
+		@Override
+		public EClassifier commonSuperType(Object problemObject, EClassifier type1, EClassifier type2) {
+			/*
+			 * OCL tells us that a Collection is not an Object, we'll circumvent this limitation in Acceleo's
+			 * case.
+			 */
+			EClassifier oclType1 = null;
+			EClassifier oclType2 = null;
+			if (type1 != null) {
+				oclType1 = getEnvironment().getUMLReflection().getOCLType(type1);
+			}
+			if (type2 != null) {
+				oclType2 = getEnvironment().getUMLReflection().getOCLType(type2);
+			}
+
+			final EClassifier commonSuperType;
+			if (oclType1 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+				commonSuperType = oclType1;
+			} else if (oclType2 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+				commonSuperType = oclType2;
+			} else {
+				commonSuperType = super.commonSuperType(problemObject, type1, type2);
+			}
+			return commonSuperType;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ocl.AbstractTypeChecker#getOperations(java.lang.Object)
 		 */
 		@Override
@@ -154,6 +187,39 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
 			}
 			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#getRelationship(java.lang.Object, java.lang.Object)
+		 */
+		@Override
+		public int getRelationship(EClassifier type1, EClassifier type2) {
+			/*
+			 * OCL tells us that a Collection is not an Object, we'll circumvent this limitation in Acceleo's
+			 * case.
+			 */
+			EClassifier oclType1 = null;
+			EClassifier oclType2 = null;
+			if (type1 != null) {
+				oclType1 = getEnvironment().getUMLReflection().getOCLType(type1);
+			}
+			if (type2 != null) {
+				oclType2 = getEnvironment().getUMLReflection().getOCLType(type2);
+			}
+
+			final int relationship;
+			if (oclType1 == oclType2) {
+				relationship = UMLReflection.SAME_TYPE;
+			} else if (oclType1 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+				relationship = UMLReflection.STRICT_SUPERTYPE;
+			} else if (oclType2 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+				relationship = UMLReflection.STRICT_SUBTYPE;
+			} else {
+				relationship = super.getRelationship(type1, type2);
+			}
+			return relationship;
 		}
 
 		/**
