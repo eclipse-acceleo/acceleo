@@ -879,7 +879,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (occurrencesFinderJob != null) {
 			occurrencesFinderJob.cancel();
 		}
-		final EObject selectedElement = OpenDeclarationUtils.findDeclaration(this);
+		final EObject selectedElement = OpenDeclarationUtils.findDeclaration(this, false);
 		String selectedElementURI = getFragmentID(selectedElement);
 		if (!selectedElementURI.equals(offsetASTNodeURI) && !this.isDirty()) {
 			offsetASTNodeURI = selectedElementURI;

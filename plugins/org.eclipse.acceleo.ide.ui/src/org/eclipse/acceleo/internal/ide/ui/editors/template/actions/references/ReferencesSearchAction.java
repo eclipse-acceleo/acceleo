@@ -60,7 +60,7 @@ public class ReferencesSearchAction extends OpenDeclarationAction {
 		}
 		if (part instanceof AcceleoEditor && ((AcceleoEditor)part).getContent() != null) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			declaration = OpenDeclarationUtils.findDeclaration(editor);
+			declaration = OpenDeclarationUtils.findDeclaration(editor, true);
 			if (declaration == null) {
 				int offset;
 				ISelection selection = editor.getSelectionProvider().getSelection();

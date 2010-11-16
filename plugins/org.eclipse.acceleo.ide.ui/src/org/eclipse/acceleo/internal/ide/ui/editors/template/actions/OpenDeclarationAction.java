@@ -74,7 +74,7 @@ public class OpenDeclarationAction extends Action implements IWorkbenchWindowAct
 		}
 		if (part instanceof AcceleoEditor && ((AcceleoEditor)part).getContent() != null) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			declaration = OpenDeclarationUtils.findDeclaration(editor);
+			declaration = OpenDeclarationUtils.findDeclaration(editor, true);
 
 			OpenDeclarationUtils.showEObject(editor.getSite().getPage(), getFileURI(declaration),
 					OpenDeclarationUtils.createRegion(declaration), declaration);
