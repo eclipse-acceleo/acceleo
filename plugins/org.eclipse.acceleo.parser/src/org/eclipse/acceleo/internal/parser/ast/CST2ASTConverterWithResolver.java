@@ -1269,7 +1269,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private boolean compatibleVariableType(org.eclipse.ocl.ecore.Variable oLetVariable) {
 		boolean result = false;
 
-		if (oLetVariable.getInitExpression().getType().getInstanceClass() != null) {
+		if (oLetVariable.getInitExpression().getType().getInstanceClass() != null
+				&& oLetVariable.getType().getInstanceClass() != null) {
 			result = oLetVariable.getInitExpression().getType().getInstanceClass().isAssignableFrom(
 					oLetVariable.getType().getInstanceClass());
 		}
