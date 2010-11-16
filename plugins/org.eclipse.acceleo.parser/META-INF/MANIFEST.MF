@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.acceleo.model,
  org.eclipse.core.runtime
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
+Export-Package: org.eclipse.acceleo.internal.parser;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.parser.tests",
+ org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.ast.ocl;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.ast.ocl.environment;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.cst;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",

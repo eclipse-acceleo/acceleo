@@ -363,7 +363,7 @@ public class CSTParserBlock {
 		eFile.setFileUrl(eFileURL);
 		parseExpressionHeader(b, e, eFileURL);
 
-		if (eFileURL != null && "".equals(eFileURL.getBody())) { //$NON-NLS-1$
+		if (eFileURL != null && ("".equals(eFileURL.getBody()) || "''".equals(eFileURL.getBody()))) { //$NON-NLS-1$ //$NON-NLS-2$
 			logProblem(AcceleoParserMessages.getString("CSTParserBlock.EmptyFileName"), eFileURL //$NON-NLS-1$
 					.getStartPosition(), eFileURL.getEndPosition());
 		}
