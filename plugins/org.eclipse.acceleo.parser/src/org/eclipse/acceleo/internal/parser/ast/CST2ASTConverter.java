@@ -926,6 +926,7 @@ public class CST2ASTConverter {
 		if (iIfBlock != null && oIfBlock != null) {
 			org.eclipse.acceleo.parser.cst.Block iElse = iIfBlock.getElse();
 			if (iElse instanceof org.eclipse.acceleo.parser.cst.Template) {
+				// Never
 				org.eclipse.acceleo.model.mtl.Template oElse = factory
 						.getOrCreateTemplate((org.eclipse.acceleo.parser.cst.Template)iElse);
 				if (oElse != null) {
@@ -933,6 +934,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.ProtectedAreaBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.ProtectedAreaBlock oElse = factory
 						.getOrCreateProtectedAreaBlock((org.eclipse.acceleo.parser.cst.ProtectedAreaBlock)iElse);
 				if (oElse != null) {
@@ -940,6 +942,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.ProtectedAreaBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.ForBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.ForBlock oElse = factory
 						.getOrCreateForBlock((org.eclipse.acceleo.parser.cst.ForBlock)iElse);
 				if (oElse != null) {
@@ -947,6 +950,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.ForBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.IfBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.IfBlock oElse = factory
 						.getOrCreateIfBlock((org.eclipse.acceleo.parser.cst.IfBlock)iElse);
 				if (oElse != null) {
@@ -954,6 +958,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.IfBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.LetBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.LetBlock oElse = factory
 						.getOrCreateLetBlock((org.eclipse.acceleo.parser.cst.LetBlock)iElse);
 				if (oElse != null) {
@@ -961,6 +966,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.LetBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.FileBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.FileBlock oElse = factory
 						.getOrCreateFileBlock((org.eclipse.acceleo.parser.cst.FileBlock)iElse);
 				if (oElse != null) {
@@ -968,6 +974,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.FileBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.TraceBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.TraceBlock oElse = factory
 						.getOrCreateTraceBlock((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 				if (oElse != null) {
@@ -975,6 +982,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.Macro) {
+				// Never
 				org.eclipse.acceleo.model.mtl.Macro oElse = factory
 						.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
 				if (oElse != null) {
@@ -1026,6 +1034,7 @@ public class CST2ASTConverter {
 		if (iLetBlock != null && oLetBlock != null) {
 			org.eclipse.acceleo.parser.cst.Block iElse = iLetBlock.getElse();
 			if (iElse instanceof org.eclipse.acceleo.parser.cst.Template) {
+				// Never
 				org.eclipse.acceleo.model.mtl.Template oElse = factory
 						.getOrCreateTemplate((org.eclipse.acceleo.parser.cst.Template)iElse);
 				if (oElse != null) {
@@ -1033,6 +1042,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.Template)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.ProtectedAreaBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.ProtectedAreaBlock oElse = factory
 						.getOrCreateProtectedAreaBlock((org.eclipse.acceleo.parser.cst.ProtectedAreaBlock)iElse);
 				if (oElse != null) {
@@ -1040,6 +1050,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.ProtectedAreaBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.ForBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.ForBlock oElse = factory
 						.getOrCreateForBlock((org.eclipse.acceleo.parser.cst.ForBlock)iElse);
 				if (oElse != null) {
@@ -1047,6 +1058,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.ForBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.IfBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.IfBlock oElse = factory
 						.getOrCreateIfBlock((org.eclipse.acceleo.parser.cst.IfBlock)iElse);
 				if (oElse != null) {
@@ -1054,6 +1066,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.IfBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.LetBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.LetBlock oElse = factory
 						.getOrCreateLetBlock((org.eclipse.acceleo.parser.cst.LetBlock)iElse);
 				if (oElse != null) {
@@ -1061,6 +1074,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.LetBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.FileBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.FileBlock oElse = factory
 						.getOrCreateFileBlock((org.eclipse.acceleo.parser.cst.FileBlock)iElse);
 				if (oElse != null) {
@@ -1068,6 +1082,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.FileBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.TraceBlock) {
+				// Never
 				org.eclipse.acceleo.model.mtl.TraceBlock oElse = factory
 						.getOrCreateTraceBlock((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 				if (oElse != null) {
@@ -1075,6 +1090,7 @@ public class CST2ASTConverter {
 				}
 				transformStepCopy((org.eclipse.acceleo.parser.cst.TraceBlock)iElse);
 			} else if (iElse instanceof org.eclipse.acceleo.parser.cst.Macro) {
+				// Never
 				org.eclipse.acceleo.model.mtl.Macro oElse = factory
 						.getOrCreateMacro((org.eclipse.acceleo.parser.cst.Macro)iElse);
 				if (oElse != null) {
