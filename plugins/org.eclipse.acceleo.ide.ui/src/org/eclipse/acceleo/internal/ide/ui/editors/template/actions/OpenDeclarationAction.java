@@ -12,14 +12,11 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
-import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -77,40 +74,11 @@ public class OpenDeclarationAction extends Action implements IWorkbenchWindowAct
 		}
 		if (part instanceof AcceleoEditor && ((AcceleoEditor)part).getContent() != null) {
 			AcceleoEditor editor = (AcceleoEditor)part;
-			declaration = findDeclaration(editor);
+			declaration = OpenDeclarationUtils.findDeclaration(editor, true);
 
 			OpenDeclarationUtils.showEObject(editor.getSite().getPage(), getFileURI(declaration),
 					OpenDeclarationUtils.createRegion(declaration), declaration);
 		}
-	}
-
-	/**
-	 * Find the declaration of the text selected in the given editor.
-	 * 
-	 * @param editor
-	 *            the current opened editor
-	 * @return the EObject corresponding to the declaration of the selected element
-	 */
-	protected EObject findDeclaration(AcceleoEditor editor) {
-		EObject res = null;
-		int offset;
-		ISelection selection = editor.getSelectionProvider().getSelection();
-		if (selection instanceof TextSelection) {
-			offset = ((TextSelection)selection).getOffset();
-		} else {
-			offset = -1;
-		}
-		ASTNode astNode = editor.getContent().getResolvedASTNode(offset, offset);
-		if (astNode != null) {
-			res = OpenDeclarationUtils.findDeclarationFromAST(astNode);
-		}
-		if (res == null) {
-			CSTNode cstNode = editor.getContent().getCSTNode(offset, offset);
-			if (cstNode != null) {
-				res = OpenDeclarationUtils.findDeclarationFromCST(editor, astNode, cstNode);
-			}
-		}
-		return res;
 	}
 
 	/**

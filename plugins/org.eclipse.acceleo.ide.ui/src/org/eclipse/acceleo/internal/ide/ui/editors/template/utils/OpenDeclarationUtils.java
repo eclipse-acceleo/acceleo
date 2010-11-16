@@ -764,9 +764,12 @@ public final class OpenDeclarationUtils {
 	 * 
 	 * @param editor
 	 *            The editor.
+	 * @param withImportsExtends
+	 *            Indicates if we should look in the imports and extends dependencies of the module in the
+	 *            editor
 	 * @return The EObject corresponding to the selected element in the editor.
 	 */
-	public static EObject findDeclaration(final AcceleoEditor editor) {
+	public static EObject findDeclaration(final AcceleoEditor editor, boolean withImportsExtends) {
 		EObject res = null;
 		int offset;
 		final ISelection selection = editor.getSelectionProvider().getSelection();
@@ -775,7 +778,13 @@ public final class OpenDeclarationUtils {
 		} else {
 			offset = -1;
 		}
-		final ASTNode astNode = editor.getContent().getASTNode(offset, offset);
+
+		ASTNode astNode = null;
+		if (withImportsExtends) {
+			astNode = editor.getContent().getASTNode(offset, offset);
+		} else {
+			astNode = editor.getContent().getASTNodeWithoutImportsExtends(offset, offset);
+		}
 
 		if (astNode != null) {
 			res = OpenDeclarationUtils.computeEObject(astNode, offset);

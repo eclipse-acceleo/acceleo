@@ -1201,6 +1201,32 @@ public class AcceleoSourceContent {
 	}
 
 	/**
+	 * Gets the nearest AST node at the given position without resolving the imports and the extends of the
+	 * AST.
+	 * 
+	 * @param posBegin
+	 *            is the beginning index
+	 * @param posEnd
+	 *            is the ending index
+	 * @return the nearest AST node
+	 */
+	public ASTNode getASTNodeWithoutImportsExtends(int posBegin, int posEnd) {
+		if (posBegin > -1) {
+			org.eclipse.acceleo.model.mtl.Module vAST = getAST();
+			if (vAST != null) {
+				ASTNode candidate = null;
+				ASTNode childrenCandidate = getChildrenCandidate(vAST, posBegin, posEnd);
+				while (childrenCandidate != null) {
+					candidate = childrenCandidate;
+					childrenCandidate = getChildrenCandidate(candidate, posBegin, posEnd);
+				}
+				return candidate;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Gets the nearest AST child at the given position. It browses the children of the given candidate and
 	 * returns the nearest children if it exists.
 	 * 
