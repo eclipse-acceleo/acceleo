@@ -24,7 +24,7 @@ Book : [b.title/]
 	ddd[w.name/]
 [/for]
 
-[file ('',false)]
+[file ('filename',false)]
 [/file]
 
 [trace]

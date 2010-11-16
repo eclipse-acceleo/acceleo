@@ -151,6 +151,23 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	}
 
 	@Test
+	public void testParseTemplateOverrideMissingTemplate() {
+		File file = this.getFileFromPath("/data/ast/template/templateOverrideMissingTemplate.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateOverrideMissingTemplate.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(1, 0, 0);
+			checkASTResolution(1, 0, 1);
+			checkASTDocumentationResolution(1, 0, 1);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
 	public void testParseTemplateMultipleOverride() {
 		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverride.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);

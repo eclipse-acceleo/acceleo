@@ -14,6 +14,7 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.textui.TestRunner;
 
+import org.eclipse.acceleo.parser.tests.AcceleoParserMessagesTests;
 import org.eclipse.acceleo.parser.tests.AcceleoParserTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTDocumentationTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTModelExpressionsTests;
@@ -43,7 +44,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		CSTParserQueryTests.class, CSTParserTemplateTests.class, CSTParserTests.class,
 		FileContentTests.class, SequenceTests.class, ASTParserModuleTests.class, ASTOperationTests.class,
 		ASTParserQueryTests.class, ASTParserTemplateTests.class, ASTParserMacroTests.class,
-		ASTModelExpressionsTests.class, ASTDocumentationTests.class })
+		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class })
 public class AllTests {
 
 	/**
