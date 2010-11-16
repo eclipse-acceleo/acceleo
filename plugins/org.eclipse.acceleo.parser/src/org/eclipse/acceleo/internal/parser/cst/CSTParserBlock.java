@@ -352,6 +352,12 @@ public class CSTParserBlock {
 		setPositions(eFileURL, b, e);
 		eFile.setFileUrl(eFileURL);
 		parseExpressionHeader(b, e, eFileURL);
+
+		if (eFileURL != null && ("".equals(eFileURL.getBody()) || "''".equals(eFileURL.getBody()))) { //$NON-NLS-1$ //$NON-NLS-2$
+			log(AcceleoParserMessages.getString("CSTParserBlock.EmptyFileName"), eFileURL //$NON-NLS-1$
+					.getStartPosition(), eFileURL.getEndPosition());
+		}
+
 		if (comma.b() != -1) {
 			boolean openModeFound = false;
 			b = ParserUtils.shiftKeyword(source.getBuffer(), comma.e(), eH.b(), "true", true); //$NON-NLS-1$
