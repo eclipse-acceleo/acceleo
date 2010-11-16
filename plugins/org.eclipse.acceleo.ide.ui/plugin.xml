@@ -887,6 +887,10 @@ Contributors:
          markerType="org.eclipse.acceleo.ide.ui.problem"
          class="org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoProblemQuickFix">
       </markerResolutionGenerator>
+      <markerResolutionGenerator
+            class="org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AcceleoWarningQuickFix"
+            markerType="org.eclipse.acceleo.ide.ui.warning">
+      </markerResolutionGenerator>
     </extension>
     
     <extension
