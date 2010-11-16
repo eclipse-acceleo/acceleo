@@ -106,7 +106,7 @@ public class AcceleoRenameAction implements IWorkbenchWindowActionDelegate {
 		}
 
 		if (fWindow != null && allResourceSaved() && !this.editor.isDirty()) {
-			final EObject object = OpenDeclarationUtils.findDeclaration(this.editor);
+			final EObject object = OpenDeclarationUtils.findResolvedDeclaration(this.editor);
 
 			if (object instanceof Template) {
 				this.launchRefactoringRenameTemplate((Template)object);

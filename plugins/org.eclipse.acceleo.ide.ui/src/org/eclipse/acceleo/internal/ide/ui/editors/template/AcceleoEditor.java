@@ -760,7 +760,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(this, selectedElement,
 						false);
 				occurrencesFinderJob = new AcceleoOccurrencesFinderJob(this, AcceleoUIMessages
-						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery, selectedElement); //$NON-NLS-1$
+						.getString("AcceleoEditor.HighligthAllOccurrencesJob"), searchQuery); //$NON-NLS-1$
 				occurrencesFinderJob.setSystem(true);
 				occurrencesFinderJob.setPriority(Job.DECORATE);
 				occurrencesFinderJob.schedule();

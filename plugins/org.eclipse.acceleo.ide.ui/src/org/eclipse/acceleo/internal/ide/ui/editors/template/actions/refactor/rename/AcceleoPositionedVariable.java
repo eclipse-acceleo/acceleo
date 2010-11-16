@@ -133,7 +133,6 @@ public class AcceleoPositionedVariable {
 	 */
 	private void findAllPositionedVariables(final AcceleoEditor editor) {
 		List<Match> list = OpenDeclarationUtils.findOccurrences(editor, this.fVariable);
-		list = OpenDeclarationUtils.findOccurrencesInTemplate(this.fVariable, list, editor.getFile());
 		this.setVariableMatches(list);
 
 		for (Match match : list) {

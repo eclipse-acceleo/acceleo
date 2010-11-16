@@ -10,17 +10,24 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchQuery;
+import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
 import org.eclipse.search.ui.text.IEditorMatchAdapter;
 import org.eclipse.search.ui.text.IFileMatchAdapter;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.texteditor.MarkerUtilities;
 
 /**
  * This class store results of the query. It is also an adapter.
@@ -69,7 +76,7 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * @see org.eclipse.search.ui.ISearchResult#getImageDescriptor()
 	 */
 	public ImageDescriptor getImageDescriptor() {
-		return ImageDescriptor.getMissingImageDescriptor();
+		return AcceleoUIActivator.getImageDescriptor("icons/AcceleoEditor.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -78,7 +85,9 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	 * @see org.eclipse.search.ui.ISearchResult#getLabel()
 	 */
 	public String getLabel() {
-		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label"); //$NON-NLS-1$
+		int matchCount = this.getMatchCount();
+		EObject declaration = this.query.getDeclaration();
+		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label", declaration, matchCount); //$NON-NLS-1$
 	}
 
 	/**
@@ -149,6 +158,80 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 			return (IFile)element;
 		} else {
 			return null;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.search.ui.text.AbstractTextSearchResult#removeAll()
+	 */
+	@Override
+	public void removeAll() {
+		// Remove all the search markers
+		Object[] elements = this.getElements();
+		for (Object object : elements) {
+			if (object instanceof ReferenceEntry) {
+				ReferenceEntry entry = (ReferenceEntry)object;
+				this.removeMarker(entry);
+			}
+		}
+
+		super.removeAll();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.search.ui.text.AbstractTextSearchResult#removeMatch(org.eclipse.search.ui.text.Match)
+	 */
+	@Override
+	public void removeMatch(Match match) {
+		Object element = match.getElement();
+		if (element instanceof ReferenceEntry) {
+			ReferenceEntry entry = (ReferenceEntry)element;
+			this.removeMarker(entry);
+		}
+		super.removeMatch(match);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.search.ui.text.AbstractTextSearchResult#removeMatches(org.eclipse.search.ui.text.Match[])
+	 */
+	@Override
+	public void removeMatches(Match[] matches) {
+		for (Match match : matches) {
+			Object element = match.getElement();
+			if (element instanceof ReferenceEntry) {
+				ReferenceEntry entry = (ReferenceEntry)element;
+				this.removeMarker(entry);
+			}
+		}
+		super.removeMatches(matches);
+	}
+
+	/**
+	 * Remove the marker of the given entry.
+	 * 
+	 * @param entry
+	 *            The entry
+	 */
+	private void removeMarker(ReferenceEntry entry) {
+		IFile file = entry.getTemplateFile();
+		try {
+			IMarker[] markers = file.findMarkers(NewSearchUI.SEARCH_MARKER, false, IResource.DEPTH_INFINITE);
+			for (IMarker iMarker : markers) {
+				int charStart = MarkerUtilities.getCharStart(iMarker);
+				int charEnd = MarkerUtilities.getCharEnd(iMarker);
+				if (charStart == entry.getRegion().getOffset()
+						&& charEnd == entry.getRegion().getOffset() + entry.getRegion().getLength()) {
+					iMarker.delete();
+				}
+			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 	}
 }
