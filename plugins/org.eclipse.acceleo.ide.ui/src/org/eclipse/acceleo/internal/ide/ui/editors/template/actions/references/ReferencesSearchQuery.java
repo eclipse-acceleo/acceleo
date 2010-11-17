@@ -291,10 +291,12 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		if (emtlPath.segmentCount() > 1 && ResourcesPlugin.getWorkspace().getRoot().exists(emtlPath)) {
 			IFile emtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(emtlPath);
 			IPath mtlPath = new AcceleoProject(emtlFile.getProject()).getInputFilePath(emtlPath);
-			IFile mtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(mtlPath);
-			if (mtlFile.exists()) {
-				StringBuffer acceleoText = FileContent.getFileContent(mtlFile.getLocation().toFile());
-				scanModuleForDeclaration(mtlFile, acceleoText, module);
+			if (mtlPath != null) {
+				IFile mtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(mtlPath);
+				if (mtlFile.exists()) {
+					StringBuffer acceleoText = FileContent.getFileContent(mtlFile.getLocation().toFile());
+					scanModuleForDeclaration(mtlFile, acceleoText, module);
+				}
 			}
 		}
 	}
