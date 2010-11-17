@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchResult;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.search.ui.text.Match;
@@ -132,7 +135,21 @@ public class AcceleoPositionedVariable {
 	 *            The acceleo editor.
 	 */
 	private void findAllPositionedVariables(final AcceleoEditor editor) {
-		List<Match> list = OpenDeclarationUtils.findOccurrences(editor, this.fVariable);
+		final List<Match> list = new ArrayList<Match>();
+
+		final ReferencesSearchQuery searchQuery = new ReferencesSearchQuery(editor, this.fVariable, false);
+		searchQuery.run(new NullProgressMonitor());
+
+		final ReferencesSearchResult result = (ReferencesSearchResult)searchQuery.getSearchResult();
+		final Object[] array = result.getElements();
+
+		for (int i = 0; i < array.length; i++) {
+			if (((ReferenceEntry)array[i]).getRegion() != null) {
+				list.add(new Match(array[i], ((ReferenceEntry)array[i]).getRegion().getOffset(),
+						((ReferenceEntry)array[i]).getRegion().getLength()));
+			}
+		}
+
 		this.setVariableMatches(list);
 
 		for (Match match : list) {
