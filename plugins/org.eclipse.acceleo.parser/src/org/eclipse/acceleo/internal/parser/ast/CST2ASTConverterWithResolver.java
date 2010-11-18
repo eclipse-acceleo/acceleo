@@ -304,7 +304,19 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					log(AcceleoParserMessages.getString("CST2ASTConverterWithResolver.MissingTemplate", //$NON-NLS-1$
 							ioNext.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 				} else {
-					oTemplate.getOverrides().addAll(oOverrides);
+					for (org.eclipse.acceleo.model.mtl.Template template : oOverrides) {
+						if (template.eContainer() instanceof org.eclipse.acceleo.model.mtl.Module
+								&& oTemplate.eContainer() instanceof org.eclipse.acceleo.model.mtl.Module
+								&& (EcoreUtil.getURI(template.eContainer()).equals(EcoreUtil.getURI(oTemplate
+										.eContainer())))) {
+							// The overridden template is in the same module as the current template
+							log(AcceleoParserMessages
+									.getString("CST2ASTConverterWithResolver.OverrideTemplateInSameModule"), //$NON-NLS-1$
+									ioNext.getStartPosition(), ioNext.getEndPosition());
+						} else {
+							oTemplate.getOverrides().add(template);
+						}
+					}
 				}
 			}
 			if (oFirst != null && oFirst.getType() != null) {
