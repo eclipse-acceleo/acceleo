@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryMultipleParameters('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.queryMultipleParameters(eClass.name)/][/file][/template]
+
+[query public queryMultipleParameters(eClass : EClass, name : String) : String = 'queryMultipleParameters'/]
