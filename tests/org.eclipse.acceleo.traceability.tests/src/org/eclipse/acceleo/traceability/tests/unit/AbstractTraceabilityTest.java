@@ -190,13 +190,15 @@ public abstract class AbstractTraceabilityTest {
 			}
 		}
 
-		String path = this.moduleURI.toString();
-		path = path.substring("platform:/plugin".length()); //$NON-NLS-1$
-		try {
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-			file.delete(true, new NullProgressMonitor());
-		} catch (CoreException e) {
-			e.printStackTrace();
+		if (this.moduleURI != null) {
+			String path = this.moduleURI.toString();
+			path = path.substring("platform:/plugin".length()); //$NON-NLS-1$
+			try {
+				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
+				file.delete(true, new NullProgressMonitor());
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

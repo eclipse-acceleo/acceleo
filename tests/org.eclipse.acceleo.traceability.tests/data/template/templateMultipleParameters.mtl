@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateMultipleParameters('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.templateSimple(eClass.name)/][/file][/template]
+
+[template public templateSimple(eClass : EClass, name : String)]templateMultipleParameters[/template]

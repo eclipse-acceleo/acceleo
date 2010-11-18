@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module templateMultipleTemplates('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.template1()/][/file][/template]
+
+[template public template1(eClass : EClass)][eClass.template2()/][/template]
+
+[template public template2(eClass : EClass)][eClass.template3()/][/template]
+
+[template public template3(eClass : EClass)][eClass.template4()/][/template]
+
+[template public template4(eClass : EClass)]templateMultipleTemplates[/template]
