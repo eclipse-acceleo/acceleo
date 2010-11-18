@@ -64,4 +64,5 @@ public final class ExpressionTrace<C> extends AbstractTrace {
 	public OCLExpression<C> getReferredExpression() {
 		return referredExpression;
 	}
+
 }
