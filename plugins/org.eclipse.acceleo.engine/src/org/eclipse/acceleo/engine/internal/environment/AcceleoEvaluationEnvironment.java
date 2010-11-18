@@ -14,7 +14,9 @@ package org.eclipse.acceleo.engine.internal.environment;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,12 +37,16 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -166,7 +172,77 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
 			result = AcceleoLibraryOperationVisitor.callNonStandardOperation(this, operation, source, args);
 		} else {
-			result = super.callOperation(operation, opcode, source, args);
+			/*
+			 * Shortcut OCL for operations returning "EJavaObject" : these could be collections, but OCL would
+			 * discard any value other than the first in such cases. See bug 287052.
+			 */
+			if (operation.getEType() == EcorePackage.eINSTANCE.getEJavaObject()) {
+				result = callOperationWorkaround287052(operation, opcode, source, args);
+			} else {
+				result = super.callOperation(operation, opcode, source, args);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Copied from
+	 * {@link org.eclipse.ocl.AbstractEvaluationEnvironment#callOperation(Object, int, Object, Object[])} to
+	 * bypass the {@link EcoreEvaluationEnvironment} "coerce" behavior as it is the cause of bug 287052.This
+	 * will only be called for EOperations which return type is EJavaObject.
+	 * 
+	 * @param operation
+	 *            Operation we are to call.
+	 * @param opcode
+	 *            OCL code for this operation.
+	 * @param source
+	 *            Source of the call.
+	 * @param args
+	 *            Arguments of the call.
+	 * @return Result of the invocation.
+	 * @throws IllegalArgumentException
+	 *             Thrown if we couldn't find an appropriate method to call.
+	 */
+	private Object callOperationWorkaround287052(EOperation operation, int opcode, Object source,
+			Object[] args) throws IllegalArgumentException {
+		if (getParent() != null) {
+			return getParent().callOperation(operation, opcode, source, args);
+		}
+
+		Method method = getJavaMethodFor(operation, source);
+
+		Object noResult = new Object();
+		Object result = noResult;
+		if (method != null) {
+			try {
+				// coerce any collection arguments to EList as necessary
+				Class<?>[] parmTypes = method.getParameterTypes();
+				for (int i = 0; i < parmTypes.length; i++) {
+					if (EList.class.isAssignableFrom(parmTypes[i])) {
+						if (args[i] == null) {
+							args[i] = ECollections.EMPTY_ELIST;
+						} else if (!(args[i] instanceof Collection<?>)) {
+							EList<Object> list = new BasicEList.FastCompare<Object>(1);
+							list.add(args[i]);
+							args[i] = list;
+						} else if (!(args[i] instanceof EList<?>)) {
+							args[i] = new BasicEList.FastCompare<Object>((Collection<?>)args[i]);
+						}
+					}
+				}
+
+				result = method.invoke(source, args);
+				// CHECKSTYLE:OFF
+				// This is mostly copied from AbstractEvaluationEnvironment, which catches Exception.
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				AcceleoEnginePlugin.log(e, false);
+				result = getInvalidResult();
+			}
+		}
+
+		if (result == noResult) {
+			throw new IllegalArgumentException();
 		}
 		return result;
 	}
