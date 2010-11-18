@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.engine.internal.evaluation;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.model.mtl.Block;
@@ -20,6 +21,7 @@ import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.InitSection;
 import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
@@ -121,6 +123,33 @@ public class AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA,
 	 */
 	public String fitIndentationTo(String source, String indentation) {
 		return getAcceleoDelegate().fitIndentationTo(source, indentation);
+	}
+
+	/**
+	 * Return the cached result for the given invocation.
+	 * 
+	 * @param query
+	 *            The query for which we need cached results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @return The cached result if any.
+	 */
+	public Object getCachedResult(Query query, List<Object> arguments) {
+		return getAcceleoDelegate().getCachedResult(query, arguments);
+	}
+
+	/**
+	 * Caches the result of the given invocation.
+	 * 
+	 * @param query
+	 *            The query for which we need to cache results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @param result
+	 *            The result that is to be cached.
+	 */
+	public void cacheResult(Query query, List<Object> arguments, Object result) {
+		getAcceleoDelegate().cacheResult(query, arguments, result);
 	}
 
 	/**

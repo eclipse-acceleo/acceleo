@@ -99,9 +99,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** We'll use this to store the value of the iteration count. */
 	private static final String ITERATION_COUNT_VARIABLE_NAME = "i"; //$NON-NLS-1$
 
-	/** This instance will be used as the cached result of a query when it is null. */
-	private static final Object NULL_QUERY_RESULT = new Object();
-
 	/** To profile an AST evaluation. */
 	private static Profiler profile;
 
@@ -116,9 +113,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
 	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
-
-	/** This instance will be used as the cached result of a query when it is undefined. */
-	private static final Object UNDEFINED_QUERY_RESULT = new Object();
 
 	/** Generation context of this visitor. */
 	private final AcceleoEvaluationContext<C> context;
@@ -138,6 +132,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private boolean fireGenerationEvent;
 
+	/** Retrieve invalid once and for all. */
+	private final Object invalid = getAcceleoEnvironment().getOCLStandardLibraryReflection().getInvalid();
+
 	/** This will allow us to remember the last EObject value of the self variable. */
 	private EObject lastEObjectSelfValue;
 
@@ -150,14 +147,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** Keeps track of the result of the last source expression. */
 	private Object lastSourceExpressionResult;
 
-	/** Retrieve invalid once and for all. */
-	private final Object invalid = getAcceleoEnvironment().getOCLStandardLibraryReflection().getInvalid();
-
 	/**
 	 * A query returns the same result each time it is called with the same arguments. This map will allow us
 	 * to keep the result in cache for faster subsequent calls.
 	 */
-	private final Map<Query, Map<List<Object>, Object>> queryResults = new HashMap<Query, Map<List<Object>, Object>>();
+	private QueryCache queryCache = new QueryCache(getAcceleoEnvironment().getOCLStandardLibraryReflection()
+			.getInvalid());
 
 	/** My decorating visitor. */
 	private EvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> visitor;
@@ -218,6 +213,20 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Caches the result of the given invocation.
+	 * 
+	 * @param query
+	 *            The query for which we need to cache results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @param result
+	 *            The result that is to be cached.
+	 */
+	public void cacheResult(Query query, List<Object> arguments, Object result) {
+		queryCache.cacheResult(query, arguments, result);
+	}
+
+	/**
 	 * Demands creation of a writer for the given file path from the generation strategy.
 	 * 
 	 * @param generatedFile
@@ -239,6 +248,45 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			return;
 		}
 		context.openNested(generatedFile, fileBlock, source, appendMode, charset);
+	}
+
+	/**
+	 * This will alter all lines of the given <em>text</em> so that they all fit with the indentation of the
+	 * last line of the current context.
+	 * 
+	 * @param source
+	 *            Text which indentation is to be altered.
+	 * @param indentation
+	 *            Indentation that is to be given to all of <em>source</em> lines.
+	 * @return The input <em>text</em> after its indentation has been modified to fit the context.
+	 */
+	public String fitIndentationTo(String source, String indentation) {
+		// Do not alter the very first line (^)
+		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
+		String replacement = "$0" + indentation; //$NON-NLS-1$
+
+		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
+		StringBuffer result = new StringBuffer();
+		boolean hasMatch = sourceMatcher.find();
+		while (hasMatch) {
+			sourceMatcher.appendReplacement(result, replacement);
+			hasMatch = sourceMatcher.find();
+		}
+		sourceMatcher.appendTail(result);
+		return result.toString();
+	}
+
+	/**
+	 * Return the cached result for the given invocation.
+	 * 
+	 * @param query
+	 *            The query for which we need cached results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @return The cached result if any.
+	 */
+	public Object getCachedResult(Query query, List<Object> arguments) {
+		return queryCache.getResult(query, arguments);
 	}
 
 	/**
@@ -671,10 +719,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
 			final Object argValue = getEvaluationEnvironment().getValueOf(var.getName());
 			if (isInvalid(argValue)) {
+				final OCLExpression<C> failingExpression = (OCLExpression<C>)invocation.getArgument().get(i);
+				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				final AcceleoEvaluationException exception = context.createAcceleoException(invocation,
-						(OCLExpression<C>)invocation.getArgument().get(i),
-						"AcceleoEvaluationVisitor.UndefinedArgument", getEvaluationEnvironment() //$NON-NLS-1$
-								.getValueOf(SELF_VARIABLE_NAME));
+						failingExpression, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
 				// Evaluation of this query failed. Remove all previously created variables
 				for (int j = 0; j <= i; j++) {
 					getEvaluationEnvironment().remove(query.getParameter().get(j).getName());
@@ -685,30 +733,25 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			var.setInitExpression(null);
 		}
 		fireGenerationEvent = fireEvents;
+
 		// If the query has already been run with these arguments, return the cached result
-		if (queryResults.containsKey(query)) {
-			final Map<List<Object>, Object> results = queryResults.get(query);
-			Object result = results.get(arguments);
-			if (result != null) {
-				// We no longer need the variables at their current value.
-				for (Variable var : query.getParameter()) {
-					getEvaluationEnvironment().remove(var.getName());
-				}
-				if (result == UNDEFINED_QUERY_RESULT) {
-					int line = getLineOf(invocation);
-					final String moduleName = ((Module)EcoreUtil.getRootContainer(query)).getName();
-					final String message = AcceleoEngineMessages.getString(
-							"AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
-									.getExpression(), line, moduleName, query, getEvaluationEnvironment()
-									.getValueOf(SELF_VARIABLE_NAME));
-					final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
-					throw exception;
-				}
-				if (result == NULL_QUERY_RESULT) {
-					result = null;
-				}
-				return result;
+		Object cachedResult = delegateGetCachedResult(query, arguments);
+		if (QueryCache.isCachedResult(cachedResult)) {
+			// We no longer need the variables at their current value.
+			for (Variable var : query.getParameter()) {
+				getEvaluationEnvironment().remove(var.getName());
 			}
+			if (QueryCache.isInvalid(cachedResult)) {
+				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
+				final AcceleoEvaluationException exception = context.createAcceleoException(query,
+						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
+						currentSelf);
+				throw exception;
+			}
+			if (QueryCache.isNull(cachedResult)) {
+				cachedResult = null;
+			}
+			return cachedResult;
 		}
 
 		// [255379] change context
@@ -734,34 +777,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		// Store result of the query invocation
-		if (queryResults.containsKey(query)) {
-			final Map<List<Object>, Object> results = queryResults.get(query);
-			if (isInvalid(result)) {
-				results.put(arguments, UNDEFINED_QUERY_RESULT);
-			} else if (result == null) {
-				results.put(arguments, NULL_QUERY_RESULT);
-			} else {
-				results.put(arguments, result);
-			}
-		} else {
-			final Map<List<Object>, Object> results = new HashMap<List<Object>, Object>(2);
-			if (isInvalid(result)) {
-				results.put(arguments, UNDEFINED_QUERY_RESULT);
-			} else if (result == null) {
-				results.put(arguments, NULL_QUERY_RESULT);
-			} else {
-				results.put(arguments, result);
-			}
-			queryResults.put(query, results);
-		}
+		delegateCacheResult(query, arguments, result);
 		if (isInvalid(result)) {
-			int line = getLineOf(invocation);
-			final String moduleName = ((Module)EcoreUtil.getRootContainer(query)).getName();
-			final String message = AcceleoEngineMessages.getString(
-					"AcceleoEvaluationVisitor.UndefinedQuery", query //$NON-NLS-1$
-							.getExpression(), line, moduleName, query, getEvaluationEnvironment().getValueOf(
-							SELF_VARIABLE_NAME));
-			final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
+			final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
+			final AcceleoEvaluationException exception = context.createAcceleoException(query,
+					(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
+					currentSelf);
 			throw exception;
 		}
 		return result;
@@ -1107,6 +1128,25 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate the
+	 * query result caching to it.
+	 * 
+	 * @param query
+	 *            The query for which we need to cache results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @param result
+	 *            The result that is to be cached.
+	 */
+	private void delegateCacheResult(Query query, List<Object> arguments, Object result) {
+		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			getAcceleoVisitor().cacheResult(query, arguments, result);
+		} else {
+			cacheResult(query, arguments, result);
+		}
+	}
+
+	/**
 	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate all
 	 * file creation to it.
 	 * 
@@ -1131,6 +1171,41 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					charset);
 		} else {
 			createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode, charset);
+		}
+	}
+
+	/**
+	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate all
+	 * indentation management to it.
+	 * 
+	 * @param source
+	 *            Text which indentation is to be altered.
+	 * @return The source text after having changed all of its lines' indentation.
+	 */
+	private String delegateFitIndentation(String source) {
+		String currentIndent = context.getCurrentLineIndentation();
+		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
+		} else {
+			return fitIndentationTo(source, currentIndent);
+		}
+	}
+
+	/**
+	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate the
+	 * query result caching to it.
+	 * 
+	 * @param query
+	 *            The query for which we need cached results.
+	 * @param arguments
+	 *            Arguments of the invocation.
+	 * @return The cached result if any.
+	 */
+	private Object delegateGetCachedResult(Query query, List<Object> arguments) {
+		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
+			return getAcceleoVisitor().getCachedResult(query, arguments);
+		} else {
+			return getCachedResult(query, arguments);
 		}
 	}
 
@@ -1521,49 +1596,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			result = super.visitExpression(expression);
 		}
 		return result;
-	}
-
-	/**
-	 * This will alter all lines of the given <em>text</em> so that they all fit with the indentation of the
-	 * last line of the current context.
-	 * 
-	 * @param source
-	 *            Text which indentation is to be altered.
-	 * @param indentation
-	 *            Indentation that is to be given to all of <em>source</em> lines.
-	 * @return The input <em>text</em> after its indentation has been modified to fit the context.
-	 */
-	public String fitIndentationTo(String source, String indentation) {
-		// Do not alter the very first line (^)
-		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
-		String replacement = "$0" + indentation; //$NON-NLS-1$
-
-		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
-		StringBuffer result = new StringBuffer();
-		boolean hasMatch = sourceMatcher.find();
-		while (hasMatch) {
-			sourceMatcher.appendReplacement(result, replacement);
-			hasMatch = sourceMatcher.find();
-		}
-		sourceMatcher.appendTail(result);
-		return result.toString();
-	}
-
-	/**
-	 * If I have an {@link AcceleoEvaluationVisitorDecorator Acceleo-specific decorator}, I'll delegate all
-	 * indentation management to it.
-	 * 
-	 * @param source
-	 *            Text which indentation is to be altered.
-	 * @return The source text after having changed all of its lines' indentation.
-	 */
-	private String delegateFitIndentation(String source) {
-		String currentIndent = context.getCurrentLineIndentation();
-		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
-		} else {
-			return fitIndentationTo(source, currentIndent);
-		}
 	}
 
 	/**
