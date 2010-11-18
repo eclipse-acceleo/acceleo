@@ -10,19 +10,23 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.suite;
 
-import org.eclipse.acceleo.traceability.tests.unit.TraceabilityTest;
-
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import org.eclipse.acceleo.traceability.tests.unit.text.AcceleoTraceabilityTextTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo traceability.
  * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@SuiteClasses({AcceleoTraceabilityTextTests.class })
+public class AllTests {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -39,10 +43,6 @@ public class AllTests extends TestCase {
 	 * @return The test suite containing all the tests.
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo traceability test suite"); //$NON-NLS-1$
-
-		suite.addTestSuite(TraceabilityTest.class);
-
-		return suite;
+		return new JUnit4TestAdapter(AllTests.class);
 	}
 }

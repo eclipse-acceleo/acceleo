@@ -3,7 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.traceability.tests
 Bundle-Version: 3.1.0.qualifier
-Fragment-Host: org.eclipse.acceleo.engine.tests;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %providerName
 Bundle-Localization: traceability.tests
+Require-Bundle: org.junit4,
+ org.eclipse.acceleo.engine,
+ org.eclipse.core.runtime,
+ org.eclipse.acceleo.parser,
+ org.eclipse.acceleo.traceability.model,
+ org.eclipse.core.resources
+Export-Package: org.eclipse.acceleo.traceability.tests.suite;x-friends:="org.eclipse.acceleo.tests"

@@ -1,0 +1,7 @@
+[comment encoding = UTF-8 /]
+[module textSimpleMultiline('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')]Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Donec pellentesque pharetra tellus lacinia tincidunt. Nullam mattis feugiat ligula eget dapibus. Etiam blandit vulputate ornare.
+Fusce a justo turpis, id suscipit magna. Curabitur nibh dolor, consequat id blandit ut, tristique sed quam. Ut vitae velit nisl, in lacinia velit.
+Praesent vel.[/file][/template]
