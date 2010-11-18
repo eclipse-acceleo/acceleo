@@ -51,6 +51,7 @@ public class AllTests {
 		classicSuite.addTest(EngineTestSuite.suite());
 		classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+		classicSuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
 
 		final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
 		traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
@@ -60,6 +61,7 @@ public class AllTests {
 		traceabilitySuite.addTest(EngineTestSuite.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+		traceabilitySuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
 
 		suite.addTest(classicSuite);
 		suite.addTest(traceabilitySuite);
