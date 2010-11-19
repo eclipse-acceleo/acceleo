@@ -1465,46 +1465,41 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
 			} else {
 				final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+				isImpacting = getTraceabilityImpactingOperationNames().contains(operationName);
 			}
 		}
 
 		return isImpacting;
+	}
+
+	/**
+	 * Returns the list of all operations that will impact traceability information.
+	 * 
+	 * @return The list of all operations that will impact traceability information.
+	 */
+	private List<String> getTraceabilityImpactingOperationNames() {
+		List<String> operationNames = new ArrayList<String>();
+
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_LAST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+
+		return operationNames;
 	}
 
 	/**
