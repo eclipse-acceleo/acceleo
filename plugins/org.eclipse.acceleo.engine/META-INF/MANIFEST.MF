@@ -20,8 +20,8 @@ Export-Package: org.eclipse.acceleo.engine,
  org.eclipse.acceleo.engine.generation.strategy,
  org.eclipse.acceleo.engine.generation.writers,
  org.eclipse.acceleo.engine.internal.debug;x-friends:="org.eclipse.acceleo.ide.ui",
- org.eclipse.acceleo.engine.internal.environment;x-friends:="org.eclipse.acceleo.engine.tests",
- org.eclipse.acceleo.engine.internal.evaluation;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.engine.tests",
+ org.eclipse.acceleo.engine.internal.environment;x-friends:="org.eclipse.acceleo.engine.tests,org.eclipse.acceleo.traceability",
+ org.eclipse.acceleo.engine.internal.evaluation;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.engine.tests,org.eclipse.acceleo.traceability",
  org.eclipse.acceleo.engine.service
 Bundle-Activator: org.eclipse.acceleo.engine.AcceleoEnginePlugin
 Eclipse-LazyStart: true
