@@ -900,7 +900,7 @@ public class OCLParser {
 			eQueryInvocation.setDefinition(eQuery);
 			eQueryInvocation.setStartPosition(eCall.getStartPosition());
 			eQueryInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall, eQuery.getParameter())) {
+			if (receiverIsArgument(eCall, eQuery.getParameter())) { // FIXME SBE Bug Query Yvan
 				eQueryInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eQueryInvocation.setType(eCall.getType());
