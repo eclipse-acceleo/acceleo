@@ -42,6 +42,7 @@ import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
@@ -175,6 +176,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * as soon as we exit this area. It will be used to shortcut all input recorded inside of such an area.
 	 */
 	private InputElement protectedAreaSource;
+
+	/** Query results are cached, thus we need to cache their traces too. */
+	private QueryTaceCache<C> queryTraceCache = new QueryTaceCache<C>();
 
 	/** This will be used internally to prevent trace recording for set expressions. */
 	private boolean record = true;
@@ -319,6 +323,35 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see AcceleoEvaluationVisitorDecorator#cacheResult(Query, List, Object)
+	 */
+	@Override
+	public void cacheResult(Query query, List<Object> arguments, Object result) {
+		queryTraceCache.cacheTrace(query, arguments, new ExpressionTrace<C>(recordedTraces.getLast()));
+
+		super.cacheResult(query, arguments, result);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see AcceleoEvaluationVisitorDecorator#getCachedResult(Query, List)
+	 */
+	@Override
+	public Object getCachedResult(Query query, List<Object> arguments) {
+		ExpressionTrace<C> cachedTraces = queryTraceCache.getCachedTrace(query, arguments);
+		if (cachedTraces != null) {
+			// The query was already in cache, replace all of its invocation traces by the cached ones
+			recordedTraces.removeLast();
+			recordedTraces.add(new ExpressionTrace<C>(cachedTraces));
+		}
+
+		return super.getCachedResult(query, arguments);
+	}
+
+	/**
 	 * Returns the stack of generated files.
 	 * 
 	 * @return The stack of generated files.
@@ -423,7 +456,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
 		scopeEObjects.add(invocation.getDefinition().getParameter().get(0));
 
+		// If this invocation isn't cached yet, we'll need to record all of its traces
+		recordedTraces.add(new ExpressionTrace<C>((OCLExpression<C>)invocation.getDefinition()
+				.getExpression()));
+
 		final Object result = super.visitAcceleoQueryInvocation(invocation);
+
+		/*
+		 * Query traces are cached, but the cache contains the traces of the very first invocation of this
+		 * query. We need to change the cached instances of GeneratedText to the current GeneratedFile.
+		 */
+		ExpressionTrace<C> queryTrace = recordedTraces.removeLast();
+		ExpressionTrace<C> currentTrace = recordedTraces.getLast();
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : queryTrace.getTraces().entrySet()) {
+			for (GeneratedText text : entry.getValue()) {
+				currentTrace.copyTrace(entry.getKey(), text);
+			}
+		}
 
 		scopeEObjects.removeLast();
 
@@ -1549,13 +1598,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// Note : sort this by order of frequency to allow shot-circuit evaluation
 		boolean generate = reference == MtlPackage.eINSTANCE.getBlock_Body();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Each();
-		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Each();
 		generate = generate || reference == MtlPackage.eINSTANCE.getFileBlock_FileUrl();
+		generate = generate || reference == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_After();
+		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Each();
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_After();
-		generate = generate || reference == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker();
 		return generate;
 	}
 

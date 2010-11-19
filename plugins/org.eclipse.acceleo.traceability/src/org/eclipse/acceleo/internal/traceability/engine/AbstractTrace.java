@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
+import org.eclipse.acceleo.traceability.TraceabilityFactory;
 
 /**
  * This will serve as the base class for traceability contexts.
@@ -54,6 +55,30 @@ public abstract class AbstractTrace {
 		trace.setStartOffset(startOffset);
 		trace.setEndOffset(currentOffset);
 		referredTraces.add(trace);
+	}
+
+	/**
+	 * Copies the given trace and adds it to this expression trace.
+	 * 
+	 * @param input
+	 *            Input element for this trace.
+	 * @param original
+	 *            Trace that we are to copy.
+	 */
+	public void copyTrace(InputElement input, GeneratedText original) {
+		Set<GeneratedText> referredTraces = traces.get(input);
+		if (referredTraces == null) {
+			referredTraces = new LinkedHashSet<GeneratedText>();
+			traces.put(input, referredTraces);
+		}
+		GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
+		int gap = currentOffset;
+		currentOffset = currentOffset + original.getEndOffset() - original.getStartOffset();
+		text.setSourceElement(input);
+		text.setStartOffset(original.getStartOffset() + gap);
+		text.setEndOffset(original.getEndOffset() + gap);
+		text.setModuleElement(original.getModuleElement());
+		referredTraces.add(text);
 	}
 
 	/**
