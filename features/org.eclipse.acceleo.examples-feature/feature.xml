@@ -12,7 +12,7 @@ Contributors:
 <feature
       id="org.eclipse.acceleo.examples"
       label="%featureName"
-      version="3.0.1.qualifier"
+      version="3.0.2.qualifier"
       provider-name="%providerName">
 
    <description>%description</description>
@@ -27,7 +27,7 @@ Contributors:
    </url>
 
    <requires>
-      <import feature="org.eclipse.acceleo" version="3.0.1.qualifier"/>
+      <import feature="org.eclipse.acceleo" version="3.0.2.qualifier"/>
    </requires>
 
    <plugin
