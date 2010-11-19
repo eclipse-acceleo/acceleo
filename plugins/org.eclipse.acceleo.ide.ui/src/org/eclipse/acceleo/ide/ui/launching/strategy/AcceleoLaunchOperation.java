@@ -101,6 +101,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 					.getString("AcceleoLaunchOperation.ClassNotFound", qualifiedName, //$NON-NLS-1$
 							project.getName()));
 			AcceleoUIActivator.getDefault().getLog().log(status);
+			return;
 		}
 
 		try {
