@@ -269,7 +269,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces()
 						.entrySet()) {
 					for (GeneratedText text : entry.getValue()) {
-						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+						GeneratedText copy = EcoreUtil.copy(text);
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
 						generatedFile.getGeneratedRegions().add(copy);
@@ -290,7 +290,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						trace.getTraces().put(entry.getKey(), existingTraces);
 					}
 					for (GeneratedText text : entry.getValue()) {
-						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+						GeneratedText copy = EcoreUtil.copy(text);
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
 						existingTraces.add(copy);
@@ -481,7 +481,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
 					// This instance of a GeneratedText is split in two by the substring
-					GeneratedText endSubstring = (GeneratedText)EcoreUtil.copy(text);
+					GeneratedText endSubstring = EcoreUtil.copy(text);
 					endSubstring.setStartOffset(endIndex + replacementLength);
 					endSubstring.setEndOffset(text.getEndOffset() + replacementLength);
 					text.setEndOffset(startIndex);

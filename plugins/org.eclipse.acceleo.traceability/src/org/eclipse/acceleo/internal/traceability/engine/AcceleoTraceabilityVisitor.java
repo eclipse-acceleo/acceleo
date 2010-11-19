@@ -31,7 +31,6 @@ import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -46,6 +45,7 @@ import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
+import org.eclipse.acceleo.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
@@ -1112,14 +1112,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					}
 				} catch (IOException e) {
 					// traceability may not be good on this one
-					AcceleoEnginePlugin.log(e, false);
+					AcceleoTraceabilityPlugin.log(e, false);
 				} finally {
 					try {
 						if (reader != null) {
 							reader.close();
 						}
 					} catch (IOException e) {
-						AcceleoEnginePlugin.log(e, false);
+						AcceleoTraceabilityPlugin.log(e, false);
 					}
 				}
 				soughtFile.setLength(length);
@@ -1246,7 +1246,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					path = ecoreURL.toString();
 				}
 			} catch (IOException e) {
-				AcceleoEnginePlugin.log(e, false);
+				AcceleoTraceabilityPlugin.log(e, false);
 			}
 		}
 
@@ -1303,7 +1303,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					path = emtlURL.toString();
 				}
 			} catch (IOException e) {
-				AcceleoEnginePlugin.log(e, false);
+				AcceleoTraceabilityPlugin.log(e, false);
 			}
 		}
 
