@@ -24,6 +24,7 @@ import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironmen
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
+import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.Query;
@@ -347,6 +348,9 @@ public class OCLParser {
 			org.eclipse.acceleo.model.mtl.Module oOtherModule = itOtherModules.next();
 			addBehavioralFeaturesToScope(oOtherModule, VisibilityKind.PUBLIC, operationWithReceiver,
 					operationWithoutReceiver, startsWith);
+			// We add the operation from the modules extended by the import.
+			this.addRecursivelyBehavioralFeaturesFromImports(oOtherModule, operationWithReceiver,
+					operationWithoutReceiver, startsWith);
 		}
 		List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 		computeAllExtends(allExtends, oModule);
@@ -355,6 +359,30 @@ public class OCLParser {
 			org.eclipse.acceleo.model.mtl.Module oOtherModule = itOtherModules.next();
 			addBehavioralFeaturesToScope(oOtherModule, VisibilityKind.PROTECTED, operationWithReceiver,
 					operationWithoutReceiver, startsWith);
+		}
+	}
+
+	/**
+	 * Add the behavioral features of the extended modules in the current parsing scope.
+	 * 
+	 * @param oModule
+	 *            is the current module
+	 * @param operationWithReceiver
+	 *            indicates if we add the operations for which the first parameter is the receiver
+	 * @param operationWithoutReceiver
+	 *            indicates if we add the operations for which there is a default receiver, the first
+	 *            parameter isn't the receiver
+	 * @param startsWith
+	 *            is a filter for the named elements to keep
+	 */
+	private void addRecursivelyBehavioralFeaturesFromImports(org.eclipse.acceleo.model.mtl.Module oModule,
+			boolean operationWithReceiver, boolean operationWithoutReceiver, String startsWith) {
+		List<Module> extendsList = oModule.getExtends();
+		if (extendsList != null && extendsList.size() > 0) {
+			for (Module module : extendsList) {
+				addBehavioralFeaturesToScope(module, VisibilityKind.PUBLIC, operationWithReceiver,
+						operationWithoutReceiver, startsWith);
+			}
 		}
 	}
 
