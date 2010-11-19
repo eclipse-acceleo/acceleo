@@ -98,7 +98,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			if (element instanceof EPackage) {
 				final String packageName = ((EPackage)element).getName();
 				final EFactory factory = factories.get(packageName);
-				if (factory != null) {
+				if (factory != null && ((EPackage)element).getEFactoryInstance() != factory) {
 					((EPackage)element).setEFactoryInstance(factory);
 				}
 			}

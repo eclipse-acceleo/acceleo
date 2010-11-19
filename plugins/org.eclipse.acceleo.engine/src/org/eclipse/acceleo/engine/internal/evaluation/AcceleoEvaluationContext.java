@@ -236,9 +236,10 @@ public class AcceleoEvaluationContext<C> {
 		if (adapter instanceof AcceleoASTNodeAdapter) {
 			line = ((AcceleoASTNodeAdapter)adapter).getLine();
 		}
-		final AcceleoEvaluationException exception = new AcceleoEvaluationException(AcceleoEngineMessages
-				.getString(messageKey, line, ((Module)EcoreUtil.getRootContainer(node)).getName(), node
-						.toString(), currentSelf, expression));
+		String moduleName = ((Module)EcoreUtil.getRootContainer(node)).getName();
+		String message = AcceleoEngineMessages.getString(messageKey, line, moduleName, node.toString(),
+				currentSelf, expression);
+		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 		exception.setStackTrace(createAcceleoStackTrace());
 		return exception;
 	}

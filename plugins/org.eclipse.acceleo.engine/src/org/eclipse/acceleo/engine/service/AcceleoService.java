@@ -68,7 +68,7 @@ public final class AcceleoService {
 	}
 
 	/**
-	 * Instantiates an instance of the servie given the generation strategy that is to be used for this
+	 * Instantiates an instance of the service given the generation strategy that is to be used for this
 	 * generation.
 	 * 
 	 * @param generationStrategy
