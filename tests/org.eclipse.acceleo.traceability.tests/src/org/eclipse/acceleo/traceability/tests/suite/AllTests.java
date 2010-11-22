@@ -14,6 +14,7 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.textui.TestRunner;
 
+import org.eclipse.acceleo.traceability.tests.unit.model.AcceleoTraceabilityModelTests;
 import org.eclipse.acceleo.traceability.tests.unit.query.AcceleoTraceabilityQueryTests;
 import org.eclipse.acceleo.traceability.tests.unit.template.AcceleoTraceabilityTemplateTests;
 import org.eclipse.acceleo.traceability.tests.unit.text.AcceleoTraceabilityTextTests;
@@ -28,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({AcceleoTraceabilityTextTests.class, AcceleoTraceabilityTemplateTests.class,
-		AcceleoTraceabilityQueryTests.class, })
+		AcceleoTraceabilityQueryTests.class, AcceleoTraceabilityModelTests.class })
 public class AllTests {
 	/**
 	 * Launches the test with the given arguments.
