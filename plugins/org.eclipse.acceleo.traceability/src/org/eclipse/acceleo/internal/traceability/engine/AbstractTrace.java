@@ -60,25 +60,29 @@ public abstract class AbstractTrace {
 	/**
 	 * Copies the given trace and adds it to this expression trace.
 	 * 
-	 * @param input
-	 *            Input element for this trace.
-	 * @param original
-	 *            Trace that we are to copy.
+	 * @param other
+	 *            The trace we are to copy.
 	 */
-	public void copyTrace(InputElement input, GeneratedText original) {
-		Set<GeneratedText> referredTraces = traces.get(input);
-		if (referredTraces == null) {
-			referredTraces = new LinkedHashSet<GeneratedText>();
-			traces.put(input, referredTraces);
-		}
-		GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
+	public void addTraceCopy(AbstractTrace other) {
 		int gap = currentOffset;
-		currentOffset = currentOffset + original.getEndOffset() - original.getStartOffset();
-		text.setSourceElement(input);
-		text.setStartOffset(original.getStartOffset() + gap);
-		text.setEndOffset(original.getEndOffset() + gap);
-		text.setModuleElement(original.getModuleElement());
-		referredTraces.add(text);
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : other.getTraces().entrySet()) {
+			InputElement input = entry.getKey();
+			Set<GeneratedText> referredTraces = traces.get(input);
+			if (referredTraces == null) {
+				referredTraces = new LinkedHashSet<GeneratedText>();
+				traces.put(input, referredTraces);
+			}
+
+			for (GeneratedText original : entry.getValue()) {
+				GeneratedText text = TraceabilityFactory.eINSTANCE.createGeneratedText();
+				currentOffset = currentOffset + original.getEndOffset() - original.getStartOffset();
+				text.setSourceElement(input);
+				text.setStartOffset(original.getStartOffset() + gap);
+				text.setEndOffset(original.getEndOffset() + gap);
+				text.setModuleElement(original.getModuleElement());
+				referredTraces.add(text);
+			}
+		}
 	}
 
 	/**
