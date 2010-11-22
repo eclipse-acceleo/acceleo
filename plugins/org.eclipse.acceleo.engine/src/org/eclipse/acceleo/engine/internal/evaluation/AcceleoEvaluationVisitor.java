@@ -594,7 +594,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		Variable var = letBlock.getLetVariable();
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
-		Object value = visitExpression((OCLExpression<C>)var.getInitExpression());
+		Object value = getVisitor().visitExpression((OCLExpression<C>)var.getInitExpression());
 		fireGenerationEvent = fireEvents;
 		if (isInvalid(value)) {
 			final AcceleoEvaluationException exception = context.createAcceleoException(letBlock,
