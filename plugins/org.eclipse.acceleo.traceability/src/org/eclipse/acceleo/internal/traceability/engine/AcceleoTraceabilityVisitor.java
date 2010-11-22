@@ -1708,7 +1708,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean switchRecordState(OCLExpression<C> expression) {
 		boolean oldRecordingValue = record;
 		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getIfBlock_IfExpr()
-				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()) {
+				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()
+				|| ((expression.eContainingFeature() == ExpressionsPackage.eINSTANCE
+						.getVariable_InitExpression()) && expression.eContainer().eContainingFeature() == MtlPackage.eINSTANCE
+						.getLetBlock_LetVariable())) {
 			record = false;
 		}
 		return oldRecordingValue;
