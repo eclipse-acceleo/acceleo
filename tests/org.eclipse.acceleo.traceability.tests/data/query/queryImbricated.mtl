@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module queryImbricated('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.query1() + eClass.query2()/][/file][/template]
+
+[query public query1(eClass : EClass) : String = 'query1'/]
+
+[query public query2(eClass : EClass) : String = eClass.query3()/]
+
+[query public query3(eClass : EClass) : String = 'query3'/]

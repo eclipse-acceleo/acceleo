@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module blockElse('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.blockElse()/][/file][/template]
+
+[template public blockElse(eClass : EClass)][if(false)][else]blockElse[/if][/template]
