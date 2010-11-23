@@ -128,6 +128,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
 
+	/**
+	 * This boolean will allow us to ignore Template Invocation traces when they're nested in Operation Calls.
+	 */
+	private boolean evaluatingOperationCall;
+
 	/** Keeps track of the variable currently being initialized. */
 	private Variable<C, PM> initializingVariable;
 
@@ -223,45 +228,50 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent) {
-		if (fireEvent && string.length() > 0) {
-			if (currentFiles != null && recordedTraces != null && currentFiles.size() > 0
-					&& recordedTraces.size() > 0) {
-				GeneratedFile generatedFile = currentFiles.getLast();
-				final ExpressionTrace<C> trace;
-				boolean disposeTrace = !(sourceBlock instanceof IfBlock)
-						|| !(sourceBlock instanceof ForBlock);
-				if (sourceBlock instanceof IfBlock || sourceBlock instanceof ForBlock) {
-					trace = recordedTraces.getLast();
-				} else {
-					trace = recordedTraces.removeLast();
-				}
-				if (protectedAreaSource != null) {
-					alterProtectedAreaTrace(string, sourceBlock, trace);
-				}
-				final int fileLength = generatedFile.getLength();
-				int addedLength = 0;
+		// Check whether we should consider these traces
+		boolean considerTrace = true;
+		// If we don't need an event or if the generated String is empty, no need to carry on
+		considerTrace = considerTrace && fireEvent && string.length() > 0;
+		// No need to go any further either if anything of our trace information is empty
+		considerTrace = considerTrace && currentFiles != null && currentFiles.size() > 0;
+		considerTrace = considerTrace && recordedTraces != null && recordedTraces.size() > 0;
+		// Lastly, we need to ignore those events corresponding to TemplateInvocation nested in OperationCalls
+		considerTrace = considerTrace && (!(sourceBlock instanceof Template) || !evaluatingOperationCall);
+		if (considerTrace) {
+			GeneratedFile generatedFile = currentFiles.getLast();
+			final ExpressionTrace<C> trace;
+			boolean disposeTrace = !(sourceBlock instanceof IfBlock) || !(sourceBlock instanceof ForBlock);
+			if (sourceBlock instanceof IfBlock || sourceBlock instanceof ForBlock) {
+				trace = recordedTraces.getLast();
+			} else {
+				trace = recordedTraces.removeLast();
+			}
+			if (protectedAreaSource != null) {
+				alterProtectedAreaTrace(string, sourceBlock, trace);
+			}
+			final int fileLength = generatedFile.getLength();
+			int addedLength = 0;
 
-				// We no longer need to refer to the same trace instance, copy its current state.
-				if (invocationTraces != null && invocationTraces.contains(trace)) {
-					invocationTraces.remove(trace);
-					invocationTraces.add(new ExpressionTrace<C>(trace));
-				}
+			// We no longer need to refer to the same trace instance, copy its current state.
+			if (invocationTraces != null && invocationTraces.contains(trace)) {
+				invocationTraces.remove(trace);
+				invocationTraces.add(new ExpressionTrace<C>(trace));
+			}
 
-				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-					while (textIterator.hasNext()) {
-						GeneratedText text = textIterator.next();
-						addedLength += text.getEndOffset() - text.getStartOffset();
-						text.setStartOffset(fileLength + text.getStartOffset());
-						text.setEndOffset(fileLength + text.getEndOffset());
-						generatedFile.getGeneratedRegions().add(text);
-						textIterator.remove();
-					}
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+				while (textIterator.hasNext()) {
+					GeneratedText text = textIterator.next();
+					addedLength += text.getEndOffset() - text.getStartOffset();
+					text.setStartOffset(fileLength + text.getStartOffset());
+					text.setEndOffset(fileLength + text.getEndOffset());
+					generatedFile.getGeneratedRegions().add(text);
+					textIterator.remove();
 				}
-				generatedFile.setLength(fileLength + addedLength);
-				if (disposeTrace) {
-					trace.dispose();
-				}
+			}
+			generatedFile.setLength(fileLength + addedLength);
+			if (disposeTrace) {
+				trace.dispose();
 			}
 		}
 		super.append(string, sourceBlock, source, fireEvent);
@@ -513,20 +523,26 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		addedTemplateScope = false;
 		invocationTraces = new LinkedList<ExpressionTrace<C>>();
 
-		final Object result = super.visitAcceleoTemplateInvocation(invocation);
+		Object result = null;
+		final boolean oldRecordState = switchRecordState((OCLExpression<C>)invocation);
+		try {
+			result = super.visitAcceleoTemplateInvocation(invocation);
+		} finally {
+			record = oldRecordState;
 
-		for (ExpressionTrace<C> trace : invocationTraces) {
-			if (oldTraces != null) {
-				oldTraces.add(trace);
-			} else {
-				trace.dispose();
+			for (ExpressionTrace<C> trace : invocationTraces) {
+				if (oldTraces != null) {
+					oldTraces.add(trace);
+				} else {
+					trace.dispose();
+				}
 			}
+			invocationTraces = oldTraces;
+			if (addedTemplateScope) {
+				scopeEObjects.removeLast();
+			}
+			addedTemplateScope = oldTemplateHadScope;
 		}
-		invocationTraces = oldTraces;
-		if (addedTemplateScope) {
-			scopeEObjects.removeLast();
-		}
-		addedTemplateScope = oldTemplateHadScope;
 
 		if (isPropertyCallSource((OCLExpression<C>)invocation)) {
 			propertyCallSource = (EObject)result;
@@ -593,7 +609,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		boolean oldRecordingValue = switchRecordState(expression);
 		if (shouldRecordTrace((EReference)expression.eContainingFeature())
-				&& !(expression.eContainer() instanceof ProtectedAreaBlock)) {
+				&& !(expression.eContainer() instanceof ProtectedAreaBlock) && !evaluatingOperationCall) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
 			recordedTraces.add(trace);
 			if (invocationTraces != null) {
@@ -721,7 +737,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		OCLExpression<C> oldOperationCallSourceExpression = operationCallSourceExpression;
 		operationCallSourceExpression = callExp.getSource();
 
+		boolean oldOperationEvaluationState = evaluatingOperationCall;
 		boolean oldRecordingValue = switchRecordState(callExp);
+		evaluatingOperationCall = true;
 
 		final Object result;
 		try {
@@ -732,6 +750,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		} finally {
 			record = oldRecordingValue;
+			evaluatingOperationCall = oldOperationEvaluationState;
 		}
 
 		operationCallSource = null;
@@ -1645,8 +1664,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
 			}
-		} else if (expression.eContainer() instanceof QueryInvocation) {
-			// We shouldn't record traces for Query Invocation sources
+		} else if (expression.eContainer() instanceof QueryInvocation
+				|| expression.eContainer() instanceof TemplateInvocation) {
+			// We shouldn't record traces for Invocation sources
 			result = false;
 		}
 		return result;
@@ -1698,8 +1718,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Switches the "record" boolean to false if the given expression is the condition of an "if" expression
-	 * (be it OCL or Acceleo). The old value of the record boolean will be returned.
+	 * Switches the "record" boolean to false if the given expression shouldn't record any trace information.
+	 * The old value of the record boolean will be returned.
 	 * 
 	 * @param expression
 	 *            Expression for which we need to check whether traces should be recorded.
@@ -1707,13 +1727,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean switchRecordState(OCLExpression<C> expression) {
 		boolean oldRecordingValue = record;
-		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getIfBlock_IfExpr()
-				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()
-				|| ((expression.eContainingFeature() == ExpressionsPackage.eINSTANCE
-						.getVariable_InitExpression()) && expression.eContainer().eContainingFeature() == MtlPackage.eINSTANCE
-						.getLetBlock_LetVariable())) {
-			record = false;
-		}
+		EStructuralFeature containingFeature = expression.eContainingFeature();
+		EObject container = expression.eContainer();
+
+		// If this is an "if" condition
+		record = containingFeature != MtlPackage.eINSTANCE.getIfBlock_IfExpr();
+		record = record && containingFeature != ExpressionsPackage.eINSTANCE.getIfExp_Condition();
+
+		// If this is a let initialization
+		record = record
+				&& (containingFeature != ExpressionsPackage.eINSTANCE.getVariable_InitExpression() || container
+						.eContainingFeature() != MtlPackage.eINSTANCE.getLetBlock_LetVariable());
+
 		return oldRecordingValue;
 	}
 }
