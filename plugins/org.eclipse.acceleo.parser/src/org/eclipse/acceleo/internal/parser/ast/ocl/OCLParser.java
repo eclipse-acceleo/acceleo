@@ -861,11 +861,67 @@ public class OCLParser {
 						ANNOTATION_SOURCE).getReferences().iterator();
 				if (referencesIt.hasNext()) {
 					EObject eModuleElement = referencesIt.next();
-					return createAcceleoInvocation(eCall, eModuleElement);
+					OCLExpression acceleoInvocation = createAcceleoInvocation(eCall, eModuleElement);
+					return handleArguments(acceleoInvocation);
 				}
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Transform the arguments into Acceleo invocations.
+	 * 
+	 * @param acceleoInvocation
+	 *            The acceleoInvocation
+	 * @return The new Acceleo invocation with its new arguments
+	 */
+	private OCLExpression handleArguments(OCLExpression acceleoInvocation) {
+		OCLExpression result = acceleoInvocation;
+		if (acceleoInvocation instanceof TemplateInvocation) {
+			TemplateInvocation templateInvocation = (TemplateInvocation)acceleoInvocation;
+			List<OCLExpression> arguments = templateInvocation.getArgument();
+			for (OCLExpression argument : arguments) {
+				createAcceleoInvocationArguments(argument);
+			}
+		} else if (acceleoInvocation instanceof QueryInvocation) {
+			QueryInvocation queryInvocation = (QueryInvocation)acceleoInvocation;
+			List<OCLExpression> arguments = queryInvocation.getArgument();
+			for (OCLExpression argument : arguments) {
+				createAcceleoInvocationArguments(argument);
+			}
+		} else if (acceleoInvocation instanceof MacroInvocation) {
+			MacroInvocation macroInvocation = (MacroInvocation)acceleoInvocation;
+			List<OCLExpression> arguments = macroInvocation.getArgument();
+			for (OCLExpression argument : arguments) {
+				createAcceleoInvocationArguments(argument);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Transform the arguments into Acceleo invocations.
+	 * 
+	 * @param argument
+	 *            The arguments of the Acceleo invocation
+	 */
+	private void createAcceleoInvocationArguments(org.eclipse.ocl.expressions.OCLExpression<?> argument) {
+		if (argument instanceof org.eclipse.ocl.expressions.CollectionLiteralExp<?>) {
+			org.eclipse.ocl.expressions.CollectionLiteralExp<?> collectionLiteralExp = (org.eclipse.ocl.expressions.CollectionLiteralExp<?>)argument;
+			List<?> parts = collectionLiteralExp.getPart();
+			for (Object collectionLiteralPart : parts) {
+				if (collectionLiteralPart instanceof org.eclipse.ocl.expressions.CollectionItem) {
+					org.eclipse.ocl.expressions.CollectionItem<?> collectionItem = (org.eclipse.ocl.expressions.CollectionItem<?>)collectionLiteralPart;
+					org.eclipse.ocl.expressions.OCLExpression<?> item = collectionItem.getItem();
+					if (item instanceof org.eclipse.ocl.expressions.CollectionLiteralExp<?>) {
+						createAcceleoInvocationArguments(item);
+					} else {
+						createAcceleoInvocation(item);
+					}
+				}
+			}
+		}
 	}
 
 	/**
