@@ -263,6 +263,74 @@ public class TemplateTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the engine when calling a template in a collection.
+	 */
+	public void testTemplateCollection() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateCollection")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateCollection")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_template_collection", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("template_call_collection")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template in a collection and then inside another
+	 * collection.
+	 */
+	public void testTemplateCollectionCollection() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_template_collection_collection", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("template_call_collection_collection")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template in a collection and then inside another
+	 * collection...
+	 */
+	public void testTemplateCollectionCollectionCollectionCollection() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_template_collection_collection_collection_collection", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("template_call_collection_collection_collection_collection")); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()

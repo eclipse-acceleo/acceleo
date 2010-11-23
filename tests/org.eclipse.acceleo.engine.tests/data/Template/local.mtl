@@ -77,3 +77,23 @@
 [template public true_guard_template(c:EClass) ? (c.abstract)]
 	local.true_guard_template called on [c.oclAsType(EObject).eClass().name/] [c.name/]
 [/template]
+
+[template public templateResult(str : Sequence(String))][str->first()/][/template]
+
+[template public templateResultCollection(str : Sequence(Sequence(String)))][str->first()->first()/][/template]
+
+[template public templateResultCollectionCollectionCollection(str : OrderedSet(Set(Sequence(Bag(String)))))][str/][/template]
+
+[template public templateCalled(str : String)]template_call_[str/][/template]
+
+[template public test_template_collection(eClass : EClass)]
+[file('template_collection', false)][templateResult(Sequence{templateCalled('collection')})/][/file]
+[/template]
+
+[template public test_template_collection_collection(eClass : EClass)]
+[file('template_collection_collection', false)][templateResultCollection(Sequence{Sequence{templateCalled('collection_collection')}})/][/file]
+[/template]
+
+[template public test_template_collection_collection_collection_collection(eClass : EClass)]
+[file('template_collection_collection', false)][OrderedSet{Set{Sequence{Bag{templateCalled('collection_collection_collection_collection')}}}}/][/file]
+[/template]
