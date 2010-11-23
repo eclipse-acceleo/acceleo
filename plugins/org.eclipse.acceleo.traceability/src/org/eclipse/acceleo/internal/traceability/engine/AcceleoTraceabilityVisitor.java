@@ -149,6 +149,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private ExpressionTrace<C> operationArgumentTrace;
 
 	/**
+	 * As we add and remove the "scope" object for templates at a different times, we need to remember whether
+	 * the template actually had a scope or not.
+	 */
+	private boolean addedTemplateScope;
+	
+	/**
 	 * Along with {@link #operationCallSourceExpression}, this allows us to retrieve the source value of an
 	 * operation call.
 	 */
@@ -245,10 +251,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 					while (textIterator.hasNext()) {
 						GeneratedText text = textIterator.next();
-						int startingOffset = addedLength;
 						addedLength += text.getEndOffset() - text.getStartOffset();
-						text.setStartOffset(fileLength + startingOffset);
-						text.setEndOffset(fileLength + addedLength);
+						text.setStartOffset(fileLength + text.getStartOffset());
+						text.setEndOffset(fileLength + text.getEndOffset());
 						generatedFile.getGeneratedRegions().add(text);
 						textIterator.remove();
 					}
@@ -468,11 +473,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		 */
 		ExpressionTrace<C> queryTrace = recordedTraces.removeLast();
 		ExpressionTrace<C> currentTrace = recordedTraces.getLast();
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : queryTrace.getTraces().entrySet()) {
-			for (GeneratedText text : entry.getValue()) {
-				currentTrace.copyTrace(entry.getKey(), text);
-			}
-		}
+		currentTrace.addTraceCopy(queryTrace);
+		queryTrace.dispose();
 
 		scopeEObjects.removeLast();
 
@@ -493,6 +495,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public String visitAcceleoTemplate(Template template) {
 		if (template.getParameter().size() > 0) {
 			scopeEObjects.add(template.getParameter().get(0));
+			addedTemplateScope = true;
 		}
 		return super.visitAcceleoTemplate(template);
 	}
@@ -506,6 +509,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
 		LinkedList<ExpressionTrace<C>> oldTraces = invocationTraces;
+		boolean oldTemplateHadScope = addedTemplateScope;
+		addedTemplateScope = false;
 		invocationTraces = new LinkedList<ExpressionTrace<C>>();
 
 		final Object result = super.visitAcceleoTemplateInvocation(invocation);
@@ -518,9 +523,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		invocationTraces = oldTraces;
-		if (invocation.getArgument().size() > 0) {
+		if (addedTemplateScope) {
 			scopeEObjects.removeLast();
 		}
+		addedTemplateScope = oldTemplateHadScope;
 
 		if (isPropertyCallSource((OCLExpression<C>)invocation)) {
 			propertyCallSource = (EObject)result;
@@ -585,11 +591,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 
-		boolean oldRecordingValue = record;
-		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getIfBlock_IfExpr()
-				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()) {
-			record = false;
-		}
+		boolean oldRecordingValue = switchRecordState(expression);
 		if (shouldRecordTrace((EReference)expression.eContainingFeature())
 				&& !(expression.eContainer() instanceof ProtectedAreaBlock)) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
@@ -719,11 +721,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		OCLExpression<C> oldOperationCallSourceExpression = operationCallSourceExpression;
 		operationCallSourceExpression = callExp.getSource();
 
+		boolean oldRecordingValue = switchRecordState(callExp);
+
 		final Object result;
-		if (isTraceabilityImpactingOperation(callExp)) {
-			result = internalVisitOperationCallExp(callExp);
-		} else {
-			result = super.visitOperationCallExp(callExp);
+		try {
+			if (isTraceabilityImpactingOperation(callExp)) {
+				result = internalVisitOperationCallExp(callExp);
+			} else {
+				result = super.visitOperationCallExp(callExp);
+			}
+		} finally {
+			record = oldRecordingValue;
 		}
 
 		operationCallSource = null;
@@ -747,7 +755,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		OCLExpression<C> oldPropertyCallSourceExpression = propertyCallSourceExpression;
 		propertyCallSourceExpression = callExp.getSource();
 
-		final Object result = getDelegate().visitPropertyCallExp(callExp);
+		Object result = null;
+		boolean oldRecordingValue = switchRecordState(callExp);
+		try {
+			result = getDelegate().visitPropertyCallExp(callExp);
+		} finally {
+			record = oldRecordingValue;
+		}
 
 		propertyCallSourceExpression = oldPropertyCallSourceExpression;
 
@@ -759,12 +773,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (protectedAreaSource != null) {
 				propertyCallInput = protectedAreaSource;
 			}
-			GeneratedText text = createGeneratedTextFor(callExp);
 			if (operationArgumentTrace != null) {
+				GeneratedText text = createGeneratedTextFor(callExp);
 				operationArgumentTrace.addTrace(propertyCallInput, text, result);
 			} else if (initializingVariable != null && !(result instanceof EObject)) {
+				GeneratedText text = createGeneratedTextFor(callExp);
 				variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
 			} else if (recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
+				GeneratedText text = createGeneratedTextFor(callExp);
 				recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 			}
 		}
@@ -862,7 +878,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitVariableExp(VariableExp<C, PM> variableExp) {
 		final Object result = super.visitVariableExp(variableExp);
 
-		boolean recordOperationArgument = operationArgumentTrace != null;
+		boolean recordOperationArgument = operationArgumentTrace != null && result instanceof String;
 		boolean recordVariableInitialization = initializingVariable != null
 				&& variableTraces.get(variableExp.getReferredVariable()) != null
 				&& shouldRecordTrace(variableExp);
@@ -1449,52 +1465,47 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
 		if (operationEType == getEnvironment().getOCLStandardLibrary().getString()
-				|| operationEType.getName().equals(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME)) {
+				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationEType.getName())) {
 			// first, switch on the predefined OCL operations
 			if (operationCode > 0) {
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
 			} else {
 				final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
-				isImpacting = isImpacting
-						|| operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+				isImpacting = getTraceabilityImpactingOperationNames().contains(operationName);
 			}
 		}
 
 		return isImpacting;
+	}
+
+	/**
+	 * Returns the list of all operations that will impact traceability information.
+	 * 
+	 * @return The list of all operations that will impact traceability information.
+	 */
+	private List<String> getTraceabilityImpactingOperationNames() {
+		List<String> operationNames = new ArrayList<String>();
+
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_LAST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+
+		return operationNames;
 	}
 
 	/**
@@ -1507,7 +1518,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Returne the scope value of the n-th scope of this evaluation. 0 being the EObject passed as argument of
+	 * Returns the scope value of the n-th scope of this evaluation. 0 being the EObject passed as argument of
 	 * the generation, <em>{@link #scopeEObjects}.size() - 1</em> the scope of the current expression.
 	 * 
 	 * @param index
@@ -1609,7 +1620,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * For a given expression, we'll check whether execution traces mst be recorded. This involves checking
+	 * For a given expression, we'll check whether execution traces must be recorded. This involves checking
 	 * whether the expression is the source of a property or operation call, then looking at which operation
 	 * will be called on the result if needed.
 	 * 
@@ -1634,6 +1645,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
 			}
+		} else if (expression.eContainer() instanceof QueryInvocation) {
+			// We shouldn't record traces for Query Invocation sources
+			result = false;
 		}
 		return result;
 	}
@@ -1681,5 +1695,25 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		return filePath;
+	}
+
+	/**
+	 * Switches the "record" boolean to false if the given expression is the condition of an "if" expression
+	 * (be it OCL or Acceleo). The old value of the record boolean will be returned.
+	 * 
+	 * @param expression
+	 *            Expression for which we need to check whether traces should be recorded.
+	 * @return The old value of the record boolean.
+	 */
+	private boolean switchRecordState(OCLExpression<C> expression) {
+		boolean oldRecordingValue = record;
+		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getIfBlock_IfExpr()
+				|| expression.eContainingFeature() == ExpressionsPackage.eINSTANCE.getIfExp_Condition()
+				|| ((expression.eContainingFeature() == ExpressionsPackage.eINSTANCE
+						.getVariable_InitExpression()) && expression.eContainer().eContainingFeature() == MtlPackage.eINSTANCE
+						.getLetBlock_LetVariable())) {
+			record = false;
+		}
+		return oldRecordingValue;
 	}
 }
