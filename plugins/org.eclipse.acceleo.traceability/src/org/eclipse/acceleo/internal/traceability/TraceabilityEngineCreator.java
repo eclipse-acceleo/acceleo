@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.traceability;
 
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngineCreator;
 import org.eclipse.acceleo.internal.traceability.engine.AcceleoTraceabilityEngine;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 /**
  * This will be used to create traceability-enabled engines instead of the regular ones.
@@ -28,8 +27,7 @@ public class TraceabilityEngineCreator implements IAcceleoEngineCreator {
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngineCreator#canBeCreated()
 	 */
 	public boolean canBeCreated() {
-		return new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).getBoolean(
-				IAcceleoTraceabilityConstants.ACCELEO_TRACEABILITY_ACTIVATION_KEY, false);
+		return AcceleoPreferences.isTraceabilityEnabled();
 	}
 
 	/**
