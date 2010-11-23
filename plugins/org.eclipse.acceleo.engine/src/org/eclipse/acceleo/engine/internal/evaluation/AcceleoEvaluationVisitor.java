@@ -591,7 +591,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		Variable var = letBlock.getLetVariable();
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
-		Object value = visitExpression((OCLExpression<C>)var.getInitExpression());
+		Object value = getVisitor().visitExpression((OCLExpression<C>)var.getInitExpression());
 		fireGenerationEvent = fireEvents;
 		if (isInvalid(value)) {
 			final AcceleoEvaluationException exception = context.createAcceleoException(letBlock,
@@ -602,7 +602,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// This will hold the name of the variable which value we replaced
 		String varName = null;
 		try {
-			if (var.getType().isInstance(value)) {
+			if (var.getType().isInstance(value)
+					|| var.getType() == getEnvironment().getOCLStandardLibrary().getOclAny()) {
 				varName = var.getName();
 				getEvaluationEnvironment().add(varName, value);
 				for (final org.eclipse.ocl.ecore.OCLExpression nested : letBlock.getBody()) {
