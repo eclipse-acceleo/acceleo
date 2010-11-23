@@ -878,7 +878,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitVariableExp(VariableExp<C, PM> variableExp) {
 		final Object result = super.visitVariableExp(variableExp);
 
-		boolean recordOperationArgument = operationArgumentTrace != null;
+		boolean recordOperationArgument = operationArgumentTrace != null && result instanceof String;
 		boolean recordVariableInitialization = initializingVariable != null
 				&& variableTraces.get(variableExp.getReferredVariable()) != null
 				&& shouldRecordTrace(variableExp);
