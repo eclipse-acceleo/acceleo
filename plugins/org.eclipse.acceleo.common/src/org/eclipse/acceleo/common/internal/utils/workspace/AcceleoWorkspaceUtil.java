@@ -166,6 +166,10 @@ public final class AcceleoWorkspaceUtil {
 		if (resourceURL == null) {
 			resourceURL = clazz.getResource(resourcePath);
 		}
+
+		if (packageAdminReference != null) {
+			context.ungetService(packageAdminReference);
+		}
 		return resourceURL;
 	}
 
