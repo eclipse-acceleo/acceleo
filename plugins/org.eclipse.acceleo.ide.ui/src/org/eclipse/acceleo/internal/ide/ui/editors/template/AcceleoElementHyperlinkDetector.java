@@ -107,7 +107,10 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 			} else {
 				wordRegion = new Region(wordStart, wordLength);
 			}
-			links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
+			if (wordRegion != null) {
+				links = new IHyperlink[1];
+				links[0] = new AcceleoElementHyperlink(editor, wordRegion, res);
+			}
 		}
 		return links;
 	}
