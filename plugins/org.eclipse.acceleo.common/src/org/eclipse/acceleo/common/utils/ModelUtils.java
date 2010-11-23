@@ -355,7 +355,7 @@ public final class ModelUtils {
 			throw new NullPointerException(AcceleoCommonMessages.getString("ModelUtils.NullSaveRoot")); //$NON-NLS-1$
 		}
 		// Copies the root to avoid modifying it
-		final EObject copyRoot = EcoreUtil.copy(root);
+		final EObject copyRoot = (EObject)EcoreUtil.copy(root);
 		attachResource(URI.createFileURI("resource.xml"), copyRoot); //$NON-NLS-1$
 
 		final StringWriter writer = new StringWriter();
