@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -36,7 +36,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -150,8 +149,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * @since 3.1
 	 */
 	protected void switchTraceability(boolean activate) {
-		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
-				"org.eclipse.acceleo.traceability.activation", activate); //$NON-NLS-1$
+		AcceleoPreferences.switchTraceability(activate);
 	}
 
 	/**
