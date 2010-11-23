@@ -19,6 +19,7 @@ Export-Package: org.eclipse.acceleo.common,
    org.eclipse.acceleo.engine,
    org.eclipse.acceleo.traceability",
  org.eclipse.acceleo.common.library.connector,
+ org.eclipse.acceleo.common.preference,
  org.eclipse.acceleo.common.utils
 Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl.ecore,
