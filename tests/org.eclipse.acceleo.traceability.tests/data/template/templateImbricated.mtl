@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module templateImbricated('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.template1() + eClass.template2()/][/file][/template]
+
+[template public template1(eClass : EClass)]template1[/template]
+
+[template public template2(eClass : EClass)][eClass.template3()/][/template]
+
+[template public template3(eClass : EClass)]template3[/template]

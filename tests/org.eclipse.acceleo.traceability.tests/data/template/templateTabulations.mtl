@@ -1,0 +1,8 @@
+[comment encoding = UTF-8 /]
+[module templateTabulations('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')]	[eClass.templateTabulations()/][/file][/template]
+
+[template public templateTabulations(eClass : EClass)]
+templateTabulations
+[/template]
