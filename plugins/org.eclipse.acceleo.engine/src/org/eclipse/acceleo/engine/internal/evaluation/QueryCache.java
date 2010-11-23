@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.model.mtl.Query;
 
 /**
@@ -95,6 +96,9 @@ public class QueryCache {
 	 *            Result we are to cache.
 	 */
 	public void cacheResult(Query query, List<Object> params, Object result) {
+		if (!AcceleoPreferences.isQueryCacheEnabled()) {
+			return;
+		}
 		Map<List<Object>, Object> cache = queryResults.get(query);
 		if (cache == null) {
 			cache = new HashMap<List<Object>, Object>();
@@ -122,10 +126,11 @@ public class QueryCache {
 	 *         hasn't been run yet.
 	 */
 	public Object getResult(Query query, List<Object> params) {
-		Map<List<Object>, Object> cache = queryResults.get(query);
-		if (cache == null) {
+		if (!AcceleoPreferences.isQueryCacheEnabled() || !queryResults.containsKey(query)) {
 			return NO_CACHED_RESULT;
 		}
+
+		Map<List<Object>, Object> cache = queryResults.get(query);
 
 		Object result = cache.get(params);
 		if (result == null) {
