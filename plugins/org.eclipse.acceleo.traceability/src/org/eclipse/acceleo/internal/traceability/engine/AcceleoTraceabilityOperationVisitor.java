@@ -460,7 +460,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		 * Substrings that will be split in two by replaced substrings will need their own new GeneratedText
 		 * instance, this Set will keep track of those so that we can add them in the trace later.
 		 */
-		Set<GeneratedText> addedRegions = new LinkedHashSet<GeneratedText>();
+		List<GeneratedText> addedRegions = new ArrayList<GeneratedText>();
 
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 			Iterator<GeneratedText> textIterator = entry.getValue().iterator();

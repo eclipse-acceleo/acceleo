@@ -30,6 +30,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.common.utils.ArrayDeque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -123,7 +124,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private OCLExpression<C> currentExpression;
 
 	/** This will hold the stack of generated files. */
-	private LinkedList<GeneratedFile> currentFiles = new LinkedList<GeneratedFile>();
+	private ArrayDeque<GeneratedFile> currentFiles = new ArrayDeque<GeneratedFile>();
 
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
@@ -137,7 +138,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private Variable<C, PM> initializingVariable;
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
-	private LinkedList<ExpressionTrace<C>> invocationTraces;
+	private ArrayDeque<ExpressionTrace<C>> invocationTraces;
 
 	/** This will be used to keep pointers towards the input elements created for the current trace. */
 	private Map<EObject, Set<InputElement>> cachedInputElements = new HashMap<EObject, Set<InputElement>>(
@@ -195,7 +196,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final LinkedList<ExpressionTrace<C>> recordedTraces = new LinkedList<ExpressionTrace<C>>();
+	private final ArrayDeque<ExpressionTrace<C>> recordedTraces = new ArrayDeque<ExpressionTrace<C>>(256);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private LinkedList<EObject> scopeEObjects = new LinkedList<EObject>();
@@ -204,6 +205,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * Records all variable traces for this session. Note that only primitive type variables will be recorded.
 	 */
 	private final Map<Variable<C, PM>, VariableTrace<C, PM>> variableTraces = new HashMap<Variable<C, PM>, VariableTrace<C, PM>>();
+
+	/** Caches the result of searching for the plugin URL of the metamodels. */
+	private final Map<String, String> ecoreURLCache = new HashMap<String, String>();
 
 	/**
 	 * Default constructor.
@@ -239,7 +243,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		considerTrace = considerTrace && (!(sourceBlock instanceof Template) || !evaluatingOperationCall);
 		if (considerTrace) {
 			GeneratedFile generatedFile = currentFiles.getLast();
-			final ExpressionTrace<C> trace;
+			ExpressionTrace<C> trace;
 			boolean disposeTrace = !(sourceBlock instanceof IfBlock) || !(sourceBlock instanceof ForBlock);
 			if (sourceBlock instanceof IfBlock || sourceBlock instanceof ForBlock) {
 				trace = recordedTraces.getLast();
@@ -253,9 +257,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			int addedLength = 0;
 
 			// We no longer need to refer to the same trace instance, copy its current state.
-			if (invocationTraces != null && invocationTraces.contains(trace)) {
-				invocationTraces.remove(trace);
-				invocationTraces.add(new ExpressionTrace<C>(trace));
+			if (invocationTraces != null) {
+				trace = new ExpressionTrace<C>(trace);
 			}
 
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
@@ -371,7 +374,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The stack of generated files.
 	 */
-	public LinkedList<GeneratedFile> getCurrentFiles() {
+	public ArrayDeque<GeneratedFile> getCurrentFiles() {
 		return currentFiles;
 	}
 
@@ -380,7 +383,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The last invocation's recorded traces.
 	 */
-	public LinkedList<ExpressionTrace<C>> getInvocationTraces() {
+	public ArrayDeque<ExpressionTrace<C>> getInvocationTraces() {
 		return invocationTraces;
 	}
 
@@ -518,10 +521,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		LinkedList<ExpressionTrace<C>> oldTraces = invocationTraces;
+		ArrayDeque<ExpressionTrace<C>> oldTraces = invocationTraces;
 		boolean oldTemplateHadScope = addedTemplateScope;
 		addedTemplateScope = false;
-		invocationTraces = new LinkedList<ExpressionTrace<C>>();
+		invocationTraces = new ArrayDeque<ExpressionTrace<C>>();
 
 		Object result = null;
 		final boolean oldRecordState = switchRecordState((OCLExpression<C>)invocation);
@@ -1264,14 +1267,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		String path = modelURI.toString();
 
 		if (path.startsWith("http://") && EMFPlugin.IS_ECLIPSE_RUNNING) { //$NON-NLS-1$
-			EPackage pack = EPackage.Registry.INSTANCE.getEPackage(path);
-			try {
-				URL ecoreURL = AcceleoWorkspaceUtil.getResourceURL(pack.getClass(), "*.ecore"); //$NON-NLS-1$
-				if (ecoreURL != null) {
-					path = ecoreURL.toString();
+			if (ecoreURLCache.containsKey(path)) {
+				path = ecoreURLCache.get(path);
+			} else {
+				String nsURI = path;
+				EPackage pack = EPackage.Registry.INSTANCE.getEPackage(nsURI);
+				try {
+					URL ecoreURL = AcceleoWorkspaceUtil.getResourceURL(pack.getClass(), "*.ecore"); //$NON-NLS-1$
+					if (ecoreURL != null) {
+						path = ecoreURL.toString();
+					}
+				} catch (IOException e) {
+					AcceleoTraceabilityPlugin.log(e, false);
 				}
-			} catch (IOException e) {
-				AcceleoTraceabilityPlugin.log(e, false);
+				ecoreURLCache.put(nsURI, path);
 			}
 		}
 
