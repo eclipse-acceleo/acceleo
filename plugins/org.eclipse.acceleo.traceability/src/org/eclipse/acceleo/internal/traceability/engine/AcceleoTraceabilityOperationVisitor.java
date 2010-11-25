@@ -273,8 +273,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
 						generatedFile.getGeneratedRegions().add(copy);
-						for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
-							insertTextInTrace(trace, copy);
+						Iterator<ExpressionTrace<C>> traceIterator = visitor.getInvocationTraces().iterator();
+						boolean inserted = false;
+						while (traceIterator.hasNext() && !inserted) {
+							inserted = insertTextInTrace(traceIterator.next(), copy);
 						}
 					}
 				}
@@ -554,8 +556,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            The trace in which we should insert <code>text</code>.
 	 * @param text
 	 *            The text that is to be inserted if it matches the trace.
+	 * @return <code>true</code> if we managed to insert this text in the given trac, <code>false</code>
+	 *         otherwise.
 	 */
-	private void insertTextInTrace(ExpressionTrace<C> trace, GeneratedText text) {
+	private boolean insertTextInTrace(ExpressionTrace<C> trace, GeneratedText text) {
 		boolean insert = false;
 		final Iterator<Set<GeneratedText>> setIterator = trace.getTraces().values().iterator();
 		while (setIterator.hasNext() && !insert) {
@@ -572,5 +576,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				candidate.add(text);
 			}
 		}
+		return insert;
 	}
 }

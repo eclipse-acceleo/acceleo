@@ -65,6 +65,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.SendSignalAction;
@@ -336,8 +337,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		ExpressionTrace<C> indentationTrace = new ExpressionTrace<C>(currentExpression);
 		indentationTrace.addTrace(input, text, indentation);
 
-		return operationVisitor.visitReplaceOperation(source, regex, replacement, indentationTrace, true,
-				true);
+		String result = operationVisitor.visitReplaceOperation(source, regex, replacement, indentationTrace,
+				true, true);
+		indentationTrace.dispose();
+
+		return result;
 	}
 
 	/**
@@ -408,7 +412,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		currentFiles.removeLast();
 		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == fileBlock
 				&& recordedTraces.getLast().getTraces().size() == 0) {
-			recordedTraces.removeLast();
+			recordedTraces.removeLast().dispose();
 		}
 	}
 
@@ -846,13 +850,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (protectedAreaSource != null) {
 			input = protectedAreaSource;
 		}
-		GeneratedText text = createGeneratedTextFor(literalExp);
 		if (operationArgumentTrace != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
 			operationArgumentTrace.addTrace(input, text, result);
 		} else if (initializingVariable != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
 			variableTraces.get(initializingVariable).addTrace(input, text, result);
 		} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
 				&& shouldRecordTrace(literalExp)) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
 			recordedTraces.getLast().addTrace(input, text, result);
 		}
 		return result;
@@ -933,12 +939,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} else {
 					input = protectedAreaSource;
 				}
-				GeneratedText text = createGeneratedTextFor(variableExp);
 				if (recordOperationArgument) {
+					GeneratedText text = createGeneratedTextFor(variableExp);
 					operationArgumentTrace.addTrace(input, text, result);
 				} else if (recordTrace) {
+					GeneratedText text = createGeneratedTextFor(variableExp);
 					recordedTraces.getLast().addTrace(input, text, result);
 				} else if (recordVariableInitialization) {
+					GeneratedText text = createGeneratedTextFor(variableExp);
 					variableTraces.get(initializingVariable).addTrace(input, text, result);
 				}
 			}
@@ -1262,7 +1270,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * @return {@link ModelFile} contained in the {@link #evaluationTrace} model.
 	 */
 	private ModelFile getModelFile(EObject modelElement) {
-		final URI modelURI = modelElement.eResource().getURI();
+		final URI modelURI;
+		if (modelElement.eResource() != null) {
+			modelURI = modelElement.eResource().getURI();
+		} else if (modelElement.eIsProxy()) {
+			modelURI = ((InternalEObject)modelElement).eProxyURI().trimFragment();
+		} else {
+			// FIXME message!
+			throw new IllegalArgumentException();
+		}
 		final String name = modelURI.lastSegment();
 		String path = modelURI.toString();
 
@@ -1404,6 +1420,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 			result = operationVisitor.visitReplaceOperation((String)sourceObject, (String)substring,
 					(String)substitution, operationArgumentTrace, substituteAll, false);
+			operationArgumentTrace.dispose();
 			operationArgumentTrace = oldArgTrace;
 
 			return result;
@@ -1447,6 +1464,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
 			Object separator = super.visitExpression(callExp.getArgument().get(0));
 			result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject, (String)separator);
+			operationArgumentTrace.dispose();
 			operationArgumentTrace = oldArgTrace;
 		} else {
 			result = super.visitOperationCallExp(callExp);
