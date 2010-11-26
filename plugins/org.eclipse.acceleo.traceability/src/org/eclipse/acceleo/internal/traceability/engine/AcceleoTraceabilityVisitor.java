@@ -1463,7 +1463,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
 			operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
 			Object separator = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject, (String)separator);
+			result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject, (String)separator,
+					operationArgumentTrace);
 			operationArgumentTrace.dispose();
 			operationArgumentTrace = oldArgTrace;
 		} else {
@@ -1515,10 +1516,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			// first, switch on the predefined OCL operations
 			if (operationCode > 0) {
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
-			} else {
-				final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-				isImpacting = getTraceabilityImpactingOperationNames().contains(operationName);
 			}
+		} else {
+			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
+			isImpacting = getTraceabilityImpactingOperationNames().contains(operationName);
 		}
 
 		return isImpacting;

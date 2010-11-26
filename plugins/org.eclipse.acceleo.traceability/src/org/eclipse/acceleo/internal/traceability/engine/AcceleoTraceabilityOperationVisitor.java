@@ -318,18 +318,68 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            Collection in which we need to add the separators.
 	 * @param separator
 	 *            Separator that is to be added in-between elements.
+	 * @param separatorTrace
+	 *            Traceability information of the separator.
 	 * @return The source collection, with <em>separator</em> inserted in-between each couple of elements from
 	 *         the <em>source</em>.
 	 */
-	public Collection<Object> visitSepOperation(Collection<Object> source, String separator) {
+	public Collection<Object> visitSepOperation(Collection<Object> source, String separator,
+			ExpressionTrace<C> separatorTrace) {
 		final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+		final List<String> stringSource = new ArrayList<String>();
 		final Iterator<?> sourceIterator = source.iterator();
 		while (sourceIterator.hasNext()) {
-			temp.add(sourceIterator.next());
+			Object nextSource = sourceIterator.next();
+			temp.add(nextSource);
+			stringSource.add(nextSource.toString());
 			if (sourceIterator.hasNext()) {
 				temp.add(separator);
 			}
 		}
+		/*
+		 * We'll assume all elements of the collection are Strings or will be printed as such, this should
+		 * handle most cases.
+		 */
+		final int separatorLength = separator.length();
+		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		int currentSeparatorOffset = 0;
+		for (int i = 0; i < stringSource.size() - 1; i++) {
+			String element = stringSource.get(i);
+			currentSeparatorOffset += element.length();
+
+			// All traces starting after this offset must be switched by 'separatorLength'
+			final Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = trace.getTraces()
+					.entrySet().iterator();
+			while (entryIterator.hasNext()) {
+				final Iterator<GeneratedText> textIterator = entryIterator.next().getValue().iterator();
+				while (textIterator.hasNext()) {
+					GeneratedText text = textIterator.next();
+					if (text.getStartOffset() >= currentSeparatorOffset) {
+						text.setStartOffset(text.getStartOffset() + separatorLength);
+						text.setEndOffset(text.getEndOffset() + separatorLength);
+					}
+				}
+			}
+
+			// Finally, Insert the separator region in the trace
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : separatorTrace.getTraces().entrySet()) {
+				Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
+				if (existingTraces == null) {
+					existingTraces = new LinkedHashSet<GeneratedText>();
+					trace.getTraces().put(entry.getKey(), existingTraces);
+				}
+				for (GeneratedText text : entry.getValue()) {
+					GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+					copy.setStartOffset(copy.getStartOffset() + currentSeparatorOffset);
+					copy.setEndOffset(copy.getEndOffset() + currentSeparatorOffset);
+					existingTraces.add(copy);
+				}
+			}
+
+			// Don't forget that the next "separatorOffset" can only start after the current
+			currentSeparatorOffset += separatorLength;
+		}
+
 		return temp;
 	}
 
