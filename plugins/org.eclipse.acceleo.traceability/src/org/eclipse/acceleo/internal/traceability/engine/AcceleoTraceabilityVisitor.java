@@ -916,8 +916,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		boolean recordOperationArgument = operationArgumentTrace != null && result instanceof String;
 		boolean recordVariableInitialization = initializingVariable != null
-				&& variableTraces.get(variableExp.getReferredVariable()) != null
-				&& shouldRecordTrace(variableExp);
+				&& shouldRecordTrace(variableExp)
+				&& (variableTraces.get(variableExp.getReferredVariable()) != null || initializingVariable
+						.getInitExpression() == variableExp);
 		boolean recordTrace = initializingVariable == null && recordedTraces.size() > 0
 				&& result instanceof String && ((String)result).length() > 0;
 
