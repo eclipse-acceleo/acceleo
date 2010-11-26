@@ -529,7 +529,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				if (text.getStartOffset() < startIndex && text.getEndOffset() == endIndex) {
 					text.setEndOffset(startIndex);
 				} else if (text.getStartOffset() == startIndex && text.getEndOffset() > endIndex) {
-					text.setStartOffset(startIndex + replacementLength);
+					text.setStartOffset(endIndex);
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
 					// This instance of a GeneratedText is split in two by the substring

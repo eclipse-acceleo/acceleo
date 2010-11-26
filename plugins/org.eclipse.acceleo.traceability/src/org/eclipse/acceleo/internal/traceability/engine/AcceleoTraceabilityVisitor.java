@@ -1528,8 +1528,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			// first, switch on the predefined OCL operations
 			if (operationCode > 0) {
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
-				isImpacting = isImpacting
-						|| getTraceabilityImpactingStringOperationNames().contains(operationName);
+			} else {
+				isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
 			}
 		} else {
 			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
