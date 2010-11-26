@@ -66,6 +66,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.SendSignalAction;
@@ -932,12 +933,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						input = protectedAreaSource;
 					}
 					for (GeneratedText text : entry.getValue()) {
+						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
 						if (recordOperationArgument) {
-							operationArgumentTrace.addTrace(input, text, result);
+							operationArgumentTrace.addTrace(input, copy, result);
 						} else if (recordTrace) {
-							recordedTraces.getLast().addTrace(input, text, result);
+							recordedTraces.getLast().addTrace(input, copy, result);
 						} else if (recordVariableInitialization) {
-							variableTraces.get(initializingVariable).addTrace(input, text, result);
+							variableTraces.get(initializingVariable).addTrace(input, copy, result);
 						}
 					}
 				}
