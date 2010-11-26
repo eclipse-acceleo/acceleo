@@ -70,6 +70,8 @@ import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.expressions.AssociationClassCallExp;
+import org.eclipse.ocl.expressions.CollectionItem;
+import org.eclipse.ocl.expressions.CollectionLiteralExp;
 import org.eclipse.ocl.expressions.EnumLiteralExp;
 import org.eclipse.ocl.expressions.ExpressionsPackage;
 import org.eclipse.ocl.expressions.IfExp;
@@ -850,16 +852,22 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (protectedAreaSource != null) {
 			input = protectedAreaSource;
 		}
-		if (operationArgumentTrace != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			operationArgumentTrace.addTrace(input, text, result);
-		} else if (initializingVariable != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			variableTraces.get(initializingVariable).addTrace(input, text, result);
-		} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
-				&& shouldRecordTrace(literalExp)) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			recordedTraces.getLast().addTrace(input, text, result);
+		// We do not create traceability information for the charset of the file block (ex: UTF-8)
+		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
+				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
+
+		if (!isFileBlockCharset) {
+			if (operationArgumentTrace != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				operationArgumentTrace.addTrace(input, text, result);
+			} else if (initializingVariable != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				variableTraces.get(initializingVariable).addTrace(input, text, result);
+			} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
+					&& shouldRecordTrace(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			}
 		}
 		return result;
 	}
@@ -1511,15 +1519,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final int operationCode = operationCall.getOperationCode();
 
 		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
+		final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
 		if (operationEType == getEnvironment().getOCLStandardLibrary().getString()
 				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationEType.getName())) {
 			// first, switch on the predefined OCL operations
 			if (operationCode > 0) {
 				isImpacting = operationCode == PredefinedType.SUBSTRING;
+				isImpacting = isImpacting
+						|| getTraceabilityImpactingStringOperationNames().contains(operationName);
 			}
 		} else {
-			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-			isImpacting = getTraceabilityImpactingOperationNames().contains(operationName);
+			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
 		}
 
 		return isImpacting;
@@ -1530,7 +1540,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The list of all operations that will impact traceability information.
 	 */
-	private List<String> getTraceabilityImpactingOperationNames() {
+	private List<String> getTraceabilityImpactingStringOperationNames() {
 		List<String> operationNames = new ArrayList<String>();
 
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
@@ -1550,7 +1560,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
 
 		return operationNames;
 	}
@@ -1692,12 +1701,40 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
 			}
+		} else if (isIteratorCallSource(expression)) {
+			result = false;
 		} else if (expression.eContainer() instanceof QueryInvocation
 				|| expression.eContainer() instanceof TemplateInvocation) {
 			// We shouldn't record traces for Invocation sources
 			result = false;
 		}
 		return result;
+	}
+
+	/**
+	 * Returns <code>true</code> if the given expression is the source of an iteration.
+	 * 
+	 * @param expression
+	 *            Expression to compare.
+	 * @return <code>true</code> if <code>expression</code> is the source of an iteration call,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isIteratorCallSource(OCLExpression<?> expression) {
+		boolean isSource = false;
+		EObject eContainer = expression.eContainer();
+		if (eContainer instanceof IteratorExp) {
+			IteratorExp<?, ?> iteratorExp = (IteratorExp<?, ?>)eContainer;
+			OCLExpression<?> source = iteratorExp.getSource();
+			isSource = (source == expression) || isIteratorCallSource(iteratorExp);
+		} else if (eContainer instanceof CollectionItem) {
+			CollectionItem<?> collectionItem = (CollectionItem<?>)eContainer;
+			eContainer = collectionItem.eContainer();
+			if (eContainer instanceof CollectionLiteralExp<?>) {
+				CollectionLiteralExp<?> collectionLiteralExp = (CollectionLiteralExp<?>)eContainer;
+				isSource = isIteratorCallSource(collectionLiteralExp);
+			}
+		}
+		return isSource;
 	}
 
 	/**
