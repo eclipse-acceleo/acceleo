@@ -25,7 +25,7 @@ import org.eclipse.acceleo.model.mtl.Query;
  * @param <C>
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
-public class QueryTaceCache<C> {
+public class QueryTraceCache<C> {
 	/** The actual backing map for this cache. */
 	private final Map<Query, Map<List<Object>, ExpressionTrace<C>>> queryTraceCache = new HashMap<Query, Map<List<Object>, ExpressionTrace<C>>>();
 

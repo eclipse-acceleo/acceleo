@@ -184,7 +184,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean addedTemplateScope;
 
 	/** Query results are cached, thus we need to cache their traces too. */
-	private QueryTaceCache<C> queryTraceCache = new QueryTaceCache<C>();
+	private QueryTraceCache<C> queryTraceCache = new QueryTraceCache<C>();
 
 	/**
 	 * Along with {@link #operationCallSourceExpression}, this allows us to retrieve the source value of an
