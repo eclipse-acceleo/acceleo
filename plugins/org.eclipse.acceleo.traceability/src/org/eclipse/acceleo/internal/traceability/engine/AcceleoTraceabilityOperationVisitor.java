@@ -133,7 +133,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * recorded traceability information.
 	 * 
 	 * @param source
-	 *            String tht is to be considered.
+	 *            String that is to be considered.
 	 * @return <code>true</code> iff the string is composed of alphanumeric characters. Traceability
 	 *         information will have been changed directly within
 	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
@@ -158,7 +158,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * traceability information.
 	 * 
 	 * @param source
-	 *            String tht is to be considered.
+	 *            String that is to be considered.
 	 * @return <code>true</code> iff the string is composed of alphabetic characters. Traceability information
 	 *         will have been changed directly within {@link AcceleoTraceabilityVisitor#recordedTraces}.
 	 */
@@ -384,6 +384,21 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "size" OCL operation directly from the traceability visitor as we need to alter recorded
+	 * traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @return Size of the given String. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public int visitSizeOperation(String source) {
+		changeTraceabilityIndicesIntegerReturn(source.length());
+
+		return source.length();
+	}
+
+	/**
 	 * Handles the "substring" OCL operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -448,7 +463,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * behavior of altering indices to reflect a boolean return. This behavior is externalized here.
 	 * 
 	 * @param result
-	 *            Boolean result of the operation. We'll only leave a four-characters long legion if
+	 *            Boolean result of the operation. We'll only leave a four-characters long region if
 	 *            <code>true</code>, five-characters long if <code>false</code>.
 	 */
 	private void changeTraceabilityIndicesBooleanReturn(boolean result) {
@@ -482,7 +497,46 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		}
 		if (lastRegion != null) {
 			lastRegion.setStartOffset(0);
-			lastRegion.setStartOffset(length);
+			lastRegion.setEndOffset(length);
+		}
+		trace.setOffset(length);
+	}
+
+	/**
+	 * Size and possibily other traceability impacting operations share the same "basic" behavior of altering
+	 * indices to reflect an integer return. This behavior is externalized here.
+	 * 
+	 * @param result
+	 *            Integer result of the operation. We'll only leave a single region with its length equal to
+	 *            the given integer's number of digits.
+	 */
+	private void changeTraceabilityIndicesIntegerReturn(int result) {
+		// We'll keep only the very last trace and alter its indices
+		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
+		GeneratedText lastRegion = null;
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
+				if (lastRegion == null) {
+					lastRegion = text;
+					lastEntry = entry;
+				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
+					// lastEntry cannot be null once we get here
+					assert lastEntry != null;
+					lastEntry.getValue().remove(lastRegion);
+					lastRegion = text;
+					lastEntry = entry;
+				} else {
+					textIterator.remove();
+				}
+			}
+		}
+		int length = String.valueOf(result).length();
+		if (lastRegion != null) {
+			lastRegion.setStartOffset(0);
+			lastRegion.setEndOffset(length);
 		}
 		trace.setOffset(length);
 	}
