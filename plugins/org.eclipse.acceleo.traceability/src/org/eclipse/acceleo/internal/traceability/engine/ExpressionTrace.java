@@ -25,7 +25,7 @@ import org.eclipse.ocl.expressions.OCLExpression;
  * @param <C>
  *            Will be either EClassifier for ecore or Classifier for UML.
  */
-public final class ExpressionTrace<C> extends AbstractTrace {
+public class ExpressionTrace<C> extends AbstractTrace {
 	/** Expression for which this context trace has been created. */
 	private final OCLExpression<C> referredExpression;
 

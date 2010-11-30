@@ -133,7 +133,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * recorded traceability information.
 	 * 
 	 * @param source
-	 *            String tht is to be considered.
+	 *            String that is to be considered.
 	 * @return <code>true</code> iff the string is composed of alphanumeric characters. Traceability
 	 *         information will have been changed directly within
 	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
@@ -158,7 +158,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * traceability information.
 	 * 
 	 * @param source
-	 *            String tht is to be considered.
+	 *            String that is to be considered.
 	 * @return <code>true</code> iff the string is composed of alphabetic characters. Traceability information
 	 *         will have been changed directly within {@link AcceleoTraceabilityVisitor#recordedTraces}.
 	 */
@@ -273,8 +273,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
 						generatedFile.getGeneratedRegions().add(copy);
-						for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
-							insertTextInTrace(trace, copy);
+						Iterator<ExpressionTrace<C>> traceIterator = visitor.getInvocationTraces().iterator();
+						boolean inserted = false;
+						while (traceIterator.hasNext() && !inserted) {
+							inserted = insertTextInTrace(traceIterator.next(), copy);
 						}
 					}
 				}
@@ -316,19 +318,84 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            Collection in which we need to add the separators.
 	 * @param separator
 	 *            Separator that is to be added in-between elements.
+	 * @param separatorTrace
+	 *            Traceability information of the separator.
 	 * @return The source collection, with <em>separator</em> inserted in-between each couple of elements from
 	 *         the <em>source</em>.
 	 */
-	public Collection<Object> visitSepOperation(Collection<Object> source, String separator) {
+	public Collection<Object> visitSepOperation(Collection<Object> source, String separator,
+			ExpressionTrace<C> separatorTrace) {
 		final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+		final List<String> stringSource = new ArrayList<String>();
 		final Iterator<?> sourceIterator = source.iterator();
 		while (sourceIterator.hasNext()) {
-			temp.add(sourceIterator.next());
+			Object nextSource = sourceIterator.next();
+			temp.add(nextSource);
+			stringSource.add(nextSource.toString());
 			if (sourceIterator.hasNext()) {
 				temp.add(separator);
 			}
 		}
+		/*
+		 * We'll assume all elements of the collection are Strings or will be printed as such, this should
+		 * handle most cases.
+		 */
+		final int separatorLength = separator.length();
+		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		int currentSeparatorOffset = 0;
+		for (int i = 0; i < stringSource.size() - 1; i++) {
+			String element = stringSource.get(i);
+			currentSeparatorOffset += element.length();
+
+			// All traces starting after this offset must be switched by 'separatorLength'
+			final Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = trace.getTraces()
+					.entrySet().iterator();
+			while (entryIterator.hasNext()) {
+				final Iterator<GeneratedText> textIterator = entryIterator.next().getValue().iterator();
+				while (textIterator.hasNext()) {
+					GeneratedText text = textIterator.next();
+					if (text.getStartOffset() >= currentSeparatorOffset) {
+						text.setStartOffset(text.getStartOffset() + separatorLength);
+						text.setEndOffset(text.getEndOffset() + separatorLength);
+					}
+				}
+			}
+
+			// Finally, Insert the separator region in the trace
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : separatorTrace.getTraces().entrySet()) {
+				Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
+				if (existingTraces == null) {
+					existingTraces = new LinkedHashSet<GeneratedText>();
+					trace.getTraces().put(entry.getKey(), existingTraces);
+				}
+				for (GeneratedText text : entry.getValue()) {
+					GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+					copy.setStartOffset(copy.getStartOffset() + currentSeparatorOffset);
+					copy.setEndOffset(copy.getEndOffset() + currentSeparatorOffset);
+					existingTraces.add(copy);
+				}
+			}
+
+			// Don't forget that the next "separatorOffset" can only start after the current
+			currentSeparatorOffset += separatorLength;
+		}
+
 		return temp;
+	}
+
+	/**
+	 * Handles the "size" OCL operation directly from the traceability visitor as we need to alter recorded
+	 * traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @return Size of the given String. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public int visitSizeOperation(String source) {
+		changeTraceabilityIndicesIntegerReturn(source.length());
+
+		return source.length();
 	}
 
 	/**
@@ -396,7 +463,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * behavior of altering indices to reflect a boolean return. This behavior is externalized here.
 	 * 
 	 * @param result
-	 *            Boolean result of the operation. We'll only leave a four-characters long legion if
+	 *            Boolean result of the operation. We'll only leave a four-characters long region if
 	 *            <code>true</code>, five-characters long if <code>false</code>.
 	 */
 	private void changeTraceabilityIndicesBooleanReturn(boolean result) {
@@ -430,7 +497,46 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		}
 		if (lastRegion != null) {
 			lastRegion.setStartOffset(0);
-			lastRegion.setStartOffset(length);
+			lastRegion.setEndOffset(length);
+		}
+		trace.setOffset(length);
+	}
+
+	/**
+	 * Size and possibily other traceability impacting operations share the same "basic" behavior of altering
+	 * indices to reflect an integer return. This behavior is externalized here.
+	 * 
+	 * @param result
+	 *            Integer result of the operation. We'll only leave a single region with its length equal to
+	 *            the given integer's number of digits.
+	 */
+	private void changeTraceabilityIndicesIntegerReturn(int result) {
+		// We'll keep only the very last trace and alter its indices
+		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
+		GeneratedText lastRegion = null;
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
+				if (lastRegion == null) {
+					lastRegion = text;
+					lastEntry = entry;
+				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
+					// lastEntry cannot be null once we get here
+					assert lastEntry != null;
+					lastEntry.getValue().remove(lastRegion);
+					lastRegion = text;
+					lastEntry = entry;
+				} else {
+					textIterator.remove();
+				}
+			}
+		}
+		int length = String.valueOf(result).length();
+		if (lastRegion != null) {
+			lastRegion.setStartOffset(0);
+			lastRegion.setEndOffset(length);
 		}
 		trace.setOffset(length);
 	}
@@ -459,7 +565,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		 * Substrings that will be split in two by replaced substrings will need their own new GeneratedText
 		 * instance, this Set will keep track of those so that we can add them in the trace later.
 		 */
-		Set<GeneratedText> addedRegions = new LinkedHashSet<GeneratedText>();
+		List<GeneratedText> addedRegions = new ArrayList<GeneratedText>();
 
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
@@ -476,7 +582,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				if (text.getStartOffset() < startIndex && text.getEndOffset() == endIndex) {
 					text.setEndOffset(startIndex);
 				} else if (text.getStartOffset() == startIndex && text.getEndOffset() > endIndex) {
-					text.setStartOffset(startIndex + replacementLength);
+					text.setStartOffset(endIndex);
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
 					// This instance of a GeneratedText is split in two by the substring
@@ -553,8 +659,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            The trace in which we should insert <code>text</code>.
 	 * @param text
 	 *            The text that is to be inserted if it matches the trace.
+	 * @return <code>true</code> if we managed to insert this text in the given trac, <code>false</code>
+	 *         otherwise.
 	 */
-	private void insertTextInTrace(ExpressionTrace<C> trace, GeneratedText text) {
+	private boolean insertTextInTrace(ExpressionTrace<C> trace, GeneratedText text) {
 		boolean insert = false;
 		final Iterator<Set<GeneratedText>> setIterator = trace.getTraces().values().iterator();
 		while (setIterator.hasNext() && !insert) {
@@ -571,5 +679,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				candidate.add(text);
 			}
 		}
+		return insert;
 	}
 }
