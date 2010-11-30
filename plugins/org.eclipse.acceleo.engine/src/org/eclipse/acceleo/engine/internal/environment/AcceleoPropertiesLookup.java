@@ -12,13 +12,13 @@ package org.eclipse.acceleo.engine.internal.environment;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.utils.ArrayDeque;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -29,10 +29,10 @@ import org.eclipse.emf.common.EMFPlugin;
  */
 public class AcceleoPropertiesLookup {
 	/** The whole list of resource bundles accessible by the generation engine. */
-	private final LinkedList<ResourceBundle> bundles = new LinkedList<ResourceBundle>();
+	private final ArrayDeque<ResourceBundle> bundles = new ArrayDeque<ResourceBundle>();
 
 	/** This will map the loaded bundles to their file name. */
-	private final Map<String, LinkedList<ResourceBundle>> bundlesByFileName = new HashMap<String, LinkedList<ResourceBundle>>();
+	private final Map<String, ArrayDeque<ResourceBundle>> bundlesByFileName = new HashMap<String, ArrayDeque<ResourceBundle>>();
 
 	/**
 	 * This will contain the custom properties for this engine, properties that will always take precedence
@@ -74,9 +74,9 @@ public class AcceleoPropertiesLookup {
 		fileName += ".properties"; //$NON-NLS-1$
 
 		bundles.add(bundle);
-		LinkedList<ResourceBundle> nameSakes = bundlesByFileName.get(fileName);
+		ArrayDeque<ResourceBundle> nameSakes = bundlesByFileName.get(fileName);
 		if (nameSakes == null) {
-			nameSakes = new LinkedList<ResourceBundle>();
+			nameSakes = new ArrayDeque<ResourceBundle>();
 			bundlesByFileName.put(fileName, nameSakes);
 		}
 		nameSakes.add(bundle);
@@ -129,7 +129,7 @@ public class AcceleoPropertiesLookup {
 			soughtPropertiesFile += propertiesExtension;
 		}
 
-		LinkedList<ResourceBundle> candidates = bundlesByFileName.get(soughtPropertiesFile);
+		ArrayDeque<ResourceBundle> candidates = bundlesByFileName.get(soughtPropertiesFile);
 		ResourceBundle bundle = null;
 		if (candidates != null) {
 			for (ResourceBundle candidate : candidates) {

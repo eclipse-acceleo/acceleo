@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.ArrayDeque;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -90,7 +91,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
 	 * multiple bindings against the same variable name.
 	 */
-	private final LinkedList<Map<String, LinkedList<Object>>> scopedVariableMap = new LinkedList<Map<String, LinkedList<Object>>>();
+	private final ArrayDeque<Map<String, LinkedList<Object>>> scopedVariableMap = new ArrayDeque<Map<String, LinkedList<Object>>>();
 
 	/**
 	 * This will contain variables that are global to a generation module.
