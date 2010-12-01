@@ -1604,15 +1604,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
 		final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-		// first, switch on the predefined OCL operations
-		if (operationCode > 0) {
+		// first, handle the MTL specific operations
+		if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
+				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
+			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
+		} else {
+			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
+		}
+		// Then the OCL ones
+		if (!isImpacting && operationCode > 0) {
 			isImpacting = operationCode == PredefinedType.SUBSTRING;
 			isImpacting = isImpacting || operationCode == PredefinedType.SIZE;
-			// Then handle the MTL specific operations
-		} else {
-			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
-			isImpacting = isImpacting
-					|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
 		}
 
 		return isImpacting;
