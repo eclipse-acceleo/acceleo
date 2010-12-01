@@ -1308,7 +1308,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
-			assertEquals("clas".length(), generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals("false".length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -1318,15 +1318,15 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("clas".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("false".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof PropertyCallExp);
 			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
 			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
-			assertEquals(183, propertyCallExp.getStartPosition());
-			assertEquals(183 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(180, propertyCallExp.getStartPosition());
+			assertEquals(180 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
