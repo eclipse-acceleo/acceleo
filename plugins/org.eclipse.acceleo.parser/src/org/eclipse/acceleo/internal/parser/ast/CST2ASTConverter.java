@@ -542,7 +542,6 @@ public class CST2ASTConverter {
 				if (containsRelevantExpressionsOnLine(nextBody, startIndex, lookbehind)) {
 					result = true;
 				}
-				result = false;
 			}
 		} else {
 			result = true;
