@@ -1603,17 +1603,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean isImpacting = false;
 		final int operationCode = operationCall.getOperationCode();
 
-		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
+		EClassifier operationReceiverEType = (EClassifier)operationCall.getSource().getType();
 		final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-		// first, switch on the predefined OCL operations
-		if (operationCode > 0) {
+		// first, handle the MTL specific operations
+		if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
+				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
+			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
+		} else {
+			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
+		}
+		// Then the OCL ones
+		if (!isImpacting && operationCode > 0) {
 			isImpacting = operationCode == PredefinedType.SUBSTRING;
 			isImpacting = isImpacting || operationCode == PredefinedType.SIZE;
-			// Then handle the MTL specific operations
-		} else {
-			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
-			isImpacting = isImpacting
-					|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
 		}
 
 		return isImpacting;
@@ -1779,10 +1781,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(expression)) {
 			OperationCallExp<C, O> call = (OperationCallExp<C, O>)expression.eContainer();
 			EOperation op = (EOperation)call.getReferredOperation();
-			/*
-			 * if (isTraceabilityImpactingOperation(call)) { result = false; } else
-			 */
-			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
+			if (isTraceabilityImpactingOperation(call)) {
+				result = true;
+			} else if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
 			}
 		} else if (isIteratorCallSource(expression)) {
