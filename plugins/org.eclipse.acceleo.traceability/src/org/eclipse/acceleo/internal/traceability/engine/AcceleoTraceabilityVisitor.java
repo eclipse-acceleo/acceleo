@@ -1602,7 +1602,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean isImpacting = false;
 		final int operationCode = operationCall.getOperationCode();
 
-		EClassifier operationEType = ((EOperation)operationCall.getReferredOperation()).getEType();
+		EClassifier operationReceiverEType = (EClassifier)operationCall.getSource().getType();
 		final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
 		// first, handle the MTL specific operations
 		if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
