@@ -860,7 +860,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else if (initializingVariable != null && !(result instanceof EObject)) {
 				GeneratedText text = createGeneratedTextFor(callExp);
 				variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
-			} else if (recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
+			} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
 				GeneratedText text = createGeneratedTextFor(callExp);
 				recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 			} else if (iterationTraces != null) {
@@ -912,7 +912,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
 				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
 
-		if (!isFileBlockCharset) {
+		if (record && !isFileBlockCharset) {
 			if (operationArgumentTrace != null) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				operationArgumentTrace.addTrace(input, text, result);
