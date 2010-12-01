@@ -985,7 +985,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean recordTrace = initializingVariable == null && recordedTraces.size() > 0
 				&& result instanceof String && ((String)result).length() > 0;
 
-		if (recordVariableInitialization || recordTrace || recordOperationArgument) {
+		if (recordVariableInitialization || (record && recordTrace) || recordOperationArgument) {
 			VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
 			boolean isPrimitiveIteratorVariable = referredVarTrace != null
 					&& referredVarTrace.getReferredVariable() == iterationVariable
@@ -1019,8 +1019,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 							recordedTraces.getLast().addTrace(input, copy, result);
 						} else if (recordVariableInitialization) {
 							variableTraces.get(initializingVariable).addTrace(input, copy, result);
-						} else if (iterationTraces != null) {
-							iterationTraces.addTrace(input, copy, result);
 						}
 					}
 				}
@@ -1040,9 +1038,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} else if (recordVariableInitialization) {
 					GeneratedText text = createGeneratedTextFor(variableExp);
 					variableTraces.get(initializingVariable).addTrace(input, text, result);
-				} else if (iterationTraces != null) {
-					GeneratedText text = createGeneratedTextFor(variableExp);
-					iterationTraces.addTrace(input, text, result);
 				}
 			}
 		}
