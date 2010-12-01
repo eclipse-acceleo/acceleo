@@ -1876,6 +1876,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * @return The old value of the record boolean.
 	 */
 	private boolean switchRecordState(OCLExpression<C> expression) {
+		// Do not switch on the recording state if it was previously switched off (avoids recording
+		// information for nested expressions)
+		if (!record) {
+			return record;
+		}
 		boolean oldRecordingValue = record;
 		EStructuralFeature containingFeature = expression.eContainingFeature();
 		EObject container = expression.eContainer();
