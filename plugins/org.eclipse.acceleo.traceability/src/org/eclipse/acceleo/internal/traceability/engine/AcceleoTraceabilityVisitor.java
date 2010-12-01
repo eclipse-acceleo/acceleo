@@ -841,32 +841,31 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		try {
 			result = getDelegate().visitPropertyCallExp(callExp);
 		} finally {
+			if (propertyCallSource != null && result != null) {
+				InputElement propertyCallInput = getInputElement(propertyCallSource,
+						(EStructuralFeature)callExp.getReferredProperty());
+				propertyCallSource = null;
+
+				if (protectedAreaSource != null) {
+					propertyCallInput = protectedAreaSource;
+				}
+				if (operationArgumentTrace != null) {
+					GeneratedText text = createGeneratedTextFor(callExp);
+					operationArgumentTrace.addTrace(propertyCallInput, text, result);
+				} else if (initializingVariable != null && !(result instanceof EObject)) {
+					GeneratedText text = createGeneratedTextFor(callExp);
+					variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
+				} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
+					GeneratedText text = createGeneratedTextFor(callExp);
+					recordedTraces.getLast().addTrace(propertyCallInput, text, result);
+				} else if (iterationTraces != null) {
+					GeneratedText text = createGeneratedTextFor(callExp);
+					iterationTraces.addTrace(propertyCallInput, text, result);
+				}
+			}
+
+			propertyCallSourceExpression = oldPropertyCallSourceExpression;
 			record = oldRecordingValue;
-		}
-
-		propertyCallSourceExpression = oldPropertyCallSourceExpression;
-
-		if (propertyCallSource != null && result != null) {
-			InputElement propertyCallInput = getInputElement(propertyCallSource, (EStructuralFeature)callExp
-					.getReferredProperty());
-			propertyCallSource = null;
-
-			if (protectedAreaSource != null) {
-				propertyCallInput = protectedAreaSource;
-			}
-			if (operationArgumentTrace != null) {
-				GeneratedText text = createGeneratedTextFor(callExp);
-				operationArgumentTrace.addTrace(propertyCallInput, text, result);
-			} else if (initializingVariable != null && !(result instanceof EObject)) {
-				GeneratedText text = createGeneratedTextFor(callExp);
-				variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
-			} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
-				GeneratedText text = createGeneratedTextFor(callExp);
-				recordedTraces.getLast().addTrace(propertyCallInput, text, result);
-			} else if (iterationTraces != null) {
-				GeneratedText text = createGeneratedTextFor(callExp);
-				iterationTraces.addTrace(propertyCallInput, text, result);
-			}
 		}
 
 		if (isPropertyCallSource(callExp)) {
