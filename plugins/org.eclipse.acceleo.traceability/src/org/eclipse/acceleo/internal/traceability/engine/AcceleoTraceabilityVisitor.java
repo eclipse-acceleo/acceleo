@@ -1610,11 +1610,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			isImpacting = operationCode == PredefinedType.SUBSTRING;
 			isImpacting = isImpacting || operationCode == PredefinedType.SIZE;
 			// Then handle the MTL specific operations
-		} else if (operationEType == getEnvironment().getOCLStandardLibrary().getString()
-				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationEType.getName())) {
-			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
 		} else {
-			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
+			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
+			isImpacting = isImpacting
+					|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
 		}
 
 		return isImpacting;
