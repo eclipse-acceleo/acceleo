@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module stringReplaceQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.name.replace('s', eClass.newValue())/][/file][/template]
+
+[query public newValue(eClass : EClass) : String = 'z'/]

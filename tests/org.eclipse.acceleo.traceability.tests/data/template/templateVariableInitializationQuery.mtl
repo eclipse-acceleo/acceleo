@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module templateVariableInitializationQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.templateVariableInit()/][/file][/template]
+
+[template public templateVariableInit(eClass : EClass) {
+		newName : String = 'newName';
+		className : String = eClass.className();
+	}
+]templateVariableInit[newName/][className/][/template]
+
+[query public className(eClass : EClass) : String = 'className'/]

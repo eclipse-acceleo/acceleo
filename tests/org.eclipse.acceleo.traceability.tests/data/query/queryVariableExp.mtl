@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryVariableExp('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][queryVarExp('a')/][/file][/template]
+
+[query public queryVarExp(str : String) : String = str + str + str/]

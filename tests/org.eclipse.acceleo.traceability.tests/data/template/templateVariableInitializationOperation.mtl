@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module templateVariableInitializationOperation('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.templateVariableInit()/][/file][/template]
+
+[template public templateVariableInit(eClass : EClass) {
+		newName : String = 'newName';
+		className : String = eClass.name.substring(1, 3).concat('YOP');
+	}
+]templateVariableInit[newName/][className/][/template]

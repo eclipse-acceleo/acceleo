@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module templateCollection2('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][template3(Sequence{eClass.template1(), eClass.template2()})/][/file][/template]
+
+[template public template1(eClass : EClass)]template1[/template]
+
+[template public template2(eClass : EClass)]template2[/template]
+
+[template public template3(col : Sequence(String))][col/][/template]

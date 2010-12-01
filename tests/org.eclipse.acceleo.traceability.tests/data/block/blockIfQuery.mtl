@@ -1,0 +1,8 @@
+[comment encoding = UTF-8 /]
+[module blockIfQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.blockIf()/][/file][/template]
+
+[template public blockIf(eClass : EClass)][if(eClass.queryTest())]blockIf[/if][/template]
+
+[query public queryTest(eClass : EClass) : Boolean = true/]

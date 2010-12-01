@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2009, 2010 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,28 +14,18 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.traceability.tests.unit.block.AcceleoTraceabilityBlockTests;
-import org.eclipse.acceleo.traceability.tests.unit.library.AcceleoTraceabilityLibraryOclTests;
-import org.eclipse.acceleo.traceability.tests.unit.library.AcceleoTraceabilityLibraryStringTests;
-import org.eclipse.acceleo.traceability.tests.unit.model.AcceleoTraceabilityModelTests;
-import org.eclipse.acceleo.traceability.tests.unit.query.AcceleoTraceabilityQueryTests;
-import org.eclipse.acceleo.traceability.tests.unit.template.AcceleoTraceabilityTemplateTests;
-import org.eclipse.acceleo.traceability.tests.unit.text.AcceleoTraceabilityTextTests;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceIntParameterTest;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceNoParametersTest;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceStringParameterTest;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceStringStringParameterTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/**
- * This suite will launch all the tests defined for the Acceleo traceability.
- * 
- * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- */
 @RunWith(Suite.class)
-@SuiteClasses({AcceleoTraceabilityTextTests.class, AcceleoTraceabilityTemplateTests.class,
-		AcceleoTraceabilityQueryTests.class, AcceleoTraceabilityModelTests.class,
-		AcceleoTraceabilityBlockTests.class, AcceleoTraceabilityLibraryStringTests.class,
-		AcceleoTraceabilityLibraryOclTests.class })
-public class AllTests {
+@SuiteClasses({StringSourceNoParametersTest.class, StringSourceStringParameterTest.class,
+		StringSourceIntParameterTest.class, StringSourceStringStringParameterTest.class })
+public class RandomAllTests {
 	/**
 	 * Launches the test with the given arguments.
 	 * 

@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryCollectionSelect('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][Sequence{'a', 'b', 'c'}->select(query1())/][/file][/template]
+
+[query public query1(str : String) : Boolean = str.startsWith('a')/]

@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryCache('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.queryCache() + eClass.queryCache() + eClass.queryCache()/][/file][/template]
+
+[query public queryCache(eClass : EClass) : String = 'queryCache'/]

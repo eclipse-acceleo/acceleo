@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module blockForVariableInitializationQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.blockFor()/][/file][/template]
+
+[template public blockFor(eClass : EClass)][for(Sequence{1, 2, 3}) {
+	newName : String = 'newName';
+	otherName : String = eClass.otherName();
+}]blockFor[newName/][otherName/][/for][/template]
+
+[query public otherName(eClass : EClass) : String = 'otherName'/]
