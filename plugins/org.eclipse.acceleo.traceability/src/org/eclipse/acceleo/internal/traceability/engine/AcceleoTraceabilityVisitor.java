@@ -808,7 +808,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		final Object result;
 		try {
-			if (isTraceabilityImpactingOperation(callExp)) {
+			if (record && isTraceabilityImpactingOperation(callExp)) {
 				result = internalVisitOperationCallExp(callExp);
 			} else {
 				result = super.visitOperationCallExp(callExp);
