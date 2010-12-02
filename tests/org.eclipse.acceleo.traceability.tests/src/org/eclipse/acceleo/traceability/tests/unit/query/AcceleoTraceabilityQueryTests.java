@@ -788,8 +788,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(274, string.getStartPosition());
-			assertEquals(274 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(197, string.getStartPosition());
+			assertEquals(197 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
