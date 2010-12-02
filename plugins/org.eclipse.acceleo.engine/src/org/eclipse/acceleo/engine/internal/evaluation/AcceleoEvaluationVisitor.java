@@ -47,6 +47,7 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -1396,6 +1397,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				tempVar.setName(TEMPORARY_INVOCATION_ARG_PREFIX + i);
 				tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation
 						.getArgument().get(i)));
+				tempVar.setType((EClassifier)((OCLExpression<C>)invocation.getArgument().get(i)).getType());
 				temporaryArgVars.add(tempVar);
 				// Evaluate the value of this new variable
 				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
