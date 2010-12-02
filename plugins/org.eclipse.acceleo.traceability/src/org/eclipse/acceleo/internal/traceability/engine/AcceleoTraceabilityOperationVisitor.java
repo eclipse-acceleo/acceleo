@@ -60,6 +60,26 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "endsWith" non standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @param substring
+	 *            The substring we need at the end of the <code>source</code>.
+	 * @return <code>true</code> iff the string <code>source</code> ends with the given <code>substring</code>
+	 *         . Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitEndsWithOperation(String source, String substring) {
+		boolean result = source.endsWith(substring);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
+	}
+
+	/**
 	 * Handles the "first" OCL operation directly from the traceability visitor as we need to alter recorded
 	 * traceability information.
 	 * 
@@ -392,10 +412,30 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * @return Size of the given String. Traceability information will have been changed directly within
 	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
 	 */
-	public int visitSizeOperation(String source) {
+	public Integer visitSizeOperation(String source) {
 		changeTraceabilityIndicesIntegerReturn(source.length());
 
-		return source.length();
+		return Integer.valueOf(source.length());
+	}
+
+	/**
+	 * Handles the "startsWith" non standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @param substring
+	 *            The substring we need at the beginning of the <code>source</code>.
+	 * @return <code>true</code> iff the string <code>source</code> starts with the given
+	 *         <code>substring</code>. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitStartsWithOperation(String source, String substring) {
+		boolean result = source.startsWith(substring);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
 	}
 
 	/**

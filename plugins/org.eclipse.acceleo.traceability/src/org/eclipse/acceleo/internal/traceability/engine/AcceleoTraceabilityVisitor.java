@@ -1554,6 +1554,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = operationVisitor.visitIsAlphanumOperation((String)sourceObject);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH)) {
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			Object substring = super.visitExpression(callExp.getArgument().get(0));
+			result = operationVisitor.visitStartsWithOperation((String)sourceObject, (String)substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH)) {
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			Object substring = super.visitExpression(callExp.getArgument().get(0));
+			result = operationVisitor.visitEndsWithOperation((String)sourceObject, (String)substring);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
