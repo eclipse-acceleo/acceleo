@@ -170,8 +170,8 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			EGenericType eGenericType = propertyCall.getEGenericType();
 			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
 			assertEquals("eClass.name", propertyCall.toString()); //$NON-NLS-1$
-			assertEquals(178, propertyCall.getStartPosition());
-			assertEquals(178 + "eClass.name".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
+			assertEquals(193, propertyCall.getStartPosition());
+			assertEquals(193 + "eClass.name".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();

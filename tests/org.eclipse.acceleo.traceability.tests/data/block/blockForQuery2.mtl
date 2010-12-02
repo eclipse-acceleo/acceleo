@@ -3,6 +3,6 @@
 
 [template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.blockFor()/][/file][/template]
 
-[template public blockFor(eClass : EClass)][for(Sequence{queryInSequence('a'), queryInSequence('b')})]blockFor[/for][/template]
+[template public blockFor(eClass : EClass)][for(Sequence{queryInSequence('a'), queryInSequence('b')})][self/][/for][/template]
 
 [query public queryInSequence(str : String) : String = 'begin' + str + 'end'/]

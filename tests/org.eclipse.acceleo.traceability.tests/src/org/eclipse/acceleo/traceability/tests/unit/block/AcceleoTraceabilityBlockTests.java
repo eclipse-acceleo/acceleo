@@ -355,8 +355,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("blockIf", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(264, string.getStartPosition());
-			assertEquals(264 + "blockIf".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(308, string.getStartPosition());
+			assertEquals(308 + "blockIf".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -465,7 +465,7 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(3, generatedRegions.size());
-			assertEquals("blockFor".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals("abc".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -1200,8 +1200,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof VariableExp);
 			VariableExp variableExp = (VariableExp)element;
 			assertEquals("name", variableExp.getName()); //$NON-NLS-1$
-			assertEquals(291, variableExp.getStartPosition());
-			assertEquals(291 + "name".length(), variableExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(306, variableExp.getStartPosition());
+			assertEquals(306 + "name".length(), variableExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
