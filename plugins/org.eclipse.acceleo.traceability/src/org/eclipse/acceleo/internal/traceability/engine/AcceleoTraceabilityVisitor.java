@@ -736,6 +736,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public Object visitIteratorExp(IteratorExp<C, PM> callExp) {
+		boolean oldOperationEvaluationState = evaluatingOperationCall;
+		evaluatingOperationCall = true;
 		scopeEObjects.add(callExp.getIterator().get(0));
 		IterationTrace<C> oldIterationTraces = iterationTraces;
 		iterationTraces = new IterationTrace<C>(callExp.getSource());
@@ -751,6 +753,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		try {
 			result = super.visitIteratorExp(callExp);
 		} finally {
+			evaluatingOperationCall = oldOperationEvaluationState;
 			iterationTraces.dispose();
 			iterationTraces = oldIterationTraces;
 			iterationBody = oldIterationBody;
@@ -1787,10 +1790,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				result = false;
 			}
 		} else if (isIteratorCallSource(expression)) {
-			result = false;
-		} else if (expression.eContainer() instanceof QueryInvocation
-				|| expression.eContainer() instanceof TemplateInvocation) {
-			// We shouldn't record traces for Invocation sources
 			result = false;
 		}
 		return result;
