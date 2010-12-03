@@ -752,7 +752,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					last.dispose();
 					break;
 				case PredefinedType.SELECT:
-					if (result instanceof Boolean && ((Boolean)result).booleanValue()) {
+					if (result instanceof Boolean && ((Boolean)result).booleanValue()
+							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
 						ExpressionTrace<C> trace = recordedTraces.getLast();
 						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 								.getTracesForIteration().entrySet()) {
@@ -761,7 +762,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					}
 					break;
 				case PredefinedType.REJECT:
-					if (result instanceof Boolean && !((Boolean)result).booleanValue()) {
+					if (result instanceof Boolean && !((Boolean)result).booleanValue()
+							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
 						ExpressionTrace<C> trace = recordedTraces.getLast();
 						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 								.getTracesForIteration().entrySet()) {
