@@ -1586,7 +1586,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					.intValue() - 1, ((Integer)endIndex).intValue());
 		} else if (callExp.getOperationCode() == PredefinedType.SIZE) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitSizeOperation((String)sourceObject);
+			if (sourceObject instanceof String) {
+				result = operationVisitor.visitSizeOperation((String)sourceObject);
+			} else if (sourceObject instanceof Collection<?>) {
+				result = operationVisitor.visitSizeOperation((Collection<Object>)sourceObject);
+			} else {
+				// FIXME throw exception
+				result = null;
+			}
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = operationVisitor.visitTrimOperation((String)sourceObject);

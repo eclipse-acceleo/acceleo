@@ -486,8 +486,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "size" OCL operation directly from the traceability visitor as we need to alter recorded
-	 * traceability information.
+	 * Handles the "String::size" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
 	 * 
 	 * @param source
 	 *            String that is to be considered.
@@ -498,6 +498,21 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		changeTraceabilityIndicesIntegerReturn(source.length());
 
 		return Integer.valueOf(source.length());
+	}
+
+	/**
+	 * Handles the "Collection::size" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            Collection that is to be considered.
+	 * @return Size of the given Collection. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Integer visitSizeOperation(Collection<?> source) {
+		changeTraceabilityIndicesIntegerReturn(source.size());
+
+		return Integer.valueOf(source.size());
 	}
 
 	/**
