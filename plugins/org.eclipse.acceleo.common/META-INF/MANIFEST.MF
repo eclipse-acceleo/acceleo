@@ -15,6 +15,7 @@ Export-Package: org.eclipse.acceleo.common,
    org.eclipse.acceleo.examples",
  org.eclipse.acceleo.common.internal.utils.workspace;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.compatibility,org.eclipse.acceleo.engine",
  org.eclipse.acceleo.common.library.connector,
+ org.eclipse.acceleo.common.preference,
  org.eclipse.acceleo.common.utils
 Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl.ecore,

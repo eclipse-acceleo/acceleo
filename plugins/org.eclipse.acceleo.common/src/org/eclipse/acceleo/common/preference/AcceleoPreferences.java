@@ -1,0 +1,59 @@
+/*******************************************************************************
+ * Copyright (c) 2006, 2010 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.common.preference;
+
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+
+/**
+ * This will allow for the manipulation of Acceleo preferences.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.0
+ */
+public final class AcceleoPreferences {
+	/** Preference key for the traceability enablement. */
+	private static final String PREFERENCE_KEY_ENABLE_TRACEABILITY = "org.eclipse.acceleo.traceability.enable"; //$NON-NLS-1$
+
+	/** Default value for the traceability enablement. */
+	private static final boolean DEFAULT_ENABLE_TRACEABILITY = false;
+
+	/** Preferences scope for the Acceleo common plugin. */
+	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
+			.getNode(AcceleoCommonPlugin.PLUGIN_ID);
+
+	/**
+	 * Doesn't need to be instantiated.
+	 */
+	private AcceleoPreferences() {
+		// Hides default constructor
+	}
+
+	/**
+	 * Switches the traceability enablement to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the traceability, <code>false</code> to disable it.
+	 */
+	public static void switchTraceability(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_TRACEABILITY, state);
+	}
+
+	/**
+	 * Returns whether the traceability is enabled or not.
+	 * 
+	 * @return <code>true</code> if the traceability is enabled, <code>false</code> otherwise.
+	 */
+	public static boolean isTraceabilityEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_TRACEABILITY, DEFAULT_ENABLE_TRACEABILITY);
+	}
+}
