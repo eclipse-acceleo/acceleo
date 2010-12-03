@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.traceability.engine;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,8 +48,28 @@ import org.eclipse.ocl.ecore.SendSignalAction;
  *            Will be either EParameter for ecore or Parameter for UML.
  */
 public final class AcceleoTraceabilityOperationVisitor<C, PM> {
+	/** This will contain references towards the Class representing OCL primitive types. */
+	private static final List<Class<?>> PRIMITIVE_CLASSES;
+
 	/** The evaluation visitor that spawned this operation visitor. */
 	private AcceleoTraceabilityVisitor<EPackage, C, EOperation, EStructuralFeature, EEnumLiteral, PM, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> visitor;
+
+	static {
+		PRIMITIVE_CLASSES = new ArrayList<Class<?>>(10);
+		PRIMITIVE_CLASSES.add(Character.class);
+		PRIMITIVE_CLASSES.add(String.class);
+
+		PRIMITIVE_CLASSES.add(Short.class);
+		PRIMITIVE_CLASSES.add(Integer.class);
+		PRIMITIVE_CLASSES.add(Long.class);
+		PRIMITIVE_CLASSES.add(BigInteger.class);
+
+		PRIMITIVE_CLASSES.add(Float.class);
+		PRIMITIVE_CLASSES.add(Double.class);
+		PRIMITIVE_CLASSES.add(BigDecimal.class);
+
+		PRIMITIVE_CLASSES.add(Boolean.class);
+	}
 
 	/**
 	 * Instantiates an operation visitor given its parent evaluation visitor.
@@ -328,6 +351,65 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		}
 		sourceMatcher.appendTail(result);
 		return result.toString();
+	}
+
+	/**
+	 * Takes care of the "reverse" non standard operations from the traceability visitor so as to properly
+	 * reverse traceability information.
+	 * 
+	 * @param source
+	 *            Collection we need to reverse.
+	 * @return The reversed collection.
+	 */
+	public Collection<Object> visitReverseOperation(Collection<Object> source) {
+		Collection<Object> result;
+		final List<Object> temp = new ArrayList<Object>(source);
+		Collections.reverse(temp);
+		if (source instanceof LinkedHashSet<?>) {
+			final Set<Object> reversedSet = new LinkedHashSet<Object>(temp);
+			result = reversedSet;
+		} else {
+			result = temp;
+		}
+
+		boolean isPrimitiveCollection = true;
+		Iterator<Object> valueIterator = source.iterator();
+		while (valueIterator.hasNext() && isPrimitiveCollection) {
+			isPrimitiveCollection = isPrimitive(valueIterator.next());
+		}
+
+		if (isPrimitiveCollection) {
+			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+
+			// Retrieve the list of all regions, regardless of their input
+			List<GeneratedText> regions = new ArrayList<GeneratedText>();
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				regions.addAll(entry.getValue());
+			}
+
+			// Sort them so that we don't have to worry about their order
+			Collections.sort(regions);
+
+			// If there is one generated region for each source value, all the better
+			if (regions.size() == source.size()) {
+				int regionsLength = 0;
+				for (int i = regions.size() - 1; i >= 0; i--) {
+					GeneratedText region = regions.get(i);
+					int startOffset = regionsLength;
+					regionsLength += region.getEndOffset() - region.getStartOffset();
+					region.setStartOffset(startOffset);
+					region.setEndOffset(regionsLength);
+				}
+			} else {
+				// Otherwise, we'll have to assume the regions correspond to the value's toString()
+				// for (Object value : source) {
+				// String stringValue = value.toString();
+				// int valueLength = stringValue.length();
+				// }
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -720,5 +802,21 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			}
 		}
 		return insert;
+	}
+
+	/**
+	 * This will check whether the given value is an OCL primitive.
+	 * 
+	 * @param value
+	 *            The value to check.
+	 * @return <code>true</code> if this value is an OCL primitive.
+	 */
+	private boolean isPrimitive(Object value) {
+		Class<?> valueClass = value.getClass();
+		if (valueClass.isPrimitive()) {
+			return true;
+		}
+
+		return PRIMITIVE_CLASSES.contains(valueClass);
 	}
 }

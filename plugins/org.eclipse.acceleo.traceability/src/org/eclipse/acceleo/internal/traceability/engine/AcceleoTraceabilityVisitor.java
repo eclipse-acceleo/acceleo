@@ -1561,6 +1561,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			Object substring = super.visitExpression(callExp.getArgument().get(0));
 			result = operationVisitor.visitEndsWithOperation((String)sourceObject, (String)substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
+			Object sourceObject = super.visitExpression(callExp.getSource());
+			result = operationVisitor.visitReverseOperation((Collection<Object>)sourceObject);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
@@ -1620,7 +1623,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
 			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
 		} else {
-			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.contains(operationName);
+			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName);
+			isImpacting = isImpacting
+					|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName);
 		}
 		// Then the OCL ones
 		if (!isImpacting && operationCode > 0) {
