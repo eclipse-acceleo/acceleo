@@ -87,6 +87,7 @@ import org.eclipse.ocl.expressions.StringLiteralExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
 import org.eclipse.ocl.types.PrimitiveType;
+import org.eclipse.ocl.util.OCLStandardLibraryUtil;
 import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
@@ -645,29 +646,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				invocationTraces.add(trace);
 			}
 		}
-		if (iterationBody == expression) {
-			/*
-			 * Add another trace for these so that we can avoid modifying them as a whole if the iteration
-			 * body has an iterator expression
-			 */
-			recordedTraces.add(new ExpressionTrace<C>(expression));
-		}
 		Object result = null;
 		try {
-			result = getDelegate().visitExpression(expression);
+			// Intercept the iterator's body
+			if (iterationBody == expression) {
+				result = visitIteratorBody(expression);
+			} else {
+				result = getDelegate().visitExpression(expression);
+			}
 		} catch (AcceleoEvaluationCancelledException e) {
 			cancel();
 			throw e;
 		} finally {
 			record = oldRecordingValue;
-			if (iterationBody == expression) {
-				// Merge the iteration body trace with the remainder of the iteration traces
-				ExpressionTrace<C> last = recordedTraces.removeLast();
-				recordedTraces.getLast().addTraceCopy(last);
-				last.dispose();
-				// and update the iteration count
-				iterationCount++;
-			}
 		}
 
 		if (isPropertyCallSource(expression)) {
@@ -726,6 +717,65 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(callExp)) {
 			operationCallSource = result;
 		}
+		return result;
+	}
+
+	/**
+	 * We'll delegate all calls to an iterator body's evaluation to this method in order to intercept and
+	 * modify the trace information as needed.
+	 * 
+	 * @param iteratorBody
+	 *            Body of the iterator which is to be evaluated.
+	 * @return The result of this iterator body, after we've taken care of modifying the trace.
+	 */
+	public Object visitIteratorBody(OCLExpression<C> iteratorBody) {
+		int opCode = OCLStandardLibraryUtil.getOperationCode(((IteratorExp<?, ?>)iteratorBody.eContainer())
+				.getName());
+		if (opCode == PredefinedType.COLLECT || opCode == PredefinedType.COLLECT_NESTED) {
+			/*
+			 * Add another trace for these so that we can avoid modifying them as a whole if the iteration
+			 * body has an iterator expression
+			 */
+			recordedTraces.add(new ExpressionTrace<C>(iteratorBody));
+		}
+
+		Object result = null;
+		try {
+			result = getDelegate().visitExpression(iteratorBody);
+		} finally {
+			switch (opCode) {
+				case PredefinedType.COLLECT:
+				case PredefinedType.COLLECT_NESTED:
+					// Merge the iteration body trace with the remainder of the iteration traces
+					ExpressionTrace<C> last = recordedTraces.removeLast();
+					recordedTraces.getLast().addTraceCopy(last);
+					last.dispose();
+					break;
+				case PredefinedType.SELECT:
+					if (result instanceof Boolean && ((Boolean)result).booleanValue()) {
+						ExpressionTrace<C> trace = recordedTraces.getLast();
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+								.getTracesForIteration().entrySet()) {
+							trace.getTraces().put(entry.getKey(), entry.getValue());
+						}
+					}
+					break;
+				case PredefinedType.REJECT:
+					if (result instanceof Boolean && !((Boolean)result).booleanValue()) {
+						ExpressionTrace<C> trace = recordedTraces.getLast();
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+								.getTracesForIteration().entrySet()) {
+							trace.getTraces().put(entry.getKey(), entry.getValue());
+						}
+					}
+					break;
+				// FIXME handle the other iterators
+				default:
+					break;
+			}
+			iterationCount++;
+		}
+
 		return result;
 	}
 
@@ -933,6 +983,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				iterationTraces.addTrace(input, text, result);
 			}
 		}
+
 		return result;
 	}
 
@@ -986,16 +1037,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean recordTrace = initializingVariable == null && recordedTraces.size() > 0
 				&& result instanceof String && ((String)result).length() > 0;
 
+		// Whether we'll record them or not, advance the iterator traces if needed
+		VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
+		boolean isPrimitiveIteratorVariable = referredVarTrace != null
+				&& referredVarTrace.getReferredVariable() == iterationVariable
+				&& iterationVariable.getType() instanceof PrimitiveType<?>;
+		if (isPrimitiveIteratorVariable) {
+			if (iterationTraces.getLastIteration() != iterationCount) {
+				iterationTraces.advanceIteration(result.toString());
+			}
+		}
+
 		if (recordVariableInitialization || (record && recordTrace) || recordOperationArgument) {
-			VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
-			boolean isPrimitiveIteratorVariable = referredVarTrace != null
-					&& referredVarTrace.getReferredVariable() == iterationVariable
-					&& iterationVariable.getType() instanceof PrimitiveType<?>;
 			// If this is an iteratorExp's iteration variable, we need to retrieve its correct trace manually
 			if (referredVarTrace != null && isPrimitiveIteratorVariable) {
-				if (iterationTraces.getLastIteration() != iterationCount) {
-					iterationTraces.advanceIteration(result.toString());
-				}
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 						.getTracesForIteration().entrySet()) {
 					referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
@@ -1194,7 +1249,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			trace.dispose();
 		}
 		variableTraces.clear();
-		iterationTraces.dispose();
+		if (iterationTraces != null) {
+			iterationTraces.dispose();
+		}
 	}
 
 	/**
@@ -1529,7 +1586,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					.intValue() - 1, ((Integer)endIndex).intValue());
 		} else if (callExp.getOperationCode() == PredefinedType.SIZE) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitSizeOperation((String)sourceObject);
+			if (sourceObject instanceof String) {
+				result = operationVisitor.visitSizeOperation((String)sourceObject);
+			} else if (sourceObject instanceof Collection<?>) {
+				result = operationVisitor.visitSizeOperation((Collection<Object>)sourceObject);
+			} else {
+				// FIXME throw exception
+				result = null;
+			}
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
 			Object sourceObject = super.visitExpression(callExp.getSource());
 			result = operationVisitor.visitTrimOperation((String)sourceObject);
@@ -1796,10 +1860,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(expression)) {
 			OperationCallExp<C, O> call = (OperationCallExp<C, O>)expression.eContainer();
 			EOperation op = (EOperation)call.getReferredOperation();
-			/*
-			 * if (isTraceabilityImpactingOperation(call)) { result = false; } else
-			 */
-			if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
+			if (isTraceabilityImpactingOperation(call)) {
+				result = true;
+			} else if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
 			}
 		} else if (isIteratorCallSource(expression)) {
@@ -1905,6 +1968,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		record = record
 				&& (containingFeature != ExpressionsPackage.eINSTANCE.getVariable_InitExpression() || container
 						.eContainingFeature() != MtlPackage.eINSTANCE.getLetBlock_LetVariable());
+
+		// Similarly, bodies of all iterators except for collect shouldn't record any trace
+		if (record && container instanceof IteratorExp<?, ?>) {
+			int opCode = OCLStandardLibraryUtil.getOperationCode(((IteratorExp<?, ?>)container).getName());
+			if (opCode != PredefinedType.COLLECT && opCode != PredefinedType.COLLECT_NESTED) {
+				record = containingFeature != ExpressionsPackage.eINSTANCE.getLoopExp_Body();
+			}
+		}
 
 		return oldRecordingValue;
 	}
