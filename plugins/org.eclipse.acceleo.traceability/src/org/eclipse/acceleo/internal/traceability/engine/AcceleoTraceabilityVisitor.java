@@ -1249,7 +1249,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			trace.dispose();
 		}
 		variableTraces.clear();
-		iterationTraces.dispose();
+		if (iterationTraces != null) {
+			iterationTraces.dispose();
+		}
 	}
 
 	/**
