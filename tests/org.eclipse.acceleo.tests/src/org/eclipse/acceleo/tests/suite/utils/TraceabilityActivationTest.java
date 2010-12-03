@@ -12,8 +12,7 @@ package org.eclipse.acceleo.tests.suite.utils;
 
 import junit.framework.TestCase;
 
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 
 /**
  * This test's only purpose is to enable the traceability visitor for all subsequent tests.
@@ -35,7 +34,7 @@ public class TraceabilityActivationTest extends TestCase {
 	 * Activates the traceability visitor for all subsequent tests.
 	 */
 	public void testActivateTraceability() {
-		new InstanceScope().getNode(AcceleoEnginePlugin.PLUGIN_ID).putBoolean(
-				"org.eclipse.acceleo.traceability.activation", true); //$NON-NLS-1$
+		AcceleoPreferences.switchTraceability(true);
+		assertTrue(AcceleoPreferences.isTraceabilityEnabled());
 	}
 }
