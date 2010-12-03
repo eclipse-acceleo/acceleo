@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
  * This will allow for the manipulation of Acceleo preferences.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.1
  */
 public final class AcceleoPreferences {
 	/** Preference key for the traceability enablement. */

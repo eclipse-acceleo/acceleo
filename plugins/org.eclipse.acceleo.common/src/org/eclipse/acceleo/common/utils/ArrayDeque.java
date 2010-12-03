@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a> - Backporting
  * @param <E>
  *            the type of elements held in this collection
+ * @since 3.1
  */
 @SuppressWarnings("unchecked")
 public class ArrayDeque<E> extends AbstractCollection<E> implements Deque<E>, Cloneable, Serializable {
