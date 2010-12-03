@@ -652,6 +652,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
 		GeneratedText lastRegion = null;
+		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 			while (textIterator.hasNext()) {
@@ -662,12 +663,20 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
 					// lastEntry cannot be null once we get here
 					assert lastEntry != null;
-					lastEntry.getValue().remove(lastRegion);
+					if (lastEntry != entry) {
+						lastEntry.getValue().remove(lastRegion);
+						lastEntry = entry;
+					} else {
+						rejectFromEntry.add(lastRegion);
+					}
 					lastRegion = text;
-					lastEntry = entry;
 				} else {
 					textIterator.remove();
 				}
+			}
+			if (!rejectFromEntry.isEmpty()) {
+				entry.getValue().removeAll(rejectFromEntry);
+				rejectFromEntry.clear();
 			}
 		}
 		int length = String.valueOf(result).length();
