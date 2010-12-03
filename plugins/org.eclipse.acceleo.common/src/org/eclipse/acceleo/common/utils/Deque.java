@@ -23,6 +23,7 @@ import java.util.Queue;
  * @author Josh Bloch and Doug Lea
  * @param <E>
  *            the type of elements held in this collection
+ * @since 3.0
  */
 public interface Deque<E> extends Queue<E> {
 	/**
