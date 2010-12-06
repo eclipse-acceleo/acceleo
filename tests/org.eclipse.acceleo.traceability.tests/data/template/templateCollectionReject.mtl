@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module templateCollectionReject('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][Sequence{'a', 'b', 'c'}->reject(val | val.startsWith(template1('a')))/][/file][/template]
+
+[template public template1(str : String)][str/][/template]

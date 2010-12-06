@@ -758,7 +758,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
 			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
 
-			GeneratedText generatedText = generatedRegions.get(0);
+			GeneratedText generatedText = generatedRegions.get(2);
 			assertEquals(0, generatedText.getStartOffset());
 			assertEquals("c".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
@@ -782,7 +782,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals(206, string.getStartPosition());
 			assertEquals(206 + "'bb'".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(2);
+			generatedText = generatedRegions.get(0);
 			assertEquals("cbb".length(), generatedText.getStartOffset()); //$NON-NLS-1$
 			assertEquals("cbbaaa".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
@@ -824,7 +824,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
 			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
 
-			GeneratedText generatedText = generatedRegions.get(0);
+			GeneratedText generatedText = generatedRegions.get(3);
 			assertEquals(0, generatedText.getStartOffset());
 			assertEquals("class4".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
@@ -843,7 +843,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 
-			generatedText = generatedRegions.get(1);
+			generatedText = generatedRegions.get(2);
 			assertEquals("class4".length(), generatedText.getStartOffset()); //$NON-NLS-1$
 			assertEquals("class4class3".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
@@ -862,7 +862,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 
-			generatedText = generatedRegions.get(2);
+			generatedText = generatedRegions.get(1);
 			assertEquals("class4class3".length(), generatedText.getStartOffset()); //$NON-NLS-1$
 			assertEquals("class4class3class2".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
@@ -881,7 +881,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 
-			generatedText = generatedRegions.get(3);
+			generatedText = generatedRegions.get(0);
 			assertEquals("class4class3class2".length(), generatedText.getStartOffset()); //$NON-NLS-1$
 			assertEquals("class4class3class2class1".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
@@ -1678,15 +1678,15 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("2".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("true".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof PropertyCallExp);
-			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
-			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
-			assertEquals(178, propertyCallExp.getStartPosition());
-			assertEquals(178 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("strstr operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(179, stringLiteralExp.getStartPosition());
+			assertEquals(179 + "'strstr operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1720,15 +1720,15 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("2".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("strt".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof PropertyCallExp);
-			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
-			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
-			assertEquals(178, propertyCallExp.getStartPosition());
-			assertEquals(178 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("strtok operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(179, stringLiteralExp.getStartPosition());
+			assertEquals(179 + "'strtok operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1804,15 +1804,51 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("clas".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("tok".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof PropertyCallExp);
-			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
-			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
-			assertEquals(183, propertyCallExp.getStartPosition());
-			assertEquals(183 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("tokenize operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(181, stringLiteralExp.getStartPosition());
+			assertEquals(181 + "'tokenize operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals("tok".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("tokniz".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("tokenize operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(181, stringLiteralExp.getStartPosition());
+			assertEquals(181 + "'tokenize operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals("tokniz".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("tokniz op".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("tokenize operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(181, stringLiteralExp.getStartPosition());
+			assertEquals(181 + "'tokenize operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals("tokniz op".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("tokniz opration".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("tokenize operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(181, stringLiteralExp.getStartPosition());
+			assertEquals(181 + "'tokenize operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
