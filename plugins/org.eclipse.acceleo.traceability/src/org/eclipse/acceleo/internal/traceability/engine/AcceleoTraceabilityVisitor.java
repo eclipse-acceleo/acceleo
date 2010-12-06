@@ -1668,6 +1668,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH)) {
 			String substring = (String)arguments.get(0);
 			result = operationVisitor.visitEndsWithOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitContainsOperation((String)source, substring);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
 			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
 		} else {

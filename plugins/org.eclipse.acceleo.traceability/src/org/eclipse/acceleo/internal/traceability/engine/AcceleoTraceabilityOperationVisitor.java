@@ -92,6 +92,26 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "contains" non standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @param substring
+	 *            The substring we need to be contained in <code>source</code>.
+	 * @return <code>true</code> iff the string <code>source</code> contains the given <code>substring</code>.
+	 *         Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitContainsOperation(String source, String substring) {
+		boolean result = source.contains(substring);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
+	}
+
+	/**
 	 * Handles the "endsWith" non standard operation directly from the traceability visitor as we need to
 	 * alter recorded traceability information.
 	 * 
