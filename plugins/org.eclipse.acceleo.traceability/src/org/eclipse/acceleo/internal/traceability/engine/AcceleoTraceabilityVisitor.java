@@ -1519,6 +1519,45 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * Handles the call to a standard OCL operation that impacts traceability.
+	 * 
+	 * @param callExp
+	 *            The operation call to visit.
+	 * @param source
+	 *            Source of the call.
+	 * @return Result of the call.
+	 */
+	@SuppressWarnings("unchecked")
+	private Object internalVisitOCLOperation(OperationCallExp<C, O> callExp, Object source) {
+		final Object result;
+
+		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
+		for (OCLExpression<C> expression : callExp.getArgument()) {
+			// FIXME handle invalid and null
+			arguments.add(super.visitExpression(expression));
+		}
+
+		if (callExp.getOperationCode() == PredefinedType.SUBSTRING) {
+			int startIndex = ((Integer)arguments.get(0)).intValue() - 1;
+			int endIndex = ((Integer)arguments.get(1)).intValue();
+			result = operationVisitor.visitSubstringOperation((String)source, startIndex, endIndex);
+		} else if (callExp.getOperationCode() == PredefinedType.SIZE) {
+			if (source instanceof String) {
+				result = operationVisitor.visitSizeOperation((String)source);
+			} else if (source instanceof Collection<?>) {
+				result = operationVisitor.visitSizeOperation((Collection<Object>)source);
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		} else {
+			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
+			throw new UnsupportedOperationException();
+		}
+
+		return result;
+	}
+
+	/**
 	 * We'll intercept each and every calls to traceability-impacting operations as returned by
 	 * {@link #isTraceabilityImpactingOperation(OperationCallExp)} and reroute them here. We'll then
 	 * specialize the evaluation of that given operation call so as to record evaluation traces.
@@ -1531,6 +1570,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private Object internalVisitOperationCallExp(OperationCallExp<C, O> callExp) {
 		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
 		final Object result;
+
+		Object sourceObject = super.visitExpression(callExp.getSource());
 
 		/*
 		 * All four "substitute" type operations will be handled the same, yet they require that argument
@@ -1551,7 +1592,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				substituteRegexes = true;
 			}
 
-			Object sourceObject = super.visitExpression(callExp.getSource());
 			boolean oldRecordingValue = record;
 			record = false;
 			Object substring = super.visitExpression(callExp.getArgument().get(0));
@@ -1576,62 +1616,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 			return result;
 		}
-		/*
-		 * FIXME when all cases are handled, externalize source/args evaluation before the if - else if, and
-		 * check for invalid values.
-		 */
-		if (callExp.getOperationCode() == PredefinedType.SUBSTRING) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object startIndex = super.visitExpression(callExp.getArgument().get(0));
-			Object endIndex = super.visitExpression(callExp.getArgument().get(1));
-			result = operationVisitor.visitSubstringOperation((String)sourceObject, ((Integer)startIndex)
-					.intValue() - 1, ((Integer)endIndex).intValue());
-		} else if (callExp.getOperationCode() == PredefinedType.SIZE) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			if (sourceObject instanceof String) {
-				result = operationVisitor.visitSizeOperation((String)sourceObject);
-			} else if (sourceObject instanceof Collection<?>) {
-				result = operationVisitor.visitSizeOperation((Collection<Object>)sourceObject);
-			} else {
-				// FIXME throw exception
-				result = null;
-			}
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitTrimOperation((String)sourceObject);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object endIndex = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitFirstOperation((String)sourceObject, ((Integer)endIndex)
-					.intValue());
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object charCount = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitLastOperation((String)sourceObject, ((Integer)charCount)
-					.intValue());
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object substring = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitIndexOperation((String)sourceObject, (String)substring);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitIsAlphaOperation((String)sourceObject);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitIsAlphanumOperation((String)sourceObject);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object substring = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitStartsWithOperation((String)sourceObject, (String)substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			Object substring = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitEndsWithOperation((String)sourceObject, (String)substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
-			result = operationVisitor.visitReverseOperation((Collection<Object>)sourceObject);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
-			Object sourceObject = super.visitExpression(callExp.getSource());
+
+		EOperation operation = (EOperation)callExp.getReferredOperation();
+
+		// Collection::sep also requires that its separator traces be recorded
+		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
 			ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
 			operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
 			Object separator = super.visitExpression(callExp.getArgument().get(0));
@@ -1639,8 +1628,101 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					operationArgumentTrace);
 			operationArgumentTrace.dispose();
 			operationArgumentTrace = oldArgTrace;
+		} else if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
+			result = internalVisitStandardOperation(callExp, sourceObject);
+		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+			result = internalVisitNonStandardOperation(callExp, sourceObject);
 		} else {
-			result = super.visitOperationCallExp(callExp);
+			// Only OCL operations remain
+			result = internalVisitOCLOperation(callExp, sourceObject);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Handles the call to a non-standard MTL operation that impacts traceability.
+	 * 
+	 * @param callExp
+	 *            The operation call to visit.
+	 * @param source
+	 *            Source of the call.
+	 * @return Result of the call.
+	 */
+	@SuppressWarnings("unchecked")
+	private Object internalVisitNonStandardOperation(OperationCallExp<C, O> callExp, Object source) {
+		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
+		final Object result;
+
+		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
+		for (OCLExpression<C> expression : callExp.getArgument()) {
+			// FIXME handle invalid and null
+			arguments.add(super.visitExpression(expression));
+		}
+
+		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
+			result = operationVisitor.visitTrimOperation((String)source);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitStartsWithOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitEndsWithOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
+			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
+		} else {
+			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
+			throw new UnsupportedOperationException();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Handles the call to a standard MTL operation that impacts traceability.
+	 * 
+	 * @param callExp
+	 *            The operation call to visit.
+	 * @param source
+	 *            Source of the call.
+	 * @return Result of the call.
+	 */
+	private Object internalVisitStandardOperation(OperationCallExp<C, O> callExp, Object source) {
+		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
+		final Object result;
+
+		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
+		for (OCLExpression<C> expression : callExp.getArgument()) {
+			// FIXME handle invalid and null
+			arguments.add(super.visitExpression(expression));
+		}
+
+		if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST)) {
+			int charCount = ((Integer)arguments.get(0)).intValue();
+			result = operationVisitor.visitFirstOperation((String)source, charCount);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST)) {
+			int charCount = ((Integer)arguments.get(0)).intValue();
+			result = operationVisitor.visitLastOperation((String)source, charCount);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitIndexOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA)) {
+			result = operationVisitor.visitIsAlphaOperation((String)source);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
+			result = operationVisitor.visitIsAlphanumOperation((String)source);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitStrstrOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP)) {
+			String otherString = (String)arguments.get(0);
+			result = operationVisitor.visitStrcmpOperation((String)source, otherString);
+		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK)) {
+			String delimiters = (String)arguments.get(0);
+			Integer flag = (Integer)arguments.get(1);
+			result = operationVisitor.visitStrtokOperation((String)source, delimiters, flag);
+		} else {
+			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
+			throw new UnsupportedOperationException();
 		}
 
 		return result;

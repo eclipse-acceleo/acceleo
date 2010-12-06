@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
@@ -50,6 +53,12 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	/** This will contain references towards the Class representing OCL primitive types. */
 	private static final List<Class<?>> PRIMITIVE_CLASSES;
+
+	/**
+	 * Maps a source String to its Tokenizer. Needed for the implementation of the standard operation
+	 * "strtok(String, Integer)" as currently specified.
+	 */
+	private static final Map<String, TraceabilityTokenizer> TOKENIZERS = new HashMap<String, TraceabilityTokenizer>();
 
 	/** The evaluation visitor that spawned this operation visitor. */
 	private AcceleoTraceabilityVisitor<EPackage, C, EOperation, EStructuralFeature, EEnumLiteral, PM, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> visitor;
@@ -390,9 +399,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			// Sort them so that we don't have to worry about their order
 			Collections.sort(regions);
 
-			// If there is one generated region for each source value, all the better
+			int regionsLength = 0;
 			if (regions.size() == source.size()) {
-				int regionsLength = 0;
+				// If there is one generated region for each source value, all the better
 				for (int i = regions.size() - 1; i >= 0; i--) {
 					GeneratedText region = regions.get(i);
 					int startOffset = regionsLength;
@@ -401,11 +410,43 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					region.setEndOffset(regionsLength);
 				}
 			} else {
-				// Otherwise, we'll have to assume the regions correspond to the value's toString()
-				// for (Object value : source) {
-				// String stringValue = value.toString();
-				// int valueLength = stringValue.length();
-				// }
+				/*
+				 * Otherwise, we'll have to assume the regions correspond to the value's toString() -Note that
+				 * we'll never be here for non-primitive Collections-
+				 */
+				List<Integer> valueLengthes = new ArrayList<Integer>(source.size());
+				for (Object value : source) {
+					String stringValue = value.toString();
+					valueLengthes.add(stringValue.length());
+				}
+				Collections.reverse(valueLengthes);
+
+				for (int i = valueLengthes.size() - 1; i >= 0; i--) {
+					int valueLength = valueLengthes.get(i);
+					GeneratedText region = regions.get(i);
+					int regionLength = region.getEndOffset() - region.getStartOffset();
+
+					// go back all the way back to the first region for this value
+					int valueRegionsStartIndex = i;
+					int gap = valueLength - regionLength;
+					while (gap > 0) {
+						valueRegionsStartIndex--;
+						GeneratedText previous = regions.get(valueRegionsStartIndex);
+						int previousLength = previous.getEndOffset() - previous.getStartOffset();
+						gap = gap - previousLength;
+					}
+
+					// We found the first region for this value. start reversing it
+					for (int j = valueRegionsStartIndex; j < regions.size(); j++) {
+						GeneratedText text = regions.get(j);
+
+						int startOffset = regionsLength;
+						regionsLength += text.getEndOffset() - text.getEndOffset();
+
+						region.setStartOffset(startOffset);
+						region.setEndOffset(regionsLength);
+					}
+				}
 			}
 		}
 
@@ -486,21 +527,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "String::size" OCL operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @return Size of the given String. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitSizeOperation(String source) {
-		changeTraceabilityIndicesIntegerReturn(source.length());
-
-		return Integer.valueOf(source.length());
-	}
-
-	/**
 	 * Handles the "Collection::size" OCL operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -513,6 +539,21 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		changeTraceabilityIndicesIntegerReturn(source.size());
 
 		return Integer.valueOf(source.size());
+	}
+
+	/**
+	 * Handles the "String::size" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @return Size of the given String. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Integer visitSizeOperation(String source) {
+		changeTraceabilityIndicesIntegerReturn(source.length());
+
+		return Integer.valueOf(source.length());
 	}
 
 	/**
@@ -533,6 +574,93 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		changeTraceabilityIndicesBooleanReturn(result);
 
 		return Boolean.valueOf(result);
+	}
+
+	/**
+	 * Handles the "strcmp" standard operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be compared with <code>other</code>.
+	 * @param other
+	 *            The string with which to compare <em>source</em>.
+	 * @return An integer less than zero, equal to zero, or greater than zero depending on whether
+	 *         <code>other</code> is lexicographically less than, equal to, or greater than
+	 *         <code>source</code>. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Integer visitStrcmpOperation(String source, String other) {
+		int result = source.compareTo(other);
+
+		changeTraceabilityIndicesIntegerReturn(result);
+
+		return Integer.valueOf(result);
+	}
+
+	/**
+	 * Handles the "strstr" standard operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            String from which to find a given substring.
+	 * @param substring
+	 *            The substring we seek within <em>source</em>.
+	 * @return <code>true</code> if <code>substring</code> could be found in <code>source</code>,
+	 *         <code>false</code> otherwise. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitStrstrOperation(String source, String substring) {
+		boolean result = source.contains(substring);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
+	}
+
+	/**
+	 * Handles the "strtok" standard operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            Source String in which tokenization has to take place.
+	 * @param delimiters
+	 *            Delimiters around which the <code>source</code> has to be split.
+	 * @param flag
+	 *            The value of this influences the token that needs be returned. A value of <code>0</code>
+	 *            means the very first token will be returned, a value of <code>1</code> means the returned
+	 *            token will be the next (as compared to the last one that's been returned).
+	 * @return The first of all tokens if <code>flag</code> is <code>0</code>, the next token if
+	 *         <code>flag</code> is <code>1</code>. Fails in {@link AcceleoEvaluationException} otherwise.
+	 * @see org.eclipse.acceleo.engine.internal.environment.AcceleoLibraryOperationVisitor#strtok(String,
+	 *      String, Integer)
+	 */
+	public String visitStrtokOperation(String source, String delimiters, Integer flag) {
+		final String result;
+		final TraceabilityTokenizer tokenizer;
+		if (flag.intValue() == 0) {
+			tokenizer = new TraceabilityTokenizer(source, delimiters);
+			TOKENIZERS.put(source, tokenizer);
+			result = tokenizer.nextToken();
+		} else if (flag.intValue() == 1) {
+			if (TOKENIZERS.containsKey(source)) {
+				tokenizer = TOKENIZERS.get(source);
+			} else {
+				tokenizer = new TraceabilityTokenizer(source, delimiters);
+				TOKENIZERS.put(source, tokenizer);
+			}
+			String token = ""; //$NON-NLS-1$
+			if (tokenizer.hasMoreTokens()) {
+				token = tokenizer.nextToken();
+			}
+			result = token;
+		} else {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationEnvironment.IllegalTokenizerFlag", flag)); //$NON-NLS-1$
+		}
+
+		changeTraceabilityIndicesSubstringReturn(tokenizer.getLastOffset(), tokenizer.getNextOffset());
+
+		return result;
 	}
 
 	/**
