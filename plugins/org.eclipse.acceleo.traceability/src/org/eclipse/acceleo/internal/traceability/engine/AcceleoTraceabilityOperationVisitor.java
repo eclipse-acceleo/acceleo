@@ -29,6 +29,7 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
+import org.eclipse.acceleo.traceability.TraceabilityFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
@@ -703,6 +704,71 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "tokenize" non-standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be tokenized.
+	 * @param delims
+	 *            Delimiters to tokenize around.
+	 * @return The List of tokens <code>source</code> contains. Traceability information will have been
+	 *         changed directly within {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public List<String> visitTokenizeOperation(String source, String delims) {
+		final TraceabilityTokenizer tokenizer = new TraceabilityTokenizer(source, delims);
+		final List<String> result = new ArrayList<String>();
+		final ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+
+		int[][] tokenRegions = new int[tokenizer.countTokens()][2];
+
+		int tokenCount = 0;
+		while (tokenizer.hasMoreTokens()) {
+			result.add(tokenizer.nextToken());
+
+			int startIndex = tokenizer.getLastOffset();
+			int endIndex = tokenizer.getNextOffset();
+
+			tokenRegions[tokenCount][0] = startIndex;
+			tokenRegions[tokenCount][1] = endIndex;
+			tokenCount++;
+		}
+
+		// First of all, if we have but a single token, this acts as substring does
+		if (result.size() == 1) {
+			changeTraceabilityIndicesSubstringReturn(tokenRegions[0][0], tokenRegions[0][1]);
+		} else {
+			Set<Map.Entry<InputElement, Set<GeneratedText>>> traceRegions = trace.getTraces().entrySet();
+			// If we only have a single region, we only need to split it
+			if (trace.getTraces().size() == 1 && traceRegions.iterator().next().getValue().size() == 1) {
+				Map.Entry<InputElement, Set<GeneratedText>> entry = traceRegions.iterator().next();
+				Set<GeneratedText> generatedRegions = entry.getValue();
+				GeneratedText firstRegion = generatedRegions.iterator().next();
+				int length = tokenRegions[0][1] - tokenRegions[0][0];
+				firstRegion.setStartOffset(0);
+				firstRegion.setEndOffset(length);
+
+				for (int i = 1; i < tokenRegions.length; i++) {
+					int start = tokenRegions[i][0];
+					int end = tokenRegions[i][1];
+					int startOffset = length;
+					length += end - start;
+
+					GeneratedText newRegion = (GeneratedText)EcoreUtil.copy(firstRegion);
+					newRegion.setStartOffset(startOffset);
+					newRegion.setEndOffset(length);
+
+					generatedRegions.add(newRegion);
+				}
+			} else {
+				// Otherwise, we need to find back from which generated region a given token has been taken
+				changeTraceabilityIndicesComplexTokenize(trace, tokenRegions);
+			}
+		}
+
+		return result;
+	}
+
+	/**
 	 * Handles the "trim" non-standard operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -784,6 +850,123 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			lastRegion.setStartOffset(0);
 			lastRegion.setEndOffset(length);
 		}
+		trace.setOffset(length);
+	}
+
+	/**
+	 * This will alter the traceability information for complex tokenizations.
+	 * <p>
+	 * Specifically, this is aimed at altering traces for tokenization where tokens could be spanned accross
+	 * multiple generated regions. For example,
+	 * 
+	 * <pre>
+	 * ('arai' + 'bza' + 'geaa' + 'ab' + 'adaa')
+	 * </pre>
+	 * 
+	 * Creates 5 generated regions : [ [0,4], [4,7], [7,11], [11,13], [13,17] ] while
+	 * 
+	 * <pre>
+	 * ('arai' + 'bza' + 'geaa' + 'ab' + 'adaa').tokenize('a')
+	 * </pre>
+	 * 
+	 * Creates 6 generated regions : [ [0,1], [1,2], [2, 4], [4,6], [6,7], [7,8] ] as the second token ("ibz")
+	 * spans accross both the generated regions for the string literals 'arai' and 'bza'.
+	 * </p>
+	 * 
+	 * @param trace
+	 *            The trace we are to alter.
+	 * @param tokenRegions
+	 *            offsets of the token regions.
+	 */
+	private void changeTraceabilityIndicesComplexTokenize(ExpressionTrace<C> trace, int[][] tokenRegions) {
+		/*
+		 * Copy the map : none of the old generated regions will be kept : we'll replace all of them with the
+		 * token regions.
+		 */
+		Map<InputElement, Set<GeneratedText>> traceCopy = new HashMap<InputElement, Set<GeneratedText>>(trace
+				.getTraces());
+		trace.getTraces().clear();
+
+		int length = 0;
+		for (int[] tokenRegion : tokenRegions) {
+			int tokenStart = tokenRegion[0];
+			int tokenEnd = tokenRegion[1];
+			int tokenLength = tokenEnd - tokenStart;
+
+			// We'll try and break our loops as soon as the whole token as been created
+			int initialLength = length;
+
+			Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = traceCopy.entrySet()
+					.iterator();
+			while (entryIterator.hasNext() && length < initialLength + tokenLength) {
+				Map.Entry<InputElement, Set<GeneratedText>> entry = entryIterator.next();
+				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+				while (textIterator.hasNext() && length < initialLength + tokenLength) {
+					GeneratedText text = textIterator.next();
+
+					GeneratedText tokenText = null;
+
+					/*
+					 * We can be in one of four cases : The token is fully included into a region, the region
+					 * is fully included in a token, the region ends with a token, or the region starts with a
+					 * token.
+					 */
+					if (text.getStartOffset() < tokenStart && text.getEndOffset() > tokenEnd) {
+						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
+						tokenText.setStartOffset(length);
+						tokenText.setEndOffset(length + tokenLength);
+						tokenText.setModuleElement(text.getModuleElement());
+						tokenText.setOutputFile(text.getOutputFile());
+						tokenText.setSourceElement(text.getSourceElement());
+
+						length += tokenLength;
+					} else if (text.getStartOffset() > tokenStart && text.getEndOffset() < tokenEnd) {
+						int textLength = text.getEndOffset() - text.getStartOffset();
+						tokenText = (GeneratedText)EcoreUtil.copy(text);
+						tokenText.setStartOffset(length);
+						tokenText.setEndOffset(length + textLength);
+
+						length += textLength;
+					} else if (text.getStartOffset() > tokenStart && text.getEndOffset() > tokenEnd) {
+						int tokenRegionLength = text.getEndOffset() - tokenStart;
+						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
+						tokenText.setStartOffset(length);
+						tokenText.setEndOffset(length + tokenRegionLength);
+						tokenText.setModuleElement(text.getModuleElement());
+						tokenText.setOutputFile(text.getOutputFile());
+						tokenText.setSourceElement(text.getSourceElement());
+
+						length += tokenRegionLength;
+					} else if (text.getStartOffset() < tokenStart && text.getEndOffset() < tokenEnd) {
+						int tokenRegionLength = tokenEnd - text.getStartOffset();
+						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
+						tokenText.setStartOffset(length);
+						tokenText.setEndOffset(length + tokenRegionLength);
+						tokenText.setModuleElement(text.getModuleElement());
+						tokenText.setOutputFile(text.getOutputFile());
+						tokenText.setSourceElement(text.getSourceElement());
+
+						length += tokenRegionLength;
+					}
+
+					if (tokenText != null) {
+						InputElement tokenKey = entry.getKey();
+						Set<GeneratedText> tokenTraces = trace.getTraces().get(tokenKey);
+						if (tokenTraces == null) {
+							tokenTraces = new LinkedHashSet<GeneratedText>();
+							trace.getTraces().put(tokenKey, tokenTraces);
+						}
+						tokenTraces.add(tokenText);
+					}
+				}
+			}
+		}
+
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : traceCopy.entrySet()) {
+			entry.getValue().clear();
+		}
+		traceCopy.clear();
+
 		trace.setOffset(length);
 	}
 

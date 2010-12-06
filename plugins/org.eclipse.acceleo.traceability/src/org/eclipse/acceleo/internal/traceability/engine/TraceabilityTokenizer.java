@@ -56,6 +56,24 @@ public final class TraceabilityTokenizer {
 	}
 
 	/**
+	 * Counts the number of tokens this tokenizer's string contains.
+	 * 
+	 * @return The number of tokens this tokenizer's string contains.
+	 */
+	public int countTokens() {
+		int tokenOffset = 0;
+		int tokenCount = 0;
+
+		do {
+			tokenOffset = skipDelimiters(tokenOffset);
+			tokenOffset = scanToken(tokenOffset);
+			tokenCount++;
+		} while (tokenOffset < source.length());
+
+		return tokenCount;
+	}
+
+	/**
 	 * Returns the offset of the last token's start.
 	 * 
 	 * @return The offset of the last token's start.
@@ -85,7 +103,7 @@ public final class TraceabilityTokenizer {
 		}
 
 		boolean result = true;
-		if (nextOffset == source.length()) {
+		if (skipDelimiters(nextOffset) == source.length()) {
 			result = false;
 		} else {
 			if (nextOffset > 0) {

@@ -1534,7 +1534,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
 		for (OCLExpression<C> expression : callExp.getArgument()) {
 			// FIXME handle invalid and null
+			boolean oldRecordingValue = record;
+			record = false;
 			arguments.add(super.visitExpression(expression));
+			record = oldRecordingValue;
 		}
 
 		if (callExp.getOperationCode() == PredefinedType.SUBSTRING) {
@@ -1657,7 +1660,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
 		for (OCLExpression<C> expression : callExp.getArgument()) {
 			// FIXME handle invalid and null
+			boolean oldRecordingValue = record;
+			record = false;
 			arguments.add(super.visitExpression(expression));
+			record = oldRecordingValue;
 		}
 
 		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
@@ -1673,6 +1679,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			result = operationVisitor.visitContainsOperation((String)source, substring);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
 			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
+			String delims = (String)arguments.get(0);
+			result = operationVisitor.visitTokenizeOperation((String)source, delims);
 		} else {
 			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
 			throw new UnsupportedOperationException();
@@ -1697,7 +1706,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
 		for (OCLExpression<C> expression : callExp.getArgument()) {
 			// FIXME handle invalid and null
+			boolean oldRecordingValue = record;
+			record = false;
 			arguments.add(super.visitExpression(expression));
+			record = oldRecordingValue;
 		}
 
 		if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_FIRST)) {
