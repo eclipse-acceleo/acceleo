@@ -894,14 +894,14 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			int tokenLength = tokenEnd - tokenStart;
 
 			// We'll try and break our loops as soon as the whole token as been created
-			int initialLength = length;
+			int expectedLength = length + tokenLength;
 
 			Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = traceCopy.entrySet()
 					.iterator();
-			while (entryIterator.hasNext() && length < initialLength + tokenLength) {
+			while (entryIterator.hasNext() && length < expectedLength) {
 				Map.Entry<InputElement, Set<GeneratedText>> entry = entryIterator.next();
 				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-				while (textIterator.hasNext() && length < initialLength + tokenLength) {
+				while (textIterator.hasNext() && length < expectedLength) {
 					GeneratedText text = textIterator.next();
 
 					GeneratedText tokenText = null;
@@ -911,7 +911,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					 * is fully included in a token, the region ends with a token, or the region starts with a
 					 * token.
 					 */
-					if (text.getStartOffset() < tokenStart && text.getEndOffset() > tokenEnd) {
+					if (text.getStartOffset() <= tokenStart && text.getEndOffset() >= tokenEnd) {
+						// token fully included in generated region
 						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
 						tokenText.setStartOffset(length);
 						tokenText.setEndOffset(length + tokenLength);
@@ -920,14 +921,17 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						tokenText.setSourceElement(text.getSourceElement());
 
 						length += tokenLength;
-					} else if (text.getStartOffset() > tokenStart && text.getEndOffset() < tokenEnd) {
+					} else if (text.getStartOffset() >= tokenStart && text.getEndOffset() <= tokenEnd) {
+						// generated region fully included in token
 						int textLength = text.getEndOffset() - text.getStartOffset();
 						tokenText = (GeneratedText)EcoreUtil.copy(text);
 						tokenText.setStartOffset(length);
 						tokenText.setEndOffset(length + textLength);
 
 						length += textLength;
-					} else if (text.getStartOffset() > tokenStart && text.getEndOffset() > tokenEnd) {
+					} else if (text.getStartOffset() <= tokenStart && text.getEndOffset() > tokenStart
+							&& text.getEndOffset() < tokenEnd) {
+						// generated region ends with token
 						int tokenRegionLength = text.getEndOffset() - tokenStart;
 						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
 						tokenText.setStartOffset(length);
@@ -937,7 +941,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						tokenText.setSourceElement(text.getSourceElement());
 
 						length += tokenRegionLength;
-					} else if (text.getStartOffset() < tokenStart && text.getEndOffset() < tokenEnd) {
+					} else if (text.getStartOffset() < tokenEnd && text.getEndOffset() >= tokenEnd
+							&& text.getStartOffset() > tokenStart) {
+						// generated region starts with token
 						int tokenRegionLength = tokenEnd - text.getStartOffset();
 						tokenText = TraceabilityFactory.eINSTANCE.createGeneratedText();
 						tokenText.setStartOffset(length);

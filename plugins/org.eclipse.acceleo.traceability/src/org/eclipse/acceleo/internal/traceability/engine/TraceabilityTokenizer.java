@@ -67,8 +67,10 @@ public final class TraceabilityTokenizer {
 		do {
 			tokenOffset = skipDelimiters(tokenOffset);
 			tokenOffset = scanToken(tokenOffset);
-			tokenCount++;
-		} while (tokenOffset < source.length());
+			if (tokenOffset != source.length()) {
+				tokenCount++;
+			}
+		} while (skipDelimiters(tokenOffset) < source.length());
 
 		return tokenCount;
 	}
@@ -106,8 +108,9 @@ public final class TraceabilityTokenizer {
 		if (skipDelimiters(nextOffset) == source.length()) {
 			result = false;
 		} else {
-			if (nextOffset > 0) {
-				lastOffset = nextOffset + 1;
+			lastOffset = skipDelimiters(nextOffset);
+			if (lastOffset == source.length()) {
+				result = false;
 			}
 			nextOffset = scanToken(lastOffset);
 			soughtNext = true;
