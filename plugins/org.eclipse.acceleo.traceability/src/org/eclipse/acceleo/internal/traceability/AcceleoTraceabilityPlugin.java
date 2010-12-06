@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.traceability;
+package org.eclipse.acceleo.internal.traceability;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.core.runtime.CoreException;
