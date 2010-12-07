@@ -67,9 +67,7 @@ public final class TraceabilityTokenizer {
 		do {
 			tokenOffset = skipDelimiters(tokenOffset);
 			tokenOffset = scanToken(tokenOffset);
-			if (tokenOffset != source.length()) {
-				tokenCount++;
-			}
+			tokenCount++;
 		} while (skipDelimiters(tokenOffset) < source.length());
 
 		return tokenCount;
