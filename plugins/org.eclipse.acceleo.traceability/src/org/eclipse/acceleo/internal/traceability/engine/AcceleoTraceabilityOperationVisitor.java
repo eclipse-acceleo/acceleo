@@ -166,39 +166,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
 	 */
 	public Integer visitIndexOperation(String source, String substring) {
-		// FIXME couldn't this use #changeTraceabilityIndicesForIntegerReturn?
 		int result = source.indexOf(substring);
-		final int digitCount;
-		if (result == -1) {
-			digitCount = 2;
-		} else {
-			digitCount = 1 + (int)Math.log(result);
-		}
 
-		/*
-		 * We need to remove all recorded traces before this call, retaining the one that gave the region
-		 * containing our index.
-		 */
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-			while (textIterator.hasNext()) {
-				GeneratedText text = textIterator.next();
-				if (text.getEndOffset() < result || text.getStartOffset() > result) {
-					textIterator.remove();
-				} else {
-					text.setStartOffset(0);
-					text.setEndOffset(digitCount);
-				}
-			}
-		}
-		trace.setOffset(digitCount);
+		changeTraceabilityIndicesIntegerReturn(result);
 
-		// Increment java index value by 1 for OCL
-		result++;
-		if (result == Integer.valueOf(0)) {
-			result = Integer.valueOf(-1);
-		}
 		return Integer.valueOf(result);
 	}
 
