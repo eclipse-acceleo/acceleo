@@ -757,7 +757,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						ExpressionTrace<C> trace = recordedTraces.getLast();
 						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 								.getTracesForIteration().entrySet()) {
-							trace.getTraces().put(entry.getKey(), entry.getValue());
+							trace.mergeTrace(entry.getKey(), entry.getValue());
 						}
 					}
 					break;
@@ -767,7 +767,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						ExpressionTrace<C> trace = recordedTraces.getLast();
 						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 								.getTracesForIteration().entrySet()) {
-							trace.getTraces().put(entry.getKey(), entry.getValue());
+							trace.mergeTrace(entry.getKey(), entry.getValue());
 						}
 					}
 					break;

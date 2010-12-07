@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -53,6 +54,32 @@ public class ExpressionTrace<C> extends AbstractTrace {
 		// We need to replace the Set instance
 		for (InputElement key : temp.keySet()) {
 			traces.put(key, new LinkedHashSet<GeneratedText>(temp.get(key)));
+		}
+	}
+
+	/**
+	 * Adds all of the given generated regions to the trace associated with <code>input</code>. The generated
+	 * regions offsets will be modified to be set just after the current offset.
+	 * 
+	 * @param input
+	 *            Input element for which to merge regions.
+	 * @param regions
+	 *            Regions we are to merge.
+	 */
+	public void mergeTrace(InputElement input, Set<GeneratedText> regions) {
+		Set<GeneratedText> associatedTraces = traces.get(input);
+		if (associatedTraces == null) {
+			associatedTraces = new LinkedHashSet<GeneratedText>();
+			traces.put(input, associatedTraces);
+		}
+
+		for (GeneratedText region : regions) {
+			GeneratedText regionCopy = (GeneratedText)EcoreUtil.copy(region);
+			int regionLength = region.getEndOffset() - region.getStartOffset();
+			regionCopy.setStartOffset(currentOffset);
+			regionCopy.setEndOffset(currentOffset + regionLength);
+			currentOffset += regionLength;
+			associatedTraces.add(regionCopy);
 		}
 	}
 
