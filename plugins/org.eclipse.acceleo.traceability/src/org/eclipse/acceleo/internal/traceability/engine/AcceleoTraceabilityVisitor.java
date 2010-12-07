@@ -861,7 +861,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final Object result;
 		try {
 			if (record && isTraceabilityImpactingOperation(callExp)) {
-				result = internalVisitOperationCallExp(callExp);
+				// Boolean and Integer returning operations evaluation won't be intercepted
+				// But we'll alter their trace information
+				if (isBooleanReturningOperation(callExp)) {
+					result = super.visitOperationCallExp(callExp);
+					operationVisitor.changeTraceabilityIndicesBooleanReturn(((Boolean)result).booleanValue());
+				} else if (isIntegerReturningOperation(callExp)) {
+					result = super.visitOperationCallExp(callExp);
+					operationVisitor.changeTraceabilityIndicesIntegerReturn(((Integer)result).intValue());
+				} else {
+					result = internalVisitOperationCallExp(callExp);
+				}
 			} else {
 				result = super.visitOperationCallExp(callExp);
 			}
@@ -984,6 +994,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				iterationTraces.addTrace(input, text, result);
 			}
+		} else if (!record && operationArgumentTrace != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
+			operationArgumentTrace.addTrace(input, text, result);
 		}
 
 		return result;
@@ -1540,21 +1553,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			record = oldRecordingValue;
 		}
 
-		if (callExp.getOperationCode() == PredefinedType.SUBSTRING) {
-			int startIndex = ((Integer)arguments.get(0)).intValue() - 1;
-			int endIndex = ((Integer)arguments.get(1)).intValue();
-			result = operationVisitor.visitSubstringOperation((String)source, startIndex, endIndex);
-		} else if (callExp.getOperationCode() == PredefinedType.SIZE) {
-			if (source instanceof String) {
-				result = operationVisitor.visitSizeOperation((String)source);
-			} else if (source instanceof Collection<?>) {
-				result = operationVisitor.visitSizeOperation((Collection<Object>)source);
-			} else {
+		switch (callExp.getOperationCode()) {
+			case PredefinedType.SUBSTRING:
+				int startIndex = ((Integer)arguments.get(0)).intValue() - 1;
+				int endIndex = ((Integer)arguments.get(1)).intValue();
+				result = operationVisitor.visitSubstringOperation((String)source, startIndex, endIndex);
+				break;
+			default:
+				// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known
+				// operations
 				throw new UnsupportedOperationException();
-			}
-		} else {
-			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
-			throw new UnsupportedOperationException();
 		}
 
 		return result;
@@ -1668,24 +1676,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
 			result = operationVisitor.visitTrimOperation((String)source);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitStartsWithOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitEndsWithOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitContainsOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES)) {
-			String regex = (String)arguments.get(0);
-			result = operationVisitor.visitMatchesOperation((String)source, regex);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitLastIndexOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE)) {
-			String other = (String)arguments.get(0);
-			result = operationVisitor.visitEqualsIgnoreCaseOperation((String)source, other);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING)) {
+			Integer startIndex = ((Integer)arguments.get(0)).intValue() - 1;
+			result = operationVisitor.visitSubstringOperation((String)source, startIndex);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
 			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
@@ -1727,19 +1720,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_LAST)) {
 			int charCount = ((Integer)arguments.get(0)).intValue();
 			result = operationVisitor.visitLastOperation((String)source, charCount);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_INDEX)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitIndexOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA)) {
-			result = operationVisitor.visitIsAlphaOperation((String)source);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM)) {
-			result = operationVisitor.visitIsAlphanumOperation((String)source);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRSTR)) {
-			String substring = (String)arguments.get(0);
-			result = operationVisitor.visitStrstrOperation((String)source, substring);
-		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRCMP)) {
-			String otherString = (String)arguments.get(0);
-			result = operationVisitor.visitStrcmpOperation((String)source, otherString);
 		} else if (operationName.equals(AcceleoStandardLibrary.OPERATION_STRING_STRTOK)) {
 			String delimiters = (String)arguments.get(0);
 			Integer flag = (Integer)arguments.get(1);
@@ -1750,6 +1730,36 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		return result;
+	}
+
+	/**
+	 * This will return <code>true</code> if the given operation call returns a boolean.
+	 * 
+	 * @param operationCall
+	 *            The operation call which return type is to be checked.
+	 * @return <code>true</code> if the given operation call returns a boolean.
+	 */
+	private boolean isBooleanReturningOperation(OperationCallExp<C, O> operationCall) {
+		final EClassifier operationReturnEType = (EClassifier)operationCall.getType();
+		final EClassifier booleanClassifier = (EClassifier)getEnvironment().getOCLStandardLibrary()
+				.getBoolean();
+
+		return booleanClassifier == operationReturnEType;
+	}
+
+	/**
+	 * This will return <code>true</code> if the given operation call returns an integer.
+	 * 
+	 * @param operationCall
+	 *            The operation call which return type is to be checked.
+	 * @return <code>true</code> if the given operation call returns a integer.
+	 */
+	private boolean isIntegerReturningOperation(OperationCallExp<C, O> operationCall) {
+		final EClassifier operationReturnEType = (EClassifier)operationCall.getType();
+		final EClassifier integerClassifier = (EClassifier)getEnvironment().getOCLStandardLibrary()
+				.getInteger();
+
+		return integerClassifier == operationReturnEType;
 	}
 
 	/**
@@ -1786,23 +1796,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean isTraceabilityImpactingOperation(OperationCallExp<C, O> operationCall) {
 		boolean isImpacting = false;
-		final int operationCode = operationCall.getOperationCode();
 
-		EClassifier operationReceiverEType = (EClassifier)operationCall.getSource().getType();
-		final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-		// first, handle the MTL specific operations
-		if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
-				|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
-			isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
+		final EClassifier operationReceiverEType = (EClassifier)operationCall.getSource().getType();
+
+		// Any operation that returns a Primitive impacts the traceability
+		if (isBooleanReturningOperation(operationCall) || isIntegerReturningOperation(operationCall)) {
+			isImpacting = true;
 		} else {
-			isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName);
-			isImpacting = isImpacting
-					|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName);
-		}
-		// Then the OCL ones
-		if (!isImpacting && operationCode > 0) {
-			isImpacting = operationCode == PredefinedType.SUBSTRING;
-			isImpacting = isImpacting || operationCode == PredefinedType.SIZE;
+			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
+			// first, handle the MTL specific operations
+			if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
+					|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
+				isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
+			} else {
+				isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName);
+				isImpacting = isImpacting
+						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName);
+			}
 		}
 
 		return isImpacting;
@@ -1816,26 +1826,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private List<String> getTraceabilityImpactingStringOperationNames() {
 		List<String> operationNames = new ArrayList<String>();
 
+		// Operations returning Integer or Boolean values are handled otherwise
+
+		// standard library
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_INDEX);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_LAST);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES);
+
+		// non standard library
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+
+		// OCL
+		operationNames.add(PredefinedType.SUBSTRING_NAME);
 
 		return operationNames;
 	}
@@ -1978,6 +1986,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		} else if (isIteratorCallSource(expression)) {
 			result = false;
+		} else if (expression.eContainingFeature() == ExpressionsPackage.eINSTANCE
+				.getOperationCallExp_Argument()
+				&& isTraceabilityImpactingOperation((OperationCallExp<C, O>)expression.eContainer())) {
+			result = false;
 		}
 		return result;
 	}
@@ -2061,6 +2073,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            Expression for which we need to check whether traces should be recorded.
 	 * @return The old value of the record boolean.
 	 */
+	@SuppressWarnings("unchecked")
 	private boolean switchRecordState(OCLExpression<C> expression) {
 		// Do not switch on the recording state if it was previously switched off (avoids recording
 		// information for nested expressions)
@@ -2086,6 +2099,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (opCode != PredefinedType.COLLECT && opCode != PredefinedType.COLLECT_NESTED) {
 				record = containingFeature != ExpressionsPackage.eINSTANCE.getLoopExp_Body();
 			}
+		}
+
+		// We won't record any trace information either for the traceability impacting operations' arguments
+		if (record && containingFeature == ExpressionsPackage.eINSTANCE.getOperationCallExp_Argument()) {
+			record = !isTraceabilityImpactingOperation((OperationCallExp<C, O>)container);
 		}
 
 		return oldRecordingValue;
