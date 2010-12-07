@@ -896,8 +896,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("bidule", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(195, string.getStartPosition());
-			assertEquals(195 + "'bidule'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(203, string.getStartPosition());
+			assertEquals(203 + "'bidule'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("bidule".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -908,8 +908,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("chose", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(213, string.getStartPosition());
-			assertEquals(213 + "'chose'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(216, string.getStartPosition());
+			assertEquals(216 + "'chose'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(4);
 			assertEquals("bidulechose".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -920,8 +920,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("gnagna", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(269, string.getStartPosition());
-			assertEquals(269 + "'gnagna'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(275, string.getStartPosition());
+			assertEquals(275 + "'gnagna'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals("bidulechosegnagna".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -932,8 +932,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("chose", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(213, string.getStartPosition());
-			assertEquals(213 + "'chose'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(219, string.getStartPosition());
+			assertEquals(219 + "'chose'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(5);
 			assertEquals("bidulechosegnagnachose".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -944,8 +944,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("gnagna", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(269, string.getStartPosition());
-			assertEquals(269 + "'gnagna'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(275, string.getStartPosition());
+			assertEquals(275 + "'gnagna'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(3);
 			assertEquals("bidulechosegnagnachosegnagna".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -956,8 +956,8 @@ public class AcceleoTraceabilityQueryTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("machin", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(246, string.getStartPosition());
-			assertEquals(246 + "'machin'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(252, string.getStartPosition());
+			assertEquals(252 + "'machin'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();

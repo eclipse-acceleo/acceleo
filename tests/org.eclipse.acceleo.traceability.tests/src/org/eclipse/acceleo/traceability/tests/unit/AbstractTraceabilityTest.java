@@ -45,6 +45,7 @@ import org.eclipse.ocl.expressions.OCLExpression;
 import org.junit.After;
 import org.osgi.framework.Bundle;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 import static org.junit.Assert.fail;
@@ -243,10 +244,11 @@ public abstract class AbstractTraceabilityTest {
 
 		Resource modelResource = ModelUtils.createResource(moduleURI, resourceSet);
 		AcceleoParser parser = new AcceleoParser();
-		assertNull(parser.getProblems(file));
-		assertNull(parser.getWarnings(file));
-		assertNull(parser.getInfos(file));
 		parser.parse(source, modelResource, new ArrayList<URI>());
+
+		assertEquals("[]", parser.getProblems(file).getList().toString()); //$NON-NLS-1$
+		assertEquals("[]", parser.getWarnings(file).getList().toString()); //$NON-NLS-1$
+		assertEquals("[]", parser.getInfos(file).getList().toString()); //$NON-NLS-1$
 		return modelResource;
 	}
 

@@ -932,8 +932,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(195, string.getStartPosition());
+			assertEquals(195 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("a, ".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -944,8 +944,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("b", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(197, string.getStartPosition());
-			assertEquals(197 + "'b'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(200, string.getStartPosition());
+			assertEquals(200 + "'b'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(3);
 			assertEquals("a".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -956,8 +956,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals(", ", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(212, string.getStartPosition());
-			assertEquals(212 + "', '".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(215, string.getStartPosition());
+			assertEquals(215 + "', '".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals("a, b, ".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -968,8 +968,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("c", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(202, string.getStartPosition());
-			assertEquals(202 + "'c'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(205, string.getStartPosition());
+			assertEquals(205 + "'c'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(4);
 			assertEquals("a, b".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -980,8 +980,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals(", ", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(212, string.getStartPosition());
-			assertEquals(212 + "', '".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(215, string.getStartPosition());
+			assertEquals(215 + "', '".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1255,6 +1255,48 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 	}
 
 	@Test
+	public void testTraceabilityLibraryStringCollectionLast2() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/library/string/stringCollectionLast2.mtl", //$NON-NLS-1$
+				"main", "data/library/string/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals("c".length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(192, string.getStartPosition());
+			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EClass);
+			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
 	public void testTraceabilityLibraryStringContains() {
 		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
 				"data/library/string/stringContains.mtl", //$NON-NLS-1$
@@ -1367,50 +1409,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("lowercase", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(181, string.getStartPosition());
-			assertEquals(181 + "'lowercase'".length(), string.getEndPosition()); //$NON-NLS-1$
-
-			InputElement sourceElement = generatedText.getSourceElement();
-			EObject modelElement = sourceElement.getModelElement();
-			assertTrue(modelElement instanceof EClass);
-			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
-			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
-					modelElement.eResource().getURI().path());
-			cpt++;
-		}
-	}
-
-	@Test
-	public void testTraceabilityLibraryStringCollectionLast2() {
-		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
-				"data/library/string/stringCollectionLast2.mtl", //$NON-NLS-1$
-				"main", "data/library/string/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
-		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
-		assertEquals(4, generatedFiles.size());
-
-		int cpt = 1;
-		for (GeneratedFile generatedFile : generatedFiles) {
-			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertEquals(1, generatedRegions.size());
-			assertEquals("c".length(), generatedFile.getLength()); //$NON-NLS-1$
-
-			List<InputElement> sourceElements = generatedFile.getSourceElements();
-			assertEquals(2, sourceElements.size()); // the class and its name
-			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
-			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
-
-			GeneratedText generatedText = generatedRegions.get(0);
-			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
-			ModuleElement moduleElement = generatedText.getModuleElement();
-			EObject element = moduleElement.getModuleElement();
-			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof StringLiteralExp);
-			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(189, string.getStartPosition());
+			assertEquals(189 + "'lowercase'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1703,8 +1703,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
 			assertEquals("index operation", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(179, stringLiteralExp.getStartPosition());
-			assertEquals(179 + "'index operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(182, stringLiteralExp.getStartPosition());
+			assertEquals(182 + "'index operation'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1745,8 +1745,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
 			assertEquals("characters and spaces", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(179, stringLiteralExp.getStartPosition());
-			assertEquals(179 + "'characters and spaces'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(180, stringLiteralExp.getStartPosition());
+			assertEquals(180 + "'characters and spaces'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
