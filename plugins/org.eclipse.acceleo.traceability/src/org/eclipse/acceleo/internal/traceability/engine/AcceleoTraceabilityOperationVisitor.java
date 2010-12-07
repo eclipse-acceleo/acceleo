@@ -93,66 +93,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "contains" non standard operation directly from the traceability visitor as we need to
-	 * alter recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @param substring
-	 *            The substring we need to be contained in <code>source</code>.
-	 * @return <code>true</code> iff the string <code>source</code> contains the given <code>substring</code>.
-	 *         Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitContainsOperation(String source, String substring) {
-		boolean result = source.contains(substring);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
-	 * Handles the "endsWith" non standard operation directly from the traceability visitor as we need to
-	 * alter recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @param substring
-	 *            The substring we need at the end of the <code>source</code>.
-	 * @return <code>true</code> iff the string <code>source</code> ends with the given <code>substring</code>
-	 *         . Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitEndsWithOperation(String source, String substring) {
-		boolean result = source.endsWith(substring);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
-	 * Handles the "equalsIgnoreCase" non standard operation directly from the traceability visitor as we need
-	 * to alter recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @param other
-	 *            The other String to compare with <code>source</code>.
-	 * @return <code>true</code> iff the string <code>source</code> is equals to <code>other</code>, ignoring
-	 *         case. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitEqualsIgnoreCaseOperation(String source, String other) {
-		boolean result = source.equalsIgnoreCase(other);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
 	 * Handles the "first" OCL operation directly from the traceability visitor as we need to alter recorded
 	 * traceability information.
 	 * 
@@ -174,78 +114,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "index" OCL operation directly from the traceability visitor as we need to alter recorded
-	 * traceability information.
-	 * 
-	 * @param source
-	 *            String from which to find a given index.
-	 * @param substring
-	 *            The substring we seek within <em>source</em>.
-	 * @return Index of <em>substring</em> within <em>source</em>, -1 if it wasn't contained. Traceability
-	 *         information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitIndexOperation(String source, String substring) {
-		int result = source.indexOf(substring);
-		if (result != -1) {
-			result++;
-		}
-
-		changeTraceabilityIndicesIntegerReturn(result);
-
-		return Integer.valueOf(result);
-	}
-
-	/**
-	 * Handles the "isAlphanum" OCL operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @return <code>true</code> iff the string is composed of alphanumeric characters. Traceability
-	 *         information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitIsAlphanumOperation(String source) {
-		boolean result = true;
-		final char[] chars = source.toCharArray();
-		for (final char c : chars) {
-			if (!Character.isLetterOrDigit(c)) {
-				result = false;
-				break;
-			}
-		}
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
-	 * Handles the "isAlpha" OCL operation directly from the traceability visitor as we need to alter recorded
-	 * traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @return <code>true</code> iff the string is composed of alphabetic characters. Traceability information
-	 *         will have been changed directly within {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitIsAlphaOperation(String source) {
-		boolean result = true;
-		final char[] chars = source.toCharArray();
-		for (final char c : chars) {
-			if (!Character.isLetter(c)) {
-				result = false;
-				break;
-			}
-		}
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
 	 * Handles the "last" OCL operation directly from the traceability visitor as we need to alter recorded
 	 * traceability information.
 	 * 
@@ -264,49 +132,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			result = visitSubstringOperation(source, source.length() - charCount, source.length());
 		}
 		return result;
-	}
-
-	/**
-	 * Handles the "lastIndex" non standard operation directly from the traceability visitor as we need to
-	 * alter recorded traceability information.
-	 * 
-	 * @param source
-	 *            String from which to find a given index.
-	 * @param substring
-	 *            The substring we seek within <em>source</em>.
-	 * @return Index of the last occurence of <em>substring</em> within <em>source</em>, -1 if it wasn't
-	 *         contained. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitLastIndexOperation(String source, String substring) {
-		int result = source.lastIndexOf(substring);
-		if (result != -1) {
-			result++;
-		}
-
-		changeTraceabilityIndicesIntegerReturn(result);
-
-		return Integer.valueOf(result);
-	}
-
-	/**
-	 * Handles the "matches" non standard operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @param regex
-	 *            The regex we are to match against <code>source</code>.
-	 * @return <code>true</code> iff the string <code>source</code> matches the given <code>regex</code>.
-	 *         Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitMatchesOperation(String source, String regex) {
-		boolean result = source.matches(regex);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
 	}
 
 	/**
@@ -586,97 +411,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "Collection::size" OCL operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            Collection that is to be considered.
-	 * @return Size of the given Collection. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitSizeOperation(Collection<?> source) {
-		changeTraceabilityIndicesIntegerReturn(source.size());
-
-		return Integer.valueOf(source.size());
-	}
-
-	/**
-	 * Handles the "String::size" OCL operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @return Size of the given String. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitSizeOperation(String source) {
-		changeTraceabilityIndicesIntegerReturn(source.length());
-
-		return Integer.valueOf(source.length());
-	}
-
-	/**
-	 * Handles the "startsWith" non standard operation directly from the traceability visitor as we need to
-	 * alter recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be considered.
-	 * @param substring
-	 *            The substring we need at the beginning of the <code>source</code>.
-	 * @return <code>true</code> iff the string <code>source</code> starts with the given
-	 *         <code>substring</code>. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitStartsWithOperation(String source, String substring) {
-		boolean result = source.startsWith(substring);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
-	 * Handles the "strcmp" standard operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String that is to be compared with <code>other</code>.
-	 * @param other
-	 *            The string with which to compare <em>source</em>.
-	 * @return An integer less than zero, equal to zero, or greater than zero depending on whether
-	 *         <code>other</code> is lexicographically less than, equal to, or greater than
-	 *         <code>source</code>. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Integer visitStrcmpOperation(String source, String other) {
-		int result = source.compareTo(other);
-
-		changeTraceabilityIndicesIntegerReturn(result);
-
-		return Integer.valueOf(result);
-	}
-
-	/**
-	 * Handles the "strstr" standard operation directly from the traceability visitor as we need to alter
-	 * recorded traceability information.
-	 * 
-	 * @param source
-	 *            String from which to find a given substring.
-	 * @param substring
-	 *            The substring we seek within <em>source</em>.
-	 * @return <code>true</code> if <code>substring</code> could be found in <code>source</code>,
-	 *         <code>false</code> otherwise. Traceability information will have been changed directly within
-	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
-	 */
-	public Boolean visitStrstrOperation(String source, String substring) {
-		boolean result = source.contains(substring);
-
-		changeTraceabilityIndicesBooleanReturn(result);
-
-		return Boolean.valueOf(result);
-	}
-
-	/**
 	 * Handles the "strtok" standard operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -720,6 +454,23 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		changeTraceabilityIndicesSubstringReturn(tokenizer.getLastOffset(), tokenizer.getNextOffset());
 
 		return result;
+	}
+
+	/**
+	 * Handles the "substring" non standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String from which to take out a substring.
+	 * @param startIndex
+	 *            Index at which the substring starts.
+	 * @return The substring. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public String visitSubstringOperation(String source, int startIndex) {
+		changeTraceabilityIndicesSubstringReturn(startIndex, source.length());
+
+		return source.substring(startIndex);
 	}
 
 	/**
@@ -855,7 +606,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            Boolean result of the operation. We'll only leave a four-characters long region if
 	 *            <code>true</code>, five-characters long if <code>false</code>.
 	 */
-	private void changeTraceabilityIndicesBooleanReturn(boolean result) {
+	void changeTraceabilityIndicesBooleanReturn(boolean result) {
 		// We'll keep only the very last trace and alter its indices
 		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
@@ -884,6 +635,54 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		} else {
 			length = 5;
 		}
+		if (lastRegion != null) {
+			lastRegion.setStartOffset(0);
+			lastRegion.setEndOffset(length);
+		}
+		trace.setOffset(length);
+	}
+
+	/**
+	 * Size and possibily other traceability impacting operations share the same "basic" behavior of altering
+	 * indices to reflect an integer return. This behavior is externalized here.
+	 * 
+	 * @param result
+	 *            Integer result of the operation. We'll only leave a single region with its length equal to
+	 *            the given integer's number of digits.
+	 */
+	void changeTraceabilityIndicesIntegerReturn(int result) {
+		// We'll keep only the very last trace and alter its indices
+		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
+		GeneratedText lastRegion = null;
+		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
+				if (lastRegion == null) {
+					lastRegion = text;
+					lastEntry = entry;
+				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
+					// lastEntry cannot be null once we get here
+					assert lastEntry != null;
+					if (lastEntry != entry) {
+						lastEntry.getValue().remove(lastRegion);
+						lastEntry = entry;
+					} else {
+						rejectFromEntry.add(lastRegion);
+					}
+					lastRegion = text;
+				} else {
+					textIterator.remove();
+				}
+			}
+			if (!rejectFromEntry.isEmpty()) {
+				entry.getValue().removeAll(rejectFromEntry);
+				rejectFromEntry.clear();
+			}
+		}
+		int length = String.valueOf(result).length();
 		if (lastRegion != null) {
 			lastRegion.setStartOffset(0);
 			lastRegion.setEndOffset(length);
@@ -1011,54 +810,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		}
 		traceCopy.clear();
 
-		trace.setOffset(length);
-	}
-
-	/**
-	 * Size and possibily other traceability impacting operations share the same "basic" behavior of altering
-	 * indices to reflect an integer return. This behavior is externalized here.
-	 * 
-	 * @param result
-	 *            Integer result of the operation. We'll only leave a single region with its length equal to
-	 *            the given integer's number of digits.
-	 */
-	private void changeTraceabilityIndicesIntegerReturn(int result) {
-		// We'll keep only the very last trace and alter its indices
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
-		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
-		GeneratedText lastRegion = null;
-		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-			while (textIterator.hasNext()) {
-				GeneratedText text = textIterator.next();
-				if (lastRegion == null) {
-					lastRegion = text;
-					lastEntry = entry;
-				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
-					// lastEntry cannot be null once we get here
-					assert lastEntry != null;
-					if (lastEntry != entry) {
-						lastEntry.getValue().remove(lastRegion);
-						lastEntry = entry;
-					} else {
-						rejectFromEntry.add(lastRegion);
-					}
-					lastRegion = text;
-				} else {
-					textIterator.remove();
-				}
-			}
-			if (!rejectFromEntry.isEmpty()) {
-				entry.getValue().removeAll(rejectFromEntry);
-				rejectFromEntry.clear();
-			}
-		}
-		int length = String.valueOf(result).length();
-		if (lastRegion != null) {
-			lastRegion.setStartOffset(0);
-			lastRegion.setEndOffset(length);
-		}
 		trace.setOffset(length);
 	}
 
