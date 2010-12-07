@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module stringTokenize2('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][('aa' + 'aa' + 'aria' + 'aa' + 'harry' + 'malia' + 'aa' + 'pou' + 'poupidou' + 'pou' + 'aa' + 'aa').tokenize('a')/][/file][/template]

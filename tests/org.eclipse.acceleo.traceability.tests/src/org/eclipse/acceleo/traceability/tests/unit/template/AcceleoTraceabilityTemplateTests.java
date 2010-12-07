@@ -847,15 +847,15 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("aaa".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(299, string.getStartPosition());
-			assertEquals(299 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(200, string.getStartPosition());
+			assertEquals(200 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
