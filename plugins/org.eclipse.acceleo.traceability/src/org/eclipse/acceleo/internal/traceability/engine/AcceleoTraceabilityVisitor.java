@@ -1677,6 +1677,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS)) {
 			String substring = (String)arguments.get(0);
 			result = operationVisitor.visitContainsOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES)) {
+			String regex = (String)arguments.get(0);
+			result = operationVisitor.visitMatchesOperation((String)source, regex);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX)) {
+			String substring = (String)arguments.get(0);
+			result = operationVisitor.visitLastIndexOperation((String)source, substring);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE)) {
+			String other = (String)arguments.get(0);
+			result = operationVisitor.visitEqualsIgnoreCaseOperation((String)source, other);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
 			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
@@ -1818,6 +1827,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
 		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);

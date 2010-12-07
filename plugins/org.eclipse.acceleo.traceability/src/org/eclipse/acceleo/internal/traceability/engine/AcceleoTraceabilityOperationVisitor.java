@@ -133,6 +133,26 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "equalsIgnoreCase" non standard operation directly from the traceability visitor as we need
+	 * to alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @param other
+	 *            The other String to compare with <code>source</code>.
+	 * @return <code>true</code> iff the string <code>source</code> is equals to <code>other</code>, ignoring
+	 *         case. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitEqualsIgnoreCaseOperation(String source, String other) {
+		boolean result = source.equalsIgnoreCase(other);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
+	}
+
+	/**
 	 * Handles the "first" OCL operation directly from the traceability visitor as we need to alter recorded
 	 * traceability information.
 	 * 
@@ -167,6 +187,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 */
 	public Integer visitIndexOperation(String source, String substring) {
 		int result = source.indexOf(substring);
+		if (result != -1) {
+			result++;
+		}
 
 		changeTraceabilityIndicesIntegerReturn(result);
 
@@ -241,6 +264,49 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			result = visitSubstringOperation(source, source.length() - charCount, source.length());
 		}
 		return result;
+	}
+
+	/**
+	 * Handles the "lastIndex" non standard operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param source
+	 *            String from which to find a given index.
+	 * @param substring
+	 *            The substring we seek within <em>source</em>.
+	 * @return Index of the last occurence of <em>substring</em> within <em>source</em>, -1 if it wasn't
+	 *         contained. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Integer visitLastIndexOperation(String source, String substring) {
+		int result = source.lastIndexOf(substring);
+		if (result != -1) {
+			result++;
+		}
+
+		changeTraceabilityIndicesIntegerReturn(result);
+
+		return Integer.valueOf(result);
+	}
+
+	/**
+	 * Handles the "matches" non standard operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param source
+	 *            String that is to be considered.
+	 * @param regex
+	 *            The regex we are to match against <code>source</code>.
+	 * @return <code>true</code> iff the string <code>source</code> matches the given <code>regex</code>.
+	 *         Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public Boolean visitMatchesOperation(String source, String regex) {
+		boolean result = source.matches(regex);
+
+		changeTraceabilityIndicesBooleanReturn(result);
+
+		return Boolean.valueOf(result);
 	}
 
 	/**
