@@ -139,6 +139,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean evaluatingOperationCall;
 
+	/** This will be set to <code>true</code> whenever we begin the evaluation of a template post-invocation. */
+	private boolean evaluatingPostCall;
+
 	/** Keeps track of the variable currently being initialized. */
 	private Variable<C, PM> initializingVariable;
 
@@ -638,6 +641,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		boolean oldRecordingValue = switchRecordState(expression);
+		boolean oldEvaluatingPostCall = evaluatingPostCall;
+		evaluatingPostCall = evaluatingPostCall
+				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
 		if (shouldRecordTrace((EReference)expression.eContainingFeature())
 				&& !(expression.eContainer() instanceof ProtectedAreaBlock) && !evaluatingOperationCall) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
@@ -659,6 +665,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			throw e;
 		} finally {
 			record = oldRecordingValue;
+			evaluatingPostCall = oldEvaluatingPostCall;
 		}
 
 		if (isPropertyCallSource(expression)) {
@@ -1103,7 +1110,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				if (recordOperationArgument) {
 					GeneratedText text = createGeneratedTextFor(variableExp);
 					operationArgumentTrace.addTrace(input, text, result);
-				} else if (recordTrace) {
+				} else if (recordTrace && !evaluatingPostCall) {
 					GeneratedText text = createGeneratedTextFor(variableExp);
 					recordedTraces.getLast().addTrace(input, text, result);
 				} else if (recordVariableInitialization) {
@@ -1119,6 +1126,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			operationCallSource = result;
 		}
 		return result;
+	}
+
+	/**
+	 * Returns the value of {@link #evaluatingPostCall}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
+	 * 
+	 * @return The value of {@link #evaluatingPostCall}.
+	 */
+	boolean isEvaluatingPostCall() {
+		return evaluatingPostCall;
 	}
 
 	/**
