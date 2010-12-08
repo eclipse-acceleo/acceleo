@@ -894,30 +894,91 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            Index at which the substring ends.
 	 */
 	private void changeTraceabilityIndicesSubstringReturn(int startIndex, int endIndex) {
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-			while (textIterator.hasNext()) {
-				GeneratedText text = textIterator.next();
-				if (text.getEndOffset() <= startIndex || text.getStartOffset() >= endIndex) {
-					textIterator.remove();
-				} else {
-					/*
-					 * We have four cases : either 1) the region overlaps with the start index, 2) it overlaps
-					 * with the end index, 3) it overlaps with both or 4) it overlaps with none.
-					 */
-					if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
-						text.setStartOffset(0);
-						text.setEndOffset(endIndex - startIndex);
-					} else if (text.getStartOffset() < startIndex) {
-						text.setStartOffset(0);
-						text.setEndOffset(text.getEndOffset() - startIndex);
-					} else if (text.getEndOffset() > endIndex) {
-						text.setStartOffset(text.getStartOffset() - startIndex);
-						text.setEndOffset(endIndex - startIndex);
+		// If we're currently evaluating a "post" call, we should use the invocation traces.
+		if (visitor.isEvaluatingPostCall()) {
+			// We need the starting index of these traces
+			int offsetGap = -1;
+			for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+					for (GeneratedText text : entry.getValue()) {
+						if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
+							offsetGap = text.getStartOffset();
+						}
+					}
+				}
+			}
+
+			// actual indices where the substring starts and ends
+			int actualStartIndex = startIndex + offsetGap;
+			int actualEndIndex = endIndex + offsetGap;
+
+			for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+					while (textIterator.hasNext()) {
+						GeneratedText text = textIterator.next();
+						GeneratedFile output = text.getOutputFile();
+						int removedLength = 0;
+						if (text.getEndOffset() <= actualStartIndex
+								|| text.getStartOffset() >= actualEndIndex) {
+							textIterator.remove();
+							EcoreUtil.remove(text);
+							removedLength = text.getEndOffset() - text.getStartOffset();
+						} else {
+							/*
+							 * We have four cases : either 1) the region overlaps with the start index, 2) it
+							 * overlaps with the end index, 3) it overlaps with both or 4) it overlaps with
+							 * none.
+							 */
+							int initialLength = text.getEndOffset() - text.getStartOffset();
+							if (text.getStartOffset() < actualStartIndex
+									&& text.getEndOffset() > actualEndIndex) {
+								text.setStartOffset(offsetGap);
+								text.setEndOffset(endIndex - startIndex);
+							} else if (text.getStartOffset() < actualStartIndex) {
+								text.setStartOffset(offsetGap);
+								text.setEndOffset(text.getEndOffset() - startIndex);
+							} else if (text.getEndOffset() > actualEndIndex) {
+								text.setStartOffset(text.getStartOffset() - startIndex);
+								text.setEndOffset(endIndex - startIndex);
+							} else {
+								text.setStartOffset(text.getStartOffset() - startIndex);
+								text.setEndOffset(text.getEndOffset() - startIndex);
+							}
+							removedLength = initialLength - text.getEndOffset() + text.getStartOffset();
+						}
+						if (output != null && removedLength > 0) {
+							output.setLength(output.getLength() - removedLength);
+						}
+					}
+				}
+			}
+		} else {
+			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+				while (textIterator.hasNext()) {
+					GeneratedText text = textIterator.next();
+					if (text.getEndOffset() <= startIndex || text.getStartOffset() >= endIndex) {
+						textIterator.remove();
 					} else {
-						text.setStartOffset(text.getStartOffset() - startIndex);
-						text.setEndOffset(text.getEndOffset() - startIndex);
+						/*
+						 * We have four cases : either 1) the region overlaps with the start index, 2) it
+						 * overlaps with the end index, 3) it overlaps with both or 4) it overlaps with none.
+						 */
+						if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
+							text.setStartOffset(0);
+							text.setEndOffset(endIndex - startIndex);
+						} else if (text.getStartOffset() < startIndex) {
+							text.setStartOffset(0);
+							text.setEndOffset(text.getEndOffset() - startIndex);
+						} else if (text.getEndOffset() > endIndex) {
+							text.setStartOffset(text.getStartOffset() - startIndex);
+							text.setEndOffset(endIndex - startIndex);
+						} else {
+							text.setStartOffset(text.getStartOffset() - startIndex);
+							text.setEndOffset(text.getEndOffset() - startIndex);
+						}
 					}
 				}
 			}
