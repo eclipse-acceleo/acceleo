@@ -88,7 +88,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		T result = source.iterator().next();
 
 		if (TraceabilityVisitorUtil.isPrimitive(result)) {
-			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+			AbstractTrace trace = visitor.getLastExpressionTrace();
 
 			/*
 			 * Retrieve the list of all regions, regardless of their input. We'll later use this list to know
@@ -190,7 +190,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		} while (valueIterator.hasNext());
 
 		if (TraceabilityVisitorUtil.isPrimitive(result)) {
-			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+			AbstractTrace trace = visitor.getLastExpressionTrace();
 
 			/*
 			 * Retrieve the list of all regions, regardless of their input. We'll later use this list to know
@@ -369,7 +369,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				}
 				generatedFile.setLength(fileLength + replacementLength);
 			} else {
-				ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+				AbstractTrace trace = visitor.getLastExpressionTrace();
 				changeTraceabilityIndicesOfReplaceOperation(trace, startIndex, endIndex, replacementLength);
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces()
 						.entrySet()) {
@@ -420,7 +420,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 
 		// Only alter the traceability information if the collection is primitive
 		if (TraceabilityVisitorUtil.isPrimitive(source)) {
-			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+			AbstractTrace trace = visitor.getLastExpressionTrace();
 
 			// Retrieve the list of all regions, regardless of their input
 			List<GeneratedText> regions = new ArrayList<GeneratedText>();
@@ -516,7 +516,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		 * handle most cases.
 		 */
 		final int separatorLength = separator.length();
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		AbstractTrace trace = visitor.getLastExpressionTrace();
 		int currentSeparatorOffset = 0;
 		for (int i = 0; i < stringSource.size() - 1; i++) {
 			String element = stringSource.get(i);
@@ -656,7 +656,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	public List<String> visitTokenizeOperation(String source, String delims) {
 		final TraceabilityTokenizer tokenizer = new TraceabilityTokenizer(source, delims);
 		final List<String> result = new ArrayList<String>();
-		final ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		final AbstractTrace trace = visitor.getLastExpressionTrace();
 
 		int[][] tokenRegions = new int[tokenizer.countTokens()][2];
 
@@ -760,7 +760,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 */
 	void changeTraceabilityIndicesBooleanReturn(boolean result) {
 		// We'll keep only the very last trace and alter its indices
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		AbstractTrace trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
 		GeneratedText lastRegion = null;
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
@@ -804,7 +804,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 */
 	void changeTraceabilityIndicesIntegerReturn(int result) {
 		// We'll keep only the very last trace and alter its indices
-		ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+		AbstractTrace trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
 		GeneratedText lastRegion = null;
 		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
@@ -869,7 +869,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 */
 	// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
 	@SuppressWarnings("cast")
-	private void changeTraceabilityIndicesComplexTokenize(ExpressionTrace<C> trace, int[][] tokenRegions) {
+	private void changeTraceabilityIndicesComplexTokenize(AbstractTrace trace, int[][] tokenRegions) {
 		/*
 		 * Copy the map : none of the old generated regions will be kept : we'll replace all of them with the
 		 * token regions.
@@ -985,7 +985,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            or the opposite ; which also mean that <em>replacementLength</em> <u>can</u> be negative.
 	 */
 	@SuppressWarnings("unchecked")
-	private void changeTraceabilityIndicesOfReplaceOperation(ExpressionTrace<C> trace, int startIndex,
+	private void changeTraceabilityIndicesOfReplaceOperation(AbstractTrace trace, int startIndex,
 			int endIndex, int replacementLength) {
 		/*
 		 * Substrings that will be split in two by replaced substrings will need their own new GeneratedText
@@ -1109,18 +1109,26 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				}
 			}
 		} else {
-			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+			final AbstractTrace trace;
+			if (visitor.isInitializingVariable()) {
+				trace = visitor.getInitializingVariableTrace();
+			} else {
+				trace = visitor.getLastExpressionTrace();
+			}
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 				while (textIterator.hasNext()) {
 					GeneratedText text = textIterator.next();
+					int removedLength = 0;
 					if (text.getEndOffset() <= startIndex || text.getStartOffset() >= endIndex) {
 						textIterator.remove();
+						removedLength = text.getEndOffset() - text.getStartOffset();
 					} else {
 						/*
 						 * We have four cases : either 1) the region overlaps with the start index, 2) it
 						 * overlaps with the end index, 3) it overlaps with both or 4) it overlaps with none.
 						 */
+						int initialLength = text.getEndOffset() - text.getStartOffset();
 						if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
 							text.setStartOffset(0);
 							text.setEndOffset(endIndex - startIndex);
@@ -1134,7 +1142,9 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 							text.setStartOffset(text.getStartOffset() - startIndex);
 							text.setEndOffset(text.getEndOffset() - startIndex);
 						}
+						removedLength = initialLength - text.getEndOffset() + text.getStartOffset();
 					}
+					trace.setOffset(trace.getOffset() - removedLength);
 				}
 			}
 		}

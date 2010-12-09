@@ -39,22 +39,36 @@ public abstract class AbstractTrace {
 	 *            Input element from which this region has been generated.
 	 * @param trace
 	 *            The actual trace that is to be recorded for this expression.
-	 * @param value
-	 *            Generated text value. This will be used to properly set the trace's offsets.
+	 * @param length
+	 *            Length of this new trace.
 	 */
-	public void addTrace(InputElement input, GeneratedText trace, Object value) {
+	public void addTrace(InputElement input, GeneratedText trace, int length) {
 		Set<GeneratedText> referredTraces = traces.get(input);
 		if (referredTraces == null) {
 			referredTraces = new LinkedHashSet<GeneratedText>();
 			traces.put(input, referredTraces);
 		}
-		final String stringValue = value.toString();
 		int startOffset = currentOffset;
-		currentOffset = currentOffset + stringValue.length();
+		currentOffset = currentOffset + length;
 		trace.setSourceElement(input);
 		trace.setStartOffset(startOffset);
 		trace.setEndOffset(currentOffset);
 		referredTraces.add(trace);
+	}
+
+	/**
+	 * Adds the given trace to the list of traces corresponding to this expression, setting the offset as it
+	 * goes.
+	 * 
+	 * @param input
+	 *            Input element from which this region has been generated.
+	 * @param trace
+	 *            The actual trace that is to be recorded for this expression.
+	 * @param value
+	 *            Generated text value. This will be used to properly set the trace's offsets.
+	 */
+	public void addTrace(InputElement input, GeneratedText trace, Object value) {
+		addTrace(input, trace, value.toString().length());
 	}
 
 	/**
@@ -93,6 +107,15 @@ public abstract class AbstractTrace {
 			entry.getValue().clear();
 		}
 		traces.clear();
+	}
+
+	/**
+	 * Returns the current offset of this trace.
+	 * 
+	 * @return Current offset of this trace.
+	 */
+	public int getOffset() {
+		return currentOffset;
 	}
 
 	/**

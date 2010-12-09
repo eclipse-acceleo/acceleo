@@ -411,7 +411,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The stack of generated files.
 	 */
-	public ArrayDeque<GeneratedFile> getCurrentFiles() {
+	ArrayDeque<GeneratedFile> getCurrentFiles() {
 		return currentFiles;
 	}
 
@@ -420,7 +420,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The last invocation's recorded traces.
 	 */
-	public ArrayDeque<ExpressionTrace<C>> getInvocationTraces() {
+	ArrayDeque<ExpressionTrace<C>> getInvocationTraces() {
 		return invocationTraces;
 	}
 
@@ -429,8 +429,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The last recorded expression trace.
 	 */
-	public ExpressionTrace<C> getLastExpressionTrace() {
+	AbstractTrace getLastExpressionTrace() {
 		return recordedTraces.getLast();
+	}
+
+	AbstractTrace getInitializingVariableTrace() {
+		return variableTraces.get(initializingVariable);
 	}
 
 	/**
@@ -512,8 +516,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		scopeEObjects.add(invocation.getDefinition().getParameter().get(0));
 
 		// If this invocation isn't cached yet, we'll need to record all of its traces
-		recordedTraces.add(new ExpressionTrace<C>((OCLExpression<C>)invocation.getDefinition()
-				.getExpression()));
+		OCLExpression<C> expression = (OCLExpression<C>)invocation.getDefinition().getExpression();
+		if (!isInitializingVariable()) {
+			recordedTraces.add(new ExpressionTrace<C>(expression));
+		}
 
 		final Object result = super.visitAcceleoQueryInvocation(invocation);
 
@@ -521,10 +527,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		 * Query traces are cached, but the cache contains the traces of the very first invocation of this
 		 * query. We need to change the cached instances of GeneratedText to the current GeneratedFile.
 		 */
-		ExpressionTrace<C> queryTrace = recordedTraces.removeLast();
-		ExpressionTrace<C> currentTrace = recordedTraces.getLast();
-		currentTrace.addTraceCopy(queryTrace);
-		queryTrace.dispose();
+		if (!isInitializingVariable()) {
+			final AbstractTrace queryTrace = recordedTraces.removeLast();
+			ExpressionTrace<C> currentTrace = recordedTraces.getLast();
+			currentTrace.addTraceCopy(queryTrace);
+			queryTrace.dispose();
+		}
 
 		scopeEObjects.removeLast();
 
@@ -941,7 +949,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				if (operationArgumentTrace != null) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					operationArgumentTrace.addTrace(propertyCallInput, text, result);
-				} else if (initializingVariable != null && !(result instanceof EObject)) {
+				} else if (isInitializingVariable() && !(result instanceof EObject)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
 				} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
@@ -1004,7 +1012,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (operationArgumentTrace != null) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				operationArgumentTrace.addTrace(input, text, result);
-			} else if (initializingVariable != null) {
+			} else if (isInitializingVariable()) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				variableTraces.get(initializingVariable).addTrace(input, text, result);
 			} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
@@ -1055,7 +1063,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 
-		initializingVariable = oldVar;
+		if (isPrimitive) {
+			initializingVariable = oldVar;
+		}
 		return result;
 	}
 
@@ -1069,11 +1079,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		final Object result = super.visitVariableExp(variableExp);
 
 		boolean recordOperationArgument = operationArgumentTrace != null && result instanceof String;
-		boolean recordVariableInitialization = initializingVariable != null
+		boolean recordVariableInitialization = isInitializingVariable()
 				&& shouldRecordTrace(variableExp)
 				&& (variableTraces.get(variableExp.getReferredVariable()) != null || initializingVariable
 						.getInitExpression() == variableExp);
-		boolean recordTrace = initializingVariable == null && recordedTraces.size() > 0
+		boolean recordTrace = !isInitializingVariable() && recordedTraces.size() > 0
 				&& result instanceof String && ((String)result).length() > 0;
 
 		// Whether we'll record them or not, advance the iterator traces if needed
@@ -1110,12 +1120,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
 						@SuppressWarnings("cast")
 						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
+						int regionLength = copy.getEndOffset() - copy.getStartOffset();
 						if (recordOperationArgument) {
-							operationArgumentTrace.addTrace(input, copy, result);
+							operationArgumentTrace.addTrace(input, copy, regionLength);
 						} else if (recordTrace) {
-							recordedTraces.getLast().addTrace(input, copy, result);
+							recordedTraces.getLast().addTrace(input, copy, regionLength);
 						} else if (recordVariableInitialization) {
-							variableTraces.get(initializingVariable).addTrace(input, copy, result);
+							variableTraces.get(initializingVariable).addTrace(input, copy, regionLength);
 						}
 					}
 				}
@@ -1155,6 +1166,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	boolean isEvaluatingPostCall() {
 		return evaluatingPostCall;
+	}
+
+	/**
+	 * Returns the value of {@link #initializingVariable}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
+	 * 
+	 * @return The value of {@link #initializingVariable}.
+	 */
+	boolean isInitializingVariable() {
+		return initializingVariable != null;
 	}
 
 	/**
