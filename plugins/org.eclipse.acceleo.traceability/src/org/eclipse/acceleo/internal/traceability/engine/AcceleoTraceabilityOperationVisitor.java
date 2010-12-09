@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.traceability.engine;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,9 +50,6 @@ import org.eclipse.ocl.ecore.SendSignalAction;
  *            Will be either EParameter for ecore or Parameter for UML.
  */
 public final class AcceleoTraceabilityOperationVisitor<C, PM> {
-	/** This will contain references towards the Class representing OCL primitive types. */
-	private static final List<Class<?>> PRIMITIVE_CLASSES;
-
 	/**
 	 * Maps a source String to its Tokenizer. Needed for the implementation of the standard operation
 	 * "strtok(String, Integer)" as currently specified.
@@ -63,23 +58,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 
 	/** The evaluation visitor that spawned this operation visitor. */
 	private AcceleoTraceabilityVisitor<EPackage, C, EOperation, EStructuralFeature, EEnumLiteral, PM, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> visitor;
-
-	static {
-		PRIMITIVE_CLASSES = new ArrayList<Class<?>>(10);
-		PRIMITIVE_CLASSES.add(Character.class);
-		PRIMITIVE_CLASSES.add(String.class);
-
-		PRIMITIVE_CLASSES.add(Short.class);
-		PRIMITIVE_CLASSES.add(Integer.class);
-		PRIMITIVE_CLASSES.add(Long.class);
-		PRIMITIVE_CLASSES.add(BigInteger.class);
-
-		PRIMITIVE_CLASSES.add(Float.class);
-		PRIMITIVE_CLASSES.add(Double.class);
-		PRIMITIVE_CLASSES.add(BigDecimal.class);
-
-		PRIMITIVE_CLASSES.add(Boolean.class);
-	}
 
 	/**
 	 * Instantiates an operation visitor given its parent evaluation visitor.
@@ -93,8 +71,84 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "first" OCL operation directly from the traceability visitor as we need to alter recorded
-	 * traceability information.
+	 * Handles the "Collection::first" OCL operation directly from the traceability visitor as we need to
+	 * alter recorded traceability information.
+	 * 
+	 * @param <T>
+	 *            Type of the collection's content.
+	 * @param source
+	 *            Collection from which to retrieve the first element.
+	 * @return First element of the collection. Traceability information will have been changed directly
+	 *         within {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public <T> T visitFirstOperation(Collection<T> source) {
+		if (source.isEmpty()) {
+			return null;
+		}
+		T result = source.iterator().next();
+
+		if (TraceabilityVisitorUtil.isPrimitive(result)) {
+			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+
+			/*
+			 * Retrieve the list of all regions, regardless of their input. We'll later use this list to know
+			 * which regions we should retain.
+			 */
+			List<GeneratedText> regions = new ArrayList<GeneratedText>();
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				regions.addAll(entry.getValue());
+			}
+
+			// If we're lucky, there is a single region, otherwise :
+			if (regions.size() > 1) {
+				// Sort them so we don't need to worry about their order
+				Collections.sort(regions);
+
+				if (regions.size() == source.size()) {
+					// If there is one region per value of the source, all the better
+					regions = regions.subList(0, 1);
+				} else {
+					/*
+					 * Otherwise, we'll have to assume the regions correspond to the value's toString() -Note
+					 * that we'll never be here for non-primitive Collections-
+					 */
+					int valueLength = result.toString().length();
+
+					int regionsStartIndex = 0;
+					GeneratedText region = regions.get(regionsStartIndex);
+					int regionLength = region.getEndOffset() - region.getStartOffset();
+
+					// skip all the way ahead to the first region for this value
+					int regionsEndIndex = regionsStartIndex;
+					int gap = valueLength - regionLength;
+					while (gap > 0) {
+						regionsEndIndex++;
+						GeneratedText next = regions.get(regionsEndIndex);
+						int nextLength = next.getEndOffset() - next.getStartOffset();
+						gap = gap - nextLength;
+					}
+
+					regions = regions.subList(regionsStartIndex, regionsEndIndex + 1);
+				}
+
+				Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = trace.getTraces()
+						.entrySet().iterator();
+				while (entryIterator.hasNext()) {
+					Map.Entry<InputElement, Set<GeneratedText>> entry = entryIterator.next();
+					entry.getValue().retainAll(regions);
+					if (entry.getValue().isEmpty()) {
+						entryIterator.remove();
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Handles the "String::first" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
 	 * 
 	 * @param source
 	 *            String from which to take out a substring.
@@ -114,8 +168,103 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "last" OCL operation directly from the traceability visitor as we need to alter recorded
-	 * traceability information.
+	 * Handles the "Collection::last" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
+	 * 
+	 * @param <T>
+	 *            Type of the collection's content.
+	 * @param source
+	 *            Collection from which to retrieve the last element.
+	 * @return Last element of the collection. Traceability information will have been changed directly within
+	 *         {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public <T> T visitLastOperation(Collection<T> source) {
+		if (source.isEmpty()) {
+			return null;
+		}
+
+		Iterator<T> valueIterator = source.iterator();
+		T result;
+		do {
+			result = valueIterator.next();
+		} while (valueIterator.hasNext());
+
+		if (TraceabilityVisitorUtil.isPrimitive(result)) {
+			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
+
+			/*
+			 * Retrieve the list of all regions, regardless of their input. We'll later use this list to know
+			 * which regions we should retain.
+			 */
+			List<GeneratedText> regions = new ArrayList<GeneratedText>();
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				regions.addAll(entry.getValue());
+			}
+
+			// If we're lucky, there is a single region, otherwise :
+			if (regions.size() > 1) {
+				// Sort them so we don't need to worry about their order
+				Collections.sort(regions);
+
+				/*
+				 * Since we'll remove all regions except for the last, we need to remember the first of their
+				 * offsets in order to compensate the gap.
+				 */
+				int regionsStartOffset = regions.get(0).getStartOffset();
+
+				if (regions.size() == source.size()) {
+					// If there is one region per value of the source, all the better
+					regions = regions.subList(regions.size() - 1, regions.size());
+				} else {
+					/*
+					 * Otherwise, we'll have to assume the regions correspond to the value's toString() -Note
+					 * that we'll never be here for non-primitive Collections-
+					 */
+					int valueLength = result.toString().length();
+
+					int regionsEndIndex = regions.size() - 1;
+					GeneratedText region = regions.get(regionsEndIndex);
+					int regionLength = region.getEndOffset() - region.getStartOffset();
+
+					// go all the way back to the first region for this value
+					int regionsStartIndex = regionsEndIndex;
+					int gap = valueLength - regionLength;
+					while (gap > 0) {
+						regionsStartIndex--;
+						GeneratedText previous = regions.get(regionsStartIndex);
+						int previousLength = previous.getEndOffset() - previous.getStartOffset();
+						gap = gap - previousLength;
+					}
+
+					regions = regions.subList(regionsStartIndex, regionsEndIndex + 1);
+				}
+
+				// Now that we know which regions to retain, restore their offsets
+				for (GeneratedText region : regions) {
+					int regionLength = region.getEndOffset() - region.getStartOffset();
+					region.setStartOffset(regionsStartOffset);
+					region.setEndOffset(regionsStartOffset + regionLength);
+					regionsStartOffset += regionLength;
+				}
+
+				Iterator<Map.Entry<InputElement, Set<GeneratedText>>> entryIterator = trace.getTraces()
+						.entrySet().iterator();
+				while (entryIterator.hasNext()) {
+					Map.Entry<InputElement, Set<GeneratedText>> entry = entryIterator.next();
+					entry.getValue().retainAll(regions);
+					if (entry.getValue().isEmpty()) {
+						entryIterator.remove();
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Handles the "String::last" OCL operation directly from the traceability visitor as we need to alter
+	 * recorded traceability information.
 	 * 
 	 * @param source
 	 *            String from which to take out a substring.
@@ -205,6 +354,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : substitutionTrace.getTraces()
 						.entrySet()) {
 					for (GeneratedText text : entry.getValue()) {
+						// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+						@SuppressWarnings("cast")
 						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
@@ -228,6 +379,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						trace.getTraces().put(entry.getKey(), existingTraces);
 					}
 					for (GeneratedText text : entry.getValue()) {
+						// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+						@SuppressWarnings("cast")
 						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
 						copy.setStartOffset(copy.getStartOffset() + startIndex);
 						copy.setEndOffset(copy.getEndOffset() + startIndex);
@@ -265,13 +418,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			result = temp;
 		}
 
-		boolean isPrimitiveCollection = true;
-		Iterator<Object> valueIterator = source.iterator();
-		while (valueIterator.hasNext() && isPrimitiveCollection) {
-			isPrimitiveCollection = isPrimitive(valueIterator.next());
-		}
-
-		if (isPrimitiveCollection) {
+		// Only alter the traceability information if the collection is primitive
+		if (TraceabilityVisitorUtil.isPrimitive(source)) {
 			ExpressionTrace<C> trace = visitor.getLastExpressionTrace();
 
 			// Retrieve the list of all regions, regardless of their input
@@ -396,6 +544,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					trace.getTraces().put(entry.getKey(), existingTraces);
 				}
 				for (GeneratedText text : entry.getValue()) {
+					// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+					@SuppressWarnings("cast")
 					GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
 					copy.setStartOffset(copy.getStartOffset() + currentSeparatorOffset);
 					copy.setEndOffset(copy.getEndOffset() + currentSeparatorOffset);
@@ -542,6 +692,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					int startOffset = length;
 					length += end - start;
 
+					// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+					@SuppressWarnings("cast")
 					GeneratedText newRegion = (GeneratedText)EcoreUtil.copy(firstRegion);
 					newRegion.setStartOffset(startOffset);
 					newRegion.setEndOffset(length);
@@ -599,7 +751,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * isAlpha, isAlphanum and possibily other traceability impacting operations share the same "basic"
+	 * isAlpha, isAlphanum and possibly other traceability impacting operations share the same "basic"
 	 * behavior of altering indices to reflect a boolean return. This behavior is externalized here.
 	 * 
 	 * @param result
@@ -643,7 +795,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Size and possibily other traceability impacting operations share the same "basic" behavior of altering
+	 * Size and possibly other traceability impacting operations share the same "basic" behavior of altering
 	 * indices to reflect an integer return. This behavior is externalized here.
 	 * 
 	 * @param result
@@ -715,6 +867,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 * @param tokenRegions
 	 *            offsets of the token regions.
 	 */
+	// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+	@SuppressWarnings("cast")
 	private void changeTraceabilityIndicesComplexTokenize(ExpressionTrace<C> trace, int[][] tokenRegions) {
 		/*
 		 * Copy the map : none of the old generated regions will be kept : we'll replace all of them with the
@@ -858,6 +1012,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					text.setEndOffset(text.getEndOffset() + replacementLength);
 				} else if (text.getStartOffset() < startIndex && text.getEndOffset() > endIndex) {
 					// This instance of a GeneratedText is split in two by the substring
+					// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+					@SuppressWarnings("cast")
 					GeneratedText endSubstring = (GeneratedText)EcoreUtil.copy(text);
 					endSubstring.setStartOffset(endIndex + replacementLength);
 					endSubstring.setEndOffset(text.getEndOffset() + replacementLength);
@@ -884,8 +1040,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Substring, trim and possibily other traceability impacting operations share the same "basic" behavior
-	 * of altering start and end indices without changing "inside". This behavior is externalized here.
+	 * Substring, trim and possibly other traceability impacting operations share the same "basic" behavior of
+	 * altering start and end indices without changing "inside". This behavior is externalized here.
 	 * 
 	 * @param startIndex
 	 *            Index at which the substring starts.
@@ -1013,21 +1169,5 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			}
 		}
 		return insert;
-	}
-
-	/**
-	 * This will check whether the given value is an OCL primitive.
-	 * 
-	 * @param value
-	 *            The value to check.
-	 * @return <code>true</code> if this value is an OCL primitive.
-	 */
-	private boolean isPrimitive(Object value) {
-		Class<?> valueClass = value.getClass();
-		if (valueClass.isPrimitive()) {
-			return true;
-		}
-
-		return PRIMITIVE_CLASSES.contains(valueClass);
 	}
 }
