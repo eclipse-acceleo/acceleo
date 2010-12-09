@@ -278,6 +278,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				trace = recordedTraces.removeLast();
 			}
 			if (protectedAreaSource != null) {
+				// Check that the trace is indeed what we need
+				if (trace.getReferredExpression() != sourceBlock) {
+					ExpressionTrace<C> temp = trace;
+					trace = recordedTraces.removeLast();
+					trace.addTraceCopy(temp);
+					temp.dispose();
+				}
 				alterProtectedAreaTrace(string, sourceBlock, trace);
 			}
 			final int fileLength = generatedFile.getLength();
@@ -566,7 +573,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			for (ExpressionTrace<C> trace : invocationTraces) {
 				if (oldTraces != null) {
 					oldTraces.add(trace);
-				} else {
+				} else if (!recordedTraces.contains(trace)) {
 					trace.dispose();
 				}
 			}
@@ -1184,9 +1191,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (isExistingArea) {
 			final GeneratedText markerRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
 			markerRegion.setStartOffset(markerIndex);
-			markerRegion.setStartOffset(markerEndIndex);
+			markerRegion.setEndOffset(markerEndIndex);
 			markerRegion.setModuleElement(getModuleElement(protectedArea));
-			trace.addTrace(protectedAreaSource, markerRegion, content);
+			Set<GeneratedText> set = trace.getTraces().get(protectedAreaSource);
+			if (set == null) {
+				set = new LinkedHashSet<GeneratedText>();
+				trace.getTraces().put(protectedAreaSource, set);
+			}
+			set.add(markerRegion);
 		} else {
 			// Alter indices So that they start and end after the "Start of user code"
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
@@ -1235,7 +1247,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		GeneratedText contentRegion = null;
 		if (endOffset != areaEndIndex) {
 			contentRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
-			contentRegion.setStartOffset(endOffset);
+			contentRegion.setStartOffset(markerEndIndex);
 			contentRegion.setEndOffset(areaEndIndex);
 			contentRegion.setModuleElement(getModuleElement(protectedArea));
 			contentRegion.setSourceElement(protectedAreaSource);
