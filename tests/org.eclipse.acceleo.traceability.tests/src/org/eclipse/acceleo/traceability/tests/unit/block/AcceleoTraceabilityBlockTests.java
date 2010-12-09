@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
+import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
@@ -1414,12 +1415,12 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof ProtectedAreaBlock);
 			ProtectedAreaBlock protectedAreaBlock = (ProtectedAreaBlock)element;
-			assertTrue(protectedAreaBlock.getMarker() instanceof QueryInvocation);
-			assertEquals("queryTest", ((QueryInvocation)protectedAreaBlock.getMarker()).getDefinition() //$NON-NLS-1$
+			assertTrue(protectedAreaBlock.getMarker() instanceof TemplateInvocation);
+			assertEquals("templateTest", ((TemplateInvocation)protectedAreaBlock.getMarker()).getDefinition() //$NON-NLS-1$
 					.getName());
-			assertEquals(185, protectedAreaBlock.getStartPosition());
-			assertEquals(185 + "[protected (eClass.queryTest())]\n[/protected]".length(), protectedAreaBlock //$NON-NLS-1$
-					.getEndPosition());
+			assertEquals(188, protectedAreaBlock.getStartPosition());
+			assertEquals(188 + "[protected (eClass.templateTest())]\n[/protected]".length(), //$NON-NLS-1$
+					protectedAreaBlock.getEndPosition());
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("start of user code ".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -1430,8 +1431,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof PropertyCallExp);
 			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
 			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
-			assertEquals(302, propertyCallExp.getStartPosition());
-			assertEquals(302 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(304, propertyCallExp.getStartPosition());
+			assertEquals(304 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals(("start of user code class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -1442,8 +1443,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
 			assertEquals("\n", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(217, stringLiteralExp.getStartPosition());
-			assertEquals(217 + "\n".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+			assertEquals(223, stringLiteralExp.getStartPosition());
+			assertEquals(223 + "\n".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(3);
 			assertEquals(("start of user code class" + cpt + "\n").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ 
@@ -1454,12 +1455,12 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof ProtectedAreaBlock);
 			protectedAreaBlock = (ProtectedAreaBlock)element;
-			assertTrue(protectedAreaBlock.getMarker() instanceof QueryInvocation);
-			assertEquals("queryTest", ((QueryInvocation)protectedAreaBlock.getMarker()).getDefinition() //$NON-NLS-1$
+			assertTrue(protectedAreaBlock.getMarker() instanceof TemplateInvocation);
+			assertEquals("templateTest", ((TemplateInvocation)protectedAreaBlock.getMarker()).getDefinition() //$NON-NLS-1$
 					.getName());
-			assertEquals(185, protectedAreaBlock.getStartPosition());
-			assertEquals(185 + "[protected (eClass.queryTest())]\n[/protected]".length(), protectedAreaBlock //$NON-NLS-1$
-					.getEndPosition());
+			assertEquals(188, protectedAreaBlock.getStartPosition());
+			assertEquals(188 + "[protected (eClass.templateTest())]\n[/protected]".length(), //$NON-NLS-1$
+					protectedAreaBlock.getEndPosition());
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
