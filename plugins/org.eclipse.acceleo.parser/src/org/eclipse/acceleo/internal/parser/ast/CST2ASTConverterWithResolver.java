@@ -1101,6 +1101,16 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				transformStepResolveBody(iForBlock);
 
 				transformStepResolveRemoveVariables(iInit);
+
+				if (oLoopVariable != null) {
+					if ((oLoopVariable.getType() != null && oIterSet != null) && oIterSet.getType() != null
+							&& !compatibleVariableTypeFor(oLoopVariable, oIterSet)) {
+						logWarning(AcceleoParserMessages.getString(
+								"CST2ASTConverterWithResolver.PossibleIncompatible", oLoopVariable //$NON-NLS-1$
+										.getType().getName(), oIterSet.getType().getName()), oLoopVariable
+								.getStartPosition(), oIterSet.getEndPosition());
+					}
+				}
 			} finally {
 				if (iLoopVariable != null && oLoopVariable != null) {
 					transformStepResolveRemoveVariable(iLoopVariable);
@@ -1111,6 +1121,37 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				factory.getOCL().removeVariableFromScope(iterationCount);
 			}
 		}
+	}
+
+	/**
+	 * Indicates if the type of the variable of the for is compatible with the type of the iterator of the
+	 * for.
+	 * 
+	 * @param oForVariable
+	 *            The for variable
+	 * @param oIterSet
+	 *            The iterator
+	 * @return <code>true</code> if both type are compatible, <code>false</code> otherwise.
+	 */
+	private boolean compatibleVariableTypeFor(org.eclipse.ocl.ecore.Variable oForVariable,
+			org.eclipse.ocl.ecore.OCLExpression oIterSet) {
+		boolean result = false;
+
+		EClassifier initType = oIterSet.getType();
+		EClassifier variableType = oForVariable.getType();
+		EClassifier oclAny = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclAny();
+
+		if (initType instanceof CollectionType) {
+			CollectionType collectionType = (CollectionType)initType;
+			initType = collectionType.getElementType();
+		}
+		if (initType.getInstanceClass() != null && variableType.getInstanceClass() != null) {
+			result = initType.getInstanceClass().isAssignableFrom(variableType.getInstanceClass());
+		} else if (variableType == oclAny) {
+			result = true;
+		}
+
+		return result;
 	}
 
 	/**
@@ -1218,9 +1259,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 					if ((oLetVariable.getType() != null && oLetVariable.getInitExpression() != null)
 							&& oLetVariable.getInitExpression().getType() != null
-							&& !compatibleVariableType(oLetVariable)) {
+							&& !compatibleVariableTypeLet(oLetVariable)) {
 						logWarning(AcceleoParserMessages.getString(
-								"CST2ASTConverterWithResolver.PossibleIncompatibleLet", oLetVariable //$NON-NLS-1$
+								"CST2ASTConverterWithResolver.PossibleIncompatible", oLetVariable //$NON-NLS-1$
 										.getType().getName(), oLetVariable.getInitExpression().getType()
 										.getName()), oLetVariable.getStartPosition(), oLetVariable
 								.getInitExpression().getEndPosition());
@@ -1266,7 +1307,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            The let variable
 	 * @return <code>true</code> if both type are compatible, <code>false</code> otherwise.
 	 */
-	private boolean compatibleVariableType(org.eclipse.ocl.ecore.Variable oLetVariable) {
+	private boolean compatibleVariableTypeLet(org.eclipse.ocl.ecore.Variable oLetVariable) {
 		boolean result = false;
 
 		EClassifier initType = oLetVariable.getInitExpression().getType();
