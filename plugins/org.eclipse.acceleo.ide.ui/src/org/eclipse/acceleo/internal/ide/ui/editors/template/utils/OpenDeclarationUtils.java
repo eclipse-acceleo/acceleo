@@ -727,10 +727,12 @@ public final class OpenDeclarationUtils {
 		final int startValue = -2;
 		int start = startValue;
 		int end = -1;
+
+		int max = document.getLength();
 		try {
 			int pos = offset;
 			char c;
-			while (pos >= 0) {
+			while (pos >= 0 && pos < max) {
 				c = document.getChar(pos);
 				if (!Character.isJavaIdentifierPart(c)) {
 					break;
