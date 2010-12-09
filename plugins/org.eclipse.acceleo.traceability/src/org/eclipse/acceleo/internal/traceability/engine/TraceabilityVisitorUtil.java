@@ -100,12 +100,18 @@ public final class TraceabilityVisitorUtil {
 	 * @return <code>true</code> if this value is an OCL primitive.
 	 */
 	public static boolean isPrimitive(Object value) {
-		Class<?> valueClass = value.getClass();
-		if (valueClass.isPrimitive()) {
-			return true;
+		if (value == null) {
+			return false;
 		}
 
-		return PRIMITIVE_CLASSES.contains(valueClass);
+		boolean result = false;
+		Class<?> valueClass = value.getClass();
+		if (valueClass.isPrimitive()) {
+			result = true;
+		} else {
+			result = PRIMITIVE_CLASSES.contains(valueClass);
+		}
+		return result;
 	}
 
 	/**
