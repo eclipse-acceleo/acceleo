@@ -776,11 +776,14 @@ public class OCLParser {
 	 * @param realOffsetInTheBuffer
 	 *            beginning index of the given text in the file, this index is used to compute the real offset
 	 *            of a problem...
+	 * @param iModelExpression
+	 *            The model expression (only used to solve a recursivity problem
 	 * @return an {@link OCLExpression} instance.
 	 * @throws ParserException
 	 *             if the given text is not conform to what we expect.
 	 */
-	public OCLExpression parseOCLExpression(String text, int realOffsetInTheBuffer) throws ParserException {
+	public OCLExpression parseOCLExpression(String text, int realOffsetInTheBuffer,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) throws ParserException {
 		if (text.trim().equals(IAcceleoConstants.SUPER)) {
 			TemplateInvocation eTemplateInvocation = MtlFactory.eINSTANCE.createTemplateInvocation();
 			eTemplateInvocation.setDefinition(null);
@@ -796,11 +799,11 @@ public class OCLParser {
 				EObject eContent = eAllContents.next();
 				shiftOCLExpressionPositions(realOffsetInTheBuffer, eContent);
 			}
-			OCLExpression newOCLExpression = createAcceleoInvocation(eOCLExpression);
+			OCLExpression newOCLExpression = createAcceleoInvocation(eOCLExpression, iModelExpression);
 			if (newOCLExpression == null) {
 				Iterator<EObject> eAllContentsIt = eOCLExpression.eAllContents();
 				while (eAllContentsIt.hasNext()) {
-					createAcceleoInvocation(eAllContentsIt.next());
+					createAcceleoInvocation(eAllContentsIt.next(), iModelExpression);
 				}
 				newOCLExpression = eOCLExpression;
 			}
@@ -846,12 +849,15 @@ public class OCLParser {
 	 * 
 	 * @param eObject
 	 *            is the detected OCL element
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
 	 * @return the new OCL expression, which is an invocation of the Acceleo module element
 	 */
-	private OCLExpression createAcceleoInvocation(EObject eObject) {
+	private OCLExpression createAcceleoInvocation(EObject eObject,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		// Check the source of this object and replace it if needed
 		if (eObject instanceof CallExp) {
-			createAcceleoInvocation(((CallExp)eObject).getSource());
+			createAcceleoInvocation(((CallExp)eObject).getSource(), iModelExpression);
 		}
 		if (eObject instanceof OperationCallExp) {
 			OperationCallExp eCall = (OperationCallExp)eObject;
@@ -861,8 +867,9 @@ public class OCLParser {
 						ANNOTATION_SOURCE).getReferences().iterator();
 				if (referencesIt.hasNext()) {
 					EObject eModuleElement = referencesIt.next();
-					OCLExpression acceleoInvocation = createAcceleoInvocation(eCall, eModuleElement);
-					return handleArguments(acceleoInvocation);
+					OCLExpression acceleoInvocation = createAcceleoInvocation(eCall, eModuleElement,
+							iModelExpression);
+					return handleArguments(acceleoInvocation, iModelExpression);
 				}
 			}
 		}
@@ -874,27 +881,30 @@ public class OCLParser {
 	 * 
 	 * @param acceleoInvocation
 	 *            The acceleoInvocation
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
 	 * @return The new Acceleo invocation with its new arguments
 	 */
-	private OCLExpression handleArguments(OCLExpression acceleoInvocation) {
+	private OCLExpression handleArguments(OCLExpression acceleoInvocation,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		OCLExpression result = acceleoInvocation;
 		if (acceleoInvocation instanceof TemplateInvocation) {
 			TemplateInvocation templateInvocation = (TemplateInvocation)acceleoInvocation;
 			List<OCLExpression> arguments = templateInvocation.getArgument();
 			for (OCLExpression argument : arguments) {
-				createAcceleoInvocationArguments(argument);
+				createAcceleoInvocationArguments(argument, iModelExpression);
 			}
 		} else if (acceleoInvocation instanceof QueryInvocation) {
 			QueryInvocation queryInvocation = (QueryInvocation)acceleoInvocation;
 			List<OCLExpression> arguments = queryInvocation.getArgument();
 			for (OCLExpression argument : arguments) {
-				createAcceleoInvocationArguments(argument);
+				createAcceleoInvocationArguments(argument, iModelExpression);
 			}
 		} else if (acceleoInvocation instanceof MacroInvocation) {
 			MacroInvocation macroInvocation = (MacroInvocation)acceleoInvocation;
 			List<OCLExpression> arguments = macroInvocation.getArgument();
 			for (OCLExpression argument : arguments) {
-				createAcceleoInvocationArguments(argument);
+				createAcceleoInvocationArguments(argument, iModelExpression);
 			}
 		}
 		return result;
@@ -905,8 +915,11 @@ public class OCLParser {
 	 * 
 	 * @param argument
 	 *            The arguments of the Acceleo invocation
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
 	 */
-	private void createAcceleoInvocationArguments(org.eclipse.ocl.expressions.OCLExpression<?> argument) {
+	private void createAcceleoInvocationArguments(org.eclipse.ocl.expressions.OCLExpression<?> argument,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		if (argument instanceof org.eclipse.ocl.expressions.CollectionLiteralExp<?>) {
 			org.eclipse.ocl.expressions.CollectionLiteralExp<?> collectionLiteralExp = (org.eclipse.ocl.expressions.CollectionLiteralExp<?>)argument;
 			List<?> parts = collectionLiteralExp.getPart();
@@ -915,9 +928,9 @@ public class OCLParser {
 					org.eclipse.ocl.expressions.CollectionItem<?> collectionItem = (org.eclipse.ocl.expressions.CollectionItem<?>)collectionLiteralPart;
 					org.eclipse.ocl.expressions.OCLExpression<?> item = collectionItem.getItem();
 					if (item instanceof org.eclipse.ocl.expressions.CollectionLiteralExp<?>) {
-						createAcceleoInvocationArguments(item);
+						createAcceleoInvocationArguments(item, iModelExpression);
 					} else {
-						createAcceleoInvocation(item);
+						createAcceleoInvocation(item, iModelExpression);
 					}
 				}
 			}
@@ -931,23 +944,27 @@ public class OCLParser {
 	 *            is the detected OCL operation call
 	 * @param eModuleElement
 	 *            is the referred module element
+	 * @param iModelExpression
+	 *            The model expression of the CST (only used to solve a recursivity problem)
 	 * @return the new OCL expression, which is an invocation of the Acceleo module element
 	 */
-	private OCLExpression createAcceleoInvocation(OperationCallExp eCall, EObject eModuleElement) {
+	private OCLExpression createAcceleoInvocation(OperationCallExp eCall, EObject eModuleElement,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		OCLExpression eOCLExpression;
 		if (eModuleElement instanceof Template) {
+			// We have a template invocation
 			Template eTemplate = (Template)eModuleElement;
 			TemplateInvocation eTemplateInvocation = MtlFactory.eINSTANCE.createTemplateInvocation();
 			eOCLExpression = eTemplateInvocation;
 			eTemplateInvocation.setDefinition(eTemplate);
 			eTemplateInvocation.setStartPosition(eCall.getStartPosition());
 			eTemplateInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall, eTemplate.getParameter())) {
+			if (receiverIsArgument(eCall, eTemplate, eTemplate.getParameter(), iModelExpression)) {
 				eTemplateInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eTemplateInvocation.setType(eCall.getType());
 			move(eCall.getArgument(), eTemplateInvocation.getArgument());
-			checkArgumentInvocations(eTemplateInvocation.getArgument());
+			checkArgumentInvocations(eTemplateInvocation.getArgument(), iModelExpression);
 			EcoreUtil.replace(eCall, eTemplateInvocation);
 		} else if (eModuleElement instanceof Query) {
 			Query eQuery = (Query)eModuleElement;
@@ -956,12 +973,12 @@ public class OCLParser {
 			eQueryInvocation.setDefinition(eQuery);
 			eQueryInvocation.setStartPosition(eCall.getStartPosition());
 			eQueryInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall, eQuery.getParameter())) { // FIXME SBE Bug Query Yvan
+			if (receiverIsArgument(eCall, eQuery, eQuery.getParameter(), iModelExpression)) {
 				eQueryInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eQueryInvocation.setType(eCall.getType());
 			move(eCall.getArgument(), eQueryInvocation.getArgument());
-			checkArgumentInvocations(eQueryInvocation.getArgument());
+			checkArgumentInvocations(eQueryInvocation.getArgument(), iModelExpression);
 			EcoreUtil.replace(eCall, eQueryInvocation);
 		} else if (eModuleElement instanceof Macro) {
 			Macro eMacro = (Macro)eModuleElement;
@@ -970,12 +987,12 @@ public class OCLParser {
 			eMacroInvocation.setDefinition(eMacro);
 			eMacroInvocation.setStartPosition(eCall.getStartPosition());
 			eMacroInvocation.setEndPosition(eCall.getEndPosition());
-			if (receiverIsArgument(eCall, eMacro.getParameter())) {
+			if (receiverIsArgument(eCall, eMacro, eMacro.getParameter(), iModelExpression)) {
 				eMacroInvocation.getArgument().add((OCLExpression)eCall.getSource());
 			}
 			eMacroInvocation.setType(eCall.getType());
 			move(eCall.getArgument(), eMacroInvocation.getArgument());
-			checkArgumentInvocations(eMacroInvocation.getArgument());
+			checkArgumentInvocations(eMacroInvocation.getArgument(), iModelExpression);
 			EcoreUtil.replace(eCall, eMacroInvocation);
 		} else {
 			eOCLExpression = null;
@@ -988,28 +1005,86 @@ public class OCLParser {
 	 * 
 	 * @param eCall
 	 *            is an operation call
+	 * @param astModuleElement
+	 *            The module element from the AST
 	 * @param variables
 	 *            The list of variables of the template, query or macro called.
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
 	 * @return true if the receiver of the given operation call should be added to the arguments
 	 */
-	private boolean receiverIsArgument(OperationCallExp eCall, List<Variable> variables) {
-		boolean result;
+	private boolean receiverIsArgument(OperationCallExp eCall, ModuleElement astModuleElement,
+			List<Variable> variables, org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
+		boolean result = false;
 		if (eCall.getSource() != null) {
 			if (eCall.getSource() instanceof VariableExp
 					&& ((VariableExp)eCall.getSource()).getReferredVariable() != null) {
 
+				// No arguments for the call: the source is the argument
 				if (eCall.getArgument().size() == 0) {
 					result = true;
+				} else if (variables.size() == 0 && iModelExpression != null) {
+					// We are in a recursive call of a template or a query
+					result = handleRecursiveCall(eCall, astModuleElement, variables, iModelExpression);
 				} else {
+					// We are in a call where the source may be the argument
 					result = eCall.getArgument().size() < variables.size();
 					result = result && variables.size() != 0;
 				}
-
 			} else {
 				result = true;
 			}
 		} else {
 			result = false;
+		}
+		return result;
+	}
+
+	/**
+	 * Handle the recursive call.
+	 * 
+	 * @param eCall
+	 *            is an operation call
+	 * @param astModuleElement
+	 *            The module element from the AST
+	 * @param variables
+	 *            The list of variables of the template, query or macro called.
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
+	 * @return true if the receiver of the given operation call should be added to the arguments
+	 */
+	private boolean handleRecursiveCall(OperationCallExp eCall, ModuleElement astModuleElement,
+			List<Variable> variables, org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
+		boolean result = false;
+		EObject eContainer = iModelExpression.eContainer();
+		while (eContainer != null && !(eContainer instanceof org.eclipse.acceleo.parser.cst.ModuleElement)) {
+			eContainer = eContainer.eContainer();
+		}
+
+		if (eContainer instanceof org.eclipse.acceleo.parser.cst.Template) {
+			// We have the module of the CST, we need to look for the correct template or query
+			org.eclipse.acceleo.parser.cst.Template cstTemplate = (org.eclipse.acceleo.parser.cst.Template)eContainer;
+			if (cstTemplate.getStartPosition() == astModuleElement.getStartPosition()
+					&& cstTemplate.getEndPosition() == astModuleElement.getEndPosition()) {
+				result = eCall.getArgument().size() < cstTemplate.getParameter().size();
+				result = result && cstTemplate.getParameter().size() != 0;
+			}
+		} else if (eContainer instanceof org.eclipse.acceleo.parser.cst.Query) {
+			// We have the module of the CST, we need to look for the correct template or query
+			org.eclipse.acceleo.parser.cst.Query cstQuery = (org.eclipse.acceleo.parser.cst.Query)eContainer;
+			if (cstQuery.getStartPosition() == astModuleElement.getStartPosition()
+					&& cstQuery.getEndPosition() == astModuleElement.getEndPosition()) {
+				result = eCall.getArgument().size() < cstQuery.getParameter().size();
+				result = result && variables.size() != 0;
+			}
+		} else if (eContainer instanceof org.eclipse.acceleo.parser.cst.Macro) {
+			// We have the module of the CST, we need to look for the correct template or query
+			org.eclipse.acceleo.parser.cst.Macro cstMacro = (org.eclipse.acceleo.parser.cst.Macro)eContainer;
+			if (cstMacro.getStartPosition() == astModuleElement.getStartPosition()
+					&& cstMacro.getEndPosition() == astModuleElement.getEndPosition()) {
+				result = eCall.getArgument().size() < cstMacro.getParameter().size();
+				result = result && variables.size() != 0;
+			}
 		}
 		return result;
 	}
@@ -1032,12 +1107,15 @@ public class OCLParser {
 	 * 
 	 * @param arguments
 	 *            is the arguments list
+	 * @param iModelExpression
+	 *            The CST model expression (used only for solving a recusive problem)
 	 */
-	private void checkArgumentInvocations(List<OCLExpression> arguments) {
+	private void checkArgumentInvocations(List<OCLExpression> arguments,
+			org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		ListIterator<OCLExpression> it = arguments.listIterator();
 		while (it.hasNext()) {
 			OCLExpression next = it.next();
-			OCLExpression newArgument = createAcceleoInvocation(next);
+			OCLExpression newArgument = createAcceleoInvocation(next, iModelExpression);
 			if (newArgument != null) {
 				it.set(newArgument);
 			}

@@ -308,7 +308,7 @@ public class ASTFactory {
 			if (oOCLExpression == null) {
 				try {
 					oOCLExpression = pOCL.parseOCLExpression(iModelExpression.getBody(), iModelExpression
-							.getStartPosition());
+							.getStartPosition(), iModelExpression);
 					ioModelExpression.put(iModelExpression, oOCLExpression);
 				} catch (WrappedOCLException e) {
 					if (e.getStartPosition() > -1 && e.getEndPosition() > -1) {
