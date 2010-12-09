@@ -21,6 +21,7 @@ import org.eclipse.acceleo.engine.tests.unit.blocks.protectedareablock.Protected
 import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.QueryPropertyInvocationTest;
+import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.RecursiveTemplateInvocation;
 import org.eclipse.acceleo.engine.tests.unit.encoding.GenerationEncodingTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
@@ -73,6 +74,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(TemplateTest.class);
 		suite.addTestSuite(DualTemplateInvocationTest.class);
 		suite.addTestSuite(QueryPropertyInvocationTest.class);
+		suite.addTestSuite(RecursiveTemplateInvocation.class);
 
 		// Encoding
 		suite.addTestSuite(GenerationEncodingTest.class);

@@ -1,0 +1,14 @@
+[module recursive_template_invocation(http://www.eclipse.org/emf/2002/Ecore)/]
+[template public recursive_source_is_argument(c:EClass)]
+[file ('recursive_template_invocation_is', false)][c.recursive_is(true)/][/file]
+[/template]
+
+[template public recursive_is(c:EClass, b:Boolean)]start[if (not b)]stop[else]continue[c.recursive_is(false)/][/if]
+[/template]
+
+[template public recursive_source_is_not_argument(c:EClass)]
+[file ('recursive_template_invocation_not', false)][recursive_not(c, true)/][/file]
+[/template]
+
+[template public recursive_not(c:EClass, b:Boolean)]start[if (not b)]stop[else]continue[recursive_not(c, false)/][/if]
+[/template]

@@ -1,4 +1,4 @@
-[module dual_query_call(http://www.eclipse.org/emf/2002/Ecore)/]
+[module dual_template_call(http://www.eclipse.org/emf/2002/Ecore)/]
 [template public test(c:EClass)]
 	[file ('dual_template_invocation', false)]
 		[c.name.toLowerLast().toUpperLast()/]
