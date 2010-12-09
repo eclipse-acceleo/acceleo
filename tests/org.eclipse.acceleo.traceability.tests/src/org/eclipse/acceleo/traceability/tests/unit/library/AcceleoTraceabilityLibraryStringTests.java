@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.library;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.eclipse.acceleo.traceability.GeneratedFile;
@@ -24,9 +27,6 @@ import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityTest {
 
@@ -1157,8 +1157,8 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(197, string.getStartPosition());
+			assertEquals(197 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1182,30 +1182,73 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
-			assertEquals("a".length(), generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
-			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$ 
 			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
-			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$  //$NON-NLS-2$
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("class1".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof StringLiteralExp);
-			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
+			assertEquals(242, propertyCallExp.getStartPosition());
+			assertEquals(242 + "name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
 			assertTrue(modelElement instanceof EClass);
-			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("class1", ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityLibraryStringCollectionFirst3() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/library/string/stringCollectionFirst3.mtl", //$NON-NLS-1$
+				"main", "data/library/string/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$ 
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$  //$NON-NLS-2$
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals("class1".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
+			assertEquals(189, propertyCallExp.getStartPosition());
+			assertEquals(189 + "eClass.eContainer().oclAsType(EPackage).eClassifiers->first().name".length(), //$NON-NLS-1$
+					propertyCallExp.getEndPosition());
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EClass);
+			assertEquals("class1", ((EClass)modelElement).getName()); //$NON-NLS-1$
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 			cpt++;
@@ -1234,15 +1277,15 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("c".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("c", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(206, string.getStartPosition());
+			assertEquals(206 + "'c'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1266,7 +1309,7 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
-			assertEquals("c".length(), generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -1276,20 +1319,63 @@ public class AcceleoTraceabilityLibraryStringTests extends AbstractTraceabilityT
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("a".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("class4".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof StringLiteralExp);
-			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("a", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(192, string.getStartPosition());
-			assertEquals(192 + "'a'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
+			assertEquals(241, propertyCallExp.getStartPosition());
+			assertEquals(241 + "name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
 			assertTrue(modelElement instanceof EClass);
-			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("class4", ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityLibraryStringCollectionLast3() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/library/string/stringCollectionLast3.mtl", //$NON-NLS-1$
+				"main", "data/library/string/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals("class4".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			assertEquals("name", propertyCallExp.getReferredProperty().getName()); //$NON-NLS-1$
+			assertEquals(188, propertyCallExp.getStartPosition());
+			assertEquals(188 + "eClass.eContainer().oclAsType(EPackage).eClassifiers->last().name".length(), //$NON-NLS-1$
+					propertyCallExp.getEndPosition());
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EClass);
+			assertEquals("class4", ((EClass)modelElement).getName()); //$NON-NLS-1$
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/library/string/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 			cpt++;

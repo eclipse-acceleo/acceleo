@@ -1,0 +1,4 @@
+[comment encoding = UTF-8 /]
+[module stringCollectionFirst3('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][eClass.eContainer().oclAsType(EPackage).eClassifiers->first().name/][/file][/template]
