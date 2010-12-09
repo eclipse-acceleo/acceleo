@@ -71,11 +71,13 @@ import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.expressions.AssociationClassCallExp;
+import org.eclipse.ocl.expressions.BooleanLiteralExp;
 import org.eclipse.ocl.expressions.CollectionItem;
 import org.eclipse.ocl.expressions.CollectionLiteralExp;
 import org.eclipse.ocl.expressions.EnumLiteralExp;
 import org.eclipse.ocl.expressions.ExpressionsPackage;
 import org.eclipse.ocl.expressions.IfExp;
+import org.eclipse.ocl.expressions.IntegerLiteralExp;
 import org.eclipse.ocl.expressions.IterateExp;
 import org.eclipse.ocl.expressions.IteratorExp;
 import org.eclipse.ocl.expressions.LetExp;
@@ -433,6 +435,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		return recordedTraces.getLast();
 	}
 
+	/**
+	 * Returns the traces of the current variable initialization.
+	 * 
+	 * @return The traces of the current variable initialization.
+	 */
 	AbstractTrace getInitializingVariableTrace() {
 		return variableTraces.get(initializingVariable);
 	}
@@ -458,14 +465,34 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#visitAcceleoForBlock(org.eclipse.acceleo.model.mtl.ForBlock)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void visitAcceleoForBlock(ForBlock forBlock) {
 		if (forBlock.getLoopVariable() != null) {
 			scopeEObjects.add(forBlock.getLoopVariable());
 		}
-		// FIXME what to do if the iteration set is of a primitive type? ([for (eClass.eSupertypes.name)/])
 
-		super.visitAcceleoForBlock(forBlock);
+		IterationTrace<C> oldIterationTraces = iterationTraces;
+		iterationTraces = new IterationTrace<C>((OCLExpression<C>)forBlock.getIterSet());
+		OCLExpression<C> oldIterationBody = iterationBody;
+		iterationBody = (OCLExpression<C>)forBlock.getBody().get(forBlock.getBody().size() - 1);
+		int oldIterationCount = iterationCount;
+		iterationCount = 0;
+		Variable<C, PM> oldIterationVariable = iterationVariable;
+		iterationVariable = (Variable<C, PM>)forBlock.getLoopVariable();
+		if (iterationVariable != null) {
+			variableTraces.put(iterationVariable, new VariableTrace<C, PM>(iterationVariable));
+		}
+
+		try {
+			super.visitAcceleoForBlock(forBlock);
+		} finally {
+			iterationTraces.dispose();
+			iterationTraces = oldIterationTraces;
+			iterationBody = oldIterationBody;
+			iterationCount = oldIterationCount;
+			iterationVariable = oldIterationVariable;
+		}
 
 		if (forBlock.getLoopVariable() != null) {
 			scopeEObjects.removeLast();
@@ -620,6 +647,46 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitBooleanLiteralExp(org.eclipse.ocl.expressions.BooleanLiteralExp)
+	 */
+	@Override
+	public Object visitBooleanLiteralExp(BooleanLiteralExp<C> literalExp) {
+		final Object result = super.visitBooleanLiteralExp(literalExp);
+
+		InputElement input = getInputElement(retrieveScopeEObjectValue());
+		if (protectedAreaSource != null) {
+			input = protectedAreaSource;
+		}
+
+		if (record) {
+			if (operationArgumentTrace != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				operationArgumentTrace.addTrace(input, text, result);
+			} else if (isInitializingVariable()) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				variableTraces.get(initializingVariable).addTrace(input, text, result);
+			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
+					&& shouldRecordTrace(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (isOperationCallSource(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (iterationTraces != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				iterationTraces.addTrace(input, text, result);
+			}
+		} else if (!record && operationArgumentTrace != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
+			operationArgumentTrace.addTrace(input, text, result);
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitEnumLiteralExp(org.eclipse.ocl.expressions.EnumLiteralExp)
 	 */
 	@Override
@@ -669,8 +736,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 		Object result = null;
 		try {
-			// Intercept the iterator's body
-			if (iterationBody == expression) {
+			// Intercept OCL iterator bodies
+			if (iterationBody == expression
+					&& expression.eContainingFeature() != MtlPackage.eINSTANCE.getBlock_Body()) {
 				result = visitIteratorBody(expression);
 			} else {
 				result = getDelegate().visitExpression(expression);
@@ -681,6 +749,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} finally {
 			record = oldRecordingValue;
 			evaluatingPostCall = oldEvaluatingPostCall;
+			// Advance Acceleo iterator (for loops) iteration count
+			if (iterationBody == expression
+					&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
+				iterationCount++;
+			}
 		}
 
 		if (isPropertyCallSource(expression)) {
@@ -718,6 +791,49 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(ifExp)) {
 			operationCallSource = result;
 		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitIntegerLiteralExp(org.eclipse.ocl.expressions.IntegerLiteralExp)
+	 */
+	@Override
+	public Object visitIntegerLiteralExp(IntegerLiteralExp<C> literalExp) {
+		final Object result = super.visitIntegerLiteralExp(literalExp);
+
+		InputElement input = getInputElement(retrieveScopeEObjectValue());
+		if (protectedAreaSource != null) {
+			input = protectedAreaSource;
+		}
+		// We do not create traceability information for the charset of the file block (ex: UTF-8)
+		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
+				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
+
+		if (record && !isFileBlockCharset) {
+			if (operationArgumentTrace != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				operationArgumentTrace.addTrace(input, text, result);
+			} else if (isInitializingVariable()) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				variableTraces.get(initializingVariable).addTrace(input, text, result);
+			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
+					&& shouldRecordTrace(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (isOperationCallSource(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (iterationTraces != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				iterationTraces.addTrace(input, text, result);
+			}
+		} else if (!record && operationArgumentTrace != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
+			operationArgumentTrace.addTrace(input, text, result);
+		}
+
 		return result;
 	}
 
@@ -1084,13 +1200,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				&& (variableTraces.get(variableExp.getReferredVariable()) != null || initializingVariable
 						.getInitExpression() == variableExp);
 		boolean recordTrace = !isInitializingVariable() && recordedTraces.size() > 0
-				&& result instanceof String && ((String)result).length() > 0;
+				&& TraceabilityVisitorUtil.isPrimitive(result) && result.toString().length() > 0;
 
 		// Whether we'll record them or not, advance the iterator traces if needed
 		VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
 		boolean isPrimitiveIteratorVariable = referredVarTrace != null
 				&& referredVarTrace.getReferredVariable() == iterationVariable
 				&& iterationVariable.getType() instanceof PrimitiveType<?>;
+		// Acceleo For block iteration variables are optional
+		isPrimitiveIteratorVariable = isPrimitiveIteratorVariable
+				|| (referredVarTrace == null && "self".equals(variableExp.getReferredVariable().getName()) //$NON-NLS-1$
+				&& iterationTraces != null);
 		if (isPrimitiveIteratorVariable) {
 			if (iterationTraces.getLastIteration() != iterationCount) {
 				iterationTraces.advanceIteration(result.toString());
@@ -1099,7 +1219,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		if (recordVariableInitialization || (record && recordTrace) || recordOperationArgument) {
 			// If this is an iteratorExp's iteration variable, we need to retrieve its correct trace manually
-			if (referredVarTrace != null && isPrimitiveIteratorVariable) {
+			if (isPrimitiveIteratorVariable) {
+				if (referredVarTrace == null) {
+					referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
+				}
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
 						.getTracesForIteration().entrySet()) {
 					referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
@@ -2106,6 +2229,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				CollectionLiteralExp<?> collectionLiteralExp = (CollectionLiteralExp<?>)eContainer;
 				isSource = isIteratorCallSource(collectionLiteralExp);
 			}
+		} else if (eContainer instanceof ForBlock) {
+			isSource = EcoreUtil.isAncestor(iterationTraces.getReferredExpression(), expression);
 		}
 		return isSource;
 	}
