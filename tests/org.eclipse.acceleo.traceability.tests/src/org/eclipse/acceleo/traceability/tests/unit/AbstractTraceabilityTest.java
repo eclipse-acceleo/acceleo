@@ -24,13 +24,10 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.util.MtlResourceImpl;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -162,7 +159,8 @@ public abstract class AbstractTraceabilityTest {
 				+ (new Path(mtlPath)).removeFileExtension().addFileExtension(
 						IAcceleoConstants.EMTL_FILE_EXTENSION), true);
 
-		Resource modelResource = ModelUtils.createResource(moduleURI, resourceSet);
+		Resource modelResource = new MtlResourceImpl(URI
+				.createURI("org.eclipse.acceleo/src/module/myModule.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
 		assertNull(parser.getProblems(file));
 		assertNull(parser.getWarnings(file));
@@ -242,7 +240,8 @@ public abstract class AbstractTraceabilityTest {
 				+ (new Path(mtlPath)).removeFileExtension().addFileExtension(
 						IAcceleoConstants.EMTL_FILE_EXTENSION), true);
 
-		Resource modelResource = ModelUtils.createResource(moduleURI, resourceSet);
+		Resource modelResource = new MtlResourceImpl(URI
+				.createURI("org.eclipse.acceleo/src/module/myModule.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
 		parser.parse(source, modelResource, new ArrayList<URI>());
 
@@ -304,17 +303,6 @@ public abstract class AbstractTraceabilityTest {
 		for (Resource resource : resourceSet.getResources()) {
 			if (resource != inputModel.eResource()) {
 				resource.unload();
-			}
-		}
-
-		if (this.moduleURI != null) {
-			String path = this.moduleURI.toString();
-			path = path.substring("platform:/plugin".length()); //$NON-NLS-1$
-			try {
-				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-				file.delete(true, new NullProgressMonitor());
-			} catch (CoreException e) {
-				e.printStackTrace();
 			}
 		}
 	}
