@@ -778,6 +778,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						}
 					}
 					break;
+				case PredefinedType.ANY:
+					if (result instanceof Boolean && ((Boolean)result).booleanValue()
+							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
+						ExpressionTrace<C> trace = recordedTraces.getLast();
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+								.getTracesForIteration().entrySet()) {
+							trace.mergeTrace(entry.getKey(), entry.getValue());
+						}
+					}
+					break;
 				// FIXME handle the other iterators
 				default:
 					break;
@@ -1090,6 +1100,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						input = protectedAreaSource;
 					}
 					for (GeneratedText text : entry.getValue()) {
+						// 3.4 compatibility : EcoreUtil.copy() wasn't generic. The cast is necessary
+						@SuppressWarnings("cast")
 						GeneratedText copy = (GeneratedText)EcoreUtil.copy(text);
 						if (recordOperationArgument) {
 							operationArgumentTrace.addTrace(input, copy, result);
@@ -1557,7 +1569,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            Source of the call.
 	 * @return Result of the call.
 	 */
-	@SuppressWarnings("unchecked")
 	private Object internalVisitOCLOperation(OperationCallExp<C, O> callExp, Object source) {
 		final Object result;
 
@@ -1575,6 +1586,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				int startIndex = ((Integer)arguments.get(0)).intValue() - 1;
 				int endIndex = ((Integer)arguments.get(1)).intValue();
 				result = operationVisitor.visitSubstringOperation((String)source, startIndex, endIndex);
+				break;
+			case PredefinedType.FIRST:
+				result = operationVisitor.visitFirstOperation((Collection<?>)source);
+				break;
+			case PredefinedType.LAST:
+				result = operationVisitor.visitLastOperation((Collection<?>)source);
 				break;
 			default:
 				// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known
@@ -1815,6 +1832,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean isImpacting = false;
 
 		final EClassifier operationReceiverEType = (EClassifier)operationCall.getSource().getType();
+		final EClassifier stringType = (EClassifier)getEnvironment().getOCLStandardLibrary().getString();
+		final EClassifier collectionType = (EClassifier)getEnvironment().getOCLStandardLibrary()
+				.getCollection();
 
 		// Any operation that returns a Primitive impacts the traceability
 		if (isBooleanReturningOperation(operationCall) || isIntegerReturningOperation(operationCall)) {
@@ -1822,17 +1842,36 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else {
 			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
 			// first, handle the MTL specific operations
-			if (operationReceiverEType == getEnvironment().getOCLStandardLibrary().getString()
+			if (operationReceiverEType == stringType
 					|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
 				isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
-			} else {
-				isImpacting = AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName);
-				isImpacting = isImpacting
-						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName);
+			} else if (collectionType.eClass().isInstance(operationReceiverEType)) {
+				isImpacting = getTraceabilityImpactingCollectionOperationNames().contains(operationName);
 			}
 		}
 
 		return isImpacting;
+	}
+
+	/**
+	 * Returns the list of all operations that will impact traceability information.
+	 * 
+	 * @return The list of all operations that will impact traceability information.
+	 */
+	private List<String> getTraceabilityImpactingCollectionOperationNames() {
+		List<String> operationNames = new ArrayList<String>();
+
+		// Operations returning Integer or Boolean values are handled otherwise
+
+		// non standard library
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+
+		// OCL
+		operationNames.add(PredefinedType.FIRST_NAME);
+		operationNames.add(PredefinedType.LAST_NAME);
+
+		return operationNames;
 	}
 
 	/**
@@ -1996,7 +2035,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(expression)) {
 			OperationCallExp<C, O> call = (OperationCallExp<C, O>)expression.eContainer();
 			EOperation op = (EOperation)call.getReferredOperation();
-			if (isTraceabilityImpactingOperation(call)) {
+			if (isTraceabilityImpactingOperation(call)
+					&& TraceabilityVisitorUtil.isPrimitive((EClassifier)call.getType())) {
 				result = true;
 			} else if (op.getEType() != getEnvironment().getOCLStandardLibrary().getString()) {
 				result = false;
