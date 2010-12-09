@@ -27,6 +27,7 @@ import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ocl.ecore.IntegerLiteralExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.VariableExp;
@@ -603,7 +604,7 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(3, generatedRegions.size());
-			assertEquals("blockFor".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals("123".length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -611,63 +612,19 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
 			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
 
-			int gencpt = 0;
+			int gencpt = 1;
 			for (GeneratedText generatedText : generatedRegions) {
-				assertEquals(0 + ("blockFor".length() * gencpt), generatedText.getStartOffset()); //$NON-NLS-1$
-				assertEquals("blockFor".length() * (gencpt + 1), generatedText.getEndOffset()); //$NON-NLS-1$
+				assertEquals(0 + gencpt - 1, generatedText.getStartOffset());
+				assertEquals(gencpt, generatedText.getEndOffset());
 				ModuleElement moduleElement = generatedText.getModuleElement();
 				EObject element = moduleElement.getModuleElement();
 				assertTrue(element instanceof ASTNode);
-				assertTrue(element instanceof StringLiteralExp);
-				StringLiteralExp string = (StringLiteralExp)element;
-				assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-				assertEquals(281, string.getStartPosition());
-				assertEquals(281 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
-
-				InputElement sourceElement = generatedText.getSourceElement();
-				EObject modelElement = sourceElement.getModelElement();
-				assertTrue(modelElement instanceof EClass);
-				assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
-				assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/block/model.ecore", //$NON-NLS-1$
-						modelElement.eResource().getURI().path());
-				gencpt++;
-			}
-			cpt++;
-		}
-	}
-
-	@Test
-	public void testTraceabilityBlockForTemplate2() {
-		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
-				"data/block/blockForTemplate2.mtl", //$NON-NLS-1$
-				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
-		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
-		assertEquals(4, generatedFiles.size());
-
-		int cpt = 1;
-		for (GeneratedFile generatedFile : generatedFiles) {
-			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertEquals(3, generatedRegions.size());
-			assertEquals("blockFor".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
-
-			List<InputElement> sourceElements = generatedFile.getSourceElements();
-			assertEquals(2, sourceElements.size()); // the class and its name
-			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
-			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
-
-			int gencpt = 0;
-			for (GeneratedText generatedText : generatedRegions) {
-				assertEquals(0 + ("blockFor".length() * gencpt), generatedText.getStartOffset()); //$NON-NLS-1$
-				assertEquals("blockFor".length() * (gencpt + 1), generatedText.getEndOffset()); //$NON-NLS-1$
-				ModuleElement moduleElement = generatedText.getModuleElement();
-				EObject element = moduleElement.getModuleElement();
-				assertTrue(element instanceof ASTNode);
-				assertTrue(element instanceof StringLiteralExp);
-				StringLiteralExp string = (StringLiteralExp)element;
-				assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-				assertEquals(281, string.getStartPosition());
-				assertEquals(281 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+				assertTrue(element instanceof IntegerLiteralExp);
+				IntegerLiteralExp integer = (IntegerLiteralExp)element;
+				assertEquals(Integer.valueOf(gencpt), integer.getIntegerSymbol());
+				assertEquals(279 + ((gencpt - 1) * 3), integer.getStartPosition());
+				assertEquals(279 + ((gencpt - 1) * 3) + Integer.valueOf(gencpt).toString().length(), integer
+						.getEndPosition());
 
 				InputElement sourceElement = generatedText.getSourceElement();
 				EObject modelElement = sourceElement.getModelElement();
@@ -812,8 +769,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(388, string.getStartPosition());
+			assertEquals(388 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("blockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -824,57 +781,99 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(333, string.getStartPosition());
+			assertEquals(333 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals("blockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothername".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(481, string.getStartPosition());
+			assertEquals(481 + "otherName".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals("blockFornewNameothername".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(388, string.getStartPosition());
+			assertEquals(388 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(3);
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			generatedText = generatedRegions.get(4);
+			assertEquals("blockFornewNameothernameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
-
-			generatedText = generatedRegions.get(4);
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
-			moduleElement = generatedText.getModuleElement();
-			element = moduleElement.getModuleElement();
-			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof StringLiteralExp);
-			string = (StringLiteralExp)element;
-			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(333, string.getStartPosition());
+			assertEquals(333 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(5);
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFornewName".length(), generatedText //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewNameothername".length(), generatedText //$NON-NLS-1$
 					.getEndOffset());
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(481, string.getStartPosition());
+			assertEquals(481 + "otherName".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals("blockFornewNameothernameblockFornewNameothername".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFor".length(), generatedText //$NON-NLS-1$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(388, string.getStartPosition());
+			assertEquals(388 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(7);
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFor".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewName".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(333, string.getStartPosition());
+			assertEquals(333 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(8);
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewName".length(), //$NON-NLS-1$
+					generatedText.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewNameothername".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(481, string.getStartPosition());
+			assertEquals(481 + "otherName".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -914,8 +913,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(385, string.getStartPosition());
+			assertEquals(385 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("blockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -926,57 +925,99 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(330, string.getStartPosition());
+			assertEquals(330 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals("blockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothername".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(486, string.getStartPosition());
+			assertEquals(486 + "'otherName'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals("blockFornewNameothername".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(385, string.getStartPosition());
+			assertEquals(385 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(3);
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			generatedText = generatedRegions.get(4);
+			assertEquals("blockFornewNameothernameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
-
-			generatedText = generatedRegions.get(4);
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
-			moduleElement = generatedText.getModuleElement();
-			element = moduleElement.getModuleElement();
-			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof StringLiteralExp);
-			string = (StringLiteralExp)element;
-			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(330, string.getStartPosition());
+			assertEquals(330 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(5);
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFornewName".length(), generatedText //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameothernameblockFornewNameothername".length(), generatedText //$NON-NLS-1$
 					.getEndOffset());
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(486, string.getStartPosition());
+			assertEquals(486 + "'otherName'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals("blockFornewNameothernameblockFornewNameothername".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFor".length(), generatedText //$NON-NLS-1$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(385, string.getStartPosition());
+			assertEquals(385 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(7);
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFor".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewName".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(330, string.getStartPosition());
+			assertEquals(330 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(8);
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewName".length(), //$NON-NLS-1$
+					generatedText.getStartOffset());
+			assertEquals("blockFornewNameothernameblockFornewNameothernameblockFornewNameothername".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("otherName", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(486, string.getStartPosition());
+			assertEquals(486 + "'otherName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -999,8 +1040,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		int cpt = 1;
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertEquals(9, generatedRegions.size());
-			assertEquals("blockFornewNameotherName".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals(12, generatedRegions.size());
+			assertEquals("blockFornewNameclaYOP".length() * 3, generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -1017,8 +1058,8 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(412, string.getStartPosition());
+			assertEquals(412 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(1);
 			assertEquals("blockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
@@ -1029,48 +1070,99 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(334, string.getStartPosition());
+			assertEquals(334 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			generatedText = generatedRegions.get(2);
 			assertEquals("blockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNamecla".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(367, propertyCallExp.getStartPosition());
+			assertEquals(367 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals("blockFornewNamecla".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameclaYOP".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("YOP", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(402, string.getStartPosition());
+			assertEquals(402 + "'YOP'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals("blockFornewNameclaYOP".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameclaYOPblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(412, string.getStartPosition());
+			assertEquals(412 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(3);
-			assertEquals("blockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			generatedText = generatedRegions.get(5);
+			assertEquals("blockFornewNameclaYOPblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameclaYOPblockFornewName".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(334, string.getStartPosition());
+			assertEquals(334 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(4);
-			assertEquals("blockFornewNameblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			generatedText = generatedRegions.get(6);
+			assertEquals("blockFornewNameclaYOPblockFornewName".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameclaYOPblockFornewNamecla".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(367, propertyCallExp.getStartPosition());
+			assertEquals(367 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(7);
+			assertEquals("blockFornewNameclaYOPblockFornewNamecla".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOP".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("YOP", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(402, string.getStartPosition());
+			assertEquals(402 + "'YOP'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(8);
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOP".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFor".length(), generatedText //$NON-NLS-1$
+					.getEndOffset());
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("blockFor", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(337, string.getStartPosition());
-			assertEquals(337 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(412, string.getStartPosition());
+			assertEquals(412 + "blockFor".length(), string.getEndPosition()); //$NON-NLS-1$
 
-			generatedText = generatedRegions.get(5);
-			assertEquals("blockFornewNameblockFornewNameblockFor".length(), generatedText.getStartOffset()); //$NON-NLS-1$
-			assertEquals("blockFornewNameblockFornewNameblockFornewName".length(), generatedText //$NON-NLS-1$
+			generatedText = generatedRegions.get(9);
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFor".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFornewName".length(), generatedText //$NON-NLS-1$
 					.getEndOffset());
 			moduleElement = generatedText.getModuleElement();
 			element = moduleElement.getModuleElement();
@@ -1078,8 +1170,36 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			string = (StringLiteralExp)element;
 			assertEquals("newName", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(325, string.getStartPosition());
-			assertEquals(325 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(334, string.getStartPosition());
+			assertEquals(334 + "'newName'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(10);
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFornewName".length(), generatedText //$NON-NLS-1$
+					.getStartOffset());
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFornewNamecla".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(367, propertyCallExp.getStartPosition());
+			assertEquals(367 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(11);
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFornewNamecla".length(), //$NON-NLS-1$
+					generatedText.getStartOffset());
+			assertEquals("blockFornewNameclaYOPblockFornewNameclaYOPblockFornewNameclaYOP".length(), //$NON-NLS-1$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("YOP", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(402, string.getStartPosition());
+			assertEquals(402 + "'YOP'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
