@@ -8,7 +8,11 @@
         <cs:dependency name="org.eclipse.pde.core" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.pde.junit.runtime" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.platform" componentType="eclipse.feature"/>
+        <cs:dependency name="org.eclipse.swtbot.eclipse.core" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.swtbot.eclipse.finder" componentType="osgi.bundle"/>
+        <cs:dependency name="org.eclipse.swtbot.eclipse.spy" componentType="osgi.bundle"/>
+        <cs:dependency name="org.eclipse.swtbot.go" componentType="osgi.bundle"/>
+        <cs:dependency name="org.eclipse.swtbot.junit4_x" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.swtbot.swt.finder" componentType="osgi.bundle"/>
         <cs:dependency name="org.junit4" componentType="osgi.bundle"/>
     </cs:dependencies>
