@@ -79,13 +79,6 @@
 			<cs:products alias="output" base="${buckminster.output}/zips/" />
 		</cs:public>
 
-		<cs:public name="tag" actor="buckminster.tag">
-			<cs:actorProperties>
-				<cs:property key="tag" value="build_${build.id}" />
-				<cs:property key="exclude.0" value="^org\.eclipse\.test$" />
-				<cs:property key="exclude.1" value="^org\.eclipse\.ant\.optional\.junit$" />
-			</cs:actorProperties>
-		</cs:public>
 	</cs:actions>
 
 	<cs:groups>
