@@ -150,6 +150,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** This will be used to keep pointers towards the latest template invocation traces. */
 	private ArrayDeque<ExpressionTrace<C>> invocationTraces;
 
+	/**
+	 * This will allow us to restore generated files' offsets in the case where traceability information is
+	 * wrong in any way.
+	 */
+	private int lastInvocationTracesLength;
+
 	/** This will allow us to determine when we finish the evaluation of an iteration. */
 	private OCLExpression<C> iterationBody;
 
@@ -308,7 +314,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					textIterator.remove();
 				}
 			}
-			generatedFile.setLength(fileLength + addedLength);
+
+			int stringLength = string.length();
+			if (addedLength != stringLength && lastInvocationTracesLength != stringLength) {
+				/*
+				 * We might have had an error with traceability information on this expression. Force the
+				 * length of the file to grow the length of the String. Should we log anything? This
+				 * information would be interesting if a user encounters such a failure.
+				 */
+				generatedFile.setLength(fileLength + stringLength);
+			} else {
+				generatedFile.setLength(fileLength + addedLength);
+			}
+			if (invocationTraces != null) {
+				lastInvocationTracesLength += stringLength;
+			} else {
+				lastInvocationTracesLength = 0;
+			}
 			if (disposeTrace) {
 				trace.dispose();
 			}
