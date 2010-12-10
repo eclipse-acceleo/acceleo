@@ -381,7 +381,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public void visitAcceleoForBlock(ForBlock forBlock) {
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
-		final Object iteration = visitExpression((OCLExpression<C>)forBlock.getIterSet());
+		final Object iteration = getAcceleoVisitor().visitExpression((OCLExpression<C>)forBlock.getIterSet());
 		fireGenerationEvent = fireEvents;
 		final Variable loopVariable = forBlock.getLoopVariable();
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
