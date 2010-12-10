@@ -8,6 +8,7 @@
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.apache\.log4j(?:\..+)?$" searchPathRef="swtbot"/>
+  <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator searchPathRef="platform"/>
   <rm:searchPath name="local.releng">
     <rm:provider componentTypes="buckminster" readerType="local" mutable="false">
