@@ -795,14 +795,14 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Size and possibly other traceability impacting operations share the same "basic" behavior of altering
-	 * indices to reflect an integer return. This behavior is externalized here.
+	 * This will handle the traceabiliy information changes for all operations that return a Number :
+	 * arithmetic operations, String::size(), Collection::Index()...
 	 * 
 	 * @param result
-	 *            Integer result of the operation. We'll only leave a single region with its length equal to
-	 *            the given integer's number of digits.
+	 *            Result of the operation. We'll only leave a single region with its length equal to the given
+	 *            integer's number of digits.
 	 */
-	void changeTraceabilityIndicesIntegerReturn(int result) {
+	void changeTraceabilityIndicesNumberReturn(Number result) {
 		// We'll keep only the very last trace and alter its indices
 		AbstractTrace trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
