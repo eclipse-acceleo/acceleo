@@ -81,9 +81,11 @@ import org.eclipse.ocl.expressions.IntegerLiteralExp;
 import org.eclipse.ocl.expressions.IterateExp;
 import org.eclipse.ocl.expressions.IteratorExp;
 import org.eclipse.ocl.expressions.LetExp;
+import org.eclipse.ocl.expressions.LiteralExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.PropertyCallExp;
+import org.eclipse.ocl.expressions.RealLiteralExp;
 import org.eclipse.ocl.expressions.StateExp;
 import org.eclipse.ocl.expressions.StringLiteralExp;
 import org.eclipse.ocl.expressions.Variable;
@@ -675,33 +677,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitBooleanLiteralExp(BooleanLiteralExp<C> literalExp) {
 		final Object result = super.visitBooleanLiteralExp(literalExp);
 
-		InputElement input = getInputElement(retrieveScopeEObjectValue());
-		if (protectedAreaSource != null) {
-			input = protectedAreaSource;
-		}
-
-		if (record) {
-			if (operationArgumentTrace != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				operationArgumentTrace.addTrace(input, text, result);
-			} else if (isInitializingVariable()) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				variableTraces.get(initializingVariable).addTrace(input, text, result);
-			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
-					&& shouldRecordTrace(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (isOperationCallSource(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (iterationTraces != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				iterationTraces.addTrace(input, text, result);
-			}
-		} else if (!record && operationArgumentTrace != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			operationArgumentTrace.addTrace(input, text, result);
-		}
+		recordLiteralExp(literalExp, result);
 
 		return result;
 	}
@@ -776,6 +752,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
 				iterationCount++;
 			}
+			// Ensure we've properly recorded the iteration traces
+			if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getForBlock_IterSet()
+					&& iterationTraces.getTraces().isEmpty()) {
+				iterationTraces.addTraceCopy(recordedTraces.getLast());
+			}
 		}
 
 		if (isPropertyCallSource(expression)) {
@@ -825,36 +806,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitIntegerLiteralExp(IntegerLiteralExp<C> literalExp) {
 		final Object result = super.visitIntegerLiteralExp(literalExp);
 
-		InputElement input = getInputElement(retrieveScopeEObjectValue());
-		if (protectedAreaSource != null) {
-			input = protectedAreaSource;
-		}
-		// We do not create traceability information for the charset of the file block (ex: UTF-8)
-		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
-				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
-
-		if (record && !isFileBlockCharset) {
-			if (operationArgumentTrace != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				operationArgumentTrace.addTrace(input, text, result);
-			} else if (isInitializingVariable()) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				variableTraces.get(initializingVariable).addTrace(input, text, result);
-			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
-					&& shouldRecordTrace(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (isOperationCallSource(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (iterationTraces != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				iterationTraces.addTrace(input, text, result);
-			}
-		} else if (!record && operationArgumentTrace != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			operationArgumentTrace.addTrace(input, text, result);
-		}
+		recordLiteralExp(literalExp, result);
 
 		return result;
 	}
@@ -1036,9 +988,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				if (isBooleanReturningOperation(callExp)) {
 					result = super.visitOperationCallExp(callExp);
 					operationVisitor.changeTraceabilityIndicesBooleanReturn(((Boolean)result).booleanValue());
-				} else if (isIntegerReturningOperation(callExp)) {
+				} else if (isNumberReturningOperation(callExp)) {
 					result = super.visitOperationCallExp(callExp);
-					operationVisitor.changeTraceabilityIndicesIntegerReturn(((Integer)result).intValue());
+					operationVisitor.changeTraceabilityIndicesNumberReturn((Number)result);
 				} else {
 					result = internalVisitOperationCallExp(callExp);
 				}
@@ -1076,7 +1028,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		try {
 			result = getDelegate().visitPropertyCallExp(callExp);
 		} finally {
-			if (propertyCallSource != null && result != null) {
+			if (propertyCallSource != null && result != null && TraceabilityVisitorUtil.isPrimitive(result)) {
 				InputElement propertyCallInput = getInputElement(propertyCallSource,
 						(EStructuralFeature)callExp.getReferredProperty());
 				propertyCallSource = null;
@@ -1087,7 +1039,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				if (operationArgumentTrace != null) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					operationArgumentTrace.addTrace(propertyCallInput, text, result);
-				} else if (isInitializingVariable() && !(result instanceof EObject)) {
+				} else if (isInitializingVariable()) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
 				} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
@@ -1108,6 +1060,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(callExp)) {
 			operationCallSource = result;
 		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitRealLiteralExp(org.eclipse.ocl.expressions.RealLiteralExp)
+	 */
+	@Override
+	public Object visitRealLiteralExp(RealLiteralExp<C> literalExp) {
+		final Object result = super.visitRealLiteralExp(literalExp);
+
+		recordLiteralExp(literalExp, result);
 
 		return result;
 	}
@@ -1138,36 +1104,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitStringLiteralExp(StringLiteralExp<C> literalExp) {
 		final Object result = super.visitStringLiteralExp(literalExp);
 
-		InputElement input = getInputElement(retrieveScopeEObjectValue());
-		if (protectedAreaSource != null) {
-			input = protectedAreaSource;
-		}
-		// We do not create traceability information for the charset of the file block (ex: UTF-8)
-		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
-				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
-
-		if (record && !isFileBlockCharset) {
-			if (operationArgumentTrace != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				operationArgumentTrace.addTrace(input, text, result);
-			} else if (isInitializingVariable()) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				variableTraces.get(initializingVariable).addTrace(input, text, result);
-			} else if (recordedTraces.size() > 0 && ((String)result).length() > 0
-					&& shouldRecordTrace(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (isOperationCallSource(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (iterationTraces != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
-				iterationTraces.addTrace(input, text, result);
-			}
-		} else if (!record && operationArgumentTrace != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
-			operationArgumentTrace.addTrace(input, text, result);
-		}
+		recordLiteralExp(literalExp, result);
 
 		return result;
 	}
@@ -1179,7 +1116,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public Object visitVariable(Variable<C, PM> variable) {
-		final boolean isPrimitive = variable.getType() instanceof PrimitiveType<?>;
+		final boolean isPrimitive = TraceabilityVisitorUtil.isPrimitive(variable.getType())
+				|| TraceabilityVisitorUtil.isPrimitiveCollection((EClassifier)variable.getType());
 		Variable<C, PM> oldVar = null;
 		if (isPrimitive) {
 			variableTraces.put(variable, new VariableTrace<C, PM>(variable));
@@ -1960,18 +1898,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * This will return <code>true</code> if the given operation call returns an integer.
+	 * This will return <code>true</code> if the given operation call returns a Number.
 	 * 
 	 * @param operationCall
 	 *            The operation call which return type is to be checked.
-	 * @return <code>true</code> if the given operation call returns a integer.
+	 * @return <code>true</code> if the given operation call returns a Number.
 	 */
-	private boolean isIntegerReturningOperation(OperationCallExp<C, O> operationCall) {
+	private boolean isNumberReturningOperation(OperationCallExp<C, O> operationCall) {
 		final EClassifier operationReturnEType = (EClassifier)operationCall.getType();
 		final EClassifier integerClassifier = (EClassifier)getEnvironment().getOCLStandardLibrary()
 				.getInteger();
+		final EClassifier realClassifier = (EClassifier)getEnvironment().getOCLStandardLibrary().getReal();
 
-		return integerClassifier == operationReturnEType;
+		return integerClassifier == operationReturnEType || realClassifier == operationReturnEType;
 	}
 
 	/**
@@ -2015,7 +1954,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				.getCollection();
 
 		// Any operation that returns a Primitive impacts the traceability
-		if (isBooleanReturningOperation(operationCall) || isIntegerReturningOperation(operationCall)) {
+		if (isBooleanReturningOperation(operationCall) || isNumberReturningOperation(operationCall)) {
 			isImpacting = true;
 		} else {
 			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
@@ -2080,6 +2019,47 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		operationNames.add(PredefinedType.SUBSTRING_NAME);
 
 		return operationNames;
+	}
+
+	/**
+	 * Records information for the evaluation of literal expressions.
+	 * 
+	 * @param literalExp
+	 *            The expression literal we've evaluated.
+	 * @param result
+	 *            The result of the evaluation.
+	 */
+	private void recordLiteralExp(LiteralExp<C> literalExp, Object result) {
+		InputElement input = getInputElement(retrieveScopeEObjectValue());
+		if (protectedAreaSource != null) {
+			input = protectedAreaSource;
+		}
+		// We do not create traceability information for the charset of the file block (ex: UTF-8)
+		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
+				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
+
+		if (record && !isFileBlockCharset) {
+			if (operationArgumentTrace != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				operationArgumentTrace.addTrace(input, text, result);
+			} else if (isInitializingVariable()) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				variableTraces.get(initializingVariable).addTrace(input, text, result);
+			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
+					&& shouldRecordTrace(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (isOperationCallSource(literalExp)) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				recordedTraces.getLast().addTrace(input, text, result);
+			} else if (iterationTraces != null) {
+				GeneratedText text = createGeneratedTextFor(literalExp);
+				iterationTraces.addTrace(input, text, result);
+			}
+		} else if (!record && operationArgumentTrace != null) {
+			GeneratedText text = createGeneratedTextFor(literalExp);
+			operationArgumentTrace.addTrace(input, text, result);
+		}
 	}
 
 	/**

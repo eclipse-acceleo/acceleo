@@ -19,7 +19,9 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.ocl.types.CollectionType;
 import org.eclipse.ocl.types.PrimitiveType;
+import org.eclipse.ocl.types.TypesPackage;
 
 /**
  * This class will provide convenience methods used by both the evaluation visitor and the operation visitor.
@@ -105,11 +107,17 @@ public final class TraceabilityVisitorUtil {
 		}
 
 		boolean result = false;
-		Class<?> valueClass = value.getClass();
-		if (valueClass.isPrimitive()) {
-			result = true;
+		if (value instanceof EClassifier) {
+			result = isPrimitive((EClassifier)value);
+		} else if (value instanceof Collection<?>) {
+			result = isPrimitive((Collection<?>)value);
 		} else {
-			result = PRIMITIVE_CLASSES.contains(valueClass);
+			Class<?> valueClass = value.getClass();
+			if (valueClass.isPrimitive()) {
+				result = true;
+			} else {
+				result = PRIMITIVE_CLASSES.contains(valueClass);
+			}
 		}
 		return result;
 	}
@@ -126,5 +134,19 @@ public final class TraceabilityVisitorUtil {
 			return true;
 		}
 		return PRIMITIVE_CLASSIFIERS.contains(classifier);
+	}
+
+	/**
+	 * This will check whether the given classifier is considered as a primitive collection in OCL terms.
+	 * 
+	 * @param classifier
+	 *            The classifier to check.
+	 * @return <code>true</code> if this classifier translates into an OCL primitive.
+	 */
+	public static boolean isPrimitiveCollection(EClassifier classifier) {
+		if (TypesPackage.eINSTANCE.getCollectionType().isInstance(classifier)) {
+			return isPrimitive(((CollectionType<?, ?>)classifier).getElementType());
+		}
+		return false;
 	}
 }
