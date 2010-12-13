@@ -8,16 +8,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.traceability.tests.unit.random.operations;
+package org.eclipse.acceleo.traceability.tests.unit.random.string;
 
-public class StringSourceStringStringParameter {
-	private String value;
+import org.eclipse.acceleo.traceability.tests.unit.random.operations.AbstractOperation;
 
-	public StringSourceStringStringParameter(String value) {
+public class StringSourceNoParameters extends AbstractOperation {
+
+	public StringSourceNoParameters(String value) {
 		this.value = value;
 	}
 
-	public String getValue() {
-		return value;
-	}
 }

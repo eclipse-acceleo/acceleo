@@ -16,18 +16,24 @@ import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.tests.unit.AbstractTraceabilityTest;
 import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
+import org.eclipse.acceleo.traceability.tests.unit.random.collection.CollectionSourceNoParameter;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BagData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BooleanData;
+import org.eclipse.acceleo.traceability.tests.unit.random.data.CollectionData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.FloatData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.IntData;
+import org.eclipse.acceleo.traceability.tests.unit.random.data.ObjectData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.OrderedSetData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.SequenceData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.SetData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.StringData;
-import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceIntParameter;
-import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceNoParameters;
-import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceStringParameter;
-import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceStringStringParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.operations.AbstractOperation;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceIntIntParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceIntParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceNoParameters;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceStringIntParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceStringParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.string.StringSourceStringStringParameter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoint;
@@ -129,21 +135,52 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	
 	/** Data points Sequence */
 	@DataPoint public static SequenceData sequenceStringValue = new SequenceData("Sequence{'a', 'b', 'c'}");
+	@DataPoint public static SequenceData sequenceIntValue = new SequenceData("Sequence{1, 2, 3}");
+	@DataPoint public static SequenceData sequenceBooleanValue = new SequenceData("Sequence{true, true, false}");
+	@DataPoint public static SequenceData sequenceFloatValue = new SequenceData("Sequence{17.8, 5.77, -3.5}");
+	@DataPoint public static SequenceData sequenceEObjectValue = new SequenceData("Sequence{eClass, eClass.eContainer()}");
+	@DataPoint public static SequenceData sequenceEObjectPropertyValue = new SequenceData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name");
+	@DataPoint public static SequenceData sequenceSequenceStringValue = new SequenceData("Sequence{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
+	@DataPoint public static SequenceData sequenceBagStringValue = new SequenceData("Sequence{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
+	@DataPoint public static SequenceData sequenceSetStringValue = new SequenceData("Sequence{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
+	@DataPoint public static SequenceData sequenceOrderedSetStringValue = new SequenceData("Sequence{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
 	
 	/** Data points Bag */
 	@DataPoint public static BagData bagStringValue = new BagData("Bag{'a', 'b', 'c'}");
+	@DataPoint public static BagData bagIntValue = new BagData("Bag{1, 2, 3}");
+	@DataPoint public static BagData bagBooleanValue = new BagData("Bag{true, false, true}");
+	@DataPoint public static BagData bagFloatValue = new BagData("Bag{17.8, 5.77, -3.5}");
+	@DataPoint public static BagData bagEObjectValue = new BagData("Bag{eClass, eClass.eContainer()}");
+	@DataPoint public static BagData bagEObjectPropertyValue = new BagData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name->asBag()");
+	@DataPoint public static BagData bagBagStringValue = new BagData("Bag{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
+	@DataPoint public static BagData bagSetStringValue = new BagData("Bag{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
+	@DataPoint public static BagData bagSequenceStringValue = new BagData("Bag{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
+	@DataPoint public static BagData bagOrderedSetStringValue = new BagData("Bag{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
 	
 	/** Data points Set */
 	@DataPoint public static SetData setStringValue = new SetData("Set{'a', 'b', 'c'}");
+	@DataPoint public static SetData setIntValue = new SetData("Set{1, 2, 3}");
+	@DataPoint public static SetData setBooleanValue = new SetData("Set{true, false, false}");
+	@DataPoint public static SetData setFloatValue = new SetData("Set{25.2, 3.14, -3.54}");
+	@DataPoint public static SetData setEObjectValue = new SetData("Set{eClass, eClass.eContainer()}");
+	@DataPoint public static SetData setEObjectPropertyValue = new SetData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name->asSet()");
+	@DataPoint public static SetData setSetStringValue = new SetData("Set{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
+	@DataPoint public static SetData setSequenceStringValue = new SetData("Set{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
+	@DataPoint public static SetData setBagStringValue = new SetData("Set{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
+	@DataPoint public static SetData setOrderedSetStringValue = new SetData("Set{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
 	
 	/** Data points OrderedSet */
 	@DataPoint public static OrderedSetData orderedsetStringValue = new OrderedSetData("OrderedSet{'a', 'b', 'c'}");
+	@DataPoint public static OrderedSetData orderedsetIntValue = new OrderedSetData("OrderedSet{1, 2, 3}");
+	@DataPoint public static OrderedSetData orderedsetBooleanValue = new OrderedSetData("OrderedSet{true, false, true}");
+	@DataPoint public static OrderedSetData orderedsetFloatValue = new OrderedSetData("OrderedSet{12.25, 1.44, -3.5}");
+	@DataPoint public static OrderedSetData orderedsetEObjectValue = new OrderedSetData("OrderedSet{eClass, eClass.eContainer()}");
 	
 
 	
 	/**################################################################################################
 	 *
-	 * 									String Data
+	 * 									String Operations
 	 *
 	 *################################################################################################*/
 	@DataPoint public static StringSourceNoParameters isAlpha = new StringSourceNoParameters(".isAlpha");
@@ -174,134 +211,210 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static StringSourceStringStringParameter replace = new StringSourceStringStringParameter(".replace");
 	@DataPoint public static StringSourceStringStringParameter replaceAll = new StringSourceStringStringParameter(".replaceAll");
 	
+	@DataPoint public static StringSourceStringIntParameter strtok = new StringSourceStringIntParameter(".strtok");
+	
+	@DataPoint public static StringSourceIntIntParameter substringOcl = new StringSourceIntIntParameter(".substring");
+	
 	/**################################################################################################
 	 *
-	 * 									String Operations
+	 * 									String Tests
 	 *
 	 *################################################################################################*/
 	
 	@Theory
 	public void testIsAlpha(StringData source) {
-		this.stringSourceNoParameters(isAlpha, source);
+		this.noParameters(isAlpha, source);
 	}
 	
 	@Theory
 	public void testIsAlphaNum(StringData source) {
-		this.stringSourceNoParameters(isAlphanum, source);
+		this.noParameters(isAlphanum, source);
 	}
 	
 	@Theory
 	public void testToLowerFirst(StringData source) {
-		this.stringSourceNoParameters(toLowerFirst, source);
+		this.noParameters(toLowerFirst, source);
 	}
 
 	@Theory
 	public void testToUpperFirst(StringData source) {
-		this.stringSourceNoParameters(toUpperFirst, source);
+		this.noParameters(toUpperFirst, source);
 	}
 	
 	@Theory
 	public void testToUpper(StringData source) {
-		this.stringSourceNoParameters(toUpper, source);
+		this.noParameters(toUpper, source);
 	}
 	
 	@Theory
 	public void testTrim(StringData source) {
-		this.stringSourceNoParameters(trim, source);
+		this.noParameters(trim, source);
 	}
 	
 	@Theory
 	public void testIndex(StringData source, StringData param) {
-		this.stringSourceStringParameter(index, source, param);
+		this.oneParameter(index, source, param);
 	}
 	
 	@Theory
 	public void testStrcmp(StringData source, StringData param) {
-		this.stringSourceStringParameter(strcmp, source, param);
+		this.oneParameter(strcmp, source, param);
 	}
 	
 	@Theory
 	public void testContains(StringData source, StringData param) {
-		this.stringSourceStringParameter(contains, source, param);
+		this.oneParameter(contains, source, param);
 	}
 	
 	@Theory
 	public void testEndsWith(StringData source, StringData param) {
-		this.stringSourceStringParameter(index, source, param);
+		this.oneParameter(index, source, param);
 	}
 	
 	@Theory
 	public void testEqualsIgnoreCase(StringData source, StringData param) {
-		this.stringSourceStringParameter(equalsIgnoreCase, source, param);
+		this.oneParameter(equalsIgnoreCase, source, param);
 	}
 	
 	@Theory
 	public void testLastIndex(StringData source, StringData param) {
-		this.stringSourceStringParameter(lastIndex, source, param);
+		this.oneParameter(lastIndex, source, param);
 	}
 	
 	@Theory
 	public void testMatches(StringData source, StringData param) {
-		this.stringSourceStringParameter(matches, source, param);
+		this.oneParameter(matches, source, param);
 	}
 	
 	@Theory
 	public void testStartsWith(StringData source, StringData param) {
-		this.stringSourceStringParameter(startsWith, source, param);
+		this.oneParameter(startsWith, source, param);
 	}
 	
 	@Theory
 	public void testTokenize(StringData source, StringData param) {
-		this.stringSourceStringParameter(tokenize, source, param);
+		this.oneParameter(tokenize, source, param);
 	}
 	
 	@Theory
 	public void testConcat(StringData source, StringData param) {
-		this.stringSourceStringParameter(concat, source, param);
+		this.oneParameter(concat, source, param);
 	}
 	
 	@Theory
 	public void testFirst(StringData source, IntData param) {
-		this.stringSourceIntParameter(first, source, param);
+		this.oneParameter(first, source, param);
 	}
 	
 	@Theory
 	public void testLast(StringData source, IntData param) {
-		this.stringSourceIntParameter(last, source, param);
+		this.oneParameter(last, source, param);
 	}
 	
 	@Theory
 	public void testSubstring(StringData source, IntData param) {
-		this.stringSourceIntParameter(substring, source, param);
+		this.oneParameter(substring, source, param);
 	}
 	
 	@Theory
 	public void testSubstitute(StringData source, StringData param1, StringData param2) {
-		this.stringSourceStringStringParameter(substitute, source, param1, param2);
+		this.twoParameters(substitute, source, param1, param2);
 	}
 	
 	@Theory
 	public void testSubstituteAll(StringData source, StringData param1, StringData param2) {
-		this.stringSourceStringStringParameter(substituteAll, source, param1, param2);
+		this.twoParameters(substituteAll, source, param1, param2);
 	}
 	
 	@Theory
 	public void testReplace(StringData source, StringData param1, StringData param2) {
-		this.stringSourceStringStringParameter(replace, source, param1, param2);
+		this.twoParameters(replace, source, param1, param2);
 	}
 	
 	@Theory
 	public void testReplaceAll(StringData source, StringData param1, StringData param2) {
-		this.stringSourceStringStringParameter(replaceAll, source, param1, param2);
+		this.twoParameters(replaceAll, source, param1, param2);
+	}
+	
+	@Theory
+	public void testStrtok(StringData source, StringData param1, IntData param2) {
+		this.twoParameters(strtok, source, param1, param2);
+	}
+
+	@Theory
+	public void testSubstringOcl(StringData source, IntData param1, IntData param2) {
+		this.twoParameters(substringOcl, source, param1, param2);
+	}
+	
+	
+	/**################################################################################################
+	 *
+	 * 									Collection Operations
+	 *
+	 *################################################################################################*/
+	
+	@DataPoint public static CollectionSourceNoParameter asBag = new CollectionSourceNoParameter("->asBag");
+	@DataPoint public static CollectionSourceNoParameter asSet = new CollectionSourceNoParameter("->asSet");
+	@DataPoint public static CollectionSourceNoParameter asSequence = new CollectionSourceNoParameter("->asSequence");
+	@DataPoint public static CollectionSourceNoParameter flatten = new CollectionSourceNoParameter("->flatten");
+	@DataPoint public static CollectionSourceNoParameter isEmpty = new CollectionSourceNoParameter("->isEmpty");
+	@DataPoint public static CollectionSourceNoParameter notEmpty = new CollectionSourceNoParameter("->notEmpty");
+	@DataPoint public static CollectionSourceNoParameter sizeCollection = new CollectionSourceNoParameter("->size");
+	@DataPoint public static CollectionSourceNoParameter sum = new CollectionSourceNoParameter("->sum");
+	
+	/**################################################################################################
+	 *
+	 * 									Collection Tests
+	 *
+	 *################################################################################################*/
+	
+	@Theory
+	public void testAsBag(CollectionData source) {
+		this.noParameters(asBag, source);
+	}
+	
+	@Theory
+	public void testAsSet(CollectionData source) {
+		this.noParameters(asSet, source);
+	}
+	
+	@Theory
+	public void testAsSequence(CollectionData source) {
+		this.noParameters(asSequence, source);
+	}
+	
+	@Theory
+	public void testFlatten(CollectionData source) {
+		this.noParameters(flatten, source);
+	}
+	
+	@Theory
+	public void testIsEmpty(CollectionData source) {
+		this.noParameters(isEmpty, source);
+	}
+	
+	@Theory
+	public void testNotEmpty(CollectionData source) {
+		this.noParameters(notEmpty, source);
+	}
+	
+	@Theory
+	public void testSizeCollection(CollectionData source) {
+		this.noParameters(sizeCollection, source);
+	}
+	
+	@Theory
+	public void testSum(CollectionData source) {
+		this.noParameters(sum, source);
 	}
 	
 	/**################################################################################################
 	 *
-	 * 									String Utility methods
+	 * 									Utility Methods
 	 *
 	 *################################################################################################*/
 	
-	private void stringSourceIntParameter(StringSourceIntParameter operation, StringData source, IntData param) {
+	private void oneParameter(AbstractOperation operation, ObjectData source, ObjectData param) {
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
@@ -318,7 +431,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 		c++;
 	}
 	
-	private void stringSourceNoParameters(StringSourceNoParameters operation, StringData source) {
+	private void noParameters(AbstractOperation operation, ObjectData source) {
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("()").append(this.moduleBufferEnd);
@@ -335,24 +448,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 		c++;
 	}
 	
-	private void stringSourceStringParameter(StringSourceStringParameter operation, StringData source, StringData param) {
-		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
-				operation.getValue());
-		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
-		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
-				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
-		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
-		assertThat(generatedFiles.size(), is(4));
-		for (GeneratedFile generatedFile : generatedFiles) {
-			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
-					generatedRegions.size(), not(equalTo(0)));
-		}
-		
-		c++;
-	}
-	
-	private void stringSourceStringStringParameter(StringSourceStringStringParameter operation, StringData source, StringData param1, StringData param2) {
+	private void twoParameters(AbstractOperation operation, ObjectData source, ObjectData param1, ObjectData param2) {
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("(").append(param1.getValue()).append(", ").append(param2.getValue()).append(")")

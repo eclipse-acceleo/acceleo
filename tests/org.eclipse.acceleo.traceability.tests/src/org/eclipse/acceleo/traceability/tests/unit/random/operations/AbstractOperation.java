@@ -10,12 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.random.operations;
 
-public class StringSourceNoParameters {
-	private String value;
-
-	public StringSourceNoParameters(String value) {
-		this.value = value;
-	}
+public class AbstractOperation {
+	protected String value;
 
 	public String getValue() {
 		return value;

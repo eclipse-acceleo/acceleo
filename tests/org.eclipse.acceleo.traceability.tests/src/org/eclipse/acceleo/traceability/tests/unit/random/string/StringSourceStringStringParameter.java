@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.random.string;
 
-import org.eclipse.acceleo.traceability.tests.unit.random.data.IntData;
-import org.eclipse.acceleo.traceability.tests.unit.random.data.StringData;
-import org.junit.experimental.theories.Theory;
+import org.eclipse.acceleo.traceability.tests.unit.random.operations.AbstractOperation;
 
-public class StringSourceIntIntParameterTest {
-	@Theory
-	public void stringSourceIntIntParameter(StringData source, IntData param1, IntData param2) {
+public class StringSourceStringStringParameter extends AbstractOperation {
 
+	public StringSourceStringStringParameter(String value) {
+		this.value = value;
 	}
 }
