@@ -14,11 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.experimental.theories.DataPoint;
 import org.junit.runner.Runner;
 import org.junit.runners.Suite;
 import org.junit.runners.model.FrameworkField;
-import org.junit.runners.model.TestClass;
 
 public class AcceleoTraceabilityTheoriesSuite extends Suite {
 
@@ -30,34 +28,12 @@ public class AcceleoTraceabilityTheoriesSuite extends Suite {
 		// Find the types used by the constructor
 		Class<?>[] types = this.getTestClass().getOnlyConstructor().getParameterTypes();
 
-		// Find all the combinations of fields that can be used with the constructor.
-		List<List<FrameworkField>> matchingParametersCouples = new ArrayList<List<FrameworkField>>();
-		for (Class<?> type : types) {
-			List<FrameworkField> classFields = this.getClassFields(this.getTestClass(), type);
-			matchingParametersCouples.add(classFields);
-		}
-
-		List<List<FrameworkField>> combinations = AcceleoTraceabilityCombinationUtil
-				.combinate(matchingParametersCouples);
-
-		// Create a runner for the class initialized with a combination of parameters
-		for (List<FrameworkField> list : combinations) {
-			this.runners.add(new AcceleoTraceabilityTheoriesRunner(clazz, list));
-		}
-	}
-
-	private List<FrameworkField> getClassFields(TestClass testClass, Class<?> clazz) {
-		List<FrameworkField> useableAttribute = new ArrayList<FrameworkField>();
-
-		List<FrameworkField> annotatedFields = testClass.getAnnotatedFields(DataPoint.class);
-		for (FrameworkField frameworkField : annotatedFields) {
-			Class<?> declaringClass = frameworkField.getField().getType();
-			if (clazz.isAssignableFrom(declaringClass)) {
-				useableAttribute.add(frameworkField);
+		List<FrameworkField> operations = this.getTestClass().getAnnotatedFields(Operation.class);
+		for (FrameworkField operation : operations) {
+			if (types.length > 0 && types[0].isAssignableFrom(operation.getField().getType())) {
+				this.runners.add(new AcceleoTraceabilityTheoriesRunner(clazz, operation));
 			}
 		}
-
-		return useableAttribute;
 	}
 
 	/**

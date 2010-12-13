@@ -19,7 +19,7 @@ import org.eclipse.acceleo.traceability.tests.unit.random.AcceleoTraceabilityRan
 import org.eclipse.acceleo.traceability.tests.unit.random.AcceleoTraceabilityTheoriesSuite;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.StringData;
 import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceNoParameters;
-import org.junit.Test;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -33,15 +33,12 @@ public class StringSourceNoParametersTest extends AcceleoTraceabilityRandomTests
 
 	private StringSourceNoParameters operation;
 
-	private StringData source;
-
-	public StringSourceNoParametersTest(StringSourceNoParameters operation, StringData source) {
+	public StringSourceNoParametersTest(StringSourceNoParameters operation) {
 		this.operation = operation;
-		this.source = source;
 	}
 
-	@Test
-	public void stringSourceNoParameters() {
+	@Theory
+	public void stringSourceNoParameters(StringData source) {
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("()").append(this.moduleBufferEnd);

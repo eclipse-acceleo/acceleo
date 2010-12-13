@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.random;
 
+import java.util.List;
+
+import org.eclipse.acceleo.traceability.GeneratedFile;
+import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.tests.unit.AbstractTraceabilityTest;
+import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BagData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BooleanData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.FloatData;
@@ -23,13 +28,33 @@ import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourc
 import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceNoParameters;
 import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceStringParameter;
 import org.eclipse.acceleo.traceability.tests.unit.random.operations.StringSourceStringStringParameter;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("nls")
 @RunWith(Theories.class)
 public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
+
+	private static int c = 0;
+
+	@BeforeClass
+	public static void initialize() {
+		c = 0;
+	}
+
+	@AfterClass
+	public static void conclude() {
+		System.err.println("Number of tests: " + c);
+	}
 
 	//@formatter:off
 	
@@ -59,7 +84,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	
 	/**################################################################################################
 	 *
-	 * 											Attributes
+	 * 									Arguments
 	 *
 	 *################################################################################################*/
 
@@ -118,7 +143,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	
 	/**################################################################################################
 	 *
-	 * 											String Operations
+	 * 									String Data
 	 *
 	 *################################################################################################*/
 	@DataPoint public static StringSourceNoParameters isAlpha = new StringSourceNoParameters(".isAlpha");
@@ -148,4 +173,200 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static StringSourceStringStringParameter substituteAll = new StringSourceStringStringParameter(".substituteAll");
 	@DataPoint public static StringSourceStringStringParameter replace = new StringSourceStringStringParameter(".replace");
 	@DataPoint public static StringSourceStringStringParameter replaceAll = new StringSourceStringStringParameter(".replaceAll");
+	
+	/**################################################################################################
+	 *
+	 * 									String Operations
+	 *
+	 *################################################################################################*/
+	
+	@Theory
+	public void testIsAlpha(StringData source) {
+		this.stringSourceNoParameters(isAlpha, source);
+	}
+	
+	@Theory
+	public void testIsAlphaNum(StringData source) {
+		this.stringSourceNoParameters(isAlphanum, source);
+	}
+	
+	@Theory
+	public void testToLowerFirst(StringData source) {
+		this.stringSourceNoParameters(toLowerFirst, source);
+	}
+
+	@Theory
+	public void testToUpperFirst(StringData source) {
+		this.stringSourceNoParameters(toUpperFirst, source);
+	}
+	
+	@Theory
+	public void testToUpper(StringData source) {
+		this.stringSourceNoParameters(toUpper, source);
+	}
+	
+	@Theory
+	public void testTrim(StringData source) {
+		this.stringSourceNoParameters(trim, source);
+	}
+	
+	@Theory
+	public void testIndex(StringData source, StringData param) {
+		this.stringSourceStringParameter(index, source, param);
+	}
+	
+	@Theory
+	public void testStrcmp(StringData source, StringData param) {
+		this.stringSourceStringParameter(strcmp, source, param);
+	}
+	
+	@Theory
+	public void testContains(StringData source, StringData param) {
+		this.stringSourceStringParameter(contains, source, param);
+	}
+	
+	@Theory
+	public void testEndsWith(StringData source, StringData param) {
+		this.stringSourceStringParameter(index, source, param);
+	}
+	
+	@Theory
+	public void testEqualsIgnoreCase(StringData source, StringData param) {
+		this.stringSourceStringParameter(equalsIgnoreCase, source, param);
+	}
+	
+	@Theory
+	public void testLastIndex(StringData source, StringData param) {
+		this.stringSourceStringParameter(lastIndex, source, param);
+	}
+	
+	@Theory
+	public void testMatches(StringData source, StringData param) {
+		this.stringSourceStringParameter(matches, source, param);
+	}
+	
+	@Theory
+	public void testStartsWith(StringData source, StringData param) {
+		this.stringSourceStringParameter(startsWith, source, param);
+	}
+	
+	@Theory
+	public void testTokenize(StringData source, StringData param) {
+		this.stringSourceStringParameter(tokenize, source, param);
+	}
+	
+	@Theory
+	public void testConcat(StringData source, StringData param) {
+		this.stringSourceStringParameter(concat, source, param);
+	}
+	
+	@Theory
+	public void testFirst(StringData source, IntData param) {
+		this.stringSourceIntParameter(first, source, param);
+	}
+	
+	@Theory
+	public void testLast(StringData source, IntData param) {
+		this.stringSourceIntParameter(last, source, param);
+	}
+	
+	@Theory
+	public void testSubstring(StringData source, IntData param) {
+		this.stringSourceIntParameter(substring, source, param);
+	}
+	
+	@Theory
+	public void testSubstitute(StringData source, StringData param1, StringData param2) {
+		this.stringSourceStringStringParameter(substitute, source, param1, param2);
+	}
+	
+	@Theory
+	public void testSubstituteAll(StringData source, StringData param1, StringData param2) {
+		this.stringSourceStringStringParameter(substituteAll, source, param1, param2);
+	}
+	
+	@Theory
+	public void testReplace(StringData source, StringData param1, StringData param2) {
+		this.stringSourceStringStringParameter(replace, source, param1, param2);
+	}
+	
+	@Theory
+	public void testReplaceAll(StringData source, StringData param1, StringData param2) {
+		this.stringSourceStringStringParameter(replaceAll, source, param1, param2);
+	}
+	
+	/**################################################################################################
+	 *
+	 * 									String Utility methods
+	 *
+	 *################################################################################################*/
+	
+	private void stringSourceIntParameter(StringSourceIntParameter operation, StringData source, IntData param) {
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+					generatedRegions.size(), not(equalTo(0)));
+		}
+		
+		c++;
+	}
+	
+	private void stringSourceNoParameters(StringSourceNoParameters operation, StringData source) {
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("()").append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+					generatedRegions.size(), not(equalTo(0)));
+		}
+		
+		c++;
+	}
+	
+	private void stringSourceStringParameter(StringSourceStringParameter operation, StringData source, StringData param) {
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+					generatedRegions.size(), not(equalTo(0)));
+		}
+		
+		c++;
+	}
+	
+	private void stringSourceStringStringParameter(StringSourceStringStringParameter operation, StringData source, StringData param1, StringData param2) {
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("(").append(param1.getValue()).append(", ").append(param2.getValue()).append(")")
+				.append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+					generatedRegions.size(), not(equalTo(0)));
+		}
+		
+		c++;
+	}
 }
