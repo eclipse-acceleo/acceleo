@@ -16,10 +16,13 @@ import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.tests.unit.AbstractTraceabilityTest;
 import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
+import org.eclipse.acceleo.traceability.tests.unit.random.collection.CollectionSourceCollectionParameter;
 import org.eclipse.acceleo.traceability.tests.unit.random.collection.CollectionSourceNoParameter;
+import org.eclipse.acceleo.traceability.tests.unit.random.collection.CollectionSourceObjectParameter;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BagData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.BooleanData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.CollectionData;
+import org.eclipse.acceleo.traceability.tests.unit.random.data.ExpressionData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.FloatData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.IntData;
 import org.eclipse.acceleo.traceability.tests.unit.random.data.ObjectData;
@@ -59,7 +62,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 
 	@AfterClass
 	public static void conclude() {
-		System.err.println("Number of tests: " + c);
+		System.err.println("Number of successes: " + c);
 	}
 
 	//@formatter:off
@@ -175,8 +178,22 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static OrderedSetData orderedsetBooleanValue = new OrderedSetData("OrderedSet{true, false, true}");
 	@DataPoint public static OrderedSetData orderedsetFloatValue = new OrderedSetData("OrderedSet{12.25, 1.44, -3.5}");
 	@DataPoint public static OrderedSetData orderedsetEObjectValue = new OrderedSetData("OrderedSet{eClass, eClass.eContainer()}");
-	
+	@DataPoint public static OrderedSetData orderedsetOrderedSetStringValue = new OrderedSetData("OrderedSet{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
+	@DataPoint public static OrderedSetData orderedsetSetStringValue = new OrderedSetData("OrderedSet{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'c', 'b', 'a'}}");
+	@DataPoint public static OrderedSetData orderedsetBagStringValue = new OrderedSetData("Bag{OrderedSet{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'c', 'b', 'a'}}");
+	@DataPoint public static OrderedSetData orderedsetSequenceStringValue = new OrderedSetData("OrderedSet{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'c', 'b', 'a'}}");
 
+	/** Data points Expression */
+	@DataPoint public static ExpressionData expressionToStringSize = new ExpressionData("toString().size()");
+	@DataPoint public static ExpressionData expressionToString = new ExpressionData("toString()");
+	@DataPoint public static ExpressionData expressionOclIsUndefined = new ExpressionData("oclIsUndefined()");
+	@DataPoint public static ExpressionData expressionOclIsKindOfString = new ExpressionData("oclIsKindOf(String)");
+	@DataPoint public static ExpressionData expressionOclIsKindOfBoolean = new ExpressionData("oclIsKindOf(Boolean)");
+	@DataPoint public static ExpressionData expressionOclIsKindOfInteger = new ExpressionData("oclIsKindOf(Integer)");
+	@DataPoint public static ExpressionData expressionOclIsTypeOfString = new ExpressionData("oclIsTypeOf(String)");
+	@DataPoint public static ExpressionData expressionOclIsTypeOfBoolean = new ExpressionData("oclIsTypeOf(Boolean)");
+	@DataPoint public static ExpressionData expressionOclIsTypeOfInteger = new ExpressionData("oclIsTypeOf(Integer)");
+	@DataPoint public static ExpressionData expressionOclIsInvalid = new ExpressionData("oclIsInvalid()");
 	
 	/**################################################################################################
 	 *
@@ -355,6 +372,7 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	
 	@DataPoint public static CollectionSourceNoParameter asBag = new CollectionSourceNoParameter("->asBag");
 	@DataPoint public static CollectionSourceNoParameter asSet = new CollectionSourceNoParameter("->asSet");
+	@DataPoint public static CollectionSourceNoParameter asOrderedSet = new CollectionSourceNoParameter("->asOrderedSet");
 	@DataPoint public static CollectionSourceNoParameter asSequence = new CollectionSourceNoParameter("->asSequence");
 	@DataPoint public static CollectionSourceNoParameter flatten = new CollectionSourceNoParameter("->flatten");
 	@DataPoint public static CollectionSourceNoParameter isEmpty = new CollectionSourceNoParameter("->isEmpty");
@@ -362,6 +380,24 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static CollectionSourceNoParameter sizeCollection = new CollectionSourceNoParameter("->size");
 	@DataPoint public static CollectionSourceNoParameter sum = new CollectionSourceNoParameter("->sum");
 	
+	@DataPoint public static CollectionSourceObjectParameter count = new CollectionSourceObjectParameter("->count");
+	@DataPoint public static CollectionSourceObjectParameter excludes = new CollectionSourceObjectParameter("->excludes");
+	@DataPoint public static CollectionSourceObjectParameter excluding = new CollectionSourceObjectParameter("->excluding");
+	@DataPoint public static CollectionSourceObjectParameter includes = new CollectionSourceObjectParameter("->includes");
+	@DataPoint public static CollectionSourceObjectParameter including = new CollectionSourceObjectParameter("->including");
+	
+	@DataPoint public static CollectionSourceObjectParameter any = new CollectionSourceObjectParameter("->any");
+	@DataPoint public static CollectionSourceObjectParameter collect = new CollectionSourceObjectParameter("->collect");
+	@DataPoint public static CollectionSourceObjectParameter forAll = new CollectionSourceObjectParameter("->forAll");
+	@DataPoint public static CollectionSourceObjectParameter isUnique = new CollectionSourceObjectParameter("->isUnique");
+	@DataPoint public static CollectionSourceObjectParameter select = new CollectionSourceObjectParameter("->select");
+	@DataPoint public static CollectionSourceObjectParameter reject = new CollectionSourceObjectParameter("->reject");
+	@DataPoint public static CollectionSourceObjectParameter sortedBy = new CollectionSourceObjectParameter("->sortedBy");
+	
+	@DataPoint public static CollectionSourceCollectionParameter excludesAll = new CollectionSourceCollectionParameter("->excludesAll");
+	@DataPoint public static CollectionSourceCollectionParameter includesAll = new CollectionSourceCollectionParameter("->includesAll");
+	@DataPoint public static CollectionSourceCollectionParameter product = new CollectionSourceCollectionParameter("->product");
+		
 	/**################################################################################################
 	 *
 	 * 									Collection Tests
@@ -371,6 +407,11 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@Theory
 	public void testAsBag(CollectionData source) {
 		this.noParameters(asBag, source);
+	}
+
+	@Theory
+	public void testAsOrderedSet(CollectionData source) {
+		this.noParameters(asOrderedSet, source);
 	}
 	
 	@Theory
@@ -408,30 +449,89 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 		this.noParameters(sum, source);
 	}
 	
+	@Theory
+	public void testCount(CollectionData source, ObjectData param) {
+		this.oneParameter(count, source, param);
+	}
+	
+	@Theory
+	public void testExcludes(CollectionData source, ObjectData param) {
+		this.oneParameter(excludes, source, param);
+	}
+	
+	@Theory
+	public void testExcluding(CollectionData source, ObjectData param) {
+		this.oneParameter(excluding, source, param);
+	}
+	
+	@Theory
+	public void testIncludes(CollectionData source, ObjectData param) {
+		this.oneParameter(includes, source, param);
+	}
+	
+	@Theory
+	public void testIncluding(CollectionData source, ObjectData param) {
+		this.oneParameter(including, source, param);
+	}
+	
+	@Theory
+	public void testAny(CollectionData source, ExpressionData param) {
+		this.oneParameter(any, source, param);
+	}
+
+	@Theory
+	public void testCollect(CollectionData source, ExpressionData param) {
+		this.oneParameter(collect, source, param);
+	}
+	
+	@Theory
+	public void testIsUnique(CollectionData source, ExpressionData param) {
+		this.oneParameter(isUnique, source, param);
+	}
+	
+	@Theory
+	public void testForAll(CollectionData source, ExpressionData param) {
+		this.oneParameter(forAll, source, param);
+	}
+	
+	@Theory
+	public void testSelect(CollectionData source, ExpressionData param) {
+		this.oneParameter(select, source, param);
+	}
+	
+	@Theory
+	public void testReject(CollectionData source, ExpressionData param) {
+		this.oneParameter(reject, source, param);
+	}
+	
+	@Theory
+	public void testSortedBy(CollectionData source, ExpressionData param) {
+		this.oneParameter(sortedBy, source, param);
+	}
+	
+	@Theory
+	public void testExcludesAll(CollectionData source, CollectionData param) {
+		this.oneParameter(excludesAll, source, param);
+	}
+	
+	@Theory
+	public void testIncludesAll(CollectionData source, CollectionData param) {
+		this.oneParameter(includesAll, source, param);
+	}
+	
+	@Theory
+	public void testProduct(CollectionData source, CollectionData param) {
+		this.oneParameter(product, source, param);
+	}
+	
 	/**################################################################################################
 	 *
 	 * 									Utility Methods
 	 *
 	 *################################################################################################*/
 	
-	private void oneParameter(AbstractOperation operation, ObjectData source, ObjectData param) {
-		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
-				operation.getValue());
-		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
-		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
-				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
-		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
-		assertThat(generatedFiles.size(), is(4));
-		for (GeneratedFile generatedFile : generatedFiles) {
-			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
-					generatedRegions.size(), not(equalTo(0)));
-		}
-		
-		c++;
-	}
-	
 	private void noParameters(AbstractOperation operation, ObjectData source) {
+		c++;
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("()").append(this.moduleBufferEnd);
@@ -441,14 +541,44 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 		assertThat(generatedFiles.size(), is(4));
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+			assertThat(source.getValue() + operation.getValue() + "()",generatedRegions.size(), not(equalTo(0)));
+		}
+	}
+	
+	private void oneParameter(AbstractOperation operation, ObjectData source, ObjectData param) {
+		c++;
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat(source.getValue() + operation.getValue() + "(" + param.getValue() + ")",
 					generatedRegions.size(), not(equalTo(0)));
 		}
-		
+	}
+	
+	private void oneParameter(AbstractOperation operation, ObjectData source, ExpressionData param) {
 		c++;
+		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
+				operation.getValue());
+		moduleBuffer.append("(").append(param.getValue()).append(")").append(this.moduleBufferEnd);
+		AcceleoTraceabilityListener acceleoTraceabilityListener = this.parseAndGenerate(
+				"data/random/randomtheories.mtl", moduleBuffer, "main", "data/random/model.ecore", true);
+		List<GeneratedFile> generatedFiles = acceleoTraceabilityListener.getGeneratedFiles();
+		assertThat(generatedFiles.size(), is(4));
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertThat(source.getValue() + operation.getValue() + "(" + param.getValue() + ")",
+					generatedRegions.size(), not(equalTo(0)));
+		}
 	}
 	
 	private void twoParameters(AbstractOperation operation, ObjectData source, ObjectData param1, ObjectData param2) {
+		c++;
 		StringBuffer moduleBuffer = this.moduleBufferBegin.append(source.getValue()).append(
 				operation.getValue());
 		moduleBuffer.append("(").append(param1.getValue()).append(", ").append(param2.getValue()).append(")")
@@ -459,10 +589,8 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 		assertThat(generatedFiles.size(), is(4));
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
-			assertThat("operation: " + operation.getValue() + " /// source: " + source.getValue(),
+			assertThat(source.getValue() + operation.getValue() + "(" + param1.getValue() + "," + param2.getValue()+ ")",
 					generatedRegions.size(), not(equalTo(0)));
 		}
-		
-		c++;
 	}
 }
