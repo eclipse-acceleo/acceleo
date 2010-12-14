@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.block;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
@@ -33,6 +30,9 @@ import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 
@@ -519,7 +519,7 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(6, generatedRegions.size());
-			assertEquals(("begin".length() + 1 + "end".length()) * 2, generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals(("begin".length() + 1 + "end".length()) * 2, generatedFile.getLength()); //$NON-NLS-1$ //$NON-NLS-2$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
