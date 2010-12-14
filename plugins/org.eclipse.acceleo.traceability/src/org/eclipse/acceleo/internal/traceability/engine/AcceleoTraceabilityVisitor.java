@@ -632,9 +632,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			for (ExpressionTrace<C> trace : invocationTraces) {
 				if (oldTraces != null) {
 					oldTraces.add(trace);
-				} else if (!recordedTraces.contains(trace)) {
-					trace.dispose();
 				}
+				// This was way too CPU intensive, we'll settle with sub-otptimal memory usage
+				// else if (!recordedTraces.contains(trace)) {
+				// trace.dispose();
+				// }
 			}
 			invocationTraces = oldTraces;
 			if (addedTemplateScope) {
@@ -923,11 +925,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// NOTE : assume we have a single iterator, see commment on iterationVariable
 		iterationVariable = callExp.getIterator().get(0);
 
+		// Iterator expressions should have their own traces in case they are themselves an iterator source
+		recordedTraces.add(new ExpressionTrace<C>(callExp));
+
 		Object result = null;
 		try {
 			result = super.visitIteratorExp(callExp);
 		} finally {
 			evaluatingOperationCall = oldOperationEvaluationState;
+			ExpressionTrace<C> traces = recordedTraces.removeLast();
+			if (oldIterationTraces != null) {
+				oldIterationTraces.addTraceCopy(traces);
+			} else {
+				recordedTraces.getLast().addTraceCopy(traces);
+			}
+			traces.dispose();
 			iterationTraces.dispose();
 			iterationTraces = oldIterationTraces;
 			iterationBody = oldIterationBody;
@@ -2200,7 +2212,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				result = false;
 			}
 		} else if (isIteratorCallSource(expression)) {
-			result = false;
+			result = !(recordedTraces.getLast().getReferredExpression() instanceof IteratorExp<?, ?> && EcoreUtil
+					.isAncestor(recordedTraces.getLast().getReferredExpression(), expression));
 		} else if (expression.eContainingFeature() == ExpressionsPackage.eINSTANCE
 				.getOperationCallExp_Argument()
 				&& isTraceabilityImpactingOperation((OperationCallExp<C, O>)expression.eContainer())) {
