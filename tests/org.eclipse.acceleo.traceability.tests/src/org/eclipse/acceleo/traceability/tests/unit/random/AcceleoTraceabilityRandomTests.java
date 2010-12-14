@@ -94,6 +94,8 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 			.append("\n")
 			.append("[query public queryFloat2(eClass : EClass) : Real = eClass.name.size() * 1.7/]\n")
 			.append("\n")
+			.append("[query public queryBoolean1(eClass : EClass) : Boolean = true/]\n")
+			.append("\n")
 			.append("");
 	
 	/**################################################################################################
