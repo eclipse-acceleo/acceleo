@@ -45,17 +45,17 @@ public class AcceleoParser {
 	/**
 	 * To store the problems of each file.
 	 */
-	private Map<File, AcceleoParserProblems> problems;
+	private final Map<File, AcceleoParserProblems> problems = new HashMap<File, AcceleoParserProblems>();
 
 	/**
 	 * To store the warnings of each file.
 	 */
-	private Map<File, AcceleoParserWarnings> warnings;
+	private final Map<File, AcceleoParserWarnings> warnings = new HashMap<File, AcceleoParserWarnings>();
 
 	/**
 	 * To store the infos of each file.
 	 */
-	private Map<File, AcceleoParserInfos> infos;
+	private final Map<File, AcceleoParserInfos> infos = new HashMap<File, AcceleoParserInfos>();
 
 	/**
 	 * Creates an AST from a list of Acceleo files, using a CST step.
@@ -253,17 +253,14 @@ public class AcceleoParser {
 	 *            The list of source buffers.
 	 */
 	private void manageParsingResult(List<AcceleoSourceBuffer> sources) {
-		problems = new HashMap<File, AcceleoParserProblems>(sources.size());
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			problems.put(source.getFile(), source.getProblems());
 		}
-		warnings = new HashMap<File, AcceleoParserWarnings>(sources.size());
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			warnings.put(source.getFile(), source.getWarnings());
 		}
-		infos = new HashMap<File, AcceleoParserInfos>(sources.size());
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
 			infos.put(source.getFile(), source.getInfos());
@@ -333,13 +330,10 @@ public class AcceleoParser {
 		source.resolveAST();
 		source.resolveASTDocumentation();
 		if (source.getFile() != null) {
-			problems = new HashMap<File, AcceleoParserProblems>(1);
 			problems.put(source.getFile(), source.getProblems());
 
-			warnings = new HashMap<File, AcceleoParserWarnings>(1);
 			warnings.put(source.getFile(), source.getWarnings());
 
-			infos = new HashMap<File, AcceleoParserInfos>(1);
 			infos.put(source.getFile(), source.getInfos());
 		}
 	}
@@ -352,11 +346,7 @@ public class AcceleoParser {
 	 * @return the parsing problems, or null
 	 */
 	public AcceleoParserProblems getProblems(File file) {
-		if (problems != null) {
-			return problems.get(file);
-		} else {
-			return null;
-		}
+		return problems.get(file);
 	}
 
 	/**
@@ -368,11 +358,7 @@ public class AcceleoParser {
 	 * @since 3.0
 	 */
 	public AcceleoParserProblems getProblems(AcceleoFile acceleoFile) {
-		if (problems != null && acceleoFile != null) {
-			return problems.get(acceleoFile.getMtlFile());
-		} else {
-			return null;
-		}
+		return problems.get(acceleoFile.getMtlFile());
 	}
 
 	/**
@@ -384,11 +370,7 @@ public class AcceleoParser {
 	 * @since 3.1
 	 */
 	public AcceleoParserWarnings getWarnings(File file) {
-		if (warnings != null) {
-			return warnings.get(file);
-		} else {
-			return null;
-		}
+		return warnings.get(file);
 	}
 
 	/**
