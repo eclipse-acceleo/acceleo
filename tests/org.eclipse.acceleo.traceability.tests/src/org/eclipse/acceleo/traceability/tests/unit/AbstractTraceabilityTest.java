@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -41,11 +45,6 @@ import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.junit.After;
 import org.osgi.framework.Bundle;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-
-import static org.junit.Assert.fail;
 
 /**
  * This will be used as the base class for our traceability tests. It adds functionality to locate files
@@ -162,10 +161,10 @@ public abstract class AbstractTraceabilityTest {
 		Resource modelResource = new MtlResourceImpl(URI
 				.createURI("org.eclipse.acceleo/src/module/myModule.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
+		parser.parse(source, modelResource, new ArrayList<URI>());
 		assertNull(parser.getProblems(file));
 		assertNull(parser.getWarnings(file));
 		assertNull(parser.getInfos(file));
-		parser.parse(source, modelResource, new ArrayList<URI>());
 		return modelResource;
 	}
 
