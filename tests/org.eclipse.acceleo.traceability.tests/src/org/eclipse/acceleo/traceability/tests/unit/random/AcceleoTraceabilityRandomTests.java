@@ -89,6 +89,11 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 			.append("[query public queryInt1(eClass : EClass) : Integer = 17/]\n")
 			.append("\n")
 			.append("[query public queryInt2(eClass : EClass) : Integer = eClass.name.size()/]\n")
+			.append("\n")
+			.append("[query public queryFloat1(eClass : EClass) : Real = 1.7/]\n")
+			.append("\n")
+			.append("[query public queryFloat2(eClass : EClass) : Real = eClass.name.size() * 1.7/]\n")
+			.append("\n")
 			.append("");
 	
 	/**################################################################################################
@@ -142,11 +147,14 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static SequenceData sequenceBooleanValue = new SequenceData("Sequence{true, true, false}");
 	@DataPoint public static SequenceData sequenceFloatValue = new SequenceData("Sequence{17.8, 5.77, -3.5}");
 	@DataPoint public static SequenceData sequenceEObjectValue = new SequenceData("Sequence{eClass, eClass.eContainer()}");
+	@DataPoint public static SequenceData sequenceEObjectPropertyCallValue = new SequenceData("Sequence{eClass.name, eClass.eContainer().oclAsType(EPackage).name}");
 	@DataPoint public static SequenceData sequenceEObjectPropertyValue = new SequenceData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name");
 	@DataPoint public static SequenceData sequenceSequenceStringValue = new SequenceData("Sequence{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
 	@DataPoint public static SequenceData sequenceBagStringValue = new SequenceData("Sequence{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
 	@DataPoint public static SequenceData sequenceSetStringValue = new SequenceData("Sequence{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
 	@DataPoint public static SequenceData sequenceOrderedSetStringValue = new SequenceData("Sequence{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
+	@DataPoint public static SequenceData sequenceStringLiteralAndTemplateValue = new SequenceData("Sequence{'a', 'This is my template: ' + eClass.template1(), eClass.template2()}");
+	@DataPoint public static SequenceData sequenceStringLiteralAndTemplateAndStringQueryValue = new SequenceData("Sequence{'a', 'This is my template: ' + eClass.template1(), eClass.template2(), eClass.queryString1()}");
 	
 	/** Data points Bag */
 	@DataPoint public static BagData bagStringValue = new BagData("Bag{'a', 'b', 'c'}");
@@ -154,11 +162,14 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static BagData bagBooleanValue = new BagData("Bag{true, false, true}");
 	@DataPoint public static BagData bagFloatValue = new BagData("Bag{17.8, 5.77, -3.5}");
 	@DataPoint public static BagData bagEObjectValue = new BagData("Bag{eClass, eClass.eContainer()}");
+	@DataPoint public static BagData bagEObjectPropertyCallValue = new BagData("Bag{eClass.name, eClass.eContainer().oclAsType(EPackage).name}");
 	@DataPoint public static BagData bagEObjectPropertyValue = new BagData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name->asBag()");
 	@DataPoint public static BagData bagBagStringValue = new BagData("Bag{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
 	@DataPoint public static BagData bagSetStringValue = new BagData("Bag{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
 	@DataPoint public static BagData bagSequenceStringValue = new BagData("Bag{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
 	@DataPoint public static BagData bagOrderedSetStringValue = new BagData("Bag{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
+	@DataPoint public static BagData bagStringLiteralAndTemplateValue = new BagData("Bag{'a', 'This is my template: ' + eClass.template1(), eClass.template2()}");
+	@DataPoint public static BagData bagStringLiteralAndTemplateAndStringQueryValue = new BagData("Bag{'a', 'This is my template: ' + eClass.template1(), eClass.template2(), eClass.queryString1()}");
 	
 	/** Data points Set */
 	@DataPoint public static SetData setStringValue = new SetData("Set{'a', 'b', 'c'}");
@@ -166,11 +177,14 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static SetData setBooleanValue = new SetData("Set{true, false, false}");
 	@DataPoint public static SetData setFloatValue = new SetData("Set{25.2, 3.14, -3.54}");
 	@DataPoint public static SetData setEObjectValue = new SetData("Set{eClass, eClass.eContainer()}");
+	@DataPoint public static SetData setEObjectPropertyCallValue = new SetData("Set{eClass.name, eClass.eContainer().oclAsType(EPackage).name}");
 	@DataPoint public static SetData setEObjectPropertyValue = new SetData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name->asSet()");
 	@DataPoint public static SetData setSetStringValue = new SetData("Set{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'b', 'c', 'a'}}");
 	@DataPoint public static SetData setSequenceStringValue = new SetData("Set{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'b', 'c', 'a'}}");
 	@DataPoint public static SetData setBagStringValue = new SetData("Set{Bag{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'b', 'c', 'a'}}");
 	@DataPoint public static SetData setOrderedSetStringValue = new SetData("Set{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
+	@DataPoint public static SetData setStringLiteralAndTemplateValue = new SetData("Set{'a', 'This is my template: ' + eClass.template1(), eClass.template2()}");
+	@DataPoint public static SetData setStringLiteralAndTemplateAndStringQueryValue = new SetData("Set{'a', 'This is my template: ' + eClass.template1(), eClass.template2(), eClass.queryString1()}");
 	
 	/** Data points OrderedSet */
 	@DataPoint public static OrderedSetData orderedsetStringValue = new OrderedSetData("OrderedSet{'a', 'b', 'c'}");
@@ -178,11 +192,15 @@ public class AcceleoTraceabilityRandomTests extends AbstractTraceabilityTest {
 	@DataPoint public static OrderedSetData orderedsetBooleanValue = new OrderedSetData("OrderedSet{true, false, true}");
 	@DataPoint public static OrderedSetData orderedsetFloatValue = new OrderedSetData("OrderedSet{12.25, 1.44, -3.5}");
 	@DataPoint public static OrderedSetData orderedsetEObjectValue = new OrderedSetData("OrderedSet{eClass, eClass.eContainer()}");
+	@DataPoint public static OrderedSetData orderedsetEObjectPropertyCallValue = new OrderedSetData("OrderedSet{eClass.name, eClass.eContainer().oclAsType(EPackage).name}");
+	@DataPoint public static OrderedSetData orderedsetEObjectPropertyValue = new OrderedSetData("eClass.eContainer().oclAsType(EPackage).eClassifiers.name->asOrderedSet()");
 	@DataPoint public static OrderedSetData orderedsetOrderedSetStringValue = new OrderedSetData("OrderedSet{OrderedSet{'a', 'b', 'c'}, OrderedSet{'c', 'b', 'a'}, OrderedSet{'b', 'c', 'a'}}");
 	@DataPoint public static OrderedSetData orderedsetSetStringValue = new OrderedSetData("OrderedSet{Set{'a', 'b', 'c'}, Set{'c', 'b', 'a'}, Set{'c', 'b', 'a'}}");
 	@DataPoint public static OrderedSetData orderedsetBagStringValue = new OrderedSetData("Bag{OrderedSet{'a', 'b', 'c'}, Bag{'c', 'b', 'a'}, Bag{'c', 'b', 'a'}}");
 	@DataPoint public static OrderedSetData orderedsetSequenceStringValue = new OrderedSetData("OrderedSet{Sequence{'a', 'b', 'c'}, Sequence{'c', 'b', 'a'}, Sequence{'c', 'b', 'a'}}");
-
+	@DataPoint public static OrderedSetData orderedsetStringLiteralAndTemplateValue = new OrderedSetData("OrderedSet{'a', 'This is my template: ' + eClass.template1(), eClass.template2()}");
+	@DataPoint public static OrderedSetData orderedsetStringLiteralAndTemplateAndStringQueryValue = new OrderedSetData("OrderedSet{'a', 'This is my template: ' + eClass.template1(), eClass.template2(), eClass.queryString1()}");
+	
 	/** Data points Expression */
 	@DataPoint public static ExpressionData expressionToStringSize = new ExpressionData("toString().size()");
 	@DataPoint public static ExpressionData expressionToString = new ExpressionData("toString()");
