@@ -1289,6 +1289,9 @@ public class AcceleoSourceContent {
 	public boolean isInModuleHeader(int posBegin, int posEnd, boolean inAST) {
 		int beginHeaderModule = -1;
 		if (inAST) {
+			if (this.getAST() == null) {
+				this.createAST();
+			}
 			beginHeaderModule = this.getAST().getStartHeaderPosition();
 		} else {
 			beginHeaderModule = this.getCST().getStartPosition();
