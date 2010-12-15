@@ -25,8 +25,4 @@
          id="org.eclipse.acceleo.sdk"
          version="0.0.0"/>
          
-   <includes
-         id="org.eclipse.acceleo.tests"
-         version="0.0.0"/>
-
 </feature>
