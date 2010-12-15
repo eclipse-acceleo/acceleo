@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit;
 
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -26,6 +29,9 @@ import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.util.MtlResourceImpl;
 import org.eclipse.acceleo.parser.AcceleoParser;
+import org.eclipse.acceleo.parser.AcceleoParserInfos;
+import org.eclipse.acceleo.parser.AcceleoParserProblems;
+import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -41,10 +47,6 @@ import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.junit.After;
 import org.osgi.framework.Bundle;
-
-import static junit.framework.Assert.assertEquals;
-
-import static org.junit.Assert.fail;
 
 /**
  * This will be used as the base class for our traceability tests. It adds functionality to locate files
@@ -162,9 +164,20 @@ public abstract class AbstractTraceabilityTest {
 				.createURI("org.eclipse.acceleo/src/module/myModule.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
 		parser.parse(source, modelResource, new ArrayList<URI>());
-		assertEquals("[]", parser.getProblems(file).getList().toString()); //$NON-NLS-1$
-		assertEquals("[]", parser.getWarnings(file).getList().toString()); //$NON-NLS-1$
-		assertEquals("[]", parser.getInfos(file).getList().toString()); //$NON-NLS-1$
+
+		AcceleoParserProblems problems = parser.getProblems(file);
+		AcceleoParserWarnings warnings = parser.getWarnings(file);
+		AcceleoParserInfos infos = parser.getInfos(file);
+		final String emptyList = "[]"; //$NON-NLS-1$
+		if (problems != null) {
+			assertEquals(emptyList, problems.getList().toString());
+		}
+		if (warnings != null) {
+			assertEquals(emptyList, warnings.getList().toString());
+		}
+		if (infos != null) {
+			assertEquals(emptyList, infos.getList().toString());
+		}
 		return modelResource;
 	}
 
@@ -244,9 +257,19 @@ public abstract class AbstractTraceabilityTest {
 		AcceleoParser parser = new AcceleoParser();
 		parser.parse(source, modelResource, new ArrayList<URI>());
 
-		assertEquals("[]", parser.getProblems(file).getList().toString()); //$NON-NLS-1$
-		assertEquals("[]", parser.getWarnings(file).getList().toString()); //$NON-NLS-1$
-		assertEquals("[]", parser.getInfos(file).getList().toString()); //$NON-NLS-1$
+		AcceleoParserProblems problems = parser.getProblems(file);
+		AcceleoParserWarnings warnings = parser.getWarnings(file);
+		AcceleoParserInfos infos = parser.getInfos(file);
+		final String emptyList = "[]"; //$NON-NLS-1$
+		if (problems != null) {
+			assertEquals(emptyList, problems.getList().toString());
+		}
+		if (warnings != null) {
+			assertEquals(emptyList, warnings.getList().toString());
+		}
+		if (infos != null) {
+			assertEquals(emptyList, infos.getList().toString());
+		}
 		return modelResource;
 	}
 
