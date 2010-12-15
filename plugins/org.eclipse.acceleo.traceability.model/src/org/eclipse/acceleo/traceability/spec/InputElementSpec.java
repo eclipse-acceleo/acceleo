@@ -12,6 +12,7 @@ package org.eclipse.acceleo.traceability.spec;
 
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.impl.InputElementImpl;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
@@ -22,18 +23,31 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class InputElementSpec extends InputElementImpl {
 	/**
+	 * We know that neither the model element nor its feature will ever be modified during a generation, we
+	 * can then cache the hashcode.
+	 */
+	private transient int hashCode;
+
+	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see InputElementImpl#setFeature(EStructuralFeature)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof InputElement) {
-			if (getModelElement() == ((InputElement)obj).getModelElement()) {
-				return getFeature() == ((InputElement)obj).getFeature();
-			}
-		}
-		return false;
+	public void setFeature(EStructuralFeature newFeature) {
+		hashCode = 0;
+		super.setFeature(newFeature);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see InputElementImpl#setModel(EObject)
+	 */
+	@Override
+	public void setModelElement(EObject newModelElement) {
+		hashCode = 0;
+		super.setModelElement(newModelElement);
 	}
 
 	/**
@@ -43,18 +57,51 @@ public class InputElementSpec extends InputElementImpl {
 	 */
 	@Override
 	public int hashCode() {
-		if (getModelElement() == null && getFeature() == null) {
-			return super.hashCode();
+		if (hashCode != 0) {
+			return hashCode;
 		}
 
-		int hashcode = 0;
-		if (getModelElement() != null) {
-			hashcode = getModelElement().hashCode();
+		final int prime = 31;
+		hashCode = prime;
+
+		if (modelElement == null) {
+			hashCode = prime * hashCode;
+		} else {
+			hashCode = prime * hashCode + modelElement.hashCode();
 		}
-		if (getFeature() != null) {
-			hashcode += getFeature().hashCode();
+
+		if (feature == null) {
+			hashCode = prime * hashCode;
+		} else {
+			hashCode = prime * hashCode + feature.hashCode();
 		}
-		return hashcode;
+
+		return hashCode;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#equals(Object)
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof InputElement) {
+			EObject otherModelElement = ((InputElement)other).getModelElement();
+			boolean equal = true;
+			if (modelElement == null) {
+				equal = otherModelElement == null;
+			} else {
+				equal = modelElement.equals(otherModelElement);
+			}
+			if (equal && feature == null) {
+				equal = ((InputElement)other).getFeature() == null;
+			} else if (equal) {
+				equal = feature.equals(((InputElement)other).getFeature());
+			}
+			return equal;
+		}
+		return false;
 	}
 
 	/**
