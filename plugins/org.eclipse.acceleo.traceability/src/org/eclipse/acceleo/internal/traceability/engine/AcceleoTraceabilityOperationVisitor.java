@@ -27,6 +27,7 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
+import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.TraceabilityFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -710,6 +711,40 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * Handles the "tostring" non-standard operation for non-primitives directly from the traceability visitor
+	 * as we need to create traceability information.
+	 * 
+	 * @param source
+	 *            Object we need the String value of.
+	 * @param moduleElement
+	 *            The module element that triggered this toString call.
+	 * @return The String value of the <code>source</code>. Traceability information will have been changed
+	 *         directly within {@link AcceleoTraceabilityVisitor#recordedTraces}.
+	 */
+	public String visitTostringOperation(Object source, ModuleElement moduleElement) {
+		final StringBuffer buffer = new StringBuffer();
+		if (source instanceof Collection<?>) {
+			final Iterator<?> childrenIterator = ((Collection<?>)source).iterator();
+			while (childrenIterator.hasNext()) {
+				buffer.append(visitTostringOperation(childrenIterator.next(), moduleElement));
+			}
+		} else if (source != null) {
+			String result = source.toString();
+			buffer.append(result);
+
+			if (source instanceof EObject) {
+				final AbstractTrace trace = visitor.getLastExpressionTrace();
+				GeneratedText region = TraceabilityFactory.eINSTANCE.createGeneratedText();
+
+				region.setModuleElement(moduleElement);
+
+				trace.addTrace(visitor.getInputElement((EObject)source), region, result);
+			}
+		}
+		return buffer.toString();
+	}
+
+	/**
 	 * Handles the "trim" non-standard operation directly from the traceability visitor as we need to alter
 	 * recorded traceability information.
 	 * 
@@ -751,6 +786,62 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
+	 * For non-primitives, we'll need to create our own traceability information. <code>moduleElement</code>
+	 * will then hold a reference to the module element that triggered the operation call.
+	 * 
+	 * @param result
+	 *            Result of the operation call.
+	 * @param source
+	 *            Source of the operation call.
+	 * @param moduleElement
+	 *            The module element that triggered this toString call.
+	 */
+	void changeTraceabilityIndicesBooleanReturn(boolean result, Object source, ModuleElement moduleElement) {
+		if (!visitor.getLastExpressionTrace().getTraces().isEmpty()) {
+			changeTraceabilityIndicesBooleanReturn(result);
+		} else if (source instanceof EObject) {
+			final AbstractTrace trace = visitor.getLastExpressionTrace();
+			GeneratedText region = TraceabilityFactory.eINSTANCE.createGeneratedText();
+
+			region.setModuleElement(moduleElement);
+
+			final int length;
+			if (result) {
+				length = 4;
+			} else {
+				length = 5;
+			}
+			trace.addTrace(visitor.getInputElement((EObject)source), region, length);
+		}
+	}
+
+	/**
+	 * For non-primitives, we'll need to create our own traceability information. <code>moduleElement</code>
+	 * will then hold a reference to the module element that triggered the operation call.
+	 * 
+	 * @param result
+	 *            Result of the operation call.
+	 * @param source
+	 *            Source of the operation call.
+	 * @param moduleElement
+	 *            The module element that triggered this toString call.
+	 * @see #changeTraceabilityIndicesNumberReturn(Number)
+	 */
+	void changeTraceabilityIndicesNumberReturn(Number result, Object source, ModuleElement moduleElement) {
+		if (!visitor.getLastExpressionTrace().getTraces().isEmpty()) {
+			changeTraceabilityIndicesNumberReturn(result);
+		} else if (source instanceof EObject) {
+			final AbstractTrace trace = visitor.getLastExpressionTrace();
+			GeneratedText region = TraceabilityFactory.eINSTANCE.createGeneratedText();
+
+			region.setModuleElement(moduleElement);
+
+			final int length = String.valueOf(result).length();
+			trace.addTrace(visitor.getInputElement((EObject)source), region, length);
+		}
+	}
+
+	/**
 	 * isAlpha, isAlphanum and possibly other traceability impacting operations share the same "basic"
 	 * behavior of altering indices to reflect a boolean return. This behavior is externalized here.
 	 * 
@@ -758,7 +849,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	 *            Boolean result of the operation. We'll only leave a four-characters long region if
 	 *            <code>true</code>, five-characters long if <code>false</code>.
 	 */
-	void changeTraceabilityIndicesBooleanReturn(boolean result) {
+	private void changeTraceabilityIndicesBooleanReturn(boolean result) {
 		// We'll keep only the very last trace and alter its indices
 		AbstractTrace trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
@@ -787,54 +878,6 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		} else {
 			length = 5;
 		}
-		if (lastRegion != null) {
-			lastRegion.setStartOffset(0);
-			lastRegion.setEndOffset(length);
-		}
-		trace.setOffset(length);
-	}
-
-	/**
-	 * This will handle the traceabiliy information changes for all operations that return a Number :
-	 * arithmetic operations, String::size(), Collection::Index()...
-	 * 
-	 * @param result
-	 *            Result of the operation. We'll only leave a single region with its length equal to the given
-	 *            integer's number of digits.
-	 */
-	void changeTraceabilityIndicesNumberReturn(Number result) {
-		// We'll keep only the very last trace and alter its indices
-		AbstractTrace trace = visitor.getLastExpressionTrace();
-		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
-		GeneratedText lastRegion = null;
-		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
-		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
-			while (textIterator.hasNext()) {
-				GeneratedText text = textIterator.next();
-				if (lastRegion == null) {
-					lastRegion = text;
-					lastEntry = entry;
-				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
-					// lastEntry cannot be null once we get here
-					assert lastEntry != null;
-					if (lastEntry != entry) {
-						lastEntry.getValue().remove(lastRegion);
-						lastEntry = entry;
-					} else {
-						rejectFromEntry.add(lastRegion);
-					}
-					lastRegion = text;
-				} else {
-					textIterator.remove();
-				}
-			}
-			if (!rejectFromEntry.isEmpty()) {
-				entry.getValue().removeAll(rejectFromEntry);
-				rejectFromEntry.clear();
-			}
-		}
-		int length = String.valueOf(result).length();
 		if (lastRegion != null) {
 			lastRegion.setStartOffset(0);
 			lastRegion.setEndOffset(length);
@@ -964,6 +1007,54 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		}
 		traceCopy.clear();
 
+		trace.setOffset(length);
+	}
+
+	/**
+	 * This will handle the traceabiliy information changes for all operations that return a Number :
+	 * arithmetic operations, String::size(), Collection::Index()...
+	 * 
+	 * @param result
+	 *            Result of the operation. We'll only leave a single region with its length equal to the given
+	 *            integer's number of digits.
+	 */
+	private void changeTraceabilityIndicesNumberReturn(Number result) {
+		// We'll keep only the very last trace and alter its indices
+		AbstractTrace trace = visitor.getLastExpressionTrace();
+		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
+		GeneratedText lastRegion = null;
+		final List<GeneratedText> rejectFromEntry = new ArrayList<GeneratedText>();
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+			while (textIterator.hasNext()) {
+				GeneratedText text = textIterator.next();
+				if (lastRegion == null) {
+					lastRegion = text;
+					lastEntry = entry;
+				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
+					// lastEntry cannot be null once we get here
+					assert lastEntry != null;
+					if (lastEntry != entry) {
+						lastEntry.getValue().remove(lastRegion);
+						lastEntry = entry;
+					} else {
+						rejectFromEntry.add(lastRegion);
+					}
+					lastRegion = text;
+				} else {
+					textIterator.remove();
+				}
+			}
+			if (!rejectFromEntry.isEmpty()) {
+				entry.getValue().removeAll(rejectFromEntry);
+				rejectFromEntry.clear();
+			}
+		}
+		int length = String.valueOf(result).length();
+		if (lastRegion != null) {
+			lastRegion.setStartOffset(0);
+			lastRegion.setEndOffset(length);
+		}
 		trace.setOffset(length);
 	}
 

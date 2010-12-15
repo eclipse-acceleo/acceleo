@@ -129,7 +129,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** Initial size of our "cache" maps. */
 	private static final int INITIAL_CACHE_SIZE = 128;
 
-	/** Traceability needs to kno what expression is being processed at all times. */
+	/** Traceability needs to know what expression is being processed at all times. */
 	private OCLExpression<C> currentExpression;
 
 	/** This will hold the stack of generated files. */
@@ -442,6 +442,46 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * Returns the traces of the current variable initialization.
+	 * 
+	 * @return The traces of the current variable initialization.
+	 */
+	AbstractTrace getInitializingVariableTrace() {
+		return variableTraces.get(initializingVariable);
+	}
+
+	/**
+	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
+	 * model element and neither structural feature nor operation linked. Note that it will be created if
+	 * needed.
+	 * 
+	 * @param modelElement
+	 *            Model element we seek the corresponding InputElement of.
+	 * @return {@link InputElement} contained in the {@link #evaluationTrace} model.
+	 */
+	InputElement getInputElement(EObject modelElement) {
+		ModelFile soughtModel = getModelFile(modelElement);
+
+		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
+		if (candidateInputs == null) {
+			candidateInputs = new HashSet<InputElement>();
+			cachedInputElements.put(modelElement, candidateInputs);
+		}
+		for (InputElement input : candidateInputs) {
+			if (input.getFeature() == null && input.getOperation() == null) {
+				return input;
+			}
+		}
+
+		// If we're here, such an InputElement does not already exist
+		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
+		soughtElement.setModelElement(modelElement);
+		soughtModel.getInputElements().add(soughtElement);
+		candidateInputs.add(soughtElement);
+		return soughtElement;
+	}
+
+	/**
 	 * Returns the last invocation's recorded traces.
 	 * 
 	 * @return The last invocation's recorded traces.
@@ -460,12 +500,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Returns the traces of the current variable initialization.
+	 * Returns the value of {@link #evaluatingPostCall}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
 	 * 
-	 * @return The traces of the current variable initialization.
+	 * @return The value of {@link #evaluatingPostCall}.
 	 */
-	AbstractTrace getInitializingVariableTrace() {
-		return variableTraces.get(initializingVariable);
+	boolean isEvaluatingPostCall() {
+		return evaluatingPostCall;
+	}
+
+	/**
+	 * Returns the value of {@link #initializingVariable}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
+	 * 
+	 * @return The value of {@link #initializingVariable}.
+	 */
+	boolean isInitializingVariable() {
+		return initializingVariable != null;
 	}
 
 	/**
@@ -681,6 +732,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		recordLiteralExp(literalExp, result);
 
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.EvaluationVisitorDecorator#visitCollectionLiteralExp(org.eclipse.ocl.expressions.CollectionLiteralExp)
+	 */
+	@Override
+	public Object visitCollectionLiteralExp(CollectionLiteralExp<C> literalExp) {
+		final Object result = super.visitCollectionLiteralExp(literalExp);
+
+		if (isPropertyCallSource(literalExp)) {
+			propertyCallSource = (EObject)result;
+		} else if (isOperationCallSource(literalExp)) {
+			operationCallSource = result;
+		}
 		return result;
 	}
 
@@ -999,10 +1067,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				// But we'll alter their trace information
 				if (isBooleanReturningOperation(callExp)) {
 					result = super.visitOperationCallExp(callExp);
-					operationVisitor.changeTraceabilityIndicesBooleanReturn(((Boolean)result).booleanValue());
+					// for non-primitive sources, we'll need to create our own trace
+					ModuleElement moduleElement = getModuleElement(callExp);
+					Object source = operationCallSource;
+					if (source instanceof Collection<?> || source == null) {
+						source = retrieveScopeEObjectValue();
+					}
+					operationVisitor.changeTraceabilityIndicesBooleanReturn(((Boolean)result).booleanValue(),
+							source, moduleElement);
 				} else if (isNumberReturningOperation(callExp)) {
 					result = super.visitOperationCallExp(callExp);
-					operationVisitor.changeTraceabilityIndicesNumberReturn((Number)result);
+					// for non-primitive sources, we'll need to create our own trace
+					ModuleElement moduleElement = getModuleElement(callExp);
+					Object source = operationCallSource;
+					if (source instanceof Collection<?> || source == null) {
+						source = retrieveScopeEObjectValue();
+					}
+					operationVisitor.changeTraceabilityIndicesNumberReturn((Number)result, source,
+							moduleElement);
 				} else {
 					result = internalVisitOperationCallExp(callExp);
 				}
@@ -1254,26 +1336,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Returns the value of {@link #evaluatingPostCall}. Package visibility as this is only meant for the
-	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
-	 * 
-	 * @return The value of {@link #evaluatingPostCall}.
-	 */
-	boolean isEvaluatingPostCall() {
-		return evaluatingPostCall;
-	}
-
-	/**
-	 * Returns the value of {@link #initializingVariable}. Package visibility as this is only meant for the
-	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
-	 * 
-	 * @return The value of {@link #initializingVariable}.
-	 */
-	boolean isInitializingVariable() {
-		return initializingVariable != null;
-	}
-
-	/**
 	 * This will be used to create the evaluation trace for a given protected area's content and alter the
 	 * trace for its marker; indeed traces aren't recorded anywhere else than for the marker evaluation as the
 	 * remainder are mainly hard-coded strings.
@@ -1484,37 +1546,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			evaluationTrace.getGeneratedFiles().add(soughtFile);
 		}
 		return soughtFile;
-	}
-
-	/**
-	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
-	 * model element and neither structural feature nor operation linked. Note that it will be created if
-	 * needed.
-	 * 
-	 * @param modelElement
-	 *            Model element we seek the corresponding InputElement of.
-	 * @return {@link InputElement} contained in the {@link #evaluationTrace} model.
-	 */
-	private InputElement getInputElement(EObject modelElement) {
-		ModelFile soughtModel = getModelFile(modelElement);
-
-		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
-		if (candidateInputs == null) {
-			candidateInputs = new HashSet<InputElement>();
-			cachedInputElements.put(modelElement, candidateInputs);
-		}
-		for (InputElement input : candidateInputs) {
-			if (input.getFeature() == null && input.getOperation() == null) {
-				return input;
-			}
-		}
-
-		// If we're here, such an InputElement does not already exist
-		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
-		soughtElement.setModelElement(modelElement);
-		soughtModel.getInputElements().add(soughtElement);
-		candidateInputs.add(soughtElement);
-		return soughtElement;
 	}
 
 	/**
@@ -1846,6 +1877,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
 			String delims = (String)arguments.get(0);
 			result = operationVisitor.visitTokenizeOperation((String)source, delims);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING)) {
+			// toString on non-primitives will need to create its own trace.
+			ModuleElement moduleElement = getModuleElement(callExp);
+			result = operationVisitor.visitTostringOperation(source, moduleElement);
 		} else {
 			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
 			throw new UnsupportedOperationException();
@@ -1970,12 +2005,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			isImpacting = true;
 		} else {
 			final String operationName = ((EOperation)operationCall.getReferredOperation()).getName();
-			// first, handle the MTL specific operations
 			if (operationReceiverEType == stringType
 					|| AcceleoStandardLibrary.PRIMITIVE_STRING_NAME.equals(operationReceiverEType.getName())) {
 				isImpacting = getTraceabilityImpactingStringOperationNames().contains(operationName);
 			} else if (collectionType.eClass().isInstance(operationReceiverEType)) {
 				isImpacting = getTraceabilityImpactingCollectionOperationNames().contains(operationName);
+			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)
+					&& !TraceabilityVisitorUtil.isPrimitive(operationReceiverEType)) {
+				// toString() applied on non-primitive will need to create its own traceability information.
+				isImpacting = true;
 			}
 		}
 
