@@ -127,7 +127,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		if (element instanceof Variable<?, ?> && ((Variable<?, ?>)element).getName() != null
 				&& ((Variable<?, ?>)element).getName().startsWith(VARIABLE_PREFIX)) {
 			final String varName = ((Variable<?, ?>)element).getName();
-			if (!varName.matches("temp\\d+")) { //$NON-NLS-1$
+			if (varName != null && !varName.matches("temp\\d+")) { //$NON-NLS-1$
 				return;
 			}
 			if (variableNames.contains(varName)) {
