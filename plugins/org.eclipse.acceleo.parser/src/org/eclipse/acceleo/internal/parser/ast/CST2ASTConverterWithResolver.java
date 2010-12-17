@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.expressions.OCLExpression;
@@ -59,6 +60,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 	/** Key of the error message for an unavailable clause. */
 	private static final String UNAVAILABLE_CLAUSE_KEY = "CST2ASTConverterWithResolver.UnavailableClause"; //$NON-NLS-1$
+
+	/** Key of the error message for a possible incompatible type. */
+	private static final String POSSIBLE_INCOMPATIBLE_TYPE = "CST2ASTConverterWithResolver.PossibleIncompatible"; //$NON-NLS-1$
 
 	/**
 	 * The resolution step can be limited to the specified region, for increasing performances. This index is
@@ -537,7 +541,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.model.mtl.Module oModule, String name, List<EClassifier> paramTypes) {
 		List<org.eclipse.acceleo.model.mtl.Template> result = new ArrayList<org.eclipse.acceleo.model.mtl.Template>();
 		if (oModule != null) {
-			result.addAll(getProtectedTemplatesNamed(oModule, name, paramTypes));
 			List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 			computeAllExtends(allExtends, oModule);
 			Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = allExtends.iterator();
@@ -1105,9 +1108,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (oLoopVariable != null) {
 					if ((oLoopVariable.getType() != null && oIterSet != null) && oIterSet.getType() != null
 							&& !compatibleVariableTypeFor(oLoopVariable, oIterSet)) {
-						logWarning(AcceleoParserMessages.getString(
-								"CST2ASTConverterWithResolver.PossibleIncompatible", oLoopVariable //$NON-NLS-1$
-										.getType().getName(), oIterSet.getType().getName()), oLoopVariable
+						logWarning(AcceleoParserMessages.getString(POSSIBLE_INCOMPATIBLE_TYPE, oLoopVariable
+								.getType().getName(), oIterSet.getType().getName()), oLoopVariable
 								.getStartPosition(), oIterSet.getEndPosition());
 					}
 				}
@@ -1139,15 +1141,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 
 		EClassifier initType = oIterSet.getType();
 		EClassifier variableType = oForVariable.getType();
-		EClassifier oclAny = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclAny();
 
 		if (initType instanceof CollectionType) {
 			CollectionType collectionType = (CollectionType)initType;
 			initType = collectionType.getElementType();
 		}
 		if (initType.getInstanceClass() != null && variableType.getInstanceClass() != null) {
-			result = initType.getInstanceClass().isAssignableFrom(variableType.getInstanceClass());
-		} else if (variableType == oclAny) {
+			result = variableType.getInstanceClass().isAssignableFrom(initType.getInstanceClass());
+		} else if (variableType instanceof AnyType) {
 			result = true;
 		}
 
@@ -1260,11 +1261,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					if ((oLetVariable.getType() != null && oLetVariable.getInitExpression() != null)
 							&& oLetVariable.getInitExpression().getType() != null
 							&& !compatibleVariableTypeLet(oLetVariable)) {
-						logWarning(AcceleoParserMessages.getString(
-								"CST2ASTConverterWithResolver.PossibleIncompatible", oLetVariable //$NON-NLS-1$
-										.getType().getName(), oLetVariable.getInitExpression().getType()
-										.getName()), oLetVariable.getStartPosition(), oLetVariable
-								.getInitExpression().getEndPosition());
+						logWarning(AcceleoParserMessages.getString(POSSIBLE_INCOMPATIBLE_TYPE, oLetVariable
+								.getType().getName(), oLetVariable.getInitExpression().getType().getName()),
+								oLetVariable.getStartPosition(), oLetVariable.getInitExpression()
+										.getEndPosition());
 					}
 				}
 			}
@@ -1491,6 +1491,19 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				} else {
 					logProblem(IAcceleoParserProblemsConstants.SYNTAX_TYPE_NOT_VALID + iQuery.getType(),
 							iQuery.getStartPosition(), iQuery.getEndPosition());
+				}
+			}
+
+			if (oQuery.getType() != null && oQuery.getExpression() != null
+					&& oQuery.getExpression().getType() != null) {
+				EClassifier queryType = oQuery.getType();
+				EClassifier expressionType = oQuery.getExpression().getType();
+				if (queryType.getInstanceClass() != null && expressionType.getInstanceClass() != null
+						&& !queryType.getInstanceClass().isAssignableFrom(expressionType.getInstanceClass())) {
+					logWarning(AcceleoParserMessages.getString(POSSIBLE_INCOMPATIBLE_TYPE, queryType
+							.getName(), expressionType.getName()), oQuery.getStartPosition(), oQuery
+							.getEndPosition());
+
 				}
 			}
 		}
