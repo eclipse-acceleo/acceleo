@@ -143,6 +143,10 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	 */
 	private IRegion getWordRegion(AcceleoEditor currentEditor, int cursorOffset, int expressionStart,
 			int expressionLength) {
+		if ((expressionStart + expressionLength) > currentEditor.getContent().getText().length()) {
+			return null;
+		}
+
 		// Creates a new String to avoid keeping the whole document in memory
 		final String expression = new String(currentEditor.getContent().getText().substring(expressionStart,
 				expressionStart + expressionLength));
