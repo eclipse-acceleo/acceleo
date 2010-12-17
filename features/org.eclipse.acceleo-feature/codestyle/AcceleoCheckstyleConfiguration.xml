@@ -84,6 +84,7 @@
         </module>
         <module name="FileLength">
             <property name="severity" value="error"/>
+            <property name="max" value="2500"/>
         </module>
         <module name="MethodLength">
             <property name="severity" value="error"/>
