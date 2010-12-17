@@ -483,7 +483,10 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		ModuleElement moduleElement = null;
 
 		EObject eContainer = v.eContainer();
-		while (eContainer != null || !(eContainer instanceof ModuleElement)) {
+		while (!(eContainer instanceof ModuleElement)) {
+			if (eContainer == null) {
+				break;
+			}
 			eContainer = eContainer.eContainer();
 		}
 
