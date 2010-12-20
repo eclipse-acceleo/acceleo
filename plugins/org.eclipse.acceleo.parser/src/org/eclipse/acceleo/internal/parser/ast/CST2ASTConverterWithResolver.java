@@ -21,6 +21,7 @@ import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
@@ -960,6 +961,64 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			transformStepResolveBody(iProtectedAreaBlock);
 
 			transformStepResolveRemoveVariables(iInit);
+
+			if (oProtectedAreaBlock.getBody() != null && oProtectedAreaBlock.getBody().size() > 0) {
+				int initEndPosition = oProtectedAreaBlock.getBody().get(0).getStartPosition();
+				if (this.astProvider instanceof AcceleoSourceBuffer) {
+					AcceleoSourceBuffer buffer = (AcceleoSourceBuffer)this.astProvider;
+					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, UNIX_LINE_SEPARATOR);
+					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, DOS_LINE_SEPARATOR);
+					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, MAC_LINE_SEPARATOR);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Parse the rest of the line after the protected area.
+	 * 
+	 * @param buffer
+	 *            The acceleo source buffer.
+	 * @param startPosition
+	 *            The position of the end of the protected area block.
+	 * @param delimiter
+	 *            The delimiter.
+	 */
+	private void parseWhitespaceAfterProtectedArea(AcceleoSourceBuffer buffer, int startPosition,
+			String delimiter) {
+		int startNonWhiteSpace = -1;
+		int endNonWhiteSpace = -1;
+
+		StringBuffer strBuffer = buffer.getBuffer();
+		int indexOfLineDelimiter = strBuffer.indexOf(delimiter, startPosition);
+		if (indexOfLineDelimiter != strBuffer.length()) {
+			for (int i = startPosition; i < indexOfLineDelimiter; i++) {
+				char charAt = strBuffer.charAt(i);
+				if (!Character.isWhitespace(charAt)) {
+					startNonWhiteSpace = i;
+					break;
+				}
+			}
+
+			if (startNonWhiteSpace != -1) {
+				for (int i = startNonWhiteSpace; i < indexOfLineDelimiter; i++) {
+					char charAt = strBuffer.charAt(i);
+					if (Character.isWhitespace(charAt)) {
+						endNonWhiteSpace = i;
+						break;
+					}
+				}
+			}
+
+			if (startNonWhiteSpace != -1 && endNonWhiteSpace == -1) {
+				endNonWhiteSpace = indexOfLineDelimiter;
+			}
+
+			if (startNonWhiteSpace != -1 && endNonWhiteSpace != -1) {
+				this.logWarning(AcceleoParserMessages
+						.getString("CST2ASTConverterWithResolver.TextAfterProtectedAreaMarker"), //$NON-NLS-1$
+						startNonWhiteSpace, endNonWhiteSpace);
+			}
 		}
 	}
 

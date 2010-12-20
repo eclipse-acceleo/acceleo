@@ -52,13 +52,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  */
 public class CST2ASTConverter {
 	/** Line separator of the unix platforms. */
-	private static final String UNIX_LINE_SEPARATOR = "\n"; //$NON-NLS-1$
+	protected static final String UNIX_LINE_SEPARATOR = "\n"; //$NON-NLS-1$
 
 	/** Line separator of the mac platforms. */
-	private static final String MAC_LINE_SEPARATOR = "\r"; //$NON-NLS-1$
+	protected static final String MAC_LINE_SEPARATOR = "\r"; //$NON-NLS-1$
 
 	/** Line separator of the dos platforms. */
-	private static final String DOS_LINE_SEPARATOR = "\r\n"; //$NON-NLS-1$
+	protected static final String DOS_LINE_SEPARATOR = "\r\n"; //$NON-NLS-1$
 
 	/**
 	 * The factory used to create the objects of the AST model.
