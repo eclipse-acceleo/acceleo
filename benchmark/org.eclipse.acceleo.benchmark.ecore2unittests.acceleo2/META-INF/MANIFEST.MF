@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Name: Ecore2unittests
+Bundle-SymbolicName: org.eclipse.acceleo.benchmark.ecore2unittests.acceleo2
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Require-Bundle: fr.obeo.acceleo.gen,
+ org.eclipse.emf.codegen.ecore;bundle-version="2.6.0"
