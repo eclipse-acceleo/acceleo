@@ -1,0 +1,27 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+extension org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common;
+
+cached getterPrefix(ecore::EStructuralFeature feature) : feature.eType.name == 'EBoolean' ? 'is' : 'get';
+
+cached valueGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.isPrimitive() ? primitiveValueGetter(class, feature) : class.name.toFirstLower() + '.get' + feature.name.toFirstUpper() + '()';
+
+cached primitiveValueGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.instanceClassName == 'int' ? '((Integer)' + class.name.toFirstLower() + '.' + feature.getterPrefix() + feature.name.toFirstUpper() + '()' + ').intValue()' : (feature.eType.instanceClassName == 'char' ? '((Character)' + class.name.toFirstLower() + '.' + feature.getterPrefix() + feature.name.toFirstUpper() + '()' + ').charValue()' : '((' + feature.eType.instanceClassName.toFirstUpper() + ')' + class.name.toFirstLower() + '.' + feature.getterPrefix() + feature.name.toFirstUpper() + '()' + ').' + feature.eType.instanceClassName + 'Value()');
+
+cached defaultValueGetter(ecore::EStructuralFeature feature) : feature.eType.isPrimitive() ? feature.primitiveDefaultValueGetter() : 'feature.getDefaultValue()';
+
+cached primitiveDefaultValueGetter(ecore::EStructuralFeature feature) : feature.eType.instanceClassName == 'int' ? '((Integer)feature.getDefaultValue()).intValue()' : (feature.eType.instanceClassName == 'char' ? '((Character)feature.getDefaultValue()).charValue()' : '((' + feature.eType.instanceClassName.toFirstUpper() + ')feature.getDefaultValue()).' + feature.eType.instanceClassName + 'Value()');
+
+cached reflectiveGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.isPrimitive() ? class.primitiveReflectiveGetter(feature) : class.name.toFirstLower() + '.eGet(feature)';
+
+cached reflectiveBasicGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.isPrimitive() ? class.primitiveReflectiveBasicGetter(feature) : class.name.toFirstLower() + '.eGet(feature, false)';
+
+cached primitiveReflectiveGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.instanceClassName == 'int' ? '((Integer)' + class.name.toFirstLower() + '.eGet(feature)).intValue()' : (feature.eType.instanceClassName == 'char' ? '((Character)' + class.name.toFirstLower() + '.eGet(feature)).charValue()' : '((' + feature.eType.instanceClassName.toFirstUpper() + ')' + class.name.toFirstLower() + '.eGet(feature)).' + feature.eType.instanceClassName + 'Value()');
+
+cached primitiveReflectiveBasicGetter(ecore::EClass class, ecore::EStructuralFeature feature) : feature.eType.instanceClassName == 'int' ? '((Integer)' + class.name.toFirstLower() + '.eGet(feature, false)).intValue()' : (feature.eType.instanceClassName == 'char' ? '((Character)' + class.name.toFirstLower() + '.eGet(feature, false)).charValue()' : '((' + feature.eType.instanceClassName.toFirstUpper() + ')' + class.name.toFirstLower() + '.eGet(feature, false)).' + feature.eType.instanceClassName + 'Value()');

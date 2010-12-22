@@ -1,0 +1,66 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common»
+
+«DEFINE testSuite FOR genmodel::GenPackage»
+«FILE 'src-gen/' + testPackage(this).replaceAll('\\.', '/') + '/suite/' + this.prefix.toFirstUpper() + 'TestSuite.java'»
+package «this.testPackage()».suite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+«FOREACH genClasses.select(genClass | !genClass.ecoreClass().abstract && genClass.ecoreClass().eContents.select(eObj | !ecore::EGenericType.isInstance(eObj)).size != 0) AS genClass»
+import «this.testPackage()».unit.«genClass.ecoreClass().name.toFirstUpper()»Test;
+«ENDFOREACH»
+«FOREACH genEnums AS genEnum»
+import «this.testPackage()».unit.«genEnum.ecoreEnum().name.toFirstUpper()»Test;
+«ENDFOREACH»
+import «this.testPackage()».unit.«this.prefix.toFirstUpper()»AdapterFactoryTest;
+import «this.testPackage()».unit.«this.prefix.toFirstUpper()»FactoryTest;
+import «this.testPackage()».unit.«this.prefix.toFirstUpper()»SwitchTest;
+
+/**
+ * This test suite allows clients to launch all tests generated for package «this.ecorePackage().name» at once.
+ *
+ * @generated
+ */
+public class «this.prefix.toFirstUpper()»TestSuite extends TestCase {
+	/**
+	 * Standalone launcher for package «this.ecorePackage().name»'s tests.
+	 *
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		TestRunner.run(suite());
+	}
+
+	/**
+	 * This will return a suite populated with all generated tests for package «this.ecorePackage().name».
+	 *
+	 * @generated
+	 */
+	public static Test suite() {
+		final TestSuite suite = new TestSuite("«this.prefix.toFirstUpper()» test suite"); //$NON-NLS-1$
+
+		«FOREACH genClasses.select(genClass | !genClass.ecoreClass().abstract && genClass.ecoreClass().eContents.select(eObj | !ecore::EGenericType.isInstance(eObj)).size != 0) AS genClass»
+		suite.addTestSuite(«genClass.ecoreClass().name.toFirstUpper()»Test.class);
+		«ENDFOREACH»
+		«FOREACH genEnums AS genEnum»
+		suite.addTestSuite(«genEnum.ecoreEnum().name.toFirstUpper()»Test.class);
+		«ENDFOREACH»
+		suite.addTestSuite(«this.prefix.toFirstUpper()»AdapterFactoryTest.class);
+		suite.addTestSuite(«this.prefix.toFirstUpper()»FactoryTest.class);
+		suite.addTestSuite(«this.prefix.toFirstUpper()»SwitchTest.class);
+
+		return suite;
+	}
+}
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,50 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common»
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::switchTestExtension»
+
+«DEFINE switchTest FOR genmodel::GenPackage»
+«FILE 'src-gen/' + testPackage(this).replaceAll('\\.', '/') + '/unit/' + this.prefix.toFirstUpper() + 'SwitchTest.java'»
+package «this.testPackage()».unit;
+
+import junit.framework.TestCase;
+
+import «this.modelPackage()».«this.modelFactoryClassName()»;
+import «this.modelPackage()».util.«this.modelSwitchClassName()»;
+«FOREACH this.genClasses.ecoreClass().select(e | !e.abstract) AS eClass»
+import «this.modelPackage()».«eClass.name»;
+«ENDFOREACH»
+
+/*
+ * TODO This is but a skeleton for the tests of «this.modelSwitchClassName()».
+ * Set as "generated NOT" and override each test if you overrode the default generated
+ * behavior.
+ */
+/**
+ * Tests the behavior of the {@link «this.modelSwitchClassName()» generated switch} for package «this.ecorePackage().name».
+ *
+ * @generated
+ */
+@SuppressWarnings("nls")
+public class «this.modelSwitchClassName()»Test extends TestCase {
+	«FOREACH this.genClasses.ecoreClass().select(e | !e.interface) AS eClass SEPARATOR '\n'»
+	/**
+	 * Ensures that the generated switch knows {@link «eClass.name»}.
+	 *
+	 * @generated
+	 */
+	public void testCase«eClass.name.toFirstUpper()»() {
+		«this.modelSwitchClassName()»<?> «this.ecorePackage().name.toFirstLower()»switch = new «this.modelSwitchClassName()»<Object>();
+		assertNull(«this.ecorePackage().name.toFirstLower()»switch.case«eClass.name.toFirstUpper()»(«instanceCreator(this, eClass)»));
+		assertNull(«this.ecorePackage().name.toFirstLower()»switch.doSwitch(«instanceCreator(this, eClass)»));
+	}
+	«ENDFOREACH»
+}
+«ENDFILE»
+«ENDDEFINE»

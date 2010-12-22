@@ -1,0 +1,24 @@
+module test.workflow
+
+var targetProject = 'fr.obeo.ecore2unittests.generated'
+var modelPath = '${targetProject}/model/generated.genmodel'
+
+Workflow {
+	bean = org.eclipse.emf.mwe.utils.StandaloneSetup {
+		platformUri = '..'
+		registerGeneratedEPackage = 'org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage'
+	}
+	
+	component = org.eclipse.emf.mwe.utils.Reader {
+		uri = "platform:/resource/${modelPath}"
+		modelSlot = "model"
+	}
+
+	component = org.eclipse.xpand2.Generator {
+		metaModel = org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel {}
+		expand = "org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::main::main FOR model"
+		outlet = {
+			path = '../${targetProject}'
+		}
+	}
+}

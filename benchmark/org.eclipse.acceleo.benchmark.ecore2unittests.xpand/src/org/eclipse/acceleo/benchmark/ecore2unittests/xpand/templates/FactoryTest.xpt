@@ -1,0 +1,143 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common»
+
+«DEFINE factoryTest FOR genmodel::GenPackage»
+«FILE 'src-gen/' + testPackage(this).replaceAll('\\.', '/') + '/unit/' + prefix.toFirstUpper() + 'FactoryTest.java'»
+package «this.testPackage() + '.unit'»;
+
+import junit.framework.TestCase;
+
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.impl.EClassifierImpl;
+
+import «this.modelPackage()».«this.modelFactoryClassName()»;
+import «this.modelPackage()».«this.modelPackageClassName()»;
+«FOREACH genClasses.ecoreClass().select(e | !e.abstract) AS eClass»
+import «this.modelPackage()».«eClass.name»;
+«ENDFOREACH»
+«FOREACH genEnums.ecoreEnum() AS eEnum»
+import «this.modelPackage()».«eEnum.name»;
+«ENDFOREACH»
+
+/**
+ * Tests the behavior of the {@link «this.modelFactoryClassName()» generated factory} for package «this.ecorePackage().name».
+ *
+ * @generated
+ */
+@SuppressWarnings("nls")
+public class «this.modelFactoryClassName()»Test extends TestCase {
+	«FOREACH genClasses.select(e | !e.ecoreClass().abstract) AS genClass SEPARATOR '\n'»
+	/**
+	 * Ensures that creating {@link «genClass.ecoreClass().name.toFirstUpper()»} can be done through the factory.
+	 *
+	 * @generated
+	 */
+	public void testCreate«genClass.ecoreClass().name.toFirstUpper()»() {
+		Object result = «this.modelFactoryClassName()».eINSTANCE.create«genClass.ecoreClass().name.toFirstUpper()»();
+		assertNotNull(result);
+		assertTrue(result instanceof «genClass.ecoreClass().name»);
+
+		result = «this.modelFactoryClassName()».eINSTANCE.create(«this.modelPackageClassName()».Literals.«genClass.ecoreClass().name.toFirstUpper().convertToPackageString()»);
+		assertNotNull(result);
+		assertTrue(result instanceof «genClass.ecoreClass().name»);
+	}
+	«ENDFOREACH»
+
+	/**
+	 * Ensures that trying to create an {@link EClass} from another package yields the expected exception.
+	 *
+	 * @generated
+	 */
+	public void testCreateUnknownEClass() {
+		try {
+			EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+			((EClassifierImpl)eClass).setClassifierID(-1);
+			«this.modelFactoryClassName()».eINSTANCE.create(eClass);
+			fail("Expected IllegalArgumentException hasn't been thrown");
+		} catch (IllegalArgumentException e) {
+			// Expected behavior
+		}
+	}
+
+	«FOREACH genEnums AS genEnum SEPARATOR '\n'»
+	/**
+	 * Ensures that converting {@link «genEnum.ecoreEnum().name.toFirstUpper()»} to String can be done through the factory. 
+	 *
+	 * @generated
+	 */
+	public void testConvert«genEnum.ecoreEnum().name.toFirstUpper()»ToString() {
+		for («genEnum.ecoreEnum().name.toFirstUpper()» value : «genEnum.ecoreEnum().name.toFirstUpper()».VALUES) {
+			Object result = «this.modelFactoryClassName()».eINSTANCE.convertToString(«this.modelPackageClassName()».Literals.«genEnum.ecoreEnum().name.toFirstUpper().convertToPackageString()», value);
+			assertNotNull(result);
+			assertEquals(value.toString(), result);
+		}
+	}
+	«ENDFOREACH»
+
+	/**
+	 * Ensures that trying to convert an {@link EEnum} from another package to String yields the expected
+	 * exception.
+	 *
+	 * @generated
+	 */
+	public void testConvertUnknownEEnumToString() {
+		try {
+			EEnum eEnum = EcoreFactory.eINSTANCE.createEEnum();
+			((EClassifierImpl)eEnum).setClassifierID(-1);
+			«this.modelFactoryClassName()».eINSTANCE.convertToString(eEnum, eEnum);
+			fail("Expected IllegalArgumentException hasn't been thrown");
+		} catch (IllegalArgumentException e) {
+			// Expected behavior
+		}
+	}
+
+	«FOREACH genEnums AS genEnum SEPARATOR '\n'»
+	/**
+	 * Ensures that creating {@link «genEnum.ecoreEnum().name.toFirstUpper()»} from String can be done through the factory. 
+	 *
+	 * @generated
+	 */
+	public void testCreate«genEnum.ecoreEnum().name.toFirstUpper()»FromString() {
+		for («genEnum.ecoreEnum().name.toFirstUpper()» value : «genEnum.ecoreEnum().name.toFirstUpper()».VALUES) {
+			Object result = «this.modelFactoryClassName()».eINSTANCE.createFromString(«this.modelPackageClassName()».Literals.«genEnum.ecoreEnum().name.toFirstUpper().convertToPackageString()», value.getLiteral());
+			assertNotNull(result);
+			assertSame(value, result);
+
+			try {
+				«this.modelFactoryClassName()».eINSTANCE.createFromString(«this.modelPackageClassName()».Literals.«genEnum.ecoreEnum().name.toFirstUpper().convertToPackageString()», "ThisShouldntBeAKnownEEnumLiteral");
+				fail("Expected IllegalArgumentException hasn't been thrown");
+			} catch (IllegalArgumentException e) {
+				// Expected behavior
+			}
+		}
+	}
+	«ENDFOREACH»
+
+	/**
+	 * Ensures that trying to create an {@link EEnum} from another package from String yields the expected
+	 * exception.
+	 *
+	 * @generated
+	 */
+	public void testCreateUnknownEEnumFromString() {
+		try {
+			EEnum eEnum = EcoreFactory.eINSTANCE.createEEnum();
+			((EClassifierImpl)eEnum).setClassifierID(-1);
+			«this.modelFactoryClassName()».eINSTANCE.createFromString(eEnum, "ThisShouldntBeAKnownEEnumLiteral");
+			fail("Expected IllegalArgumentException hasn't been thrown");
+		} catch (IllegalArgumentException e) {
+			// Expected behavior
+		}
+	}
+}
+«ENDFILE»
+«ENDDEFINE»

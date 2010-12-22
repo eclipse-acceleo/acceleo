@@ -1,0 +1,19 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«DEFINE main FOR genmodel::GenModel»
+	«EXPAND CommonFiles::manifest FOR this»
+	«EXPAND AbstractTestClass::abstractTestClass FOREACH genPackages»
+	«EXPAND AdapterFactoryTest::adapterFactoryTest FOREACH genPackages»
+	«EXPAND FactoryTest::factoryTest FOREACH genPackages»
+	«EXPAND SwitchTest::switchTest FOREACH genPackages»
+	«EXPAND TestSuite::testSuite FOREACH genPackages»
+	
+	«EXPAND ClassTest::classTest FOREACH genPackages.genClasses»
+	«EXPAND EnumerationTest::enumerationTest FOREACH genPackages.genEnums»
+«ENDDEFINE»

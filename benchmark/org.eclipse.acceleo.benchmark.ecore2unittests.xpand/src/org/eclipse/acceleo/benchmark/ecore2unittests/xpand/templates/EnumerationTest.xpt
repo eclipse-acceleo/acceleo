@@ -1,0 +1,67 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common»
+
+«DEFINE enumerationTest FOR genmodel::GenEnum»
+«FILE 'src-gen/' + testPackage(this).replaceAll('\\.', '/') + '/unit/' + ecoreEnum(this).name.toFirstUpper() + 'Test.java'»
+package «this.testPackage() + '.unit'»;
+
+import junit.framework.TestCase;
+
+import «this.modelPackage()».«this.ecoreEnum().name.toFirstUpper()»;
+
+/**
+ * Tests the behavior of the {@link «this.ecoreEnum().name.toFirstUpper()»} enumeration.
+ * 
+ * @generated
+ */
+@SuppressWarnings("nls")
+public class «this.ecoreEnum().name.toFirstUpper()»Test extends TestCase {
+	/**
+	 * Tests the behavior of the {@link «this.ecoreEnum().name.toFirstUpper()»#get(int)} method.
+	 * 
+	 * @generated
+ 	 */
+	public void testGetInt() {
+		int highestValue = -1;
+		for («this.ecoreEnum().name.toFirstUpper()» value : «this.ecoreEnum().name.toFirstUpper()».VALUES) {
+			assertSame(«this.ecoreEnum().name.toFirstUpper()».get(value.getValue()), value);
+			if (value.getValue() > highestValue) {
+				highestValue = value.getValue();
+			}
+		}
+		assertNull(«this.ecoreEnum().name.toFirstUpper()».get(++highestValue));
+	}
+
+	/**
+	 * Tests the behavior of the {@link «this.ecoreEnum().name.toFirstUpper()»#get(java.lang.String)} method.
+	 * 
+	 * @generated
+ 	 */
+	public void testGetString() {
+		for («this.ecoreEnum().name.toFirstUpper()» value : «this.ecoreEnum().name.toFirstUpper()».VALUES) {
+			assertSame(«this.ecoreEnum().name.toFirstUpper()».get(value.getLiteral()), value);
+		}
+		assertNull(«this.ecoreEnum().name.toFirstUpper()».get("ThisIsNotAValueOfTheTestedEnum"));
+	}
+
+	/**
+	 * Tests the behavior of the {@link «this.ecoreEnum().name.toFirstUpper()»#getByName(java.lang.String)} method.
+	 * 
+	 * @generated
+ 	 */
+	public void testGetByName() {
+		for («this.ecoreEnum().name.toFirstUpper()» value : «this.ecoreEnum().name.toFirstUpper()».VALUES) {
+			assertSame(«this.ecoreEnum().name.toFirstUpper()».getByName(value.getName()), value);
+		}
+		assertNull(«this.ecoreEnum().name.toFirstUpper()».getByName("ThisIsNotTheNameOfAValueFromTheTestedEnum"));
+	}
+}
+«ENDFILE»
+«ENDDEFINE»

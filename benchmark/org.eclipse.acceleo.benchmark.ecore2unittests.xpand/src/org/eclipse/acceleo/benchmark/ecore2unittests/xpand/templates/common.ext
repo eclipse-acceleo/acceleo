@@ -1,0 +1,65 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+cached testPackage(genmodel::GenPackage pack) : pack.basePackage + '.tests';
+
+cached testPackage(genmodel::GenClassifier classifier) : testPackage(classifier.genPackage);
+
+cached modelPackage(genmodel::GenPackage pack) : pack.basePackage + '.' + pack.prefix.toLowerCase() + (pack.interfacePackageSuffix == '' ? '' : '.' + pack.interfacePackageSuffix.toLowerCase());
+
+cached modelPackage(genmodel::GenClassifier classifier) : classifier.genPackage.modelPackage();
+
+cached implementationPackage(genmodel::GenPackage pack) : pack.basePackage + '.' + pack.prefix.toLowerCase() + (pack.classPackageSuffix == '' ? '' : '.' + pack.classPackageSuffix.toLowerCase());
+
+cached implementationPackage(genmodel::GenClassifier classifier) : classifier.genPackage.implementationPackage();
+
+cached modelAdapterFactoryClassName(genmodel::GenPackage pack) : pack.prefix + 'AdapterFactory';
+
+cached modelFactoryClassName(genmodel::GenPackage pack) : pack.prefix + 'Factory';
+
+cached modelSwitchClassName(genmodel::GenPackage pack) : pack.prefix + 'Switch';
+
+cached qualifiedModelFactoryClassName(genmodel::GenPackage pack) : pack.modelPackage() + '.' + pack.prefix + 'Factory';
+
+cached modelFactoryClassName(ecore::EClass eClass) : ((genmodel::GenClass)eInverse(eClass, 'GenClass').toList().first()).genPackage.modelFactoryClassName();
+
+cached qualifiedModelFactoryClassName(ecore::EClass eClass) : eClass.ePackage.nsURI == 'http://www.eclipse.org/emf/2002/Ecore' ? 'org.eclipse.emf.ecore.EcoreFactory' : ((genmodel::GenClass)eInverse(eClass, 'GenClass').toList().first()).genPackage.qualifiedModelFactoryClassName();
+
+cached modelPackageClassName(genmodel::GenPackage pack) : pack.prefix + 'Package';
+
+cached qualifiedModelPackageClassName(genmodel::GenPackage pack) : pack.modelPackage() + '.' + pack.prefix + 'Package';
+
+cached modelPackageClassName(ecore::EClass eClass) : ((genmodel::GenClass)eInverse(eClass, 'GenClass').toList().first()).genPackage.modelPackageClassName();
+
+cached qualifiedModelPackageClassName(ecore::EClass eClass) : eClass.ePackage.nsURI == 'http://www.eclipse.org/emf/2002/Ecore' ? 'org.eclipse.emf.ecore.EcorePackage' : ((genmodel::GenClass)eInverse(eClass, 'GenClass').toList().first()).genPackage.qualifiedModelPackageClassName();
+
+cached qualifiedGeneratedName(ecore::EClassifier classifier) : classifier.ePackage.nsURI == 'http://www.eclipse.org/emf/2002/Ecore' ? ('org.eclipse.emf.ecore.' + classifier.name) : (((genmodel::GenClassifier)eInverse(classifier, 'GenClassifier').toList().first()).modelPackage() + '.' +  classifier.name);
+
+cached qualifiedGeneratedImplementation(ecore::EClassifier classifier) : classifier.ePackage.nsURI == 'http://www.eclipse.org/emf/2002/Ecore' ? ('org.eclipse.emf.ecore.impl' + classifier.name + 'Impl') : (((genmodel::GenClassifier)eInverse(classifier, 'GenClassifier').toList().first()).implementationPackage() + '.' + classifier.name + 'Impl');
+
+cached instantiatableSubClass(ecore::EClass class) : !class.abstract ? class : eInverse(class, 'EClass').select(e | !((ecore::EClass)e).abstract && ((ecore::EClass)e).eSuperTypes.contains(class)).toList().first();
+
+cached isPrimitive(ecore::EClassifier eClassifier) : eClassifier.name.matches('EBoolean|EByte|EChar|EDouble|EFloat|EInt|ELong|EShort');
+
+ecore::EClass ecoreClass(genmodel::GenClass genClass) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.MetamodelUtil.getEcoreClass(org.eclipse.emf.codegen.ecore.genmodel.GenClass);
+
+ecore::EEnum ecoreEnum(genmodel::GenEnum genEnum) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.MetamodelUtil.getEcoreEnum(org.eclipse.emf.codegen.ecore.genmodel.GenEnum);
+	
+ecore::EPackage ecorePackage(genmodel::GenPackage genPackage) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.MetamodelUtil.getEcorePackage(org.eclipse.emf.codegen.ecore.genmodel.GenPackage);
+	
+String convertToPackageString(String string) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.StringService.convertToPackageString(java.lang.String);
+
+List eInverse(ecore::EClass object, String filter) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.CrossReferencerService.eInverse(org.eclipse.emf.ecore.EClass, java.lang.String);
+	
+List eInverse(ecore::EClassifier object, String filter) : JAVA
+	org.eclipse.acceleo.benchmark.ecore2unittests.xpand.services.CrossReferencerService.eInverse(org.eclipse.emf.ecore.EClassifier, java.lang.String);

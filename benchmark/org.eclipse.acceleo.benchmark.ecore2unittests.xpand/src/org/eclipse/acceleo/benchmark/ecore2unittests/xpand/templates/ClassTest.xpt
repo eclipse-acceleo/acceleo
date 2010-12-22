@@ -1,0 +1,256 @@
+/*
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+*/
+
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::common»
+«EXTENSION org::eclipse::acceleo::benchmark::ecore2unittests::xpand::templates::classTestExtension»
+
+«DEFINE classTest FOR genmodel::GenClass»
+«IF !this.ecoreClass().abstract && this.ecoreClass().eContents.select(eObj | !ecore::EGenericType.isInstance(eObj)).size != 0»
+«FILE 'src-gen/' + testPackage(this).replaceAll('\\.', '/') + '/unit/' + ecoreClass(this).name.toFirstUpper() + 'Test.java'»
+package «testPackage(this)».unit;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+import «modelPackage(this)».«genPackage.modelFactoryClassName()»;
+import «modelPackage(this)».«ecoreClass(this).name.toFirstUpper()»;
+
+/**
+ * Tests the behavior of the {@link «ecoreClass(this).name.toFirstUpper()»} class.
+ * 
+ * @generated
+ */
+public class «ecoreClass(this).name.toFirstUpper()»Test extends Abstract«genPackage.prefix.toFirstUpper()»Test {
+	«FOREACH ecoreClass(this).eAllReferences.select(refer | refer.many && refer.changeable && !refer.derived && refer.eContainingClass.ePackage.nsURI != 'http://www.eclipse.org/emf/2002/Ecore') AS reference SEPARATOR '\n'»
+	«EXPAND multiValuedReference(this, reference)»
+	«ENDFOREACH»
+
+	«FOREACH ecoreClass(this).eAllReferences.select(refer | !refer.many && refer.changeable && !refer.derived && refer.eContainingClass.ePackage.nsURI != 'http://www.eclipse.org/emf/2002/Ecore') AS reference SEPARATOR '\n'»
+	«EXPAND uniqueReference(this, reference)»
+	«ENDFOREACH»
+
+	«FOREACH ecoreClass(this).eAllAttributes.select(attrib | !attrib.many && attrib.changeable && !attrib.derived && attrib.eContainingClass.ePackage.nsURI != 'http://www.eclipse.org/emf/2002/Ecore') AS attribute SEPARATOR '\n'»
+	«EXPAND uniqueAttribute(this, attribute)»
+	«ENDFOREACH»
+	
+	«FOREACH ecoreClass(this).eAllStructuralFeatures.select(feat | (feat.derived || !feat.changeable) && feat.eContainingClass.ePackage.nsURI != 'http://www.eclipse.org/emf/2002/Ecore') AS feature SEPARATOR '\n'»
+	«EXPAND unchangeableFeature(this, feature)»
+	«ENDFOREACH»
+}
+«ENDFILE»
+«ENDIF»
+«ENDDEFINE»
+
+«DEFINE multiValuedReference(genmodel::GenClass class, ecore::EReference ref) FOR genmodel::GenClass»
+/**
+ * Tests the behavior of reference <code>«ref.name»</code>'s accessors.
+ * 
+ * @generated
+ */
+public void test«ref.name.toFirstUpper()»() {
+	EStructuralFeature feature = «ref.eContainingClass.qualifiedModelPackageClassName()».eINSTANCE.get«ref.eContainingClass.name.toFirstUpper()»_«ref.name.toFirstUpper()»();
+	«ecoreClass(class).name.toFirstUpper()» «ecoreClass(class).name.toFirstLower()» = «class.genPackage.modelFactoryClassName()».eINSTANCE.create«ecoreClass(class).name.toFirstUpper()»();
+	«ecoreClass(class).name.toFirstLower()».eAdapters().add(new MockEAdapter());
+	«ref.eType.qualifiedGeneratedName()» «ref.name»Value = «IF ((ecore::EClass)ref.eType).instantiatableSubClass() == null»new «ref.eType.qualifiedGeneratedImplementation()»(){}«ELSE»«((ecore::EClass)ref.eType).instantiatableSubClass().qualifiedModelFactoryClassName()».eINSTANCE.create«((ecore::EClass)ref.eType).instantiatableSubClass().name»()«ENDIF»;
+	List<«ref.eType.qualifiedGeneratedName()»> list«ref.name.toFirstUpper()» = new ArrayList<«ref.eType.qualifiedGeneratedName()»>(1);
+	list«ref.name.toFirstUpper()».add(«ref.name»Value);
+
+	assertFalse(«ecoreClass(class).name.toFirstLower()».eIsSet(feature));
+	assertTrue(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»().isEmpty());
+
+	«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»().add(«ref.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertTrue(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»().contains(«ref.name»Value));
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature));
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature, false));
+	assertTrue(«ecoreClass(class).name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertTrue(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«ecoreClass(class).name.toFirstLower()»)«ELSE» == «ecoreClass(class).name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«ecoreClass(class).name.toFirstLower()».eUnset(feature);
+	assertTrue(notified);
+	notified = false;
+	assertTrue(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»().isEmpty());
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature));
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature, false));
+	assertFalse(«ecoreClass(class).name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertFalse(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«ecoreClass(class).name.toFirstLower()»)«ELSE» == «ecoreClass(class).name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«ecoreClass(class).name.toFirstLower()».eSet(feature, list«ref.name.toFirstUpper()»);
+	assertTrue(notified);
+	notified = false;
+	assertTrue(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»().contains(«ref.name»Value));
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature));
+	assertSame(«ecoreClass(class).name.toFirstLower()».get«ref.name.toFirstUpper()»(), «ecoreClass(class).name.toFirstLower()».eGet(feature, false));
+	assertTrue(«ecoreClass(class).name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertTrue(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«ecoreClass(class).name.toFirstLower()»)«ELSE» == «ecoreClass(class).name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+}
+«ENDDEFINE»
+
+«DEFINE uniqueReference(genmodel::GenClass class, ecore::EReference ref) FOR genmodel::GenClass»
+/**
+ * Tests the behavior of reference <code>«ref.name»</code>'s accessors.
+ * 
+ * @generated
+ */
+public void test«ref.name.toFirstUpper()»() {
+	EStructuralFeature feature = «ref.eContainingClass.qualifiedModelPackageClassName()».eINSTANCE.get«ref.eContainingClass.name.toFirstUpper()»_«ref.name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstUpper()» «class.ecoreClass().name.toFirstLower()» = «class.genPackage.modelFactoryClassName()».eINSTANCE.create«class.ecoreClass().name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstLower()».eAdapters().add(new MockEAdapter());
+	«ref.eType.qualifiedGeneratedName()» «ref.name»Value = «IF ((ecore::EClass)ref.eType).instantiatableSubClass() == null»new «ref.eType.qualifiedGeneratedName()»(){}«ELSE»«((ecore::EClass)ref.eType).instantiatableSubClass().qualifiedModelFactoryClassName()».eINSTANCE.create«((ecore::EClass)ref.eType).instantiatableSubClass().name»()«ENDIF»;
+
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	assertNull(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+
+	«class.ecoreClass().name.toFirstLower()».set«ref.name.toFirstUpper()»(«ref.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertSame(«ref.name»Value, «class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature));
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature, false));
+	assertTrue(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertTrue(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«class.ecoreClass().name.toFirstLower()»)«ELSE» == «class.ecoreClass().name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«class.ecoreClass().name.toFirstLower()».eUnset(feature);
+	assertTrue(notified);
+	notified = false;
+	assertNull(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature));
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature, false));
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertFalse(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«class.ecoreClass().name.toFirstLower()»)«ELSE» == «class.ecoreClass().name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«class.ecoreClass().name.toFirstLower()».set«ref.name.toFirstUpper()»(«ref.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertSame(«ref.name»Value, «class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature));
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature, false));
+	assertTrue(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertTrue(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«class.ecoreClass().name.toFirstLower()»)«ELSE» == «class.ecoreClass().name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«class.ecoreClass().name.toFirstLower()».eSet(feature, «ref.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertSame(«ref.name»Value, «class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature));
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature, false));
+	assertTrue(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertTrue(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«class.ecoreClass().name.toFirstLower()»)«ELSE» == «class.ecoreClass().name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+
+	«class.ecoreClass().name.toFirstLower()».set«ref.name.toFirstUpper()»(null);
+	assertTrue(notified);
+	notified = false;
+	assertNull(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(feature.getDefaultValue(), «class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»());
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature));
+	assertSame(«class.ecoreClass().name.toFirstLower()».get«ref.name.toFirstUpper()»(), «class.ecoreClass().name.toFirstLower()».eGet(feature, false));
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF ref.eOpposite != null»
+	assertFalse(«ref.name»Value.get«ref.eOpposite.name.toFirstUpper()»()«IF ref.eOpposite.many».contains(«class.ecoreClass().name.toFirstLower()»)«ELSE» == «class.ecoreClass().name.toFirstLower()»«ENDIF»);
+	«ENDIF»
+}
+«ENDDEFINE»
+
+«DEFINE uniqueAttribute(genmodel::GenClass class, ecore::EAttribute attribute) FOR genmodel::GenClass»
+/**
+ * Tests the behavior of attribute <code>«attribute.name»</code>'s accessors.
+ * 
+ * @generated
+ */
+public void test«attribute.name.toFirstUpper()»() {
+	EStructuralFeature feature = «attribute.eContainingClass.qualifiedModelPackageClassName()».eINSTANCE.get«attribute.eContainingClass.name.toFirstUpper()»_«attribute.name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstUpper()» «class.ecoreClass().name.toFirstLower()» = «class.genPackage.modelFactoryClassName()».eINSTANCE.create«class.ecoreClass().name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstLower()».eAdapters().add(new MockEAdapter());
+	«IF ecore::EEnum.isInstance(attribute.eType)»
+	«attribute.eType.qualifiedGeneratedName()» «attribute.name»Value = («attribute.eType.qualifiedGeneratedName()»)feature.getDefaultValue();
+	for («attribute.eType.qualifiedGeneratedName()» a«attribute.eType.name» : «attribute.eType.qualifiedGeneratedName()».VALUES) {
+		if («attribute.name»Value.getValue() != a«attribute.eType.name».getValue()) {
+			«attribute.name»Value = a«attribute.eType.name»;
+			break;
+		}
+	}
+	«ELSE»
+	«attribute.eType.instanceClassName» «attribute.name»Value = «IF attribute.eType.isPrimitive()»get«attribute.eType.instanceClassName.toFirstUpper()»DistinctFromDefault(feature)«ELSE»(«attribute.eType.instanceClassName»)getValueDistinctFromDefault(feature)«ENDIF»;
+	«ENDIF»
+
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	assertEquals(«attribute.defaultValueGetter()», «class.ecoreClass().valueGetter(attribute)»);
+
+	«class.ecoreClass().name.toFirstLower()».set«attribute.name.toFirstUpper()»(«attribute.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertEquals(«attribute.name»Value, «class.ecoreClass().valueGetter(attribute)»);
+	assertEquals(«class.ecoreClass().valueGetter(attribute)», «class.ecoreClass().reflectiveGetter(attribute)»);
+	assertTrue(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+
+	«class.ecoreClass().name.toFirstLower()».eUnset(feature);
+	assertTrue(notified);
+	notified = false;
+	assertEquals(«attribute.defaultValueGetter()», «class.ecoreClass().valueGetter(attribute)»);
+	assertEquals(«class.ecoreClass().valueGetter(attribute)», «class.ecoreClass().reflectiveGetter(attribute)»);
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+
+	«class.ecoreClass().name.toFirstLower()».eSet(feature, «attribute.name»Value);
+	assertTrue(notified);
+	notified = false;
+	assertEquals(«attribute.name»Value, «class.ecoreClass().valueGetter(attribute)»);
+	assertEquals(«class.ecoreClass().valueGetter(attribute)», «class.ecoreClass().reflectiveGetter(attribute)»);
+	assertTrue(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+
+	«class.ecoreClass().name.toFirstLower()».set«attribute.name.toFirstUpper()»(«IF attribute.eType.isPrimitive()»((«IF attribute.eType.instanceClassName == 'int'»Integer«ELSE»«attribute.eType.instanceClassName.toFirstUpper()»«ENDIF»)feature.getDefaultValue()).«attribute.eType.instanceClassName»Value()«ELSE»null«ENDIF»);
+	assertTrue(notified);
+	notified = false;
+	assertEquals(«attribute.defaultValueGetter()», «class.ecoreClass().valueGetter(attribute)»);
+	assertEquals(«class.ecoreClass().valueGetter(attribute)», «class.ecoreClass().reflectiveGetter(attribute)»);
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+}
+«ENDDEFINE»
+
+«DEFINE unchangeableFeature(genmodel::GenClass class, ecore::EStructuralFeature feature) FOR genmodel::GenClass»
+/**
+ * Tests the behavior of «IF ecore::EReference.isInstance(feature)»reference«ELSE»attribute«ENDIF» <code>«feature.name»</code>'s getter.
+ * 
+ * @generated
+ */
+public void test«feature.name.toFirstUpper()»() {
+	EStructuralFeature feature = «feature.eContainingClass.qualifiedModelPackageClassName()».eINSTANCE.get«feature.eContainingClass.name.toFirstUpper()»_«feature.name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstUpper()» «class.ecoreClass().name.toFirstLower()» = «class.genPackage.modelFactoryClassName()».eINSTANCE.create«class.ecoreClass().name.toFirstUpper()»();
+	«class.ecoreClass().name.toFirstLower()».eAdapters().add(new MockEAdapter());
+
+	assertFalse(«class.ecoreClass().name.toFirstLower()».eIsSet(feature));
+	«IF !feature.derived»
+	assertSame(«IF ecore::EReference.isInstance(feature)»«((ecore::EReference)feature).defaultValueGetter()»«ELSE»«((ecore::EAttribute)feature).defaultValueGetter()»«ENDIF», «class.ecoreClass().name.toFirstLower()».«feature.getterPrefix()»«feature.name.toFirstUpper()»());
+	«ELSE»
+	try {
+		«class.ecoreClass().name.toFirstLower()».«feature.getterPrefix()»«feature.name.toFirstUpper()»();
+		«class.ecoreClass().reflectiveGetter(feature)»;
+	} catch (UnsupportedOperationException e) {
+		fail("Getter for derived feature «feature.name» hasn't been implemented.");
+	}
+	«ENDIF»
+
+	// TODO This is «IF feature.derived»a derived«ELSE»an unchangeable«ENDIF» feature. Set as "generated NOT" and implement test
+}
+«ENDDEFINE»
