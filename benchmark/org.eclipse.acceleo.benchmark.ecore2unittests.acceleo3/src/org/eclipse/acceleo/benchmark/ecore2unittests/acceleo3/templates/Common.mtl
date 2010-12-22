@@ -1,0 +1,50 @@
+[comment]
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+[/comment]
+[module Common('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public testPackage(pack : GenPackage) : String = pack.basePackage.concat('.tests')/]
+
+[query public testPackage(classifier : GenClassifier) : String = classifier.genPackage.testPackage()/]
+
+[query public modelPackage(pack : GenPackage) : String = pack.basePackage.concat('.').concat(pack.prefix.toLower()).concat(if pack.interfacePackageSuffix = '' then '' else '.'.concat(pack.interfacePackageSuffix.toLower()) endif)/]
+
+[query public modelPackage(classifier : GenClassifier) : String = classifier.genPackage.modelPackage()/]
+
+[query public implementationPackage(pack : GenPackage) : String = pack.basePackage.concat('.').concat(pack.prefix.toLower()).concat(if pack.classPackageSuffix = '' then '' else '.'.concat(pack.classPackageSuffix.toLower()) endif)/]
+
+[query public implementationPackage(classifier : GenClassifier) : String = classifier.genPackage.implementationPackage()/]
+
+[query public modelAdapterFactoryClassName(pack : GenPackage) : String = pack.prefix.concat('AdapterFactory')/]
+
+[query public modelFactoryClassName(pack : GenPackage) : String = pack.prefix.concat('Factory')/]
+
+[query public modelSwitchClassName(pack : GenPackage) : String = pack.prefix.concat('Switch')/]
+
+[query public qualifiedModelFactoryClassName(pack : GenPackage) : String = pack.modelPackage().concat('.').concat(pack.prefix).concat('Factory')/]
+
+[query public modelFactoryClassName(eClass : EClass) : String = eClass.eInverse(genmodel::GenClass)->first().genPackage.modelFactoryClassName()/]
+
+[query public qualifiedModelFactoryClassName(eClass : EClass) : String = if eClass.ePackage.nsURI = 'http://www.eclipse.org/emf/2002/Ecore' then 'org.eclipse.emf.ecore.EcoreFactory' else eClass.eInverse(genmodel::GenClass)->first().genPackage.qualifiedModelFactoryClassName() endif/]
+
+[query public modelPackageClassName(pack : GenPackage) : String = pack.prefix.concat('Package')/]
+
+[query public qualifiedModelPackageClassName(pack : GenPackage) : String = pack.modelPackage().concat('.').concat(pack.prefix).concat('Package')/]
+
+[query public modelPackageClassName(eClass : EClass) : String = eClass.eInverse(genmodel::GenClass)->first().genPackage.modelPackageClassName()/]
+
+[query public qualifiedModelPackageClassName(eClass : EClass) : String = if eClass.ePackage.nsURI = 'http://www.eclipse.org/emf/2002/Ecore' then 'org.eclipse.emf.ecore.EcorePackage' else eClass.eInverse(genmodel::GenClass)->first().genPackage.qualifiedModelPackageClassName() endif/]
+
+[query public qualifiedGeneratedName(classifier : EClassifier) : String = if classifier.ePackage.nsURI = 'http://www.eclipse.org/emf/2002/Ecore' then 'org.eclipse.emf.ecore.'.concat(classifier.name) else classifier.eInverse(genmodel::GenClassifier)->first().modelPackage().concat('.').concat(classifier.name) endif/]
+
+[query public qualifiedGeneratedImplementation(classifier : EClassifier) : String = if classifier.ePackage.nsURI = 'http://www.eclipse.org/emf/2002/Ecore' then 'org.eclipse.emf.ecore.impl'.concat(classifier.name).concat('Impl') else classifier.eInverse(genmodel::GenClassifier)->first().implementationPackage().concat('.').concat(classifier.name).concat('Impl') endif/]
+
+[query public instantiatableSubClass(class : EClass) : EClass = if not class.abstract then class else class.eInverse(EClass)->select(not abstract and eSuperTypes->includes(class))->first() endif/]
+
+[query public isPrimitive(eClassifier : EClassifier) : Boolean = invoke('java.lang.String', 'matches(java.lang.String)', Sequence{eClassifier.name, 'EBoolean|EByte|EChar|EDouble|EFloat|EInt|ELong|EShort'})/]

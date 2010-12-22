@@ -1,0 +1,74 @@
+[comment]
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+[/comment]
+[module AdapterFactoryTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+[import Common/]
+
+[template public adapterFactoryTest(pack : GenPackage)]
+[file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('AdapterFactoryTest.java'), false)]
+package [pack.testPackage().concat('.unit')/];
+
+import junit.framework.TestCase;
+
+import [pack.modelPackage()/].[pack.modelFactoryClassName()/];
+import [pack.modelPackage()/].[pack.modelPackageClassName()/];
+import [pack.modelPackage()/].util.[pack.modelAdapterFactoryClassName()/];
+[for (eClass : EClass | pack.genClasses.ecoreClass->select(not abstract))]
+import [pack.modelPackage()/].[eClass.name/];
+[/for]
+
+/*
+ * TODO This is but a skeleton for the tests of [pack.modelAdapterFactoryClassName()/].
+ * Set as "generated NOT" and override each test if you overrode the default generated
+ * behavior.
+ */
+/**
+ * Tests the behavior of the {@link [pack.modelAdapterFactoryClassName()/] generated adapter factory} for package [pack.ecorePackage.name/].
+ *
+ * @generated
+ */
+@SuppressWarnings("nls")
+public class [pack.modelAdapterFactoryClassName()/]Test extends TestCase {
+	[for (eClass : EClass | pack.genClasses.ecoreClass) separator('\n')]
+	/**
+	 * Ensures that creating adapters for {@link [eClass.name/]} can be done through the AdapterFactory.
+	 *
+	 * @generated
+	 */
+	public void testCreate[eClass.name.toUpperFirst()/]Adapter() {
+		[pack.modelAdapterFactoryClassName()/] adapterFactory = new [pack.modelAdapterFactoryClassName()/]();
+		assertNull(adapterFactory.create[eClass.name.toUpperFirst()/]Adapter());
+		[if (not eClass.abstract)]
+		assertNull(adapterFactory.createAdapter([pack.modelFactoryClassName()/].eINSTANCE.create[eClass.name.toUpperFirst()/]()));
+		[elseif (not eClass.interface)]
+		assertNull(adapterFactory.createAdapter(new [eClass.qualifiedGeneratedImplementation()/](){}));
+		[/if]
+	}
+	[/for]
+	
+	/**
+	 * Ensures that the AdapterFactory knows all classes of package [pack.ecorePackage.name/].
+	 *
+	 * @generated
+	 */
+	public void testIsFactoryForType() {
+		[pack.modelAdapterFactoryClassName()/] adapterFactory = new [pack.modelAdapterFactoryClassName()/]();
+		[for (eClass : EClass | pack.genClasses.ecoreClass) ? (not eClass.abstract)]
+		assertTrue(adapterFactory.isFactoryForType([pack.modelFactoryClassName()/].eINSTANCE.create[eClass.name.toUpperFirst()/]()));
+		[/for]
+		assertTrue(adapterFactory.isFactoryForType([pack.modelPackageClassName()/].eINSTANCE));
+		[if (pack.ecorePackage.nsURI <> 'http://www.eclipse.org/emf/2002/Ecore')]
+		org.eclipse.emf.ecore.EClass eClass = org.eclipse.emf.ecore.EcoreFactory.eINSTANCE.createEClass();
+		assertFalse(adapterFactory.isFactoryForType(eClass));
+		[/if]
+		assertFalse(adapterFactory.isFactoryForType(new Object()));
+	}
+}
+[/file]
+[/template]

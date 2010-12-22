@@ -1,0 +1,68 @@
+[comment]
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+[/comment]
+[module TestSuite('http://www.eclipse.org/emf/2002/GenModel')/]
+[import Common/]
+
+[template public testSuite(pack : GenPackage)]
+[file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/suite/')).concat(pack.prefix.toUpperFirst()).concat('TestSuite.java'), false)]
+package [pack.testPackage().concat('.suite')/];
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+[for (genClass : GenClass | pack.genClasses) ? (not genClass.ecoreClass.abstract and not genClass.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
+import [pack.testPackage().concat('.unit')/].[genClass.ecoreClass.name.toUpperFirst()/]Test;
+[/for]
+[for (genEnum : GenEnum | pack.genEnums)]
+import [pack.testPackage().concat('.unit')/].[genEnum.ecoreEnum.name.toUpperFirst()/]Test;
+[/for]
+import [pack.testPackage().concat('.unit')/].[pack.prefix.toUpperFirst()/]AdapterFactoryTest;
+import [pack.testPackage().concat('.unit')/].[pack.prefix.toUpperFirst()/]FactoryTest;
+import [pack.testPackage().concat('.unit')/].[pack.prefix.toUpperFirst()/]SwitchTest;
+
+/**
+ * This test suite allows clients to launch all tests generated for package [pack.ecorePackage.name/] at once.
+ *
+ * @generated
+ */
+public class [pack.prefix.toUpperFirst()/]TestSuite extends TestCase {
+	/**
+	 * Standalone launcher for package [pack.ecorePackage.name/]'s tests.
+	 *
+	 * @generated
+	 */
+	public static void main(String['[]'/] args) {
+		TestRunner.run(suite());
+	}
+
+	/**
+	 * This will return a suite populated with all generated tests for package [pack.ecorePackage.name/].
+	 *
+	 * @generated
+	 */
+	public static Test suite() {
+		final TestSuite suite = new TestSuite("[pack.prefix.toUpperFirst()/] test suite"); //$NON-NLS-1$
+
+		[for (genClass : GenClass | pack.genClasses) ? (not genClass.ecoreClass.abstract and not genClass.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
+		suite.addTestSuite([genClass.ecoreClass.name.toUpperFirst()/]Test.class);
+		[/for]
+		[for (genEnum : GenEnum | pack.genEnums)]
+		suite.addTestSuite([genEnum.ecoreEnum.name.toUpperFirst()/]Test.class);
+		[/for]
+		suite.addTestSuite([pack.prefix.toUpperFirst()/]AdapterFactoryTest.class);
+		suite.addTestSuite([pack.prefix.toUpperFirst()/]FactoryTest.class);
+		suite.addTestSuite([pack.prefix.toUpperFirst()/]SwitchTest.class);
+
+		return suite;
+	}
+}
+[/file]
+[/template]

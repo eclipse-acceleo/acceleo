@@ -1,0 +1,289 @@
+[comment]
+  Copyright 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+[/comment]
+[module ClassTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+[import Common/]
+
+[template public classTest(class : GenClass) ? (not class.ecoreClass.abstract and not class.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
+[file ('src-gen/'.concat(class.testPackage().substituteAll('.', '/')).concat('/unit/').concat(class.ecoreClass.name.toUpperFirst()).concat('Test.java'), false)]
+package [class.testPackage() + '.unit'/];
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+import [class.modelPackage()/].[class.genPackage.modelFactoryClassName()/];
+import [class.modelPackage()/].[class.ecoreClass.name.toUpperFirst()/];
+
+/**
+ * Tests the behavior of the {@link [class.ecoreClass.name.toUpperFirst()/]} class.
+ * 
+ * @generated
+ */
+public class [class.ecoreClass.name.toUpperFirst()/]Test extends Abstract[class.genPackage.prefix.toUpperFirst()/]Test {
+	[for (reference : EReference | class.ecoreClass.eAllReferences->select(refer : ecore::EReference | refer.many and refer.changeable and not refer.derived and refer.eContainingClass.ePackage.nsURI <> 'http://www.eclipse.org/emf/2002/Ecore')) separator ('\n')]
+	[multiValuedReference(class, reference)/]
+	[/for]
+
+	[for (reference : EReference | class.ecoreClass.eAllReferences->select(refer : ecore::EReference | not refer.many and refer.changeable and not refer.derived and refer.eContainingClass.ePackage.nsURI <> 'http://www.eclipse.org/emf/2002/Ecore')) separator ('\n')]
+	[uniqueReference(class, reference)/]
+	[/for]
+
+	[for (attribute : EAttribute | class.ecoreClass.eAllAttributes->select(attrib : ecore::EAttribute | not attrib.many and attrib.changeable and not attrib.derived and attrib.eContainingClass.ePackage.nsURI <> 'http://www.eclipse.org/emf/2002/Ecore')) separator ('\n')]
+	[uniqueAttribute(class, attribute)/]
+	[/for]
+	
+	[for (feature : EStructuralFeature | class.ecoreClass.eAllStructuralFeatures->select((derived or not changeable) and eContainingClass.ePackage.nsURI <> 'http://www.eclipse.org/emf/2002/Ecore')) separator ('\n')]
+	[unchangeableFeature(class, feature)/]
+	[/for]
+}
+[/file]
+[/template]
+
+[template private multiValuedReference(class : GenClass, ref : EReference)]
+/**
+	 * Tests the behavior of reference <code>[ref.name/]</code>'s accessors.
+	 * 
+	 * @generated
+ 	 */
+	public void test[ref.name.toUpperFirst()/]() {
+		EStructuralFeature feature = [ref.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[ref.eContainingClass.name.toUpperFirst()/]_[ref.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toLowerFirst()/].eAdapters().add(new MockEAdapter());
+		[ref.eType.qualifiedGeneratedName()/] [ref.name/]Value = [if (ref.eType.oclAsType(EClass).instantiatableSubClass().oclIsUndefined())]new [ref.eType.qualifiedGeneratedImplementation()/](){}[else][ref.eType.oclAsType(EClass).instantiatableSubClass().qualifiedModelFactoryClassName()/].eINSTANCE.create[ref.eType.oclAsType(EClass).instantiatableSubClass().name/]()[/if];
+		List<[ref.eType.qualifiedGeneratedName()/]> list[ref.name.toUpperFirst()/] = new ArrayList<[ref.eType.qualifiedGeneratedName()/]>(1);
+		list[ref.name.toUpperFirst()/].add([ref.name/]Value);
+
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]().isEmpty());
+
+		[class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]().add([ref.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]().contains([ref.name/]Value));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertTrue([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].eUnset(feature);
+		assertTrue(notified);
+		notified = false;
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]().isEmpty());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertFalse([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].eSet(feature, list[ref.name.toUpperFirst()/]);
+		assertTrue(notified);
+		notified = false;
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]().contains([ref.name/]Value));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertTrue([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+	}
+[/template]
+
+[template private uniqueReference(class : GenClass, ref : EReference)]
+/**
+	 * Tests the behavior of reference <code>[ref.name/]</code>'s accessors.
+	 * 
+	 * @generated
+ 	 */
+	public void test[ref.name.toUpperFirst()/]() {
+		EStructuralFeature feature = [ref.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[ref.eContainingClass.name.toUpperFirst()/]_[ref.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toLowerFirst()/].eAdapters().add(new MockEAdapter());
+		[ref.eType.qualifiedGeneratedName()/] [ref.name/]Value = [if (ref.eType.oclAsType(EClass).instantiatableSubClass().oclIsUndefined())]new [ref.eType.qualifiedGeneratedName()/](){}[else][ref.eType.oclAsType(EClass).instantiatableSubClass().qualifiedModelFactoryClassName()/].eINSTANCE.create[ref.eType.oclAsType(EClass).instantiatableSubClass().name/]()[/if];
+
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		assertNull([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+
+		[class.ecoreClass.name.toLowerFirst()/].set[ref.name.toUpperFirst()/]([ref.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertSame([ref.name/]Value, [class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertTrue([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].eUnset(feature);
+		assertTrue(notified);
+		notified = false;
+		assertNull([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertFalse([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].set[ref.name.toUpperFirst()/]([ref.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertSame([ref.name/]Value, [class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertTrue([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].eSet(feature, [ref.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertSame([ref.name/]Value, [class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertTrue([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+
+		[class.ecoreClass.name.toLowerFirst()/].set[ref.name.toUpperFirst()/](null);
+		assertTrue(notified);
+		notified = false;
+		assertNull([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame(feature.getDefaultValue(), [class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/]());
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature));
+		assertSame([class.ecoreClass.name.toLowerFirst()/].get[ref.name.toUpperFirst()/](), [class.ecoreClass.name.toLowerFirst()/].eGet(feature, false));
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not ref.eOpposite->isEmpty())]
+		[for (opposite : EReference | ref.eOpposite)]
+		assertFalse([ref.name/]Value.get[opposite.name.toUpperFirst()/]()[if (opposite.many)].contains([class.ecoreClass.name.toLowerFirst()/])[else] == [class.ecoreClass.name.toLowerFirst()/][/if]);
+		[/for]
+		[/if]
+	}
+[/template]
+
+[template private uniqueAttribute(class : GenClass, attribute : EAttribute)]
+/**
+	 * Tests the behavior of attribute <code>[attribute.name/]</code>'s accessors.
+	 * 
+	 * @generated
+ 	 */
+	public void test[attribute.name.toUpperFirst()/]() {
+		EStructuralFeature feature = [attribute.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[attribute.eContainingClass.name.toUpperFirst()/]_[attribute.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toLowerFirst()/].eAdapters().add(new MockEAdapter());
+		[if (attribute.eType.oclIsKindOf(EEnum))]
+		[attribute.eType.qualifiedGeneratedName()/] [attribute.name/]Value = ([attribute.eType.qualifiedGeneratedName()/])feature.getDefaultValue();
+		for ([attribute.eType.qualifiedGeneratedName()/] a[attribute.eType.name/] : [attribute.eType.qualifiedGeneratedName()/].VALUES) {
+			if ([attribute.name/]Value.getValue() != a[attribute.eType.name/].getValue()) {
+				[attribute.name/]Value = a[attribute.eType.name/];
+				break;
+			}
+		}
+		[else]
+		[attribute.eType.instanceClassName/] [attribute.name/]Value = [if (attribute.eType.isPrimitive())]get[attribute.eType.instanceClassName.toUpperFirst()/]DistinctFromDefault(feature)[else]([attribute.eType.instanceClassName/])getValueDistinctFromDefault(feature)[/if];
+		[/if]
+
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		assertEquals([attribute.defaultValueGetter()/], [class.ecoreClass.valueGetter(attribute)/]);
+
+		[class.ecoreClass.name.toLowerFirst()/].set[attribute.name.toUpperFirst()/]([attribute.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertEquals([attribute.name/]Value, [class.ecoreClass.valueGetter(attribute)/]);
+		assertEquals([class.ecoreClass.valueGetter(attribute)/], [class.ecoreClass.reflectiveGetter(attribute)/]);
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+
+		[class.ecoreClass.name.toLowerFirst()/].eUnset(feature);
+		assertTrue(notified);
+		notified = false;
+		assertEquals([attribute.defaultValueGetter()/], [class.ecoreClass.valueGetter(attribute)/]);
+		assertEquals([class.ecoreClass.valueGetter(attribute)/], [class.ecoreClass.reflectiveGetter(attribute)/]);
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+
+		[class.ecoreClass.name.toLowerFirst()/].eSet(feature, [attribute.name/]Value);
+		assertTrue(notified);
+		notified = false;
+		assertEquals([attribute.name/]Value, [class.ecoreClass.valueGetter(attribute)/]);
+		assertEquals([class.ecoreClass.valueGetter(attribute)/], [class.ecoreClass.reflectiveGetter(attribute)/]);
+		assertTrue([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+
+		[class.ecoreClass.name.toLowerFirst()/].set[attribute.name.toUpperFirst()/]([if (attribute.eType.isPrimitive())](([if (attribute.eType.instanceClassName = 'int')]Integer[else][attribute.eType.instanceClassName.toUpperFirst()/][/if])feature.getDefaultValue()).[attribute.eType.instanceClassName/]Value()[else]null[/if]);
+		assertTrue(notified);
+		notified = false;
+		assertEquals([attribute.defaultValueGetter()/], [class.ecoreClass.valueGetter(attribute)/]);
+		assertEquals([class.ecoreClass.valueGetter(attribute)/], [class.ecoreClass.reflectiveGetter(attribute)/]);
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+	}
+[/template]
+
+[template private unchangeableFeature(class : GenClass, feature : EStructuralFeature)]
+/**
+	 * Tests the behavior of [if (feature.oclIsKindOf(EReference))]reference[else]attribute[/if] <code>[feature.name/]</code>'s getter.
+	 * 
+	 * @generated
+ 	 */
+	public void test[feature.name.toUpperFirst()/]() {
+		EStructuralFeature feature = [feature.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[feature.eContainingClass.name.toUpperFirst()/]_[feature.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
+		[class.ecoreClass.name.toLowerFirst()/].eAdapters().add(new MockEAdapter());
+
+		assertFalse([class.ecoreClass.name.toLowerFirst()/].eIsSet(feature));
+		[if (not feature.derived)]
+		assertSame([if (feature.oclIsKindOf(EReference))][feature.oclAsType(EReference).defaultValueGetter()/][else][feature.oclAsType(EAttribute).defaultValueGetter()/][/if], [class.ecoreClass.name.toLowerFirst()/].[feature.getterPrefix()/][feature.name.toUpperFirst()/]());
+		[else]
+		try {
+			[class.ecoreClass.name.toLowerFirst()/].[feature.getterPrefix()/][feature.name.toUpperFirst()/]();
+			[class.ecoreClass.reflectiveGetter(feature)/];
+		} catch (UnsupportedOperationException e) {
+			fail("Getter for derived feature [feature.name/] hasn't been implemented.");
+		}
+		[/if]
+
+		// TODO This is [if (feature.derived)]a derived[else]an unchangeable[/if] feature. Set as "generated NOT" and implement test
+	}
+[/template]
+
+[query private getterPrefix(feature : EStructuralFeature) : String = if feature.eType.name = 'EBoolean' then 'is' else 'get' endif/]
+
+[query private valueGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.isPrimitive() then primitiveValueGetter(class, feature) else class.name.toLowerFirst().concat('.get').concat(feature.name.toUpperFirst()).concat('()') endif/]
+
+[query private primitiveValueGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.instanceClassName = 'int' then '((Integer)'.concat(class.name.toLowerFirst()).concat('.').concat(feature.getterPrefix()).concat(feature.name.toUpperFirst()).concat('()').concat(').intValue()') else if feature.eType.instanceClassName = 'char' then '((Character)'.concat(class.name.toLowerFirst()).concat('.').concat(feature.getterPrefix()).concat(feature.name.toUpperFirst()).concat('()').concat(').charValue()') else '(('.concat(feature.eType.instanceClassName.toUpperFirst()).concat(')').concat(class.name.toLowerFirst()).concat('.').concat(feature.getterPrefix()).concat(feature.name.toUpperFirst()).concat('()').concat(').').concat(feature.eType.instanceClassName).concat('Value()') endif endif/]
+
+[query private defaultValueGetter(feature : EStructuralFeature) : String = if feature.eType.isPrimitive() then feature.primitiveDefaultValueGetter() else 'feature.getDefaultValue()' endif/]
+
+[query private primitiveDefaultValueGetter(feature : EStructuralFeature) : String = if feature.eType.instanceClassName = 'int' then '((Integer)feature.getDefaultValue()).intValue()' else if feature.eType.instanceClassName = 'char' then '((Character)feature.getDefaultValue()).charValue()' else '(('.concat(feature.eType.instanceClassName.toUpperFirst()).concat(')feature.getDefaultValue()).').concat(feature.eType.instanceClassName).concat('Value()') endif endif/]
+
+[query private reflectiveGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.isPrimitive() then class.primitiveReflectiveGetter(feature) else class.name.toLowerFirst().concat('.eGet(feature)') endif/]
+
+[query private reflectiveBasicGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.isPrimitive() then class.primitiveReflectiveBasicGetter(feature) else class.name.toLowerFirst().concat('.eGet(feature, false)') endif/]
+
+[query private primitiveReflectiveGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.instanceClassName = 'int' then '((Integer)'.concat(class.name.toLowerFirst()).concat('.eGet(feature)).intValue()') else if feature.eType.instanceClassName = 'char' then '((Character)'.concat(class.name.toLowerFirst()).concat('.eGet(feature)).charValue()') else '(('.concat(feature.eType.instanceClassName.toUpperFirst()).concat(')').concat(class.name.toLowerFirst()).concat('.eGet(feature)).').concat(feature.eType.instanceClassName).concat('Value()') endif endif/]
+
+[query private primitiveReflectiveBasicGetter(class : EClass, feature : EStructuralFeature) : String = if feature.eType.instanceClassName = 'int' then '((Integer)'.concat(class.name.toLowerFirst()).concat('.eGet(feature, false)).intValue()') else if feature.eType.instanceClassName = 'char' then '((Character)'.concat(class.name.toLowerFirst()).concat('.eGet(feature, false)).charValue()') else '(('.concat(feature.eType.instanceClassName.toUpperFirst()).concat(')').concat(class.name.toLowerFirst()).concat('.eGet(feature, false)).').concat(feature.eType.instanceClassName).concat('Value()') endif endif/]
