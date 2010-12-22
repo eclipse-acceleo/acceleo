@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -592,10 +593,23 @@ public final class AcceleoLibraryOperationVisitor {
 	 *            Target of the cross referencing.
 	 */
 	private static void createEInverseCrossreferencer(EObject target) {
-		if (target.eResource() != null && target.eResource().getResourceSet() != null) {
-			final ResourceSet rs = target.eResource().getResourceSet();
-			final ContentTreeIterator<Notifier> contentIterator = new ContentTreeIterator<Notifier>(
-					Collections.singleton(rs)) {
+		Resource res = null;
+		ResourceSet rs = null;
+		if (target.eResource() != null) {
+			res = target.eResource();
+		}
+		if (res != null && res.getResourceSet() != null) {
+			rs = res.getResourceSet();
+		}
+
+		if (rs != null) {
+			// Manually add the ecore.ecore resource in the list of cross referenced notifiers
+			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
+			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
+			notifiers.add(rs);
+			notifiers.add(ecoreResource);
+
+			final ContentTreeIterator<Notifier> contentIterator = new ContentTreeIterator<Notifier>(notifiers) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
@@ -611,13 +625,15 @@ public final class AcceleoLibraryOperationVisitor {
 					return resourceSetIterator;
 				}
 			};
-			referencer = new CrossReferencer(rs) {
+
+			referencer = new CrossReferencer(notifiers) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+					done();
 				}
 
 				@Override
@@ -625,24 +641,27 @@ public final class AcceleoLibraryOperationVisitor {
 					return contentIterator;
 				}
 			};
-		} else if (target.eResource() != null) {
-			referencer = new CrossReferencer(target.eResource()) {
+		} else if (res != null) {
+			referencer = new CrossReferencer(res) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+					done();
 				}
 			};
 		} else {
-			referencer = new CrossReferencer(EcoreUtil.getRootContainer(target)) {
+			EObject targetObject = EcoreUtil.getRootContainer(target);
+			referencer = new CrossReferencer(targetObject) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+					done();
 				}
 			};
 		}
