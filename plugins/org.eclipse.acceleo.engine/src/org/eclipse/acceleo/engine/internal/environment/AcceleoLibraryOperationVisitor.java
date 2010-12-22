@@ -42,7 +42,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.util.CollectionUtil;
 
@@ -606,25 +605,13 @@ public final class AcceleoLibraryOperationVisitor {
 			// Manually add the ecore.ecore resource in the list of cross referenced notifiers
 			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
 			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
-			notifiers.add(rs);
-			notifiers.add(ecoreResource);
-
-			final ContentTreeIterator<Notifier> contentIterator = new ContentTreeIterator<Notifier>(notifiers) {
-				/** Default SUID. */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected Iterator<Resource> getResourceSetChildren(ResourceSet resourceSet) {
-					List<Resource> resources = new ArrayList<Resource>();
-					for (Resource res : resourceSet.getResources()) {
-						if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(res.getURI().fileExtension())) {
-							resources.add(res);
-						}
-					}
-					resourceSetIterator = new ResourcesIterator(resources);
-					return resourceSetIterator;
+			for (Resource crossReferenceResource : rs.getResources()) {
+				if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(crossReferenceResource.getURI()
+						.fileExtension())) {
+					notifiers.add(crossReferenceResource);
 				}
-			};
+			}
+			notifiers.add(ecoreResource);
 
 			referencer = new CrossReferencer(notifiers) {
 				/** Default SUID. */
@@ -634,11 +621,6 @@ public final class AcceleoLibraryOperationVisitor {
 				{
 					crossReference();
 					done();
-				}
-
-				@Override
-				protected TreeIterator<Notifier> newContentsIterator() {
-					return contentIterator;
 				}
 			};
 		} else if (res != null) {
