@@ -370,6 +370,22 @@ public class AcceleoEvaluationContext<C> {
 	}
 
 	/**
+	 * This will return the indentation of the very last line of the very last file writer in context.
+	 * 
+	 * @return indentation of the very last line in context.
+	 */
+	public String getLastFileIndentation() {
+		Writer writer = writers.getLast();
+		for (int i = writers.size() - 1; i >= 0 && !(writer instanceof AbstractAcceleoWriter); i--) {
+			writer = writers.get(i);
+		}
+		if (writer != null) {
+			return ((AbstractAcceleoWriter)writer).getCurrentLineIndentation();
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	/**
 	 * This will return the indentation of the very last line of the very last opened writer in context.
 	 * 
 	 * @return indentation of the very last line in context.
