@@ -678,7 +678,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			lastEObjectSelfValue = (EObject)source;
 		}
 		if (areaContent != null) {
-			delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
+			String currentIndent = context.getLastFileIndentation();
+			delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, "$1"), protectedArea,
+					lastEObjectSelfValue, fireGenerationEvent);
 		} else {
 			context.openNested();
 			fireGenerationEvent = false;
