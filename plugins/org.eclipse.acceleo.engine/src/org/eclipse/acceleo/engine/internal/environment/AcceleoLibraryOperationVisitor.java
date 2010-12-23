@@ -12,6 +12,7 @@ package org.eclipse.acceleo.engine.internal.environment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -583,6 +584,68 @@ public final class AcceleoLibraryOperationVisitor {
 	}
 
 	/**
+	 * This will try and find the given method on the given service Class.
+	 * 
+	 * @param serviceClass
+	 *            The class on which to search for the given method.
+	 * @param methodSignature
+	 *            The signature of the method we are to search for.
+	 * @return The method if any. Will throw exceptions in other cases.
+	 * @throws NoSuchMethodException
+	 *             Thrown if the method cannot be found.
+	 * @throws ClassNotFoundException
+	 *             Thrown if we cannot find one of the parameters' class.
+	 */
+	private static Method findInvokeMethod(Class<?> serviceClass, String methodSignature)
+			throws NoSuchMethodException, ClassNotFoundException {
+		final int openParenthesisIndex = methodSignature.indexOf('(');
+		Method method = null;
+		if (openParenthesisIndex == -1) {
+			method = serviceClass.getMethod(methodSignature);
+		} else {
+			final String methodName = methodSignature.substring(0, openParenthesisIndex);
+			final int closeParenthesisIndex = methodSignature.indexOf(')');
+			if (closeParenthesisIndex - openParenthesisIndex <= 1) {
+				method = serviceClass.getMethod(methodName);
+			} else {
+				final String parameterTypesString = methodSignature.substring(openParenthesisIndex + 1,
+						closeParenthesisIndex);
+				final List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
+				int nextCommaIndex = parameterTypesString.indexOf(',');
+				int previousComma = 0;
+				while (nextCommaIndex != -1) {
+					final String parameterType = parameterTypesString
+							.substring(previousComma, nextCommaIndex).trim();
+					if (PRIMITIVE_TYPES.containsKey(parameterType)) {
+						parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
+					} else if (serviceClass.getClassLoader() != null) {
+						parameterTypes.add(serviceClass.getClassLoader().loadClass(parameterType));
+					} else {
+						parameterTypes.add(Class.forName(parameterType));
+					}
+					previousComma = nextCommaIndex + 1;
+					nextCommaIndex = parameterTypesString.indexOf(',', previousComma);
+				}
+				/*
+				 * The last (or only) parameter type is not followed by a comma and not handled in the while
+				 */
+				final String parameterType = parameterTypesString.substring(previousComma,
+						parameterTypesString.length()).trim();
+				if (PRIMITIVE_TYPES.containsKey(parameterType)) {
+					parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
+				} else if (serviceClass.getClassLoader() != null) {
+					parameterTypes.add(serviceClass.getClassLoader().loadClass(parameterType));
+				} else {
+					parameterTypes.add(Class.forName(parameterType));
+				}
+				method = serviceClass.getMethod(methodName, parameterTypes.toArray(new Class[parameterTypes
+						.size()]));
+			}
+		}
+		return method;
+	}
+
+	/**
 	 * This will create the cross referencer that's to be used by the "eInverse" library. It will attempt to
 	 * create the cross referencer on the target's resourceSet. If it is null, we'll then attempt to create
 	 * the cross referencer on the target's resource. When the resource too is null, we'll create the cross
@@ -833,92 +896,50 @@ public final class AcceleoLibraryOperationVisitor {
 	@SuppressWarnings("unchecked")
 	private static Object invoke(URI moduleURI, Object source, Object[] args) {
 		Object result = null;
-		final Object serviceInstance = AcceleoServicesRegistry.INSTANCE
-				.addService(moduleURI, (String)args[0]);
-		if (serviceInstance == null) {
+		final Class<?> serviceClass = AcceleoServicesRegistry.INSTANCE.addServiceClass(moduleURI,
+				(String)args[0]);
+		if (serviceClass == null) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
 					"AcceleoEvaluationEnvironment.ClassNotFound", args[0], moduleURI.lastSegment())); //$NON-NLS-1$
 		}
-		final Class<?> serviceClass = serviceInstance.getClass();
 		final String methodSignature = (String)args[1];
-		final Method method;
 		try {
-			final int openParenthesisIndex = methodSignature.indexOf('(');
-			if (openParenthesisIndex != -1) {
-				final String methodName = methodSignature.substring(0, openParenthesisIndex);
-				final int closeParenthesisIndex = methodSignature.indexOf(')');
-				if (closeParenthesisIndex - openParenthesisIndex > 1) {
-					final String parameterTypesString = methodSignature.substring(openParenthesisIndex + 1,
-							closeParenthesisIndex);
-					final List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
-					int nextCommaIndex = parameterTypesString.indexOf(',');
-					int previousComma = 0;
-					while (nextCommaIndex != -1) {
-						final String parameterType = parameterTypesString.substring(previousComma,
-								nextCommaIndex).trim();
-						if (PRIMITIVE_TYPES.containsKey(parameterType)) {
-							parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
-						} else if (serviceInstance.getClass().getClassLoader() != null) {
-							parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
-									parameterType));
-						} else {
-							parameterTypes.add(Class.forName(parameterType));
-						}
-						previousComma = nextCommaIndex + 1;
-						nextCommaIndex = parameterTypesString.indexOf(',', previousComma);
-					}
-					/*
-					 * The last (or only) parameter type is not followed by a comma and not handled in the
-					 * while
-					 */
-					final String parameterType = parameterTypesString.substring(previousComma,
-							parameterTypesString.length()).trim();
-					if (PRIMITIVE_TYPES.containsKey(parameterType)) {
-						parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
-					} else if (serviceInstance.getClass().getClassLoader() != null) {
-						parameterTypes.add(serviceInstance.getClass().getClassLoader().loadClass(
-								parameterType));
-					} else {
-						parameterTypes.add(Class.forName(parameterType));
-					}
-					method = serviceClass.getMethod(methodName, parameterTypes
-							.toArray(new Class[parameterTypes.size()]));
-				} else {
-					method = serviceClass.getMethod(methodName);
-				}
-			} else {
-				method = serviceClass.getMethod(methodSignature);
-			}
-			// method cannot be null at this point. getMetod has thrown an exception in such cases
-			assert method != null;
+			final Method method = findInvokeMethod(serviceClass, methodSignature);
+			// method cannot be null at this point. findInvokeMethod has thrown an exception in such cases
+
 			final List<Object> invocationArguments = (List<Object>)args[2];
 			if (method.getParameterTypes().length == 0) {
 				// If we can use the method from the Java service on the current EObject we do it
-				if (serviceInstance.getClass().isInstance(source)) {
+				if (Modifier.isStatic(method.getModifiers())) {
+					result = method.invoke(null);
+				} else if (serviceClass.isInstance(source)) {
 					if (invocationArguments.size() == 0) {
 						result = method.invoke(source);
 					} else {
 						result = method.invoke(invocationArguments.get(0));
 					}
 				} else {
-					result = method.invoke(serviceInstance);
+					result = method.invoke(AcceleoServicesRegistry.INSTANCE.getServiceInstance(serviceClass));
 				}
 			} else {
 				if (method.getParameterTypes().length - invocationArguments.size() == 1) {
 					invocationArguments.add(0, source);
 				}
-				if (method.getParameterTypes().length - invocationArguments.size() == -1) {
+				if (Modifier.isStatic(method.getModifiers())) {
+					result = method.invoke(null, invocationArguments.toArray(new Object[invocationArguments
+							.size()]));
+				} else if (method.getParameterTypes().length - invocationArguments.size() == -1) {
 					final Object swappedSource = invocationArguments.remove(0);
 					result = method.invoke(swappedSource, invocationArguments
 							.toArray(new Object[invocationArguments.size()]));
 				} else {
-					result = method.invoke(serviceInstance, invocationArguments
-							.toArray(new Object[invocationArguments.size()]));
+					result = method.invoke(AcceleoServicesRegistry.INSTANCE.getServiceInstance(serviceClass),
+							invocationArguments.toArray(new Object[invocationArguments.size()]));
 				}
 			}
 		} catch (NoSuchMethodException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationEnvironment.NoSuchMethod", args[1], args[0]), e); //$NON-NLS-1$
+					"AcceleoEvaluationEnvironment.NoSuchMethod", methodSignature, args[0]), e); //$NON-NLS-1$
 		} catch (IllegalArgumentException e) {
 			throw new AcceleoEvaluationException(e.getMessage(), e);
 		} catch (IllegalAccessException e) {
@@ -927,12 +948,12 @@ public final class AcceleoLibraryOperationVisitor {
 			 * members.
 			 */
 			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationEnvironment.RestrictedMethod", args[1], args[0]), e); //$NON-NLS-1$
+					"AcceleoEvaluationEnvironment.RestrictedMethod", methodSignature, args[0]), e); //$NON-NLS-1$
 		} catch (InvocationTargetException e) {
 			throw new AcceleoEvaluationException(e.getMessage(), e);
 		} catch (ClassNotFoundException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoEvaluationEnvironment.ParameterClassNotFound", args[1], args[0]), e); //$NON-NLS-1$
+					"AcceleoEvaluationEnvironment.ParameterClassNotFound", methodSignature, args[0]), e); //$NON-NLS-1$
 		}
 		return result;
 	}
