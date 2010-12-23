@@ -48,24 +48,15 @@ public final class AcceleoServicesEclipseUtil {
 	}
 
 	/**
-	 * Returns all registered service classes.
+	 * This will return the singleton instance of the given class that serves as invocation source.
 	 * 
-	 * @return All registered service classes.
+	 * @param serviceClass
+	 *            The class we need the service singleton of.
+	 * @return The singleton instance of the given service class.
+	 * @since 3.1
 	 */
-	public static Set<Object> getRegisteredServices() {
-		return AcceleoWorkspaceUtil.INSTANCE.refreshInstances(REGISTERED_SERVICES, false);
-	}
-
-	/**
-	 * Returns the registered service going by <code>qualifiedName</code>. <b>Note</b> that the service needs
-	 * to be registered before it can be retrieved through this if it is not in the workspace.
-	 * 
-	 * @param qualifiedName
-	 *            Qualified name of the service we seek an instance of.
-	 * @return The registered service going by name <code>qualifiedName</code>.
-	 */
-	public static Object getService(String qualifiedName) {
-		return AcceleoWorkspaceUtil.INSTANCE.refreshInstance(qualifiedName, false);
+	public static Object getServiceInstance(Class<?> serviceClass) {
+		return AcceleoWorkspaceUtil.INSTANCE.getServiceInstance(serviceClass);
 	}
 
 	/**
@@ -83,34 +74,23 @@ public final class AcceleoServicesEclipseUtil {
 	 *            Qualified name of the service we are looking for.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
-	public static Object registerService(Bundle bundle, String qualifiedName) {
-		Object instance = null;
+	public static Class<?> registerService(Bundle bundle, String qualifiedName) {
+		Class<?> clazz = null;
 		try {
-			final Class<?> clazz = bundle.loadClass(qualifiedName);
-			instance = clazz.newInstance();
-			if (instance != null) {
+			clazz = bundle.loadClass(qualifiedName);
+			if (clazz != null) {
 				REGISTERED_SERVICES.add(qualifiedName);
 			}
 		} catch (ClassNotFoundException e) {
 			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
 					qualifiedName, bundle.getSymbolicName()), e, false);
-		} catch (IllegalAccessException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
-					qualifiedName, bundle.getSymbolicName()), e, false);
-		} catch (InstantiationException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
-					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
-		return instance;
+		return clazz;
 	}
 
 	/**
 	 * This will refresh workspace contributions to Acceleo and load the given service if it is located in a
 	 * workspace bundle.
-	 * <p>
-	 * As a result of this call, the service will be added to the list of registered services, allowing it to
-	 * be retrieved through {@link #getRegisteredServices()} afterwards.
-	 * </p>
 	 * 
 	 * @param project
 	 *            The {@link IProject} containing the acceleo file which tries to make use of a service name
@@ -119,12 +99,12 @@ public final class AcceleoServicesEclipseUtil {
 	 *            Qualified name of the service we are looking for.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
-	public static Object registerService(IProject project, String qualifiedName) {
-		final Object instance = AcceleoWorkspaceUtil.INSTANCE.getClassInstance(project, qualifiedName);
-		if (instance != null) {
+	public static Class<?> registerService(IProject project, String qualifiedName) {
+		final Class<?> clazz = AcceleoWorkspaceUtil.INSTANCE.getClass(project, qualifiedName);
+		if (clazz != null) {
 			REGISTERED_SERVICES.add(qualifiedName);
 		}
-		return instance;
+		return clazz;
 	}
 
 	/**
@@ -132,10 +112,6 @@ public final class AcceleoServicesEclipseUtil {
 	 * This will first attempt to search through the workspace projects if one of them corresponds to this
 	 * symbolic name, and will be fully equivalent to calling
 	 * <code>Platform.getBundle(bundleName).loadClass(qualifiedName).newinstance()</code> otherwise.
-	 * <p>
-	 * As a result of this call, the service will be added to the list of registered services, allowing it to
-	 * be retrieved through {@link #getRegisteredServices()} afterwards.
-	 * </p>
 	 * 
 	 * @param bundleName
 	 *            The symbolic name of the bundle {@link Bundle} containing the acceleo file which tries to
@@ -144,15 +120,15 @@ public final class AcceleoServicesEclipseUtil {
 	 *            Qualified name of the service we are looking for.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
-	public static Object registerService(String bundleName, String qualifiedName) {
-		Object instance = null;
+	public static Class<?> registerService(String bundleName, String qualifiedName) {
+		Class<?> clazz = null;
 		final IProject project = AcceleoWorkspaceUtil.getProject(bundleName);
 		if (project != null) {
-			instance = registerService(project, qualifiedName);
+			clazz = registerService(project, qualifiedName);
 		} else {
-			instance = registerService(Platform.getBundle(bundleName), qualifiedName);
+			clazz = registerService(Platform.getBundle(bundleName), qualifiedName);
 		}
-		return instance;
+		return clazz;
 	}
 
 	/**
@@ -170,13 +146,13 @@ public final class AcceleoServicesEclipseUtil {
 	 *            Qualified name of the service we are looking for.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
-	public static Object registerService(URI uri, String qualifiedName) {
-		Object instance = null;
+	public static Class<?> registerService(URI uri, String qualifiedName) {
+		Class<?> clazz = null;
 		if (uri.isPlatform()) {
 			final String bundleName = uri.segment(1);
 			final Bundle bundle = Platform.getBundle(bundleName);
 			if (bundle != null) {
-				instance = registerService(bundle, qualifiedName);
+				clazz = registerService(bundle, qualifiedName);
 			}
 		} else {
 			final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
@@ -186,17 +162,17 @@ public final class AcceleoServicesEclipseUtil {
 				final String projectName = workspaceRelative.segment(1);
 				final IProject project = workspaceRoot.getProject(projectName);
 				if (project != null && project.exists()) {
-					instance = registerService(project, qualifiedName);
+					clazz = registerService(project, qualifiedName);
 				}
 			}
-			if (instance == null) {
-				instance = workspaceSuffixWorkaround(uri, qualifiedName);
+			if (clazz == null) {
+				clazz = workspaceSuffixWorkaround(uri, qualifiedName);
 			}
 		}
-		if (instance != null) {
+		if (clazz != null) {
 			REGISTERED_SERVICES.add(qualifiedName);
 		}
-		return instance;
+		return clazz;
 	}
 
 	/**
@@ -209,16 +185,16 @@ public final class AcceleoServicesEclipseUtil {
 	 *            Qualified name of the service we are looking for.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
-	private static Object workspaceSuffixWorkaround(URI uri, String qualifiedName) {
-		Object res = null;
+	private static Class<?> workspaceSuffixWorkaround(URI uri, String qualifiedName) {
+		Class<?> clazz = null;
 		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.resolveAsPlatformPlugin(uri.toString()));
 		if (platformURI != null) {
 			String bundleName = platformURI.segment(1);
 			Bundle bundle = Platform.getBundle(bundleName);
 			if (bundle != null) {
-				res = registerService(bundle, qualifiedName);
+				clazz = registerService(bundle, qualifiedName);
 			}
 		}
-		return res;
+		return clazz;
 	}
 }

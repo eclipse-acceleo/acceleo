@@ -386,24 +386,6 @@ public final class AcceleoWorkspaceUtil {
 	/**
 	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
 	 * bundles for a class corresponding to <code>qualifiedName</code>.
-	 * <p>
-	 * <b>Note</b> that this will not search through <u>all</u> packages of the workspace bundles : it will
-	 * only go through <u>exported packages</u>. Use {@link #getClass(String, boolean)} to search through all
-	 * potential packages.
-	 * </p>
-	 * 
-	 * @param qualifiedName
-	 *            The qualified name of the class we seek to load.
-	 * @return The class <code>qualifiedName</code> if it could be found in the workspace bundles,
-	 *         <code>null</code> otherwise.
-	 */
-	public synchronized Class<?> getClass(String qualifiedName) {
-		return getClass(qualifiedName, true);
-	}
-
-	/**
-	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
-	 * bundles for a class corresponding to <code>qualifiedName</code>.
 	 * 
 	 * @param qualifiedName
 	 *            The qualified name of the class we seek to load.
@@ -427,10 +409,9 @@ public final class AcceleoWorkspaceUtil {
 				for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
 					final IPluginModelBase model = entry.getKey();
 					if (workspaceInstance.getBundle().equals(model.getBundleDescription().getSymbolicName())) {
-						final Object instance = internalLoadClass(entry.getValue(), qualifiedName);
+						clazz = internalLoadClass(entry.getValue(), qualifiedName);
 						workspaceInstance.setStale(false);
-						workspaceInstance.setInstance(instance);
-						clazz = instance.getClass();
+						workspaceInstance.setClass(clazz);
 						break;
 					}
 				}
@@ -480,8 +461,8 @@ public final class AcceleoWorkspaceUtil {
 	 * @return An instance of the class <code>qualifiedName</code> if it could be found in the workspace
 	 *         bundles, <code>null</code> otherwise.
 	 */
-	public synchronized Object getClassInstance(IProject project, String qualifiedName) {
-		Object instance = null;
+	public synchronized Class<?> getClass(IProject project, String qualifiedName) {
+		Class<?> instance = null;
 		addWorkspaceContribution(project);
 		refreshContributions();
 		final IPluginModelBase model = PluginRegistry.findModel(project);
@@ -489,54 +470,6 @@ public final class AcceleoWorkspaceUtil {
 		if (installedBundle != null) {
 			instance = internalLoadClass(installedBundle, qualifiedName);
 		}
-		return instance;
-	}
-
-	/**
-	 * This will refresh the workspace contributions if needed, then search through the workspace loaded
-	 * bundles for a class corresponding to <code>qualifiedName</code>.
-	 * 
-	 * @param qualifiedName
-	 *            The qualified name of the class we seek to load.
-	 * @return An instance of the class <code>qualifiedName</code> if it could be found in the workspace
-	 *         bundles, <code>null</code> otherwise.
-	 */
-	public synchronized Object getClassInstance(String qualifiedName) {
-		if (changedContributions.size() > 0) {
-			refreshContributions();
-		}
-		Object instance = null;
-		final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(qualifiedName);
-		if (workspaceInstance != null) {
-			if (workspaceInstance.isStale()) {
-				for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-					final IPluginModelBase model = entry.getKey();
-					if (workspaceInstance.getBundle().equals(model.getBundleDescription().getSymbolicName())) {
-						instance = internalLoadClass(entry.getValue(), qualifiedName);
-						workspaceInstance.setStale(false);
-						workspaceInstance.setInstance(instance);
-						break;
-					}
-				}
-			} else {
-				instance = workspaceInstance.getInstance();
-			}
-		}
-		if (instance != null) {
-			return instance;
-		}
-
-		Iterator<Map.Entry<IPluginModelBase, Bundle>> iterator = workspaceInstalledBundles.entrySet()
-				.iterator();
-		while (instance == null && iterator.hasNext()) {
-			Map.Entry<IPluginModelBase, Bundle> entry = iterator.next();
-
-			if (hasCorrespondingExportPackage(entry.getKey(), qualifiedName)) {
-				final Bundle bundle = entry.getValue();
-				instance = internalLoadClass(bundle, qualifiedName);
-			}
-		}
-
 		return instance;
 	}
 
@@ -599,24 +532,33 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This will return the set of all classes that have been loaded from the workspace and set in cache.
-	 * <b>Note</b> that this will refresh the workspace contributions and attempt to refresh all stale class
-	 * instances if any. Also take note that as a result of this refreshing, the order in which the instances
-	 * are returned is not guaranteed to be the same for each call.
+	 * Retrieves the singleton instance of the given service class after refreshing it if needed.
 	 * 
-	 * @return The set of all classes that have been loaded from the workspace and set in cache.
+	 * @param serviceClass
+	 *            The service class we need an instance of.
+	 * @return The singleton instance of the given service class if any.
 	 */
-	public synchronized Set<Object> getWorkspaceInstances() {
-		if (changedContributions.size() > 0) {
-			refreshContributions();
+	public synchronized Object getServiceInstance(Class<?> serviceClass) {
+		String qualifiedName = serviceClass.getName();
+		for (Map.Entry<String, WorkspaceClassInstance> workspaceClass : workspaceLoadedClasses.entrySet()) {
+			if (workspaceClass.getKey().equals(qualifiedName)) {
+				WorkspaceClassInstance workspaceInstance = workspaceClass.getValue();
+				if (workspaceInstance.isStale()) {
+					for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+						final IPluginModelBase model = entry.getKey();
+						if (workspaceInstance.getBundle().equals(
+								model.getBundleDescription().getSymbolicName())) {
+							Class<?> clazz = internalLoadClass(entry.getValue(), qualifiedName);
+							workspaceInstance.setStale(false);
+							workspaceInstance.setClass(clazz);
+							break;
+						}
+					}
+				}
+				return workspaceInstance.getInstance();
+			}
 		}
-		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
-
-		for (String qualifiedName : workspaceLoadedClasses.keySet()) {
-			workspaceInstances.add(getClassInstance(qualifiedName));
-		}
-
-		return workspaceInstances;
+		return null;
 	}
 
 	/**
@@ -647,73 +589,6 @@ public final class AcceleoWorkspaceUtil {
 			installBundle(candidate);
 		}
 		changedContributions.clear();
-	}
-
-	/**
-	 * This will seek through the workspace loaded instances for a class corresponding to the given qualified
-	 * name and return its singleton instance if it has already been loaded. Qualified names that do not
-	 * correspond to loaded workspace classes will only be loaded if <code>loadNew</code> is <code>true</code>
-	 * .
-	 * <p>
-	 * Take note that any stale instance will be instantiated anew as a result of this call. Workspace
-	 * contributions will also be refreshed prior to any attempt at seeking cached instances.
-	 * </p>
-	 * 
-	 * @param qualifiedName
-	 *            Qualified name of the instance we seek to retrieve.
-	 * @param loadNew
-	 *            If <code>true</code>, qualified names corresponding to classes that haven't been loaded yet
-	 *            will be resolved in the workspace and an instance will be returned. Otherwise, they will
-	 *            simply be ignored.
-	 * @return The refreshed instance, <code>null</code> if it couldn't be found or loaded.
-	 */
-	public synchronized Object refreshInstance(String qualifiedName, boolean loadNew) {
-		if (changedContributions.size() > 0) {
-			refreshContributions();
-		}
-
-		if (loadNew || workspaceLoadedClasses.containsKey(qualifiedName)) {
-			return getClassInstance(qualifiedName);
-		}
-
-		return null;
-	}
-
-	/**
-	 * This will seek through the workspace loaded instances for classes corresponding to the given qualified
-	 * names and return their singleton instances if they have already been loaded. Qualified names that do
-	 * not correspond to loaded workspace classes will only be loaded if <code>loadNew</code> is
-	 * <code>true</code>.
-	 * <p>
-	 * Take note that any stale instance will be instantiated anew as a result of this call. Workspace
-	 * contributions will also be refreshed prior to any attempt at seeking cached instances.
-	 * </p>
-	 * <p>
-	 * The order of the returned set of instances will be consistent with the order in which
-	 * <code>qualifiedNames</code> are supplied.
-	 * </p>
-	 * 
-	 * @param qualifiedNames
-	 *            Qualified names of the instances we seek to retrieve.
-	 * @param loadNew
-	 *            If <code>true</code>, qualified names corresponding to classes that haven't been loaded yet
-	 *            will be resolved in the workspace and an instance will be returned. Otherwise, they will
-	 *            simply be ignored.
-	 * @return The set of refreshed instances. Order will be consistent with <code>qualifiedNames</code>.
-	 */
-	public synchronized Set<Object> refreshInstances(Set<String> qualifiedNames, boolean loadNew) {
-		if (changedContributions.size() > 0) {
-			refreshContributions();
-		}
-		final Set<Object> workspaceInstances = new LinkedHashSet<Object>();
-
-		for (String qualifiedName : qualifiedNames) {
-			if (loadNew || workspaceLoadedClasses.containsKey(qualifiedName)) {
-				workspaceInstances.add(getClassInstance(qualifiedName));
-			}
-		}
-
-		return workspaceInstances;
 	}
 
 	/**
@@ -913,33 +788,25 @@ public final class AcceleoWorkspaceUtil {
 	 *            Qualified name of the class that is to be loaded.
 	 * @return An instance of the class if it could be loaded, <code>null</code> otherwise.
 	 */
-	private Object internalLoadClass(Bundle bundle, String qualifiedName) {
+	private Class<?> internalLoadClass(Bundle bundle, String qualifiedName) {
 		try {
 			WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(qualifiedName);
-			final Object instance;
+			final Class<?> clazz;
 			if (workspaceInstance == null) {
-				final Class<?> clazz = bundle.loadClass(qualifiedName);
-				instance = clazz.newInstance();
-				workspaceLoadedClasses.put(qualifiedName, new WorkspaceClassInstance(instance, bundle
+				clazz = bundle.loadClass(qualifiedName);
+				workspaceLoadedClasses.put(qualifiedName, new WorkspaceClassInstance(clazz, bundle
 						.getSymbolicName()));
 			} else if (workspaceInstance.isStale()) {
-				final Class<?> clazz = bundle.loadClass(qualifiedName);
-				instance = clazz.newInstance();
+				clazz = bundle.loadClass(qualifiedName);
 				workspaceInstance.setStale(false);
-				workspaceInstance.setInstance(instance);
+				workspaceInstance.setClass(clazz);
 			} else {
-				instance = workspaceInstance.getInstance();
+				clazz = workspaceInstance.getClassInstance();
 			}
 
-			return instance;
+			return clazz;
 		} catch (ClassNotFoundException e) {
 			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
-					qualifiedName, bundle.getSymbolicName()), e, false);
-		} catch (InstantiationException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
-					qualifiedName, bundle.getSymbolicName()), e, false);
-		} catch (IllegalAccessException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return null;

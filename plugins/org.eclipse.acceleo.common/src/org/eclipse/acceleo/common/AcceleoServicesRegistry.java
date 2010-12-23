@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common;
 
-import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
@@ -35,7 +36,10 @@ public final class AcceleoServicesRegistry {
 	private static final String CONSTRUCTOR_FAILURE_KEY = "AcceleoServicesRegistry.ClassConstructorFailure"; //$NON-NLS-1$
 
 	/** This will contain the services registered for Acceleo evaluations. */
-	private final Set<Object> registeredServices = new LinkedHashSet<Object>();
+	private final Set<Class<?>> registeredServices = new LinkedHashSet<Class<?>>();
+
+	/** This will allow us to only instantiate services once. */
+	private final Map<Class<?>, Object> serviceInstances = new HashMap<Class<?>, Object>();
 
 	/**
 	 * This class is a singleton. Access instance through {@link #INSTANCE}.
@@ -50,75 +54,29 @@ public final class AcceleoServicesRegistry {
 	 * @param service
 	 *            Service that is to be registered for Acceleo evaluations.
 	 * @return <code>true</code> if the set didn't already contain <code>service</code>.
+	 * @since 3.1
 	 */
+	public boolean addServiceClass(Class<?> service) {
+		return registeredServices.add(service);
+	}
+
+	/**
+	 * Adds a service to the registry.
+	 * 
+	 * @param service
+	 *            Service that is to be registered for Acceleo evaluations.
+	 * @return <code>true</code> if the set didn't already contain <code>service</code>.
+	 * @deprecated
+	 */
+	@Deprecated
 	public boolean addService(Object service) {
 		boolean registered = false;
 		if (service instanceof Class<?>) {
-			try {
-				registered = registeredServices.add(((Class<?>)service).newInstance());
-			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
-						((Class<?>)service).getName()), e, false);
-			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
-						((Class<?>)service).getName()), e, false);
-			}
+			registered = addServiceClass((Class<?>)service);
 		} else {
-			registered = registeredServices.add(service);
+			registered = addServiceClass(service.getClass());
 		}
 		return registered;
-	}
-
-	/**
-	 * Returns all registered services classes. <b>Note</b> that workspace services are refreshed each time
-	 * this is called if Eclipse is running.
-	 * 
-	 * @return All registered services classes.
-	 */
-	public Set<Object> getAllRegisteredServiceInstances() {
-		final Set<Object> compound = new LinkedHashSet<Object>();
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			compound.addAll(AcceleoServicesEclipseUtil.getRegisteredServices());
-		}
-		compound.addAll(registeredServices);
-		return compound;
-	}
-
-	/**
-	 * Returns all registered services methods. <b>Note</b> that workspace services are refreshed each time
-	 * this is called if Eclipse is running.
-	 * 
-	 * @return All applicable registered services methods.
-	 */
-	public Set<Method> getAllRegisteredServices() {
-		final Set<Object> serviceInstances = getAllRegisteredServiceInstances();
-		final Set<Method> services = new LinkedHashSet<Method>(serviceInstances.size());
-		for (Object serviceInstance : serviceInstances) {
-			for (Method method : serviceInstance.getClass().getMethods()) {
-				services.add(method);
-			}
-		}
-		return services;
-	}
-
-	/**
-	 * Returns all registered services methods applicable for the given type. <b>Note</b> that workspace
-	 * services are refreshed each time this is called if Eclipse is running.
-	 * 
-	 * @param receiverType
-	 *            Type of the receiver we seek applicable services for.
-	 * @return All applicable registered services methods.
-	 */
-	public Set<Method> getRegisteredServices(Class<?> receiverType) {
-		final Set<Method> allServices = getAllRegisteredServices();
-		final Set<Method> applicableServices = new LinkedHashSet<Method>(allServices.size());
-		for (Method method : allServices) {
-			final Class<?>[] parameters = method.getParameterTypes();
-			if (parameters.length > 0 && parameters[0].equals(receiverType)) {
-				applicableServices.add(method);
-			}
-		}
-		return applicableServices;
 	}
 
 	/**
@@ -141,30 +99,49 @@ public final class AcceleoServicesRegistry {
 	 * @return <code>true</code> if we could instantiate the service and add it for evaluation,
 	 *         <code>false</code> otherwise.
 	 * @since 0.8
+	 * @deprecated
 	 */
+	@Deprecated
 	public boolean addService(String bundleName, String qualifiedName) {
-		Object serviceInstance = null;
+		return addServiceClass(bundleName, qualifiedName) != null;
+	}
+
+	/**
+	 * This will attempt to register the service corresponding to the given information within the registry.
+	 * <p>
+	 * If Eclipse is currently running, it will try and find a workspace plugin which symbolic name is equal
+	 * to <code>bundleName</code> and install it, then load the class <code>qualifiedName</code> in this
+	 * workspace defined bundle. When no workspace plugin can be found with this symbolic name, the registry
+	 * will try and find an installed bundle with this name.
+	 * </p>
+	 * <p>
+	 * Outside of Eclispe, this will simply try to load a class named <code>qualifiedName</code> from the
+	 * current classloader.
+	 * </p>
+	 * 
+	 * @param bundleName
+	 *            Symbolic name of the bundle containing the acceleo generator currently being evaluated.
+	 * @param qualifiedName
+	 *            Qualified name of the service class we need an instance of.
+	 * @return The registered Class if any.
+	 * @since 3.1
+	 */
+	public Class<?> addServiceClass(String bundleName, String qualifiedName) {
+		Class<?> clazz = null;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			serviceInstance = AcceleoServicesEclipseUtil.registerService(bundleName, qualifiedName);
+			clazz = AcceleoServicesEclipseUtil.registerService(bundleName, qualifiedName);
 		} else {
 			try {
-				final Class<?> clazz = Class.forName(qualifiedName);
-				serviceInstance = clazz.newInstance();
-				if (serviceInstance != null) {
-					registeredServices.add(serviceInstance);
+				clazz = Class.forName(qualifiedName);
+				if (clazz != null) {
+					registeredServices.add(clazz);
 				}
 			} catch (ClassNotFoundException e) {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
 						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
-			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
-						qualifiedName), e, false);
-			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
-						qualifiedName), e, false);
 			}
 		}
-		return serviceInstance != null;
+		return clazz;
 	}
 
 	/**
@@ -187,27 +164,78 @@ public final class AcceleoServicesRegistry {
 	 *            Qualified name of the service class we need an instance of.
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 * @since 0.8
+	 * @deprecated
 	 */
+	@Deprecated
 	public Object addService(URI uri, String qualifiedName) {
-		Object serviceInstance = null;
+		return addServiceClass(uri, qualifiedName);
+	}
+
+	/**
+	 * This will attempt to register the service corresponding to the given information within the registry.
+	 * <p>
+	 * If Eclipse is currently running, it will try and find a workspace plugin corresponding to the given URI
+	 * and install it, then load the class <code>qualifiedName</code> in this workspace defined bundle. When
+	 * no corrsponding workspace plugin can be found, the registry will try and find it in the installed
+	 * bundles.
+	 * </p>
+	 * <p>
+	 * Outside of Eclipse, this will simply try to load a class named <code>qualifiedName</code> from the
+	 * current classloader.
+	 * </p>
+	 * 
+	 * @param uri
+	 *            URI of the module currently being evaluated. This will be used as a source to find the
+	 *            required service by looking through its dependencies.
+	 * @param qualifiedName
+	 *            Qualified name of the service class we need an instance of.
+	 * @return The loaded class if any.
+	 * @since 3.1
+	 */
+	public Class<?> addServiceClass(URI uri, String qualifiedName) {
+		Class<?> clazz = null;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			serviceInstance = AcceleoServicesEclipseUtil.registerService(uri, qualifiedName);
+			clazz = AcceleoServicesEclipseUtil.registerService(uri, qualifiedName);
 		} else {
 			try {
-				final Class<?> clazz = Class.forName(qualifiedName);
-				serviceInstance = clazz.newInstance();
-				if (serviceInstance != null) {
-					registeredServices.add(serviceInstance);
+				clazz = Class.forName(qualifiedName);
+				if (clazz != null) {
+					registeredServices.add(clazz);
 				}
 			} catch (ClassNotFoundException e) {
 				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
 						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
-			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
-						qualifiedName), e, false);
-			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
-						qualifiedName), e, false);
+			}
+		}
+		return clazz;
+	}
+
+	/**
+	 * This will return the singleton instance of the given class that serves as invocation source.
+	 * 
+	 * @param serviceClass
+	 *            The class we need the service singleton of.
+	 * @return The singleton instance of the given service class.
+	 * @since 3.1
+	 */
+	public Object getServiceInstance(Class<?> serviceClass) {
+		Object serviceInstance = null;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			serviceInstance = AcceleoServicesEclipseUtil.getServiceInstance(serviceClass);
+		}
+		if (serviceInstance == null) {
+			serviceInstance = serviceInstances.get(serviceClass);
+			if (serviceInstance == null) {
+				try {
+					serviceInstance = serviceClass.newInstance();
+					serviceInstances.put(serviceClass, serviceInstance);
+				} catch (InstantiationException e) {
+					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
+							serviceClass.getName()), e, false);
+				} catch (IllegalAccessException e) {
+					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
+							serviceClass.getName()), e, false);
+				}
 			}
 		}
 		return serviceInstance;
