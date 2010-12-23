@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+
 /**
  * This will allow us to hold information about a workspace-loaded class' instance. Instances of this class
  * will mostly be used to determine if the loaded instance is stale (this will happen if its containing bundle
@@ -21,6 +24,9 @@ final class WorkspaceClassInstance {
 	/** Symbolic name of the bundle from which this class has been loaded. */
 	private final String bundle;
 
+	/** Class Object of this instance. */
+	private Class<?> clazz;
+
 	/** Actual instance of the loaded class. */
 	private Object instance;
 
@@ -31,16 +37,16 @@ final class WorkspaceClassInstance {
 	private boolean stale;
 
 	/**
-	 * Instantiates a {@link WorkspaceClassInstance} given the actual wrapped instance and the symbolic name
-	 * of the bundle from which the class had been loaded.
+	 * Instantiates a {@link WorkspaceClassInstance} given the actual wrapped class and the symbolic name of
+	 * the bundle from which the class had been loaded.
 	 * 
-	 * @param instance
-	 *            Actual instance of the loaded class.
+	 * @param clazz
+	 *            Actual instance of the loaded Class.
 	 * @param bundle
 	 *            Symbolic name of the bundle from which this class has been loaded.
 	 */
-	public WorkspaceClassInstance(Object instance, String bundle) {
-		this.instance = instance;
+	public WorkspaceClassInstance(Class<?> clazz, String bundle) {
+		this.clazz = clazz;
 		this.bundle = bundle;
 	}
 
@@ -68,7 +74,16 @@ final class WorkspaceClassInstance {
 	 * @return The qualified name of the wrapped instance.
 	 */
 	public String getQualifiedName() {
-		return instance.getClass().getName();
+		return clazz.getName();
+	}
+
+	/**
+	 * Returns the wrapped class instance.
+	 * 
+	 * @return The wrapped class instance.
+	 */
+	public Class<?> getClassInstance() {
+		return clazz;
 	}
 
 	/**
@@ -77,17 +92,29 @@ final class WorkspaceClassInstance {
 	 * @return The currently wrapped instance.
 	 */
 	public Object getInstance() {
+		if (instance == null) {
+			try {
+				instance = clazz.newInstance();
+			} catch (InstantiationException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
+						clazz.getName(), bundle), e, false);
+			} catch (IllegalAccessException e) {
+				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
+						clazz.getName(), bundle), e, false);
+			}
+		}
 		return instance;
 	}
 
 	/**
-	 * Swaps the wrapped instance to the given value.
+	 * Sets the Class instance after a refresh.
 	 * 
-	 * @param instance
-	 *            New instance of the wrapped class.
+	 * @param newClass
+	 *            The new Class instance.
 	 */
-	public void setInstance(Object instance) {
-		this.instance = instance;
+	public void setClass(Class<?> newClass) {
+		clazz = newClass;
+		instance = null;
 	}
 
 	/**
