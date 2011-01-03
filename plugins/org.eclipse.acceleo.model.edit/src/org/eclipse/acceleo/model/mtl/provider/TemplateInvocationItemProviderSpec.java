@@ -39,7 +39,8 @@ public class TemplateInvocationItemProviderSpec extends TemplateInvocationItemPr
 	public Object getImage(Object object) {
 		Object res = null;
 
-		if (((TemplateInvocation)object).getDefinition().isMain()) {
+		if (object != null && ((TemplateInvocation)object).getDefinition() != null
+				&& ((TemplateInvocation)object).getDefinition().isMain()) {
 			res = overlayImage(object, getResourceLocator().getImage("full/obj16/TemplateInvocation_main")); //$NON-NLS-1$
 		} else {
 			res = super.getImage(object);
