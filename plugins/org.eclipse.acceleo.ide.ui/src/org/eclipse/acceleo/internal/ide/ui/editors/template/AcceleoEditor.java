@@ -571,11 +571,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 					warningTitleImage = new DecorationOverlayIcon(originalTitleImage, errorDescriptor,
 							IDecoration.BOTTOM_LEFT).createImage();
 				}
-				if (currentImage != warningTitleImage) {
+				if (currentImage != warningTitleImage && !warningTitleImage.isDisposed()) {
 					editor.setTitleImage(warningTitleImage);
 				}
 			} else {
-				if (currentImage != originalTitleImage) {
+				if (currentImage != originalTitleImage && !originalTitleImage.isDisposed()) {
 					editor.setTitleImage(originalTitleImage);
 				}
 			}
