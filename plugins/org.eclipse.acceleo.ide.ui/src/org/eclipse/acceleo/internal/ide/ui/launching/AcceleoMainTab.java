@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.launching.strategy.IAcceleoLaunchingStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -35,6 +36,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -52,6 +54,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 
@@ -62,6 +67,11 @@ import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab {
+
+	/**
+	 * Image registry key for help image (value <code>"dialog_help_image"</code> ).
+	 */
+	private static final String DLG_IMG_HELP = "dialog_help_image"; //$NON-NLS-1$
 
 	/**
 	 * Profile mode constant.
@@ -119,6 +129,11 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	private Button computeTraceability;
 
 	/**
+	 * Checkbox button that indicates if we would like to compute the profiling information.
+	 */
+	private Button computeProfiling;
+
+	/**
 	 * The arguments text widget.
 	 */
 	private Text argumentsText;
@@ -174,24 +189,35 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		Composite mainComposite = (Composite)getControl();
-		new Label(mainComposite, SWT.NONE);
-		Composite compAcceleo = createComposite(mainComposite, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0,
-				0);
-		Composite compModelTarget = createComposite(compAcceleo, parent.getFont(), 1, 1, GridData.FILL_BOTH,
-				0, 0);
-		createAcceleoModelEditor(compModelTarget);
-		createAcceleoTargetEditor(compModelTarget);
+		createAcceleoModelEditor(mainComposite);
+
+		createAcceleoTargetEditor(mainComposite);
+		// TODO SBE or launch config.getProfiling != null
 		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
-			createAcceleoProfileModelEditor(compModelTarget);
+			createAcceleoProfileModelEditor(mainComposite, true);
+		} else {
+			createAcceleoProfileModelEditor(mainComposite, false);
 		}
-		createAcceleoArgumentsEditor(compAcceleo);
+		createAcceleoArgumentsEditor(mainComposite);
+
 		new Label(mainComposite, SWT.NONE);
-		Composite endCompositeLeft = createComposite(mainComposite, parent.getFont(), 4, 2,
-				GridData.VERTICAL_ALIGN_END | GridData.HORIZONTAL_ALIGN_BEGINNING, 0, 0);
+		Composite endCompositeLeft = createComposite(mainComposite, parent.getFont(), 3, 1,
+				GridData.FILL_HORIZONTAL, 0, 0);
 		createAcceleoLaunchingStrategyEditor(endCompositeLeft);
-		Composite endCompositeRight = createComposite(mainComposite, parent.getFont(), 4, 2,
-				GridData.VERTICAL_ALIGN_END | GridData.HORIZONTAL_ALIGN_END, 0, 0);
-		createAcceleoTraceabilityEditor(endCompositeRight);
+
+		createAcceleoTraceabilityEditor(endCompositeLeft);
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			createAcceleoProfilingEditor(endCompositeLeft, true);
+		} else {
+			createAcceleoProfilingEditor(endCompositeLeft, false);
+		}
+
+		// Add help to the JDT tabs
+		Composite mainClassParent = this.fMainText.getParent();
+		createHelpButton(mainClassParent, AcceleoUIMessages.getString("AcceleoMainTab.Help.JavaClass")); //$NON-NLS-1$
+
+		Composite projectParent = this.fProjText.getParent();
+		createHelpButton(projectParent, AcceleoUIMessages.getString("AcceleoMainTab.Help.Project")); //$NON-NLS-1$
 	}
 
 	/**
@@ -217,14 +243,14 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	@Override
 	protected void updateLaunchConfigurationDialog() {
 		super.updateLaunchConfigurationDialog();
-		updateTraceabilitySettingsVisibility();
+		updateSettingsVisibility();
 	}
 
 	/**
 	 * Marks the traceability widget as invisible if the launching strategy is 'Java Application', and marks
 	 * it visible otherwise.
 	 */
-	private void updateTraceabilitySettingsVisibility() {
+	private void updateSettingsVisibility() {
 		if (computeTraceability != null && launchingStrategyCombo != null) {
 			if ("Java Application".equals(launchingStrategyCombo.getText())) { //$NON-NLS-1$
 				computeTraceability.setSelection(false);
@@ -232,7 +258,31 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			} else {
 				computeTraceability.setVisible(true);
 			}
+			profileModelButton.setEnabled(computeProfiling.getSelection());
+			profileModelText.setEnabled(computeProfiling.getSelection());
 		}
+	}
+
+	/**
+	 * Creates a help button in the given parent with the given help message and the given help ID.
+	 * 
+	 * @param parent
+	 *            The composite
+	 * @param helpMessage
+	 *            The help message seen by the user
+	 * @return The toolbar with the button.
+	 */
+	private ToolBar createHelpButton(Composite parent, String helpMessage) {
+		Image image = JFaceResources.getImage(DLG_IMG_HELP);
+		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
+		((GridLayout)parent.getLayout()).numColumns++;
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
+			item.setToolTipText(helpMessage);
+		}
+		return result;
 	}
 
 	/**
@@ -261,6 +311,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				handleBrowseModelButton();
 			}
 		});
+
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Model")); //$NON-NLS-1$
 	}
 
 	/**
@@ -268,8 +320,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * 
 	 * @param parent
 	 *            the parent composite
+	 * @param activatedByDefault
+	 *            Indicates if the profiling is activated by default.
 	 */
-	protected void createAcceleoProfileModelEditor(Composite parent) {
+	protected void createAcceleoProfileModelEditor(Composite parent, boolean activatedByDefault) {
 		Font font = parent.getFont();
 		Group mainGroup = createGroup(parent,
 				AcceleoUIMessages.getString("AcceleoMainTab.ProfileModelPath"), 2, 1, //$NON-NLS-1$
@@ -291,6 +345,11 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				handleBrowseProfileModelButton();
 			}
 		});
+
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Profile")); //$NON-NLS-1$
+
+		profileModelText.setEnabled(activatedByDefault);
+		profileModelButton.setEnabled(activatedByDefault);
 	}
 
 	/**
@@ -349,7 +408,15 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 
 		if (dialog.getResult().length > 0 && dialog.getResult()[0] instanceof IPath
 				&& ((IPath)dialog.getResult()[0]).segmentCount() > 0) {
-			profileModelText.setText(dialog.getResult()[0].toString());
+
+			String path = dialog.getResult()[0].toString();
+			if (path.endsWith(PROFILE_EXTENSION)) {
+				profileModelText.setText(path);
+			} else if (path.endsWith("/")) { //$NON-NLS-1$
+				profileModelText.setText(path + "profiling.mtlp"); //$NON-NLS-1$
+			} else {
+				profileModelText.setText(path + "/profiling.mtlp"); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -379,6 +446,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				handleBrowseTargetButton();
 			}
 		});
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Target")); //$NON-NLS-1$
 	}
 
 	/**
@@ -418,7 +486,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	protected void createAcceleoArgumentsEditor(Composite parent) {
 		Font font = parent.getFont();
 		Group mainGroup = createGroup(parent, AcceleoUIMessages.getString("AcceleoMainTab.Arguments"), 2, 1, //$NON-NLS-1$
-				GridData.VERTICAL_ALIGN_BEGINNING);
+				GridData.FILL_HORIZONTAL);
 		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
 		argumentsText = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -432,6 +500,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				updateLaunchConfigurationDialog();
 			}
 		});
+
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Properties")); //$NON-NLS-1$
 	}
 
 	/**
@@ -442,10 +512,14 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	protected void createAcceleoTraceabilityEditor(Composite parent) {
 		Font font = parent.getFont();
-		Composite comp = createComposite(parent, font, 2, 2, GridData.HORIZONTAL_ALIGN_END, 0, 0);
+		Group traceabilityGroup = createGroup(parent, AcceleoUIMessages
+				.getString("AcceleoMainTab.Traceability"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_VERTICAL);
+
+		Composite comp = createComposite(traceabilityGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
 		computeTraceability = new Button(comp, SWT.CHECK);
-		computeTraceability.setFont(parent.getFont());
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		computeTraceability.setFont(font);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
 		gd.horizontalSpan = 1;
 		computeTraceability.setLayoutData(gd);
 		computeTraceability.setText(AcceleoUIMessages.getString("AcceleoMainTab.ComputeTraceability")); //$NON-NLS-1$
@@ -458,6 +532,51 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 
 			}
 		});
+
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Traceability")); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates the widgets for specifying if we compute the traceability information.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param checkedByDefault
+	 *            Indicates if the checkbox should be checked by default.
+	 */
+	protected void createAcceleoProfilingEditor(Composite parent, boolean checkedByDefault) {
+		Font font = parent.getFont();
+
+		Group profilingGroup = createGroup(parent,
+				AcceleoUIMessages.getString("AcceleoMainTab.Profiling"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_VERTICAL);
+
+		Composite comp = createComposite(profilingGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		computeProfiling = new Button(comp, SWT.CHECK);
+		computeProfiling.setFont(font);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		gd.horizontalSpan = 1;
+		computeProfiling.setLayoutData(gd);
+		computeProfiling.setText(AcceleoUIMessages.getString("AcceleoMainTab.ComputeProfiling")); //$NON-NLS-1$
+		computeProfiling.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				Widget widget = e.widget;
+				if (widget instanceof Button) {
+					Button button = (Button)widget;
+					profileModelText.setEnabled(button.getSelection());
+					profileModelButton.setEnabled(button.getSelection());
+					AcceleoPreferences.switchProfiler(button.getSelection());
+					updateLaunchConfigurationDialog();
+				}
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+
+		computeProfiling.setSelection(checkedByDefault);
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Profiling")); //$NON-NLS-1$
 	}
 
 	/**
@@ -468,9 +587,13 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	protected void createAcceleoLaunchingStrategyEditor(Composite parent) {
 		Font font = parent.getFont();
-		Composite comp = createComposite(parent, font, 2, 2, GridData.HORIZONTAL_ALIGN_BEGINNING, 0, 0);
-		Label label = new Label(comp, SWT.NONE);
-		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.LaunchingStrategy")); //$NON-NLS-1$
+
+		Group launchingGroup = createGroup(parent, AcceleoUIMessages
+				.getString("AcceleoMainTab.LaunchingStrategy"), 2, 1, //$NON-NLS-1$
+				GridData.FILL_VERTICAL);
+
+		Composite comp = createComposite(launchingGroup, font, 2, 2, GridData.HORIZONTAL_ALIGN_BEGINNING, 0,
+				0);
 		launchingStrategyCombo = new Combo(comp, SWT.READ_ONLY);
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.horizontalSpan = 1;
@@ -488,6 +611,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		if (launchingStrategyCombo.getItemCount() > 0) {
 			launchingStrategyCombo.select(0);
 		}
+
+		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Strategy")); //$NON-NLS-1$
 	}
 
 	/**
@@ -622,14 +747,12 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	public void initializeFrom(ILaunchConfiguration config) {
 		super.initializeFrom(config);
 		updateAcceleoModelFromConfig(config);
-		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
-			updateAcceleoProfileModelFromConfig(config);
-		}
+		updateAcceleoProfileModelFromConfig(config);
 		updateAcceleoTargetFromConfig(config);
 		updateAcceleoTraceabilityFromConfig(config);
 		updateAcceleoArgumentsFromConfig(config);
 		updateAcceleoLaunchingStrategyFromConfig(config);
-		updateTraceabilitySettingsVisibility();
+		updateSettingsVisibility();
 	}
 
 	/**
@@ -658,6 +781,13 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		String model = ""; //$NON-NLS-1$
 		try {
 			model = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH, ""); //$NON-NLS-1$
+			boolean profiling = config.getAttribute(
+					IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_PROFILING, false);
+			if (profiling) {
+				computeProfiling.setSelection(true);
+			} else {
+				computeProfiling.setSelection(false);
+			}
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
@@ -772,7 +902,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				result = false;
 			}
 		}
-		if (result && PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+		if (result && computeProfiling.getSelection()) {
 			if ("".equals(profileModelText.getText().trim())) { //$NON-NLS-1$
 				setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.MissingProfileModel")); //$NON-NLS-1$
 				result = false;
@@ -798,7 +928,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		}
 		super.performApply(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, modelText.getText().trim());
-		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_PROFILING, computeProfiling
+				.getSelection());
+		if (computeProfiling.getSelection()) {
 			config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH,
 					profileModelText.getText().trim());
 		}
@@ -820,7 +952,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, ""); //$NON-NLS-1$
-		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+		if (computeProfiling != null && computeProfiling.getSelection()) {
 			config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_PROFILE_MODEL_PATH, ""); //$NON-NLS-1$
 		}
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_TARGET_PATH, ""); //$NON-NLS-1$
