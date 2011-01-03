@@ -197,6 +197,16 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Returns the profiler.
+	 * 
+	 * @return The profiler.
+	 * @since 3.1
+	 */
+	public static Profiler getProfiler() {
+		return profile;
+	}
+
+	/**
 	 * Appends the given string to the last buffer of the context stack. This will notify all text generation
 	 * listeners along the way.
 	 * 
