@@ -38,6 +38,9 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.util.SafeRunnable;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -49,6 +52,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scrollable;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -186,7 +190,12 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 		treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeViewer.addSelectionChangedListener(this);
 		treeViewer.setContentProvider(new AcceleoOutlinePageContentProvider(adapterFactory));
-		treeViewer.setLabelProvider(new AcceleoOutlinePageLabelProvider(adapterFactory));
+
+		// Handle decorations coming from org.eclipse.ui.decorators.
+		ILabelProvider lp = new AcceleoOutlinePageLabelProvider(adapterFactory);
+		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
+
+		treeViewer.setLabelProvider(new DecoratingLabelProvider(lp, decorator));
 		setInput(editor.getContent().getCST());
 	}
 
