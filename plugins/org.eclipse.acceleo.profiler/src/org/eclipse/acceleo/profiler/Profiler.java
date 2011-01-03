@@ -219,20 +219,24 @@ public class Profiler {
 	public void save(String modelURI) throws IOException {
 		addDefaultNodes();
 		computePercentage();
-		save(resource, modelURI);
+		if (resource != null) {
+			save(resource, modelURI);
+		}
 	}
 
 	/**
 	 * Compute percentage for the current profile tree.
 	 */
 	private void computePercentage() {
-		for (ProfileEntry root : resource.getEntries()) {
-			final long baseTime = root.getDuration();
-			root.setPercentage(100.0);
-			final Iterator<EObject> itContent = root.eAllContents();
-			while (itContent.hasNext()) {
-				final ProfileEntry node = (ProfileEntry)itContent.next();
-				node.setPercentage(node.getDuration() * 100.0 / baseTime);
+		if (resource != null) {
+			for (ProfileEntry root : resource.getEntries()) {
+				final long baseTime = root.getDuration();
+				root.setPercentage(100.0);
+				final Iterator<EObject> itContent = root.eAllContents();
+				while (itContent.hasNext()) {
+					final ProfileEntry node = (ProfileEntry)itContent.next();
+					node.setPercentage(node.getDuration() * 100.0 / baseTime);
+				}
 			}
 		}
 	}
@@ -241,8 +245,10 @@ public class Profiler {
 	 * Add default entries to reach 100%.
 	 */
 	protected void addDefaultNodes() {
-		for (ProfileEntry root : resource.getEntries()) {
-			addDefaultNodes(root);
+		if (resource != null) {
+			for (ProfileEntry root : resource.getEntries()) {
+				addDefaultNodes(root);
+			}
 		}
 	}
 
@@ -287,5 +293,15 @@ public class Profiler {
 		final Map<?, ?> options = new HashMap<Object, Object>();
 		newModelResource.save(options);
 		newModelResource.unload();
+	}
+
+	/**
+	 * Returns the profile resource.
+	 * 
+	 * @return The profile resource.
+	 * @since 3.1
+	 */
+	public ProfileResource getProfileResource() {
+		return resource;
 	}
 }
