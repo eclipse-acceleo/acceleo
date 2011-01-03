@@ -21,11 +21,17 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
  * @since 3.1
  */
 public final class AcceleoPreferences {
+	/** Preference key for the profiler enablement. */
+	private static final String PREFERENCE_KEY_ENABLE_PROFILER = "org.eclipse.acceleo.profiler.enable"; //$NON-NLS-1$
+
 	/** Preference key for the traceability enablement. */
 	private static final String PREFERENCE_KEY_ENABLE_TRACEABILITY = "org.eclipse.acceleo.traceability.enable"; //$NON-NLS-1$
 
 	/** Preference key for the activation of Acceleo's query caches. */
 	private static final String PREFERENCE_KEY_ENABLE_QUERY_CACHE = "org.eclipse.acceleo.query.cache.enable"; //$NON-NLS-1$
+
+	/** Default value for the profiler enablement. */
+	private static final boolean DEFAULT_ENABLE_PROFILER = false;
 
 	/** Default value for the traceability enablement. */
 	private static final boolean DEFAULT_ENABLE_TRACEABILITY = false;
@@ -80,5 +86,24 @@ public final class AcceleoPreferences {
 	 */
 	public static boolean isQueryCacheEnabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_QUERY_CACHE, DEFAULT_ENABLE_QUERY_CACHE);
+	}
+
+	/**
+	 * Switches the profiler on and off.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the profiler, <code>false</code> to disable it.
+	 */
+	public static void switchProfiler(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_PROFILER, state);
+	}
+
+	/**
+	 * Returns whether the profiler is enabled or not.
+	 * 
+	 * @return <code>true</code> if the profiler is enabled, <code>false</code> otherwise.
+	 */
+	public static boolean isProfilerEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_PROFILER, DEFAULT_ENABLE_PROFILER);
 	}
 }
