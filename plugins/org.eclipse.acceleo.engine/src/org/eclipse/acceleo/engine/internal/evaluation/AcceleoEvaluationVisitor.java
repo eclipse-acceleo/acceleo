@@ -434,10 +434,15 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						&& !loopVariable.getType().isInstance(o)) {
 					if (!iterationCCE) {
 						int line = getLineOf(forBlock);
+						String actualType = "null";
+						if (o != null) {
+							actualType = o.getClass().getName();
+						}
+						final String expectedType = loopVariable.getType().getName();
 						final String message = AcceleoEngineMessages.getString(
 								"AcceleoEvaluationVisitor.IterationClassCast", line, ((Module)EcoreUtil //$NON-NLS-1$
-										.getRootContainer(forBlock)).getName(), forBlock.toString(), o
-										.getClass().getName(), loopVariable.getType().getName());
+										.getRootContainer(forBlock)).getName(), forBlock.toString(),
+								actualType, expectedType);
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 						exception.setStackTrace(context.createAcceleoStackTrace());
 						AcceleoEnginePlugin.log(exception, false);
