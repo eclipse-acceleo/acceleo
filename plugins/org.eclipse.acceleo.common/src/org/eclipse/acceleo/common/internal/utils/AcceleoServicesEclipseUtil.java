@@ -148,7 +148,7 @@ public final class AcceleoServicesEclipseUtil {
 	 */
 	public static Class<?> registerService(URI uri, String qualifiedName) {
 		Class<?> clazz = null;
-		if (uri.isPlatform()) {
+		if (uri.isPlatformPlugin()) {
 			final String bundleName = uri.segment(1);
 			final Bundle bundle = Platform.getBundle(bundleName);
 			if (bundle != null) {
@@ -156,10 +156,17 @@ public final class AcceleoServicesEclipseUtil {
 			}
 		} else {
 			final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-			final URI workspaceRootURI = URI.createURI(workspaceRoot.getLocationURI().toString());
-			final URI workspaceRelative = uri.deresolve(workspaceRootURI);
-			if (!workspaceRelative.equals(uri)) {
-				final String projectName = workspaceRelative.segment(1);
+			String projectName = null;
+			if (uri.isPlatformResource()) {
+				projectName = uri.segment(1);
+			} else {
+				final URI workspaceRootURI = URI.createURI(workspaceRoot.getLocationURI().toString());
+				final URI workspaceRelative = uri.deresolve(workspaceRootURI);
+				if (!workspaceRelative.equals(uri)) {
+					projectName = workspaceRelative.segment(1);
+				}
+			}
+			if (projectName != null) {
 				final IProject project = workspaceRoot.getProject(projectName);
 				if (project != null && project.exists()) {
 					clazz = registerService(project, qualifiedName);
@@ -187,7 +194,11 @@ public final class AcceleoServicesEclipseUtil {
 	 */
 	private static Class<?> workspaceSuffixWorkaround(URI uri, String qualifiedName) {
 		Class<?> clazz = null;
-		URI platformURI = URI.createURI(AcceleoWorkspaceUtil.resolveAsPlatformPlugin(uri.toString()));
+		String resolvedURI = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(URI.decode(uri.toString()));
+		URI platformURI = null;
+		if (resolvedURI != null) {
+			platformURI = URI.createURI(resolvedURI);
+		}
 		if (platformURI != null) {
 			String bundleName = platformURI.segment(1);
 			Bundle bundle = Platform.getBundle(bundleName);
