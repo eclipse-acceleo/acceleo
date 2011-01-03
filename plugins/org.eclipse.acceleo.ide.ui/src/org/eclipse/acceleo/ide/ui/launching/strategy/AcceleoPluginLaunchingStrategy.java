@@ -18,6 +18,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
+import org.eclipse.acceleo.engine.utils.AcceleoEngineUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.debug.core.AcceleoDebugger;
@@ -66,6 +67,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 
 		AcceleoDebugger debugger = null;
 		Profiler profiler = null;
+		boolean profiling = configuration.getAttribute(
+				IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_PROFILING, false);
+
 		if ("debug".equals(mode)) { //$NON-NLS-1$
 			debugger = new AcceleoDebugger(project);
 			for (IDebugTarget target : launch.getDebugTargets()) {
@@ -74,9 +78,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
 			AcceleoEvaluationVisitor.setDebug(debugger);
 			debugger.start();
-		} else if ("profile".equals(mode)) { //$NON-NLS-1$
+		} else if (AcceleoPreferences.isProfilerEnabled() || profiling) {
 			profiler = new Profiler();
-			AcceleoEvaluationVisitor.setProfile(profiler);
+			AcceleoEngineUtils.setProfiler(profiler);
 			launch.addProcess(new AcceleoProcess(launch));
 		} else {
 			launch.addProcess(new AcceleoProcess(launch));
@@ -135,8 +139,9 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 				if (debugger != null) {
 					debugger.end();
 				}
-			} else if ("profile".equals(mode)) { //$NON-NLS-1$
-				saveProfileModel(configuration, profiler, monitor);
+			} else if (AcceleoPreferences.isProfilerEnabled() || profiling) {
+				saveProfileModel(configuration, AcceleoEvaluationVisitor.getProfiler(), monitor);
+				AcceleoEvaluationVisitor.setProfile(null);
 			}
 		}
 	}

@@ -48,6 +48,12 @@ public interface IAcceleoLaunchConfigurationConstants {
 	String ATTR_COMPUTE_TRACEABILITY = AcceleoUIActivator.PLUGIN_ID + ".COMPUTE_TRACEABILITY"; //$NON-NLS-1$
 
 	/**
+	 * Launch configuration attribute key. The value is true if we would like to compute the profiling
+	 * information.
+	 */
+	String ATTR_COMPUTE_PROFILING = AcceleoUIActivator.PLUGIN_ID + ".COMPUTE_PROFILING"; //$NON-NLS-1$
+
+	/**
 	 * Launch configuration attribute key. This is the value of the code generation arguments.
 	 */
 	String ATTR_ARGUMENTS = AcceleoUIActivator.PLUGIN_ID + ".ARGUMENTS"; //$NON-NLS-1$
