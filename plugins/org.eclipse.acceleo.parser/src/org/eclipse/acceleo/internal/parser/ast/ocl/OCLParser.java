@@ -1197,10 +1197,17 @@ public class OCLParser {
 	 */
 	public List<Choice> getSyntaxHelp(String text) {
 		List<Choice> result = new ArrayList<Choice>();
-		result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
-		pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
 		try {
 			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
+			pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
+		} catch (NullPointerException e) {
+			// do not log, it can append during the parsing.
+		}
+
+		try {
+			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
+		} catch (NullPointerException e) {
+			// do not log, it can append during the parsing.
 		} finally {
 			popContext();
 		}
