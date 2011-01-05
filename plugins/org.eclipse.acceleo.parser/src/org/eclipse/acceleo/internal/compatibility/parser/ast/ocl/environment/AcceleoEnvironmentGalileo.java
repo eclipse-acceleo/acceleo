@@ -36,11 +36,15 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.AbstractTypeChecker;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.TypeChecker;
+import org.eclipse.ocl.ecore.BagType;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreFactory;
+import org.eclipse.ocl.ecore.OrderedSetType;
 import org.eclipse.ocl.ecore.PrimitiveType;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.ecore.SequenceType;
+import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
@@ -259,8 +263,15 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 								.equals(operationName);
 
 				if (isParameterizedCollection) {
-					final org.eclipse.ocl.ecore.CollectionType alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil
-							.copy(type);
+					final org.eclipse.ocl.ecore.CollectionType alteredSequence;
+					if (type instanceof SequenceType || type instanceof OrderedSetType
+							|| type instanceof BagType || type instanceof SetType) {
+						alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil.copy(type);
+					} else if (owner instanceof org.eclipse.ocl.ecore.CollectionType) {
+						alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil.copy(owner);
+					} else {
+						alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil.copy(type);
+					}
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
 					Set<EClassifier> altered = alteredTypes.get(type);
 					if (altered == null) {
