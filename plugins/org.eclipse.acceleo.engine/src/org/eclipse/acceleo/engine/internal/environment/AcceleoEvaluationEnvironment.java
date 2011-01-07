@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.utils.ArrayDeque;
+import org.eclipse.acceleo.common.utils.ArrayStack;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.common.utils.Stack;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -91,7 +92,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
 	 * multiple bindings against the same variable name.
 	 */
-	private final ArrayDeque<Map<String, LinkedList<Object>>> scopedVariableMap = new ArrayDeque<Map<String, LinkedList<Object>>>();
+	private final Stack<Map<String, LinkedList<Object>>> scopedVariableMap = new ArrayStack<Map<String, LinkedList<Object>>>();
 
 	/**
 	 * This will contain variables that are global to a generation module.
