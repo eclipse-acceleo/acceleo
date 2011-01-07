@@ -16,6 +16,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.common.tests.unit.utils.AcceleoCommonPluginTest;
+import org.eclipse.acceleo.common.tests.unit.utils.ArrayStackTest;
 import org.eclipse.acceleo.common.tests.unit.utils.MessagesTest;
 import org.eclipse.acceleo.common.tests.unit.utils.modelutils.ModelUtilsTestSuite;
 
@@ -45,6 +46,7 @@ public class CommonTestSuite extends TestCase {
 
 		suite.addTestSuite(MessagesTest.class);
 		suite.addTestSuite(AcceleoCommonPluginTest.class);
+		suite.addTestSuite(ArrayStackTest.class);
 		suite.addTest(ModelUtilsTestSuite.suite());
 
 		return suite;
