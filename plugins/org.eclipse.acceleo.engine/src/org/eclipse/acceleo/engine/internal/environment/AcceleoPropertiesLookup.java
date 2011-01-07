@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.environment;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
-import org.eclipse.acceleo.common.utils.ArrayDeque;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -29,10 +30,10 @@ import org.eclipse.emf.common.EMFPlugin;
  */
 public class AcceleoPropertiesLookup {
 	/** The whole list of resource bundles accessible by the generation engine. */
-	private final ArrayDeque<ResourceBundle> bundles = new ArrayDeque<ResourceBundle>();
+	private final List<ResourceBundle> bundles = new ArrayList<ResourceBundle>();
 
 	/** This will map the loaded bundles to their file name. */
-	private final Map<String, ArrayDeque<ResourceBundle>> bundlesByFileName = new HashMap<String, ArrayDeque<ResourceBundle>>();
+	private final Map<String, List<ResourceBundle>> bundlesByFileName = new HashMap<String, List<ResourceBundle>>();
 
 	/**
 	 * This will contain the custom properties for this engine, properties that will always take precedence
@@ -74,9 +75,9 @@ public class AcceleoPropertiesLookup {
 		fileName += ".properties"; //$NON-NLS-1$
 
 		bundles.add(bundle);
-		ArrayDeque<ResourceBundle> nameSakes = bundlesByFileName.get(fileName);
+		List<ResourceBundle> nameSakes = bundlesByFileName.get(fileName);
 		if (nameSakes == null) {
-			nameSakes = new ArrayDeque<ResourceBundle>();
+			nameSakes = new ArrayList<ResourceBundle>();
 			bundlesByFileName.put(fileName, nameSakes);
 		}
 		nameSakes.add(bundle);
@@ -129,7 +130,7 @@ public class AcceleoPropertiesLookup {
 			soughtPropertiesFile += propertiesExtension;
 		}
 
-		ArrayDeque<ResourceBundle> candidates = bundlesByFileName.get(soughtPropertiesFile);
+		List<ResourceBundle> candidates = bundlesByFileName.get(soughtPropertiesFile);
 		ResourceBundle bundle = null;
 		if (candidates != null) {
 			for (ResourceBundle candidate : candidates) {
