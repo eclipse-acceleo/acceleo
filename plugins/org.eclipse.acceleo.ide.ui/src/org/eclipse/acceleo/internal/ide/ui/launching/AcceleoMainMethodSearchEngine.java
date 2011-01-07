@@ -7,8 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- * 
- * This is inspired of the 'MainMethodSearchEngine.java' file of the JDT.
+ *	   Obeo - Tweaking for the needs of Acceleo
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.launching;
 
@@ -41,7 +40,8 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
- * Gets the main method of the Java class representing the main template.
+ * Gets the main method of the Java class representing the main template. This is inspired from the
+ * 'MainMethodSearchEngine.java' file of the JDT.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
