@@ -30,7 +30,8 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
-import org.eclipse.acceleo.common.utils.ArrayDeque;
+import org.eclipse.acceleo.common.utils.ArrayStack;
+import org.eclipse.acceleo.common.utils.Stack;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
@@ -133,7 +134,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private OCLExpression<C> currentExpression;
 
 	/** This will hold the stack of generated files. */
-	private ArrayDeque<GeneratedFile> currentFiles = new ArrayDeque<GeneratedFile>();
+	private Stack<GeneratedFile> currentFiles = new ArrayStack<GeneratedFile>();
 
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
@@ -150,7 +151,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private Variable<C, PM> initializingVariable;
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
-	private ArrayDeque<ExpressionTrace<C>> invocationTraces;
+	private Stack<ExpressionTrace<C>> invocationTraces;
 
 	/**
 	 * This will allow us to restore generated files' offsets in the case where traceability information is
@@ -233,7 +234,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final ArrayDeque<ExpressionTrace<C>> recordedTraces = new ArrayDeque<ExpressionTrace<C>>(256);
+	private final Stack<ExpressionTrace<C>> recordedTraces = new ArrayStack<ExpressionTrace<C>>(256);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private LinkedList<EObject> scopeEObjects = new LinkedList<EObject>();
@@ -437,7 +438,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The stack of generated files.
 	 */
-	ArrayDeque<GeneratedFile> getCurrentFiles() {
+	Stack<GeneratedFile> getCurrentFiles() {
 		return currentFiles;
 	}
 
@@ -486,7 +487,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The last invocation's recorded traces.
 	 */
-	ArrayDeque<ExpressionTrace<C>> getInvocationTraces() {
+	Stack<ExpressionTrace<C>> getInvocationTraces() {
 		return invocationTraces;
 	}
 
@@ -668,10 +669,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		ArrayDeque<ExpressionTrace<C>> oldTraces = invocationTraces;
+		Stack<ExpressionTrace<C>> oldTraces = invocationTraces;
 		boolean oldTemplateHadScope = addedTemplateScope;
 		addedTemplateScope = false;
-		invocationTraces = new ArrayDeque<ExpressionTrace<C>>();
+		invocationTraces = new ArrayStack<ExpressionTrace<C>>();
 
 		Object result = null;
 		final boolean oldRecordState = switchRecordState((OCLExpression<C>)invocation);
