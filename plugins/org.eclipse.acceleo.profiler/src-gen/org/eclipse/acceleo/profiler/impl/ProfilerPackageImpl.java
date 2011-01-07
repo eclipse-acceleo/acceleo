@@ -1,9 +1,13 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: ProfilerPackageImpl.java,v 1.2 2010/04/12 09:35:23 lgoubet Exp $
- */
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.profiler.impl;
 
 import org.eclipse.acceleo.profiler.Internal;
@@ -96,8 +100,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public static ProfilerPackage init() {
-		if (isInited)
+		if (isInited) {
 			return (ProfilerPackage)EPackage.Registry.INSTANCE.getEPackage(ProfilerPackage.eNS_URI);
+		}
 
 		// Obtain or create and register package
 		ProfilerPackageImpl theProfilerPackage = (ProfilerPackageImpl)(EPackage.Registry.INSTANCE
@@ -258,8 +263,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated)
+		if (isCreated) {
 			return;
+		}
 		isCreated = true;
 
 		// Create classes and their features
@@ -295,8 +301,9 @@ public class ProfilerPackageImpl extends EPackageImpl implements ProfilerPackage
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized)
+		if (isInitialized) {
 			return;
+		}
 		isInitialized = true;
 
 		// Initialize package

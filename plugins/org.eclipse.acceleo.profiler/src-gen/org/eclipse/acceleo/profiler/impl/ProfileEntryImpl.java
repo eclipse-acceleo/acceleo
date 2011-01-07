@@ -1,9 +1,13 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: ProfileEntryImpl.java,v 1.3 2010/04/26 15:24:18 lgoubet Exp $
- */
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.profiler.impl;
 
 import java.util.Collection;
@@ -177,9 +181,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setDuration(long newDuration) {
 		long oldDuration = duration;
 		duration = newDuration;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__DURATION,
 					oldDuration, duration));
+		}
 	}
 
 	/**
@@ -201,8 +206,9 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 * @generated
 	 */
 	public ProfileEntry getCaller() {
-		if (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER)
+		if (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER) {
 			return null;
+		}
 		return (ProfileEntry)eContainer();
 	}
 
@@ -224,20 +230,25 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setCaller(ProfileEntry newCaller) {
 		if (newCaller != eInternalContainer()
 				|| (eContainerFeatureID != ProfilerPackage.PROFILE_ENTRY__CALLER && newCaller != null)) {
-			if (EcoreUtil.isAncestor(this, newCaller))
+			if (EcoreUtil.isAncestor(this, newCaller)) {
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
+			}
 			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
+			if (eInternalContainer() != null) {
 				msgs = eBasicRemoveFromContainer(msgs);
-			if (newCaller != null)
+			}
+			if (newCaller != null) {
 				msgs = ((InternalEObject)newCaller).eInverseAdd(this, ProfilerPackage.PROFILE_ENTRY__CALLEES,
 						ProfileEntry.class, msgs);
+			}
 			msgs = basicSetCaller(newCaller, msgs);
-			if (msgs != null)
+			if (msgs != null) {
 				msgs.dispatch();
-		} else if (eNotificationRequired())
+			}
+		} else if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__CALLER,
 					newCaller, newCaller));
+		}
 	}
 
 	/**
@@ -257,9 +268,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setCount(long newCount) {
 		long oldCount = count;
 		count = newCount;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__COUNT,
 					oldCount, count));
+		}
 	}
 
 	/**
@@ -279,9 +291,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setPercentage(double newPercentage) {
 		double oldPercentage = percentage;
 		percentage = newPercentage;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__PERCENTAGE,
 					oldPercentage, percentage));
+		}
 	}
 
 	/**
@@ -301,9 +314,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setCreateTime(long newCreateTime) {
 		long oldCreateTime = createTime;
 		createTime = newCreateTime;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__CREATE_TIME,
 					oldCreateTime, createTime));
+		}
 	}
 
 	/**
@@ -316,9 +330,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 			InternalEObject oldMonitored = (InternalEObject)monitored;
 			monitored = eResolveProxy(oldMonitored);
 			if (monitored != oldMonitored) {
-				if (eNotificationRequired())
+				if (eNotificationRequired()) {
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
 							ProfilerPackage.PROFILE_ENTRY__MONITORED, oldMonitored, monitored));
+				}
 			}
 		}
 		return monitored;
@@ -341,9 +356,10 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	public void setMonitored(EObject newMonitored) {
 		EObject oldMonitored = monitored;
 		monitored = newMonitored;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ProfilerPackage.PROFILE_ENTRY__MONITORED,
 					oldMonitored, monitored));
+		}
 	}
 
 	/**
@@ -381,8 +397,9 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCallees()).basicAdd(otherEnd,
 						msgs);
 			case ProfilerPackage.PROFILE_ENTRY__CALLER:
-				if (eInternalContainer() != null)
+				if (eInternalContainer() != null) {
 					msgs = eBasicRemoveFromContainer(msgs);
+				}
 				return basicSetCaller((ProfileEntry)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -440,8 +457,9 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 			case ProfilerPackage.PROFILE_ENTRY__CREATE_TIME:
 				return new Long(getCreateTime());
 			case ProfilerPackage.PROFILE_ENTRY__MONITORED:
-				if (resolve)
+				if (resolve) {
 					return getMonitored();
+				}
 				return basicGetMonitored();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -548,8 +566,9 @@ public class ProfileEntryImpl extends EObjectImpl implements ProfileEntry {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy())
+		if (eIsProxy()) {
 			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (duration: "); //$NON-NLS-1$
