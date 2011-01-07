@@ -7,4 +7,4 @@
 
 [query public query2(eClass : EClass) : String = 'query2'/]
 
-[query public query3(col : Sequence(String)) : String = col.toString()/]
+[query public query3(col : Sequence(String)) : String = col->toString()/]
