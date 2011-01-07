@@ -1,37 +1,46 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.unit;
 
 import junit.framework.TestCase;
 
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.impl.EClassifierImpl;
-
+import org.eclipse.acceleo.parser.cst.Block;
+import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.FileBlock;
+import org.eclipse.acceleo.parser.cst.ForBlock;
+import org.eclipse.acceleo.parser.cst.IfBlock;
+import org.eclipse.acceleo.parser.cst.InitSection;
+import org.eclipse.acceleo.parser.cst.LetBlock;
+import org.eclipse.acceleo.parser.cst.Macro;
+import org.eclipse.acceleo.parser.cst.ModelExpression;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
-import org.eclipse.acceleo.parser.cst.TypedModel;
-import org.eclipse.acceleo.parser.cst.Comment;
-import org.eclipse.acceleo.parser.cst.Template;
-import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
-import org.eclipse.acceleo.parser.cst.Variable;
-import org.eclipse.acceleo.parser.cst.TemplateExpression;
-import org.eclipse.acceleo.parser.cst.ModelExpression;
-import org.eclipse.acceleo.parser.cst.TextExpression;
-import org.eclipse.acceleo.parser.cst.Block;
-import org.eclipse.acceleo.parser.cst.InitSection;
-import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
-import org.eclipse.acceleo.parser.cst.ForBlock;
-import org.eclipse.acceleo.parser.cst.IfBlock;
-import org.eclipse.acceleo.parser.cst.LetBlock;
-import org.eclipse.acceleo.parser.cst.FileBlock;
-import org.eclipse.acceleo.parser.cst.TraceBlock;
-import org.eclipse.acceleo.parser.cst.Macro;
-import org.eclipse.acceleo.parser.cst.Query;
-import org.eclipse.acceleo.parser.cst.VisibilityKind;
 import org.eclipse.acceleo.parser.cst.OpenModeKind;
+import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
+import org.eclipse.acceleo.parser.cst.Query;
+import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.TemplateExpression;
+import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
+import org.eclipse.acceleo.parser.cst.TextExpression;
+import org.eclipse.acceleo.parser.cst.TraceBlock;
+import org.eclipse.acceleo.parser.cst.TypedModel;
+import org.eclipse.acceleo.parser.cst.Variable;
+import org.eclipse.acceleo.parser.cst.VisibilityKind;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.impl.EClassifierImpl;
 
 /**
  * Tests the behavior of the {@link CstFactory generated factory} for package cst.
