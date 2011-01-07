@@ -1,9 +1,13 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: ResourceImpl.java,v 1.2 2010/04/26 15:24:10 lgoubet Exp $
- */
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.traceability.impl;
 
 import org.eclipse.acceleo.traceability.Resource;
@@ -124,9 +128,10 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	public void setPath(String newPath) {
 		String oldPath = path;
 		path = newPath;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__PATH,
 					oldPath, path));
+		}
 	}
 
 	/**
@@ -146,9 +151,10 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__NAME,
 					oldName, name));
+		}
 	}
 
 	/**
@@ -168,9 +174,10 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	public void setCharset(String newCharset) {
 		String oldCharset = charset;
 		charset = newCharset;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.RESOURCE__CHARSET,
 					oldCharset, charset));
+		}
 	}
 
 	/**
@@ -258,8 +265,9 @@ public class ResourceImpl extends EObjectImpl implements Resource {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy())
+		if (eIsProxy()) {
 			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (path: "); //$NON-NLS-1$

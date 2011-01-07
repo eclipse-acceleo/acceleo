@@ -1,9 +1,13 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: GeneratedTextImpl.java,v 1.2 2010/04/26 15:24:11 lgoubet Exp $
- */
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.traceability.impl;
 
 import org.eclipse.acceleo.traceability.GeneratedFile;
@@ -127,10 +131,11 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 			InternalEObject oldSourceElement = (InternalEObject)sourceElement;
 			sourceElement = (InputElement)eResolveProxy(oldSourceElement);
 			if (sourceElement != oldSourceElement) {
-				if (eNotificationRequired())
+				if (eNotificationRequired()) {
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
 							TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement,
 							sourceElement));
+				}
 			}
 		}
 		return sourceElement;
@@ -153,9 +158,10 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public void setSourceElement(InputElement newSourceElement) {
 		InputElement oldSourceElement = sourceElement;
 		sourceElement = newSourceElement;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement, sourceElement));
+		}
 	}
 
 	/**
@@ -168,10 +174,11 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 			InternalEObject oldModuleElement = (InternalEObject)moduleElement;
 			moduleElement = (ModuleElement)eResolveProxy(oldModuleElement);
 			if (moduleElement != oldModuleElement) {
-				if (eNotificationRequired())
+				if (eNotificationRequired()) {
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
 							TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement,
 							moduleElement));
+				}
 			}
 		}
 		return moduleElement;
@@ -194,9 +201,10 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public void setModuleElement(ModuleElement newModuleElement) {
 		ModuleElement oldModuleElement = moduleElement;
 		moduleElement = newModuleElement;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement, moduleElement));
+		}
 	}
 
 	/**
@@ -205,8 +213,9 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	 * @generated
 	 */
 	public GeneratedFile getOutputFile() {
-		if (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE)
+		if (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE) {
 			return null;
+		}
 		return (GeneratedFile)eContainer();
 	}
 
@@ -229,20 +238,25 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public void setOutputFile(GeneratedFile newOutputFile) {
 		if (newOutputFile != eInternalContainer()
 				|| (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE && newOutputFile != null)) {
-			if (EcoreUtil.isAncestor(this, newOutputFile))
+			if (EcoreUtil.isAncestor(this, newOutputFile)) {
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
+			}
 			NotificationChain msgs = null;
-			if (eInternalContainer() != null)
+			if (eInternalContainer() != null) {
 				msgs = eBasicRemoveFromContainer(msgs);
-			if (newOutputFile != null)
+			}
+			if (newOutputFile != null) {
 				msgs = ((InternalEObject)newOutputFile).eInverseAdd(this,
 						TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, GeneratedFile.class, msgs);
+			}
 			msgs = basicSetOutputFile(newOutputFile, msgs);
-			if (msgs != null)
+			if (msgs != null) {
 				msgs.dispatch();
-		} else if (eNotificationRequired())
+			}
+		} else if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE, newOutputFile, newOutputFile));
+		}
 	}
 
 	/**
@@ -262,9 +276,10 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public void setStartOffset(int newStartOffset) {
 		int oldStartOffset = startOffset;
 		startOffset = newStartOffset;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					TraceabilityPackage.GENERATED_TEXT__START_OFFSET, oldStartOffset, startOffset));
+		}
 	}
 
 	/**
@@ -284,9 +299,10 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public void setEndOffset(int newEndOffset) {
 		int oldEndOffset = endOffset;
 		endOffset = newEndOffset;
-		if (eNotificationRequired())
+		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					TraceabilityPackage.GENERATED_TEXT__END_OFFSET, oldEndOffset, endOffset));
+		}
 	}
 
 	/**
@@ -309,8 +325,9 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE:
-				if (eInternalContainer() != null)
+				if (eInternalContainer() != null) {
 					msgs = eBasicRemoveFromContainer(msgs);
+				}
 				return basicSetOutputFile((GeneratedFile)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -354,12 +371,14 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT:
-				if (resolve)
+				if (resolve) {
 					return getSourceElement();
+				}
 				return basicGetSourceElement();
 			case TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT:
-				if (resolve)
+				if (resolve) {
 					return getModuleElement();
+				}
 				return basicGetModuleElement();
 			case TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE:
 				return getOutputFile();
@@ -454,8 +473,9 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy())
+		if (eIsProxy()) {
 			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startOffset: "); //$NON-NLS-1$

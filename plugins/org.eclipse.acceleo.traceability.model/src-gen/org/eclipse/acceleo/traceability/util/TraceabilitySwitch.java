@@ -1,9 +1,13 @@
-/**
- * <copyright>
- * </copyright>
- *
- * $Id: TraceabilitySwitch.java,v 1.2 2010/04/26 15:24:14 lgoubet Exp $
- */
+/*******************************************************************************
+ * Copyright (c) 2008, 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.acceleo.traceability.util;
 
 import java.util.List;
@@ -87,65 +91,77 @@ public class TraceabilitySwitch<T1> {
 			case TraceabilityPackage.TRACEABILITY_MODEL: {
 				TraceabilityModel traceabilityModel = (TraceabilityModel)theEObject;
 				T1 result = caseTraceabilityModel(traceabilityModel);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.RESOURCE: {
 				Resource resource = (Resource)theEObject;
 				T1 result = caseResource(resource);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.MODEL_FILE: {
 				ModelFile modelFile = (ModelFile)theEObject;
 				T1 result = caseModelFile(modelFile);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(modelFile);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.MODULE_FILE: {
 				ModuleFile moduleFile = (ModuleFile)theEObject;
 				T1 result = caseModuleFile(moduleFile);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(moduleFile);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.GENERATED_FILE: {
 				GeneratedFile generatedFile = (GeneratedFile)theEObject;
 				T1 result = caseGeneratedFile(generatedFile);
-				if (result == null)
+				if (result == null) {
 					result = caseResource(generatedFile);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.INPUT_ELEMENT: {
 				InputElement inputElement = (InputElement)theEObject;
 				T1 result = caseInputElement(inputElement);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.MODULE_ELEMENT: {
 				ModuleElement moduleElement = (ModuleElement)theEObject;
 				T1 result = caseModuleElement(moduleElement);
-				if (result == null)
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			case TraceabilityPackage.GENERATED_TEXT: {
 				GeneratedText generatedText = (GeneratedText)theEObject;
 				T1 result = caseGeneratedText(generatedText);
-				if (result == null)
+				if (result == null) {
 					result = caseIComparable(generatedText);
-				if (result == null)
+				}
+				if (result == null) {
 					result = defaultCase(theEObject);
+				}
 				return result;
 			}
 			default:
