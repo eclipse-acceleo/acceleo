@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.cst.utils;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -334,7 +334,7 @@ public class Sequence implements ISequence {
 	 */
 	public List<Region> split(final StringBuffer buffer, int posBegin, int posEnd, boolean keepSeparator,
 			Sequence spec, SequenceBlock[] inhibs) {
-		List<Region> result = new LinkedList<Region>();
+		List<Region> result = new ArrayList<Region>();
 		if (buffer != null && buffer.length() > 0 && posEnd > 0 && posEnd > posBegin) {
 			int currentPos;
 			if (posBegin < 0) {
