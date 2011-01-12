@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.model.mtl.Query;
 
 /**
@@ -39,7 +38,7 @@ public class QueryTraceCache<C> {
 	 * @return The cached trace for this query, if any.
 	 */
 	public ExpressionTrace<C> getCachedTrace(Query query, List<Object> parameters) {
-		if (!AcceleoPreferences.isQueryCacheEnabled() || !queryTraceCache.containsKey(query)) {
+		if (!queryTraceCache.containsKey(query)) {
 			return null;
 		}
 
@@ -58,9 +57,6 @@ public class QueryTraceCache<C> {
 	 *            Trace that is to be cached.
 	 */
 	public void cacheTrace(Query query, List<Object> parameters, ExpressionTrace<C> trace) {
-		if (!AcceleoPreferences.isQueryCacheEnabled()) {
-			return;
-		}
 		Map<List<Object>, ExpressionTrace<C>> cache = queryTraceCache.get(query);
 		if (cache == null) {
 			cache = new HashMap<List<Object>, ExpressionTrace<C>>();
