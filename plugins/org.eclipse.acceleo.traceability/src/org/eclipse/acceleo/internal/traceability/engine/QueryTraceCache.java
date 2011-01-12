@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Obeo.
+ * Copyright (c) 2009, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.model.mtl.Query;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.acceleo.model.mtl.Query;
  * @param <C>
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
-public class QueryTaceCache<C> {
+public class QueryTraceCache<C> {
 	/** The actual backing map for this cache. */
 	private final Map<Query, Map<List<Object>, ExpressionTrace<C>>> queryTraceCache = new HashMap<Query, Map<List<Object>, ExpressionTrace<C>>>();
 
@@ -38,11 +39,12 @@ public class QueryTaceCache<C> {
 	 * @return The cached trace for this query, if any.
 	 */
 	public ExpressionTrace<C> getCachedTrace(Query query, List<Object> parameters) {
-		Map<List<Object>, ExpressionTrace<C>> cache = queryTraceCache.get(query);
-		if (cache != null) {
-			return cache.get(parameters);
+		if (!AcceleoPreferences.isQueryCacheEnabled() || !queryTraceCache.containsKey(query)) {
+			return null;
 		}
-		return null;
+
+		Map<List<Object>, ExpressionTrace<C>> cache = queryTraceCache.get(query);
+		return cache.get(parameters);
 	}
 
 	/**
@@ -56,6 +58,9 @@ public class QueryTaceCache<C> {
 	 *            Trace that is to be cached.
 	 */
 	public void cacheTrace(Query query, List<Object> parameters, ExpressionTrace<C> trace) {
+		if (!AcceleoPreferences.isQueryCacheEnabled()) {
+			return;
+		}
 		Map<List<Object>, ExpressionTrace<C>> cache = queryTraceCache.get(query);
 		if (cache == null) {
 			cache = new HashMap<List<Object>, ExpressionTrace<C>>();

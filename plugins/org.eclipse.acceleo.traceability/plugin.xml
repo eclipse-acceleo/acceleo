@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<fragment>
+<plugin>
    <extension
          point="org.eclipse.acceleo.engine.creator">
       <engineCreator
             class="org.eclipse.acceleo.internal.traceability.TraceabilityEngineCreator"
-            label="Traceability evaluation engine">
+            label="org.eclipse.acceleo.traceability.traceabilityEngineCreator">
       </engineCreator>
    </extension>
 
-</fragment>
+</plugin>

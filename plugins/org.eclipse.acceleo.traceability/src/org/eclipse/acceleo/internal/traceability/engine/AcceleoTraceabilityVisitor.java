@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Obeo.
+ * Copyright (c) 2009, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,11 +33,11 @@ import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.ArrayStack;
 import org.eclipse.acceleo.common.utils.Stack;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator;
+import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
@@ -198,6 +198,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean addedTemplateScope;
 
+	/** Query results are cached, thus we need to cache their traces too. */
+	private QueryTraceCache<C> queryTraceCache = new QueryTraceCache<C>();
+
 	/**
 	 * Along with {@link #operationCallSourceExpression}, this allows us to retrieve the source value of an
 	 * operation call.
@@ -226,9 +229,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * as soon as we exit this area. It will be used to shortcut all input recorded inside of such an area.
 	 */
 	private InputElement protectedAreaSource;
-
-	/** Query results are cached, thus we need to cache their traces too. */
-	private QueryTaceCache<C> queryTraceCache = new QueryTaceCache<C>();
 
 	/** This will be used internally to prevent trace recording for set expressions. */
 	private boolean record = true;
@@ -1532,14 +1532,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					}
 				} catch (IOException e) {
 					// traceability may not be good on this one
-					AcceleoEnginePlugin.log(e, false);
+					AcceleoTraceabilityPlugin.log(e, false);
 				} finally {
 					try {
 						if (reader != null) {
 							reader.close();
 						}
 					} catch (IOException e) {
-						AcceleoEnginePlugin.log(e, false);
+						AcceleoTraceabilityPlugin.log(e, false);
 					}
 				}
 				soughtFile.setLength(length);
@@ -1647,7 +1647,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						path = ecoreURL.toString();
 					}
 				} catch (IOException e) {
-					AcceleoEnginePlugin.log(e, false);
+					AcceleoTraceabilityPlugin.log(e, false);
 				}
 				ecoreURLCache.put(nsURI, path);
 			}
@@ -1706,7 +1706,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					path = emtlURL.toString();
 				}
 			} catch (IOException e) {
-				AcceleoEnginePlugin.log(e, false);
+				AcceleoTraceabilityPlugin.log(e, false);
 			}
 		}
 
