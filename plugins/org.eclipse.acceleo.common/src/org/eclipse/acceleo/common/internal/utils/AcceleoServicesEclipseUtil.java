@@ -160,7 +160,8 @@ public final class AcceleoServicesEclipseUtil {
 			if (uri.isPlatformResource()) {
 				projectName = uri.segment(1);
 			} else {
-				final URI workspaceRootURI = URI.createURI(workspaceRoot.getLocationURI().toString());
+				final URI workspaceRootURI = URI.createURI(URI.decode(workspaceRoot.getLocationURI()
+						.toString()));
 				final URI workspaceRelative = uri.deresolve(workspaceRootURI);
 				if (!workspaceRelative.equals(uri)) {
 					projectName = workspaceRelative.segment(1);
