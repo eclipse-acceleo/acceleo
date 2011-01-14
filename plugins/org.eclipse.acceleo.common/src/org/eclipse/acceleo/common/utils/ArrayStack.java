@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
  *            Type of the elements contained by this Stack.
+ * @since 3.0
  */
 public class ArrayStack<E> implements Stack<E>, Externalizable {
 	/** Serial version UID, this will be used during deserialization. */

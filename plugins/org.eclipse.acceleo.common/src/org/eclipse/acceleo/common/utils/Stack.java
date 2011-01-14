@@ -18,6 +18,7 @@ import java.util.Collection;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
  *            Type of the elements contained by this Stack.
+ * @since 3.0
  */
 public interface Stack<E> extends Collection<E> {
 	/**
