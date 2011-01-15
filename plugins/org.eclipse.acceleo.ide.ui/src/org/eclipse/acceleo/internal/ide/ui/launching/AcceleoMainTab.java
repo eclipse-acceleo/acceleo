@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.launching;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -192,7 +193,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		createAcceleoModelEditor(mainComposite);
 
 		createAcceleoTargetEditor(mainComposite);
-		// TODO SBE or launch config.getProfiling != null
 		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
 			createAcceleoProfileModelEditor(mainComposite, true);
 		} else {
@@ -490,7 +490,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
 		argumentsText = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		final int heightHint = 70;
+		final int heightHint = 30;
 		gd.heightHint = heightHint;
 		gd.widthHint = 100;
 		gd.horizontalSpan = 2;
@@ -625,6 +625,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			while (strategies.hasNext()) {
 				descriptions.add(strategies.next());
 			}
+
 			launchingStrategyCombo.setItems(descriptions.toArray(new String[descriptions.size()]));
 			final int visibleItemCount = 15;
 			if (descriptions.size() < visibleItemCount) {
@@ -979,6 +980,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * @return all the launching strategies descriptions
 	 */
 	private List<String> getLaunchingStrategies() {
+		List<String> acceleoStrategies = new ArrayList<String>();
+
 		if (launchingStrategies == null) {
 			launchingStrategies = new ArrayList<String>();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -991,14 +994,21 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 					IConfigurationElement[] members = extension.getConfigurationElements();
 					for (int j = 0; j < members.length; j++) {
 						IConfigurationElement member = members[j];
+						String name = member.getContributor().getName();
 						String description = member.getAttribute("description"); //$NON-NLS-1$
-						if (description != null && description.length() > 0) {
+						if (description != null && description.length() > 0
+								&& AcceleoUIActivator.PLUGIN_ID.equals(name)) {
+							acceleoStrategies.add(description);
+						} else if (description != null && description.length() > 0) {
 							launchingStrategies.add(description);
 						}
 					}
 				}
 			}
 		}
+		Collections.sort(acceleoStrategies);
+		Collections.sort(launchingStrategies);
+		launchingStrategies.addAll(0, acceleoStrategies);
 		return launchingStrategies;
 	}
 
