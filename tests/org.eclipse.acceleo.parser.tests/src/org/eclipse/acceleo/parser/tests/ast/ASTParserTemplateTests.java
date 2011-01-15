@@ -126,8 +126,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 1, 0);
-			checkASTDocumentationResolution(1, 1, 0);
+			checkASTResolution(1, 0, 1);
+			checkASTDocumentationResolution(1, 0, 1);
 		} else {
 			fail();
 		}
@@ -143,8 +143,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 1, 0);
-			checkASTDocumentationResolution(1, 1, 0);
+			checkASTResolution(1, 0, 1);
+			checkASTDocumentationResolution(1, 0, 1);
 		} else {
 			fail();
 		}
@@ -246,8 +246,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 3, 0);
-			checkASTDocumentationResolution(1, 3, 0);
+			checkASTResolution(1, 2, 1);
+			checkASTDocumentationResolution(1, 2, 1);
 		} else {
 			fail();
 		}
@@ -264,8 +264,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 3, 0);
-			checkASTDocumentationResolution(1, 3, 0);
+			checkASTResolution(1, 2, 1);
+			checkASTDocumentationResolution(1, 2, 1);
 		} else {
 			fail();
 		}
