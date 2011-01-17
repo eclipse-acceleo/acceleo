@@ -731,7 +731,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				return dynamicModules;
 			}
 			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
-				resourceSet.setURIConverter(new DynamicModulesURIConverter(this));
+				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
+						this));
 			}
 			for (File moduleFile : dynamicModuleFiles) {
 				if (moduleFile.exists() && moduleFile.canRead()) {
