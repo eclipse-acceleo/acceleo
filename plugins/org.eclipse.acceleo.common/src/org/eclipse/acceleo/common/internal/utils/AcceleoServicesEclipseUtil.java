@@ -53,7 +53,7 @@ public final class AcceleoServicesEclipseUtil {
 	 * @param serviceClass
 	 *            The class we need the service singleton of.
 	 * @return The singleton instance of the given service class.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public static Object getServiceInstance(Class<?> serviceClass) {
 		return AcceleoWorkspaceUtil.INSTANCE.getServiceInstance(serviceClass);
