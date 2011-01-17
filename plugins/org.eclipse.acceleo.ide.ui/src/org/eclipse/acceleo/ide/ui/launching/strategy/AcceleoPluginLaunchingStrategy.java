@@ -139,7 +139,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 				if (debugger != null) {
 					debugger.end();
 				}
-			} else if (AcceleoPreferences.isProfilerEnabled() || profiling) {
+			} else if (profiling) {
 				saveProfileModel(configuration, AcceleoEvaluationVisitor.getProfiler(), monitor);
 				AcceleoEvaluationVisitor.setProfile(null);
 			}
