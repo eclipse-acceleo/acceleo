@@ -23,12 +23,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
+import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -94,7 +95,7 @@ public class AcceleoEvaluationContext<C> {
 	protected final boolean notifyOnGenerationEnd;
 
 	/** This will maintain the stack trace of expression evaluations. */
-	private List<OCLExpression<C>> expressionStack = new LinkedList<OCLExpression<C>>();
+	private Deque<OCLExpression<C>> expressionStack = new CircularArrayDeque<OCLExpression<C>>();
 
 	/** References the file which is to be used as the root for all generated files. */
 	private final File generationRoot;
@@ -112,7 +113,7 @@ public class AcceleoEvaluationContext<C> {
 	private final Map<Writer, Map<String, String>> userCodeBlocks = new HashMap<Writer, Map<String, String>>();
 
 	/** This will hold the buffer stack. */
-	private final LinkedList<Writer> writers = new LinkedList<Writer>();
+	private final Deque<Writer> writers = new CircularArrayDeque<Writer>();
 
 	/**
 	 * Instantiates an evaluation context given the root of the to-be-generated files.
@@ -165,7 +166,7 @@ public class AcceleoEvaluationContext<C> {
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent)
 			throws AcceleoEvaluationException {
 		try {
-			if (writers.size() > 0) {
+			if (!writers.isEmpty()) {
 				final Writer currentWriter = writers.getLast();
 				currentWriter.append(string);
 				if (fireEvent && string.length() > 0) {
@@ -307,7 +308,7 @@ public class AcceleoEvaluationContext<C> {
 	 *             This will be thrown if the last writer of the stack cannot be flushed and closed.
 	 */
 	public String closeContext(Block sourceBlock, EObject source) throws AcceleoEvaluationException {
-		if (writers.size() == 0) {
+		if (writers.isEmpty()) {
 			AcceleoEnginePlugin.log(AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"), false); //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
@@ -386,7 +387,7 @@ public class AcceleoEvaluationContext<C> {
 	 * @return indentation of the very last line in context.
 	 */
 	public String getLastFileIndentation() {
-		Writer writer = writers.getLast();
+		Writer writer = null;
 		for (int i = writers.size() - 1; i >= 0 && !(writer instanceof AbstractAcceleoWriter); i--) {
 			writer = writers.get(i);
 		}
@@ -477,12 +478,8 @@ public class AcceleoEvaluationContext<C> {
 	public String getProtectedAreaContent(String marker) {
 		// Seeks out the last opened file writer
 		Writer writer = null;
-		for (int i = writers.size() - 1; i >= 0; i--) {
+		for (int i = writers.size() - 1; i >= 0 && !(writer instanceof AbstractAcceleoWriter); i--) {
 			writer = writers.get(i);
-			if (writer instanceof AbstractAcceleoWriter) {
-				break;
-			}
-			writer = null;
 		}
 
 		final Map<String, String> areas = userCodeBlocks.get(writer);
@@ -523,7 +520,7 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	public void openNested() throws AcceleoEvaluationException {
 		try {
-			if (writers.size() > 0) {
+			if (!writers.isEmpty()) {
 				writers.getLast().flush();
 			}
 		} catch (final IOException e) {
@@ -557,7 +554,7 @@ public class AcceleoEvaluationContext<C> {
 			String charset) throws AcceleoEvaluationException {
 		fireFilePathComputed(new AcceleoTextGenerationEvent(generatedFile.getPath(), fileBlock, source));
 		try {
-			if (writers.size() > 0) {
+			if (!writers.isEmpty()) {
 				writers.getLast().flush();
 			}
 			final Map<String, String> savedCodeBlocks = new HashMap<String, String>();
@@ -598,7 +595,7 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	public void openNested(OutputStream stream) {
 		try {
-			if (writers.size() > 0) {
+			if (!writers.isEmpty()) {
 				writers.getLast().flush();
 			}
 		} catch (final IOException e) {
@@ -633,13 +630,12 @@ public class AcceleoEvaluationContext<C> {
 	}
 
 	/**
-	 * Removes the given expression from the expression stack trace.
-	 * 
-	 * @param expression
-	 *            Expression that is to be removed from the stack.
+	 * Removes the last added expression from the expression stack trace.
 	 */
-	public void removeFromStack(OCLExpression<C> expression) {
-		expressionStack.remove(expression);
+	public void removeFromStack() {
+		if (!expressionStack.isEmpty()) {
+			expressionStack.removeLast();
+		}
 	}
 
 	/**

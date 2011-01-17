@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.utils.ArrayStack;
+import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.common.utils.Stack;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -91,12 +91,12 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
 	 * multiple bindings against the same variable name.
 	 */
-	private final Stack<Map<String, Stack<Object>>> scopedVariableMap = new ArrayStack<Map<String, Stack<Object>>>();
+	private final Deque<Map<String, Deque<Object>>> scopedVariableMap = new CircularArrayDeque<Map<String, Deque<Object>>>();
 
 	/**
 	 * This will contain variables that are global to a generation module.
 	 */
-	private final Map<String, Stack<Object>> globalVariableMap = new HashMap<String, Stack<Object>>();
+	private final Map<String, Deque<Object>> globalVariableMap = new HashMap<String, Deque<Object>>();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -113,7 +113,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent,
 			Module module, AcceleoPropertiesLookup properties) {
 		super(parent);
-		scopedVariableMap.add(new HashMap<String, Stack<Object>>());
+		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
@@ -131,7 +131,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	public AcceleoEvaluationEnvironment(Module module, AcceleoPropertiesLookup properties) {
 		super();
-		scopedVariableMap.add(new HashMap<String, Stack<Object>>());
+		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
@@ -145,15 +145,15 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void add(String name, Object value) {
-		Map<String, Stack<Object>> variableMap;
+		Map<String, Deque<Object>> variableMap;
 		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
 			variableMap = globalVariableMap;
 		} else {
 			variableMap = scopedVariableMap.getLast();
 		}
-		Stack<Object> values = variableMap.get(name);
+		Deque<Object> values = variableMap.get(name);
 		if (values == null) {
-			values = new ArrayStack<Object>();
+			values = new CircularArrayDeque<Object>();
 			variableMap.put(name, values);
 		}
 		values.add(value);
@@ -265,7 +265,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * QueryInvocation.
 	 */
 	public void createVariableScope() {
-		scopedVariableMap.add(new HashMap<String, Stack<Object>>());
+		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
 	}
 
 	/**
@@ -358,9 +358,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The map of currently available variables.
 	 */
 	public Map<String, Object> getCurrentVariables() {
-		Map<String, Stack<Object>> variableMap = scopedVariableMap.getLast();
+		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
 		Map<String, Object> availableVariables = new HashMap<String, Object>();
-		for (Map.Entry<String, Stack<Object>> var : variableMap.entrySet()) {
+		for (Map.Entry<String, Deque<Object>> var : variableMap.entrySet()) {
 			if (!var.getValue().isEmpty()) {
 				availableVariables.put(var.getKey(), var.getValue().getLast());
 			}
@@ -386,7 +386,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	@Override
 	public Object getValueOf(String name) {
 		Object value = null;
-		Map<String, Stack<Object>> variableMap = scopedVariableMap.getLast();
+		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
 		if (variableMap.containsKey(name)) {
 			value = variableMap.get(name).getLast();
 		} else if (globalVariableMap.containsKey(name)) {
@@ -426,7 +426,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public Object remove(String name) {
-		Map<String, Stack<Object>> variableMap;
+		Map<String, Deque<Object>> variableMap;
 		if (scopedVariableMap.getLast().containsKey(name)) {
 			variableMap = scopedVariableMap.getLast();
 		} else if (globalVariableMap.containsKey(name)) {
@@ -447,7 +447,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @return Removes and return the last variable scope.
 	 */
-	public Map<String, Stack<Object>> removeVariableScope() {
+	public Map<String, Deque<Object>> removeVariableScope() {
 		return scopedVariableMap.removeLast();
 	}
 
@@ -458,7 +458,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void replace(String name, Object value) {
-		Map<String, Stack<Object>> variableMap;
+		Map<String, Deque<Object>> variableMap;
 		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
 			variableMap = globalVariableMap;
 		} else {
@@ -478,7 +478,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public String toString() {
-		Map<String, Stack<Object>> variableMap = scopedVariableMap.getLast();
+		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
 		return variableMap.toString();
 	}
 
