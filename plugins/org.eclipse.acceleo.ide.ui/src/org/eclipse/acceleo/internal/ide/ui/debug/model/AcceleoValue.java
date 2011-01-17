@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.acceleo.common.utils.ArrayStack;
-import org.eclipse.acceleo.common.utils.Stack;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -179,7 +177,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	 * @return the variables
 	 */
 	private IVariable[] computeEObjectVariables(EObject object) {
-		Stack<IVariable> variables = new ArrayStack<IVariable>();
+		List<IVariable> variables = new ArrayList<IVariable>();
 		List<EStructuralFeature> structuralFeatures = object.eClass().getEAllStructuralFeatures();
 		for (Iterator<EStructuralFeature> iterFeatures = structuralFeatures.iterator(); iterFeatures
 				.hasNext();) {
@@ -211,7 +209,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	 *             when an issue occurs
 	 */
 	private IVariable[] computeCollectionVariables(Collection<?> collection) throws DebugException {
-		Stack<IVariable> variables = new ArrayStack<IVariable>();
+		List<IVariable> variables = new ArrayList<IVariable>();
 		for (Iterator<?> iterObjects = collection.iterator(); iterObjects.hasNext();) {
 			Object element = iterObjects.next();
 			if (element instanceof EObject) {
@@ -235,7 +233,7 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	 * @return an empty array
 	 */
 	private IVariable[] computeVariables(Object object) {
-		Stack<IVariable> variables = new ArrayStack<IVariable>();
+		List<IVariable> variables = new ArrayList<IVariable>();
 		return variables.toArray(new IVariable[variables.size()]);
 	}
 
