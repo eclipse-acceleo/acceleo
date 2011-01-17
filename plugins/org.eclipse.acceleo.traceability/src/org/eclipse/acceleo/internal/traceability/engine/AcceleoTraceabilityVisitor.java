@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,8 +29,8 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
-import org.eclipse.acceleo.common.utils.ArrayStack;
-import org.eclipse.acceleo.common.utils.Stack;
+import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -134,7 +133,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private OCLExpression<C> currentExpression;
 
 	/** This will hold the stack of generated files. */
-	private Stack<GeneratedFile> currentFiles = new ArrayStack<GeneratedFile>();
+	private Deque<GeneratedFile> currentFiles = new CircularArrayDeque<GeneratedFile>();
 
 	/** All traceability information for this session will be saved in this instance. */
 	private final TraceabilityModel evaluationTrace;
@@ -151,7 +150,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private Variable<C, PM> initializingVariable;
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
-	private Stack<ExpressionTrace<C>> invocationTraces;
+	private Deque<ExpressionTrace<C>> invocationTraces;
 
 	/**
 	 * This will allow us to restore generated files' offsets in the case where traceability information is
@@ -234,10 +233,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final Stack<ExpressionTrace<C>> recordedTraces = new ArrayStack<ExpressionTrace<C>>(256);
+	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(256);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
-	private LinkedList<EObject> scopeEObjects = new LinkedList<EObject>();
+	private Deque<EObject> scopeEObjects = new CircularArrayDeque<EObject>();
 
 	/**
 	 * Records all variable traces for this session. Note that only primitive type variables will be recorded.
@@ -275,8 +274,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// If we don't need an event or if the generated String is empty, no need to carry on
 		considerTrace = considerTrace && fireEvent && string.length() > 0;
 		// No need to go any further either if anything of our trace information is empty
-		considerTrace = considerTrace && currentFiles != null && currentFiles.size() > 0;
-		considerTrace = considerTrace && recordedTraces != null && recordedTraces.size() > 0;
+		considerTrace = considerTrace && currentFiles != null && !currentFiles.isEmpty();
+		considerTrace = considerTrace && recordedTraces != null && !recordedTraces.isEmpty();
 		// Lastly, we need to ignore those events corresponding to TemplateInvocation nested in OperationCalls
 		considerTrace = considerTrace && (!(sourceBlock instanceof Template) || !evaluatingOperationCall);
 		if (considerTrace) {
@@ -438,7 +437,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The stack of generated files.
 	 */
-	Stack<GeneratedFile> getCurrentFiles() {
+	Deque<GeneratedFile> getCurrentFiles() {
 		return currentFiles;
 	}
 
@@ -487,7 +486,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * 
 	 * @return The last invocation's recorded traces.
 	 */
-	Stack<ExpressionTrace<C>> getInvocationTraces() {
+	Deque<ExpressionTrace<C>> getInvocationTraces() {
 		return invocationTraces;
 	}
 
@@ -530,8 +529,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		super.visitAcceleoFileBlock(fileBlock);
 
 		currentFiles.removeLast();
-		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == fileBlock
-				&& recordedTraces.getLast().getTraces().size() == 0) {
+		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
+				&& recordedTraces.getLast().getTraces().isEmpty()) {
 			recordedTraces.removeLast().dispose();
 		}
 	}
@@ -573,8 +572,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (forBlock.getLoopVariable() != null) {
 			scopeEObjects.removeLast();
 		}
-		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == forBlock
-				&& recordedTraces.getLast().getTraces().size() == 0) {
+		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == forBlock
+				&& recordedTraces.getLast().getTraces().isEmpty()) {
 			recordedTraces.removeLast();
 		}
 	}
@@ -588,8 +587,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public void visitAcceleoIfBlock(IfBlock ifBlock) {
 		super.visitAcceleoIfBlock(ifBlock);
 
-		if (recordedTraces.size() > 0 && recordedTraces.getLast().getReferredExpression() == ifBlock
-				&& recordedTraces.getLast().getTraces().size() == 0) {
+		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == ifBlock
+				&& recordedTraces.getLast().getTraces().isEmpty()) {
 			recordedTraces.removeLast();
 		}
 	}
@@ -669,10 +668,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object visitAcceleoTemplateInvocation(TemplateInvocation invocation) {
-		Stack<ExpressionTrace<C>> oldTraces = invocationTraces;
+		Deque<ExpressionTrace<C>> oldTraces = invocationTraces;
 		boolean oldTemplateHadScope = addedTemplateScope;
 		addedTemplateScope = false;
-		invocationTraces = new ArrayStack<ExpressionTrace<C>>();
+		invocationTraces = new CircularArrayDeque<ExpressionTrace<C>>();
 
 		Object result = null;
 		final boolean oldRecordState = switchRecordState((OCLExpression<C>)invocation);
@@ -781,7 +780,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		currentExpression = expression;
 
 		// Very first call of a template comes from IAcceleoEngine#doEvaluate()
-		if (scopeEObjects.size() == 0 && expression instanceof Template) {
+		if (scopeEObjects.isEmpty() && expression instanceof Template) {
 			for (org.eclipse.ocl.ecore.Variable var : ((Template)expression).getParameter()) {
 				Object value = getEvaluationEnvironment().getValueOf(var.getName());
 				if (value instanceof EObject) {
@@ -1137,7 +1136,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} else if (isInitializingVariable()) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					variableTraces.get(initializingVariable).addTrace(propertyCallInput, text, result);
-				} else if (record && recordedTraces.size() > 0 && shouldRecordTrace(callExp)) {
+				} else if (record && !recordedTraces.isEmpty() && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 				} else if (iterationTraces != null) {
@@ -1254,7 +1253,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				&& shouldRecordTrace(variableExp)
 				&& (variableTraces.get(variableExp.getReferredVariable()) != null || initializingVariable
 						.getInitExpression() == variableExp);
-		boolean recordTrace = !isInitializingVariable() && recordedTraces.size() > 0
+		boolean recordTrace = !isInitializingVariable() && !recordedTraces.isEmpty()
 				&& TraceabilityVisitorUtil.isPrimitive(result) && result.toString().length() > 0;
 
 		// Whether we'll record them or not, advance the iterator traces if needed
@@ -1435,7 +1434,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// We need to reorder the whole thing
 		LinkedHashSet<GeneratedText> set = (LinkedHashSet<GeneratedText>)trace.getTraces().get(
 				protectedAreaSource);
-		LinkedHashSet<GeneratedText> copy = new LinkedHashSet<GeneratedText>(set);
+		Set<GeneratedText> copy = new LinkedHashSet<GeneratedText>(set);
 		set.clear();
 
 		set.add(startRegion);
@@ -2096,7 +2095,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else if (isInitializingVariable()) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				variableTraces.get(initializingVariable).addTrace(input, text, result);
-			} else if (recordedTraces.size() > 0 && result.toString().length() > 0
+			} else if (!recordedTraces.isEmpty() && result.toString().length() > 0
 					&& shouldRecordTrace(literalExp)) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				recordedTraces.getLast().addTrace(input, text, result);
@@ -2133,21 +2132,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	private EObject retrieveScopeEObjectValue(int index) {
 		EObject scopeValue = null;
-		for (int i = index; i >= 0; i--) {
+		for (int i = index; i >= 0 && scopeValue == null; i--) {
 			EObject scope = scopeEObjects.get(i);
 			if (scope instanceof Variable<?, ?>) {
 				final Object value = getEvaluationEnvironment()
 						.getValueOf(((Variable<C, PM>)scope).getName());
 				if (value instanceof EObject) {
 					scopeValue = (EObject)value;
-					break;
 				}
 			} else if (scope instanceof VariableExp<?, ?>) {
 				final Object value = getEvaluationEnvironment().getValueOf(
 						(((VariableExp<C, PM>)scope).getReferredVariable()).getName());
 				if (value instanceof EObject) {
 					scopeValue = (EObject)value;
-					break;
 				}
 			} else {
 				scopeValue = scope;
@@ -2157,7 +2154,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						scopeValue = (EObject)self;
 					}
 				}
-				break;
 			}
 		}
 		return scopeValue;
