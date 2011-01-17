@@ -10,21 +10,30 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.environment;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ContentHandler;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 
 /**
@@ -36,6 +45,9 @@ import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
+	/** The parent URIConverted if any. */
+	private URIConverter parent;
+
 	/** This will be initialized with the environment that asked for the construction of a converter. */
 	private final AcceleoEvaluationEnvironment parentEnvironment;
 
@@ -44,10 +56,13 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 	 * {@link AcceleoEvaluationEnvironment} only.
 	 * 
 	 * @param parent
+	 *            The parent URIConverter. Can be <code>null</code>.
+	 * @param parentEnvironment
 	 *            Environment that asked for this URI converter instance.
 	 */
-	DynamicModulesURIConverter(AcceleoEvaluationEnvironment parent) {
-		parentEnvironment = parent;
+	DynamicModulesURIConverter(URIConverter parent, AcceleoEvaluationEnvironment parentEnvironment) {
+		this.parent = parent;
+		this.parentEnvironment = parentEnvironment;
 	}
 
 	/**
@@ -57,33 +72,252 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 	 */
 	@Override
 	public URI normalize(URI uri) {
-		if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(uri.fileExtension())
-				|| !"file".equals(uri.scheme())) { //$NON-NLS-1$
-			return super.normalize(uri);
+		URI normalized = normalizeWithParent(uri);
+		if (normalized == null || normalized.equals(uri)) {
+			normalized = dynamicNormalize(uri);
 		}
+		return normalized;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#getURIMap()
+	 */
+	@Override
+	public Map<URI, URI> getURIMap() {
+		if (parent != null) {
+			return parent.getURIMap();
+		}
+		return super.getURIMap();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#getURIHandlers()
+	 */
+	@Override
+	public EList<URIHandler> getURIHandlers() {
+		if (parent != null) {
+			return parent.getURIHandlers();
+		}
+		return super.getURIHandlers();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#getURIHandler(org.eclipse.emf.common.util.URI)
+	 */
+	@Override
+	public URIHandler getURIHandler(URI uri) {
+		if (parent != null) {
+			return parent.getURIHandler(uri);
+		}
+		return super.getURIHandler(uri);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#getContentHandlers()
+	 */
+	@Override
+	public EList<ContentHandler> getContentHandlers() {
+		if (parent != null) {
+			return parent.getContentHandlers();
+		}
+		return super.getContentHandlers();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createInputStream(org.eclipse.emf.common.util.URI)
+	 */
+	@Override
+	public InputStream createInputStream(URI uri) throws IOException {
+		if (parent != null) {
+			return parent.createInputStream(uri);
+		}
+		return super.createInputStream(uri);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createInputStream(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public InputStream createInputStream(URI uri, Map<?, ?> options) throws IOException {
+		if (parent != null) {
+			return parent.createInputStream(uri, options);
+		}
+		return super.createInputStream(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createOutputStream(org.eclipse.emf.common.util.URI)
+	 */
+	@Override
+	public OutputStream createOutputStream(URI uri) throws IOException {
+		if (parent != null) {
+			return parent.createOutputStream(uri);
+		}
+		return super.createOutputStream(uri);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#createOutputStream(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public OutputStream createOutputStream(URI uri, Map<?, ?> options) throws IOException {
+		if (parent != null) {
+			return parent.createOutputStream(uri, options);
+		}
+		return super.createOutputStream(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#delete(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public void delete(URI uri, Map<?, ?> options) throws IOException {
+		if (parent != null) {
+			parent.delete(uri, options);
+		}
+		super.delete(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#contentDescription(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public Map<String, ?> contentDescription(URI uri, Map<?, ?> options) throws IOException {
+		if (parent != null) {
+			return parent.contentDescription(uri, options);
+		}
+		return super.contentDescription(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#exists(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public boolean exists(URI uri, Map<?, ?> options) {
+		if (parent != null) {
+			return parent.exists(uri, options);
+		}
+		return super.exists(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#getAttributes(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map)
+	 */
+	@Override
+	public Map<String, ?> getAttributes(URI uri, Map<?, ?> options) {
+		if (parent != null) {
+			return parent.getAttributes(uri, options);
+		}
+		return super.getAttributes(uri, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#setAttributes(org.eclipse.emf.common.util.URI,
+	 *      java.util.Map, java.util.Map)
+	 */
+	@Override
+	public void setAttributes(URI uri, Map<String, ?> attributes, Map<?, ?> options) throws IOException {
+		if (parent != null) {
+			parent.setAttributes(uri, attributes, options);
+		}
+		super.setAttributes(uri, attributes, options);
+	}
+
+	/**
+	 * Normalizes the given URI using the parent environment.
+	 * 
+	 * @param uri
+	 *            The uri we are to normalize.
+	 * @return The normalized form of <code>uri</code>.
+	 */
+	private URI normalizeWithParent(URI uri) {
+		if (parent != null) {
+			return parent.normalize(uri);
+		}
+		return uri;
+	}
+
+	/**
+	 * This will be called if the parent {@link URIConverter} didn't know how to convert the given URI.
+	 * 
+	 * @param uri
+	 *            The uri we are to normalize.
+	 * @return The normalized form of <code>uri</code>.
+	 */
+	private URI dynamicNormalize(URI uri) {
 		URI normalized = getURIMap().get(uri);
 		if (normalized == null) {
-			String moduleName = uri.lastSegment();
-			moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-			Set<URI> candidateURIs = new LinkedHashSet<URI>();
+			BundleURLConverter conv = new BundleURLConverter(uri.toString());
+			if (conv.resolveBundle() != null) {
+				normalized = URI.createURI(conv.resolveAsPlatformPlugin());
+			}
+		}
+		if (normalized == null
+				&& (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(uri.fileExtension()) || !"file".equals(uri.scheme()))) { //$NON-NLS-1$
+			normalized = super.normalize(uri);
+		}
+		if (normalized != null) {
+			getURIMap().put(uri, normalized);
+			return normalized;
+		}
 
-			// Search matching module in the current generation context
-			Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
-			for (Module candidateModule : candidateModules) {
-				candidateURIs.add(candidateModule.eResource().getURI());
-			}
-			// If there were no matching module, search in their ResourceSet(s)
-			if (candidateURIs.size() == 0) {
-				candidateURIs.addAll(searchResourceSetForMatches(moduleName));
-			}
-			if (candidateURIs.size() == 1) {
-				normalized = candidateURIs.iterator().next();
-			} else if (candidateURIs.size() > 0) {
-				normalized = findBestMatchFor(uri, candidateURIs);
-			}
-			// There is a chance that our match should itself be normalized
-			if ((normalized == null || "file".equals(normalized.scheme())) //$NON-NLS-1$
-					&& EMFPlugin.IS_ECLIPSE_RUNNING) {
+		String moduleName = uri.lastSegment();
+		moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
+		Set<URI> candidateURIs = new LinkedHashSet<URI>();
+
+		// Search matching module in the current generation context
+		Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
+		for (Module candidateModule : candidateModules) {
+			candidateURIs.add(candidateModule.eResource().getURI());
+		}
+		// If there were no matching module, search in their ResourceSet(s)
+		if (candidateURIs.size() == 0) {
+			candidateURIs.addAll(searchResourceSetForMatches(moduleName));
+		}
+		if (candidateURIs.size() == 1) {
+			normalized = candidateURIs.iterator().next();
+		} else if (candidateURIs.size() > 0) {
+			normalized = findBestMatchFor(uri, candidateURIs);
+		}
+		// There is a chance that our match should itself be normalized
+		if ((normalized == null || "file".equals(normalized.scheme())) //$NON-NLS-1$
+				&& EMFPlugin.IS_ECLIPSE_RUNNING) {
+			BundleURLConverter conv = new BundleURLConverter(uri.toString());
+			if (conv.resolveBundle() != null) {
+				normalized = URI.createURI(conv.resolveAsPlatformPlugin());
+			} else {
 				String uriToString = uri.toString();
 				if (uriToString.indexOf('#') > 0) {
 					uriToString = uriToString.substring(0, uriToString.indexOf('#'));
@@ -93,12 +327,12 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 					normalized = URI.createURI(resolvedPath);
 				}
 			}
-			if (normalized == null) {
-				normalized = super.normalize(uri);
-			}
-			if (!uri.equals(normalized)) {
-				getURIMap().put(uri, normalized);
-			}
+		}
+		if (normalized == null) {
+			normalized = super.normalize(uri);
+		}
+		if (!uri.equals(normalized)) {
+			getURIMap().put(uri, normalized);
 		}
 		return normalized;
 	}
