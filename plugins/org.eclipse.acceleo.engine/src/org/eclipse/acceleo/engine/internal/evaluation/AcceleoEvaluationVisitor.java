@@ -1013,7 +1013,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (hasInit) {
 				restoreInitVariables(((Block)expression).getInit());
 			}
-			context.removeFromStack(expression);
+			context.removeFromStack();
 		}
 
 		return result;
