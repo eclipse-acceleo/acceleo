@@ -375,8 +375,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		if (head == tail) {
 			throw new NoSuchElementException();
 		}
-		final int mask = data.length - 1;
-		return data[(tail - 1) & mask];
+		return data[(tail - 1) & data.length - 1];
 	}
 
 	/**
@@ -743,9 +742,10 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	 */
 	@Override
 	public Object[] toArray() {
-		Object[] result = new Object[size()];
+		final int size = size();
+		Object[] result = new Object[size];
 		if (head < tail) {
-			System.arraycopy(data, head, result, 0, size());
+			System.arraycopy(data, head, result, 0, size);
 		} else if (head != tail) {
 			int headLength = data.length - head;
 			// Copy all elements at the right of "head"...
@@ -764,18 +764,19 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Object> T[] toArray(T[] a) {
+		final int size = size();
 		final T[] temp;
-		if (a.length > size()) {
+		if (a.length > size) {
 			temp = a;
 		} else {
-			temp = (T[])Array.newInstance(a.getClass().getComponentType(), size());
+			temp = (T[])Array.newInstance(a.getClass().getComponentType(), size);
 		}
 		/*
 		 * "head" could be located somewhere _after_ tail as we could have pushed elements on the back of our
 		 * deque. Reorder them now.
 		 */
 		if (head < tail) {
-			System.arraycopy(data, head, temp, 0, size());
+			System.arraycopy(data, head, temp, 0, size);
 		} else if (head != tail) {
 			int headLength = data.length - head;
 			// Copy all elements at the right of "head"...
@@ -1103,7 +1104,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		 */
 		public E next() {
 			checkComodification();
-			if (head == tail) {
+			if (next == tail) {
 				throw new NoSuchElementException();
 			}
 			final E result = data[next];
@@ -1123,11 +1124,14 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 			}
 			checkComodification();
 
-			int deletionIndex = (head - lastReturned) & (data.length - 1);
+			final boolean increment = next == head;
+			int deletionIndex = (lastReturned - head) & (data.length - 1);
 			CircularArrayDeque.this.remove(deletionIndex);
 			expectedModCount++;
 			final int mask = data.length - 1;
-			if (deletionIndex >= size() / 2 && size() > 1) {
+			if (increment) {
+				next = (next + 1) & mask;
+			} else if (deletionIndex >= size() / 2 && size() > 1) {
 				next = (next - 1) & mask;
 			}
 			lastReturned = -1;
@@ -1174,11 +1178,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		public void add(E element) {
 			checkComodification();
 
-			int mask = data.length - 1;
-			CircularArrayDeque.this.add((head - next + 1) & mask, element);
+			final boolean increment = next != head;
+			CircularArrayDeque.this.add((next - head) & (data.length - 1), element);
 			expectedModCount++;
-			mask = data.length - 1;
-			next = (next + 1) & mask;
+			if (increment) {
+				next = (next + 1) & (data.length - 1);
+			}
 			lastReturned = -1;
 		}
 
@@ -1197,7 +1202,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		 * @see java.util.ListIterator#nextIndex()
 		 */
 		public int nextIndex() {
-			return next;
+			return (next - head) & (data.length - 1);
 		}
 
 		/**
@@ -1207,10 +1212,11 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		 */
 		public E previous() {
 			checkComodification();
-			if (next == tail) {
+			final int mask = data.length - 1;
+			if (next == head) {
 				throw new NoSuchElementException();
 			}
-			next = (next - 1) & (data.length - 1);
+			next = (next - 1) & mask;
 			final E result = data[next];
 			lastReturned = next;
 			return result;
@@ -1222,7 +1228,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		 * @see java.util.ListIterator#previousIndex()
 		 */
 		public int previousIndex() {
-			return (next - 1) & (data.length - 1);
+			return ((next - head) & (data.length - 1)) - 1;
 		}
 
 		/**
@@ -1236,7 +1242,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 			}
 			checkComodification();
 
-			CircularArrayDeque.this.set((head - lastReturned) & (data.length - 1), element);
+			CircularArrayDeque.this.set((lastReturned - head) & (data.length - 1), element);
 		}
 	}
 }
