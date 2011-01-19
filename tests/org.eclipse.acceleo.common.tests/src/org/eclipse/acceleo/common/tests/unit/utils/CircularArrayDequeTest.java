@@ -18,6 +18,7 @@ import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -182,6 +183,35 @@ public class CircularArrayDequeTest extends TestCase {
 		assertTrue(deque.containsAll(setString20));
 		assertTrue(deque.containsAll(dequeString40));
 		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements but with
+	 * out of bounds indices.
+	 */
+	public void testAddAllRandomOutOfBounds() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		for (int i = 0; i < testObjects.length; i++) {
+			List<Object> testCollection = new ArrayList<Object>();
+			testCollection.add(testObjects[i]);
+			testCollection.add(testObjects[testObjects.length - 1 - i]);
+
+			try {
+				deque.addAll(-1, testCollection);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+			try {
+				deque.addAll(deque.size() + 1, testCollection);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+		}
 	}
 
 	/**
@@ -371,11 +401,37 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
+	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements but with out of
+	 * bounds indices.
+	 */
+	public void testAddRandomAccessOutOfBounds() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		for (int i = 0; i < testObjects.length; i++) {
+			try {
+				deque.add(-1, testObjects[i]);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+			try {
+				deque.add(deque.size() + 1, testObjects[i]);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+		}
+	}
+
+	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements.
 	 */
 	public void testAddRandomAccessLeftRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
+
 		for (int i = 0; i < testObjects.length; i++) {
 			internalTestAddRandomAccessLeftRotate(testObjects[i]);
 		}
@@ -388,6 +444,7 @@ public class CircularArrayDequeTest extends TestCase {
 	public void testAddRandomAccessRightRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
+
 		for (int i = 0; i < testObjects.length; i++) {
 			internalTestAddRandomAccessRightRotate(testObjects[i]);
 		}
@@ -398,15 +455,28 @@ public class CircularArrayDequeTest extends TestCase {
 	 */
 	public void testClear() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
+		assertSame(0, deque.size());
+		assertTrue(deque.isEmpty());
+		assertEquals(16, getInternalCapacity(deque));
+
+		deque.clear();
+		assertSame(0, deque.size());
+		assertTrue(deque.isEmpty());
+		assertEquals(16, getInternalCapacity(deque));
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
 			deque.offer(rand);
 		}
 		deque.offer(null);
-		assertFalse(deque.isEmpty());
 		assertSame(101, deque.size());
+		assertFalse(deque.isEmpty());
 		int expectedCapacity = getNextPowerOfTwo(deque.size());
+		assertEquals(expectedCapacity, getInternalCapacity(deque));
+
+		deque.clear();
+		assertTrue(deque.isEmpty());
+		assertSame(0, deque.size());
 		assertEquals(expectedCapacity, getInternalCapacity(deque));
 
 		deque.clear();
@@ -429,6 +499,18 @@ public class CircularArrayDequeTest extends TestCase {
 			assertTrue(deque.contains(null));
 			assertTrue(deque.contains(rand));
 		}
+
+		Deque<Object> dequeCopy = new CircularArrayDeque<Object>(deque);
+		assertTrue(deque.contains(null));
+		for (Object o : dequeCopy) {
+			assertTrue(deque.contains(o));
+		}
+
+		deque.clear();
+		assertFalse(deque.contains(null));
+		for (Object o : dequeCopy) {
+			assertFalse(deque.contains(o));
+		}
 	}
 
 	/**
@@ -443,6 +525,8 @@ public class CircularArrayDequeTest extends TestCase {
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
+		assertFalse(deque.containsAll(objects1));
+
 		deque.addAll(objects1);
 		assertSame(42, deque.size());
 		assertTrue(deque.containsAll(objects1));
@@ -453,10 +537,16 @@ public class CircularArrayDequeTest extends TestCase {
 		objects2.add(null);
 		assertSame(42, objects2.size());
 
+		assertFalse(deque.containsAll(objects2));
+
 		deque.addAll(objects2);
 		assertSame(objects1.size() + objects2.size(), deque.size());
 		assertTrue(deque.containsAll(objects1));
 		assertTrue(deque.containsAll(objects2));
+
+		deque.clear();
+		assertFalse(deque.containsAll(objects1));
+		assertFalse(deque.containsAll(objects2));
 	}
 
 	/**
@@ -485,6 +575,51 @@ public class CircularArrayDequeTest extends TestCase {
 		assertEquals(dequeString40.size(), deque.size());
 		assertTrue(deque.containsAll(dequeString40));
 		assertEquals(getNextPowerOfTwo(dequeString40.size()), getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#element()} with random elements.
+	 */
+	public void testElement() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		try {
+			deque.element();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		deque.offer(null);
+		assertSame(null, deque.element());
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.offer(rand);
+			assertSame(null, deque.element());
+		}
+		List<Object> lastAdded = new ArrayList<Object>();
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.addFirst(rand);
+			lastAdded.add(rand);
+			assertEquals(rand, deque.element());
+		}
+		for (int i = 0; i < 20; i++) {
+			deque.removeFirst();
+			if (i < 19) {
+				assertEquals(lastAdded.get(lastAdded.size() - i - 2), deque.element());
+			} else {
+				assertSame(null, deque.element());
+			}
+		}
+
+		deque.clear();
+		try {
+			deque.element();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
 	}
 
 	/**
@@ -579,6 +714,47 @@ public class CircularArrayDequeTest extends TestCase {
 		assertFalse(deque2.equals(deque3));
 		assertFalse(deque3.equals(deque1));
 		assertFalse(deque3.equals(deque2));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#get(int))} with random indices.
+	 */
+	public void testGet() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		List<Object> objects = new ArrayList<Object>();
+		int max = 100000;
+
+		try {
+			deque.get(0);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+
+		for (int i = 0; i < max; i++) {
+			String rand = getRandomString();
+			deque.add(rand);
+			objects.add(rand);
+		}
+
+		try {
+			deque.get(-1);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+
+		for (int i = 0; i < max; i++) {
+			assertEquals(objects.get(i), deque.get(i));
+			assertEquals(objects.get(max - 1 - i), deque.get(max - 1 - i));
+		}
+
+		try {
+			deque.get(deque.size());
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
 	}
 
 	/**
@@ -757,15 +933,25 @@ public class CircularArrayDequeTest extends TestCase {
 				new Object() };
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
+		for (int i = 0; i < testObjects.length; i++) {
+			assertEquals(Integer.valueOf(-1), Integer.valueOf(deque.indexOf(testObjects[i])));
+		}
+
 		for (Object o : testObjects) {
 			deque.offer(o);
 		}
+
 		Object[] expected = new Object[16];
 		for (int i = 0; i < testObjects.length; i++) {
 			expected[i] = testObjects[i];
 			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.indexOf(testObjects[i])));
 		}
 		assertEqualContent(expected, getInternalArray(deque));
+
+		deque.clear();
+		for (int i = 0; i < testObjects.length; i++) {
+			assertEquals(Integer.valueOf(-1), Integer.valueOf(deque.indexOf(testObjects[i])));
+		}
 
 		deque = new CircularArrayDeque<Object>();
 		deque.offer("a"); //$NON-NLS-1$
@@ -797,6 +983,23 @@ public class CircularArrayDequeTest extends TestCase {
 		for (int i = 0; i < testObjects.length; i++) {
 			expected[(i + offset) & (expected.length - 1)] = testObjects[i];
 			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.indexOf(testObjects[i])));
+		}
+		assertEqualContent(expected, getInternalArray(deque));
+
+		deque = new CircularArrayDeque<Object>();
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		expected = new Object[getNextPowerOfTwo(testObjects.length * 2)];
+		for (int i = 0; i < testObjects.length; i++) {
+			expected[i] = testObjects[i];
+			expected[i + testObjects.length] = testObjects[i];
+			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.indexOf(testObjects[i])));
+			assertEquals(Integer.valueOf(i + testObjects.length), Integer.valueOf(deque
+					.lastIndexOf(testObjects[i])));
 		}
 		assertEqualContent(expected, getInternalArray(deque));
 	}
@@ -888,6 +1091,18 @@ public class CircularArrayDequeTest extends TestCase {
 			// expected
 		}
 		deque.pop();
+
+		deque.addLast(null);
+		concurrentIterator = deque.iterator();
+		assertNull(concurrentIterator.next());
+		deque.addLast(null);
+		try {
+			concurrentIterator.remove();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		deque.clear();
 
 		deque.addAll(listInt10);
 		deque.addAll(setString20);
@@ -1017,9 +1232,461 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
+	 * Tests the behavior of {@link CircularArrayDeque#lastIndexOf(Object)} with random elements.
+	 */
+	public void testLastIndexOf() {
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 5.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		for (int i = 0; i < testObjects.length; i++) {
+			assertEquals(Integer.valueOf(-1), Integer.valueOf(deque.lastIndexOf(testObjects[i])));
+		}
+
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+
+		Object[] expected = new Object[16];
+		for (int i = 0; i < testObjects.length; i++) {
+			expected[i] = testObjects[i];
+			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.lastIndexOf(testObjects[i])));
+		}
+		assertEqualContent(expected, getInternalArray(deque));
+
+		deque.clear();
+		for (int i = 0; i < testObjects.length; i++) {
+			assertEquals(Integer.valueOf(-1), Integer.valueOf(deque.lastIndexOf(testObjects[i])));
+		}
+
+		deque = new CircularArrayDeque<Object>();
+		deque.offer("a"); //$NON-NLS-1$
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		deque.removeFirst();
+		int offset = 1;
+		expected = new Object[16];
+		for (int i = 0; i < testObjects.length; i++) {
+			expected[i + offset] = testObjects[i];
+			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.lastIndexOf(testObjects[i])));
+		}
+		assertEqualContent(expected, getInternalArray(deque));
+
+		deque = new CircularArrayDeque<Object>();
+		for (int i = 0; i < 10; i++) {
+			deque.offer("a"); //$NON-NLS-1$			
+		}
+		for (int i = 0; i < 9; i++) {
+			deque.removeFirst();
+		}
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		deque.removeFirst();
+		offset = 10;
+		expected = new Object[16];
+		for (int i = 0; i < testObjects.length; i++) {
+			expected[(i + offset) & (expected.length - 1)] = testObjects[i];
+			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.lastIndexOf(testObjects[i])));
+		}
+		assertEqualContent(expected, getInternalArray(deque));
+
+		deque = new CircularArrayDeque<Object>();
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		for (Object o : testObjects) {
+			deque.offer(o);
+		}
+		expected = new Object[getNextPowerOfTwo(testObjects.length * 2)];
+		for (int i = 0; i < testObjects.length; i++) {
+			expected[i] = testObjects[i];
+			expected[i + testObjects.length] = testObjects[i];
+			assertEquals(Integer.valueOf(i), Integer.valueOf(deque.indexOf(testObjects[i])));
+			assertEquals(Integer.valueOf(i + testObjects.length), Integer.valueOf(deque
+					.lastIndexOf(testObjects[i])));
+		}
+		assertEqualContent(expected, getInternalArray(deque));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#listIterator()} with random elements.
+	 */
+	public void testListIterator() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		ListIterator<Object> emptyIterator = deque.listIterator();
+		assertFalse(emptyIterator.hasNext());
+		assertFalse(emptyIterator.hasPrevious());
+		assertSame(0, emptyIterator.nextIndex());
+		assertSame(-1, emptyIterator.previousIndex());
+		try {
+			emptyIterator.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.previous();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.set(new Object());
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		try {
+			emptyIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		Object a = new Object();
+		emptyIterator.add(a);
+		assertSame(1, deque.size());
+		assertFalse(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		assertEquals(a, emptyIterator.previous());
+		assertTrue(emptyIterator.hasNext());
+		assertFalse(emptyIterator.hasPrevious());
+		assertSame(0, emptyIterator.nextIndex());
+		assertSame(-1, emptyIterator.previousIndex());
+
+		assertEquals(a, emptyIterator.next());
+		assertFalse(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		Object b = new Object();
+		emptyIterator.add(b);
+		assertSame(2, deque.size());
+		assertFalse(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(2, emptyIterator.nextIndex());
+		assertSame(1, emptyIterator.previousIndex());
+
+		assertEquals(b, emptyIterator.previous());
+		assertTrue(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		Object c = new Object();
+		emptyIterator.set(c);
+		assertSame(2, deque.size());
+		assertTrue(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		assertEquals(c, emptyIterator.next());
+		assertFalse(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(2, emptyIterator.nextIndex());
+		assertSame(1, emptyIterator.previousIndex());
+
+		assertEquals(c, emptyIterator.previous());
+		assertTrue(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		emptyIterator.remove();
+		assertSame(1, deque.size());
+		assertFalse(emptyIterator.hasNext());
+		assertTrue(emptyIterator.hasPrevious());
+		assertSame(1, emptyIterator.nextIndex());
+		assertSame(0, emptyIterator.previousIndex());
+
+		try {
+			emptyIterator.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		assertEquals(a, emptyIterator.previous());
+		assertTrue(emptyIterator.hasNext());
+		assertFalse(emptyIterator.hasPrevious());
+		assertSame(0, emptyIterator.nextIndex());
+		assertSame(-1, emptyIterator.previousIndex());
+
+		emptyIterator.remove();
+		assertSame(0, deque.size());
+		assertFalse(emptyIterator.hasNext());
+		assertFalse(emptyIterator.hasPrevious());
+		assertSame(0, emptyIterator.nextIndex());
+		assertSame(-1, emptyIterator.previousIndex());
+
+		try {
+			emptyIterator.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.previous();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.set(new Object());
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		try {
+			emptyIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+
+		ListIterator<Object> concurrentIterator = deque.listIterator();
+		deque.addFirst(null);
+		try {
+			concurrentIterator.next();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.previous();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.add(new Object());
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.set(new Object());
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		deque.pop();
+
+		concurrentIterator = deque.listIterator();
+		deque.addLast(null);
+		try {
+			concurrentIterator.next();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.previous();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.add(new Object());
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.set(new Object());
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		deque.pop();
+
+		deque.addLast(null);
+		concurrentIterator = deque.listIterator();
+		assertNull(concurrentIterator.next());
+		deque.addLast(null);
+		try {
+			concurrentIterator.next();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.previous();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.add(new Object());
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.set(new Object());
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.remove();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		deque.clear();
+
+		List<Integer> listInt10 = randomIntegerList(10);
+		Set<String> setString20 = randomStringSet(20);
+		List<String> dequeString40 = randomStringDeque(40);
+
+		deque.addAll(listInt10);
+		deque.addAll(setString20);
+		deque.addAll(dequeString40);
+
+		Iterator<Integer> listIterator = listInt10.iterator();
+		Iterator<String> setIterator = setString20.iterator();
+		Iterator<String> dequeIterator = dequeString40.iterator();
+		ListIterator<Object> containedValues = deque.listIterator();
+		while (listIterator.hasNext()) {
+			assertEquals(listIterator.next(), containedValues.next());
+		}
+		assertTrue(containedValues.hasNext());
+		while (setIterator.hasNext()) {
+			assertEquals(setIterator.next(), containedValues.next());
+		}
+		assertTrue(containedValues.hasNext());
+		while (dequeIterator.hasNext()) {
+			assertEquals(dequeIterator.next(), containedValues.next());
+		}
+		assertFalse(containedValues.hasNext());
+		assertTrue(containedValues.hasPrevious());
+		for (int i = dequeString40.size() - 1; i >= 0 && containedValues.hasPrevious(); i--) {
+			assertEquals(dequeString40.get(i), containedValues.previous());
+		}
+		assertTrue(containedValues.hasPrevious());
+		List<Object> setCopy = new ArrayList<Object>(setString20);
+		for (int i = setString20.size() - 1; i >= 0 && containedValues.hasPrevious(); i--) {
+			assertEquals(setCopy.get(i), containedValues.previous());
+		}
+		assertTrue(containedValues.hasPrevious());
+		for (int i = listInt10.size() - 1; i >= 0 && containedValues.hasPrevious(); i--) {
+			assertEquals(listInt10.get(i), containedValues.previous());
+		}
+		assertFalse(containedValues.hasPrevious());
+
+		for (@SuppressWarnings("unused")
+		Integer val : listInt10) {
+			deque.removeFirst();
+		}
+		deque.addAll(listInt10);
+
+		listIterator = listInt10.iterator();
+		setIterator = setString20.iterator();
+		dequeIterator = dequeString40.iterator();
+		containedValues = deque.listIterator();
+		while (setIterator.hasNext()) {
+			assertEquals(setIterator.next(), containedValues.next());
+		}
+		assertTrue(containedValues.hasNext());
+		while (dequeIterator.hasNext()) {
+			assertEquals(dequeIterator.next(), containedValues.next());
+		}
+		assertTrue(containedValues.hasNext());
+		while (listIterator.hasNext()) {
+			assertEquals(listIterator.next(), containedValues.next());
+		}
+		assertFalse(containedValues.hasNext());
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#listIterator(int)} with random elements.
+	 */
+	public void testListIteratorStartAt() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		try {
+			deque.listIterator(-1);
+			fail("Expected IndexOutOfBoundsException  hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			deque.listIterator(deque.size() + 1);
+			fail("Expected IndexOutOfBoundsException  hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+
+		for (Object o : testObjects) {
+			deque.add(o);
+		}
+		try {
+			deque.listIterator(-1);
+			fail("Expected IndexOutOfBoundsException  hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+
+		ListIterator<Object> iterator = deque.listIterator(0);
+		assertFalse(iterator.hasPrevious());
+		for (Object o : testObjects) {
+			assertTrue(iterator.hasNext());
+			assertEquals(o, iterator.next());
+		}
+		assertFalse(iterator.hasNext());
+		for (int i = testObjects.length - 1; i >= 0; i--) {
+			assertTrue(iterator.hasPrevious());
+			assertEquals(testObjects[i], iterator.previous());
+		}
+		assertFalse(iterator.hasPrevious());
+
+		iterator = deque.listIterator(deque.size());
+		assertFalse(iterator.hasNext());
+		for (int i = testObjects.length - 1; i >= 0; i--) {
+			assertTrue(iterator.hasPrevious());
+			assertEquals(testObjects[i], iterator.previous());
+		}
+		assertFalse(iterator.hasPrevious());
+		for (Object o : testObjects) {
+			assertTrue(iterator.hasNext());
+			assertEquals(o, iterator.next());
+		}
+		assertFalse(iterator.hasNext());
+
+		try {
+			deque.listIterator(deque.size() + 1);
+			fail("Expected IndexOutOfBoundsException  hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
 	 * Tests the behavior of {@link CircularArrayDeque#offer(Object) with random elements.
 	 */
-	public void testoffer() {
+	public void testOffer() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
 		String string1 = getRandomString();
