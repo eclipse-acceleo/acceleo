@@ -21,6 +21,7 @@ import java.util.MissingResourceException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -37,6 +38,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
@@ -248,10 +250,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
 	 */
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
-		ResourceSet resourceSet = element.eResource().getResourceSet();
-
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
+		ResourceSet resourceSet = createResourceSet();
 
 		addListeners();
 		addProperties();
@@ -292,10 +291,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *             the model cannot be loaded.
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
-		ResourceSet resourceSet = new ResourceSetImpl();
-
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
+		ResourceSet resourceSet = createResourceSet();
 
 		addListeners();
 		addProperties();
@@ -405,6 +401,40 @@ public abstract class AbstractAcceleoGenerator {
 			}
 		}
 		return service;
+	}
+
+	/**
+	 * Creates the resource set we'll use to load our modules.
+	 * 
+	 * @return The created resource set.
+	 */
+	protected ResourceSet createResourceSet() {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		// Set our own URI Converter in order to handle jarred emtls
+		resourceSet.setURIConverter(new ExtensibleURIConverterImpl() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#normalize(org.eclipse.emf.common.util.URI)
+			 */
+			@Override
+			public URI normalize(URI uri) {
+				URI normalized = getURIMap().get(uri);
+				if (normalized == null) {
+					BundleURLConverter conv = new BundleURLConverter(uri.toString());
+					if (conv.resolveBundle() != null) {
+						normalized = URI.createURI(conv.resolveAsPlatformPlugin());
+						getURIMap().put(normalized, uri);
+					}
+				}
+				return super.normalize(uri);
+			}
+		});
+
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
+
+		return resourceSet;
 	}
 
 	/**
