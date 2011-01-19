@@ -148,6 +148,11 @@ public class BundleURLConverter {
 			actualPath = actualPath.substring(FILE_PROTOCOL.length() + 1);
 		}
 
+		// FIXME LGO Why are we coming here with this ???
+		if (actualPath.contains("#")) { //$NON-NLS-1$
+			actualPath = actualPath.substring(0, actualPath.indexOf('#'));
+		}
+
 		Bundle tempBundle = null;
 		String tempPath = null;
 		String[] segments = actualPath.split("/"); //$NON-NLS-1$
