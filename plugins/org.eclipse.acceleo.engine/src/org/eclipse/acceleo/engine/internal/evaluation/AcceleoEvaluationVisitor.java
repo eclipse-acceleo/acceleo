@@ -342,6 +342,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					"AcceleoEvaluationVisitor.NotStringFileURL", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
+		} else if ("".equals(fileURLResult)) { //$NON-NLS-1$
+			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+					"AcceleoEvaluationVisitor.EmptyFileName", getEvaluationEnvironment() //$NON-NLS-1$
+							.getValueOf(SELF_VARIABLE_NAME));
+			throw exception;
 		}
 		final String filePath = String.valueOf(fileURLResult).trim();
 
@@ -434,7 +439,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						&& !loopVariable.getType().isInstance(o)) {
 					if (!iterationCCE) {
 						int line = getLineOf(forBlock);
-						String actualType = "null";
+						String actualType = "null"; //$NON-NLS-1$
 						if (o != null) {
 							actualType = o.getClass().getName();
 						}
@@ -694,7 +699,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		if (areaContent != null) {
 			String currentIndent = context.getLastFileIndentation();
-			delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, "$1"), protectedArea,
+			delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, "$1"), protectedArea, //$NON-NLS-1$ //$NON-NLS-2$
 					lastEObjectSelfValue, fireGenerationEvent);
 		} else {
 			context.openNested();
