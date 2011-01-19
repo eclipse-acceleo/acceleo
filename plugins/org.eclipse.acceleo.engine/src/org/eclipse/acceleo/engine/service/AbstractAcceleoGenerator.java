@@ -407,6 +407,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * Creates the resource set we'll use to load our modules.
 	 * 
 	 * @return The created resource set.
+	 * @since 3.0
 	 */
 	protected ResourceSet createResourceSet() {
 		ResourceSet resourceSet = new ResourceSetImpl();
