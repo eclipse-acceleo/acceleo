@@ -1276,6 +1276,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			// restore parameters as they were prior to the call
 			for (int i = 0; i < candidate.getParameter().size(); i++) {
 				final Variable param = candidate.getParameter().get(i);
+				((VariableExp)param.getInitExpression()).setReferredVariable(null);
 				param.setInitExpression(null);
 				getEvaluationEnvironment().remove(param.getName());
 			}
@@ -1406,10 +1407,16 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
 				Variable var = actualTemplate.getParameter().get(i);
 				final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
-				init.setReferredVariable(temporaryArgVars.get(i));
+				final Variable temporaryVar = temporaryArgVars.get(i);
+				init.setReferredVariable(temporaryVar);
 				var.setInitExpression(init);
 				// Evaluate the value of this new variable
 				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
+				// Unset every temporary reference we've set to prevent cross referencers from keeping these
+				var.setInitExpression(null);
+				init.setReferredVariable(null);
+				temporaryVar.setType(null);
+				temporaryVar.setInitExpression(null);
 			}
 			fireGenerationEvent = fireEvents;
 		} else {
@@ -1456,10 +1463,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				for (int i = 0; i < actualTemplate.getParameter().size(); i++) {
 					Variable var = actualTemplate.getParameter().get(i);
 					final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
-					init.setReferredVariable(temporaryArgVars.get(i));
+					final Variable temporaryVar = temporaryArgVars.get(i);
+					init.setReferredVariable(temporaryVar);
 					var.setInitExpression(init);
 					// Evaluate the value of this new variable
 					getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
+					// Unset every temporary reference we've set to prevent cross referencers from keeping
+					// these
+					var.setInitExpression(null);
+					init.setReferredVariable(null);
+					temporaryVar.setType(null);
+					temporaryVar.setInitExpression(null);
 				}
 			} else {
 				// No template remains after guard evaluation. Create an empty template so no
