@@ -428,6 +428,9 @@ public abstract class AbstractAcceleoGenerator {
 						getURIMap().put(normalized, uri);
 					}
 				}
+				if (normalized != null) {
+					return normalized;
+				}
 				return super.normalize(uri);
 			}
 		});
