@@ -711,7 +711,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 	}
 
 	/**
-	 * Handles the "toString" non-standard operation for non-primitives directly from the traceability visitor
+	 * Handles the "tostring" non-standard operation for non-primitives directly from the traceability visitor
 	 * as we need to create traceability information.
 	 * 
 	 * @param source
