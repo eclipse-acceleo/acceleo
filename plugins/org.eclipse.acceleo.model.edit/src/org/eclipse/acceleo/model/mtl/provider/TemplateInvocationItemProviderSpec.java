@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,8 @@ public class TemplateInvocationItemProviderSpec extends TemplateInvocationItemPr
 	public Object getImage(Object object) {
 		Object res = null;
 
-		if (((TemplateInvocation)object).getDefinition().isMain()) {
+		if (object != null && ((TemplateInvocation)object).getDefinition() != null
+				&& ((TemplateInvocation)object).getDefinition().isMain()) {
 			res = overlayImage(object, getResourceLocator().getImage("full/obj16/TemplateInvocation_main")); //$NON-NLS-1$
 		} else {
 			res = super.getImage(object);
