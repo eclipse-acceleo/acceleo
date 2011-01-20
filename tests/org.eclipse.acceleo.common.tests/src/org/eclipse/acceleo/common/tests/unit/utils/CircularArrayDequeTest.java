@@ -186,35 +186,6 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
-	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements but with
-	 * out of bounds indices.
-	 */
-	public void testAddAllRandomOutOfBounds() {
-		Deque<Object> deque = new CircularArrayDeque<Object>();
-		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-				new Object() };
-
-		for (int i = 0; i < testObjects.length; i++) {
-			List<Object> testCollection = new ArrayList<Object>();
-			testCollection.add(testObjects[i]);
-			testCollection.add(testObjects[testObjects.length - 1 - i]);
-
-			try {
-				deque.addAll(-1, testCollection);
-				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
-			} catch (IndexOutOfBoundsException e) {
-				// expected
-			}
-			try {
-				deque.addAll(deque.size() + 1, testCollection);
-				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
-			} catch (IndexOutOfBoundsException e) {
-				// expected
-			}
-		}
-	}
-
-	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements.
 	 */
 	public void testAddAllRandomAccessLeftRotate() {
@@ -241,6 +212,35 @@ public class CircularArrayDequeTest extends TestCase {
 			testCollection.add(testObjects[i]);
 			testCollection.add(testObjects[testObjects.length - 1 - i]);
 			internalTestAddAllRandomAccessRightRotate(testCollection);
+		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements but with
+	 * out of bounds indices.
+	 */
+	public void testAddAllRandomOutOfBounds() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		for (int i = 0; i < testObjects.length; i++) {
+			List<Object> testCollection = new ArrayList<Object>();
+			testCollection.add(testObjects[i]);
+			testCollection.add(testObjects[testObjects.length - 1 - i]);
+
+			try {
+				deque.addAll(-1, testCollection);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+			try {
+				deque.addAll(deque.size() + 1, testCollection);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
 		}
 	}
 
@@ -401,6 +401,18 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
+	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements.
+	 */
+	public void testAddRandomAccessLeftRotate() {
+		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				new Object() };
+
+		for (int i = 0; i < testObjects.length; i++) {
+			internalTestAddRandomAccessLeftRotate(testObjects[i]);
+		}
+	}
+
+	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements but with out of
 	 * bounds indices.
 	 */
@@ -422,18 +434,6 @@ public class CircularArrayDequeTest extends TestCase {
 			} catch (IndexOutOfBoundsException e) {
 				// expected
 			}
-		}
-	}
-
-	/**
-	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements.
-	 */
-	public void testAddRandomAccessLeftRotate() {
-		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-				new Object() };
-
-		for (int i = 0; i < testObjects.length; i++) {
-			internalTestAddRandomAccessLeftRotate(testObjects[i]);
 		}
 	}
 
@@ -550,34 +550,6 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
-	 * Tests that the copy constructor of the ArrayStack creates a deque with all objects of the initial
-	 * collection.
-	 */
-	public void testCopyInstantiation() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
-
-		Deque<Object> deque = new CircularArrayDeque<Object>(listInt10);
-		assertFalse(deque.isEmpty());
-		assertEquals(listInt10.size(), deque.size());
-		assertTrue(deque.containsAll(listInt10));
-		assertEquals(getNextPowerOfTwo(listInt10.size()), getInternalCapacity(deque));
-
-		deque = new CircularArrayDeque<Object>(setString20);
-		assertFalse(deque.isEmpty());
-		assertEquals(setString20.size(), deque.size());
-		assertTrue(deque.containsAll(setString20));
-		assertEquals(getNextPowerOfTwo(setString20.size()), getInternalCapacity(deque));
-
-		deque = new CircularArrayDeque<Object>(dequeString40);
-		assertFalse(deque.isEmpty());
-		assertEquals(dequeString40.size(), deque.size());
-		assertTrue(deque.containsAll(dequeString40));
-		assertEquals(getNextPowerOfTwo(dequeString40.size()), getInternalCapacity(deque));
-	}
-
-	/**
 	 * Tests the behavior of {@link CircularArrayDeque#element()} with random elements.
 	 */
 	public void testElement() {
@@ -620,22 +592,6 @@ public class CircularArrayDequeTest extends TestCase {
 		} catch (NoSuchElementException e) {
 			// expected
 		}
-	}
-
-	/**
-	 * Tests the two constructors of the ArrayStack that initialize an empty deque.
-	 */
-	public void testEmptyInstantiation() {
-		Deque<Object> deque = new CircularArrayDeque<Object>();
-		assertTrue(deque.isEmpty());
-		assertSame(0, deque.size());
-		// Default capacity is 16
-		assertEquals(16, getInternalCapacity(deque));
-
-		deque = new CircularArrayDeque<Object>((1 << 10) - 1);
-		assertTrue(deque.isEmpty());
-		assertSame(0, deque.size());
-		assertEquals(1 << 10, getInternalCapacity(deque));
 	}
 
 	/**
@@ -1002,6 +958,82 @@ public class CircularArrayDequeTest extends TestCase {
 					.lastIndexOf(testObjects[i])));
 		}
 		assertEqualContent(expected, getInternalArray(deque));
+	}
+
+	/**
+	 * Tests that the copy constructor of the Deque creates a deque with all objects of the initial
+	 * collection.
+	 */
+	public void testInstantiationCopy() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
+		Deque<Object> deque = new CircularArrayDeque<Object>(listInt10);
+		assertFalse(deque.isEmpty());
+		assertEquals(listInt10.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertEquals(getNextPowerOfTwo(listInt10.size()), getInternalCapacity(deque));
+
+		deque = new CircularArrayDeque<Object>(setString20);
+		assertFalse(deque.isEmpty());
+		assertEquals(setString20.size(), deque.size());
+		assertTrue(deque.containsAll(setString20));
+		assertEquals(getNextPowerOfTwo(setString20.size()), getInternalCapacity(deque));
+
+		deque = new CircularArrayDeque<Object>(dequeString40);
+		assertFalse(deque.isEmpty());
+		assertEquals(dequeString40.size(), deque.size());
+		assertTrue(deque.containsAll(dequeString40));
+		assertEquals(getNextPowerOfTwo(dequeString40.size()), getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the two constructors of the Deque that initialize an empty deque.
+	 */
+	public void testInstantiationEmpty() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		assertTrue(deque.isEmpty());
+		assertSame(0, deque.size());
+		// Default capacity is 16
+		assertEquals(16, getInternalCapacity(deque));
+
+		deque = new CircularArrayDeque<Object>((1 << 10) - 1);
+		assertTrue(deque.isEmpty());
+		assertSame(0, deque.size());
+		assertEquals(1 << 10, getInternalCapacity(deque));
+
+		deque = new CircularArrayDeque<Object>(1 << 31);
+		assertTrue(deque.isEmpty());
+		assertSame(0, deque.size());
+		assertEquals(4, getInternalCapacity(deque));
+
+		deque = new CircularArrayDeque<Object>(-1);
+		assertTrue(deque.isEmpty());
+		assertSame(0, deque.size());
+		assertEquals(4, getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the constructors of the Deque with out of bounds or erroneous values.
+	 */
+	public void testInstantiationError() {
+		try {
+			new CircularArrayDeque<Object>(Integer.MAX_VALUE);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+		try {
+			/*
+			 * The last possible size for our internal array is 2^30, trying to hold that much elements will
+			 * yield a size of -1, which is invalid.
+			 */
+			new CircularArrayDeque<Object>((1 << 30) + 1);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
 	}
 
 	/**
@@ -1762,6 +1794,222 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
+	 * Tests the behavior of {@link CircularArrayDeque#offerAll(Collection)} with random elements.
+	 */
+	public void testOfferAll() {
+		Collection<Object> emptyCollection = Collections.emptyList();
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		deque.offerAll(listInt10);
+		assertEquals(listInt10.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+		deque.offerAll(emptyCollection);
+		assertEquals(listInt10.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+		deque.offerAll(setString20);
+		assertEquals(listInt10.size() + setString20.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertTrue(deque.containsAll(setString20));
+		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+		deque.offerAll(dequeString40);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertTrue(deque.containsAll(setString20));
+		assertTrue(deque.containsAll(dequeString40));
+		int expectedCapacity = getNextPowerOfTwo(deque.size());
+		assertEquals(expectedCapacity, getInternalCapacity(deque));
+
+		for (@SuppressWarnings("unused")
+		Integer val : listInt10) {
+			deque.removeFirst();
+		}
+		assertEquals(setString20.size() + dequeString40.size(), deque.size());
+		assertFalse(deque.containsAll(listInt10));
+		assertTrue(deque.containsAll(setString20));
+		assertTrue(deque.containsAll(dequeString40));
+		assertEquals(expectedCapacity, getInternalCapacity(deque));
+
+		deque.offerAll(listInt10);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertTrue(deque.containsAll(setString20));
+		assertTrue(deque.containsAll(dequeString40));
+		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+		deque.offerAll(emptyCollection);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size(), deque.size());
+		assertTrue(deque.containsAll(listInt10));
+		assertTrue(deque.containsAll(setString20));
+		assertTrue(deque.containsAll(dequeString40));
+		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#offerFirst(Object)} with random elements.
+	 */
+	public void testOfferFirst() {
+		Integer integer1 = getRandomInteger();
+		Integer integer2 = getRandomInteger();
+		String string1 = getRandomString();
+		String string2 = getRandomString();
+		Object object1 = new Object();
+		Object object2 = new Object();
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		deque.offerFirst(integer1);
+		assertSame(1, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(integer2);
+		assertSame(2, deque.size());
+		assertEquals(integer2, deque.getFirst());
+		assertEquals(integer2, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(string1);
+		assertSame(3, deque.size());
+		assertEquals(string1, deque.getFirst());
+		assertEquals(string1, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(string2);
+		assertSame(4, deque.size());
+		assertEquals(string2, deque.getFirst());
+		assertEquals(string2, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(object1);
+		assertSame(5, deque.size());
+		assertEquals(object1, deque.getFirst());
+		assertEquals(object1, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(object2);
+		assertSame(6, deque.size());
+		assertEquals(object2, deque.getFirst());
+		assertEquals(object2, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(null);
+		assertSame(7, deque.size());
+		assertSame(null, deque.getFirst());
+		assertSame(null, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.removeFirst();
+		assertSame(6, deque.size());
+		assertEquals(object2, deque.getFirst());
+		assertEquals(object2, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		deque.offerFirst(null);
+		assertSame(7, deque.size());
+		assertSame(null, deque.getFirst());
+		assertSame(null, deque.peek());
+		assertEquals(integer1, deque.getLast());
+
+		// Ensure we go above capacity
+		for (int i = 0; i < 100; i++) {
+			String rand = getRandomString();
+			deque.offerFirst(rand);
+			assertSame(7 + i + 1, deque.size());
+			assertEquals(rand, deque.getFirst());
+			assertEquals(rand, deque.peek());
+			assertSame(integer1, deque.getLast());
+		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#offerLast(Object)} with random elements.
+	 */
+	public void testOfferLast() {
+		Integer integer1 = getRandomInteger();
+		Integer integer2 = getRandomInteger();
+		String string1 = getRandomString();
+		String string2 = getRandomString();
+		Object object1 = new Object();
+		Object object2 = new Object();
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		deque.offerLast(integer1);
+		assertSame(1, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.getLast());
+		assertEquals(integer1, deque.peek());
+
+		deque.offerLast(integer2);
+		assertSame(2, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(integer2, deque.getLast());
+
+		deque.offerLast(string1);
+		assertSame(3, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(string1, deque.getLast());
+
+		deque.offerLast(string2);
+		assertSame(4, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(string2, deque.getLast());
+
+		deque.offerLast(object1);
+		assertSame(5, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(object1, deque.getLast());
+
+		deque.offerLast(object2);
+		assertSame(6, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(object2, deque.getLast());
+
+		deque.offerLast(null);
+		assertSame(7, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertSame(null, deque.getLast());
+
+		deque.pop();
+		assertSame(6, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertEquals(object2, deque.getLast());
+
+		deque.offerLast(null);
+		assertSame(7, deque.size());
+		assertEquals(integer1, deque.getFirst());
+		assertEquals(integer1, deque.peek());
+		assertSame(null, deque.getLast());
+
+		// Ensure we go above capacity
+		for (int i = 0; i < 100; i++) {
+			String rand = getRandomString();
+			deque.offerLast(rand);
+			assertSame(7 + i + 1, deque.size());
+			assertEquals(integer1, deque.getFirst());
+			assertEquals(integer1, deque.peek());
+			assertSame(rand, deque.getLast());
+		}
+	}
+
+	/**
 	 * Tests the behavior of {@link CircularArrayDeque#toArray(Object[])} with random elements.
 	 */
 	public void testParameterizedToArray() {
@@ -1858,8 +2106,146 @@ public class CircularArrayDequeTest extends TestCase {
 		}
 		assertSame(null, deque.peek());
 
+		deque.addAll(lastAdded);
 		deque.clear();
+
 		assertNull(deque.peek());
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#peekFirst()} with random elements.
+	 */
+	public void testPeekFirst() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		try {
+			deque.peekFirst();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		deque.offer(null);
+		assertSame(null, deque.peekFirst());
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.offer(rand);
+			assertSame(null, deque.peekFirst());
+		}
+		List<Object> lastAdded = new ArrayList<Object>();
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.addFirst(rand);
+			lastAdded.add(rand);
+			assertEquals(rand, deque.peekFirst());
+		}
+		for (int i = 0; i < 20; i++) {
+			deque.removeFirst();
+			if (i < 19) {
+				assertEquals(lastAdded.get(lastAdded.size() - i - 2), deque.peekFirst());
+			} else {
+				assertSame(null, deque.peekFirst());
+			}
+		}
+
+		deque.clear();
+		try {
+			deque.peekFirst();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#peekLast()} with random elements.
+	 */
+	public void testPeekLast() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		try {
+			deque.peekLast();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		deque.offer(null);
+		assertSame(null, deque.peekLast());
+		List<Object> lastAdded = new ArrayList<Object>();
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.offer(rand);
+			lastAdded.add(rand);
+			assertEquals(rand, deque.peekLast());
+		}
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			deque.addFirst(rand);
+			assertEquals(lastAdded.get(lastAdded.size() - 1), deque.peekLast());
+		}
+		for (int i = 0; i < 20; i++) {
+			deque.removeLast();
+			if (i < 19) {
+				assertEquals(lastAdded.get(lastAdded.size() - i - 2), deque.peekLast());
+			} else {
+				assertSame(null, deque.peekLast());
+			}
+		}
+
+		deque.clear();
+		try {
+			deque.peekLast();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#poll()} with random elements.
+	 */
+	public void testPoll() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		List<Object> objectsFirst = new ArrayList<Object>();
+		List<Object> objectsLast = new ArrayList<Object>();
+
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			objectsFirst.add(rand);
+		}
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			objectsLast.add(rand);
+		}
+		assertFalse(deque.containsAll(objectsFirst));
+		assertFalse(deque.containsAll(objectsLast));
+
+		assertNull(deque.poll());
+
+		for (Object o : objectsLast) {
+			deque.offer(o);
+		}
+		for (Object o : objectsFirst) {
+			deque.addFirst(o);
+		}
+		assertTrue(deque.containsAll(objectsFirst));
+		assertTrue(deque.containsAll(objectsLast));
+
+		for (int i = objectsFirst.size() - 1; i >= 0; i--) {
+			assertEquals(objectsFirst.get(i), deque.poll());
+		}
+		for (Object o : objectsLast) {
+			assertEquals(o, deque.poll());
+		}
+
+		assertNull(deque.poll());
+
+		deque.addAll(objectsFirst);
+		deque.addAll(objectsLast);
+		deque.clear();
+
+		assertNull(deque.poll());
 	}
 
 	/**
@@ -2218,6 +2604,66 @@ public class CircularArrayDequeTest extends TestCase {
 	}
 
 	/**
+	 * Tests the behavior of {@link CircularArrayDeque#remove()} with random elements.
+	 */
+	public void testRemoveQueue() {
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+		List<Object> objectsFirst = new ArrayList<Object>();
+		List<Object> objectsLast = new ArrayList<Object>();
+
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			objectsFirst.add(rand);
+		}
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			objectsLast.add(rand);
+		}
+		assertFalse(deque.containsAll(objectsFirst));
+		assertFalse(deque.containsAll(objectsLast));
+
+		try {
+			deque.remove();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$			
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		for (Object o : objectsLast) {
+			deque.offer(o);
+		}
+		for (Object o : objectsFirst) {
+			deque.addFirst(o);
+		}
+		assertTrue(deque.containsAll(objectsFirst));
+		assertTrue(deque.containsAll(objectsLast));
+
+		for (int i = objectsFirst.size() - 1; i >= 0; i--) {
+			assertEquals(objectsFirst.get(i), deque.remove());
+		}
+		for (Object o : objectsLast) {
+			assertEquals(o, deque.remove());
+		}
+
+		try {
+			deque.remove();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$			
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+
+		deque.addAll(objectsFirst);
+		deque.addAll(objectsLast);
+		deque.clear();
+		try {
+			deque.remove();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$			
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+	}
+
+	/**
 	 * Tests the behavior of {@link CircularArrayDeque#remove(Object)} with random elements.
 	 */
 	public void testRemoveRightRotate() {
@@ -2232,32 +2678,183 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests the behavior of {@link CircularArrayDeque#retainAll(Collection)} with random elements.
 	 */
 	public void testRetainAll() {
+		Collection<Object> emptyCollection = Collections.emptyList();
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objects = new ArrayList<Object>();
+		deque.addAll(listInt10);
+		deque.addAll(emptyCollection);
+		deque.addAll(setString20);
+		deque.addAll(dequeString40);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objects.add(rand);
+		boolean modified = deque.retainAll(dequeString40);
+		assertTrue(modified);
+		assertSame(dequeString40.size(), deque.size());
+		for (Integer integer : listInt10) {
+			assertFalse(deque.contains(integer));
 		}
-		assertFalse(deque.containsAll(objects));
-
-		try {
-			deque.retainAll(objects);
-			fail("Expected UnsupportedOperationException hasn't been thrown"); //$NON-NLS-1$			
-		} catch (UnsupportedOperationException e) {
-			// expected
+		for (String string : setString20) {
+			assertFalse(deque.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(deque.contains(string));
 		}
 
-		for (Object o : objects) {
-			deque.offer(o);
-		}
-		assertTrue(deque.containsAll(objects));
+		deque = new CircularArrayDeque<Object>();
+		deque.addAll(listInt10);
+		deque.addAll(emptyCollection);
+		deque.addAll(setString20);
+		deque.addAll(dequeString40);
 
-		try {
-			deque.retainAll(objects);
-			fail("Expected UnsupportedOperationException hasn't been thrown"); //$NON-NLS-1$			
-		} catch (UnsupportedOperationException e) {
-			// expected
+		modified = deque.retainAll(setString20);
+		assertTrue(modified);
+		assertSame(setString20.size(), deque.size());
+		for (Integer integer : listInt10) {
+			assertFalse(deque.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(deque.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(deque.contains(string));
+		}
+
+		deque = new CircularArrayDeque<Object>();
+		deque.addAll(listInt10);
+		deque.addAll(emptyCollection);
+		deque.addAll(setString20);
+		deque.addAll(dequeString40);
+
+		modified = deque.retainAll(listInt10);
+		assertTrue(modified);
+		assertSame(listInt10.size(), deque.size());
+		for (Integer integer : listInt10) {
+			assertTrue(deque.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(deque.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(deque.contains(string));
+		}
+
+		deque = new CircularArrayDeque<Object>();
+		deque.addAll(listInt10);
+		deque.addAll(emptyCollection);
+		deque.addAll(setString20);
+		deque.addAll(dequeString40);
+
+		modified = deque.retainAll(emptyCollection);
+		assertTrue(modified);
+		assertSame(0, deque.size());
+		for (Integer integer : listInt10) {
+			assertFalse(deque.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(deque.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(deque.contains(string));
+		}
+
+		deque = new CircularArrayDeque<Object>();
+		modified = deque.retainAll(emptyCollection);
+		assertFalse(modified);
+		assertSame(0, deque.size());
+
+		modified = deque.retainAll(listInt10);
+		assertFalse(modified);
+		assertSame(0, deque.size());
+
+		modified = deque.retainAll(dequeString40);
+		assertFalse(modified);
+		assertSame(0, deque.size());
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#set(int, Object)} with random elements.
+	 */
+	public void testSet() {
+		Integer integer1 = getRandomInteger();
+		Integer integer2 = getRandomInteger();
+		String string1 = getRandomString();
+		String string2 = getRandomString();
+		Object object1 = new Object();
+		Object object2 = new Object();
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		int[] invalidIndices = new int[] {0, -1, Integer.MIN_VALUE, deque.size() + 1 };
+		for (int i : invalidIndices) {
+			try {
+				deque.set(i, string2);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+		}
+
+		deque.add(integer1);
+		deque.add(string1);
+		deque.add(object1);
+
+		invalidIndices = new int[] {-1, Integer.MIN_VALUE, deque.size() + 1 };
+		for (int i : invalidIndices) {
+			try {
+				deque.set(i, string2);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+		}
+
+		assertEquals(integer1, deque.set(0, integer2));
+		assertEquals(integer2, deque.get(0));
+		assertFalse(deque.contains(integer1));
+		assertSame(3, deque.size());
+
+		assertEquals(string1, deque.set(1, string2));
+		assertEquals(string2, deque.get(1));
+		assertFalse(deque.contains(string1));
+		assertSame(3, deque.size());
+
+		assertEquals(object1, deque.set(2, object2));
+		assertEquals(object2, deque.get(2));
+		assertFalse(deque.contains(object1));
+		assertSame(3, deque.size());
+
+		assertEquals(string2, deque.set(1, integer2));
+		assertEquals(integer2, deque.get(1));
+		assertFalse(deque.contains(string2));
+		assertSame(3, deque.size());
+
+		assertEquals(object2, deque.set(2, integer2));
+		assertEquals(integer2, deque.get(2));
+		assertFalse(deque.contains(object2));
+		assertSame(3, deque.size());
+
+		invalidIndices = new int[] {-1, Integer.MIN_VALUE, deque.size() + 1 };
+		for (int i : invalidIndices) {
+			try {
+				deque.set(i, string2);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
+		}
+
+		deque.clear();
+
+		invalidIndices = new int[] {0, -1, Integer.MIN_VALUE, deque.size() + 1 };
+		for (int i : invalidIndices) {
+			try {
+				deque.set(i, string2);
+				fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+			} catch (IndexOutOfBoundsException e) {
+				// expected
+			}
 		}
 	}
 
@@ -2283,6 +2880,61 @@ public class CircularArrayDequeTest extends TestCase {
 			deque.pop();
 			assertSame(--size, deque.size());
 		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#subList(int, int)} with random elements. As this is
+	 * fully inherited from AbstractList, we'll only test that the operation is accessible.
+	 */
+	public void testSubList() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		List<Object> subList = deque.subList(0, 0);
+		assertEquals(subList, deque);
+		assertTrue(subList.isEmpty());
+
+		try {
+			deque.subList(0, 5);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+
+		deque.addAll(listInt10);
+		deque.addAll(setString20);
+
+		subList = deque.subList(0, deque.size());
+		assertEquals(subList, deque);
+
+		subList = deque.subList(0, listInt10.size());
+		assertSame(listInt10.size(), subList.size());
+		assertTrue(subList.containsAll(listInt10));
+
+		subList = deque.subList(0, listInt10.size() + setString20.size());
+		assertSame(listInt10.size() + setString20.size(), subList.size());
+		assertTrue(subList.containsAll(listInt10));
+		assertTrue(subList.containsAll(setString20));
+
+		try {
+			deque.subList(-1, 10);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+
+		try {
+			deque.subList(5, 0);
+			fail("Expected IllegalArgumentException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			// Expected
+		}
+
+		subList = deque.subList(5, 5);
+		assertSame(0, subList.size());
+		assertTrue(subList.isEmpty());
 	}
 
 	/**
