@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -108,6 +108,13 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * Preference key for matching brackets color.
 	 */
 	private static final String MATCHING_BRACKETS_COLOR = PreferenceConstants.EDITOR_MATCHING_BRACKETS_COLOR;
+
+	/**
+	 * [320692] We wish to show the "missing nature dialog" only once. This boolean will be updated to true
+	 * once the dialog has been displayed and will never change state again until the user next relaunches its
+	 * Eclipse instance.
+	 */
+	private static boolean natureDialogShown;
 
 	/**
 	 * TODO JMU/SBE : We should use a clear method to clear the current AST selection. Keeps a reference to
@@ -280,7 +287,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private void initializeContent(IDocument document, IFile file) {
 		if (document != null) {
 			try {
-				if (file == null || file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+				if (file == null || natureDialogShown
+						|| file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {

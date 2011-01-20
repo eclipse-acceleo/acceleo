@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -116,5 +119,24 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	/**
+	 * Logs the given exception as error or warning.
+	 * 
+	 * @param exception
+	 *            The exception to log.
+	 * @param blocker
+	 *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
+	 *            warning.
+	 * @since 3.0
+	 */
+	public static void log(Exception exception, boolean blocker) {
+		int severity = IStatus.WARNING;
+		if (blocker) {
+			severity = IStatus.ERROR;
+		}
+		ILog log = getDefault().getLog();
+		log.log(new Status(severity, PLUGIN_ID, exception.getMessage(), exception));
 	}
 }
