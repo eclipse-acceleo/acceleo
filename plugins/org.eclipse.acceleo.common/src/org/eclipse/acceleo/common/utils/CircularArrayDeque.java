@@ -99,6 +99,9 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 
 	/**
 	 * Constructs an empty deque with an initial capacity sufficient to hold the given number of elements.
+	 * <p>
+	 * If the expected element count is negative, the initial capacity of this deque will be <code>4</code>.
+	 * </p>
 	 * 
 	 * @param elementCount
 	 *            The number of elements we expect to hold in this deque.
@@ -1020,7 +1023,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	private void initialize(int elementCount) {
 		final int initialCapacity;
 		if (elementCount <= 1) {
-			initialCapacity = getNextPowerOfTwo(3);
+			initialCapacity = 4;
 		} else {
 			initialCapacity = getNextPowerOfTwo(elementCount);
 		}

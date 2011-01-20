@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Obeo.
+ * Copyright (c) 2009, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -146,6 +146,11 @@ public class BundleURLConverter {
 		}
 		if (actualPath.startsWith(FILE_PROTOCOL + '/')) {
 			actualPath = actualPath.substring(FILE_PROTOCOL.length() + 1);
+		}
+
+		// FIXME LGO Why are we coming here with this ???
+		if (actualPath.contains("#")) { //$NON-NLS-1$
+			actualPath = actualPath.substring(0, actualPath.indexOf('#'));
 		}
 
 		Bundle tempBundle = null;

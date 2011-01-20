@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Obeo.
+ * Copyright (c) 2009, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -130,7 +130,8 @@ public final class AcceleoServicesRegistry {
 		Class<?> clazz = null;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			clazz = AcceleoServicesEclipseUtil.registerService(bundleName, qualifiedName);
-		} else {
+		}
+		if (clazz == null) {
 			try {
 				clazz = Class.forName(qualifiedName);
 				if (clazz != null) {
@@ -196,15 +197,18 @@ public final class AcceleoServicesRegistry {
 		Class<?> clazz = null;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			clazz = AcceleoServicesEclipseUtil.registerService(uri, qualifiedName);
-		} else {
+		}
+		if (clazz == null) {
 			try {
 				clazz = Class.forName(qualifiedName);
 				if (clazz != null) {
 					registeredServices.add(clazz);
 				}
 			} catch (ClassNotFoundException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
-						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
+				if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+							"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
+				}
 			}
 		}
 		return clazz;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,9 +56,10 @@ public class AcceleoOCLReflection {
 	public Object getInvalid() {
 		if (invalid == null) {
 			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
-			String methodName = "getOclInvalid"; //$NON-NLS-1$
-			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
-				methodName = "getInvalid"; //$NON-NLS-1$
+			String methodName = "getInvalid"; //$NON-NLS-1$
+			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GANYMEDE
+					|| AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GALILEO) {
+				methodName = "getOclInvalid"; //$NON-NLS-1$
 			}
 			try {
 				final Method method = stdLib.getClass().getMethod(methodName);
@@ -85,9 +86,10 @@ public class AcceleoOCLReflection {
 	public EClassifier getOCLInvalid() {
 		if (oclInvalid == null) {
 			final OCLStandardLibrary<EClassifier> stdLib = environment.getOCLStandardLibrary();
-			String methodName = "getInvalid"; //$NON-NLS-1$
-			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
-				methodName = "getOclInvalid"; //$NON-NLS-1$
+			String methodName = "getOclInvalid"; //$NON-NLS-1$
+			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GANYMEDE
+					|| AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GALILEO) {
+				methodName = "getInvalid"; //$NON-NLS-1$
 			}
 			try {
 				final Method method = stdLib.getClass().getMethod(methodName);
@@ -136,14 +138,15 @@ public class AcceleoOCLReflection {
 		reservedKeywords.add("then"); //$NON-NLS-1$
 		reservedKeywords.add("xor"); //$NON-NLS-1$
 
-		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GANYMEDE
+				|| AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.GALILEO) {
+			reservedKeywords.add("attr"); //$NON-NLS-1$
+			reservedKeywords.add("oper"); //$NON-NLS-1$			
+		} else {
 			reservedKeywords.add("body"); //$NON-NLS-1$
 			reservedKeywords.add("derive"); //$NON-NLS-1$
 			reservedKeywords.add("init"); //$NON-NLS-1$
 			reservedKeywords.add("static"); //$NON-NLS-1$
-		} else {
-			reservedKeywords.add("attr"); //$NON-NLS-1$
-			reservedKeywords.add("oper"); //$NON-NLS-1$
 		}
 
 		return reservedKeywords;
