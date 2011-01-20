@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,10 +39,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.ContentTreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.eclipse.ocl.util.CollectionUtil;
 
@@ -655,57 +655,58 @@ public final class AcceleoLibraryOperationVisitor {
 	 *            Target of the cross referencing.
 	 */
 	private static void createEInverseCrossreferencer(EObject target) {
-		if (target.eResource() != null && target.eResource().getResourceSet() != null) {
-			final ResourceSet rs = target.eResource().getResourceSet();
-			final ContentTreeIterator<Notifier> contentIterator = new ContentTreeIterator<Notifier>(
-					Collections.singleton(rs)) {
-				/** Default SUID. */
-				private static final long serialVersionUID = 1L;
+		Resource res = null;
+		ResourceSet rs = null;
+		if (target.eResource() != null) {
+			res = target.eResource();
+		}
+		if (res != null && res.getResourceSet() != null) {
+			rs = res.getResourceSet();
+		}
 
-				@Override
-				protected Iterator<Resource> getResourceSetChildren(ResourceSet resourceSet) {
-					List<Resource> resources = new ArrayList<Resource>();
-					for (Resource res : resourceSet.getResources()) {
-						if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(res.getURI().fileExtension())) {
-							resources.add(res);
-						}
-					}
-					resourceSetIterator = new ResourcesIterator(resources);
-					return resourceSetIterator;
+		if (rs != null) {
+			// Manually add the ecore.ecore resource in the list of cross referenced notifiers
+			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
+			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
+			for (Resource crossReferenceResource : rs.getResources()) {
+				if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(crossReferenceResource.getURI()
+						.fileExtension())) {
+					notifiers.add(crossReferenceResource);
 				}
-			};
-			referencer = new CrossReferencer(rs) {
-				/** Default SUID. */
-				private static final long serialVersionUID = 1L;
+			}
+			notifiers.add(ecoreResource);
 
-				// static initializer
-				{
-					crossReference();
-				}
-
-				@Override
-				protected TreeIterator<Notifier> newContentsIterator() {
-					return contentIterator;
-				}
-			};
-		} else if (target.eResource() != null) {
-			referencer = new CrossReferencer(target.eResource()) {
+			referencer = new CrossReferencer(notifiers) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+					done();
+				}
+			};
+		} else if (res != null) {
+			referencer = new CrossReferencer(res) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+					done();
 				}
 			};
 		} else {
-			referencer = new CrossReferencer(EcoreUtil.getRootContainer(target)) {
+			EObject targetObject = EcoreUtil.getRootContainer(target);
+			referencer = new CrossReferencer(targetObject) {
 				/** Default SUID. */
 				private static final long serialVersionUID = 1L;
 
 				// static initializer
 				{
 					crossReference();
+					done();
 				}
 			};
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -255,6 +255,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public void createFileWriter(File generatedFile, Block fileBlock, EObject source, boolean appendMode,
 			String charset) throws AcceleoEvaluationException {
+		if (generatedFile.getName().endsWith(File.separator) || generatedFile.isDirectory()) {
+			return;
+		}
 		context.openNested(generatedFile, fileBlock, source, appendMode, charset);
 	}
 
