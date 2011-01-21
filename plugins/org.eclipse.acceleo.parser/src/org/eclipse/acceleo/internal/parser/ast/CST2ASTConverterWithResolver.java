@@ -380,7 +380,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.acceleo.model.mtl.Module oModule, String name, List<EClassifier> paramTypes) {
 		List<org.eclipse.acceleo.model.mtl.Template> result = new ArrayList<org.eclipse.acceleo.model.mtl.Template>();
 		if (oModule != null) {
-			result.addAll(getProtectedTemplatesNamed(oModule, name, paramTypes));
 			List<org.eclipse.acceleo.model.mtl.Module> allExtends = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 			computeAllExtends(allExtends, oModule);
 			Iterator<org.eclipse.acceleo.model.mtl.Module> itOtherModules = allExtends.iterator();
