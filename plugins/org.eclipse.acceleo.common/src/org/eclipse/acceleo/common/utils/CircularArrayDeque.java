@@ -32,6 +32,12 @@ import java.util.RandomAccess;
  * {@link NoSuchElementException}s when the queue is empty.
  * </p>
  * <p>
+ * Most operations on the {@link CircularArrayDeque} execute in constant time. This includes
+ * {@link #addFirst(Object)}, {@link #addLast(Object)}, {@link #removeFirst()}, {@link #removeLast()} and
+ * {@link #get(int)}. Other random-access operations such as {@link #add(Object)} and {@link #remove(Object)}
+ * execute in amortized linear time, with the constant being lower than for the {@link java.util.ArrayList}.
+ * </p>
+ * <p>
  * This implementation of a double-ended queue is backed by an array which size we'll always maintain to be a
  * power of two. Adding and removing elements from both ends we'll end up moving the "head" and "tail"
  * pointers by one to either the left or the right. This deque is considered empty when these two pointers are
