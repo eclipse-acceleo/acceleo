@@ -264,9 +264,6 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 				modCount++;
 				insertionIndex = (insertionIndex + 1) & mask;
 			}
-			if (head == tail) {
-				doubleCapacity();
-			}
 		}
 		return true;
 	}
@@ -909,16 +906,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		// How many indices still to delete?
 		if (cursor == startIndex) {
 			// Only 1
-			if (indices[startIndex] == ((tail - 1) & mask)) {
-				removeLast();
-			} else {
-				modCount++;
-				tail = (tail - 1) & mask;
-				for (int i = indices[startIndex]; i != tail; i = (i + 1) & mask) {
-					data[i] = data[(i + 1) & mask];
-				}
-				data[tail] = null;
+			modCount++;
+			tail = (tail - 1) & mask;
+			for (int i = indices[startIndex]; i != tail; i = (i + 1) & mask) {
+				data[i] = data[(i + 1) & mask];
 			}
+			data[tail] = null;
 		} else if (cursor > startIndex) {
 			tail = (tail - 1) & mask;
 			int gap = 1;
@@ -960,16 +953,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		// How many indices still to delete?
 		if (cursor == startIndex) {
 			// Only 1
-			if (indices[startIndex] == head) {
-				removeFirst();
-			} else {
-				modCount++;
-				for (int i = indices[startIndex]; i != head; i = (i - 1) & mask) {
-					data[i] = data[(i - 1) & mask];
-				}
-				data[head] = null;
-				head = (head - 1) & mask;
+			modCount++;
+			for (int i = indices[startIndex]; i != head; i = (i - 1) & mask) {
+				data[i] = data[(i - 1) & mask];
 			}
+			data[head] = null;
+			head = (head - 1) & mask;
 		} else if (cursor < startIndex) {
 			int gap = 1;
 			int fence = cursor;
@@ -1062,7 +1051,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	 */
 	@SuppressWarnings("unchecked")
 	private void setCapacity(int newCapacity) {
-		final int oldCapacity = data.length;
+		final int newTail;
+		if (head == tail) {
+			newTail = data.length;
+		} else {
+			newTail = size();
+		}
 		E[] temp = (E[])new Object[newCapacity];
 
 		int headLength = data.length - head;
@@ -1073,7 +1067,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 
 		data = temp;
 		head = 0;
-		tail = oldCapacity;
+		tail = newTail;
 	}
 
 	/**

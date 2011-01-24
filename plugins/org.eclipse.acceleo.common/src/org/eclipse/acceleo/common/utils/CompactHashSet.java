@@ -440,10 +440,12 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 		// If we're here, the set doesn't contain the element
 		if (deletedIndex >= 0) {
 			setIndex(deletedIndex, element);
+			modCount++;
 			deleted--;
 			size++;
 		} else {
 			setIndex(index, element);
+			modCount++;
 			if (size++ >= threshold) {
 				rehash();
 			}
@@ -552,7 +554,7 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 		 * @see java.util.Iterator#hasNext()
 		 */
 		public boolean hasNext() {
-			return data[next] != null && data[next] != DELETED_VALUE;
+			return next < data.length && data[next] != null && data[next] != DELETED_VALUE;
 		}
 
 		/**
@@ -562,6 +564,9 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 		 */
 		public E next() {
 			checkComodification();
+			if (next == data.length) {
+				throw new NoSuchElementException();
+			}
 			E result = data[next];
 			if (result == null) {
 				throw new NoSuchElementException();
