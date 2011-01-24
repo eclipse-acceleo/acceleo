@@ -13,8 +13,11 @@ package org.eclipse.acceleo.common.tests.unit.utils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -30,14 +33,798 @@ import org.eclipse.acceleo.common.utils.Deque;
  */
 public class CompactHashSetTest extends TestCase {
 	/**
-	 * Tests the empty set constructor.
+	 * This will test the behavior of {@link CompactHashSet#add(Object)} with random elements.
 	 */
-	public void testInstantiationEmpty() {
-		Set<Object> set = new CompactHashSet<Object>();
+	public void testAdd() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Set<Object> set = createSet();
+
+		int size = 0;
+		for (Integer integer : listInt10) {
+			boolean modified = set.add(integer);
+			assertTrue(modified);
+			assertTrue(set.contains(integer));
+			assertEquals(++size, set.size());
+		}
+		assertTrue(set.containsAll(listInt10));
+		assertFalse(set.contains(null));
+
+		for (String string : setString20) {
+			boolean modified = set.add(string);
+			assertTrue(modified);
+			assertTrue(set.contains(string));
+			assertEquals(++size, set.size());
+		}
+		assertTrue(set.containsAll(setString20));
+		assertFalse(set.contains(null));
+
+		for (String string : dequeString40) {
+			boolean modified = set.add(string);
+			assertTrue(modified);
+			assertTrue(set.contains(string));
+			assertEquals(++size, set.size());
+		}
+		assertTrue(set.containsAll(dequeString40));
+		assertFalse(set.contains(null));
+
+		for (Object o : duplicatesList) {
+			if (set.contains(o)) {
+				boolean modified = set.add(o);
+				assertFalse(modified);
+				assertTrue(set.contains(o));
+				assertEquals(size, set.size());
+			} else {
+				boolean modified = set.add(o);
+				assertTrue(modified);
+				assertTrue(set.contains(o));
+				assertEquals(++size, set.size());
+			}
+		}
+		assertTrue(set.containsAll(duplicatesList));
+		assertTrue(set.contains(null));
+
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size()
+				+ (duplicatesList.size() / 2), set.size());
+	}
+
+	/**
+	 * This will test the behavior of {@link CompactHashSet#addAll(Collection)} with random elements.
+	 */
+	public void testAddAll() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Set<Object> set = createSet();
+
+		boolean modified = set.addAll(listInt10);
+		int expectedCapacity = 16;
+		assertTrue(modified);
+		assertEquals(listInt10.size(), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		modified = set.addAll(setString20);
+		expectedCapacity = 64;
+		assertTrue(modified);
+		assertEquals(listInt10.size() + setString20.size(), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		modified = set.addAll(dequeString40);
+		expectedCapacity = 128;
+		assertTrue(modified);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size(), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		modified = set.addAll(duplicatesList);
+		expectedCapacity = 256;
+		assertTrue(modified);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size()
+				+ (duplicatesList.size() / 2), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+
+		set.removeAll(setString20);
+		assertEquals(listInt10.size() + dequeString40.size() + (duplicatesList.size() / 2), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+
+		set.addAll(setString20);
+		assertEquals(listInt10.size() + setString20.size() + dequeString40.size()
+				+ (duplicatesList.size() / 2), set.size());
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+	}
+
+	/**
+	 * This will test the behavior of {@link CompactHashSet#clear()} with random elements.
+	 */
+	public void testClear() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Set<Object> set = createSet();
+
+		int expectedCapacity = 16;
+		set.clear();
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
-		assertSame(16, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		set.clear();
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		expectedCapacity = 64;
+		set.clear();
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+		expectedCapacity = 128;
+		set.clear();
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+		set.addAll(duplicatesList);
+		expectedCapacity = 256;
+		set.clear();
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.clear();
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(expectedCapacity, getInternalCapacity(set));
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+	}
+
+	/**
+	 * This will test the behavior of {@link CompactHashSet#contains(Object)} with random elements.
+	 */
+	public void testContains() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Set<Object> set = createSet();
+
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(setString20);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(dequeString40);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(duplicatesList);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+
+		set.removeAll(setString20);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+
+		set.clear();
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+		set.addAll(duplicatesList);
+		for (Integer integer : listInt10) {
+			assertTrue(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertTrue(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertTrue(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertTrue(set.contains(o));
+		}
+		assertTrue(set.contains(null));
+
+		set.removeAll(listInt10);
+		set.removeAll(setString20);
+		set.removeAll(dequeString40);
+		set.removeAll(duplicatesList);
+		for (Integer integer : listInt10) {
+			assertFalse(set.contains(integer));
+		}
+		for (String string : setString20) {
+			assertFalse(set.contains(string));
+		}
+		for (String string : dequeString40) {
+			assertFalse(set.contains(string));
+		}
+		for (Object o : duplicatesList) {
+			assertFalse(set.contains(o));
+		}
+		assertFalse(set.contains(null));
+	}
+
+	/**
+	 * This will test the behavior of {@link CompactHashSet#containsAll(Object)} with random elements.
+	 */
+	public void testContainsAll() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Set<Object> set = createSet();
+
+		assertFalse(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+
+		set.addAll(listInt10);
+		assertTrue(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+
+		set.addAll(setString20);
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+
+		set.addAll(dequeString40);
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+
+		set.addAll(duplicatesList);
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+
+		set.removeAll(setString20);
+		assertTrue(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+
+		set.clear();
+		assertFalse(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+		set.addAll(duplicatesList);
+		assertTrue(set.containsAll(listInt10));
+		assertTrue(set.containsAll(setString20));
+		assertTrue(set.containsAll(dequeString40));
+		assertTrue(set.containsAll(duplicatesList));
+
+		set.removeAll(listInt10);
+		set.removeAll(setString20);
+		set.removeAll(dequeString40);
+		set.removeAll(duplicatesList);
+		assertFalse(set.containsAll(listInt10));
+		assertFalse(set.containsAll(setString20));
+		assertFalse(set.containsAll(dequeString40));
+		assertFalse(set.containsAll(duplicatesList));
+	}
+
+	/**
+	 * Tests the behavior of {@link CompactHashSet#equals(Object)} with random elements.
+	 */
+	public void testEquals() {
+		Set<Object> set1 = createSet();
+		Set<Object> set2 = createSet();
+
+		Collection<Object> objects1 = new ArrayList<Object>();
+		objects1.add(null);
+		objects1.addAll(randomStringDeque(40));
+		objects1.add(null);
+		assertSame(42, objects1.size());
+
+		assertTrue(set1.equals(set2));
+		assertTrue(set2.equals(set1));
+
+		set1.addAll(objects1);
+		set2.addAll(objects1);
+
+		Set<Object> set3 = createSet(set1);
+
+		assertTrue(set1.equals(set2));
+		assertTrue(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertTrue(set2.equals(set3));
+		assertTrue(set3.equals(set1));
+		assertTrue(set3.equals(set2));
+
+		for (int i = 0; i < 100; i++) {
+			String rand = getRandomString();
+			set1.add(rand);
+			set2.add(rand);
+		}
+		set1.add(null);
+		set2.add(null);
+		assertTrue(set1.equals(set2));
+		assertFalse(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertFalse(set2.equals(set3));
+		assertFalse(set3.equals(set1));
+		assertFalse(set3.equals(set2));
+
+		set1.remove(null);
+		assertFalse(set1.equals(set2));
+		assertFalse(set1.equals(set3));
+		assertFalse(set2.equals(set1));
+		assertFalse(set2.equals(set3));
+		assertFalse(set3.equals(set1));
+		assertFalse(set3.equals(set2));
+
+		set1.add(null);
+		assertTrue(set1.equals(set2));
+		assertFalse(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertFalse(set2.equals(set3));
+		assertFalse(set3.equals(set1));
+		assertFalse(set3.equals(set2));
+
+		set1.remove(null);
+		set2.remove(null);
+		assertTrue(set1.equals(set2));
+		assertFalse(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertFalse(set2.equals(set3));
+		assertFalse(set3.equals(set1));
+		assertFalse(set3.equals(set2));
+
+		set1.clear();
+		set2.clear();
+		assertTrue(set1.equals(set2));
+		assertFalse(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertFalse(set2.equals(set3));
+		assertFalse(set3.equals(set1));
+		assertFalse(set3.equals(set2));
+
+		set1.addAll(objects1);
+		set2.addAll(objects1);
+		assertTrue(set1.equals(set2));
+		assertTrue(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertTrue(set2.equals(set3));
+		assertTrue(set3.equals(set1));
+		assertTrue(set3.equals(set2));
+
+		set1.clear();
+		set2.clear();
+		set3.clear();
+		assertTrue(set1.equals(set2));
+		assertTrue(set1.equals(set3));
+		assertTrue(set2.equals(set1));
+		assertTrue(set2.equals(set3));
+		assertTrue(set3.equals(set1));
+		assertTrue(set3.equals(set2));
+	}
+
+	/**
+	 * Tests the behavior of {@link CompactHashSet#hashCode()} with random elements.
+	 */
+	public void testHashCode() {
+		Set<Object> set1 = createSet();
+		Set<Object> set2 = createSet();
+
+		Collection<Object> objects1 = new ArrayList<Object>();
+		objects1.add(null);
+		objects1.addAll(randomStringDeque(40));
+		objects1.add(null);
+		assertSame(42, objects1.size());
+
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+
+		set1.addAll(objects1);
+		set2.addAll(objects1);
+
+		Set<Object> set3 = createSet(set1);
+
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertTrue(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertTrue(set2.hashCode() == set3.hashCode());
+		assertTrue(set3.hashCode() == set1.hashCode());
+		assertTrue(set3.hashCode() == set2.hashCode());
+
+		for (int i = 0; i < 100; i++) {
+			String rand = getRandomString();
+			set1.add(rand);
+			set2.add(rand);
+		}
+		set1.add(null);
+		set2.add(null);
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertFalse(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertFalse(set2.hashCode() == set3.hashCode());
+		assertFalse(set3.hashCode() == set1.hashCode());
+		assertFalse(set3.hashCode() == set2.hashCode());
+
+		set1.remove(null);
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertFalse(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertFalse(set2.hashCode() == set3.hashCode());
+		assertFalse(set3.hashCode() == set1.hashCode());
+		assertFalse(set3.hashCode() == set2.hashCode());
+
+		set1.add(null);
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertFalse(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertFalse(set2.hashCode() == set3.hashCode());
+		assertFalse(set3.hashCode() == set1.hashCode());
+		assertFalse(set3.hashCode() == set2.hashCode());
+
+		set1.remove(null);
+		set2.remove(null);
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertFalse(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertFalse(set2.hashCode() == set3.hashCode());
+		assertFalse(set3.hashCode() == set1.hashCode());
+		assertFalse(set3.hashCode() == set2.hashCode());
+
+		set1.clear();
+		set2.clear();
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertFalse(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertFalse(set2.hashCode() == set3.hashCode());
+		assertFalse(set3.hashCode() == set1.hashCode());
+		assertFalse(set3.hashCode() == set2.hashCode());
+
+		set1.addAll(objects1);
+		set2.addAll(objects1);
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertTrue(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertTrue(set2.hashCode() == set3.hashCode());
+		assertTrue(set3.hashCode() == set1.hashCode());
+		assertTrue(set3.hashCode() == set2.hashCode());
+
+		set1.clear();
+		set2.clear();
+		set3.clear();
+		assertTrue(set1.hashCode() == set2.hashCode());
+		assertTrue(set1.hashCode() == set3.hashCode());
+		assertTrue(set2.hashCode() == set1.hashCode());
+		assertTrue(set2.hashCode() == set3.hashCode());
+		assertTrue(set3.hashCode() == set1.hashCode());
+		assertTrue(set3.hashCode() == set2.hashCode());
 	}
 
 	/**
@@ -53,6 +840,8 @@ public class CompactHashSetTest extends TestCase {
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
 
 		Set<Object> set = new CompactHashSet<Object>(listInt10);
 		assertFalse(set.isEmpty());
@@ -94,58 +883,18 @@ public class CompactHashSetTest extends TestCase {
 		for (Object o : duplicatesList) {
 			assertTrue(set.contains(o));
 		}
+		assertTrue(set.contains(null));
 	}
 
 	/**
-	 * Tests the {@link CompactHashSet#CompactHashSet(int)} constructor of our set.
+	 * Tests the empty set constructor.
 	 */
-	public void testInstantiationSize() {
-		Set<Object> set = new CompactHashSet<Object>(10);
+	public void testInstantiationEmpty() {
+		Set<Object> set = new CompactHashSet<Object>();
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(16, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
-
-		set = new CompactHashSet<Object>(0);
-		assertTrue(set.isEmpty());
-		assertSame(0, set.size());
-		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
-
-		set = new CompactHashSet<Object>((1 << 10) - 1);
-		assertTrue(set.isEmpty());
-		assertSame(0, set.size());
-		assertEquals(1 << 10, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
-
-		set = new CompactHashSet<Object>(1 << 31);
-		assertTrue(set.isEmpty());
-		assertSame(0, set.size());
-		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
-
-		set = new CompactHashSet<Object>(-10);
-		assertTrue(set.isEmpty());
-		assertSame(0, set.size());
-		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
-
-		try {
-			set = new CompactHashSet<Object>(Integer.MAX_VALUE);
-			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
-		} catch (IndexOutOfBoundsException e) {
-			// Expected
-		}
-		try {
-			/*
-			 * The last possible size for our internal array is 2^30, trying to hold that much elements will
-			 * yield a size of -1, which is invalid.
-			 */
-			set = new CompactHashSet<Object>((1 << 30) + 1);
-			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
-		} catch (IndexOutOfBoundsException e) {
-			// Expected
-		}
 	}
 
 	/**
@@ -209,6 +958,335 @@ public class CompactHashSetTest extends TestCase {
 	}
 
 	/**
+	 * Tests the {@link CompactHashSet#CompactHashSet(int)} constructor of our set.
+	 */
+	public void testInstantiationSize() {
+		Set<Object> set = new CompactHashSet<Object>(10);
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertSame(16, getInternalCapacity(set));
+		assertEquals(0.75f, getInternalLoadFactor(set));
+
+		set = new CompactHashSet<Object>(0);
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertSame(4, getInternalCapacity(set));
+		assertEquals(0.75f, getInternalLoadFactor(set));
+
+		set = new CompactHashSet<Object>((1 << 10) - 1);
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertEquals(1 << 10, getInternalCapacity(set));
+		assertEquals(0.75f, getInternalLoadFactor(set));
+
+		set = new CompactHashSet<Object>(1 << 31);
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertSame(4, getInternalCapacity(set));
+		assertEquals(0.75f, getInternalLoadFactor(set));
+
+		set = new CompactHashSet<Object>(-10);
+		assertTrue(set.isEmpty());
+		assertSame(0, set.size());
+		assertSame(4, getInternalCapacity(set));
+		assertEquals(0.75f, getInternalLoadFactor(set));
+
+		try {
+			set = new CompactHashSet<Object>(Integer.MAX_VALUE);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+		try {
+			/*
+			 * The last possible size for our internal array is 2^30, trying to hold that much elements will
+			 * yield a size of -1, which is invalid.
+			 */
+			set = new CompactHashSet<Object>((1 << 30) + 1);
+			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+	}
+
+	/**
+	 * Tests the behavior of {@link CompactHashSet#isEmpty()} with random elements.
+	 */
+	public void testIsEmpty() {
+		Set<Object> set = createSet();
+
+		assertTrue(set.isEmpty());
+
+		set.add(null);
+		assertFalse(set.isEmpty());
+
+		Collection<String> elements = new ArrayList<String>();
+		for (int i = 0; i < 100; i++) {
+			String rand = getRandomString();
+			elements.add(rand);
+			set.add(rand);
+			assertFalse(set.isEmpty());
+		}
+		for (String rand : elements) {
+			set.remove(rand);
+			assertFalse(set.isEmpty());
+		}
+
+		set.remove(null);
+		assertTrue(set.isEmpty());
+
+		for (int i = 0; i < 100; i++) {
+			set.add(getRandomString());
+			assertFalse(set.isEmpty());
+		}
+
+		set.clear();
+		assertTrue(set.isEmpty());
+	}
+
+	/**
+	 * Tests the behavior of {@link CompactHashSet#iterator()} with random elements.
+	 */
+	public void testIterator() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
+		Set<Object> set = createSet();
+
+		Iterator<Object> emptyIterator = set.iterator();
+		assertFalse(emptyIterator.hasNext());
+		try {
+			emptyIterator.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+
+		Iterator<Object> concurrentIterator = set.iterator();
+		set.add(null);
+		try {
+			concurrentIterator.next();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		set.clear();
+
+		set.add(null);
+		concurrentIterator = set.iterator();
+		assertNull(concurrentIterator.next());
+		set.add(new Object());
+		try {
+			concurrentIterator.remove();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		set.clear();
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+
+		Iterator<Object> containedValues = set.iterator();
+		while (containedValues.hasNext()) {
+			Object next = containedValues.next();
+			assertTrue(listInt10.contains(next) || setString20.contains(next) || dequeString40.contains(next));
+		}
+		assertFalse(containedValues.hasNext());
+
+		for (Integer val : listInt10) {
+			set.remove(val);
+		}
+		set.addAll(listInt10);
+
+		containedValues = set.iterator();
+		while (containedValues.hasNext()) {
+			Object next = containedValues.next();
+			assertTrue(listInt10.contains(next) || setString20.contains(next) || dequeString40.contains(next));
+		}
+		assertFalse(containedValues.hasNext());
+
+		set.clear();
+		assertFalse(set.iterator().hasNext());
+	}
+
+	/**
+	 * Tests the removal of elements of the Set through the iterator.remove method.
+	 */
+	public void testIteratorRemove() {
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
+		Set<Object> set = createSet();
+
+		Iterator<Object> emptyIterator = set.iterator();
+		assertFalse(emptyIterator.hasNext());
+		try {
+			emptyIterator.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		try {
+			emptyIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+
+		Iterator<Object> concurrentIterator = set.iterator();
+		set.add(null);
+		try {
+			concurrentIterator.next();
+			fail("Expected ConcurrentModificationException hasn't been thrown"); //$NON-NLS-1$
+		} catch (ConcurrentModificationException e) {
+			// expected
+		}
+		try {
+			concurrentIterator.remove();
+			fail("Expected IllegalStateException hasn't been thrown"); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			// expected
+		}
+		set.clear();
+
+		set.addAll(listInt10);
+		set.addAll(setString20);
+		set.addAll(dequeString40);
+
+		Iterator<Object> containedValues = set.iterator();
+		int size = set.size();
+		while (containedValues.hasNext()) {
+			final Object next = containedValues.next();
+			assertTrue(listInt10.contains(next) || setString20.contains(next) || dequeString40.contains(next));
+			assertSame(size, set.size());
+			containedValues.remove();
+			assertFalse(set.contains(next));
+			assertSame(--size, set.size());
+		}
+		assertFalse(containedValues.hasNext());
+		assertSame(0, set.size());
+	}
+
+	/**
+	 * Creates an empty set on which to execute these tests.
+	 * 
+	 * @return The set to execute these tests on.
+	 */
+	protected Set<Object> createSet() {
+		return new CompactHashSet<Object>();
+	}
+
+	/**
+	 * Creates a set containing all of the elements from the given collection.
+	 * 
+	 * @param collection
+	 *            The collection which elements are to be added to the new set.
+	 * @return The set to execute these tests on.
+	 */
+	protected Set<Object> createSet(Collection<? extends Object> collection) {
+		return new CompactHashSet<Object>(collection);
+	}
+
+	/**
+	 * Makes the "data" field of the given set public in order to retrieve it.
+	 * 
+	 * @param set
+	 *            The set we need the internal array of.
+	 * @return The internal array of the given set.
+	 */
+	private Object[] getInternalArray(Set<?> set) {
+		if (!(set instanceof CompactHashSet<?>)) {
+			fail("Unexpected set implementation"); //$NON-NLS-1$
+		}
+		Field dataField = null;
+		for (Field field : set.getClass().getDeclaredFields()) {
+			if (field.getName().equals("data")) { //$NON-NLS-1$
+				dataField = field;
+				break;
+			}
+		}
+		assertNotNull(dataField);
+		assert dataField != null;
+		dataField.setAccessible(true);
+		Object[] data = null;
+		try {
+			data = (Object[])dataField.get(set);
+		} catch (IllegalArgumentException e) {
+			// carry on
+		} catch (IllegalAccessException e) {
+			// carry on
+		}
+		if (data == null) {
+			fail("could not retrieve internal data array of " + set); //$NON-NLS-1$
+		}
+		return data;
+	}
+
+	/**
+	 * Makes the "data" field of the given set public in order to retrieve its current size.
+	 * 
+	 * @param set
+	 *            The set we need the capacity of.
+	 * @return The capacity of the given set.
+	 */
+	private int getInternalCapacity(Set<?> set) {
+		Object[] data = getInternalArray(set);
+		return data.length;
+	}
+
+	/**
+	 * Makes the "loadFactor" field of the given set public in order to retrieve it.
+	 * 
+	 * @param set
+	 *            The set we need the internal loadFactor of.
+	 * @return The loadFactor of the given set.
+	 */
+	private float getInternalLoadFactor(Set<?> set) {
+		if (!(set instanceof CompactHashSet<?>)) {
+			fail("Unexpected set implementation"); //$NON-NLS-1$
+		}
+		Field loadFactorField = null;
+		for (Field field : set.getClass().getDeclaredFields()) {
+			if (field.getName().equals("loadFactor")) { //$NON-NLS-1$
+				loadFactorField = field;
+				break;
+			}
+		}
+		assertNotNull(loadFactorField);
+		assert loadFactorField != null;
+		loadFactorField.setAccessible(true);
+		Float loadFactor = null;
+		try {
+			loadFactor = (Float)loadFactorField.get(set);
+		} catch (IllegalArgumentException e) {
+			// carry on
+		} catch (IllegalAccessException e) {
+			// carry on
+		}
+		if (loadFactor == null) {
+			fail("could not retrieve load factor of " + set); //$NON-NLS-1$
+		}
+		assert loadFactor != null;
+		return loadFactor.floatValue();
+	}
+
+	/**
 	 * Get the closest power of two greater than <code>number</code>.
 	 * 
 	 * @param number
@@ -224,6 +1302,24 @@ public class CompactHashSetTest extends TestCase {
 		powerOfTwo |= powerOfTwo >> 16;
 		powerOfTwo++;
 		return powerOfTwo;
+	}
+
+	/**
+	 * Returns a random Integer between 0 and 100000.
+	 * 
+	 * @return A random Integer between 0 and 100000.
+	 */
+	private Integer getRandomInteger() {
+		return Integer.valueOf(Double.valueOf(Math.random() * 100000d).intValue());
+	}
+
+	/**
+	 * Returns a random String representing an integer between 0 and 100000.
+	 * 
+	 * @return A random String representing an integer between 0 and 100000.
+	 */
+	private String getRandomString() {
+		return getRandomInteger().toString();
 	}
 
 	/**
@@ -281,115 +1377,5 @@ public class CompactHashSetTest extends TestCase {
 			set.add(s);
 		}
 		return set;
-	}
-
-	/**
-	 * Returns a random Integer between 0 and 100000.
-	 * 
-	 * @return A random Integer between 0 and 100000.
-	 */
-	private Integer getRandomInteger() {
-		return Integer.valueOf(Double.valueOf(Math.random() * 100000d).intValue());
-	}
-
-	/**
-	 * Returns a random String representing an integer between 0 and 100000.
-	 * 
-	 * @return A random String representing an integer between 0 and 100000.
-	 */
-	private String getRandomString() {
-		return getRandomInteger().toString();
-	}
-
-	/**
-	 * Makes the "data" field of the given set public in order to retrieve it.
-	 * 
-	 * @param set
-	 *            The set we need the internal array of.
-	 * @return The internal array of the given set.
-	 */
-	private Object[] getInternalArray(Set<?> set) {
-		if (!(set instanceof CompactHashSet<?>)) {
-			fail("Unexpected set implementation"); //$NON-NLS-1$
-		}
-		Field dataField = null;
-		for (Field field : set.getClass().getDeclaredFields()) {
-			if (field.getName().equals("data")) { //$NON-NLS-1$
-				dataField = field;
-				break;
-			}
-		}
-		assertNotNull(dataField);
-		assert dataField != null;
-		dataField.setAccessible(true);
-		Object[] data = null;
-		try {
-			data = (Object[])dataField.get(set);
-		} catch (IllegalArgumentException e) {
-			// carry on
-		} catch (IllegalAccessException e) {
-			// carry on
-		}
-		if (data == null) {
-			fail("could not retrieve internal data array of " + set); //$NON-NLS-1$
-		}
-		return data;
-	}
-
-	/**
-	 * Makes the "loadFactor" field of the given set public in order to retrieve it.
-	 * 
-	 * @param set
-	 *            The set we need the internal loadFactor of.
-	 * @return The loadFactor of the given set.
-	 */
-	private float getInternalLoadFactor(Set<?> set) {
-		if (!(set instanceof CompactHashSet<?>)) {
-			fail("Unexpected set implementation"); //$NON-NLS-1$
-		}
-		Field loadFactorField = null;
-		for (Field field : set.getClass().getDeclaredFields()) {
-			if (field.getName().equals("loadFactor")) { //$NON-NLS-1$
-				loadFactorField = field;
-				break;
-			}
-		}
-		assertNotNull(loadFactorField);
-		assert loadFactorField != null;
-		loadFactorField.setAccessible(true);
-		Float loadFactor = null;
-		try {
-			loadFactor = (Float)loadFactorField.get(set);
-		} catch (IllegalArgumentException e) {
-			// carry on
-		} catch (IllegalAccessException e) {
-			// carry on
-		}
-		if (loadFactor == null) {
-			fail("could not retrieve load factor of " + set); //$NON-NLS-1$
-		}
-		assert loadFactor != null;
-		return loadFactor.floatValue();
-	}
-
-	/**
-	 * Makes the "data" field of the given set public in order to retrieve its current size.
-	 * 
-	 * @param set
-	 *            The set we need the capacity of.
-	 * @return The capacity of the given set.
-	 */
-	private int getInternalCapacity(Set<?> set) {
-		Object[] data = getInternalArray(set);
-		return data.length;
-	}
-
-	/**
-	 * Creates an empty set on which to execute these tests.
-	 * 
-	 * @return The set to execute these tests on.
-	 */
-	protected Set<Object> createSet() {
-		return new CompactHashSet<Object>();
 	}
 }

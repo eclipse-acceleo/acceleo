@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -183,6 +189,91 @@ public class CircularArrayDequeTest extends TestCase {
 		assertTrue(deque.containsAll(setString20));
 		assertTrue(deque.containsAll(dequeString40));
 		assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+	}
+
+	/**
+	 * Tests the behavior of {@link CircularArrayDeque#addAll(Collection)} with random elements.
+	 */
+	public void testAddAllRandomAccess() {
+		Collection<Object> emptyCollection = Collections.emptyList();
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+
+		/*
+		 * we'll do this five times : one by adding at the beginning (0), one by adding at the end
+		 * (deque.size), one by adding in the first half (deque.size / 4), one by adding in the last half
+		 * (deque.size / 4 * 3) and finally by adding at the middle (deque.size / 2).
+		 */
+		for (int i = 0; i < 5; i++) {
+			Deque<Object> deque = new CircularArrayDeque<Object>();
+
+			int insertionIndex = 0;
+			if (i == 1) {
+				insertionIndex = deque.size();
+			} else if (i == 2) {
+				insertionIndex = deque.size() / 4;
+			} else if (i == 3) {
+				insertionIndex = deque.size() / 4 * 3;
+			} else if (i == 4) {
+				insertionIndex = deque.size() / 2;
+			}
+			boolean modified = deque.addAll(insertionIndex, emptyCollection);
+			assertFalse(modified);
+			assertEquals(0, deque.size());
+			assertEquals(16, getInternalCapacity(deque));
+
+			insertionIndex = 0;
+			if (i == 1) {
+				insertionIndex = deque.size();
+			} else if (i == 2) {
+				insertionIndex = deque.size() / 4;
+			} else if (i == 3) {
+				insertionIndex = deque.size() / 4 * 3;
+			} else if (i == 4) {
+				insertionIndex = deque.size() / 2;
+			}
+			modified = deque.addAll(insertionIndex, listInt10);
+			assertTrue(modified);
+			assertEquals(listInt10.size(), deque.size());
+			assertTrue(deque.containsAll(listInt10));
+			assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+			insertionIndex = 0;
+			if (i == 1) {
+				insertionIndex = deque.size();
+			} else if (i == 2) {
+				insertionIndex = deque.size() / 4;
+			} else if (i == 3) {
+				insertionIndex = deque.size() / 4 * 3;
+			} else if (i == 4) {
+				insertionIndex = deque.size() / 2;
+			}
+			modified = deque.addAll(insertionIndex, setString20);
+			assertTrue(modified);
+			assertEquals(listInt10.size() + setString20.size(), deque.size());
+			assertTrue(deque.containsAll(listInt10));
+			assertTrue(deque.containsAll(setString20));
+			assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+
+			insertionIndex = 0;
+			if (i == 1) {
+				insertionIndex = deque.size();
+			} else if (i == 2) {
+				insertionIndex = deque.size() / 4;
+			} else if (i == 3) {
+				insertionIndex = deque.size() / 4 * 3;
+			} else if (i == 4) {
+				insertionIndex = deque.size() / 2;
+			}
+			modified = deque.addAll(insertionIndex, dequeString40);
+			assertTrue(modified);
+			assertEquals(listInt10.size() + setString20.size() + dequeString40.size(), deque.size());
+			assertTrue(deque.containsAll(listInt10));
+			assertTrue(deque.containsAll(setString20));
+			assertTrue(deque.containsAll(dequeString40));
+			assertEquals(getNextPowerOfTwo(deque.size()), getInternalCapacity(deque));
+		}
 	}
 
 	/**
@@ -606,12 +697,6 @@ public class CircularArrayDequeTest extends TestCase {
 		objects1.addAll(randomStringDeque(40));
 		objects1.add(null);
 		assertSame(42, objects1.size());
-
-		Collection<Object> objects2 = new ArrayList<Object>();
-		objects2.add(null);
-		objects2.addAll(randomStringSet(40));
-		objects2.add(null);
-		assertSame(42, objects2.size());
 
 		deque1.addAll(objects1);
 		deque2.addAll(objects1);
@@ -1065,6 +1150,68 @@ public class CircularArrayDequeTest extends TestCase {
 
 		deque.clear();
 		assertTrue(deque.isEmpty());
+	}
+
+	/**
+	 * Tests the behavior of the serialization and deserialization support of the {@link CircularArrayDeque}.
+	 * FIXME test deserialization from file to ensure we do not break support of older serialized deques.
+	 */
+	public void testIsSerializable() {
+		Collection<Object> emptyCollection = Collections.emptyList();
+		Collection<Integer> listInt10 = randomIntegerList(10);
+		Collection<String> setString20 = randomStringSet(20);
+		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Object> duplicatesList = new ArrayList<Object>();
+		for (int i = 0; i < 40; i++) {
+			int dupe = i / 2;
+			duplicatesList.add(Integer.valueOf(dupe));
+			duplicatesList.add(String.valueOf(dupe));
+		}
+		duplicatesList.add(null);
+		duplicatesList.add(null);
+
+		Deque<Object> deque = new CircularArrayDeque<Object>();
+
+		byte[] serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		Deque<Object> read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
+
+		deque.addAll(emptyCollection);
+		serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
+
+		deque.addAll(listInt10);
+		serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
+
+		deque.addAll(setString20);
+		serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
+
+		deque.addAll(dequeString40);
+		serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
+
+		deque.addAll(duplicatesList);
+		serialized = writeDeque(deque);
+		assertTrue(serialized.length > 0);
+		read = readDeque(serialized);
+		assertNotNull(read);
+		assertEquals(deque, read);
 	}
 
 	/**
@@ -2425,6 +2572,13 @@ public class CircularArrayDequeTest extends TestCase {
 		assertFalse(modified);
 		modified = deque.removeAll(dequeString40);
 		assertFalse(modified);
+
+		deque.add(null);
+		assertTrue(deque.contains(null));
+		assertFalse(deque.isEmpty());
+		deque.removeAll(Collections.singleton(null));
+		assertFalse(deque.contains(null));
+		assertTrue(deque.isEmpty());
 	}
 
 	/**
@@ -4447,5 +4601,51 @@ public class CircularArrayDequeTest extends TestCase {
 			set.add(s);
 		}
 		return set;
+	}
+
+	/**
+	 * Reads a Deque from the given string.
+	 * 
+	 * @param serialized
+	 *            The serialized deque we are to read.
+	 * @return The read Deque.
+	 */
+	@SuppressWarnings("unchecked")
+	private Deque<Object> readDeque(byte[] serialized) {
+		try {
+			InputStream bais = new ByteArrayInputStream(serialized);
+			ObjectInputStream stream = new ObjectInputStream(bais);
+			Object read = stream.readObject();
+			stream.close();
+			if (read instanceof Deque<?>) {
+				return (Deque<Object>)read;
+			}
+			fail("The read Object wasn't a Deque"); //$NON-NLS-1$
+		} catch (ClassNotFoundException e) {
+			fail("Unexpected ClassNotFoundException thrown"); //$NON-NLS-1$
+		} catch (IOException e) {
+			fail("Unexpected IOException thrown"); //$NON-NLS-1$	
+		}
+		return null;
+	}
+
+	/**
+	 * Serializes the given deque to a String.
+	 * 
+	 * @param deque
+	 *            The deque we are to serialize.
+	 * @return The serialized deque.
+	 */
+	private byte[] writeDeque(Deque<Object> deque) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream stream = new ObjectOutputStream(baos);
+			stream.writeObject(deque);
+			stream.close();
+			return baos.toByteArray();
+		} catch (IOException e) {
+			fail("Unexpected IOException thrown"); //$NON-NLS-1$
+		}
+		return new byte[0];
 	}
 }
