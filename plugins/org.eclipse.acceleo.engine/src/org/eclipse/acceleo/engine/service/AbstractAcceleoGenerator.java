@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
@@ -38,7 +40,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -87,6 +91,13 @@ public abstract class AbstractAcceleoGenerator {
 	protected File targetFolder;
 
 	/**
+	 * This will be used to know which resource to <u>not</u> unload from the resourceSet post generation.
+	 * 
+	 * @since 3.1
+	 */
+	protected Set<Resource> originalResources = new HashSet<Resource>();
+
+	/**
 	 * Allows clients to add a generation listener to this generator instance.
 	 * 
 	 * @param listener
@@ -130,6 +141,10 @@ public abstract class AbstractAcceleoGenerator {
 			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
 					target, monitor));
 		}
+
+		postGenerate(getModule().eResource().getResourceSet());
+		originalResources.clear();
+
 		return result;
 	}
 
@@ -251,7 +266,15 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
 	 */
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
-		ResourceSet resourceSet = createResourceSet();
+		ResourceSet resourceSet = element.eResource().getResourceSet();
+		originalResources.addAll(resourceSet.getResources());
+		resourceSet.setURIConverter(createURIConverter());
+
+		// make sure that metamodel projects in the workspace override those in plugins
+		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
 
 		addListeners();
 		addProperties();
@@ -292,7 +315,14 @@ public abstract class AbstractAcceleoGenerator {
 	 *             the model cannot be loaded.
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
-		ResourceSet resourceSet = createResourceSet();
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.setURIConverter(createURIConverter());
+
+		// make sure that metamodel projects in the workspace override those in plugins
+		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
+		registerResourceFactories(resourceSet);
+		registerPackages(resourceSet);
 
 		addListeners();
 		addProperties();
@@ -405,15 +435,30 @@ public abstract class AbstractAcceleoGenerator {
 	}
 
 	/**
-	 * Creates the resource set we'll use to load our modules.
+	 * This will be called by the engine when the generation stops. By default, we'll use this opportunity to
+	 * unload the resources we've loaded in the resource set.
 	 * 
-	 * @return The created resource set.
+	 * @param rs
+	 *            The resource set from which to unload resources.
+	 * @since 3.0
+	 */
+	protected void postGenerate(ResourceSet rs) {
+		List<Resource> unload = new ArrayList<Resource>(rs.getResources());
+		unload.removeAll(originalResources);
+		for (Resource res : unload) {
+			res.unload();
+			rs.getResources().remove(res);
+		}
+	}
+
+	/**
+	 * Creates the URI Converter we'll use to load our modules.
+	 * 
+	 * @return The created URI Converted.
 	 * @since 3.1
 	 */
-	protected ResourceSet createResourceSet() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		// Set our own URI Converter in order to handle jarred emtls
-		resourceSet.setURIConverter(new ExtensibleURIConverterImpl() {
+	protected URIConverter createURIConverter() {
+		return new ExtensibleURIConverterImpl() {
 			/**
 			 * {@inheritDoc}
 			 * 
@@ -426,7 +471,7 @@ public abstract class AbstractAcceleoGenerator {
 					BundleURLConverter conv = new BundleURLConverter(uri.toString());
 					if (conv.resolveBundle() != null) {
 						normalized = URI.createURI(conv.resolveAsPlatformPlugin());
-						getURIMap().put(normalized, uri);
+						getURIMap().put(uri, normalized);
 					}
 				}
 				if (normalized != null) {
@@ -434,15 +479,7 @@ public abstract class AbstractAcceleoGenerator {
 				}
 				return super.normalize(uri);
 			}
-		});
-
-		// make sure that metamodel projects in the workspace override those in plugins
-		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
-
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
-
-		return resourceSet;
+		};
 	}
 
 	/**
