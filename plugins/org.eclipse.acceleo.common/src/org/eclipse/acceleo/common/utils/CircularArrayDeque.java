@@ -32,6 +32,12 @@ import java.util.RandomAccess;
  * {@link NoSuchElementException}s when the queue is empty.
  * </p>
  * <p>
+ * Most operations on the {@link CircularArrayDeque} execute in constant time. This includes
+ * {@link #addFirst(Object)}, {@link #addLast(Object)}, {@link #removeFirst()}, {@link #removeLast()} and
+ * {@link #get(int)}. Other random-access operations such as {@link #add(Object)} and {@link #remove(Object)}
+ * execute in amortized linear time, with the constant being lower than for the {@link java.util.ArrayList}.
+ * </p>
+ * <p>
  * This implementation of a double-ended queue is backed by an array which size we'll always maintain to be a
  * power of two. Adding and removing elements from both ends we'll end up moving the "head" and "tail"
  * pointers by one to either the left or the right. This deque is considered empty when these two pointers are
@@ -257,9 +263,6 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 				data[insertionIndex] = iterator.next();
 				modCount++;
 				insertionIndex = (insertionIndex + 1) & mask;
-			}
-			if (head == tail) {
-				doubleCapacity();
 			}
 		}
 		return true;
@@ -903,16 +906,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		// How many indices still to delete?
 		if (cursor == startIndex) {
 			// Only 1
-			if (indices[startIndex] == ((tail - 1) & mask)) {
-				removeLast();
-			} else {
-				modCount++;
-				tail = (tail - 1) & mask;
-				for (int i = indices[startIndex]; i != tail; i = (i + 1) & mask) {
-					data[i] = data[(i + 1) & mask];
-				}
-				data[tail] = null;
+			modCount++;
+			tail = (tail - 1) & mask;
+			for (int i = indices[startIndex]; i != tail; i = (i + 1) & mask) {
+				data[i] = data[(i + 1) & mask];
 			}
+			data[tail] = null;
 		} else if (cursor > startIndex) {
 			tail = (tail - 1) & mask;
 			int gap = 1;
@@ -954,16 +953,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		// How many indices still to delete?
 		if (cursor == startIndex) {
 			// Only 1
-			if (indices[startIndex] == head) {
-				removeFirst();
-			} else {
-				modCount++;
-				for (int i = indices[startIndex]; i != head; i = (i - 1) & mask) {
-					data[i] = data[(i - 1) & mask];
-				}
-				data[head] = null;
-				head = (head - 1) & mask;
+			modCount++;
+			for (int i = indices[startIndex]; i != head; i = (i - 1) & mask) {
+				data[i] = data[(i - 1) & mask];
 			}
+			data[head] = null;
+			head = (head - 1) & mask;
 		} else if (cursor < startIndex) {
 			int gap = 1;
 			int fence = cursor;
@@ -1056,7 +1051,12 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	 */
 	@SuppressWarnings("unchecked")
 	private void setCapacity(int newCapacity) {
-		final int oldCapacity = data.length;
+		final int newTail;
+		if (head == tail) {
+			newTail = data.length;
+		} else {
+			newTail = size();
+		}
 		E[] temp = (E[])new Object[newCapacity];
 
 		int headLength = data.length - head;
@@ -1067,7 +1067,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 
 		data = temp;
 		head = 0;
-		tail = oldCapacity;
+		tail = newTail;
 	}
 
 	/**
