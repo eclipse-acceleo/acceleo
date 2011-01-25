@@ -80,24 +80,28 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (getProject() == null || !getProject().isAccessible()) {
 			return new IProject[] {};
 		} else {
-			outputFolder = getOutputFolder(getProject());
 			try {
-				if (kind == FULL_BUILD) {
-					clean(monitor);
-					fullBuild(monitor);
-				} else {
-					IResourceDelta delta = getDelta(getProject());
-					if (delta == null) {
+				outputFolder = getOutputFolder(getProject());
+				try {
+					if (kind == FULL_BUILD) {
 						clean(monitor);
 						fullBuild(monitor);
 					} else {
-						incrementalBuild(delta, monitor);
+						IResourceDelta delta = getDelta(getProject());
+						if (delta == null) {
+							clean(monitor);
+							fullBuild(monitor);
+						} else {
+							incrementalBuild(delta, monitor);
+						}
 					}
+				} catch (OperationCanceledException e) {
+					// continue
+				} finally {
+					outputFolder = null;
 				}
 			} catch (OperationCanceledException e) {
-				// continue
-			} finally {
-				outputFolder = null;
+				// We've only thrown this to cancel everything, stop propagation
 			}
 			return null;
 		}
