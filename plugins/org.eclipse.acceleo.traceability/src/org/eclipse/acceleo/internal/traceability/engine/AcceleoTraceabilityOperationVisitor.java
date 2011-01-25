@@ -854,6 +854,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		AbstractTrace trace = visitor.getLastExpressionTrace();
 		Map.Entry<InputElement, Set<GeneratedText>> lastEntry = null;
 		GeneratedText lastRegion = null;
+		List<GeneratedText> removeRegions = new ArrayList<GeneratedText>();
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 			Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 			while (textIterator.hasNext()) {
@@ -864,7 +865,11 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				} else if (text.getEndOffset() > lastRegion.getEndOffset()) {
 					// lastEntry cannot be null once we get here
 					assert lastEntry != null;
-					lastEntry.getValue().remove(lastRegion);
+					removeRegions.add(lastRegion);
+					if (entry != lastEntry) {
+						lastEntry.getValue().removeAll(removeRegions);
+						removeRegions.clear();
+					}
 					lastRegion = text;
 					lastEntry = entry;
 				} else {
