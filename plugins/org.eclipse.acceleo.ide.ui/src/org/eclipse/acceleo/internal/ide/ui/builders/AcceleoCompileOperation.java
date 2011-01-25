@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -105,6 +106,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		monitor.beginTask(AcceleoUIMessages.getString("AcceleoCompileOperation.Task.Compile"), files.length); //$NON-NLS-1$
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		for (int i = 0; i < files.length; i++) {
+			checkCanceled(monitor);
 			monitor.subTask(AcceleoUIMessages.getString(
 					"AcceleoCompileOperation.Task.Clean", files[0].getFullPath().toString())); //$NON-NLS-1$
 			files[i].deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
@@ -152,6 +154,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		List<AcceleoFile> iFiles = new ArrayList<AcceleoFile>();
 		List<URI> oURIs = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
+			checkCanceled(monitor);
 			if (acceleoProject.getOutputFilePath(files[i]) != null) {
 				IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
 				if (outputPath != null) {
@@ -183,7 +186,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
-		if (!monitor.isCanceled()) {
+		checkCanceled(monitor);
 			List<IFile> filesWithMainTag = new ArrayList<IFile>();
 			for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
 				AcceleoFile iFile = iterator.next();
@@ -196,7 +199,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
 					acceleoProject, filesWithMainTag);
 			createRunnableAcceleoOperation.run(monitor);
-		}
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
 			Iterator<AcceleoFile> itFiles = iFiles.iterator();
@@ -271,6 +273,18 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		return false;
 	}
 
+	/**
+	 * Checks whether the given monitor has been canceled and throw and interrupted exception if so.
+	 * 
+	 * @param monitor
+	 *            Monitor to check the state of.
+	 */
+	private void checkCanceled(IProgressMonitor monitor) {
+		if (monitor.isCanceled()) {
+			throw new OperationCanceledException();
+		}
+	}
+	
 	/**
 	 * Creates an error marker on the given file.
 	 * 
