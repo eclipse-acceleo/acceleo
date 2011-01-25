@@ -33,6 +33,7 @@ import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoRuntimeException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
@@ -248,6 +249,22 @@ public class AcceleoEvaluationContext<C> {
 		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 		exception.setStackTrace(createAcceleoStackTrace());
 		return exception;
+	}
+
+	/**
+	 * Wraps the given throwable inside a custom Acceleo Exception.
+	 * 
+	 * @param cause
+	 *            Actual cause of the failure.
+	 * @return The created exception. Could be <code>null</code> if this context has already been disposed.
+	 */
+	public AcceleoRuntimeException createAcceleoRuntimeException(Throwable cause) {
+		if (expressionStack.size() > 0) {
+			AcceleoRuntimeException exception = new AcceleoRuntimeException(cause);
+			exception.setStackTrace(createAcceleoStackTrace());
+			return exception;
+		}
+		return null;
 	}
 
 	/**

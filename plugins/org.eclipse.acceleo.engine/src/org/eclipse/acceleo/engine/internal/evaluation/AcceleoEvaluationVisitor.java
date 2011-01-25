@@ -25,6 +25,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoRuntimeException;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
@@ -998,6 +999,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		} catch (final AcceleoEvaluationException e) {
 			// We'll Try and carry on evaluating the expressions
 			AcceleoEnginePlugin.log(e, false);
+		} catch (final AcceleoRuntimeException e) {
+			// We simply need to propagate this, this block is here to avoid falling back to the catch
+			// RuntimeException
+			throw e;
 			// CHECKSTYLE:OFF
 			/*
 			 * deactivated checkstyle as we need to properly dispose the context when an exception is thrown
@@ -1005,12 +1010,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			 */
 		} catch (final RuntimeException e) {
 			// CHECKSTYLE:ON
+			AcceleoRuntimeException acceleoException = context.createAcceleoRuntimeException(e);
 			try {
 				context.dispose();
 			} catch (final AcceleoEvaluationException ee) {
 				// We're already in an exception handling phase. Propagate the former exception.
 			}
-			throw e;
+			throw acceleoException;
 		} finally {
 			if (debug != null && !(expression instanceof StringLiteralExp)) {
 				debug.stepDebugOutput(astFragment, debugInput, result);
