@@ -47,9 +47,11 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.EvaluationVisitor;
 import org.eclipse.ocl.EvaluationVisitorDecorator;
@@ -1040,6 +1042,16 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (callExp.getSource().getType() == stringType
 					|| callExp.getArgument().get(0).getType() == stringType) {
 				((EObject)callExp.getReferredOperation()).eAdapters().add(new AcceleoOverrideAdapter());
+			}
+		}
+		/*
+		 * OCL used "/" as operation name for the division ... Which means divisions will never be
+		 * serializable : its URI is invalid. We'll then try and "trick" OCL for these.
+		 */
+		if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
+			URI uri = ((InternalEObject)callExp.getReferredOperation()).eProxyURI();
+			if (uri.fragment() != null && uri.fragment().endsWith("%2F")) { //$NON-NLS-1$
+				callExp.setOperationCode(PredefinedType.DIVIDE);
 			}
 		}
 		lastSourceExpression = callExp.getSource();
