@@ -1356,8 +1356,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		} catch (CoreException e) {
 			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
 		}
-		String replacementStringAfter = ", ${false}, '${" + defaultEncoding //$NON-NLS-1$
-				+ "}')]\n" + tab + '\t' + '\n' + tab + '[' + '/' //$NON-NLS-1$
+		String replacementStringAfter = ", ${false}, '" + defaultEncoding //$NON-NLS-1$
+				+ "')]\n" + tab + '\t' + '\n' + tab + '[' + '/' //$NON-NLS-1$
 				+ IAcceleoConstants.FILE + ']';
 		String replacementString = replacementStringBefore + replacementStringAfter;
 		String displayString = '[' + IAcceleoConstants.FILE + ']';
