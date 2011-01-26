@@ -440,7 +440,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * 
 	 * @param rs
 	 *            The resource set from which to unload resources.
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	protected void postGenerate(ResourceSet rs) {
 		List<Resource> unload = new ArrayList<Resource>(rs.getResources());
