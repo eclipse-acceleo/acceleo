@@ -33,9 +33,10 @@ import java.util.RandomAccess;
  * </p>
  * <p>
  * Most operations on the {@link CircularArrayDeque} execute in constant time. This includes
- * {@link #addFirst(Object)}, {@link #addLast(Object)}, {@link #removeFirst()}, {@link #removeLast()} and
- * {@link #get(int)}. Other random-access operations such as {@link #add(Object)} and {@link #remove(Object)}
- * execute in amortized linear time, with the constant being lower than for the {@link java.util.ArrayList}.
+ * {@link #add(Object)}, {@link #addAll(Collection)}n {@link #addFirst(Object)}, {@link #addLast(Object)},
+ * {@link #removeFirst()}, {@link #removeLast()} and {@link #get(int)}. Other random-access operations such as
+ * {@link #add(int, Object)} and {@link #remove(Object)} execute in amortized linear time, with the constant
+ * being lower (<code>1/2</code>) than for the {@link java.util.ArrayList}.
  * </p>
  * <p>
  * This implementation of a double-ended queue is backed by an array which size we'll always maintain to be a

@@ -25,6 +25,19 @@ import java.util.Set;
  * {@link java.util.HashMap} implementation that resolve it by using a {@link java.util.LinkedList} for each
  * hash.
  * </p>
+ * <p>
+ * These differences between the {@link java.util.HashSet} and the {@link CompactHashSet} allow for more
+ * efficient memory usage, and faster iteration (sequential array read for the {@link CompactHashSet} versus
+ * sequential array read plus doubly linked list iteration for the standard {@link java.util.HashSet}).
+ * Consequently, the write operations also come out faster.
+ * </p>
+ * <p>
+ * This class offers constant time performance for the basic {@link #add(Object)}, {@link #contains(Object)}
+ * and {@link #remove(Object)} operations if the {@link Object#hashCode()} function of the contained Objects
+ * evenly disperses the elements. Iteration over this set's elements requires time proportional to its
+ * internal array's length (which is equal to the next power of two greater than the highest {@link #size()}
+ * this set attained).
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
