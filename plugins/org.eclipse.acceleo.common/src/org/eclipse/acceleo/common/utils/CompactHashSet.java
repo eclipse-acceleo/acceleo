@@ -21,15 +21,18 @@ import java.util.Set;
  * This implementation of the {@link Set} interface uses the same hashing functions as the
  * {@link java.util.HashSet} does. However it does not rely on an underlying map.
  * <p>
- * In case of hash collisions, we'll use linear proving with a step of 1 instead of the
- * {@link java.util.HashMap} implementation that resolve it by using a {@link java.util.LinkedList} for each
- * hash.
+ * The {@link java.util.HashSet} uses open hashing to resolve hash collisions : each bucket of the underlying
+ * array points to a Linked List containing the actual elements. The {@link CompactHashSet} uses closed
+ * hashing, storing the actual elements in their own bucket and using linear probing (with a step of
+ * <code>1</code>) to determine the bucket in case of collisions.
  * </p>
  * <p>
- * These differences between the {@link java.util.HashSet} and the {@link CompactHashSet} allow for more
- * efficient memory usage, and faster iteration (sequential array read for the {@link CompactHashSet} versus
- * sequential array read plus doubly linked list iteration for the standard {@link java.util.HashSet}).
- * Consequently, the write operations also come out faster.
+ * The {@link CompactHashSet} implementation has been designed for minimal memory footprint. It does not keep
+ * a cache of the inserted elements' hashCodes, and thus we need to actually use the
+ * {@link Object#equals(Object)} method when searching for an existing entry without checking the hashCode
+ * values beforehand. This behavior can lead to slower performance on {@link #contains(Object)} and
+ * {@link #add(Object)}... Though not so much in practice as the iteration through existing elements is
+ * actually faster.
  * </p>
  * <p>
  * This class offers constant time performance for the basic {@link #add(Object)}, {@link #contains(Object)}
