@@ -26,6 +26,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -111,8 +112,8 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 			}
 
 			if (generator != null) {
-				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getLocation()
-						.append(model).toString());
+				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getFile(
+						new Path(model)).getLocation().toString());
 				modelURI = URI.createURI(URI.decode(modelURI.toString()));
 				generator.initialize(modelURI, targetFolder, args);
 				generator.doGenerate(BasicMonitor.toMonitor(monitor));
