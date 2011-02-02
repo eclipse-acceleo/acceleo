@@ -98,7 +98,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 */
 	@Override
 	public String toString() {
-		if (astNode != null) {
+		if (astNode != null && !astNode.eIsProxy()) {
 			String templateName = astNode.eResource().getURI().lastSegment();
 			String templateDisplay;
 			if (astNode instanceof ModuleElement) {
@@ -114,9 +114,13 @@ public class TraceabilityRegion extends TraceabilityElement {
 			}
 			return "[" + targetFileOffset + "," + (targetFileOffset + targetFileLength) + "] by '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ templateDisplay + "'"; //$NON-NLS-1$
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+
+		String result = ""; //$NON-NLS-1$
+		if (astNode != null) {
+			result = astNode.toString();
+		}
+		return result;
 	}
 
 	/**
