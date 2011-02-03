@@ -268,7 +268,9 @@ public abstract class AbstractAcceleoGenerator {
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
 		ResourceSet resourceSet = element.eResource().getResourceSet();
 		originalResources.addAll(resourceSet.getResources());
-		resourceSet.setURIConverter(createURIConverter());
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			resourceSet.setURIConverter(createURIConverter());
+		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
 		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
@@ -316,7 +318,9 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.setURIConverter(createURIConverter());
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			resourceSet.setURIConverter(createURIConverter());
+		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
 		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
