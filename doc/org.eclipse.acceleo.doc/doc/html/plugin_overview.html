@@ -61,11 +61,36 @@ file, mode, text_explicit*, code_explicit*, super, stdout
 </div>
 <div class="section" id="requirements">
 <h1><a class="toc-backref" href="#id2">Requirements</a></h1>
-<p>Acceleo depends on:</p>
-<ol class="arabic simple">
-<li>EMF runtime ( 2.4.X and later )</li>
-<li>OCL runtime ( 1.2.X and later )</li>
-</ol>
+<p>The Acceleo development team does its best to maintain downward compatibility towards Ganymede (Eclipse 3.4). Following
+is the compatibility chart :</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="31%" />
+<col width="31%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Acceleo</th>
+<th class="head">Eclipse 3.4 - EMF 2.4 - OCL 1.2</th>
+<th class="head">Eclipse 3.5 - EMF 2.5 - OCL 1.3</th>
+<th class="head">Eclipse 3.6 - EMF 2.6 - OCL 3.0</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>0.8</td>
+<td>OK</td>
+<td>OK</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>3.0</td>
+<td>OK</td>
+<td>OK</td>
+<td>OK</td>
+</tr>
+</tbody>
+</table>
+<p>An empty cell indicates that the compatibility hasn't been tested for a particular combination.</p>
 <p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="acceleo-modules-and-projects">

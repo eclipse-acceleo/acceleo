@@ -37,10 +37,18 @@ back to Contents_
 Requirements
 ============
 
-Acceleo depends on:
+The Acceleo development team does its best to maintain downward compatibility towards Ganymede (Eclipse 3.4). Following
+is the compatibility chart :
 
-#. EMF runtime ( 2.4.X and later )
-#. OCL runtime ( 1.2.X and later )
++---------+---------------------------------+---------------------------------+---------------------------------+
+| Acceleo | Eclipse 3.4 - EMF 2.4 - OCL 1.2 | Eclipse 3.5 - EMF 2.5 - OCL 1.3 | Eclipse 3.6 - EMF 2.6 - OCL 3.0 | 
++=========+=================================+=================================+=================================+
+| 0.8     | OK                              | OK                              |                                 |
++---------+---------------------------------+---------------------------------+---------------------------------+
+| 3.0     | OK                              | OK                              | OK                              |
++---------+---------------------------------+---------------------------------+---------------------------------+
+
+An empty cell indicates that the compatibility hasn't been tested for a particular combination.
 
 back to Contents_
 
