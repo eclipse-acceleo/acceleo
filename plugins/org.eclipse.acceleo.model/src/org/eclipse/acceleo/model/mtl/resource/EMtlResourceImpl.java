@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -65,9 +66,13 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doLoad(java.io.InputStream, java.util.Map)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+		// Record unknown features so that we can load emtl files compiled under 3.1 with 3.0
+		((Map<Object, Object>)options).put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
 		super.doLoad(inputStream, options);
+
 		EAnnotation positions = getPositions(false);
 		if (positions != null) {
 			restorePositions(positions);
