@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -69,9 +70,13 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+		Map<Object, Object> actualOptions = (Map<Object, Object>)options;
+		if (actualOptions == null) {
+			actualOptions = Collections.EMPTY_MAP;
+		}
 		// Record unknown features so that we can load emtl files compiled under 3.1 with 3.0
-		((Map<Object, Object>)options).put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
-		super.doLoad(inputStream, options);
+		actualOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
+		super.doLoad(inputStream, actualOptions);
 
 		EAnnotation positions = getPositions(false);
 		if (positions != null) {
