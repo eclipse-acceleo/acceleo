@@ -157,15 +157,16 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	@Override
 	public void add(int index, E element) {
 		int size = size();
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException(String.valueOf(index));
-		}
 
 		if (index == 0) {
 			addFirst(element);
 		} else if (index == size) {
 			addLast(element);
 		} else {
+			if (index < 0 || index > size) {
+				throw new IndexOutOfBoundsException(String.valueOf(index));
+			}
+
 			/*
 			 * If we are close to head, we'll move elements to the left. If we are closer to tail, we'll move
 			 * them to the right.
@@ -275,8 +276,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	 * @see org.eclipse.acceleo.common.utils.Deque#addFirst(java.lang.Object)
 	 */
 	public void addFirst(E element) {
-		final int mask = data.length - 1;
-		head = (head - 1) & mask;
+		head = (head - 1) & (data.length - 1);
 		data[head] = element;
 		modCount++;
 		if (head == tail) {
@@ -290,10 +290,9 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	 * @see org.eclipse.acceleo.common.utils.Deque#addLast(java.lang.Object)
 	 */
 	public void addLast(E element) {
-		final int mask = data.length - 1;
 		data[tail] = element;
 		modCount++;
-		tail = (tail + 1) & mask;
+		tail = (tail + 1) & (data.length - 1);
 		if (head == tail) {
 			doubleCapacity();
 		}
@@ -709,8 +708,7 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 		if (head == tail) {
 			throw new NoSuchElementException();
 		}
-		final int mask = data.length - 1;
-		tail = (tail - 1) & mask;
+		tail = (tail - 1) & (data.length - 1);
 		final E result = data[tail];
 		data[tail] = null;
 		modCount++;
