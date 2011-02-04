@@ -233,7 +233,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(256);
+	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(32);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private Deque<EObject> scopeEObjects = new CircularArrayDeque<EObject>();
@@ -2352,6 +2352,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// If this is an "if" condition
 		record = containingFeature != MtlPackage.eINSTANCE.getIfBlock_IfExpr();
 		record = record && containingFeature != ExpressionsPackage.eINSTANCE.getIfExp_Condition();
+
+		// If this is a guard expression
+		record = record && containingFeature != MtlPackage.eINSTANCE.getForBlock_Guard();
+		record = record && containingFeature != MtlPackage.eINSTANCE.getTemplate_Guard();
 
 		// If this is a let initialization
 		record = record
