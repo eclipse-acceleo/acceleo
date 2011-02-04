@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[module main('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import org::eclipse::acceleo::module::ecore2python::parser /]
+[import org::eclipse::acceleo::module::ecore2python::commonClass /]
+[import org::eclipse::acceleo::module::ecore2python::factory /]
+[import org::eclipse::acceleo::module::ecore2python::init /]
+
+[template public generate(aPackage : EPackage)]
+	
+	[comment @main /]
+	[aPackage.generateParser()/]
+	[aPackage.packageToPythonCommonFile()/]
+	[aPackage.packageToPythonFactoryFile()/]
+	[aPackage.toModuleInit()/]
+	
+[/template]
