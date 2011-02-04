@@ -11,46 +11,46 @@
 [module names('http://www.eclipse.org/emf/2002/Ecore')/]
 [import common/]
 
-[template public moduleCommon(packaje : EPackage)]
-	[packaje.moduleFullName()/]/__common__.py
-[/template]
+[query public moduleCommon(packaje : EPackage) : String =
+	packaje.moduleFullName() + '/__common__.py'
+/]
 
-[template public moduleFactory(packaje : EPackage)]
-	[packaje.moduleFullName()/]/__factory__.py
-[/template]
+[query public moduleFactory(packaje : EPackage) : String =
+	packaje.moduleFullName() + '/__factory__.py'
+/]
 
-[template public moduleInit(packaje : EPackage)]
-	[packaje.moduleFullName()/]/__init__.py
-[/template]
+[query public moduleInit(packaje : EPackage) : String =
+	packaje.moduleFullName() + '/__init__.py'
+/]
 
-[template public parserName(packaje : EPackage)]
-	[packaje.moduleFullName()/]/__parser__.py
-[/template]
+[query public parserName(packaje : EPackage) : String =
+	packaje.moduleFullName() + '/__parser__.py'
+/]
 
-[template public baseClass(packaje : EPackage)]
-	[packaje.name.concat('Base').javaToPythonName().toUpperFirst()/]
-[/template]
+[query public baseClass(packaje : EPackage) : String =
+	packaje.name.concat('Base').javaToPythonName().toUpperFirst()
+/]
 
-[template public moduleName(packaje : EPackage)]
-	[packaje.name.javaToPythonName()/]
-[/template]
+[query public moduleName(packaje : EPackage) : String =
+	packaje.name.javaToPythonName()
+/]
 
-[template public relationBaseClass(packaje : EPackage)]
-	[packaje.name.concat('RelationBase').javaToPythonName().toUpperFirst()/]
-[/template]
+[query public relationBaseClass(packaje : EPackage) : String =
+	packaje.name.concat('RelationBase').javaToPythonName().toUpperFirst()
+/]
 
-[template public resourceClass(packaje : EPackage)]
-	[packaje.name.concat('Resource').javaToPythonName().toUpperFirst()/]
-[/template]
+[query public resourceClass(packaje : EPackage) : String =
+	packaje.name.concat('Resource').javaToPythonName().toUpperFirst()
+/]
 
-[template public factoryClassName(packaje : EPackage)]
-	[packaje.name.concat('Factory').javaToPythonName().toUpperFirst()/]
-[/template]
+[query public factoryClassName(packaje : EPackage) : String =
+	packaje.name.concat('Factory').javaToPythonName().toUpperFirst()
+/]
 
-[template public resourceFactory(packaje : EPackage)]
-	[packaje.name.concat('ResourceFactory').javaToPythonName().toUpperFirst()/]
-[/template]
+[query public resourceFactory(packaje : EPackage) : String =
+	packaje.name.concat('ResourceFactory').javaToPythonName().toUpperFirst()
+/]
 
-[template private moduleFullName(packaje : EPackage)]
-	[packaje.qualifiedName().substituteAll('.', '/')/]
-[/template]
+[query private moduleFullName(packaje : EPackage) :String =
+	packaje.qualifiedName().substituteAll('.', '/')
+/]

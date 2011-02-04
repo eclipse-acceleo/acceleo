@@ -23,4 +23,4 @@ This will return the qualified name of the given element, python style.
 [comment]
 This will convert the given name to python style name (thus a class name 'EcoreClass' would become 'ecore_class').
 [/comment]
-[query public javaToPythonName(name : String) : String = name.toLowerFirst().replaceAll('\\p{Lu}', '_$0').toLower()/]
+[query public javaToPythonName(name : String) : String = name.toLower()/]
