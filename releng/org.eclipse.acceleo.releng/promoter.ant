@@ -27,6 +27,9 @@
 		<property environment="env." />
 		<echoproperties destfile="${promoter.setup.directory}/all.properties" />
 		-->
+		
+		<!-- Copy addDownloadStats.xsl -->
+		<copy file="addDownloadStats.xsl" todir="${promoter.setup.directory}"/>
 	</target>
 
 	<target name="-locate.launcher.jar" unless="launcher.jar">
