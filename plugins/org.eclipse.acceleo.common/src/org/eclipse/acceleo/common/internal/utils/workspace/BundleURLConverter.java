@@ -160,7 +160,7 @@ public class BundleURLConverter {
 		for (int i = segments.length - 1; i >= 0 && bundle == null; i--) {
 			if (isBundleIDCandidate(segments[i])) {
 				tempBundle = AcceleoCommonPlugin.getDefault().getContext().getBundle(
-						Long.valueOf(segments[i]));
+						Long.valueOf(segments[i]).longValue());
 			} else {
 				tempBundle = Platform.getBundle(segments[i]);
 			}
@@ -169,7 +169,9 @@ public class BundleURLConverter {
 				tempPath = ""; //$NON-NLS-1$
 
 				int pathStart = i + 1;
-				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$
+				// ".cp" in the file path means this URI points somewhere in the workspace metadata.
+				// "@dot" in the path means it has been built through the PDE build with customBuildCallBacks
+				if (".cp".equals(segments[pathStart]) || "@dot".equals(segments[pathStart])) { //$NON-NLS-1$ //$NON-NLS-2$
 					pathStart += 1;
 				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
 					pathStart += 2;
