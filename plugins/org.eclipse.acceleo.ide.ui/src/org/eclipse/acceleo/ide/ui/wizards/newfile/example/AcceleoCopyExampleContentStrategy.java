@@ -94,9 +94,9 @@ public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrateg
 			boolean templateIsMain, String metamodelURI, String metamodelFileType) {
 		String var;
 		if (metamodelFileType != null && metamodelFileType.length() > 0) {
-			var = String.valueOf(Character.toLowerCase(metamodelFileType.charAt(0)));
+			var = 'a' + String.valueOf(metamodelFileType);
 		} else {
-			var = "v"; //$NON-NLS-1$
+			var = "arg"; //$NON-NLS-1$
 		}
 		String fileExtension;
 		if (exampleFile != null && exampleFile.getFileExtension() != null) {

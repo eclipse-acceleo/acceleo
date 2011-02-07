@@ -79,9 +79,9 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 				}
 				if (paramType.length() == 0) {
 					CSTNode currentNode = content.getCSTNode(posBegin, posBegin);
-					paramType = getCurrentVariableTypeName(currentNode, "E"); //$NON-NLS-1$
+					paramType = getCurrentVariableTypeName(currentNode, "Type"); //$NON-NLS-1$
 				}
-				String paramName = Character.toLowerCase(paramType.charAt(0)) + paramType.substring(1);
+				String paramName = 'a' + paramType;
 				StringBuilder newText = new StringBuilder();
 				if (newOffset > 0) {
 					newText.append('\n');

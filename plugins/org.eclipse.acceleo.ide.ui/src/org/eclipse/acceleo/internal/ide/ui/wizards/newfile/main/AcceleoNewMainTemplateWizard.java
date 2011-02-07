@@ -287,11 +287,11 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 			receiverTypes.add(getTemplateReceiverType(template));
 		}
 		for (String receiverType : receiverTypes) {
-			char var;
+			String var;
 			if (receiverType.length() > 0) {
-				var = Character.toLowerCase(receiverType.charAt(0));
+				var = 'a' + receiverType;
 			} else {
-				var = 'v';
+				var = "arg"; //$NON-NLS-1$
 			}
 			buffer.append("[template public " + moduleName + receiverType + "(" + var + " : " + receiverType + ")]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			buffer.append("\t\n"); //$NON-NLS-1$
