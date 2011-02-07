@@ -223,6 +223,21 @@
 				<filename name="m2t-acceleo-Update*.zip" />
 			</fileset>
 		</unzip>
+		
+		<!-- Adding download stats to the repository -->
+		<unzip dest="${build.repository.directory}">
+			<fileset file="${build.repository.directory}/artifacts.jar"/>
+		</unzip>
+		
+		<move file="${build.repository.directory}/artifacts.xml" tofile="${build.repository.directory}/artifacts.original.xml"/>
+		
+		<xslt style="addDownloadStats.xsl" in="${build.repository.directory}/artifacts.original.xml" out="${build.repository.directory}/artifacts.xml"/>
+		
+		<zip destfile="${build.repository.directory}/artifacts.jar" file="${build.repository.directory}/artifacts.xml"/>
+		
+		<delete file="${build.repository.directory}/artifacts.xml" />
+		<delete file="${build.repository.directory}/artifacts.original.xml" />
+		<!-- END download stats -->
 
 		<p2.composite.repository destination="${composite.repository.url}">
 			<add>
