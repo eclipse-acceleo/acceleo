@@ -64,7 +64,7 @@ public class NewQueryForeachType implements IAcceleoPatternProposal {
 	public String createTemplateProposal(List<EClass> types, String indentTab) {
 		StringBuilder buffer = new StringBuilder();
 		for (EClass eClass : types) {
-			buffer.append("[query public ${name}(e : "); //$NON-NLS-1$
+			buffer.append("[query public ${name}(${arg} : "); //$NON-NLS-1$
 			buffer.append(eClass.getName());
 			buffer.append(") : ${E} = ${self} /]\n\n"); //$NON-NLS-1$
 		}

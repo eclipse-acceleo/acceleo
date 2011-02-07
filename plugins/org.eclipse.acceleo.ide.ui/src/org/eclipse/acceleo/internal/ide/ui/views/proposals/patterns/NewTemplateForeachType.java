@@ -64,7 +64,7 @@ public class NewTemplateForeachType implements IAcceleoPatternProposal {
 	public String createTemplateProposal(List<EClass> types, String indentTab) {
 		StringBuilder buffer = new StringBuilder();
 		for (EClass eClass : types) {
-			buffer.append("[template public ${name}(${e} : "); //$NON-NLS-1$
+			buffer.append("[template public ${name}(${arg} : "); //$NON-NLS-1$
 			buffer.append(eClass.getName());
 			buffer.append(") ]\n"); //$NON-NLS-1$
 			buffer.append("\t[comment TODO Auto-generated template stub/]\n"); //$NON-NLS-1$

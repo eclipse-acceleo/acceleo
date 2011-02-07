@@ -44,8 +44,8 @@ public class ExtractAsTemplateAction extends AbstractRefactoringWithVariableCont
 			throws BadLocationException {
 		int newOffset = document.getLength();
 		CSTNode currentNode = content.getCSTNode(offset, offset + length);
-		String paramType = getCurrentVariableTypeName(currentNode, "E"); //$NON-NLS-1$
-		String paramName = getCurrentVariableName(currentNode, "e"); //$NON-NLS-1$
+		String paramType = getCurrentVariableTypeName(currentNode, "Type"); //$NON-NLS-1$
+		String paramName = getCurrentVariableName(currentNode, "arg"); //$NON-NLS-1$
 		if (currentNode instanceof ModuleElement) {
 			newOffset = ((ModuleElement)currentNode).getEndPosition();
 		} else if (currentNode != null) {
