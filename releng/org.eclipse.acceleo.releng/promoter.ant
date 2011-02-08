@@ -236,7 +236,7 @@
 		
 		<xslt style="addDownloadStats.xsl" in="${build.repository.directory}/artifacts.original.xml" out="${build.repository.directory}/artifacts.xml"/>
 		
-		<zip destfile="${build.repository.directory}/artifacts.jar" file="${build.repository.directory}/artifacts.xml"/>
+		<zip destfile="${build.repository.directory}/artifacts.jar" basedir="${build.repository.directory}" includes="artifacts.xml"/>
 		
 		<delete file="${build.repository.directory}/artifacts.xml" />
 		<delete file="${build.repository.directory}/artifacts.original.xml" />
