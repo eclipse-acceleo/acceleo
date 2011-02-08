@@ -54,7 +54,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -317,15 +316,12 @@ public class AcceleoResultView extends ResourceNavigator {
 			};
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceChangeListener);
 		}
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
-				&& selectionListener == null) {
+		if (getSite().getPage() != null && selectionListener == null) {
 			selectionListener = new ISelectionListener() {
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 					if (getContent() != null && selection instanceof TextSelection
-							&& ((TextSelection)selection).getOffset() >= 0
-							&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
-						IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-								.getActivePage().getActiveEditor();
+							&& ((TextSelection)selection).getOffset() >= 0 && getSite().getPage() != null) {
+						IEditorPart editor = getSite().getPage().getActiveEditor();
 						IFile file;
 						if (editor != null && editor.getEditorInput() != null) {
 							file = (IFile)editor.getEditorInput().getAdapter(IFile.class);
@@ -342,8 +338,7 @@ public class AcceleoResultView extends ResourceNavigator {
 					}
 				}
 			};
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().addPostSelectionListener(
-					selectionListener);
+			getSite().getPage().addPostSelectionListener(selectionListener);
 		}
 	}
 
@@ -424,10 +419,8 @@ public class AcceleoResultView extends ResourceNavigator {
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceChangeListener);
 			resourceChangeListener = null;
 		}
-		if (selectionListener != null
-				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null) {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().removePostSelectionListener(
-					selectionListener);
+		if (selectionListener != null && getSite().getPage() != null) {
+			getSite().getPage().removePostSelectionListener(selectionListener);
 			selectionListener = null;
 		}
 	}
@@ -467,9 +460,7 @@ public class AcceleoResultView extends ResourceNavigator {
 				ITextEditor editor = (ITextEditor)part;
 				if (element instanceof TraceabilityRegion) {
 					TraceabilityRegion region = (TraceabilityRegion)element;
-					editor
-							.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(),
-									true);
+					editor.setHighlightRange(region.getTargetFileOffset(), region.getTargetFileLength(), true);
 				} else if (element instanceof TraceabilityTemplate) {
 					int b = getMin((TraceabilityTemplate)element);
 					int e = getMax((TraceabilityTemplate)element);
