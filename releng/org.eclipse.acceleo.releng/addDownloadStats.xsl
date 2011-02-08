@@ -25,19 +25,27 @@ Laurent Goubet (Obeo) - modification for Acceleo download stats
 			<property name='p2.statsURI' value='http://download.eclipse.org/stats' />
 		</properties>
 	</xsl:template>
-
-	<xsl:template match="artifact[@classifier='osgi.bundle' and @id='org.eclipse.acceleo.ide.ui']/properties">
+	
+	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo']/properties">
 		<xsl:call-template name="artifact_properties"/>
 	</xsl:template>
 	
-	<xsl:template match="artifact[@classifier='osgi.bundle' and @id='org.eclipse.acceleo.common']/properties">
+	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.examples']/properties">
+		<xsl:call-template name="artifact_properties"/>
+	</xsl:template>
+
+	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.runtime']/properties">
+		<xsl:call-template name="artifact_properties"/>
+	</xsl:template>
+	
+	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.sdk']/properties">
 		<xsl:call-template name="artifact_properties"/>
 	</xsl:template>
 	
  	<xsl:template name="artifact_properties">
  		<properties size='{@size+1}'>
 			<xsl:copy-of select="property" />
-			<property name='download.stats' value='{../@id}.bundle-{../@version}' />
+			<property name='download.stats' value='{../@id}.feature-{../@version}' />
 		</properties>
 	</xsl:template>
 
