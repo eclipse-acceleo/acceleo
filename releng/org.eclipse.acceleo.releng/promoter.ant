@@ -53,6 +53,9 @@
 		<delete dir="${publisher.root}" />
 		<mkdir dir="${publisher.root}" />
 
+		<!-- Copy addDownloadStats.xsl -->
+		<copy file="addDownloadStats.xsl" todir="${publisher.root}"/>
+
 		<copy tofile="${publisher.root}/publisher.ant" file="${ant.file}" />
 
 		<property name="promoter.properties.file" value="${env.WORKSPACE}/${promoter.properties.file.name}" />
@@ -223,6 +226,21 @@
 				<filename name="m2t-acceleo-Update*.zip" />
 			</fileset>
 		</unzip>
+
+		<!-- Adding download stats to the repository -->
+		<unzip dest="${build.repository.directory}">
+			<fileset file="${build.repository.directory}/artifacts.jar"/>
+		</unzip>
+		
+		<move file="${build.repository.directory}/artifacts.xml" tofile="${build.repository.directory}/artifacts.original.xml"/>
+		
+		<xslt style="addDownloadStats.xsl" in="${build.repository.directory}/artifacts.original.xml" out="${build.repository.directory}/artifacts.xml"/>
+		
+		<zip destfile="${build.repository.directory}/artifacts.jar" basedir="${build.repository.directory}" includes="artifacts.xml"/>
+		
+		<delete file="${build.repository.directory}/artifacts.xml" />
+		<delete file="${build.repository.directory}/artifacts.original.xml" />
+		<!-- END download stats -->
 
 		<p2.composite.repository destination="${composite.repository.url}">
 			<add>
