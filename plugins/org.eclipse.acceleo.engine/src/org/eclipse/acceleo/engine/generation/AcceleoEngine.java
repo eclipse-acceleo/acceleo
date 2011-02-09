@@ -263,11 +263,6 @@ public class AcceleoEngine implements IAcceleoEngine {
 			}
 			try {
 				query.evaluate();
-			} catch (AcceleoEvaluationCancelledException e) {
-				/*
-				 * This exception served its purpose of letting us reset everything and stop evaluation. We
-				 * won't log it.
-				 */
 			} finally {
 				// reset variables
 				for (Variable var : template.getParameter()) {
