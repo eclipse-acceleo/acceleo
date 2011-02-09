@@ -1,3 +1,3 @@
 		package target
 		
-anAttributeOfB, anotherAttributeOfB, aReferenceFromB
+		anAttributeOfB, anotherAttributeOfB, aReferenceFromB

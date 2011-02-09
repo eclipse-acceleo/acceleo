@@ -200,7 +200,7 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 * This will call the Acceleo service to generate the given template.
 	 * 
 	 * @param templateName
-	 *            Name of the templat that is to be evaluated.
+	 *            Name of the template that is to be evaluated.
 	 * @param strategy
 	 *            Strategy that's to be used for this generation.
 	 */
