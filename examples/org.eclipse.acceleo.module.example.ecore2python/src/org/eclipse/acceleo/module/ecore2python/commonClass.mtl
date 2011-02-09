@@ -12,7 +12,6 @@
 [import names/]
 
 [template public packageToPythonCommonFile(packaje : EPackage)]
-	[comment @main /]
 	[file (packaje.moduleCommon().trim(), false)]
 	class [packaje.baseClass()/]:
 		"""

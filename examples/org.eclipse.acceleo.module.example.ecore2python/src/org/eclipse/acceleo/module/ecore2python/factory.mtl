@@ -12,7 +12,6 @@
 [import names/]
 
 [template public packageToPythonFactoryFile(packaje : EPackage)]
-	[comment @main /]
 	[file (packaje.moduleFactory().trim(), false)]
 	[for (c : EClassifier | packaje.eClassifiers) ? (c.oclIsKindOf(EClass) and not c.oclAsType(EClass).abstract)]
 	from [packaje.moduleName()/] import [c.name/]

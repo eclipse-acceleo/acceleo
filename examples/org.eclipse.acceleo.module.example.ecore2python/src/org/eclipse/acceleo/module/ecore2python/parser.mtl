@@ -12,7 +12,6 @@
 [import names/]
 
 [template public generateParser(packaje : EPackage)]
-	[comment @main /]
 	[file (packaje.parserName().trim(), false)]
 	from xml.sax import ContentHandler, make_parser
 

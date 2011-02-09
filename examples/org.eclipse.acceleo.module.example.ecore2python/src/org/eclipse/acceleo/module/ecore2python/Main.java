@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
-import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -26,110 +25,90 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
- * Entry point of the 'Factory' generation module.
- * 
+ * Entry point of the 'Main' generation module.
+ *
  * @generated
  */
-public class Factory extends AbstractAcceleoGenerator {
-
+public class Main extends AbstractAcceleoGenerator {
 	/**
 	 * The name of the module.
-	 * 
+	 *
 	 * @generated
 	 */
-	public static final String MODULE_FILE_NAME = "factory";
-
+	public static final String MODULE_FILE_NAME = "main";
+	
 	/**
 	 * The name of the templates that are to be generated.
-	 * 
+	 *
 	 * @generated
 	 */
-	public static final String[] TEMPLATE_NAMES = { "packageToPythonFactoryFile", };
+	public static final String[] TEMPLATE_NAMES = { "generate", };
 
 	/**
-	 * Allows the public constructor to be used. Note that a generator created this way cannot be used to
-	 * launch generations before one of {@link #initialize(EObject, File, List)} or
+	 * Allows the public constructor to be used. Note that a generator created
+	 * this way cannot be used to launch generations before one of
+	 * {@link #initialize(EObject, File, List)} or
 	 * {@link #initialize(URI, File, List)} is called.
 	 * <p>
-	 * The main reason for this constructor is to allow clients of this generation to call it from another
-	 * Java file, as it allows for the retrieval of {@link #getProperties()} and
+	 * The main reason for this constructor is to allow clients of this
+	 * generation to call it from another Java file, as it allows for the
+	 * retrieval of {@link #getProperties()} and
 	 * {@link #getGenerationListeners()}.
 	 * </p>
-	 * 
+	 *
 	 * @generated
 	 */
-	public Factory() {
+	public Main() {
     // Empty implementation
   }
 
 	/**
-	 * Constructor.
+	 * This allows clients to instantiates a generator with all required information.
 	 * 
 	 * @param modelURI
-	 *            is the URI of the model.
+	 *            URI where the model on which this generator will be used is located.
 	 * @param targetFolder
-	 *            is the output folder
+	 *            This will be used as the output folder for this generation : it will be the base path
+	 *            against which all file block URLs will be resolved.
 	 * @param arguments
-	 *            are the other arguments
+	 *            If the template which will be called requires more than one argument taken from the model,
+	 *            pass them here.
 	 * @throws IOException
-	 *             Thrown when the output cannot be saved.
+	 *             This can be thrown in three scenarios : the module cannot be found, it cannot be loaded, or
+	 *             the model cannot be loaded.
 	 * @generated
 	 */
-	public Factory(URI modelURI, File targetFolder, List<? extends Object> arguments) throws IOException {
+	public Main(URI modelURI, File targetFolder,
+			List<? extends Object> arguments) throws IOException {
     initialize(modelURI, targetFolder, arguments);
   }
 
 	/**
-	 * Constructor.
+	 * This allows clients to instantiates a generator with all required information.
 	 * 
 	 * @param model
-	 *            is the root element of the model.
+	 *            We'll iterate over the content of this element to find Objects matching the first parameter
+	 *            of the template we need to call.
 	 * @param targetFolder
-	 *            is the output folder
+	 *            This will be used as the output folder for this generation : it will be the base path
+	 *            against which all file block URLs will be resolved.
 	 * @param arguments
-	 *            are the other arguments
+	 *            If the template which will be called requires more than one argument taken from the model,
+	 *            pass them here.
 	 * @throws IOException
-	 *             Thrown when the output cannot be saved.
+	 *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
 	 * @generated
 	 */
-	public Factory(EObject model, File targetFolder, List<? extends Object> arguments) throws IOException {
+	public Main(EObject model, File targetFolder,
+			List<? extends Object> arguments) throws IOException {
     initialize(model, targetFolder, arguments);
   }
-
+	
 	/**
-	 * Updates the registry used for looking up a package based namespace, in the resource set.
-	 * 
-	 * @param resourceSet
-	 *            is the resource set
-	 * @generated
-	 */
-	@Override
-	public void registerPackages(ResourceSet resourceSet) {
-    super.registerPackages(resourceSet);
-    resourceSet.getPackageRegistry().put(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.emf.ecore.EcorePackage.eINSTANCE);
-    // TODO If you need additional package registrations, do them here. The following line is an example for UML.
-    // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-  }
-
-	/**
-	 * Updates the registry used for looking up resources factory in the given resource set.
-	 * 
-	 * @param resourceSet
-	 *            The resource set that is to be updated.
-	 * @generated
-	 */
-	@Override
-	public void registerResourceFactories(ResourceSet resourceSet) {
-    super.registerResourceFactories(resourceSet);
-    // TODO If you need additional resource factories registrations, do them here. The following line is an example for UML.
-    // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-  }
-
-	/**
-	 * The main method.
+	 * This can be used to launch the generation from a standalone application.
 	 * 
 	 * @param args
-	 *            are the arguments
+	 *            Arguments of the generation.
 	 * @generated
 	 */
 	public static void main(String[] args) {
@@ -143,7 +122,7 @@ public class Factory extends AbstractAcceleoGenerator {
         for (int i = 2; i < args.length; i++) {
           arguments.add(args[i]);
         }
-        Factory generator = new Factory(modelURI, folder, arguments);
+        Main generator = new Main(modelURI, folder, arguments);
         generator.doGenerate(new BasicMonitor());
       }
     } catch (IOException e) {
@@ -152,12 +131,12 @@ public class Factory extends AbstractAcceleoGenerator {
   }
 
 	/**
-	 * Launches the generation.
+	 * Launches the generation described by this instance.
 	 * 
 	 * @param monitor
 	 *            This will be used to display progress information to the user.
 	 * @throws IOException
-	 *             Thrown when the output cannot be saved.
+	 *             This will be thrown if any of the output files cannot be saved to disk.
 	 * @generated
 	 */
 	@Override
@@ -168,7 +147,7 @@ public class Factory extends AbstractAcceleoGenerator {
      */
     super.doGenerate(monitor);
   }
-
+	
 	/**
 	 * If this generator needs to listen to text generation events, listeners can be returned from here.
 	 * 
@@ -181,7 +160,7 @@ public class Factory extends AbstractAcceleoGenerator {
     // TODO if you need to listen to generation event, add listeners to the list here
     return listeners;
   }
-
+	
 	/**
 	 * If you need to change the way files are generated, this is your entry point.
 	 * <p>
@@ -199,11 +178,14 @@ public class Factory extends AbstractAcceleoGenerator {
 	 * <p>
 	 * All three of these default strategies support merging through JMerge.
 	 * </p>
+	 * 
+	 * @return The generation strategy that is to be used for generations launched through this launcher.
+	 * @generated
 	 */
 	public IAcceleoGenerationStrategy getGenerationStrategy() {
-		return new DefaultStrategy();
-	}
-
+    return super.getGenerationStrategy();
+  }
+	
 	/**
 	 * This will be called in order to find and load the module that will be launched through this launcher.
 	 * We expect this name not to contain file extension, and the module to be located beside the launcher.
@@ -215,7 +197,7 @@ public class Factory extends AbstractAcceleoGenerator {
 	public String getModuleName() {
     return MODULE_FILE_NAME;
   }
-
+	
 	/**
 	 * If the module(s) called by this launcher require properties files, return their qualified path from
 	 * here.Take note that the first added properties files will take precedence over subsequent ones if they
@@ -245,7 +227,7 @@ public class Factory extends AbstractAcceleoGenerator {
      */
     return propertiesFiles;
   }
-
+	
 	/**
 	 * This will be used to get the list of templates that are to be launched by this launcher.
 	 * 
@@ -256,5 +238,34 @@ public class Factory extends AbstractAcceleoGenerator {
 	public String[] getTemplateNames() {
     return TEMPLATE_NAMES;
   }
+	
+	/**
+	 * This can be used to update the resource set's package registry with all needed EPackages.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 * @generated
+	 */
+	@Override
+	public void registerPackages(ResourceSet resourceSet) {
+    super.registerPackages(resourceSet);
+    resourceSet.getPackageRegistry().put(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.emf.ecore.EcorePackage.eINSTANCE);
+    // TODO If you need additional package registrations, do them here. The following line is an example for UML.
+    // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+  }
 
+	/**
+	 * This can be used to update the resource set's resource factory registry with all needed factories.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 * @generated
+	 */
+	@Override
+	public void registerResourceFactories(ResourceSet resourceSet) {
+    super.registerResourceFactories(resourceSet);
+    // TODO If you need additional resource factories registrations, do them here. The following line is an example for UML.
+    // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+  }
+	
 }
