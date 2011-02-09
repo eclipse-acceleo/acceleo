@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.AcceleoRuntimeException;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -192,8 +193,10 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 			new AcceleoEngine().evaluate(publicTemplate, validArguments, null, defaultStrategy,
 					new BasicMonitor());
 			fail(NPE_FAILURE);
-		} catch (NullPointerException e) {
+		} catch (AcceleoRuntimeException e) {
+			Throwable cause = e.getCause();
 			// expected behavior
+			assertTrue(cause instanceof NullPointerException);
 		}
 	}
 
