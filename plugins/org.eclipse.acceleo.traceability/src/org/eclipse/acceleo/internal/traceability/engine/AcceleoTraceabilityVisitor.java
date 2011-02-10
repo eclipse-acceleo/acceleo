@@ -233,7 +233,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(256);
+	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(32);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private Deque<EObject> scopeEObjects = new CircularArrayDeque<EObject>();
@@ -281,11 +281,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (considerTrace) {
 			GeneratedFile generatedFile = currentFiles.getLast();
 			ExpressionTrace<C> trace;
-			boolean disposeTrace = !(sourceBlock instanceof IfBlock) || !(sourceBlock instanceof ForBlock);
-			if (sourceBlock instanceof IfBlock || sourceBlock instanceof ForBlock) {
-				trace = recordedTraces.getLast();
-			} else {
+			boolean disposeTrace = !(sourceBlock instanceof IfBlock) && !(sourceBlock instanceof ForBlock);
+			if (disposeTrace) {
 				trace = recordedTraces.removeLast();
+			} else {
+				trace = recordedTraces.getLast();
 			}
 			if (protectedAreaSource != null) {
 				// Check that the trace is indeed what we need
@@ -302,18 +302,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 			// We no longer need to refer to the same trace instance, copy its current state.
 			if (invocationTraces != null) {
-				trace = new ExpressionTrace<C>(trace);
+				invocationTraces.remove(trace);
+				invocationTraces.add(new ExpressionTrace<C>(trace));
 			}
 
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 				while (textIterator.hasNext()) {
 					GeneratedText text = textIterator.next();
+					textIterator.remove();
 					addedLength += text.getEndOffset() - text.getStartOffset();
 					text.setStartOffset(fileLength + text.getStartOffset());
 					text.setEndOffset(fileLength + text.getEndOffset());
 					generatedFile.getGeneratedRegions().add(text);
-					textIterator.remove();
 				}
 			}
 
@@ -335,6 +336,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 			if (disposeTrace) {
 				trace.dispose();
+			} else {
+				trace.setOffset(0);
 			}
 		}
 		super.append(string, sourceBlock, source, fireEvent);
@@ -526,8 +529,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public void visitAcceleoFileBlock(FileBlock fileBlock) {
+		Deque<ExpressionTrace<C>> oldInvocationTraces = invocationTraces;
+		invocationTraces = null;
+
 		super.visitAcceleoFileBlock(fileBlock);
 
+		invocationTraces = oldInvocationTraces;
 		currentFiles.removeLast();
 		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
 				&& recordedTraces.getLast().getTraces().isEmpty()) {
