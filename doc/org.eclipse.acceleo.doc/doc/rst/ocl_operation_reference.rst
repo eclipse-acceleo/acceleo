@@ -1065,7 +1065,7 @@ select ( expr : OclExpression ) : Collection(T)
 
 Back to Contents_
 
-size () : Boolean
+size () : Integer
 -----------------------------------------------------------------
 	Returns the number of elements contained in *self*.
 	

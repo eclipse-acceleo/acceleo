@@ -23,97 +23,103 @@
 <a class="last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
 </tbody>
 </table>
-<p>Copyright © 2008, 2010 Obeo™.</p>
+<p>Copyright © 2008, 2011 Obeo™.</p>
 <p>The goal of this document is to help you get started with Acceleo as fast as
 possible. No details, no explanations, just the facts!</p>
-<p>We will assume you already have Acceleo installed in Eclipse, which you can
-download from <a class="reference external" href="http://www.eclipse.org/downloads/">the Eclipse download site</a>.</p>
+<p>We will assume you already have Acceleo installed in Eclipse; Installation
+instructions can be consulted on the
+<a class="reference external" href="http://www.eclipse.org/acceleo/download/">official site</a>. Eclipse itself
+can be downloaded from
+<a class="reference external" href="http://www.eclipse.org/downloads/">the Eclipse download site</a>.</p>
 <p>First of all, switch to the Acceleo perspective, which will make everything
-easier. Open the &quot;Window&quot; menu, then <em>Open Perspective &gt; Other...</em> and choose
+easier. Open the <em>Window</em> menu, then <em>Open Perspective &gt; Other...</em> and choose
 Acceleo.</p>
 <p>Create an Acceleo project, which will contain your first &quot;Hello world&quot;
 generator. Right-click in the package explorer, then select <em>New &gt; Acceleo
 Project</em>.</p>
 <img alt="../images/acceleo_new_project.png" src="../images/acceleo_new_project.png" />
-<p>Call it <tt class="docutils literal">org.eclipse.acceleo.helloworld</tt> or whatever name you like better, and
-click <em>Next &gt;</em>.
-Click <em>Finish</em> on the next screen.
-By default, an Acceleo template called <tt class="docutils literal">generate.mtl</tt> is created and opened.</p>
-<p>Edit it so that it looks like the following (Just insert some text for the
+<p>Call it <tt class="docutils literal">org.eclipse.acceleo.helloworld</tt> or whichever name you like better, and
+click <em>Next &gt;</em> then <em>Finish</em> on the next screen. By default, an Acceleo template
+called <tt class="docutils literal">generate.mtl</tt> is created and opened.</p>
+<p>Edit it so that it looks like the following (simply insert some text for the
 purpose of the demonstration):</p>
 <img alt="../images/acceleo_quickstart_module.png" src="../images/acceleo_quickstart_module.png" />
-<p>Now you want to run this template. In order to run a template, you need to
+<p>Now, you need to run this template. In order to evaluate a generation module, you need to
 provide Acceleo with two pieces of information:</p>
 <ul class="simple">
 <li>The input model;</li>
 <li>The output folder.</li>
 </ul>
-<p>Here we want to use a UML model, so we'll create one very quickly. Of course,
+<p>Here we want to use an ecore model, so we'll create one very quickly. Of course,
 models are usually produced by software designers, architects, or developers,
 and generally not by the same people that write Acceleo modules.</p>
 <p>So, let's create a new project since there's no reason for our models to be in
-the same project as our generator (Actually, models and templates should be
-separated). Right-click in the package explorer, and select <em>New &gt; Project...</em>,
-then <em>Java Project</em>.</p>
+the same project as our generator (in fact, a good practice would be to separate
+models from templates). Right-click in the package explorer, and select
+<em>New &gt; Project...</em>, then <em>Java Project</em>.</p>
 <p>Click on Next and enter the name of the project that will
 contain the model and the java code generated from this model. Something like
 <tt class="docutils literal">org.eclipse.acceleo.test</tt> will be perfect! Do <em>not</em> switch to the java
 perspective when asked to.</p>
-<p>Now let's create our UML model. Right-click on the new project, and select <em>New
+<p>Now let's create our ecore model. Right-click on the new project, and select <em>New
 &gt; Other...</em>.</p>
 <img alt="../images/acceleo_quickstart_uml_new0.png" src="../images/acceleo_quickstart_uml_new0.png" />
-<p>In the wizard's page, type &quot;uml&quot; in the top field to filter the choices, and
-select &quot;UML Model&quot;.
-Click <em>Next &gt;</em>.</p>
+<p>In the wizard's page, type &quot;ecore&quot; in the top field to filter the choices, and
+select &quot;Ecore Model&quot;. Click <em>Next &gt;</em>.</p>
 <img alt="../images/acceleo_quickstart_uml_new1.png" src="../images/acceleo_quickstart_uml_new1.png" />
-<p>Give a name to the UML model to create, for instance <tt class="docutils literal">Sample.uml</tt>.
-Click <em>Next &gt;</em>.</p>
+<p>Give a name to the ecore model to create, for instance <tt class="docutils literal">Sample.ecore</tt>. Click
+<em>Next &gt;</em>.</p>
 <img alt="../images/acceleo_quickstart_uml_new2.png" src="../images/acceleo_quickstart_uml_new2.png" />
-<p>Select the root type to use for your model, here we will use &quot;Package&quot;.
-This should create and open a new UML model.</p>
+<p>Select the root type to use for your model, here we will use &quot;EPackage&quot;.
+Click <em>Finish</em>; this should create and open a new ecore model.</p>
 <img alt="../images/acceleo_quickstart_uml_new3.png" src="../images/acceleo_quickstart_uml_new3.png" />
-<p>Now add one or more classes to the model. To do this, either you have a
-graphical UML editor such as <em>topcased</em> installed, in which case you can use it,
+<p>Now add one or more classes to the model. To do this, either you have a graphical
+ecore editor such as <em>Ecore Tools</em> installed, in which case you can use it,
 or follow these instructions:</p>
 <ul>
-<li><p class="first">Right-click on the root package and select <em>New Child &gt; Package Element &gt;
-Class</em>;</p>
+<li><p class="first">Right-click on the root package and select <em>Show Properties View</em></p>
+<img alt="../images/acceleo_quickstart_properties_view.png" src="../images/acceleo_quickstart_properties_view.png" />
+</li>
+<li><p class="first">In the properties view, change the value of the <tt class="docutils literal">name</tt> property to any name
+you wish for the package. Here we'll make it be <tt class="docutils literal">tutorial</tt>.</p>
+<img alt="../images/acceleo_quickstart_package_name.png" src="../images/acceleo_quickstart_package_name.png" />
+</li>
+<li><p class="first">Right-click on the package and select <em>New Child &gt; EClass</em>;</p>
 <img alt="../images/acceleo_quickstart_uml_new_class.png" src="../images/acceleo_quickstart_uml_new_class.png" />
 </li>
-<li><p class="first">Right-click on the class and select &quot;Show Properties View&quot;;</p>
-</li>
-<li><p class="first">In the properties view, enter a name for the new class.</p>
+<li><p class="first">In the properties view, enter a name for the new class, we'll name it <tt class="docutils literal">Acceleo</tt>
+in this example.</p>
+<img alt="../images/acceleo_quickstart_class_name.png" src="../images/acceleo_quickstart_class_name.png" />
 </li>
 </ul>
-<p>Repeat these steps to create several classes.</p>
-<p>OK, this model is just a dummy to get you started. In real life, models will
-contain lots of information, but it's not our purpose here and now.</p>
+<p>Repeat these steps to create as many classes as desired.</p>
+<p>Of course, this model is just a dummy to get you started. In real life, models will
+contain lots of information, but it is not our purpose here and now.</p>
 <p>So you should now have a model that looks like this:</p>
 <img alt="../images/acceleo_quickstart_model.png" src="../images/acceleo_quickstart_model.png" />
-<p>So let's run the generator on this model!</p>
+<p>Let's run our generator against this model!</p>
 <p>Right-click on the Acceleo module file (that is, the <tt class="docutils literal">generate.mtl</tt> file) and
 select <em>Run As &gt; Launch Acceleo Application</em>.</p>
 <img alt="../images/acceleo_quickstart_launch1.png" src="../images/acceleo_quickstart_launch1.png" />
 <p>The Acceleo launch configuration page opens, and you need to provide the
 information mentionned earlier.</p>
 <img alt="../images/acceleo_quickstart_launch2.png" src="../images/acceleo_quickstart_launch2.png" />
-<p>Use the <em>Browse...</em> buttons to simply select the model and the destination
-folder (you will need to use <tt class="docutils literal">*.uml</tt> filter instead of the default <tt class="docutils literal">*.xmi</tt> in
+<p>Use the <em>Browse...</em> buttons to easily select the model and the destination
+folder (you will need to use <tt class="docutils literal">*.ecore</tt> as filter instead of the default <tt class="docutils literal">*.xmi</tt> in
 order to locate your model file).</p>
 <p>The launch configuration page should now look like this:</p>
 <img alt="../images/acceleo_quickstart_launch3.png" src="../images/acceleo_quickstart_launch3.png" />
 <p>Click on the <em>Run</em> button.
-A file named &quot;Acceleo&quot; (or whatever name you used for your UML class) appears
+A file named &quot;Acceleo.txt&quot; (or whatever name you used for your ecore class) appears
 in the target folder.</p>
-<p>You can either open it from the package explorer or from the Result view (on the
-bottom right of the screen). Here is its content:</p>
+<p>You can open it from the package explorer. Here is its content:</p>
 <img alt="../images/acceleo_quickstart_output_file.png" src="../images/acceleo_quickstart_output_file.png" />
 <p>It contains the text <tt class="docutils literal">Hello, Acceleo world!</tt>, in which <tt class="docutils literal">Acceleo</tt> has been
-dynamically extracted from the UML model (it's just the class name), while the
+dynamically extracted from the ecore model (it is the class name), while the
 rest of the text is statically written in the template itself.</p>
-<p>Now it's time to experiment by yourself! At some point, you'll probably need to
-read the rest of the Acceleo documentation to further your comprehension but for
-now you know enough to get to know Acceleo by playing around with it a bit.</p>
+<p>Now it's time to experiment by yourself! You should probably read the
+<a class="reference external" href="first_generator.html">First Generator</a> tutorial to further your comprehension
+but for now you know enough to get to know Acceleo by playing around with it a bit.</p>
 </div>
 </body>
 </html>

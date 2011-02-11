@@ -27,144 +27,144 @@
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#ocl-operations-for-type-classifier" id="id23">Ocl operations for type <em>Classifier</em></a><ul>
-<li><a class="reference internal" href="#allinstances-set-t" id="id24">allInstances () : Set{T}</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-classifier" id="id24">Ocl operations for type <em>Classifier</em></a><ul>
+<li><a class="reference internal" href="#allinstances-set-t" id="id25">allInstances () : Set{T}</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-oclany" id="id25">Ocl operations for type <em>OclAny</em></a><ul>
-<li><a class="reference internal" href="#oclastype-typespec-classifier-t" id="id26">oclAsType ( typespec : Classifier ) : T</a></li>
-<li><a class="reference internal" href="#oclisinvalid-boolean" id="id27">oclIsInvalid () : Boolean</a></li>
-<li><a class="reference internal" href="#ocliskindof-classifier-typespec-boolean" id="id28">oclIsKindOf( Classifier typespec ) : Boolean</a></li>
-<li><a class="reference internal" href="#oclistypeof-typespec-classifier-boolean" id="id29">oclIsTypeOf( typespec : Classifier ) : Boolean</a></li>
-<li><a class="reference internal" href="#oclisundefined-boolean" id="id30">oclIsUndefined () : Boolean</a></li>
-<li><a class="reference internal" href="#object-oclany-boolean" id="id31">&lt;&gt; ( object : OclAny ) : Boolean</a></li>
-<li><a class="reference internal" href="#id1" id="id32">= ( object : OclAny) : Boolean</a></li>
-<li><a class="reference internal" href="#object-t-boolean" id="id33">&lt; ( object : T ) : Boolean</a></li>
-<li><a class="reference internal" href="#id2" id="id34">&gt; ( object : T ) : Boolean</a></li>
-<li><a class="reference internal" href="#id3" id="id35">&lt;= ( object : T ) : Boolean</a></li>
-<li><a class="reference internal" href="#id4" id="id36">&gt;= ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-oclany" id="id26">Ocl operations for type <em>OclAny</em></a><ul>
+<li><a class="reference internal" href="#oclastype-typespec-classifier-t" id="id27">oclAsType ( typespec : Classifier ) : T</a></li>
+<li><a class="reference internal" href="#oclisinvalid-boolean" id="id28">oclIsInvalid () : Boolean</a></li>
+<li><a class="reference internal" href="#ocliskindof-classifier-typespec-boolean" id="id29">oclIsKindOf( Classifier typespec ) : Boolean</a></li>
+<li><a class="reference internal" href="#oclistypeof-typespec-classifier-boolean" id="id30">oclIsTypeOf( typespec : Classifier ) : Boolean</a></li>
+<li><a class="reference internal" href="#oclisundefined-boolean" id="id31">oclIsUndefined () : Boolean</a></li>
+<li><a class="reference internal" href="#object-oclany-boolean" id="id32">&lt;&gt; ( object : OclAny ) : Boolean</a></li>
+<li><a class="reference internal" href="#id1" id="id33">= ( object : OclAny) : Boolean</a></li>
+<li><a class="reference internal" href="#object-t-boolean" id="id34">&lt; ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#id2" id="id35">&gt; ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#id3" id="id36">&lt;= ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#id4" id="id37">&gt;= ( object : T ) : Boolean</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-string" id="id37">Ocl operations for type <em>String</em></a><ul>
-<li><a class="reference internal" href="#concat-s-string-string" id="id38">concat ( s : String ) : String</a></li>
-<li><a class="reference internal" href="#size-integer" id="id39">size () : Integer</a></li>
-<li><a class="reference internal" href="#substring-lower-integer-upper-integer-string" id="id40">substring ( lower : Integer, upper : Integer ) : String</a></li>
-<li><a class="reference internal" href="#tointeger-integer" id="id41">toInteger () : Integer</a></li>
-<li><a class="reference internal" href="#tolower-string" id="id42">toLower () : String</a></li>
-<li><a class="reference internal" href="#toreal-real" id="id43">toReal () : Real</a></li>
-<li><a class="reference internal" href="#toupper-string" id="id44">toUpper () : String</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-string" id="id38">Ocl operations for type <em>String</em></a><ul>
+<li><a class="reference internal" href="#concat-s-string-string" id="id39">concat ( s : String ) : String</a></li>
+<li><a class="reference internal" href="#size-integer" id="id40">size () : Integer</a></li>
+<li><a class="reference internal" href="#substring-lower-integer-upper-integer-string" id="id41">substring ( lower : Integer, upper : Integer ) : String</a></li>
+<li><a class="reference internal" href="#tointeger-integer" id="id42">toInteger () : Integer</a></li>
+<li><a class="reference internal" href="#tolower-string" id="id43">toLower () : String</a></li>
+<li><a class="reference internal" href="#toreal-real" id="id44">toReal () : Real</a></li>
+<li><a class="reference internal" href="#toupper-string" id="id45">toUpper () : String</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-number" id="id45">Ocl operations for type <em>Number</em></a><ul>
-<li><a class="reference internal" href="#number-abs-number" id="id46">Number::abs () : Number</a></li>
-<li><a class="reference internal" href="#number-floor-integer" id="id47">Number::floor () : Integer</a></li>
-<li><a class="reference internal" href="#number-max-r-number-number" id="id48">Number::max ( r : Number ) : Number</a></li>
-<li><a class="reference internal" href="#number-min-r-number-number" id="id49">Number::min ( r : Number ) : Number</a></li>
-<li><a class="reference internal" href="#number-round-integer" id="id50">Number::round () : Integer</a></li>
-<li><a class="reference internal" href="#integer-div-i-integer-integer" id="id51">Integer::div ( i : Integer ) : Integer</a></li>
-<li><a class="reference internal" href="#integer-mod-i-integer-integer" id="id52">Integer::mod ( i : Integer ) : Integer</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-number" id="id46">Ocl operations for type <em>Number</em></a><ul>
+<li><a class="reference internal" href="#number-abs-number" id="id47">Number::abs () : Number</a></li>
+<li><a class="reference internal" href="#number-floor-integer" id="id48">Number::floor () : Integer</a></li>
+<li><a class="reference internal" href="#number-max-r-number-number" id="id49">Number::max ( r : Number ) : Number</a></li>
+<li><a class="reference internal" href="#number-min-r-number-number" id="id50">Number::min ( r : Number ) : Number</a></li>
+<li><a class="reference internal" href="#number-round-integer" id="id51">Number::round () : Integer</a></li>
+<li><a class="reference internal" href="#integer-div-i-integer-integer" id="id52">Integer::div ( i : Integer ) : Integer</a></li>
+<li><a class="reference internal" href="#integer-mod-i-integer-integer" id="id53">Integer::mod ( i : Integer ) : Integer</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-collection" id="id53">Ocl operations for type <em>Collection</em></a><ul>
-<li><a class="reference internal" href="#any-expr-oclexpression-t" id="id54">any ( expr : OclExpression ) : T</a></li>
-<li><a class="reference internal" href="#asbag-bag-t" id="id55">asBag () : Bag(T)</a></li>
-<li><a class="reference internal" href="#asorderedset-orderedset-t" id="id56">asOrderedSet () : OrderedSet(T)</a></li>
-<li><a class="reference internal" href="#assequence-boolean" id="id57">asSequence () : Boolean</a></li>
-<li><a class="reference internal" href="#asset-set-t" id="id58">asSet () : Set(T)</a></li>
-<li><a class="reference internal" href="#collect-expr-oclexpression-collection-t2" id="id59">collect ( expr : OclExpression ) : Collection(T2)</a></li>
-<li><a class="reference internal" href="#collectnested-expr-oclexpression-collection-t2" id="id60">collectNested ( expr : OclExpression ) : Collection(T2)</a></li>
-<li><a class="reference internal" href="#count-object-t-integer" id="id61">count ( object : T ) : Integer</a></li>
-<li><a class="reference internal" href="#excludes-object-t-boolean" id="id62">excludes ( object : T ) : Boolean</a></li>
-<li><a class="reference internal" href="#excludesall-c2-collection-t-boolean" id="id63">excludesAll ( c2 : Collection(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#excluding-object-t-collection-t" id="id64">excluding ( object : T ) : Collection(T)</a></li>
-<li><a class="reference internal" href="#exists-expr-oclexpression-boolean" id="id65">exists ( expr : OclExpression ) : Boolean</a></li>
-<li><a class="reference internal" href="#flatten-collection-t2" id="id66">flatten () : Collection(T2)</a></li>
-<li><a class="reference internal" href="#forall-expr-oclexpression-boolean" id="id67">forAll ( expr : OclExpression ) : Boolean</a></li>
-<li><a class="reference internal" href="#includes-object-t-boolean" id="id68">includes ( object : T ) : Boolean</a></li>
-<li><a class="reference internal" href="#includesall-c2-collection-t-boolean" id="id69">includesAll ( c2 : Collection(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#including-object-t-collection-t" id="id70">including ( object : T ) : Collection(T)</a></li>
-<li><a class="reference internal" href="#isempty-boolean" id="id71">isEmpty () : Boolean</a></li>
-<li><a class="reference internal" href="#isunique-expr-oclexpression-boolean" id="id72">isUnique ( expr : OclExpression ) : Boolean</a></li>
-<li><a class="reference internal" href="#notempty-boolean" id="id73">notEmpty () : Boolean</a></li>
-<li><a class="reference internal" href="#one-expr-oclexpression-boolean" id="id74">one ( expr : OclExpression ) : Boolean</a></li>
-<li><a class="reference internal" href="#product-c2-collection-t2-set-tuple-first-t-second-t2" id="id75">product ( c2 : Collection(T2) ) : Set(Tuple(first : T, second : T2))</a></li>
-<li><a class="reference internal" href="#reject-expr-oclexpression-collection-t" id="id76">reject ( expr : OclExpression ) : Collection(T)</a></li>
-<li><a class="reference internal" href="#select-expr-oclexpression-collection-t" id="id77">select ( expr : OclExpression ) : Collection(T)</a></li>
-<li><a class="reference internal" href="#size-boolean" id="id78">size () : Boolean</a></li>
-<li><a class="reference internal" href="#sortedby-expr-oclexpression-sequence-t" id="id79">sortedBy ( expr : OclExpression ) : Sequence(T)</a></li>
-<li><a class="reference internal" href="#sum-real" id="id80">sum () : Real</a></li>
-<li><a class="reference internal" href="#ocl-operations-for-type-sequence" id="id81">Ocl operations for type <em>Sequence</em></a><ul>
-<li><a class="reference internal" href="#seq-sequence-t-boolean" id="id82">= ( seq : Sequence(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id5" id="id83">&lt;&gt; ( seq : Sequence(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#append-object-t-sequence-t" id="id84">append ( object : T ) : Sequence(T)</a></li>
-<li><a class="reference internal" href="#at-index-integer-t" id="id85">at ( index : Integer ) : T</a></li>
-<li><a class="reference internal" href="#first-t" id="id86">first () : T</a></li>
-<li><a class="reference internal" href="#indexof-object-t-integer" id="id87">indexOf ( object : T ) : Integer</a></li>
-<li><a class="reference internal" href="#insertat-index-integer-object-t-sequence-t" id="id88">insertAt ( index : Integer, object : T) : Sequence(T)</a></li>
-<li><a class="reference internal" href="#last-t" id="id89">last () : T</a></li>
-<li><a class="reference internal" href="#prepend-object-t-sequence-t" id="id90">prepend ( object : T ) : Sequence(T)</a></li>
-<li><a class="reference internal" href="#subsequence-startindex-integer-endindex-integer-sequence-t" id="id91">subSequence ( startIndex : Integer, endIndex : Integer ) : Sequence(T)</a></li>
-<li><a class="reference internal" href="#union-seq-sequence-t-sequence-t" id="id92">union ( seq : Sequence(T) ) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-collection" id="id54">Ocl operations for type <em>Collection</em></a><ul>
+<li><a class="reference internal" href="#any-expr-oclexpression-t" id="id55">any ( expr : OclExpression ) : T</a></li>
+<li><a class="reference internal" href="#asbag-bag-t" id="id56">asBag () : Bag(T)</a></li>
+<li><a class="reference internal" href="#asorderedset-orderedset-t" id="id57">asOrderedSet () : OrderedSet(T)</a></li>
+<li><a class="reference internal" href="#assequence-boolean" id="id58">asSequence () : Boolean</a></li>
+<li><a class="reference internal" href="#asset-set-t" id="id59">asSet () : Set(T)</a></li>
+<li><a class="reference internal" href="#collect-expr-oclexpression-collection-t2" id="id60">collect ( expr : OclExpression ) : Collection(T2)</a></li>
+<li><a class="reference internal" href="#collectnested-expr-oclexpression-collection-t2" id="id61">collectNested ( expr : OclExpression ) : Collection(T2)</a></li>
+<li><a class="reference internal" href="#count-object-t-integer" id="id62">count ( object : T ) : Integer</a></li>
+<li><a class="reference internal" href="#excludes-object-t-boolean" id="id63">excludes ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#excludesall-c2-collection-t-boolean" id="id64">excludesAll ( c2 : Collection(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#excluding-object-t-collection-t" id="id65">excluding ( object : T ) : Collection(T)</a></li>
+<li><a class="reference internal" href="#exists-expr-oclexpression-boolean" id="id66">exists ( expr : OclExpression ) : Boolean</a></li>
+<li><a class="reference internal" href="#flatten-collection-t2" id="id67">flatten () : Collection(T2)</a></li>
+<li><a class="reference internal" href="#forall-expr-oclexpression-boolean" id="id68">forAll ( expr : OclExpression ) : Boolean</a></li>
+<li><a class="reference internal" href="#includes-object-t-boolean" id="id69">includes ( object : T ) : Boolean</a></li>
+<li><a class="reference internal" href="#includesall-c2-collection-t-boolean" id="id70">includesAll ( c2 : Collection(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#including-object-t-collection-t" id="id71">including ( object : T ) : Collection(T)</a></li>
+<li><a class="reference internal" href="#isempty-boolean" id="id72">isEmpty () : Boolean</a></li>
+<li><a class="reference internal" href="#isunique-expr-oclexpression-boolean" id="id73">isUnique ( expr : OclExpression ) : Boolean</a></li>
+<li><a class="reference internal" href="#notempty-boolean" id="id74">notEmpty () : Boolean</a></li>
+<li><a class="reference internal" href="#one-expr-oclexpression-boolean" id="id75">one ( expr : OclExpression ) : Boolean</a></li>
+<li><a class="reference internal" href="#product-c2-collection-t2-set-tuple-first-t-second-t2" id="id76">product ( c2 : Collection(T2) ) : Set(Tuple(first : T, second : T2))</a></li>
+<li><a class="reference internal" href="#reject-expr-oclexpression-collection-t" id="id77">reject ( expr : OclExpression ) : Collection(T)</a></li>
+<li><a class="reference internal" href="#select-expr-oclexpression-collection-t" id="id78">select ( expr : OclExpression ) : Collection(T)</a></li>
+<li><a class="reference internal" href="#id5" id="id79">size () : Integer</a></li>
+<li><a class="reference internal" href="#sortedby-expr-oclexpression-sequence-t" id="id80">sortedBy ( expr : OclExpression ) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#sum-real" id="id81">sum () : Real</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-sequence" id="id82">Ocl operations for type <em>Sequence</em></a><ul>
+<li><a class="reference internal" href="#seq-sequence-t-boolean" id="id83">= ( seq : Sequence(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id6" id="id84">&lt;&gt; ( seq : Sequence(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#append-object-t-sequence-t" id="id85">append ( object : T ) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#at-index-integer-t" id="id86">at ( index : Integer ) : T</a></li>
+<li><a class="reference internal" href="#first-t" id="id87">first () : T</a></li>
+<li><a class="reference internal" href="#indexof-object-t-integer" id="id88">indexOf ( object : T ) : Integer</a></li>
+<li><a class="reference internal" href="#insertat-index-integer-object-t-sequence-t" id="id89">insertAt ( index : Integer, object : T) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#last-t" id="id90">last () : T</a></li>
+<li><a class="reference internal" href="#prepend-object-t-sequence-t" id="id91">prepend ( object : T ) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#subsequence-startindex-integer-endindex-integer-sequence-t" id="id92">subSequence ( startIndex : Integer, endIndex : Integer ) : Sequence(T)</a></li>
+<li><a class="reference internal" href="#union-seq-sequence-t-sequence-t" id="id93">union ( seq : Sequence(T) ) : Sequence(T)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-bag" id="id93">Ocl operations for type <em>Bag</em></a><ul>
-<li><a class="reference internal" href="#bag-bag-t-boolean" id="id94">= ( bag : Bag(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id6" id="id95">&lt;&gt; ( bag : Bag(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#intersection-bag-bag-t-bag-t" id="id96">intersection ( bag : Bag(T) ) : Bag(T)</a></li>
-<li><a class="reference internal" href="#intersection-set-set-t-set-t" id="id97">intersection ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#union-bag-bag-t-bag-t" id="id98">union ( bag : Bag(T) ) : Bag(T)</a></li>
-<li><a class="reference internal" href="#union-set-set-t-bag-t" id="id99">union ( set : Set(T) ) : Bag(T)</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-bag" id="id94">Ocl operations for type <em>Bag</em></a><ul>
+<li><a class="reference internal" href="#bag-bag-t-boolean" id="id95">= ( bag : Bag(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id7" id="id96">&lt;&gt; ( bag : Bag(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#intersection-bag-bag-t-bag-t" id="id97">intersection ( bag : Bag(T) ) : Bag(T)</a></li>
+<li><a class="reference internal" href="#intersection-set-set-t-set-t" id="id98">intersection ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#union-bag-bag-t-bag-t" id="id99">union ( bag : Bag(T) ) : Bag(T)</a></li>
+<li><a class="reference internal" href="#union-set-set-t-bag-t" id="id100">union ( set : Set(T) ) : Bag(T)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-orderedset" id="id100">Ocl operations for type <em>OrderedSet</em></a><ul>
-<li><a class="reference internal" href="#set-set-t-boolean" id="id101">= ( set : Set(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#orderedset-orderedset-t-boolean" id="id102">= ( orderedset : OrderedSet(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id7" id="id103">&lt;&gt; ( set : Set(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id8" id="id104">&lt;&gt; ( orderedset : OrderedSet(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#set-set-t-set-t" id="id105"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#append-object-t-orderedset-t" id="id106">append ( object : T ) : OrderedSet(T)</a></li>
-<li><a class="reference internal" href="#id9" id="id107">at ( index : Integer ) : T</a></li>
-<li><a class="reference internal" href="#id10" id="id108">first () : T</a></li>
-<li><a class="reference internal" href="#id11" id="id109">indexOf ( object : T ) : Integer</a></li>
-<li><a class="reference internal" href="#insertat-index-integer-object-t-orderedset-t" id="id110">insertAt ( index : Integer, object : T ) : OrderedSet(T)</a></li>
-<li><a class="reference internal" href="#intersection-bag-bag-t-set-t" id="id111">intersection ( bag : Bag(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id12" id="id112">intersection ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id13" id="id113">last () : T</a></li>
-<li><a class="reference internal" href="#prepend-object-t-orderedset-t" id="id114">prepend ( object : T ) : OrderedSet(T)</a></li>
-<li><a class="reference internal" href="#suborderedset-startindex-integer-endindex-integer-orderedset-t" id="id115">subOrderedSet ( startIndex : Integer, endIndex : Integer ) : OrderedSet(T)</a></li>
-<li><a class="reference internal" href="#symmetricdifference-set-set-t-set-t" id="id116">symmetricDifference ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id14" id="id117">union ( bag : Bag(T) ) : Bag(T)</a></li>
-<li><a class="reference internal" href="#union-set-set-t-set-t" id="id118">union ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-orderedset" id="id101">Ocl operations for type <em>OrderedSet</em></a><ul>
+<li><a class="reference internal" href="#set-set-t-boolean" id="id102">= ( set : Set(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#orderedset-orderedset-t-boolean" id="id103">= ( orderedset : OrderedSet(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id8" id="id104">&lt;&gt; ( set : Set(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id9" id="id105">&lt;&gt; ( orderedset : OrderedSet(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#set-set-t-set-t" id="id106"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#append-object-t-orderedset-t" id="id107">append ( object : T ) : OrderedSet(T)</a></li>
+<li><a class="reference internal" href="#id10" id="id108">at ( index : Integer ) : T</a></li>
+<li><a class="reference internal" href="#id11" id="id109">first () : T</a></li>
+<li><a class="reference internal" href="#id12" id="id110">indexOf ( object : T ) : Integer</a></li>
+<li><a class="reference internal" href="#insertat-index-integer-object-t-orderedset-t" id="id111">insertAt ( index : Integer, object : T ) : OrderedSet(T)</a></li>
+<li><a class="reference internal" href="#intersection-bag-bag-t-set-t" id="id112">intersection ( bag : Bag(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id13" id="id113">intersection ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id14" id="id114">last () : T</a></li>
+<li><a class="reference internal" href="#prepend-object-t-orderedset-t" id="id115">prepend ( object : T ) : OrderedSet(T)</a></li>
+<li><a class="reference internal" href="#suborderedset-startindex-integer-endindex-integer-orderedset-t" id="id116">subOrderedSet ( startIndex : Integer, endIndex : Integer ) : OrderedSet(T)</a></li>
+<li><a class="reference internal" href="#symmetricdifference-set-set-t-set-t" id="id117">symmetricDifference ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id15" id="id118">union ( bag : Bag(T) ) : Bag(T)</a></li>
+<li><a class="reference internal" href="#union-set-set-t-set-t" id="id119">union ( set : Set(T) ) : Set(T)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-set" id="id119">Ocl operations for type <em>Set</em></a><ul>
-<li><a class="reference internal" href="#id15" id="id120">= ( set : Set(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id16" id="id121">&lt;&gt; ( set : Set(T) ) : Boolean</a></li>
-<li><a class="reference internal" href="#id17" id="id122"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id18" id="id123">intersection ( bag : Bag(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id19" id="id124">intersection ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id20" id="id125">symmetricDifference ( set : Set(T) ) : Set(T)</a></li>
-<li><a class="reference internal" href="#id21" id="id126">union ( bag : Bag(T) ) : Bag(T)</a></li>
-<li><a class="reference internal" href="#id22" id="id127">union ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-set" id="id120">Ocl operations for type <em>Set</em></a><ul>
+<li><a class="reference internal" href="#id16" id="id121">= ( set : Set(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id17" id="id122">&lt;&gt; ( set : Set(T) ) : Boolean</a></li>
+<li><a class="reference internal" href="#id18" id="id123"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id19" id="id124">intersection ( bag : Bag(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id20" id="id125">intersection ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id21" id="id126">symmetricDifference ( set : Set(T) ) : Set(T)</a></li>
+<li><a class="reference internal" href="#id22" id="id127">union ( bag : Bag(T) ) : Bag(T)</a></li>
+<li><a class="reference internal" href="#id23" id="id128">union ( set : Set(T) ) : Set(T)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ocl-operations-for-type-boolean" id="id128">Ocl operations for type <em>Boolean</em></a><ul>
-<li><a class="reference internal" href="#and" id="id129">And</a></li>
-<li><a class="reference internal" href="#implies" id="id130">Implies</a></li>
-<li><a class="reference internal" href="#or" id="id131">Or</a></li>
-<li><a class="reference internal" href="#not" id="id132">Not</a></li>
-<li><a class="reference internal" href="#xor" id="id133">Xor</a></li>
+<li><a class="reference internal" href="#ocl-operations-for-type-boolean" id="id129">Ocl operations for type <em>Boolean</em></a><ul>
+<li><a class="reference internal" href="#and" id="id130">And</a></li>
+<li><a class="reference internal" href="#implies" id="id131">Implies</a></li>
+<li><a class="reference internal" href="#or" id="id132">Or</a></li>
+<li><a class="reference internal" href="#not" id="id133">Not</a></li>
+<li><a class="reference internal" href="#xor" id="id134">Xor</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#glossary" id="id134">Glossary</a></li>
+<li><a class="reference internal" href="#glossary" id="id135">Glossary</a></li>
 </ul>
 </div>
 <div class="section" id="ocl-operations-for-type-classifier">
-<h1><a class="toc-backref" href="#id23">Ocl operations for type <em>Classifier</em></a></h1>
+<h1><a class="toc-backref" href="#id24">Ocl operations for type <em>Classifier</em></a></h1>
 <div class="section" id="allinstances-set-t">
-<h2><a class="toc-backref" href="#id24">allInstances () : Set{T}</a></h2>
+<h2><a class="toc-backref" href="#id25">allInstances () : Set{T}</a></h2>
 <blockquote>
 <p>Returns a Set containing all of the existing instances of the current classifier (along with instances of all its
 inherited classifiers).</p>
@@ -190,9 +190,9 @@ inherited classifiers).</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-oclany">
-<h1><a class="toc-backref" href="#id25">Ocl operations for type <em>OclAny</em></a></h1>
+<h1><a class="toc-backref" href="#id26">Ocl operations for type <em>OclAny</em></a></h1>
 <div class="section" id="oclastype-typespec-classifier-t">
-<h2><a class="toc-backref" href="#id26">oclAsType ( typespec : Classifier ) : T</a></h2>
+<h2><a class="toc-backref" href="#id27">oclAsType ( typespec : Classifier ) : T</a></h2>
 <blockquote>
 <p>Returns <em>self</em> statically typed as typespec if it is an instance of this type. <em>Note</em> that this does not alter the
 runtime value of <em>self</em>, it only enables access to subtype operations. This operation allows users to cast <em>self</em>
@@ -218,7 +218,7 @@ to another type.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="oclisinvalid-boolean">
-<h2><a class="toc-backref" href="#id27">oclIsInvalid () : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id28">oclIsInvalid () : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is equal to <em>invalid</em>.</p>
 <p>examples:</p>
@@ -248,7 +248,7 @@ to another type.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="ocliskindof-classifier-typespec-boolean">
-<h2><a class="toc-backref" href="#id28">oclIsKindOf( Classifier typespec ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id29">oclIsKindOf( Classifier typespec ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if the type of <em>self</em> corresponds to the type or supertype of typespec, <strong>false</strong> otherwise. This
 operation allows users to check the class hierarchy of <em>self</em> much like would an <em>instanceof</em> Java.</p>
@@ -279,7 +279,7 @@ operation allows users to check the class hierarchy of <em>self</em> much like w
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="oclistypeof-typespec-classifier-boolean">
-<h2><a class="toc-backref" href="#id29">oclIsTypeOf( typespec : Classifier ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id30">oclIsTypeOf( typespec : Classifier ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if the type of <em>self</em> is the same as typespec, or <strong>false</strong> otherwise. This operation allows users
 to check the exact class type of <em>self</em>.</p>
@@ -310,7 +310,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="oclisundefined-boolean">
-<h2><a class="toc-backref" href="#id30">oclIsUndefined () : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id31">oclIsUndefined () : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is equal to <em>invalid</em> or <em>null</em>.</p>
 <p>examples:</p>
@@ -340,7 +340,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="object-oclany-boolean">
-<h2><a class="toc-backref" href="#id31">&lt;&gt; ( object : OclAny ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id32">&lt;&gt; ( object : OclAny ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is a different object from <em>object</em>.</p>
 <p>examples:</p>
@@ -370,7 +370,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="id1">
-<h2><a class="toc-backref" href="#id32">= ( object : OclAny) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id33">= ( object : OclAny) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is equal to <em>object</em>.</p>
 <p>examples:</p>
@@ -400,7 +400,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="object-t-boolean">
-<h2><a class="toc-backref" href="#id33">&lt; ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id34">&lt; ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and less than <em>object</em>.</p>
 <p>examples:</p>
@@ -430,7 +430,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="id2">
-<h2><a class="toc-backref" href="#id34">&gt; ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id35">&gt; ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and greater than <em>object</em>.</p>
 <p>examples:</p>
@@ -460,7 +460,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id35">&lt;= ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id36">&lt;= ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and less than or equal to <em>object</em>.</p>
 <p>examples:</p>
@@ -490,7 +490,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="id4">
-<h2><a class="toc-backref" href="#id36">&gt;= ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id37">&gt;= ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is comparable to <em>object</em> and greater than or equal to <em>object</em>.</p>
 <p>examples:</p>
@@ -521,11 +521,11 @@ to check the exact class type of <em>self</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-string">
-<h1><a class="toc-backref" href="#id37">Ocl operations for type <em>String</em></a></h1>
+<h1><a class="toc-backref" href="#id38">Ocl operations for type <em>String</em></a></h1>
 <p><strong>A note on Strings</strong> : OCL Strings begin at index <em>1</em>, not <em>0</em> as in most languages. Thus <em>'test'.at(0)</em> fails in
 <em>invalid</em> whereas <em>'test'.at(1)</em> yields <em>'t'</em>. Likewise, <em>'test'.substring(2, 2)</em> returns <em>'e'</em>.</p>
 <div class="section" id="concat-s-string-string">
-<h2><a class="toc-backref" href="#id38">concat ( s : String ) : String</a></h2>
+<h2><a class="toc-backref" href="#id39">concat ( s : String ) : String</a></h2>
 <blockquote>
 <p>Returns a string containing <em>self</em> followed by <em>s</em>.</p>
 <p>examples:</p>
@@ -549,7 +549,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="size-integer">
-<h2><a class="toc-backref" href="#id39">size () : Integer</a></h2>
+<h2><a class="toc-backref" href="#id40">size () : Integer</a></h2>
 <blockquote>
 <p>Returns the number of characters composing <em>self</em>.</p>
 <p>examples:</p>
@@ -573,7 +573,7 @@ to check the exact class type of <em>self</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="substring-lower-integer-upper-integer-string">
-<h2><a class="toc-backref" href="#id40">substring ( lower : Integer, upper : Integer ) : String</a></h2>
+<h2><a class="toc-backref" href="#id41">substring ( lower : Integer, upper : Integer ) : String</a></h2>
 <blockquote>
 <p>Returns a string containing all characters from <em>self</em> starting from index <em>lower</em> up to index <em>upper</em> included.
 Both <em>lower</em> and <em>upper</em> parameters should be contained between <em>1</em> and <em>self.size()</em> included. <em>lower</em> cannot be
@@ -605,7 +605,7 @@ greater than <em>upper</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="tointeger-integer">
-<h2><a class="toc-backref" href="#id41">toInteger () : Integer</a></h2>
+<h2><a class="toc-backref" href="#id42">toInteger () : Integer</a></h2>
 <blockquote>
 <p>Returns an Integer of value equal to <em>self</em>, or Ø if <em>self</em> does not represent an integer.</p>
 <p>examples:</p>
@@ -635,7 +635,7 @@ greater than <em>upper</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="tolower-string">
-<h2><a class="toc-backref" href="#id42">toLower () : String</a></h2>
+<h2><a class="toc-backref" href="#id43">toLower () : String</a></h2>
 <blockquote>
 <p>Returns <em>self</em> with all characters converted to lowercase.</p>
 <p>examples:</p>
@@ -659,7 +659,7 @@ greater than <em>upper</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="toreal-real">
-<h2><a class="toc-backref" href="#id43">toReal () : Real</a></h2>
+<h2><a class="toc-backref" href="#id44">toReal () : Real</a></h2>
 <blockquote>
 <p>Returns a Real of value equal to <em>self</em>, or Ø if <em>self</em> does not represent a real.</p>
 <p>examples:</p>
@@ -689,7 +689,7 @@ greater than <em>upper</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="toupper-string">
-<h2><a class="toc-backref" href="#id44">toUpper () : String</a></h2>
+<h2><a class="toc-backref" href="#id45">toUpper () : String</a></h2>
 <blockquote>
 <p>Returns <em>self</em> with all characters converted to uppercase.</p>
 <p>examples:</p>
@@ -714,11 +714,11 @@ greater than <em>upper</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-number">
-<h1><a class="toc-backref" href="#id45">Ocl operations for type <em>Number</em></a></h1>
+<h1><a class="toc-backref" href="#id46">Ocl operations for type <em>Number</em></a></h1>
 <p>In addition to the basic math functions (+, -, /, *) are a number of advanced functions. Take note that <em>Number</em>
 denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless otherwise specified.</p>
 <div class="section" id="number-abs-number">
-<h2><a class="toc-backref" href="#id46">Number::abs () : Number</a></h2>
+<h2><a class="toc-backref" href="#id47">Number::abs () : Number</a></h2>
 <blockquote>
 <p>Returns the absolute value of <em>self</em>, <em>self</em> if it is already a positive number.</p>
 <p>examples:</p>
@@ -745,7 +745,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="number-floor-integer">
-<h2><a class="toc-backref" href="#id47">Number::floor () : Integer</a></h2>
+<h2><a class="toc-backref" href="#id48">Number::floor () : Integer</a></h2>
 <blockquote>
 <p>Returns the integer part of <em>self</em> if it is a Real, <em>self</em> if it is an Integer.</p>
 <p>examples:</p>
@@ -775,7 +775,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="number-max-r-number-number">
-<h2><a class="toc-backref" href="#id48">Number::max ( r : Number ) : Number</a></h2>
+<h2><a class="toc-backref" href="#id49">Number::max ( r : Number ) : Number</a></h2>
 <blockquote>
 <p>Returns the greatest number between <em>self</em> and <em>r</em>.</p>
 <p>examples:</p>
@@ -808,7 +808,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="number-min-r-number-number">
-<h2><a class="toc-backref" href="#id49">Number::min ( r : Number ) : Number</a></h2>
+<h2><a class="toc-backref" href="#id50">Number::min ( r : Number ) : Number</a></h2>
 <blockquote>
 <p>Returns the lowest number between <em>self</em> and <em>r</em>.</p>
 <p>examples:</p>
@@ -841,7 +841,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="number-round-integer">
-<h2><a class="toc-backref" href="#id50">Number::round () : Integer</a></h2>
+<h2><a class="toc-backref" href="#id51">Number::round () : Integer</a></h2>
 <blockquote>
 <p>Returns the nearest integer to <em>self</em> if it is a Real, <em>self</em> if it is an Integer.</p>
 <p>examples:</p>
@@ -874,7 +874,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="integer-div-i-integer-integer">
-<h2><a class="toc-backref" href="#id51">Integer::div ( i : Integer ) : Integer</a></h2>
+<h2><a class="toc-backref" href="#id52">Integer::div ( i : Integer ) : Integer</a></h2>
 <blockquote>
 <p>Returns the integer quotient of the division of <em>self</em> by <em>i</em>.</p>
 <p>examples:</p>
@@ -901,7 +901,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="integer-mod-i-integer-integer">
-<h2><a class="toc-backref" href="#id52">Integer::mod ( i : Integer ) : Integer</a></h2>
+<h2><a class="toc-backref" href="#id53">Integer::mod ( i : Integer ) : Integer</a></h2>
 <blockquote>
 <p>Returns the integer remainder of the division of <em>self</em> by <em>i</em>.</p>
 <p>examples:</p>
@@ -929,7 +929,7 @@ denotes both <em>Integer</em> and <em>Real</em>, and they're substitutive unless
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-collection">
-<h1><a class="toc-backref" href="#id53">Ocl operations for type <em>Collection</em></a></h1>
+<h1><a class="toc-backref" href="#id54">Ocl operations for type <em>Collection</em></a></h1>
 <p>Please note that OCL collections can contain the <em>null</em> value (null) but not the <em>invalid</em> value (Ø). Trying
 to add Ø within a new or existing collection will yield Ø as a result. OCL proposes four distinct kinds
 of collections offering all possibilities of ordering/unicity.</p>
@@ -968,7 +968,7 @@ of collections offering all possibilities of ordering/unicity.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 <div class="section" id="any-expr-oclexpression-t">
-<h2><a class="toc-backref" href="#id54">any ( expr : OclExpression ) : T</a></h2>
+<h2><a class="toc-backref" href="#id55">any ( expr : OclExpression ) : T</a></h2>
 <blockquote>
 <p>Returns any element contained in <em>self</em> that validates the condition <em>expr</em>, null otherwise. Evaluation is shortcut as soon
 as an element validating <em>expr</em> is found. Note that the result of this on unordered collections will be random if more than
@@ -997,7 +997,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="asbag-bag-t">
-<h2><a class="toc-backref" href="#id55">asBag () : Bag(T)</a></h2>
+<h2><a class="toc-backref" href="#id56">asBag () : Bag(T)</a></h2>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em>.</p>
 <p>examples:</p>
@@ -1036,7 +1036,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="asorderedset-orderedset-t">
-<h2><a class="toc-backref" href="#id56">asOrderedSet () : OrderedSet(T)</a></h2>
+<h2><a class="toc-backref" href="#id57">asOrderedSet () : OrderedSet(T)</a></h2>
 <blockquote>
 <p>Returns an OrderedSet containing all elements of <em>self</em>. Element ordering is preserved when possible.</p>
 <p>examples:</p>
@@ -1075,7 +1075,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="assequence-boolean">
-<h2><a class="toc-backref" href="#id57">asSequence () : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id58">asSequence () : Boolean</a></h2>
 <blockquote>
 <p>Returns a Sequence containing all elements of <em>self</em>. Element ordering is preserved when possible.</p>
 <p>examples:</p>
@@ -1108,7 +1108,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="asset-set-t">
-<h2><a class="toc-backref" href="#id58">asSet () : Set(T)</a></h2>
+<h2><a class="toc-backref" href="#id59">asSet () : Set(T)</a></h2>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em>.</p>
 <p>examples:</p>
@@ -1153,7 +1153,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="collect-expr-oclexpression-collection-t2">
-<h2><a class="toc-backref" href="#id59">collect ( expr : OclExpression ) : Collection(T2)</a></h2>
+<h2><a class="toc-backref" href="#id60">collect ( expr : OclExpression ) : Collection(T2)</a></h2>
 <blockquote>
 <p>Returns a collection containing the result of applying <em>expr</em> on all elements contained in <em>self</em>.</p>
 <p>examples:</p>
@@ -1177,7 +1177,7 @@ one element validates <em>expr</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="collectnested-expr-oclexpression-collection-t2">
-<h2><a class="toc-backref" href="#id60">collectNested ( expr : OclExpression ) : Collection(T2)</a></h2>
+<h2><a class="toc-backref" href="#id61">collectNested ( expr : OclExpression ) : Collection(T2)</a></h2>
 <blockquote>
 <p>Returns a collection containing all the elements contained in <em>self</em> on which we applied the OclExpression <em>expr</em>.
 The results won't be flattened. The type of the resulting collection depends on the type of <em>self</em>.</p>
@@ -1204,7 +1204,7 @@ model contains two persons such as <em>person1.children = {James, Jane}</em> and
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="count-object-t-integer">
-<h2><a class="toc-backref" href="#id61">count ( object : T ) : Integer</a></h2>
+<h2><a class="toc-backref" href="#id62">count ( object : T ) : Integer</a></h2>
 <blockquote>
 <p>Returns how many times <em>object</em> is in the collection <em>self</em>.</p>
 <p>examples:</p>
@@ -1237,7 +1237,7 @@ model contains two persons such as <em>person1.children = {James, Jane}</em> and
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="excludes-object-t-boolean">
-<h2><a class="toc-backref" href="#id62">excludes ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id63">excludes ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>object</em> is not contained in <em>self</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1264,7 +1264,7 @@ model contains two persons such as <em>person1.children = {James, Jane}</em> and
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="excludesall-c2-collection-t-boolean">
-<h2><a class="toc-backref" href="#id63">excludesAll ( c2 : Collection(T) ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id64">excludesAll ( c2 : Collection(T) ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if no element of <em>c2</em> is contained in <em>self</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1291,7 +1291,7 @@ model contains two persons such as <em>person1.children = {James, Jane}</em> and
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="excluding-object-t-collection-t">
-<h2><a class="toc-backref" href="#id64">excluding ( object : T ) : Collection(T)</a></h2>
+<h2><a class="toc-backref" href="#id65">excluding ( object : T ) : Collection(T)</a></h2>
 <blockquote>
 <p>Returns a collection containing all elements of <em>self</em> minus all occurences of <em>object</em>.
 <strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
@@ -1326,7 +1326,7 @@ excluding elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="exists-expr-oclexpression-boolean">
-<h2><a class="toc-backref" href="#id65">exists ( expr : OclExpression ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id66">exists ( expr : OclExpression ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if at least one element in <em>self</em> validates the condition <em>expr</em>, <strong>false</strong> otherwise. The evaluation
 stops as soon as one element validating <em>expr</em> is found.</p>
@@ -1351,7 +1351,7 @@ stops as soon as one element validating <em>expr</em> is found.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="flatten-collection-t2">
-<h2><a class="toc-backref" href="#id66">flatten () : Collection(T2)</a></h2>
+<h2><a class="toc-backref" href="#id67">flatten () : Collection(T2)</a></h2>
 <blockquote>
 <p>Returns a collection containing all elements of <em>self</em> recursively flattened.
 <strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
@@ -1386,7 +1386,7 @@ flattening.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="forall-expr-oclexpression-boolean">
-<h2><a class="toc-backref" href="#id67">forAll ( expr : OclExpression ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id68">forAll ( expr : OclExpression ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if the all the elements contained in <em>self</em> validate the condition <em>expr</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1413,7 +1413,7 @@ flattening.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="includes-object-t-boolean">
-<h2><a class="toc-backref" href="#id68">includes ( object : T ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id69">includes ( object : T ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>object</em> is contained in <em>self</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1440,7 +1440,7 @@ flattening.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="includesall-c2-collection-t-boolean">
-<h2><a class="toc-backref" href="#id69">includesAll ( c2 : Collection(T) ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id70">includesAll ( c2 : Collection(T) ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if all element of <em>c2</em> are contained in <em>self</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1467,7 +1467,7 @@ flattening.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="including-object-t-collection-t">
-<h2><a class="toc-backref" href="#id70">including ( object : T ) : Collection(T)</a></h2>
+<h2><a class="toc-backref" href="#id71">including ( object : T ) : Collection(T)</a></h2>
 <blockquote>
 <p>Returns a collection containing all elements of <em>self</em> followed by <em>object</em>.
 <strong>Note</strong> : at the time of writing, the OCL standard library sports a bug which changes <em>OrderedSets</em> in <em>Sets</em> when
@@ -1502,7 +1502,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="isempty-boolean">
-<h2><a class="toc-backref" href="#id71">isEmpty () : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id72">isEmpty () : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> is empty, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1532,7 +1532,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="isunique-expr-oclexpression-boolean">
-<h2><a class="toc-backref" href="#id72">isUnique ( expr : OclExpression ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id73">isUnique ( expr : OclExpression ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if all elements contained in <em>self</em> evaluate to a distinct value for <em>expr</em>.</p>
 <p>examples:</p>
@@ -1559,7 +1559,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="notempty-boolean">
-<h2><a class="toc-backref" href="#id73">notEmpty () : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id74">notEmpty () : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains at least one element, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1589,7 +1589,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="one-expr-oclexpression-boolean">
-<h2><a class="toc-backref" href="#id74">one ( expr : OclExpression ) : Boolean</a></h2>
+<h2><a class="toc-backref" href="#id75">one ( expr : OclExpression ) : Boolean</a></h2>
 <blockquote>
 <p>Returns <strong>true</strong> if there is only one element contained in <em>self</em> that validates the condition <em>expr</em>, <strong>false</strong> otherwise.</p>
 <p>examples:</p>
@@ -1616,7 +1616,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="product-c2-collection-t2-set-tuple-first-t-second-t2">
-<h2><a class="toc-backref" href="#id75">product ( c2 : Collection(T2) ) : Set(Tuple(first : T, second : T2))</a></h2>
+<h2><a class="toc-backref" href="#id76">product ( c2 : Collection(T2) ) : Set(Tuple(first : T, second : T2))</a></h2>
 <blockquote>
 <p>Returns a Set of Tuples which represents the cartesian product of <em>self</em> with <em>c2</em>.</p>
 <p>examples (notation of the tuples has been simplified):</p>
@@ -1643,7 +1643,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="reject-expr-oclexpression-collection-t">
-<h2><a class="toc-backref" href="#id76">reject ( expr : OclExpression ) : Collection(T)</a></h2>
+<h2><a class="toc-backref" href="#id77">reject ( expr : OclExpression ) : Collection(T)</a></h2>
 <blockquote>
 <p>Returns a collection with all elements of <em>self</em> except for those who validate the OclExpression <em>expr</em>.</p>
 <p>examples:</p>
@@ -1676,7 +1676,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="select-expr-oclexpression-collection-t">
-<h2><a class="toc-backref" href="#id77">select ( expr : OclExpression ) : Collection(T)</a></h2>
+<h2><a class="toc-backref" href="#id78">select ( expr : OclExpression ) : Collection(T)</a></h2>
 <blockquote>
 <p>Returns a collection with all elements of <em>self</em> that validate the OclExpression <em>expr</em>.</p>
 <p>examples:</p>
@@ -1708,8 +1708,8 @@ including elements.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="size-boolean">
-<h2><a class="toc-backref" href="#id78">size () : Boolean</a></h2>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id79">size () : Integer</a></h2>
 <blockquote>
 <p>Returns the number of elements contained in <em>self</em>.</p>
 <p>examples:</p>
@@ -1736,7 +1736,7 @@ including elements.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="sortedby-expr-oclexpression-sequence-t">
-<h2><a class="toc-backref" href="#id79">sortedBy ( expr : OclExpression ) : Sequence(T)</a></h2>
+<h2><a class="toc-backref" href="#id80">sortedBy ( expr : OclExpression ) : Sequence(T)</a></h2>
 <blockquote>
 <p>Returns a sorted collection containing all elements from <em>self</em> sorted in accordance with the OclExpression <em>expr</em>.
 This can be used on all kind of collections yet will always yield a Sequence-typed result except for OrderedSet which
@@ -1764,7 +1764,7 @@ model contains two employees such as <em>employee1.age = 24</em> and <em>employe
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="sum-real">
-<h2><a class="toc-backref" href="#id80">sum () : Real</a></h2>
+<h2><a class="toc-backref" href="#id81">sum () : Real</a></h2>
 <blockquote>
 <p>Returns the sum of all elements contained in <em>self</em> if they support the '+' operation.</p>
 <p>examples:</p>
@@ -1794,9 +1794,9 @@ model contains two employees such as <em>employee1.age = 24</em> and <em>employe
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="ocl-operations-for-type-sequence">
-<h2><a class="toc-backref" href="#id81">Ocl operations for type <em>Sequence</em></a></h2>
+<h2><a class="toc-backref" href="#id82">Ocl operations for type <em>Sequence</em></a></h2>
 <div class="section" id="seq-sequence-t-boolean">
-<h3><a class="toc-backref" href="#id82">= ( seq : Sequence(T) ) : Boolean</a></h3>
+<h3><a class="toc-backref" href="#id83">= ( seq : Sequence(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains the very same objects as <em>seq</em> in the very same order as they are in <em>seq</em>.</p>
 <p>examples:</p>
@@ -1825,8 +1825,8 @@ model contains two employees such as <em>employee1.age = 24</em> and <em>employe
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id5">
-<h3><a class="toc-backref" href="#id83">&lt;&gt; ( seq : Sequence(T) ) : Boolean</a></h3>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id84">&lt;&gt; ( seq : Sequence(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>seq</em>, or if these objects are not in the same order
 as they are in <em>seq</em>.</p>
@@ -1857,7 +1857,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="append-object-t-sequence-t">
-<h3><a class="toc-backref" href="#id84">append ( object : T ) : Sequence(T)</a></h3>
+<h3><a class="toc-backref" href="#id85">append ( object : T ) : Sequence(T)</a></h3>
 <blockquote>
 <p>Returns a Sequence containing all elements of <em>self</em> followed by <em>object</em>.</p>
 <p>examples:</p>
@@ -1881,7 +1881,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="at-index-integer-t">
-<h3><a class="toc-backref" href="#id85">at ( index : Integer ) : T</a></h3>
+<h3><a class="toc-backref" href="#id86">at ( index : Integer ) : T</a></h3>
 <blockquote>
 <p>Returns the element of <em>self</em> at the <em>index</em> position.</p>
 <p>examples:</p>
@@ -1905,7 +1905,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="first-t">
-<h3><a class="toc-backref" href="#id86">first () : T</a></h3>
+<h3><a class="toc-backref" href="#id87">first () : T</a></h3>
 <blockquote>
 <p>Returns the first element of <em>self</em>.</p>
 <p>examples:</p>
@@ -1929,7 +1929,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="indexof-object-t-integer">
-<h3><a class="toc-backref" href="#id87">indexOf ( object : T ) : Integer</a></h3>
+<h3><a class="toc-backref" href="#id88">indexOf ( object : T ) : Integer</a></h3>
 <blockquote>
 <p>Returns the position of <em>object</em> in sequence <em>self</em>.</p>
 <p>examples:</p>
@@ -1953,7 +1953,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="insertat-index-integer-object-t-sequence-t">
-<h3><a class="toc-backref" href="#id88">insertAt ( index : Integer, object : T) : Sequence(T)</a></h3>
+<h3><a class="toc-backref" href="#id89">insertAt ( index : Integer, object : T) : Sequence(T)</a></h3>
 <blockquote>
 <p>Returns a Sequence containing <em>self</em> with <em>object</em> inserted at the <em>index</em> position.</p>
 <p>examples:</p>
@@ -1986,7 +1986,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="last-t">
-<h3><a class="toc-backref" href="#id89">last () : T</a></h3>
+<h3><a class="toc-backref" href="#id90">last () : T</a></h3>
 <blockquote>
 <p>Returns the last element of <em>self</em>.</p>
 <p>examples:</p>
@@ -2010,7 +2010,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="prepend-object-t-sequence-t">
-<h3><a class="toc-backref" href="#id90">prepend ( object : T ) : Sequence(T)</a></h3>
+<h3><a class="toc-backref" href="#id91">prepend ( object : T ) : Sequence(T)</a></h3>
 <blockquote>
 <p>Returns a Sequence containing <em>object</em> followed by all elements of <em>self</em> .</p>
 <p>examples:</p>
@@ -2034,7 +2034,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="subsequence-startindex-integer-endindex-integer-sequence-t">
-<h3><a class="toc-backref" href="#id91">subSequence ( startIndex : Integer, endIndex : Integer ) : Sequence(T)</a></h3>
+<h3><a class="toc-backref" href="#id92">subSequence ( startIndex : Integer, endIndex : Integer ) : Sequence(T)</a></h3>
 <blockquote>
 <p>Returns a Sequence containing all elements of <em>self</em> between the positions 'startIndex' and 'endIndex'.</p>
 <p>examples:</p>
@@ -2061,7 +2061,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="union-seq-sequence-t-sequence-t">
-<h3><a class="toc-backref" href="#id92">union ( seq : Sequence(T) ) : Sequence(T)</a></h3>
+<h3><a class="toc-backref" href="#id93">union ( seq : Sequence(T) ) : Sequence(T)</a></h3>
 <blockquote>
 <p>Returns a Sequence containing all elements of <em>self</em> followed by all elements of <em>seq</em>.</p>
 <p>examples:</p>
@@ -2086,9 +2086,9 @@ as they are in <em>seq</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-bag">
-<h2><a class="toc-backref" href="#id93">Ocl operations for type <em>Bag</em></a></h2>
+<h2><a class="toc-backref" href="#id94">Ocl operations for type <em>Bag</em></a></h2>
 <div class="section" id="bag-bag-t-boolean">
-<h3><a class="toc-backref" href="#id94">= ( bag : Bag(T) ) : Boolean</a></h3>
+<h3><a class="toc-backref" href="#id95">= ( bag : Bag(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>bag</em> in the same quantities.</p>
 <p>examples:</p>
@@ -2117,8 +2117,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id6">
-<h3><a class="toc-backref" href="#id95">&lt;&gt; ( bag : Bag(T) ) : Boolean</a></h3>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id96">&lt;&gt; ( bag : Bag(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>bag</em> in the same quantities.</p>
 <p>examples:</p>
@@ -2148,7 +2148,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="intersection-bag-bag-t-bag-t">
-<h3><a class="toc-backref" href="#id96">intersection ( bag : Bag(T) ) : Bag(T)</a></h3>
+<h3><a class="toc-backref" href="#id97">intersection ( bag : Bag(T) ) : Bag(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> that are also contained by <em>bag</em>.</p>
 <p>examples:</p>
@@ -2175,7 +2175,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="intersection-set-set-t-set-t">
-<h3><a class="toc-backref" href="#id97">intersection ( set : Set(T) ) : Set(T)</a></h3>
+<h3><a class="toc-backref" href="#id98">intersection ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> that are also contained by <em>set</em>.</p>
 <p>examples:</p>
@@ -2199,7 +2199,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="union-bag-bag-t-bag-t">
-<h3><a class="toc-backref" href="#id98">union ( bag : Bag(T) ) : Bag(T)</a></h3>
+<h3><a class="toc-backref" href="#id99">union ( bag : Bag(T) ) : Bag(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> and all elements of <em>bag</em>.</p>
 <p>examples:</p>
@@ -2223,7 +2223,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="union-set-set-t-bag-t">
-<h3><a class="toc-backref" href="#id99">union ( set : Set(T) ) : Bag(T)</a></h3>
+<h3><a class="toc-backref" href="#id100">union ( set : Set(T) ) : Bag(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> and all elements of <em>set</em>.</p>
 <p>examples:</p>
@@ -2248,9 +2248,9 @@ as they are in <em>seq</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-orderedset">
-<h2><a class="toc-backref" href="#id100">Ocl operations for type <em>OrderedSet</em></a></h2>
+<h2><a class="toc-backref" href="#id101">Ocl operations for type <em>OrderedSet</em></a></h2>
 <div class="section" id="set-set-t-boolean">
-<h3><a class="toc-backref" href="#id101">= ( set : Set(T) ) : Boolean</a></h3>
+<h3><a class="toc-backref" href="#id102">= ( set : Set(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>set</em>.</p>
 <p>examples:</p>
@@ -2280,7 +2280,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="orderedset-orderedset-t-boolean">
-<h3><a class="toc-backref" href="#id102">= ( orderedset : OrderedSet(T) ) : Boolean</a></h3>
+<h3><a class="toc-backref" href="#id103">= ( orderedset : OrderedSet(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>orderedset</em> regardless of element ordering.</p>
 <p>examples:</p>
@@ -2312,8 +2312,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id7">
-<h3><a class="toc-backref" href="#id103">&lt;&gt; ( set : Set(T) ) : Boolean</a></h3>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id104">&lt;&gt; ( set : Set(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>set</em>.</p>
 <p>examples:</p>
@@ -2342,8 +2342,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id8">
-<h3><a class="toc-backref" href="#id104">&lt;&gt; ( orderedset : OrderedSet(T) ) : Boolean</a></h3>
+<div class="section" id="id9">
+<h3><a class="toc-backref" href="#id105">&lt;&gt; ( orderedset : OrderedSet(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>orderedset</em>.</p>
 <p>examples:</p>
@@ -2373,7 +2373,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="set-set-t-set-t">
-<h3><a class="toc-backref" href="#id105"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></h3>
+<h3><a class="toc-backref" href="#id106"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> minus all elements of <em>set</em>.</p>
 <p>examples:</p>
@@ -2397,7 +2397,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="append-object-t-orderedset-t">
-<h3><a class="toc-backref" href="#id106">append ( object : T ) : OrderedSet(T)</a></h3>
+<h3><a class="toc-backref" href="#id107">append ( object : T ) : OrderedSet(T)</a></h3>
 <blockquote>
 <p>Returns an OrderedSet containing all elements of <em>self</em> followed by <em>object</em>.</p>
 <p>examples:</p>
@@ -2420,8 +2420,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id9">
-<h3><a class="toc-backref" href="#id107">at ( index : Integer ) : T</a></h3>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id108">at ( index : Integer ) : T</a></h3>
 <blockquote>
 <p>Returns the element of <em>self</em> located at position <em>index</em> in the collection.</p>
 <p>examples:</p>
@@ -2444,8 +2444,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id10">
-<h3><a class="toc-backref" href="#id108">first () : T</a></h3>
+<div class="section" id="id11">
+<h3><a class="toc-backref" href="#id109">first () : T</a></h3>
 <blockquote>
 <p>Returns the first element of <em>self</em>.</p>
 <p>examples:</p>
@@ -2468,8 +2468,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id11">
-<h3><a class="toc-backref" href="#id109">indexOf ( object : T ) : Integer</a></h3>
+<div class="section" id="id12">
+<h3><a class="toc-backref" href="#id110">indexOf ( object : T ) : Integer</a></h3>
 <blockquote>
 <p>Returns the position of <em>object</em> in <em>self</em>.</p>
 <p>examples:</p>
@@ -2493,7 +2493,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="insertat-index-integer-object-t-orderedset-t">
-<h3><a class="toc-backref" href="#id110">insertAt ( index : Integer, object : T ) : OrderedSet(T)</a></h3>
+<h3><a class="toc-backref" href="#id111">insertAt ( index : Integer, object : T ) : OrderedSet(T)</a></h3>
 <blockquote>
 <p>Returns an OrderedSet containing <em>self</em> with <em>object</em> inserted at the <em>index</em> position.</p>
 <p>examples:</p>
@@ -2520,7 +2520,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="intersection-bag-bag-t-set-t">
-<h3><a class="toc-backref" href="#id111">intersection ( bag : Bag(T) ) : Set(T)</a></h3>
+<h3><a class="toc-backref" href="#id112">intersection ( bag : Bag(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> that are also contained by <em>bag</em>.</p>
 <p>examples:</p>
@@ -2543,8 +2543,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id12">
-<h3><a class="toc-backref" href="#id112">intersection ( set : Set(T) ) : Set(T)</a></h3>
+<div class="section" id="id13">
+<h3><a class="toc-backref" href="#id113">intersection ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> that are also contained by <em>set</em>.</p>
 <p>examples:</p>
@@ -2567,8 +2567,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id13">
-<h3><a class="toc-backref" href="#id113">last () : T</a></h3>
+<div class="section" id="id14">
+<h3><a class="toc-backref" href="#id114">last () : T</a></h3>
 <blockquote>
 <p>Returns the last element of <em>self</em>.</p>
 <p>examples:</p>
@@ -2592,7 +2592,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="prepend-object-t-orderedset-t">
-<h3><a class="toc-backref" href="#id114">prepend ( object : T ) : OrderedSet(T)</a></h3>
+<h3><a class="toc-backref" href="#id115">prepend ( object : T ) : OrderedSet(T)</a></h3>
 <blockquote>
 <p>Returns an OrderedSet containing <em>object</em> followed by all elements of <em>self</em>.</p>
 <p>examples:</p>
@@ -2616,7 +2616,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="suborderedset-startindex-integer-endindex-integer-orderedset-t">
-<h3><a class="toc-backref" href="#id115">subOrderedSet ( startIndex : Integer, endIndex : Integer ) : OrderedSet(T)</a></h3>
+<h3><a class="toc-backref" href="#id116">subOrderedSet ( startIndex : Integer, endIndex : Integer ) : OrderedSet(T)</a></h3>
 <blockquote>
 <p>Returns an OrderedSet containing all elements of <em>self</em> between the positions <em>startIndex</em> and <em>endIndex</em>.</p>
 <p>examples:</p>
@@ -2643,7 +2643,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="symmetricdifference-set-set-t-set-t">
-<h3><a class="toc-backref" href="#id116">symmetricDifference ( set : Set(T) ) : Set(T)</a></h3>
+<h3><a class="toc-backref" href="#id117">symmetricDifference ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all of the elements of <em>self</em> and <em>set</em> that are not present in both.</p>
 <p>examples:</p>
@@ -2666,8 +2666,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id14">
-<h3><a class="toc-backref" href="#id117">union ( bag : Bag(T) ) : Bag(T)</a></h3>
+<div class="section" id="id15">
+<h3><a class="toc-backref" href="#id118">union ( bag : Bag(T) ) : Bag(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> followed by all elements of <em>bag</em>.</p>
 <p>examples:</p>
@@ -2691,7 +2691,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="union-set-set-t-set-t">
-<h3><a class="toc-backref" href="#id118">union ( set : Set(T) ) : Set(T)</a></h3>
+<h3><a class="toc-backref" href="#id119">union ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> followed by all elements of <em>set</em>.</p>
 <p>examples:</p>
@@ -2716,9 +2716,9 @@ as they are in <em>seq</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-set">
-<h2><a class="toc-backref" href="#id119">Ocl operations for type <em>Set</em></a></h2>
-<div class="section" id="id15">
-<h3><a class="toc-backref" href="#id120">= ( set : Set(T) ) : Boolean</a></h3>
+<h2><a class="toc-backref" href="#id120">Ocl operations for type <em>Set</em></a></h2>
+<div class="section" id="id16">
+<h3><a class="toc-backref" href="#id121">= ( set : Set(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> contains the same objects as <em>set</em>.</p>
 <p>examples:</p>
@@ -2747,8 +2747,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id16">
-<h3><a class="toc-backref" href="#id121">&lt;&gt; ( set : Set(T) ) : Boolean</a></h3>
+<div class="section" id="id17">
+<h3><a class="toc-backref" href="#id122">&lt;&gt; ( set : Set(T) ) : Boolean</a></h3>
 <blockquote>
 <p>Returns <strong>true</strong> if <em>self</em> does not contain the same objects as <em>set</em>.</p>
 <p>examples:</p>
@@ -2777,8 +2777,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id17">
-<h3><a class="toc-backref" href="#id122"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></h3>
+<div class="section" id="id18">
+<h3><a class="toc-backref" href="#id123"><cite>-</cite> ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> minus all elements of <em>set</em>.</p>
 <p>examples:</p>
@@ -2801,8 +2801,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id18">
-<h3><a class="toc-backref" href="#id123">intersection ( bag : Bag(T) ) : Set(T)</a></h3>
+<div class="section" id="id19">
+<h3><a class="toc-backref" href="#id124">intersection ( bag : Bag(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> that are also contained in <em>bag</em>.</p>
 <p>examples:</p>
@@ -2825,8 +2825,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id19">
-<h3><a class="toc-backref" href="#id124">intersection ( set : Set(T) ) : Set(T)</a></h3>
+<div class="section" id="id20">
+<h3><a class="toc-backref" href="#id125">intersection ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> that are also contained in <em>set</em>.</p>
 <p>examples:</p>
@@ -2849,8 +2849,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id20">
-<h3><a class="toc-backref" href="#id125">symmetricDifference ( set : Set(T) ) : Set(T)</a></h3>
+<div class="section" id="id21">
+<h3><a class="toc-backref" href="#id126">symmetricDifference ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all of the elements of <em>self</em> and <em>set</em> that are not present in both.</p>
 <p>examples:</p>
@@ -2873,8 +2873,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id21">
-<h3><a class="toc-backref" href="#id126">union ( bag : Bag(T) ) : Bag(T)</a></h3>
+<div class="section" id="id22">
+<h3><a class="toc-backref" href="#id127">union ( bag : Bag(T) ) : Bag(T)</a></h3>
 <blockquote>
 <p>Returns a Bag containing all elements of <em>self</em> and all elements of <em>bag</em>.</p>
 <p>examples:</p>
@@ -2897,8 +2897,8 @@ as they are in <em>seq</em>.</p>
 </blockquote>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
-<div class="section" id="id22">
-<h3><a class="toc-backref" href="#id127">union ( set : Set(T) ) : Set(T)</a></h3>
+<div class="section" id="id23">
+<h3><a class="toc-backref" href="#id128">union ( set : Set(T) ) : Set(T)</a></h3>
 <blockquote>
 <p>Returns a Set containing all elements of <em>self</em> and all elements of <em>set</em>.</p>
 <p>examples:</p>
@@ -2924,9 +2924,9 @@ as they are in <em>seq</em>.</p>
 </div>
 </div>
 <div class="section" id="ocl-operations-for-type-boolean">
-<h1><a class="toc-backref" href="#id128">Ocl operations for type <em>Boolean</em></a></h1>
+<h1><a class="toc-backref" href="#id129">Ocl operations for type <em>Boolean</em></a></h1>
 <div class="section" id="and">
-<h2><a class="toc-backref" href="#id129">And</a></h2>
+<h2><a class="toc-backref" href="#id130">And</a></h2>
 <blockquote>
 <table border="1" class="truthtable docutils">
 <colgroup>
@@ -2964,7 +2964,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="implies">
-<h2><a class="toc-backref" href="#id130">Implies</a></h2>
+<h2><a class="toc-backref" href="#id131">Implies</a></h2>
 <blockquote>
 <table border="1" class="truthtable docutils">
 <colgroup>
@@ -3002,7 +3002,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="or">
-<h2><a class="toc-backref" href="#id131">Or</a></h2>
+<h2><a class="toc-backref" href="#id132">Or</a></h2>
 <blockquote>
 <table border="1" class="truthtable docutils">
 <colgroup>
@@ -3040,7 +3040,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="not">
-<h2><a class="toc-backref" href="#id132">Not</a></h2>
+<h2><a class="toc-backref" href="#id133">Not</a></h2>
 <blockquote>
 <table border="1" class="truthtable docutils">
 <colgroup>
@@ -3068,7 +3068,7 @@ as they are in <em>seq</em>.</p>
 <p>Back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
 <div class="section" id="xor">
-<h2><a class="toc-backref" href="#id133">Xor</a></h2>
+<h2><a class="toc-backref" href="#id134">Xor</a></h2>
 <blockquote>
 <table border="1" class="truthtable docutils">
 <colgroup>
@@ -3107,7 +3107,7 @@ as they are in <em>seq</em>.</p>
 </div>
 </div>
 <div class="section" id="glossary">
-<h1><a class="toc-backref" href="#id134">Glossary</a></h1>
+<h1><a class="toc-backref" href="#id135">Glossary</a></h1>
 <blockquote>
 <dl class="docutils">
 <dt><strong>invalid</strong></dt>
