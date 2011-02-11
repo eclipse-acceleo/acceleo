@@ -81,6 +81,10 @@ table {
   width: 40%;
 }
 
+table.overview {
+  width: 80%;
+}
+
 tr:nth-child(even) {
   background: #f0f0f0
 }
@@ -94,6 +98,10 @@ table th {
 table td {
   border: 1px solid black;
   padding-left: 1em;
+}
+
+table.overview td.abstract {
+  width: 70%;
 }
 
 table p {
