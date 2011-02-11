@@ -405,9 +405,11 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 		final Set<URI> candidates = new LinkedHashSet<URI>();
 		final List<ResourceSet> resourceSets = new ArrayList<ResourceSet>();
 		for (Module module : parentEnvironment.getCurrentModules()) {
-			final ResourceSet resourceSet = module.eResource().getResourceSet();
-			if (!resourceSets.contains(resourceSet)) {
-				resourceSets.add(resourceSet);
+			if (module != null && module.eResource() != null) {
+				final ResourceSet resourceSet = module.eResource().getResourceSet();
+				if (!resourceSets.contains(resourceSet)) {
+					resourceSets.add(resourceSet);
+				}
 			}
 		}
 		for (ResourceSet resourceSet : resourceSets) {
