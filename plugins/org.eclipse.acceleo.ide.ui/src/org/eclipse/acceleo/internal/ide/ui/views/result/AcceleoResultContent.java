@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
@@ -35,16 +36,23 @@ import org.eclipse.ocl.utilities.ASTNode;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoResultContent implements IAcceleoTextGenerationListener {
-
 	/**
 	 * The generated files. The key is the full path of the file and the value its traceability data.
 	 */
 	private Map<String, TraceabilityTargetFile> targetFiles = new HashMap<String, TraceabilityTargetFile>();
 
+	/** The label provider in charge of computing the names of the elements we'll show in this result view. */
+	private ILabelProvider labelProvider;
+
 	/**
 	 * Constructor.
+	 * 
+	 * @param labelProvider
+	 *            The label provider in charge of computing the names of the elements we'll show in this
+	 *            result view.
 	 */
-	public AcceleoResultContent() {
+	public AcceleoResultContent(ILabelProvider labelProvider) {
+		this.labelProvider = labelProvider;
 	}
 
 	/**
@@ -164,11 +172,11 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 		}
 		TraceabilityModel newModel;
 		if (eObject instanceof Module) {
-			newModel = new TraceabilityTemplate((Module)eObject);
+			newModel = new TraceabilityTemplate((Module)eObject, labelProvider.getText(eObject));
 		} else if (eObject instanceof TemplateExpression) {
-			newModel = new TraceabilityTemplate((TemplateExpression)eObject);
+			newModel = new TraceabilityTemplate((TemplateExpression)eObject, labelProvider.getText(eObject));
 		} else {
-			newModel = new TraceabilityModel(eObject);
+			newModel = new TraceabilityModel(eObject, labelProvider.getText(eObject));
 		}
 		Set<TraceabilityModel> toMove = new HashSet<TraceabilityModel>();
 		for (TraceabilityModel sibling : parent.getChildren()) {

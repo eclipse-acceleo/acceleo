@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Obeo.
+ * Copyright (c) 2008, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,9 @@ public class TraceabilityModel extends TraceabilityContainer {
 	 */
 	private EObject eObject;
 
+	/** The Label we are to display for this element. */
+	private String label;
+
 	/**
 	 * The regions of the text synchronized with the EObject.
 	 */
@@ -38,10 +41,13 @@ public class TraceabilityModel extends TraceabilityContainer {
 	 * 
 	 * @param eObject
 	 *            the current EObject synchronized with the text
+	 * @param label
+	 *            the Label we are to display for this element.
 	 */
-	public TraceabilityModel(EObject eObject) {
+	public TraceabilityModel(EObject eObject, String label) {
 		this.eObject = eObject;
 		this.regions = new ArrayList<TraceabilityRegion>();
+		this.label = label;
 	}
 
 	/**
@@ -60,6 +66,16 @@ public class TraceabilityModel extends TraceabilityContainer {
 	 */
 	public List<TraceabilityRegion> getRegions() {
 		return regions;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.views.result.AbstractTraceabilityElement#getLabel()
+	 */
+	@Override
+	public String getLabel() {
+		return label;
 	}
 
 	/**
