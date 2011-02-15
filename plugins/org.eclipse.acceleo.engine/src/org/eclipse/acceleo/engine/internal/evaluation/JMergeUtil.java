@@ -14,11 +14,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 
 /**
  * This class will be used to provide JMerge support when generating MTL files. Keep this in a separate class
@@ -64,12 +67,17 @@ public final class JMergeUtil {
 			JControlModel model = new JControlModel();
 			model.initialize(new ASTFacadeHelper(), jmergeFile);
 			if (model.canMerge()) {
-				JMerger jMerger = new JMerger(model);
-				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
-				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
-						new FileInputStream(target), charset));
-				jMerger.merge();
-				newContent = jMerger.getTargetCompilationUnit().getContents();
+				try {
+					JMerger jMerger = new JMerger(model);
+					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
+					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForInputStream(
+							new FileInputStream(target), charset));
+					jMerger.merge();
+					newContent = jMerger.getTargetCompilationUnit().getContents();
+				} catch (WrappedException e) {
+					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+							"JMergeUtilError", target.getName()), false); //$NON-NLS-1$
+				}
 			} else {
 				// FIXME log, couldn't find emf-merge.xml
 			}
