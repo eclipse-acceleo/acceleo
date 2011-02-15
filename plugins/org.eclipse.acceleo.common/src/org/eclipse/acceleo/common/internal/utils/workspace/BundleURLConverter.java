@@ -12,6 +12,8 @@ package org.eclipse.acceleo.common.internal.utils.workspace;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.core.runtime.FileLocator;
@@ -19,14 +21,21 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 /**
- * Instances of this class will be used to convert URLs to and from multiple protocols : <code>file</code>,
- * <code>bundleentry</code>, <code>platform:/plugin</code>, <code>jar</code>, <code>http</code>...
+ * Instances of this class will be used to convert URLs pointing to installed bundles to and from multiple
+ * protocols : <code>file</code>, <code>bundleentry</code>, <code>platform:/plugin</code>, <code>jar</code>,
+ * <code>http</code>...
+ * <p>
+ * This should never be used in standalone as its only purpose is to find installed bundles' entries.
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class BundleURLConverter {
 	/** Describes the file URL protocol. */
 	private static final String FILE_PROTOCOL = "file:"; //$NON-NLS-1$
+
+	/** The following segments will be trimmed out of the URIs we try and resolve. */
+	private static final List<String> IGNORED_URI_SEGMENTS = new ArrayList<String>(3);
 
 	/** Describes the jar URL protocol. */
 	private static final String JAR_PROTOCOL = "jar:"; //$NON-NLS-1$
@@ -48,6 +57,18 @@ public class BundleURLConverter {
 
 	/** This will contain an URL using a native java protocol (http, jar, file...). */
 	private String nativeProtocolURL;
+
+	static {
+		// "@dot" in the path means it has been built through the PDE build with customBuildCallBacks
+		IGNORED_URI_SEGMENTS.add("@dot"); //$NON-NLS-1$
+		/*
+		 * "bin" or "src" in the path means that, somehow, we resolved the URIs against workspace compiled
+		 * artifacts. As we are currently trying to resolve the URI in an installed bundle, we know these
+		 * segmants are noise.
+		 */
+		IGNORED_URI_SEGMENTS.add("bin"); //$NON-NLS-1$
+		IGNORED_URI_SEGMENTS.add("src"); //$NON-NLS-1$
+	}
 
 	/**
 	 * Constructs and URL converter given the URL we'll have to manipulate.
@@ -148,7 +169,6 @@ public class BundleURLConverter {
 			actualPath = actualPath.substring(FILE_PROTOCOL.length() + 1);
 		}
 
-		// FIXME LGO Why are we coming here with this ???
 		if (actualPath.contains("#")) { //$NON-NLS-1$
 			actualPath = actualPath.substring(0, actualPath.indexOf('#'));
 		}
@@ -170,15 +190,16 @@ public class BundleURLConverter {
 
 				int pathStart = i + 1;
 				// ".cp" in the file path means this URI points somewhere in the workspace metadata.
-				// "@dot" in the path means it has been built through the PDE build with customBuildCallBacks
-				if (".cp".equals(segments[pathStart]) || "@dot".equals(segments[pathStart])) { //$NON-NLS-1$ //$NON-NLS-2$
+				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$ 
 					pathStart += 1;
 				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
 					pathStart += 2;
 				}
 
 				for (int j = pathStart; j < segments.length; j++) {
-					tempPath += '/' + segments[j];
+					if (!IGNORED_URI_SEGMENTS.contains(segments[j])) {
+						tempPath += '/' + segments[j];
+					}
 				}
 				URL fileURL = tempBundle.getEntry(tempPath);
 				if (fileURL != null) {
