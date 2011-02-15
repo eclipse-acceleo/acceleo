@@ -116,11 +116,16 @@ public final class JMergeUtil {
 			JControlModel model = new JControlModel();
 			model.initialize(new ASTFacadeHelper(), jmergeFile);
 			if (model.canMerge()) {
-				JMerger jMerger = new JMerger(model);
-				jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
-				jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForContents(oldContent));
-				jMerger.merge();
-				newContent = jMerger.getTargetCompilationUnit().getContents();
+				try {
+					JMerger jMerger = new JMerger(model);
+					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(content));
+					jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForContents(oldContent));
+					jMerger.merge();
+					newContent = jMerger.getTargetCompilationUnit().getContents();
+				} catch (WrappedException e) {
+					AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+							"JMergeUtilError", target.getName()), false); //$NON-NLS-1$
+				}
 			} else {
 				// FIXME log, couldn't find emf-merge.xml
 			}
