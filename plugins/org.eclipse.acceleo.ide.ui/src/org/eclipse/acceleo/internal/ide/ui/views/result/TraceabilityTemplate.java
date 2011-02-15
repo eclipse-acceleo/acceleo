@@ -26,9 +26,11 @@ public class TraceabilityTemplate extends TraceabilityModel {
 	 * 
 	 * @param eTemplateElement
 	 *            the current module synchronized with the text
+	 * @param label
+	 *            The label that is to be displayed for this element.
 	 */
-	public TraceabilityTemplate(Module eTemplateElement) {
-		super(eTemplateElement);
+	public TraceabilityTemplate(Module eTemplateElement, String label) {
+		super(eTemplateElement, label);
 	}
 
 	/**
@@ -36,9 +38,11 @@ public class TraceabilityTemplate extends TraceabilityModel {
 	 * 
 	 * @param eTemplateElement
 	 *            the current template element synchronized with the text
+	 * @param label
+	 *            The label that is to be displayed for this element.
 	 */
-	public TraceabilityTemplate(TemplateExpression eTemplateElement) {
-		super(eTemplateElement);
+	public TraceabilityTemplate(TemplateExpression eTemplateElement, String label) {
+		super(eTemplateElement, label);
 	}
 
 	/**

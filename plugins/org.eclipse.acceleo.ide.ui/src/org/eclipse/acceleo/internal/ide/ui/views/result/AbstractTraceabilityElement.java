@@ -15,19 +15,19 @@ package org.eclipse.acceleo.internal.ide.ui.views.result;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class TraceabilityElement {
+public abstract class AbstractTraceabilityElement {
 
 	/**
 	 * The parent.
 	 */
-	private TraceabilityElement parent;
+	private AbstractTraceabilityElement parent;
 
 	/**
 	 * Gets the parent model to text traceability information.
 	 * 
 	 * @return the parent model to text traceability information, it can be null
 	 */
-	public TraceabilityElement getParent() {
+	public AbstractTraceabilityElement getParent() {
 		return parent;
 	}
 
@@ -37,8 +37,14 @@ public class TraceabilityElement {
 	 * @param parent
 	 *            is the new parent
 	 */
-	public void setParent(TraceabilityElement parent) {
+	public void setParent(AbstractTraceabilityElement parent) {
 		this.parent = parent;
 	}
 
+	/**
+	 * Returns the label to display for this element.
+	 * 
+	 * @return The label to display for this element.
+	 */
+	public abstract String getLabel();
 }

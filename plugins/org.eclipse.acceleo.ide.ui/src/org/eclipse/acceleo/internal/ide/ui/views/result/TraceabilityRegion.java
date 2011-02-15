@@ -20,7 +20,7 @@ import org.eclipse.ocl.utilities.ASTNode;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class TraceabilityRegion extends TraceabilityElement {
+public class TraceabilityRegion extends AbstractTraceabilityElement {
 
 	/**
 	 * The text region offset.
@@ -37,6 +37,9 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 */
 	private ASTNode astNode;
 
+	/** The Label we are to display for this element. */
+	private String label;
+
 	/**
 	 * Constructor.
 	 * 
@@ -52,6 +55,7 @@ public class TraceabilityRegion extends TraceabilityElement {
 		this.targetFileOffset = targetFileOffset;
 		this.targetFileLength = targetFileLength;
 		this.astNode = astNode;
+		label = toString();
 	}
 
 	/**
@@ -79,6 +83,16 @@ public class TraceabilityRegion extends TraceabilityElement {
 	 */
 	public ASTNode getAstNode() {
 		return astNode;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.views.result.AbstractTraceabilityElement#getLabel()
+	 */
+	@Override
+	public String getLabel() {
+		return label;
 	}
 
 	/**

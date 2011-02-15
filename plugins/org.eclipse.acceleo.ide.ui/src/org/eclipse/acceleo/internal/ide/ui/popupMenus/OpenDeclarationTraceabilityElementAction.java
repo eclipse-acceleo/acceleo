@@ -14,6 +14,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclaratio
 import org.eclipse.acceleo.internal.ide.ui.views.result.TraceabilityModel;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -46,12 +47,15 @@ public class OpenDeclarationTraceabilityElementAction implements IWorkbenchWindo
 			if (selectedElement instanceof TraceabilityModel) {
 				EObject declaration = ((TraceabilityModel)selectedElement).getEObject();
 				Resource resource = declaration.eResource();
+				URI fileURI = null;
 				if (resource != null && resource.getURI() != null) {
-					URI fileURI = resource.getURI();
-					OpenDeclarationUtils.showEObject(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage(), fileURI, OpenDeclarationUtils.createRegion(declaration),
-							declaration);
+					fileURI = resource.getURI();
+				} else if (declaration.eIsProxy()) {
+					fileURI = ((InternalEObject)declaration).eProxyURI().trimFragment();
 				}
+				OpenDeclarationUtils.showEObject(PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage(), fileURI, OpenDeclarationUtils.createRegion(declaration),
+						declaration);
 			}
 		}
 	}

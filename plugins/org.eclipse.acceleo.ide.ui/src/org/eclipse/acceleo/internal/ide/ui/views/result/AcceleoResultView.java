@@ -42,6 +42,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -205,11 +206,11 @@ public class AcceleoResultView extends ResourceNavigator {
 				if (element instanceof String) {
 					result = (String)element;
 				} else if (element instanceof TraceabilityTemplate) {
-					result = getText(((TraceabilityTemplate)element).getTemplateElement());
+					result = ((TraceabilityTemplate)element).getLabel();
 				} else if (element instanceof TraceabilityModel) {
-					result = getText(((TraceabilityModel)element).getEObject());
+					result = ((TraceabilityModel)element).getLabel();
 				} else if (element instanceof TraceabilityRegion) {
-					result = ((TraceabilityRegion)element).toString();
+					result = ((TraceabilityRegion)element).getLabel();
 				} else {
 					result = super.getText(element);
 				}
@@ -306,7 +307,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		if (content != null) {
 			AcceleoService.removeStaticListener(content);
 		}
-		content = new AcceleoResultContent();
+		content = new AcceleoResultContent((ILabelProvider)getTreeViewer().getLabelProvider());
 		AcceleoService.addStaticListener(content);
 		if (resourceChangeListener == null) {
 			resourceChangeListener = new IResourceChangeListener() {
@@ -433,10 +434,10 @@ public class AcceleoResultView extends ResourceNavigator {
 	@Override
 	protected void handleDoubleClick(DoubleClickEvent event) {
 		if (event.getSelection() instanceof TreeSelection
-				&& ((TreeSelection)event.getSelection()).getFirstElement() instanceof TraceabilityElement) {
-			TraceabilityElement element = (TraceabilityElement)((TreeSelection)event.getSelection())
-					.getFirstElement();
-			TraceabilityElement fileElement = element;
+				&& ((TreeSelection)event.getSelection()).getFirstElement() instanceof AbstractTraceabilityElement) {
+			AbstractTraceabilityElement element = (AbstractTraceabilityElement)((TreeSelection)event
+					.getSelection()).getFirstElement();
+			AbstractTraceabilityElement fileElement = element;
 			while (fileElement != null && !(fileElement instanceof TraceabilityTargetFile)) {
 				fileElement = fileElement.getParent();
 			}
@@ -489,7 +490,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 * @throws CoreException
 	 *             when an issue occurs when creating the markers
 	 */
-	private void reportActiveRegions(IFile file, StringBuffer buffer, TraceabilityElement element)
+	private void reportActiveRegions(IFile file, StringBuffer buffer, AbstractTraceabilityElement element)
 			throws CoreException {
 		if (element instanceof TraceabilityModel) {
 			TraceabilityModel model = (TraceabilityModel)element;
@@ -560,7 +561,7 @@ public class AcceleoResultView extends ResourceNavigator {
 		String objectToString = ""; //$NON-NLS-1$
 		String featureToString = ""; //$NON-NLS-1$
 		String templateToString = ""; //$NON-NLS-1$
-		TraceabilityElement current = region.getParent();
+		AbstractTraceabilityElement current = region.getParent();
 		while (current != null) {
 			if (featureToString.length() == 0 && current instanceof TraceabilityTemplate
 					&& ((TraceabilityTemplate)current).getTemplateElement() instanceof ModuleElement) {
@@ -723,7 +724,7 @@ public class AcceleoResultView extends ResourceNavigator {
 	 *            is the ancestors list, it's an input/output parameter
 	 */
 	private void computeViewAncestors(TraceabilityContainer current, List<Object> result) {
-		TraceabilityElement parent = current.getParent();
+		AbstractTraceabilityElement parent = current.getParent();
 		while (parent != null) {
 			result.add(0, parent);
 			if (parent instanceof TraceabilityTargetFile) {

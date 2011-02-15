@@ -59,6 +59,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -314,7 +315,7 @@ public final class OpenDeclarationUtils {
 		IWorkbench workbench = page.getWorkbenchWindow().getWorkbench();
 		if (fileURI != null && eObject != null) {
 			URI newFileURI = formatURI(fileURI);
-			if (newFileURI != null) {
+			if (newFileURI != null && (!(eObject instanceof ASTNode || eObject instanceof Module))) {
 				Object fileObject = getIFileXorIOFile(newFileURI);
 				if (fileObject instanceof IFile) {
 					newFileURI = URI.createPlatformResourceURI(((IFile)fileObject).getFullPath().toString(),
@@ -328,7 +329,7 @@ public final class OpenDeclarationUtils {
 				} else {
 					editorDescriptor = workbench.getEditorRegistry().getDefaultEditor(lastSegment);
 				}
-				if (editorDescriptor != null && (!(eObject instanceof ASTNode || eObject instanceof Module))) {
+				if (editorDescriptor != null) {
 					try {
 						IEditorPart newEditor = page.openEditor(new URIEditorInput(newFileURI),
 								editorDescriptor.getId());
@@ -517,6 +518,7 @@ public final class OpenDeclarationUtils {
 		if (ecorePath != null) {
 			result = URI.createPlatformResourceURI(ecorePath, false);
 		}
+		// FIXME stop reparsing extension points!!!!!!!!!!!!!!
 		if (result == null && fileURIString.startsWith("http")) { //$NON-NLS-1$
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
@@ -596,46 +598,8 @@ public final class OpenDeclarationUtils {
 	 *            is the EObject to select (Ecore editor), can be null
 	 */
 	private static void selectAndReveal(IEditorPart newEditor, IRegion aRegion, EObject eObject) {
-		IRegion region = aRegion;
 		if (newEditor instanceof AcceleoEditor) {
-			AcceleoEditor acceleoEditor = (AcceleoEditor)newEditor;
-			if (region != null && eObject instanceof ModuleElement) {
-				int e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END,
-						region.getOffset());
-				if (e > -1) {
-					region = new Region(region.getOffset(), e + IAcceleoConstants.DEFAULT_END.length()
-							- region.getOffset());
-				}
-				acceleoEditor.selectAndReveal(region.getOffset(), region.getLength());
-			} else if (region != null) {
-				acceleoEditor.selectAndReveal(region.getOffset(), region.getLength());
-			} else {
-				EObject newEObject = null;
-				Module eModule = acceleoEditor.getContent().getAST();
-				if (eModule != null && eModule.eResource() != null && eObject != null
-						&& eObject.eResource() != null) {
-					String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
-					try {
-						newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
-					} catch (IllegalArgumentException e) {
-						AcceleoUIActivator.log(e, true);
-						newEObject = eObject;
-					}
-					// Remark : We must be sure to get the positions of the new EObject
-				}
-				int defaultBegin;
-				int defaultEnd;
-				if (eObject instanceof ASTNode) {
-					defaultBegin = ((ASTNode)eObject).getStartPosition();
-					defaultEnd = ((ASTNode)eObject).getEndPosition();
-				} else {
-					defaultBegin = -1;
-					defaultEnd = -1;
-				}
-				if (newEObject instanceof ASTNode) {
-					selectAndRevealASTNode(acceleoEditor, (ASTNode)newEObject, defaultBegin, defaultEnd);
-				}
-			}
+			selectAndReveal((AcceleoEditor)newEditor, aRegion, eObject);
 		} else if (newEditor instanceof IEditingDomainProvider && eObject.eResource() != null) {
 			IEditingDomainProvider editor = (IEditingDomainProvider)newEditor;
 			String eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
@@ -647,6 +611,62 @@ public final class OpenDeclarationUtils {
 				if (editor instanceof IViewerProvider) {
 					setSelectionToViewer(newObject, ((IViewerProvider)editor).getViewer());
 				}
+			}
+		}
+	}
+
+	/**
+	 * Creates a selection in the given Acceleo editor. A selection can be created for a text editor by
+	 * defining a region.
+	 * 
+	 * @param acceleoEditor
+	 *            is an editor
+	 * @param aRegion
+	 *            is the textual region to select (Text editor), can be null
+	 * @param eObject
+	 *            is the EObject to select (Ecore editor), can be null
+	 */
+	private static void selectAndReveal(AcceleoEditor acceleoEditor, IRegion aRegion, EObject eObject) {
+		IRegion region = aRegion;
+		if (region != null && eObject instanceof ModuleElement) {
+			int e = acceleoEditor.getContent().getText().indexOf(IAcceleoConstants.DEFAULT_END,
+					region.getOffset());
+			if (e > -1) {
+				region = new Region(region.getOffset(), e + IAcceleoConstants.DEFAULT_END.length()
+						- region.getOffset());
+			}
+			acceleoEditor.selectAndReveal(region.getOffset(), region.getLength());
+		} else if (region != null) {
+			acceleoEditor.selectAndReveal(region.getOffset(), region.getLength());
+		} else {
+			EObject newEObject = null;
+			Module eModule = acceleoEditor.getContent().getAST();
+			if (eModule != null && eModule.eResource() != null && eObject != null) {
+				String eObjectFragmentURI = null;
+				if (eObject.eResource() != null) {
+					eObjectFragmentURI = eObject.eResource().getURIFragment(eObject);
+				} else if (eObject.eIsProxy()) {
+					eObjectFragmentURI = ((InternalEObject)eObject).eProxyURI().fragment();
+				}
+				try {
+					newEObject = eModule.eResource().getEObject(eObjectFragmentURI);
+				} catch (IllegalArgumentException e) {
+					AcceleoUIActivator.log(e, true);
+					newEObject = eObject;
+				}
+				// Remark : We must be sure to get the positions of the new EObject
+			}
+			int defaultBegin;
+			int defaultEnd;
+			if (eObject instanceof ASTNode) {
+				defaultBegin = ((ASTNode)eObject).getStartPosition();
+				defaultEnd = ((ASTNode)eObject).getEndPosition();
+			} else {
+				defaultBegin = -1;
+				defaultEnd = -1;
+			}
+			if (newEObject instanceof ASTNode) {
+				selectAndRevealASTNode(acceleoEditor, (ASTNode)newEObject, defaultBegin, defaultEnd);
 			}
 		}
 	}

@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class TraceabilityContainer extends TraceabilityElement {
+public class TraceabilityContainer extends AbstractTraceabilityElement {
 
 	/**
 	 * Children model to text traceability information.
@@ -41,4 +41,14 @@ public class TraceabilityContainer extends TraceabilityElement {
 		return children;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.views.result.AbstractTraceabilityElement#getLabel()
+	 */
+	@Override
+	public String getLabel() {
+		// Should be overriden
+		return "";
+	}
 }
