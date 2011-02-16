@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<title>First Generator Module</title>
+<meta name="authors" content="Laurent Goubet  Laurent Delaigue" />
+<link rel="stylesheet" href="../style/acceleo.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="first-generator-module">
+<h1 class="title">First Generator Module</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Authors:</th>
+<td>Laurent Goubet
+<br />Laurent Delaigue</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first reference external" href="mailto:laurent.goubet&#64;obeo.fr">laurent.goubet&#64;obeo.fr</a>,
+<a class="last reference external" href="mailto:laurent.delaigue&#64;obeo.fr">laurent.delaigue&#64;obeo.fr</a></td></tr>
+</tbody>
+</table>
+<p>Copyright © 2008, 2011 Obeo™.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#use-the-acceleo-perspective" id="id1">Use the Acceleo perspective</a></li>
+<li><a class="reference internal" href="#create-an-acceleo-project" id="id2">Create an Acceleo Project</a></li>
+<li><a class="reference internal" href="#the-acceleo-editor" id="id3">The Acceleo editor</a></li>
+<li><a class="reference internal" href="#generating-java-beans" id="id4">Generating java beans</a></li>
+<li><a class="reference internal" href="#user-code-blocks" id="id5">User code blocks</a></li>
+<li><a class="reference internal" href="#java-services-wrappers" id="id6">Java services wrappers</a></li>
+<li><a class="reference internal" href="#creating-a-main-module" id="id7">Creating a main module</a></li>
+<li><a class="reference internal" href="#creating-a-ui-launcher" id="id8">Creating a UI launcher</a></li>
+</ul>
+</div>
+<p>The aim of this tutorial is to get you started with Acceleo by helping you create your first generation
+module. For the purpose of this tutorial, we will focus on creating an Acceleo module that generates
+Java beans from a UML model.</p>
+<img alt="../images/first_generator/uml_model_example.png" src="../images/first_generator/uml_model_example.png" />
+<div class="section" id="use-the-acceleo-perspective">
+<h1><a class="toc-backref" href="#id1">Use the Acceleo perspective</a></h1>
+<p>Using the Acceleo perspective will make things easier when working with Acceleo as it provides dedicated
+views and actions. Furthermore, being on that perspective will promote some menu items so that they are
+directly accessible instead of being nested within others.</p>
+<p>You can switch to the Acceleo perspective by selecting the <em>Window &gt; Open Perspective &gt; Other...</em> menu and
+selecting <em>Acceleo</em> in the popup that appears then.</p>
+<img alt="../images/acceleo_perspective.png" src="../images/acceleo_perspective.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="create-an-acceleo-project">
+<h1><a class="toc-backref" href="#id2">Create an Acceleo Project</a></h1>
+<p>Acceleo Projects are meant to provide you with facilities to write your Acceleo modules. In order to create
+a new Acceleo project, use the menu item <em>File &gt; New &gt; Acceleo Project</em>.</p>
+<img alt="../images/first_generator/new_acceleo_module_project.png" src="../images/first_generator/new_acceleo_module_project.png" />
+<p>Choose the name you want for your project (here, we'll go for the default <tt class="docutils literal">org.eclipse.acceleo.module.sample</tt>),
+then click <em>Next &gt;</em>.</p>
+<img alt="../images/first_generator/new_acceleo_module_project_1.png" src="../images/first_generator/new_acceleo_module_project_1.png" />
+<p>This second wizard page allows you to initialize the project by creating one or several Acceleo module files.</p>
+<ul class="simple">
+<li>Select the folder in which you want to create the new module file.</li>
+<li>Fill in the module name (we'll leave it as <tt class="docutils literal">generate</tt> in this example).</li>
+<li>Select the metamodel from which your generation module will take its types (in this example, <tt class="docutils literal">UML</tt>).</li>
+<li>Finally, choose the metaclass that will be used to generate the file (in this example, <tt class="docutils literal">Class</tt>). This can
+be modified later at any time directly in the module files.</li>
+</ul>
+<p><strong>Note:</strong> other options are available to initialize the new module with existing content. These will be
+discussed in detail later.</p>
+<img alt="../images/first_generator/new_acceleo_module_project_2.png" src="../images/first_generator/new_acceleo_module_project_2.png" />
+<p>You can create more than one module file in this project by using the &quot;Add&quot; button on the left, we only need
+one in this example.</p>
+<p>Clicking on finish will create the module file(s), and some files automatically generated from it (more on
+these below).</p>
+<img alt="../images/first_generator/new_acceleo_module_project_result.png" src="../images/first_generator/new_acceleo_module_project_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="the-acceleo-editor">
+<h1><a class="toc-backref" href="#id3">The Acceleo editor</a></h1>
+<p>The Acceleo module editor provides the following features:</p>
+<ul class="simple">
+<li>Syntax highlighting</li>
+<li>Content assistant (ctrl + space)</li>
+<li>Error detection</li>
+<li>Quick fixes (ctrl + shift + 1)</li>
+<li>Dynamic outline</li>
+<li>Quick outline (ctrl + O)</li>
+<li>Code folding</li>
+<li>Open declaration (either with 'ctrl + left click' or 'F3' on selection)</li>
+<li>Search references (ctrl + shift + G)</li>
+</ul>
+<img alt="../images/first_generator/acceleo_editor.png" src="../images/first_generator/acceleo_editor.png" />
+<p>For more information about the Acceleo syntax, please read the official OMG specification accessible from
+<a class="reference external" href="http://www.omg.org/spec/MOFM2T/1.0/">the official MTL Specification</a>.</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="generating-java-beans">
+<h1><a class="toc-backref" href="#id4">Generating java beans</a></h1>
+<p>We would now like to create a bean for each of the classes defined in our sample model. Here is the code
+for the module file:</p>
+<pre class="literal-block">
+[comment encoding = UTF-8 /]
+[module generate('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[template public generate(aClass : Class)]
+[file (aClass.name.concat('.java'), false)]
+        public class [aClass.name.toUpperFirst()/] {
+        [for (p: Property | aClass.attribute) separator('\n')]
+                private [p.type.name/] [p.name/];
+        [/for]
+
+        [for (p: Property | aClass.attribute) separator('\n')]
+                public [p.type.name/] get[p.name.toUpperFirst()/]() {
+                        return this.[p.name/];
+                }
+        [/for]
+
+        [for (o: Operation | aClass.ownedOperation) separator('\n')]
+                public [o.type.name/] [o.name/]() {
+                        // TODO should be implemented
+                }
+        [/for]
+        }
+[/file]
+[/template]
+</pre>
+<p>As shown below, the content assistant provides choices from the UML metamodel:</p>
+<img alt="../images/first_generator/acceleo_editor_example.png" src="../images/first_generator/acceleo_editor_example.png" />
+<p>You can now launch the generation of your Java beans using this generation module. In order to do this, you
+will have to :</p>
+<p>Right-click on the Acceleo module file (that is, the <tt class="docutils literal">generate.mtl</tt> file) and select <em>Run As &gt; Launch
+Acceleo Application</em>.</p>
+<img alt="../images/acceleo_quickstart_launch1.png" src="../images/acceleo_quickstart_launch1.png" />
+<p>The Acceleo launch configuration page opens, and you need to provide it with the sample model and target
+folder.</p>
+<img alt="../images/first_generator/acceleo_module_launch.png" src="../images/first_generator/acceleo_module_launch.png" />
+<p>The resulting java file generated by this module file will look like this:</p>
+<img alt="../images/first_generator/acceleo_module_java_result.png" src="../images/first_generator/acceleo_module_java_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="user-code-blocks">
+<h1><a class="toc-backref" href="#id5">User code blocks</a></h1>
+<p>Acceleo supports two ways of specifying user code blocks in the generated code. User code blocks delimit
+portions of text that are only generated once, and preserved for subsequent generations. This is very useful
+in order to allow users to add code in some areas of the generated files while keeping the rest of the file
+under the control of the generator.</p>
+<p>The first way of specifying user-code blocks is to use the standard <tt class="docutils literal">[protected <span class="pre">(id)]...[/protected]</span></tt>
+construct, as shown below (we've also added some queries in there to handle the package structure):</p>
+<img alt="../images/first_generator/acceleo_usercode_1_editor.png" src="../images/first_generator/acceleo_usercode_1_editor.png" />
+<p>The above module produces the following code:</p>
+<img alt="../images/first_generator/acceleo_usercode_1_generated.png" src="../images/first_generator/acceleo_usercode_1_generated.png" />
+<p>The second way, which is specific to generators that target the java language, is to add <tt class="docutils literal">&#64;generated</tt>
+annotations on the javadoc of elements that must be generated. Other elements (those that do not have such
+annotations in their javadoc, or in which the annotation has been slightly modified (i.e: <tt class="docutils literal">&#64;generated NOT</tt>
+or <tt class="docutils literal"><span class="pre">&#64;not-generated</span></tt> ... or whatever you fancy)) are considered not to be modified by subsequent generations.</p>
+<p>If a file contains at least one annotation <tt class="docutils literal">&#64;generated</tt>, the merge of the former java file and the newly
+generated one is delegated to <a class="reference external" href="http://wiki.eclipse.org/JET_FAQ_How_does_JMerge_work%3F">JMerge</a>. <tt class="docutils literal">&#64;generated</tt> annotations must be added in the javadoc of the relevant
+java elements. They are <strong>not</strong> JDK5 annotations.</p>
+<img alt="../images/first_generator/acceleo_usercode_2_editor.png" src="../images/first_generator/acceleo_usercode_2_editor.png" />
+<p>In both of these examples, the code located in &quot;protected&quot; areas will never be overriden by subsequent
+generations, be it left as-is or modified by the user outside of the module (directly in the generated file).</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="java-services-wrappers">
+<h1><a class="toc-backref" href="#id6">Java services wrappers</a></h1>
+<p>We will now add a requirement that java beans should only be generated for Classes that have the <tt class="docutils literal">Bean</tt>
+stereotype. This coud be done through Acceleo alone, but for the purpose of this tutorial we will use a java
+service (extension of the language) in order to check whether the stereotype is present on any given Class.</p>
+<p>It is possible to initialize the content of a new Acceleo module file with content that comes from :</p>
+<ul class="simple">
+<li>An existing Acceleo module file (a copy of this file is made)</li>
+<li>Some java code that you need to access from your Acceleo templates</li>
+</ul>
+<p>We will detail here the second possibility, which makes it possible to execute standard java code from any Acceleo
+template or query.</p>
+<p>First, create the Java class we'll use as a service in Acceleo.</p>
+<ul class="simple">
+<li>Right-click the <tt class="docutils literal">org.eclipse.acceleo.module.sample</tt> package in the Package Explorer and select <em>New &gt; Class</em></li>
+</ul>
+<img alt="../images/first_generator/new_java_class.png" src="../images/first_generator/new_java_class.png" />
+<ul class="simple">
+<li>In the popup that appears, change the <em>Package</em> field to <tt class="docutils literal">org.eclipse.acceleo.module.sample.services</tt> and
+fill in the <em>name</em> field, we'll call this java Class <tt class="docutils literal">UML2Services</tt> in this tutorial.</li>
+</ul>
+<img alt="../images/first_generator/new_java_class_1.png" src="../images/first_generator/new_java_class_1.png" />
+<ul class="simple">
+<li>Finally, paste in the following code for this class :</li>
+</ul>
+<pre class="literal-block">
+package org.eclipse.acceleo.module.sample.services;
+
+import java.util.List;
+
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Stereotype;
+
+public class UML2Services {
+        public boolean hasStereotype(Class clazz, String stereotypeName) {
+                List&lt;Stereotype&gt; stereotypes = clazz.getAppliedStereotypes();
+                for (Stereotype stereotype : stereotypes) {
+                        if (stereotype.getName().equals(stereotypeName)) {
+                                return true;
+                        }
+                }
+                return false;
+        }
+}
+</pre>
+<p>Now, what's left is to call this method from Acceleo. The easiest way to do so is to use the provided wizard.
+Right-click the <tt class="docutils literal">org.eclipse.acceleo.module.sample.services</tt> package and select <em>New &gt; Acceleo Module File</em>.</p>
+<img alt="../images/first_generator/new_service_wrapper.png" src="../images/first_generator/new_service_wrapper.png" />
+<p>In the wizard window, enter the relevant information in the fields : select the UML metamodel URI and change the
+<strong>name</strong> field to <tt class="docutils literal">uml2Services</tt>. Then, activate the <strong>Advanced</strong> button in order to gain access to the advanced
+options.</p>
+<p>Tick the <em>Initialize Contents</em> checkbox and select: <em>Create a Java services wrapper</em>. Finally, browse to find the
+<tt class="docutils literal">UML2Services</tt> java file.</p>
+<img alt="../images/first_generator/new_service_wrapper_1.png" src="../images/first_generator/new_service_wrapper_1.png" />
+<p>This creates a new Acceleo Module file that contains a query (one per java method in your java class) whose role
+is just to delegate its behavior to the java class, thus making it accessible to your templates.</p>
+<p>This is simply achieved thanks to the non-standard <tt class="docutils literal">invoke</tt> Acceleo operation.</p>
+<img alt="../images/first_generator/new_service_wrapper_2.png" src="../images/first_generator/new_service_wrapper_2.png" />
+<p>Now to prevent Acceleo from generating files for classes that do not have the <tt class="docutils literal">Bean</tt> stereotype, all that's
+needed is to import the <tt class="docutils literal">uml2Services</tt> module in the <tt class="docutils literal">generate</tt> module and nest the <tt class="docutils literal">[file]</tt> block within
+an <tt class="docutils literal">[if]</tt> block calling this service.</p>
+<img alt="../images/first_generator/new_service_wrapper_3.png" src="../images/first_generator/new_service_wrapper_3.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="creating-a-main-module">
+<h1><a class="toc-backref" href="#id7">Creating a main module</a></h1>
+<p>We recommend not to have multiple modules with an <em>&#64;main</em> annotation, as it complicates the workflow (you have to
+launch multiple generations to create all needed files). On the contrary, we recommend creating a &quot;main&quot; module
+which role will be to delegate to all of the modules that will create files. Typically, this module will be
+placed alone in its own <tt class="docutils literal">*.main</tt> package.</p>
+<p>Let's create this launcher for the beans generation. First, right-click the <tt class="docutils literal">org.eclipse.acceleo.module.sample</tt>
+package in the Package Explorer and select <em>New &gt; Acceleo Module File</em>.</p>
+<p>We will need to change all default information. First, append '<em>/main</em>' at the end of the <em>parent folder</em> field.
+Then, give a meaningful name for this module (<tt class="docutils literal">umlToBeans</tt> in this example) and set its metamodel appropriately.
+As we generate on UML, we will also change the root type of our generation to <em>Package</em> (the root of our UML model).
+We will also untick <em>This will generate a file</em> and tick <em>Create a main annotation</em> in the advanced options.</p>
+<img alt="../images/first_generator/new_main_module.png" src="../images/first_generator/new_main_module.png" />
+<p>Since this module contains a <em>&#64;main</em> annotation, we will need to export its containing package (so that other
+Eclipse plugins may launch the generation). For this, open the <strong>META-INF/MANIFEST.MF</strong> file of your project, go to
+its <strong>Runtime</strong> tab, click <em>Add</em> and select the <tt class="docutils literal">org.eclipse.acceleo.module.sample.main</tt> package. The tab should
+look like this when you are done :</p>
+<img alt="../images/first_generator/export_main_package.png" src="../images/first_generator/export_main_package.png" />
+<p>Now, paste the following code in your <tt class="docutils literal">umlToBeans</tt> module :</p>
+<pre class="literal-block">
+[comment encoding = UTF-8 /]
+[module umlToBeans('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[import org::eclipse::acceleo::module::sample::files::generate /]
+
+[template public umlToBeans(aPackage : Package)]
+[comment &#64;main /]
+[for (aClass : Class | aPackage.packagedElement-&gt;filter(Class))]
+        [aClass.generate()/]
+[/for]
+[/template]
+</pre>
+<p>And that's it! you can now launch this main module in order to generate java beans from any UML model. Simply right
+click the <tt class="docutils literal">umlToBeans.mtl</tt> file, select <em>Run As &gt; Launch Acceleo Application</em> and select the model from which to
+generate and the target folder before hitting the <em>Run</em> button.</p>
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+<div class="section" id="creating-a-ui-launcher">
+<h1><a class="toc-backref" href="#id8">Creating a UI launcher</a></h1>
+<p>Now that your generation modules are ready, you may want to have some wizards to launch the generation from within
+Eclipse. You can use the generated java launcher in a manually coded action, but you can also use the <strong>New Acceleo
+UI project</strong> wizard. This wizard will create a new Eclipse project which will allow you to launch the generation
+with a right-click action on any appropriate model.</p>
+<p>First, right click on your Acceleo project (<tt class="docutils literal">org.eclipse.acceleo.module.sample</tt>) then select <em>New &gt; Acceleo UI
+Launcher Project</em>.</p>
+<img alt="../images/first_generator/new_module_ui_project.png" src="../images/first_generator/new_module_ui_project.png" />
+<p>Fill in the desired name for this project, then click next.</p>
+<img alt="../images/first_generator/new_module_ui_project_1.png" src="../images/first_generator/new_module_ui_project_1.png" />
+<p>Select the generator project as referenced project, then click next.</p>
+<img alt="../images/first_generator/new_module_ui_project_2.png" src="../images/first_generator/new_module_ui_project_2.png" />
+<p>Finally, enter the model filename filter (files for which the generation action must be proposed on ricght-clicks,
+<tt class="docutils literal">*.uml</tt> in our example), and the java code for the target folder (leave it as-is to generate the code in the <tt class="docutils literal"><span class="pre">src-gen</span></tt> folder of the
+project containing the right-clicked model).</p>
+<img alt="../images/first_generator/new_module_ui_project_3.png" src="../images/first_generator/new_module_ui_project_3.png" />
+<p>The wizard will create a new plugin with all the necessary code to display a new action for the selected model
+file that will generate code in the specified folder. The screenshot below shows the result of this plugin, a
+<em>Generate Uml To Beans</em> action on the <em>.uml</em> files.</p>
+<img alt="../images/first_generator/new_module_ui_project_result.png" src="../images/first_generator/new_module_ui_project_result.png" />
+<p>back to <a class="reference internal" href="#contents">Contents</a></p>
+</div>
+</div>
+</body>
+</html>

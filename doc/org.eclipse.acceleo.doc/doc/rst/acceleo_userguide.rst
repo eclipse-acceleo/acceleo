@@ -1,7 +1,5 @@
 .. image:: ../images/Obeo_Network_Banner.png
-
-.. |ObeoNetWork| image:: /images/Obeo_Network_Banner.png
-.. _ObeoNetWork: http://docs.obeonetwork.com/acceleo/3.0.2/user-guide 
+   :target: http://docs.obeonetwork.com/acceleo/3.0.2/user-guide
 
 ================================================================================
 Acceleo User Guide

@@ -325,7 +325,7 @@ As mentioned in the OMG specification, MTL files (modules) can call for template
 
 There is another way to create automatically this main module file by following the different steps of the wizard : *New > Other > Acceleo Model To Text > Acceleo Main Module File*.
 
-.. image:: ../images/acceleo_new_main_module.png
+.. image:: ../images/android_tutorial/acceleo_new_main_module.png
 
 Editing the code generator
 --------------------------------------------------------------------------------

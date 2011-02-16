@@ -64,7 +64,7 @@ To create a new Acceleo project, open the *New project* Eclipse wizard, and in t
 category select *Acceleo Project*. On the next page, enter the project name. You can then click *Finish* directly to
 create an empty Acceleo project, or go to the next page to create one or several initial module files:
 
-  .. image:: ../images/acceleo_new_template_wizard.png
+  .. image:: ../images/overview/acceleo_new_template_wizard.png
 
 In the *Module information* section, you can specify the location and name of the new *.mtl* file to create. In this
 section, you can also initialize the contents of the new module file with either a fixed example file (*Copy example
@@ -82,7 +82,7 @@ project's source folder, following the same conventions as Java files: a module 
 *com::example::acceleo::myModule* must be stored in the file *com/example/acceleo/myModule.mtl* in one of the
 project's source folders.
 
-  .. image:: ../images/acceleo_project-structure.png
+  .. image:: ../images/overview/acceleo_project-structure.png
 
 back to Contents_
 
@@ -102,7 +102,7 @@ programming editor to make you more productive when developing modules:
 - Open declaration (either with 'ctrl + left click' or 'F3')
 - Search references (ctrl + shift + G)
 
-  .. image:: ../images/acceleo_editor_overview.png
+  .. image:: ../images/overview/acceleo_editor_overview.png
 
 Some of these features are detailed below.
 
@@ -118,17 +118,17 @@ The completion mechanism is smart enough to only present you the syntactically c
 is invoked. For example, when invoked at the top-level of a file (outside of templates, macros, queries, ...), only the
 top-level Acceleo constructs are shown:
 
-  .. image:: ../images/acceleo_completion-top-level.png
+  .. image:: ../images/overview/acceleo_completion-top-level.png
 
 The context is also used to sort the proposed choices. For example, inside an *[if]* block, the *[elseif]* and *[else]*
 choices appear at the top of the completion proposals:
 
-  .. image:: ../images/acceleo_completion-if.png
+  .. image:: ../images/overview/acceleo_completion-if.png
 
 Note that although the choices are presented as keywords inside brackets (e.g. *[for]*, *[file]*, etc.), you do not
 have to type the opening bracket but can simply type the first letters:
 
-  .. image:: ../images/acceleo_completion-for.png
+  .. image:: ../images/overview/acceleo_completion-for.png
 
 back to Contents_
 
@@ -144,12 +144,12 @@ Acceleo elements (variables, templates, queries and modules) alike.
 In the example below, the *p* variable is a UML property, so completion on the partial expression *p.n* proposes both
 features and operations of the UML2 *Property* class which start with *n*:
 
-  .. image:: ../images/acceleo_completion-mm.png
+  .. image:: ../images/overview/acceleo_completion-mm.png
 
 Starting from an empty expression, the completion proposes all visible Acceleo variables and templates which can be
 invoked in addition to features and operations of the current element (the latter not visible on the screenshot):
 
-  .. image:: ../images/acceleo_completion.png
+  .. image:: ../images/overview/acceleo_completion.png
 
 back to Contents_
 
@@ -175,7 +175,7 @@ In the example below, the cursor was on the definition of the iteration variable
 "Search references" by pressing *Ctrl+Shift+g* opened the Eclipse search view with all the references to this variable
 inside the current module, and potential matches in other modules of the same project:
 
-  .. image:: ../images/acceleo_search-references-1.png
+  .. image:: ../images/overview/acceleo_search-references-1.png
 
 As for "Open Declaration", the "Search References" feature works for all kind of elements: Acceleo variables, templates,
 queries and modules, metamodel types, features and operations.
@@ -206,7 +206,7 @@ Launching a Module
 To launch a generation of an Acceleo module, open the Eclipse *Run configurations* dialog, and create a new
 configuration of type *Acceleo Application*.
 
-  .. image:: ../images/acceleo_launch-configuration.png
+  .. image:: ../images/overview/acceleo_launch-configuration.png
 
 You can also right-click on a *.mtl* file and select *Run as > Acceleo Application* to open the same dialog with some
 of the information already configured to run this template.
@@ -259,7 +259,7 @@ text output.
 The Acceleo debugger has some support for conditional breakpoints: once you have set a breakpoint, simply click on it
 in the left margin. A dialog box appears where you can enter a name pattern:
 
-  .. image:: ../images/acceleo_breakpoint_condition.png
+  .. image:: ../images/overview/acceleo_breakpoint_condition.png
 
 Once you have set a name pattern, the breakpoint will only be triggered on elements whose name match the pattern
 (please note that breakpoint conditions are currently only taken into account for the next debug session).
@@ -267,7 +267,7 @@ Once you have set a name pattern, the breakpoint will only be triggered on eleme
 When you launch a debug session on your module, if you have breakpoints and they are enabled, the generation will pause
 when they are hit. If you then switch to the *Debug* perspective, you should see the familiar debug views:
 
-  .. image:: ../images/acceleo_debugger.png
+  .. image:: ../images/overview/acceleo_debugger.png
 
 In the *Debug* view itself (top left), you can see the current template call stack. If you select a frame, the Acceleo
 editor (below) will open on the corresponding file and line. The *Variables* view (top right) allows you to inspect the

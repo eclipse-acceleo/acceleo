@@ -104,7 +104,7 @@ is the compatibility chart :</p>
 category select <em>Acceleo Project</em>. On the next page, enter the project name. You can then click <em>Finish</em> directly to
 create an empty Acceleo project, or go to the next page to create one or several initial module files:</p>
 <blockquote>
-<img alt="../images/acceleo_new_template_wizard.png" src="../images/acceleo_new_template_wizard.png" />
+<img alt="../images/overview/acceleo_new_template_wizard.png" src="../images/overview/acceleo_new_template_wizard.png" />
 </blockquote>
 <p>In the <em>Module information</em> section, you can specify the location and name of the new <em>.mtl</em> file to create. In this
 section, you can also initialize the contents of the new module file with either a fixed example file (<em>Copy example
@@ -119,7 +119,7 @@ project's source folder, following the same conventions as Java files: a module 
 <em>com::example::acceleo::myModule</em> must be stored in the file <em>com/example/acceleo/myModule.mtl</em> in one of the
 project's source folders.</p>
 <blockquote>
-<img alt="../images/acceleo_project-structure.png" src="../images/acceleo_project-structure.png" />
+<img alt="../images/overview/acceleo_project-structure.png" src="../images/overview/acceleo_project-structure.png" />
 </blockquote>
 <p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
@@ -145,7 +145,7 @@ programming editor to make you more productive when developing modules:</p>
 <li><p class="first">Open declaration (either with 'ctrl + left click' or 'F3')</p>
 </li>
 <li><p class="first">Search references (ctrl + shift + G)</p>
-<img alt="../images/acceleo_editor_overview.png" src="../images/acceleo_editor_overview.png" />
+<img alt="../images/overview/acceleo_editor_overview.png" src="../images/overview/acceleo_editor_overview.png" />
 </li>
 </ul>
 <p>Some of these features are detailed below.</p>
@@ -158,17 +158,17 @@ It is activated with the <em>Ctrl+Space</em> key combination by default.</p>
 is invoked. For example, when invoked at the top-level of a file (outside of templates, macros, queries, ...), only the
 top-level Acceleo constructs are shown:</p>
 <blockquote>
-<img alt="../images/acceleo_completion-top-level.png" src="../images/acceleo_completion-top-level.png" />
+<img alt="../images/overview/acceleo_completion-top-level.png" src="../images/overview/acceleo_completion-top-level.png" />
 </blockquote>
 <p>The context is also used to sort the proposed choices. For example, inside an <em>[if]</em> block, the <em>[elseif]</em> and <em>[else]</em>
 choices appear at the top of the completion proposals:</p>
 <blockquote>
-<img alt="../images/acceleo_completion-if.png" src="../images/acceleo_completion-if.png" />
+<img alt="../images/overview/acceleo_completion-if.png" src="../images/overview/acceleo_completion-if.png" />
 </blockquote>
 <p>Note that although the choices are presented as keywords inside brackets (e.g. <em>[for]</em>, <em>[file]</em>, etc.), you do not
 have to type the opening bracket but can simply type the first letters:</p>
 <blockquote>
-<img alt="../images/acceleo_completion-for.png" src="../images/acceleo_completion-for.png" />
+<img alt="../images/overview/acceleo_completion-for.png" src="../images/overview/acceleo_completion-for.png" />
 </blockquote>
 <p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
@@ -181,12 +181,12 @@ Acceleo elements (variables, templates, queries and modules) alike.</p>
 <p>In the example below, the <em>p</em> variable is a UML property, so completion on the partial expression <em>p.n</em> proposes both
 features and operations of the UML2 <em>Property</em> class which start with <em>n</em>:</p>
 <blockquote>
-<img alt="../images/acceleo_completion-mm.png" src="../images/acceleo_completion-mm.png" />
+<img alt="../images/overview/acceleo_completion-mm.png" src="../images/overview/acceleo_completion-mm.png" />
 </blockquote>
 <p>Starting from an empty expression, the completion proposes all visible Acceleo variables and templates which can be
 invoked in addition to features and operations of the current element (the latter not visible on the screenshot):</p>
 <blockquote>
-<img alt="../images/acceleo_completion.png" src="../images/acceleo_completion.png" />
+<img alt="../images/overview/acceleo_completion.png" src="../images/overview/acceleo_completion.png" />
 </blockquote>
 <p>back to <a class="reference internal" href="#contents">Contents</a></p>
 </div>
@@ -208,7 +208,7 @@ invoked by default using the <em>Ctrl+Shift+g</em> key combination. It can be us
 &quot;Search references&quot; by pressing <em>Ctrl+Shift+g</em> opened the Eclipse search view with all the references to this variable
 inside the current module, and potential matches in other modules of the same project:</p>
 <blockquote>
-<img alt="../images/acceleo_search-references-1.png" src="../images/acceleo_search-references-1.png" />
+<img alt="../images/overview/acceleo_search-references-1.png" src="../images/overview/acceleo_search-references-1.png" />
 </blockquote>
 <p>As for &quot;Open Declaration&quot;, the &quot;Search References&quot; feature works for all kind of elements: Acceleo variables, templates,
 queries and modules, metamodel types, features and operations.</p>
@@ -234,7 +234,7 @@ convenient <em>Acceleo Application</em> launcher. Such launchers require two inp
 <p>To launch a generation of an Acceleo module, open the Eclipse <em>Run configurations</em> dialog, and create a new
 configuration of type <em>Acceleo Application</em>.</p>
 <blockquote>
-<img alt="../images/acceleo_launch-configuration.png" src="../images/acceleo_launch-configuration.png" />
+<img alt="../images/overview/acceleo_launch-configuration.png" src="../images/overview/acceleo_launch-configuration.png" />
 </blockquote>
 <p>You can also right-click on a <em>.mtl</em> file and select <em>Run as &gt; Acceleo Application</em> to open the same dialog with some
 of the information already configured to run this template.</p>
@@ -276,14 +276,14 @@ text output.</p>
 <p>The Acceleo debugger has some support for conditional breakpoints: once you have set a breakpoint, simply click on it
 in the left margin. A dialog box appears where you can enter a name pattern:</p>
 <blockquote>
-<img alt="../images/acceleo_breakpoint_condition.png" src="../images/acceleo_breakpoint_condition.png" />
+<img alt="../images/overview/acceleo_breakpoint_condition.png" src="../images/overview/acceleo_breakpoint_condition.png" />
 </blockquote>
 <p>Once you have set a name pattern, the breakpoint will only be triggered on elements whose name match the pattern
 (please note that breakpoint conditions are currently only taken into account for the next debug session).</p>
 <p>When you launch a debug session on your module, if you have breakpoints and they are enabled, the generation will pause
 when they are hit. If you then switch to the <em>Debug</em> perspective, you should see the familiar debug views:</p>
 <blockquote>
-<img alt="../images/acceleo_debugger.png" src="../images/acceleo_debugger.png" />
+<img alt="../images/overview/acceleo_debugger.png" src="../images/overview/acceleo_debugger.png" />
 </blockquote>
 <p>In the <em>Debug</em> view itself (top left), you can see the current template call stack. If you select a frame, the Acceleo
 editor (below) will open on the corresponding file and line. The <em>Variables</em> view (top right) allows you to inspect the
