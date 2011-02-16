@@ -477,7 +477,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					guardValue = Boolean.TRUE;
 				} else {
 					fireGenerationEvent = false;
-					guardValue = visitExpression((OCLExpression<C>)forBlock.getGuard());
+					guardValue = getVisitor().visitExpression((OCLExpression<C>)forBlock.getGuard());
 					fireGenerationEvent = fireEvents;
 				}
 				if (isInvalid(guardValue)) {
@@ -487,7 +487,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				}
 				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
 					if (forBlock.getEach() != null && hasPrevious) {
-						visitExpression((OCLExpression<C>)forBlock.getEach());
+						getVisitor().visitExpression((OCLExpression<C>)forBlock.getEach());
 						/*
 						 * no need to reset the state of the "previous" boolean as all following do have a
 						 * previous item
