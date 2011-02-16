@@ -32,7 +32,7 @@ Create an Acceleo project, which will contain your first "Hello world"
 generator. Right-click in the package explorer, then select *New > Acceleo
 Project*.
 
-.. image:: ../images/acceleo_new_project.png
+.. image:: ../images/quickstart/acceleo_new_project.png
 
 Call it ``org.eclipse.acceleo.helloworld`` or whichever name you like better, and
 click *Next >* then *Finish* on the next screen. By default, an Acceleo template
@@ -41,7 +41,7 @@ called ``generate.mtl`` is created and opened.
 Edit it so that it looks like the following (simply insert some text for the
 purpose of the demonstration):
 
-.. image:: ../images/acceleo_quickstart_module.png
+.. image:: ../images/quickstart/acceleo_quickstart_module.png
 
 Now, you need to run this template. In order to evaluate a generation module, you need to
 provide Acceleo with two pieces of information:
@@ -66,22 +66,22 @@ perspective when asked to.
 Now let's create our ecore model. Right-click on the new project, and select *New
 > Other...*.
 
-.. image:: ../images/acceleo_quickstart_uml_new0.png
+.. image:: ../images/quickstart/acceleo_quickstart_uml_new0.png
 
 In the wizard's page, type "ecore" in the top field to filter the choices, and
 select "Ecore Model". Click *Next >*.
 
-.. image:: ../images/acceleo_quickstart_uml_new1.png
+.. image:: ../images/quickstart/acceleo_quickstart_uml_new1.png
 
 Give a name to the ecore model to create, for instance ``Sample.ecore``. Click
 *Next >*.
 
-.. image:: ../images/acceleo_quickstart_uml_new2.png
+.. image:: ../images/quickstart/acceleo_quickstart_uml_new2.png
 
 Select the root type to use for your model, here we will use "EPackage".
 Click *Finish*; this should create and open a new ecore model.
 
-.. image:: ../images/acceleo_quickstart_uml_new3.png
+.. image:: ../images/quickstart/acceleo_quickstart_uml_new3.png
 
 Now add one or more classes to the model. To do this, either you have a graphical
 ecore editor such as *Ecore Tools* installed, in which case you can use it,
@@ -89,21 +89,21 @@ or follow these instructions:
 
 - Right-click on the root package and select *Show Properties View*
 
-  .. image:: ../images/acceleo_quickstart_properties_view.png
+  .. image:: ../images/quickstart/acceleo_quickstart_properties_view.png
 
 - In the properties view, change the value of the ``name`` property to any name
   you wish for the package. Here we'll make it be ``tutorial``.
 
-  .. image:: ../images/acceleo_quickstart_package_name.png
+  .. image:: ../images/quickstart/acceleo_quickstart_package_name.png
 
 - Right-click on the package and select *New Child > EClass*;
 
-  .. image:: ../images/acceleo_quickstart_uml_new_class.png
+  .. image:: ../images/quickstart/acceleo_quickstart_uml_new_class.png
 
 - In the properties view, enter a name for the new class, we'll name it ``Acceleo``
   in this example.
 
-  .. image:: ../images/acceleo_quickstart_class_name.png
+  .. image:: ../images/quickstart/acceleo_quickstart_class_name.png
 
 Repeat these steps to create as many classes as desired.
 
@@ -112,7 +112,7 @@ contain lots of information, but it is not our purpose here and now.
 
 So you should now have a model that looks like this:
 
-.. image:: ../images/acceleo_quickstart_model.png
+.. image:: ../images/quickstart/acceleo_quickstart_model.png
 
 Let's run our generator against this model!
 
@@ -124,7 +124,7 @@ select *Run As > Launch Acceleo Application*.
 The Acceleo launch configuration page opens, and you need to provide the
 information mentionned earlier.
 
-.. image:: ../images/acceleo_quickstart_launch2.png
+.. image:: ../images/quickstart/acceleo_quickstart_launch2.png
 
 Use the *Browse...* buttons to easily select the model and the destination
 folder (you will need to use ``*.ecore`` as filter instead of the default ``*.xmi`` in
@@ -132,7 +132,7 @@ order to locate your model file).
 
 The launch configuration page should now look like this:
 
-.. image:: ../images/acceleo_quickstart_launch3.png
+.. image:: ../images/quickstart/acceleo_quickstart_launch3.png
 
 Click on the *Run* button.
 A file named "Acceleo.txt" (or whatever name you used for your ecore class) appears
@@ -140,7 +140,7 @@ in the target folder.
 
 You can open it from the package explorer. Here is its content:
 
-.. image:: ../images/acceleo_quickstart_output_file.png
+.. image:: ../images/quickstart/acceleo_quickstart_output_file.png
 
 It contains the text ``Hello, Acceleo world!``, in which ``Acceleo`` has been
 dynamically extracted from the ecore model (it is the class name), while the

@@ -530,7 +530,7 @@ Non-standard *EObject* operations
  All of the examples from this section are set in the context of this model (with **root** being an instance of
  *Model* as per the UML metamodel) :
  
- .. image:: ../images/model_example.png
+ .. image:: ../images/operation_reference/model_example.png
 
 ancestors () : Sequence(EObject)
 ___________________________________________________________________________
