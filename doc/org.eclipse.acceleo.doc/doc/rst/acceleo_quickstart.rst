@@ -147,5 +147,5 @@ dynamically extracted from the ecore model (it is the class name), while the
 rest of the text is statically written in the template itself.
 
 Now it's time to experiment by yourself! You should probably read the
-`First Generator <first_generator.html>`_ tutorial to further your comprehension
+`First Generator <first_acceleo_module.html>`_ tutorial to further your comprehension
 but for now you know enough to get to know Acceleo by playing around with it a bit.
