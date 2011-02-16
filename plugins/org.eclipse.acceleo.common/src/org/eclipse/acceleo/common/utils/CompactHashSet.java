@@ -474,7 +474,7 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 	 * 
 	 * @param element
 	 *            The element we seek index of.
-	 * @return The index of the given element in the underlyinh array if present, <code>-1</code> otherwise.
+	 * @return The index of the given element in the underlying array if present, <code>-1</code> otherwise.
 	 */
 	private int indexOf(Object element) {
 		final Object actualElement = maskNull(element);
