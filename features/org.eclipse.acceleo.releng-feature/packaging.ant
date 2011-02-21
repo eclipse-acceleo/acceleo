@@ -3,7 +3,7 @@
 	<target name="create.target.platform.metadata">
 		<buckminster.targetPlatformLocation property="target.platform.location" />
 		<property name="target.platform.repository" value="file:/${sp:output}" />
-		<p2.publish.featuresAndBundles metadataRepository="${target.platform.repository}" source="${target.platform.location}" publishArtifacts="false" />
+		<p2.publish.featuresAndBundles metadataRepository="${target.platform.repository}" source="${target.platform.location}" publishArtifacts="false" repositoryname="Acceleo build Site"/>
 		<buckminster.publishJRE metadataRepository="${target.platform.repository}" publishArtifacts="false" />
 	</target>
 
