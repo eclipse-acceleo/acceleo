@@ -177,7 +177,7 @@ public final class AcceleoServicesRegistry {
 	 * <p>
 	 * If Eclipse is currently running, it will try and find a workspace plugin corresponding to the given URI
 	 * and install it, then load the class <code>qualifiedName</code> in this workspace defined bundle. When
-	 * no corrsponding workspace plugin can be found, the registry will try and find it in the installed
+	 * no corresponding workspace plugin can be found, the registry will try and find it in the installed
 	 * bundles.
 	 * </p>
 	 * <p>
