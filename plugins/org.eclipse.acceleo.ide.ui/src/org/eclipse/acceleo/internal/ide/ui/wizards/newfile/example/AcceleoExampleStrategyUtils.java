@@ -70,8 +70,7 @@ public final class AcceleoExampleStrategyUtils {
 						if (strategyClass != null) {
 							try {
 								Bundle bundle = Platform.getBundle(member.getNamespaceIdentifier());
-								Class<IAcceleoExampleStrategy> c = (Class<IAcceleoExampleStrategy>)bundle
-										.loadClass(strategyClass);
+								Class<IAcceleoExampleStrategy> c = bundle.loadClass(strategyClass);
 								IAcceleoExampleStrategy exampleStrategy = c.newInstance();
 								exampleStrategies.add(exampleStrategy);
 							} catch (ClassNotFoundException e) {

@@ -52,7 +52,7 @@ public class AcceleoLaunchDelegateStandalone extends org.eclipse.jdt.launching.J
 			}
 			if (container != null) {
 				IWorkspaceRunnable operation = new IWorkspaceRunnable() {
-					public void run(IProgressMonitor monitor) throws CoreException {
+					public void run(final IProgressMonitor progressMonitor) throws CoreException {
 						try {
 							int i = 0;
 							while (!launch.isTerminated() && i < 100) {
@@ -62,7 +62,7 @@ public class AcceleoLaunchDelegateStandalone extends org.eclipse.jdt.launching.J
 							AcceleoUIActivator.log(e, true);
 						}
 						if (container.getProject() != null) {
-							container.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+							container.getProject().refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
 						}
 					}
 				};

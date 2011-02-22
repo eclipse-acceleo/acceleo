@@ -97,6 +97,21 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	public static final String OVERRIDES_BROWSER_VIEW_ID = "org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"; //$NON-NLS-1$
 
 	/**
+	 * The active project.
+	 */
+	IProject project;
+
+	/**
+	 * Indicates if we have to clean the view.
+	 */
+	boolean clean = true;
+
+	/**
+	 * The Templates part.
+	 */
+	CheckboxTreeViewer templatesViewer;
+
+	/**
 	 * The editing domain.
 	 */
 	private AdapterFactoryEditingDomain editingDomain;
@@ -105,11 +120,6 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * The adapter factory.
 	 */
 	private ComposedAdapterFactory adapterFactory;
-
-	/**
-	 * The Templates part.
-	 */
-	private CheckboxTreeViewer templatesViewer;
 
 	/**
 	 * Interface for listening to workbench part lifecycle events. It is used to listen when an Acceleo Editor
@@ -121,16 +131,6 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * The resource sets to unload, when we close the view...
 	 */
 	private Set<ResourceSet> toUnload = new HashSet<ResourceSet>();
-
-	/**
-	 * The active project.
-	 */
-	private IProject project;
-
-	/**
-	 * Indicates if we have to clean the view.
-	 */
-	private boolean clean = true;
 
 	/**
 	 * The resource change listener to detect that the view must be refreshed.
@@ -228,7 +228,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private IFile getFileInDelta(IResourceDelta delta) throws CoreException {
+	IFile getFileInDelta(IResourceDelta delta) throws CoreException {
 		IFile result = null;
 		if (delta != null) {
 			IResource resource = delta.getResource();
@@ -292,7 +292,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * @param aFile
 	 *            is the current template
 	 */
-	private void refreshContent(IFile aFile) {
+	void refreshContent(IFile aFile) {
 		IProject aProject;
 		if (aFile != null) {
 			aProject = aFile.getProject();
@@ -300,7 +300,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 			aProject = null;
 		}
 		if (!clean) {
-			if (aProject == null || aProject != null && aProject == project) {
+			if (aProject == null || aProject == project) {
 				return;
 			}
 		}
@@ -328,7 +328,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * @param monitor
 	 *            is the current monitor
 	 */
-	private synchronized void updateViewTemplates(IProgressMonitor monitor) {
+	synchronized void updateViewTemplates(IProgressMonitor monitor) {
 		if (project != null) {
 			Set<ResourceSet> newResourceSet = new HashSet<ResourceSet>();
 			AcceleoProject acceleoProject = new AcceleoProject(project);
@@ -580,7 +580,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	/**
 	 * Initialize the templates viewer content.
 	 */
-	private void initializeTemplatesViewerContent() {
+	void initializeTemplatesViewerContent() {
 		IEditorPart part = getSite().getPage().getActiveEditor();
 		if (part instanceof AcceleoEditor) {
 			AcceleoEditor editor = (AcceleoEditor)part;
@@ -596,7 +596,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * @param eObject
 	 *            is the event object
 	 */
-	private void handleDoubleClick(EObject eObject) {
+	void handleDoubleClick(EObject eObject) {
 		if (eObject.eResource() != null) {
 			IRegion region;
 			if (eObject instanceof ModuleElement) {
@@ -623,7 +623,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 *            fragment URI of the element that is to be expanded
 	 * @return the expanded EObject
 	 */
-	private EObject expandFragment(URI eObjectFileURI, String eObjectFragmentURI) {
+	EObject expandFragment(URI eObjectFileURI, String eObjectFragmentURI) {
 		if (eObjectFileURI != null && eObjectFragmentURI != null
 				&& templatesViewer.getInput() instanceof Object[]) {
 			Object[] inputs = (Object[])templatesViewer.getInput();
@@ -664,7 +664,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	 * @param state
 	 *            is the checked state
 	 */
-	private synchronized void checkStateTemplate(Module eModule, boolean state) {
+	synchronized void checkStateTemplate(Module eModule, boolean state) {
 		for (ModuleElement eModuleElement : eModule.getOwnedModuleElement()) {
 			templatesViewer.expandToLevel(eModuleElement, 1);
 			templatesViewer.setChecked(eModuleElement, state);

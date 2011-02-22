@@ -120,9 +120,8 @@ public class AcceleoResultView extends ResourceNavigator {
 		public Object[] getElements(Object element) {
 			if (element instanceof String) {
 				return new Object[] {(String)element };
-			} else {
-				return super.getElements(element);
 			}
+			return super.getElements(element);
 		}
 
 		/**
@@ -201,21 +200,21 @@ public class AcceleoResultView extends ResourceNavigator {
 			String text = resourcesLabelProvider.getText(element);
 			if (text != null && text.length() > 0) {
 				return text;
-			} else {
-				String result;
-				if (element instanceof String) {
-					result = (String)element;
-				} else if (element instanceof TraceabilityTemplate) {
-					result = ((TraceabilityTemplate)element).getLabel();
-				} else if (element instanceof TraceabilityModel) {
-					result = ((TraceabilityModel)element).getLabel();
-				} else if (element instanceof TraceabilityRegion) {
-					result = ((TraceabilityRegion)element).getLabel();
-				} else {
-					result = super.getText(element);
-				}
-				return result;
 			}
+
+			String result;
+			if (element instanceof String) {
+				result = (String)element;
+			} else if (element instanceof TraceabilityTemplate) {
+				result = ((TraceabilityTemplate)element).getLabel();
+			} else if (element instanceof TraceabilityModel) {
+				result = ((TraceabilityModel)element).getLabel();
+			} else if (element instanceof TraceabilityRegion) {
+				result = ((TraceabilityRegion)element).getLabel();
+			} else {
+				result = super.getText(element);
+			}
+			return result;
 		}
 
 		/**
@@ -729,9 +728,8 @@ public class AcceleoResultView extends ResourceNavigator {
 			result.add(0, parent);
 			if (parent instanceof TraceabilityTargetFile) {
 				break;
-			} else {
-				parent = parent.getParent();
 			}
+			parent = parent.getParent();
 		}
 		if (parent instanceof TraceabilityTargetFile) {
 			IFile targetFile = ((TraceabilityTargetFile)parent).getTargetFile();

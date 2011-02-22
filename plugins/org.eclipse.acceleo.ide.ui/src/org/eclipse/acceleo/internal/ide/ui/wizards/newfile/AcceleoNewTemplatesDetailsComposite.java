@@ -678,9 +678,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 			protected Iterator<? extends EObject> getEObjectChildren(EObject eObject) {
 				if (eObject instanceof EPackage) {
 					return ((EPackage)eObject).getESubpackages().iterator();
-				} else {
-					return Collections.<EObject> emptyList().iterator();
 				}
+				return Collections.<EObject> emptyList().iterator();
 			}
 		};
 		while (iterator.hasNext()) {
@@ -888,9 +887,8 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 		if (metamodelType != null && metamodelTypes != null && metamodelType.getSelectionIndex() > -1
 				&& metamodelType.getSelectionIndex() < metamodelTypes.length) {
 			return metamodelTypes[metamodelType.getSelectionIndex()];
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

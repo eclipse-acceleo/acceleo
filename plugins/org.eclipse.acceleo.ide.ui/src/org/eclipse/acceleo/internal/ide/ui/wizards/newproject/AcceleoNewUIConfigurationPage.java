@@ -144,9 +144,8 @@ public class AcceleoNewUIConfigurationPage extends WizardPage {
 				}
 			}
 			return mName;
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

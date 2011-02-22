@@ -39,9 +39,8 @@ public class AcceleoSourceLookupParticipant extends JavaSourceLookupParticipant 
 	public String getSourceName(Object object) throws CoreException {
 		if (object instanceof AcceleoStackFrame) {
 			return ((AcceleoStackFrame)object).getSourceName();
-		} else {
-			return super.getSourceName(object);
 		}
+		return super.getSourceName(object);
 	}
 
 	/**

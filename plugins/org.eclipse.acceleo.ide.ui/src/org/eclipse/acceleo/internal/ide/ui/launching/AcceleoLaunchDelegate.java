@@ -102,8 +102,7 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 					if (strategyClass != null && description != null && description.equals(launchingID)) {
 						try {
 							Bundle bundle = Platform.getBundle(member.getNamespaceIdentifier());
-							Class<IAcceleoLaunchingStrategy> c = (Class<IAcceleoLaunchingStrategy>)bundle
-									.loadClass(strategyClass);
+							Class<IAcceleoLaunchingStrategy> c = bundle.loadClass(strategyClass);
 							return c.newInstance();
 						} catch (ClassNotFoundException e) {
 							AcceleoUIActivator.log(e, true);

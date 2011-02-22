@@ -68,9 +68,8 @@ public class NewLetElseLetForeachType implements IAcceleoPatternProposal {
 			public int compare(EClass c0, EClass c1) {
 				if (c0.isSuperTypeOf(c1)) {
 					return 1;
-				} else {
-					return -1;
 				}
+				return -1;
 			}
 		});
 		StringBuilder buffer = new StringBuilder();

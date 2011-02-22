@@ -151,9 +151,8 @@ public class CreateTemplateData {
 	public String getTemplateExamplePath() {
 		if (templateIsInitialized) {
 			return templateExamplePath;
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -164,9 +163,8 @@ public class CreateTemplateData {
 	public String getTemplateExampleStrategy() {
 		if (templateIsInitialized) {
 			return templateExampleStrategy;
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -320,9 +318,8 @@ public class CreateTemplateData {
 	public String getTemplateJavaClassShortName() {
 		if (templateShortName.length() > 0) {
 			return Character.toUpperCase(templateShortName.charAt(0)) + templateShortName.substring(1);
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

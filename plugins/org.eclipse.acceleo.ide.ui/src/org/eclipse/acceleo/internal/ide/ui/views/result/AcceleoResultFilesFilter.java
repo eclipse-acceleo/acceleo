@@ -48,13 +48,12 @@ public class AcceleoResultFilesFilter extends ViewerFilter {
 	public boolean select(Viewer viewer, Object parent, Object element) {
 		if (element instanceof String) {
 			return true;
-		} else {
-			Object resource = element;
-			if (resource instanceof IJavaProject) {
-				resource = ((IJavaProject)resource).getProject();
-			}
-			return !(resource instanceof IResource) || select((IResource)resource);
 		}
+		Object resource = element;
+		if (resource instanceof IJavaProject) {
+			resource = ((IJavaProject)resource).getProject();
+		}
+		return !(resource instanceof IResource) || select((IResource)resource);
 	}
 
 	/**

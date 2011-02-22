@@ -64,9 +64,8 @@ public class ProposalsBrowserTypesLabelProvider extends AdapterFactoryLabelProvi
 	public Image getImage(Object object) {
 		if (object instanceof EClassHandler) {
 			return super.getImage(((EClassHandler)object).getEClass());
-		} else {
-			return super.getImage(object);
 		}
+		return super.getImage(object);
 	}
 
 }

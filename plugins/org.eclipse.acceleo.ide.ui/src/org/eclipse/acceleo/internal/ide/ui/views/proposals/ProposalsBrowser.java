@@ -324,9 +324,8 @@ public class ProposalsBrowser extends ViewPart implements IEditingDomainProvider
 								.getString("ProposalsBrowser.LongTimeOperation"), AcceleoUIMessages //$NON-NLS-1$
 								.getString("ProposalsBrowser.LongTimeOperationCancel"))) { //$NON-NLS-1$ 
 							throw new CancellationException();
-						} else {
-							beginningTime = -1;
 						}
+						beginningTime = -1;
 					}
 					typesViewer.setChecked(eSubTypeHandler, state);
 					checkStateSubTypes(eSubTypeHandler, state);

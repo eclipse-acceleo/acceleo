@@ -208,9 +208,8 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 				if (otherChild instanceof TraceabilityTemplate) {
 					index = i;
 					break;
-				} else {
-					i++;
 				}
+				i++;
 			}
 		}
 		if (index == -1) {

@@ -138,9 +138,8 @@ public class AcceleoNewProjectUIWizard extends Wizard implements INewWizard {
 				setMessage(
 						AcceleoUIMessages.getString("AcceleoNewProjectUIWizard.OverwriteProject"), IMessageProvider.WARNING); //$NON-NLS-1$
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		}
 	}
 

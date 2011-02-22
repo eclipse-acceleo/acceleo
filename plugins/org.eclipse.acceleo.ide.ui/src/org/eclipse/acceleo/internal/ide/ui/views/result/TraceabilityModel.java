@@ -95,9 +95,8 @@ public class TraceabilityModel extends TraceabilityContainer {
 				result = "<" + eObject.eClass().getName() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return result;
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 }

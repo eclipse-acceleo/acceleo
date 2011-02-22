@@ -62,9 +62,8 @@ public class FileBlocksLabelProvider extends AdapterFactoryLabelProvider {
 	public Color getBackground(Object object) {
 		if (object instanceof FileBlocksProjectHandler && !((FileBlocksProjectHandler)object).isResolved()) {
 			return manager.getColor(IAcceleoColorConstants.TEMPLATE);
-		} else {
-			return super.getBackground(object);
 		}
+		return super.getBackground(object);
 	}
 
 	/**

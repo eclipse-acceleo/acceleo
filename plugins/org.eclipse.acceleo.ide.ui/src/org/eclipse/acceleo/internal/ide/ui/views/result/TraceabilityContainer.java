@@ -49,6 +49,6 @@ public class TraceabilityContainer extends AbstractTraceabilityElement {
 	@Override
 	public String getLabel() {
 		// Should be overriden
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

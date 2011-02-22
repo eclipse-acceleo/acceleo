@@ -251,9 +251,8 @@ public class AcceleoNewMainTemplateWizardPage extends WizardPage {
 	public String getTemplateContainer() {
 		if (templateContainer != null && templateContainer.getText() != null) {
 			return templateContainer.getText();
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -264,9 +263,8 @@ public class AcceleoNewMainTemplateWizardPage extends WizardPage {
 	public String getTemplateName() {
 		if (templateName != null && templateName.getText() != null) {
 			return templateName.getText();
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 }

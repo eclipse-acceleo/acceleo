@@ -72,9 +72,8 @@ public class ProposalsBrowserTypesProvider extends AdapterFactoryContentProvider
 	public boolean hasChildren(Object object) {
 		if (object instanceof EClassHandler) {
 			return view.hasSubType((EClassHandler)object);
-		} else {
-			return super.hasChildren(object);
 		}
+		return super.hasChildren(object);
 	}
 
 	/**
@@ -86,9 +85,8 @@ public class ProposalsBrowserTypesProvider extends AdapterFactoryContentProvider
 	public Object[] getChildren(Object object) {
 		if (object instanceof EClassHandler) {
 			return view.createSubTypeHandlers((EClassHandler)object);
-		} else {
-			return super.getChildren(object);
 		}
+		return super.getChildren(object);
 	}
 
 }

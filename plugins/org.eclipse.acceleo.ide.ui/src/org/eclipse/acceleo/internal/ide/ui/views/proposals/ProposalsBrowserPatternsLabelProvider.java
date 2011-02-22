@@ -64,9 +64,8 @@ public class ProposalsBrowserPatternsLabelProvider extends AdapterFactoryLabelPr
 	public Image getImage(Object object) {
 		if (object instanceof IAcceleoPatternProposal) {
 			return ((IAcceleoPatternProposal)object).getImage();
-		} else {
-			return super.getImage(object);
 		}
+		return super.getImage(object);
 	}
 
 }
