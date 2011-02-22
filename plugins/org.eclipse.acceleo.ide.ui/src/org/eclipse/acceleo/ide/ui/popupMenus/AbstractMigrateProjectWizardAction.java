@@ -55,7 +55,7 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 	/**
 	 * The current selection.
 	 */
-	protected ISelection currentSelection;
+	ISelection currentSelection;
 
 	/**
 	 * {@inheritDoc}
