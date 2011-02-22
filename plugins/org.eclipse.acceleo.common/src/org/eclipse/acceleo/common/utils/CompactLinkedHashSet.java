@@ -116,9 +116,7 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		if (entry == header) {
 			return;
 		}
-		if (entry != null) {
-			previous.next = entry.next;
-		}
+		previous.next = entry.next;
 	}
 
 	/**

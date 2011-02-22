@@ -15,10 +15,9 @@ import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
- * This implementation of the {@link Set} interface uses the same hashing functions as the
+ * This implementation of the {@link java.util.Set} interface uses the same hashing functions as the
  * {@link java.util.HashSet} does. However it does not rely on an underlying map.
  * <p>
  * The {@link java.util.HashSet} uses open hashing to resolve hash collisions : each bucket of the underlying
@@ -47,7 +46,7 @@ import java.util.Set;
  *            Type of the elements contained by this Set.
  * @since 3.1
  */
-public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
+public class CompactHashSet<E> extends AbstractSet<E> {
 	/** This object will be used as a place holder for deleted values. */
 	static final Object DELETED_VALUE = new Object();
 
@@ -156,9 +155,10 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 	 * @return The altered hash code.
 	 */
 	protected static int supplementalHash(int hashCode) {
+		int newHash = hashCode;
 		// CHECKSTYLE:OFF This has been borrowed from HashMap#newHash(int)
-		hashCode ^= (hashCode >>> 20) ^ (hashCode >>> 12);
-		return hashCode ^ (hashCode >>> 7) ^ (hashCode >>> 4);
+		newHash ^= (newHash >>> 20) ^ (newHash >>> 12);
+		return newHash ^ (newHash >>> 7) ^ (newHash >>> 4);
 		// CHECKSTYLE:ON
 	}
 
@@ -228,9 +228,8 @@ public class CompactHashSet<E> extends AbstractSet<E> implements Set<E> {
 	public boolean add(E element) {
 		if (element == null) {
 			return addNull();
-		} else {
-			return addValue(element);
 		}
+		return addValue(element);
 	}
 
 	/**

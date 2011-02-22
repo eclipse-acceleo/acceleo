@@ -211,9 +211,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	public Object put(String key, Object value) {
 		if (dynamicEcorePackagePaths.containsKey(key)) {
 			return super.put(key, value);
-		} else {
-			return delegate.put(key, value);
 		}
+		return delegate.put(key, value);
 	}
 
 	/**
@@ -261,13 +260,12 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		}
 
 		if (eObject instanceof EPackage && ((EPackage)eObject).getNsURI() != null
-				&& !"".equals(((EPackage)eObject).getNsURI())) {
+				&& !"".equals(((EPackage)eObject).getNsURI())) { //$NON-NLS-1$
 			EPackage ePackage = (EPackage)eObject;
 			registerEcorePackageHierarchy(ePackage);
 			return ePackage.getNsURI();
-		} else {
-			return pathName;
 		}
+		return pathName;
 	}
 
 	/**
@@ -279,9 +277,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	public Object remove(Object key) {
 		if (dynamicEcorePackagePaths.containsKey(key)) {
 			return super.remove(key);
-		} else {
-			return delegate.remove(key);
 		}
+		return delegate.remove(key);
 	}
 
 	/**
@@ -333,8 +330,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		if (ePackage.getNsURI() != null) {
 			// The MTL ecore file mustn't be dynamic!!!
 			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
-			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix())
-					&& !"mtlstdlib".equals(ePackage.getNsPrefix())) {
+			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
+					&& !"mtlstdlib".equals(ePackage.getNsPrefix())) { //$NON-NLS-1$
 				if (ePackage.eResource() != null) {
 					dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI()
 							.toString());

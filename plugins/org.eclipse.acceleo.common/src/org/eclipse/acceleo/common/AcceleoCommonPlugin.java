@@ -447,6 +447,13 @@ public class AcceleoCommonPlugin extends Plugin {
 	 */
 	private class WorkspaceEcoreListener implements IResourceChangeListener {
 		/**
+		 * Default constructor.
+		 */
+		WorkspaceEcoreListener() {
+			// Increases visibility
+		}
+
+		/**
 		 * {@inheritDoc}
 		 * 
 		 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
@@ -463,7 +470,7 @@ public class AcceleoCommonPlugin extends Plugin {
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
 						try {
-							List<IFile> ecoreFiles = members((IContainer)event.getResource(), "ecore");
+							List<IFile> ecoreFiles = members((IContainer)event.getResource(), "ecore"); //$NON-NLS-1$
 							if (!ecoreFiles.isEmpty()) {
 								for (IFile ecoreFile : ecoreFiles) {
 									AcceleoPackageRegistry.INSTANCE.unregisterEcorePackages(ecoreFile
@@ -477,7 +484,7 @@ public class AcceleoCommonPlugin extends Plugin {
 					break;
 				case IResourceChangeEvent.POST_CHANGE:
 					if (event.getResource() != null
-							&& event.getResource().getFileExtension().endsWith("ecore")) {
+							&& event.getResource().getFileExtension().endsWith("ecore")) { //$NON-NLS-1$
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(event.getResource()
 								.getFullPath().toString());
 					}

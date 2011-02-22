@@ -450,7 +450,7 @@ public interface IAcceleoConstants {
 	 * 
 	 * @since 3.1
 	 */
-	String DOCUMENTATION_BEGIN = "**";
+	String DOCUMENTATION_BEGIN = "**"; //$NON-NLS-1$
 
 	/**
 	 * Delimiter of the beginning of the indentation of a new line.
@@ -462,5 +462,5 @@ public interface IAcceleoConstants {
 	 * 
 	 * @since 3.1
 	 */
-	String DOCUMENTATION_NEW_LINE = "*";
+	String DOCUMENTATION_NEW_LINE = "*"; //$NON-NLS-1$
 }

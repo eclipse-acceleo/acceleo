@@ -774,7 +774,7 @@ public final class AcceleoWorkspaceUtil {
 		int state = target.getState();
 		if (state != Bundle.INSTALLED) {
 			throw new IllegalStateException(AcceleoCommonMessages.getString(
-					"WorkspaceUtil.IllegalBundleState", target, state)); //$NON-NLS-1$
+					"WorkspaceUtil.IllegalBundleState", target, Integer.valueOf(state))); //$NON-NLS-1$
 		}
 		return target;
 	}
