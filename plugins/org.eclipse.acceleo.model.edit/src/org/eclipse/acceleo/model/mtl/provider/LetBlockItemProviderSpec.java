@@ -39,8 +39,7 @@ public class LetBlockItemProviderSpec extends LetBlockItemProvider {
 	public String getText(Object object) {
 		if (((LetBlock)object).getLetVariable() != null) {
 			return ((LetBlock)object).getLetVariable().toString();
-		} else {
-			return super.getText(object);
 		}
+		return super.getText(object);
 	}
 }

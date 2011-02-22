@@ -39,8 +39,7 @@ public class FileBlockItemProviderSpec extends FileBlockItemProvider {
 	public String getText(Object object) {
 		if (((FileBlock)object).getFileUrl() != null) {
 			return ((FileBlock)object).getFileUrl().toString();
-		} else {
-			return super.getText(object);
 		}
+		return super.getText(object);
 	}
 }

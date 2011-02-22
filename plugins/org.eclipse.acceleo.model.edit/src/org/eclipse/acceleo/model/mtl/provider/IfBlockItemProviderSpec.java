@@ -39,8 +39,7 @@ public class IfBlockItemProviderSpec extends IfBlockItemProvider {
 	public String getText(Object object) {
 		if (((IfBlock)object).getIfExpr() != null) {
 			return "[if/] " + ((IfBlock)object).getIfExpr().toString(); //$NON-NLS-1$
-		} else {
-			return super.getText(object);
 		}
+		return super.getText(object);
 	}
 }
