@@ -525,13 +525,12 @@ public class ReferencesSearchQuery implements ISearchQuery {
 						&& !var1.getName().equals(var2.getName())) {
 					result = false;
 					break;
-				} else {
-					if ((var1.getType() != null && var2.getType() != null)
-							&& (var1.getType().getName() != null && !var1.getType().getName().equals(
-									var2.getType().getName()))) {
-						result = false;
-						break;
-					}
+				}
+				if ((var1.getType() != null && var2.getType() != null)
+						&& (var1.getType().getName() != null && !var1.getType().getName().equals(
+								var2.getType().getName()))) {
+					result = false;
+					break;
 				}
 			}
 
@@ -577,13 +576,12 @@ public class ReferencesSearchQuery implements ISearchQuery {
 						&& !var1.getName().equals(var2.getName())) {
 					result = false;
 					break;
-				} else {
-					if ((var1.getType() != null && var2.getType() != null)
-							&& (var1.getType().getName() != null && !var1.getType().getName().equals(
-									var2.getType().getName()))) {
-						result = false;
-						break;
-					}
+				}
+				if ((var1.getType() != null && var2.getType() != null)
+						&& (var1.getType().getName() != null && !var1.getType().getName().equals(
+								var2.getType().getName()))) {
+					result = false;
+					break;
 				}
 			}
 
@@ -621,9 +619,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		}
 		if (result != null) {
 			return result;
-		} else {
-			return new Region(0, 0);
 		}
+		return new Region(0, 0);
 	}
 
 	/**

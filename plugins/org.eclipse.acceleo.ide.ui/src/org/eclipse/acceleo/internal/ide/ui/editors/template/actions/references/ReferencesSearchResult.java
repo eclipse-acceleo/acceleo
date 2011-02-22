@@ -87,7 +87,8 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	public String getLabel() {
 		int matchCount = this.getMatchCount();
 		EObject declaration = this.query.getDeclaration();
-		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label", declaration, matchCount); //$NON-NLS-1$
+		return AcceleoUIMessages.getString("AcceleoReferencesSearch.Result.Label", declaration, Integer //$NON-NLS-1$
+				.valueOf(matchCount));
 	}
 
 	/**
@@ -133,9 +134,8 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 				&& match.getElement() instanceof IFile) {
 			IFile matchedFile = (IFile)match.getElement();
 			return ((AcceleoEditor)editor).getFile().equals(matchedFile);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -156,9 +156,8 @@ public class ReferencesSearchResult extends AbstractTextSearchResult implements 
 	public IFile getFile(Object element) {
 		if (element instanceof IFile) {
 			return (IFile)element;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class ReferencesTreeContentProvider implements ITreeContentProvider {
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
 	 */
-	private class EntryComparator implements Comparator<Object> {
+	protected class EntryComparator implements Comparator<Object> {
 		/**
 		 * {@inheritDoc}
 		 * 

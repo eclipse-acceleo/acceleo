@@ -28,8 +28,7 @@ public class ReferenceSorter extends ViewerSorter {
 	public int category(Object element) {
 		if (element instanceof ReferenceEntry) {
 			return 0;
-		} else {
-			return 1;
 		}
+		return 1;
 	}
 }

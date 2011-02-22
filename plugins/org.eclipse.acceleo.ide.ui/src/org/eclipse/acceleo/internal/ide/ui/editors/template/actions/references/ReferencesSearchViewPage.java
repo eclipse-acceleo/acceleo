@@ -33,16 +33,11 @@ import org.eclipse.ui.part.IShowInTargetList;
 public class ReferencesSearchViewPage extends AbstractTextSearchViewPage implements IAdaptable {
 
 	/**
-	 * The show in target constant.
-	 */
-	private static final String[] SHOW_IN_TARGETS = new String[] {IPageLayout.ID_RES_NAV };
-
-	/**
 	 * The show in target list constant.
 	 */
 	private static final IShowInTargetList SHOW_IN_TARGET_LIST = new IShowInTargetList() {
 		public String[] getShowInTargetIds() {
-			return SHOW_IN_TARGETS;
+			return new String[] {IPageLayout.ID_RES_NAV };
 		}
 	};
 

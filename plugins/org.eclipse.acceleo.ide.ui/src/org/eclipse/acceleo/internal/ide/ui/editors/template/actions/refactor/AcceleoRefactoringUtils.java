@@ -243,8 +243,7 @@ public final class AcceleoRefactoringUtils {
 			}
 
 			return allSaved;
-		} else {
-			return true;
 		}
+		return true;
 	}
 }

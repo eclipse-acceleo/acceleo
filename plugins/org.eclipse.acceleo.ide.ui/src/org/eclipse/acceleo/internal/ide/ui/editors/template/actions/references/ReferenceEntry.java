@@ -135,9 +135,8 @@ public class ReferenceEntry implements IAdaptable {
 	public IRegion getRegion() {
 		if (match instanceof ASTNode) {
 			return createRegion((ASTNode)match);
-		} else {
-			return new Region(0, 0);
 		}
+		return new Region(0, 0);
 	}
 
 	/**
@@ -152,9 +151,8 @@ public class ReferenceEntry implements IAdaptable {
 		if (b > -1) {
 			int e = eModuleElement.getEndPosition();
 			return new Region(b, e - b);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
