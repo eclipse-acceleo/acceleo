@@ -178,7 +178,7 @@ public final class AcceleoLibraryOperationVisitor {
 				result = substitute(sourceValue, (String)args[0], (String)args[1], false);
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_INDEX.equals(operation.getName())) {
 				// Increment java index value by 1 for OCL
-				result = sourceValue.indexOf((String)args[0]) + 1;
+				result = Integer.valueOf(sourceValue.indexOf((String)args[0]) + 1);
 				if (result == Integer.valueOf(0)) {
 					result = Integer.valueOf(-1);
 				}
@@ -201,15 +201,15 @@ public final class AcceleoLibraryOperationVisitor {
 					result = sourceValue.substring(sourceValue.length() - charCount, sourceValue.length());
 				}
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_STRSTR.equals(operation.getName())) {
-				result = sourceValue.contains((String)args[0]);
+				result = Boolean.valueOf(sourceValue.contains((String)args[0]));
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_STRTOK.equals(operation.getName())) {
 				result = strtok(sourceValue, (String)args[0], (Integer)args[1]);
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_STRCMP.equals(operation.getName())) {
-				result = sourceValue.compareTo((String)args[0]);
+				result = Integer.valueOf(sourceValue.compareTo((String)args[0]));
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_ISALPHA.equals(operation.getName())) {
-				result = isAlpha(sourceValue);
+				result = Boolean.valueOf(isAlpha(sourceValue));
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM.equals(operation.getName())) {
-				result = isAlphanumeric(sourceValue);
+				result = Boolean.valueOf(isAlphanumeric(sourceValue));
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_TOUPPERFIRST.equals(operation.getName())) {
 				if (sourceValue.length() == 0) {
 					result = sourceValue;
@@ -422,22 +422,22 @@ public final class AcceleoLibraryOperationVisitor {
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL.equals(operationName)) {
 			result = source.replaceAll((String)args[0], (String)args[1]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH.equals(operationName)) {
-			result = source.endsWith((String)args[0]);
+			result = Boolean.valueOf(source.endsWith((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_EQUALSIGNORECASE.equals(operationName)) {
-			result = source.equalsIgnoreCase((String)args[0]);
+			result = Boolean.valueOf(source.equalsIgnoreCase((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH.equals(operationName)) {
-			result = source.startsWith((String)args[0]);
+			result = Boolean.valueOf(source.startsWith((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TRIM.equals(operationName)) {
 			result = source.trim();
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE.equals(operationName)) {
 			result = tokenize(source, (String)args[0]);
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
-			result = source.contains((String)args[0]);
+			result = Boolean.valueOf(source.contains((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES.equals(operationName)) {
-			result = source.matches((String)args[0]);
+			result = Boolean.valueOf(source.matches((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX.equals(operationName)) {
 			// Increment java index value by 1 for OCL
-			result = source.lastIndexOf((String)args[0]) + 1;
+			result = Integer.valueOf(source.lastIndexOf((String)args[0]) + 1);
 			if (result == Integer.valueOf(0)) {
 				result = Integer.valueOf(-1);
 			}

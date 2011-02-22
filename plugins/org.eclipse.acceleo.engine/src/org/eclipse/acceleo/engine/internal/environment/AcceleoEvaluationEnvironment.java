@@ -613,8 +613,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				for (Template template : applicableCandidates) {
 					EObject eContainer = template.eContainer();
 					if (eContainer instanceof Module
-							&& (getScopeOf(origin).contains((Module)eContainer) || ((Module)eContainer)
-									.equals(origin))) {
+							&& (getScopeOf(origin).contains(eContainer) || eContainer.equals(origin))) {
 						candidateOverriding.add(template);
 					}
 				}

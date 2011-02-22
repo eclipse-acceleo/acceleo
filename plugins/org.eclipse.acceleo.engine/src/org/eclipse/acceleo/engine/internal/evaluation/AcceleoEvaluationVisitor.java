@@ -430,9 +430,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			while (contentIterator.hasNext()) {
 				count++;
 				if (count == 1) {
-					getEvaluationEnvironment().add(ITERATION_COUNT_VARIABLE_NAME, count);
+					getEvaluationEnvironment().add(ITERATION_COUNT_VARIABLE_NAME, Integer.valueOf(count));
 				} else {
-					getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, count);
+					getEvaluationEnvironment().replace(ITERATION_COUNT_VARIABLE_NAME, Integer.valueOf(count));
 				}
 				final Object o = contentIterator.next();
 				// null typed loop variables will be the same as "Object" typed
@@ -448,9 +448,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						}
 						final String expectedType = loopVariable.getType().getName();
 						final String message = AcceleoEngineMessages.getString(
-								"AcceleoEvaluationVisitor.IterationClassCast", line, ((Module)EcoreUtil //$NON-NLS-1$
-										.getRootContainer(forBlock)).getName(), forBlock.toString(),
-								actualType, expectedType);
+								"AcceleoEvaluationVisitor.IterationClassCast", Integer.valueOf(line), //$NON-NLS-1$
+								((Module)EcoreUtil.getRootContainer(forBlock)).getName(),
+								forBlock.toString(), actualType, expectedType);
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 						exception.setStackTrace(context.createAcceleoStackTrace());
 						AcceleoEnginePlugin.log(exception, false);
@@ -840,8 +840,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				int line = getLineOf(template);
 				final String moduleName = ((Module)EcoreUtil.getRootContainer(template)).getName();
 				final String message = AcceleoEngineMessages.getString(
-						"AcceleoEvaluationVisitor.UndefinedPost", template.getPost(), line, moduleName, //$NON-NLS-1$
-						template, result);
+						"AcceleoEvaluationVisitor.UndefinedPost", template.getPost(), Integer.valueOf(line), //$NON-NLS-1$
+						moduleName, template, result);
 				final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 				throw exception;
 			}
@@ -1227,9 +1227,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		String currentIndent = context.getCurrentLineIndentation();
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
-		} else {
-			return fitIndentationTo(source, currentIndent);
 		}
+		return fitIndentationTo(source, currentIndent);
 	}
 
 	/**
@@ -1245,9 +1244,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private Object delegateGetCachedResult(Query query, List<Object> arguments) {
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return getAcceleoVisitor().getCachedResult(query, arguments);
-		} else {
-			return getCachedResult(query, arguments);
 		}
+		return getCachedResult(query, arguments);
 	}
 
 	/**

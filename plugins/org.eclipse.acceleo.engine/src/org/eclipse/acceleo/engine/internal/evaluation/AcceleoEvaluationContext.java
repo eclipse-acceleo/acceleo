@@ -244,8 +244,8 @@ public class AcceleoEvaluationContext<C> {
 			line = ((AcceleoASTNodeAdapter)adapter).getLine();
 		}
 		String moduleName = ((Module)EcoreUtil.getRootContainer(node)).getName();
-		String message = AcceleoEngineMessages.getString(messageKey, line, moduleName, node.toString(),
-				currentSelf, expression);
+		String message = AcceleoEngineMessages.getString(messageKey, Integer.valueOf(line), moduleName, node
+				.toString(), currentSelf, expression);
 		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 		exception.setStackTrace(createAcceleoStackTrace());
 		return exception;
