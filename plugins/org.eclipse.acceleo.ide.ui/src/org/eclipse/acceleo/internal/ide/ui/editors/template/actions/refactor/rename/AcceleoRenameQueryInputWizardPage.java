@@ -174,7 +174,7 @@ public class AcceleoRenameQueryInputWizardPage extends UserInputWizardPage {
 	/**
 	 * Handle changes in the text box.
 	 */
-	private void handleInputChanged() {
+	protected void handleInputChanged() {
 		final RefactoringStatus status = new RefactoringStatus();
 		final AcceleoRenameQueryRefactoring refactoring = this.getRenameQueryRefactoring();
 

@@ -172,16 +172,16 @@ public class AcceleoRenameTextRefactoring extends Refactoring {
 		List<OCLExpression> body = block.getBody();
 		if (body == null || body.size() == 0) {
 			return null;
-		} else {
-			List<OCLExpression> subBody = new ArrayList<OCLExpression>();
-			for (OCLExpression oclExpression : body) {
-				if (oclExpression instanceof Block) {
-					subBody.addAll(getContainedOCLExpression((Block)oclExpression));
-				}
-			}
-			body.addAll(subBody);
-			return body;
 		}
+
+		List<OCLExpression> subBody = new ArrayList<OCLExpression>();
+		for (OCLExpression oclExpression : body) {
+			if (oclExpression instanceof Block) {
+				subBody.addAll(getContainedOCLExpression((Block)oclExpression));
+			}
+		}
+		body.addAll(subBody);
+		return body;
 	}
 
 	/**
@@ -223,11 +223,11 @@ public class AcceleoRenameTextRefactoring extends Refactoring {
 	 */
 	public RefactoringStatus initialize(Map<String, String> arguments) {
 		final RefactoringStatus status = new RefactoringStatus();
-		String value = (String)arguments.get(ORIGINAL_TEXT);
+		String value = arguments.get(ORIGINAL_TEXT);
 		if (value != null) {
 			// I'm not sure I need to do something here, so let's do nothing instead :)
 		}
-		value = (String)arguments.get(NEWNAME);
+		value = arguments.get(NEWNAME);
 		if (value != null) {
 			this.setNewName(value);
 		}

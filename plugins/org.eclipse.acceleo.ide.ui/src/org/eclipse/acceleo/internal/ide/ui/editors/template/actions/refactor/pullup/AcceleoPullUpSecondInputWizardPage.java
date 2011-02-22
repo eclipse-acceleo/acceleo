@@ -40,14 +40,14 @@ import org.eclipse.swt.widgets.Text;
 public class AcceleoPullUpSecondInputWizardPage extends UserInputWizardPage {
 
 	/**
+	 * The text field to type the name of the destination module.
+	 */
+	protected Text textField;
+
+	/**
 	 * The treeviewer to show the destination folder.
 	 */
 	private TreeViewer viewer;
-
-	/**
-	 * The text field to type the name of the destination module.
-	 */
-	private Text textField;
 
 	/**
 	 * The label of the text.
@@ -135,6 +135,17 @@ public class AcceleoPullUpSecondInputWizardPage extends UserInputWizardPage {
 		this.textField.setLayoutData(formDataText);
 
 		this.viewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ltk.ui.refactoring.RefactoringWizardPage#getRefactoring()
+	 */
+	@Override
+	protected Refactoring getRefactoring() {
+		// enhances visibility
+		return super.getRefactoring();
 	}
 
 	/**

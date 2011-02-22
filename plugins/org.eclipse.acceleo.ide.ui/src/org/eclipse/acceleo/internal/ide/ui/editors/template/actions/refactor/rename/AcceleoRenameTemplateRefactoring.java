@@ -61,9 +61,19 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 	private static final String REFERENCES = "references"; //$NON-NLS-1$
 
 	/**
+	 * The current template.
+	 */
+	protected AcceleoPositionedTemplate fTemplate;
+
+	/**
 	 * The name of the new template.
 	 */
-	private String fNewTemplateName;
+	protected String fNewTemplateName;
+
+	/**
+	 * Whether or not we have to updates all the references (default = true).
+	 */
+	protected boolean fUpdateReferences = true;
 
 	/**
 	 * The title of the refactoring.
@@ -75,16 +85,6 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 	 * The files that will be impacted by the changes and the changes.
 	 */
 	private Map<IFile, TextFileChange> fChanges;
-
-	/**
-	 * Whether or not we have to updates all the references (default = true).
-	 */
-	private boolean fUpdateReferences = true;
-
-	/**
-	 * The current template.
-	 */
-	private AcceleoPositionedTemplate fTemplate;
 
 	/**
 	 * The file name.
@@ -462,15 +462,15 @@ public class AcceleoRenameTemplateRefactoring extends Refactoring {
 	 */
 	public RefactoringStatus initialize(final Map<String, String> arguments) {
 		final RefactoringStatus status = new RefactoringStatus();
-		String value = (String)arguments.get(TEMPLATE);
+		String value = arguments.get(TEMPLATE);
 		if (value != null) {
 			// I'm not sure I need to do something here, so let's do nothing instead :)
 		}
-		value = (String)arguments.get(NEWNAME);
+		value = arguments.get(NEWNAME);
 		if (value != null) {
 			this.setNewTemplateName(value);
 		}
-		value = (String)arguments.get(REFERENCES);
+		value = arguments.get(REFERENCES);
 		if (value != null) {
 			setUpdateReferences(Boolean.valueOf(value).booleanValue());
 		}

@@ -294,9 +294,8 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 	public String getSourceName() {
 		if (stackInfo != null && stackInfo.getFile() != null) {
 			return stackInfo.getFile().getName();
-		} else {
-			return ""; //$NON-NLS-1$
 		}
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

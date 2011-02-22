@@ -39,17 +39,16 @@ import org.eclipse.debug.core.model.IThread;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTarget, IBreakpointManagerListener {
+public final class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTarget, IBreakpointManagerListener {
+	/**
+	 * The thread.
+	 */
+	protected AcceleoThread thread;
 
 	/**
 	 * The process.
 	 */
 	private AcceleoDebugProcess process;
-
-	/**
-	 * The thread.
-	 */
-	private AcceleoThread thread;
 
 	/**
 	 * The current launch configuration which is the result of launching a debug session.
@@ -76,7 +75,7 @@ public class AcceleoDebugTarget extends AbstractDebugElement implements IDebugTa
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
 	 */
-	private class TemplateDebuggerListener implements ITemplateDebuggerListener {
+	protected class TemplateDebuggerListener implements ITemplateDebuggerListener {
 
 		/**
 		 * {@inheritDoc}

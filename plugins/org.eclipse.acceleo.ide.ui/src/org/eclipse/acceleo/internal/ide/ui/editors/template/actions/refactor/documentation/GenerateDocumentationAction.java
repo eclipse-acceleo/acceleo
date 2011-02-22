@@ -18,6 +18,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclaratio
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
@@ -106,7 +107,7 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 			document.replace(startPosition, 0, newBuffer.toString());
 		} catch (BadLocationException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(Status.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 	}
 
@@ -132,7 +133,7 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 			document.replace(startPosition, 0, newBuffer.toString());
 		} catch (BadLocationException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(Status.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 	}
 
@@ -176,7 +177,7 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 			document.replace(startPosition, 0, newBuffer.toString());
 		} catch (BadLocationException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(Status.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
 	}
 }

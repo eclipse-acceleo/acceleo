@@ -257,7 +257,7 @@ public class AcceleoRenameAction extends AbstractRefactoringAction {
 	private void launchRefactorRenameTextOccurrences(ITextSelection selection) {
 		ASTNode astNode = this.editor.getContent().getASTNode(selection.getOffset() + selection.getLength(),
 				selection.getOffset() + selection.getLength());
-		if (selection != null && selection.getLength() > 0 && astNode instanceof LiteralExp) {
+		if (selection.getLength() > 0 && astNode instanceof LiteralExp) {
 			Template template = (Template)this.editor.getContent().getASTParent(astNode,
 					org.eclipse.acceleo.model.mtl.Template.class);
 			IDocument document = this.editor.getDocumentProvider().getDocument(this.editor.getEditorInput());

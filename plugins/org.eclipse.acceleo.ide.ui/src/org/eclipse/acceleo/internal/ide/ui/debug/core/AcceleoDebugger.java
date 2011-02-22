@@ -322,9 +322,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 				}
 			}
 			return line;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**
@@ -470,36 +469,36 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	private boolean isBreakpoint(ASTFragment astFragment, boolean isOutputStep) {
 		if (terminated) {
 			return false;
-		} else {
-			boolean ret = false;
-			if (stepInto) {
-				ret = true;
-			} else if (stepOver) {
-				if (stackDebugger.size() <= stackDebuggerSize) {
-					ret = true;
-					stackDebuggerSize = stackDebugger.size();
-				} else {
-					ret = false;
-				}
-			} else if (stepReturn) {
-				if (stackDebugger.size() < stackDebuggerSize) {
-					ret = true;
-					stackDebuggerSize = stackDebugger.size();
-				} else {
-					ret = false;
-				}
-			} else {
-				if (astFragment.isEmpty() || isOutputStep) {
-					ret = false;
-				} else {
-					ret = breakpointsASTFragments.contains(astFragment);
-				}
-			}
-			if (ret) {
-				state = SUSPENDED;
-			}
-			return ret;
 		}
+
+		boolean ret = false;
+		if (stepInto) {
+			ret = true;
+		} else if (stepOver) {
+			if (stackDebugger.size() <= stackDebuggerSize) {
+				ret = true;
+				stackDebuggerSize = stackDebugger.size();
+			} else {
+				ret = false;
+			}
+		} else if (stepReturn) {
+			if (stackDebugger.size() < stackDebuggerSize) {
+				ret = true;
+				stackDebuggerSize = stackDebugger.size();
+			} else {
+				ret = false;
+			}
+		} else {
+			if (astFragment.isEmpty() || isOutputStep) {
+				ret = false;
+			} else {
+				ret = breakpointsASTFragments.contains(astFragment);
+			}
+		}
+		if (ret) {
+			state = SUSPENDED;
+		}
+		return ret;
 	}
 
 	/**

@@ -63,7 +63,17 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 	/**
 	 * The name of the new query.
 	 */
-	private String fNewQueryName;
+	protected String fNewQueryName;
+
+	/**
+	 * The current query.
+	 */
+	protected AcceleoPositionedQuery fQuery;
+
+	/**
+	 * Whether or not we have to updates all the references (default = true).
+	 */
+	protected boolean fUpdateReferences = true;
 
 	/**
 	 * The files that will be impacted by the changes and the changes.
@@ -71,20 +81,10 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 	private Map<IFile, TextFileChange> fChanges;
 
 	/**
-	 * Whether or not we have to updates all the references (default = true).
-	 */
-	private boolean fUpdateReferences = true;
-
-	/**
 	 * The title of the refactoring.
 	 */
 	private final String title = AcceleoUIMessages
 			.getString("AcceleoEditorRenameQueryRefactoring.RenameQueryTitle"); //$NON-NLS-1$
-
-	/**
-	 * The current query.
-	 */
-	private AcceleoPositionedQuery fQuery;
 
 	/**
 	 * The file name.
@@ -456,15 +456,15 @@ public class AcceleoRenameQueryRefactoring extends Refactoring {
 	 */
 	public RefactoringStatus initialize(final Map<String, String> arguments) {
 		final RefactoringStatus status = new RefactoringStatus();
-		String value = (String)arguments.get(QUERY);
+		String value = arguments.get(QUERY);
 		if (value != null) {
 			// I'm not sure I need to do something here, so let's do nothing instead :)
 		}
-		value = (String)arguments.get(NEWNAME);
+		value = arguments.get(NEWNAME);
 		if (value != null) {
 			this.setNewQueryName(value);
 		}
-		value = (String)arguments.get(REFERENCES);
+		value = arguments.get(REFERENCES);
 		if (value != null) {
 			setUpdateReferences(Boolean.valueOf(value).booleanValue());
 		}

@@ -82,11 +82,22 @@ public class AcceleoPullUpFirstInputWizardPage extends UserInputWizardPage {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ltk.ui.refactoring.RefactoringWizardPage#getRefactoring()
+	 */
+	@Override
+	protected Refactoring getRefactoring() {
+		// enhances visibility
+		return super.getRefactoring();
+	}
+
+	/**
 	 * Returns the list of the selected template in the table viewer.
 	 * 
 	 * @return The list of the selected template in the table viewer.
 	 */
-	private List<Template> getSelectedTemplate() {
+	protected List<Template> getSelectedTemplate() {
 		List<Template> result = new ArrayList<Template>();
 		Object[] checkedElements = this.viewer.getCheckedElements();
 		for (Object object : checkedElements) {

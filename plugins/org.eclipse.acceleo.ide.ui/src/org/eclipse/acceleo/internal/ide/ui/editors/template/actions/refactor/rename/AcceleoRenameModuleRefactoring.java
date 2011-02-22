@@ -69,9 +69,19 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 	private static final String NEWNAME = "newName"; //$NON-NLS-1$
 
 	/**
+	 * The current module.
+	 */
+	protected Module fModule;
+
+	/**
+	 * The current project.
+	 */
+	protected IProject fProject;
+
+	/**
 	 * The name of the new module.
 	 */
-	private String fNewModuleName;
+	protected String fNewModuleName;
 
 	/**
 	 * The files that will be impacted by the changes and the changes.
@@ -92,16 +102,6 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 	 * The java refactoring descriptor.
 	 */
 	private RenameJavaElementDescriptor javaCompUnitRefactoringDescriptor;
-
-	/**
-	 * The current module.
-	 */
-	private Module fModule;
-
-	/**
-	 * The current project.
-	 */
-	private IProject fProject;
 
 	/**
 	 * The file.
@@ -328,6 +328,7 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 			status.merge(RefactoringStatus.createErrorStatus(AcceleoUIMessages
 					.getString("AcceleoEditorRenameModuleRefactoring.NoModuleSpecified"))); //$NON-NLS-1$
 		} else if (this.renameJavaFile) {
+			assert element != null;
 			// ID of the rename compilation unit refactoring process of the JDT
 			this.javaCompUnitRefactoringContribution = RefactoringCore
 					.getRefactoringContribution(IJavaRefactorings.RENAME_TYPE);
@@ -526,11 +527,11 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 	 */
 	public RefactoringStatus initialize(final Map<String, String> arguments) {
 		final RefactoringStatus status = new RefactoringStatus();
-		String value = (String)arguments.get(MODULE);
+		String value = arguments.get(MODULE);
 		if (value != null) {
 			// I'm not sure I need to do something here, so let's do nothing instead :)
 		}
-		value = (String)arguments.get(NEWNAME);
+		value = arguments.get(NEWNAME);
 		if (value != null) {
 			this.setNewModuleName(value);
 		}

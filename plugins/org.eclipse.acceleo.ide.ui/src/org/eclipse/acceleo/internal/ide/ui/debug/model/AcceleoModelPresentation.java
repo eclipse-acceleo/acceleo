@@ -194,9 +194,8 @@ public class AcceleoModelPresentation extends LabelProvider implements IDebugMod
 		}
 		if (name.endsWith("." + IAcceleoConstants.MTL_FILE_EXTENSION)) { //$NON-NLS-1$
 			return AcceleoEditor.ACCELEO_EDITOR_ID;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 }

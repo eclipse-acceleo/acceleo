@@ -57,7 +57,12 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	/**
 	 * The name of the new variable.
 	 */
-	private String fNewVariableName;
+	protected String fNewVariableName;
+
+	/**
+	 * The current variable.
+	 */
+	protected AcceleoPositionedVariable fVariable;
 
 	/**
 	 * The files that will be impacted by the changes and the changes.
@@ -69,11 +74,6 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	 */
 	private final String title = AcceleoUIMessages
 			.getString("AcceleoEditorRenameVariableRefactoring.RenameVariableTitle"); //$NON-NLS-1$
-
-	/**
-	 * The current variable.
-	 */
-	private AcceleoPositionedVariable fVariable;
 
 	/**
 	 * The file name.
@@ -307,11 +307,11 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 	 */
 	public RefactoringStatus initialize(final Map<String, String> arguments) {
 		final RefactoringStatus status = new RefactoringStatus();
-		String value = (String)arguments.get(VARIABLE);
+		String value = arguments.get(VARIABLE);
 		if (value != null) {
 			// I'm not sure I need to do something here, so let's do nothing instead :)
 		}
-		value = (String)arguments.get(NEWNAME);
+		value = arguments.get(NEWNAME);
 		if (value != null) {
 			this.setNewVariableName(value);
 		}
