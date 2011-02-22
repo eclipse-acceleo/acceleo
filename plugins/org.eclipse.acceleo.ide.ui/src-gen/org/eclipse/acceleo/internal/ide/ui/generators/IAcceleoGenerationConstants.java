@@ -8,19 +8,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.wizards.module;
+package org.eclipse.acceleo.internal.ide.ui.generators;
 
 /**
  * Constants used by all the Acceleo wizards.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public interface IAcceleoWizardGenerationConstants {
+public interface IAcceleoGenerationConstants {
 
 	/**
 	 * The uri of the Acceleo module generator.
 	 */
-	String ACCELEO_MODULE_GENERATOR_URI = "org.eclipse.acceleo.ide.ui/modules/acceleoModule.emtl"; //$NON-NLS-1$
+	String ACCELEO_MODULE_GENERATOR_URI = "acceleoModule.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the Acceleo module generator.
@@ -30,7 +30,7 @@ public interface IAcceleoWizardGenerationConstants {
 	/**
 	 * The uri of the Acceleo java class generator.
 	 */
-	String ACCELEO_JAVA_CLASS_GENERATOR_URI = "org.eclipse.acceleo.ide.ui/modules/acceleoJavaClassGenerator.emtl"; //$NON-NLS-1$
+	String ACCELEO_JAVA_CLASS_GENERATOR_URI = "acceleoJavaClassGenerator.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the Acceleo module generator.
@@ -40,7 +40,7 @@ public interface IAcceleoWizardGenerationConstants {
 	/**
 	 * The uri of the Ant runner generator.
 	 */
-	String ANT_RUNNER_GENERATOR_URI = "org.eclipse.acceleo.ide.ui/modules/antRunner.emtl"; //$NON-NLS-1$
+	String ANT_RUNNER_GENERATOR_URI = "antRunner.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the Ant runner generator.
@@ -50,7 +50,7 @@ public interface IAcceleoWizardGenerationConstants {
 	/**
 	 * The uri of the Ant runner read me generator.
 	 */
-	String ANT_RUNNER_READ_ME_GENERATOR_URI = "org.eclipse.acceleo.ide.ui/modules/antRunnerReadMe.emtl"; //$NON-NLS-1$
+	String ANT_RUNNER_READ_ME_GENERATOR_URI = "antRunnerReadMe.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the Ant runner generator.
@@ -60,10 +60,11 @@ public interface IAcceleoWizardGenerationConstants {
 	/**
 	 * The uri of the build.acceleo generator.
 	 */
-	String BUILD_ACCELEO_GENERATOR_URI = "org.eclipse.acceleo.ide.ui/modules/buildAcceleo.emtl"; //$NON-NLS-1$
+	String BUILD_ACCELEO_GENERATOR_URI = "buildAcceleo.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the build.acceleo generator.
 	 */
 	String BUILD_ACCELEO_TEMPLATE_URI = "genBuildAcceleo"; //$NON-NLS-1$
+
 }

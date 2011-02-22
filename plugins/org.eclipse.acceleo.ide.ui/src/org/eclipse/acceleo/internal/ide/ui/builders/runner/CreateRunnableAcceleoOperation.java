@@ -10,31 +10,26 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders.runner;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
-import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
-import org.eclipse.acceleo.internal.ide.ui.wizards.module.IAcceleoWizardGenerationConstants;
+import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TypedModel;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -45,11 +40,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -65,21 +58,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
-
-	/**
-	 * The Acceleo module used for the generation of the Java class.
-	 */
-	private static Module acceleoJavaClassGenerator;
-
-	/**
-	 * The Acceleo module that will generate the ant runner for the main template.
-	 */
-	private static Module antRunnerGenerator;
-
-	/**
-	 * The Acceleo module that will generate the and read me file.
-	 */
-	private static Module antReadMeGenerator;
 
 	/**
 	 * The Acceleo project which contains the templates to be considered.
@@ -180,11 +158,12 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 							List<String> templateNames = acceleoMainClass.getTemplateNames();
 							templateNames.addAll(mainTemplateNames);
 
-							generateJavafile(acceleoMainClass, fileAcceleo.getParent());
+							AcceleoUIGenerator.getDefault().generateJavaClass(acceleoMainClass,
+									fileAcceleo.getParent());
 
 							IFolder antFolder = fileAcceleo.getProject().getFolder("tasks"); //$NON-NLS-1$
 							if (antFolder.exists()) {
-								generateAntFile(acceleoMainClass, antFolder);
+								AcceleoUIGenerator.getDefault().generateAntFiles(acceleoMainClass, antFolder);
 							}
 							// else : We don't want to create the ANT folder if it doesn't exist
 						}
@@ -199,81 +178,6 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 		} catch (IOException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
-		}
-	}
-
-	/**
-	 * Generates the Java main class for the generation.
-	 * 
-	 * @param acceleoMainClass
-	 *            The utility class that holds all the information for the generation.
-	 * @param outputFolder
-	 *            The output folder.
-	 */
-	private void generateJavafile(AcceleoMainClass acceleoMainClass, IContainer outputFolder) {
-		try {
-			if (acceleoJavaClassGenerator == null) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				String moduleURI = IAcceleoWizardGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI;
-				EObject load = ModelUtils.load(moduleURI, resourceSet);
-
-				if (load instanceof Module) {
-					acceleoJavaClassGenerator = (Module)load;
-				}
-			}
-
-			if (acceleoJavaClassGenerator != null) {
-				String templateName = IAcceleoWizardGenerationConstants.ACCELEO_JAVA_CLASS_TEMPLATE_URI;
-				File generationRoot = outputFolder.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(acceleoJavaClassGenerator, templateName,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				outputFolder.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			}
-		} catch (IOException e) {
-			AcceleoUIActivator.log(e, true);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
-	}
-
-	/**
-	 * Generates the Ant files.
-	 * 
-	 * @param acceleoMainClass
-	 *            The Acceleo main class.
-	 * @param outputFolder
-	 *            The output folder.
-	 */
-	private void generateAntFile(AcceleoMainClass acceleoMainClass, IContainer outputFolder) {
-		try {
-			if (antRunnerGenerator == null || antReadMeGenerator == null) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				EObject load = ModelUtils.load(IAcceleoWizardGenerationConstants.ANT_RUNNER_GENERATOR_URI,
-						resourceSet);
-				EObject loadReadMe = ModelUtils.load(
-						IAcceleoWizardGenerationConstants.ANT_RUNNER_READ_ME_GENERATOR_URI, resourceSet);
-
-				if (load instanceof Module && loadReadMe instanceof Module) {
-					antRunnerGenerator = (Module)load;
-					antReadMeGenerator = (Module)loadReadMe;
-				}
-			}
-
-			if (antRunnerGenerator != null && antReadMeGenerator != null) {
-				String templateNameWriter = IAcceleoWizardGenerationConstants.ANT_RUNNER_TEMPLATE_URI;
-				String templateNameReadMe = IAcceleoWizardGenerationConstants.ANT_RUNNER_READ_ME_TEMPLATE_URI;
-
-				File generationRoot = outputFolder.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(antRunnerGenerator, templateNameWriter,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				new AcceleoService(new DefaultStrategy()).doGenerate(antReadMeGenerator, templateNameReadMe,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				outputFolder.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			}
-		} catch (IOException e) {
-			AcceleoUIActivator.log(e, true);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
 		}
 	}
 
