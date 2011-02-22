@@ -142,7 +142,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 			}
 			if (variableNames.contains(varName)) {
 				final String lastName = variableNames.get(variableNames.size() - 1);
-				int lastIndex = Integer.valueOf(lastName.substring(VARIABLE_PREFIX.length()));
+				int lastIndex = Integer.valueOf(lastName.substring(VARIABLE_PREFIX.length())).intValue();
 				do {
 					lastIndex++;
 				} while (variableNames.contains(VARIABLE_PREFIX + lastIndex));

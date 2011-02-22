@@ -69,17 +69,17 @@ public class QueryInvocationSpec extends QueryInvocationImpl {
 
 		if (def.eIsProxy()) {
 			return "unresolved query invocation : " + getName() + "()"; //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			final StringBuilder toString = new StringBuilder(def.getName());
-			toString.append('(');
-			for (int i = 0; i < args.size(); i++) {
-				toString.append(args.get(i).toString());
-				if (i + 1 < args.size()) {
-					toString.append(',');
-				}
-			}
-			toString.append(')');
-			return toString.toString();
 		}
+
+		final StringBuilder toString = new StringBuilder(def.getName());
+		toString.append('(');
+		for (int i = 0; i < args.size(); i++) {
+			toString.append(args.get(i).toString());
+			if (i + 1 < args.size()) {
+				toString.append(',');
+			}
+		}
+		toString.append(')');
+		return toString.toString();
 	}
 }
