@@ -55,9 +55,9 @@ public final class CallSetParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+
+		localRange = trim;
 		Region[] positions = TextSearch.splitPositionsIn(buffer, localRange, new String[] {TemplateConstants
 				.getDefault().getCallSep(), }, false, TemplateConstants.getDefault().getSpec(),
 				TemplateConstants.getDefault().getInhibsExpression());

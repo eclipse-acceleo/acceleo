@@ -114,7 +114,6 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseResourceSet(ResourceSet object) {
 		return null;
 	}
@@ -130,7 +129,6 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseResource(Resource object) {
 		return null;
 	}
@@ -146,7 +144,6 @@ public class MtSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

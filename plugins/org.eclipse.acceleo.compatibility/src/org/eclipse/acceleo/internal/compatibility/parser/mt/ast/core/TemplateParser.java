@@ -284,9 +284,8 @@ public final class TemplateParser {
 			}
 			template.getImports().add(importedMetamodel);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 }

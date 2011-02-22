@@ -56,9 +56,9 @@ public final class NotParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+		localRange = trim;
+
 		String text = buffer.substring(localRange.b(), localRange.e());
 		if (text.startsWith(TemplateConstants.getDefault().getNot())) {
 			Expression expression = ExpressionParser.createExpression(offset, buffer, new Region(localRange
@@ -69,8 +69,7 @@ public final class NotParser {
 			notExpression.setBegin(offset + localRange.b());
 			notExpression.setEnd(offset + localRange.e());
 			return notExpression;
-		} else {
-			return null;
 		}
+		return null;
 	}
 }

@@ -184,7 +184,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseStatement(Statement object) {
 		return null;
 	}
@@ -200,7 +199,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseComment(Comment object) {
 		return null;
 	}
@@ -216,7 +214,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseIf(If object) {
 		return null;
 	}
@@ -232,7 +229,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseFor(For object) {
 		return null;
 	}
@@ -248,7 +244,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseFeature(Feature object) {
 		return null;
 	}
@@ -264,7 +259,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseText(Text object) {
 		return null;
 	}
@@ -280,7 +274,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -296,7 +289,6 @@ public class StatementsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

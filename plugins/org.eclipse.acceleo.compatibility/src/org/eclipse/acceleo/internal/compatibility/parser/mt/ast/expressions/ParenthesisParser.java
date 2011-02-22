@@ -56,9 +56,9 @@ public final class ParenthesisParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+		localRange = trim;
+
 		Region begin = TextSearch.indexIn(buffer, TemplateConstants.getDefault().getParenth()[0], localRange);
 		if (begin.b() == localRange.b()) {
 			Region end = TextSearch.blockIndexEndIn(buffer, TemplateConstants.getDefault().getParenth()[0],

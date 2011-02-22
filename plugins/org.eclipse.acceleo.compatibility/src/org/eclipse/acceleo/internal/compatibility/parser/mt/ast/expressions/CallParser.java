@@ -56,9 +56,9 @@ public final class CallParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+
+		localRange = trim;
 		Expression filter = null;
 		Region begin = TextSearch.indexIn(buffer, TemplateConstants.getDefault().getBrackets()[0],
 				localRange, TemplateConstants.getDefault().getSpec(), new String[][] {
@@ -86,9 +86,8 @@ public final class CallParser {
 			if (trim.b() == -1) {
 				throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 						.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-			} else {
-				localRange = trim;
 			}
+			localRange = trim;
 		}
 		Call call;
 		begin = TextSearch.indexIn(buffer, TemplateConstants.getDefault().getParenth()[0], localRange,

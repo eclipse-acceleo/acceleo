@@ -55,9 +55,8 @@ public final class OperatorParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+		localRange = trim;
 
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; i++) {
 			Region[] positions = TextSearch.splitPositionsIn(buffer, localRange,

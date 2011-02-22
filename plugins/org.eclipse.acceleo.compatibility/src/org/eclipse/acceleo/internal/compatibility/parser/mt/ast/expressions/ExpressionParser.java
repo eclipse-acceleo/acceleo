@@ -54,9 +54,9 @@ public final class ExpressionParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+		localRange = trim;
+
 		Expression expression = OperatorParser.createOperator(offset, buffer, localRange, template);
 		if (expression != null) {
 			res = expression;

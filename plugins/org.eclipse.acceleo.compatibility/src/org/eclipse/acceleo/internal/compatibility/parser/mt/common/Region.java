@@ -73,9 +73,8 @@ public final class Region {
 		if (arg0 instanceof Region) {
 			final Region other = (Region)arg0;
 			return b == other.b && e == other.e;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

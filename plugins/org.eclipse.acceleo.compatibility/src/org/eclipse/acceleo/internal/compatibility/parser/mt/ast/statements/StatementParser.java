@@ -317,12 +317,12 @@ public final class StatementParser {
 				}
 			}
 			return end.e();
-		} else {
-			block.add(TextParser.createText(offset, buffer, range));
-			throw new TemplateSyntaxException(
-					AcceleoCompatibilityMessages.getString(
-							"TemplateSyntaxError.UnclosedTag", new Object[] {tagEnd, tagBegin, }), template, new Region(begin.b(), range.e())); //$NON-NLS-1$
 		}
+
+		block.add(TextParser.createText(offset, buffer, range));
+		throw new TemplateSyntaxException(AcceleoCompatibilityMessages.getString(
+				"TemplateSyntaxError.UnclosedTag", new Object[] {tagEnd, tagBegin, }), template, //$NON-NLS-1$
+				new Region(begin.b(), range.e()));
 	}
 
 	/**
@@ -383,9 +383,8 @@ public final class StatementParser {
 		}
 		if (stop) {
 			return res;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
@@ -417,8 +416,7 @@ public final class StatementParser {
 		}
 		if (stop) {
 			return res;
-		} else {
-			return true;
 		}
+		return true;
 	}
 }

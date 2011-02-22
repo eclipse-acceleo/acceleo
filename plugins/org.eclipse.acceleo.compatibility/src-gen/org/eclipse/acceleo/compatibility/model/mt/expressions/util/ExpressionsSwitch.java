@@ -286,7 +286,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseExpression(Expression object) {
 		return null;
 	}
@@ -302,7 +301,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseCallSet(CallSet object) {
 		return null;
 	}
@@ -318,7 +316,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseCall(Call object) {
 		return null;
 	}
@@ -334,7 +331,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseNot(Not object) {
 		return null;
 	}
@@ -350,7 +346,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseOperator(Operator object) {
 		return null;
 	}
@@ -366,7 +361,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseParenthesis(Parenthesis object) {
 		return null;
 	}
@@ -382,7 +376,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseLiteral(Literal object) {
 		return null;
 	}
@@ -398,7 +391,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseStringLiteral(StringLiteral object) {
 		return null;
 	}
@@ -414,7 +406,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseIntegerLiteral(IntegerLiteral object) {
 		return null;
 	}
@@ -430,7 +421,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseDoubleLiteral(DoubleLiteral object) {
 		return null;
 	}
@@ -446,7 +436,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseBooleanLiteral(BooleanLiteral object) {
 		return null;
 	}
@@ -462,7 +451,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseNullLiteral(NullLiteral object) {
 		return null;
 	}
@@ -478,7 +466,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T caseASTNode(ASTNode object) {
 		return null;
 	}
@@ -494,7 +481,6 @@ public class ExpressionsSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public T defaultCase(EObject object) {
 		return null;
 	}

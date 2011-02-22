@@ -312,9 +312,8 @@ public final class TemplateConstants {
 
 		if (lastFirstChar != null && first == lastFirstChar.charValue()) {
 			return;
-		} else {
-			lastFirstChar = new Character(first);
 		}
+		lastFirstChar = new Character(first);
 
 		// contains String equal to first + "%" and "%" + last, avoid too much
 		// concatenations later on

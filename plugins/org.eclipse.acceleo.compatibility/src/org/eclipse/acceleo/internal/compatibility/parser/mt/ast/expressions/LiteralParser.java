@@ -69,9 +69,9 @@ public final class LiteralParser {
 		if (trim.b() == -1) {
 			throw new TemplateSyntaxException(AcceleoCompatibilityMessages
 					.getString("TemplateSyntaxError.MissingElement"), template, localRange); //$NON-NLS-1$
-		} else {
-			localRange = trim;
 		}
+		localRange = trim;
+
 		Literal expression;
 		String text = buffer.substring(localRange.b(), localRange.e());
 		if ((text.length() >= (TemplateConstants.getDefault().getLiteral()[0].length() + TemplateConstants

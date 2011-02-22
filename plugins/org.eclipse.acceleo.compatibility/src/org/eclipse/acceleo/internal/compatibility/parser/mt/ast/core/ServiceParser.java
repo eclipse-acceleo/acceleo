@@ -60,9 +60,8 @@ public final class ServiceParser {
 		}
 		if (path.length() > 0) {
 			return getOrCreateService(path + '.' + shortName, root);
-		} else {
-			return getOrCreateService(shortName, root);
 		}
+		return getOrCreateService(shortName, root);
 	}
 
 	/**
