@@ -1877,7 +1877,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
 			result = operationVisitor.visitTrimOperation((String)source);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING)) {
-			Integer startIndex = ((Integer)arguments.get(0)).intValue() - 1;
+			int startIndex = Integer.valueOf(((Integer)arguments.get(0)).intValue() - 1).intValue();
 			result = operationVisitor.visitSubstringOperation((String)source, startIndex);
 		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
 			result = operationVisitor.visitReverseOperation((Collection<Object>)source);

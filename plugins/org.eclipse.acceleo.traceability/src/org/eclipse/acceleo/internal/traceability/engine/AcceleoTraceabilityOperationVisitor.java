@@ -450,12 +450,12 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				List<Integer> valueLengthes = new ArrayList<Integer>(source.size());
 				for (Object value : source) {
 					String stringValue = value.toString();
-					valueLengthes.add(stringValue.length());
+					valueLengthes.add(Integer.valueOf(stringValue.length()));
 				}
 				Collections.reverse(valueLengthes);
 
 				for (int i = valueLengthes.size() - 1; i >= 0; i--) {
-					int valueLength = valueLengthes.get(i);
+					int valueLength = valueLengthes.get(i).intValue();
 					GeneratedText region = regions.get(i);
 					int regionLength = region.getEndOffset() - region.getStartOffset();
 

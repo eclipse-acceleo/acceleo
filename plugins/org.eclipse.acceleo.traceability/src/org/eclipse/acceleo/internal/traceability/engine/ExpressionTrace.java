@@ -74,6 +74,7 @@ public class ExpressionTrace<C> extends AbstractTrace {
 		}
 
 		for (GeneratedText region : regions) {
+			@SuppressWarnings("cast")
 			GeneratedText regionCopy = (GeneratedText)EcoreUtil.copy(region);
 			int regionLength = region.getEndOffset() - region.getStartOffset();
 			regionCopy.setStartOffset(currentOffset);
