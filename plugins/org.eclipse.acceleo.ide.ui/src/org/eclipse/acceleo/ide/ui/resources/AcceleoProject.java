@@ -177,9 +177,8 @@ public class AcceleoProject {
 	public boolean equals(Object obj) {
 		if (obj instanceof AcceleoProject) {
 			return ((AcceleoProject)obj).project.equals(project);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

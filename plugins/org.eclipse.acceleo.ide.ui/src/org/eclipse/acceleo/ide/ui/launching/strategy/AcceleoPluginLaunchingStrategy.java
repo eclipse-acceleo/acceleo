@@ -248,9 +248,8 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (project != null && project.isAccessible()) {
 			return project;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
