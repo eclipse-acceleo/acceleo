@@ -95,9 +95,8 @@ public class Region {
 		if (arg0 instanceof Region) {
 			Region other = (Region)arg0;
 			return (b == other.b) && (e == other.e) && (sequence == other.sequence);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

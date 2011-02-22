@@ -171,9 +171,8 @@ public class SequenceBlock implements ISequence {
 	public Region search(StringBuffer buffer, int posBegin, int posEnd, Sequence spec, SequenceBlock[] inhibs) {
 		if (beginHeader == null) {
 			return Region.NOT_FOUND;
-		} else {
-			return beginHeader.search(buffer, posBegin, posEnd, spec, inhibs);
 		}
+		return beginHeader.search(buffer, posBegin, posEnd, spec, inhibs);
 	}
 
 	/**
@@ -191,9 +190,8 @@ public class SequenceBlock implements ISequence {
 	public Region searchBeginHeader(final StringBuffer buffer, int posBegin, int posEnd) {
 		if (beginHeader == null) {
 			return Region.NOT_FOUND;
-		} else {
-			return beginHeader.search(buffer, posBegin, posEnd);
 		}
+		return beginHeader.search(buffer, posBegin, posEnd);
 	}
 
 	/**

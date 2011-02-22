@@ -1342,9 +1342,8 @@ public class CSTParser {
 				posResult = eHBrackets.e();
 			}
 			return posResult;
-		} else {
-			return posBegin;
 		}
+		return posBegin;
 	}
 
 	/**

@@ -48,8 +48,6 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	@SuppressWarnings("unused")
-	// TODO JMU "file" isn't used
 	public void addProblem(File file, String message, int line, int posBegin, int posEnd) {
 		list.add(new AcceleoParserProblem(message, line, posBegin, posEnd));
 	}

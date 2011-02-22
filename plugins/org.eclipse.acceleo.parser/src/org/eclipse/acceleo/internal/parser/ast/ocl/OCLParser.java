@@ -254,9 +254,8 @@ public class OCLParser {
 		}
 		if (eContext != null) {
 			return eContext.getType();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -668,7 +667,6 @@ public class OCLParser {
 	 * @param oModule
 	 *            is the current module
 	 */
-	@SuppressWarnings("unused")
 	public void removeRecursivelyBehavioralFeaturesToScope(org.eclipse.acceleo.model.mtl.Module oModule) {
 		/* Do nothing */
 	}
@@ -791,24 +789,24 @@ public class OCLParser {
 			eTemplateInvocation.setStartPosition(realOffsetInTheBuffer);
 			eTemplateInvocation.setEndPosition(realOffsetInTheBuffer + text.length());
 			return eTemplateInvocation;
-		} else {
-			OCLExpression eOCLExpression = createQuery(text);
-			shiftOCLExpressionPositions(realOffsetInTheBuffer, eOCLExpression);
-			Iterator<EObject> eAllContents = eOCLExpression.eAllContents();
-			while (eAllContents.hasNext()) {
-				EObject eContent = eAllContents.next();
-				shiftOCLExpressionPositions(realOffsetInTheBuffer, eContent);
-			}
-			OCLExpression newOCLExpression = createAcceleoInvocation(eOCLExpression, iModelExpression);
-			if (newOCLExpression == null) {
-				Iterator<EObject> eAllContentsIt = eOCLExpression.eAllContents();
-				while (eAllContentsIt.hasNext()) {
-					createAcceleoInvocation(eAllContentsIt.next(), iModelExpression);
-				}
-				newOCLExpression = eOCLExpression;
-			}
-			return newOCLExpression;
 		}
+
+		OCLExpression eOCLExpression = createQuery(text);
+		shiftOCLExpressionPositions(realOffsetInTheBuffer, eOCLExpression);
+		Iterator<EObject> eAllContents = eOCLExpression.eAllContents();
+		while (eAllContents.hasNext()) {
+			EObject eContent = eAllContents.next();
+			shiftOCLExpressionPositions(realOffsetInTheBuffer, eContent);
+		}
+		OCLExpression newOCLExpression = createAcceleoInvocation(eOCLExpression, iModelExpression);
+		if (newOCLExpression == null) {
+			Iterator<EObject> eAllContentsIt = eOCLExpression.eAllContents();
+			while (eAllContentsIt.hasNext()) {
+				createAcceleoInvocation(eAllContentsIt.next(), iModelExpression);
+			}
+			newOCLExpression = eOCLExpression;
+		}
+		return newOCLExpression;
 	}
 
 	/**
@@ -835,9 +833,8 @@ public class OCLParser {
 			} catch (ParserException e2) {
 				if (firstProblemObject != null) {
 					throw new WrappedOCLException(e1, firstProblemObject);
-				} else {
-					throw e1;
 				}
+				throw e1;
 			} finally {
 				popContext();
 			}

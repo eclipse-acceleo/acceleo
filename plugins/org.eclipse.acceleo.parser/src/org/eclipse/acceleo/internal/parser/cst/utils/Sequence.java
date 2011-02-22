@@ -178,9 +178,8 @@ public class Sequence implements ISequence {
 				Integer e = matchesEnd(buffer, b, posEnd);
 				if (e != null && e.intValue() > -1) {
 					return new Region(b, e.intValue(), this);
-				} else {
-					b = indexOf(buffer, tokens[0], b + 1, posEnd);
 				}
+				b = indexOf(buffer, tokens[0], b + 1, posEnd);
 			}
 		}
 		return Region.NOT_FOUND;
@@ -349,15 +348,15 @@ public class Sequence implements ISequence {
 						result.add(new Region(currentPos, posEnd, this));
 					}
 					break;
-				} else {
-					if (index.b() > currentPos) {
-						result.add(new Region(currentPos, index.b(), this));
-					}
-					if (keepSeparator) {
-						result.add(index);
-					}
-					currentPos = index.e();
 				}
+
+				if (index.b() > currentPos) {
+					result.add(new Region(currentPos, index.b(), this));
+				}
+				if (keepSeparator) {
+					result.add(index);
+				}
+				currentPos = index.e();
 			}
 		}
 		return result;

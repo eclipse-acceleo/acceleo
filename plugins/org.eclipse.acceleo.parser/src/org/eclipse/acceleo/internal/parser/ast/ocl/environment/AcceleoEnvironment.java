@@ -311,9 +311,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				// parent
 				// environments.
 				break;
-			} else {
-				parent = getInternalParent();
 			}
+			parent = getInternalParent();
 		}
 		return metamodelsInScope;
 	}

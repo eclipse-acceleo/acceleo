@@ -91,9 +91,8 @@ public final class ParserUtils {
 		}
 		if (iPositionMin > -1 && iPositionMin < pElements.length) {
 			return iPositionMin;
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
 	/**
@@ -123,10 +122,9 @@ public final class ParserUtils {
 			int j = getNextSequence(buffer, currentPosBegin, posEnd, pInhibs, pInhibsPositions);
 			if (j == -1 || i == -1 || pElementsPositions[i].b() < pInhibsPositions[j].b()) {
 				return i;
-			} else {
-				SequenceBlock pInhib = pInhibs[j];
-				currentPosBegin = pInhib.searchEndBodyAtBeginHeader(buffer, pInhibsPositions[j], posEnd).e();
 			}
+			SequenceBlock pInhib = pInhibs[j];
+			currentPosBegin = pInhib.searchEndBodyAtBeginHeader(buffer, pInhibsPositions[j], posEnd).e();
 		}
 		return -1;
 	}
@@ -232,9 +230,8 @@ public final class ParserUtils {
 	private static boolean similarCharacters(char c1, char c2, boolean ignoreCase) {
 		if (ignoreCase) {
 			return Character.toUpperCase(c1) == Character.toUpperCase(c2);
-		} else {
-			return c1 == c2;
 		}
+		return c1 == c2;
 	}
 
 	/**
@@ -277,9 +274,8 @@ public final class ParserUtils {
 				i++;
 			}
 			return i == text.length();
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 }

@@ -161,7 +161,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	 * Initializes the line information for the underlying buffer.
 	 */
 	private void init() {
-		lines.add(0);
+		lines.add(Integer.valueOf(0));
 		int offset = 0;
 		while (offset < buffer.length()) {
 			if (buffer.charAt(offset) == '\n') {
@@ -195,7 +195,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 		}
 		if (soughtLine == -1) {
 			for (int i = 0; i < lines.size(); i++) {
-				if (lines.get(i) > offset) {
+				if (lines.get(i).intValue() > offset) {
 					soughtLine = i;
 					break;
 				}
@@ -215,9 +215,8 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	public File getFile() {
 		if (acceleoFile != null) {
 			return acceleoFile.getMtlFile();
-		} else {
-			return null;
 		}
+		return null;
 
 	}
 
@@ -279,9 +278,8 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	public OCLParser getOCL() {
 		if (astCreator != null) {
 			return astCreator.getOCL();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -294,9 +292,8 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 	public Environment<?, EClassifier, EOperation, EStructuralFeature, ?, ?, ?, ?, ?, ?, ?, ?> getOCLEnvironment() {
 		if (astCreator != null && astCreator.getOCL() != null) {
 			return astCreator.getOCL().getOCLEnvironment();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

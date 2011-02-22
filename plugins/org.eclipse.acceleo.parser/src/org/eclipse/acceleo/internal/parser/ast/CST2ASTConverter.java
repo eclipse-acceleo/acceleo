@@ -379,7 +379,6 @@ public class CST2ASTConverter {
 	 * @param iModelExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.ModelExpression'
 	 */
-	@SuppressWarnings("unused")
 	private void transformStepCopy(org.eclipse.acceleo.parser.cst.ModelExpression iModelExpression) {
 		// wait step OCL
 	}

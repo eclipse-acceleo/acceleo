@@ -168,9 +168,8 @@ public final class FileContent {
 				}
 			}
 			return column;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**
@@ -191,9 +190,8 @@ public final class FileContent {
 				}
 			}
 			return line;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 }

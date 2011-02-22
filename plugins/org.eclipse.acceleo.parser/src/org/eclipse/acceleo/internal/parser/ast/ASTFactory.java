@@ -181,9 +181,8 @@ public class ASTFactory {
 				ioModule.put(iModule, oModule);
 			}
 			return oModule;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -202,9 +201,8 @@ public class ASTFactory {
 				ioTypedModel.put(iTypedModel, oTypedModel);
 			}
 			return oTypedModel;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -223,9 +221,8 @@ public class ASTFactory {
 				ioTemplate.put(iTemplate, oTemplate);
 			}
 			return oTemplate;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -244,9 +241,8 @@ public class ASTFactory {
 				ioVariable.put(iVariable, oVariable);
 			}
 			return oVariable;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -269,9 +265,8 @@ public class ASTFactory {
 				ioTemplateExpression.put(iTemplateExpression, oTemplateExpression);
 			}
 			return oTemplateExpression;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -289,9 +284,8 @@ public class ASTFactory {
 			org.eclipse.acceleo.model.mtl.TemplateExpression oTemplateExpression = ioTemplateExpression
 					.get(iTemplateExpression);
 			return oTemplateExpression;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -326,9 +320,8 @@ public class ASTFactory {
 				}
 			}
 			return oOCLExpression;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -347,9 +340,8 @@ public class ASTFactory {
 				ioTextExpression.put(iTextExpression, oTextExpression);
 			}
 			return oTextExpression;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -367,9 +359,8 @@ public class ASTFactory {
 				ioBlock.put(iBlock, oBlock);
 			}
 			return oBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -388,9 +379,8 @@ public class ASTFactory {
 				ioInitSection.put(iInitSection, oInitSection);
 			}
 			return oInitSection;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -411,9 +401,8 @@ public class ASTFactory {
 				ioProtectedAreaBlock.put(iProtectedAreaBlock, oProtectedAreaBlock);
 			}
 			return oProtectedAreaBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -432,9 +421,8 @@ public class ASTFactory {
 				ioForBlock.put(iForBlock, oForBlock);
 			}
 			return oForBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -453,9 +441,8 @@ public class ASTFactory {
 				ioIfBlock.put(iIfBlock, oIfBlock);
 			}
 			return oIfBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -474,9 +461,8 @@ public class ASTFactory {
 				ioLetBlock.put(iLetBlock, oLetBlock);
 			}
 			return oLetBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -495,9 +481,8 @@ public class ASTFactory {
 				ioFileBlock.put(iFileBlock, oFileBlock);
 			}
 			return oFileBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -516,9 +501,8 @@ public class ASTFactory {
 				ioTraceBlock.put(iTraceBlock, oTraceBlock);
 			}
 			return oTraceBlock;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -536,9 +520,8 @@ public class ASTFactory {
 				ioMacro.put(iMacro, oMacro);
 			}
 			return oMacro;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -556,9 +539,8 @@ public class ASTFactory {
 				ioQuery.put(iQuery, oQuery);
 			}
 			return oQuery;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -577,9 +559,8 @@ public class ASTFactory {
 				ioComment.put(iComment, oComment);
 			}
 			return oComment;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -598,9 +579,8 @@ public class ASTFactory {
 				ioDocumentation.put(iDocumentation, oDocumentation);
 			}
 			return oDocumentation;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

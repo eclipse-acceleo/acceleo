@@ -856,7 +856,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * @param iTextExpression
 	 *            is the input object of type 'org.eclipse.acceleo.parser.cst.TextExpression'
 	 */
-	@SuppressWarnings("unused")
 	private void transformStepResolve(org.eclipse.acceleo.parser.cst.TextExpression iTextExpression) {
 		// Nothing to do here
 	}
@@ -1656,9 +1655,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		if (iNext != null) {
 			return (resolveBeginPosition == -1 || resolveBeginPosition >= iNext.getStartPosition())
 					&& (resolveEndPosition == -1 || resolveEndPosition <= iNext.getEndPosition());
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

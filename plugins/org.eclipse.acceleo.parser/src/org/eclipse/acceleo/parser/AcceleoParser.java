@@ -127,7 +127,7 @@ public class AcceleoParser {
 	public void parse(List<AcceleoFile> acceleoFiles, List<URI> outputURIs, List<URI> dependenciesURIs,
 			Map<URI, URI> mapURIs, Monitor monitor) {
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
-				new Object[] {acceleoFiles.size() }), acceleoFiles.size() * 3);
+				new Object[] {Integer.valueOf(acceleoFiles.size()), }), acceleoFiles.size() * 3);
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<Resource> newResources = new ArrayList<Resource>();
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
@@ -384,9 +384,8 @@ public class AcceleoParser {
 	public AcceleoParserWarnings getWarnings(AcceleoFile acceleoFile) {
 		if (warnings != null && acceleoFile != null) {
 			return warnings.get(acceleoFile.getMtlFile());
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -400,9 +399,8 @@ public class AcceleoParser {
 	public AcceleoParserInfos getInfos(File file) {
 		if (infos != null) {
 			return infos.get(file);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -416,8 +414,7 @@ public class AcceleoParser {
 	public AcceleoParserInfos getInfos(AcceleoFile acceleoFile) {
 		if (infos != null && acceleoFile != null) {
 			return infos.get(acceleoFile.getMtlFile());
-		} else {
-			return null;
 		}
+		return null;
 	}
 }
