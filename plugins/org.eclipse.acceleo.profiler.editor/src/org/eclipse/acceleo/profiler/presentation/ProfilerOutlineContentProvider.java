@@ -49,17 +49,15 @@ public class ProfilerOutlineContentProvider extends AdapterFactoryContentProvide
 					long diff = o2.getDuration() - o1.getDuration();
 					if (diff != 0) {
 						return (int)diff;
-					} else {
-						return o1.getMonitored().toString().compareTo(o2.getMonitored().toString());
 					}
+					return o1.getMonitored().toString().compareTo(o2.getMonitored().toString());
 				}
 			});
 
 			sorted.addAll(((LoopProfileEntry)object).getLoopElements());
 			return sorted.toArray();
-		} else {
-			return new Object[] {};
 		}
+		return new Object[] {};
 	}
 
 	/**

@@ -115,9 +115,8 @@ public final class ProfilerEditor extends EcoreEditor {
 			public Object[] getChildren(Object object) {
 				if (object instanceof ProfileEntry) {
 					return ((ProfileEntry)object).getCallees().toArray();
-				} else {
-					return super.getChildren(object);
 				}
+				return super.getChildren(object);
 			}
 
 			@Override
