@@ -22,7 +22,7 @@ import org.eclipse.acceleo.traceability.impl.GeneratedTextImpl;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class GeneratedTextSpec extends GeneratedTextImpl implements Comparable<GeneratedText> {
+public class GeneratedTextSpec extends GeneratedTextImpl {
 	/** Cache the hash code, we'll reinitialize this cache whenever one of the fields change. */
 	private transient int hashCode;
 
