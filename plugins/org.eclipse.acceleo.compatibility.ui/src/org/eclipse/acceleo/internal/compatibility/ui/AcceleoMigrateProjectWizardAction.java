@@ -144,7 +144,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 	 * @throws CoreException
 	 *             when a workspace issue occurs
 	 */
-	private void generateMTLWithProgress(IPath baseFolder, IPath mainTemplate, IProgressMonitor monitor)
+	protected void generateMTLWithProgress(IPath baseFolder, IPath mainTemplate, IProgressMonitor monitor)
 			throws IOException, CoreException {
 		if (baseFolder.segmentCount() > 0
 				&& ResourcesPlugin.getWorkspace().getRoot().getProject(baseFolder.segment(0)).isAccessible()) {
