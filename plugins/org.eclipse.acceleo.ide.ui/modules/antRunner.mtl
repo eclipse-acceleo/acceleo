@@ -1,0 +1,47 @@
+[comment encoding = UTF-8 /]
+[**
+ * Copyright (c) 2008, 2011 Obeo.<br/>
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ * @author sbegaudeau
+ */]
+[module antRunner('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')/]
+
+
+[**
+ * Generate the Ant task to launch the generation from Ant.
+ * @param anAcceleoMainClass The Acceleo main class.
+ */]
+[template public genAntRunner(anAcceleoMainClass : AcceleoMainClass)]
+[file (anAcceleoMainClass.moduleFileShortName + '.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="[anAcceleoMainClass.moduleFileShortName/]" name="[anAcceleoMainClass.projectName/]">
+    <property name="ECLIPSE_HOME" value="../../"/>
+    <property name="ECLIPSE_WORKSPACE" value="../"/>
+    <path id="[anAcceleoMainClass.projectName/].libraryclasspath">
+        <pathelement location="../[anAcceleoMainClass.projectName/]/bin"/>
+        [for (classpathEntry : String | anAcceleoMainClass.resolvedClassPath)]
+        <pathelement location="[classpathEntry/]"/>
+        [/for]
+    </path>
+    <path id="[anAcceleoMainClass.projectName/].classpath">
+        <path refid="[anAcceleoMainClass.projectName/].libraryclasspath"/>
+    </path>
+
+    <target name="[anAcceleoMainClass.moduleFileShortName/]">
+
+        <java classname="[anAcceleoMainClass.basePackage/].[anAcceleoMainClass.classShortName/]" classpathref="[anAcceleoMainClass.projectName/].classpath">
+            <arg value="model"/>
+            <arg value="target"/>
+        </java>
+
+    </target>
+
+</project>
+[/file]
+[/template]

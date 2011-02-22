@@ -10,25 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders.runner;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
+import org.eclipse.acceleo.internal.ide.ui.wizards.module.IAcceleoWizardGenerationConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -42,15 +45,13 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.codegen.merge.java.JControlModel;
-import org.eclipse.emf.codegen.merge.java.JMerger;
-import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
-import org.eclipse.emf.common.util.DiagnosticException;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -64,6 +65,21 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
+
+	/**
+	 * The Acceleo module used for the generation of the Java class.
+	 */
+	private static Module acceleoJavaClassGenerator;
+
+	/**
+	 * The Acceleo module that will generate the ant runner for the main template.
+	 */
+	private static Module antRunnerGenerator;
+
+	/**
+	 * The Acceleo module that will generate the and read me file.
+	 */
+	private static Module antReadMeGenerator;
 
 	/**
 	 * The Acceleo project which contains the templates to be considered.
@@ -150,27 +166,25 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 						List<String> mainTemplateNames = new ArrayList<String>();
 						computesMainTemplateNames(mainTemplateNames, module);
 						if (mainTemplateNames.size() > 0) {
-							CreateRunnableAcceleoContent arg = new CreateRunnableAcceleoContent(fileAcceleo
-									.getProject().getName(), packageName, classShortName, new Path(
-									fileAcceleo.getName()).removeFileExtension().lastSegment(),
-									mainTemplateNames, packages, resolvedClasspath);
-							CreateRunnableJavaWriter javaWriter = new CreateRunnableJavaWriter();
-							String javaText = javaWriter.generate(arg);
-							IFile javaFile = fileAcceleo.getParent().getFile(
-									new Path(classShortName).addFileExtension("java")); //$NON-NLS-1$
-							createFile(javaFile, javaText, monitor);
+							AcceleoMainClass acceleoMainClass = AcceleowizardmodelFactory.eINSTANCE
+									.createAcceleoMainClass();
+							acceleoMainClass.setBasePackage(packageName);
+							acceleoMainClass.setClassShortName(classShortName);
+							acceleoMainClass.setModuleFileShortName(new Path(fileAcceleo.getName())
+									.removeFileExtension().lastSegment());
+							acceleoMainClass.setProjectName(fileAcceleo.getProject().getName());
+							EList<String> packagesList = acceleoMainClass.getPackages();
+							packagesList.addAll(packages);
+							List<String> classPath = acceleoMainClass.getResolvedClassPath();
+							classPath.addAll(resolvedClasspath);
+							List<String> templateNames = acceleoMainClass.getTemplateNames();
+							templateNames.addAll(mainTemplateNames);
+
+							generateJavafile(acceleoMainClass, fileAcceleo.getParent());
+
 							IFolder antFolder = fileAcceleo.getProject().getFolder("tasks"); //$NON-NLS-1$
 							if (antFolder.exists()) {
-								CreateRunnableAntWriter antWriter = new CreateRunnableAntWriter();
-								String antText = antWriter.generate(arg);
-								IFile antFile = antFolder.getFile(new Path(fileAcceleo.getName())
-										.removeFileExtension().addFileExtension("xml")); //$NON-NLS-1$
-								createFile(antFile, antText, monitor);
-								CreateRunnableAntCallWriter antCallWriter = new CreateRunnableAntCallWriter();
-								String antCallText = antCallWriter.generate(arg);
-								IFile antCallFile = antFolder.getFile(new Path(fileAcceleo.getName())
-										.removeFileExtension().addFileExtension("readme")); //$NON-NLS-1$
-								createFile(antCallFile, antCallText, monitor);
+								generateAntFile(acceleoMainClass, antFolder);
 							}
 							// else : We don't want to create the ANT folder if it doesn't exist
 						}
@@ -185,6 +199,81 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 		} catch (IOException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+		}
+	}
+
+	/**
+	 * Generates the Java main class for the generation.
+	 * 
+	 * @param acceleoMainClass
+	 *            The utility class that holds all the information for the generation.
+	 * @param outputFolder
+	 *            The output folder.
+	 */
+	private void generateJavafile(AcceleoMainClass acceleoMainClass, IContainer outputFolder) {
+		try {
+			if (acceleoJavaClassGenerator == null) {
+				ResourceSet resourceSet = new ResourceSetImpl();
+				String moduleURI = IAcceleoWizardGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI;
+				EObject load = ModelUtils.load(moduleURI, resourceSet);
+
+				if (load instanceof Module) {
+					acceleoJavaClassGenerator = (Module)load;
+				}
+			}
+
+			if (acceleoJavaClassGenerator != null) {
+				String templateName = IAcceleoWizardGenerationConstants.ACCELEO_JAVA_CLASS_TEMPLATE_URI;
+				File generationRoot = outputFolder.getLocation().toFile();
+				new AcceleoService(new DefaultStrategy()).doGenerate(acceleoJavaClassGenerator, templateName,
+						acceleoMainClass, generationRoot, new BasicMonitor());
+				outputFolder.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			}
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+	}
+
+	/**
+	 * Generates the Ant files.
+	 * 
+	 * @param acceleoMainClass
+	 *            The Acceleo main class.
+	 * @param outputFolder
+	 *            The output folder.
+	 */
+	private void generateAntFile(AcceleoMainClass acceleoMainClass, IContainer outputFolder) {
+		try {
+			if (antRunnerGenerator == null || antReadMeGenerator == null) {
+				ResourceSet resourceSet = new ResourceSetImpl();
+				EObject load = ModelUtils.load(IAcceleoWizardGenerationConstants.ANT_RUNNER_GENERATOR_URI,
+						resourceSet);
+				EObject loadReadMe = ModelUtils.load(
+						IAcceleoWizardGenerationConstants.ANT_RUNNER_READ_ME_GENERATOR_URI, resourceSet);
+
+				if (load instanceof Module && loadReadMe instanceof Module) {
+					antRunnerGenerator = (Module)load;
+					antReadMeGenerator = (Module)loadReadMe;
+				}
+			}
+
+			if (antRunnerGenerator != null && antReadMeGenerator != null) {
+				String templateNameWriter = IAcceleoWizardGenerationConstants.ANT_RUNNER_TEMPLATE_URI;
+				String templateNameReadMe = IAcceleoWizardGenerationConstants.ANT_RUNNER_READ_ME_TEMPLATE_URI;
+
+				File generationRoot = outputFolder.getLocation().toFile();
+				new AcceleoService(new DefaultStrategy()).doGenerate(antRunnerGenerator, templateNameWriter,
+						acceleoMainClass, generationRoot, new BasicMonitor());
+				new AcceleoService(new DefaultStrategy()).doGenerate(antReadMeGenerator, templateNameReadMe,
+						acceleoMainClass, generationRoot, new BasicMonitor());
+				outputFolder.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			}
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
 		}
 	}
 
@@ -255,90 +344,6 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 			while (eContentsIt.hasNext()) {
 				EObject eContent = eContentsIt.next();
 				computesMainTemplateNames(mainTemplateNames, eContent);
-			}
-		}
-	}
-
-	/**
-	 * Creates the given file and its content.
-	 * 
-	 * @param newFile
-	 *            is the file to create
-	 * @param content
-	 *            is the content of the new file
-	 * @param monitor
-	 *            is the monitor
-	 * @throws UnsupportedEncodingException
-	 *             when an encoding problem has been detected
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void createFile(IFile newFile, String content, IProgressMonitor monitor)
-			throws UnsupportedEncodingException, CoreException {
-		IFile file = newFile;
-		String text = content;
-		if (file.exists() && "java".equals(file.getFileExtension())) { //$NON-NLS-1$
-			String jmergeFile = URI.createPlatformPluginURI(
-					"org.eclipse.emf.codegen.ecore/templates/emf-merge.xml", false).toString(); //$NON-NLS-1$
-			JControlModel model = new JControlModel();
-			ASTFacadeHelper astFacadeHelper = new ASTFacadeHelper();
-			model.initialize(astFacadeHelper, jmergeFile);
-			if (model.canMerge()) {
-				JMerger jMerger = new JMerger(model);
-				try {
-					jMerger.setSourceCompilationUnit(jMerger.createCompilationUnitForContents(text));
-					// JMerge takes care of buffering our streams
-					jMerger.setTargetCompilationUnit(jMerger
-							.createCompilationUnitForInputStream(new FileInputStream(file.getLocation()
-									.toFile())));
-					jMerger.merge();
-					text = jMerger.getTargetCompilationUnit().getContents();
-				} catch (FileNotFoundException e) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
-				} catch (WrappedException e) {
-					if (e.getCause() instanceof DiagnosticException) {
-						AcceleoUIActivator.getDefault().getLog().log(
-								new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-										.getString("CreateRunnableAcceleoOperation.MergerFailure"), e //$NON-NLS-1$
-										.getCause()));
-					} else {
-						throw e;
-					}
-				}
-			} else {
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-								.getString("CreateRunnableAcceleoOperation.MergerUnusable"), null)); //$NON-NLS-1$
-			}
-		}
-		if (!file.exists() && file.getParent().exists()) {
-			IResource[] members = file.getParent().members(IResource.FILE);
-			for (int i = 0; i < members.length; i++) {
-				if (members[i] instanceof IFile
-						&& file.getName().toLowerCase().equals(members[i].getName().toLowerCase())) {
-					file = (IFile)members[i];
-					break;
-				}
-			}
-		}
-		boolean update;
-		if (!file.exists()) {
-			update = true;
-		} else {
-			String oldText = FileContent.getFileContent(file.getLocation().toFile()).toString();
-			if (!text.equals(oldText) && oldText.contains("@generated")) { //$NON-NLS-1$
-				update = true;
-			} else {
-				update = false;
-			}
-		}
-		if (update) {
-			ByteArrayInputStream javaStream = new ByteArrayInputStream(text.getBytes("UTF8")); //$NON-NLS-1$
-			if (!file.exists()) {
-				file.create(javaStream, true, monitor);
-			} else {
-				file.setContents(javaStream, true, false, monitor);
 			}
 		}
 	}

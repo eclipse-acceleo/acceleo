@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,12 +20,18 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateBuildAcceleoWriter;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
+import org.eclipse.acceleo.internal.ide.ui.wizards.module.IAcceleoWizardGenerationConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
+import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -37,8 +43,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -55,6 +66,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 * The builder ID.
 	 */
 	public static final String BUILDER_ID = "org.eclipse.acceleo.ide.ui.acceleoBuilder"; //$NON-NLS-1$
+
+	/**
+	 * The Acceleo module that will generate the build.acceleo file.
+	 */
+	private static Module buildAcceleoGenerator;
 
 	/**
 	 * The output folder to ignore.
@@ -170,23 +186,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			AcceleoProject project = new AcceleoProject(getProject());
 			List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
 			dependencies.remove(getProject());
-			CreateBuildAcceleoWriter buildWriter = new CreateBuildAcceleoWriter();
-			String buildText = buildWriter.generate(new Object[] {dependencies, });
-			if (!buildAcceleo.exists()
-					|| !buildText.equals(FileContent.getFileContent(buildAcceleo.getLocation().toFile())
-							.toString())) {
-				try {
-					ByteArrayInputStream javaStream = new ByteArrayInputStream(buildText.getBytes("UTF8")); //$NON-NLS-1$
-					if (!buildAcceleo.exists()) {
-						buildAcceleo.create(javaStream, true, monitor);
-					} else {
-						buildAcceleo.setContents(javaStream, true, false, monitor);
-					}
-				} catch (UnsupportedEncodingException e) {
-					throw new CoreException(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e
-							.getMessage(), e));
-				}
+			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE
+					.createAcceleoProject();
+			List<String> pluginDependencies = acceleoProject.getPluginDependencies();
+			for (IProject iProject : dependencies) {
+				pluginDependencies.add(iProject.getName());
 			}
+
+			generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
+
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
 					buildAcceleo.getName()) == -1) {
 				AcceleoUIActivator.getDefault().getLog().log(
@@ -194,6 +202,42 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
 										.getName(), })));
 			}
+		}
+	}
+
+	/**
+	 * Generates the build.acceleo file.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	private void generateBuildAcceleo(
+			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoProject,
+			IContainer outputContainer) {
+		try {
+			if (buildAcceleoGenerator == null) {
+				ResourceSet resourceSet = new ResourceSetImpl();
+				String moduleURI = IAcceleoWizardGenerationConstants.BUILD_ACCELEO_GENERATOR_URI;
+				EObject load = ModelUtils.load(moduleURI, resourceSet);
+
+				if (load instanceof Module) {
+					buildAcceleoGenerator = (Module)load;
+				}
+			}
+
+			if (buildAcceleoGenerator != null) {
+				String templateName = IAcceleoWizardGenerationConstants.BUILD_ACCELEO_TEMPLATE_URI;
+				File generationRoot = outputContainer.getLocation().toFile();
+				new AcceleoService(new DefaultStrategy()).doGenerate(buildAcceleoGenerator, templateName,
+						acceleoProject, generationRoot, new BasicMonitor());
+				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			}
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
 		}
 	}
 

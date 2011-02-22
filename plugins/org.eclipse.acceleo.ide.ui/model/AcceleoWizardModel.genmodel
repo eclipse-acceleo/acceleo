@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.acceleo.ide.ui/src-gen"
+    modelPluginID="org.eclipse.acceleo.ide.ui" modelName="AcceleoWizardModel" nonNLSMarkers="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    runtimeVersion="2.4" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>AcceleoWizardModel.ecore</foreignModel>
+  <genPackages prefix="Acceleowizardmodel" basePackage="org.eclipse.acceleo.internal.ide.ui"
+      disposableProviderFactory="true" ecorePackage="AcceleoWizardModel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="AcceleoWizardModel.ecore#//ModuleElementKind">
+      <genEnumLiterals ecoreEnumLiteral="AcceleoWizardModel.ecore#//ModuleElementKind/Template"/>
+      <genEnumLiterals ecoreEnumLiteral="AcceleoWizardModel.ecore#//ModuleElementKind/Query"/>
+    </genEnums>
+    <genClasses ecoreClass="AcceleoWizardModel.ecore#//AcceleoProject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoProject/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoProject/generatorName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AcceleoWizardModel.ecore#//AcceleoProject/acceleoModules"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoProject/pluginDependencies"/>
+    </genClasses>
+    <genClasses ecoreClass="AcceleoWizardModel.ecore#//AcceleoUIProject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/generatorName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/pluginsDependencies"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/modules"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/modulePlugins"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/moduleJavaClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/modelNameFilter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoUIProject/targetFolderRelativePath"/>
+    </genClasses>
+    <genClasses ecoreClass="AcceleoWizardModel.ecore#//AcceleoModule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModule/parentFolder"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModule/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModule/metamodelURI"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AcceleoWizardModel.ecore#//AcceleoModule/moduleElement"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="AcceleoWizardModel.ecore#//AcceleoModuleElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/parameterType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/isInitialized"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/initializationKind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AcceleoWizardModel.ecore#//AcceleoModuleElement/initializationPath"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
