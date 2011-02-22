@@ -8,7 +8,7 @@
 	<property name="plugin" value="org.eclipse.acceleo.common"/>
 	<property name="docPlugin" value="org.eclipse.acceleo.doc"/>
 
-	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,modeling*.png,plugin.xml,plugin.properties,*.xml,index/**,doc/**,references/**"/>
+	<property name="filesToInclude" value="META-INF/**,about.html,about.ini,about.mappings,about.properties,plugin.xml,plugin.properties,toc.xml,topics_Reference.xml,index/**,doc/**,references/**"/>
 	<property name="filesToExclude" value="**/*.dnx"/>
 
 	<!-- Compiler settings. -->
