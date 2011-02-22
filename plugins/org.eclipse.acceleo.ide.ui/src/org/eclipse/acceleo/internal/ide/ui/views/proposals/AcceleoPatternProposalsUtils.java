@@ -68,7 +68,9 @@ public final class AcceleoPatternProposalsUtils {
 						if (patternClass != null) {
 							try {
 								Bundle bundle = Platform.getBundle(member.getNamespaceIdentifier());
-								Class<IAcceleoPatternProposal> c = bundle.loadClass(patternClass);
+								@SuppressWarnings("cast")
+								Class<IAcceleoPatternProposal> c = (Class<IAcceleoPatternProposal>)bundle
+										.loadClass(patternClass);
 								IAcceleoPatternProposal patternProposal = c.newInstance();
 								patternProposals.add(patternProposal);
 							} catch (ClassNotFoundException e) {
