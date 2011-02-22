@@ -49,26 +49,33 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region,
 			boolean canShowMultipleHyperlinks) {
 		final ITextEditor textEditor = (ITextEditor)getAdapter(ITextEditor.class);
-		// shortcut : do not show links for non relevant chars (dot, arrows, ...)
-		boolean shortcut = false;
-		if (region == null || !(textEditor instanceof AcceleoEditor)) {
-			shortcut = true;
+		if (region != null && textEditor instanceof AcceleoEditor) {
+			int offset = region.getOffset();
+			final AcceleoEditor editor = (AcceleoEditor)textEditor;
+			final int start = Math.max(0, offset - 10);
+			final int end = Math.min(editor.getContent().getText().length(), offset + 10);
+			// Creates a new String to avoid keeping the whole document in memory
+			final String expressionSurroundings = new String(editor.getContent().getText().substring(start,
+					end));
+			if (isRelevant(expressionSurroundings, offset - start)) {
+				return detectHyperlinks(editor, offset);
+			}
 		}
-		int offset = region.getOffset();
-		final AcceleoEditor editor = (AcceleoEditor)textEditor;
-		final int start = Math.max(0, offset - 10);
-		final int end = Math.min(editor.getContent().getText().length(), offset + 10);
-		// Creates a new String to avoid keeping the whole document in memory
-		final String expressionSurroundings = new String(editor.getContent().getText().substring(start, end));
-		if (!isRelevant(expressionSurroundings, offset - start)) {
-			shortcut = true;
-		}
-		if (shortcut) {
-			return null;
-		}
+		return null;
+	}
 
+	/**
+	 * This will be called from {@link #detectHyperlinks(ITextViewer, IRegion, boolean)} when we've taken care
+	 * of all shortcut routes.
+	 * 
+	 * @param editor
+	 *            The AcceleoEditor in which to detect hyperlinks.
+	 * @param offset
+	 *            Offset at which to search for hyperlinks.
+	 * @return The detected hyperlinks if any.
+	 */
+	private IHyperlink[] detectHyperlinks(AcceleoEditor editor, int offset) {
 		EObject res = null;
-
 		int wordStart = -1;
 		int wordLength = -1;
 

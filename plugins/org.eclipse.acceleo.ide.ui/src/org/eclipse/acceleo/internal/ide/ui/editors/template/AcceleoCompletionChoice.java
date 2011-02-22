@@ -109,9 +109,8 @@ public class AcceleoCompletionChoice implements Choice {
 	public boolean equals(Object obj) {
 		if (obj instanceof AcceleoCompletionChoice) {
 			return oclChoice.equals(((AcceleoCompletionChoice)obj).oclChoice);
-		} else {
-			return oclChoice.equals(obj);
 		}
+		return oclChoice.equals(obj);
 	}
 
 	/**

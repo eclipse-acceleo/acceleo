@@ -88,7 +88,7 @@ public class AcceleoDocumentProvider extends FileDocumentProvider {
 	 * @param newText
 	 *            the string that will replace previous contents
 	 */
-	private void handlePositionUpdate(int posBegin, int posEnd, String newText) {
+	protected void handlePositionUpdate(int posBegin, int posEnd, String newText) {
 		if (editor.getContent() != null) {
 			EObject cstNode = editor.getContent().updateCST(posBegin, posEnd, newText);
 			if (cstNode != null) {

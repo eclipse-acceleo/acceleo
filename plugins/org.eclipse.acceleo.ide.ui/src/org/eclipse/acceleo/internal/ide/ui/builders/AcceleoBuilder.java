@@ -78,28 +78,28 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map arguments, IProgressMonitor monitor) throws CoreException {
 		if (getProject() == null || !getProject().isAccessible()) {
 			return new IProject[] {};
-		} else {
-			outputFolder = getOutputFolder(getProject());
-			try {
-				if (kind == FULL_BUILD) {
+		}
+
+		outputFolder = getOutputFolder(getProject());
+		try {
+			if (kind == FULL_BUILD) {
+				clean(monitor);
+				fullBuild(monitor);
+			} else {
+				IResourceDelta delta = getDelta(getProject());
+				if (delta == null) {
 					clean(monitor);
 					fullBuild(monitor);
 				} else {
-					IResourceDelta delta = getDelta(getProject());
-					if (delta == null) {
-						clean(monitor);
-						fullBuild(monitor);
-					} else {
-						incrementalBuild(delta, monitor);
-					}
+					incrementalBuild(delta, monitor);
 				}
-			} catch (OperationCanceledException e) {
-				// We've only thrown this to cancel everything, stop propagation
-			} finally {
-				outputFolder = null;
 			}
-			return null;
+		} catch (OperationCanceledException e) {
+			// We've only thrown this to cancel everything, stop propagation
+		} finally {
+			outputFolder = null;
 		}
+		return null;
 	}
 
 	/**
@@ -121,9 +121,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					long m1 = arg1.getLocation().toFile().lastModified();
 					if (m0 < m1) {
 						return 1;
-					} else {
-						return -1;
 					}
+					return -1;
 				}
 			});
 			registerAccessibleEcoreFiles();
@@ -223,9 +222,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					long m1 = arg1.getLocation().toFile().lastModified();
 					if (m0 < m1) {
 						return 1;
-					} else {
-						return -1;
 					}
+					return -1;
 				}
 			});
 			registerAccessibleEcoreFiles();

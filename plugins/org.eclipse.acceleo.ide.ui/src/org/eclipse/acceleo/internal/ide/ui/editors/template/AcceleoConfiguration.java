@@ -155,7 +155,9 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 				}
 			}
 
-			// FIXME JMU doesn't compile in 3.4
+			// We cannot use the override annotation here : it would not compile in 3.4.
+			// Suppressing "all" warnings as we cannot suppress only the missing override.
+			@SuppressWarnings("all")
 			protected IRegion findExtendedDoubleClickSelection(IDocument document, int offset) {
 				IRegion region = OpenDeclarationUtils.findIdentifierRegion(document, offset);
 				return region;

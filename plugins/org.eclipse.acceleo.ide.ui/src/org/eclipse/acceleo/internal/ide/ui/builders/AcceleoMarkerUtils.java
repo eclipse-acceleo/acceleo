@@ -84,6 +84,8 @@ public final class AcceleoMarkerUtils {
 			marker.setAttribute(IMarker.CHAR_START, posBegin);
 			marker.setAttribute(IMarker.CHAR_END, posEnd);
 			marker.setAttribute(IMarker.MESSAGE, message);
+		} else {
+			return;
 		}
 
 		if (AcceleoMarkerUtils.PROBLEM_MARKER_ID.equals(markerId)) {

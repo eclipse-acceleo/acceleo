@@ -139,7 +139,7 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			if (annotationModel != null) {
 				synchronized(getLockObject(annotationModel)) {
 					for (Entry<Annotation, Position> entry : annotationMap.entrySet()) {
-						annotationModel.addAnnotation((Annotation)entry.getKey(), (Position)entry.getValue());
+						annotationModel.addAnnotation(entry.getKey(), entry.getValue());
 					}
 				}
 			}

@@ -394,9 +394,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				i++;
 			} while (Character.isWhitespace(c) && i < text.length());
 			return c == ref;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -1338,17 +1337,15 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					if (currentLineIsEmpty && c == '[') {
 						iEmptyLineAndNoMTL = iBeginLine;
 						break;
-					} else {
-						currentLineIsEmpty = false;
 					}
+					currentLineIsEmpty = false;
 				} else if (c == '\n') {
 					if (currentLineIsEmpty) {
 						iEmptyLineAndNoMTL = i + 1;
 						break;
-					} else {
-						currentLineIsEmpty = true;
-						iBeginLine = i + 1;
 					}
+					currentLineIsEmpty = true;
+					iBeginLine = i + 1;
 				}
 				i++;
 			}
@@ -1781,10 +1778,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					replacementOffset, replacementLength);
 			Region region = new Region(replacementOffset, replacementLength);
 			return new AcceleoCompletionTemplateProposal(template, context, region, image, info);
-		} else {
-			return new CompletionProposal(replacementString, replacementOffset, replacementLength,
-					cursorPosition, image, displayString, contextInformation, info);
 		}
+		return new CompletionProposal(replacementString, replacementOffset, replacementLength,
+				cursorPosition, image, displayString, contextInformation, info);
 	}
 	// CHECKSTYLE:ON
 }

@@ -382,7 +382,7 @@ public class AcceleoWhitespaceCharactersPainter implements IPainter, PaintListen
 		// Acceleo : compatibility with 3.4 breaks when using this, commenting out
 		if (/* !fTextWidget.getBlockSelection() && */isOffsetSelected(fTextWidget, widgetOffset)) {
 			fg = fTextWidget.getSelectionForeground();
-		} else if (styleRange == null || styleRange.start + styleRange.length <= widgetOffset) {
+		} else {
 			styleRange = fTextWidget.getStyleRangeAtOffset(widgetOffset);
 			if (styleRange == null || styleRange.foreground == null) {
 				fg = fTextWidget.getForeground();

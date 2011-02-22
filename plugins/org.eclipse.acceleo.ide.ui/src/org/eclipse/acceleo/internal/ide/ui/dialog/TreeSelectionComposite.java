@@ -59,6 +59,11 @@ public class TreeSelectionComposite extends Composite {
 	private static final int SIZING_SELECTION_PANE_HEIGHT = 300;
 
 	/**
+	 * The tree viewer.
+	 */
+	protected TreeViewer treeViewer;
+
+	/**
 	 * The listener to notify of events.
 	 */
 	private Listener listener;
@@ -77,11 +82,6 @@ public class TreeSelectionComposite extends Composite {
 	 * Handle on parts.
 	 */
 	private Text resourceNameField;
-
-	/**
-	 * The tree viewer.
-	 */
-	private TreeViewer treeViewer;
 
 	/**
 	 * The content provider of the tree viewer.

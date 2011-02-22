@@ -51,7 +51,7 @@ public class ResourceSelectionDialog extends SelectionDialog {
 	/**
 	 * The widget group.
 	 */
-	private TreeSelectionComposite selection;
+	protected TreeSelectionComposite selection;
 
 	/**
 	 * The root resource to populate the viewer with.

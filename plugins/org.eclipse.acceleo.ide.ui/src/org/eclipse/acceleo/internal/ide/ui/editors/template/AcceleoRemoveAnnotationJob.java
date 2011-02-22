@@ -62,7 +62,7 @@ public class AcceleoRemoveAnnotationJob extends Job {
 				synchronized(getLockObject(model)) {
 					Iterator<Annotation> annotations = model.getAnnotationIterator();
 					while (annotations.hasNext()) {
-						Annotation annotation = (Annotation)annotations.next();
+						Annotation annotation = annotations.next();
 						if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
 								.getType())) {
 							model.removeAnnotation(annotation);

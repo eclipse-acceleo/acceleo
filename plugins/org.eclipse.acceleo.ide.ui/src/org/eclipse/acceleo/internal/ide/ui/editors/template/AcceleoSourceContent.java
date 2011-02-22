@@ -93,9 +93,25 @@ public class AcceleoSourceContent {
 	private static final String MARKER_POSITION_SEPARATOR = ","; //$NON-NLS-1$
 
 	/**
+	 * There can be several syntax help requested. It count the requests.
+	 */
+	protected int syntaxHelpCount;
+
+	/**
+	 * The current resource set used to compute the syntax help information. It contains a copy of the current
+	 * AST and its dependencies.
+	 */
+	protected ResourceSet syntaxHelpResourceSet;
+
+	/**
 	 * The Acceleo file. It can be null if the file hasn't been specified.
 	 */
-	private IFile file;
+	protected IFile file;
+
+	/**
+	 * The source.
+	 */
+	protected AcceleoSourceBufferWithASTJob source;
 
 	/**
 	 * The Acceleo project which contains the Acceleo file. It can be null if the file hasn't been specified.
@@ -103,25 +119,9 @@ public class AcceleoSourceContent {
 	private AcceleoProject acceleoProject;
 
 	/**
-	 * The source.
-	 */
-	private AcceleoSourceBufferWithASTJob source;
-
-	/**
 	 * The parser used to create a CST model from the document.
 	 */
 	private CSTParser cstParser;
-
-	/**
-	 * There can be several syntax help requested. It count the requests.
-	 */
-	private int syntaxHelpCount;
-
-	/**
-	 * The current resource set used to compute the syntax help information. It contains a copy of the current
-	 * AST and its dependencies.
-	 */
-	private ResourceSet syntaxHelpResourceSet;
 
 	/**
 	 * The job instance to unload the syntax help information.
@@ -141,7 +141,7 @@ public class AcceleoSourceContent {
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
 	 */
-	private class SyntaxHelpJob {
+	protected class SyntaxHelpJob {
 
 		/**
 		 * The job.
@@ -264,7 +264,7 @@ public class AcceleoSourceContent {
 		/**
 		 * It computes the AST. The AST links will be resolved in the specified region.
 		 */
-		private void runCreateAST() {
+		protected void runCreateAST() {
 			IFile fileMTL = AcceleoSourceContent.this.file;
 			if (fileMTL != null && fileMTL.exists()) {
 				Map<String, IMarker> position2problemMarkers = new HashMap<String, IMarker>();
@@ -324,12 +324,11 @@ public class AcceleoSourceContent {
 	public org.eclipse.acceleo.parser.cst.Module getCST() {
 		if (source == null) {
 			return null;
-		} else {
-			if (source.getCST() == null) {
-				createCST();
-			}
-			return source.getCST();
 		}
+		if (source.getCST() == null) {
+			createCST();
+		}
+		return source.getCST();
 	}
 
 	/**
@@ -341,12 +340,11 @@ public class AcceleoSourceContent {
 	public org.eclipse.acceleo.model.mtl.Module getAST() {
 		if (source == null) {
 			return null;
-		} else {
-			if (source.getAST() == null) {
-				createAST();
-			}
-			return source.getAST();
 		}
+		if (source.getAST() == null) {
+			createAST();
+		}
+		return source.getAST();
 	}
 
 	/**
@@ -668,9 +666,8 @@ public class AcceleoSourceContent {
 				childrenCandidate = getChildrenCandidate(candidate, posBegin, posEnd);
 			}
 			return candidate;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -766,6 +763,7 @@ public class AcceleoSourceContent {
 	 * @return a list of {@link Choice}s, possibly empty. The ordering of the list may or may not indicate
 	 *         relative relevance or frequency of a choice
 	 */
+	@SuppressWarnings("cast")
 	public synchronized Collection<Choice> getSyntaxHelp(String text, int offset) {
 		syntaxHelpCount++;
 		try {
@@ -958,7 +956,8 @@ public class AcceleoSourceContent {
 	 * @param dependenciesURIs
 	 *            are the URIs of the "imports" dependencies to load
 	 */
-	private void loadImportsDependencies(org.eclipse.acceleo.model.mtl.Module vAST, List<URI> dependenciesURIs) {
+	protected void loadImportsDependencies(org.eclipse.acceleo.model.mtl.Module vAST,
+			List<URI> dependenciesURIs) {
 		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
 			URI oURI = itDependenciesURIs.next();
 			String oName = new Path(oURI.lastSegment()).removeFileExtension().lastSegment();
@@ -992,7 +991,8 @@ public class AcceleoSourceContent {
 	 * @param dependenciesURIs
 	 *            are the URIs of the "extends" dependencies to load
 	 */
-	private void loadExtendsDependencies(org.eclipse.acceleo.model.mtl.Module vAST, List<URI> dependenciesURIs) {
+	protected void loadExtendsDependencies(org.eclipse.acceleo.model.mtl.Module vAST,
+			List<URI> dependenciesURIs) {
 		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
 			URI oURI = itDependenciesURIs.next();
 			String oName = new Path(oURI.lastSegment()).removeFileExtension().lastSegment();
@@ -1028,8 +1028,8 @@ public class AcceleoSourceContent {
 	 *            The ID of the marker
 	 * @return The initialized map of markers
 	 */
-	private Map<String, IMarker> initMarkers(final Map<String, IMarker> position2marker, final IFile fileMTL,
-			final String markerID) {
+	protected Map<String, IMarker> initMarkers(final Map<String, IMarker> position2marker,
+			final IFile fileMTL, final String markerID) {
 		try {
 			IMarker[] markers = fileMTL.findMarkers(markerID, false, IResource.DEPTH_INFINITE);
 
@@ -1068,7 +1068,7 @@ public class AcceleoSourceContent {
 	 * @param fileMTL
 	 *            The MTL file on which the marker should appeared
 	 */
-	private void manageMarker(final AcceleoParserMessages acceleoParserDatas,
+	protected void manageMarker(final AcceleoParserMessages acceleoParserDatas,
 			final Map<String, IMarker> position2marker, final IFile fileMTL) {
 		if (acceleoParserDatas == null) {
 			return;
@@ -1153,6 +1153,7 @@ public class AcceleoSourceContent {
 	 * 
 	 * @return the meta-model objects, or an empty list
 	 */
+	@SuppressWarnings("cast")
 	public List<EClassifier> getTypes() {
 		if (getCST() != null) {
 			org.eclipse.acceleo.model.mtl.Module vAST = source.getAST();
@@ -1197,9 +1198,8 @@ public class AcceleoSourceContent {
 		}
 		if (accessibleOutputFiles != null) {
 			return new ArrayList<URI>(accessibleOutputFiles);
-		} else {
-			return new ArrayList<URI>();
 		}
+		return new ArrayList<URI>();
 	}
 
 	/**
@@ -1410,7 +1410,7 @@ public class AcceleoSourceContent {
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private class ChoiceComparator implements Comparator<Choice> {
+	protected class ChoiceComparator implements Comparator<Choice> {
 		/**
 		 * {@inheritDoc}
 		 * 
@@ -1474,7 +1474,7 @@ public class AcceleoSourceContent {
 	 * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to,
 	 *         or greater than the second.
 	 */
-	private int compareOperations(Choice arg0, Choice arg1) {
+	protected int compareOperations(Choice arg0, Choice arg1) {
 		int value;
 		// Templates and queries require special handling
 		boolean arg0IsTemplate = arg0 instanceof AcceleoCompletionChoice

@@ -130,6 +130,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	protected String offsetASTNodeURI = ""; //$NON-NLS-1$
 
 	/**
+	 * The job that will supress the annotation when the user type some text.
+	 */
+	protected AcceleoRemoveAnnotationJob removeAnnotationJob;
+
+	/**
 	 * The source content (The semantic content for this editor). It is used to create a CST model and is able
 	 * to do an incremental parsing of the text.
 	 */
@@ -172,11 +177,6 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * The decorate job to highlight all the occurrences of the current selection in the editor.
 	 */
 	private AcceleoOccurrencesFinderJob occurrencesFinderJob;
-
-	/**
-	 * The job that will supress the annotation when the user type some text.
-	 */
-	private AcceleoRemoveAnnotationJob removeAnnotationJob;
 
 	/**
 	 * Listener which is notified when the post selection changes on the page. It is used to highlight in the
@@ -534,7 +534,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	/**
 	 * Change the error image in the editor's tab.
 	 */
-	private void changeErrorImage() {
+	protected void changeErrorImage() {
 		final AcceleoEditor editor = this;
 		Image currentImage = editor.getTitleImage();
 		if (originalTitleImage == null) {
@@ -875,7 +875,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * Find all the occurrences of the selected element and highlight them.
 	 */
 	@SuppressWarnings("unchecked")
-	private void findOccurrences() {
+	protected void findOccurrences() {
 		if (occurrencesFinderJob != null) {
 			occurrencesFinderJob.cancel();
 		}
@@ -888,7 +888,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			if (model != null) {
 				Iterator<Annotation> annotations = model.getAnnotationIterator();
 				while (annotations.hasNext()) {
-					Annotation annotation = (Annotation)annotations.next();
+					Annotation annotation = annotations.next();
 					if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
 							.getType())) {
 						model.removeAnnotation(annotation);
