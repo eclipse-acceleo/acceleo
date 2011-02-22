@@ -444,9 +444,8 @@ public final class OpenDeclarationUtils {
 		}
 		if (workspaceFile != null) {
 			return workspaceFile;
-		} else {
-			return absoluteFile;
 		}
+		return absoluteFile;
 	}
 
 	/**
@@ -563,9 +562,8 @@ public final class OpenDeclarationUtils {
 		}
 		if (result != null) {
 			return result;
-		} else {
-			return fileURI;
 		}
+		return fileURI;
 	}
 
 	/**
@@ -961,7 +959,7 @@ public final class OpenDeclarationUtils {
 		final List<Match> list = new ArrayList<Match>();
 
 		for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
-			Match match = (Match)iterator.next();
+			Match match = iterator.next();
 			if (((ReferenceEntry)match.getElement()).getTemplateFile().equals(file)) {
 				list.add(match);
 			}

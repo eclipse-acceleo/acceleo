@@ -87,9 +87,8 @@ public class KeywordRule implements ISequenceRule {
 	public IToken evaluate(ICharacterScanner scanner) {
 		if (read(scanner) > 0) {
 			return token;
-		} else {
-			return Token.UNDEFINED;
 		}
+		return Token.UNDEFINED;
 	}
 
 	/**
@@ -118,11 +117,10 @@ public class KeywordRule implements ISequenceRule {
 			}
 			if (valid && (!wholeWord || nextIsNotIdentifierPart(scanner))) {
 				return keyword.length();
-			} else {
-				while (shift > 0) {
-					scanner.unread();
-					shift--;
-				}
+			}
+			while (shift > 0) {
+				scanner.unread();
+				shift--;
 			}
 		}
 		return 0;

@@ -16,7 +16,6 @@ import org.eclipse.jface.text.AbstractInformationControl;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IInformationControlExtension2;
-import org.eclipse.jface.text.IInformationControlExtension3;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -28,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class AcceleoHoverInformationControl extends AbstractInformationControl implements IInformationControlExtension2, IInformationControlExtension3 {
+public class AcceleoHoverInformationControl extends AbstractInformationControl implements IInformationControlExtension2 {
 
 	/**
 	 * Indicates if there is a documentation in input.

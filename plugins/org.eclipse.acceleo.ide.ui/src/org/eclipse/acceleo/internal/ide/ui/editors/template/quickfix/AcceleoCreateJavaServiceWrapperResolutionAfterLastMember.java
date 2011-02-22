@@ -181,6 +181,7 @@ public class AcceleoCreateJavaServiceWrapperResolutionAfterLastMember extends Ab
 						browseFile = false;
 					}
 					if (browseFile) {
+						assert javaClass != null;
 						Method[] javaMethods = javaClass.getDeclaredMethods();
 						for (int j = 0; j < javaMethods.length; j++) {
 							Method javaMethod = javaMethods[j];

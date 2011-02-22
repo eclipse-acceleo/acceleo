@@ -76,9 +76,8 @@ public class SequenceRule implements ISequenceRule {
 	public IToken evaluate(ICharacterScanner scanner) {
 		if (read(scanner) > 0) {
 			return token;
-		} else {
-			return Token.UNDEFINED;
 		}
+		return Token.UNDEFINED;
 	}
 
 	/**
@@ -97,9 +96,8 @@ public class SequenceRule implements ISequenceRule {
 			if (n == 0) {
 				valid = Boolean.FALSE;
 				break;
-			} else {
-				shift += n;
 			}
+			shift += n;
 			if (i + 1 < words.length) {
 				shift += readWhitespace(scanner);
 			}

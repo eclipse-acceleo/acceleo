@@ -55,9 +55,8 @@ public class AcceleoOutlinePageContentProvider extends AdapterFactoryContentProv
 				public int compare(CSTNode n0, CSTNode n1) {
 					if (n0.getStartPosition() < n1.getStartPosition()) {
 						return -1;
-					} else {
-						return 1;
 					}
+					return 1;
 				}
 			};
 			List<CSTNode> orderedCollection = new ArrayList<CSTNode>(((List<?>)object).size());

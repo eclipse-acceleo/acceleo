@@ -62,9 +62,8 @@ public class FirstVariableRule implements ISequenceRule {
 	public IToken evaluate(ICharacterScanner scanner) {
 		if (read(scanner) > 0) {
 			return token;
-		} else {
-			return Token.UNDEFINED;
 		}
+		return Token.UNDEFINED;
 	}
 
 	/**

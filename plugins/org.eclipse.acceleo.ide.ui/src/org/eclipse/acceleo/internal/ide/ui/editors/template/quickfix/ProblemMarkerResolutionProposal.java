@@ -68,9 +68,8 @@ public class ProblemMarkerResolutionProposal implements ICompletionProposal {
 	public String getAdditionalProposalInfo() {
 		if (resolution instanceof IMarkerResolution2) {
 			return ((IMarkerResolution2)resolution).getDescription();
-		} else {
-			return marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 		}
+		return marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 	}
 
 	/**

@@ -188,17 +188,17 @@ public interface IAcceleoContantsImage {
 			/**
 			 * The 'public query' icon.
 			 */
-			String QUERY_PUBLIC = COMPLETION + "Query.gif"; //$NON-NLS-1$
+			String COMPLETION_QUERY_PUBLIC = COMPLETION + "Completion_Query.gif"; //$NON-NLS-1$
 
 			/**
 			 * The 'protected query' icon.
 			 */
-			String QUERY_PROTECTED = COMPLETION + "Query_protected.gif"; //$NON-NLS-1$
+			String COMPLETION_QUERY_PROTECTED = COMPLETION + "Completion_Query_protected.gif"; //$NON-NLS-1$
 
 			/**
 			 * The 'private query' icon.
 			 */
-			String QUERY_PRIVATE = COMPLETION + "Query_private.gif"; //$NON-NLS-1$
+			String COMPLETION_QUERY_PRIVATE = COMPLETION + "Completion_Query_private.gif"; //$NON-NLS-1$
 
 			/**
 			 * The 'public template' icon.

@@ -109,9 +109,8 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 
 		if (text != null) {
 			return text.toString();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -215,9 +214,8 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 		}
 		if (documentation != null) {
 			return AcceleoUIDocumentationUtils.getTextFrom(documentation);
-		} else {
-			return AcceleoUIDocumentationUtils.getSignatureFrom(eObject);
 		}
+		return AcceleoUIDocumentationUtils.getSignatureFrom(eObject);
 	}
 
 	/**
@@ -228,9 +226,8 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 	public IRegion getHoverRegion(ITextViewer textViewer, int offset) {
 		if (offset > -1) {
 			return new Region(offset, 0);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 }

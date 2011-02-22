@@ -181,9 +181,8 @@ public class AcceleoTextHover implements ITextHover, ITextHoverExtension2 {
 			}
 
 			return result;
-		} else {
-			return eObject;
 		}
+		return eObject;
 	}
 
 	/**

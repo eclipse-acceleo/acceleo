@@ -348,7 +348,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 	 * @param element
 	 *            is the container of the modified element
 	 */
-	private void refreshContainer(final Object element) {
+	protected void refreshContainer(final Object element) {
 		if (element instanceof Module) {
 			int selection = -1;
 			if (getTreeViewer().getControl() instanceof Scrollable

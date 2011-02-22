@@ -447,7 +447,7 @@ public class HTML2TextReader extends AbstractSubstitutionTextReader {
 						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 			}
 		} else {
-			String str = (String)ENTITY_LOOKUP.get(symbol);
+			String str = ENTITY_LOOKUP.get(symbol);
 			if (str != null) {
 				return str;
 			}

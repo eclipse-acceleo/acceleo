@@ -350,15 +350,15 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 		try {
 			filteredTreeConstructor = FilteredTree.class.getConstructor(Composite.class, int.class,
 					PatternFilter.class, boolean.class);
-			filteredTree = filteredTreeConstructor.newInstance(parent, SWT.SINGLE | SWT.H_SCROLL
-					| SWT.V_SCROLL, new QuickOutlinePatternFilter(), true);
+			filteredTree = filteredTreeConstructor.newInstance(parent, Integer.valueOf(SWT.SINGLE
+					| SWT.H_SCROLL | SWT.V_SCROLL), new QuickOutlinePatternFilter(), Boolean.valueOf(true));
 		} catch (NoSuchMethodException e) {
 			// Eclipse < 3.5
 			try {
 				filteredTreeConstructor = FilteredTree.class.getConstructor(Composite.class, int.class,
 						PatternFilter.class);
-				filteredTree = filteredTreeConstructor.newInstance(parent, SWT.SINGLE | SWT.H_SCROLL
-						| SWT.V_SCROLL, new QuickOutlinePatternFilter());
+				filteredTree = filteredTreeConstructor.newInstance(parent, Integer.valueOf(SWT.SINGLE
+						| SWT.H_SCROLL | SWT.V_SCROLL), new QuickOutlinePatternFilter());
 			} catch (NoSuchMethodException ee) {
 				// shouldn't happen
 				AcceleoUIActivator.getDefault().getLog().log(

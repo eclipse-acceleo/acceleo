@@ -64,9 +64,8 @@ public class QuickOutlineContentProvider extends AdapterFactoryContentProvider {
 				}
 			}
 			return children.toArray();
-		} else {
-			return new Object[0];
 		}
+		return new Object[0];
 	}
 
 	/**

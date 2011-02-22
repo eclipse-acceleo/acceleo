@@ -127,9 +127,8 @@ public class SequenceBlockRule implements ISequenceRule {
 	public IToken evaluate(ICharacterScanner scanner) {
 		if (read(scanner) > 0) {
 			return token;
-		} else {
-			return Token.UNDEFINED;
 		}
+		return Token.UNDEFINED;
 	}
 
 	/**
@@ -194,9 +193,8 @@ public class SequenceBlockRule implements ISequenceRule {
 	private int read(ISequenceRule sequence, ICharacterScanner scanner) {
 		if (sequence != null) {
 			return sequence.read(scanner);
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**

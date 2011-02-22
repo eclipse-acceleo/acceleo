@@ -165,19 +165,19 @@ public final class AcceleoUIDocumentationUtils {
 		switch (visibility) {
 			case PRIVATE:
 				image = AcceleoUIActivator.getDefault().getImage(
-						IAcceleoContantsImage.TemplateEditor.Completion.QUERY_PRIVATE);
+						IAcceleoContantsImage.TemplateEditor.Completion.COMPLETION_QUERY_PRIVATE);
 				break;
 			case PROTECTED:
 				image = AcceleoUIActivator.getDefault().getImage(
-						IAcceleoContantsImage.TemplateEditor.Completion.QUERY_PROTECTED);
+						IAcceleoContantsImage.TemplateEditor.Completion.COMPLETION_QUERY_PROTECTED);
 				break;
 			case PUBLIC:
 				image = AcceleoUIActivator.getDefault().getImage(
-						IAcceleoContantsImage.TemplateEditor.Completion.QUERY_PUBLIC);
+						IAcceleoContantsImage.TemplateEditor.Completion.COMPLETION_QUERY_PUBLIC);
 				break;
 			default:
 				image = AcceleoUIActivator.getDefault().getImage(
-						IAcceleoContantsImage.TemplateEditor.Completion.QUERY_PUBLIC);
+						IAcceleoContantsImage.TemplateEditor.Completion.COMPLETION_QUERY_PUBLIC);
 				break;
 		}
 		return image;
