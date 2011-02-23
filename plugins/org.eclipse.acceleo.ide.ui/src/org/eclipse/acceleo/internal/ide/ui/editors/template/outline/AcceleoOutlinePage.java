@@ -363,9 +363,11 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 				((Scrollable)getTreeViewer().getControl()).getVerticalBar().setSelection(selection);
 			}
 		} else {
-			TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
-			getTreeViewer().refresh(element);
-			getTreeViewer().setExpandedTreePaths(treePaths);
+			if (!getTreeViewer().getTree().isDisposed()) {
+				TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
+				getTreeViewer().refresh(element);
+				getTreeViewer().setExpandedTreePaths(treePaths);
+			}
 		}
 	}
 
