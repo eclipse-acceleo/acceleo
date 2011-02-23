@@ -843,7 +843,7 @@ public class CompactHashSetTest extends TestCase {
 		duplicatesList.add(null);
 		duplicatesList.add(null);
 
-		Set<Object> set = new CompactHashSet<Object>(listInt10);
+		Set<Object> set = createSet(listInt10);
 		assertFalse(set.isEmpty());
 		assertSame(listInt10.size(), set.size());
 		assertSame(getNextPowerOfTwo(listInt10.size()), getInternalCapacity(set));
@@ -853,7 +853,7 @@ public class CompactHashSetTest extends TestCase {
 			assertTrue(set.contains(integer));
 		}
 
-		set = new CompactHashSet<Object>(setString20);
+		set = createSet(setString20);
 		assertFalse(set.isEmpty());
 		assertSame(setString20.size(), set.size());
 		assertSame(getNextPowerOfTwo(setString20.size()), getInternalCapacity(set));
@@ -863,7 +863,7 @@ public class CompactHashSetTest extends TestCase {
 			assertTrue(set.contains(string));
 		}
 
-		set = new CompactHashSet<Object>(dequeString40);
+		set = createSet(dequeString40);
 		assertFalse(set.isEmpty());
 		assertSame(dequeString40.size(), set.size());
 		assertSame(getNextPowerOfTwo(dequeString40.size()), getInternalCapacity(set));
@@ -873,7 +873,7 @@ public class CompactHashSetTest extends TestCase {
 			assertTrue(set.contains(string));
 		}
 
-		set = new CompactHashSet<Object>(duplicatesList);
+		set = createSet(duplicatesList);
 		final int expectedSize = duplicatesList.size() / 2;
 		assertFalse(set.isEmpty());
 		assertSame(expectedSize, set.size());
@@ -890,7 +890,7 @@ public class CompactHashSetTest extends TestCase {
 	 * Tests the empty set constructor.
 	 */
 	public void testInstantiationEmpty() {
-		Set<Object> set = new CompactHashSet<Object>();
+		Set<Object> set = createSet();
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(16, getInternalCapacity(set));
@@ -909,7 +909,7 @@ public class CompactHashSetTest extends TestCase {
 
 		for (int capacity : validCapacities) {
 			for (float loadFactor : validLoadFactors) {
-				Set<Object> set = new CompactHashSet<Object>(capacity, loadFactor);
+				Set<Object> set = createSet(capacity, loadFactor);
 				assertTrue(set.isEmpty());
 				assertSame(0, set.size());
 				assertEquals(Math.max(4, getNextPowerOfTwo(capacity)), getInternalCapacity(set));
@@ -917,7 +917,7 @@ public class CompactHashSetTest extends TestCase {
 			}
 			for (float loadFactor : invalidLoadFactors) {
 				try {
-					new CompactHashSet<Object>(capacity, loadFactor);
+					createSet(capacity, loadFactor);
 					if (loadFactor <= 0f || loadFactor > 1f || Float.isNaN(loadFactor)) {
 						fail("Expected IllegalArgumentException hasn't been thrown"); //$NON-NLS-1$
 					} else {
@@ -934,7 +934,7 @@ public class CompactHashSetTest extends TestCase {
 		for (int capacity : invalidCapacities) {
 			for (float loadFactor : validLoadFactors) {
 				try {
-					new CompactHashSet<Object>(capacity, loadFactor);
+					createSet(capacity, loadFactor);
 					fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
 				} catch (IndexOutOfBoundsException e) {
 					// Expected
@@ -942,7 +942,7 @@ public class CompactHashSetTest extends TestCase {
 			}
 			for (float loadFactor : invalidLoadFactors) {
 				try {
-					new CompactHashSet<Object>(capacity, loadFactor);
+					createSet(capacity, loadFactor);
 					if (loadFactor <= 0f || loadFactor > 1f || Float.isNaN(loadFactor)) {
 						fail("Expected IllegalArgumentException hasn't been thrown"); //$NON-NLS-1$
 					} else {
@@ -961,38 +961,38 @@ public class CompactHashSetTest extends TestCase {
 	 * Tests the {@link CompactHashSet#CompactHashSet(int)} constructor of our set.
 	 */
 	public void testInstantiationSize() {
-		Set<Object> set = new CompactHashSet<Object>(10);
+		Set<Object> set = createSet(10);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(16, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
 
-		set = new CompactHashSet<Object>(0);
+		set = createSet(0);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
 
-		set = new CompactHashSet<Object>((1 << 10) - 1);
+		set = createSet((1 << 10) - 1);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertEquals(1 << 10, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
 
-		set = new CompactHashSet<Object>(1 << 31);
+		set = createSet(1 << 31);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
 
-		set = new CompactHashSet<Object>(-10);
+		set = createSet(-10);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
 		assertEquals(0.75f, getInternalLoadFactor(set));
 
 		try {
-			set = new CompactHashSet<Object>(Integer.MAX_VALUE);
+			set = createSet(Integer.MAX_VALUE);
 			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
@@ -1002,7 +1002,7 @@ public class CompactHashSetTest extends TestCase {
 			 * The last possible size for our internal array is 2^30, trying to hold that much elements will
 			 * yield a size of -1, which is invalid.
 			 */
-			set = new CompactHashSet<Object>((1 << 30) + 1);
+			set = createSet((1 << 30) + 1);
 			fail("Expected IndexOutOfBoundsException hasn't been thrown"); //$NON-NLS-1$
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
@@ -1119,9 +1119,22 @@ public class CompactHashSetTest extends TestCase {
 			assertTrue(listInt10.contains(next) || setString20.contains(next) || dequeString40.contains(next));
 		}
 		assertFalse(containedValues.hasNext());
+		try {
+			containedValues.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
 
 		set.clear();
 		assertFalse(set.iterator().hasNext());
+		containedValues = set.iterator();
+		try {
+			containedValues.next();
+			fail("Expected NoSuchElementException hasn't been thrown"); //$NON-NLS-1$
+		} catch (NoSuchElementException e) {
+			// expected
+		}
 	}
 
 	/**
@@ -1184,6 +1197,108 @@ public class CompactHashSetTest extends TestCase {
 	}
 
 	/**
+	 * This will try and ensure that rehashing works properly both when we have a high count of "deleted"
+	 * entries and when no entry has been deleted.
+	 */
+	public void testRehashing() {
+		/*
+		 * We're using for this test values which we know the hashCode so as to prevent all collisions. We
+		 * need to test the rehashing when adding a new value into a set which only contains deleted
+		 * elements... rehashing won't happen if the value's hash collides with a deleted element.
+		 */
+		Set<Object> set1 = createSet();
+		Set<Object> set2 = createSet();
+
+		List<Integer> integers = new ArrayList<Integer>();
+		for (int i = 1; i < 14; i++) {
+			integers.add(Integer.valueOf(i));
+		}
+
+		assertSame(0, set1.size());
+		assertSame(16, getInternalCapacity(set1));
+		assertSame(0, set2.size());
+		assertSame(16, getInternalCapacity(set2));
+
+		/*
+		 * With the default capacity and load factor, the rehashing takes place at 13 insertions. For now, add
+		 * 12 elements in each set.
+		 */
+		for (int i = 0; i < 12; i++) {
+			set1.add(integers.get(i));
+			set2.add(integers.get(i));
+		}
+
+		// Make sure that the rehashing did not take place
+		assertSame(12, set1.size());
+		assertSame(16, getInternalCapacity(set1));
+		assertSame(12, set2.size());
+		assertSame(16, getInternalCapacity(set2));
+
+		// Delete 11 elements from set 1
+		for (int i = 0; i < 11; i++) {
+			set1.remove(integers.get(i));
+		}
+
+		assertSame(1, set1.size());
+		assertSame(16, getInternalCapacity(set1));
+		assertSame(12, set2.size());
+		assertSame(16, getInternalCapacity(set2));
+
+		// Now, add a 13th element to both sets
+		set1.add(integers.get(12));
+		set2.add(integers.get(12));
+
+		/*
+		 * And ensure that the first set's capacity hasn't been increased while the second set's has been
+		 * doubled.
+		 */
+		assertSame(2, set1.size());
+		assertSame(16, getInternalCapacity(set1));
+		assertSame(13, set2.size());
+		assertSame(32, getInternalCapacity(set2));
+	}
+
+	/**
+	 * Tests the behavior of {@link CompactHashSet#remove(Object)} with random elements.
+	 */
+	public void testRemove() {
+		Set<Object> set = createSet();
+		List<Object> objects = new ArrayList<Object>();
+
+		for (int i = 0; i < 20; i++) {
+			String rand = getRandomString();
+			objects.add(rand);
+		}
+		assertFalse(set.containsAll(objects));
+
+		for (Object o : objects) {
+			boolean removed = set.remove(o);
+			assertFalse(removed);
+			assertFalse(set.contains(o));
+		}
+
+		for (Object o : objects) {
+			set.add(o);
+		}
+		assertTrue(set.containsAll(objects));
+
+		for (Object o : objects) {
+			assertTrue(set.contains(o));
+			boolean removed = set.remove(o);
+			assertTrue(removed);
+			assertFalse(set.contains(o));
+		}
+
+		assertFalse(set.containsAll(objects));
+
+		for (Object o : objects) {
+			boolean removed = set.remove(o);
+			assertFalse(removed);
+			assertFalse(set.contains(o));
+		}
+	}
+
+	/**
 	 * Creates an empty set on which to execute these tests.
 	 * 
 	 * @return The set to execute these tests on.
@@ -1204,6 +1319,87 @@ public class CompactHashSetTest extends TestCase {
 	}
 
 	/**
+	 * Creates a set using the single int constructor.
+	 * 
+	 * @param elementCount
+	 *            Number of elements this set is meant to contain.
+	 * @return The set to execute these tests on.
+	 */
+	protected Set<Object> createSet(int elementCount) {
+		return new CompactHashSet<Object>(elementCount);
+	}
+
+	/**
+	 * Creates a new set given its initial capacity and load factor.
+	 * 
+	 * @param elementCount
+	 *            Number of elements this set is meant to contain.
+	 * @param loadFactor
+	 *            Load factor of the new set.
+	 * @return The set to execute these tests on.
+	 */
+	protected Set<Object> createSet(int elementCount, float loadFactor) {
+		return new CompactHashSet<Object>(elementCount, loadFactor);
+	}
+
+	/**
+	 * Returns a list containing <code>size</code> random Integers.
+	 * 
+	 * @param size
+	 *            Size of the list to create.
+	 * @return A list containing <code>size</code> random Integers.
+	 */
+	protected List<Integer> randomIntegerList(int size) {
+		List<Integer> list = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) {
+			Integer integer = getRandomInteger();
+			while (list.contains(integer)) {
+				integer = getRandomInteger();
+			}
+			list.add(integer);
+		}
+		return list;
+	}
+
+	/**
+	 * Returns a deque containing <code>size</code> random Strings.
+	 * 
+	 * @param size
+	 *            Size of the deque to create.
+	 * @return A deque containing <code>size</code> random Strings.
+	 */
+	protected Deque<String> randomStringDeque(int size) {
+		Deque<String> deque = new CircularArrayDeque<String>(size);
+		for (int i = 0; i < size; i++) {
+			String s = getRandomString();
+			while (deque.contains(s)) {
+				s = getRandomString();
+			}
+			deque.add(s);
+		}
+		return deque;
+	}
+
+	/**
+	 * Returns a set containing <code>size</code> random Strings.
+	 * 
+	 * @param size
+	 *            Size of the set to create.
+	 * @return A set containing <code>size</code> random Strings.
+	 */
+	protected Set<String> randomStringSet(int size) {
+		Set<String> set = new HashSet<String>(size);
+		for (int i = 0; i < size; i++) {
+			String s = getRandomString();
+			while (set.contains(s)) {
+				s = getRandomString();
+			}
+			set.add(s);
+		}
+		return set;
+	}
+
+	/**
 	 * Makes the "data" field of the given set public in order to retrieve it.
 	 * 
 	 * @param set
@@ -1215,7 +1411,7 @@ public class CompactHashSetTest extends TestCase {
 			fail("Unexpected set implementation"); //$NON-NLS-1$
 		}
 		Field dataField = null;
-		for (Field field : set.getClass().getDeclaredFields()) {
+		for (Field field : CompactHashSet.class.getDeclaredFields()) {
 			if (field.getName().equals("data")) { //$NON-NLS-1$
 				dataField = field;
 				break;
@@ -1262,7 +1458,7 @@ public class CompactHashSetTest extends TestCase {
 			fail("Unexpected set implementation"); //$NON-NLS-1$
 		}
 		Field loadFactorField = null;
-		for (Field field : set.getClass().getDeclaredFields()) {
+		for (Field field : CompactHashSet.class.getDeclaredFields()) {
 			if (field.getName().equals("loadFactor")) { //$NON-NLS-1$
 				loadFactorField = field;
 				break;
@@ -1320,62 +1516,5 @@ public class CompactHashSetTest extends TestCase {
 	 */
 	private String getRandomString() {
 		return getRandomInteger().toString();
-	}
-
-	/**
-	 * Returns a list containing <code>size</code> random Integers.
-	 * 
-	 * @param size
-	 *            Size of the list to create.
-	 * @return A list containing <code>size</code> random Integers.
-	 */
-	private List<Integer> randomIntegerList(int size) {
-		List<Integer> list = new ArrayList<Integer>(size);
-		for (int i = 0; i < size; i++) {
-			Integer integer = getRandomInteger();
-			while (list.contains(integer)) {
-				integer = getRandomInteger();
-			}
-			list.add(integer);
-		}
-		return list;
-	}
-
-	/**
-	 * Returns a deque containing <code>size</code> random Strings.
-	 * 
-	 * @param size
-	 *            Size of the deque to create.
-	 * @return A deque containing <code>size</code> random Strings.
-	 */
-	private Deque<String> randomStringDeque(int size) {
-		Deque<String> deque = new CircularArrayDeque<String>(size);
-		for (int i = 0; i < size; i++) {
-			String s = getRandomString();
-			while (deque.contains(s)) {
-				s = getRandomString();
-			}
-			deque.add(s);
-		}
-		return deque;
-	}
-
-	/**
-	 * Returns a set containing <code>size</code> random Strings.
-	 * 
-	 * @param size
-	 *            Size of the set to create.
-	 * @return A set containing <code>size</code> random Strings.
-	 */
-	private Set<String> randomStringSet(int size) {
-		Set<String> set = new HashSet<String>(size);
-		for (int i = 0; i < size; i++) {
-			String s = getRandomString();
-			while (set.contains(s)) {
-				s = getRandomString();
-			}
-			set.add(s);
-		}
-		return set;
 	}
 }

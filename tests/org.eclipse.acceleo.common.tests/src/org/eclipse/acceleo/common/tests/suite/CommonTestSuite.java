@@ -18,6 +18,7 @@ import junit.textui.TestRunner;
 import org.eclipse.acceleo.common.tests.unit.utils.AcceleoCommonPluginTest;
 import org.eclipse.acceleo.common.tests.unit.utils.CircularArrayDequeTest;
 import org.eclipse.acceleo.common.tests.unit.utils.CompactHashSetTest;
+import org.eclipse.acceleo.common.tests.unit.utils.CompactLinkedHashSetTest;
 import org.eclipse.acceleo.common.tests.unit.utils.MessagesTest;
 import org.eclipse.acceleo.common.tests.unit.utils.modelutils.ModelUtilsTestSuite;
 
@@ -49,6 +50,7 @@ public class CommonTestSuite extends TestCase {
 		suite.addTestSuite(AcceleoCommonPluginTest.class);
 		suite.addTestSuite(CircularArrayDequeTest.class);
 		suite.addTestSuite(CompactHashSetTest.class);
+		suite.addTestSuite(CompactLinkedHashSetTest.class);
 		suite.addTest(ModelUtilsTestSuite.suite());
 
 		return suite;
