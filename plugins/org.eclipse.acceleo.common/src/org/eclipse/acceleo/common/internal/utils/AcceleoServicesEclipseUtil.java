@@ -16,6 +16,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -175,6 +176,14 @@ public final class AcceleoServicesEclipseUtil {
 			}
 			if (clazz == null) {
 				clazz = workspaceSuffixWorkaround(uri, qualifiedName);
+			}
+		}
+		// This is our last, most costly ... but most effective test
+		if (clazz == null) {
+			BundleURLConverter converter = new BundleURLConverter(uri.toString());
+			Bundle bundle = converter.resolveBundle();
+			if (bundle != null) {
+				clazz = registerService(bundle, qualifiedName);
 			}
 		}
 		if (clazz != null) {
