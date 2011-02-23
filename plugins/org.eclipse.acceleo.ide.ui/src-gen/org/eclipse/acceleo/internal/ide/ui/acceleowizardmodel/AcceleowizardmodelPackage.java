@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackage.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackage.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -272,13 +272,40 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_MODULE__GENERATE_DOCUMENTATION = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Is Initialized</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_MODULE__IS_INITIALIZED = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Initialization Kind</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_MODULE__INITIALIZATION_KIND = EcorePackage.EOBJECT_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Initialization Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_MODULE__INITIALIZATION_PATH = EcorePackage.EOBJECT_FEATURE_COUNT + 8;
+
+	/**
 	 * The number of structural features of the '<em>Acceleo Module</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_MODULE_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
+	int ACCELEO_MODULE_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl <em>Acceleo Module Element</em>}' class.
@@ -318,40 +345,13 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_MODULE_ELEMENT__KIND = EcorePackage.EOBJECT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Is Initialized</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACCELEO_MODULE_ELEMENT__IS_INITIALIZED = EcorePackage.EOBJECT_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Initialization Kind</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACCELEO_MODULE_ELEMENT__INITIALIZATION_KIND = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Initialization Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACCELEO_MODULE_ELEMENT__INITIALIZATION_PATH = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
-
-	/**
 	 * The feature id for the '<em><b>Is Main</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_MODULE_ELEMENT__IS_MAIN = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
+	int ACCELEO_MODULE_ELEMENT__IS_MAIN = EcorePackage.EOBJECT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Generate File</b></em>' attribute.
@@ -360,7 +360,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_MODULE_ELEMENT__GENERATE_FILE = EcorePackage.EOBJECT_FEATURE_COUNT + 7;
+	int ACCELEO_MODULE_ELEMENT__GENERATE_FILE = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Acceleo Module Element</em>' class.
@@ -369,7 +369,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_MODULE_ELEMENT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 8;
+	int ACCELEO_MODULE_ELEMENT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl <em>Acceleo Main Class</em>}' class.
@@ -693,6 +693,39 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EAttribute getAcceleoModule_GenerateDocumentation();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isIsInitialized <em>Is Initialized</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Initialized</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isIsInitialized()
+	 * @see #getAcceleoModule()
+	 * @generated
+	 */
+	EAttribute getAcceleoModule_IsInitialized();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationKind <em>Initialization Kind</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Initialization Kind</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationKind()
+	 * @see #getAcceleoModule()
+	 * @generated
+	 */
+	EAttribute getAcceleoModule_InitializationKind();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationPath <em>Initialization Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Initialization Path</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationPath()
+	 * @see #getAcceleoModule()
+	 * @generated
+	 */
+	EAttribute getAcceleoModule_InitializationPath();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement <em>Acceleo Module Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -734,39 +767,6 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAcceleoModuleElement_Kind();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsInitialized <em>Is Initialized</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Initialized</em>'.
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsInitialized()
-	 * @see #getAcceleoModuleElement()
-	 * @generated
-	 */
-	EAttribute getAcceleoModuleElement_IsInitialized();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationKind <em>Initialization Kind</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Initialization Kind</em>'.
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationKind()
-	 * @see #getAcceleoModuleElement()
-	 * @generated
-	 */
-	EAttribute getAcceleoModuleElement_InitializationKind();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationPath <em>Initialization Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Initialization Path</em>'.
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationPath()
-	 * @see #getAcceleoModuleElement()
-	 * @generated
-	 */
-	EAttribute getAcceleoModuleElement_InitializationPath();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsMain <em>Is Main</em>}'.
@@ -1084,6 +1084,30 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EAttribute ACCELEO_MODULE__GENERATE_DOCUMENTATION = eINSTANCE.getAcceleoModule_GenerateDocumentation();
 
 		/**
+		 * The meta object literal for the '<em><b>Is Initialized</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_MODULE__IS_INITIALIZED = eINSTANCE.getAcceleoModule_IsInitialized();
+
+		/**
+		 * The meta object literal for the '<em><b>Initialization Kind</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_MODULE__INITIALIZATION_KIND = eINSTANCE.getAcceleoModule_InitializationKind();
+
+		/**
+		 * The meta object literal for the '<em><b>Initialization Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_MODULE__INITIALIZATION_PATH = eINSTANCE.getAcceleoModule_InitializationPath();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl <em>Acceleo Module Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1116,30 +1140,6 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE_ELEMENT__KIND = eINSTANCE.getAcceleoModuleElement_Kind();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Initialized</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACCELEO_MODULE_ELEMENT__IS_INITIALIZED = eINSTANCE.getAcceleoModuleElement_IsInitialized();
-
-		/**
-		 * The meta object literal for the '<em><b>Initialization Kind</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACCELEO_MODULE_ELEMENT__INITIALIZATION_KIND = eINSTANCE.getAcceleoModuleElement_InitializationKind();
-
-		/**
-		 * The meta object literal for the '<em><b>Initialization Path</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ACCELEO_MODULE_ELEMENT__INITIALIZATION_PATH = eINSTANCE.getAcceleoModuleElement_InitializationPath();
 
 		/**
 		 * The meta object literal for the '<em><b>Is Main</b></em>' attribute feature.

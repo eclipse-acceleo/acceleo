@@ -8,26 +8,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example;
+package org.eclipse.acceleo.internal.ide.ui.wizards.module.example;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
+import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 
 /**
- * To initialize automatically an Acceleo template file from another M2T template file, by copying and
- * modifying the text of the example into the new template.
+ * To initialize automatically an Acceleo module file from another M2T file, by copying and modifying the text
+ * of the example into the new module.
  * 
- * @see IAcceleoExampleStrategy
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrategy {
-
+public abstract class AbstractAcceleoInitializationStrategy implements IAcceleoInitializationStrategy {
 	/**
 	 * Constant to declare a complex pattern variable in the text to read.
 	 */
@@ -46,9 +45,29 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 	protected static final String END_LINE = "\\n"; //$NON-NLS-1$
 
 	/**
+	 * The module element kind.
+	 */
+	protected String elementKind;
+
+	/**
+	 * Indicates if the template has a file block.
+	 */
+	protected boolean templateHasFileBlock;
+
+	/**
+	 * Indicates if the template is main.
+	 */
+	protected boolean templateIsMain;
+
+	/**
+	 * Indicates if the documentation should be generated.
+	 */
+	protected boolean shouldGenerateDocumentation;
+
+	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceMetamodelURI()
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceMetamodelURI()
 	 */
 	public boolean forceMetamodelURI() {
 		return true;
@@ -57,25 +76,7 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasFile()
-	 */
-	public boolean forceHasFile() {
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceHasMain()
-	 */
-	public boolean forceHasMain() {
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#forceMetamodelType()
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceMetamodelType()
 	 */
 	public boolean forceMetamodelType() {
 		return true;
@@ -84,11 +85,43 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy#getContent(org.eclipse.core.resources.IFile,
-	 *      java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceHasFile()
 	 */
-	public String getContent(IFile exampleFile, String moduleName, boolean templateHasFileBlock,
-			boolean templateIsMain, String metamodelURI, String metamodelFileType) {
+	public boolean forceHasFile() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceHasMain()
+	 */
+	public boolean forceHasMain() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#configure(java.lang.String,
+	 *      boolean, boolean, boolean)
+	 */
+	public void configure(String moduleElementKind, boolean hasFileBlock, boolean isMain,
+			boolean generateDocumentation) {
+		this.elementKind = moduleElementKind;
+		this.templateHasFileBlock = hasFileBlock;
+		this.templateIsMain = isMain;
+		this.shouldGenerateDocumentation = generateDocumentation;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#getContent(org.eclipse.core.resources.IFile,
+	 *      java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public String getContent(IFile exampleFile, String moduleName, List<String> metamodelURI,
+			String metamodelFileType) {
 		StringBuffer buffer = new StringBuffer(""); //$NON-NLS-1$
 		if (exampleFile != null && exampleFile.exists()) {
 			StringBuffer text = readExampleContent(exampleFile);
@@ -342,5 +375,4 @@ public abstract class AbstractM2TContentStrategy implements IAcceleoExampleStrat
 		}
 		return null;
 	}
-
 }

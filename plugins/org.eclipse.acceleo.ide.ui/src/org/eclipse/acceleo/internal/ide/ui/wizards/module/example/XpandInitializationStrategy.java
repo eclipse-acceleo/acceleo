@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example;
+package org.eclipse.acceleo.internal.ide.ui.wizards.module.example;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,13 +16,13 @@ import java.util.regex.Pattern;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 
 /**
- * To initialize automatically an Acceleo template file from an Xpand template file, by copying and modifying
- * the text of the example into the new template.
+ * To initialize automatically an Acceleo module file from an Xpand template file, by copying and modifying
+ * the text of the example into the new module.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-public class XpandContentStrategy extends AbstractM2TContentStrategy {
-
+public class XpandInitializationStrategy extends AbstractAcceleoInitializationStrategy {
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -159,4 +159,30 @@ public class XpandContentStrategy extends AbstractM2TContentStrategy {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceQuery()
+	 */
+	public boolean forceQuery() {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceTemplate()
+	 */
+	public boolean forceTemplate() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy#forceDocumentation()
+	 */
+	public boolean forceDocumentation() {
+		return true;
+	}
 }

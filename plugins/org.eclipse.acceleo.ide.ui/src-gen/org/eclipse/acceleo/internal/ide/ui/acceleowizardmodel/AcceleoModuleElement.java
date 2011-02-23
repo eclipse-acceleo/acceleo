@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleoModuleElement.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleoModuleElement.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -19,9 +19,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getParameterType <em>Parameter Type</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getKind <em>Kind</em>}</li>
- *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsInitialized <em>Is Initialized</em>}</li>
- *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationKind <em>Initialization Kind</em>}</li>
- *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationPath <em>Initialization Path</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsMain <em>Is Main</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isGenerateFile <em>Generate File</em>}</li>
  * </ul>
@@ -112,85 +109,6 @@ public interface AcceleoModuleElement extends EObject {
 	 * @generated
 	 */
 	void setKind(ModuleElementKind value);
-
-	/**
-	 * Returns the value of the '<em><b>Is Initialized</b></em>' attribute.
-	 * The default value is <code>"false"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Is Initialized</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Is Initialized</em>' attribute.
-	 * @see #setIsInitialized(boolean)
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage#getAcceleoModuleElement_IsInitialized()
-	 * @model default="false" required="true"
-	 * @generated
-	 */
-	boolean isIsInitialized();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsInitialized <em>Is Initialized</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Is Initialized</em>' attribute.
-	 * @see #isIsInitialized()
-	 * @generated
-	 */
-	void setIsInitialized(boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Initialization Kind</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Initialization Kind</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initialization Kind</em>' attribute.
-	 * @see #setInitializationKind(String)
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage#getAcceleoModuleElement_InitializationKind()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getInitializationKind();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationKind <em>Initialization Kind</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initialization Kind</em>' attribute.
-	 * @see #getInitializationKind()
-	 * @generated
-	 */
-	void setInitializationKind(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Initialization Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Initialization Path</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initialization Path</em>' attribute.
-	 * @see #setInitializationPath(String)
-	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage#getAcceleoModuleElement_InitializationPath()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getInitializationPath();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getInitializationPath <em>Initialization Path</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initialization Path</em>' attribute.
-	 * @see #getInitializationPath()
-	 * @generated
-	 */
-	void setInitializationPath(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Is Main</b></em>' attribute.

@@ -352,7 +352,7 @@ public final class AcceleoUIDocumentationUtils {
 	 */
 	private static String getTypeOfParameter(EList<Variable> parameters, String parameterName) {
 		for (Variable variable : parameters) {
-			if (variable.getName().equals(parameterName)) {
+			if (variable != null && variable.getType() != null && variable.getName().equals(parameterName)) {
 				return variable.getType().getName();
 			}
 		}

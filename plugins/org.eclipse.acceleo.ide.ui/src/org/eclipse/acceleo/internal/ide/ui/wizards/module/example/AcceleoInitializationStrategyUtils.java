@@ -8,13 +8,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example;
+package org.eclipse.acceleo.internal.ide.ui.wizards.module.example;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
+import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -28,37 +28,39 @@ import org.osgi.framework.Bundle;
 /**
  * Utility class to find all the example strategies existing in the current Eclipse instance.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-public final class AcceleoExampleStrategyUtils {
+public final class AcceleoInitializationStrategyUtils {
 
 	/**
-	 * All the example strategies existing in the current Eclipse instance. An internal extension point is
-	 * defined to specify multiple example strategies. It is often used to initialize automatically a template
-	 * file from an example in the Acceleo project.
+	 * All the initialization strategies existing in the current Eclipse instance. An internal extension point
+	 * is defined to specify multiple initialization strategies. It is often used to initialize automatically
+	 * a template file from an example in the Acceleo project.
 	 */
-	private static List<IAcceleoExampleStrategy> exampleStrategies;
+	private static List<IAcceleoInitializationStrategy> initializationStrategy;
 
 	/**
-	 * Constructor.
+	 * The constructor.
 	 */
-	private AcceleoExampleStrategyUtils() {
+	private AcceleoInitializationStrategyUtils() {
+		// prevent instantiation
 	}
 
 	/**
-	 * Gets all the example strategies existing in the current Eclipse instance. An internal extension point
-	 * is defined to specify multiple example strategies. It is often used to initialize automatically a
-	 * template file from an example in the Acceleo project.
+	 * Gets all the initialization strategies existing in the current Eclipse instance. An internal extension
+	 * point is defined to specify multiple initialization strategies. It is often used to initialize
+	 * automatically a template file from an example in the Acceleo project.
 	 * 
-	 * @return all the example strategies
+	 * @return all the initialization strategies
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<IAcceleoExampleStrategy> getExampleStrategies() {
-		if (exampleStrategies == null) {
-			exampleStrategies = new ArrayList<IAcceleoExampleStrategy>();
+	public static List<IAcceleoInitializationStrategy> getInitializationStrategy() {
+		if (initializationStrategy == null) {
+			initializationStrategy = new ArrayList<IAcceleoInitializationStrategy>();
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
-					.getExtensionPoint(IAcceleoExampleStrategy.EXAMPLE_STRATEGY_EXTENSION_ID);
+					.getExtensionPoint(IAcceleoInitializationStrategy.INITIALIZATION_STRATEGY_EXTENSION_ID);
 			if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
 				IExtension[] extensions = extensionPoint.getExtensions();
 				for (int i = 0; i < extensions.length; i++) {
@@ -70,11 +72,10 @@ public final class AcceleoExampleStrategyUtils {
 						if (strategyClass != null) {
 							try {
 								Bundle bundle = Platform.getBundle(member.getNamespaceIdentifier());
-								@SuppressWarnings("cast")
-								Class<IAcceleoExampleStrategy> c = (Class<IAcceleoExampleStrategy>)bundle
+								Class<IAcceleoInitializationStrategy> c = (Class<IAcceleoInitializationStrategy>)bundle
 										.loadClass(strategyClass);
-								IAcceleoExampleStrategy exampleStrategy = c.newInstance();
-								exampleStrategies.add(exampleStrategy);
+								IAcceleoInitializationStrategy exampleStrategy = c.newInstance();
+								initializationStrategy.add(exampleStrategy);
 							} catch (ClassNotFoundException e) {
 								IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
 										IStatus.OK, e.getMessage(), e);
@@ -89,17 +90,17 @@ public final class AcceleoExampleStrategyUtils {
 								AcceleoUIActivator.getDefault().getLog().log(status);
 							}
 						} else {
+							String message = AcceleoUIMessages.getString(
+									"AcceleoNewTemplatesWizard.MissingStrategyClass", //$NON-NLS-1$
+									IAcceleoInitializationStrategy.INITIALIZATION_STRATEGY_EXTENSION_ID);
 							IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
-									IStatus.OK, AcceleoUIMessages.getString(
-											"AcceleoNewTemplatesWizard.MissingStrategyClass", //$NON-NLS-1$
-											IAcceleoExampleStrategy.EXAMPLE_STRATEGY_EXTENSION_ID), null);
+									IStatus.OK, message, null);
 							AcceleoUIActivator.getDefault().getLog().log(status);
 						}
 					}
 				}
 			}
 		}
-		return exampleStrategies;
+		return initializationStrategy;
 	}
-
 }

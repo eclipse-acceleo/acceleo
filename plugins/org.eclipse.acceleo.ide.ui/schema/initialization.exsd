@@ -3,10 +3,10 @@
 <schema targetNamespace="org.eclipse.acceleo.ide.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.acceleo.ide.ui" id="example" name="org.eclipse.acceleo.ide.ui.example"/>
+         <meta.schema plugin="org.eclipse.acceleo.ide.ui" id="initialization" name="org.eclipse.acceleo.ide.ui.initialization"/>
       </appInfo>
       <documentation>
-         Define a strategy to initialize automatically a file in the Acceleo project.
+         This extension point is available for those who want to contribute a new initialization strategy in the new module wizard.
       </documentation>
    </annotation>
 
@@ -15,13 +15,10 @@
          <appInfo>
             <meta.element />
          </appInfo>
-         <documentation>
-            This extension is deprecated, please use the new extension named org.eclipse.acceleo.ide.ui.initialization.
-         </documentation>
       </annotation>
       <complexType>
          <sequence>
-            <element ref="strategy" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="initializationStrategy" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -50,41 +47,56 @@
       </complexType>
    </element>
 
-   <element name="strategy">
-      <annotation>
-         <documentation>
-            This extension is deprecated, please use the new extension named org.eclipse.acceleo.ide.ui.initialization.
-         </documentation>
-      </annotation>
+   <element name="initializationStrategy">
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The fully qualified name of a Java class implementing &lt;code&gt;org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy&lt;/code&gt;.
+                  The fully qualified name of a java class implementing &lt;code&gt;org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy&lt;/code&gt;.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy"/>
                </appInfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
-
-
-
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Acceleo 3.1
+      </documentation>
+   </annotation>
 
    <annotation>
       <appInfo>
-         <meta.section type="copyright"/>
+         <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         Copyright (c) 2009, 2011 Obeo.
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License v1.0
-which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+         [Enter extension point usage example here.]
       </documentation>
    </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
 
 </schema>

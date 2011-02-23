@@ -33,17 +33,20 @@ public final class JavaServicesUtils {
 	 * @return the textual format of the query
 	 */
 	public static String createQuery(Method javaMethod) {
+		final String argPrefix = "arg"; //$NON-NLS-1$
+		final String parenthesisStart = "("; //$NON-NLS-1$
+
 		StringBuilder buffer = new StringBuilder();
 		Class<?>[] javaParameters = javaMethod.getParameterTypes();
 		buffer.append("[query public "); //$NON-NLS-1$
 		buffer.append(javaMethod.getName());
-		buffer.append("("); //$NON-NLS-1$
+		buffer.append(parenthesisStart);
 		for (int i = 0; i < javaParameters.length; i++) {
 			if (i > 0) {
 				buffer.append(',');
 				buffer.append(' ');
 			}
-			buffer.append("arg"); //$NON-NLS-1$
+			buffer.append(argPrefix);
 			buffer.append(i);
 			buffer.append(" : "); //$NON-NLS-1$
 			buffer.append(javaClass2OclType(javaParameters[i]));
@@ -54,7 +57,7 @@ public final class JavaServicesUtils {
 		buffer.append(javaMethod.getDeclaringClass().getName());
 		buffer.append("', '"); //$NON-NLS-1$
 		buffer.append(javaMethod.getName());
-		buffer.append("("); //$NON-NLS-1$
+		buffer.append(parenthesisStart);
 		for (int i = 0; i < javaParameters.length; i++) {
 			if (i > 0) {
 				buffer.append(',');
@@ -67,7 +70,71 @@ public final class JavaServicesUtils {
 			if (i > 0) {
 				buffer.append(", "); //$NON-NLS-1$
 			}
-			buffer.append("arg"); //$NON-NLS-1$
+			buffer.append(argPrefix);
+			buffer.append(i);
+		}
+		buffer.append("}) /]\n\n"); //$NON-NLS-1$
+		return buffer.toString();
+	}
+
+	/**
+	 * Create the query that is able to invoke the given Java method.
+	 * 
+	 * @param javaMethod
+	 *            is the current method of the class
+	 * @param withDocumentation
+	 *            Indicates if we should generate some documentation too
+	 * @return the textual format of the query
+	 */
+	public static String createQuery(Method javaMethod, boolean withDocumentation) {
+		final String argPrefix = "arg"; //$NON-NLS-1$
+		final String parenthesisStart = "("; //$NON-NLS-1$
+
+		StringBuilder buffer = new StringBuilder();
+		Class<?>[] javaParameters = javaMethod.getParameterTypes();
+		if (withDocumentation) {
+			buffer.append("[**\n * The documentation of the query\n"); //$NON-NLS-1$
+			for (int i = 0; i < javaParameters.length; i++) {
+				buffer.append(" * @param arg"); //$NON-NLS-1$
+				buffer.append(i);
+				buffer.append("\n"); //$NON-NLS-1$
+			}
+			buffer.append(" */]\n"); //$NON-NLS-1$
+		}
+
+		buffer.append("[query public "); //$NON-NLS-1$
+		buffer.append(javaMethod.getName());
+		buffer.append(parenthesisStart);
+		for (int i = 0; i < javaParameters.length; i++) {
+			if (i > 0) {
+				buffer.append(',');
+				buffer.append(' ');
+			}
+			buffer.append(argPrefix);
+			buffer.append(i);
+			buffer.append(" : "); //$NON-NLS-1$
+			buffer.append(javaClass2OclType(javaParameters[i]));
+		}
+		buffer.append(") : "); //$NON-NLS-1$
+		buffer.append(javaClass2OclType(javaMethod.getReturnType()));
+		buffer.append("\n\t= invoke('"); //$NON-NLS-1$
+		buffer.append(javaMethod.getDeclaringClass().getName());
+		buffer.append("', '"); //$NON-NLS-1$
+		buffer.append(javaMethod.getName());
+		buffer.append(parenthesisStart);
+		for (int i = 0; i < javaParameters.length; i++) {
+			if (i > 0) {
+				buffer.append(',');
+				buffer.append(' ');
+			}
+			buffer.append(javaParameters[i].getName());
+		}
+		buffer.append(")', Sequence{"); //$NON-NLS-1$
+		for (int i = 0; i < javaParameters.length; i++) {
+			if (i > 0) {
+				buffer.append(", "); //$NON-NLS-1$
+			}
+			buffer.append(argPrefix);
 			buffer.append(i);
 		}
 		buffer.append("}) /]\n\n"); //$NON-NLS-1$

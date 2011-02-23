@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackageImpl.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackageImpl.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -331,6 +331,33 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getAcceleoModule_IsInitialized() {
+		return (EAttribute)acceleoModuleEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoModule_InitializationKind() {
+		return (EAttribute)acceleoModuleEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoModule_InitializationPath() {
+		return (EAttribute)acceleoModuleEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getAcceleoModuleElement() {
 		return acceleoModuleElementEClass;
 	}
@@ -367,7 +394,7 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAcceleoModuleElement_IsInitialized() {
+	public EAttribute getAcceleoModuleElement_IsMain() {
 		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -376,35 +403,8 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAcceleoModuleElement_InitializationKind() {
-		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getAcceleoModuleElement_InitializationPath() {
-		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getAcceleoModuleElement_IsMain() {
-		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getAcceleoModuleElement_GenerateFile() {
-		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(7);
+		return (EAttribute)acceleoModuleElementEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -539,14 +539,14 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		createEAttribute(acceleoModuleEClass, ACCELEO_MODULE__METAMODEL_UR_IS);
 		createEReference(acceleoModuleEClass, ACCELEO_MODULE__MODULE_ELEMENT);
 		createEAttribute(acceleoModuleEClass, ACCELEO_MODULE__GENERATE_DOCUMENTATION);
+		createEAttribute(acceleoModuleEClass, ACCELEO_MODULE__IS_INITIALIZED);
+		createEAttribute(acceleoModuleEClass, ACCELEO_MODULE__INITIALIZATION_KIND);
+		createEAttribute(acceleoModuleEClass, ACCELEO_MODULE__INITIALIZATION_PATH);
 
 		acceleoModuleElementEClass = createEClass(ACCELEO_MODULE_ELEMENT);
 		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__NAME);
 		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__PARAMETER_TYPE);
 		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__KIND);
-		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__IS_INITIALIZED);
-		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__INITIALIZATION_KIND);
-		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__INITIALIZATION_PATH);
 		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__IS_MAIN);
 		createEAttribute(acceleoModuleElementEClass, ACCELEO_MODULE_ELEMENT__GENERATE_FILE);
 
@@ -624,14 +624,14 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		initEAttribute(getAcceleoModule_MetamodelURIs(), ecorePackage.getEString(), "metamodelURIs", null, 1, -1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(getAcceleoModule_ModuleElement(), this.getAcceleoModuleElement(), null, "moduleElement", null, 0, 1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoModule_GenerateDocumentation(), ecorePackage.getEBoolean(), "generateDocumentation", null, 1, 1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoModule_IsInitialized(), ecorePackage.getEBoolean(), "isInitialized", "false", 1, 1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(getAcceleoModule_InitializationKind(), ecorePackage.getEString(), "initializationKind", null, 1, 1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoModule_InitializationPath(), ecorePackage.getEString(), "initializationPath", null, 1, 1, AcceleoModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(acceleoModuleElementEClass, AcceleoModuleElement.class, "AcceleoModuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getAcceleoModuleElement_Name(), ecorePackage.getEString(), "name", null, 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoModuleElement_ParameterType(), ecorePackage.getEString(), "parameterType", null, 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoModuleElement_Kind(), this.getModuleElementKind(), "kind", null, 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getAcceleoModuleElement_IsInitialized(), ecorePackage.getEBoolean(), "isInitialized", "false", 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
-		initEAttribute(getAcceleoModuleElement_InitializationKind(), ecorePackage.getEString(), "initializationKind", null, 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getAcceleoModuleElement_InitializationPath(), ecorePackage.getEString(), "initializationPath", null, 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoModuleElement_IsMain(), ecorePackage.getEBoolean(), "isMain", "false", 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEAttribute(getAcceleoModuleElement_GenerateFile(), ecorePackage.getEBoolean(), "generateFile", "false", 1, 1, AcceleoModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -20,6 +20,7 @@ import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IContainer;
@@ -61,6 +62,11 @@ public class AcceleoUIGenerator {
 	private static Module antReadMeGenerator;
 
 	/**
+	 * The Acceleo module that will generate the Acceleo module file.
+	 */
+	private static Module moduleGenerator;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -96,7 +102,8 @@ public class AcceleoUIGenerator {
 		try {
 			if (acceleoJavaClassGenerator == null) {
 				ResourceSet resourceSet = new ResourceSetImpl();
-				URI moduleURI = this.convertToURI(IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI);
+				URI moduleURI = this
+						.convertToURI(IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI);
 				EObject load = ModelUtils.load(moduleURI, resourceSet);
 
 				if (load instanceof Module) {
@@ -187,6 +194,41 @@ public class AcceleoUIGenerator {
 				File generationRoot = outputContainer.getLocation().toFile();
 				new AcceleoService(new DefaultStrategy()).doGenerate(buildAcceleoGenerator, templateName,
 						acceleoProject, generationRoot, new BasicMonitor());
+				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			}
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+	}
+
+	/**
+	 * Generates the Acceleo module.
+	 * 
+	 * @param acceleoModule
+	 *            the Acceleo module.
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateAcceleoModule(AcceleoModule acceleoModule, IContainer outputContainer) {
+		try {
+			if (moduleGenerator == null) {
+				ResourceSet resourceSet = new ResourceSetImpl();
+				URI moduleURI = this.convertToURI(IAcceleoGenerationConstants.ACCELEO_MODULE_GENERATOR_URI);
+				EObject load = ModelUtils.load(moduleURI, resourceSet);
+
+				if (load instanceof Module) {
+					moduleGenerator = (Module)load;
+				}
+			}
+
+			if (moduleGenerator != null) {
+				String templateName = IAcceleoGenerationConstants.ACCELEO_MODULE_TEMPLATE_URI;
+				File generationRoot = outputContainer.getLocation().toFile();
+				new AcceleoService(new DefaultStrategy()).doGenerate(moduleGenerator, templateName,
+						acceleoModule, generationRoot, new BasicMonitor());
+
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 			}
 		} catch (IOException e) {

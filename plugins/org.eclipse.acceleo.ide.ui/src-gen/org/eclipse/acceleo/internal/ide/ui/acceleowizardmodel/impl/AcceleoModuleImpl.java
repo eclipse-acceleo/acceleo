@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleoModuleImpl.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleoModuleImpl.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -35,6 +35,9 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#getMetamodelURIs <em>Metamodel UR Is</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#getModuleElement <em>Module Element</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#isGenerateDocumentation <em>Generate Documentation</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#isIsInitialized <em>Is Initialized</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#getInitializationKind <em>Initialization Kind</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl#getInitializationPath <em>Initialization Path</em>}</li>
  * </ul>
  * </p>
  *
@@ -140,6 +143,66 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 	 * @ordered
 	 */
 	protected boolean generateDocumentation = GENERATE_DOCUMENTATION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsInitialized() <em>Is Initialized</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsInitialized()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_INITIALIZED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsInitialized() <em>Is Initialized</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsInitialized()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isInitialized = IS_INITIALIZED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getInitializationKind() <em>Initialization Kind</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitializationKind()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String INITIALIZATION_KIND_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInitializationKind() <em>Initialization Kind</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitializationKind()
+	 * @generated
+	 * @ordered
+	 */
+	protected String initializationKind = INITIALIZATION_KIND_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getInitializationPath() <em>Initialization Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitializationPath()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String INITIALIZATION_PATH_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInitializationPath() <em>Initialization Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitializationPath()
+	 * @generated
+	 * @ordered
+	 */
+	protected String initializationPath = INITIALIZATION_PATH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -304,6 +367,69 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsInitialized() {
+		return isInitialized;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsInitialized(boolean newIsInitialized) {
+		boolean oldIsInitialized = isInitialized;
+		isInitialized = newIsInitialized;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleowizardmodelPackage.ACCELEO_MODULE__IS_INITIALIZED, oldIsInitialized, isInitialized));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getInitializationKind() {
+		return initializationKind;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInitializationKind(String newInitializationKind) {
+		String oldInitializationKind = initializationKind;
+		initializationKind = newInitializationKind;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_KIND, oldInitializationKind, initializationKind));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getInitializationPath() {
+		return initializationPath;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInitializationPath(String newInitializationPath) {
+		String oldInitializationPath = initializationPath;
+		initializationPath = newInitializationPath;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_PATH, oldInitializationPath, initializationPath));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -333,6 +459,12 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 				return getModuleElement();
 			case AcceleowizardmodelPackage.ACCELEO_MODULE__GENERATE_DOCUMENTATION:
 				return isGenerateDocumentation();
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__IS_INITIALIZED:
+				return isIsInitialized();
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_KIND:
+				return getInitializationKind();
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_PATH:
+				return getInitializationPath();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -365,6 +497,15 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 			case AcceleowizardmodelPackage.ACCELEO_MODULE__GENERATE_DOCUMENTATION:
 				setGenerateDocumentation((Boolean)newValue);
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__IS_INITIALIZED:
+				setIsInitialized((Boolean)newValue);
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_KIND:
+				setInitializationKind((String)newValue);
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_PATH:
+				setInitializationPath((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -395,6 +536,15 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 			case AcceleowizardmodelPackage.ACCELEO_MODULE__GENERATE_DOCUMENTATION:
 				setGenerateDocumentation(GENERATE_DOCUMENTATION_EDEFAULT);
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__IS_INITIALIZED:
+				setIsInitialized(IS_INITIALIZED_EDEFAULT);
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_KIND:
+				setInitializationKind(INITIALIZATION_KIND_EDEFAULT);
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_PATH:
+				setInitializationPath(INITIALIZATION_PATH_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -419,6 +569,12 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 				return moduleElement != null;
 			case AcceleowizardmodelPackage.ACCELEO_MODULE__GENERATE_DOCUMENTATION:
 				return generateDocumentation != GENERATE_DOCUMENTATION_EDEFAULT;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__IS_INITIALIZED:
+				return isInitialized != IS_INITIALIZED_EDEFAULT;
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_KIND:
+				return INITIALIZATION_KIND_EDEFAULT == null ? initializationKind != null : !INITIALIZATION_KIND_EDEFAULT.equals(initializationKind);
+			case AcceleowizardmodelPackage.ACCELEO_MODULE__INITIALIZATION_PATH:
+				return INITIALIZATION_PATH_EDEFAULT == null ? initializationPath != null : !INITIALIZATION_PATH_EDEFAULT.equals(initializationPath);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -443,6 +599,12 @@ public class AcceleoModuleImpl extends EObjectImpl implements AcceleoModule {
 		result.append(metamodelURIs);
 		result.append(", generateDocumentation: "); //$NON-NLS-1$
 		result.append(generateDocumentation);
+		result.append(", isInitialized: "); //$NON-NLS-1$
+		result.append(isInitialized);
+		result.append(", initializationKind: "); //$NON-NLS-1$
+		result.append(initializationKind);
+		result.append(", initializationPath: "); //$NON-NLS-1$
+		result.append(initializationPath);
 		result.append(')');
 		return result.toString();
 	}

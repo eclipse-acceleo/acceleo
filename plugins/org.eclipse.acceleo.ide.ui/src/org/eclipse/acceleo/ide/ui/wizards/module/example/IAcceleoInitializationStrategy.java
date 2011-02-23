@@ -8,32 +8,41 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ide.ui.wizards.newfile.example;
+package org.eclipse.acceleo.ide.ui.wizards.module.example;
+
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 
 /**
  * An internal extension point is defined to specify multiple example strategies. It is used to initialize
- * automatically a template file from an example in the "New>Acceleo>Acceleo Templates" wizard. The extension
- * point "org.eclipse.acceleo.ide.ui.example" requires a fully qualified name of a Java class implementing
- * this interface.
+ * automatically a template file from an example in the "New>Acceleo>Acceleo Module" wizard. The extension
+ * point "org.eclipse.acceleo.ide.ui.initialization" requires a fully qualified name of a Java class
+ * implementing this interface.
  * 
- * @see AcceleoCopyExampleContentStrategy
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
- * @deprecated Please use
- *             {@link org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy} now.
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-@Deprecated
-public interface IAcceleoExampleStrategy {
+public interface IAcceleoInitializationStrategy {
+
+	/**
+	 * The template kind.
+	 */
+	String TEMPLATE_KIND = "template"; //$NON-NLS-1$
+
+	/**
+	 * The query kind.
+	 */
+	String QUERY_KIND = "query"; //$NON-NLS-1$
 
 	/**
 	 * The identifier of the internal extension point specifying the implementation to use for example
 	 * strategy. It is used to initialize automatically a template file in the Acceleo project.
 	 */
-	String EXAMPLE_STRATEGY_EXTENSION_ID = "org.eclipse.acceleo.ide.ui.example"; //$NON-NLS-1$
+	String INITIALIZATION_STRATEGY_EXTENSION_ID = "org.eclipse.acceleo.ide.ui.initialization"; //$NON-NLS-1$
 
 	/**
-	 * Gets the description of the strategy (Displayed in the "New>Acceleo>Acceleo Templates" wizard).
+	 * Gets the description of the strategy (Displayed in the "New>Acceleo>Acceleo Module" wizard).
 	 * 
 	 * @return the description of the strategy
 	 */
@@ -57,7 +66,6 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if this strategy defines itself the meta-model type of the template to create.
 	 * 
 	 * @return true if this strategy defines itself the meta-model type
-	 * @since 3.0
 	 */
 	boolean forceMetamodelType();
 
@@ -65,7 +73,6 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if the template created by this strategy will generate a file.
 	 * 
 	 * @return true if the template created by this strategy will generate a file
-	 * @since 3.0
 	 */
 	boolean forceHasFile();
 
@@ -73,9 +80,44 @@ public interface IAcceleoExampleStrategy {
 	 * Indicates if this strategy defines a main annotation (@main).
 	 * 
 	 * @return true if this strategy defines a main annotation
-	 * @since 3.0
 	 */
 	boolean forceHasMain();
+
+	/**
+	 * Indicates if this strategy can define the use of a query.
+	 * 
+	 * @return <code>true</code> if this strategy can define a new query.
+	 */
+	boolean forceQuery();
+
+	/**
+	 * Indicates if this strategy can define the use of a template.
+	 * 
+	 * @return <code>true</code> if this strategy can define a new template.
+	 */
+	boolean forceTemplate();
+
+	/**
+	 * Indicates if this strategy force the use of the documentation.
+	 * 
+	 * @return <code>true</code> if this strategy must use the documentation, <code>false</code> otherwise.
+	 */
+	boolean forceDocumentation();
+
+	/**
+	 * Configure the strategy.
+	 * 
+	 * @param moduleElementKind
+	 *            The kind of module element (TEMPLATE_KIND or QUERY_KIND).
+	 * @param hasFileBlock
+	 *            indicates if a file block must be generated
+	 * @param isMain
+	 *            indicates if a main annotation (@main) must be generated
+	 * @param generateDocumentation
+	 *            Indicates if the documentation should be generated
+	 */
+	void configure(String moduleElementKind, boolean hasFileBlock, boolean isMain,
+			boolean generateDocumentation);
 
 	/**
 	 * Gets the new template content, using the example file and the wizard information.
@@ -84,17 +126,12 @@ public interface IAcceleoExampleStrategy {
 	 *            is the selected example
 	 * @param moduleName
 	 *            is the module name
-	 * @param templateHasFileBlock
-	 *            indicates if a file block must be generated
-	 * @param templateIsMain
-	 *            indicates if a main annotation (@main) must be generated
 	 * @param metamodelURI
 	 *            is the metamodel URI
 	 * @param metamodelFileType
 	 *            is the main metamodel type
 	 * @return the new template content
 	 */
-	String getContent(IFile exampleFile, String moduleName, boolean templateHasFileBlock,
-			boolean templateIsMain, String metamodelURI, String metamodelFileType);
-
+	String getContent(IFile exampleFile, String moduleName, List<String> metamodelURI,
+			String metamodelFileType);
 }

@@ -23,8 +23,12 @@ import org.eclipse.core.runtime.CoreException;
  * template.
  * 
  * @see IAcceleoExampleStrategy
+ * @deprecated This class is now unused in Acceleo and as such, it is deprecated. Please see
+ *             {@link org.eclipse.acceleo.ide.ui.wizards.module.example.AcceleoCopyExampleInitializationStrategy}
+ *             now.
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
+@Deprecated
 public class AcceleoCopyExampleContentStrategy implements IAcceleoExampleStrategy {
 
 	/**

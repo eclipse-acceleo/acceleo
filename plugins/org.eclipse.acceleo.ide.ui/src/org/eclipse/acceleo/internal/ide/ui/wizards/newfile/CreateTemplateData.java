@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.wizards.newfile;
 
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AcceleoExampleStrategyUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -361,11 +360,6 @@ public class CreateTemplateData {
 		if (templateExampleStrategy == null || templateExampleStrategy.length() == 0) {
 			templateExampleStrategy = AcceleoUIMessages
 					.getString("AcceleoCopyExampleContentStrategy.Description"); //$NON-NLS-1$
-		}
-		for (IAcceleoExampleStrategy strategy : AcceleoExampleStrategyUtils.getExampleStrategies()) {
-			if (templateExampleStrategy.equals(strategy.getDescription())) {
-				return strategy;
-			}
 		}
 		return null;
 	}

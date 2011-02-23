@@ -23,7 +23,6 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.newfile.example.IAcceleoExampleStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.AcceleoExampleStrategyUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -443,15 +442,6 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	 * @return the selected example strategy, or null if selection is empty
 	 */
 	public IAcceleoExampleStrategy getTemplateExampleStrategy() {
-		if (templateIsInitializeButtonState.getSelection()) {
-			if (templateExampleStrategy != null
-					&& templateExampleStrategy.getSelectionIndex() > -1
-					&& templateExampleStrategy.getSelectionIndex() < AcceleoExampleStrategyUtils
-							.getExampleStrategies().size()) {
-				return AcceleoExampleStrategyUtils.getExampleStrategies().get(
-						templateExampleStrategy.getSelectionIndex());
-			}
-		}
 		return null;
 	}
 
@@ -730,20 +720,6 @@ public class AcceleoNewTemplatesDetailsComposite extends Composite {
 	 * Refreshes the available example strategies in the current Eclipse instance.
 	 */
 	private void updateStrategies() {
-		if (templateExampleStrategy != null) {
-			List<String> descriptions = new ArrayList<String>();
-			for (Iterator<IAcceleoExampleStrategy> iterator = AcceleoExampleStrategyUtils
-					.getExampleStrategies().iterator(); iterator.hasNext();) {
-				descriptions.add(iterator.next().getDescription());
-			}
-			templateExampleStrategy.setItems(descriptions.toArray(new String[descriptions.size()]));
-			final int visibleItemCount = 15;
-			if (descriptions.size() < visibleItemCount) {
-				templateExampleStrategy.setVisibleItemCount(descriptions.size());
-			} else {
-				templateExampleStrategy.setVisibleItemCount(visibleItemCount);
-			}
-		}
 	}
 
 	/**

@@ -18,15 +18,7 @@ Contributors:
    
    <extension-point id="example" name="org.eclipse.acceleo.ide.ui.example" schema="schema/example.exsd"/>
 
-   <extension point="org.eclipse.acceleo.ide.ui.example">
-      <strategy
-            class="org.eclipse.acceleo.ide.ui.wizards.newfile.example.AcceleoCopyExampleContentStrategy"/>
-   </extension>
    
-   <extension point="org.eclipse.acceleo.ide.ui.example">
-      <strategy
-            class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.example.JavaServicesWrapperStrategy"/>
-   </extension>
 
    <!-- 
    <extension point="org.eclipse.acceleo.ide.ui.example">
@@ -43,6 +35,7 @@ Contributors:
    -->
   
    <extension-point id="launching" name="org.eclipse.acceleo.ide.ui.launching" schema="schema/launching.exsd"/>
+   <extension-point id="initialization" name="org.eclipse.acceleo.ide.ui.initialization" schema="schema/initialization.exsd"/>
 
    <!-- The description attribute mustn't be modified -->
    <extension point="org.eclipse.acceleo.ide.ui.launching">
@@ -538,11 +531,11 @@ Contributors:
        </category>
        <wizard
              category="org.eclipse.acceleo.ide.ui"
-             class="org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.module.AcceleoModuleWizard"
+             finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
              icon="icons/AcceleoEditor.gif"
-             id="org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"
-             name="%AcceleoModuleWizardName"
-             finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective">
+             id="org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoModuleWizard"
+             name="%AcceleoModuleWizardName">
           <description>
              %AcceleoModuleWizardDescription
           </description>
@@ -1073,6 +1066,23 @@ Contributors:
              verticalRulerPreferenceKey="overrideIndicatorInVerticalRuler"
              verticalRulerPreferenceValue="true">
        </specification>
+    </extension>
+    <extension
+          point="org.eclipse.emf.ecore.generated_package">
+       <package
+             class="org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage"
+             genModel="model/AcceleoWizardModel.genmodel"
+             uri="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1">
+       </package>
+    </extension>
+    <extension
+          point="org.eclipse.acceleo.ide.ui.initialization">
+       <initializationStrategy
+             class="org.eclipse.acceleo.ide.ui.wizards.module.example.AcceleoCopyExampleInitializationStrategy">
+       </initializationStrategy>
+       <initializationStrategy
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.module.example.JavaServicesWrapperInitializationStrategy">
+       </initializationStrategy>
     </extension>
 
 </plugin>
