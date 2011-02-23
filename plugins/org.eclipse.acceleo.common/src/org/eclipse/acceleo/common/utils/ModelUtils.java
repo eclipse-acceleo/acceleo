@@ -444,10 +444,8 @@ public final class ModelUtils {
 			EPackage ePackage = (EPackage)eObject;
 			registerEcorePackageHierarchy(ePackage);
 			return ePackage.getNsURI();
-		} else {
-			return pathName;
 		}
-
+		return pathName;
 	}
 
 	/**
@@ -502,7 +500,7 @@ public final class ModelUtils {
 	public static String getRegisteredEcorePackagePath(String nsURI) {
 		return dynamicEcorePackagePaths.get(nsURI);
 	}
-	
+
 	/**
 	 * This will make sure that a resource factory is registered in the ResourceSet for the given file
 	 * extension.
