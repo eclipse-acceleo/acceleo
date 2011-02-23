@@ -1221,9 +1221,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		String currentIndent = context.getCurrentLineIndentation();
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
-		} else {
-			return fitIndentationTo(source, currentIndent);
 		}
+		return fitIndentationTo(source, currentIndent);
 	}
 
 	/**
@@ -1239,9 +1238,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private Object delegateGetCachedResult(Query query, List<Object> arguments) {
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return getAcceleoVisitor().getCachedResult(query, arguments);
-		} else {
-			return getCachedResult(query, arguments);
 		}
+		return getCachedResult(query, arguments);
 	}
 
 	/**
