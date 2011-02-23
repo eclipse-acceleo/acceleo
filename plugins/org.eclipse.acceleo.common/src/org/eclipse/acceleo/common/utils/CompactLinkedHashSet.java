@@ -18,6 +18,28 @@ import java.util.NoSuchElementException;
 /**
  * This implementation is similar to the {@link java.util.LinkedHashSet}, except that it does not rely on an
  * underlying map but on the {@link CompactHashSet} instead.
+ * <p>
+ * <b>Note: great care must be exercised if mutable objects are inserted in this set.</b> The behavior of the
+ * {@link CompactLinkedHashSet} is not specified if the value of one of its content is changed in a manner
+ * that affects {@link Object#equals(Object)} comparisons.
+ * </p>
+ * <p>
+ * The {@link CompactLinkedHashSet} has been implemented to be a memory-efficient replacement for the
+ * {@link java.util.LinkedHashSet}. However, its speed performance, though on par with that of the
+ * {@link java.util.LinkedHashSet} 's in most cases, is not guaranteed to be equivalent in all use cases.
+ * </p>
+ * <p>
+ * The {@link java.util.LinkedHashSet} uses open hashing to resolve hash collisions, the
+ * {@link CompactLinkedHashSet} relies on linear probing closed hashing instead. See the documentation of
+ * {@link CompactHashSet} for more details on this.
+ * </p>
+ * <p>
+ * This class offers constant time performance for the basic {@link #add(Object)}, {@link #contains(Object)}
+ * and {@link #remove(Object)} operations if the {@link Object#hashCode()} function of the contained Objects
+ * evenly disperses the elements. Iteration over this set's elements requires time proportional to its
+ * internal array's length (which is equal to the next power of two greater than the highest {@link #size()}
+ * this set attained).
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
@@ -112,9 +134,6 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		while (entry.index != index && entry != header) {
 			previous = entry;
 			entry = entry.next;
-		}
-		if (entry == header) {
-			return;
 		}
 		previous.next = entry.next;
 	}
