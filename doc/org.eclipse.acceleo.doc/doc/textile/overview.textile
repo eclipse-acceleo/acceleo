@@ -1,0 +1,37 @@
+[[Image:../images/acceleo.png|center]]
+
+Acceleo is an implementation of the Object Management Group (OMG) MOF Model to Text Language (MTL) standard.
+
+This component is an entirely new development of the OMG MOF Model to Text (Mof2Text) language. The implementation will be compliant with the core feature compliance level of the Mof2Text language to start with, then with the advanced feature compliance.
+
+Each document of the documentation set shipped with this plug-in deals with a different aspect of mastering Acceleo.
+
+{| border="1" cellpadding="5" cellspacing="0" 
+|-
+! style="background: #CEF2CE;" | Document
+! style="background: #CEF2CE;" | Abstract
+|-
+| [../html/plugin_overview.html Plug-in Overview]
+| This will give you at a glance a quick overview of what Acceleo offers.
+|-
+| [../html/acceleo_quickstart.html Quick Start]
+|This document is meant to help you get started with Acceleo as fast as possible. No details, no explanations, just the facts!
+|-
+| [first_acceleo_module.html First Acceleo Module]
+| This tutorial is meant to be a little more detailled version of an Acceleo quickstart. It will aim at getting you started with the main features of Acceleo.
+|-
+| [../html/acceleo_tutorial_android_example.html Android Tutorial]
+| This is meant to give beginners a tutorial to get them started with defining their own code generators ... and advanced users a way to discover some of Acceleo killer features.
+|-
+| [../html/ocl_operation_reference.html OCL operations reference]
+| This is more of an OCL documentation, but this will give you an exhaustive list of the available OCL standard library operations, a short description and examples for each of them.
+|-
+| [../html/acceleo_operation_reference.html Acceleo operations reference]
+| Same as the above, yet this time for the Acceleo standard (and non standard) libraries. Once again, a short description and examples for each of these operations will be listed.
+|-
+| [../html/acceleo_equivalence.html Acceleo migration equivalences]
+| This document lists all of the services that existed in Acceleo 2 and their identified equivalences. It will notably be useful when migrating templates.
+|-
+| [../html/acceleo_text_production_rules.html Text production rules]
+| This document is more of a normative document than it is an end-user documentation; it will help you understand the rules that Acceleo uses under the hood in order to determine when indentation should be swallowed, when lines should be indented, when lines should be trimmed, ...
+|} 

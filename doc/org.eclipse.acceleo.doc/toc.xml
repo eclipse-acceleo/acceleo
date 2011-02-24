@@ -2,12 +2,12 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Acceleo Model To Text Transformation Language (MTL)">
- <topic href="doc/overview.html" label="User Guide">
+ <topic href="doc/textile/overview.html" label="User Guide">
     <topic href="doc/html/plugin_overview.html" label="Plugin overview">
     </topic>
     <topic href="doc/html/acceleo_quickstart.html" label="Quick Start">
     </topic>
-    <topic href="doc/html/first_acceleo_module.html" label="First Generator Module">
+    <topic href="doc/textile/first_acceleo_module.html" label="First Generator Module">
     </topic>
     <topic href="doc/html/acceleo_tutorial_android_example.html" label="Android Tutorial">
     </topic>
