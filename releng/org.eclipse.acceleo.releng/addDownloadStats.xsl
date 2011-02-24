@@ -26,19 +26,7 @@ Laurent Goubet (Obeo) - modification for Acceleo download stats
 		</properties>
 	</xsl:template>
 	
-	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo']/properties">
-		<xsl:call-template name="artifact_properties"/>
-	</xsl:template>
-	
-	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.examples']/properties">
-		<xsl:call-template name="artifact_properties"/>
-	</xsl:template>
-
 	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.runtime']/properties">
-		<xsl:call-template name="artifact_properties"/>
-	</xsl:template>
-	
-	<xsl:template match="artifact[@classifier='org.eclipse.update.feature' and @id='org.eclipse.acceleo.sdk']/properties">
 		<xsl:call-template name="artifact_properties"/>
 	</xsl:template>
 	
