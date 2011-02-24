@@ -17,7 +17,7 @@ Each document of the documentation set shipped with this plug-in deals with a di
 | [../html/acceleo_quickstart.html Quick Start]
 |This document is meant to help you get started with Acceleo as fast as possible. No details, no explanations, just the facts!
 |-
-| [first_acceleo_module.html First Acceleo Module]
+| [getting_started.html First Acceleo Module]
 | This tutorial is meant to be a little more detailled version of an Acceleo quickstart. It will aim at getting you started with the main features of Acceleo.
 |-
 | [../html/acceleo_tutorial_android_example.html Android Tutorial]
