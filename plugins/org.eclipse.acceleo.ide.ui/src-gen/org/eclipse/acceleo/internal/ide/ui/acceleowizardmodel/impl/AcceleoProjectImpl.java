@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleoProjectImpl.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleoProjectImpl.java,v 1.2 2011/02/25 12:47:28 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getGeneratorName <em>Generator Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getAcceleoModules <em>Acceleo Modules</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getPluginDependencies <em>Plugin Dependencies</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getExportedPackages <em>Exported Packages</em>}</li>
  * </ul>
  * </p>
  *
@@ -103,6 +104,16 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 	 * @ordered
 	 */
 	protected EList<String> pluginDependencies;
+
+	/**
+	 * The cached value of the '{@link #getExportedPackages() <em>Exported Packages</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExportedPackages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> exportedPackages;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -194,6 +205,18 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<String> getExportedPackages() {
+		if (exportedPackages == null) {
+			exportedPackages = new EDataTypeUniqueEList<String>(String.class, this, AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES);
+		}
+		return exportedPackages;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -219,6 +242,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				return getAcceleoModules();
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__PLUGIN_DEPENDENCIES:
 				return getPluginDependencies();
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
+				return getExportedPackages();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -246,6 +271,10 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				getPluginDependencies().clear();
 				getPluginDependencies().addAll((Collection<? extends String>)newValue);
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
+				getExportedPackages().clear();
+				getExportedPackages().addAll((Collection<? extends String>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -270,6 +299,9 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__PLUGIN_DEPENDENCIES:
 				getPluginDependencies().clear();
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
+				getExportedPackages().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -290,6 +322,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				return acceleoModules != null && !acceleoModules.isEmpty();
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__PLUGIN_DEPENDENCIES:
 				return pluginDependencies != null && !pluginDependencies.isEmpty();
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
+				return exportedPackages != null && !exportedPackages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -310,6 +344,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 		result.append(generatorName);
 		result.append(", pluginDependencies: "); //$NON-NLS-1$
 		result.append(pluginDependencies);
+		result.append(", exportedPackages: "); //$NON-NLS-1$
+		result.append(exportedPackages);
 		result.append(')');
 		return result.toString();
 	}

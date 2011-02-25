@@ -553,7 +553,7 @@ Contributors:
        </wizard>
        <wizard
              category="org.eclipse.acceleo.ide.ui"
-             class="org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
+             class="org.eclipse.acceleo.internal.ide.ui.wizards.project.AcceleoProjectWizard"
              icon="icons/AcceleoNewProject.gif"
              id="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"
              name="%AcceleoProjectWizardName"

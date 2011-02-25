@@ -94,8 +94,8 @@ public class AcceleoModuleWizard extends Wizard implements INewWizard, IExecutab
 	@Override
 	public void addPages() {
 		IContainer firstContainer = null;
-		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
-			IStructuredSelection aSelection = (IStructuredSelection)selection;
+		if (selection != null && !selection.isEmpty()) {
+			IStructuredSelection aSelection = selection;
 			if (aSelection.size() > 0) {
 				Object element = aSelection.getFirstElement();
 				if (element instanceof IAdaptable) {

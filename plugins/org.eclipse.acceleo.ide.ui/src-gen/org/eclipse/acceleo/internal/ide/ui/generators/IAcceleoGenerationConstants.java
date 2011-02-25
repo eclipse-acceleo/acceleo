@@ -67,4 +67,63 @@ public interface IAcceleoGenerationConstants {
 	 */
 	String BUILD_ACCELEO_TEMPLATE_URI = "genBuildAcceleo"; //$NON-NLS-1$
 
+	/**
+	 * The uri of the .project generator.
+	 */
+	String PROJECT_DESCRIPTION_GENERATOR_URI = "projectDescription.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the .settings/org.eclipse.jdt.core.prefs generator.
+	 */
+	String PROJECT_DESCRIPTION_TEMPLATE_URI = "genProjectDescription"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the .settings/org.eclipse.jdt.core.prefs generator.
+	 */
+	String PROJECT_SETTINGS_GENERATOR_URI = "projectSettings.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the .settings/org.eclipse.jdt.core.prefs generator.
+	 */
+	String PROJECT_SETTINGS_TEMPLATE_URI = "genProjectSettings"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the .classpath generator.
+	 */
+	String PROJECT_CLASSPATH_GENERATOR_URI = "projectClasspath.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the .classpath generator.
+	 */
+	String PROJECT_CLASSPATH_TEMPLATE_URI = "genProjectClassPath"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the MANIFEST.MF generator.
+	 */
+	String PROJECT_MANIFEST_GENERATOR_URI = "projectManifest.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the MANIFEST.MF generator.
+	 */
+	String PROJECT_MANIFEST_TEMPLATE_URI = "genManifestMF"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the build.properties generator.
+	 */
+	String PROJECT_BUILD_GENERATOR_URI = "buildProperties.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the build.properties generator.
+	 */
+	String PROJECT_BUILD_TEMPLATE_URI = "genBuildProperties"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the activator generator.
+	 */
+	String PROJECT_ACTIVATOR_GENERATOR_URI = "activator.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the activator generator.
+	 */
+	String PROJECT_ACTIVATOR_TEMPLATE_URI = "genActivator"; //$NON-NLS-1$
 }

@@ -86,12 +86,12 @@ public class AcceleoModuleComposite extends Composite {
 	/**
 	 * Default module name.
 	 */
-	private static final String MODULE_NAME = "generate"; //$NON-NLS-1$
+	public static final String MODULE_NAME = "generate"; //$NON-NLS-1$
 
 	/**
 	 * Default module element name.
 	 */
-	private static final String MODULE_ELEMENT_NAME = "generateElement"; //$NON-NLS-1$
+	public static final String MODULE_ELEMENT_NAME = "generateElement"; //$NON-NLS-1$
 
 	/**
 	 * The Acceleo module composite listener.
@@ -213,6 +213,11 @@ public class AcceleoModuleComposite extends Composite {
 	private Button initializeContentBrowseButton;
 
 	/**
+	 * Indicates if we should update the module.
+	 */
+	private boolean shouldUpdate;
+
+	/**
 	 * The constructor.
 	 * 
 	 * @param parent
@@ -222,6 +227,7 @@ public class AcceleoModuleComposite extends Composite {
 	 */
 	public AcceleoModuleComposite(Composite parent, IAcceleoModuleCompositeListener listener) {
 		super(parent, SWT.NONE);
+		this.shouldUpdate = true;
 		this.listener = listener;
 		acceleoModule.setModuleElement(acceleoModuleElement);
 		this.createControls();
@@ -250,9 +256,108 @@ public class AcceleoModuleComposite extends Composite {
 	}
 
 	/**
+	 * Initialize the composite from an Acceleo module.
+	 * 
+	 * @param acceleoModule
+	 *            The Acceleo module.
+	 */
+	public void setAcceleoModule(AcceleoModule acceleoModule) {
+		// module name
+		this.acceleoModule = acceleoModule;
+		if (this.acceleoModule.getName() != null) {
+			moduleName.setText(this.acceleoModule.getName());
+		}
+		// module parent folder
+		if (this.acceleoModule.getParentFolder() != null) {
+			moduleContainer.setText(this.acceleoModule.getParentFolder());
+		}
+		// module metamodels
+		this.metamodelTable.removeAll();
+		EList<String> metamodelURIs = this.acceleoModule.getMetamodelURIs();
+		for (String uri : metamodelURIs) {
+			TableItem item = new TableItem(this.metamodelTable, SWT.NONE);
+			item.setText(uri);
+		}
+		// refresh available type
+		updateMetaModelTypes();
+		// module element name
+		if (this.acceleoModule.getModuleElement().getName() != null) {
+			moduleElementName.setText(this.acceleoModule.getModuleElement().getName());
+		}
+		// module element parameter type
+		if (this.acceleoModule.getModuleElement().getParameterType() != null) {
+			metamodelType.setText(this.acceleoModule.getModuleElement().getParameterType());
+		}
+		// module element kind
+		if (this.acceleoModule.getModuleElement().getKind() == ModuleElementKind.QUERY) {
+			queryModuleElementKind.setSelection(true);
+			templateModuleElementKind.setSelection(false);
+			isMain.setEnabled(false);
+			generateFile.setEnabled(false);
+		} else if (this.acceleoModule.getModuleElement().getKind() == ModuleElementKind.TEMPLATE) {
+			queryModuleElementKind.setSelection(false);
+			templateModuleElementKind.setSelection(true);
+			isMain.setEnabled(true);
+			generateFile.setEnabled(true);
+		}
+		// generate documentation
+		if (this.acceleoModule.isGenerateDocumentation()) {
+			generateDocumentation.setSelection(true);
+		} else {
+			generateDocumentation.setSelection(false);
+		}
+		// generate file
+		if (this.acceleoModule.getModuleElement().isGenerateFile()) {
+			generateFile.setSelection(true);
+		} else {
+			generateFile.setSelection(false);
+		}
+		// is main
+		if (this.acceleoModule.getModuleElement().isIsMain()) {
+			isMain.setSelection(true);
+		} else {
+			isMain.setSelection(false);
+		}
+		// initialize content
+		if (this.acceleoModule.isIsInitialized()) {
+			initializeContent.setSelection(true);
+			initializeContentKind.setEnabled(true);
+			initializeContentFile.setEnabled(true);
+		} else {
+			initializeContent.setSelection(false);
+			initializeContentKind.setEnabled(false);
+			initializeContentFile.setEnabled(false);
+		}
+		// initialize kind
+		if (this.acceleoModule.getInitializationKind() != null) {
+			initializeContentKind.setText(this.acceleoModule.getInitializationKind());
+		}
+		// initialize path
+		if (this.acceleoModule.getInitializationPath() != null) {
+			initializeContentFile.setText(this.acceleoModule.getInitializationPath());
+		}
+	}
+
+	/**
+	 * Initialize the composite from an Acceleo module without updating the module in the process.
+	 * 
+	 * @param anAcceleoModule
+	 *            The Acceleo module.
+	 */
+	public void setAcceleoModuleWithoutUpdate(AcceleoModule anAcceleoModule) {
+		this.shouldUpdate = false;
+		this.setAcceleoModule(anAcceleoModule);
+		this.shouldUpdate = true;
+		this.updateModule();
+	}
+
+	/**
 	 * Update the module thanks to the data from the composite.
 	 */
 	private void updateModule() {
+		if (!shouldUpdate) {
+			return;
+		}
 		this.acceleoModule.setName(moduleName.getText());
 
 		IPath path = new Path(moduleContainer.getText());
@@ -265,28 +370,28 @@ public class AcceleoModuleComposite extends Composite {
 			metamodelURIs.add(tableItem.getText());
 		}
 
-		this.acceleoModuleElement.setName(moduleElementName.getText());
-		this.acceleoModuleElement.setParameterType(metamodelType.getText());
+		this.acceleoModule.getModuleElement().setName(moduleElementName.getText());
+		this.acceleoModule.getModuleElement().setParameterType(metamodelType.getText());
 
 		boolean isTemplate = templateModuleElementKind.getSelection();
 		boolean isQuery = queryModuleElementKind.getSelection();
 
 		if (isTemplate && !isQuery) {
-			this.acceleoModuleElement.setKind(ModuleElementKind.TEMPLATE);
+			this.acceleoModule.getModuleElement().setKind(ModuleElementKind.TEMPLATE);
 		} else if (isQuery && !isTemplate) {
-			this.acceleoModuleElement.setKind(ModuleElementKind.QUERY);
-			this.acceleoModuleElement.setIsMain(false);
-			this.acceleoModuleElement.setGenerateFile(false);
+			this.acceleoModule.getModuleElement().setKind(ModuleElementKind.QUERY);
+			this.acceleoModule.getModuleElement().setIsMain(false);
+			this.acceleoModule.getModuleElement().setGenerateFile(false);
 		} else {
 			// error
 		}
 
 		if (isTemplate) {
 			boolean hasMain = isMain.getSelection();
-			this.acceleoModuleElement.setIsMain(hasMain);
+			this.acceleoModule.getModuleElement().setIsMain(hasMain);
 
 			boolean generatesFile = generateFile.getSelection();
-			this.acceleoModuleElement.setGenerateFile(generatesFile);
+			this.acceleoModule.getModuleElement().setGenerateFile(generatesFile);
 		}
 
 		boolean hasDocumentation = generateDocumentation.getSelection();
@@ -718,9 +823,8 @@ public class AcceleoModuleComposite extends Composite {
 			protected Iterator<? extends EObject> getEObjectChildren(EObject eObject) {
 				if (eObject instanceof EPackage) {
 					return ((EPackage)eObject).getESubpackages().iterator();
-				} else {
-					return Collections.<EObject> emptyList().iterator();
 				}
+				return Collections.<EObject> emptyList().iterator();
 			}
 		};
 		while (iterator.hasNext()) {

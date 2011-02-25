@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleoProject.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleoProject.java,v 1.2 2011/02/25 12:47:28 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getGeneratorName <em>Generator Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getAcceleoModules <em>Acceleo Modules</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getPluginDependencies <em>Plugin Dependencies</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getExportedPackages <em>Exported Packages</em>}</li>
  * </ul>
  * </p>
  *
@@ -114,5 +115,21 @@ public interface AcceleoProject extends EObject {
 	 * @generated
 	 */
 	EList<String> getPluginDependencies();
+
+	/**
+	 * Returns the value of the '<em><b>Exported Packages</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Exported Packages</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Exported Packages</em>' attribute list.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage#getAcceleoProject_ExportedPackages()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getExportedPackages();
 
 } // AcceleoProject

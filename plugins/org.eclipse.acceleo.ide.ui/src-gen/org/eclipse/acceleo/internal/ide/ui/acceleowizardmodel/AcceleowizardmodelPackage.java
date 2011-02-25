@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackage.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackage.java,v 1.3 2011/02/25 12:47:28 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -14,57 +14,52 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Package</b> for the model.
- * It contains accessors for the meta objects to represent
+ * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta objects to
+ * represent
  * <ul>
- *   <li>each class,</li>
- *   <li>each feature of each class,</li>
- *   <li>each enum,</li>
- *   <li>and each data type</li>
+ * <li>each class,</li>
+ * <li>each feature of each class,</li>
+ * <li>each enum,</li>
+ * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
  * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory
  * @model kind="package"
  * @generated
  */
+@SuppressWarnings("hiding")
 public interface AcceleowizardmodelPackage extends EPackage {
 	/**
 	 * The package name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNAME = "acceleowizardmodel"; //$NON-NLS-1$
 
 	/**
 	 * The package namespace URI.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_URI = "http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1"; //$NON-NLS-1$
 
 	/**
 	 * The package namespace name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_PREFIX = "acceleowizardmodel"; //$NON-NLS-1$
 
 	/**
 	 * The singleton instance of the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	AcceleowizardmodelPackage eINSTANCE = org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl.init();
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl <em>Acceleo Project</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoProject()
 	 * @generated
@@ -73,8 +68,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -82,17 +76,17 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Generator Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ACCELEO_PROJECT__GENERATOR_NAME = EcorePackage.EOBJECT_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Acceleo Modules</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Acceleo Modules</b></em>' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -108,18 +102,26 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_PROJECT__PLUGIN_DEPENDENCIES = EcorePackage.EOBJECT_FEATURE_COUNT + 3;
 
 	/**
-	 * The number of structural features of the '<em>Acceleo Project</em>' class.
+	 * The feature id for the '<em><b>Exported Packages</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_PROJECT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
+	int ACCELEO_PROJECT__EXPORTED_PACKAGES = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of structural features of the '<em>Acceleo Project</em>' class.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_PROJECT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl <em>Acceleo UI Project</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoUIProject()
 	 * @generated
@@ -128,8 +130,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -137,8 +138,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Generator Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -155,8 +156,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Modules</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -164,8 +165,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Module Plugins</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -173,8 +174,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Module Java Class</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -182,8 +183,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Model Name Filter</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -209,8 +210,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl <em>Acceleo Module</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoModule()
 	 * @generated
@@ -219,8 +219,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Project Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -228,8 +228,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Parent Folder</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -237,8 +237,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -246,8 +245,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Metamodel UR Is</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -264,8 +263,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Generate Documentation</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -273,8 +272,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Is Initialized</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -282,8 +281,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Initialization Kind</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -291,8 +290,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Initialization Path</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -300,8 +299,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The number of structural features of the '<em>Acceleo Module</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -309,8 +308,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl <em>Acceleo Module Element</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoModuleElement()
 	 * @generated
@@ -319,8 +317,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -328,8 +325,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Parameter Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -337,17 +334,16 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Kind</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ACCELEO_MODULE_ELEMENT__KIND = EcorePackage.EOBJECT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Is Main</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Is Main</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -355,8 +351,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Generate File</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -364,8 +360,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The number of structural features of the '<em>Acceleo Module Element</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -373,8 +369,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl <em>Acceleo Main Class</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoMainClass()
 	 * @generated
@@ -383,8 +378,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Project Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -392,8 +387,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Base Package</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -401,8 +396,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Class Short Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -410,8 +405,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Module File Short Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -419,8 +414,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Template Names</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -428,8 +423,8 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Packages</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -455,19 +450,16 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind <em>Module Element Kind</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getModuleElementKind()
 	 * @generated
 	 */
 	int MODULE_ELEMENT_KIND = 5;
 
-
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject <em>Acceleo Project</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo Project</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject
 	 * @generated
@@ -476,8 +468,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getName()
 	 * @see #getAcceleoProject()
@@ -487,8 +478,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getGeneratorName <em>Generator Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Generator Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getGeneratorName()
 	 * @see #getAcceleoProject()
@@ -498,8 +488,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getAcceleoModules <em>Acceleo Modules</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Acceleo Modules</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getAcceleoModules()
 	 * @see #getAcceleoProject()
@@ -509,8 +498,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getPluginDependencies <em>Plugin Dependencies</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Plugin Dependencies</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getPluginDependencies()
 	 * @see #getAcceleoProject()
@@ -519,9 +507,19 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EAttribute getAcceleoProject_PluginDependencies();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject <em>Acceleo UI Project</em>}'.
+	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getExportedPackages <em>Exported Packages</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Exported Packages</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getExportedPackages()
+	 * @see #getAcceleoProject()
+	 * @generated
+	 */
+	EAttribute getAcceleoProject_ExportedPackages();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject <em>Acceleo UI Project</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo UI Project</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject
 	 * @generated
@@ -530,8 +528,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getName()
 	 * @see #getAcceleoUIProject()
@@ -541,8 +538,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getGeneratorName <em>Generator Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Generator Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getGeneratorName()
 	 * @see #getAcceleoUIProject()
@@ -552,8 +548,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getPluginsDependencies <em>Plugins Dependencies</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Plugins Dependencies</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getPluginsDependencies()
 	 * @see #getAcceleoUIProject()
@@ -563,8 +558,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModules <em>Modules</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Modules</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModules()
 	 * @see #getAcceleoUIProject()
@@ -574,8 +568,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModulePlugins <em>Module Plugins</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Module Plugins</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModulePlugins()
 	 * @see #getAcceleoUIProject()
@@ -585,8 +578,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModuleJavaClass <em>Module Java Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Module Java Class</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModuleJavaClass()
 	 * @see #getAcceleoUIProject()
@@ -596,8 +588,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModelNameFilter <em>Model Name Filter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Model Name Filter</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getModelNameFilter()
 	 * @see #getAcceleoUIProject()
@@ -607,8 +598,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getTargetFolderRelativePath <em>Target Folder Relative Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Target Folder Relative Path</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject#getTargetFolderRelativePath()
 	 * @see #getAcceleoUIProject()
@@ -618,8 +608,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule <em>Acceleo Module</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo Module</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule
 	 * @generated
@@ -628,8 +617,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getProjectName <em>Project Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Project Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getProjectName()
 	 * @see #getAcceleoModule()
@@ -639,8 +627,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getParentFolder <em>Parent Folder</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Parent Folder</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getParentFolder()
 	 * @see #getAcceleoModule()
@@ -650,8 +637,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getName()
 	 * @see #getAcceleoModule()
@@ -661,8 +647,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getMetamodelURIs <em>Metamodel UR Is</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Metamodel UR Is</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getMetamodelURIs()
 	 * @see #getAcceleoModule()
@@ -672,8 +657,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getModuleElement <em>Module Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Module Element</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getModuleElement()
 	 * @see #getAcceleoModule()
@@ -683,8 +667,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isGenerateDocumentation <em>Generate Documentation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Generate Documentation</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isGenerateDocumentation()
 	 * @see #getAcceleoModule()
@@ -694,8 +677,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isIsInitialized <em>Is Initialized</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Initialized</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#isIsInitialized()
 	 * @see #getAcceleoModule()
@@ -705,8 +687,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationKind <em>Initialization Kind</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Initialization Kind</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationKind()
 	 * @see #getAcceleoModule()
@@ -716,8 +697,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationPath <em>Initialization Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Initialization Path</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule#getInitializationPath()
 	 * @see #getAcceleoModule()
@@ -727,8 +707,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement <em>Acceleo Module Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo Module Element</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement
 	 * @generated
@@ -737,8 +716,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getName()
 	 * @see #getAcceleoModuleElement()
@@ -748,8 +726,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getParameterType <em>Parameter Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Parameter Type</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getParameterType()
 	 * @see #getAcceleoModuleElement()
@@ -759,8 +736,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getKind <em>Kind</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Kind</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#getKind()
 	 * @see #getAcceleoModuleElement()
@@ -770,8 +746,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsMain <em>Is Main</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Is Main</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isIsMain()
 	 * @see #getAcceleoModuleElement()
@@ -781,8 +756,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isGenerateFile <em>Generate File</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Generate File</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement#isGenerateFile()
 	 * @see #getAcceleoModuleElement()
@@ -792,8 +766,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass <em>Acceleo Main Class</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo Main Class</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass
 	 * @generated
@@ -802,8 +775,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getProjectName <em>Project Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Project Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getProjectName()
 	 * @see #getAcceleoMainClass()
@@ -813,8 +785,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getBasePackage <em>Base Package</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Base Package</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getBasePackage()
 	 * @see #getAcceleoMainClass()
@@ -824,8 +795,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getClassShortName <em>Class Short Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Class Short Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getClassShortName()
 	 * @see #getAcceleoMainClass()
@@ -835,8 +805,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getModuleFileShortName <em>Module File Short Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Module File Short Name</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getModuleFileShortName()
 	 * @see #getAcceleoMainClass()
@@ -846,8 +815,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getTemplateNames <em>Template Names</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Template Names</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getTemplateNames()
 	 * @see #getAcceleoMainClass()
@@ -857,8 +825,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getPackages <em>Packages</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Packages</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getPackages()
 	 * @see #getAcceleoMainClass()
@@ -868,8 +835,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getResolvedClassPath <em>Resolved Class Path</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Resolved Class Path</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getResolvedClassPath()
 	 * @see #getAcceleoMainClass()
@@ -879,8 +845,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind <em>Module Element Kind</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for enum '<em>Module Element Kind</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind
 	 * @generated
@@ -888,22 +853,21 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EEnum getModuleElementKind();
 
 	/**
-	 * Returns the factory that creates the instances of the model.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
 	AcceleowizardmodelFactory getAcceleowizardmodelFactory();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Defines literals for the meta objects that represent
+	 * <!-- begin-user-doc --> Defines literals for the meta objects that represent
 	 * <ul>
-	 *   <li>each class,</li>
-	 *   <li>each feature of each class,</li>
-	 *   <li>each enum,</li>
-	 *   <li>and each data type</li>
+	 * <li>each class,</li>
+	 * <li>each feature of each class,</li>
+	 * <li>each enum,</li>
+	 * <li>and each data type</li>
 	 * </ul>
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -911,8 +875,7 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	interface Literals {
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl <em>Acceleo Project</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoProject()
 		 * @generated
@@ -928,33 +891,39 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EAttribute ACCELEO_PROJECT__NAME = eINSTANCE.getAcceleoProject_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Generator Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Generator Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_PROJECT__GENERATOR_NAME = eINSTANCE.getAcceleoProject_GeneratorName();
 
 		/**
 		 * The meta object literal for the '<em><b>Acceleo Modules</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ACCELEO_PROJECT__ACCELEO_MODULES = eINSTANCE.getAcceleoProject_AcceleoModules();
 
 		/**
-		 * The meta object literal for the '<em><b>Plugin Dependencies</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Plugin Dependencies</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_PROJECT__PLUGIN_DEPENDENCIES = eINSTANCE.getAcceleoProject_PluginDependencies();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl <em>Acceleo UI Project</em>}' class.
+		 * The meta object literal for the '<em><b>Exported Packages</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_PROJECT__EXPORTED_PACKAGES = eINSTANCE.getAcceleoProject_ExportedPackages();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl <em>Acceleo UI Project</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoUIProject()
 		 * @generated
@@ -970,65 +939,63 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EAttribute ACCELEO_UI_PROJECT__NAME = eINSTANCE.getAcceleoUIProject_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Generator Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Generator Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__GENERATOR_NAME = eINSTANCE.getAcceleoUIProject_GeneratorName();
 
 		/**
-		 * The meta object literal for the '<em><b>Plugins Dependencies</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Plugins Dependencies</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__PLUGINS_DEPENDENCIES = eINSTANCE.getAcceleoUIProject_PluginsDependencies();
 
 		/**
-		 * The meta object literal for the '<em><b>Modules</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Modules</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__MODULES = eINSTANCE.getAcceleoUIProject_Modules();
 
 		/**
-		 * The meta object literal for the '<em><b>Module Plugins</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Module Plugins</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__MODULE_PLUGINS = eINSTANCE.getAcceleoUIProject_ModulePlugins();
 
 		/**
-		 * The meta object literal for the '<em><b>Module Java Class</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Module Java Class</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__MODULE_JAVA_CLASS = eINSTANCE.getAcceleoUIProject_ModuleJavaClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Model Name Filter</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Model Name Filter</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__MODEL_NAME_FILTER = eINSTANCE.getAcceleoUIProject_ModelNameFilter();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Folder Relative Path</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute ACCELEO_UI_PROJECT__TARGET_FOLDER_RELATIVE_PATH = eINSTANCE.getAcceleoUIProject_TargetFolderRelativePath();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl <em>Acceleo Module</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleImpl
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoModule()
 		 * @generated
@@ -1036,17 +1003,17 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EClass ACCELEO_MODULE = eINSTANCE.getAcceleoModule();
 
 		/**
-		 * The meta object literal for the '<em><b>Project Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Project Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__PROJECT_NAME = eINSTANCE.getAcceleoModule_ProjectName();
 
 		/**
-		 * The meta object literal for the '<em><b>Parent Folder</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Parent Folder</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__PARENT_FOLDER = eINSTANCE.getAcceleoModule_ParentFolder();
@@ -1060,57 +1027,55 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EAttribute ACCELEO_MODULE__NAME = eINSTANCE.getAcceleoModule_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Metamodel UR Is</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Metamodel UR Is</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__METAMODEL_UR_IS = eINSTANCE.getAcceleoModule_MetamodelURIs();
 
 		/**
 		 * The meta object literal for the '<em><b>Module Element</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ACCELEO_MODULE__MODULE_ELEMENT = eINSTANCE.getAcceleoModule_ModuleElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Generate Documentation</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Generate Documentation</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__GENERATE_DOCUMENTATION = eINSTANCE.getAcceleoModule_GenerateDocumentation();
 
 		/**
-		 * The meta object literal for the '<em><b>Is Initialized</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Is Initialized</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__IS_INITIALIZED = eINSTANCE.getAcceleoModule_IsInitialized();
 
 		/**
-		 * The meta object literal for the '<em><b>Initialization Kind</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Initialization Kind</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__INITIALIZATION_KIND = eINSTANCE.getAcceleoModule_InitializationKind();
 
 		/**
-		 * The meta object literal for the '<em><b>Initialization Path</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Initialization Path</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE__INITIALIZATION_PATH = eINSTANCE.getAcceleoModule_InitializationPath();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl <em>Acceleo Module Element</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoModuleElementImpl
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoModuleElement()
 		 * @generated
@@ -1126,9 +1091,9 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EAttribute ACCELEO_MODULE_ELEMENT__NAME = eINSTANCE.getAcceleoModuleElement_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Parameter Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Parameter Type</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE_ELEMENT__PARAMETER_TYPE = eINSTANCE.getAcceleoModuleElement_ParameterType();
@@ -1143,24 +1108,23 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '<em><b>Is Main</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc
+		 * --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE_ELEMENT__IS_MAIN = eINSTANCE.getAcceleoModuleElement_IsMain();
 
 		/**
-		 * The meta object literal for the '<em><b>Generate File</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Generate File</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MODULE_ELEMENT__GENERATE_FILE = eINSTANCE.getAcceleoModuleElement_GenerateFile();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl <em>Acceleo Main Class</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoMainClass()
 		 * @generated
@@ -1168,65 +1132,64 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		EClass ACCELEO_MAIN_CLASS = eINSTANCE.getAcceleoMainClass();
 
 		/**
-		 * The meta object literal for the '<em><b>Project Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Project Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__PROJECT_NAME = eINSTANCE.getAcceleoMainClass_ProjectName();
 
 		/**
-		 * The meta object literal for the '<em><b>Base Package</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Base Package</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__BASE_PACKAGE = eINSTANCE.getAcceleoMainClass_BasePackage();
 
 		/**
-		 * The meta object literal for the '<em><b>Class Short Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Class Short Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__CLASS_SHORT_NAME = eINSTANCE.getAcceleoMainClass_ClassShortName();
 
 		/**
-		 * The meta object literal for the '<em><b>Module File Short Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Module File Short Name</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__MODULE_FILE_SHORT_NAME = eINSTANCE.getAcceleoMainClass_ModuleFileShortName();
 
 		/**
-		 * The meta object literal for the '<em><b>Template Names</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Template Names</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__TEMPLATE_NAMES = eINSTANCE.getAcceleoMainClass_TemplateNames();
 
 		/**
-		 * The meta object literal for the '<em><b>Packages</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Packages</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__PACKAGES = eINSTANCE.getAcceleoMainClass_Packages();
 
 		/**
-		 * The meta object literal for the '<em><b>Resolved Class Path</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Resolved Class Path</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH = eINSTANCE.getAcceleoMainClass_ResolvedClassPath();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind <em>Module Element Kind</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind
 		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getModuleElementKind()
 		 * @generated
@@ -1235,4 +1198,4 @@ public interface AcceleowizardmodelPackage extends EPackage {
 
 	}
 
-} //AcceleowizardmodelPackage
+} // AcceleowizardmodelPackage

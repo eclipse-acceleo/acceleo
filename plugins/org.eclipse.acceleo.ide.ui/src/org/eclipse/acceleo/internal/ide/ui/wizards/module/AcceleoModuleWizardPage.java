@@ -105,7 +105,6 @@ public class AcceleoModuleWizardPage extends WizardPage implements IAcceleoModul
 	public void createControl(Composite parent) {
 		acceleoModuleComposite = new AcceleoModuleComposite(parent, this);
 		this.setControl(acceleoModuleComposite);
-
 		if (!"".equals(container)) { //$NON-NLS-1$
 			acceleoModuleComposite.setModuleContainer(container);
 		}

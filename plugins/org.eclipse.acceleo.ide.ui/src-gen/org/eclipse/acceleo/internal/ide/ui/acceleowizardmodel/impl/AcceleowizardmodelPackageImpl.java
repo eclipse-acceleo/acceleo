@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackageImpl.java,v 1.2 2011/02/23 15:35:39 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackageImpl.java,v 1.3 2011/02/25 12:47:28 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -180,6 +180,15 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 */
 	public EAttribute getAcceleoProject_PluginDependencies() {
 		return (EAttribute)acceleoProjectEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoProject_ExportedPackages() {
+		return (EAttribute)acceleoProjectEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -521,6 +530,7 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		createEAttribute(acceleoProjectEClass, ACCELEO_PROJECT__GENERATOR_NAME);
 		createEReference(acceleoProjectEClass, ACCELEO_PROJECT__ACCELEO_MODULES);
 		createEAttribute(acceleoProjectEClass, ACCELEO_PROJECT__PLUGIN_DEPENDENCIES);
+		createEAttribute(acceleoProjectEClass, ACCELEO_PROJECT__EXPORTED_PACKAGES);
 
 		acceleoUIProjectEClass = createEClass(ACCELEO_UI_PROJECT);
 		createEAttribute(acceleoUIProjectEClass, ACCELEO_UI_PROJECT__NAME);
@@ -606,6 +616,7 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		initEAttribute(getAcceleoProject_GeneratorName(), ecorePackage.getEString(), "generatorName", "", 1, 1, AcceleoProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEReference(getAcceleoProject_AcceleoModules(), this.getAcceleoModule(), null, "acceleoModules", null, 0, -1, AcceleoProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoProject_PluginDependencies(), theEcorePackage.getEString(), "pluginDependencies", null, 0, -1, AcceleoProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoProject_ExportedPackages(), ecorePackage.getEString(), "exportedPackages", null, 0, -1, AcceleoProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(acceleoUIProjectEClass, AcceleoUIProject.class, "AcceleoUIProject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getAcceleoUIProject_Name(), ecorePackage.getEString(), "name", null, 1, 1, AcceleoUIProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$

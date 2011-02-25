@@ -67,6 +67,36 @@ public class AcceleoUIGenerator {
 	private static Module moduleGenerator;
 
 	/**
+	 * The Acceleo module that will generate the .project description file.
+	 */
+	private static Module projectDescription;
+
+	/**
+	 * The Acceleo module that will generate the .settings/org.eclipse.jdt.core.prefs file.
+	 */
+	private static Module projectSettings;
+
+	/**
+	 * The Acceleo module that will generate the .classpath file.
+	 */
+	private static Module projectClasspath;
+
+	/**
+	 * The Acceleo module that will generate the MANIFEST.MF file.
+	 */
+	private static Module projectManifest;
+
+	/**
+	 * The Acceleo module that will generate the build.properties file.
+	 */
+	private static Module buildProperties;
+
+	/**
+	 * The Acceleo module that will generate the Activator file.
+	 */
+	private static Module activator;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -99,30 +129,9 @@ public class AcceleoUIGenerator {
 	 *            The output folder.
 	 */
 	public void generateJavaClass(AcceleoMainClass acceleoMainClass, IContainer outputContainer) {
-		try {
-			if (acceleoJavaClassGenerator == null) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				URI moduleURI = this
-						.convertToURI(IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI);
-				EObject load = ModelUtils.load(moduleURI, resourceSet);
-
-				if (load instanceof Module) {
-					acceleoJavaClassGenerator = (Module)load;
-				}
-			}
-
-			if (acceleoJavaClassGenerator != null) {
-				String templateName = IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_TEMPLATE_URI;
-				File generationRoot = outputContainer.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(acceleoJavaClassGenerator, templateName,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			}
-		} catch (IOException e) {
-			AcceleoUIActivator.log(e, true);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
+		generate(acceleoJavaClassGenerator, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_GENERATOR_URI,
+				IAcceleoGenerationConstants.ACCELEO_JAVA_CLASS_TEMPLATE_URI);
 	}
 
 	/**
@@ -134,38 +143,12 @@ public class AcceleoUIGenerator {
 	 *            The output folder.
 	 */
 	public void generateAntFiles(AcceleoMainClass acceleoMainClass, IContainer outputContainer) {
-		try {
-			if (antRunnerGenerator == null || antReadMeGenerator == null) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				URI loadModuleURI = this.convertToURI(IAcceleoGenerationConstants.ANT_RUNNER_GENERATOR_URI);
-				EObject load = ModelUtils.load(loadModuleURI, resourceSet);
-
-				URI loadReadMeModuleURI = this
-						.convertToURI(IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_GENERATOR_URI);
-				EObject loadReadMe = ModelUtils.load(loadReadMeModuleURI, resourceSet);
-
-				if (load instanceof Module && loadReadMe instanceof Module) {
-					antRunnerGenerator = (Module)load;
-					antReadMeGenerator = (Module)loadReadMe;
-				}
-			}
-
-			if (antRunnerGenerator != null && antReadMeGenerator != null) {
-				String templateNameWriter = IAcceleoGenerationConstants.ANT_RUNNER_TEMPLATE_URI;
-				String templateNameReadMe = IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_TEMPLATE_URI;
-
-				File generationRoot = outputContainer.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(antRunnerGenerator, templateNameWriter,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				new AcceleoService(new DefaultStrategy()).doGenerate(antReadMeGenerator, templateNameReadMe,
-						acceleoMainClass, generationRoot, new BasicMonitor());
-				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			}
-		} catch (IOException e) {
-			AcceleoUIActivator.log(e, true);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
+		generate(antRunnerGenerator, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.ANT_RUNNER_GENERATOR_URI,
+				IAcceleoGenerationConstants.ANT_RUNNER_TEMPLATE_URI);
+		generate(antReadMeGenerator, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_GENERATOR_URI,
+				IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_TEMPLATE_URI);
 	}
 
 	/**
@@ -177,30 +160,9 @@ public class AcceleoUIGenerator {
 	 *            The output container.
 	 */
 	public void generateBuildAcceleo(AcceleoProject acceleoProject, IContainer outputContainer) {
-		try {
-			if (buildAcceleoGenerator == null) {
-				ResourceSet resourceSet = new ResourceSetImpl();
-				URI moduleURI = this.convertToURI(IAcceleoGenerationConstants.BUILD_ACCELEO_GENERATOR_URI);
-
-				EObject load = ModelUtils.load(moduleURI, resourceSet);
-
-				if (load instanceof Module) {
-					buildAcceleoGenerator = (Module)load;
-				}
-			}
-
-			if (buildAcceleoGenerator != null) {
-				String templateName = IAcceleoGenerationConstants.BUILD_ACCELEO_TEMPLATE_URI;
-				File generationRoot = outputContainer.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(buildAcceleoGenerator, templateName,
-						acceleoProject, generationRoot, new BasicMonitor());
-				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-			}
-		} catch (IOException e) {
-			AcceleoUIActivator.log(e, true);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
+		generate(buildAcceleoGenerator, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.BUILD_ACCELEO_GENERATOR_URI,
+				IAcceleoGenerationConstants.BUILD_ACCELEO_TEMPLATE_URI);
 	}
 
 	/**
@@ -212,22 +174,128 @@ public class AcceleoUIGenerator {
 	 *            The output container.
 	 */
 	public void generateAcceleoModule(AcceleoModule acceleoModule, IContainer outputContainer) {
+		generate(moduleGenerator, acceleoModule, outputContainer,
+				IAcceleoGenerationConstants.ACCELEO_MODULE_GENERATOR_URI,
+				IAcceleoGenerationConstants.ACCELEO_MODULE_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the .project file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateProjectDescription(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(projectDescription, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_DESCRIPTION_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_DESCRIPTION_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the settings file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateProjectSettings(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(projectSettings, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_SETTINGS_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_SETTINGS_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the classpath file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateProjectClasspath(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(projectClasspath, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_CLASSPATH_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_CLASSPATH_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the MANIFEST.MF file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateProjectManifest(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(projectManifest, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_MANIFEST_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_MANIFEST_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the build.properties file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateBuildProperties(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(buildProperties, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_BUILD_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_BUILD_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the activator file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateActivator(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(activator, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_ACTIVATOR_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_ACTIVATOR_TEMPLATE_URI);
+	}
+
+	/**
+	 * Launch the generation.
+	 * 
+	 * @param module
+	 *            The module
+	 * @param eObject
+	 *            The EObject
+	 * @param outputContainer
+	 *            The output container
+	 * @param generatorURI
+	 *            The generator uri
+	 * @param templateURI
+	 *            The template uri
+	 */
+	private void generate(Module module, EObject eObject, IContainer outputContainer, String generatorURI,
+			String templateURI) {
+		Module moduleTmp = module;
 		try {
-			if (moduleGenerator == null) {
+			if (moduleTmp == null) {
 				ResourceSet resourceSet = new ResourceSetImpl();
-				URI moduleURI = this.convertToURI(IAcceleoGenerationConstants.ACCELEO_MODULE_GENERATOR_URI);
+				URI moduleURI = this.convertToURI(generatorURI);
 				EObject load = ModelUtils.load(moduleURI, resourceSet);
 
 				if (load instanceof Module) {
-					moduleGenerator = (Module)load;
+					moduleTmp = (Module)load;
 				}
 			}
 
-			if (moduleGenerator != null) {
-				String templateName = IAcceleoGenerationConstants.ACCELEO_MODULE_TEMPLATE_URI;
+			if (moduleTmp != null) {
+				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
-				new AcceleoService(new DefaultStrategy()).doGenerate(moduleGenerator, templateName,
-						acceleoModule, generationRoot, new BasicMonitor());
+				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject,
+						generationRoot, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 			}
