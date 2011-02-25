@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
  * This will allow for the manipulation of Acceleo preferences.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 3.1
+ * @since 3.0
  */
 public final class AcceleoPreferences {
 	/** Preference key for the profiler enablement. */
@@ -40,7 +40,7 @@ public final class AcceleoPreferences {
 	private static final boolean DEFAULT_ENABLE_QUERY_CACHE = true;
 
 	/** Preferences scope for the Acceleo common plugin. */
-	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
+	private static final IEclipsePreferences PREFERENCES_SCOPE = InstanceScope.INSTANCE
 			.getNode(AcceleoCommonPlugin.PLUGIN_ID);
 
 	/**
@@ -74,6 +74,7 @@ public final class AcceleoPreferences {
 	 * 
 	 * @param state
 	 *            <code>true</code> to enable the cache, <code>false</code> to disable it.
+	 * @since 3.1
 	 */
 	public static void switchQueryCache(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_QUERY_CACHE, state);
@@ -83,6 +84,7 @@ public final class AcceleoPreferences {
 	 * Returns whether the query cache is enabled or not.
 	 * 
 	 * @return <code>true</code> if the query cache is enabled, <code>false</code> otherwise.
+	 * @since 3.1
 	 */
 	public static boolean isQueryCacheEnabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_QUERY_CACHE, DEFAULT_ENABLE_QUERY_CACHE);
