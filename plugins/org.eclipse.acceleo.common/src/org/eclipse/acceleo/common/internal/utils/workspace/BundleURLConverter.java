@@ -175,6 +175,7 @@ public class BundleURLConverter {
 
 		Bundle tempBundle = null;
 		String tempPath = null;
+		String tempWithIgnoredSegments = null;
 		String[] segments = actualPath.split("/"); //$NON-NLS-1$
 		// Note : this loop will be broken as soon as we find the bundle
 		for (int i = segments.length - 1; i >= 0 && bundle == null; i--) {
@@ -196,15 +197,32 @@ public class BundleURLConverter {
 					pathStart += 2;
 				}
 
+				boolean containsIgnoredSegments = false;
 				for (int j = pathStart; j < segments.length; j++) {
+					if (containsIgnoredSegments) {
+						tempWithIgnoredSegments += '/' + segments[j];
+					}
 					if (!IGNORED_URI_SEGMENTS.contains(segments[j])) {
 						tempPath += '/' + segments[j];
+					} else {
+						if (!containsIgnoredSegments) {
+							containsIgnoredSegments = true;
+							tempWithIgnoredSegments = '/' + segments[j];
+						}
 					}
 				}
 				URL fileURL = tempBundle.getEntry(tempPath);
 				if (fileURL != null) {
 					bundle = tempBundle;
 					bundlePath = tempPath;
+				} else if (tempWithIgnoredSegments != null) {
+					fileURL = tempBundle.getEntry(tempWithIgnoredSegments);
+					if (fileURL != null) {
+						bundle = tempBundle;
+						bundlePath = tempWithIgnoredSegments;
+					}
+				}
+				if (fileURL != null) {
 					try {
 						nativeProtocolURL = FileLocator.resolve(fileURL).toString();
 					} catch (IOException e) {
