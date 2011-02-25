@@ -80,7 +80,6 @@ public final class ScriptParser {
 								new Region(begin.e(), end.b()), template);
 					} catch (final TemplateSyntaxException e) {
 						problems.add(e);
-						descriptor = null;
 					}
 				}
 			} else { // -1
