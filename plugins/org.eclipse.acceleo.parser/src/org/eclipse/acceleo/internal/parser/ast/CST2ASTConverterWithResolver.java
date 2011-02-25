@@ -1205,12 +1205,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			initType = collectionType.getElementType();
 		}
 
-		// If we have a proxy, we cannot conclude so let's assume that it's good.
-		if (oForVariable.eIsProxy() || oIterSet.eIsProxy() || initType.eIsProxy() || variableType.eIsProxy()) {
+		// If we have a proxy, we cannot conclude so let's assume that it's good.*
+		boolean invalidInitType = initType == null || initType.eIsProxy();
+		if (oForVariable.eIsProxy() || oIterSet.eIsProxy() || invalidInitType || variableType.eIsProxy()) {
 			return true;
 		}
 
-		if (initType.getInstanceClass() != null && variableType.getInstanceClass() != null) {
+		if (initType != null && initType.getInstanceClass() != null
+				&& variableType.getInstanceClass() != null) {
 			result = variableType.getInstanceClass().isAssignableFrom(initType.getInstanceClass());
 		} else if (variableType instanceof AnyType) {
 			result = true;
