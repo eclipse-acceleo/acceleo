@@ -53,6 +53,7 @@ import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
+import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Position;
@@ -818,7 +819,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		}
 		addedAnnotations.putAll(modifiedAnnotations);
 		if (annotationModel != null) {
-			annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
+			synchronized(getLockObject(annotationModel)) {
+				annotationModel.modifyAnnotations(deleted, addedAnnotations, null);
+			}
 		}
 	}
 
@@ -886,12 +889,14 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			final IAnnotationModel model = this.getDocumentProvider().getAnnotationModel(
 					this.getEditorInput());
 			if (model != null) {
-				Iterator<Annotation> annotations = model.getAnnotationIterator();
-				while (annotations.hasNext()) {
-					Annotation annotation = annotations.next();
-					if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
-							.getType())) {
-						model.removeAnnotation(annotation);
+				synchronized(getLockObject(model)) {
+					Iterator<Annotation> annotations = model.getAnnotationIterator();
+					while (annotations.hasNext()) {
+						Annotation annotation = annotations.next();
+						if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
+								.getType())) {
+							model.removeAnnotation(annotation);
+						}
 					}
 				}
 			}
@@ -905,6 +910,23 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				occurrencesFinderJob.schedule();
 			}
 		}
+	}
+
+	/**
+	 * Returns the lock object for the given annotation model.
+	 * 
+	 * @param iAnnotationModel
+	 *            the annotation model
+	 * @return the annotation model's lock object
+	 */
+	private Object getLockObject(final IAnnotationModel iAnnotationModel) {
+		if (iAnnotationModel instanceof ISynchronizable) {
+			final Object lock = ((ISynchronizable)iAnnotationModel).getLockObject();
+			if (lock != null) {
+				return lock;
+			}
+		}
+		return iAnnotationModel;
 	}
 
 	/**
