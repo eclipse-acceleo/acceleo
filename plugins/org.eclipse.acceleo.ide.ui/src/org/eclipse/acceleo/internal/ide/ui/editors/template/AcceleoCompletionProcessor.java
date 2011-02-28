@@ -1012,7 +1012,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (IAcceleoConstants.IMPORT.startsWith(start.toLowerCase())
 						|| ('[' + IAcceleoConstants.IMPORT).startsWith(start.toLowerCase())) {
 					String replacementStringBefore = '[' + IAcceleoConstants.IMPORT + ' ';
-					String replacementStringAfter = "${common} /]\n" + tab; //$NON-NLS-1$
+					String replacementStringAfter = "${common} /]" + tab; //$NON-NLS-1$
 					String replacementString = replacementStringBefore + replacementStringAfter;
 					proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
 							.length(), replacementStringBefore.length(), patternImage,
