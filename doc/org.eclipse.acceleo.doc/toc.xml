@@ -19,7 +19,9 @@
     </topic>
     <topic href="doc/html/acceleo_text_production_rules.html" label="Text Production Rules">
     </topic>
+    <anchor id="org.eclipse.acceleo.doc.userguide.anchor"/>
  </topic>
+ <anchor id="org.eclipse.acceleo.doc.anchor"/>
  <topic href="doc/Legal.html" label="Legal">
  </topic>
 </toc>
