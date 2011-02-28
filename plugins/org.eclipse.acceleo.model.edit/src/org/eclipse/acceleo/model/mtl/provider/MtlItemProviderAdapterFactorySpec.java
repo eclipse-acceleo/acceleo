@@ -142,6 +142,32 @@ public class MtlItemProviderAdapterFactorySpec extends MtlItemProviderAdapterFac
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.model.mtl.provider.MtlItemProviderAdapterFactory#createQueryAdapter()
+	 */
+	@Override
+	public Adapter createQueryAdapter() {
+		if (queryItemProvider == null) {
+			queryItemProvider = new QueryItemProviderSpec(this);
+		}
+		return queryItemProvider;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.model.mtl.provider.MtlItemProviderAdapterFactory#createTemplateAdapter()
+	 */
+	@Override
+	public Adapter createTemplateAdapter() {
+		if (templateItemProvider == null) {
+			templateItemProvider = new TemplateItemProviderSpec(this);
+		}
+		return templateItemProvider;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.model.mtl.provider.MtlItemProviderAdapterFactory#isFactoryForType(java.lang.Object)
 	 */
 	@Override

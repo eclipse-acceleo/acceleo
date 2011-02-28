@@ -13,6 +13,7 @@ package org.eclipse.acceleo.model.mtl.provider;
 import java.util.Iterator;
 
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.ocl.ecore.Variable;
 
@@ -48,7 +49,7 @@ public class TemplateItemProviderSpec extends TemplateItemProvider {
 		for (Iterator<Variable> eParameters = eTemplate.getParameter().iterator(); eParameters.hasNext();) {
 			Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
-				text.append(eVariable.getType());
+				text.append(eVariable.getType().getName());
 			}
 			if (eParameters.hasNext()) {
 				text.append(", "); //$NON-NLS-1$
@@ -65,12 +66,16 @@ public class TemplateItemProviderSpec extends TemplateItemProvider {
 	 */
 	@Override
 	public Object getImage(Object object) {
-		Object res = null;
+		Object res = super.getImage(object);
 
-		if (((Template)object).isMain()) {
-			res = overlayImage(object, getResourceLocator().getImage("full/obj16/Template_main")); //$NON-NLS-1$
-		} else {
-			res = super.getImage(object);
+		if (object instanceof Template) {
+			if (((Template)object).isMain()) {
+				res = overlayImage(object, getResourceLocator().getImage("full/obj16/Template_main")); //$NON-NLS-1$
+			} else if (((Template)object).getVisibility() == VisibilityKind.PRIVATE) {
+				res = overlayImage(object, getResourceLocator().getImage("full/obj16/Template_private")); //$NON-NLS-1$
+			} else if (((Template)object).getVisibility() == VisibilityKind.PROTECTED) {
+				res = overlayImage(object, getResourceLocator().getImage("full/obj16/Template_protected")); //$NON-NLS-1$
+			}
 		}
 		return res;
 	}

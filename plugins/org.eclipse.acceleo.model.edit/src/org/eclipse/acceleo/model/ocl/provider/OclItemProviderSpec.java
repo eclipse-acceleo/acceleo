@@ -13,6 +13,7 @@ package org.eclipse.acceleo.model.ocl.provider;
 import org.eclipse.acceleo.model.mtl.provider.MtlEditPlugin;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
+import org.eclipse.ocl.ecore.Constraint;
 
 /**
  * Specializes the ReflectiveItemProvider implementation.
@@ -48,6 +49,13 @@ public class OclItemProviderSpec extends ReflectiveItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
+		if (object instanceof Constraint) {
+			Constraint constraint = (Constraint)object;
+			if ((constraint.getConstrainedElements() == null || constraint.getConstrainedElements().size() == 0)
+					&& constraint.getName() == null) {
+				return ""; //$NON-NLS-1$
+			}
+		}
 		return object.toString();
 	}
 }

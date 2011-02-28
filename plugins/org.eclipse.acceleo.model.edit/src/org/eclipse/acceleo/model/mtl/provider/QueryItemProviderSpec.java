@@ -11,35 +11,25 @@
 package org.eclipse.acceleo.model.mtl.provider;
 
 import org.eclipse.acceleo.model.mtl.Query;
-import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.notify.AdapterFactory;
 
 /**
- * Specializes the QueryInvocationItemProvider implementation.
+ * Specializes the QueryItemProvider.
  * 
- * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-public class QueryInvocationItemProviderSpec extends QueryInvocationItemProvider {
+public class QueryItemProviderSpec extends QueryItemProvider {
 
 	/**
-	 * Constructor.
+	 * The constructor.
 	 * 
 	 * @param adapterFactory
-	 *            the adapter factory
+	 *            The adapter factory.
 	 */
-	public QueryInvocationItemProviderSpec(AdapterFactory adapterFactory) {
+	public QueryItemProviderSpec(AdapterFactory adapterFactory) {
 		super(adapterFactory);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.model.mtl.provider.QueryInvocationItemProvider#getText(java.lang.Object)
-	 */
-	@Override
-	public String getText(Object object) {
-		return object.toString();
 	}
 
 	/**
@@ -50,8 +40,8 @@ public class QueryInvocationItemProviderSpec extends QueryInvocationItemProvider
 	@Override
 	public Object getImage(Object object) {
 		Object image = null;
-		if (object instanceof QueryInvocation && ((QueryInvocation)object).getDefinition() != null) {
-			Query query = ((QueryInvocation)object).getDefinition();
+		if (object instanceof Query) {
+			Query query = (Query)object;
 			if (query.getVisibility() == VisibilityKind.PRIVATE) {
 				image = overlayImage(object, getResourceLocator().getImage("full/obj16/Query_private")); //$NON-NLS-1$
 			} else if (query.getVisibility() == VisibilityKind.PROTECTED) {
