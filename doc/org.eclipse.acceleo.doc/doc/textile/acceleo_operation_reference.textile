@@ -434,11 +434,12 @@ Removes all leading and trailing white space characters (tabulation, space, line
 | 'trim operation'
 |}
 
+
 == Non-standard *EObject* operations ==
 All of the examples from this section are set in the context of this model (with **root** being an instance of *Model* as per the UML metamodel) :
 
 
-[[Image:Acceleo-Model-example.png|thumb|748px|center|The example model used for the next operations.]]
+[[Image:../images/operation_reference/model_example.png|thumb|748px|center|]]
 
 
 === ancestors () : Sequence(EObject) ===
