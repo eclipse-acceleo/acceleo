@@ -226,7 +226,7 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 					break;
 				case CstPackage.QUERY:
 					org.eclipse.acceleo.parser.cst.Query eQuery = (org.eclipse.acceleo.parser.cst.Query)eObject;
-					text.append("query " + eQuery.getName()); //$NON-NLS-1$
+					text.append(getTextForQuery(eQuery));
 					break;
 				default:
 					throw new IllegalArgumentException(AcceleoUIMessages.getString(
@@ -249,9 +249,35 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		for (Iterator<EPackage> ePackages = eTypedModel.getTakesTypesFrom().iterator(); ePackages.hasNext();) {
 			text.append(ePackages.next().getName());
 			if (ePackages.hasNext()) {
-				text.append(", "); //$NON-NLS-1$
+				text.append(IAcceleoConstants.COMMA_SEPARATOR + " "); //$NON-NLS-1$
 			}
 		}
+		return text;
+	}
+
+	/**
+	 * Gets the label text specific to a 'Query' instance.
+	 * 
+	 * @param eQuery
+	 *            is the model object '<em><b>Query</b></em>'.
+	 * @return the text
+	 */
+	private StringBuffer getTextForQuery(org.eclipse.acceleo.parser.cst.Query eQuery) {
+		StringBuffer text = new StringBuffer();
+		text.append("query "); //$NON-NLS-1$
+		text.append(eQuery.getName());
+		text.append("("); //$NON-NLS-1$
+		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eQuery.getParameter().iterator(); eParameters
+				.hasNext();) {
+			org.eclipse.acceleo.parser.cst.Variable eVariable = eParameters.next();
+			if (eVariable.getType() != null) {
+				text.append(eVariable.getType());
+			}
+			if (eParameters.hasNext()) {
+				text.append(IAcceleoConstants.COMMA_SEPARATOR + " "); //$NON-NLS-1$
+			}
+		}
+		text.append(")"); //$NON-NLS-1$
 		return text;
 	}
 
