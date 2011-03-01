@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -24,6 +23,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -95,7 +95,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * 
 	 * @since 3.0
 	 */
-	protected Set<Resource> originalResources = new HashSet<Resource>();
+	protected Set<Resource> originalResources = new CompactHashSet<Resource>();
 
 	/**
 	 * Allows clients to add a generation listener to this generator instance.

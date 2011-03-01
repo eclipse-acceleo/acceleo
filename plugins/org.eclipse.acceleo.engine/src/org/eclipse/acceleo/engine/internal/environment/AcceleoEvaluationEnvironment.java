@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
@@ -73,7 +73,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private static final String TEMPORARY_INVOCATION_ARG_PREFIX = "temporaryInvocationVariable$"; //$NON-NLS-1$
 
 	/** This will allow the environment to know of the modules currently in the generation context. */
-	private final Set<Module> currentModules = new HashSet<Module>();
+	private final Set<Module> currentModules = new CompactHashSet<Module>();
 
 	/** Maps dynamic overrides as registered in the {@link AcceleoDynamicTemplatesRegistry}. */
 	private final Map<Template, Set<Template>> dynamicOverrides = new HashMap<Template, Set<Template>>();
@@ -492,14 +492,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The set of applicable templates.
 	 */
 	private Set<Template> applicableTemplates(Set<Template> candidates, List<Object> argumentTypes) {
-		final Set<Template> applicableCandidates = new LinkedHashSet<Template>(candidates);
+		final Set<Template> applicableCandidates = new CompactLinkedHashSet<Template>(candidates);
 		for (final Template candidate : candidates) {
 			if (candidate.getParameter().size() != argumentTypes.size()) {
 				applicableCandidates.remove(candidate);
 			}
 		}
 		for (int i = 0; i < argumentTypes.size(); i++) {
-			for (final Template candidate : new LinkedHashSet<Template>(applicableCandidates)) {
+			for (final Template candidate : new CompactLinkedHashSet<Template>(applicableCandidates)) {
 				final Object parameterType = candidate.getParameter().get(i).getType();
 				if (!isApplicableArgument(parameterType, argumentTypes.get(i))) {
 					applicableCandidates.remove(candidate);
@@ -522,13 +522,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return All of the applicable templates of this name in the current context.
 	 */
 	private Set<Template> getAllCandidateNamesakes(Module origin, Template call, List<Object> argumentTypes) {
-		final Set<Template> namesakes = new LinkedHashSet<Template>();
+		final Set<Template> namesakes = new CompactLinkedHashSet<Template>();
 		final Set<Template> candidates = templates.get(call.getName());
 		if (candidates == null) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationEnvironment.ModuleResolutionError")); //$NON-NLS-1$
 		}
-		Set<Module> scope = new HashSet<Module>();
+		Set<Module> scope = new CompactHashSet<Module>();
 		scope.add(origin);
 		scope.addAll(getScopeOf(origin));
 		for (Template candidate : candidates) {
@@ -551,7 +551,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The whole scope of modules visible from <code>module</code>.
 	 */
 	private Set<Module> getScopeOf(Module module) {
-		Set<Module> scope = new HashSet<Module>();
+		Set<Module> scope = new CompactHashSet<Module>();
 
 		if (module.getExtends().size() > 0) {
 			// Only supports single inheritance
@@ -577,7 +577,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The whole scope of modules visible thanks to an extends.
 	 */
 	private Set<Module> getExtendedScope(Module module) {
-		Set<Module> scope = new HashSet<Module>();
+		Set<Module> scope = new CompactHashSet<Module>();
 
 		if (module.getExtends().size() > 0) {
 			// Only supports single inheritance
@@ -638,7 +638,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private Set<Template> getAllDynamicCandidateOverriding(List<Template> overridenTemplates,
 			List<Object> argumentTypes) {
-		final Set<Template> dynamicOverriding = new LinkedHashSet<Template>();
+		final Set<Template> dynamicOverriding = new CompactLinkedHashSet<Template>();
 		for (final Template overriden : overridenTemplates) {
 			final Set<Template> candidates = dynamicOverrides.get(overriden);
 			if (candidates != null) {
@@ -655,7 +655,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The set of all currently accessible modules.
 	 */
 	Set<Module> getCurrentModules() {
-		return new HashSet<Module>(currentModules);
+		return new CompactHashSet<Module>(currentModules);
 	}
 
 	/**
@@ -712,7 +712,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	private Set<Module> loadDynamicModules() {
 		final Set<File> dynamicModuleFiles = AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules();
-		final Set<Module> dynamicModules = new LinkedHashSet<Module>();
+		final Set<Module> dynamicModules = new CompactLinkedHashSet<Module>();
 		// shortcut
 		if (dynamicModuleFiles.size() > 0) {
 			ResourceSet resourceSet = null;
@@ -768,7 +768,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			if (elem instanceof Template) {
 				Set<Template> namesakes = templates.get(elem.getName());
 				if (namesakes == null) {
-					namesakes = new LinkedHashSet<Template>();
+					namesakes = new CompactLinkedHashSet<Template>();
 					templates.put(elem.getName(), namesakes);
 				}
 				namesakes.add((Template)elem);
@@ -794,7 +794,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private void mapDynamicModule(Module module, Set<Module> dynamicModules) {
 		boolean map = false;
 
-		final Set<Module> unMappedRequiredModules = new LinkedHashSet<Module>();
+		final Set<Module> unMappedRequiredModules = new CompactLinkedHashSet<Module>();
 		for (Module extended : module.getExtends()) {
 			if (dynamicModules.contains(extended)) {
 				mapDynamicModule(extended, dynamicModules);
@@ -826,7 +826,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				for (final Template overriden : ownedTemplate.getOverrides()) {
 					Set<Template> overriding = dynamicOverrides.get(overriden);
 					if (overriding == null && templates.containsKey(overriden.getName())) {
-						overriding = new LinkedHashSet<Template>();
+						overriding = new CompactLinkedHashSet<Template>();
 						Template match = overriden;
 						Set<Template> candidates = templates.get(overriden.getName());
 						for (Template template : candidates) {
@@ -844,7 +844,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				if (ownedTemplate.getOverrides().size() == 0) {
 					Set<Template> namesakes = templates.get(ownedTemplate.getName());
 					if (namesakes == null) {
-						namesakes = new LinkedHashSet<Template>();
+						namesakes = new CompactLinkedHashSet<Template>();
 						templates.put(ownedTemplate.getName(), namesakes);
 					}
 					namesakes.add(ownedTemplate);
@@ -875,7 +875,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		for (final Template overriden : elem.getOverrides()) {
 			Set<Template> overriding = overridingTemplates.get(overriden);
 			if (overriding == null) {
-				overriding = new LinkedHashSet<Template>();
+				overriding = new CompactLinkedHashSet<Template>();
 				overridingTemplates.put(overriden, overriding);
 			}
 			overriding.add(elem);
@@ -942,7 +942,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		final List<Template> reorderedList = new ArrayList<Template>(candidates.size());
 
 		// We only support single inheritance. get(0) comes from that.
-		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+		for (final Template candidate : new CompactLinkedHashSet<Template>(candidates)) {
 			boolean isOverridingCandidate = false;
 			Module module = (Module)candidate.eContainer();
 			while (!isOverridingCandidate && module != null && module.getExtends().size() > 0) {
@@ -955,14 +955,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 
-		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+		for (final Template candidate : new CompactLinkedHashSet<Template>(candidates)) {
 			if (candidate.eContainer() == origin) {
 				reorderedList.add(candidate);
 				candidates.remove(candidate);
 			}
 		}
 
-		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+		for (final Template candidate : new CompactLinkedHashSet<Template>(candidates)) {
 			for (final Module extended : origin.getExtends()) {
 				if (candidate.eContainer() == extended) {
 					reorderedList.add(candidate);
@@ -971,7 +971,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 
-		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+		for (final Template candidate : new CompactLinkedHashSet<Template>(candidates)) {
 			for (final Module imported : origin.getImports()) {
 				if (candidate.eContainer() == imported) {
 					reorderedList.add(candidate);
@@ -980,7 +980,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			}
 		}
 
-		for (final Template candidate : new LinkedHashSet<Template>(candidates)) {
+		for (final Template candidate : new CompactLinkedHashSet<Template>(candidates)) {
 			for (final Module imported : origin.getImports()) {
 				Module myImportedModule = imported;
 
@@ -1009,9 +1009,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private List<Template> reorderDynamicOverrides(Set<Template> candidates) {
 		final List<Template> reorderedList = new ArrayList<Template>(candidates.size());
 
-		final Set<Template> lowest = new LinkedHashSet<Template>(candidates);
+		final Set<Template> lowest = new CompactLinkedHashSet<Template>(candidates);
 		while (!lowest.isEmpty()) {
-			for (final Template candidate : new LinkedHashSet<Template>(lowest)) {
+			for (final Template candidate : new CompactLinkedHashSet<Template>(lowest)) {
 				for (final Template overriden : candidate.getOverrides()) {
 					if (lowest.contains(overriden)) {
 						lowest.remove(overriden);

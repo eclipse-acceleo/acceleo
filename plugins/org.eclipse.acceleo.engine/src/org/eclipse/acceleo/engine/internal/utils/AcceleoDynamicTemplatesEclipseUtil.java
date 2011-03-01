@@ -16,12 +16,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.core.runtime.FileLocator;
@@ -39,7 +39,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	protected static final Map<Bundle, List<String>> EXTENDING_BUNDLES = new HashMap<Bundle, List<String>>();
 
 	/** This will contain the modules contained by this registry. */
-	private static final Set<File> REGISTERED_MODULES = new LinkedHashSet<File>();
+	private static final Set<File> REGISTERED_MODULES = new CompactLinkedHashSet<File>();
 
 	/**
 	 * Utility classes don't need a default constructor.
@@ -80,7 +80,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	 */
 	public static Set<File> getRegisteredModules() {
 		refreshModules();
-		return new LinkedHashSet<File>(REGISTERED_MODULES);
+		return new CompactLinkedHashSet<File>(REGISTERED_MODULES);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 		REGISTERED_MODULES.clear();
 		final List<Bundle> uninstalledBundles = new ArrayList<Bundle>();
 		final String pathSeparator = "/"; //$NON-NLS-1$
-		for (java.util.Map.Entry<Bundle, List<String>> entry : new LinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
+		for (java.util.Map.Entry<Bundle, List<String>> entry : new CompactLinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
 				EXTENDING_BUNDLES.entrySet())) {
 			Bundle bundle = entry.getKey();
 			if (bundle.getState() == Bundle.UNINSTALLED) {

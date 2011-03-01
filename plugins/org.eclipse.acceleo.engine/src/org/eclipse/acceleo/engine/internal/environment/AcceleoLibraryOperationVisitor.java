@@ -29,6 +29,7 @@ import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.emf.common.notify.Notifier;
@@ -309,7 +310,7 @@ public final class AcceleoLibraryOperationVisitor {
 			final List<Object> temp = new ArrayList<Object>(source);
 			Collections.reverse(temp);
 			if (source instanceof LinkedHashSet<?>) {
-				final Set<Object> reversedSet = new LinkedHashSet<Object>(temp);
+				final Set<Object> reversedSet = new CompactLinkedHashSet<Object>(temp);
 				result = reversedSet;
 			} else {
 				result = temp;
@@ -567,7 +568,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 * @return Sequence containing the full set of inverse references.
 	 */
 	private static Set<EObject> eInverse(EObject target, EClassifier filter) {
-		final Set<EObject> result = new LinkedHashSet<EObject>();
+		final Set<EObject> result = new CompactLinkedHashSet<EObject>();
 		if (referencer == null) {
 			createEInverseCrossreferencer(target);
 		}

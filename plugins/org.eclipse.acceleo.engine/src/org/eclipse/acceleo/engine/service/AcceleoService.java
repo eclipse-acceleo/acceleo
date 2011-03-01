@@ -13,12 +13,12 @@ package org.eclipse.acceleo.engine.service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -241,7 +241,7 @@ public final class AcceleoService {
 				if (templateTypes.containsKey(templateType)) {
 					templateTypes.get(templateType).add(template);
 				} else {
-					Set<Template> temp = new HashSet<Template>();
+					Set<Template> temp = new CompactHashSet<Template>();
 					temp.add(template);
 					templateTypes.put(templateType, temp);
 				}

@@ -13,10 +13,10 @@ package org.eclipse.acceleo.engine.service;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.emf.common.EMFPlugin;
 
@@ -36,7 +36,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	public static final AcceleoDynamicTemplatesRegistry INSTANCE = new AcceleoDynamicTemplatesRegistry();
 
 	/** This will contain references to the modules added to this registry. */
-	private final Set<File> registeredModules = new LinkedHashSet<File>();
+	private final Set<File> registeredModules = new CompactLinkedHashSet<File>();
 
 	/**
 	 * This class is a singleton. Access the instance through {@link #INSTANCE}.
@@ -119,7 +119,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 	 * @return A copy of the registered modules set.
 	 */
 	public Set<File> getRegisteredModules() {
-		final Set<File> compound = new LinkedHashSet<File>();
+		final Set<File> compound = new CompactLinkedHashSet<File>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			compound.addAll(AcceleoDynamicTemplatesEclipseUtil.getRegisteredModules());
 		}

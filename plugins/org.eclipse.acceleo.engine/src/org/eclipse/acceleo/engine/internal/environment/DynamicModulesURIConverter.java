@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +24,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.EList;
@@ -295,7 +295,7 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 
 		String moduleName = uri.lastSegment();
 		moduleName = moduleName.substring(0, moduleName.lastIndexOf('.'));
-		Set<URI> candidateURIs = new LinkedHashSet<URI>();
+		Set<URI> candidateURIs = new CompactLinkedHashSet<URI>();
 
 		// Search matching module in the current generation context
 		Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
@@ -383,7 +383,7 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 	 *         <code>moduleName</code>.
 	 */
 	private Set<Module> searchCurrentModuleForCandidateMatches(String moduleName) {
-		Set<Module> candidates = new LinkedHashSet<Module>();
+		Set<Module> candidates = new CompactLinkedHashSet<Module>();
 		for (Module module : parentEnvironment.getCurrentModules()) {
 			if (moduleName.equals(module.getName())) {
 				candidates.add(module);
@@ -402,7 +402,7 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 	 *         <code>moduleName</code>.
 	 */
 	private Set<URI> searchResourceSetForMatches(String moduleName) {
-		final Set<URI> candidates = new LinkedHashSet<URI>();
+		final Set<URI> candidates = new CompactLinkedHashSet<URI>();
 		final List<ResourceSet> resourceSets = new ArrayList<ResourceSet>();
 		for (Module module : parentEnvironment.getCurrentModules()) {
 			if (module != null && module.eResource() != null) {
