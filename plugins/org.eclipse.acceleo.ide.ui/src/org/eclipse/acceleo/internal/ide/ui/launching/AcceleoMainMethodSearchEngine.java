@@ -13,11 +13,11 @@ package org.eclipse.acceleo.internal.ide.ui.launching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.runtime.CoreException;
@@ -157,7 +157,7 @@ public class AcceleoMainMethodSearchEngine {
 	 */
 	private Set<IType> addSubtypes(List<IType> types, IProgressMonitor monitor, IJavaSearchScope scope) {
 		Iterator<IType> iterator = types.iterator();
-		Set<IType> result = new HashSet<IType>(types.size());
+		Set<IType> result = new CompactHashSet<IType>(types.size());
 		IType type = null;
 		ITypeHierarchy hierarchy = null;
 		IType[] subtypes = null;

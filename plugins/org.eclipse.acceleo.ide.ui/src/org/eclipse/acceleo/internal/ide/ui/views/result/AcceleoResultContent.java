@@ -12,10 +12,10 @@ package org.eclipse.acceleo.internal.ide.ui.views.result;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -178,7 +178,7 @@ public class AcceleoResultContent implements IAcceleoTextGenerationListener {
 		} else {
 			newModel = new TraceabilityModel(eObject, labelProvider.getText(eObject));
 		}
-		Set<TraceabilityModel> toMove = new HashSet<TraceabilityModel>();
+		Set<TraceabilityModel> toMove = new CompactHashSet<TraceabilityModel>();
 		for (TraceabilityModel sibling : parent.getChildren()) {
 			if (ancestorOf(newModel.getEObject(), sibling.getEObject())) {
 				toMove.add(sibling);

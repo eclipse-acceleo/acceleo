@@ -16,13 +16,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -743,7 +743,7 @@ public class AcceleoProject {
 	public static List<URI> getAllPlatformPluginOutputFiles() {
 		List<URI> outputURIs = new ArrayList<URI>();
 		if (!allBundlesOutputFilesFound) {
-			Set<String> done = new HashSet<String>();
+			Set<String> done = new CompactHashSet<String>();
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject aProject : projects) {
 				try {

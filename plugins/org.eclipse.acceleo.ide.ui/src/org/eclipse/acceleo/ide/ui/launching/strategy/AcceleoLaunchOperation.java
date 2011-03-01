@@ -111,6 +111,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				generator = safeInstantiate(generatorClass);
 			}
 
+			final long start = System.currentTimeMillis();
 			if (generator != null) {
 				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getFile(
 						new Path(model)).getLocation().toString());
@@ -130,6 +131,8 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				}
 				main.invoke(null, new Object[] {invocationArgs, });
 			}
+			final long end = System.currentTimeMillis();
+			System.out.println(((end - start) / 1000) + "s");
 		} catch (NoSuchMethodException e) {
 			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);

@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +22,8 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
@@ -419,7 +419,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		String textOCL = text.substring(startPosition, offset);
 		Collection<Choice> choices = content.getSyntaxHelp(textOCL, offset);
-		Set<String> duplicated = new HashSet<String>();
+		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String replacementString = next.getName();
 			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
@@ -472,7 +472,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		String textOCL = text.substring(startPosition, offset);
 		Collection<Choice> choices = content.getSyntaxHelp(textOCL, offset);
-		Set<String> duplicated = new HashSet<String>();
+		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String choiceValue = next.getName();
 			String replacement = getReplacementStringFor(choiceValue);
@@ -759,7 +759,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			i--;
 		}
 		String start = text.substring(i, offset);
-		Iterator<String> entries = new LinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet())
+		Iterator<String> entries = new CompactLinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet())
 				.iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
@@ -769,7 +769,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		if (start.length() > 0) {
-			entries = new LinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet()).iterator();
+			entries = new CompactLinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet()).iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
 				EPackage ePackage = ModelUtils.getEPackage(pURI);

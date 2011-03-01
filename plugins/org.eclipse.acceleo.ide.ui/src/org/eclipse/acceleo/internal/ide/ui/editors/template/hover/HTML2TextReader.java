@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -57,7 +57,7 @@ public class HTML2TextReader extends AbstractSubstitutionTextReader {
 
 	static {
 
-		TAGS = new HashSet<String>();
+		TAGS = new CompactHashSet<String>();
 		TAGS.add("b"); //$NON-NLS-1$
 		TAGS.add("br"); //$NON-NLS-1$
 		TAGS.add("br/"); //$NON-NLS-1$

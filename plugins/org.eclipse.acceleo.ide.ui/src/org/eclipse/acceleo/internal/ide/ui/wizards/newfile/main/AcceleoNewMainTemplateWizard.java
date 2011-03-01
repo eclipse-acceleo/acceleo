@@ -14,13 +14,13 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -330,7 +330,7 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 	 */
 	private void computeMinimizedHeaderInformation(Template[] templates, Collection<String> metamodels,
 			Collection<String> imports) {
-		Set<Module> done = new HashSet<Module>();
+		Set<Module> done = new CompactHashSet<Module>();
 		for (Template template : templates) {
 			Module module = null;
 			EObject parent = template.eContainer();

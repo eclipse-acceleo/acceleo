@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.outline;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Macro;
 import org.eclipse.acceleo.parser.cst.Module;
@@ -57,7 +57,7 @@ public class QuickOutlineContentProvider extends AdapterFactoryContentProvider {
 	@Override
 	public Object[] getElements(Object object) {
 		if (object instanceof Module) {
-			Set<CSTNode> children = new LinkedHashSet<CSTNode>();
+			Set<CSTNode> children = new CompactLinkedHashSet<CSTNode>();
 			for (EObject child : ((Module)object).eContents()) {
 				if (child instanceof Template || child instanceof Query || child instanceof Macro) {
 					children.add((CSTNode)child);

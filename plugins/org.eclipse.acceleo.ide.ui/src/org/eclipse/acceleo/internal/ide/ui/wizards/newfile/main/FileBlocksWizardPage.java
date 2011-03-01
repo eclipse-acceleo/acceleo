@@ -12,11 +12,11 @@ package org.eclipse.acceleo.internal.ide.ui.wizards.newfile.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -82,7 +82,7 @@ public class FileBlocksWizardPage extends WizardPage implements IEditingDomainPr
 	/**
 	 * The resource sets to unload, when we close the view.
 	 */
-	private Set<ResourceSet> toUnload = new HashSet<ResourceSet>();
+	private Set<ResourceSet> toUnload = new CompactHashSet<ResourceSet>();
 
 	/**
 	 * The active project.
@@ -205,7 +205,7 @@ public class FileBlocksWizardPage extends WizardPage implements IEditingDomainPr
 	 */
 	private void update(IProgressMonitor monitor) {
 		if (project != null) {
-			Set<ResourceSet> newResourceSet = new HashSet<ResourceSet>();
+			Set<ResourceSet> newResourceSet = new CompactHashSet<ResourceSet>();
 			AcceleoProject acceleoProject = new AcceleoProject(project);
 			final List<FileBlocksProjectHandler> projects = new ArrayList<FileBlocksProjectHandler>();
 			ResourceSet resourceSet = acceleoProject.loadAccessibleOutputFiles(monitor);

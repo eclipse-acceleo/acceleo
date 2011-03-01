@@ -15,13 +15,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
@@ -756,7 +756,7 @@ public class AcceleoModuleComposite extends Composite {
 		Object[] result = registeredPackageDialog.getResult();
 		if (result != null) {
 			List<?> nsURIs = Arrays.asList(result);
-			Set<String> uriSet = new LinkedHashSet<String>();
+			Set<String> uriSet = new CompactLinkedHashSet<String>();
 			if (registeredPackageDialog.isDevelopmentTimeVersion()) {
 				StringBuffer uris = new StringBuffer();
 				try {

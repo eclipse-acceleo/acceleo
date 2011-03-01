@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.launching;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainerType;
 import org.eclipse.debug.core.sourcelookup.ISourceLookupParticipant;
@@ -32,7 +32,7 @@ public class AcceleoSourceLookupDirector extends AbstractSourceLookupDirector {
 	private static Set<String> fFilteredTypes;
 
 	static {
-		fFilteredTypes = new HashSet<String>();
+		fFilteredTypes = new CompactHashSet<String>();
 		fFilteredTypes.add(JavaProjectSourceContainer.TYPE_ID);
 	}
 

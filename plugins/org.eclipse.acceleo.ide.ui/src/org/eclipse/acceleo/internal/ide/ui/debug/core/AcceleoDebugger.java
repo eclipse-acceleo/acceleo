@@ -13,13 +13,13 @@ package org.eclipse.acceleo.internal.ide.ui.debug.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
@@ -75,7 +75,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	/**
 	 * Contains the AST node fragments of all the available breakpoints.
 	 */
-	private Set<ASTFragment> breakpointsASTFragments = new HashSet<ASTFragment>();
+	private Set<ASTFragment> breakpointsASTFragments = new CompactHashSet<ASTFragment>();
 
 	/**
 	 * Contains all the AST node fragments of the project to debug. The map value is the position of the AST
@@ -86,7 +86,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	/**
 	 * Debugger events listeners during a template evaluation.
 	 */
-	private Set<ITemplateDebuggerListener> listeners = new HashSet<ITemplateDebuggerListener>();
+	private Set<ITemplateDebuggerListener> listeners = new CompactHashSet<ITemplateDebuggerListener>();
 
 	/**
 	 * The current stack of the debugger. It corresponds to the "Launch View" stack.
@@ -156,7 +156,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 			Map<File, Module> mtlFiles = getInputOutputAcceleoFiles(project, oResourceSet);
 			breakpointsASTFragments.clear();
 			allASTFragments.clear();
-			Set<ASTFragment> conflicts = new HashSet<ASTFragment>();
+			Set<ASTFragment> conflicts = new CompactHashSet<ASTFragment>();
 			Iterator<Map.Entry<File, Module>> mtlFilesIt = mtlFiles.entrySet().iterator();
 			while (mtlFilesIt.hasNext()) {
 				Map.Entry<File, Module> entry = mtlFilesIt.next();
