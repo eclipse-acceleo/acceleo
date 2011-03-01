@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.ast.ocl.OCLParser;
 import org.eclipse.acceleo.model.mtl.CommentBody;
@@ -1296,7 +1296,7 @@ public class CST2ASTConverter {
 	private void transformStepCopyOwnedModuleElement(org.eclipse.acceleo.parser.cst.Module iModule,
 			org.eclipse.acceleo.model.mtl.Module oModule) {
 		if (!isCanceled) {
-			Set<String> allSignatures = new HashSet<String>();
+			Set<String> allSignatures = new CompactHashSet<String>();
 			Iterator<org.eclipse.acceleo.parser.cst.ModuleElement> iOwnedModuleElementIt = iModule
 					.getOwnedModuleElement().iterator();
 			while (iOwnedModuleElementIt.hasNext()) {

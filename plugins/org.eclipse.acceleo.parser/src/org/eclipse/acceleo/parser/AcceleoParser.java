@@ -14,13 +14,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -132,7 +132,7 @@ public class AcceleoParser {
 		List<Resource> newResources = new ArrayList<Resource>();
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
 		Iterator<URI> itOutputURIs = outputURIs.iterator();
-		Set<String> allImportedFiles = new HashSet<String>();
+		Set<String> allImportedFiles = new CompactHashSet<String>();
 		for (Iterator<AcceleoFile> itAcceleoFiles = acceleoFiles.iterator(); !monitor.isCanceled()
 				&& itAcceleoFiles.hasNext() && itOutputURIs.hasNext();) {
 			AcceleoFile acceleoFile = itAcceleoFiles.next();
@@ -289,7 +289,7 @@ public class AcceleoParser {
 			}
 		}
 		source.createCST();
-		Set<String> allImportedFiles = new HashSet<String>();
+		Set<String> allImportedFiles = new CompactHashSet<String>();
 		for (ModuleImportsValue importValue : source.getCST().getImports()) {
 			String importedFileName = importValue.getName();
 			if (importedFileName != null) {

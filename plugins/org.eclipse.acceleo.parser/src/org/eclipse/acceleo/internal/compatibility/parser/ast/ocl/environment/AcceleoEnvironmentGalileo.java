@@ -12,12 +12,12 @@ package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
@@ -275,7 +275,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					alteredSequence.setElementType(((TypeExp)args.get(0)).getReferredType());
 					Set<EClassifier> altered = alteredTypes.get(type);
 					if (altered == null) {
-						altered = new HashSet<EClassifier>();
+						altered = new CompactHashSet<EClassifier>();
 						alteredTypes.put(type, altered);
 					}
 					altered.add(alteredSequence);
@@ -418,7 +418,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 */
 		private void createSubTypesHierarchy(EClassifier classifier) {
 			if (subTypes.get(classifier) == null) {
-				final Set<EClassifier> hierarchy = new HashSet<EClassifier>();
+				final Set<EClassifier> hierarchy = new CompactHashSet<EClassifier>();
 
 				ECrossReferenceAdapter referencer = getCrossReferencer(classifier);
 				for (EStructuralFeature.Setting setting : referencer.getInverseReferences(classifier, false)) {
