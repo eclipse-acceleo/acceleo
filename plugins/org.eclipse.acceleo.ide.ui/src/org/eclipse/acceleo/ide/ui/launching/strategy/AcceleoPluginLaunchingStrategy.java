@@ -151,7 +151,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 * 
 	 * @param activate
 	 *            indicates that we would like to compute the traceability information
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	protected void switchTraceability(boolean activate) {
 		AcceleoPreferences.switchTraceability(activate);

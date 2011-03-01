@@ -131,7 +131,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	protected String offsetASTNodeURI = ""; //$NON-NLS-1$
 
 	/**
-	 * The job that will supress the annotation when the user type some text.
+	 * The job that will suppress the annotation when the user type some text.
 	 */
 	protected AcceleoRemoveAnnotationJob removeAnnotationJob;
 

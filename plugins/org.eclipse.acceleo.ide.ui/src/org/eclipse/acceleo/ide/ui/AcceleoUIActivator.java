@@ -129,7 +129,7 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 * @param blocker
 	 *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
 	 *            warning.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public static void log(Exception exception, boolean blocker) {
 		int severity = IStatus.WARNING;

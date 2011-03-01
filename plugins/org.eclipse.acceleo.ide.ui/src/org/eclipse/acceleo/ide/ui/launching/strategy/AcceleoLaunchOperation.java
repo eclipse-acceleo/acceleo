@@ -35,7 +35,7 @@ import org.eclipse.emf.common.util.URI;
  * To launch an Acceleo application as an Eclipse plug-in operation.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
- * @since 3.1
+ * @since 3.0
  */
 public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	/**
