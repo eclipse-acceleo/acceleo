@@ -40,7 +40,7 @@ public final class AcceleoPreferences {
 	private static final boolean DEFAULT_ENABLE_QUERY_CACHE = true;
 
 	/** Preferences scope for the Acceleo common plugin. */
-	private static final IEclipsePreferences PREFERENCES_SCOPE = InstanceScope.INSTANCE
+	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
 			.getNode(AcceleoCommonPlugin.PLUGIN_ID);
 
 	/**
