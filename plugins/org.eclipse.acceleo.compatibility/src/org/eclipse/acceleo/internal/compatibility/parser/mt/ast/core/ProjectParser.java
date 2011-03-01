@@ -11,13 +11,13 @@
 package org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.compatibility.model.mt.MtFactory;
 import org.eclipse.acceleo.compatibility.model.mt.ResourceSet;
 import org.eclipse.acceleo.compatibility.model.mt.core.CoreFactory;
@@ -97,7 +97,7 @@ public final class ProjectParser {
 	private static Map<IFile, Template> createTemplates(IProject[] projects, ResourceSet root)
 			throws CoreException {
 		Map<IFile, Template> files = new HashMap<IFile, Template>();
-		Set<IFolder> done = new HashSet<IFolder>();
+		Set<IFolder> done = new CompactHashSet<IFolder>();
 		for (int i = 0; i < projects.length; i++) {
 			IProject project = projects[i];
 			final IJavaProject javaProject = JavaCore.create(project);
