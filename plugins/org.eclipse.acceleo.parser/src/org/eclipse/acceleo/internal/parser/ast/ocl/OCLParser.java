@@ -1198,13 +1198,13 @@ public class OCLParser {
 			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
 			pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
 		} catch (NullPointerException e) {
-			// do not log, it can append during the parsing.
+			// do not log, it can happen during the parsing.
 		}
 
 		try {
 			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
 		} catch (NullPointerException e) {
-			// do not log, it can append during the parsing.
+			// do not log, it can happen during the parsing.
 		} finally {
 			popContext();
 		}
