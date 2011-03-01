@@ -299,7 +299,7 @@ public class Profiler {
 	 * Returns the profile resource.
 	 * 
 	 * @return The profile resource.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public ProfileResource getProfileResource() {
 		return resource;
