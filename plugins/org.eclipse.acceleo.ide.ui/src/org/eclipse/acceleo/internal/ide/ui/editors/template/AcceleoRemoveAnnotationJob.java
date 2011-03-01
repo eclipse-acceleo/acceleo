@@ -54,25 +54,23 @@ public class AcceleoRemoveAnnotationJob extends Job {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		if (this.acceleoEditor.isDirty()) {
-			final IAnnotationModel model = this.acceleoEditor.getDocumentProvider().getAnnotationModel(
-					this.acceleoEditor.getEditorInput());
+		final IAnnotationModel model = this.acceleoEditor.getDocumentProvider().getAnnotationModel(
+				this.acceleoEditor.getEditorInput());
 
-			if (model != null) {
-				synchronized(getLockObject(model)) {
-					Iterator<Annotation> annotations = model.getAnnotationIterator();
-					while (annotations.hasNext()) {
-						Annotation annotation = annotations.next();
-						if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
-								.getType())) {
-							model.removeAnnotation(annotation);
-						}
+		if (model != null) {
+			synchronized(getLockObject(model)) {
+				Iterator<Annotation> annotations = model.getAnnotationIterator();
+				while (annotations.hasNext()) {
+					Annotation annotation = annotations.next();
+					if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
+							.getType())) {
+						model.removeAnnotation(annotation);
 					}
-
-					// We re-initialize this variable to allow the user to click on the same element again
-					// and see the highlighting.
-					this.acceleoEditor.offsetASTNodeURI = ""; //$NON-NLS-1$
 				}
+
+				// We re-initialize this variable to allow the user to click on the same element again
+				// and see the highlighting.
+				this.acceleoEditor.offsetASTNodeURI = ""; //$NON-NLS-1$
 			}
 		}
 		return Status.OK_STATUS;

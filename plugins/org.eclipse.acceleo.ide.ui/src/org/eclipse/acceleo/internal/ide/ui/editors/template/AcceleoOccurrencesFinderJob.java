@@ -11,25 +11,26 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchResult;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.acceleo.model.mtl.Block;
+import org.eclipse.acceleo.model.mtl.IfBlock;
+import org.eclipse.acceleo.model.mtl.LetBlock;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
 import org.eclipse.search.ui.text.Match;
 
@@ -100,52 +101,166 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
-		List<Match> matches = this.listOfTheOccurencesInTheCurrentFile(result);
-		final Map<Annotation, Position> annotationMap = new HashMap<Annotation, Position>(matches.size());
-		for (Match match : matches) {
-			ReferenceEntry ref = null;
-			if (match.getElement() instanceof ReferenceEntry) {
-				ref = (ReferenceEntry)match.getElement();
-			} else {
-				continue;
-			}
-
-			if (monitor.isCanceled()) {
-				status = Status.CANCEL_STATUS;
-			}
-
-			if (this.editor.getDocumentProvider() == null
-					|| this.editor.getDocumentProvider().getAnnotationModel(this.editor.getEditorInput()) == null) {
-				status = Status.CANCEL_STATUS;
-			}
-
-			if (status == Status.CANCEL_STATUS) {
-				return status;
-			}
-
-			final String description = ref.getMatch().toString();
-
-			final IRegion region = ref.getRegion();
-			final Position position = new Position(region.getOffset(), region.getLength());
-
-			// Existing marker of the JDT do not modify !
-			annotationMap.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false, description), position);
-		}
-
 		if (this.editor.getDocumentProvider() != null && this.editor.getEditorInput() != null) {
 			final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
 					this.editor.getEditorInput());
-
 			if (annotationModel != null) {
-				synchronized(getLockObject(annotationModel)) {
-					for (Entry<Annotation, Position> entry : annotationMap.entrySet()) {
-						annotationModel.addAnnotation(entry.getKey(), entry.getValue());
+
+				List<Match> matches = this.listOfTheOccurencesInTheCurrentFile(result);
+				for (Match match : matches) {
+					ReferenceEntry ref = null;
+					if (match.getElement() instanceof ReferenceEntry) {
+						ref = (ReferenceEntry)match.getElement();
+					} else {
+						continue;
+					}
+
+					if (monitor.isCanceled()) {
+						status = Status.CANCEL_STATUS;
+					}
+
+					if (this.editor.getDocumentProvider() == null
+							|| this.editor.getDocumentProvider().getAnnotationModel(
+									this.editor.getEditorInput()) == null) {
+						status = Status.CANCEL_STATUS;
+					}
+
+					if (status == Status.CANCEL_STATUS) {
+						return status;
+					}
+
+					final String description = ref.getMatch().toString();
+
+					for (Position position : this.computePositions(ref)) {
+						synchronized(getLockObject(annotationModel)) {
+							// Existing marker of the JDT do not modify !
+							annotationModel.addAnnotation(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE,
+									false, description), position);
+						}
 					}
 				}
 			}
 		}
 
 		return status;
+	}
+
+	/**
+	 * Compute the regions to highlight from this reference entry.
+	 * 
+	 * @param ref
+	 *            The reference entry
+	 * @return The regions to highlight
+	 */
+	private List<Position> computePositions(ReferenceEntry ref) {
+		List<Position> positions = new ArrayList<Position>();
+
+		if (!(ref.getMatch() instanceof ASTNode)) {
+			return positions;
+		}
+		ASTNode astNode = (ASTNode)ref.getMatch();
+
+		if (!(astNode instanceof Block)) {
+			positions.add(new Position(astNode.getStartPosition(), astNode.getEndPosition()
+					- astNode.getStartPosition()));
+		} else {
+			Block block = (Block)astNode;
+			if (block.getBody() != null && block.getBody().size() > 0) {
+				OCLExpression startBody = block.getBody().get(0);
+				Position startPosition = new Position(block.getStartPosition(), startBody.getStartPosition()
+						- 1 - block.getStartPosition());
+				positions.add(startPosition);
+
+				Position endPosition = null;
+				if (block instanceof IfBlock) {
+					endPosition = computeIfEndRegion((IfBlock)block);
+				} else if (block instanceof LetBlock) {
+					endPosition = computeLetEndRegion((LetBlock)block);
+				} else {
+					endPosition = new Position(block.getBody().get(block.getBody().size() - 1)
+							.getEndPosition(), block.getEndPosition()
+							- block.getBody().get(block.getBody().size() - 1).getEndPosition());
+				}
+
+				positions.add(endPosition);
+			} else {
+				positions.add(new Position(block.getStartPosition(), block.getEndPosition()
+						- block.getStartPosition()));
+			}
+		}
+
+		return positions;
+	}
+
+	/**
+	 * Returns the end region of the if block.
+	 * 
+	 * @param iBlock
+	 *            The if block
+	 * @return The end region of the if block
+	 */
+	private Position computeIfEndRegion(IfBlock iBlock) {
+		Position endRegion = null;
+		Block else1 = iBlock.getElse();
+		List<IfBlock> elseIf = iBlock.getElseIf();
+		// Else and Elseif
+		if (else1 != null && elseIf != null && elseIf.size() > 0) {
+			int endPosition = else1.getEndPosition();
+			int endPosition2 = elseIf.get(elseIf.size() - 1).getEndPosition();
+			if (endPosition > endPosition2) {
+				endRegion = new Position(endPosition, iBlock.getEndPosition() - endPosition);
+			} else {
+				endRegion = new Position(endPosition2, iBlock.getEndPosition() - endPosition2);
+			}
+			// no else but elseif
+		} else if (else1 == null && elseIf != null && elseIf.size() > 0) {
+			int endPosition = elseIf.get(elseIf.size() - 1).getEndPosition();
+			endRegion = new Position(endPosition, iBlock.getEndPosition() - endPosition);
+			// no else if
+		} else if (elseIf == null || elseIf.size() == 0) {
+			if (else1 != null) {
+				int endPosition = else1.getEndPosition();
+				endRegion = new Position(endPosition, iBlock.getEndPosition() - endPosition);
+			} else {
+				endRegion = new Position(iBlock.getBody().get(iBlock.getBody().size() - 1).getEndPosition(),
+						iBlock.getEndPosition()
+								- iBlock.getBody().get(iBlock.getBody().size() - 1).getEndPosition());
+			}
+		}
+		return endRegion;
+	}
+
+	/**
+	 * Returns the end region of the let block.
+	 * 
+	 * @param eBlock
+	 *            The let block
+	 * @return The end region of the let block
+	 */
+	private Position computeLetEndRegion(LetBlock eBlock) {
+		Position endRegion = null;
+		Block else1 = eBlock.getElse();
+		List<LetBlock> elseLet = eBlock.getElseLet();
+		if (else1 != null && elseLet != null && elseLet.size() > 0) {
+			int endPosition = else1.getEndPosition();
+			int endPosition2 = elseLet.get(elseLet.size() - 1).getEndPosition();
+			if (endPosition > endPosition2) {
+				endRegion = new Position(endPosition, eBlock.getEndPosition() - endPosition);
+			} else {
+				endRegion = new Position(endPosition2, eBlock.getEndPosition() - endPosition2);
+			}
+		} else if (else1 == null && elseLet != null && elseLet.size() > 0) {
+			int endPosition = elseLet.get(elseLet.size() - 1).getEndPosition();
+			endRegion = new Position(endPosition, eBlock.getEndPosition() - endPosition);
+		} else if (else1 != null && (elseLet == null || elseLet.size() == 0)) {
+			int endPosition = else1.getEndPosition();
+			endRegion = new Position(endPosition, eBlock.getEndPosition() - endPosition);
+		} else if (else1 == null || elseLet != null && elseLet.size() == 0) {
+			endRegion = new Position(eBlock.getBody().get(eBlock.getBody().size() - 1).getEndPosition(),
+					eBlock.getEndPosition()
+							- eBlock.getBody().get(eBlock.getBody().size() - 1).getEndPosition());
+		}
+		return endRegion;
 	}
 
 	/**

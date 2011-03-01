@@ -748,6 +748,19 @@ Contributors:
                tooltip="%AcceleoWhitespaceCharactersActionTooltip">
          </action>
       </editorContribution>
+      <editorContribution
+            id="acceleo.MarkOccurrencesToggle"
+            targetID="org.eclipse.acceleo.ide.ui.editors.template.AcceleoEditor">
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.editors.template.MarkOccurrencesToggleAction"
+               icon="icons/template-editor/ToggleMarkOccurrences.png"
+               id="org.eclipse.acceleo.ide.ui.editors.template.markoccurrences"
+               label="%AcceleoToggleMarkOccurrencesActionLabel"
+               style="toggle"
+               toolbarPath="Normal/additions"
+               tooltip="%AcceleoToggleMarkOccurrencesActionTooltip">
+         </action>
+      </editorContribution>
    </extension>
    
    <extension

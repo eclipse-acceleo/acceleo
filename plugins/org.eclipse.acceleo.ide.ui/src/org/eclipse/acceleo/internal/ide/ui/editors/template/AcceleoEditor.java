@@ -26,7 +26,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutli
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIPreferences;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -58,6 +58,7 @@ import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
@@ -844,7 +845,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			findOccurrencesPostSelectionListener = new ISelectionListener() {
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 					// 318142 filter out selections that are not "text" selections
-					if (selection instanceof ITextSelection && part == AcceleoEditor.this) {
+					if (selection instanceof ITextSelection && part == AcceleoEditor.this
+							&& AcceleoUIPreferences.isMarkOccurrencesEnabled()) {
 						findOccurrences();
 					}
 				}
@@ -864,8 +866,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 					AcceleoEditor editor = (AcceleoEditor)PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 
-					removeAnnotationJob = new AcceleoRemoveAnnotationJob(editor);
-					removeAnnotationJob.schedule();
+					if (AcceleoEditor.this.isDirty()) {
+						removeAnnotationJob = new AcceleoRemoveAnnotationJob(editor);
+						removeAnnotationJob.schedule();
+					}
 				}
 
 			}
@@ -882,7 +886,15 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (occurrencesFinderJob != null) {
 			occurrencesFinderJob.cancel();
 		}
-		final EObject selectedElement = OpenDeclarationUtils.findDeclaration(this, false);
+		int offset;
+		final ISelection selection = this.getSelectionProvider().getSelection();
+		if (selection instanceof TextSelection) {
+			offset = ((TextSelection)selection).getOffset();
+		} else {
+			offset = -1;
+		}
+
+		final EObject selectedElement = this.getContent().getASTNodeWithoutImportsExtends(offset, offset);
 		String selectedElementURI = getFragmentID(selectedElement);
 		if (!selectedElementURI.equals(offsetASTNodeURI) && !this.isDirty()) {
 			offsetASTNodeURI = selectedElementURI;

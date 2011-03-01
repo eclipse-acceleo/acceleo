@@ -417,7 +417,35 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				final Variable v2 = (Variable)o2;
 				result = this.isMatchingVariable(v1, v2);
 			} else {
-				result = EcoreUtil.equals(o1, o2);
+				Module m1 = null;
+				Module m2 = null;
+				boolean validSearchInFile = o1 instanceof ASTNode && o2 instanceof ASTNode
+						&& !searchOutsideOfCurrentFile;
+
+				EObject parent1 = o1.eContainer();
+				EObject parent2 = o2.eContainer();
+				while (parent1 != null) {
+					if (parent1 instanceof Module) {
+						m1 = (Module)parent1;
+					}
+					parent1 = parent1.eContainer();
+				}
+
+				while (parent2 != null) {
+					if (parent2 instanceof Module) {
+						m2 = (Module)parent2;
+					}
+					parent2 = parent2.eContainer();
+				}
+
+				if (m1 != null && m2 != null && m1.getName().equals(m2.getName()) && validSearchInFile) {
+					ASTNode astNode1 = (ASTNode)o1;
+					ASTNode astNode2 = (ASTNode)o2;
+					result = astNode1.getStartPosition() == astNode2.getStartPosition()
+							&& astNode1.getEndPosition() == astNode2.getEndPosition();
+				} else {
+					result = EcoreUtil.equals(o1, o2);
+				}
 			}
 		} else if (o1 instanceof VariableExp && o2 instanceof Variable) {
 			VariableExp vx = (VariableExp)o1;
