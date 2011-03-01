@@ -54,7 +54,7 @@ public final class AcceleoServicesRegistry {
 	 * @param service
 	 *            Service that is to be registered for Acceleo evaluations.
 	 * @return <code>true</code> if the set didn't already contain <code>service</code>.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public boolean addServiceClass(Class<?> service) {
 		return registeredServices.add(service);
@@ -124,7 +124,7 @@ public final class AcceleoServicesRegistry {
 	 * @param qualifiedName
 	 *            Qualified name of the service class we need an instance of.
 	 * @return The registered Class if any.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public Class<?> addServiceClass(String bundleName, String qualifiedName) {
 		Class<?> clazz = null;
@@ -191,7 +191,7 @@ public final class AcceleoServicesRegistry {
 	 * @param qualifiedName
 	 *            Qualified name of the service class we need an instance of.
 	 * @return The loaded class if any.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public Class<?> addServiceClass(URI uri, String qualifiedName) {
 		Class<?> clazz = null;
@@ -220,7 +220,7 @@ public final class AcceleoServicesRegistry {
 	 * @param serviceClass
 	 *            The class we need the service singleton of.
 	 * @return The singleton instance of the given service class.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public Object getServiceInstance(Class<?> serviceClass) {
 		Object serviceInstance = null;

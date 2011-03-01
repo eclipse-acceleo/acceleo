@@ -16,6 +16,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -53,7 +54,7 @@ public final class AcceleoServicesEclipseUtil {
 	 * @param serviceClass
 	 *            The class we need the service singleton of.
 	 * @return The singleton instance of the given service class.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public static Object getServiceInstance(Class<?> serviceClass) {
 		return AcceleoWorkspaceUtil.INSTANCE.getServiceInstance(serviceClass);
@@ -175,6 +176,14 @@ public final class AcceleoServicesEclipseUtil {
 			}
 			if (clazz == null) {
 				clazz = workspaceSuffixWorkaround(uri, qualifiedName);
+			}
+		}
+		// This is our last, most costly ... but most effective test
+		if (clazz == null) {
+			BundleURLConverter converter = new BundleURLConverter(uri.toString());
+			Bundle bundle = converter.resolveBundle();
+			if (bundle != null) {
+				clazz = registerService(bundle, qualifiedName);
 			}
 		}
 		if (clazz != null) {

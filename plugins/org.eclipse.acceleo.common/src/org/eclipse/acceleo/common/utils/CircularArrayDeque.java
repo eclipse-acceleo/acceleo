@@ -33,10 +33,9 @@ import java.util.RandomAccess;
  * </p>
  * <p>
  * Most operations on the {@link CircularArrayDeque} execute in constant time. This includes
- * {@link #add(Object)}, {@link #addAll(Collection)}n {@link #addFirst(Object)}, {@link #addLast(Object)},
- * {@link #removeFirst()}, {@link #removeLast()} and {@link #get(int)}. Other random-access operations such as
- * {@link #add(int, Object)} and {@link #remove(Object)} execute in amortized linear time, with the constant
- * being lower (<code>1/2</code>) than for the {@link java.util.ArrayList}.
+ * {@link #addFirst(Object)}, {@link #addLast(Object)}, {@link #removeFirst()}, {@link #removeLast()} and
+ * {@link #get(int)}. Other random-access operations such as {@link #add(Object)} and {@link #remove(Object)}
+ * execute in amortized linear time, with the constant being lower than for the {@link java.util.ArrayList}.
  * </p>
  * <p>
  * This implementation of a double-ended queue is backed by an array which size we'll always maintain to be a
@@ -53,7 +52,7 @@ import java.util.RandomAccess;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
  *            Type of the elements contained by this Deque.
- * @since 3.1
+ * @since 3.0
  */
 public final class CircularArrayDeque<E> extends AbstractList<E> implements Deque<E>, Externalizable, RandomAccess {
 	/** The default initial capacity of our Deques. */

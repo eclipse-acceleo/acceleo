@@ -20,7 +20,7 @@ import java.util.Queue;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
  *            Type of the elements contained by this Deque.
- * @since 3.1
+ * @since 3.0
  */
 public interface Deque<E> extends Queue<E>, List<E> {
 	/**
