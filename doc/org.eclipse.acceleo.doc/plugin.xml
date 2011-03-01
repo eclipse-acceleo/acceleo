@@ -16,22 +16,4 @@ Contributors:
   <extension point="org.eclipse.help.toc">
     <toc file="toc.xml" primary="true"/>
    </extension>
-
-  <!-- ====================================================================== -->
-  <!-- Define TOCs                                                            -->
-  <!-- ====================================================================== -->
-
-   <extension point="org.eclipse.help.toc">
-       <toc file="topics_Reference.xml" />
-   </extension>
-
-<!-- ============================================================================= -->
-<!-- Define Javadoc locations                                                      -->
-<!-- ============================================================================= -->
-   <extension point="org.eclipse.pde.core.javadoc">
-       <javadoc path="doc.zip!/references/javadoc" archive="true">
-       		<plugin id="org.eclipse.acceleo.common"/>
-       </javadoc>
-   </extension>
-
 </plugin>
