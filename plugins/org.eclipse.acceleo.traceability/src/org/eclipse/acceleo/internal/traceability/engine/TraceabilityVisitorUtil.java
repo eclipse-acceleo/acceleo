@@ -27,7 +27,7 @@ import org.eclipse.ocl.types.TypesPackage;
  * This class will provide convenience methods used by both the evaluation visitor and the operation visitor.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- * @since 3.1
+ * @since 3.0
  */
 public final class TraceabilityVisitorUtil {
 	/** This will contain references towards the Class representing OCL primitive types. */
