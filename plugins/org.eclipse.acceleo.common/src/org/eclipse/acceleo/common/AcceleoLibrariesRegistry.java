@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
 import org.eclipse.acceleo.common.library.connector.IQuery;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.ecore.EClassifier;
 
@@ -30,7 +30,7 @@ public final class AcceleoLibrariesRegistry {
 	public static final AcceleoLibrariesRegistry INSTANCE = new AcceleoLibrariesRegistry();
 
 	/** This will contain the libraries registered for Acceleo evaluations. */
-	private final Set<ILibrary> registeredLibraries = new LinkedHashSet<ILibrary>();
+	private final Set<ILibrary> registeredLibraries = new CompactLinkedHashSet<ILibrary>();
 
 	/**
 	 * This class is a singleton. Access instance through {@link #INSTANCE}.
@@ -58,7 +58,7 @@ public final class AcceleoLibrariesRegistry {
 	 * @return All registered libraries.
 	 */
 	public Set<ILibrary> getAllRegisteredLibraries() {
-		final Set<ILibrary> compound = new LinkedHashSet<ILibrary>();
+		final Set<ILibrary> compound = new CompactLinkedHashSet<ILibrary>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			compound.addAll(AcceleoLibrariesEclipseUtil.getRegisteredLibraries());
 		}
@@ -75,7 +75,7 @@ public final class AcceleoLibrariesRegistry {
 	public Set<IQuery> getAllRegisteredQueries() {
 		final Set<ILibrary> libraries = getAllRegisteredLibraries();
 		// at least
-		final Set<IQuery> queries = new LinkedHashSet<IQuery>(libraries.size());
+		final Set<IQuery> queries = new CompactLinkedHashSet<IQuery>(libraries.size());
 		for (ILibrary library : libraries) {
 			for (IQuery query : library.getQueries()) {
 				queries.add(query);
@@ -94,7 +94,7 @@ public final class AcceleoLibrariesRegistry {
 	 */
 	public Set<IQuery> getRegisteredQueries(EClassifier receiverType) {
 		final Set<IQuery> allQueries = getAllRegisteredQueries();
-		final Set<IQuery> applicableQueries = new LinkedHashSet<IQuery>(allQueries.size());
+		final Set<IQuery> applicableQueries = new CompactLinkedHashSet<IQuery>(allQueries.size());
 		for (IQuery query : allQueries) {
 			final EClassifier contextType = query.getContextType();
 			if (contextType.equals(receiverType)) {

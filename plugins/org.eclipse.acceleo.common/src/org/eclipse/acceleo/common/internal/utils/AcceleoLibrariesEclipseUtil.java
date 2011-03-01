@@ -11,11 +11,11 @@
 package org.eclipse.acceleo.common.internal.utils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 
 /**
  * Eclipse-specific utilities for Acceleo services. It will be initialized with all libraries that could be
@@ -26,7 +26,7 @@ import org.eclipse.acceleo.common.library.connector.ILibrary;
 public final class AcceleoLibrariesEclipseUtil {
 
 	/** Keeps track of all connectors that are contributed to the libraries extension point. */
-	private static final Set<ILibrary> LIBRARIES = new LinkedHashSet<ILibrary>();
+	private static final Set<ILibrary> LIBRARIES = new CompactLinkedHashSet<ILibrary>();
 
 	/**
 	 * Utility classes don't need a default constructor.
@@ -59,7 +59,7 @@ public final class AcceleoLibrariesEclipseUtil {
 	 */
 	public static Set<ILibrary> getRegisteredLibraries() {
 		AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
-		return new LinkedHashSet<ILibrary>(LIBRARIES);
+		return new CompactLinkedHashSet<ILibrary>(LIBRARIES);
 	}
 
 	/**

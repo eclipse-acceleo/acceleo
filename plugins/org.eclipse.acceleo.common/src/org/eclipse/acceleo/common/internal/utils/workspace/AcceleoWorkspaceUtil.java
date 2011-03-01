@@ -21,7 +21,6 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
@@ -30,6 +29,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -83,7 +83,7 @@ public final class AcceleoWorkspaceUtil {
 	 * refresh. This is the trigger of refreshing workspace contributions : if empty, no plugins will ever be
 	 * installed.
 	 */
-	final Set<IPluginModelBase> changedContributions = new LinkedHashSet<IPluginModelBase>();
+	final Set<IPluginModelBase> changedContributions = new CompactLinkedHashSet<IPluginModelBase>();
 
 	/** Keeps track of all manually loaded workspace bundles. */
 	final Map<IPluginModelBase, Bundle> workspaceInstalledBundles = new HashMap<IPluginModelBase, Bundle>();
@@ -290,7 +290,7 @@ public final class AcceleoWorkspaceUtil {
 	 * @return The set of output folders name for the given (java) project.
 	 */
 	private static Set<String> getOutputFolders(IProject project) {
-		final Set<String> classpathEntries = new LinkedHashSet<String>();
+		final Set<String> classpathEntries = new CompactLinkedHashSet<String>();
 		final IJavaProject javaProject = JavaCore.create(project);
 		try {
 			for (IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {

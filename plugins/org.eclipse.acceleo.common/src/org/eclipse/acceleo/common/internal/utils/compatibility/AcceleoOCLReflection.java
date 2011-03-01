@@ -12,10 +12,10 @@ package org.eclipse.acceleo.common.internal.utils.compatibility;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.types.OCLStandardLibrary;
@@ -116,7 +116,7 @@ public class AcceleoOCLReflection {
 			return reservedKeywords;
 		}
 
-		reservedKeywords = new HashSet<String>();
+		reservedKeywords = new CompactHashSet<String>();
 		reservedKeywords.add("and"); //$NON-NLS-1$
 		reservedKeywords.add("context"); //$NON-NLS-1$
 		reservedKeywords.add("def"); //$NON-NLS-1$

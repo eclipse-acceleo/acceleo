@@ -12,11 +12,11 @@ package org.eclipse.acceleo.common;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.library.connector.ILibrary;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 
 /**
  * This will allow Acceleo to know which {@link ILibrary} implementation are available to the evaluation
@@ -31,7 +31,7 @@ public final class AcceleoLibraryConnectorsRegistry {
 	public static final AcceleoLibraryConnectorsRegistry INSTANCE = new AcceleoLibraryConnectorsRegistry();
 
 	/** This will contain the services registered for Acceleo evaluations. */
-	private final Set<Class<ILibrary>> registeredLibraryConnectors = new LinkedHashSet<Class<ILibrary>>();
+	private final Set<Class<ILibrary>> registeredLibraryConnectors = new CompactLinkedHashSet<Class<ILibrary>>();
 
 	/**
 	 * This will contain the {@link ILibrary} class implementation keyed by the file extension they are able

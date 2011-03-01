@@ -11,11 +11,11 @@
 package org.eclipse.acceleo.common;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 
@@ -36,7 +36,7 @@ public final class AcceleoServicesRegistry {
 	private static final String CONSTRUCTOR_FAILURE_KEY = "AcceleoServicesRegistry.ClassConstructorFailure"; //$NON-NLS-1$
 
 	/** This will contain the services registered for Acceleo evaluations. */
-	private final Set<Class<?>> registeredServices = new LinkedHashSet<Class<?>>();
+	private final Set<Class<?>> registeredServices = new CompactLinkedHashSet<Class<?>>();
 
 	/** This will allow us to only instantiate services once. */
 	private final Map<Class<?>, Object> serviceInstances = new HashMap<Class<?>, Object>();

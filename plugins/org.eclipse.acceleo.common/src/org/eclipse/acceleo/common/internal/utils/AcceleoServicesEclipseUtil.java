@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -32,7 +32,7 @@ import org.osgi.framework.Bundle;
  */
 public final class AcceleoServicesEclipseUtil {
 	/** Services are cached within {@link AcceleoWorkspaceUtil}. This will only store their qualified names. */
-	private static final Set<String> REGISTERED_SERVICES = new LinkedHashSet<String>();
+	private static final Set<String> REGISTERED_SERVICES = new CompactLinkedHashSet<String>();
 
 	/**
 	 * Utility classes don't need a default constructor.
