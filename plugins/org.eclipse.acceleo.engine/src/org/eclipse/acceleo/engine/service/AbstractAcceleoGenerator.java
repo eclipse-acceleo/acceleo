@@ -93,7 +93,7 @@ public abstract class AbstractAcceleoGenerator {
 	/**
 	 * This will be used to know which resource to <u>not</u> unload from the resourceSet post generation.
 	 * 
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	protected Set<Resource> originalResources = new HashSet<Resource>();
 
@@ -102,7 +102,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * 
 	 * @param listener
 	 *            The listener that is to be registered for this generator.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public void addGenerationListener(IAcceleoTextGenerationListener listener) {
 		generationListeners.add(listener);
@@ -444,7 +444,7 @@ public abstract class AbstractAcceleoGenerator {
 	 * 
 	 * @param rs
 	 *            The resource set from which to unload resources.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	protected void postGenerate(ResourceSet rs) {
 		List<Resource> unload = new ArrayList<Resource>(rs.getResources());
@@ -459,8 +459,8 @@ public abstract class AbstractAcceleoGenerator {
 	 * Creates the URI Converter we'll use to load our modules. Take note that this should never be used out
 	 * of Eclipse.
 	 * 
-	 * @return The created URI Converted.
-	 * @since 3.1
+	 * @return The created URI Converter.
+	 * @since 3.0
 	 */
 	protected URIConverter createURIConverter() {
 		return new ExtensibleURIConverterImpl() {

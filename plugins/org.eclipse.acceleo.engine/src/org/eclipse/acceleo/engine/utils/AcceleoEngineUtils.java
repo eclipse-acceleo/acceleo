@@ -17,7 +17,7 @@ import org.eclipse.acceleo.profiler.Profiler;
  * This class will allow the manipulation of the profiler.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.1
+ * @since 3.0
  */
 public final class AcceleoEngineUtils {
 

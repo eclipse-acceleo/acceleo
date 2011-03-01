@@ -203,7 +203,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * Returns the profiler.
 	 * 
 	 * @return The profiler.
-	 * @since 3.1
+	 * @since 3.0
 	 */
 	public static Profiler getProfiler() {
 		return profile;
