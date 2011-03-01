@@ -11,10 +11,10 @@
 package org.eclipse.acceleo.internal.traceability.engine;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.ocl.expressions.OCLExpression;
@@ -71,7 +71,7 @@ public final class IterationTrace<C> extends ExpressionTrace<C> {
 				if (text.getStartOffset() >= startOffset && text.getEndOffset() <= endOffset) {
 					Set<GeneratedText> iterationText = currentIterationTraces.get(entry.getKey());
 					if (iterationText == null) {
-						iterationText = new LinkedHashSet<GeneratedText>();
+						iterationText = new CompactLinkedHashSet<GeneratedText>();
 						currentIterationTraces.put(entry.getKey(), iterationText);
 					}
 					iterationText.add(text);

@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -30,6 +29,8 @@ import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.CompactHashSet;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
@@ -467,7 +468,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
 		if (candidateInputs == null) {
-			candidateInputs = new HashSet<InputElement>();
+			candidateInputs = new CompactHashSet<InputElement>();
 			cachedInputElements.put(modelElement, candidateInputs);
 		}
 		for (InputElement input : candidateInputs) {
@@ -1380,7 +1381,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			markerRegion.setModuleElement(getModuleElement(protectedArea));
 			Set<GeneratedText> set = trace.getTraces().get(protectedAreaSource);
 			if (set == null) {
-				set = new LinkedHashSet<GeneratedText>();
+				set = new CompactLinkedHashSet<GeneratedText>();
 				trace.getTraces().put(protectedAreaSource, set);
 			}
 			set.add(markerRegion);
@@ -1441,7 +1442,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// We need to reorder the whole thing
 		LinkedHashSet<GeneratedText> set = (LinkedHashSet<GeneratedText>)trace.getTraces().get(
 				protectedAreaSource);
-		Set<GeneratedText> copy = new LinkedHashSet<GeneratedText>(set);
+		Set<GeneratedText> copy = new CompactLinkedHashSet<GeneratedText>(set);
 		set.clear();
 
 		set.add(startRegion);
@@ -1570,7 +1571,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
 		if (candidateInputs == null) {
-			candidateInputs = new HashSet<InputElement>();
+			candidateInputs = new CompactHashSet<InputElement>();
 			cachedInputElements.put(modelElement, candidateInputs);
 		}
 		for (InputElement input : candidateInputs) {
@@ -1603,7 +1604,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
 		if (candidateInputs == null) {
-			candidateInputs = new HashSet<InputElement>();
+			candidateInputs = new CompactHashSet<InputElement>();
 			cachedInputElements.put(modelElement, candidateInputs);
 		}
 		for (InputElement input : candidateInputs) {

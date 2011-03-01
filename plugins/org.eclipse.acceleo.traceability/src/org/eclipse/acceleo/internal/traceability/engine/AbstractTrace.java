@@ -11,10 +11,10 @@
 package org.eclipse.acceleo.internal.traceability.engine;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.TraceabilityFactory;
@@ -45,7 +45,7 @@ public abstract class AbstractTrace {
 	public void addTrace(InputElement input, GeneratedText trace, int length) {
 		Set<GeneratedText> referredTraces = traces.get(input);
 		if (referredTraces == null) {
-			referredTraces = new LinkedHashSet<GeneratedText>();
+			referredTraces = new CompactLinkedHashSet<GeneratedText>();
 			traces.put(input, referredTraces);
 		}
 		int startOffset = currentOffset;
@@ -83,7 +83,7 @@ public abstract class AbstractTrace {
 			InputElement input = entry.getKey();
 			Set<GeneratedText> referredTraces = traces.get(input);
 			if (referredTraces == null) {
-				referredTraces = new LinkedHashSet<GeneratedText>();
+				referredTraces = new CompactLinkedHashSet<GeneratedText>();
 				traces.put(input, referredTraces);
 			}
 

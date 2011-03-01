@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.traceability.GeneratedFile;
@@ -376,7 +377,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						.entrySet()) {
 					Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
 					if (existingTraces == null) {
-						existingTraces = new LinkedHashSet<GeneratedText>();
+						existingTraces = new CompactLinkedHashSet<GeneratedText>();
 						trace.getTraces().put(entry.getKey(), existingTraces);
 					}
 					for (GeneratedText text : entry.getValue()) {
@@ -413,7 +414,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		final List<Object> temp = new ArrayList<Object>(source);
 		Collections.reverse(temp);
 		if (source instanceof LinkedHashSet<?>) {
-			final Set<Object> reversedSet = new LinkedHashSet<Object>(temp);
+			final Set<Object> reversedSet = new CompactLinkedHashSet<Object>(temp);
 			result = reversedSet;
 		} else {
 			result = temp;
@@ -541,7 +542,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : separatorTrace.getTraces().entrySet()) {
 				Set<GeneratedText> existingTraces = trace.getTraces().get(entry.getKey());
 				if (existingTraces == null) {
-					existingTraces = new LinkedHashSet<GeneratedText>();
+					existingTraces = new CompactLinkedHashSet<GeneratedText>();
 					trace.getTraces().put(entry.getKey(), existingTraces);
 				}
 				for (GeneratedText text : entry.getValue()) {
@@ -998,7 +999,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 						InputElement tokenKey = entry.getKey();
 						Set<GeneratedText> tokenTraces = trace.getTraces().get(tokenKey);
 						if (tokenTraces == null) {
-							tokenTraces = new LinkedHashSet<GeneratedText>();
+							tokenTraces = new CompactLinkedHashSet<GeneratedText>();
 							trace.getTraces().put(tokenKey, tokenTraces);
 						}
 						tokenTraces.add(tokenText);

@@ -11,9 +11,9 @@
 package org.eclipse.acceleo.internal.traceability.engine;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -53,7 +53,7 @@ public class ExpressionTrace<C> extends AbstractTrace {
 		LinkedHashMap<InputElement, Set<GeneratedText>> temp = other.getTraces();
 		// We need to replace the Set instance
 		for (InputElement key : temp.keySet()) {
-			traces.put(key, new LinkedHashSet<GeneratedText>(temp.get(key)));
+			traces.put(key, new CompactLinkedHashSet<GeneratedText>(temp.get(key)));
 		}
 	}
 
@@ -69,7 +69,7 @@ public class ExpressionTrace<C> extends AbstractTrace {
 	public void mergeTrace(InputElement input, Set<GeneratedText> regions) {
 		Set<GeneratedText> associatedTraces = traces.get(input);
 		if (associatedTraces == null) {
-			associatedTraces = new LinkedHashSet<GeneratedText>();
+			associatedTraces = new CompactLinkedHashSet<GeneratedText>();
 			traces.put(input, associatedTraces);
 		}
 
