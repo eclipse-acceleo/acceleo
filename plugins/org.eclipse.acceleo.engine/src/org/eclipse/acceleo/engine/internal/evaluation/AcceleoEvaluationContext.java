@@ -259,12 +259,11 @@ public class AcceleoEvaluationContext<C> {
 	 * @return The created exception. Could be <code>null</code> if this context has already been disposed.
 	 */
 	public AcceleoRuntimeException createAcceleoRuntimeException(Throwable cause) {
+		AcceleoRuntimeException exception = new AcceleoRuntimeException(cause);
 		if (expressionStack.size() > 0) {
-			AcceleoRuntimeException exception = new AcceleoRuntimeException(cause);
 			exception.setStackTrace(createAcceleoStackTrace());
-			return exception;
 		}
-		return null;
+		return exception;
 	}
 
 	/**
