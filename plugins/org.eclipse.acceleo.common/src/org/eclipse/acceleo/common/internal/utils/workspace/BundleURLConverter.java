@@ -191,7 +191,7 @@ public class BundleURLConverter {
 
 				int pathStart = i + 1;
 				// ".cp" in the file path means this URI points somewhere in the workspace metadata.
-				if (".cp".equals(segments[pathStart])) { //$NON-NLS-1$ 
+				if (pathStart < segments.length && ".cp".equals(segments[pathStart])) { //$NON-NLS-1$ 
 					pathStart += 1;
 				} else if (segments.length > pathStart + 1 && ".cp".equals(segments[pathStart + 1])) { //$NON-NLS-1$
 					pathStart += 2;
