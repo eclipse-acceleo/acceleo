@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -688,8 +687,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} finally {
 			record = oldRecordState;
 
-			for (ExpressionTrace<C> trace : invocationTraces) {
-				if (oldTraces != null) {
+			if (oldTraces != null && invocationTraces != null) {
+				for (ExpressionTrace<C> trace : invocationTraces) {
 					oldTraces.add(trace);
 				}
 				// This was way too CPU intensive, we'll settle with sub-otptimal memory usage
@@ -1440,7 +1439,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		// We need to reorder the whole thing
-		LinkedHashSet<GeneratedText> set = (LinkedHashSet<GeneratedText>)trace.getTraces().get(
+		CompactLinkedHashSet<GeneratedText> set = (CompactLinkedHashSet<GeneratedText>)trace.getTraces().get(
 				protectedAreaSource);
 		Set<GeneratedText> copy = new CompactLinkedHashSet<GeneratedText>(set);
 		set.clear();
