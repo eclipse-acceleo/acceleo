@@ -1005,9 +1005,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 					}
 				}
 			}
+			Collections.sort(launchingStrategies);
 		}
 		Collections.sort(acceleoStrategies);
-		Collections.sort(launchingStrategies);
 		launchingStrategies.addAll(0, acceleoStrategies);
 		return launchingStrategies;
 	}
