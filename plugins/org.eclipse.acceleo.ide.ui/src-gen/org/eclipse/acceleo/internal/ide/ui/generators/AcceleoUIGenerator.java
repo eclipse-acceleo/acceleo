@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
@@ -31,7 +32,10 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
@@ -283,6 +287,12 @@ public class AcceleoUIGenerator {
 		try {
 			if (moduleTmp == null) {
 				ResourceSet resourceSet = new ResourceSetImpl();
+				if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+					resourceSet.setURIConverter(createURIConverter());
+				}
+
+				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
 				URI moduleURI = this.convertToURI(generatorURI);
 				EObject load = ModelUtils.load(moduleURI, resourceSet);
 
@@ -304,6 +314,38 @@ public class AcceleoUIGenerator {
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
 		}
+	}
+
+	/**
+	 * Creates the URI Converter we'll use to load our modules. Take note that this should never be used out
+	 * of Eclipse.
+	 * 
+	 * @return The created URI Converter.
+	 * @since 3.0
+	 */
+	protected URIConverter createURIConverter() {
+		return new ExtensibleURIConverterImpl() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl#normalize(org.eclipse.emf.common.util.URI)
+			 */
+			@Override
+			public URI normalize(URI uri) {
+				URI normalized = getURIMap().get(uri);
+				if (normalized == null) {
+					BundleURLConverter conv = new BundleURLConverter(uri.toString());
+					if (conv.resolveBundle() != null) {
+						normalized = URI.createURI(conv.resolveAsPlatformPlugin());
+						getURIMap().put(uri, normalized);
+					}
+				}
+				if (normalized != null) {
+					return normalized;
+				}
+				return super.normalize(uri);
+			}
+		};
 	}
 
 	/**
@@ -347,7 +389,7 @@ public class AcceleoUIGenerator {
 	 */
 	private URI createTemplateURI(String entry) {
 		if (entry.startsWith("file:") || entry.startsWith("jar:")) { //$NON-NLS-1$ //$NON-NLS-2$ 
-			return URI.createURI(URI.decode(entry));
+			return URI.createURI(URI.decode(entry), false);
 		}
 		return URI.createFileURI(URI.decode(entry));
 	}
