@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -23,20 +24,31 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.ExpressionsPackage;
 
 /**
  * The Acceleo UI Generator will handle the generation of all the files created by the Acceleo UI.
@@ -293,7 +305,10 @@ public class AcceleoUIGenerator {
 
 				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 
+				registerPackages(resourceSet);
+				registerResourceFactories(resourceSet);
 				URI moduleURI = this.convertToURI(generatorURI);
+				System.out.println(moduleURI);
 				EObject load = ModelUtils.load(moduleURI, resourceSet);
 
 				if (load instanceof Module) {
@@ -392,5 +407,55 @@ public class AcceleoUIGenerator {
 			return URI.createURI(URI.decode(entry), false);
 		}
 		return URI.createFileURI(URI.decode(entry));
+	}
+
+	/**
+	 * This will update the resource set's package registry with all usual EPackages.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 */
+	private void registerPackages(ResourceSet resourceSet) {
+		resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(GenModelPackage.eINSTANCE.getNsURI(), GenModelPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
+				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(ExpressionsPackage.eINSTANCE.getNsURI(),
+				ExpressionsPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+
+		resourceSet.getPackageRegistry().put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
+				getOCLStdLibPackage());
+		resourceSet.getPackageRegistry().put(AcceleowizardmodelPackage.eINSTANCE.getNsURI(),
+				AcceleowizardmodelPackage.eINSTANCE);
+	}
+
+	/**
+	 * Returns the package containing the OCL standard library.
+	 * 
+	 * @return The package containing the OCL standard library.
+	 */
+	private EPackage getOCLStdLibPackage() {
+		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+		EPackage oclStdLibPackage = (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary()
+				.getBag());
+		environment.dispose();
+		return oclStdLibPackage;
+	}
+
+	/**
+	 * This will update the resource set's resource factory registry with all usual factories.
+	 * 
+	 * @param resourceSet
+	 *            The resource set which registry has to be updated.
+	 */
+	private void registerResourceFactories(ResourceSet resourceSet) {
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", //$NON-NLS-1$
+				new EcoreResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
+				IAcceleoConstants.EMTL_FILE_EXTENSION, new EMtlResourceFactoryImpl());
 	}
 }
