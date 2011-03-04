@@ -299,16 +299,12 @@ public class AcceleoUIGenerator {
 		try {
 			if (moduleTmp == null) {
 				ResourceSet resourceSet = new ResourceSetImpl();
-				if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-					resourceSet.setURIConverter(createURIConverter());
-				}
-
-				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
-
 				registerPackages(resourceSet);
 				registerResourceFactories(resourceSet);
+				resourceSet.setURIConverter(createURIConverter());
+				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
 				URI moduleURI = this.convertToURI(generatorURI);
-				System.out.println(moduleURI);
 				EObject load = ModelUtils.load(moduleURI, resourceSet);
 
 				if (load instanceof Module) {
