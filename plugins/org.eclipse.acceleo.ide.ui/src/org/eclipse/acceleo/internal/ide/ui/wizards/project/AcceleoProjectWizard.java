@@ -192,7 +192,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	 */
 	@Override
 	public boolean canFinish() {
-		return newProjectPage.isPageComplete();
+		return newProjectPage.isPageComplete() && newAcceleoModulesCreationPage.isPageComplete();
 	}
 
 	/**
