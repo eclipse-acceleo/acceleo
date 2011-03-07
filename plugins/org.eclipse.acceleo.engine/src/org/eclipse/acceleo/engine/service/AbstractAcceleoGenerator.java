@@ -31,6 +31,7 @@ import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.EMFPlugin;
@@ -381,8 +382,10 @@ public abstract class AbstractAcceleoGenerator {
 	public void registerResourceFactories(ResourceSet resourceSet) {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", //$NON-NLS-1$
 				new EcoreResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-				IAcceleoConstants.EMTL_FILE_EXTENSION, new EMtlResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+				IAcceleoConstants.BINARY_CONTENT_TYPE, new EMtlBinaryResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+				IAcceleoConstants.XMI_CONTENT_TYPE, new EMtlResourceFactoryImpl());
 	}
 
 	/**
