@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -31,7 +32,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 /**
  * Utility class for model loading/saving and serialization.
@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class ModelUtils {
+
 	/** Constant for the file encoding system property. */
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
 
@@ -60,7 +61,7 @@ public final class ModelUtils {
 	 * @return The resource <tt>root</tt> has been attached to.
 	 */
 	public static Resource attachResource(URI resourceURI, EObject root) {
-		if (root == null) {
+		if (root == null || resourceURI == null) {
 			throw new NullPointerException(AcceleoCommonMessages.getString("ModelUtils.NullRoot")); //$NON-NLS-1$
 		}
 		final Resource newResource = createResource(resourceURI);
@@ -81,7 +82,7 @@ public final class ModelUtils {
 	 * @return The resource <tt>root</tt> has been attached to.
 	 */
 	public static Resource attachResource(URI resourceURI, ResourceSet resourceSet, EObject root) {
-		if (root == null) {
+		if (root == null || resourceURI == null) {
 			throw new NullPointerException(AcceleoCommonMessages.getString("ModelUtils.NullRoot")); //$NON-NLS-1$
 		}
 		final Resource newResource = createResource(resourceURI, resourceSet);
@@ -110,9 +111,23 @@ public final class ModelUtils {
 	 * @return The {@link Resource} given the model extension it is intended for.
 	 */
 	public static Resource createResource(URI modelURI, ResourceSet resourceSet) {
-		String fileExtension = modelURI.fileExtension();
-		ensureResourceFactoryPresent(resourceSet, fileExtension);
-		return resourceSet.createResource(modelURI);
+		ensureResourceFactoryPresent(resourceSet);
+		return resourceSet.createResource(modelURI, IAcceleoConstants.XMI_CONTENT_TYPE);
+	}
+
+	/**
+	 * This will create a {@link Resource} given the model extension it is intended for and a ResourceSet.
+	 * 
+	 * @param modelURI
+	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
+	 * @param resourceSet
+	 *            The {@link ResourceSet} to load the model in.
+	 * @return The {@link Resource} given the model extension it is intended for.
+	 * @since 3.1
+	 */
+	public static Resource createBinaryResource(URI modelURI, ResourceSet resourceSet) {
+		ensureResourceFactoryPresent(resourceSet);
+		return resourceSet.createResource(modelURI, IAcceleoConstants.BINARY_CONTENT_TYPE);
 	}
 
 	/**
@@ -309,8 +324,7 @@ public final class ModelUtils {
 	 *             If the given file does not exist.
 	 */
 	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
-		String fileExtension = modelURI.fileExtension();
-		ensureResourceFactoryPresent(resourceSet, fileExtension);
+		ensureResourceFactoryPresent(resourceSet);
 
 		EObject result = null;
 		final Resource modelResource = resourceSet.getResource(modelURI, true);
@@ -432,25 +446,28 @@ public final class ModelUtils {
 	 * @param resourceSet
 	 *            The resource set in which to make sure a resource factory for extension
 	 *            <code>extension</code> exists.
-	 * @param extension
-	 *            The file extension for which to register a factory.
 	 */
-	private static void ensureResourceFactoryPresent(ResourceSet resourceSet, String extension) {
-		String fileExtension = extension;
-		if (fileExtension == null || fileExtension.length() == 0) {
-			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
-		}
-		Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(
-				fileExtension);
-		if (resourceFactory == null) {
-			resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
-					.get(fileExtension);
-			if (resourceFactory != null) {
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-						resourceFactory);
-			} else {
-				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
-						new XMIResourceFactoryImpl());
+	private static void ensureResourceFactoryPresent(ResourceSet resourceSet) {
+		// Ensure the registration of the resource factories by content type.
+		if (Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
+				IAcceleoConstants.XMI_CONTENT_TYPE) == null
+				|| Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
+						IAcceleoConstants.BINARY_CONTENT_TYPE) == null) {
+			Object binaryFactory = resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
+					IAcceleoConstants.BINARY_CONTENT_TYPE);
+			if (binaryFactory == null) {
+				Object binaryResourceFactory = Resource.Factory.Registry.INSTANCE
+						.getContentTypeToFactoryMap().get(IAcceleoConstants.BINARY_CONTENT_TYPE);
+				resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+						IAcceleoConstants.BINARY_CONTENT_TYPE, binaryResourceFactory);
+			}
+			Object xmiFactory = resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
+					IAcceleoConstants.XMI_CONTENT_TYPE);
+			if (xmiFactory == null) {
+				Object xmiResourceFactory = Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap()
+						.get(IAcceleoConstants.XMI_CONTENT_TYPE);
+				resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+						IAcceleoConstants.XMI_CONTENT_TYPE, xmiResourceFactory);
 			}
 		}
 	}

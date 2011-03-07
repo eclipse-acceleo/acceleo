@@ -463,4 +463,18 @@ public interface IAcceleoConstants {
 	 * @since 3.1
 	 */
 	String DOCUMENTATION_NEW_LINE = "*"; //$NON-NLS-1$
+
+	/**
+	 * The XMI content type id.
+	 * 
+	 * @since 3.1
+	 */
+	String XMI_CONTENT_TYPE = "org.eclipse.acceleo.model.content.emtl.xmi"; //$NON-NLS-1$
+
+	/**
+	 * The binary content type id.
+	 * 
+	 * @since 3.1
+	 */
+	String BINARY_CONTENT_TYPE = "org.eclipse.acceleo.model.content.emtl.binary"; //$NON-NLS-1$
 }
