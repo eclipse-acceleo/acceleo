@@ -211,7 +211,7 @@ public class Sequence implements ISequence {
 			if (tokens[j].length() > 0 && (i + tokens[j].length() <= posEnd) && matches(buffer, tokens[j], i)) {
 				i += tokens[j].length();
 				if (j + 1 == tokens.length) {
-					e = new Integer(i);
+					e = Integer.valueOf(i);
 					break;
 				}
 			} else {
