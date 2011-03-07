@@ -280,7 +280,7 @@ public class AcceleoSourceContent {
 						AcceleoMarkerUtils.INFO_MARKER_ID);
 
 				AcceleoSourceContent.this.createAST();
-				org.eclipse.acceleo.model.mtl.Module vAST = getAST();
+				org.eclipse.acceleo.model.mtl.Module vAST = this.getAST();
 				if (vAST != null) {
 					List<URI> dependenciesURIs = getAccessibleOutputFiles();
 					loadImportsDependencies(vAST, dependenciesURIs);
