@@ -27,20 +27,20 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.resource.impl.BinaryResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
- * EMTL/XMI Resource. The position of each AST node is serialized in a specific annotation. We compute the
+ * EMTL/Binary Resource. The position of each AST node is serialized in a specific annotation. We compute the
  * specific annotation content before saving the resource. We visit the annotation content after loading the
  * resource to set the transient positions of every AST nodes.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
-public class EMtlResourceImpl extends XMIResourceImpl {
+public class EMtlBinaryResourceImpl extends BinaryResourceImpl {
 	/**
 	 * The specific annotation used to store the positions of the AST nodes.
 	 */
@@ -58,7 +58,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * @param uri
 	 *            is the URI of the resource
 	 */
-	public EMtlResourceImpl(URI uri) {
+	public EMtlBinaryResourceImpl(URI uri) {
 		super(uri);
 	}
 
@@ -74,14 +74,6 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		if (actualOptions == null) {
 			actualOptions = new HashMap<Object, Object>();
 		}
-		// Record unknown features so that we can load emtl files compiled under 3.1 with 3.0
-		actualOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
-		// New loading options to improve loading time
-		// actualOptions.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
-		// actualOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
-		// actualOptions.put(XMLResource.OPTION_USE_DEPRECATED_METHODS, Boolean.FALSE);
-		// actualOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl(true));
-
 		super.doLoad(inputStream, actualOptions);
 
 		EAnnotation positions = getPositions(false);
@@ -265,5 +257,4 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		}
 		return positions;
 	}
-
 }
