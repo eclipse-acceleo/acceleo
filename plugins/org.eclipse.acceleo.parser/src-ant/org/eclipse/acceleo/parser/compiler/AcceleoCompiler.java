@@ -25,7 +25,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
-import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
@@ -182,7 +182,8 @@ public class AcceleoCompiler extends Task {
 		Map<URI, URI> mapURIs = new HashMap<URI, URI>();
 		computeDependencies(dependenciesURIs, mapURIs);
 		loadEcoreFiles();
-		AcceleoParser parser = new AcceleoParser();
+		// Binary serialization by default
+		AcceleoParser parser = new AcceleoParser(true);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, new BasicMonitor());
 		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile acceleoFile = iterator.next();
@@ -327,9 +328,13 @@ public class AcceleoCompiler extends Task {
 	 */
 	private void standaloneInit() {
 		Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-		if (registry.getExtensionToFactoryMap().get(IAcceleoConstants.EMTL_FILE_EXTENSION) == null) {
-			registry.getExtensionToFactoryMap().put(IAcceleoConstants.EMTL_FILE_EXTENSION,
-					new EMtlResourceFactoryImpl());
+		if (registry.getContentTypeToFactoryMap().get(IAcceleoConstants.BINARY_CONTENT_TYPE) == null) {
+			registry.getContentTypeToFactoryMap().put(IAcceleoConstants.BINARY_CONTENT_TYPE,
+					new EMtlBinaryResourceFactoryImpl());
+		}
+		if (registry.getContentTypeToFactoryMap().get(IAcceleoConstants.XMI_CONTENT_TYPE) == null) {
+			registry.getContentTypeToFactoryMap().put(IAcceleoConstants.XMI_CONTENT_TYPE,
+					new EMtlBinaryResourceFactoryImpl());
 		}
 	}
 }

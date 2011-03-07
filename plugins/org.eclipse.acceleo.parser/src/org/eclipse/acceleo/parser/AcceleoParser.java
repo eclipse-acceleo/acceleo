@@ -58,6 +58,31 @@ public class AcceleoParser {
 	private final Map<File, AcceleoParserInfos> infos = new HashMap<File, AcceleoParserInfos>();
 
 	/**
+	 * Indicates if we will compile the mtl file as a binary resource.
+	 * 
+	 * @since 3.1
+	 */
+	private boolean asBinaryResource;
+
+	/**
+	 * The constructor.
+	 */
+	public AcceleoParser() {
+		// API compatibility, nothing to do here
+	}
+
+	/**
+	 * The constructor.
+	 * 
+	 * @param asBinaryResource
+	 *            Indicates if we will compile the mtl file as a binary resource.
+	 * @since 3.1
+	 */
+	public AcceleoParser(boolean asBinaryResource) {
+		this.asBinaryResource = asBinaryResource;
+	}
+
+	/**
 	 * Creates an AST from a list of Acceleo files, using a CST step.
 	 * <p>
 	 * Assert inputFiles.size() == outputURIs.size()
@@ -141,7 +166,7 @@ public class AcceleoParser {
 			URI oURI = itOutputURIs.next();
 			AcceleoSourceBuffer source = new AcceleoSourceBuffer(acceleoFile);
 			sources.add(source);
-			Resource oResource = ModelUtils.createResource(oURI, oResourceSet);
+			Resource oResource = createResource(oURI, oResourceSet);
 			newResources.add(oResource);
 			source.createCST();
 			for (ModuleImportsValue importValue : source.getCST().getImports()) {
@@ -180,7 +205,6 @@ public class AcceleoParser {
 						iterator.next().logProblem(
 								AcceleoParserMessages.getString("AcceleoParser" + ".Error.InvalidAST", oURI //$NON-NLS-1$ //$NON-NLS-2$
 										.lastSegment()), 0, -1);
-
 					}
 				}
 			}
@@ -218,11 +242,13 @@ public class AcceleoParser {
 			if (eModule != null) {
 				Resource newResource = eModule.eResource();
 				Map<String, String> options = new HashMap<String, String>();
-				String encoding = source.getEncoding();
-				if (encoding == null) {
-					encoding = "UTF-8"; //$NON-NLS-1$
+				if (!asBinaryResource) {
+					String encoding = source.getEncoding();
+					if (encoding == null) {
+						encoding = "UTF-8"; //$NON-NLS-1$
+					}
+					options.put(XMLResource.OPTION_ENCODING, encoding);
 				}
-				options.put(XMLResource.OPTION_ENCODING, encoding);
 				try {
 					newResource.save(options);
 				} catch (IOException e) {
@@ -237,13 +263,27 @@ public class AcceleoParser {
 			}
 			monitor.worked(1);
 		}
-
 		this.manageParsingResult(sources);
-
 		Iterator<Resource> resources = oResourceSet.getResources().iterator();
 		while (resources.hasNext()) {
 			resources.next().unload();
 		}
+	}
+
+	/**
+	 * Create the resource that will be used for the serialization.
+	 * 
+	 * @param oURI
+	 *            The URI of the resource.
+	 * @param oResourceSet
+	 *            The resource set
+	 * @return The resource that will be used for the serialization.
+	 */
+	private Resource createResource(URI oURI, ResourceSet oResourceSet) {
+		if (asBinaryResource) {
+			return ModelUtils.createBinaryResource(oURI, oResourceSet);
+		}
+		return ModelUtils.createResource(oURI, oResourceSet);
 	}
 
 	/**
