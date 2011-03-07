@@ -2331,7 +2331,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				slashIndex = filePath.indexOf('/', slashIndex + 1);
 			}
 			if (slashIndex > 0) {
-				filePath.substring(slashIndex + 1);
+				filePath = filePath.substring(slashIndex + 1);
 			}
 		}
 		return filePath;
