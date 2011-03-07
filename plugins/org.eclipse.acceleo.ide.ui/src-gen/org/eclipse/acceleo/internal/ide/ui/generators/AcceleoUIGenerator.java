@@ -27,6 +27,7 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -451,7 +452,9 @@ public class AcceleoUIGenerator {
 	private void registerResourceFactories(ResourceSet resourceSet) {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", //$NON-NLS-1$
 				new EcoreResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-				IAcceleoConstants.EMTL_FILE_EXTENSION, new EMtlResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+				IAcceleoConstants.BINARY_CONTENT_TYPE, new EMtlBinaryResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
+				IAcceleoConstants.XMI_CONTENT_TYPE, new EMtlResourceFactoryImpl());
 	}
 }

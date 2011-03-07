@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
@@ -44,6 +45,16 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	 * The widget to check or not the strict compliance mode (opposite of the pragmatic compliance mode).
 	 */
 	private Button strictCompliance;
+
+	/**
+	 * The xmi resource radio button.
+	 */
+	private Button xmiResourceButton;
+
+	/**
+	 * The binary resource radio button.
+	 */
+	private Button binaryResourceButton;
 
 	/**
 	 * Constructor.
@@ -76,6 +87,11 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 				settings.setCompliance(AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE);
 			} else {
 				settings.setCompliance(AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE);
+			}
+			if (xmiResourceButton.getSelection()) {
+				settings.setResourceKind(AcceleoBuilderSettings.BUILD_XMI_RESOURCE);
+			} else {
+				settings.setResourceKind(AcceleoBuilderSettings.BUILD_BINARY_RESOURCE);
 			}
 			try {
 				settings.save();
@@ -113,9 +129,10 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
+		layout.numColumns = 2;
 		composite.setLayout(layout);
 		createComplianceGroup(composite);
+		createResourceKindGroup(composite);
 		return composite;
 	}
 
@@ -129,6 +146,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		strictCompliance = new Button(parent, SWT.CHECK);
 		strictCompliance.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.StrictMTLCompliance")); //$NON-NLS-1$
 		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
 		strictCompliance.setLayoutData(gridData);
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
@@ -142,6 +160,48 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 			}
 		} else {
 			strictCompliance.setSelection(false);
+		}
+	}
+
+	/**
+	 * Creates a group for the resource kind.
+	 * 
+	 * @param parent
+	 *            The parent composite.
+	 */
+	private void createResourceKindGroup(Composite parent) {
+		Group group = new Group(parent, SWT.BORDER);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		group.setLayoutData(gridData);
+		group.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.ResourceKind")); //$NON-NLS-1$
+		GridLayout layout = new GridLayout();
+		group.setLayout(layout);
+		layout.numColumns = 2;
+
+		binaryResourceButton = new Button(group, SWT.RADIO);
+		binaryResourceButton.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.BinaryResourceKind")); //$NON-NLS-1$
+		binaryResourceButton.setLayoutData(new GridData());
+
+		xmiResourceButton = new Button(group, SWT.RADIO);
+		xmiResourceButton.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.XMIResourceKind")); //$NON-NLS-1$
+		xmiResourceButton.setLayoutData(new GridData());
+
+		if (element instanceof IProject) {
+			IProject project = (IProject)element;
+			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+			if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE == settings.getResourceKind()) {
+				xmiResourceButton.setSelection(true);
+				binaryResourceButton.setSelection(false);
+			} else if (AcceleoBuilderSettings.BUILD_BINARY_RESOURCE == settings.getResourceKind()) {
+				xmiResourceButton.setSelection(false);
+				binaryResourceButton.setSelection(true);
+			} else {
+				xmiResourceButton.setSelection(false);
+				binaryResourceButton.setSelection(true);
+			}
+		} else {
+			xmiResourceButton.setSelection(false);
+			binaryResourceButton.setSelection(true);
 		}
 	}
 }

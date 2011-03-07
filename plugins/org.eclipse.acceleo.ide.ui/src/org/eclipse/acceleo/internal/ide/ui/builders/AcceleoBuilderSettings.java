@@ -27,6 +27,21 @@ import org.eclipse.core.runtime.CoreException;
 public class AcceleoBuilderSettings {
 
 	/**
+	 * The build resource kind keyword in the .project file.
+	 */
+	public static final String BUILD_RESOURCE_KIND = "resource.kind"; //$NON-NLS-1$
+
+	/**
+	 * The build resource kind for xmi resource.
+	 */
+	public static final String BUILD_XMI_RESOURCE = "xmi"; //$NON-NLS-1$
+
+	/**
+	 * The build resource kind for binary resources.
+	 */
+	public static final String BUILD_BINARY_RESOURCE = "binary"; //$NON-NLS-1$
+
+	/**
 	 * Strict MTL build compliance mode.
 	 */
 	public static final String BUILD_STRICT_MTL_COMPLIANCE = "strict"; //$NON-NLS-1$
@@ -52,6 +67,11 @@ public class AcceleoBuilderSettings {
 	private String compliance;
 
 	/**
+	 * The kind of resource that will be built.
+	 */
+	private String resourceKind;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param project
@@ -70,11 +90,19 @@ public class AcceleoBuilderSettings {
 				} else {
 					compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				}
+				arg = command.getArguments().get(BUILD_RESOURCE_KIND);
+				if (BUILD_XMI_RESOURCE.equals(arg)) {
+					resourceKind = BUILD_XMI_RESOURCE;
+				} else {
+					resourceKind = BUILD_BINARY_RESOURCE;
+				}
 			} else {
 				compliance = BUILD_PRAGMATIC_COMPLIANCE;
+				resourceKind = BUILD_BINARY_RESOURCE;
 			}
 		} catch (CoreException e) {
 			compliance = BUILD_PRAGMATIC_COMPLIANCE;
+			resourceKind = BUILD_BINARY_RESOURCE;
 		}
 	}
 
@@ -117,6 +145,25 @@ public class AcceleoBuilderSettings {
 	}
 
 	/**
+	 * Returns the resource kind that will be produced by the compilation.
+	 * 
+	 * @return The resource kind that will be produced by the compilation.
+	 */
+	public String getResourceKind() {
+		return resourceKind;
+	}
+
+	/**
+	 * Sets the resource kind that will be produced by the compilation (XMI or Binary).
+	 * 
+	 * @param resourceKind
+	 *            The resource kind.
+	 */
+	public void setResourceKind(String resourceKind) {
+		this.resourceKind = resourceKind;
+	}
+
+	/**
 	 * To write the new settings in the '.project' file.
 	 * 
 	 * @throws CoreException
@@ -129,6 +176,7 @@ public class AcceleoBuilderSettings {
 		if (command != null) {
 			Map<String, String> args = new HashMap<String, String>();
 			args.put(BUILD_COMPLIANCE_KEYWORD, compliance);
+			args.put(BUILD_RESOURCE_KIND, resourceKind);
 			command.setArguments(args);
 			desc.setBuildSpec(commands);
 			project.setDescription(desc, null);

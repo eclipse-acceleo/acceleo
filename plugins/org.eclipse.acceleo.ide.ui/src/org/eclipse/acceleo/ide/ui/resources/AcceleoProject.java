@@ -870,7 +870,7 @@ public class AcceleoProject {
 				}
 			}
 			// The real EMTL files musn't be created when an issue occurs.
-			AcceleoParser parser = new AcceleoParser();
+			AcceleoParser parser = new AcceleoParser(true);
 			parser.parse(inputFiles, testAbsoluteOutputURIs, new ArrayList<URI>());
 			savedURIs.addAll(pluginOutputURIs);
 			boolean hasProblem = false;
@@ -891,7 +891,7 @@ public class AcceleoProject {
 			}
 			if (!hasProblem) {
 				// We create the real EMTL files
-				parser = new AcceleoParser();
+				parser = new AcceleoParser(true);
 				parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
 			}
 		}

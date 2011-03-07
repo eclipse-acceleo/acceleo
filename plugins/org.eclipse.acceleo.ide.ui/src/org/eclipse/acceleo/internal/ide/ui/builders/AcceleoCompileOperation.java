@@ -141,7 +141,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	private void doCompileResources(IProgressMonitor monitor) throws CoreException {
 		AcceleoProject acceleoProject = new AcceleoProject(project);
 		List<URI> dependenciesURIs = acceleoProject.getAccessibleOutputFiles();
-		AcceleoParser parser = new AcceleoParser();
 		List<AcceleoFile> iFiles = new ArrayList<AcceleoFile>();
 		List<URI> oURIs = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
@@ -160,7 +159,18 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
-		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
+
+		AcceleoParser parser = null;
+		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+		String resourceKind = settings.getResourceKind();
+		if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind)) {
+			parser = new AcceleoParser(false);
+			parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
+		} else {
+			parser = new AcceleoParser(true);
+			parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
+		}
+
 		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile iFile = iterator.next();
 
@@ -215,7 +225,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				acceleoProject, filesWithMainTag);
 		createRunnableAcceleoOperation.run(monitor);
 
-		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+		settings = new AcceleoBuilderSettings(project);
 		if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
 			Iterator<AcceleoFile> itFiles = iFiles.iterator();
 			for (Iterator<URI> itURIs = oURIs.iterator(); !monitor.isCanceled() && itURIs.hasNext()
