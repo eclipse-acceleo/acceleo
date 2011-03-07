@@ -180,7 +180,7 @@ public final class AcceleoLibraryOperationVisitor {
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_INDEX.equals(operation.getName())) {
 				// Increment java index value by 1 for OCL
 				result = Integer.valueOf(sourceValue.indexOf((String)args[0]) + 1);
-				if (result == Integer.valueOf(0)) {
+				if (result.equals(Integer.valueOf(0))) {
 					result = Integer.valueOf(-1);
 				}
 			} else if (AcceleoStandardLibrary.OPERATION_STRING_FIRST.equals(operation.getName())) {
@@ -318,7 +318,7 @@ public final class AcceleoLibraryOperationVisitor {
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_LASTINDEXOF.equals(operationName)) {
 			final List<Object> temp = new ArrayList<Object>(source);
 			result = Integer.valueOf(temp.lastIndexOf(args[0]) + 1);
-			if (result == Integer.valueOf(0)) {
+			if (result.equals(Integer.valueOf(0))) {
 				Integer.valueOf(-1);
 			}
 		}
@@ -439,7 +439,7 @@ public final class AcceleoLibraryOperationVisitor {
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX.equals(operationName)) {
 			// Increment java index value by 1 for OCL
 			result = Integer.valueOf(source.lastIndexOf((String)args[0]) + 1);
-			if (result == Integer.valueOf(0)) {
+			if (result.equals(Integer.valueOf(0))) {
 				result = Integer.valueOf(-1);
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING.equals(operationName)) {
