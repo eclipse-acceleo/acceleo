@@ -268,7 +268,7 @@ public class CST2ASTConverterWithDocumentationResolver extends CST2ASTConverterW
 	private String computeDocumentationValue(final String body, final String keyword, final int posBegin,
 			final int posEnd) {
 		String newString = body.substring(posBegin, posEnd);
-		newString.trim();
+		newString = newString.trim();
 		newString = newString.substring(keyword.length());
 		return newString;
 	}
