@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -190,6 +191,7 @@ public final class AcceleoTemplateReconcilingStrategy implements IReconcilingStr
 					}
 					if (moduleElement != null) {
 						eof = seekModuleElementEnd(moduleElement);
+						alignModuleElementEnd(moduleElement);
 						if (document.getNumberOfLines(startOffset, offset - startOffset) > 2) {
 							createOrUpdateAnnotation(startOffset, offset - startOffset, false);
 						}
@@ -204,6 +206,26 @@ public final class AcceleoTemplateReconcilingStrategy implements IReconcilingStr
 		}
 		for (Annotation deleted : deletedAnnotations) {
 			currentAnnotations.remove(deleted);
+		}
+	}
+
+	/**
+	 * Align the module element end for the hover pop up of the folded code.
+	 * 
+	 * @param moduleElement
+	 *            The module element.
+	 * @throws BadLocationException
+	 *             In case of problems.
+	 */
+	private void alignModuleElementEnd(String moduleElement) throws BadLocationException {
+		if (IAcceleoConstants.DEFAULT_END_BODY_CHAR.equals(String.valueOf(document.getChar(offset)))
+				&& document.get().length() >= (offset + 1 + moduleElement.length() + 1)) {
+			String next = document.get().substring(offset, offset + 1 + moduleElement.length() + 1);
+			String nextToFind = IAcceleoConstants.DEFAULT_END_BODY_CHAR + moduleElement
+					+ IAcceleoConstants.DEFAULT_END;
+			if (nextToFind.equals(next)) {
+				offset = offset + 1 + moduleElement.length() + 1;
+			}
 		}
 	}
 

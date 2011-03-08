@@ -837,6 +837,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		ProjectionViewer viewer = (ProjectionViewer)getSourceViewer();
 
 		projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
+		projectionSupport.setHoverControlCreator(new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parentShell) {
+				return new AcceleoFoldingInformationControl(parentShell);
+			}
+		});
 		projectionSupport.install();
 
 		// turn projection mode on
