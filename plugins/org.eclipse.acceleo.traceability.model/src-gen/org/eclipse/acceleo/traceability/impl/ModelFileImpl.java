@@ -28,17 +28,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl#getInputElements <em>Input Elements</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl#getInputElements <em>Input Elements</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ModelFileImpl extends ResourceImpl implements ModelFile {
 	/**
-	 * The cached value of the '{@link #getInputElements() <em>Input Elements</em>}' containment reference
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getInputElements() <em>Input Elements</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getInputElements()
 	 * @generated
 	 * @ordered
@@ -47,7 +46,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ModelFileImpl() {
@@ -56,7 +54,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -66,20 +63,17 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<InputElement> getInputElements() {
 		if (inputElements == null) {
-			inputElements = new EObjectContainmentEList<InputElement>(InputElement.class, this,
-					TraceabilityPackage.MODEL_FILE__INPUT_ELEMENTS);
+			inputElements = new EObjectContainmentEList<InputElement>(InputElement.class, this, TraceabilityPackage.MODEL_FILE__INPUT_ELEMENTS);
 		}
 		return inputElements;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -93,7 +87,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -107,7 +100,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -124,7 +116,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -139,7 +130,6 @@ public class ModelFileImpl extends ResourceImpl implements ModelFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

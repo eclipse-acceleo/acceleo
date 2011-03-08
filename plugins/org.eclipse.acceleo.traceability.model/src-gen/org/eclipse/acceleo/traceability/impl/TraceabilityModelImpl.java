@@ -18,6 +18,7 @@ import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.ModuleFile;
 import org.eclipse.acceleo.traceability.TraceabilityModel;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
+import org.eclipse.acceleo.traceability.minimal.MinimalEObjectImpl;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -42,7 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * 
  * @generated
  */
-public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityModel {
+public class TraceabilityModelImpl extends MinimalEObjectImpl.Container implements TraceabilityModel {
 	/**
 	 * The cached value of the '{@link #getModules() <em>Modules</em>}' containment reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -54,9 +55,8 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 	protected EList<ModuleFile> modules;
 
 	/**
-	 * The cached value of the '{@link #getGeneratedFiles() <em>Generated Files</em>}' containment reference
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getGeneratedFiles() <em>Generated Files</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getGeneratedFiles()
 	 * @generated
 	 * @ordered
@@ -66,7 +66,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 	/**
 	 * The cached value of the '{@link #getModelFiles() <em>Model Files</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see #getModelFiles()
 	 * @generated
 	 * @ordered
@@ -75,7 +74,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected TraceabilityModelImpl() {
@@ -84,7 +82,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -94,46 +91,39 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<ModuleFile> getModules() {
 		if (modules == null) {
-			modules = new EObjectContainmentEList<ModuleFile>(ModuleFile.class, this,
-					TraceabilityPackage.TRACEABILITY_MODEL__MODULES);
+			modules = new EObjectContainmentEList<ModuleFile>(ModuleFile.class, this, TraceabilityPackage.TRACEABILITY_MODEL__MODULES);
 		}
 		return modules;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<GeneratedFile> getGeneratedFiles() {
 		if (generatedFiles == null) {
-			generatedFiles = new EObjectContainmentEList<GeneratedFile>(GeneratedFile.class, this,
-					TraceabilityPackage.TRACEABILITY_MODEL__GENERATED_FILES);
+			generatedFiles = new EObjectContainmentEList<GeneratedFile>(GeneratedFile.class, this, TraceabilityPackage.TRACEABILITY_MODEL__GENERATED_FILES);
 		}
 		return generatedFiles;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<ModelFile> getModelFiles() {
 		if (modelFiles == null) {
-			modelFiles = new EObjectContainmentEList<ModelFile>(ModelFile.class, this,
-					TraceabilityPackage.TRACEABILITY_MODEL__MODEL_FILES);
+			modelFiles = new EObjectContainmentEList<ModelFile>(ModelFile.class, this, TraceabilityPackage.TRACEABILITY_MODEL__MODEL_FILES);
 		}
 		return modelFiles;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public GeneratedFile getGeneratedFile(String filePath) {
@@ -144,7 +134,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public GeneratedFile getGeneratedFile(ModuleElement moduleElement) {
@@ -155,7 +144,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModuleFile getGenerationModule(String moduleURI) {
@@ -166,7 +154,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModuleFile getGenerationModule(Resource resource) {
@@ -177,7 +164,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModelFile getInputModel(String modelURI) {
@@ -188,7 +174,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModelFile getInputModel(Resource resource) {
@@ -199,7 +184,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -217,7 +201,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -235,7 +218,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -260,7 +242,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -281,7 +262,6 @@ public class TraceabilityModelImpl extends EObjectImpl implements TraceabilityMo
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

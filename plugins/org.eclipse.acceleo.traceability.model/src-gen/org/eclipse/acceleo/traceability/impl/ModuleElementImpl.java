@@ -12,6 +12,7 @@ package org.eclipse.acceleo.traceability.impl;
 
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
+import org.eclipse.acceleo.traceability.minimal.MinimalEObjectImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -25,14 +26,13 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl#getModuleElement <em>Module Element
- * </em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl#getModuleElement <em>Module Element</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
-public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
+public class ModuleElementImpl extends MinimalEObjectImpl.Container implements ModuleElement {
 	/**
 	 * The cached value of the '{@link #getModuleElement() <em>Module Element</em>}' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -45,7 +45,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ModuleElementImpl() {
@@ -54,7 +53,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -64,7 +62,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EObject getModuleElement() {
@@ -72,11 +69,8 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 			InternalEObject oldModuleElement = (InternalEObject)moduleElement;
 			moduleElement = eResolveProxy(oldModuleElement);
 			if (moduleElement != oldModuleElement) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement,
-							moduleElement));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
 			}
 		}
 		return moduleElement;
@@ -84,7 +78,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EObject basicGetModuleElement() {
@@ -93,30 +86,24 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setModuleElement(EObject newModuleElement) {
 		EObject oldModuleElement = moduleElement;
 		moduleElement = newModuleElement;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT, oldModuleElement, moduleElement));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case TraceabilityPackage.MODULE_ELEMENT__MODULE_ELEMENT:
-				if (resolve) {
-					return getModuleElement();
-				}
+				if (resolve) return getModuleElement();
 				return basicGetModuleElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -124,7 +111,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -139,7 +125,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -154,7 +139,6 @@ public class ModuleElementImpl extends EObjectImpl implements ModuleElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

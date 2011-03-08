@@ -15,6 +15,7 @@ import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
+import org.eclipse.acceleo.traceability.minimal.MinimalEObjectImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -29,19 +30,17 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getSourceElement <em>Source Element
- * </em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getModuleElement <em>Module Element
- * </em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getOutputFile <em>Output File</em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getStartOffset <em>Start Offset</em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getEndOffset <em>End Offset</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getSourceElement <em>Source Element</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getModuleElement <em>Module Element</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getOutputFile <em>Output File</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getStartOffset <em>Start Offset</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl#getEndOffset <em>End Offset</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
-public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
+public class GeneratedTextImpl extends MinimalEObjectImpl.Container implements GeneratedText {
 	/**
 	 * The cached value of the '{@link #getSourceElement() <em>Source Element</em>}' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -83,9 +82,9 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	protected int startOffset = START_OFFSET_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getEndOffset() <em>End Offset</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getEndOffset() <em>End Offset</em>}' attribute.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @see #getEndOffset()
 	 * @generated
 	 * @ordered
@@ -93,9 +92,9 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 	protected static final int END_OFFSET_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getEndOffset() <em>End Offset</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getEndOffset() <em>End Offset</em>}' attribute.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @see #getEndOffset()
 	 * @generated
 	 * @ordered
@@ -104,7 +103,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected GeneratedTextImpl() {
@@ -113,7 +111,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -123,7 +120,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public InputElement getSourceElement() {
@@ -131,11 +127,8 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 			InternalEObject oldSourceElement = (InternalEObject)sourceElement;
 			sourceElement = (InputElement)eResolveProxy(oldSourceElement);
 			if (sourceElement != oldSourceElement) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement,
-							sourceElement));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement, sourceElement));
 			}
 		}
 		return sourceElement;
@@ -143,7 +136,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public InputElement basicGetSourceElement() {
@@ -152,21 +144,17 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setSourceElement(InputElement newSourceElement) {
 		InputElement oldSourceElement = sourceElement;
 		sourceElement = newSourceElement;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement, sourceElement));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT, oldSourceElement, sourceElement));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModuleElement getModuleElement() {
@@ -174,11 +162,8 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 			InternalEObject oldModuleElement = (InternalEObject)moduleElement;
 			moduleElement = (ModuleElement)eResolveProxy(oldModuleElement);
 			if (moduleElement != oldModuleElement) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement,
-							moduleElement));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement, moduleElement));
 			}
 		}
 		return moduleElement;
@@ -186,7 +171,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public ModuleElement basicGetModuleElement() {
@@ -195,73 +179,55 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setModuleElement(ModuleElement newModuleElement) {
 		ModuleElement oldModuleElement = moduleElement;
 		moduleElement = newModuleElement;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement, moduleElement));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT, oldModuleElement, moduleElement));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public GeneratedFile getOutputFile() {
-		if (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE) {
-			return null;
-		}
+		if (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE) return null;
 		return (GeneratedFile)eContainer();
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetOutputFile(GeneratedFile newOutputFile, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newOutputFile,
-				TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE, msgs);
+		msgs = eBasicSetContainer((InternalEObject)newOutputFile, TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE, msgs);
 		return msgs;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setOutputFile(GeneratedFile newOutputFile) {
-		if (newOutputFile != eInternalContainer()
-				|| (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE && newOutputFile != null)) {
-			if (EcoreUtil.isAncestor(this, newOutputFile)) {
+		if (newOutputFile != eInternalContainer() || (eContainerFeatureID() != TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE && newOutputFile != null)) {
+			if (EcoreUtil.isAncestor(this, newOutputFile))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
-			}
 			NotificationChain msgs = null;
-			if (eInternalContainer() != null) {
+			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			}
-			if (newOutputFile != null) {
-				msgs = ((InternalEObject)newOutputFile).eInverseAdd(this,
-						TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, GeneratedFile.class, msgs);
-			}
+			if (newOutputFile != null)
+				msgs = ((InternalEObject)newOutputFile).eInverseAdd(this, TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, GeneratedFile.class, msgs);
 			msgs = basicSetOutputFile(newOutputFile, msgs);
-			if (msgs != null) {
-				msgs.dispatch();
-			}
-		} else if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE, newOutputFile, newOutputFile));
+			if (msgs != null) msgs.dispatch();
 		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE, newOutputFile, newOutputFile));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int getStartOffset() {
@@ -270,21 +236,17 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setStartOffset(int newStartOffset) {
 		int oldStartOffset = startOffset;
 		startOffset = newStartOffset;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.GENERATED_TEXT__START_OFFSET, oldStartOffset, startOffset));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_TEXT__START_OFFSET, oldStartOffset, startOffset));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int getEndOffset() {
@@ -293,21 +255,17 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setEndOffset(int newEndOffset) {
 		int oldEndOffset = endOffset;
 		endOffset = newEndOffset;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.GENERATED_TEXT__END_OFFSET, oldEndOffset, endOffset));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.GENERATED_TEXT__END_OFFSET, oldEndOffset, endOffset));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public int compareTo(GeneratedText other) {
@@ -318,16 +276,14 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE:
-				if (eInternalContainer() != null) {
+				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				}
 				return basicSetOutputFile((GeneratedFile)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -335,7 +291,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -349,36 +304,29 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 			case TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE:
-				return eInternalContainer().eInverseRemove(this,
-						TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, GeneratedFile.class, msgs);
+				return eInternalContainer().eInverseRemove(this, TraceabilityPackage.GENERATED_FILE__GENERATED_REGIONS, GeneratedFile.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case TraceabilityPackage.GENERATED_TEXT__SOURCE_ELEMENT:
-				if (resolve) {
-					return getSourceElement();
-				}
+				if (resolve) return getSourceElement();
 				return basicGetSourceElement();
 			case TraceabilityPackage.GENERATED_TEXT__MODULE_ELEMENT:
-				if (resolve) {
-					return getModuleElement();
-				}
+				if (resolve) return getModuleElement();
 				return basicGetModuleElement();
 			case TraceabilityPackage.GENERATED_TEXT__OUTPUT_FILE:
 				return getOutputFile();
@@ -392,7 +340,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -419,7 +366,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -446,7 +392,6 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -468,14 +413,11 @@ public class GeneratedTextImpl extends EObjectImpl implements GeneratedText {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) {
-			return super.toString();
-		}
+		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (startOffset: "); //$NON-NLS-1$

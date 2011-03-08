@@ -28,18 +28,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl#getModuleElements <em>Module Elements</em>}
- * </li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl#getModuleElements <em>Module Elements</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 	/**
-	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference
-	 * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #getModuleElements()
 	 * @generated
 	 * @ordered
@@ -48,7 +46,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected ModuleFileImpl() {
@@ -57,7 +54,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -67,20 +63,17 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EList<ModuleElement> getModuleElements() {
 		if (moduleElements == null) {
-			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this,
-					TraceabilityPackage.MODULE_FILE__MODULE_ELEMENTS);
+			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this, TraceabilityPackage.MODULE_FILE__MODULE_ELEMENTS);
 		}
 		return moduleElements;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -94,7 +87,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -108,7 +100,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -125,7 +116,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,7 +130,6 @@ public class ModuleFileImpl extends ResourceImpl implements ModuleFile {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

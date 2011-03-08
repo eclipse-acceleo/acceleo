@@ -30,13 +30,13 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Resource extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Path</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Path</em>' attribute isn't clear, there really should be more of a
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Path</em>' attribute.
 	 * @see #setPath(String)
 	 * @see org.eclipse.acceleo.traceability.TraceabilityPackage#getResource_Path()
@@ -46,24 +46,22 @@ public interface Resource extends EObject {
 	String getPath();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getPath <em>Path</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Path</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getPath <em>Path</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Path</em>' attribute.
 	 * @see #getPath()
 	 * @generated
 	 */
 	void setPath(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.eclipse.acceleo.traceability.TraceabilityPackage#getResource_Name()
@@ -73,24 +71,22 @@ public interface Resource extends EObject {
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getName <em>Name</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Name</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
 	 */
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Charset</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Charset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Charset</em>' attribute isn't clear, there really should be more of a
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Charset</em>' attribute.
 	 * @see #setCharset(String)
 	 * @see org.eclipse.acceleo.traceability.TraceabilityPackage#getResource_Charset()
@@ -100,11 +96,9 @@ public interface Resource extends EObject {
 	String getCharset();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getCharset <em>Charset</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Charset</em>' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.traceability.Resource#getCharset <em>Charset</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Charset</em>' attribute.
 	 * @see #getCharset()
 	 * @generated
 	 */

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.traceability.impl;
 
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.TraceabilityPackage;
+import org.eclipse.acceleo.traceability.minimal.MinimalEObjectImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -27,15 +28,15 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getModelElement <em>Model Element</em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getFeature <em>Feature</em>}</li>
- * <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getOperation <em>Operation</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getModelElement <em>Model Element</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getFeature <em>Feature</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.traceability.impl.InputElementImpl#getOperation <em>Operation</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
-public class InputElementImpl extends EObjectImpl implements InputElement {
+public class InputElementImpl extends MinimalEObjectImpl.Container implements InputElement {
 	/**
 	 * The cached value of the '{@link #getModelElement() <em>Model Element</em>}' reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -47,9 +48,9 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 	protected EObject modelElement;
 
 	/**
-	 * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getFeature()
 	 * @generated
 	 * @ordered
@@ -57,9 +58,9 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 	protected EStructuralFeature feature;
 
 	/**
-	 * The cached value of the '{@link #getOperation() <em>Operation</em>}' reference. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getOperation() <em>Operation</em>}' reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @see #getOperation()
 	 * @generated
 	 * @ordered
@@ -68,7 +69,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	protected InputElementImpl() {
@@ -77,7 +77,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -87,7 +86,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EObject getModelElement() {
@@ -95,10 +93,8 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 			InternalEObject oldModelElement = (InternalEObject)modelElement;
 			modelElement = eResolveProxy(oldModelElement);
 			if (modelElement != oldModelElement) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.INPUT_ELEMENT__MODEL_ELEMENT, oldModelElement, modelElement));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.INPUT_ELEMENT__MODEL_ELEMENT, oldModelElement, modelElement));
 			}
 		}
 		return modelElement;
@@ -106,7 +102,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EObject basicGetModelElement() {
@@ -115,21 +110,17 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setModelElement(EObject newModelElement) {
 		EObject oldModelElement = modelElement;
 		modelElement = newModelElement;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.INPUT_ELEMENT__MODEL_ELEMENT, oldModelElement, modelElement));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.INPUT_ELEMENT__MODEL_ELEMENT, oldModelElement, modelElement));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EStructuralFeature getFeature() {
@@ -137,10 +128,8 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 			InternalEObject oldFeature = (InternalEObject)feature;
 			feature = (EStructuralFeature)eResolveProxy(oldFeature);
 			if (feature != oldFeature) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.INPUT_ELEMENT__FEATURE, oldFeature, feature));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.INPUT_ELEMENT__FEATURE, oldFeature, feature));
 			}
 		}
 		return feature;
@@ -148,7 +137,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EStructuralFeature basicGetFeature() {
@@ -157,21 +145,17 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setFeature(EStructuralFeature newFeature) {
 		EStructuralFeature oldFeature = feature;
 		feature = newFeature;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.INPUT_ELEMENT__FEATURE,
-					oldFeature, feature));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.INPUT_ELEMENT__FEATURE, oldFeature, feature));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EOperation getOperation() {
@@ -179,10 +163,8 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 			InternalEObject oldOperation = (InternalEObject)operation;
 			operation = (EOperation)eResolveProxy(oldOperation);
 			if (operation != oldOperation) {
-				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							TraceabilityPackage.INPUT_ELEMENT__OPERATION, oldOperation, operation));
-				}
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TraceabilityPackage.INPUT_ELEMENT__OPERATION, oldOperation, operation));
 			}
 		}
 		return operation;
@@ -190,7 +172,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EOperation basicGetOperation() {
@@ -199,40 +180,30 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public void setOperation(EOperation newOperation) {
 		EOperation oldOperation = operation;
 		operation = newOperation;
-		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					TraceabilityPackage.INPUT_ELEMENT__OPERATION, oldOperation, operation));
-		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TraceabilityPackage.INPUT_ELEMENT__OPERATION, oldOperation, operation));
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case TraceabilityPackage.INPUT_ELEMENT__MODEL_ELEMENT:
-				if (resolve) {
-					return getModelElement();
-				}
+				if (resolve) return getModelElement();
 				return basicGetModelElement();
 			case TraceabilityPackage.INPUT_ELEMENT__FEATURE:
-				if (resolve) {
-					return getFeature();
-				}
+				if (resolve) return getFeature();
 				return basicGetFeature();
 			case TraceabilityPackage.INPUT_ELEMENT__OPERATION:
-				if (resolve) {
-					return getOperation();
-				}
+				if (resolve) return getOperation();
 				return basicGetOperation();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -240,7 +211,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -261,7 +231,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override
@@ -282,7 +251,6 @@ public class InputElementImpl extends EObjectImpl implements InputElement {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	@Override

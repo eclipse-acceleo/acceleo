@@ -26,44 +26,42 @@ import org.eclipse.emf.ecore.EReference;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.acceleo.traceability.TraceabilityFactory
  * @model kind="package"
  * @generated
  */
 public interface TraceabilityPackage extends EPackage {
 	/**
-	 * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNAME = "traceability"; //$NON-NLS-1$
 
 	/**
-	 * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package namespace URI.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_URI = "http://www.eclipse.org/acceleo/traceability/1.0"; //$NON-NLS-1$
 
 	/**
-	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package namespace name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_PREFIX = "traceability"; //$NON-NLS-1$
 
 	/**
-	 * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The singleton instance of the package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	TraceabilityPackage eINSTANCE = org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.TraceabilityModelImpl
-	 * <em>Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.TraceabilityModelImpl <em>Model</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityModelImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getTraceabilityModel()
 	 * @generated
@@ -71,9 +69,9 @@ public interface TraceabilityPackage extends EPackage {
 	int TRACEABILITY_MODEL = 0;
 
 	/**
-	 * The feature id for the '<em><b>Modules</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Modules</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -89,27 +87,26 @@ public interface TraceabilityPackage extends EPackage {
 	int TRACEABILITY_MODEL__GENERATED_FILES = 1;
 
 	/**
-	 * The feature id for the '<em><b>Model Files</b></em>' containment reference list. <!-- begin-user-doc
+	 * The feature id for the '<em><b>Model Files</b></em>' containment reference list.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int TRACEABILITY_MODEL__MODEL_FILES = 2;
 
 	/**
-	 * The number of structural features of the '<em>Model</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Model</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int TRACEABILITY_MODEL_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ResourceImpl
-	 * <em>Resource</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ResourceImpl <em>Resource</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.ResourceImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getResource()
 	 * @generated
@@ -117,16 +114,16 @@ public interface TraceabilityPackage extends EPackage {
 	int RESOURCE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int RESOURCE__PATH = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -142,18 +139,17 @@ public interface TraceabilityPackage extends EPackage {
 	int RESOURCE__CHARSET = 2;
 
 	/**
-	 * The number of structural features of the '<em>Resource</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Resource</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int RESOURCE_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl
-	 * <em>Model File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl <em>Model File</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.ModelFileImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModelFile()
 	 * @generated
@@ -161,16 +157,16 @@ public interface TraceabilityPackage extends EPackage {
 	int MODEL_FILE = 2;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int MODEL_FILE__PATH = RESOURCE__PATH;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -186,27 +182,26 @@ public interface TraceabilityPackage extends EPackage {
 	int MODEL_FILE__CHARSET = RESOURCE__CHARSET;
 
 	/**
-	 * The feature id for the '<em><b>Input Elements</b></em>' containment reference list. <!-- begin-user-doc
+	 * The feature id for the '<em><b>Input Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int MODEL_FILE__INPUT_ELEMENTS = RESOURCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Model File</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Model File</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int MODEL_FILE_FEATURE_COUNT = RESOURCE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl
-	 * <em>Module File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl <em>Module File</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.ModuleFileImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModuleFile()
 	 * @generated
@@ -214,16 +209,16 @@ public interface TraceabilityPackage extends EPackage {
 	int MODULE_FILE = 3;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int MODULE_FILE__PATH = RESOURCE__PATH;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -248,18 +243,17 @@ public interface TraceabilityPackage extends EPackage {
 	int MODULE_FILE__MODULE_ELEMENTS = RESOURCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Module File</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Module File</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int MODULE_FILE_FEATURE_COUNT = RESOURCE_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl
-	 * <em>Generated File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl <em>Generated File</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.GeneratedFileImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getGeneratedFile()
 	 * @generated
@@ -267,16 +261,16 @@ public interface TraceabilityPackage extends EPackage {
 	int GENERATED_FILE = 4;
 
 	/**
-	 * The feature id for the '<em><b>Path</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_FILE__PATH = RESOURCE__PATH;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -301,27 +295,27 @@ public interface TraceabilityPackage extends EPackage {
 	int GENERATED_FILE__GENERATED_REGIONS = RESOURCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Source Elements</b></em>' reference list. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Source Elements</b></em>' reference list.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_FILE__SOURCE_ELEMENTS = RESOURCE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Name Regions</b></em>' containment reference list. <!-- begin-user-doc
+	 * The feature id for the '<em><b>Name Regions</b></em>' containment reference list.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_FILE__NAME_REGIONS = RESOURCE_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>File Block</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>File Block</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -337,18 +331,17 @@ public interface TraceabilityPackage extends EPackage {
 	int GENERATED_FILE__LENGTH = RESOURCE_FEATURE_COUNT + 4;
 
 	/**
-	 * The number of structural features of the '<em>Generated File</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Generated File</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_FILE_FEATURE_COUNT = RESOURCE_FEATURE_COUNT + 5;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.InputElementImpl
-	 * <em>Input Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.InputElementImpl <em>Input Element</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.InputElementImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getInputElement()
 	 * @generated
@@ -356,9 +349,9 @@ public interface TraceabilityPackage extends EPackage {
 	int INPUT_ELEMENT = 5;
 
 	/**
-	 * The feature id for the '<em><b>Model Element</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Model Element</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -383,18 +376,17 @@ public interface TraceabilityPackage extends EPackage {
 	int INPUT_ELEMENT__OPERATION = 2;
 
 	/**
-	 * The number of structural features of the '<em>Input Element</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Input Element</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int INPUT_ELEMENT_FEATURE_COUNT = 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl
-	 * <em>Module Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl <em>Module Element</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.ModuleElementImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModuleElement()
 	 * @generated
@@ -402,18 +394,18 @@ public interface TraceabilityPackage extends EPackage {
 	int MODULE_ELEMENT = 6;
 
 	/**
-	 * The feature id for the '<em><b>Module Element</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Module Element</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int MODULE_ELEMENT__MODULE_ELEMENT = 0;
 
 	/**
-	 * The number of structural features of the '<em>Module Element</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Module Element</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -430,18 +422,17 @@ public interface TraceabilityPackage extends EPackage {
 	int ICOMPARABLE = 8;
 
 	/**
-	 * The number of structural features of the '<em>IComparable</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>IComparable</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ICOMPARABLE_FEATURE_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl
-	 * <em>Generated Text</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl <em>Generated Text</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.traceability.impl.GeneratedTextImpl
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getGeneratedText()
 	 * @generated
@@ -449,62 +440,62 @@ public interface TraceabilityPackage extends EPackage {
 	int GENERATED_TEXT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Source Element</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Source Element</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT__SOURCE_ELEMENT = ICOMPARABLE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Module Element</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Module Element</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT__MODULE_ELEMENT = ICOMPARABLE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Output File</b></em>' container reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Output File</b></em>' container reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT__OUTPUT_FILE = ICOMPARABLE_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Start Offset</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Start Offset</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT__START_OFFSET = ICOMPARABLE_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>End Offset</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>End Offset</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT__END_OFFSET = ICOMPARABLE_FEATURE_COUNT + 4;
 
 	/**
-	 * The number of structural features of the '<em>Generated Text</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Generated Text</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int GENERATED_TEXT_FEATURE_COUNT = ICOMPARABLE_FEATURE_COUNT + 5;
 
 	/**
-	 * The meta object id for the '<em>path</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '<em>path</em>' data type.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see java.lang.String
 	 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getpath()
 	 * @generated
@@ -512,9 +503,8 @@ public interface TraceabilityPackage extends EPackage {
 	int PATH = 9;
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.TraceabilityModel
-	 * <em>Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.TraceabilityModel <em>Model</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Model</em>'.
 	 * @see org.eclipse.acceleo.traceability.TraceabilityModel
 	 * @generated
@@ -534,10 +524,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getTraceabilityModel_Modules();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.traceability.TraceabilityModel#getGeneratedFiles <em>Generated Files</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.traceability.TraceabilityModel#getGeneratedFiles <em>Generated Files</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference list '<em>Generated Files</em>'.
 	 * @see org.eclipse.acceleo.traceability.TraceabilityModel#getGeneratedFiles()
 	 * @see #getTraceabilityModel()
@@ -558,9 +546,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getTraceabilityModel_ModelFiles();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.Resource <em>Resource</em>}
-	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.Resource <em>Resource</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Resource</em>'.
 	 * @see org.eclipse.acceleo.traceability.Resource
 	 * @generated
@@ -568,9 +555,8 @@ public interface TraceabilityPackage extends EPackage {
 	EClass getResource();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getPath
-	 * <em>Path</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getPath <em>Path</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Path</em>'.
 	 * @see org.eclipse.acceleo.traceability.Resource#getPath()
 	 * @see #getResource()
@@ -579,9 +565,8 @@ public interface TraceabilityPackage extends EPackage {
 	EAttribute getResource_Path();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getName
-	 * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.traceability.Resource#getName()
 	 * @see #getResource()
@@ -590,9 +575,8 @@ public interface TraceabilityPackage extends EPackage {
 	EAttribute getResource_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getCharset
-	 * <em>Charset</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.Resource#getCharset <em>Charset</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Charset</em>'.
 	 * @see org.eclipse.acceleo.traceability.Resource#getCharset()
 	 * @see #getResource()
@@ -601,9 +585,8 @@ public interface TraceabilityPackage extends EPackage {
 	EAttribute getResource_Charset();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModelFile
-	 * <em>Model File</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModelFile <em>Model File</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Model File</em>'.
 	 * @see org.eclipse.acceleo.traceability.ModelFile
 	 * @generated
@@ -623,9 +606,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getModelFile_InputElements();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModuleFile
-	 * <em>Module File</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModuleFile <em>Module File</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Module File</em>'.
 	 * @see org.eclipse.acceleo.traceability.ModuleFile
 	 * @generated
@@ -645,9 +627,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getModuleFile_ModuleElements();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.GeneratedFile
-	 * <em>Generated File</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.GeneratedFile <em>Generated File</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Generated File</em>'.
 	 * @see org.eclipse.acceleo.traceability.GeneratedFile
 	 * @generated
@@ -655,10 +636,8 @@ public interface TraceabilityPackage extends EPackage {
 	EClass getGeneratedFile();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.traceability.GeneratedFile#getGeneratedRegions <em>Generated Regions</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.traceability.GeneratedFile#getGeneratedRegions <em>Generated Regions</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference list '<em>Generated Regions</em>'.
 	 * @see org.eclipse.acceleo.traceability.GeneratedFile#getGeneratedRegions()
 	 * @see #getGeneratedFile()
@@ -667,10 +646,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getGeneratedFile_GeneratedRegions();
 
 	/**
-	 * Returns the meta object for the reference list '
-	 * {@link org.eclipse.acceleo.traceability.GeneratedFile#getSourceElements <em>Source Elements</em>}'.
+	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.traceability.GeneratedFile#getSourceElements <em>Source Elements</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the reference list '<em>Source Elements</em>'.
 	 * @see org.eclipse.acceleo.traceability.GeneratedFile#getSourceElements()
 	 * @see #getGeneratedFile()
@@ -703,10 +680,9 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getGeneratedFile_FileBlock();
 
 	/**
-	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.traceability.GeneratedFile#getLength <em>Length</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.traceability.GeneratedFile#getLength <em>Length</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the attribute '<em>Length</em>'.
 	 * @see org.eclipse.acceleo.traceability.GeneratedFile#getLength()
 	 * @see #getGeneratedFile()
@@ -715,9 +691,8 @@ public interface TraceabilityPackage extends EPackage {
 	EAttribute getGeneratedFile_Length();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.InputElement
-	 * <em>Input Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.InputElement <em>Input Element</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Input Element</em>'.
 	 * @see org.eclipse.acceleo.traceability.InputElement
 	 * @generated
@@ -737,10 +712,9 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getInputElement_ModelElement();
 
 	/**
-	 * Returns the meta object for the reference '
-	 * {@link org.eclipse.acceleo.traceability.InputElement#getFeature <em>Feature</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.traceability.InputElement#getFeature <em>Feature</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the reference '<em>Feature</em>'.
 	 * @see org.eclipse.acceleo.traceability.InputElement#getFeature()
 	 * @see #getInputElement()
@@ -761,9 +735,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getInputElement_Operation();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModuleElement
-	 * <em>Module Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.ModuleElement <em>Module Element</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Module Element</em>'.
 	 * @see org.eclipse.acceleo.traceability.ModuleElement
 	 * @generated
@@ -783,9 +756,8 @@ public interface TraceabilityPackage extends EPackage {
 	EReference getModuleElement_ModuleElement();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.GeneratedText
-	 * <em>Generated Text</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.traceability.GeneratedText <em>Generated Text</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Generated Text</em>'.
 	 * @see org.eclipse.acceleo.traceability.GeneratedText
 	 * @generated
@@ -864,9 +836,9 @@ public interface TraceabilityPackage extends EPackage {
 	EClass getIComparable();
 
 	/**
-	 * Returns the meta object for data type '{@link java.lang.String <em>path</em>}'. <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link java.lang.String <em>path</em>}'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for data type '<em>path</em>'.
 	 * @see java.lang.String
 	 * @model instanceClass="java.lang.String"
@@ -892,7 +864,6 @@ public interface TraceabilityPackage extends EPackage {
 	 * <li>and each data type</li>
 	 * </ul>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	interface Literals {
@@ -916,9 +887,8 @@ public interface TraceabilityPackage extends EPackage {
 		EReference TRACEABILITY_MODEL__MODULES = eINSTANCE.getTraceabilityModel_Modules();
 
 		/**
-		 * The meta object literal for the '<em><b>Generated Files</b></em>' containment reference list
-		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '<em><b>Generated Files</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference TRACEABILITY_MODEL__GENERATED_FILES = eINSTANCE.getTraceabilityModel_GeneratedFiles();
@@ -926,15 +896,13 @@ public interface TraceabilityPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Model Files</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference TRACEABILITY_MODEL__MODEL_FILES = eINSTANCE.getTraceabilityModel_ModelFiles();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ResourceImpl
-		 * <em>Resource</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ResourceImpl <em>Resource</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.ResourceImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getResource()
 		 * @generated
@@ -942,33 +910,32 @@ public interface TraceabilityPackage extends EPackage {
 		EClass RESOURCE = eINSTANCE.getResource();
 
 		/**
-		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute RESOURCE__PATH = eINSTANCE.getResource_Path();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute RESOURCE__NAME = eINSTANCE.getResource_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Charset</b></em>' attribute feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Charset</b></em>' attribute feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute RESOURCE__CHARSET = eINSTANCE.getResource_Charset();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl
-		 * <em>Model File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModelFileImpl <em>Model File</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.ModelFileImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModelFile()
 		 * @generated
@@ -976,17 +943,15 @@ public interface TraceabilityPackage extends EPackage {
 		EClass MODEL_FILE = eINSTANCE.getModelFile();
 
 		/**
-		 * The meta object literal for the '<em><b>Input Elements</b></em>' containment reference list
-		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '<em><b>Input Elements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference MODEL_FILE__INPUT_ELEMENTS = eINSTANCE.getModelFile_InputElements();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl
-		 * <em>Module File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModuleFileImpl <em>Module File</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.ModuleFileImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModuleFile()
 		 * @generated
@@ -994,17 +959,15 @@ public interface TraceabilityPackage extends EPackage {
 		EClass MODULE_FILE = eINSTANCE.getModuleFile();
 
 		/**
-		 * The meta object literal for the '<em><b>Module Elements</b></em>' containment reference list
-		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '<em><b>Module Elements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference MODULE_FILE__MODULE_ELEMENTS = eINSTANCE.getModuleFile_ModuleElements();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl
-		 * <em>Generated File</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedFileImpl <em>Generated File</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.GeneratedFileImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getGeneratedFile()
 		 * @generated
@@ -1012,9 +975,8 @@ public interface TraceabilityPackage extends EPackage {
 		EClass GENERATED_FILE = eINSTANCE.getGeneratedFile();
 
 		/**
-		 * The meta object literal for the '<em><b>Generated Regions</b></em>' containment reference list
-		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '<em><b>Generated Regions</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference GENERATED_FILE__GENERATED_REGIONS = eINSTANCE.getGeneratedFile_GeneratedRegions();
@@ -1030,31 +992,29 @@ public interface TraceabilityPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Name Regions</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference GENERATED_FILE__NAME_REGIONS = eINSTANCE.getGeneratedFile_NameRegions();
 
 		/**
-		 * The meta object literal for the '<em><b>File Block</b></em>' reference feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>File Block</b></em>' reference feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference GENERATED_FILE__FILE_BLOCK = eINSTANCE.getGeneratedFile_FileBlock();
 
 		/**
-		 * The meta object literal for the '<em><b>Length</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Length</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute GENERATED_FILE__LENGTH = eINSTANCE.getGeneratedFile_Length();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.InputElementImpl
-		 * <em>Input Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.InputElementImpl <em>Input Element</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.InputElementImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getInputElement()
 		 * @generated
@@ -1070,25 +1030,24 @@ public interface TraceabilityPackage extends EPackage {
 		EReference INPUT_ELEMENT__MODEL_ELEMENT = eINSTANCE.getInputElement_ModelElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Feature</b></em>' reference feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Feature</b></em>' reference feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference INPUT_ELEMENT__FEATURE = eINSTANCE.getInputElement_Feature();
 
 		/**
-		 * The meta object literal for the '<em><b>Operation</b></em>' reference feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Operation</b></em>' reference feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference INPUT_ELEMENT__OPERATION = eINSTANCE.getInputElement_Operation();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl
-		 * <em>Module Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.ModuleElementImpl <em>Module Element</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.ModuleElementImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getModuleElement()
 		 * @generated
@@ -1104,9 +1063,8 @@ public interface TraceabilityPackage extends EPackage {
 		EReference MODULE_ELEMENT__MODULE_ELEMENT = eINSTANCE.getModuleElement_ModuleElement();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl
-		 * <em>Generated Text</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.traceability.impl.GeneratedTextImpl <em>Generated Text</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.traceability.impl.GeneratedTextImpl
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getGeneratedText()
 		 * @generated
@@ -1146,9 +1104,9 @@ public interface TraceabilityPackage extends EPackage {
 		EAttribute GENERATED_TEXT__START_OFFSET = eINSTANCE.getGeneratedText_StartOffset();
 
 		/**
-		 * The meta object literal for the '<em><b>End Offset</b></em>' attribute feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>End Offset</b></em>' attribute feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute GENERATED_TEXT__END_OFFSET = eINSTANCE.getGeneratedText_EndOffset();
@@ -1164,9 +1122,9 @@ public interface TraceabilityPackage extends EPackage {
 		EClass ICOMPARABLE = eINSTANCE.getIComparable();
 
 		/**
-		 * The meta object literal for the '<em>path</em>' data type. <!-- begin-user-doc --> <!--
+		 * The meta object literal for the '<em>path</em>' data type.
+		 * <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
-		 * 
 		 * @see java.lang.String
 		 * @see org.eclipse.acceleo.traceability.impl.TraceabilityPackageImpl#getpath()
 		 * @generated

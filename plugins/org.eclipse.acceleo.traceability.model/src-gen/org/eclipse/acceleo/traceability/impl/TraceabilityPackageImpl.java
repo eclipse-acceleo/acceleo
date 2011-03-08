@@ -33,88 +33,78 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- * 
  * @generated
  */
 public class TraceabilityPackageImpl extends EPackageImpl implements TraceabilityPackage {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass traceabilityModelEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass resourceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass modelFileEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass moduleFileEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass generatedFileEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass inputElementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass moduleElementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass generatedTextEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EClass iComparableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private EDataType pathEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package package URI value.
-	 * <p>
-	 * Note: the correct way to create the package is via the static factory method {@link #init init()},
-	 * which also performs initialization of the package, or returns the registered package, if one already
-	 * exists. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * <p>Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.eclipse.acceleo.traceability.TraceabilityPackage#eNS_URI
 	 * @see #init()
@@ -126,33 +116,26 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it
-	 * depends.
-	 * <p>
-	 * This method is used to initialize {@link TraceabilityPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the
-	 * package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
 	 * 
+	 * <p>This method is used to initialize {@link TraceabilityPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static TraceabilityPackage init() {
-		if (isInited) {
-			return (TraceabilityPackage)EPackage.Registry.INSTANCE.getEPackage(TraceabilityPackage.eNS_URI);
-		}
+		if (isInited) return (TraceabilityPackage)EPackage.Registry.INSTANCE.getEPackage(TraceabilityPackage.eNS_URI);
 
 		// Obtain or create and register package
-		TraceabilityPackageImpl theTraceabilityPackage = (TraceabilityPackageImpl)(EPackage.Registry.INSTANCE
-				.get(eNS_URI) instanceof TraceabilityPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-				: new TraceabilityPackageImpl());
+		TraceabilityPackageImpl theTraceabilityPackage = (TraceabilityPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TraceabilityPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TraceabilityPackageImpl());
 
 		isInited = true;
 
@@ -168,6 +151,7 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 		// Mark meta-data to indicate it can't be changed
 		theTraceabilityPackage.freeze();
 
+  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(TraceabilityPackage.eNS_URI, theTraceabilityPackage);
 		return theTraceabilityPackage;
@@ -175,7 +159,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getTraceabilityModel() {
@@ -184,7 +167,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getTraceabilityModel_Modules() {
@@ -193,7 +175,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getTraceabilityModel_GeneratedFiles() {
@@ -202,7 +183,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getTraceabilityModel_ModelFiles() {
@@ -211,7 +191,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getResource() {
@@ -220,7 +199,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getResource_Path() {
@@ -229,7 +207,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getResource_Name() {
@@ -238,7 +215,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getResource_Charset() {
@@ -247,7 +223,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getModelFile() {
@@ -256,7 +231,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getModelFile_InputElements() {
@@ -265,7 +239,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getModuleFile() {
@@ -274,7 +247,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getModuleFile_ModuleElements() {
@@ -283,7 +255,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getGeneratedFile() {
@@ -292,7 +263,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedFile_GeneratedRegions() {
@@ -301,7 +271,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedFile_SourceElements() {
@@ -310,7 +279,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedFile_NameRegions() {
@@ -319,7 +287,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedFile_FileBlock() {
@@ -328,7 +295,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getGeneratedFile_Length() {
@@ -337,7 +303,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getInputElement() {
@@ -346,7 +311,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getInputElement_ModelElement() {
@@ -355,7 +319,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getInputElement_Feature() {
@@ -364,7 +327,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getInputElement_Operation() {
@@ -373,7 +335,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getModuleElement() {
@@ -382,7 +343,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getModuleElement_ModuleElement() {
@@ -391,7 +351,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getGeneratedText() {
@@ -400,7 +359,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedText_SourceElement() {
@@ -409,7 +367,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedText_ModuleElement() {
@@ -418,7 +375,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EReference getGeneratedText_OutputFile() {
@@ -427,7 +383,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getGeneratedText_StartOffset() {
@@ -436,7 +391,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EAttribute getGeneratedText_EndOffset() {
@@ -445,7 +399,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EClass getIComparable() {
@@ -454,7 +407,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public EDataType getpath() {
@@ -463,7 +415,6 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	public TraceabilityFactory getTraceabilityFactory() {
@@ -472,21 +423,18 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package. This method is guarded to have no affect on any
-	 * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) {
-			return;
-		}
+		if (isCreated) return;
 		isCreated = true;
 
 		// Create classes and their features
@@ -495,7 +443,7 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 		createEReference(traceabilityModelEClass, TRACEABILITY_MODEL__GENERATED_FILES);
 		createEReference(traceabilityModelEClass, TRACEABILITY_MODEL__MODEL_FILES);
 
-		resourceEClass = createEClass(TraceabilityPackage.RESOURCE);
+		resourceEClass = createEClass(RESOURCE);
 		createEAttribute(resourceEClass, RESOURCE__PATH);
 		createEAttribute(resourceEClass, RESOURCE__NAME);
 		createEAttribute(resourceEClass, RESOURCE__CHARSET);
@@ -536,21 +484,18 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model. This method is guarded to have no affect
-	 * on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) {
-			return;
-		}
+		if (isInitialized) return;
 		isInitialized = true;
 
 		// Initialize package
@@ -559,8 +504,7 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE
-				.getEPackage(EcorePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter iComparableEClass_T = addETypeParameter(iComparableEClass, "T"); //$NON-NLS-1$
@@ -577,167 +521,68 @@ public class TraceabilityPackageImpl extends EPackageImpl implements Traceabilit
 		generatedTextEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(traceabilityModelEClass, TraceabilityModel.class,
-				"TraceabilityModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getTraceabilityModel_Modules(),
-				this.getModuleFile(),
-				null,
-				"modules", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getTraceabilityModel_GeneratedFiles(),
-				this.getGeneratedFile(),
-				null,
-				"generatedFiles", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getTraceabilityModel_ModelFiles(),
-				this.getModelFile(),
-				null,
-				"modelFiles", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(traceabilityModelEClass, TraceabilityModel.class, "TraceabilityModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getTraceabilityModel_Modules(), this.getModuleFile(), null, "modules", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getTraceabilityModel_GeneratedFiles(), this.getGeneratedFile(), null, "generatedFiles", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getTraceabilityModel_ModelFiles(), this.getModelFile(), null, "modelFiles", null, 0, -1, TraceabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		EOperation op = addEOperation(traceabilityModelEClass, this.getGeneratedFile(),
-				"getGeneratedFile", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		EOperation op = addEOperation(traceabilityModelEClass, this.getGeneratedFile(), "getGeneratedFile", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, theEcorePackage.getEString(), "filePath", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(traceabilityModelEClass, this.getGeneratedFile(),
-				"getGeneratedFile", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(traceabilityModelEClass, this.getGeneratedFile(), "getGeneratedFile", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, this.getModuleElement(), "moduleElement", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(traceabilityModelEClass, this.getModuleFile(),
-				"getGenerationModule", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(traceabilityModelEClass, this.getModuleFile(), "getGenerationModule", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, theEcorePackage.getEString(), "moduleURI", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(traceabilityModelEClass, this.getModuleFile(),
-				"getGenerationModule", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(traceabilityModelEClass, this.getModuleFile(), "getGenerationModule", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, theEcorePackage.getEResource(), "resource", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(traceabilityModelEClass, this.getModelFile(),
-				"getInputModel", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(traceabilityModelEClass, this.getModelFile(), "getInputModel", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, theEcorePackage.getEString(), "modelURI", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(traceabilityModelEClass, this.getModelFile(),
-				"getInputModel", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(traceabilityModelEClass, this.getModelFile(), "getInputModel", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, theEcorePackage.getEResource(), "resource", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(resourceEClass, Resource.class,
-				"Resource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEAttribute(
-				getResource_Path(),
-				this.getpath(),
-				"path", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
-				getResource_Name(),
-				theEcorePackage.getEString(),
-				"name", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
-				getResource_Charset(),
-				theEcorePackage.getEString(),
-				"charset", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(resourceEClass, Resource.class, "Resource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getResource_Path(), this.getpath(), "path", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getResource_Name(), theEcorePackage.getEString(), "name", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getResource_Charset(), theEcorePackage.getEString(), "charset", null, 0, 1, Resource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(modelFileEClass, ModelFile.class,
-				"ModelFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getModelFile_InputElements(),
-				this.getInputElement(),
-				null,
-				"InputElements", null, 0, -1, ModelFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(modelFileEClass, ModelFile.class, "ModelFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getModelFile_InputElements(), this.getInputElement(), null, "InputElements", null, 0, -1, ModelFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(moduleFileEClass, ModuleFile.class,
-				"ModuleFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getModuleFile_ModuleElements(),
-				this.getModuleElement(),
-				null,
-				"moduleElements", null, 0, -1, ModuleFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(moduleFileEClass, ModuleFile.class, "ModuleFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getModuleFile_ModuleElements(), this.getModuleElement(), null, "moduleElements", null, 0, -1, ModuleFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(generatedFileEClass, GeneratedFile.class,
-				"GeneratedFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getGeneratedFile_GeneratedRegions(),
-				this.getGeneratedText(),
-				this.getGeneratedText_OutputFile(),
-				"generatedRegions", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getGeneratedFile_SourceElements(),
-				this.getInputElement(),
-				null,
-				"sourceElements", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getGeneratedFile_NameRegions(),
-				this.getGeneratedText(),
-				null,
-				"nameRegions", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getGeneratedFile_FileBlock(),
-				this.getModuleElement(),
-				null,
-				"fileBlock", null, 0, 1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
-				getGeneratedFile_Length(),
-				theEcorePackage.getEInt(),
-				"length", null, 0, 1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(generatedFileEClass, GeneratedFile.class, "GeneratedFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getGeneratedFile_GeneratedRegions(), this.getGeneratedText(), this.getGeneratedText_OutputFile(), "generatedRegions", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getGeneratedFile_SourceElements(), this.getInputElement(), null, "sourceElements", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getGeneratedFile_NameRegions(), this.getGeneratedText(), null, "nameRegions", null, 0, -1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getGeneratedFile_FileBlock(), this.getModuleElement(), null, "fileBlock", null, 0, 1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getGeneratedFile_Length(), theEcorePackage.getEInt(), "length", null, 0, 1, GeneratedFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(inputElementEClass, InputElement.class,
-				"InputElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getInputElement_ModelElement(),
-				ecorePackage.getEObject(),
-				null,
-				"modelElement", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getInputElement_Feature(),
-				theEcorePackage.getEStructuralFeature(),
-				null,
-				"feature", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getInputElement_Operation(),
-				theEcorePackage.getEOperation(),
-				null,
-				"operation", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(inputElementEClass, InputElement.class, "InputElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getInputElement_ModelElement(), ecorePackage.getEObject(), null, "modelElement", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getInputElement_Feature(), theEcorePackage.getEStructuralFeature(), null, "feature", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getInputElement_Operation(), theEcorePackage.getEOperation(), null, "operation", null, 0, 1, InputElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(moduleElementEClass, ModuleElement.class,
-				"ModuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getModuleElement_ModuleElement(),
-				theEcorePackage.getEObject(),
-				null,
-				"moduleElement", null, 0, 1, ModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(moduleElementEClass, ModuleElement.class, "ModuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getModuleElement_ModuleElement(), theEcorePackage.getEObject(), null, "moduleElement", null, 0, 1, ModuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(generatedTextEClass, GeneratedText.class,
-				"GeneratedText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
-				getGeneratedText_SourceElement(),
-				this.getInputElement(),
-				null,
-				"sourceElement", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getGeneratedText_ModuleElement(),
-				this.getModuleElement(),
-				null,
-				"moduleElement", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getGeneratedText_OutputFile(),
-				this.getGeneratedFile(),
-				this.getGeneratedFile_GeneratedRegions(),
-				"outputFile", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
-				getGeneratedText_StartOffset(),
-				theEcorePackage.getEInt(),
-				"startOffset", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
-				getGeneratedText_EndOffset(),
-				theEcorePackage.getEInt(),
-				"endOffset", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(generatedTextEClass, GeneratedText.class, "GeneratedText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(getGeneratedText_SourceElement(), this.getInputElement(), null, "sourceElement", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getGeneratedText_ModuleElement(), this.getModuleElement(), null, "moduleElement", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getGeneratedText_OutputFile(), this.getGeneratedFile(), this.getGeneratedFile_GeneratedRegions(), "outputFile", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getGeneratedText_StartOffset(), theEcorePackage.getEInt(), "startOffset", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getGeneratedText_EndOffset(), theEcorePackage.getEInt(), "endOffset", null, 0, 1, GeneratedText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		op = addEOperation(generatedTextEClass, theEcorePackage.getEInt(),
-				"compareTo", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(generatedTextEClass, theEcorePackage.getEInt(), "compareTo", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		addEParameter(op, this.getGeneratedText(), "other", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(iComparableEClass, Comparable.class,
-				"IComparable", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEClass(iComparableEClass, Comparable.class, "IComparable", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-		op = addEOperation(iComparableEClass, theEcorePackage.getEInt(),
-				"compareTo", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
+		op = addEOperation(iComparableEClass, theEcorePackage.getEInt(), "compareTo", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 		g1 = createEGenericType(iComparableEClass_T);
 		addEParameter(op, g1, "other", 0, 1, IS_UNIQUE, IS_ORDERED); //$NON-NLS-1$
 
