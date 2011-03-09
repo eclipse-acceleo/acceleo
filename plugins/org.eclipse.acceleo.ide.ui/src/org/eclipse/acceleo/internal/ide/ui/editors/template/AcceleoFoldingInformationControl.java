@@ -12,8 +12,11 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.jface.text.AbstractInformationControl;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IInformationControlExtension2;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -72,4 +75,29 @@ public class AcceleoFoldingInformationControl extends AbstractInformationControl
 
 		this.viewer = new AcceleoFoldingViewer(parent, styles);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.AbstractInformationControl#computeSizeHint()
+	 */
+	@Override
+	public Point computeSizeHint() {
+		return getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.AbstractInformationControl#getInformationPresenterControlCreator()
+	 */
+	@Override
+	public IInformationControlCreator getInformationPresenterControlCreator() {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				return new AcceleoFoldingInformationControl(parent);
+			}
+		};
+	}
+
 }
