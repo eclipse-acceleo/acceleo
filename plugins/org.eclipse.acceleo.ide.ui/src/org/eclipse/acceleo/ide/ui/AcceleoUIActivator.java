@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -61,8 +60,6 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		// It creates the EMTL files if only the MTL files are available.
-		AcceleoProject.getAllPlatformPluginOutputFiles();
 	}
 
 	/**
