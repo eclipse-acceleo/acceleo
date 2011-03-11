@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="buildAcceleo" nsURI="org::eclipse::acceleo::module::sample::files::project::buildAcceleo" startHeaderPosition="412" endHeaderPosition="492">
+  <mtl:Module name="buildAcceleo" nsURI="buildAcceleo" startHeaderPosition="412" endHeaderPosition="492">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="33" endPosition="409" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
     </documentation>
@@ -9,7 +9,7 @@
     </input>
     <ownedModuleElement xsi:type="mtl:Template" name="genBuildAcceleo" visibility="Public">
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;!-- ===================================================================== -->&#xA;&lt;!-- Custom targets.                                                       -->&#xA;&lt;!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->&#xA;&lt;!-- ===================================================================== -->&#xA;&lt;project name=&quot;Build Acceleo Module&quot; default=&quot;noDefault&quot;>&#xA;&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;!-- Default target                                                    -->&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;target name=&quot;noDefault&quot;>&#xA;        &lt;echo message=&quot;This file must be called with explicit targets&quot; />&#xA;    &lt;/target>&#xA;&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;!-- This will be called automatically after the compilation of each   -->&#xA;    &lt;!-- Bundle... in dependency order.                                    -->&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;target name=&quot;post.compile.@dot&quot;>&#xA;        &lt;acceleoCompiler &#xA;            sourceFolders=&quot;${target.folder}&quot; &#xA;            dependencies=&quot;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;!-- ===================================================================== -->&#xA;&lt;!-- Custom targets.                                                       -->&#xA;&lt;!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->&#xA;&lt;!-- ===================================================================== -->&#xA;&lt;project name=&quot;Build Acceleo Module&quot; default=&quot;noDefault&quot;>    &#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;!-- Default target                                                    -->&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;target name=&quot;noDefault&quot;>&#xA;        &lt;echo message=&quot;This file must be called with explicit targets&quot; />&#xA;    &lt;/target>&#xA;&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;!-- This will be called automatically after the compilation of each   -->&#xA;    &lt;!-- Bundle... in dependency order.                                    -->&#xA;    &lt;!-- ================================================================= -->&#xA;    &lt;target name=&quot;post.compile.@dot&quot;>&#xA;        &lt;acceleoCompiler &#xA;            sourceFolders=&quot;${target.folder}&quot; &#xA;            dependencies=&quot;"/>
         <body xsi:type="mtl:ForBlock">
           <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="${target.folder}/../../"/>
           <body xsi:type="ocl.ecore:VariableExp" name="dependency" referredVariable="/0/genBuildAcceleo/@body.0/@body.1/dependency.1">
@@ -20,13 +20,13 @@
             <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           </loopVariable>
           <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/8/OrderedSet(String)">
-            <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/9">
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoProject" referredVariable="/0/genBuildAcceleo/anAcceleoProject">
               <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
             </source>
             <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/pluginDependencies"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&quot;>&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>    &#xA;&#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&quot;&#xA;            binaryResource=&quot;true&quot;>&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>    &#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="build.acceleo">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -529,58 +529,58 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genBuildAcceleo">
       <details key="start" value="496"/>
-      <details key="end" value="1958"/>
+      <details key="end" value="2011"/>
       <details key="line" value="16"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genBuildAcceleo/@body.0">
       <details key="start" value="565"/>
-      <details key="end" value="1946"/>
+      <details key="end" value="1999"/>
       <details key="line" value="17"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genBuildAcceleo/@body.0/@body.0">
       <details key="start" value="606"/>
-      <details key="end" value="1789"/>
+      <details key="end" value="1792"/>
       <details key="line" value="18"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/genBuildAcceleo/@body.0/@body.1">
-      <details key="start" value="1789"/>
-      <details key="end" value="1879"/>
-      <details key="line" value="38"/>
+      <details key="start" value="1792"/>
+      <details key="end" value="1899"/>
+      <details key="line" value="37"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/genBuildAcceleo/@body.0/@body.1/@body.0">
-      <details key="start" value="1836"/>
-      <details key="end" value="1859"/>
-      <details key="line" value="38"/>
+      <details key="start" value="1856"/>
+      <details key="end" value="1879"/>
+      <details key="line" value="37"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/genBuildAcceleo/@body.0/@body.1/dependency">
-      <details key="start" value="1860"/>
-      <details key="end" value="1870"/>
+      <details key="start" value="1880"/>
+      <details key="end" value="1890"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/genBuildAcceleo/@body.0/@body.1/@body.2">
-      <details key="start" value="1872"/>
-      <details key="end" value="1873"/>
-      <details key="line" value="38"/>
+      <details key="start" value="1892"/>
+      <details key="end" value="1893"/>
+      <details key="line" value="37"/>
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/genBuildAcceleo/@body.0/@body.1/dependency.1">
-      <details key="start" value="1794"/>
-      <details key="end" value="1813"/>
-      <details key="line" value="38"/>
+      <details key="start" value="1797"/>
+      <details key="end" value="1816"/>
+      <details key="line" value="37"/>
     </eAnnotations>
     <eAnnotations source="positions.9" references="/0/genBuildAcceleo/@body.0/@body.1/@iterSet">
-      <details key="start" value="1816"/>
-      <details key="end" value="1834"/>
+      <details key="start" value="1819"/>
+      <details key="end" value="1854"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/genBuildAcceleo/@body.0/@body.1/@iterSet/self">
-      <details key="start" value="-1"/>
-      <details key="end" value="-1"/>
+    <eAnnotations source="positions.10" references="/0/genBuildAcceleo/@body.0/@body.1/@iterSet/anAcceleoProject">
+      <details key="start" value="1819"/>
+      <details key="end" value="1835"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.11" references="/0/genBuildAcceleo/@body.0/@body.2">
-      <details key="start" value="1879"/>
-      <details key="end" value="1939"/>
-      <details key="line" value="38"/>
+      <details key="start" value="1899"/>
+      <details key="end" value="1992"/>
+      <details key="line" value="37"/>
     </eAnnotations>
     <eAnnotations source="positions.12" references="/0/genBuildAcceleo/@body.0/@fileUrl">
       <details key="start" value="572"/>
