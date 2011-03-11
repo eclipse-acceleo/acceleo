@@ -165,11 +165,10 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		String resourceKind = settings.getResourceKind();
 		if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind)) {
 			parser = new AcceleoParser(false);
-			parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 		} else {
 			parser = new AcceleoParser(true);
-			parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 		}
+		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 
 		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile iFile = iterator.next();

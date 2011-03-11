@@ -55,6 +55,7 @@ import org.eclipse.ocl.expressions.ExpressionsPackage;
  * The Acceleo UI Generator will handle the generation of all the files created by the Acceleo UI.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.1
  */
 public class AcceleoUIGenerator {
 
@@ -333,7 +334,6 @@ public class AcceleoUIGenerator {
 	 * of Eclipse.
 	 * 
 	 * @return The created URI Converter.
-	 * @since 3.0
 	 */
 	protected URIConverter createURIConverter() {
 		return new ExtensibleURIConverterImpl() {
