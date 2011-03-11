@@ -60,6 +60,11 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
      * @generated
      */
     public static final String['[]'/] TEMPLATE_NAMES = { [templateNames->collect(str : String | '"' + str + '"')->sep(', ')/] };
+    
+    /**
+     * The list of properties files from the launch parameters (Launch configuration).
+     */
+    private List<String> propertiesFiles = new ArrayList<String>();
 
     /**
      * Allows the public constructor to be used. Note that a generator created
@@ -135,11 +140,33 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
             } else {
                 URI modelURI = URI.createFileURI(args['[0]'/]);
                 File folder = new File(args['[1]'/]);
+                
                 List<String> arguments = new ArrayList<String>();
-                for (int i = 2; i < args.length; i++) {
-                    arguments.add(args['[i]'/]);
-                }
+                
+                /*
+                 * Add in this list all the arguments used by the starting point of the generation
+                 * If your main template is called on an element of your model and a String, you can
+                 * add in "arguments" this "String" attribute.
+                 */
+                
                 [classShortName/] generator = new [classShortName/](modelURI, folder, arguments);
+                
+                /*
+                 * Add the properties from the launch arguments.
+                 * If you want to programmatically add new arguments, add them in "propertiesfiles"
+                 * You can add the absolute path of a properties files, or even a project relative path.
+                 * If you want to add another "protocol" for your properties files, please override 
+                 * "getPropertiesLoaderService(AcceleoService)" in order to return a new property loader.
+                 * The basic properties loader will look for properties in the current project if the path
+                 * of the properties file is like this "packagea.packageb.packagec.default" for a properties
+                 * file named default.properties, or if the path is an absolute path. With a new property
+                 * loader you could for example, look for properties files in a bundle.
+                 */
+                 
+                for (int i = 2; i < args.length; i++) {
+                    generator.addPropertiesFile(args['[i]'/]);
+                }
+                
                 generator.doGenerate(new BasicMonitor());
             }
         } catch (IOException e) {
@@ -232,7 +259,6 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
      */
     @Override
     public List<String> getProperties() {
-        List<String> propertiesFiles = super.getProperties();
         /*
          * TODO if your generation module requires access to properties files,
          * add their qualified path to the list here. Properties files are
@@ -243,6 +269,18 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
          * list is "org.eclipse.acceleo.sample.messages".
          */
         return propertiesFiles;
+    }
+    
+    /**
+     * Adds a properties file in the list of properties files.
+     * 
+     * @param propertiesFile
+     *            The properties file to add.
+     * @since 3.1
+     */
+    @Override
+    public void addPropertiesFile(String propertiesFile) {
+        this.propertiesFiles.add(propertiesFile);
     }
     
     /**
