@@ -371,6 +371,18 @@ public abstract class AbstractAcceleoGenerator {
 	}
 
 	/**
+	 * Checks whether the given EPackage class is located in the workspace.
+	 * 
+	 * @param ePackageClass
+	 *            The EPackage class we need to take into account.
+	 * @return <code>true</code> if the given class has been loaded from a dynamically installed bundle,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean isInWorkspace(Class<? extends EPackage> ePackageClass) {
+		return AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackageClass);
+	}
+
+	/**
 	 * This will update the resource set's package registry with all usual EPackages.
 	 * 
 	 * @param resourceSet
