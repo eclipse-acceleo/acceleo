@@ -87,6 +87,9 @@ public final class AcceleoWorkspaceUtil {
 	/** We'll use this to add 'empty' contributions for the bundles we dynamically install. */
 	private static final String EMPTY_PLUGIN_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><plugin/>"; //$NON-NLS-1$
 
+	/** Prefix we'll use for the dynamic bundles' MANIFEST. */
+	private static final String REFERENCE_URI_PREFIX = "reference:"; //$NON-NLS-1$
+
 	/**
 	 * This will keep references on the workspace's IPluginModelBase which have been changed since the last
 	 * refresh. This is the trigger of refreshing workspace contributions : if empty, no plugins will ever be
@@ -583,6 +586,36 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * This can be used to check whether the given class is located in a dynamically installed bundle.
+	 * 
+	 * @param clazz
+	 *            The class of which we need to determine the originating bundle.
+	 * @return <code>true</code> if the given class has been loaded from a dynamic bundle, <code>false</code>
+	 *         otherwise.
+	 */
+	public boolean isInDynamicBundle(Class<?> clazz) {
+		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
+		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
+		PackageAdmin packageAdmin = null;
+		if (packageAdminReference != null) {
+			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
+		}
+
+		if (packageAdmin != null) {
+			Bundle bundle = packageAdmin.getBundle(clazz);
+			if (workspaceInstalledBundles.values().contains(bundle)) {
+				return true;
+			}
+		}
+
+		if (packageAdminReference != null) {
+			context.ungetService(packageAdminReference);
+		}
+
+		return false;
+	}
+
+	/**
 	 * This will refresh the list of contributions to the registry by either installing the given plugins in
 	 * the current running Eclipse or refresh their packages. Keep this synchronized as it will be called by
 	 * each of the utilities and these calls can come from multiple threads.
@@ -689,7 +722,9 @@ public final class AcceleoWorkspaceUtil {
 				}
 			}
 			context.removeFrameworkListener(listener);
-			context.ungetService(packageAdminReference);
+			if (packageAdminReference != null) {
+				context.ungetService(packageAdminReference);
+			}
 		}
 	}
 
@@ -762,16 +797,16 @@ public final class AcceleoWorkspaceUtil {
 	private void installBundle(IPluginModelBase model) {
 		try {
 			final IResource candidateManifest = model.getUnderlyingResource();
-			final String candidateLocationReference = "reference:" //$NON-NLS-1$
+			final String candidateLocationReference = REFERENCE_URI_PREFIX
 					+ URLDecoder.decode(candidateManifest.getProject().getLocationURI().toURL()
 							.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
 			Bundle bundle = getBundle(candidateLocationReference);
 
 			/*
-			 * Install the bundle if needed. Note that we'll check bundle depencies in two phases as even if
-			 * there cannot be cyclic dependencies through the "require-bundle" header, there could be through
-			 * the "import package" header.
+			 * Install the bundle if needed. Note that we'll check bundle dependencies in two phases as even
+			 * if there cannot be cyclic dependencies through the "require-bundle" header, there could be
+			 * through the "import package" header.
 			 */
 			if (bundle == null) {
 				checkRequireBundleDependencies(model);
