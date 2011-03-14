@@ -305,7 +305,9 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
         [for (aPackage : String | packages)]
-        resourceSet.getPackageRegistry().put([aPackage/].eINSTANCE.getNsURI(), [aPackage/].eINSTANCE);
+        if (!isInWorkspace([aPackage/].class)) {
+            resourceSet.getPackageRegistry().put([aPackage/].eINSTANCE.getNsURI(), [aPackage/].eINSTANCE);
+        }
         [/for]
         // TODO If you need additional package registrations, do them here. The following line is an example for UML.
         // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
