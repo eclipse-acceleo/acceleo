@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.parser;singleton:=true
 Bundle-Version: 3.1.0.qualifier
-Bundle-ClassPath: .,
- lib/acceleoCompiler.jar
+Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
