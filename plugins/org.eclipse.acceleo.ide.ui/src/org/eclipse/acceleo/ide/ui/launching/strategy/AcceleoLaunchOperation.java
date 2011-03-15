@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
@@ -117,10 +116,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getFile(
 						new Path(model)).getLocation().toString());
 				modelURI = URI.createURI(URI.decode(modelURI.toString()));
-				generator.initialize(modelURI, targetFolder, new ArrayList<String>());
-				for (String argument : args) {
-					generator.addPropertiesFile(argument);
-				}
+				generator.initialize(modelURI, targetFolder, args);
 				generator.doGenerate(BasicMonitor.toMonitor(monitor));
 			} else {
 				// We know the generated class has a "main()" method.

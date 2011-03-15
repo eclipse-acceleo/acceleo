@@ -33,6 +33,10 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -200,7 +204,29 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	 * @return the registered package class name
 	 */
 	private String getMetamodelPackageClass(EPackage metamodel) {
-		return metamodel.getClass().getName();
+		// FIXME can't we simply return metamodel.getClass().getName()
+		// EPackage.Registry.INSTANCE.getEPackage(metamodel.getNsURI())
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint("org.eclipse.emf.ecore.generated_package"); //$NON-NLS-1$
+		if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
+			IExtension[] extensions = extensionPoint.getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				IExtension extension = extensions[i];
+				IConfigurationElement[] members = extension.getConfigurationElements();
+				for (int j = 0; j < members.length; j++) {
+					IConfigurationElement member = members[j];
+					String mURI = member.getAttribute("uri"); //$NON-NLS-1$
+					if (mURI != null && mURI.equals(metamodel.getNsURI())) {
+						String mClass = member.getAttribute("class"); //$NON-NLS-1$
+						if (mClass != null) {
+							return mClass;
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

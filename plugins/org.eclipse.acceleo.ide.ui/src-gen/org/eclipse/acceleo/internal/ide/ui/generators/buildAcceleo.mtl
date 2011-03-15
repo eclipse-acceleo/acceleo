@@ -19,7 +19,8 @@
 <!-- Custom targets.                                                       -->
 <!-- Set customBuildCallbacks = build.acceleo in your build.properties.    -->
 <!-- ===================================================================== -->
-<project name="Build Acceleo Module" default="noDefault">    
+<project name="Build Acceleo Module" default="noDefault">
+
     <!-- ================================================================= -->
     <!-- Default target                                                    -->
     <!-- ================================================================= -->
@@ -34,11 +35,10 @@
     <target name="post.compile.@dot">
         <acceleoCompiler 
             sourceFolders="${target.folder}" 
-            dependencies="[for(dependency : String | anAcceleoProject.pluginDependencies)]${target.folder}/../../[dependency/];[/for]"
-            binaryResource="true">
+            dependencies="[for(dependency : String | pluginDependencies)]${target.folder}/../../[dependency/];[/for]">
         </acceleoCompiler>
     </target>    
+
 </project>
 [/file]
 [/template]
-
