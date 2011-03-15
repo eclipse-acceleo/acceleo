@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -24,11 +25,10 @@ import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoaderService;
-import org.eclipse.acceleo.engine.service.properties.BasicAcceleoPropertiesLoaderService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
@@ -97,13 +97,6 @@ public abstract class AbstractAcceleoGenerator {
 	 * @since 3.0
 	 */
 	protected Set<Resource> originalResources = new CompactHashSet<Resource>();
-
-	/**
-	 * The properties loader service is used to retrieve properties.
-	 * 
-	 * @since 3.1
-	 */
-	protected AbstractAcceleoPropertiesLoaderService acceleoPropertiesLoaderService;
 
 	/**
 	 * Allows clients to add a generation listener to this generator instance.
@@ -243,17 +236,6 @@ public abstract class AbstractAcceleoGenerator {
 	}
 
 	/**
-	 * Adds a properties file in the list of properties files.
-	 * 
-	 * @param propertiesFile
-	 *            The properties file to add.
-	 * @since 3.1
-	 */
-	public void addPropertiesFile(String propertiesFile) {
-		// do nothing
-	}
-
-	/**
 	 * If you wish to generate files in another folder than {@link #targetFolder}, alter it here.
 	 * 
 	 * @return The root directory in which to generate files.
@@ -371,18 +353,6 @@ public abstract class AbstractAcceleoGenerator {
 	}
 
 	/**
-	 * Checks whether the given EPackage class is located in the workspace.
-	 * 
-	 * @param ePackageClass
-	 *            The EPackage class we need to take into account.
-	 * @return <code>true</code> if the given class has been loaded from a dynamically installed bundle,
-	 *         <code>false</code> otherwise.
-	 */
-	public boolean isInWorkspace(Class<? extends EPackage> ePackageClass) {
-		return AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackageClass);
-	}
-
-	/**
 	 * This will update the resource set's package registry with all usual EPackages.
 	 * 
 	 * @param resourceSet
@@ -461,12 +431,13 @@ public abstract class AbstractAcceleoGenerator {
 		for (IAcceleoTextGenerationListener listener : generationListeners) {
 			service.addListener(listener);
 		}
-
-		acceleoPropertiesLoaderService = getPropertiesLoaderService(service);
-		if (acceleoPropertiesLoaderService != null) {
-			acceleoPropertiesLoaderService.initializeService(getProperties());
+		for (String propertyFile : getProperties()) {
+			try {
+				service.addPropertiesFile(propertyFile);
+			} catch (MissingResourceException e) {
+				AcceleoEnginePlugin.log(e, false);
+			}
 		}
-
 		return service;
 	}
 
@@ -485,20 +456,6 @@ public abstract class AbstractAcceleoGenerator {
 			res.unload();
 			rs.getResources().remove(res);
 		}
-	}
-
-	/**
-	 * Returns the Acceleo properties loader service which will handle the AcceleoPropertiesLoader to load and
-	 * save the properties files.
-	 * 
-	 * @param acceleoService
-	 *            The Acceleo service
-	 * @return The Acceleo properties loader service which will handle the AcceleoPropertiesLoader to load and
-	 *         save the properties files.
-	 * @since 3.1
-	 */
-	protected AbstractAcceleoPropertiesLoaderService getPropertiesLoaderService(AcceleoService acceleoService) {
-		return new BasicAcceleoPropertiesLoaderService(acceleoService);
 	}
 
 	/**
