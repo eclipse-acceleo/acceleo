@@ -20,12 +20,12 @@
   </rm:searchPath>
   <rm:searchPath name="emf">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/modeling/emf/emf/updates/2.7milestones/core/S201101281446">
+      <rm:uri format="{0}/modeling/emf/emf/updates/2.7milestones">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/modeling/emf/emf/updates/2.7milestones/base/S201101281409">
+      <rm:uri format="{0}/modeling/emf/emf/updates/2.7milestones">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
