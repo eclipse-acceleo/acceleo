@@ -23,6 +23,7 @@ Export-Package: org.eclipse.acceleo.engine,
  org.eclipse.acceleo.engine.internal.environment;x-friends:="org.eclipse.acceleo.engine.tests,org.eclipse.acceleo.traceability",
  org.eclipse.acceleo.engine.internal.evaluation;x-friends:="org.eclipse.acceleo.engine.tests,org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.traceability",
  org.eclipse.acceleo.engine.service,
+ org.eclipse.acceleo.engine.service.properties,
  org.eclipse.acceleo.engine.utils
 Bundle-Activator: org.eclipse.acceleo.engine.AcceleoEnginePlugin
 Eclipse-LazyStart: true
