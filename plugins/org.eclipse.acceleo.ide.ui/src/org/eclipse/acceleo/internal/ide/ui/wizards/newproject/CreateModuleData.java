@@ -126,7 +126,7 @@ public class CreateModuleData {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry
 				.getExtensionPoint("org.eclipse.emf.ecore.generated_package"); //$NON-NLS-1$
-		if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
+		if (extensionPoint != null && extensionPoint.isValid() && extensionPoint.getExtensions().length > 0) {
 			IExtension[] extensions = extensionPoint.getExtensions();
 			for (int i = 0; i < extensions.length; i++) {
 				IExtension extension = extensions[i];

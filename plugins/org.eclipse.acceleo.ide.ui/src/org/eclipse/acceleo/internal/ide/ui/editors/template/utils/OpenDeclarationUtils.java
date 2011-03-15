@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -60,6 +61,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -522,7 +524,8 @@ public final class OpenDeclarationUtils {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IExtensionPoint extensionPoint = registry
 					.getExtensionPoint("org.eclipse.emf.ecore.generated_package"); //$NON-NLS-1$
-			if (extensionPoint != null && extensionPoint.getExtensions().length > 0) {
+			if (extensionPoint != null && extensionPoint.isValid()
+					&& extensionPoint.getExtensions().length > 0) {
 				IExtension[] extensions = extensionPoint.getExtensions();
 				for (int i = 0; result == null && i < extensions.length; i++) {
 					IExtension extension = extensions[i];
@@ -541,21 +544,12 @@ public final class OpenDeclarationUtils {
 					}
 				}
 			}
-			// FIXME : This could be done through URIConverter.URI_MAP. We shouldn't reparse the extension
-			// point
-			extensionPoint = registry.getExtensionPoint("org.eclipse.emf.ecore.uri_mapping"); //$NON-NLS-1$
-			if (result == null && extensionPoint != null && extensionPoint.getExtensions().length > 0) {
-				IExtension[] extensions = extensionPoint.getExtensions();
-				for (int i = 0; result == null && i < extensions.length; i++) {
-					IExtension extension = extensions[i];
-					IConfigurationElement[] members = extension.getConfigurationElements();
-					for (int j = 0; result == null && j < members.length; j++) {
-						IConfigurationElement member = members[j];
-						String sourceURI = member.getAttribute("source"); //$NON-NLS-1$
-						String targetURI = member.getAttribute("target"); //$NON-NLS-1$
-						if (sourceURI != null && sourceURI.equals(fileURIString) && targetURI != null) {
-							result = URI.createURI(targetURI, false);
-						}
+			if (result == null) {
+				final Iterator<Map.Entry<URI, URI>> iterator = URIConverter.URI_MAP.entrySet().iterator();
+				while (iterator.hasNext() && result == null) {
+					Map.Entry<URI, URI> uriMapEntry = iterator.next();
+					if (uriMapEntry.getKey().toString().equals(fileURI)) {
+						result = uriMapEntry.getValue();
 					}
 				}
 			}
