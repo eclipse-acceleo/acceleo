@@ -46,7 +46,7 @@
   </rm:searchPath>
   <rm:searchPath name="platform">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/eclipse/updates/3.7milestones/S-3.7M5-201101272034">
+      <rm:uri format="{0}/eclipse/updates/3.7milestones">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
