@@ -45,11 +45,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 public class AcceleoCompiler extends Task {
 
 	/**
-	 * Indicates if we should use binary resources for the serialization of the EMTL files.
-	 */
-	private boolean binaryResource = true;
-
-	/**
 	 * The source folders to compile.
 	 */
 	private List<File> sourceFolders = new ArrayList<File>();
@@ -154,16 +149,6 @@ public class AcceleoCompiler extends Task {
 	}
 
 	/**
-	 * Sets the binary resource attribute.
-	 * 
-	 * @param binaryResource
-	 *            Indicates if we should use a binary resource.
-	 */
-	public void setBinaryResource(boolean binaryResource) {
-		this.binaryResource = binaryResource;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.apache.tools.ant.Task#execute()
@@ -197,8 +182,8 @@ public class AcceleoCompiler extends Task {
 		Map<URI, URI> mapURIs = new HashMap<URI, URI>();
 		computeDependencies(dependenciesURIs, mapURIs);
 		loadEcoreFiles();
-
-		AcceleoParser parser = new AcceleoParser(binaryResource);
+		// Binary serialization by default
+		AcceleoParser parser = new AcceleoParser(true);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, new BasicMonitor());
 		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile acceleoFile = iterator.next();
