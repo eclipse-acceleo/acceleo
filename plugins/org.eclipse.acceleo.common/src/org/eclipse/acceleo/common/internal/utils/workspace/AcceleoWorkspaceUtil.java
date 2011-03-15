@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +30,6 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
-import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -40,17 +38,13 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IContributor;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.spi.IDynamicExtensionRegistry;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -83,12 +77,6 @@ public final class AcceleoWorkspaceUtil {
 
 	/** Key of the error message that is to be used when we cannot uninstall workspace bundles. */
 	private static final String UNINSTALLATION_FAILURE_KEY = "WorkspaceUtil.UninstallationFailure"; //$NON-NLS-1$
-
-	/** We'll use this to add 'empty' contributions for the bundles we dynamically install. */
-	private static final String EMPTY_PLUGIN_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><plugin/>"; //$NON-NLS-1$
-
-	/** Prefix we'll use for the dynamic bundles' MANIFEST. */
-	private static final String REFERENCE_URI_PREFIX = "reference:"; //$NON-NLS-1$
 
 	/**
 	 * This will keep references on the workspace's IPluginModelBase which have been changed since the last
@@ -586,36 +574,6 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
-	 * This can be used to check whether the given class is located in a dynamically installed bundle.
-	 * 
-	 * @param clazz
-	 *            The class of which we need to determine the originating bundle.
-	 * @return <code>true</code> if the given class has been loaded from a dynamic bundle, <code>false</code>
-	 *         otherwise.
-	 */
-	public boolean isInDynamicBundle(Class<?> clazz) {
-		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
-		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
-		PackageAdmin packageAdmin = null;
-		if (packageAdminReference != null) {
-			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
-		}
-
-		if (packageAdmin != null) {
-			Bundle bundle = packageAdmin.getBundle(clazz);
-			if (workspaceInstalledBundles.values().contains(bundle)) {
-				return true;
-			}
-		}
-
-		if (packageAdminReference != null) {
-			context.ungetService(packageAdminReference);
-		}
-
-		return false;
-	}
-
-	/**
 	 * This will refresh the list of contributions to the registry by either installing the given plugins in
 	 * the current running Eclipse or refresh their packages. Keep this synchronized as it will be called by
 	 * each of the utilities and these calls can come from multiple threads.
@@ -661,7 +619,6 @@ public final class AcceleoWorkspaceUtil {
 	 * @param bundles
 	 *            Bundles which exported packages are to be refreshed.
 	 */
-	@SuppressWarnings("restriction")
 	void refreshPackages(Bundle[] bundles) {
 		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
 		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
@@ -683,32 +640,6 @@ public final class AcceleoWorkspaceUtil {
 				}
 			};
 
-			/*
-			 * Hack-ish : Make sure the contributions from this bundle won't be parsed. When installing a
-			 * bundle, the EclipseBundleListener will _always_ parse the plugin.xml and notify the extension
-			 * registry (and its listeners) of the new contributions. Problem is : some bundles listen to new
-			 * contributions, but ignore the event of contribution removals (when we uninstall the bundle). We
-			 * would thus end with "invalid registry object" exceptions thrown ... with no way to prevent or
-			 * fix them whatsoever. Equinox does not provide us with an API to disable the contributions from
-			 * the bundle we're installing, temporarily disable the extension listeners... or any other way to
-			 * workaround this registry issue. We'll then make use of the fact that the EclipseBundleListener
-			 * does not add contributions from a contributor which has already been added: we'll add the
-			 * contributor beforehand with an empty plugin.xml, disabling all potential contributions this
-			 * bundle would have made otherwise.
-			 */
-
-			if (bundles != null && Platform.getExtensionRegistry() instanceof IDynamicExtensionRegistry) {
-				IExtensionRegistry registry = Platform.getExtensionRegistry();
-				for (Bundle bundle : bundles) {
-					IContributor contributor = ContributorFactoryOSGi.createContributor(bundle);
-					if (!((IDynamicExtensionRegistry)registry).hasContributor(contributor)) {
-						registry.addContribution(new ByteArrayInputStream(EMPTY_PLUGIN_XML.getBytes()),
-								contributor, false, null, null, ((ExtensionRegistry)registry)
-										.getTemporaryUserToken());
-					}
-				}
-			}
-
 			context.addFrameworkListener(listener);
 			packageAdmin.refreshPackages(bundles);
 			synchronized(flag) {
@@ -722,9 +653,7 @@ public final class AcceleoWorkspaceUtil {
 				}
 			}
 			context.removeFrameworkListener(listener);
-			if (packageAdminReference != null) {
-				context.ungetService(packageAdminReference);
-			}
+			context.ungetService(packageAdminReference);
 		}
 	}
 
@@ -797,16 +726,16 @@ public final class AcceleoWorkspaceUtil {
 	private void installBundle(IPluginModelBase model) {
 		try {
 			final IResource candidateManifest = model.getUnderlyingResource();
-			final String candidateLocationReference = REFERENCE_URI_PREFIX
+			final String candidateLocationReference = "reference:" //$NON-NLS-1$
 					+ URLDecoder.decode(candidateManifest.getProject().getLocationURI().toURL()
 							.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
 			Bundle bundle = getBundle(candidateLocationReference);
 
 			/*
-			 * Install the bundle if needed. Note that we'll check bundle dependencies in two phases as even
-			 * if there cannot be cyclic dependencies through the "require-bundle" header, there could be
-			 * through the "import package" header.
+			 * Install the bundle if needed. Note that we'll check bundle depencies in two phases as even if
+			 * there cannot be cyclic dependencies through the "require-bundle" header, there could be through
+			 * the "import package" header.
 			 */
 			if (bundle == null) {
 				checkRequireBundleDependencies(model);
