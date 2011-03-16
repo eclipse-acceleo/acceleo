@@ -77,7 +77,7 @@
             <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           </argument>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" };&#xA;    &#xA;    /**&#xA;     * The list of properties files from the launch parameters (Launch configuration).&#xA;     */&#xA;    private List&lt;String> propertiesFiles = new ArrayList&lt;String>();&#xA;&#xA;    /**&#xA;     * Allows the public constructor to be used. Note that a generator created&#xA;     * this way cannot be used to launch generations before one of&#xA;     * {@link #initialize(EObject, File, List)} or&#xA;     * {@link #initialize(URI, File, List)} is called.&#xA;     * &lt;p>&#xA;     * The main reason for this constructor is to allow clients of this&#xA;     * generation to call it from another Java file, as it allows for the&#xA;     * retrieval of {@link #getProperties()} and&#xA;     * {@link #getGenerationListeners()}.&#xA;     * &lt;/p>&#xA;     *&#xA;     * @generated&#xA;     */&#xA;    public "/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" };&#xA;    &#xA;    /**&#xA;     * The list of properties files from the launch parameters (Launch configuration).&#xA;     *&#xA;     * @generated&#xA;     */&#xA;    private List&lt;String> propertiesFiles = new ArrayList&lt;String>();&#xA;&#xA;    /**&#xA;     * Allows the public constructor to be used. Note that a generator created&#xA;     * this way cannot be used to launch generations before one of&#xA;     * {@link #initialize(EObject, File, List)} or&#xA;     * {@link #initialize(URI, File, List)} is called.&#xA;     * &lt;p>&#xA;     * The main reason for this constructor is to allow clients of this&#xA;     * generation to call it from another Java file, as it allows for the&#xA;     * retrieval of {@link #getProperties()} and&#xA;     * {@link #getGenerationListeners()}.&#xA;     * &lt;/p>&#xA;     *&#xA;     * @generated&#xA;     */&#xA;    public "/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/15">
@@ -133,7 +133,7 @@
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[i]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this.&#xA;         * The default behavior should be sufficient in most cases.&#xA;         */&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        // TODO if you need to listen to generation event, add listeners to the list here&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &lt;p>&#xA;     * Properties need to be in source folders, the path that we expect to get as a result of this call are of&#xA;     * the form &amp;lt;package>.&amp;lt;properties file name without extension>. For example, if you have a file&#xA;     * named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;, the path that needs be returned by&#xA;     * a call to {@link #getProperties()} is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files,&#xA;         * add their qualified path to the list here. Properties files are&#xA;         * expected to be in source folders, and the path here to be the&#xA;         * qualified path as if referring to a Java class. For example, if you&#xA;         * have a file named &quot;messages.properties&quot; in package&#xA;         * &quot;org.eclipse.acceleo.sample&quot;, the path that needs be added to this&#xA;         * list is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this.&#xA;         * The default behavior should be sufficient in most cases.&#xA;         */&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        // TODO if you need to listen to generation event, add listeners to the list here&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &lt;p>&#xA;     * Properties need to be in source folders, the path that we expect to get as a result of this call are of&#xA;     * the form &amp;lt;package>.&amp;lt;properties file name without extension>. For example, if you have a file&#xA;     * named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;, the path that needs be returned by&#xA;     * a call to {@link #getProperties()} is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files,&#xA;         * add their qualified path to the list here. Properties files are&#xA;         * expected to be in source folders, and the path here to be the&#xA;         * qualified path as if referring to a Java class. For example, if you&#xA;         * have a file named &quot;messages.properties&quot; in package&#xA;         * &quot;org.eclipse.acceleo.sample&quot;, the path that needs be added to this&#xA;         * list is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @generated&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
@@ -735,12 +735,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genAbstractAcceleoGenerator">
       <details key="start" value="509"/>
-      <details key="end" value="13765"/>
+      <details key="end" value="13808"/>
       <details key="line" value="16"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genAbstractAcceleoGenerator/@body.0">
       <details key="start" value="592"/>
-      <details key="end" value="13753"/>
+      <details key="end" value="13796"/>
       <details key="line" value="17"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genAbstractAcceleoGenerator/@body.0/@body.0">
@@ -875,12 +875,12 @@
     </eAnnotations>
     <eAnnotations source="positions.29" references="/0/genAbstractAcceleoGenerator/@body.0/@body.12">
       <details key="start" value="2252"/>
-      <details key="end" value="2997"/>
+      <details key="end" value="3022"/>
       <details key="line" value="62"/>
     </eAnnotations>
     <eAnnotations source="positions.30" references="/0/genAbstractAcceleoGenerator/@body.0/@body.13">
-      <details key="start" value="2998"/>
-      <details key="end" value="3012"/>
+      <details key="start" value="3023"/>
+      <details key="end" value="3037"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.31" references="/0/genAbstractAcceleoGenerator/@body.0/@body.13/self">
@@ -889,13 +889,13 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.32" references="/0/genAbstractAcceleoGenerator/@body.0/@body.14">
-      <details key="start" value="3014"/>
-      <details key="end" value="3860"/>
-      <details key="line" value="83"/>
+      <details key="start" value="3039"/>
+      <details key="end" value="3885"/>
+      <details key="line" value="85"/>
     </eAnnotations>
     <eAnnotations source="positions.33" references="/0/genAbstractAcceleoGenerator/@body.0/@body.15">
-      <details key="start" value="3861"/>
-      <details key="end" value="3875"/>
+      <details key="start" value="3886"/>
+      <details key="end" value="3900"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.34" references="/0/genAbstractAcceleoGenerator/@body.0/@body.15/self">
@@ -904,13 +904,13 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.35" references="/0/genAbstractAcceleoGenerator/@body.0/@body.16">
-      <details key="start" value="3877"/>
-      <details key="end" value="4864"/>
-      <details key="line" value="103"/>
+      <details key="start" value="3902"/>
+      <details key="end" value="4889"/>
+      <details key="line" value="105"/>
     </eAnnotations>
     <eAnnotations source="positions.36" references="/0/genAbstractAcceleoGenerator/@body.0/@body.17">
-      <details key="start" value="4865"/>
-      <details key="end" value="4879"/>
+      <details key="start" value="4890"/>
+      <details key="end" value="4904"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.37" references="/0/genAbstractAcceleoGenerator/@body.0/@body.17/self">
@@ -919,43 +919,43 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.38" references="/0/genAbstractAcceleoGenerator/@body.0/@body.18">
-      <details key="start" value="4881"/>
-      <details key="end" value="5268"/>
-      <details key="line" value="124"/>
+      <details key="start" value="4906"/>
+      <details key="end" value="5293"/>
+      <details key="line" value="126"/>
     </eAnnotations>
     <eAnnotations source="positions.39" references="/0/genAbstractAcceleoGenerator/@body.0/@body.19">
-      <details key="start" value="5269"/>
-      <details key="end" value="5273"/>
+      <details key="start" value="5294"/>
+      <details key="end" value="5298"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.40" references="/0/genAbstractAcceleoGenerator/@body.0/@body.20">
-      <details key="start" value="5275"/>
-      <details key="end" value="5485"/>
-      <details key="line" value="136"/>
+      <details key="start" value="5300"/>
+      <details key="end" value="5510"/>
+      <details key="line" value="138"/>
     </eAnnotations>
     <eAnnotations source="positions.41" references="/0/genAbstractAcceleoGenerator/@body.0/@body.21">
-      <details key="start" value="5486"/>
-      <details key="end" value="5491"/>
+      <details key="start" value="5511"/>
+      <details key="end" value="5516"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.42" references="/0/genAbstractAcceleoGenerator/@body.0/@body.22">
-      <details key="start" value="5493"/>
-      <details key="end" value="5539"/>
-      <details key="line" value="141"/>
+      <details key="start" value="5518"/>
+      <details key="end" value="5564"/>
+      <details key="line" value="143"/>
     </eAnnotations>
     <eAnnotations source="positions.43" references="/0/genAbstractAcceleoGenerator/@body.0/@body.23">
-      <details key="start" value="5540"/>
-      <details key="end" value="5545"/>
+      <details key="start" value="5565"/>
+      <details key="end" value="5570"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.44" references="/0/genAbstractAcceleoGenerator/@body.0/@body.24">
-      <details key="start" value="5547"/>
-      <details key="end" value="5985"/>
-      <details key="line" value="142"/>
+      <details key="start" value="5572"/>
+      <details key="end" value="6010"/>
+      <details key="line" value="144"/>
     </eAnnotations>
     <eAnnotations source="positions.45" references="/0/genAbstractAcceleoGenerator/@body.0/@body.25">
-      <details key="start" value="5986"/>
-      <details key="end" value="6000"/>
+      <details key="start" value="6011"/>
+      <details key="end" value="6025"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.46" references="/0/genAbstractAcceleoGenerator/@body.0/@body.25/self">
@@ -964,13 +964,13 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.47" references="/0/genAbstractAcceleoGenerator/@body.0/@body.26">
-      <details key="start" value="6002"/>
-      <details key="end" value="6019"/>
-      <details key="line" value="152"/>
+      <details key="start" value="6027"/>
+      <details key="end" value="6044"/>
+      <details key="line" value="154"/>
     </eAnnotations>
     <eAnnotations source="positions.48" references="/0/genAbstractAcceleoGenerator/@body.0/@body.27">
-      <details key="start" value="6020"/>
-      <details key="end" value="6034"/>
+      <details key="start" value="6045"/>
+      <details key="end" value="6059"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.49" references="/0/genAbstractAcceleoGenerator/@body.0/@body.27/self">
@@ -979,78 +979,78 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.50" references="/0/genAbstractAcceleoGenerator/@body.0/@body.28">
-      <details key="start" value="6036"/>
-      <details key="end" value="7136"/>
-      <details key="line" value="152"/>
+      <details key="start" value="6061"/>
+      <details key="end" value="7161"/>
+      <details key="line" value="154"/>
     </eAnnotations>
     <eAnnotations source="positions.51" references="/0/genAbstractAcceleoGenerator/@body.0/@body.29">
-      <details key="start" value="7137"/>
-      <details key="end" value="7142"/>
+      <details key="start" value="7162"/>
+      <details key="end" value="7167"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.52" references="/0/genAbstractAcceleoGenerator/@body.0/@body.30">
-      <details key="start" value="7144"/>
-      <details key="end" value="12216"/>
-      <details key="line" value="167"/>
+      <details key="start" value="7169"/>
+      <details key="end" value="12259"/>
+      <details key="line" value="169"/>
     </eAnnotations>
     <eAnnotations source="positions.53" references="/0/genAbstractAcceleoGenerator/@body.0/@body.31">
-      <details key="start" value="12217"/>
-      <details key="end" value="12221"/>
+      <details key="start" value="12260"/>
+      <details key="end" value="12264"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.54" references="/0/genAbstractAcceleoGenerator/@body.0/@body.32">
-      <details key="start" value="12223"/>
-      <details key="end" value="12640"/>
-      <details key="line" value="293"/>
+      <details key="start" value="12266"/>
+      <details key="end" value="12683"/>
+      <details key="line" value="296"/>
     </eAnnotations>
     <eAnnotations source="positions.55" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33">
-      <details key="start" value="12648"/>
-      <details key="end" value="12865"/>
-      <details key="line" value="307"/>
+      <details key="start" value="12691"/>
+      <details key="end" value="12908"/>
+      <details key="line" value="310"/>
     </eAnnotations>
     <eAnnotations source="positions.56" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.0">
-      <details key="start" value="12685"/>
-      <details key="end" value="12712"/>
-      <details key="line" value="308"/>
+      <details key="start" value="12728"/>
+      <details key="end" value="12755"/>
+      <details key="line" value="311"/>
     </eAnnotations>
     <eAnnotations source="positions.57" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage">
-      <details key="start" value="12713"/>
-      <details key="end" value="12721"/>
+      <details key="start" value="12756"/>
+      <details key="end" value="12764"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.58" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.2">
-      <details key="start" value="12723"/>
-      <details key="end" value="12783"/>
-      <details key="line" value="308"/>
+      <details key="start" value="12766"/>
+      <details key="end" value="12826"/>
+      <details key="line" value="311"/>
     </eAnnotations>
     <eAnnotations source="positions.59" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.1">
-      <details key="start" value="12784"/>
-      <details key="end" value="12792"/>
+      <details key="start" value="12827"/>
+      <details key="end" value="12835"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.60" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.4">
-      <details key="start" value="12794"/>
-      <details key="end" value="12817"/>
-      <details key="line" value="309"/>
+      <details key="start" value="12837"/>
+      <details key="end" value="12860"/>
+      <details key="line" value="312"/>
     </eAnnotations>
     <eAnnotations source="positions.61" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.2">
-      <details key="start" value="12818"/>
-      <details key="end" value="12826"/>
+      <details key="start" value="12861"/>
+      <details key="end" value="12869"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.62" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.6">
-      <details key="start" value="12828"/>
-      <details key="end" value="12851"/>
-      <details key="line" value="309"/>
+      <details key="start" value="12871"/>
+      <details key="end" value="12894"/>
+      <details key="line" value="312"/>
     </eAnnotations>
     <eAnnotations source="positions.63" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.3">
-      <details key="start" value="12654"/>
-      <details key="end" value="12671"/>
-      <details key="line" value="307"/>
+      <details key="start" value="12697"/>
+      <details key="end" value="12714"/>
+      <details key="line" value="310"/>
     </eAnnotations>
     <eAnnotations source="positions.64" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet">
-      <details key="start" value="12674"/>
-      <details key="end" value="12682"/>
+      <details key="start" value="12717"/>
+      <details key="end" value="12725"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.65" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet/self">
@@ -1059,9 +1059,9 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.66" references="/0/genAbstractAcceleoGenerator/@body.0/@body.34">
-      <details key="start" value="12866"/>
-      <details key="end" value="13746"/>
-      <details key="line" value="312"/>
+      <details key="start" value="12909"/>
+      <details key="end" value="13789"/>
+      <details key="line" value="315"/>
     </eAnnotations>
     <eAnnotations source="positions.67" references="/0/genAbstractAcceleoGenerator/@body.0/@fileUrl">
       <details key="start" value="599"/>

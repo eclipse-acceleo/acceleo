@@ -63,6 +63,8 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
     
     /**
      * The list of properties files from the launch parameters (Launch configuration).
+     *
+     * @generated
      */
     private List<String> propertiesFiles = new ArrayList<String>();
 
@@ -276,6 +278,7 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
      * 
      * @param propertiesFile
      *            The properties file to add.
+     * @generated
      * @since 3.1
      */
     @Override
