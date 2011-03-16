@@ -379,7 +379,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isInWorkspace(Class<? extends EPackage> ePackageClass) {
-		return AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackageClass);
+		return EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackageClass);
 	}
 
 	/**
