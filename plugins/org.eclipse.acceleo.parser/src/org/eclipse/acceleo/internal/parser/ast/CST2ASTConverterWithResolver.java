@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.OperationCallExp;
+import org.eclipse.ocl.ecore.VoidType;
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -1216,6 +1217,16 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			result = variableType.getInstanceClass().isAssignableFrom(initType.getInstanceClass());
 		} else if (variableType instanceof AnyType) {
 			result = true;
+		} else if (initType instanceof VoidType) {
+			result = true;
+		}
+
+		if (!result) {
+			result = EcoreUtil.equals(variableType, initType);
+		}
+
+		if (!result && initType instanceof EClass && initType instanceof EClass) {
+			result = ((EClass)variableType).isSuperTypeOf((EClass)initType);
 		}
 
 		return result;
@@ -1379,11 +1390,22 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		EClassifier initType = oLetVariable.getInitExpression().getType();
 		EClassifier variableType = oLetVariable.getType();
 		EClassifier oclAny = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclAny();
+		EClassifier oclVoid = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclVoid();
 
 		if (initType.getInstanceClass() != null && variableType.getInstanceClass() != null) {
 			result = initType.getInstanceClass().isAssignableFrom(variableType.getInstanceClass());
 		} else if (variableType == oclAny) {
 			result = true;
+		} else if (initType == oclVoid) {
+			result = true;
+		}
+
+		if (!result) {
+			result = EcoreUtil.equals(variableType, initType);
+		}
+
+		if (!result && initType instanceof EClass && initType instanceof EClass) {
+			result = ((EClass)variableType).isSuperTypeOf((EClass)initType);
 		}
 
 		return result;
