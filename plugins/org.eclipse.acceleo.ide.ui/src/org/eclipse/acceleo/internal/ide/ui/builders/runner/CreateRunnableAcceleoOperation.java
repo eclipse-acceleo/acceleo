@@ -43,6 +43,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -200,7 +201,11 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	 * @return the registered package class name
 	 */
 	private String getMetamodelPackageClass(EPackage metamodel) {
-		return metamodel.getClass().getName();
+		if (!EPackage.class.getName().equals(metamodel.getClass().getName())
+				&& !EPackageImpl.class.getName().equals(metamodel.getClass().getName())) {
+			return metamodel.getClass().getName();
+		}
+		return null;
 	}
 
 	/**
