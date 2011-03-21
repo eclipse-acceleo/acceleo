@@ -377,6 +377,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *            The EPackage class we need to take into account.
 	 * @return <code>true</code> if the given class has been loaded from a dynamically installed bundle,
 	 *         <code>false</code> otherwise.
+	 * @since 3.1
 	 */
 	public boolean isInWorkspace(Class<? extends EPackage> ePackageClass) {
 		return EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackageClass);
