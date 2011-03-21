@@ -29,6 +29,7 @@ import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoaderService;
 import org.eclipse.acceleo.engine.service.properties.BasicAcceleoPropertiesLoaderService;
+import org.eclipse.acceleo.engine.service.properties.BundleAcceleoPropertiesLoaderService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
@@ -51,6 +52,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.ExpressionsPackage;
+import org.osgi.framework.Bundle;
 
 /**
  * This will be used as the base class for all generated launchers (the java classes generated beside mtl
@@ -499,6 +501,10 @@ public abstract class AbstractAcceleoGenerator {
 	 * @since 3.1
 	 */
 	protected AbstractAcceleoPropertiesLoaderService getPropertiesLoaderService(AcceleoService acceleoService) {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			Bundle bundle = AcceleoWorkspaceUtil.getBundle(getClass());
+			return new BundleAcceleoPropertiesLoaderService(acceleoService, bundle);
+		}
 		return new BasicAcceleoPropertiesLoaderService(acceleoService);
 	}
 
