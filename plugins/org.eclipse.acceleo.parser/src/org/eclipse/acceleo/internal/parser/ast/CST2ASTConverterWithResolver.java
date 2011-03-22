@@ -1225,7 +1225,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			result = EcoreUtil.equals(variableType, initType);
 		}
 
-		if (!result && initType instanceof EClass && initType instanceof EClass) {
+		if (!result && variableType instanceof EClass && initType instanceof EClass) {
 			result = ((EClass)variableType).isSuperTypeOf((EClass)initType);
 		}
 
@@ -1411,7 +1411,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			result = EcoreUtil.equals(variableType, initType);
 		}
 
-		if (!result && initType instanceof EClass && initType instanceof EClass) {
+		if (!result && variableType instanceof EClass && initType instanceof EClass) {
 			result = ((EClass)variableType).isSuperTypeOf((EClass)initType);
 		}
 
