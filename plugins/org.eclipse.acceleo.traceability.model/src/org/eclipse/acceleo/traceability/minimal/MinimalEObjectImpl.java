@@ -12,7 +12,7 @@
  *
  * </copyright>
  *
- * $Id: MinimalEObjectImpl.java,v 1.1 2011/03/08 13:55:40 sbegaudeau Exp $
+ * $Id: MinimalEObjectImpl.java,v 1.2 2011/03/22 14:56:08 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.traceability.minimal;
 
@@ -483,7 +483,6 @@ public class MinimalEObjectImpl extends BasicEObjectImpl implements EObject, ESt
 		return new ArrayDelegatingAdapterList();
 	}
 
-	@Override
 	protected Adapter[] eBasicAdapterArray() {
 		return (Adapter[])getField(ADAPTER);
 	}
@@ -492,7 +491,6 @@ public class MinimalEObjectImpl extends BasicEObjectImpl implements EObject, ESt
 		setField(ADAPTER, eAdapters);
 	}
 
-	@Override
 	protected boolean eBasicHasAdapters() {
 		return hasField(ADAPTER);
 	}
@@ -640,7 +638,6 @@ public class MinimalEObjectImpl extends BasicEObjectImpl implements EObject, ESt
 	 * 
 	 * @return the adapter array of the container.
 	 */
-	@Override
 	protected Adapter[] eContainerAdapterArray() {
 		InternalEObject eInternalContainer = eInternalContainer();
 		return eInternalContainer instanceof MinimalEObjectImpl ? ((MinimalEObjectImpl)eInternalContainer)
