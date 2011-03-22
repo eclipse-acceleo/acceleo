@@ -169,6 +169,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			WizardNewProjectCreationPage newPage = (WizardNewProjectCreationPage)page;
 			container = newPage.getProjectName();
 			container = container + "/src/" + container.replaceAll("\\.", "/"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			container = container + "/common"; //$NON-NLS-1$
 			this.newAcceleoModulesCreationPage.setContainer(container);
 		}
 		return super.getNextPage(page);
@@ -261,7 +262,9 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 			IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 					acceleoModule.getProjectName());
-			if (moduleProject.exists() && moduleProject.isAccessible()) {
+			if (moduleProject.exists() && moduleProject.isAccessible()
+					&& acceleoModule.getModuleElement() != null
+					&& acceleoModule.getModuleElement().isIsMain()) {
 				IPath parentFolderPath = new Path(parentFolder);
 				IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
 				acceleoProject.getExportedPackages().add(
