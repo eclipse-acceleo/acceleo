@@ -105,6 +105,7 @@ public class AcceleoModulesCreationPage extends WizardPage implements IAcceleoMo
 	 *            The container.
 	 */
 	public void setContainer(String container) {
+		this.container = container;
 		if (acceleoModuleComposite != null) {
 			this.acceleoModuleComposite.setModuleContainer(container);
 		}
@@ -369,7 +370,7 @@ public class AcceleoModulesCreationPage extends WizardPage implements IAcceleoMo
 		 *      java.lang.Object, java.lang.Object)
 		 */
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			// TODO Auto-generated method stub
+			// do nothing
 
 		}
 

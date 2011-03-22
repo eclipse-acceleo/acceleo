@@ -218,6 +218,11 @@ public class AcceleoModuleComposite extends Composite {
 	private boolean shouldUpdate;
 
 	/**
+	 * The initial container.
+	 */
+	private String initialContainer;
+
+	/**
 	 * The constructor.
 	 * 
 	 * @param parent
@@ -241,6 +246,7 @@ public class AcceleoModuleComposite extends Composite {
 	 *            The module container.
 	 */
 	public void setModuleContainer(String container) {
+		initialContainer = container;
 		if (this.moduleContainer != null) {
 			this.moduleContainer.setText(container);
 		}
@@ -860,7 +866,6 @@ public class AcceleoModuleComposite extends Composite {
 				updateModule();
 			}
 		});
-
 		this.createHelpButton(pageGroup, AcceleoUIMessages
 				.getString("AcceleoModuleComposite.ModuleElementNameHelp")); //$NON-NLS-1$
 
@@ -880,7 +885,6 @@ public class AcceleoModuleComposite extends Composite {
 				updateModule();
 			}
 		});
-
 		this.createHelpButton(pageGroup, AcceleoUIMessages
 				.getString("AcceleoModuleComposite.ModuleElementTypeHelp")); //$NON-NLS-1$
 
@@ -894,6 +898,7 @@ public class AcceleoModuleComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				switchModuleElementKind();
 				updateModule();
+				updateModuleContainer();
 			}
 		});
 
@@ -905,6 +910,7 @@ public class AcceleoModuleComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				switchModuleElementKind();
 				updateModule();
+				updateModuleContainer();
 			}
 		});
 
@@ -926,7 +932,6 @@ public class AcceleoModuleComposite extends Composite {
 				updateModule();
 			}
 		});
-
 		this.createHelpButton(pageGroup, AcceleoUIMessages
 				.getString("AcceleoModuleComposite.ModuleGenerateDocumentationHelp")); //$NON-NLS-1$
 
@@ -940,9 +945,9 @@ public class AcceleoModuleComposite extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateModule();
+				updateModuleContainer();
 			}
 		});
-
 		this.createHelpButton(pageGroup, AcceleoUIMessages
 				.getString("AcceleoModuleComposite.TemplateGenerateFileHelp")); //$NON-NLS-1$
 
@@ -955,11 +960,87 @@ public class AcceleoModuleComposite extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateModule();
+				updateModuleContainer();
 			}
 		});
-
 		this.createHelpButton(pageGroup, AcceleoUIMessages
 				.getString("AcceleoModuleComposite.TemplateMainHelp")); //$NON-NLS-1$
+	}
+
+	/**
+	 * Update the container of the module.
+	 */
+	private void updateModuleContainer() {
+		/*
+		 * If the path of the module is the original path (see initialContainer) directly followed by one of
+		 * the four possibilities (common, main, files, requests) then we will update it. We assume that way
+		 * that the user did not changed the path of its module.
+		 */
+
+		final String common = "/common"; //$NON-NLS-1$
+		final String main = "/main"; //$NON-NLS-1$
+		final String files = "/files"; //$NON-NLS-1$
+		final String requests = "/requests"; //$NON-NLS-1$
+
+		String basicContainer = initialContainer;
+
+		/*
+		 * We compute the basic container aka the container minus one of the four possibilities (common, main,
+		 * files, requests) to compute the new container later.
+		 */
+
+		if (basicContainer != null && basicContainer.endsWith(common)) {
+			basicContainer = basicContainer.substring(0, basicContainer.length() - common.length());
+		} else if (basicContainer != null && basicContainer.endsWith(main)) {
+			basicContainer = basicContainer.substring(0, basicContainer.length() - main.length());
+		} else if (basicContainer != null && basicContainer.endsWith(files)) {
+			basicContainer = basicContainer.substring(0, basicContainer.length() - files.length());
+		} else if (basicContainer != null && basicContainer.endsWith(requests)) {
+			basicContainer = basicContainer.substring(0, basicContainer.length() - requests.length());
+		}
+
+		boolean canUpdate = false;
+		if (basicContainer != null && moduleContainer.getText() != null) {
+			String currentContainer = moduleContainer.getText();
+
+			canUpdate = canUpdate || currentContainer.equals(basicContainer + common);
+			canUpdate = canUpdate || currentContainer.equals(basicContainer + main);
+			canUpdate = canUpdate || currentContainer.equals(basicContainer + files);
+			canUpdate = canUpdate || currentContainer.equals(basicContainer + requests);
+		}
+
+		/*
+		 * If we think that we can update the container, here are the rules that we will follow to update the
+		 * container. Modules with a template go in "/common", if the template is a main template aka a
+		 * starting point of the generation, we move it to "/main", if the template is not a starting point of
+		 * the generation and if it generate a file we move it to "/files". If we have a query, we will see
+		 * first if it is in "/common" or "/requests" if that is the case, we don't change anything. If, on
+		 * the contrary we are in "/files" or "/main" because we thought about creating a template before, we
+		 * will move the module with the query to "/requests" by default.
+		 */
+
+		if (canUpdate) {
+			boolean isTemplate = templateModuleElementKind.getSelection();
+			boolean isQuery = queryModuleElementKind.getSelection();
+
+			if (isTemplate && !isQuery) {
+				boolean hasMain = isMain.getSelection();
+				boolean generatesFile = generateFile.getSelection();
+				if (generatesFile && !hasMain) {
+					moduleContainer.setText(basicContainer + files);
+				} else if (hasMain) {
+					moduleContainer.setText(basicContainer + main);
+				} else {
+					moduleContainer.setText(basicContainer + common);
+				}
+			} else if (isQuery && !isTemplate) {
+				if (moduleContainer.getText() != null
+						&& !(moduleContainer.getText().endsWith(common) || moduleContainer.getText()
+								.endsWith(requests))) {
+					moduleContainer.setText(basicContainer + requests);
+				}
+			}
+		}
 	}
 
 	/**
