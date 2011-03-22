@@ -194,6 +194,7 @@ public final class AcceleoWorkspaceUtil {
 	 * @since 3.1
 	 */
 	public static Bundle getBundle(Class<?> clazz) {
+		Bundle bundle = null;
 		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
 		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
 		PackageAdmin packageAdmin = null;
@@ -202,12 +203,12 @@ public final class AcceleoWorkspaceUtil {
 		}
 
 		if (packageAdmin != null) {
-			return packageAdmin.getBundle(clazz);
+			bundle = packageAdmin.getBundle(clazz);
 		}
 		if (packageAdminReference != null) {
 			context.ungetService(packageAdminReference);
 		}
-		return null;
+		return bundle;
 	}
 
 	/**
