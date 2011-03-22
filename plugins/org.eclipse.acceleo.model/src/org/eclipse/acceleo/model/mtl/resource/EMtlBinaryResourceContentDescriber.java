@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescriber;
 import org.eclipse.core.runtime.content.IContentDescription;
-import org.eclipse.core.runtime.content.XMLContentDescriber;
 
 /**
  * The EMTL binary resource content describer.
