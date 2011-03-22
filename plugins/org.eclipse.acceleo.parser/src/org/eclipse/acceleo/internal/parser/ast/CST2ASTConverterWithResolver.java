@@ -1392,7 +1392,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		EClassifier oclAny = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclAny();
 		EClassifier oclVoid = getOCL().getOCLEnvironment().getOCLStandardLibrary().getOclVoid();
 
-		if (initType.getInstanceClass() != null && variableType.getInstanceClass() != null) {
+		// If we have a proxy, we cannot conclude so let's assume that it's good.*
+		boolean invalidInitType = initType == null || initType.eIsProxy();
+		if (oLetVariable.eIsProxy() || invalidInitType || variableType.eIsProxy()) {
+			return true;
+		}
+
+		if (initType != null && initType.getInstanceClass() != null
+				&& variableType.getInstanceClass() != null) {
 			result = initType.getInstanceClass().isAssignableFrom(variableType.getInstanceClass());
 		} else if (variableType == oclAny) {
 			result = true;
