@@ -12,7 +12,7 @@
  *
  * </copyright>
  *
- * $Id: MinimalEObjectImpl.java,v 1.2 2011/03/22 14:56:08 sbegaudeau Exp $
+ * $Id: MinimalEObjectImpl.java,v 1.3 2011/03/22 15:15:53 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.traceability.minimal;
 
@@ -483,14 +483,17 @@ public class MinimalEObjectImpl extends BasicEObjectImpl implements EObject, ESt
 		return new ArrayDelegatingAdapterList();
 	}
 
+	// SBE: No @Override for eclipse 3.4 compatibility reasons
 	protected Adapter[] eBasicAdapterArray() {
 		return (Adapter[])getField(ADAPTER);
 	}
 
+	// SBE: No @Override for eclipse 3.4 compatibility reasons
 	protected void eBasicSetAdapterArray(Adapter[] eAdapters) {
 		setField(ADAPTER, eAdapters);
 	}
 
+	// SBE: No @Override for eclipse 3.4 compatibility reasons
 	protected boolean eBasicHasAdapters() {
 		return hasField(ADAPTER);
 	}
