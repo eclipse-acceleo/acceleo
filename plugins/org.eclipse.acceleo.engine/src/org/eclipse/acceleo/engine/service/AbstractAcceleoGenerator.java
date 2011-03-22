@@ -32,6 +32,8 @@ import org.eclipse.acceleo.engine.service.properties.BasicAcceleoPropertiesLoade
 import org.eclipse.acceleo.engine.service.properties.BundleAcceleoPropertiesLoaderService;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceFactoryRegistry;
+import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
@@ -46,7 +48,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
@@ -106,6 +107,16 @@ public abstract class AbstractAcceleoGenerator {
 	 * @since 3.1
 	 */
 	protected AbstractAcceleoPropertiesLoaderService acceleoPropertiesLoaderService;
+
+	/**
+	 * The original resource factory registry of the resource set containing the model if the generation is
+	 * launched from {@link #initialize(EObject, File, List)}. This attribute is used only by the
+	 * {@link AbstractAcceleoGenerator} to restore the resource factory registry after the generation. It
+	 * should <b>not</b> be used for anything else.
+	 * 
+	 * @since 3.1
+	 */
+	protected Resource.Factory.Registry resourceFactoryRegistry;
 
 	/**
 	 * Allows clients to add a generation listener to this generator instance.
@@ -288,6 +299,10 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
 		ResourceSet resourceSet = element.eResource().getResourceSet();
+
+		resourceFactoryRegistry = resourceSet.getResourceFactoryRegistry();
+		resourceSet.setResourceFactoryRegistry(new AcceleoResourceFactoryRegistry(resourceFactoryRegistry));
+
 		originalResources.addAll(resourceSet.getResources());
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			resourceSet.setURIConverter(createURIConverter());
@@ -338,7 +353,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *             the model cannot be loaded.
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
-		ResourceSet resourceSet = new ResourceSetImpl();
+		ResourceSet resourceSet = new AcceleoResourceSetImpl();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			resourceSet.setURIConverter(createURIConverter());
 		}
@@ -488,6 +503,8 @@ public abstract class AbstractAcceleoGenerator {
 			res.unload();
 			rs.getResources().remove(res);
 		}
+
+		rs.setResourceFactoryRegistry(resourceFactoryRegistry);
 	}
 
 	/**
