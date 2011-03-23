@@ -29,7 +29,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -203,31 +203,27 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	 */
 	@Override
 	public boolean performFinish() {
-		IWorkspaceRunnable projectCreation = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-						newProjectPage.getProjectName());
-				IPath location = newProjectPage.getLocationPath();
-				if (!project.exists()) {
-					IProjectDescription desc = project.getWorkspace().newProjectDescription(
-							newProjectPage.getProjectName());
-					if (location != null
-							&& ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
-						location = null;
-					}
-					desc.setLocation(location);
-					project.create(desc, monitor);
-					project.open(monitor);
-					convert(project, AcceleoProjectWizard.this, monitor);
-				}
-				if (!project.isOpen()) {
-					project.open(monitor);
-				}
-			}
-		};
-
 		try {
-			ResourcesPlugin.getWorkspace().run(projectCreation, null);
+			IProgressMonitor monitor = new NullProgressMonitor();
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+					newProjectPage.getProjectName());
+			IPath location = newProjectPage.getLocationPath();
+			if (!project.exists()) {
+				IProjectDescription desc = project.getWorkspace().newProjectDescription(
+						newProjectPage.getProjectName());
+				if (location != null
+						&& ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
+					location = null;
+				}
+				desc.setLocation(location);
+				project.create(desc, monitor);
+				project.open(monitor);
+				convert(project, AcceleoProjectWizard.this, monitor);
+				project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+			}
+			if (!project.isOpen()) {
+				project.open(monitor);
+			}
 
 			// Update the perspective.
 			BasicNewProjectResourceWizard.updatePerspective(this.configurationElement);
@@ -272,9 +268,16 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 								"\\.")); //$NON-NLS-1$
 			}
 		}
-
 		// Generate files
-		AcceleoUIGenerator.getDefault().generateProjectDescription(acceleoProject, project);
+		try {
+			IProjectDescription description = project.getDescription();
+			String[] natureIds = new String[] {IAcceleoConstants.ACCELEO_NATURE_ID,
+					IAcceleoConstants.PLUGIN_NATURE_ID, IAcceleoConstants.JAVA_NATURE_ID, };
+			description.setNatureIds(natureIds);
+			project.setDescription(description, monitor);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
 		AcceleoUIGenerator.getDefault().generateProjectSettings(acceleoProject, project);
 		AcceleoUIGenerator.getDefault().generateProjectClasspath(acceleoProject, project);
 
@@ -337,13 +340,6 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 		}
 
-		try {
-			// force the complete refresh of the project (project.refresh() is not enough)
-			project.close(monitor);
-			project.open(monitor);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
 	}
 
 	/**
