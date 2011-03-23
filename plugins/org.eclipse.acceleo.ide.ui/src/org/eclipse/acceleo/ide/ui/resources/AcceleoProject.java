@@ -250,11 +250,21 @@ public class AcceleoProject {
 	 * @return the output file path
 	 */
 	public IPath getOutputFilePath(IFile fileAcceleo) {
-		IPath filePath = fileAcceleo.getFullPath();
+		IPath projectPath = project.getRawLocation();
+		if (projectPath == null) {
+			projectPath = project.getLocation();
+		}
+		IPath acceleoFilePath = fileAcceleo.getRawLocation();
+		if (acceleoFilePath == null) {
+			acceleoFilePath = fileAcceleo.getLocation();
+		}
+
+		IPath filePath = acceleoFilePath.makeRelativeTo(projectPath);
+
 		IFolder folder = getOutputFolder(project);
 		if (folder != null) {
 			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
-				IPath sourcePath = itSourceFolders.next();
+				IPath sourcePath = itSourceFolders.next().makeRelativeTo(project.getFullPath());
 				if (sourcePath.isPrefixOf(filePath)) {
 					IPath relativePath = filePath.removeFirstSegments(sourcePath.segmentCount());
 					return folder.getFullPath().append(
@@ -323,9 +333,18 @@ public class AcceleoProject {
 	 * @return the full name of the package, or an empty string if the file is not valid
 	 */
 	public String getPackageName(IFile fileAcceleo) {
-		IPath filePath = fileAcceleo.getFullPath();
+		IPath projectPath = project.getRawLocation();
+		if (projectPath == null) {
+			projectPath = project.getLocation();
+		}
+		IPath acceleoFilePath = fileAcceleo.getRawLocation();
+		if (acceleoFilePath == null) {
+			acceleoFilePath = fileAcceleo.getLocation();
+		}
+
+		IPath filePath = acceleoFilePath.makeRelativeTo(projectPath);
 		for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
-			IPath sourcePath = itSourceFolders.next();
+			IPath sourcePath = itSourceFolders.next().makeRelativeTo(project.getFullPath());
 			if (sourcePath.isPrefixOf(filePath)) {
 				StringBuffer name = new StringBuffer();
 				String[] segments = filePath.removeFirstSegments(sourcePath.segmentCount())
