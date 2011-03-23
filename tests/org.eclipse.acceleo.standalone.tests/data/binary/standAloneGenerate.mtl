@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module standAloneGenerate('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[template public generateElement(anEClass : EClass)]
+[file ('result', false, 'UTF-8')]
+Model: [anEClass.name/]
+String Literal: ['literal'/]
+Standard library: [anEClass.name.oclIsKindOf(String)/]
+Non standard library: [anEClass.name + 'non standart'/]	
+[/file]
+[/template]

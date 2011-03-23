@@ -41,7 +41,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 /**
- * Stand alone test for the loading of Acceleo binary and xmi resources.
+ * Stand alone tests for the loading of Acceleo binary and xmi resources.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1

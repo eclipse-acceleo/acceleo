@@ -14,6 +14,7 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.textui.TestRunner;
 
+import org.eclipse.acceleo.standalone.tests.generation.GenerationTests;
 import org.eclipse.acceleo.standalone.tests.loading.LoadingTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -27,7 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @since 3.1
  */
 @RunWith(Suite.class)
-@SuiteClasses({LoadingTests.class, })
+@SuiteClasses({LoadingTests.class, GenerationTests.class })
 public final class AllTests {
 
 	/**
