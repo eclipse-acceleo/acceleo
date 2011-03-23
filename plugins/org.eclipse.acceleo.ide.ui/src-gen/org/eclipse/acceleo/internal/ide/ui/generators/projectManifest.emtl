@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="projectManifest" nsURI="org::eclipse::acceleo::module::sample::files::project::projectManifest" startHeaderPosition="412" endHeaderPosition="495">
+  <mtl:Module name="projectManifest" nsURI="projectManifest" startHeaderPosition="412" endHeaderPosition="495">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="33" endPosition="409" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
     </documentation>
@@ -50,25 +50,63 @@
             <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/pluginDependencies"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" org.eclipse.emf.ecore,&#xA; org.eclipse.emf.ecore.xmi,&#xA; org.eclipse.ocl,&#xA; org.eclipse.ocl.ecore,&#xA; org.eclipse.acceleo.model,&#xA; org.eclipse.acceleo.engine&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Bundle-ActivationPolicy: lazy&#xA;Eclipse-LazyStart: true&#xA;Export-Package: "/>
-        <body xsi:type="mtl:ForBlock">
-          <body xsi:type="ocl.ecore:VariableExp" name="exportedPackage" referredVariable="/0/genManifestMF/@body.0/@body.9/exportedPackage.1">
-            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" org.eclipse.emf.ecore,&#xA; org.eclipse.emf.ecore.xmi,&#xA; org.eclipse.ocl,&#xA; org.eclipse.ocl.ecore,&#xA; org.eclipse.acceleo.model,&#xA; org.eclipse.acceleo.engine&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Bundle-ActivationPolicy: lazy&#xA;Eclipse-LazyStart: true&#xA;"/>
+        <body xsi:type="mtl:IfBlock">
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="Export-Package: "/>
+          <body xsi:type="mtl:ForBlock">
+            <body xsi:type="ocl.ecore:VariableExp" name="exportedPackage" referredVariable="/0/genManifestMF/@body.0/@body.9/@body.1/exportedPackage.1">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </body>
+            <loopVariable name="exportedPackage">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </loopVariable>
+            <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/11/OrderedSet(String)">
+              <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/18">
+                <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
+              </source>
+              <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/exportedPackages"/>
+            </iterSet>
+            <each xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=",&#xA; ">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            </each>
           </body>
-          <loopVariable name="exportedPackage">
-            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-          </loopVariable>
-          <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/11/OrderedSet(String)">
-            <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/17">
-              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
+          <ifExpr xsi:type="ocl.ecore:OperationCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+            <source xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:PropertyCallExp" eType="/11/OrderedSet(String)">
+                <source xsi:type="ocl.ecore:VariableExp" name="acceleoProject" referredVariable="/0/genManifestMF/acceleoProject">
+                  <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
+                </source>
+                <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/exportedPackages"/>
+              </source>
+              <argument xsi:type="ocl.ecore:NullLiteralExp">
+                <eType xsi:type="ocl.ecore:VoidType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclVoid"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)_Class/%3C%3E.1"/>
             </source>
-            <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/exportedPackages"/>
-          </iterSet>
-          <each xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=",&#xA; ">
-            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-          </each>
+            <argument xsi:type="ocl.ecore:OperationCallExp">
+              <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
+              <source xsi:type="ocl.ecore:OperationCallExp">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+                <source xsi:type="ocl.ecore:PropertyCallExp" eType="/11/OrderedSet(String)">
+                  <source xsi:type="ocl.ecore:VariableExp" name="acceleoProject" referredVariable="/0/genManifestMF/acceleoProject">
+                    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
+                  </source>
+                  <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/exportedPackages"/>
+                </source>
+                <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)_Class/size"/>
+              </source>
+              <argument xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="0">
+                <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+              </argument>
+              <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer_Class/%3E"/>
+            </argument>
+            <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean_Class/and"/>
+          </ifExpr>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="META-INF/MANIFEST.MF">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -559,6 +597,9 @@
     <eClassifiers xsi:type="ocl.ecore:OrderedSetType" name="OrderedSet(String)" instanceClassName="java.util.LinkedHashSet">
       <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ocl.ecore:SetType" instanceClassName="java.util.Set">
+      <elementType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eClassifiers>
   </ecore:EPackage>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
@@ -571,6 +612,9 @@
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject"/>
@@ -601,12 +645,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genManifestMF">
       <details key="start" value="607"/>
-      <details key="end" value="1462"/>
+      <details key="end" value="1564"/>
       <details key="line" value="20"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genManifestMF/@body.0">
       <details key="start" value="672"/>
-      <details key="end" value="1450"/>
+      <details key="end" value="1552"/>
       <details key="line" value="21"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genManifestMF/@body.0/@body.0">
@@ -696,65 +740,130 @@
     </eAnnotations>
     <eAnnotations source="positions.20" references="/0/genManifestMF/@body.0/@body.8">
       <details key="start" value="1082"/>
-      <details key="end" value="1348"/>
+      <details key="end" value="1332"/>
       <details key="line" value="33"/>
     </eAnnotations>
     <eAnnotations source="positions.21" references="/0/genManifestMF/@body.0/@body.9">
-      <details key="start" value="1348"/>
-      <details key="end" value="1441"/>
+      <details key="start" value="1332"/>
+      <details key="end" value="1543"/>
       <details key="line" value="42"/>
     </eAnnotations>
-    <eAnnotations source="positions.22" references="/0/genManifestMF/@body.0/@body.9/exportedPackage">
-      <details key="start" value="1418"/>
-      <details key="end" value="1433"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.23" references="/0/genManifestMF/@body.0/@body.9/exportedPackage.1">
-      <details key="start" value="1354"/>
-      <details key="end" value="1378"/>
+    <eAnnotations source="positions.22" references="/0/genManifestMF/@body.0/@body.9/@body.0">
+      <details key="start" value="1428"/>
+      <details key="end" value="1444"/>
       <details key="line" value="42"/>
     </eAnnotations>
-    <eAnnotations source="positions.24" references="/0/genManifestMF/@body.0/@body.9/@iterSet">
-      <details key="start" value="1381"/>
-      <details key="end" value="1397"/>
+    <eAnnotations source="positions.23" references="/0/genManifestMF/@body.0/@body.9/@body.1">
+      <details key="start" value="1444"/>
+      <details key="end" value="1537"/>
+      <details key="line" value="43"/>
+    </eAnnotations>
+    <eAnnotations source="positions.24" references="/0/genManifestMF/@body.0/@body.9/@body.1/exportedPackage">
+      <details key="start" value="1514"/>
+      <details key="end" value="1529"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.25" references="/0/genManifestMF/@body.0/@body.9/@iterSet/self">
+    <eAnnotations source="positions.25" references="/0/genManifestMF/@body.0/@body.9/@body.1/exportedPackage.1">
+      <details key="start" value="1450"/>
+      <details key="end" value="1474"/>
+      <details key="line" value="43"/>
+    </eAnnotations>
+    <eAnnotations source="positions.26" references="/0/genManifestMF/@body.0/@body.9/@body.1/@iterSet">
+      <details key="start" value="1477"/>
+      <details key="end" value="1493"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.27" references="/0/genManifestMF/@body.0/@body.9/@body.1/@iterSet/self">
       <details key="start" value="-1"/>
       <details key="end" value="-1"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.26" references="/0/genManifestMF/@body.0/@body.9/@each">
-      <details key="start" value="1409"/>
-      <details key="end" value="1415"/>
+    <eAnnotations source="positions.28" references="/0/genManifestMF/@body.0/@body.9/@body.1/@each">
+      <details key="start" value="1505"/>
+      <details key="end" value="1511"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.27" references="/0/genManifestMF/@body.0/@body.10">
-      <details key="start" value="1441"/>
-      <details key="end" value="1443"/>
-      <details key="line" value="43"/>
+    <eAnnotations source="positions.29" references="/0/genManifestMF/@body.0/@body.9/@body.2">
+      <details key="start" value="1537"/>
+      <details key="end" value="1538"/>
+      <details key="line" value="44"/>
     </eAnnotations>
-    <eAnnotations source="positions.28" references="/0/genManifestMF/@body.0/@fileUrl">
+    <eAnnotations source="positions.30" references="/0/genManifestMF/@body.0/@body.9/@ifExpr">
+      <details key="start" value="1336"/>
+      <details key="end" value="1425"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.31" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@source">
+      <details key="start" value="1337"/>
+      <details key="end" value="1376"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.32" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@source/@source">
+      <details key="start" value="1337"/>
+      <details key="end" value="1368"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.33" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@source/@source/acceleoProject">
+      <details key="start" value="1337"/>
+      <details key="end" value="1351"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.34" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@source/@argument.0">
+      <details key="start" value="1372"/>
+      <details key="end" value="1376"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.35" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@argument.0">
+      <details key="start" value="1381"/>
+      <details key="end" value="1424"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.36" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@argument.0/@source">
+      <details key="start" value="1381"/>
+      <details key="end" value="1420"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.37" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@argument.0/@source/@source">
+      <details key="start" value="1381"/>
+      <details key="end" value="1412"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.38" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@argument.0/@source/@source/acceleoProject">
+      <details key="start" value="1381"/>
+      <details key="end" value="1395"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.39" references="/0/genManifestMF/@body.0/@body.9/@ifExpr/@argument.0/@argument.0">
+      <details key="start" value="1423"/>
+      <details key="end" value="1424"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.40" references="/0/genManifestMF/@body.0/@body.10">
+      <details key="start" value="1544"/>
+      <details key="end" value="1545"/>
+      <details key="line" value="45"/>
+    </eAnnotations>
+    <eAnnotations source="positions.41" references="/0/genManifestMF/@body.0/@fileUrl">
       <details key="start" value="679"/>
       <details key="end" value="701"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.29" references="/0/genManifestMF/@body.0/@charset">
+    <eAnnotations source="positions.42" references="/0/genManifestMF/@body.0/@charset">
       <details key="start" value="710"/>
       <details key="end" value="717"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.30" references="/0/genManifestMF/@documentation">
+    <eAnnotations source="positions.43" references="/0/genManifestMF/@documentation">
       <details key="start" value="499"/>
       <details key="end" value="606"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.31" references="/0/genManifestMF/@documentation/acceleoProject">
+    <eAnnotations source="positions.44" references="/0/genManifestMF/@documentation/acceleoProject">
       <details key="start" value="-1"/>
       <details key="end" value="-1"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.32" references="/0/genManifestMF/acceleoProject">
+    <eAnnotations source="positions.45" references="/0/genManifestMF/acceleoProject">
       <details key="start" value="638"/>
       <details key="end" value="669"/>
       <details key="line" value="20"/>
