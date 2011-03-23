@@ -17,7 +17,7 @@
  * The documentation of the module [anAcceleoModule.name/].
  */[']'/]
 [/if]
-['['/]module [anAcceleoModule.name/]([anAcceleoModule.metamodelURIs->sep(', ')/])[']'/]
+['['/]module [anAcceleoModule.name/]([anAcceleoModule.metamodelURIs->collect(uri : String | '\'' + uri + '\'')->sep(', ')/])[']'/]
 
 
 [if (anAcceleoModule.moduleElement.kind = ModuleElementKind::Template)]
