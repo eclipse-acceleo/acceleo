@@ -335,7 +335,31 @@ public class AcceleoModulesCreationPage extends WizardPage implements IAcceleoMo
 				setPageComplete(false);
 				break;
 		}
+		this.checkDuplicates();
 		this.treeViewer.refresh();
+	}
+
+	/**
+	 * Checks duplicate modules.
+	 */
+	private void checkDuplicates() {
+		for (int i = 0; i < acceleoModules.size(); i++) {
+			AcceleoModule acceleoModule = acceleoModules.get(i);
+			for (int j = 0; j < acceleoModules.size(); j++) {
+				AcceleoModule acceleoModule2 = acceleoModules.get(j);
+				if (i != j) {
+					String moduleName = acceleoModule.getParentFolder() + acceleoModule.getName();
+					String moduleName2 = acceleoModule2.getParentFolder() + acceleoModule2.getName();
+					if (moduleName.equals(moduleName2)) {
+						this.setMessage(null);
+						this.setErrorMessage(AcceleoUIMessages
+								.getString("AcceleoModuleCreationPage.TwoIdenticalModule")); //$NON-NLS-1$
+						this.setPageComplete(false);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	/**
