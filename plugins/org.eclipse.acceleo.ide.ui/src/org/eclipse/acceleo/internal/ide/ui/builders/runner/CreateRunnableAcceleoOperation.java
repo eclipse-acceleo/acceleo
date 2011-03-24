@@ -208,6 +208,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 				for (Class<?> clazz : metamodel.getClass().getInterfaces()) {
 					if (metamodel.getClass().getSimpleName().equals(clazz.getSimpleName() + "Impl")) { //$NON-NLS-1$
 						name = clazz.getName();
+						break;
 					}
 				}
 			} else if (metamodel.getClass().getInterfaces().length == 1
