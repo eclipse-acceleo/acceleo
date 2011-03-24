@@ -318,8 +318,8 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
 				"moduleExtendsMultipleSameModule.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(0, 1, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(0, 2, 0);
 			checkASTResolution(0, 2, 0);
 			checkASTDocumentationResolution(0, 2, 0);
 		} else {
@@ -454,8 +454,8 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
 				"moduleDuplicatedImport.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(0, 0, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
 			checkASTDocumentationResolution(0, 1, 0);
 		} else {
