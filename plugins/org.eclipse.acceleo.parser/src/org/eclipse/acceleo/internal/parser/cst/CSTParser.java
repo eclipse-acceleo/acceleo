@@ -55,6 +55,7 @@ import org.eclipse.acceleo.parser.cst.TextExpression;
 import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.acceleo.parser.cst.Variable;
 import org.eclipse.acceleo.parser.cst.VisibilityKind;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -278,11 +279,56 @@ public class CSTParser {
 					computeModuleDocumentation(commentsBeforeModule, eModule);
 					parseModuleHeader(bH.e(), eH.b(), eModule);
 					parseModuleBody(eH.e(), source.getBuffer().length(), eModule);
+
+					checkModuleImports(eModule);
+					checkModuleExtends(eModule);
 					return eModule;
 				}
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Checks the imported module for duplicates.
+	 * 
+	 * @param eModule
+	 *            The module
+	 */
+	private void checkModuleImports(Module eModule) {
+		List<String> importedValues = new ArrayList<String>();
+
+		EList<ModuleImportsValue> imports = eModule.getImports();
+		for (ModuleImportsValue moduleImportsValue : imports) {
+			if (importedValues.contains(moduleImportsValue.getName())) {
+				logWarning(AcceleoParserMessages.getString(
+						"CST2ASTConverterWithResolver.ModuleAlreadyImports", moduleImportsValue.getName()), //$NON-NLS-1$
+						moduleImportsValue.getStartPosition(), moduleImportsValue.getEndPosition());
+			} else {
+				importedValues.add(moduleImportsValue.getName());
+			}
+		}
+	}
+
+	/**
+	 * Checks extended modules value for duplicates.
+	 * 
+	 * @param eModule
+	 *            The module
+	 */
+	private void checkModuleExtends(Module eModule) {
+		List<String> extendedValues = new ArrayList<String>();
+
+		EList<ModuleExtendsValue> extendedModules = eModule.getExtends();
+		for (ModuleExtendsValue moduleExtendsValue : extendedModules) {
+			if (extendedValues.contains(moduleExtendsValue.getName())) {
+				logWarning(AcceleoParserMessages.getString(
+						"CST2ASTConverterWithResolver.ModuleAlreadyExtends", moduleExtendsValue.getName()), //$NON-NLS-1$
+						moduleExtendsValue.getStartPosition(), moduleExtendsValue.getEndPosition());
+			} else {
+				extendedValues.add(moduleExtendsValue.getName());
+			}
+		}
 	}
 
 	/**

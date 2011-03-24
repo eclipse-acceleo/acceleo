@@ -18,6 +18,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
+import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateOverridesValue;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -157,23 +159,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
-						if (oModule.getImports().contains(oImportedModule)) {
-							logWarning(AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.ModuleAlreadyImports", oImportedModule //$NON-NLS-1$
-											.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
-						}
 						oModule.getImports().add(oImportedModule);
-						if (oImportedModule.isDeprecated()) {
-							logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE,
-									oImportedModule.getName()), ioNext.getStartPosition(), ioNext
-									.getEndPosition());
-						}
-						if (isRecursiveImports(oModule, oImportedModule)) {
-							logProblem(AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.RecursiveModuleImports", new Object[] { //$NON-NLS-1$
-									oModule.getName(), oImportedModule.getName(), }), ioNext
-									.getStartPosition(), ioNext.getEndPosition());
-						}
+						checkModuleImports(oModule, ioNext.getStartPosition(), ioNext.getEndPosition());
 					}
 				}
 				Iterator<ModuleExtendsValue> iExtendsIt = iModule.getExtends().iterator();
@@ -186,29 +173,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 								"CST2ASTConverterWithResolver.MissingModule", ioNext //$NON-NLS-1$
 										.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
 					} else {
-						if (oModule.getExtends().contains(oExtendedModule)) {
-							logWarning(AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.ModuleAlreadyExtends", oExtendedModule //$NON-NLS-1$
-											.getName()), ioNext.getStartPosition(), ioNext.getEndPosition());
-						}
 						oModule.getExtends().add(oExtendedModule);
-						if (!isExtendsCompatible(oModule, oExtendedModule)) {
-							logWarning(AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.ModuleExtendssIncompatibleModule", //$NON-NLS-1$
-									oExtendedModule.getName()), ioNext.getStartPosition(), ioNext
-									.getEndPosition());
-						}
-						if (isRecursiveExtends(oModule, oExtendedModule)) {
-							logProblem(AcceleoParserMessages.getString(
-									"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
-									oModule.getName(), oExtendedModule.getName(), }), ioNext
-									.getStartPosition(), ioNext.getEndPosition());
-						}
-						if (oExtendedModule.isDeprecated()) {
-							logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE,
-									oExtendedModule.getName()), ioNext.getStartPosition(), ioNext
-									.getEndPosition());
-						}
+						checkModuleExtends(oModule, ioNext.getStartPosition(), ioNext.getEndPosition());
 					}
 				}
 				factory.getOCL().addRecursivelyBehavioralFeaturesToScope(oModule);
@@ -223,6 +189,63 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					org.eclipse.acceleo.parser.cst.TypedModel iNext = iInputIt.next();
 					transformStepResolveRemoveEPackage(iNext);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Checks the validity of the imports of the module.
+	 * 
+	 * @param oModule
+	 *            The module
+	 * @param startPosition
+	 *            The start position of the current import value
+	 * @param endPosition
+	 *            The end position of the current import value
+	 */
+	private void checkModuleImports(org.eclipse.acceleo.model.mtl.Module oModule, int startPosition,
+			int endPosition) {
+		EList<Module> imports = oModule.getImports();
+		for (Module oImportedModule : imports) {
+			if (oImportedModule.isDeprecated()) {
+				logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, oImportedModule
+						.getName()), startPosition, endPosition);
+			}
+			if (isRecursiveImports(oModule, oImportedModule)) {
+				logProblem(AcceleoParserMessages.getString(
+						"CST2ASTConverterWithResolver.RecursiveModuleImports", new Object[] { //$NON-NLS-1$
+						oModule.getName(), oImportedModule.getName(), }), startPosition, endPosition);
+			}
+		}
+	}
+
+	/**
+	 * Checks the validity of the extends of the module.
+	 * 
+	 * @param oModule
+	 *            The module
+	 * @param startPosition
+	 *            The start position of the current extends value
+	 * @param endPosition
+	 *            The end position of the current extends value
+	 */
+	private void checkModuleExtends(org.eclipse.acceleo.model.mtl.Module oModule, int startPosition,
+			int endPosition) {
+		EList<Module> extendedModules = oModule.getExtends();
+		for (Module oExtendedModule : extendedModules) {
+			if (!isExtendsCompatible(oModule, oExtendedModule)) {
+				logWarning(AcceleoParserMessages.getString(
+						"CST2ASTConverterWithResolver.ModuleExtendssIncompatibleModule", //$NON-NLS-1$
+						oExtendedModule.getName()), startPosition, endPosition);
+			}
+			if (isRecursiveExtends(oModule, oExtendedModule)) {
+				logProblem(AcceleoParserMessages.getString(
+						"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
+						oModule.getName(), oExtendedModule.getName(), }), startPosition, endPosition);
+			}
+			if (oExtendedModule.isDeprecated()) {
+				logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, oExtendedModule
+						.getName()), startPosition, endPosition);
 			}
 		}
 	}
