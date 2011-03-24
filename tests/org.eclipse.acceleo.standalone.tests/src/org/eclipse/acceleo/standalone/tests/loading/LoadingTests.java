@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.standalone.tests.loading;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -34,11 +39,6 @@ import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.ExpressionsPackage;
 import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * Stand alone tests for the loading of Acceleo binary and xmi resources.
@@ -65,7 +65,7 @@ public class LoadingTests {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/xmi/generate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));
@@ -90,7 +90,7 @@ public class LoadingTests {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/xmi/generate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));
@@ -113,7 +113,7 @@ public class LoadingTests {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/binary/generate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));
@@ -138,7 +138,7 @@ public class LoadingTests {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/binary/generate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));

@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.standalone.tests.generation;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,11 +29,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * Stand alone test for the generation with Acceleo binary and xmi resources.
@@ -55,7 +55,7 @@ public class GenerationTests extends AbstractAcceleoGenerator {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/xmi/standAloneGenerate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));
@@ -63,7 +63,7 @@ public class GenerationTests extends AbstractAcceleoGenerator {
 
 			path = System.getProperty(USERDIR);
 			path = path + "/data/model.ecore";
-			URI modelURI = URI.createURI(path);
+			URI modelURI = URI.createFileURI(URI.decode(path));
 			EObject myModel = ModelUtils.load(modelURI, resourceSet);
 
 			AcceleoService service = new AcceleoService(new PreviewStrategy());
@@ -90,7 +90,7 @@ public class GenerationTests extends AbstractAcceleoGenerator {
 		String path = System.getProperty(USERDIR);
 		path = path + "/data/binary/standAloneGenerate.emtl";
 
-		URI moduleURI = URI.createURI(path);
+		URI moduleURI = URI.createFileURI(URI.decode(path));
 		try {
 			EObject eObject = ModelUtils.load(moduleURI, resourceSet);
 			assertThat(eObject, is(instanceOf(Module.class)));
@@ -98,7 +98,7 @@ public class GenerationTests extends AbstractAcceleoGenerator {
 
 			path = System.getProperty(USERDIR);
 			path = path + "/data/model.ecore";
-			URI modelURI = URI.createURI(path);
+			URI modelURI = URI.createFileURI(URI.decode(path));
 			EObject myModel = ModelUtils.load(modelURI, resourceSet);
 
 			AcceleoService service = new AcceleoService(new PreviewStrategy());
