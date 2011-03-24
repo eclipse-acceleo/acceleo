@@ -348,7 +348,7 @@ public class [classShortName/] extends AbstractAcceleoGenerator {
          * TODO If you need additional resource factories registrations, you can register them here. the following line
          * (in comment) is an example of the resource factory registration for UML. If you want to change the content
          * of this method, do NOT forget to change the "@generated" tag in the Javadoc of this method to "@generated NOT".
-         * Without this new tag, any compilation of the Acceleo module with the main templare that has caused the creation
+         * Without this new tag, any compilation of the Acceleo module with the main template that has caused the creation
          * of this class will revert your modifications. 
          */ 
         
