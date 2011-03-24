@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="acceleoJavaClassGenerator" nsURI="org::eclipse::acceleo::module::sample::files::acceleoJavaClassGenerator" startHeaderPosition="412" endHeaderPosition="505">
+  <mtl:Module name="acceleoJavaClassGenerator" nsURI="acceleoJavaClassGenerator" startHeaderPosition="412" endHeaderPosition="505">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
-      <body startPosition="33" endPosition="409" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
+      <body startPosition="33" endPosition="409" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
     </documentation>
     <input>
       <takesTypesFrom href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#/"/>
@@ -129,11 +129,11 @@
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass/classShortName"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="(modelURI, folder, arguments);&#xA;                &#xA;                /*&#xA;                 * Add the properties from the launch arguments.&#xA;                 * If you want to programmatically add new arguments, add them in &quot;propertiesfiles&quot;&#xA;                 * You can add the absolute path of a properties files, or even a project relative path.&#xA;                 * If you want to add another &quot;protocol&quot; for your properties files, please override &#xA;                 * &quot;getPropertiesLoaderService(AcceleoService)&quot; in order to return a new property loader.&#xA;                 * The basic properties loader will look for properties in the current project if the path&#xA;                 * of the properties file is like this &quot;packagea.packageb.packagec.default&quot; for a properties&#xA;                 * file named default.properties, or if the path is an absolute path. With a new property&#xA;                 * loader you could for example, look for properties files in a bundle.&#xA;                 */&#xA;                 &#xA;                for (int i = 2; i &lt; args.length; i++) {&#xA;                    generator.addPropertiesFile(args"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="(modelURI, folder, arguments);&#xA;                &#xA;                /*&#xA;                 * Add the properties from the launch arguments.&#xA;                 * If you want to programmatically add new arguments, add them in &quot;propertiesFiles&quot;&#xA;                 * You can add the absolute path of a properties files, or even a project relative path.&#xA;                 * If you want to add another &quot;protocol&quot; for your properties files, please override &#xA;                 * &quot;getPropertiesLoaderService(AcceleoService)&quot; in order to return a new property loader.&#xA;                 * The basic properties loader will look for properties in the current project if the path&#xA;                 * of the properties file is like this &quot;packagea.packageb.packagec.default&quot; for a properties&#xA;                 * file named default.properties, or if the path is an absolute path. With a new property&#xA;                 * loader you could for example, look for properties files in a bundle.&#xA;                 */&#xA;                 &#xA;                for (int i = 2; i &lt; args.length; i++) {&#xA;                    generator.addPropertiesFile(args"/>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[i]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this.&#xA;         * The default behavior should be sufficient in most cases.&#xA;         */&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        // TODO if you need to listen to generation event, add listeners to the list here&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &lt;p>&#xA;     * Properties need to be in source folders, the path that we expect to get as a result of this call are of&#xA;     * the form &amp;lt;package>.&amp;lt;properties file name without extension>. For example, if you have a file&#xA;     * named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;, the path that needs be returned by&#xA;     * a call to {@link #getProperties()} is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files,&#xA;         * add their qualified path to the list here. Properties files are&#xA;         * expected to be in source folders, and the path here to be the&#xA;         * qualified path as if referring to a Java class. For example, if you&#xA;         * have a file named &quot;messages.properties&quot; in package&#xA;         * &quot;org.eclipse.acceleo.sample&quot;, the path that needs be added to this&#xA;         * list is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @generated&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this. The default behavior should&#xA;         * be sufficient in most cases. If you want to change the content of this method, do NOT forget to&#xA;         * change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag,&#xA;         * any compilation of the Acceleo module with the main template that has caused the creation of this&#xA;         * class will revert your modifications.&#xA;         */&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        /*&#xA;         * TODO if you need to listen to generation event, add listeners to the list here. If you want to change&#xA;         * the content of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method&#xA;         * to &quot;@generated NOT&quot;. Without this new tag, any compilation of the Acceleo module with the main template&#xA;         * that has caused the creation of this class will revert your modifications.&#xA;         */&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &lt;p>&#xA;     * Properties need to be in source folders, the path that we expect to get as a result of this call are of&#xA;     * the form &amp;lt;package>.&amp;lt;properties file name without extension>. For example, if you have a file&#xA;     * named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;, the path that needs be returned by&#xA;     * a call to {@link #getProperties()} is &quot;org.eclipse.acceleo.sample.messages&quot;.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files, add their qualified path to the list here.&#xA;         * Properties files are expected to be in source folders, and the path here to be the qualified path as if referring&#xA;         * to a Java class. For example, if you have a file named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;,&#xA;         * the path that needs be added to this list is &quot;org.eclipse.acceleo.sample.messages&quot;. If you want to change the content&#xA;         * of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;.&#xA;         * Without this new tag, any compilation of the Acceleo module with the main template that has caused the creation of &#xA;         * this class will revert your modifications.&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @generated&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
@@ -162,7 +162,7 @@
             <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass/packages"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="        // TODO If you need additional package registrations, do them here. The following line is an example for UML.&#xA;        // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;    }&#xA;&#xA;    /**&#xA;     * This can be used to update the resource set's resource factory registry with all needed factories.&#xA;     * &#xA;     * @param resourceSet&#xA;     *            The resource set which registry has to be updated.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void registerResourceFactories(ResourceSet resourceSet) {&#xA;        super.registerResourceFactories(resourceSet);&#xA;        // TODO If you need additional resource factories registrations, do them here. The following line is an example for UML.&#xA;        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;    }&#xA;    &#xA;}&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="        /*&#xA;         * TODO If you need additional package registrations, you can register them here. The following line&#xA;         * (in comment) is an example of the package registration for UML. If you want to change the content&#xA;         * of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to&#xA;         * &quot;@generated NOT&quot;. Without this new tag, any compilation of the Acceleo module with the main template&#xA;         * that has caused the creation of this class will revert your modifications. You can use the method&#xA;         * &quot;isInWorkspace(Class c)&quot; to check if the package that you are about to register is in the workspace.&#xA;         * If you try to register a package that is in your workspace, you may create a conflict if the same&#xA;         * package is also registered from a plugin.&#xA;         */&#xA;        &#xA;        // resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;    }&#xA;&#xA;    /**&#xA;     * This can be used to update the resource set's resource factory registry with all needed factories.&#xA;     * &#xA;     * @param resourceSet&#xA;     *            The resource set which registry has to be updated.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void registerResourceFactories(ResourceSet resourceSet) {&#xA;        super.registerResourceFactories(resourceSet);&#xA;        /*&#xA;         * TODO If you need additional resource factories registrations, you can register them here. the following line&#xA;         * (in comment) is an example of the resource factory registration for UML. If you want to change the content&#xA;         * of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;.&#xA;         * Without this new tag, any compilation of the Acceleo module with the main templare that has caused the creation&#xA;         * of this class will revert your modifications. &#xA;         */ &#xA;        &#xA;        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;    }&#xA;    &#xA;}&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:OperationCallExp" referredOperation="/1/String_Class/+">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:PropertyCallExp">
@@ -735,12 +735,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genAbstractAcceleoGenerator">
       <details key="start" value="509"/>
-      <details key="end" value="13808"/>
+      <details key="end" value="15989"/>
       <details key="line" value="16"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genAbstractAcceleoGenerator/@body.0">
       <details key="start" value="592"/>
-      <details key="end" value="13796"/>
+      <details key="end" value="15977"/>
       <details key="line" value="17"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genAbstractAcceleoGenerator/@body.0/@body.0">
@@ -990,67 +990,67 @@
     </eAnnotations>
     <eAnnotations source="positions.52" references="/0/genAbstractAcceleoGenerator/@body.0/@body.30">
       <details key="start" value="7169"/>
-      <details key="end" value="12259"/>
+      <details key="end" value="13262"/>
       <details key="line" value="169"/>
     </eAnnotations>
     <eAnnotations source="positions.53" references="/0/genAbstractAcceleoGenerator/@body.0/@body.31">
-      <details key="start" value="12260"/>
-      <details key="end" value="12264"/>
+      <details key="start" value="13263"/>
+      <details key="end" value="13267"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.54" references="/0/genAbstractAcceleoGenerator/@body.0/@body.32">
-      <details key="start" value="12266"/>
-      <details key="end" value="12683"/>
-      <details key="line" value="296"/>
+      <details key="start" value="13269"/>
+      <details key="end" value="13686"/>
+      <details key="line" value="304"/>
     </eAnnotations>
     <eAnnotations source="positions.55" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33">
-      <details key="start" value="12691"/>
-      <details key="end" value="12908"/>
-      <details key="line" value="310"/>
+      <details key="start" value="13694"/>
+      <details key="end" value="13911"/>
+      <details key="line" value="318"/>
     </eAnnotations>
     <eAnnotations source="positions.56" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.0">
-      <details key="start" value="12728"/>
-      <details key="end" value="12755"/>
-      <details key="line" value="311"/>
+      <details key="start" value="13731"/>
+      <details key="end" value="13758"/>
+      <details key="line" value="319"/>
     </eAnnotations>
     <eAnnotations source="positions.57" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage">
-      <details key="start" value="12756"/>
-      <details key="end" value="12764"/>
+      <details key="start" value="13759"/>
+      <details key="end" value="13767"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.58" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.2">
-      <details key="start" value="12766"/>
-      <details key="end" value="12826"/>
-      <details key="line" value="311"/>
+      <details key="start" value="13769"/>
+      <details key="end" value="13829"/>
+      <details key="line" value="319"/>
     </eAnnotations>
     <eAnnotations source="positions.59" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.1">
-      <details key="start" value="12827"/>
-      <details key="end" value="12835"/>
+      <details key="start" value="13830"/>
+      <details key="end" value="13838"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.60" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.4">
-      <details key="start" value="12837"/>
-      <details key="end" value="12860"/>
-      <details key="line" value="312"/>
+      <details key="start" value="13840"/>
+      <details key="end" value="13863"/>
+      <details key="line" value="320"/>
     </eAnnotations>
     <eAnnotations source="positions.61" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.2">
-      <details key="start" value="12861"/>
-      <details key="end" value="12869"/>
+      <details key="start" value="13864"/>
+      <details key="end" value="13872"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.62" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.6">
-      <details key="start" value="12871"/>
-      <details key="end" value="12894"/>
-      <details key="line" value="312"/>
+      <details key="start" value="13874"/>
+      <details key="end" value="13897"/>
+      <details key="line" value="320"/>
     </eAnnotations>
     <eAnnotations source="positions.63" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage.3">
-      <details key="start" value="12697"/>
-      <details key="end" value="12714"/>
-      <details key="line" value="310"/>
+      <details key="start" value="13700"/>
+      <details key="end" value="13717"/>
+      <details key="line" value="318"/>
     </eAnnotations>
     <eAnnotations source="positions.64" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet">
-      <details key="start" value="12717"/>
-      <details key="end" value="12725"/>
+      <details key="start" value="13720"/>
+      <details key="end" value="13728"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.65" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet/self">
@@ -1059,9 +1059,9 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.66" references="/0/genAbstractAcceleoGenerator/@body.0/@body.34">
-      <details key="start" value="12909"/>
-      <details key="end" value="13789"/>
-      <details key="line" value="315"/>
+      <details key="start" value="13912"/>
+      <details key="end" value="15970"/>
+      <details key="line" value="323"/>
     </eAnnotations>
     <eAnnotations source="positions.67" references="/0/genAbstractAcceleoGenerator/@body.0/@fileUrl">
       <details key="start" value="599"/>
