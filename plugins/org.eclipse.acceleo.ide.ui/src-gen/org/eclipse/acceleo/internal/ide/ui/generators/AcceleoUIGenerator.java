@@ -85,11 +85,6 @@ public class AcceleoUIGenerator {
 	private static Module moduleGenerator;
 
 	/**
-	 * The Acceleo module that will generate the .project description file.
-	 */
-	private static Module projectDescription;
-
-	/**
 	 * The Acceleo module that will generate the .settings/org.eclipse.jdt.core.prefs file.
 	 */
 	private static Module projectSettings;
@@ -195,20 +190,6 @@ public class AcceleoUIGenerator {
 		generate(moduleGenerator, acceleoModule, outputContainer,
 				IAcceleoGenerationConstants.ACCELEO_MODULE_GENERATOR_URI,
 				IAcceleoGenerationConstants.ACCELEO_MODULE_TEMPLATE_URI);
-	}
-
-	/**
-	 * Generates the .project file.
-	 * 
-	 * @param acceleoProject
-	 *            the Acceleo project
-	 * @param outputContainer
-	 *            The output container.
-	 */
-	public void generateProjectDescription(AcceleoProject acceleoProject, IContainer outputContainer) {
-		generate(projectDescription, acceleoProject, outputContainer,
-				IAcceleoGenerationConstants.PROJECT_DESCRIPTION_GENERATOR_URI,
-				IAcceleoGenerationConstants.PROJECT_DESCRIPTION_TEMPLATE_URI);
 	}
 
 	/**
