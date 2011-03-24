@@ -165,11 +165,7 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 		}
 
 		// Unknown content and uri of an emtl file.
-		String path = uri.toString();
-		if (path != null && path.startsWith("file:")) { //$NON-NLS-1$
-			path = path.substring("file:".length()); //$NON-NLS-1$
-		}
-		File file = new File(path);
+		File file = new File(uri.toFileString());
 		if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
 				.equals(contentTypeIdentifier))
 				&& file.exists()) {
