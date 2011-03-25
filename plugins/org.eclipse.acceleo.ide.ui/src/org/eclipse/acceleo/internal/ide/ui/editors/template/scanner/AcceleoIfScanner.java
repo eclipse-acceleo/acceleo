@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 
 /**
  * A scanner for detecting 'if' sequences.
@@ -25,7 +25,7 @@ public class AcceleoIfScanner extends AcceleoBlockScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoIfScanner(ColorManager manager) {
+	public AcceleoIfScanner(AcceleoColorManager manager) {
 		super(manager, true);
 	}
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
@@ -38,18 +38,22 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoTemplateScanner(ColorManager manager) {
+	public AcceleoTemplateScanner(AcceleoColorManager manager) {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(IAcceleoColorConstants.LITERAL)))));
+				new TextAttribute(manager.getColor(
+						IAcceleoColorConstants.ACCELEO_COLOR_LITERAL_PREFERENCE_KEY,
+						IAcceleoColorConstants.LITERAL)))));
 		computeFirstVariableRule(rules, IAcceleoConstants.TEMPLATE, manager);
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
 		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, manager));
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(IAcceleoColorConstants.TEMPLATE))));
+		setDefaultReturnToken(new Token(new TextAttribute(manager
+				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
+						IAcceleoColorConstants.TEMPLATE))));
 	}
 
 	/**
@@ -62,9 +66,13 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	private void computeFirstVariableRule(List<IRule> rules, String behaviorType, ColorManager manager) {
-		final Color foreGroundColor = manager.getColor(IAcceleoColorConstants.TEMPLATE);
-		final Color backGroundColor = manager.getColor(IAcceleoColorConstants.FIRST_VARIABLE);
+	private void computeFirstVariableRule(List<IRule> rules, String behaviorType, AcceleoColorManager manager) {
+		final Color foreGroundColor = manager
+				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
+						IAcceleoColorConstants.TEMPLATE);
+		final Color backGroundColor = manager.getColor(
+				IAcceleoColorConstants.ACCELEO_COLOR_FIRST_VAR_PREFERENCE_KEY,
+				IAcceleoColorConstants.FIRST_VARIABLE);
 		final String unknown = "*"; //$NON-NLS-1$
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
 				unknown, IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
@@ -83,9 +91,10 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 * @return the new keyword rule
 	 */
-	private IRule computeKeywordRule(String keyword, ColorManager manager) {
+	private IRule computeKeywordRule(String keyword, AcceleoColorManager manager) {
 		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
+				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
+						IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
 	}
 
 	/**
@@ -97,9 +106,10 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String delimiter, ColorManager manager) {
+	private IRule computeDelimiterRule(String delimiter, AcceleoColorManager manager) {
 		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
+				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
+						IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
 	}
 
 	/**

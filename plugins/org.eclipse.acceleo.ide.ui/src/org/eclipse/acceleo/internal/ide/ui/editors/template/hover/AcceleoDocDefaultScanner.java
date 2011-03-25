@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoWhitespaceDetector;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
-import org.eclipse.swt.graphics.RGB;
 
 /**
  * A default scanner.
@@ -33,11 +33,12 @@ public class AcceleoDocDefaultScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoDocDefaultScanner(ColorManager manager) {
+	public AcceleoDocDefaultScanner(AcceleoColorManager manager) {
 		IRule[] rules = new IRule[1];
 		rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		this.setRules(rules);
-		this.setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(new RGB(0, 0, 0)))));
+		this.setDefaultReturnToken(new Token(
+				new TextAttribute(manager.getColor(IAcceleoColorConstants.BLACK))));
 	}
 
 	/**

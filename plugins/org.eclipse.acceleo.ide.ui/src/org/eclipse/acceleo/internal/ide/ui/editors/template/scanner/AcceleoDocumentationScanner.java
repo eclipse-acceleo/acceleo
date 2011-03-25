@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
@@ -31,7 +31,7 @@ public class AcceleoDocumentationScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoDocumentationScanner(ColorManager manager) {
+	public AcceleoDocumentationScanner(AcceleoColorManager manager) {
 		// indices declaration, viva checkstyle
 		final int seven = 7;
 		final int eight = 8;
@@ -39,25 +39,37 @@ public class AcceleoDocumentationScanner extends AbstractAcceleoScanner {
 
 		IRule[] rules = new IRule[nine];
 		rules[0] = new KeywordRule(IAcceleoConstants.TAG_AUTHOR, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[1] = new KeywordRule(IAcceleoConstants.TAG_DEPRECATED, true, false, new Token(
-				new TextAttribute(manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				new TextAttribute(manager.getColor(
+						IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[2] = new KeywordRule(IAcceleoConstants.TAG_INHERITDOC, true, false, new Token(
-				new TextAttribute(manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				new TextAttribute(manager.getColor(
+						IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[3] = new KeywordRule(IAcceleoConstants.TAG_PARAM, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[4] = new KeywordRule(IAcceleoConstants.TAG_SINCE, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[5] = new KeywordRule(IAcceleoConstants.TAG_VERSION, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[6] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[seven] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		rules[eight] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
+						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(IAcceleoColorConstants.COMMENT))));
+		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(
+				IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY, IAcceleoColorConstants.COMMENT))));
 	}
 
 	/**

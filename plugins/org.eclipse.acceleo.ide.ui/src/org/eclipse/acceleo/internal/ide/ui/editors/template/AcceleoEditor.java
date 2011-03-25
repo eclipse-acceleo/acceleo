@@ -145,7 +145,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	/**
 	 * Color manager for the syntax highlighting of this editor.
 	 */
-	private ColorManager colorManager;
+	private AcceleoColorManager colorManager;
 
 	/**
 	 * Content outline page.
@@ -207,7 +207,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	public AcceleoEditor() {
 		super();
 		content = new AcceleoSourceContent();
-		colorManager = new ColorManager();
+		colorManager = new AcceleoColorManager();
 		blockMatcher = new AcceleoPairMatcher();
 	}
 
@@ -225,7 +225,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * 
 	 * @return the color manager
 	 */
-	public ColorManager getColorManager() {
+	public AcceleoColorManager getColorManager() {
 		return colorManager;
 	}
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
@@ -60,7 +60,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * @param manager
 	 *            is the color manager
 	 */
-	public AcceleoBlockScanner(ColorManager manager) {
+	public AcceleoBlockScanner(AcceleoColorManager manager) {
 		this(manager, false);
 	}
 
@@ -72,7 +72,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * @param italic
 	 *            indicates if the italic style must be used
 	 */
-	public AcceleoBlockScanner(ColorManager manager, boolean italic) {
+	public AcceleoBlockScanner(AcceleoColorManager manager, boolean italic) {
 		IRule[] rules = getRules(manager, italic);
 		setRules(rules);
 		setDefaultReturnToken(getDefaultReturnToken(manager, italic));
@@ -87,7 +87,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 *            indicates if the italic style must be used
 	 * @return the rules of the scanner
 	 */
-	protected IRule[] getRules(ColorManager manager, boolean italic) {
+	protected IRule[] getRules(AcceleoColorManager manager, boolean italic) {
 		int style;
 		if (italic) {
 			style = SWT.ITALIC;
@@ -97,11 +97,16 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(IAcceleoColorConstants.LITERAL), null, style))));
+				new TextAttribute(manager.getColor(
+						IAcceleoColorConstants.ACCELEO_COLOR_LITERAL_PREFERENCE_KEY,
+						IAcceleoColorConstants.LITERAL), null, style))));
 		computeKeywordRules(rules, manager, italic);
 		computeDelimitersRules(rules, manager, italic);
-		Color foreGroundColor = manager.getColor(IAcceleoColorConstants.KEYWORD);
-		Color backGroundColor = manager.getColor(IAcceleoColorConstants.FIRST_VARIABLE);
+		Color foreGroundColor = manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
+				IAcceleoColorConstants.KEYWORD);
+		Color backGroundColor = manager.getColor(
+				IAcceleoColorConstants.ACCELEO_COLOR_FIRST_VAR_PREFERENCE_KEY,
+				IAcceleoColorConstants.FIRST_VARIABLE);
 		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.FOR,
 				IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
 				backGroundColor, style))));
@@ -125,7 +130,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * @param italic
 	 *            indicates if the italic style must be used
 	 */
-	private void computeKeywordRules(List<IRule> rules, ColorManager manager, boolean italic) {
+	private void computeKeywordRules(List<IRule> rules, AcceleoColorManager manager, boolean italic) {
 		int style;
 		if (italic) {
 			style = SWT.ITALIC | SWT.BOLD;
@@ -134,8 +139,9 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		}
 		for (int i = 0; i < KEYWORDS.length; i++) {
 			String keyword = KEYWORDS[i];
-			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
-					.getColor(IAcceleoColorConstants.KEYWORD), null, style))));
+			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager.getColor(
+					IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
+					IAcceleoColorConstants.KEYWORD), null, style))));
 		}
 	}
 
@@ -149,7 +155,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 * @param italic
 	 *            indicates if the italic style must be used
 	 */
-	private void computeDelimitersRules(List<IRule> rules, ColorManager manager, boolean italic) {
+	private void computeDelimitersRules(List<IRule> rules, AcceleoColorManager manager, boolean italic) {
 		int style;
 		if (italic) {
 			style = SWT.ITALIC | SWT.BOLD;
@@ -158,8 +164,9 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		}
 		for (int i = 0; i < DELIMITERS.length; i++) {
 			String keyword = DELIMITERS[i];
-			rules.add(new KeywordRule(keyword, false, false, new Token(new TextAttribute(manager
-					.getColor(IAcceleoColorConstants.KEYWORD), null, style))));
+			rules.add(new KeywordRule(keyword, false, false, new Token(new TextAttribute(manager.getColor(
+					IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
+					IAcceleoColorConstants.KEYWORD), null, style))));
 		}
 	}
 
@@ -172,14 +179,16 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 *            indicates if the italic style must be used
 	 * @return the default token
 	 */
-	protected Token getDefaultReturnToken(ColorManager manager, boolean italic) {
+	protected Token getDefaultReturnToken(AcceleoColorManager manager, boolean italic) {
 		int style;
 		if (italic) {
 			style = SWT.ITALIC;
 		} else {
 			style = SWT.NONE;
 		}
-		return new Token(new TextAttribute(manager.getColor(IAcceleoColorConstants.BLOCK), null, style));
+		return new Token(new TextAttribute(manager.getColor(
+				IAcceleoColorConstants.ACCELEO_COLOR_BLOCK_PREFERENCE_KEY, IAcceleoColorConstants.BLOCK),
+				null, style));
 	}
 
 	/**

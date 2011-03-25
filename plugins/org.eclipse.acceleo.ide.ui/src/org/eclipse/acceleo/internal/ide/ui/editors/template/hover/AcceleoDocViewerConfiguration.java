@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -28,14 +28,14 @@ public class AcceleoDocViewerConfiguration extends SourceViewerConfiguration {
 	/**
 	 * The color manager.
 	 */
-	private ColorManager colorManager;
+	private AcceleoColorManager colorManager;
 
 	/**
 	 * The constructor.
 	 */
 	public AcceleoDocViewerConfiguration() {
 		super();
-		this.colorManager = new ColorManager();
+		this.colorManager = new AcceleoColorManager();
 	}
 
 	/**

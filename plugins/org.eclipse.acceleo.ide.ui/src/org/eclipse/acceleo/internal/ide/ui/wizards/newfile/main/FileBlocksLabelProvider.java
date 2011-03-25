@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.ColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -41,7 +41,7 @@ public class FileBlocksLabelProvider extends AdapterFactoryLabelProvider {
 	/**
 	 * The color manager.
 	 */
-	private ColorManager manager = new ColorManager();
+	private AcceleoColorManager manager = new AcceleoColorManager();
 
 	/**
 	 * Construct an instance that wraps this factory.
@@ -61,7 +61,7 @@ public class FileBlocksLabelProvider extends AdapterFactoryLabelProvider {
 	@Override
 	public Color getBackground(Object object) {
 		if (object instanceof FileBlocksProjectHandler && !((FileBlocksProjectHandler)object).isResolved()) {
-			return manager.getColor(IAcceleoColorConstants.TEMPLATE);
+			return manager.getColor(IAcceleoColorConstants.RED);
 		}
 		return super.getBackground(object);
 	}
