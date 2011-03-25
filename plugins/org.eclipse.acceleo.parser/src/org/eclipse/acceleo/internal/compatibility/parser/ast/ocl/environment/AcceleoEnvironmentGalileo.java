@@ -19,6 +19,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
+import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoTypeResolver;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -36,6 +37,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.AbstractTypeChecker;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.TypeChecker;
+import org.eclipse.ocl.TypeResolver;
 import org.eclipse.ocl.ecore.BagType;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
@@ -102,6 +104,26 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			typeChecker = new AcceleoTypeChecker(this);
 		}
 		return typeChecker;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#createTypeResolver()
+	 */
+	@Override
+	protected TypeResolver<EClassifier, EOperation, EStructuralFeature> createTypeResolver() {
+		return new AcceleoTypeResolver(null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#createTypeResolver(org.eclipse.emf.ecore.resource.Resource)
+	 */
+	@Override
+	protected TypeResolver<EClassifier, EOperation, EStructuralFeature> createTypeResolver(Resource resource) {
+		return new AcceleoTypeResolver(this, resource);
 	}
 
 	/**
