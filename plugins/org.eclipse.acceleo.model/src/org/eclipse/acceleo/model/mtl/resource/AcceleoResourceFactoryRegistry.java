@@ -165,45 +165,48 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 		}
 
 		// Unknown content and uri of an emtl file.
-		File file = new File(uri.toFileString());
-		if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
-				.equals(contentTypeIdentifier))
-				&& file.exists()) {
-			InputStream stream = null;
-			InputStream containingStream = null;
-			try {
-				stream = new FileInputStream(file);
-
-				final int bufferSize = 1024;
-				containingStream = new LazyInputStream(stream, bufferSize);
-
-				EMtlBinaryResourceContentDescriber binaryContentDescriber = new EMtlBinaryResourceContentDescriber();
-				int describe = binaryContentDescriber.describe(containingStream, null);
-
-				if (describe == IContentDescriber.VALID) {
-					factory = new EMtlBinaryResourceFactoryImpl();
-				} else {
-					factory = new EMtlResourceFactoryImpl();
-				}
-
-			} catch (FileNotFoundException e) {
-				AcceleoCommonPlugin.log(e, false);
-			} catch (IOException e) {
-				AcceleoCommonPlugin.log(e, false);
-			} finally {
+		String path = uri.toFileString();
+		if (path != null) {
+			File file = new File(path);
+			if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
+					.equals(contentTypeIdentifier))
+					&& file.exists()) {
+				InputStream stream = null;
+				InputStream containingStream = null;
 				try {
-					if (containingStream != null) {
-						containingStream.close();
+					stream = new FileInputStream(file);
+
+					final int bufferSize = 1024;
+					containingStream = new LazyInputStream(stream, bufferSize);
+
+					EMtlBinaryResourceContentDescriber binaryContentDescriber = new EMtlBinaryResourceContentDescriber();
+					int describe = binaryContentDescriber.describe(containingStream, null);
+
+					if (describe == IContentDescriber.VALID) {
+						factory = new EMtlBinaryResourceFactoryImpl();
+					} else {
+						factory = new EMtlResourceFactoryImpl();
 					}
+
+				} catch (FileNotFoundException e) {
+					AcceleoCommonPlugin.log(e, false);
 				} catch (IOException e) {
 					AcceleoCommonPlugin.log(e, false);
-				}
-				try {
-					if (stream != null) {
-						stream.close();
+				} finally {
+					try {
+						if (containingStream != null) {
+							containingStream.close();
+						}
+					} catch (IOException e) {
+						AcceleoCommonPlugin.log(e, false);
 					}
-				} catch (IOException e) {
-					AcceleoCommonPlugin.log(e, false);
+					try {
+						if (stream != null) {
+							stream.close();
+						}
+					} catch (IOException e) {
+						AcceleoCommonPlugin.log(e, false);
+					}
 				}
 			}
 		} else if (IAcceleoConstants.BINARY_CONTENT_TYPE.equals(contentTypeIdentifier)) {
