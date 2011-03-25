@@ -166,6 +166,14 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 
 		// Unknown content and uri of an emtl file.
 		String path = uri.toFileString();
+
+		if (path == null) {
+			path = uri.toString();
+			if (path.startsWith("file:")) { //$NON-NLS-1$
+				path = path.substring("file:".length()); //$NON-NLS-1$
+			}
+		}
+
 		if (path != null) {
 			File file = new File(path);
 			if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
@@ -209,10 +217,13 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 					}
 				}
 			}
-		} else if (IAcceleoConstants.BINARY_CONTENT_TYPE.equals(contentTypeIdentifier)) {
-			factory = new EMtlBinaryResourceFactoryImpl();
-		} else if (IAcceleoConstants.XMI_CONTENT_TYPE.equals(contentTypeIdentifier)) {
-			factory = new EMtlResourceFactoryImpl();
+		}
+		if (factory == null) {
+			if (IAcceleoConstants.BINARY_CONTENT_TYPE.equals(contentTypeIdentifier)) {
+				factory = new EMtlBinaryResourceFactoryImpl();
+			} else if (IAcceleoConstants.XMI_CONTENT_TYPE.equals(contentTypeIdentifier)) {
+				factory = new EMtlResourceFactoryImpl();
+			}
 		}
 
 		return factory;
