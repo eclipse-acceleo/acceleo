@@ -26,6 +26,9 @@ import org.eclipse.ocl.types.OCLStandardLibrary;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoOCLReflection {
+	/** Whole set of reserved keywords for the current OCL version. */
+	private static Set<String> reservedKeywords;
+
 	/** Parent environment of this reflection. */
 	private EcoreEnvironment environment;
 
@@ -34,9 +37,6 @@ public class AcceleoOCLReflection {
 
 	/** Classifier representing the OCL invalid type. */
 	private EClassifier oclInvalid;
-
-	/** Whole set of reserved keywords for the current OCL version. */
-	private Set<String> reservedKeywords;
 
 	/**
 	 * Prepares the library reflection using the given parent environment.
@@ -111,7 +111,7 @@ public class AcceleoOCLReflection {
 	 * 
 	 * @return The list of reserved keyword for this specific version of OCL.
 	 */
-	public Set<String> getReservedKeywords() {
+	public static Set<String> getReservedKeywords() {
 		if (reservedKeywords != null) {
 			return reservedKeywords;
 		}
