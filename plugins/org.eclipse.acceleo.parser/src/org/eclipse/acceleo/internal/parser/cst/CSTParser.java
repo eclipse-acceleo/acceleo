@@ -1347,6 +1347,9 @@ public class CSTParser {
 						IAcceleoConstants.VISIBILITY_KIND_PUBLIC, true);
 				if (b != posShift) {
 					eModuleElement.setVisibility(VisibilityKind.PUBLIC);
+				} else {
+					this.logWarning(AcceleoParserMessages.getString("CSTParser.MissingVisibility"), //$NON-NLS-1$
+							eModuleElement.getStartPosition(), eModuleElement.getStartPosition());
 				}
 			}
 		}
