@@ -195,6 +195,12 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				commonSuperType = oclType1;
 			} else if (oclType2 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
 				commonSuperType = oclType2;
+			} else if (oclType1 instanceof CollectionType<?, ?>
+					&& !(oclType2 instanceof CollectionType<?, ?>)) {
+				commonSuperType = getEnvironment().getOCLStandardLibrary().getOclAny();
+			} else if (oclType2 instanceof CollectionType<?, ?>
+					&& !(oclType1 instanceof CollectionType<?, ?>)) {
+				commonSuperType = getEnvironment().getOCLStandardLibrary().getOclAny();
 			} else {
 				commonSuperType = super.commonSuperType(problemObject, type1, type2);
 			}
