@@ -380,7 +380,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (this.occurrencesFinderJob != null) {
 			this.occurrencesFinderJob.cancel();
 		}
-		if (content != null && content.getFile() != null) {
+		if (content != null && content.getFile() != null && content.getFile().exists()) {
 			try {
 				IMarker[] markers = content.getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
 						false, IResource.DEPTH_INFINITE);
