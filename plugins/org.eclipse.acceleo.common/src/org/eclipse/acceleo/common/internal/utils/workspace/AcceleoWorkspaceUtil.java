@@ -540,28 +540,24 @@ public final class AcceleoWorkspaceUtil {
 		 * loop over to the next.
 		 */
 		for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
-			final IPluginModelBase model = entry.getKey();
-
-			if (hasCorrespondingExportPackage(model, qualifiedName)) {
-				final Bundle bundle = entry.getValue();
-				URL propertiesResource = bundle.getResource(qualifiedName.replace('.', '/') + ".properties"); //$NON-NLS-1$
-				if (propertiesResource != null) {
-					InputStream stream = null;
+			final Bundle bundle = entry.getValue();
+			URL propertiesResource = bundle.getResource(qualifiedName.replace('.', '/') + ".properties"); //$NON-NLS-1$
+			if (propertiesResource != null) {
+				InputStream stream = null;
+				try {
+					stream = propertiesResource.openStream();
+					// make sure this stream is buffered
+					stream = new BufferedInputStream(stream);
+					return new PropertyResourceBundle(stream);
+				} catch (IOException e) {
+					// Swallow this, we'll throw the original MissingResourceException
+				} finally {
 					try {
-						stream = propertiesResource.openStream();
-						// make sure this stream is buffered
-						stream = new BufferedInputStream(stream);
-						return new PropertyResourceBundle(stream);
+						if (stream != null) {
+							stream.close();
+						}
 					} catch (IOException e) {
 						// Swallow this, we'll throw the original MissingResourceException
-					} finally {
-						try {
-							if (stream != null) {
-								stream.close();
-							}
-						} catch (IOException e) {
-							// Swallow this, we'll throw the original MissingResourceException
-						}
 					}
 				}
 			}
