@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -25,6 +23,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 /**
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
@@ -280,10 +280,10 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingVisibility.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(0, 0, 0);
-			checkASTResolution(0, 0, 0);
-			checkASTDocumentationResolution(0, 0, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(0, 1, 0);
+			checkASTResolution(0, 1, 0);
+			checkASTDocumentationResolution(0, 1, 0);
 		} else {
 			fail();
 		}
@@ -297,10 +297,10 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidVisibility.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 1);
-			checkCST2ASTConvertion(0, 0, 1);
-			checkASTResolution(0, 0, 1);
-			checkASTDocumentationResolution(0, 0, 1);
+			checkCSTParsing(moduleFile, 0, 1, 1);
+			checkCST2ASTConvertion(0, 1, 1);
+			checkASTResolution(0, 1, 1);
+			checkASTDocumentationResolution(0, 1, 1);
 		} else {
 			fail();
 		}

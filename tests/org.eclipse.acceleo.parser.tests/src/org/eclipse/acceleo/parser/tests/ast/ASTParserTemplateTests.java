@@ -552,10 +552,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidVisibility.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 1);
-			checkCST2ASTConvertion(0, 0, 1);
-			checkASTResolution(0, 0, 1);
-			checkASTDocumentationResolution(0, 0, 1);
+			checkCSTParsing(moduleFile, 0, 1, 1);
+			checkCST2ASTConvertion(0, 1, 1);
+			checkASTResolution(0, 1, 1);
+			checkASTDocumentationResolution(0, 1, 1);
 		} else {
 			fail();
 		}
@@ -637,10 +637,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingVisibility.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(0, 0, 0);
-			checkASTResolution(0, 0, 0);
-			checkASTDocumentationResolution(0, 0, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(0, 1, 0);
+			checkASTResolution(0, 1, 0);
+			checkASTDocumentationResolution(0, 1, 0);
 		} else {
 			fail();
 		}
