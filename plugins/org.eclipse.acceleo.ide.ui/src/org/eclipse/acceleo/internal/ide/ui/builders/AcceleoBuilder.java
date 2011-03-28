@@ -233,7 +233,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			validateAcceleoBuildFile(monitor);
 		} else {
 			// We have deleted a file, let's build the whole project.
-			this.fullBuild(monitor);
+			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
+			if (affectedChildren.length == 2 && affectedChildren[0].getResource() instanceof IFolder
+					&& affectedChildren[1].getResource() instanceof IFolder) {
+				this.fullBuild(monitor);
+			}
 		}
 
 	}
