@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
@@ -34,8 +35,7 @@ public class AcceleoDefaultScanner extends AbstractAcceleoScanner {
 		IRule[] rules = new IRule[1];
 		rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_DEFAULT_PREFERENCE_KEY, IAcceleoColorConstants.DEFAULT))));
+		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.DEFAULT))));
 	}
 
 	/**

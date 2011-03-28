@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Obeo.
+ * Copyright (c) 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,11 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
 /**
- * A rule to detect the first variable of a block.
+ * A rule to detect the variables of a block.
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class FirstVariableRule implements ISequenceRule {
-
+public class VariableRule implements ISequenceRule {
 	/**
 	 * The words used before the first variable. '*' can be used to match an unknown java word. <li>'for' '('</li>
 	 * <li>'let'</li> <li>'template' '*' '('</li>
@@ -40,7 +39,7 @@ public class FirstVariableRule implements ISequenceRule {
 	 * @param token
 	 *            is the token to use for this rule
 	 */
-	public FirstVariableRule(String[] previousWords, IToken token) {
+	public VariableRule(String[] previousWords, IToken token) {
 		this.previousWords = previousWords;
 		this.token = token;
 	}
@@ -78,26 +77,46 @@ public class FirstVariableRule implements ISequenceRule {
 		}
 		assert scanner.getColumn() == column;
 		boolean result = true;
+		boolean readNext = true;
 		int shift = 0;
-		int n = readOneWord(scanner);
-		if (n == 0) {
-			result = false;
-		} else {
-			shift += n + readWhitespace(scanner);
-			int c = scanner.read();
-			if (c != ':') {
-				scanner.unread();
+
+		while (result && readNext) {
+			int n = readOneWord(scanner);
+			if (n == 0) {
 				result = false;
 			} else {
-				shift += 1 + readWhitespace(scanner);
-				n = readOneWord(scanner);
-				if (n == 0) {
+				shift += n + readWhitespace(scanner);
+				int c = scanner.read();
+				if (c != ':') {
+					scanner.unread();
 					result = false;
 				} else {
-					shift += n;
+					shift += 1 + readWhitespace(scanner);
+					n = readOneWord(scanner);
+					if (n == 0) {
+						result = false;
+					} else {
+						shift += n;
+					}
+				}
+			}
+			if (result) {
+				int whitespaces = readWhitespace(scanner);
+				int c = scanner.read();
+				if (c != ',') {
+					scanner.unread();
+					while (whitespaces > 0) {
+						scanner.unread();
+						whitespaces--;
+					}
+					readNext = false;
+				} else {
+					shift += whitespaces + 1;
+					shift += readWhitespace(scanner);
 				}
 			}
 		}
+
 		if (!result) {
 			while (shift > 0) {
 				scanner.unread();
@@ -114,7 +133,7 @@ public class FirstVariableRule implements ISequenceRule {
 	 *            is the scanner
 	 * @return true if the previous words are valid
 	 */
-	protected boolean validatePreviousWords(ICharacterScanner scanner) {
+	private boolean validatePreviousWords(ICharacterScanner scanner) {
 		boolean valid = true;
 		int shift = 0;
 		for (int i = previousWords.length - 1; valid && i >= 0; i--) {

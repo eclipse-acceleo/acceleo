@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.swt.graphics.Color;
@@ -36,7 +36,7 @@ public class AcceleoDocTitleScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 */
 	public AcceleoDocTitleScanner(AcceleoColorManager manager) {
-		final Color green = manager.getColor(IAcceleoColorConstants.BLACK);
+		final Color green = manager.getColor(AcceleoColor.BLACK);
 
 		// IRule[] rules = new IRule[2];
 		// rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());

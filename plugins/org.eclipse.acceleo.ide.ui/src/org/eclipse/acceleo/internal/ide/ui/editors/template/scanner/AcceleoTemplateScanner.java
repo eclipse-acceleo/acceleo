@@ -14,16 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.BlockNameRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstParenthesisRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordSequenceRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.OverrideNameRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.VariableRule;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * A scanner for detecting 'template' sequences.
@@ -31,7 +35,6 @@ import org.eclipse.swt.graphics.Color;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
 	 * 
@@ -42,74 +45,199 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(
-						IAcceleoColorConstants.ACCELEO_COLOR_LITERAL_PREFERENCE_KEY,
-						IAcceleoColorConstants.LITERAL)))));
-		computeFirstVariableRule(rules, IAcceleoConstants.TEMPLATE, manager);
+				new TextAttribute(manager.getColor(AcceleoColor.LITERAL)))));
+
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
-		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
-		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
-		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, manager));
+		rules.add(computeFirstParenthesisRule(manager));
+
+		rules.addAll(computeKeywordRules(manager));
+		rules.addAll(computeDelimiterRules(manager));
+		rules.add(computeVariableRule(manager));
+		rules.add(computeTemplateNameRule(manager));
+		rules.add(computeOverrideNameRule(manager));
+
 		setRules(rules.toArray(new IRule[rules.size()]));
 		setDefaultReturnToken(new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
-						IAcceleoColorConstants.TEMPLATE))));
+				.getColor(AcceleoColor.TEMPLATE_OCL_EXPRESSION))));
 	}
 
 	/**
-	 * Creates the rule for the first variable highlighting.
+	 * Creates the rule for the first parenthesis of the signature. Needs special handling as it is not
+	 * preceded nor followed by a predictable keyword.
 	 * 
-	 * @param rules
-	 *            is a list of rules (output parameter)
-	 * @param behaviorType
-	 *            is the name of the behavioral feature : 'template', 'query', or 'macro'
 	 * @param manager
 	 *            is the color manager
+	 * @return The created rule.
 	 */
-	private void computeFirstVariableRule(List<IRule> rules, String behaviorType, AcceleoColorManager manager) {
-		final Color foreGroundColor = manager
-				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
-						IAcceleoColorConstants.TEMPLATE);
-		final Color backGroundColor = manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_FIRST_VAR_PREFERENCE_KEY,
-				IAcceleoColorConstants.FIRST_VARIABLE);
-		final String unknown = "*"; //$NON-NLS-1$
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
-				unknown, IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
-				backGroundColor, SWT.NONE))));
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, behaviorType, unknown,
-				IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
-				backGroundColor, SWT.NONE))));
+	private IRule computeFirstParenthesisRule(AcceleoColorManager manager) {
+		return new FirstParenthesisRule(IAcceleoConstants.TEMPLATE, new Token(new TextAttribute(manager
+				.getColor(AcceleoColor.TEMPLATE), null, SWT.BOLD)));
 	}
 
 	/**
-	 * Creates a rule for the given keyword.
+	 * Creates all keyword rules pertaining to an Acceleo Template.
 	 * 
+	 * @param manager
+	 *            is the color manager
+	 * @return The created rules.
+	 */
+	private List<IRule> computeKeywordRules(AcceleoColorManager manager) {
+		List<IRule> rules = new ArrayList<IRule>();
+
+		rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.TEMPLATE, null,
+				manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.TEMPLATE,
+				IAcceleoConstants.DEFAULT_END, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.OVERRIDES, null,
+				manager));
+		rules.add(computeKeywordRule(null, IAcceleoConstants.GUARD, IAcceleoConstants.PARENTHESIS_BEGIN,
+				manager));
+		rules.add(computeKeywordRule(null, IAcceleoConstants.POST, IAcceleoConstants.PARENTHESIS_BEGIN,
+				manager));
+
+		// Visibility keywords
+		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, IAcceleoConstants.VISIBILITY_KIND_PUBLIC,
+				null, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, IAcceleoConstants.VISIBILITY_KIND_PROTECTED,
+				null, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.TEMPLATE, IAcceleoConstants.VISIBILITY_KIND_PRIVATE,
+				null, manager));
+
+		return rules;
+	}
+
+	/**
+	 * Creates a keyword rule.
+	 * 
+	 * @param precedingDelimiter
+	 *            The delimiter that needs to precede the keyword.
 	 * @param keyword
-	 *            is the keyword
+	 *            The keyword we need to detect.
+	 * @param followingDelimiter
+	 *            The delimiter that needs to follow the keyword.
 	 * @param manager
 	 *            is the color manager
-	 * @return the new keyword rule
+	 * @return The created rule.
 	 */
-	private IRule computeKeywordRule(String keyword, AcceleoColorManager manager) {
-		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
-						IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
+	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter,
+			AcceleoColorManager manager) {
+		return new KeywordSequenceRule(precedingDelimiter, keyword, followingDelimiter, new Token(
+				new TextAttribute(manager.getColor(AcceleoColor.TEMPLATE), null, SWT.BOLD)));
+	}
+
+	/**
+	 * Creates all delimiter rules pertaining to an Acceleo Template.
+	 * 
+	 * @param manager
+	 *            The color manager.
+	 * @return The created rules.
+	 */
+	private List<IRule> computeDelimiterRules(AcceleoColorManager manager) {
+		List<IRule> rules = new ArrayList<IRule>();
+
+		// The "[" delimiter must be followed by the "template" keyword or the "/" of a closing tag
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.TEMPLATE,
+				manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN,
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, manager));
+
+		// The "/" of a body's end must be either preceded by "[" or followed by "]"
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN,
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, null, manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_END_BODY_CHAR,
+				IAcceleoConstants.DEFAULT_END, manager));
+
+		// The "]" character can be preceded by either ")", "}", or the "template" keyword
+		rules.add(computeDelimiterRule(IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.DEFAULT_END,
+				null, manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.BRACKETS_END, IAcceleoConstants.DEFAULT_END, null,
+				manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.TEMPLATE, IAcceleoConstants.DEFAULT_END, null,
+				manager));
+
+		// Parenthesis are delimiter themselves if and only if the are preceded or followed by a keyword
+		rules.add(computeDelimiterRule(IAcceleoConstants.TEMPLATE, IAcceleoConstants.PARENTHESIS_BEGIN, null,
+				manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.OVERRIDES, IAcceleoConstants.PARENTHESIS_BEGIN,
+				null, manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.GUARD, IAcceleoConstants.PARENTHESIS_BEGIN, null,
+				manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.POST, IAcceleoConstants.PARENTHESIS_BEGIN, null,
+				manager));
+
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.OVERRIDES,
+				manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.GUARD,
+				manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.POST,
+				manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END,
+				IAcceleoConstants.BRACKETS_BEGIN, manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END,
+				IAcceleoConstants.DEFAULT_END, manager));
+
+		// And brackets are delimiters too
+		rules.add(computeDelimiterRule(IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.BRACKETS_BEGIN,
+				null, manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.BRACKETS_END, IAcceleoConstants.DEFAULT_END,
+				manager));
+
+		return rules;
 	}
 
 	/**
 	 * Creates a rule for the given delimiter.
 	 * 
+	 * @param precedingText
+	 *            The text that needs to precede the delimiter. Can be <code>null</code>.
 	 * @param delimiter
-	 *            is the delimiter text
+	 *            The delimiter we need to detect.
+	 * @param followingText
+	 *            The text that needs to follow the keyword. Can be <code>null</code>.
 	 * @param manager
 	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String delimiter, AcceleoColorManager manager) {
-		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(manager
-				.getColor(IAcceleoColorConstants.ACCELEO_COLOR_TEMPLATE_PREFERENCE_KEY,
-						IAcceleoColorConstants.TEMPLATE), null, SWT.BOLD)));
+	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText,
+			AcceleoColorManager manager) {
+		return new KeywordSequenceRule(precedingText, delimiter, followingText, new Token(new TextAttribute(
+				manager.getColor(AcceleoColor.TEMPLATE), null, SWT.BOLD)));
+	}
+
+	/**
+	 * Computes a rule matching the template name.
+	 * 
+	 * @param manager
+	 *            The color manager.
+	 * @return The created rule.
+	 */
+	private IRule computeTemplateNameRule(AcceleoColorManager manager) {
+		return new BlockNameRule(IAcceleoConstants.TEMPLATE, new Token(new TextAttribute(manager
+				.getColor(AcceleoColor.TEMPLATE_NAME), null, SWT.NONE)));
+	}
+
+	/**
+	 * Computes a rule matching the overriden template name.
+	 * 
+	 * @param manager
+	 *            The color manager.
+	 * @return The created rule.
+	 */
+	private IRule computeOverrideNameRule(AcceleoColorManager manager) {
+		return new OverrideNameRule(new Token(new TextAttribute(manager.getColor(AcceleoColor.TEMPLATE_NAME),
+				null, SWT.NONE)));
+	}
+
+	/**
+	 * Creates a rule matching the template parameters.
+	 * 
+	 * @param manager
+	 *            is the color manager
+	 * @return the new variable rule
+	 */
+	private IRule computeVariableRule(AcceleoColorManager manager) {
+		return new VariableRule(new String[] {}, new Token(new TextAttribute(manager
+				.getColor(AcceleoColor.TEMPLATE_PARAMETER), null, SWT.NONE)));
 	}
 
 	/**

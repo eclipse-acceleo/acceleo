@@ -11,7 +11,8 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
@@ -34,17 +35,13 @@ public class AcceleoCommentScanner extends AbstractAcceleoScanner {
 	public AcceleoCommentScanner(AcceleoColorManager manager) {
 		IRule[] rules = new IRule[3];
 		rules[0] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
-						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[1] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
-						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[2] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
-				manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY,
-						IAcceleoColorConstants.COMMENT), null, SWT.BOLD)));
+				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_COMMENT_PREFERENCE_KEY, IAcceleoColorConstants.COMMENT))));
+		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.COMMENT))));
 	}
 
 	/**

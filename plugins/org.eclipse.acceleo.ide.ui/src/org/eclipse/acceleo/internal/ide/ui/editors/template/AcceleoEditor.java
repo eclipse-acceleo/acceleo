@@ -22,6 +22,7 @@ import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;

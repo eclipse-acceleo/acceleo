@@ -11,7 +11,8 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
 import org.eclipse.jface.text.TextAttribute;
@@ -38,14 +39,11 @@ public class AcceleoProtectedAreaScanner extends AbstractAcceleoScanner {
 
 		rules[0] = new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(
-						IAcceleoColorConstants.ACCELEO_COLOR_LITERAL_PREFERENCE_KEY,
-						IAcceleoColorConstants.LITERAL), null, SWT.BOLD)));
+				new TextAttribute(manager.getColor(AcceleoColor.LITERAL), null, SWT.BOLD)));
 		rules[1] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_PROTECTED_PREFERENCE_KEY,
-				IAcceleoColorConstants.PROTECTED_AREA), null, SWT.BOLD)));
+		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.PROTECTED_AREA),
+				null, SWT.BOLD)));
 	}
 
 	/**

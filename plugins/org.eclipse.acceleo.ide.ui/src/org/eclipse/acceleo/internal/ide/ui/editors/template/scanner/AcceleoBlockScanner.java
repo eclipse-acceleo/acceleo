@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.FirstVariableRule;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
 import org.eclipse.jface.text.TextAttribute;
@@ -23,7 +23,6 @@ import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * A scanner for detecting block sequences.
@@ -97,25 +96,9 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(
-						IAcceleoColorConstants.ACCELEO_COLOR_LITERAL_PREFERENCE_KEY,
-						IAcceleoColorConstants.LITERAL), null, style))));
+				new TextAttribute(manager.getColor(AcceleoColor.LITERAL), null, style))));
 		computeKeywordRules(rules, manager, italic);
 		computeDelimitersRules(rules, manager, italic);
-		Color foreGroundColor = manager.getColor(IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
-				IAcceleoColorConstants.KEYWORD);
-		Color backGroundColor = manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_FIRST_VAR_PREFERENCE_KEY,
-				IAcceleoColorConstants.FIRST_VARIABLE);
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.FOR,
-				IAcceleoConstants.PARENTHESIS_BEGIN, }, new Token(new TextAttribute(foreGroundColor,
-				backGroundColor, style))));
-		rules.add(new FirstVariableRule(
-				new String[] {IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.LET }, new Token(
-						new TextAttribute(foreGroundColor, backGroundColor, style))));
-		rules.add(new FirstVariableRule(new String[] {IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.ELSE_LET, }, new Token(new TextAttribute(foreGroundColor, backGroundColor,
-				style))));
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		return rules.toArray(new IRule[rules.size()]);
 	}
@@ -139,9 +122,8 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		}
 		for (int i = 0; i < KEYWORDS.length; i++) {
 			String keyword = KEYWORDS[i];
-			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager.getColor(
-					IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
-					IAcceleoColorConstants.KEYWORD), null, style))));
+			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+					.getColor(AcceleoColor.KEYWORD), null, style))));
 		}
 	}
 
@@ -164,9 +146,8 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		}
 		for (int i = 0; i < DELIMITERS.length; i++) {
 			String keyword = DELIMITERS[i];
-			rules.add(new KeywordRule(keyword, false, false, new Token(new TextAttribute(manager.getColor(
-					IAcceleoColorConstants.ACCELEO_COLOR_KEYWORD_PREFERENCE_KEY,
-					IAcceleoColorConstants.KEYWORD), null, style))));
+			rules.add(new KeywordRule(keyword, false, false, new Token(new TextAttribute(manager
+					.getColor(AcceleoColor.KEYWORD), null, style))));
 		}
 	}
 
@@ -186,9 +167,7 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 		} else {
 			style = SWT.NONE;
 		}
-		return new Token(new TextAttribute(manager.getColor(
-				IAcceleoColorConstants.ACCELEO_COLOR_BLOCK_PREFERENCE_KEY, IAcceleoColorConstants.BLOCK),
-				null, style));
+		return new Token(new TextAttribute(manager.getColor(AcceleoColor.BLOCK), null, style));
 	}
 
 	/**

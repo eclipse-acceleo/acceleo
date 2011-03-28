@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
@@ -48,7 +48,7 @@ public class AcceleoDocBoldScanner extends AbstractAcceleoScanner {
 	 *            is the color manager
 	 */
 	public AcceleoDocBoldScanner(AcceleoColorManager manager) {
-		final Color black = manager.getColor(IAcceleoColorConstants.BLACK);
+		final Color black = manager.getColor(AcceleoColor.BLACK);
 		final IToken boldToken = new Token(new TextAttribute(black, null, SWT.BOLD));
 
 		// IRule[] rules = new IRule[3];

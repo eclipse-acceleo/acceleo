@@ -14,8 +14,8 @@ import java.util.Iterator;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoColorManager;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.IAcceleoColorConstants;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.model.mtl.Macro;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -62,7 +62,7 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 	@Override
 	public Color getBackground(Object object) {
 		if (object instanceof ModuleProjectHandler && !((ModuleProjectHandler)object).isResolved()) {
-			return manager.getColor(IAcceleoColorConstants.RED);
+			return manager.getColor(AcceleoColor.RED);
 		}
 		return super.getBackground(object);
 	}

@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.internal.ide.ui.editors.template;
+package org.eclipse.acceleo.internal.ide.ui.editors.template.color;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,6 +46,17 @@ public class AcceleoColorManager {
 	}
 
 	/**
+	 * Retrieves the SWT Color corresponding to the given Acceleo color constant.
+	 * 
+	 * @param color
+	 *            The color we are to retrieve.
+	 * @return The SWT Color corresponding to the given Acceleo constant.
+	 */
+	public Color getColor(AcceleoColor color) {
+		return getColor(color.getPreferenceKey(), color.getDefault());
+	}
+
+	/**
 	 * Returns the Color associated with the given key in Acceleo's preference store.
 	 * 
 	 * @param key
@@ -54,7 +65,7 @@ public class AcceleoColorManager {
 	 *            Default value that is to be returned if there is no color associated to this key.
 	 * @return The retrieved color.
 	 */
-	public Color getColor(String key, RGB defaultValue) {
+	private Color getColor(String key, RGB defaultValue) {
 		RGB rgbValue = getPreference(key, defaultValue);
 		return getColor(rgbValue);
 	}
@@ -69,7 +80,7 @@ public class AcceleoColorManager {
 	 * @return The retrieved preference, or the default value if no preference is associated to this key.
 	 */
 	private RGB getPreference(String key, RGB defaultValue) {
-		if (preferenceStore.contains(key)) {
+		if (key.length() > 0 && preferenceStore.contains(key)) {
 			return PreferenceConverter.getColor(preferenceStore, key);
 		}
 		return defaultValue;
@@ -82,7 +93,7 @@ public class AcceleoColorManager {
 	 *            is the description of color
 	 * @return the color
 	 */
-	public Color getColor(RGB rgb) {
+	private Color getColor(RGB rgb) {
 		Color color = fColorTable.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
