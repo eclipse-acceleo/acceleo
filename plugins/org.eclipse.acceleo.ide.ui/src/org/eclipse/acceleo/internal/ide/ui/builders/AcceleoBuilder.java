@@ -231,6 +231,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
 			validateAcceleoBuildFile(monitor);
+		} else {
+			// We have deleted a file, let's build the whole project.
+			this.fullBuild(monitor);
 		}
 
 	}
