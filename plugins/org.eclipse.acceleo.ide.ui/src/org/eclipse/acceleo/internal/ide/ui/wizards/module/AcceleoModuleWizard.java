@@ -143,9 +143,7 @@ public class AcceleoModuleWizard extends Wizard implements INewWizard, IExecutab
 		if (project.exists() && project.isAccessible()) {
 			IPath path = new Path(acceleoModule.getParentFolder());
 			IFolder folder = project.getFolder(path.removeFirstSegments(1));
-			if (folder.exists() && folder.isAccessible()) {
-				AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
-			}
+			AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
 
 			if (acceleoModule.isIsInitialized()) {
 				String initializationKind = acceleoModule.getInitializationKind();
