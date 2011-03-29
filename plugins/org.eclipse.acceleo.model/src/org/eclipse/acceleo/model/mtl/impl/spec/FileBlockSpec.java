@@ -54,8 +54,10 @@ public class FileBlockSpec extends FileBlockImpl {
 
 		final StringBuilder toString = new StringBuilder("file"); //$NON-NLS-1$
 		toString.append('(');
-		toString.append(getFileUrl().toString());
-		toString.append(',').append(' ');
+		if (getFileUrl() != null) {
+			toString.append(getFileUrl().toString());
+			toString.append(',').append(' ');
+		}
 		if (append == OpenModeKind.APPEND) {
 			toString.append("true"); //$NON-NLS-1$
 		} else {
