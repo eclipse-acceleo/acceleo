@@ -15,7 +15,6 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.ide.ui.tests.editors.template.AcceleoCompletionProcessorTests;
-import org.eclipse.acceleo.ide.ui.tests.editors.template.rules.FirstVariableRuleTests;
 
 /**
  * This suite will launch all the tests defined for the Acceleo Eclipse User Interface Tests Plug-in.
@@ -43,7 +42,6 @@ public class AllTests {
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("Acceleo User Interface test suite");
 		suite.addTestSuite(AcceleoCompletionProcessorTests.class);
-		suite.addTestSuite(FirstVariableRuleTests.class);
 		return suite;
 	}
 
