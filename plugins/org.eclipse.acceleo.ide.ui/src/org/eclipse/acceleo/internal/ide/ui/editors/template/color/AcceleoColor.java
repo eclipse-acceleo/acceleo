@@ -55,6 +55,9 @@ public enum AcceleoColor {
 	/** Color constant for Acceleo Macros. */
 	MACRO("org.eclipse.acceleo.macro.color", new RGB(192, 0, 0)), //$NON-NLS-1$
 
+	/** Color constant for Acceleo Module names. */
+	MODULE_NAME("org.eclipse.acceleo.module.name.color", new RGB(80, 80, 255)), //$NON-NLS-1$
+
 	/** Color constant for Acceleo OCL expressions (iteration, before, after...). */
 	OCL_EXPRESSION("org.eclipse.acceleo.ocl.expression.color", new RGB(80, 80, 255)), //$NON-NLS-1$
 
@@ -84,6 +87,9 @@ public enum AcceleoColor {
 
 	/** Color constant for OCL expressions located in template signatures. */
 	TEMPLATE_OCL_EXPRESSION("org.eclipse.acceleo.template.ocl.expression.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+
+	/** Color constant for OCL keywords located in template signatures. */
+	TEMPLATE_OCL_KEYWORD("org.eclipse.acceleo.template.ocl.keyword.color", new RGB(192, 0, 0)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Templates' parameters. */
 	TEMPLATE_PARAMETER("org.eclipse.acceleo.template.parameter.color", new RGB(192, 0, 0)), //$NON-NLS-1$

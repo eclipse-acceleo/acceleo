@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.BlockNameRule;
@@ -55,6 +56,7 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 		rules.add(computeVariableRule(manager));
 		rules.add(computeTemplateNameRule(manager));
 		rules.add(computeOverrideNameRule(manager));
+		rules.addAll(computeOCLKeywordRules(manager));
 
 		setRules(rules.toArray(new IRule[rules.size()]));
 		setDefaultReturnToken(new Token(new TextAttribute(manager
@@ -238,6 +240,24 @@ public class AcceleoTemplateScanner extends AbstractAcceleoScanner {
 	private IRule computeVariableRule(AcceleoColorManager manager) {
 		return new VariableRule(new String[] {}, new Token(new TextAttribute(manager
 				.getColor(AcceleoColor.TEMPLATE_PARAMETER), null, SWT.NONE)));
+	}
+
+	/**
+	 * Computes a rule to match all OCL keywords in our query.
+	 * 
+	 * @param manager
+	 *            The color manager.
+	 * @return The created rules.
+	 */
+	private List<IRule> computeOCLKeywordRules(AcceleoColorManager manager) {
+		List<IRule> rules = new ArrayList<IRule>();
+
+		for (String keyword : AcceleoOCLReflection.getReservedKeywords()) {
+			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+					.getColor(AcceleoColor.TEMPLATE_OCL_KEYWORD), null, SWT.BOLD))));
+		}
+
+		return rules;
 	}
 
 	/**

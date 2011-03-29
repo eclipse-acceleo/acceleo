@@ -23,7 +23,7 @@ import org.eclipse.jface.text.rules.Token;
 public class BlockNameRule implements ISequenceRule {
 	/**
 	 * Name of the block we're currently scanning. Should be either {@link IAcceleoConstants#TEMPLATE},
-	 * {@link IAcceleoConstants#MACRO} or {@link IAcceleoConstants#QUERY}.
+	 * {@link IAcceleoConstants#MACRO}, {@link IAcceleoConstants#QUERY} or {@link IAcceleoConstants#MODULE}.
 	 */
 	private String blockType;
 
@@ -35,8 +35,8 @@ public class BlockNameRule implements ISequenceRule {
 	 * 
 	 * @param blockType
 	 *            Name of the block we're currently scanning. Should be either
-	 *            {@link IAcceleoConstants#TEMPLATE}, {@link IAcceleoConstants#MACRO} or
-	 *            {@link IAcceleoConstants#QUERY}.
+	 *            {@link IAcceleoConstants#TEMPLATE}, {@link IAcceleoConstants#MACRO},
+	 *            {@link IAcceleoConstants#QUERY} or {@link IAcceleoConstants#MODULE}.
 	 * @param token
 	 *            is the token to use for this rule
 	 */
@@ -81,7 +81,7 @@ public class BlockNameRule implements ISequenceRule {
 		int shift = 0;
 		int c = scanner.read();
 		shift++;
-		while (c != ICharacterScanner.EOF && c != '(' && Character.isJavaIdentifierPart(c)) {
+		while (c != ICharacterScanner.EOF && c != '(' && (c == ':' || Character.isJavaIdentifierPart(c))) {
 			c = scanner.read();
 			shift++;
 		}
@@ -106,10 +106,17 @@ public class BlockNameRule implements ISequenceRule {
 		int n = unreadVisibility(scanner);
 		shift += n;
 
-		// Whether we had a visibility or not, the next word is the block type.
+		// Whether we had a visibility or not, the previous word is either block type or the "extends"
+		// keyword.
 		n = unreadPreviousWord(scanner, blockType);
 		if (n == 0) {
-			valid = false;
+			// Might have been the "extends" keyword
+			n = unreadPreviousWord(scanner, IAcceleoConstants.EXTENDS);
+			if (n == 0) {
+				valid = false;
+			} else {
+				shift += n;
+			}
 		} else {
 			shift += n;
 		}

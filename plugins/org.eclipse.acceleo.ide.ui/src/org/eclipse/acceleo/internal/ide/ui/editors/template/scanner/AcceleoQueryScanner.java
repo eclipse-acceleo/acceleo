@@ -188,7 +188,7 @@ public class AcceleoQueryScanner extends AbstractAcceleoScanner {
 	 * @param delimiter
 	 *            The delimiter we need to detect.
 	 * @param followingWords
-	 *            The words that needs to follow the keyword. Can be <code>null</code>.
+	 *            The words that needs to follow the delimiter. Can be <code>null</code>.
 	 * @param manager
 	 *            is the color manager
 	 * @return the new delimiter rule
