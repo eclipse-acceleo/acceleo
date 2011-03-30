@@ -13,6 +13,8 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIPreferences;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
@@ -23,12 +25,17 @@ import org.eclipse.ui.IEditorPart;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
-public class MarkOccurrencesToggleAction implements IEditorActionDelegate {
+public class MarkOccurrencesToggleAction implements IEditorActionDelegate, IPropertyChangeListener {
 
 	/**
 	 * The Acceleo editor.
 	 */
 	private AcceleoEditor acceleoEditor;
+
+	/**
+	 * The action.
+	 */
+	private IAction markOccurrencesAction;
 
 	/**
 	 * {@inheritDoc}
@@ -61,6 +68,18 @@ public class MarkOccurrencesToggleAction implements IEditorActionDelegate {
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
 		if (targetEditor instanceof AcceleoEditor) {
 			this.acceleoEditor = (AcceleoEditor)targetEditor;
+			this.markOccurrencesAction = action;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		if (AcceleoUIPreferences.PREFERENCE_KEY_ENABLE_MARK_OCCURRENCES.equals(event.getProperty())) {
+			markOccurrencesAction.setChecked(Boolean.valueOf(event.getNewValue().toString()).booleanValue());
 		}
 	}
 

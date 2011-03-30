@@ -21,12 +21,12 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
  * @since 3.1
  */
 public final class AcceleoUIPreferences {
+	/** Preference key for the activation of Acceleo's mark occurrences. */
+	public static final String PREFERENCE_KEY_ENABLE_MARK_OCCURRENCES = "org.eclipse.acceleo.ui.mark.occurrences"; //$NON-NLS-1$
+
 	/** Preferences scope for the Acceleo ui plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
 			.getNode(AcceleoUIActivator.PLUGIN_ID);
-
-	/** Preference key for the activation of Acceleo's mark occurrences. */
-	private static final String PREFERENCE_KEY_ENABLE_MARK_OCCURRENCES = "org.eclipse.acceleo.ui.mark.occurrences"; //$NON-NLS-1$
 
 	/** Default value for the mark occurrences enablement. */
 	private static final boolean DEFAULT_ENABLE_MARK_OCCURRENCES = false;
