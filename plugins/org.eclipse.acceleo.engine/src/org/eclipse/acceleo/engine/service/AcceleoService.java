@@ -372,6 +372,11 @@ public final class AcceleoService {
 
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
+		if (argumentType.eIsProxy()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoService.TypeIsProxy", templateName)); //$NON-NLS-1$
+		}
+
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			final List<Object> actualArguments = new ArrayList<Object>();
