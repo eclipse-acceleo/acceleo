@@ -961,6 +961,22 @@ Contributors:
        </renameParticipant>
     </extension>
     <extension
+          point="org.eclipse.ltk.core.refactoring.moveParticipants">
+       <moveParticipant
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.move.AcceleoMoveModuleParticipant"
+             id="org.eclipse.acceleo.ide.ui.moveParticipant1"
+             name="%acceleoEditorRefactoringMove.Name">
+          <enablement>
+             <with
+                   variable="element">
+                <instanceof
+                      value="org.eclipse.core.resources.IFile">
+                </instanceof>
+             </with>
+          </enablement>
+       </moveParticipant>
+    </extension>
+    <extension
           id="warning"
           name="%AcceleoWarningLabel"
           point="org.eclipse.core.resources.markers">
