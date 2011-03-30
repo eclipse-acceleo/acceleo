@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.emf.common.util.URI;
@@ -28,6 +29,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -253,6 +255,15 @@ public final class ModelUtils {
 		if (modelResource.getContents().size() > 0) {
 			result = modelResource.getContents().get(0);
 		}
+
+		List<Resource> resources = resourceSet.getResources();
+		for (Resource resource : resources) {
+			List<Diagnostic> errors = resource.getErrors();
+			for (Diagnostic diagnostic : errors) {
+				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+			}
+		}
+
 		return result;
 	}
 
@@ -305,6 +316,13 @@ public final class ModelUtils {
 		if (result == null) {
 			throw new IOException(AcceleoCommonMessages.getString("ModelUtils.LoadFailure", path)); //$NON-NLS-1$
 		}
+		List<Resource> resources = resourceSet.getResources();
+		for (Resource resource : resources) {
+			List<Diagnostic> errors = resource.getErrors();
+			for (Diagnostic diagnostic : errors) {
+				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+			}
+		}
 		return result;
 	}
 
@@ -330,6 +348,13 @@ public final class ModelUtils {
 		final Resource modelResource = resourceSet.getResource(modelURI, true);
 		if (modelResource.getContents().size() > 0) {
 			result = modelResource.getContents().get(0);
+		}
+		List<Resource> resources = resourceSet.getResources();
+		for (Resource resource : resources) {
+			List<Diagnostic> errors = resource.getErrors();
+			for (Diagnostic diagnostic : errors) {
+				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+			}
 		}
 		return result;
 	}
