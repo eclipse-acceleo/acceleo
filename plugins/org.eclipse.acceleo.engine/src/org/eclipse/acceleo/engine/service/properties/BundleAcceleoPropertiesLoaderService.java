@@ -65,7 +65,7 @@ public class BundleAcceleoPropertiesLoaderService extends AbstractAcceleoPropert
 						filename = filename.substring(filename.lastIndexOf(".") + 1); //$NON-NLS-1$
 					}
 					filename = filename + ".properties"; //$NON-NLS-1$
-					Enumeration<Object> entries = bundle.findEntries("/", filename, true); //$NON-NLS-1$
+					Enumeration<?> entries = bundle.findEntries("/", filename, true); //$NON-NLS-1$
 					Object firstEntry = null;
 					if (entries.hasMoreElements()) {
 						firstEntry = entries.nextElement();
