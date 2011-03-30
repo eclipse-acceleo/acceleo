@@ -15,8 +15,8 @@ import org.eclipse.swt.graphics.RGB;
 /**
  * This enum will contain the various color constants of Acceleo.
  * <p>
- * Developper note : the color preferences of Acceleo may have been exported by the user, color identifier are
- * thus API !
+ * Developper note : the color preferences of Acceleo may have been exported by the user, <b>color identifier
+ * are thus API !</b>
  * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
