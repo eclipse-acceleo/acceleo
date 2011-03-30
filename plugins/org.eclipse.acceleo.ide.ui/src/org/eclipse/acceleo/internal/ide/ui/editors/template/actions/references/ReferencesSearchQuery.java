@@ -409,7 +409,8 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				final Query q1 = (Query)o1;
 				final Query q2 = (Query)o2;
 				result = this.isMatchingQuery(q1, q2);
-			} else if (o1 instanceof ModuleElement && o2 instanceof ModuleElement) {
+			} else if (o1 instanceof ModuleElement && o2 instanceof ModuleElement
+					&& ((ModuleElement)o1).getName() != null) {
 				result = ((ModuleElement)o1).getName().equals(((ModuleElement)o2).getName());
 			} else if (o1 instanceof org.eclipse.ocl.ecore.Variable
 					&& o2 instanceof org.eclipse.ocl.ecore.Variable) {
