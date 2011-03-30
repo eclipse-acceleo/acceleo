@@ -12,6 +12,7 @@ package org.eclipse.acceleo.engine.service.properties;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import org.eclipse.acceleo.engine.service.AcceleoService;
@@ -49,6 +50,7 @@ public class BundleAcceleoPropertiesLoaderService extends AbstractAcceleoPropert
 	 * 
 	 * @see org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoader#alternatePropertiesLoading(java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Properties alternatePropertiesLoading(String filepath) {
 		Properties properties = new Properties();
@@ -57,6 +59,20 @@ public class BundleAcceleoPropertiesLoaderService extends AbstractAcceleoPropert
 				URL resource = bundle.getResource(filepath);
 				if (resource != null) {
 					properties.load(resource.openStream());
+				} else if (filepath != null && !filepath.endsWith(".properties")) { //$NON-NLS-1$
+					String filename = filepath;
+					if (filename.contains(".")) { //$NON-NLS-1$
+						filename = filename.substring(filename.lastIndexOf(".") + 1); //$NON-NLS-1$
+					}
+					filename = filename + ".properties"; //$NON-NLS-1$
+					Enumeration<Object> entries = bundle.findEntries("/", filename, true); //$NON-NLS-1$
+					Object firstEntry = null;
+					if (entries.hasMoreElements()) {
+						firstEntry = entries.nextElement();
+					}
+					if (firstEntry instanceof URL) {
+						properties.load(((URL)firstEntry).openStream());
+					}
 				}
 			} catch (IOException e) {
 				return null;
