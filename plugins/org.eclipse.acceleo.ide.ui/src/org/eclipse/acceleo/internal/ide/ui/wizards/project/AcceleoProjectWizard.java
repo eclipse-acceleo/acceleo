@@ -289,6 +289,16 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 								"\\.")); //$NON-NLS-1$
 			}
 		}
+		// Prepare Ant folder
+		IFolder antTasksFolder = project.getFolder("tasks"); //$NON-NLS-1$
+		if (!antTasksFolder.exists()) {
+			try {
+				antTasksFolder.create(true, false, monitor);
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, true);
+			}
+		}
+
 		// Generate files
 		try {
 			IProjectDescription description = project.getDescription();

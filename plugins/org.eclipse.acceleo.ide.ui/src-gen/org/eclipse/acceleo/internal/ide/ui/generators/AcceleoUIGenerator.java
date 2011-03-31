@@ -13,6 +13,8 @@ package org.eclipse.acceleo.internal.ide.ui.generators;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
@@ -77,7 +79,7 @@ public class AcceleoUIGenerator {
 	/**
 	 * The Acceleo module that will generate the and read me file.
 	 */
-	private static Module antReadMeGenerator;
+	private static Module antTargetGenerator;
 
 	/**
 	 * The Acceleo module that will generate the Acceleo module file.
@@ -152,16 +154,24 @@ public class AcceleoUIGenerator {
 	 * 
 	 * @param acceleoMainClass
 	 *            The Acceleo main class.
+	 * @param eclipseFilePath
+	 *            The eclipse file path.
+	 * @param workspaceFilePath
+	 *            the workspace file path
 	 * @param outputContainer
 	 *            The output folder.
 	 */
-	public void generateAntFiles(AcceleoMainClass acceleoMainClass, IContainer outputContainer) {
+	public void generateAntFiles(AcceleoMainClass acceleoMainClass, String eclipseFilePath,
+			String workspaceFilePath, IContainer outputContainer) {
+		List<String> args = new ArrayList<String>();
+		args.add(eclipseFilePath);
+		args.add(workspaceFilePath);
 		generate(antRunnerGenerator, acceleoMainClass, outputContainer,
 				IAcceleoGenerationConstants.ANT_RUNNER_GENERATOR_URI,
-				IAcceleoGenerationConstants.ANT_RUNNER_TEMPLATE_URI);
-		generate(antReadMeGenerator, acceleoMainClass, outputContainer,
-				IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_GENERATOR_URI,
-				IAcceleoGenerationConstants.ANT_RUNNER_READ_ME_TEMPLATE_URI);
+				IAcceleoGenerationConstants.ANT_RUNNER_TEMPLATE_URI, args);
+		generate(antTargetGenerator, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.ANT_RUNNER_TARGET_GENERATOR_URI,
+				IAcceleoGenerationConstants.ANT_RUNNER_TARGET_TEMPLATE_URI, args);
 	}
 
 	/**
@@ -299,6 +309,56 @@ public class AcceleoUIGenerator {
 				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
 				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject,
+						generationRoot, new BasicMonitor());
+
+				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+			}
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+	}
+
+	/**
+	 * Launch the generation.
+	 * 
+	 * @param module
+	 *            The module
+	 * @param eObject
+	 *            The EObject
+	 * @param outputContainer
+	 *            The output container
+	 * @param generatorURI
+	 *            The generator uri
+	 * @param templateURI
+	 *            The template uri
+	 * @param args
+	 *            Arguments.
+	 */
+	private void generate(Module module, EObject eObject, IContainer outputContainer, String generatorURI,
+			String templateURI, List<? extends Object> args) {
+		Module moduleTmp = module;
+		try {
+			if (moduleTmp == null) {
+				ResourceSet resourceSet = new ResourceSetImpl();
+				registerPackages(resourceSet);
+				registerResourceFactories(resourceSet);
+				resourceSet.setURIConverter(createURIConverter());
+				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
+				URI moduleURI = this.convertToURI(generatorURI);
+				EObject load = ModelUtils.load(moduleURI, resourceSet);
+
+				if (load instanceof Module) {
+					moduleTmp = (Module)load;
+				}
+			}
+
+			if (moduleTmp != null) {
+				String templateName = templateURI;
+				File generationRoot = outputContainer.getLocation().toFile();
+				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject, args,
 						generationRoot, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());

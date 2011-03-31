@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders.runner;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +35,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -159,8 +162,18 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 									fileAcceleo.getParent());
 
 							IFolder antFolder = fileAcceleo.getProject().getFolder("tasks"); //$NON-NLS-1$
-							if (antFolder.exists()) {
-								AcceleoUIGenerator.getDefault().generateAntFiles(acceleoMainClass, antFolder);
+							IFile antFile = antFolder.getFile(acceleoMainClass.getModuleFileShortName()
+									+ ".xml"); //$NON-NLS-1$
+							if (antFolder.exists() && !antFile.exists()) {
+								IPath workspacePathRelativeToFile = computeWorkspacePath();
+								IPath eclipsePathRelativeToFile = computeEclipsePath();
+
+								AcceleoUIGenerator.getDefault().generateAntFiles(
+										acceleoMainClass,
+										eclipsePathRelativeToFile.makeRelativeTo(antFolder.getLocation())
+												.toString(),
+										workspacePathRelativeToFile.makeRelativeTo(antFolder.getLocation())
+												.toString(), antFolder);
 							}
 							// else : We don't want to create the ANT folder if it doesn't exist
 						}
@@ -176,6 +189,32 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 			AcceleoUIActivator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
 		}
+	}
+
+	/**
+	 * Returns the workspace path.
+	 * 
+	 * @return The workspace path.
+	 */
+	private IPath computeWorkspacePath() {
+		return new Path(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
+	}
+
+	/**
+	 * Returns the Eclipse path.
+	 * 
+	 * @return The Eclipse path.
+	 */
+	private IPath computeEclipsePath() {
+		URL fileURL = Platform.getInstallLocation().getURL();
+		try {
+			String filepath = FileLocator.toFileURL(fileURL).getFile();
+			File file = new File(filepath);
+			return new Path(file.getAbsolutePath().toString());
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+		return null;
 	}
 
 	/**

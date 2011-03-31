@@ -10,27 +10,30 @@
  *     Obeo - initial API and implementation
  * @author sbegaudeau
  */]
-[module antRunnerReadMe('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')/]
+[module antRunnerTarget('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')/]
 
 [**
- * Generate the Ant runner read me file.
+ * Generate the Ant runner target file.
  * @param anAcceleoMainClass The Acceleo main class.
  */]
-[template public genAntRunnerReadMe(anAcceleoMainClass : AcceleoMainClass)]
-[file (anAcceleoMainClass.moduleFileShortName + '.readme', false, 'UTF-8')]
+[template public genAntRunnerTarget(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
+[file (anAcceleoMainClass.moduleFileShortName + 'Target.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- Rename this file, put it in the target project and call it with "External Tools > Run As > Ant Build" -->
 <!-- You have to change the MODEL and the TARGET values -->
 
 <project basedir="." default="[anAcceleoMainClass.moduleFileShortName/]Sample" name="[anAcceleoMainClass.projectName/]Sample">
-	<import file="../[anAcceleoMainClass.projectName/]/tasks/[anAcceleoMainClass.moduleFileShortName/].xml"/>
+	<import file="../../[anAcceleoMainClass.projectName/]/tasks/[anAcceleoMainClass.moduleFileShortName/].xml"/>
+
+    <!-- Change the values of MODEL and TARGET to point to your model and output folder -->
 	<property name="MODEL" value="basedir/model/file.xmi"/>
 	<property name="TARGET" value="basedir/src-gen"/>
+
 	<target name="[anAcceleoMainClass.moduleFileShortName/]Sample" description="Generate files in 'TARGET'">
 		<antcall target="[anAcceleoMainClass.moduleFileShortName/]" >
-			<param name="model" value="MODEL"/>
-			<param name="target" value="TARGET"/>
+			<param name="model" value="${MODEL}"/>
+			<param name="target" value="${TARGET}"/>
 		</antcall>
 	</target>
 </project>

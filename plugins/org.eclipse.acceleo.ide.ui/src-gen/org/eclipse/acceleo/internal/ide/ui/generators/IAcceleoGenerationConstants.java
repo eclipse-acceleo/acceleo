@@ -50,12 +50,12 @@ public interface IAcceleoGenerationConstants {
 	/**
 	 * The uri of the Ant runner read me generator.
 	 */
-	String ANT_RUNNER_READ_ME_GENERATOR_URI = "antRunnerReadMe.emtl"; //$NON-NLS-1$
+	String ANT_RUNNER_TARGET_GENERATOR_URI = "antRunnerTarget.emtl"; //$NON-NLS-1$
 
 	/**
 	 * The name of the main template in the Ant runner generator.
 	 */
-	String ANT_RUNNER_READ_ME_TEMPLATE_URI = "genAntRunnerReadMe"; //$NON-NLS-1$
+	String ANT_RUNNER_TARGET_TEMPLATE_URI = "genAntRunnerTarget"; //$NON-NLS-1$
 
 	/**
 	 * The uri of the build.acceleo generator.
