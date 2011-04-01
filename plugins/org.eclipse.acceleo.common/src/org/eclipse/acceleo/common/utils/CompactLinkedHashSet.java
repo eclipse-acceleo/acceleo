@@ -135,7 +135,13 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 			previous = entry;
 			entry = entry.next;
 		}
-		previous.next = entry.next;
+		/*
+		 * TODO entry == header would mean we haven't found the index to delete in the linked list. How could
+		 * we be in such a state? Try and reproduce [341596].
+		 */
+		if (entry != header) {
+			previous.next = entry.next;
+		}
 	}
 
 	/**
