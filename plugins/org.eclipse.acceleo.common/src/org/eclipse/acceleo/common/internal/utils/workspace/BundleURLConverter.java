@@ -64,7 +64,7 @@ public class BundleURLConverter {
 		/*
 		 * "bin" or "src" in the path means that, somehow, we resolved the URIs against workspace compiled
 		 * artifacts. As we are currently trying to resolve the URI in an installed bundle, we know these
-		 * segmants are noise.
+		 * segments are noise.
 		 */
 		IGNORED_URI_SEGMENTS.add("bin"); //$NON-NLS-1$
 		IGNORED_URI_SEGMENTS.add("src"); //$NON-NLS-1$
