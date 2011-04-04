@@ -1,0 +1,9 @@
+[comment encoding = UTF-8 /]
+[module forValid5('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public forValid5(eClass : EClass)]
+[for (i : String | Sequence{'a', 'b', 'c'})]
+[i/]
+[/for]
+[/template]
+

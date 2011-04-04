@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[module forValid6('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public forValid6(eClass : EClass)]
+[for (Sequence{0..4})]
+[i.abs()/]
+[/for]
+
+[for (i : Integer | Sequence{0..4})]
+[i.abs()/]
+[/for]
+
+[for (i : String | Sequence{'a', 'b', 'c'})]
+[i.concat('a')/]
+[/for]
+[/template]
+

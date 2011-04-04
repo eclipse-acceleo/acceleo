@@ -83,6 +83,74 @@ public class ASTModelExpressionsTests extends AbstractASTParserTests {
 	}
 
 	@Test
+	public void testParseForValid3() {
+		File file = this.getFileFromPath("/data/ast/modelexpression/forValid3.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/modelexpression/files"), project, //$NON-NLS-1$
+				"forValid3.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseForValid4() {
+		File file = this.getFileFromPath("/data/ast/modelexpression/forValid4.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/modelexpression/files"), project, //$NON-NLS-1$
+				"forValid4.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseForValid5() {
+		File file = this.getFileFromPath("/data/ast/modelexpression/forValid5.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/modelexpression/files"), project, //$NON-NLS-1$
+				"forValid5.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParseForValid6() {
+		File file = this.getFileFromPath("/data/ast/modelexpression/forValid6.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/modelexpression/files"), project, //$NON-NLS-1$
+				"forValid6.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
 	public void testParseForInvalid() {
 		File file = this.getFileFromPath("/data/ast/modelexpression/forInvalid.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
