@@ -167,9 +167,12 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			Block block = (Block)astNode;
 			if (block.getBody() != null && block.getBody().size() > 0) {
 				OCLExpression startBody = block.getBody().get(0);
-				Position startPosition = new Position(block.getStartPosition(), startBody.getStartPosition()
-						- 1 - block.getStartPosition());
-				positions.add(startPosition);
+				if (!startBody.eIsProxy()) {
+					Position startPosition = new Position(block.getStartPosition(), startBody
+							.getStartPosition()
+							- 1 - block.getStartPosition());
+					positions.add(startPosition);
+				}
 
 				Position endPosition = null;
 				if (block instanceof IfBlock) {
