@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,6 +46,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
+import org.eclipse.ocl.util.Bag;
 import org.eclipse.ocl.util.CollectionUtil;
 
 /**
@@ -288,14 +290,14 @@ public final class AcceleoLibraryOperationVisitor {
 			final Collection<Object> temp;
 
 			// Determine return type
-			if (source instanceof ArrayList) {
-				temp = CollectionUtil.createNewSequence();
-			} else if (source instanceof LinkedHashSet) {
-				temp = CollectionUtil.createNewOrderedSet();
-			} else if (source instanceof Set) {
-				temp = CollectionUtil.createNewSet();
-			} else {
+			if (source instanceof Bag) {
 				temp = CollectionUtil.createNewBag();
+			} else if (source instanceof HashSet && !(source instanceof LinkedHashSet)) {
+				temp = CollectionUtil.createNewSet();
+			} else if (source instanceof Set) {
+				temp = CollectionUtil.createNewOrderedSet();
+			} else {
+				temp = CollectionUtil.createNewSequence();
 			}
 
 			final Iterator<?> sourceIterator = source.iterator();
