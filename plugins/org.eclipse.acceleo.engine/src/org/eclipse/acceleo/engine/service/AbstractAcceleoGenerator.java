@@ -331,6 +331,7 @@ public abstract class AbstractAcceleoGenerator {
 			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		URI moduleURI = createTemplateURI(moduleURL.toString());
+		moduleURI = URI.createURI(moduleURI.toString(), true);
 		module = (Module)ModelUtils.load(moduleURI, resourceSet);
 		model = element;
 		targetFolder = folder;
@@ -380,9 +381,12 @@ public abstract class AbstractAcceleoGenerator {
 		if (moduleURL == null) {
 			throw new IOException("'" + getModuleName() + ".emtl' not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		final URI moduleURI = createTemplateURI(moduleURL.toString());
+		URI moduleURI = createTemplateURI(moduleURL.toString());
+		moduleURI = URI.createURI(moduleURI.toString(), true);
 		module = (Module)ModelUtils.load(moduleURI, resourceSet);
-		model = ModelUtils.load(modelURI, resourceSet);
+
+		URI newModelURI = URI.createURI(modelURI.toString(), true);
+		model = ModelUtils.load(newModelURI, resourceSet);
 		targetFolder = folder;
 		generationArguments = arguments;
 	}
