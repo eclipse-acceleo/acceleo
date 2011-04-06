@@ -161,14 +161,7 @@ public final class AcceleoWorkspaceUtil {
 			if (bundle != null) {
 				final String pathSeparator = "/"; //$NON-NLS-1$
 				// We found the appropriate bundle. We'll now try and determine whether the emtl is jarred
-				Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, resourcePath, true);
-				if (emtlFiles != null && emtlFiles.hasMoreElements()) {
-					resourceURL = (URL)emtlFiles.nextElement();
-				}
-				// This can only be a bundle-scheme URL if we found the URL. Convert it to file or jar scheme
-				if (resourceURL != null) {
-					resourceURL = FileLocator.resolve(resourceURL);
-				}
+				resourceURL = getBundleResourceURL(bundle, pathSeparator, resourcePath);
 			}
 		}
 		/*
@@ -181,6 +174,43 @@ public final class AcceleoWorkspaceUtil {
 
 		if (packageAdminReference != null) {
 			context.ungetService(packageAdminReference);
+		}
+		return resourceURL;
+	}
+
+	/**
+	 * Returns the URL of the resource at the given path in the given bundle.
+	 * 
+	 * @param bundle
+	 *            The bundle in which we will look for the resource
+	 * @param pathSeparator
+	 *            The path separator
+	 * @param resourcePath
+	 *            The path of the resource in the bundle
+	 * @return the URL of the resource at the given path in the given bundle
+	 * @throws IOException
+	 *             This will be thrown if we fail to convert bundle-scheme URIs into file-scheme URIs.
+	 */
+	private static URL getBundleResourceURL(Bundle bundle, String pathSeparator, String resourcePath)
+			throws IOException {
+		URL resourceURL = null;
+		Enumeration<?> emtlFiles = bundle.findEntries(pathSeparator, resourcePath, true);
+		if (emtlFiles != null && emtlFiles.hasMoreElements()) {
+			resourceURL = (URL)emtlFiles.nextElement();
+		}
+
+		// We haven't found the URL of the resource, let's check if we have an absolute URL instead of the
+		// name of the resource. Fix for [336109] and [325351].
+		if (resourceURL == null) {
+			Enumeration<?> resources = bundle.getResources(resourcePath);
+			if (resources != null && resources.hasMoreElements()) {
+				resourceURL = (URL)resources.nextElement();
+			}
+		}
+
+		// This can only be a bundle-scheme URL if we found the URL. Convert it to file or jar scheme
+		if (resourceURL != null) {
+			resourceURL = FileLocator.resolve(resourceURL);
 		}
 		return resourceURL;
 	}
