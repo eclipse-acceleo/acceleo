@@ -11,8 +11,11 @@
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -21,6 +24,8 @@ import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflect
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
+import org.eclipse.acceleo.common.utils.CircularArrayDeque;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment.AcceleoUMLReflectionHelios;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -34,6 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
+import org.eclipse.ocl.LookupException;
 import org.eclipse.ocl.ecore.BagType;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.CollectionType;
@@ -45,6 +51,7 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
 
@@ -78,6 +85,15 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	private Object firstProblemObject;
 
 	/**
+	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
+	 * multiple bindings against the same variable name.
+	 */
+	private final Deque<Map<String, Deque<VariableEntry>>> scopedVariableMap = new CircularArrayDeque<Map<String, Deque<VariableEntry>>>();
+
+	/** Used to generate implicit iterator variables. */
+	private int generatorInt;
+
+	/**
 	 * Delegates instantiation to the super constructor.
 	 * 
 	 * @param parent
@@ -89,6 +105,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 		if (!(parent instanceof AcceleoEnvironment)) {
 			addAdditionalOperations();
 		}
+		scopedVariableMap.add(new HashMap<String, Deque<VariableEntry>>());
 	}
 
 	/**
@@ -100,6 +117,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	public AcceleoEnvironment(Resource oclEnvironmentResource) {
 		super(AcceleoPackageRegistry.INSTANCE, oclEnvironmentResource);
 		addAdditionalOperations();
+		scopedVariableMap.add(new HashMap<String, Deque<VariableEntry>>());
 	}
 
 	/**
@@ -547,5 +565,390 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			setFirstProblemObjectIfNull(problemObjects.get(0));
 		}
 		super.analyzerError(problemMessage, problemContext, problemObjects);
+	}
+
+	/**
+	 * Creates a new variable scope. This will typically be called when we enter a new TemplateInvocation or
+	 * QueryInvocation.
+	 */
+	public void createVariableScope() {
+		scopedVariableMap.add(new HashMap<String, Deque<VariableEntry>>());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#isEmpty()
+	 */
+	@Override
+	public boolean isEmpty() {
+		return scopedVariableMap.isEmpty();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#getVariables()
+	 */
+	@Override
+	public Collection<Variable<EClassifier, EParameter>> getVariables() {
+		Collection<Variable<EClassifier, EParameter>> result = new ArrayList<Variable<EClassifier, EParameter>>();
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				if (variableEntry.isExplicit) {
+					result.add(variableEntry.variable);
+				}
+			}
+		}
+
+		if (getInternalParent() != null) {
+			// add all non-shadowed parent variables
+			for (Variable<EClassifier, EParameter> parentVar : getInternalParent().getVariables()) {
+				if (lookupLocal(parentVar.getName()) == null) {
+					result.add(parentVar);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#addElement(java.lang.String,
+	 *      org.eclipse.ocl.expressions.Variable, boolean)
+	 */
+	@Override
+	public boolean addElement(String name, Variable<EClassifier, EParameter> elem, boolean isExplicit) {
+		String newName = name;
+		if (newName == null) {
+			newName = generateName();
+			while (lookup(newName) != null) {
+				newName = generateName();
+			}
+		}
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Deque<VariableEntry> deque = last.get(newName);
+		if (deque == null) {
+			deque = new CircularArrayDeque<AcceleoEnvironment.VariableEntry>();
+			last.put(newName, deque);
+		}
+
+		getUMLReflection().setName(elem, newName);
+		VariableEntry newelem = new VariableEntry(newName, elem, isExplicit);
+		addedVariable(newName, elem, isExplicit);
+
+		return deque.add(newelem);
+	}
+
+	/**
+	 * Generates a new, unique name for an implicit iterator variable.
+	 * 
+	 * @return the new name
+	 */
+	private String generateName() {
+		generatorInt++;
+		return "temp" + generatorInt; //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#deleteElement(java.lang.String)
+	 */
+	@Override
+	public void deleteElement(String name) {
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Deque<VariableEntry> deque = last.get(name);
+		if (deque != null && !deque.isEmpty()) {
+			deque.removeLast();
+		}
+		if (deque != null && deque.isEmpty()) {
+			last.remove(name);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupLocal(java.lang.String)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupLocal(String name) {
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		if (last != null) {
+			Deque<VariableEntry> deque = last.get(name);
+			if (deque != null && !deque.isEmpty()) {
+				VariableEntry variableEntry = deque.getLast();
+				return variableEntry.variable;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForOperation(java.lang.String,
+	 *      java.util.List)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupImplicitSourceForOperation(String name,
+			List<? extends TypedElement<EClassifier>> args) {
+		Variable<EClassifier, EParameter> vdlc = null;
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				vdlc = variableEntry.variable;
+				EClassifier owner = vdlc.getType();
+
+				if (variableEntry.isExplicit || owner == null || lookupOperation(owner, name, args) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		if (vdlc == null) {
+			vdlc = getSelfVariable();
+			if (vdlc != null) {
+				EClassifier owner = vdlc.getType();
+				if (owner == null || lookupOperation(owner, name, args) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		return vdlc;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForProperty(java.lang.String)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupImplicitSourceForProperty(String name) {
+		Variable<EClassifier, EParameter> vdlc = null;
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				vdlc = variableEntry.variable;
+				EClassifier owner = vdlc.getType();
+
+				if (variableEntry.isExplicit || owner == null || safeTryLookupProperty(owner, name) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		if (vdlc == null) {
+			vdlc = getSelfVariable();
+			if (vdlc != null) {
+				EClassifier owner = vdlc.getType();
+				if (owner == null || safeTryLookupProperty(owner, name) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		return vdlc;
+	}
+
+	/**
+	 * Wrapper for the "try" operation that doesn't throw, but just returns the first ambiguous match in case
+	 * of ambiguity.
+	 * 
+	 * @param owner
+	 *            The owner.
+	 * @param name
+	 *            The name.
+	 * @return a wrapper for the try operation.
+	 */
+	private EStructuralFeature safeTryLookupProperty(EClassifier owner, String name) {
+		EStructuralFeature result = null;
+
+		try {
+			result = tryLookupProperty(owner, name);
+		} catch (LookupException e) {
+			if (!e.getAmbiguousMatches().isEmpty()) {
+				result = (EStructuralFeature)e.getAmbiguousMatches().get(0);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForAssociationClass(java.lang.String)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupImplicitSourceForAssociationClass(String name) {
+		Variable<EClassifier, EParameter> vdlc = null;
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				vdlc = variableEntry.variable;
+				EClassifier owner = vdlc.getType();
+
+				if (variableEntry.isExplicit || owner == null
+						|| lookupAssociationClassReference(owner, name) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		if (vdlc == null) {
+			vdlc = getSelfVariable();
+			if (vdlc != null) {
+				EClassifier owner = vdlc.getType();
+				if (owner == null || lookupAssociationClassReference(owner, name) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		return vdlc;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForSignal(java.lang.String,
+	 *      java.util.List)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupImplicitSourceForSignal(String name,
+			List<? extends TypedElement<EClassifier>> args) {
+		Variable<EClassifier, EParameter> vdlc = null;
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				vdlc = variableEntry.variable;
+				EClassifier owner = vdlc.getType();
+
+				if (variableEntry.isExplicit || owner == null || lookupSignal(owner, name, args) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		if (vdlc == null) {
+			vdlc = getSelfVariable();
+			if (vdlc != null) {
+				EClassifier owner = vdlc.getType();
+				if (owner == null || lookupSignal(owner, name, args) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		return vdlc;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForState(java.util.List)
+	 */
+	@Override
+	public Variable<EClassifier, EParameter> lookupImplicitSourceForState(List<String> path)
+			throws LookupException {
+		Variable<EClassifier, EParameter> vdlc = null;
+
+		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
+		Collection<Deque<VariableEntry>> values = last.values();
+		for (Deque<VariableEntry> deque : values) {
+			for (VariableEntry variableEntry : deque) {
+				vdlc = variableEntry.variable;
+				EClassifier owner = vdlc.getType();
+
+				if (variableEntry.isExplicit || owner == null || lookupState(owner, path) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		if (vdlc == null) {
+			vdlc = getSelfVariable();
+			if (vdlc != null) {
+				EClassifier owner = vdlc.getType();
+				if (owner == null || lookupState(owner, path) == null) {
+					vdlc = null;
+				}
+			}
+		}
+
+		return vdlc;
+	}
+
+	/**
+	 * Wrapper for OCL variable declarations that additionally tracks whether they are explicit or implicit
+	 * variables.
+	 * 
+	 * @author Christian W. Damus (cdamus)
+	 */
+	protected final class VariableEntry {
+		/**
+		 * The name.
+		 */
+		final String name;
+
+		/**
+		 * The variable.
+		 */
+		final Variable<EClassifier, EParameter> variable;
+
+		/**
+		 * Indicates if the variable is explicit.
+		 */
+		final boolean isExplicit;
+
+		/**
+		 * The constructor.
+		 * 
+		 * @param name
+		 *            The name.
+		 * @param variable
+		 *            The variable
+		 * @param isExplicit
+		 *            Indicates if the variable is explicit.
+		 */
+		VariableEntry(String name, Variable<EClassifier, EParameter> variable, boolean isExplicit) {
+			this.name = name;
+			this.variable = variable;
+			this.isExplicit = isExplicit;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			String result = "VariableEntry[" + name + ", "; //$NON-NLS-1$ //$NON-NLS-2$
+			if (isExplicit) {
+				result += "explicit, "; //$NON-NLS-1$
+			} else {
+				result += "implicit, "; //$NON-NLS-1$
+			}
+			result += variable + "]"; //$NON-NLS-1$
+			return result;
+		}
 	}
 }

@@ -161,7 +161,6 @@ public class OCLParser {
 		} else {
 			helper.setContext(contextStack.peek());
 		}
-
 	}
 
 	/**
