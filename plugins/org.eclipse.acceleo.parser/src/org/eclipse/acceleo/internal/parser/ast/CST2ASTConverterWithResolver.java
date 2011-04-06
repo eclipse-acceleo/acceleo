@@ -1163,9 +1163,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					context = ((CollectionType)context).getElementType();
 				}
 			}
-			if (context != null) {
-				factory.getOCL().pushContext(context);
-			}
 
 			org.eclipse.ocl.ecore.Variable iterationCount = null;
 			if (oLoopVariable == null || !"i".equals(oLoopVariable.getName())) { //$NON-NLS-1$
@@ -1202,9 +1199,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} finally {
 				if (iLoopVariable != null && oLoopVariable != null) {
 					transformStepResolveRemoveVariable(iLoopVariable);
-				}
-				if (context != null) {
-					factory.getOCL().popContext();
 				}
 				if (iterationCount != null) {
 					factory.getOCL().removeVariableFromScope(iterationCount);
@@ -1347,7 +1341,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (saveInitExpression != null) {
 					oLetVariable.setInitExpression(null);
 				}
-				factory.getOCL().pushContext(oLetVariable.getType());
 			}
 			try {
 				org.eclipse.acceleo.parser.cst.InitSection iInit = iLetBlock.getInit();
@@ -1362,7 +1355,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					if (saveInitExpression != null) {
 						oLetVariable.setInitExpression(saveInitExpression);
 					}
-					factory.getOCL().popContext();
 
 					if ((oLetVariable.getType() != null && oLetVariable.getInitExpression() != null)
 							&& oLetVariable.getInitExpression().getType() != null
