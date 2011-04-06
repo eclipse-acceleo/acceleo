@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module queryScopeValid3('http://www.eclipse.org/emf/2002/Ecore')]
+
+[query public generate(l : EClass) : Sequence(String) = l.eAllOperations.generate2().name /]
+
+[query public generate2(l : EOperation) : EParameter = l.eParameters->first() /]

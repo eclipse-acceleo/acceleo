@@ -23,6 +23,10 @@ import org.eclipse.acceleo.parser.tests.ast.ASTParserMacroTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTParserModuleTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTParserQueryTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTParserTemplateTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTScopeForTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTScopeLetTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTScopeQueryTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTScopeTemplateTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserBlockTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserModuleTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserQueryTests;
@@ -44,7 +48,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		CSTParserQueryTests.class, CSTParserTemplateTests.class, CSTParserTests.class,
 		FileContentTests.class, SequenceTests.class, ASTParserModuleTests.class, ASTOperationTests.class,
 		ASTParserQueryTests.class, ASTParserTemplateTests.class, ASTParserMacroTests.class,
-		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class })
+		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class,
+		ASTScopeForTests.class, ASTScopeLetTests.class, ASTScopeQueryTests.class,
+		ASTScopeTemplateTests.class, })
 public class AllTests {
 
 	/**

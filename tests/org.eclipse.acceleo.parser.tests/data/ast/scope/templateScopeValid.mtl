@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module templateScopeValid('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[template public generate(l : EClass)]
+[l.defaultValue/]  
+[let l : EOperation = l.eAllOperations->first()]
+[l.eParameters/]
+
+[l.generate2()/]
+
+[let l : EParameter = l.eParameters->first()]
+[l.eOperation/]
+[/let]
+[/let]
+[l.defaultValue/]
+[let l : EAttribute = l.eAllAttributes->first()]
+[l.volatile/]
+[let l : EAnnotation = l.eAnnotations->first()]
+[l.source/]
+[/let]
+[/let]
+[l.defaultValue/]
+[/template]
+
+[template public generate2(l : EOperation)]
+[for (l : EParameter | l.eParameters)]
+[let l : EGenericType = l.eGenericType]
+[l.eRawType/]
+[/let]
+[/for]
+[/template]

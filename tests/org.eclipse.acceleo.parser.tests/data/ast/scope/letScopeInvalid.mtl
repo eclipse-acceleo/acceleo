@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module letScopeInvalid('http://www.eclipse.org/emf/2002/Ecore')]
+
+[template public generate(l : EClass)]
+[l.defaultValue/]  
+[let l : EOperation = l.eAllOperations->first()]
+[l.eParameters/] [l.defaultValue/]
+[/let]
+[l.defaultValue/]
+[/template]
