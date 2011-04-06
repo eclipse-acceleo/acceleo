@@ -1,0 +1,15 @@
+[comment encoding = UTF-8 /]
+[module forContextInvalid2('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[template public generate(a : EClass)]
+[self.eAllOperations/]
+[for (a : EAttribute | a.eAllAttributes)]
+[generate2()/]
+[/for]
+[self.eAllOperations/]
+[/template]
+
+[template public generate2(a : EAttribute)]
+[a/]
+[/template]

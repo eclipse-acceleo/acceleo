@@ -16,6 +16,8 @@ import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.parser.tests.AcceleoParserMessagesTests;
 import org.eclipse.acceleo.parser.tests.AcceleoParserTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTContextForTests;
+import org.eclipse.acceleo.parser.tests.ast.ASTContextLetTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTDocumentationTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTModelExpressionsTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTOperationTests;
@@ -50,7 +52,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ASTParserQueryTests.class, ASTParserTemplateTests.class, ASTParserMacroTests.class,
 		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class,
 		ASTScopeForTests.class, ASTScopeLetTests.class, ASTScopeQueryTests.class,
-		ASTScopeTemplateTests.class, })
+		ASTScopeTemplateTests.class, ASTContextForTests.class, ASTContextLetTests.class, })
 public class AllTests {
 
 	/**

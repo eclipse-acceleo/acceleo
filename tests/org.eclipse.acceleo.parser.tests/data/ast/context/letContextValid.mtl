@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module letContextValid('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[template public generate(a : EClass)]
+[self.eAllOperations/]
+[let idFeature : EAttribute = eIDAttribute]
+[self.eAllOperations/]
+[/let]
+[self.eAllOperations/]
+[/template]
