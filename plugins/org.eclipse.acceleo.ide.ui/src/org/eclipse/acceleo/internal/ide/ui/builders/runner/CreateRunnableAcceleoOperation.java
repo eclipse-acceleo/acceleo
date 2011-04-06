@@ -138,6 +138,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 								}
 							}
 						}
+
 						String classShortName = new Path(Character.toUpperCase(fileAcceleo.getName()
 								.charAt(0))
 								+ fileAcceleo.getName().substring(1)).removeFileExtension().lastSegment();
@@ -148,8 +149,11 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 									.createAcceleoMainClass();
 							acceleoMainClass.setBasePackage(packageName);
 							acceleoMainClass.setClassShortName(classShortName);
-							acceleoMainClass.setModuleFileShortName(new Path(fileAcceleo.getName())
-									.removeFileExtension().lastSegment());
+
+							IPath moduleFilePath = computeRelativeModuleFilePath(fileAcceleo);
+
+							String moduleFileShortName = moduleFilePath.removeFileExtension().toString();
+							acceleoMainClass.setModuleFileShortName(moduleFileShortName);
 							acceleoMainClass.setProjectName(fileAcceleo.getProject().getName());
 							EList<String> packagesList = acceleoMainClass.getPackages();
 							packagesList.addAll(packages);
@@ -168,6 +172,9 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 								IPath workspacePathRelativeToFile = computeWorkspacePath();
 								IPath eclipsePathRelativeToFile = computeEclipsePath();
 
+								moduleFileShortName = moduleFilePath.removeFileExtension().lastSegment()
+										.toString();
+								acceleoMainClass.setModuleFileShortName(moduleFileShortName);
 								AcceleoUIGenerator.getDefault().generateAntFiles(
 										acceleoMainClass,
 										eclipsePathRelativeToFile.makeRelativeTo(antFolder.getLocation())
@@ -192,9 +199,40 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	}
 
 	/**
+	 * Computes the file path of the module relative to the source folder.
+	 * 
+	 * @param file
+	 *            The module
+	 * @return The file path of the module relative to the source folder.
+	 * @since 3.1
+	 */
+	private IPath computeRelativeModuleFilePath(IFile file) {
+		IPath fullPath = file.getFullPath();
+
+		IPath moduleFilePath = fullPath;
+
+		AcceleoProject project = new AcceleoProject(file.getProject());
+		List<IPath> sourceFolders = project.getSourceFolders();
+		for (IPath sourceFolderPath : sourceFolders) {
+			if (sourceFolderPath.isPrefixOf(fullPath)) {
+				moduleFilePath = fullPath.makeRelativeTo(sourceFolderPath);
+			}
+		}
+
+		if (moduleFilePath.equals(file.getFullPath())) {
+			moduleFilePath = new Path(moduleFilePath.lastSegment());
+		} else {
+			moduleFilePath = new Path("").addTrailingSeparator().append(moduleFilePath); //$NON-NLS-1$
+		}
+
+		return moduleFilePath;
+	}
+
+	/**
 	 * Returns the workspace path.
 	 * 
 	 * @return The workspace path.
+	 * @since 3.1
 	 */
 	private IPath computeWorkspacePath() {
 		return new Path(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
@@ -204,6 +242,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	 * Returns the Eclipse path.
 	 * 
 	 * @return The Eclipse path.
+	 * @since 3.1
 	 */
 	private IPath computeEclipsePath() {
 		URL fileURL = Platform.getInstallLocation().getURL();

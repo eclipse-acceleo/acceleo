@@ -933,4 +933,19 @@ public class AcceleoProject {
 			parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
 		}
 	}
+
+	/**
+	 * Returns the list of source folders in the project.
+	 * 
+	 * @return The list of source folders in the project.
+	 * @since 3.1
+	 */
+	public List<IPath> getSourceFolders() {
+		// We create a copy to prevent problems.
+		List<IPath> paths = new ArrayList<IPath>();
+		for (IPath iPath : this.sourceFolders) {
+			paths.add(iPath);
+		}
+		return paths;
+	}
 }
