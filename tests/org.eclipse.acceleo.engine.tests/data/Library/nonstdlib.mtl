@@ -1,4 +1,4 @@
-[module template_nonstdlib('http://www.eclipse.org/emf/2002/Ecore')/]
+[module nonstdlib('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public test_nonstdlib(p : EPackage)]
 	[file ('test_string_replace', false)]

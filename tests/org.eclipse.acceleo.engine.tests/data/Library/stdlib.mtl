@@ -1,4 +1,4 @@
-[module template_stdlib('http://www.eclipse.org/emf/2002/Ecore')/]
+[module stdlib('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public test_stdlib(p : EPackage)]
 	[file ('test_string_substitute', false)]
