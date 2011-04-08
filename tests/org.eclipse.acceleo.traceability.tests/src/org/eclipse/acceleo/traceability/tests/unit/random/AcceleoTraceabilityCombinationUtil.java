@@ -13,7 +13,14 @@ package org.eclipse.acceleo.traceability.tests.unit.random;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcceleoTraceabilityCombinationUtil {
+public final class AcceleoTraceabilityCombinationUtil {
+
+	/**
+	 * The constructor.
+	 */
+	private AcceleoTraceabilityCombinationUtil() {
+		// prevent instantiation
+	}
 
 	public static <T> List<List<T>> combinate(List<List<T>> uncombinedList) {
 		List<List<T>> list = new ArrayList<List<T>>();
