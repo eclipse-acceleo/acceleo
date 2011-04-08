@@ -576,14 +576,14 @@ public class AcceleoResultView extends ResourceNavigator {
 		}
 		map.put(IMarker.MESSAGE, AcceleoUIMessages.getString("AcceleoResultView.ActiveRegionMarkerMessage", //$NON-NLS-1$
 				new Object[] {objectToString, featureToString, templateToString, }));
-		map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_INFO));
-		map.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_NORMAL));
+		map.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_INFO));
+		map.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
 		int begin = region.getTargetFileOffset();
 		int end = begin + region.getTargetFileLength();
 		int line = FileContent.lineNumber(buffer, begin);
-		map.put(IMarker.CHAR_START, new Integer(begin));
-		map.put(IMarker.CHAR_END, new Integer(end));
-		map.put(IMarker.LINE_NUMBER, new Integer(line));
+		map.put(IMarker.CHAR_START, Integer.valueOf(begin));
+		map.put(IMarker.CHAR_END, Integer.valueOf(end));
+		map.put(IMarker.LINE_NUMBER, Integer.valueOf(line));
 		MarkerUtilities.createMarker(file, map, RESULT_ACTIVE_REGION_MARKER_ID);
 	}
 
