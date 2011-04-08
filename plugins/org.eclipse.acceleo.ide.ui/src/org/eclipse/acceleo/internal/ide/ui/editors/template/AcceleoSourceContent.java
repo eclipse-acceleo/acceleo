@@ -36,6 +36,7 @@ import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.CstFactory;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.Documentation;
 import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.ModelExpression;
 import org.eclipse.acceleo.parser.cst.Module;
@@ -424,13 +425,24 @@ public class AcceleoSourceContent {
 		while (current != null) {
 			EObject modified = null;
 			if (current instanceof ModuleElement
-					&& ((ModuleElement)current).eContainingFeature() == CstPackage.eINSTANCE
-							.getModule_OwnedModuleElement()) {
+					&& (((ModuleElement)current).eContainingFeature() == CstPackage.eINSTANCE
+							.getModule_OwnedModuleElement())) {
 				ModuleElement oldModuleElement = (ModuleElement)current;
 				int newPosEnd = posBegin + newText.length();
 				int shift = newPosEnd - posEnd;
 				shiftPositionsAfter(posBegin, shift);
 				modified = replaceModuleElement(oldModuleElement);
+				if (modified == null) {
+					shiftPositionsAfter(posBegin + shift, -shift);
+				}
+			} else if (current instanceof ModuleElement
+					&& (((ModuleElement)current).eContainingFeature() == CstPackage.eINSTANCE
+							.getModule_Documentation())) {
+				Documentation oldDocumentation = (Documentation)current;
+				int newPosEnd = posBegin + newText.length();
+				int shift = newPosEnd - posEnd;
+				shiftPositionsAfter(posBegin, shift);
+				modified = replaceModuleDocumentation(oldDocumentation);
 				if (modified == null) {
 					shiftPositionsAfter(posBegin + shift, -shift);
 				}
@@ -483,6 +495,35 @@ public class AcceleoSourceContent {
 			source.getInfos().clear();
 			source.createCST();
 		}
+	}
+
+	/**
+	 * Replaces the documentation of the module.
+	 * 
+	 * @param oldDocumentation
+	 *            The old documentation.
+	 * @return The new documentation
+	 */
+	private EObject replaceModuleDocumentation(Documentation oldDocumentation) {
+		Module tempModule = CstFactory.eINSTANCE.createModule();
+		if (getCST() != null) {
+			tempModule.getInput().addAll(EcoreUtil.copyAll(getCST().getInput()));
+		}
+		cstParser.parseModuleDocumentation(0, tempModule);
+		if (tempModule.getDocumentation() != null) {
+			try {
+				Documentation newDocumentation = tempModule.getDocumentation();
+				EcoreUtil.replace(oldDocumentation, newDocumentation);
+				return newDocumentation;
+			} catch (ClassCastException e) {
+				AcceleoUIActivator.log(e, true);
+				// continue
+			} catch (ArrayStoreException e) {
+				AcceleoUIActivator.log(e, true);
+				// continue
+			}
+		}
+		return null;
 	}
 
 	/**
