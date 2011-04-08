@@ -308,7 +308,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
 	 */
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
-		ResourceSet resourceSet = element.eResource().getResourceSet();
+		ResourceSet resourceSet = new AcceleoResourceSetImpl();
 
 		resourceFactoryRegistry = resourceSet.getResourceFactoryRegistry();
 		resourceSet.setResourceFactoryRegistry(new AcceleoResourceFactoryRegistry(resourceFactoryRegistry));
