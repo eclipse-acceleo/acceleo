@@ -222,11 +222,6 @@ public final class AcceleoRefactoringUtils {
 				ISaveablesLifecycleListener modelManager = (ISaveablesLifecycleListener)acceleoEditor
 						.getSite().getWorkbenchWindow().getService(ISaveablesLifecycleListener.class);
 				Saveable[] saveableArray = acceleoEditor.getSaveables();
-				List<Saveable> list = new ArrayList<Saveable>();
-				for (int i = 0; i < saveableArray.length; i++) {
-					list.add(saveableArray[i]);
-				}
-
 				// Fires a "pre close" event so that the editors prompts us to save the dirty files.
 				// None will really be closed.
 				SaveablesLifecycleEvent event = new SaveablesLifecycleEvent(acceleoEditor,

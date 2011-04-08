@@ -59,7 +59,7 @@ import org.eclipse.ocl.expressions.ExpressionsPackage;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
-public class AcceleoUIGenerator {
+public final class AcceleoUIGenerator {
 
 	/**
 	 * The Acceleo module that will generate the build.acceleo file.
