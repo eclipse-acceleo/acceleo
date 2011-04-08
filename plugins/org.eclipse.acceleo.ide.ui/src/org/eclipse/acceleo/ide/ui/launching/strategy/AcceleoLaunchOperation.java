@@ -19,8 +19,10 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
+import org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -121,6 +123,11 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				for (String argument : args) {
 					generator.addPropertiesFile(argument);
 				}
+				IContainer target = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(
+						new Path(targetFolder.getAbsolutePath()));
+				String generationID = AcceleoLaunchingUtil.computeLaunchConfigID(project.getName(),
+						qualifiedName, model, target.getFullPath().toString(), args);
+				generator.setGenerationID(generationID);
 				generator.doGenerate(BasicMonitor.toMonitor(monitor));
 			} else {
 				// We know the generated class has a "main()" method.
