@@ -351,7 +351,7 @@ public class QuickOutlineControl extends PopupDialog implements IInformationCont
 			filteredTreeConstructor = FilteredTree.class.getConstructor(Composite.class, int.class,
 					PatternFilter.class, boolean.class);
 			filteredTree = filteredTreeConstructor.newInstance(parent, Integer.valueOf(SWT.SINGLE
-					| SWT.H_SCROLL | SWT.V_SCROLL), new QuickOutlinePatternFilter(), Boolean.valueOf(true));
+					| SWT.H_SCROLL | SWT.V_SCROLL), new QuickOutlinePatternFilter(), Boolean.TRUE);
 		} catch (NoSuchMethodException e) {
 			// Eclipse < 3.5
 			try {

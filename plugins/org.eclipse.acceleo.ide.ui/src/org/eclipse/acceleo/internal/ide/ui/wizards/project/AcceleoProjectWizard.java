@@ -227,9 +227,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 						if (!project.exists()) {
 							IProjectDescription desc = project.getWorkspace().newProjectDescription(
 									newProjectPage.getProjectName());
-							if (location != null
-									&& ResourcesPlugin.getWorkspace().getRoot().getLocation()
-											.equals(location)) {
+							if (ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
 								location = null;
 							}
 							desc.setLocation(location);
