@@ -122,7 +122,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		methodDeclaration = methodDeclaration.replace("test()", "changedMethodName()"); //$NON-NLS-1$ //$NON-NLS-2$
 		mtlFileBlock.getBody().remove(6);
 		mtlFileBlock.getBody().add(createOCLExpression('\'' + methodDeclaration + '\''));
-		final String expected = packageDeclaration + LINE_SEPARATOR + classDeclaration + LINE_SEPARATOR
+		String expected = packageDeclaration + LINE_SEPARATOR + classDeclaration + LINE_SEPARATOR
 				+ generatedTag + LINE_SEPARATOR + methodDeclaration;
 		/*
 		 * We've changed the method name but didn't alter the "@generated" tag. We then expect the generated
@@ -145,10 +145,9 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 		 * Both the method name and "@generated" tag have changed. The generated file shouldn't be modified
 		 * when generating again.
 		 */
-		/*
-		 * FIXME this doesn't test the merging : we changed the "@generated" tag in the template, not in the
-		 * preview
-		 */
+		expected = packageDeclaration + LINE_SEPARATOR + classDeclaration + LINE_SEPARATOR + generatedTag
+				+ LINE_SEPARATOR + methodDeclaration;
+
 		evaluationVisitor.visitExpression(getParentTemplate(mtlFileBlock));
 		assertSame("Expecting a single preview", 1, getPreview().size()); //$NON-NLS-1$
 		entry = getPreview().entrySet().iterator().next();
