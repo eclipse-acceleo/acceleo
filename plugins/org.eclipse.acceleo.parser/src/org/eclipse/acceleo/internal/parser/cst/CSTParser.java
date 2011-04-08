@@ -363,6 +363,38 @@ public class CSTParser {
 	}
 
 	/**
+	 * Parse the text before the module to determine the module documentation.
+	 * 
+	 * @param posBegin
+	 *            The beginning of the documentation.
+	 * @param eModule
+	 *            The module
+	 * @return The documentation or <code>null</code> if none.
+	 */
+	public Documentation parseModuleDocumentation(int posBegin, Module eModule) {
+		if (source.getBuffer() == null || source.getBuffer().length() == 0) {
+			logProblem(AcceleoParserMessages.getString("CSTParser.EmptyBuffer"), 0, -1); //$NON-NLS-1$
+		} else {
+			Region bH = pModule.searchBeginHeader(source.getBuffer(), 0, source.getBuffer().length());
+			if (bH.b() == -1) {
+				logProblem(AcceleoParserMessages.getString("CSTParser.MissingModule"), 0, -1); //$NON-NLS-1$
+			} else {
+				Region eH = pModule.searchEndHeaderAtBeginHeader(source.getBuffer(), bH, source.getBuffer()
+						.length());
+				if (eH.b() == -1) {
+					logProblem(AcceleoParserMessages.getString("CSTParser.MissingModuleEnd"), bH.b(), bH.e()); //$NON-NLS-1$
+				} else {
+					setPositions(eModule, bH.b(), source.getBuffer().length());
+					List<Comment> commentsBeforeModule = parseBeforeModule(eModule);
+					computeModuleDocumentation(commentsBeforeModule, eModule);
+					return eModule.getDocumentation();
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Reads the text before the module declaration to find the starting comment of documentation and to log
 	 * an error if there is something else before the module.
 	 * 
@@ -600,8 +632,7 @@ public class CSTParser {
 		if (bH.b() == -1) {
 			logProblem(AcceleoParserMessages.getString("CSTParser.MissingMetamodel"), posBegin, posEnd); //$NON-NLS-1$
 			String name = source.getBuffer().substring(posBegin, posEnd).trim();
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidModuleName"), posBegin, posEnd); //$NON-NLS-1$
 			}
 			eModule.setName(name);
@@ -622,8 +653,7 @@ public class CSTParser {
 				}
 			}
 			String name = source.getBuffer().substring(posBegin, bH.b()).trim();
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(
 						AcceleoParserMessages.getString("CSTParser.InvalidModuleName", name), posBegin, bH.b()); //$NON-NLS-1$
 			}
@@ -1115,8 +1145,7 @@ public class CSTParser {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eTemplate.setName(name);
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(
 						AcceleoParserMessages.getString("CSTParser.InvalidTemplateName", name), posShift, posEnd); //$NON-NLS-1$
 			}
@@ -1125,8 +1154,7 @@ public class CSTParser {
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(
 						AcceleoParserMessages.getString("CSTParser.InvalidTemplateName", name), posShift, bH.b()); //$NON-NLS-1$
 			}
@@ -1504,7 +1532,7 @@ public class CSTParser {
 						posEnd);
 			}
 			if (ACCELEO_KEYWORDS.contains(name.trim())
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name.trim())) {
+					|| AcceleoOCLReflection.getReservedKeywords().contains(name.trim())) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidVariableName", name), posBegin, //$NON-NLS-1$
 						posEnd);
 			}
@@ -1567,8 +1595,7 @@ public class CSTParser {
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidQueryName", name), posShift, //$NON-NLS-1$
 						posEnd);
 			}
@@ -1578,8 +1605,7 @@ public class CSTParser {
 			if (!ParserUtils.isIdentifier(name)) {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidQueryName", name), posShift, bH //$NON-NLS-1$
 						.b());
 			}
@@ -1646,8 +1672,7 @@ public class CSTParser {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, posEnd);
 			}
 			eMacro.setName(name);
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidMacroName", name), posShift, //$NON-NLS-1$
 						posEnd);
 			}
@@ -1657,8 +1682,7 @@ public class CSTParser {
 				logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name, posShift, bH.b());
 			}
 			eMacro.setName(name);
-			if (ACCELEO_KEYWORDS.contains(name)
-					|| new AcceleoOCLReflection(null).getReservedKeywords().contains(name)) {
+			if (ACCELEO_KEYWORDS.contains(name) || AcceleoOCLReflection.getReservedKeywords().contains(name)) {
 				logWarning(AcceleoParserMessages.getString("CSTParser.InvalidMacroName", name), posShift, //$NON-NLS-1$
 						bH.b());
 			}
