@@ -36,6 +36,7 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator;
+import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityMessages;
 import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -1635,8 +1636,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (modelElement.eIsProxy()) {
 			modelURI = ((InternalEObject)modelElement).eProxyURI().trimFragment();
 		} else {
-			// FIXME message!
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(AcceleoTraceabilityMessages
+					.getString("AcceleoTraceabilityVisitor.MissingResource")); //$NON-NLS-1$
 		}
 		final String name = modelURI.lastSegment();
 		String path = modelURI.toString();
