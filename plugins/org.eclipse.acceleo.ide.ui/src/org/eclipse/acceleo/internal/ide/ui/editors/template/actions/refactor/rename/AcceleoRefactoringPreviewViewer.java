@@ -54,8 +54,9 @@ public class AcceleoRefactoringPreviewViewer extends TextMergeViewer {
 	@Override
 	protected void configureTextViewer(TextViewer textViewer) {
 		if (textViewer instanceof ISourceViewer) {
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
-					&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null) {
+			if (PlatformUI.getWorkbench() == null
+					|| PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
+					|| PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null) {
 				return;
 			}
 
