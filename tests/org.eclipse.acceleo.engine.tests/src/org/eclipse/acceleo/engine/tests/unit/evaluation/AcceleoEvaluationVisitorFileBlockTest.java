@@ -119,7 +119,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 				+ classDeclaration + LINE_SEPARATOR + generatedTag + LINE_SEPARATOR + methodDeclaration,
 				entry.getValue().toString());
 
-		methodDeclaration.replace("test()", "changedMethodName()"); //$NON-NLS-1$ //$NON-NLS-2$
+		methodDeclaration = methodDeclaration.replace("test()", "changedMethodName()"); //$NON-NLS-1$ //$NON-NLS-2$
 		mtlFileBlock.getBody().remove(6);
 		mtlFileBlock.getBody().add(createOCLExpression('\'' + methodDeclaration + '\''));
 		final String expected = packageDeclaration + LINE_SEPARATOR + classDeclaration + LINE_SEPARATOR
@@ -135,8 +135,8 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 				generationRoot.getAbsolutePath() + File.separatorChar + fileName, entry.getKey());
 		assertEquals("File hasn't been modified as expected.", expected, entry.getValue().toString()); //$NON-NLS-1$
 
-		methodDeclaration.replace("changedMethodName()", "notGenerated()"); //$NON-NLS-1$ //$NON-NLS-2$
-		generatedTag.replace("@generated", "@generated not"); //$NON-NLS-1$ //$NON-NLS-2$
+		methodDeclaration = methodDeclaration.replace("changedMethodName()", "notGenerated()"); //$NON-NLS-1$ //$NON-NLS-2$
+		generatedTag = generatedTag.replace("@generated", "@generated not"); //$NON-NLS-1$ //$NON-NLS-2$
 		mtlFileBlock.getBody().remove(4);
 		mtlFileBlock.getBody().add(4, createOCLExpression('\'' + generatedTag + '\''));
 		mtlFileBlock.getBody().remove(6);
