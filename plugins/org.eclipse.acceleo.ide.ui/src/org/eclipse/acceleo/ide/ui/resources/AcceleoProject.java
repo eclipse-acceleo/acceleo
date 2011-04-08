@@ -942,10 +942,6 @@ public class AcceleoProject {
 	 */
 	public List<IPath> getSourceFolders() {
 		// We create a copy to prevent problems.
-		List<IPath> paths = new ArrayList<IPath>();
-		for (IPath iPath : this.sourceFolders) {
-			paths.add(iPath);
-		}
-		return paths;
+		return new ArrayList<IPath>(this.sourceFolders);
 	}
 }
