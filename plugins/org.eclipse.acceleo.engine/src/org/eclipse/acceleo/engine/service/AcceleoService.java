@@ -18,9 +18,12 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.event.AbstractAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine;
@@ -28,11 +31,19 @@ import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoEngineRegistry;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoListenerDescriptor;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoTraceabilityRegistryListenerUils;
 import org.eclipse.acceleo.engine.internal.utils.DefaultEngineSelector;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -57,6 +68,32 @@ public final class AcceleoService {
 
 	/** The current generation strategy. */
 	private final IAcceleoGenerationStrategy strategy;
+
+	/**
+	 * The listeners added to the initial engine.
+	 * 
+	 * @since 3.1
+	 **/
+	private final List<IAcceleoTextGenerationListener> addedListeners = new ArrayList<IAcceleoTextGenerationListener>();
+
+	/**
+	 * The properties files added to the initial engine.
+	 * 
+	 * @since 3.1
+	 **/
+	private final List<String> addedPropertiesfiles = new ArrayList<String>();
+
+	/**
+	 * The properties added to the initial engine.
+	 * 
+	 * @since 3.1
+	 **/
+	private final List<Map<String, String>> addedProperties = new ArrayList<Map<String, String>>();
+
+	/**
+	 * The generation ID.
+	 */
+	private String generationID;
 
 	/**
 	 * Instantiates an instance of the service with a default generation strategy.
@@ -118,6 +155,7 @@ public final class AcceleoService {
 	 */
 	public void addListener(IAcceleoTextGenerationListener listener) {
 		generationEngine.addListener(listener);
+		this.addedListeners.add(listener);
 	}
 
 	/**
@@ -133,6 +171,7 @@ public final class AcceleoService {
 	 */
 	public void addProperties(Map<String, String> customProperties) {
 		generationEngine.addProperties(customProperties);
+		this.addedProperties.add(customProperties);
 	}
 
 	/**
@@ -175,6 +214,7 @@ public final class AcceleoService {
 	 */
 	public void addPropertiesFile(String propertiesFile) throws MissingResourceException {
 		generationEngine.addProperties(propertiesFile);
+		this.addedPropertiesfiles.add(propertiesFile);
 	}
 
 	/**
@@ -545,12 +585,83 @@ public final class AcceleoService {
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
+
+		List<AcceleoListenerDescriptor> descriptorsUsed = new ArrayList<AcceleoListenerDescriptor>();
+
+		List<AcceleoListenerDescriptor> descriptors = AcceleoTraceabilityRegistryListenerUils
+				.getListenerDescriptors();
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptors) {
+			if (acceleoListenerDescriptor.getNature() == null) {
+				// If we are in stand alone, only use the descriptors without nature
+				descriptorsUsed.add(acceleoListenerDescriptor);
+			} else if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+				// Check the nature of the output project
+				IPath location = new Path(generationRoot.getAbsolutePath());
+				IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
+				if (iFile != null) {
+					IProject project = iFile.getProject();
+					try {
+						if (project != null && project.isAccessible()
+								&& project.hasNature(acceleoListenerDescriptor.getNature())) {
+							descriptorsUsed.add(acceleoListenerDescriptor);
+						}
+					} catch (CoreException e) {
+						AcceleoEnginePlugin.log(e, false);
+					}
+				}
+			}
+		}
+
+		boolean forceTraceability = false;
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+			IAcceleoTextGenerationListener listener = acceleoListenerDescriptor.getTraceabilityListener();
+			if (listener instanceof AbstractAcceleoTextGenerationListener) {
+				AbstractAcceleoTextGenerationListener textGenerationListener = (AbstractAcceleoTextGenerationListener)listener;
+				textGenerationListener.setGenerationID(generationID);
+			}
+
+			// If one of the listeners wants to force the traceability it will have it.
+			if (!AcceleoPreferences.isTraceabilityEnabled()
+					&& acceleoListenerDescriptor.isForceTraceability()) {
+				AcceleoPreferences.switchTraceability(true);
+				forceTraceability = true;
+			}
+		}
+
+		// We create the engine once again if someone has forced the traceability
+		if (forceTraceability) {
+			createEngine();
+
+			// We restore all the content of the previous engine
+			for (IAcceleoTextGenerationListener listener : this.addedListeners) {
+				generationEngine.addListener(listener);
+			}
+			for (Map<String, String> properties : this.addedProperties) {
+				generationEngine.addProperties(properties);
+			}
+			for (String propertiesFiles : this.addedPropertiesfiles) {
+				generationEngine.addProperties(propertiesFiles);
+			}
+		}
+
+		// We add the listeners contributed thanks to the extension point.
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+			generationEngine.addListener(acceleoListenerDescriptor.getTraceabilityListener());
+		}
+
 		try {
 			return generationEngine.evaluate(template, arguments, generationRoot, strategy, monitor);
 		} finally {
 			for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 				generationEngine.removeListener(listener);
 			}
+			for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+				generationEngine.removeListener(acceleoListenerDescriptor.getTraceabilityListener());
+			}
+			// Clear the cache
+			addedListeners.clear();
+			addedProperties.clear();
+			addedPropertiesfiles.clear();
 		}
 	}
 
@@ -640,5 +751,16 @@ public final class AcceleoService {
 		}
 		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
 				"AcceleoService.UndefinedTemplate", templateName, module.getName())); //$NON-NLS-1$
+	}
+
+	/**
+	 * Sets the generation ID.
+	 * 
+	 * @param generationID
+	 *            The generation ID.
+	 * @since 3.1
+	 */
+	public void setGenerationID(String generationID) {
+		this.generationID = generationID;
 	}
 }

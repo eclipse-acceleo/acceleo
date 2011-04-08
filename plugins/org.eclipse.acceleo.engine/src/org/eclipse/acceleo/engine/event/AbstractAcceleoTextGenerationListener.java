@@ -17,6 +17,12 @@ package org.eclipse.acceleo.engine.event;
  * @since 3.1
  */
 public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoTextGenerationListener {
+
+	/**
+	 * The generation ID.
+	 */
+	protected String generationID;
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -61,5 +67,16 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 	 */
 	public void textGenerated(AcceleoTextGenerationEvent event) {
 		// Empty implementation
+	}
+
+	/**
+	 * Sets the generation ID.
+	 * 
+	 * @param generationID
+	 *            The generation ID.
+	 * @since 3.1
+	 */
+	public void setGenerationID(String generationID) {
+		this.generationID = generationID;
 	}
 }

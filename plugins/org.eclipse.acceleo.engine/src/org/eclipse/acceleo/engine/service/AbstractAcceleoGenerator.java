@@ -119,6 +119,16 @@ public abstract class AbstractAcceleoGenerator {
 	protected Resource.Factory.Registry resourceFactoryRegistry;
 
 	/**
+	 * The generation ID is a unique identifier describing all the parameters of the generation. It is
+	 * computed thanks to
+	 * {@link org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil#computeLaunchConfigID(String, String, String, String, List)}
+	 * .
+	 * 
+	 * @since 3.1
+	 */
+	protected String generationID;
+
+	/**
 	 * Allows clients to add a generation listener to this generator instance.
 	 * 
 	 * @param listener
@@ -441,6 +451,17 @@ public abstract class AbstractAcceleoGenerator {
 	}
 
 	/**
+	 * Sets the generation ID.
+	 * 
+	 * @param generationID
+	 *            The generation ID.
+	 * @since 3.1
+	 */
+	public void setGenerationID(String generationID) {
+		this.generationID = generationID;
+	}
+
+	/**
 	 * If you need to listen to generation events, generation listeners can be added for notification through
 	 * this.Listeners can be added to the {@link #generationListeners} list.
 	 * 
@@ -484,6 +505,7 @@ public abstract class AbstractAcceleoGenerator {
 			service.addListener(listener);
 		}
 
+		service.setGenerationID(generationID);
 		acceleoPropertiesLoaderService = getPropertiesLoaderService(service);
 		if (acceleoPropertiesLoaderService != null) {
 			acceleoPropertiesLoaderService.initializeService(getProperties());

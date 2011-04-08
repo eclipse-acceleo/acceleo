@@ -12,8 +12,10 @@ package org.eclipse.acceleo.engine;
 
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoEngineRegistry;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoTraceabilityRegistryListenerUils;
 import org.eclipse.acceleo.engine.internal.utils.DynamicTemplatesRegistryListener;
 import org.eclipse.acceleo.engine.internal.utils.EngineRegistryListener;
+import org.eclipse.acceleo.engine.internal.utils.TraceabilityRegistryListeners;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
@@ -39,6 +41,9 @@ public class AcceleoEnginePlugin extends Plugin {
 
 	/** The registry listener that will be used to listen to engine creator changes. */
 	private final EngineRegistryListener engineCreatorListener = new EngineRegistryListener();
+
+	/** The registry listener that will be used to listen to traceability listener changes. */
+	private final TraceabilityRegistryListeners traceabilityRegistryListener = new TraceabilityRegistryListeners();
 
 	/**
 	 * Default constructor for the plugin.
@@ -160,8 +165,11 @@ public class AcceleoEnginePlugin extends Plugin {
 		registry.addListener(dynamicTemplatesListener,
 				DynamicTemplatesRegistryListener.DYNAMIC_TEMPLATES_EXTENSION_POINT);
 		registry.addListener(engineCreatorListener, EngineRegistryListener.ENGINE_CREATORS_EXTENSION_POINT);
+		registry.addListener(traceabilityRegistryListener,
+				TraceabilityRegistryListeners.TRACEABILITY_LISTENERS_EXTENSION_POINT);
 		dynamicTemplatesListener.parseInitialContributions();
 		engineCreatorListener.parseInitialContributions();
+		traceabilityRegistryListener.parseInitialContributions();
 	}
 
 	/**
@@ -176,7 +184,9 @@ public class AcceleoEnginePlugin extends Plugin {
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.removeListener(dynamicTemplatesListener);
 		registry.removeListener(engineCreatorListener);
+		registry.removeListener(traceabilityRegistryListener);
 		AcceleoDynamicTemplatesEclipseUtil.clearRegistry();
 		AcceleoEngineRegistry.clearRegistry();
+		AcceleoTraceabilityRegistryListenerUils.clearRegistry();
 	}
 }
