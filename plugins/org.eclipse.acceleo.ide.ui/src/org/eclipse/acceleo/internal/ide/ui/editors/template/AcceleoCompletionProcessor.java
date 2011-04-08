@@ -1249,7 +1249,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length()
 					+ virtualText.length(), replacementStringBefore.length(), patternImage,
-					'[' + IAcceleoConstants.IF + ']', null, tab.toString() + replacementString));
+					'[' + IAcceleoConstants.IF + ']', null, tab + replacementString));
 		}
 		if (IAcceleoConstants.FILE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.FILE).startsWith(start.toLowerCase())) {
@@ -1264,7 +1264,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
 					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.LET + ']', null,
-					tab.toString() + replacementString));
+					tab + replacementString));
 		}
 		if (IAcceleoConstants.TRACE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.TRACE).startsWith(start.toLowerCase())) {
@@ -1399,9 +1399,10 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (withMainTag) {
 			displayString += " - " + IAcceleoConstants.TAG_MAIN; //$NON-NLS-1$
 		}
-		proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
-				replacementStringBefore.length(), patternImage, displayString, null, tab.toString()
-						+ replacementString));
+		proposals
+				.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
+						replacementStringBefore.length(), patternImage, displayString, null, tab
+								+ replacementString));
 	}
 
 	/**
