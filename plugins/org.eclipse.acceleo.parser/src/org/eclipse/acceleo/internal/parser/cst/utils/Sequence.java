@@ -199,7 +199,7 @@ public class Sequence implements ISequence {
 	private Integer matchesEnd(final StringBuffer buffer, int posBegin, int posEnd) {
 		Integer e;
 		if (tokens.length == 1) {
-			e = new Integer(posBegin + tokens[0].length());
+			e = Integer.valueOf(posBegin + tokens[0].length());
 		} else {
 			e = null;
 		}
