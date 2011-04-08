@@ -662,6 +662,9 @@ public final class AcceleoService {
 			addedListeners.clear();
 			addedProperties.clear();
 			addedPropertiesfiles.clear();
+			if (forceTraceability) {
+				AcceleoPreferences.switchTraceability(false);
+			}
 		}
 	}
 
