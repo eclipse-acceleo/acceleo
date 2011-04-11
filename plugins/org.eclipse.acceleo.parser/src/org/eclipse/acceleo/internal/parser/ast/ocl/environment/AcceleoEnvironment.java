@@ -27,6 +27,7 @@ import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment.AcceleoUMLReflectionHelios;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -37,6 +38,7 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.ocl.AmbiguousLookupException;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
 import org.eclipse.ocl.LookupException;
@@ -52,6 +54,10 @@ import org.eclipse.ocl.ecore.SequenceType;
 import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.expressions.Variable;
+import org.eclipse.ocl.internal.l10n.OCLMessages;
+import org.eclipse.ocl.lpg.ProblemHandler;
+import org.eclipse.ocl.options.ProblemOption;
+import org.eclipse.ocl.parser.AbstractOCLAnalyzer;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
 
@@ -781,6 +787,84 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 		} catch (LookupException e) {
 			if (!e.getAmbiguousMatches().isEmpty()) {
 				result = (EStructuralFeature)e.getAmbiguousMatches().get(0);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#tryLookupProperty(java.lang.Object, java.lang.String)
+	 */
+	@Override
+	public EStructuralFeature tryLookupProperty(EClassifier owner, String name) throws LookupException {
+		EStructuralFeature result = lookupProperty(owner, name);
+
+		if (result == null) {
+			// looks up non-navigable named ends as well as unnamed ends. Hence
+			// the possibility of ambiguity
+			result = lookupNonNavigableEnd(owner, name);
+
+			if ((result == null) && AbstractOCLAnalyzer.isEscaped(name)) {
+				result = lookupNonNavigableEnd(owner, AbstractOCLAnalyzer.unescape(name));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Looks up a non-navigable association end on behalf of the specified <code>owner</code> classifier
+	 * (which is at that end).
+	 * 
+	 * @param owner
+	 *            a classifier in the context of which the property is used
+	 * @param name
+	 *            the end name to look up
+	 * @return the non-navigable end, or <code>null</code> if it cannot be found
+	 * @throws LookupException
+	 *             in case that multiple non-navigable properties are found that have the same name and the
+	 *             problem option is ERROR or worse
+	 */
+	@SuppressWarnings("restriction")
+	private EStructuralFeature lookupNonNavigableEnd(EClassifier owner, String name) throws LookupException {
+		EClassifier tmpOwner = owner;
+		if (tmpOwner == null) {
+			Variable<EClassifier, EParameter> vdcl = lookupImplicitSourceForProperty(name);
+
+			if (vdcl == null) {
+				return null;
+			}
+
+			tmpOwner = vdcl.getType();
+		}
+
+		List<EStructuralFeature> matches = new java.util.ArrayList<EStructuralFeature>(2);
+		findNonNavigableAssociationEnds(tmpOwner, name, matches);
+
+		if (matches.isEmpty()) {
+			// search for unnamed ends (named but non-navigable ends take priority)
+			findUnnamedAssociationEnds(tmpOwner, name, matches);
+		}
+
+		EStructuralFeature result = null;
+		if (matches.size() > 0) {
+			result = matches.get(0);
+		}
+		if (matches.size() > 1) {
+			// ambiguous matches. What to do?
+			if (notOK(ProblemOption.AMBIGUOUS_ASSOCIATION_ENDS)) {
+				ProblemHandler.Severity sev = getValue(ProblemOption.AMBIGUOUS_ASSOCIATION_ENDS);
+
+				// will have to report the problem
+				String message = OCLMessages.bind(OCLMessages.Ambig_AssocEnd_, name, getUMLReflection()
+						.getName(tmpOwner));
+
+				if (sev.getDiagnosticSeverity() >= Diagnostic.ERROR) {
+					throw new AmbiguousLookupException(message, matches);
+				}
+				getProblemHandler().analyzerProblem(sev, message, "lookupNonNavigableProperty", -1, -1); //$NON-NLS-1$
 			}
 		}
 
