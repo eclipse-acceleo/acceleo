@@ -828,7 +828,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 *             problem option is ERROR or worse
 	 */
 	@SuppressWarnings("restriction")
-	private EStructuralFeature lookupNonNavigableEnd(EClassifier owner, String name) throws LookupException {
+	protected EStructuralFeature lookupNonNavigableEnd(EClassifier owner, String name) throws LookupException {
 		EClassifier tmpOwner = owner;
 		if (tmpOwner == null) {
 			Variable<EClassifier, EParameter> vdcl = lookupImplicitSourceForProperty(name);
