@@ -26,7 +26,7 @@
 	call.ancestors()->last().allMethods()->collect(name)
 		->includes(call.name)/]
 
-[query public getTargetService(call : Call) : Service =
+[query public getTargetService(call : Call) : Set(Method) =
 	call.ancestors()->last().allMethods()
 		->select(name = call.name)->asSet()/]
 

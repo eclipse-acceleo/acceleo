@@ -19,16 +19,16 @@ templ : Acceleo.org template that needs be converted.
 [/for]
 
 [comment We'll assume that a template beginning with "is*" or "has*" is a query returning a boolean/]
-[for (templ.scripts) separator('\n')]
-[if (isBooleanQuery())][convertToBooleanQuery()/][elseif (isCollectionQuery())][convertToCollectionQuery()/][else][convertToTemplate()/][/if]
+[for (script : Script | templ.scripts) separator('\n')]
+[if (script.isBooleanQuery())][script.convertToBooleanQuery()/][elseif (script.isCollectionQuery())][script.convertToCollectionQuery()/][else][script.convertToTemplate()/][/if]
 [/for]
 
 [for (adaptCall : Call | selectUniqueCallAdapt())]
-['['/]query private ['adaptTo'.concat(getAdaptType())/](o : OclAny) : [adaptCall.inferAdaptReturnType()/] = invoke('org.eclipse.acceleo.compatibility.services.MigrationServices', '['adaptTo'.concat(adaptCall.arguments->first().convertExpressionToOCL().replaceAll('\'', ''))/](java.lang.Object)', Sequence{o})/]
+['['/]query private ['adaptTo'.concat(adaptCall.getAdaptType())/](o : OclAny) : [adaptCall.inferAdaptReturnType()/] = invoke('org.eclipse.acceleo.compatibility.services.MigrationServices', '['adaptTo'.concat(adaptCall.arguments->first().convertExpressionToOCL().replaceAll('\'', ''))/](java.lang.Object)', Sequence{o})/]
 [/for]
 
 [for (service : Method | templ.allCalls()->select(c | c.isServiceCall()).getTargetService()->asSet())]
-[convertToQuery()/]
+[service.convertToQuery()/]
 [/for]
 [/file]
 [/template]
@@ -140,7 +140,7 @@ else
 	let setcall : CallSet =
 		script.descriptor._post.oclAsType(CallSet)
 	in
-		if setcall.calls->select(name = 'trim')->isEmpty() then
+		if setcall.calls->select(call : Call | call.name = 'trim')->isEmpty() then
 			''
 		else
 			' post(trim())'
@@ -153,7 +153,7 @@ Generate the content of file tag
 
 script : Acceleo script that will be converted to an Acceleo MTL query.
 [/comment]
-[query public genFileName(script : Script) : String = 
+[query public genFileName(script : Script) : Sequence(String) = 
 	let 
 		stmts : OrderedSet(mt::statements::Statement) =
 			script.descriptor.file.statements,
