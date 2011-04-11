@@ -874,6 +874,30 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#findNonNavigableAssociationEnds(java.lang.Object,
+	 *      java.lang.String, java.util.List)
+	 */
+	@Override
+	protected void findNonNavigableAssociationEnds(EClassifier classifier, String name,
+			List<EStructuralFeature> ends) {
+		// do nothing
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractEnvironment#findUnnamedAssociationEnds(java.lang.Object, java.lang.String,
+	 *      java.util.List)
+	 */
+	@Override
+	protected void findUnnamedAssociationEnds(EClassifier classifier, String name,
+			List<EStructuralFeature> ends) {
+		// do nothing
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ocl.AbstractEnvironment#lookupImplicitSourceForAssociationClass(java.lang.String)
 	 */
 	@Override
