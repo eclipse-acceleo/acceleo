@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -943,5 +944,41 @@ public class AcceleoProject {
 	public List<IPath> getSourceFolders() {
 		// We create a copy to prevent problems.
 		return new ArrayList<IPath>(this.sourceFolders);
+	}
+
+	/**
+	 * Make relative to.
+	 * 
+	 * @param path1
+	 *            The first path
+	 * @param path2
+	 *            the second path
+	 * @return The first path relative to the second path.
+	 * @since 3.1
+	 */
+	public static IPath makeRelativeTo(IPath path1, IPath path2) {
+		IPath path = path1;
+
+		// can't make relative if devices are not equal
+		if (path1.getDevice() == path2.getDevice()
+				|| (path1.getDevice() != null && path1.getDevice().equalsIgnoreCase(path2.getDevice()))) {
+			int commonLength = path1.matchingFirstSegments(path2);
+			final int differenceLength = path2.segmentCount() - commonLength;
+			final int newSegmentLength = differenceLength + path1.segmentCount() - commonLength;
+			if (newSegmentLength == 0) {
+				return Path.EMPTY;
+			}
+			String[] newSegments = new String[newSegmentLength];
+			// add parent references for each segment different from the base
+			Arrays.fill(newSegments, 0, differenceLength, ".."); //$NON-NLS-1$
+			// append the segments of this path not in common with the base
+			System.arraycopy(path1.segments(), commonLength, newSegments, differenceLength, newSegmentLength
+					- differenceLength);
+			for (String segment : newSegments) {
+				path.append(segment);
+			}
+		}
+
+		return path;
 	}
 }

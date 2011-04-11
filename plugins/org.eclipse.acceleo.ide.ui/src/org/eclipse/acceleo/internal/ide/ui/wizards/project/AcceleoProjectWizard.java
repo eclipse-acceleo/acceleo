@@ -195,6 +195,11 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	 */
 	@Override
 	public boolean canFinish() {
+		IWizardContainer iWizardContainer = this.getContainer();
+		IWizardPage currentPage = iWizardContainer.getCurrentPage();
+		if (currentPage instanceof WizardNewProjectCreationPage) {
+			return newProjectPage.isPageComplete();
+		}
 		return newProjectPage.isPageComplete() && newAcceleoModulesCreationPage.isPageComplete();
 	}
 
@@ -266,25 +271,28 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	private void convert(IProject project, AcceleoProjectWizard wizard, IProgressMonitor monitor) {
 		String projectName = wizard.newProjectPage.getProjectName();
 		String generatorName = this.computeGeneratorName(projectName);
-
 		AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE.createAcceleoProject();
 		acceleoProject.setName(projectName);
 		acceleoProject.setGeneratorName(generatorName);
 
 		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
-		for (AcceleoModule acceleoModule : allModules) {
-			String parentFolder = acceleoModule.getParentFolder();
+		IWizardContainer iWizardContainer = this.getContainer();
+		IWizardPage currentPage = iWizardContainer.getCurrentPage();
+		if (!(currentPage instanceof WizardNewProjectCreationPage)) {
+			for (AcceleoModule acceleoModule : allModules) {
+				String parentFolder = acceleoModule.getParentFolder();
 
-			IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-					acceleoModule.getProjectName());
-			if (moduleProject.exists() && moduleProject.isAccessible()
-					&& acceleoModule.getModuleElement() != null
-					&& acceleoModule.getModuleElement().isIsMain()) {
-				IPath parentFolderPath = new Path(parentFolder);
-				IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
-				acceleoProject.getExportedPackages().add(
-						folder.getProjectRelativePath().removeFirstSegments(1).toString().replaceAll("/", //$NON-NLS-1$
-								"\\.")); //$NON-NLS-1$
+				IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+						acceleoModule.getProjectName());
+				if (moduleProject.exists() && moduleProject.isAccessible()
+						&& acceleoModule.getModuleElement() != null
+						&& acceleoModule.getModuleElement().isIsMain()) {
+					IPath parentFolderPath = new Path(parentFolder);
+					IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
+					acceleoProject.getExportedPackages().add(
+							folder.getProjectRelativePath().removeFirstSegments(1).toString().replaceAll("/", //$NON-NLS-1$
+									"\\.")); //$NON-NLS-1$
+				}
 			}
 		}
 		// Prepare Ant folder
@@ -319,6 +327,9 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateActivator(acceleoProject, project);
 
+		if (currentPage instanceof WizardNewProjectCreationPage) {
+			return;
+		}
 		for (AcceleoModule acceleoModule : allModules) {
 			monitor.worked(10);
 			String parentFolder = acceleoModule.getParentFolder();
