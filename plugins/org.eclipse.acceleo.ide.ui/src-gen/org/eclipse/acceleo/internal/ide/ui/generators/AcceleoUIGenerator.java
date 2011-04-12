@@ -316,7 +316,7 @@ public final class AcceleoUIGenerator {
 				}
 
 				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject,
-						generationRoot, new BasicMonitor());
+						generationRoot, true, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 
