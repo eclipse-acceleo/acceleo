@@ -5,7 +5,7 @@
 [template public generate(a : EClass)]
 [self.eAllOperations/]
 [for (a : EAttribute | a.eAllAttributes)]
-[self.eAttributeType/]
+[self.eAllOperations/]
 [/for]
 [self.eAllOperations/]
 [/template]

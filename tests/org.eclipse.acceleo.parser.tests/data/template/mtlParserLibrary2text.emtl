@@ -65,7 +65,7 @@
           </source>
           <argument xsi:type="ocl.ecore:OperationCallExp">
             <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-            <source xsi:type="ocl.ecore:PropertyCallExp" eType="/6/OrderedSet(Writer)">
+            <source xsi:type="ocl.ecore:PropertyCallExp" eType="/7/OrderedSet(Writer)">
               <source xsi:type="ocl.ecore:VariableExp" name="l" referredVariable="/0/bookToText/l">
                 <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Library"/>
               </source>
@@ -95,7 +95,7 @@
         <loopVariable name="w">
           <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Writer"/>
         </loopVariable>
-        <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/6/OrderedSet(Writer)">
+        <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/7/OrderedSet(Writer)">
           <source xsi:type="ocl.ecore:VariableExp" name="l" referredVariable="/0/bookToText/l">
             <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Library"/>
           </source>
@@ -670,6 +670,9 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>
   </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>
+  </ocl.ecore:Variable>
   <ecore:EPackage name="collections">
     <eClassifiers xsi:type="ocl.ecore:OrderedSetType" name="OrderedSet(Writer)" instanceClassName="java.util.LinkedHashSet">
       <elementType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Writer"/>
@@ -696,14 +699,17 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>
   </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Writer"/>
+  </ocl.ecore:Variable>
   <ocl.ecore:Variable name="i">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
-    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>
+    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Writer"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
-    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>
+    <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Writer"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http:///org/eclipse/emf/examples/library/extlibrary.ecore/1.0.0#//Book"/>

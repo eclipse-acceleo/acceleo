@@ -3,9 +3,13 @@
 
 
 [template public generate(a : EClass)]
-[eAllOperations/]
+[self.eAllOperations/]
 [for (a : EAttribute | a.eAllAttributes)]
-[eAllOperations/]
+[generate2()/]
 [/for]
-[eAllOperations/]
+[self.eAllOperations/]
+[/template]
+
+[template public generate2(a : EAttribute)]
+[a/]
 [/template]
