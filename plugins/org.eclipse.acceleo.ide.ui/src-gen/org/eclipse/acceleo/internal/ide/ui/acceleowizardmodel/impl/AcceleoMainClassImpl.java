@@ -2,25 +2,30 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleoMainClassImpl.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleoMainClassImpl.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
 import java.util.Collection;
 
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,8 +39,8 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getClassShortName <em>Class Short Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getModuleFileShortName <em>Module File Short Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getTemplateNames <em>Template Names</em>}</li>
- *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getPackages <em>Packages</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getResolvedClassPath <em>Resolved Class Path</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoMainClassImpl#getPackages <em>Packages</em>}</li>
  * </ul>
  * </p>
  *
@@ -133,16 +138,6 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 	protected EList<String> templateNames;
 
 	/**
-	 * The cached value of the '{@link #getPackages() <em>Packages</em>}' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPackages()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<String> packages;
-
-	/**
 	 * The cached value of the '{@link #getResolvedClassPath() <em>Resolved Class Path</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -151,6 +146,16 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 	 * @ordered
 	 */
 	protected EList<String> resolvedClassPath;
+
+	/**
+	 * The cached value of the '{@link #getPackages() <em>Packages</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPackages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<AcceleoPackage> packages;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -272,11 +277,25 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<String> getPackages() {
+	public EList<AcceleoPackage> getPackages() {
 		if (packages == null) {
-			packages = new EDataTypeUniqueEList<String>(String.class, this, AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES);
+			packages = new EObjectContainmentEList<AcceleoPackage>(AcceleoPackage.class, this, AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES);
 		}
 		return packages;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
+				return ((InternalEList<?>)getPackages()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -309,10 +328,10 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 				return getModuleFileShortName();
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__TEMPLATE_NAMES:
 				return getTemplateNames();
-			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
-				return getPackages();
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH:
 				return getResolvedClassPath();
+			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
+				return getPackages();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -342,13 +361,13 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 				getTemplateNames().clear();
 				getTemplateNames().addAll((Collection<? extends String>)newValue);
 				return;
-			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
-				getPackages().clear();
-				getPackages().addAll((Collection<? extends String>)newValue);
-				return;
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH:
 				getResolvedClassPath().clear();
 				getResolvedClassPath().addAll((Collection<? extends String>)newValue);
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
+				getPackages().clear();
+				getPackages().addAll((Collection<? extends AcceleoPackage>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -377,11 +396,11 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__TEMPLATE_NAMES:
 				getTemplateNames().clear();
 				return;
-			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
-				getPackages().clear();
-				return;
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH:
 				getResolvedClassPath().clear();
+				return;
+			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
+				getPackages().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -405,10 +424,10 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 				return MODULE_FILE_SHORT_NAME_EDEFAULT == null ? moduleFileShortName != null : !MODULE_FILE_SHORT_NAME_EDEFAULT.equals(moduleFileShortName);
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__TEMPLATE_NAMES:
 				return templateNames != null && !templateNames.isEmpty();
-			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
-				return packages != null && !packages.isEmpty();
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH:
 				return resolvedClassPath != null && !resolvedClassPath.isEmpty();
+			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS__PACKAGES:
+				return packages != null && !packages.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -433,8 +452,6 @@ public class AcceleoMainClassImpl extends EObjectImpl implements AcceleoMainClas
 		result.append(moduleFileShortName);
 		result.append(", templateNames: "); //$NON-NLS-1$
 		result.append(templateNames);
-		result.append(", packages: "); //$NON-NLS-1$
-		result.append(packages);
 		result.append(", resolvedClassPath: "); //$NON-NLS-1$
 		result.append(resolvedClassPath);
 		result.append(')');

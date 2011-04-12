@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelSwitch.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelSwitch.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.util;
 
@@ -117,6 +117,12 @@ public class AcceleowizardmodelSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleowizardmodelPackage.ACCELEO_PACKAGE: {
+				AcceleoPackage acceleoPackage = (AcceleoPackage)theEObject;
+				T result = caseAcceleoPackage(acceleoPackage);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -193,6 +199,21 @@ public class AcceleowizardmodelSwitch<T> {
 	 * @generated
 	 */
 	public T caseAcceleoMainClass(AcceleoMainClass object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Acceleo Package</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Acceleo Package</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAcceleoPackage(AcceleoPackage object) {
 		return null;
 	}
 

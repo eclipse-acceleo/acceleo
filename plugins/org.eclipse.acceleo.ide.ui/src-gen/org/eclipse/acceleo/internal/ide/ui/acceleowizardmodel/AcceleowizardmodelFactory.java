@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelFactory.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelFactory.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -69,6 +69,15 @@ public interface AcceleowizardmodelFactory extends EFactory {
 	 * @generated
 	 */
 	AcceleoMainClass createAcceleoMainClass();
+
+	/**
+	 * Returns a new object of class '<em>Acceleo Package</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Acceleo Package</em>'.
+	 * @generated
+	 */
+	AcceleoPackage createAcceleoPackage();
 
 	/**
 	 * Returns the package supported by this factory.

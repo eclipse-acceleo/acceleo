@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackage.java,v 1.3 2011/02/25 12:47:28 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackage.java,v 1.4 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -422,22 +422,22 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_MAIN_CLASS__TEMPLATE_NAMES = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Packages</b></em>' attribute list.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ACCELEO_MAIN_CLASS__PACKAGES = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
-
-	/**
 	 * The feature id for the '<em><b>Resolved Class Path</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
+	int ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Packages</b></em>' containment reference list.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_MAIN_CLASS__PACKAGES = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Acceleo Main Class</em>' class.
@@ -449,13 +449,50 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_MAIN_CLASS_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 7;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPackageImpl <em>Acceleo Package</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPackageImpl
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPackage()
+	 * @generated
+	 */
+	int ACCELEO_PACKAGE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_PACKAGE__CLASS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_PACKAGE__PATH = 1;
+
+	/**
+	 * The number of structural features of the '<em>Acceleo Package</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_PACKAGE_FEATURE_COUNT = 2;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind <em>Module Element Kind</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getModuleElementKind()
 	 * @generated
 	 */
-	int MODULE_ELEMENT_KIND = 5;
+	int MODULE_ELEMENT_KIND = 6;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject <em>Acceleo Project</em>}'.
@@ -824,14 +861,46 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EAttribute getAcceleoMainClass_TemplateNames();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getPackages <em>Packages</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getPackages <em>Packages</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Packages</em>'.
+	 * @return the meta object for the containment reference list '<em>Packages</em>'.
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getPackages()
 	 * @see #getAcceleoMainClass()
 	 * @generated
 	 */
-	EAttribute getAcceleoMainClass_Packages();
+	EReference getAcceleoMainClass_Packages();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage <em>Acceleo Package</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Acceleo Package</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage
+	 * @generated
+	 */
+	EClass getAcceleoPackage();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage#getClass_ <em>Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Class</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage#getClass_()
+	 * @see #getAcceleoPackage()
+	 * @generated
+	 */
+	EAttribute getAcceleoPackage_Class();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage#getPath <em>Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Path</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage#getPath()
+	 * @see #getAcceleoPackage()
+	 * @generated
+	 */
+	EAttribute getAcceleoPackage_Path();
 
 	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getResolvedClassPath <em>Resolved Class Path</em>}'.
@@ -1177,7 +1246,33 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EAttribute ACCELEO_MAIN_CLASS__PACKAGES = eINSTANCE.getAcceleoMainClass_Packages();
+		EReference ACCELEO_MAIN_CLASS__PACKAGES = eINSTANCE.getAcceleoMainClass_Packages();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPackageImpl <em>Acceleo Package</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPackageImpl
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPackage()
+		 * @generated
+		 */
+		EClass ACCELEO_PACKAGE = eINSTANCE.getAcceleoPackage();
+
+		/**
+		 * The meta object literal for the '<em><b>Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_PACKAGE__CLASS = eINSTANCE.getAcceleoPackage_Class();
+
+		/**
+		 * The meta object literal for the '<em><b>Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_PACKAGE__PATH = eINSTANCE.getAcceleoPackage_Path();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolved Class Path</b></em>' attribute list feature. <!--

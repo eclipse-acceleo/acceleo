@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelFactoryImpl.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelFactoryImpl.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -66,6 +66,7 @@ public class AcceleowizardmodelFactoryImpl extends EFactoryImpl implements Accel
 			case AcceleowizardmodelPackage.ACCELEO_MODULE: return createAcceleoModule();
 			case AcceleowizardmodelPackage.ACCELEO_MODULE_ELEMENT: return createAcceleoModuleElement();
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS: return createAcceleoMainClass();
+			case AcceleowizardmodelPackage.ACCELEO_PACKAGE: return createAcceleoPackage();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -149,6 +150,16 @@ public class AcceleowizardmodelFactoryImpl extends EFactoryImpl implements Accel
 	public AcceleoMainClass createAcceleoMainClass() {
 		AcceleoMainClassImpl acceleoMainClass = new AcceleoMainClassImpl();
 		return acceleoMainClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AcceleoPackage createAcceleoPackage() {
+		AcceleoPackageImpl acceleoPackage = new AcceleoPackageImpl();
+		return acceleoPackage;
 	}
 
 	/**

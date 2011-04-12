@@ -22,6 +22,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
@@ -122,7 +123,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 					ResourceSet resourceSet = new ResourceSetImpl();
 					try {
 						registerPackages(resourceSet);
-						List<String> packages = new ArrayList<String>();
+						List<AcceleoPackage> packages = new ArrayList<AcceleoPackage>();
 						EObject module = ModelUtils.load(moduleURI, resourceSet);
 						if (module instanceof Module) {
 							Iterator<TypedModel> typedModelIt = ((Module)module).getInput().iterator();
@@ -132,8 +133,12 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 								while (packagesIt.hasNext()) {
 									EPackage ePackage = packagesIt.next();
 									String mClass = getMetamodelPackageClass(ePackage);
-									if (mClass != null && !packages.contains(mClass)) {
-										packages.add(mClass);
+									if (mClass != null && ePackage.eResource() != null) {
+										AcceleoPackage acceleoPackage = AcceleowizardmodelFactory.eINSTANCE
+												.createAcceleoPackage();
+										acceleoPackage.setClass(mClass);
+										acceleoPackage.setPath(ePackage.eResource().getURI().toString());
+										packages.add(acceleoPackage);
 									}
 								}
 							}
@@ -155,7 +160,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 							String moduleFileShortName = moduleFilePath.removeFileExtension().toString();
 							acceleoMainClass.setModuleFileShortName(moduleFileShortName);
 							acceleoMainClass.setProjectName(fileAcceleo.getProject().getName());
-							EList<String> packagesList = acceleoMainClass.getPackages();
+							EList<AcceleoPackage> packagesList = acceleoMainClass.getPackages();
 							packagesList.addAll(packages);
 							List<String> classPath = acceleoMainClass.getResolvedClassPath();
 							classPath.addAll(resolvedClasspath);

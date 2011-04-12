@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelAdapterFactory.java,v 1.1 2011/02/22 08:40:08 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelAdapterFactory.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.util;
 
@@ -92,6 +92,10 @@ public class AcceleowizardmodelAdapterFactory extends AdapterFactoryImpl {
 				return createAcceleoMainClassAdapter();
 			}
 			@Override
+			public Adapter caseAcceleoPackage(AcceleoPackage object) {
+				return createAcceleoPackageAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -178,6 +182,20 @@ public class AcceleowizardmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAcceleoMainClassAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage <em>Acceleo Package</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage
+	 * @generated
+	 */
+	public Adapter createAcceleoPackageAdapter() {
 		return null;
 	}
 

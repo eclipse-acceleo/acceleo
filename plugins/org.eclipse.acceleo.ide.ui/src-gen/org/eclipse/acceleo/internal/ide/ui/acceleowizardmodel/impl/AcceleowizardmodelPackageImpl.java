@@ -2,13 +2,14 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackageImpl.java,v 1.3 2011/02/25 12:47:28 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackageImpl.java,v 1.4 2011/04/12 15:01:49 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
@@ -65,6 +66,13 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * @generated
 	 */
 	private EClass acceleoMainClassEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass acceleoPackageEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -475,8 +483,35 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAcceleoMainClass_Packages() {
-		return (EAttribute)acceleoMainClassEClass.getEStructuralFeatures().get(5);
+	public EReference getAcceleoMainClass_Packages() {
+		return (EReference)acceleoMainClassEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getAcceleoPackage() {
+		return acceleoPackageEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPackage_Class() {
+		return (EAttribute)acceleoPackageEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPackage_Path() {
+		return (EAttribute)acceleoPackageEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -485,7 +520,7 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * @generated
 	 */
 	public EAttribute getAcceleoMainClass_ResolvedClassPath() {
-		return (EAttribute)acceleoMainClassEClass.getEStructuralFeatures().get(6);
+		return (EAttribute)acceleoMainClassEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -566,8 +601,12 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		createEAttribute(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__CLASS_SHORT_NAME);
 		createEAttribute(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__MODULE_FILE_SHORT_NAME);
 		createEAttribute(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__TEMPLATE_NAMES);
-		createEAttribute(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__PACKAGES);
 		createEAttribute(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__RESOLVED_CLASS_PATH);
+		createEReference(acceleoMainClassEClass, ACCELEO_MAIN_CLASS__PACKAGES);
+
+		acceleoPackageEClass = createEClass(ACCELEO_PACKAGE);
+		createEAttribute(acceleoPackageEClass, ACCELEO_PACKAGE__CLASS);
+		createEAttribute(acceleoPackageEClass, ACCELEO_PACKAGE__PATH);
 
 		// Create enums
 		moduleElementKindEEnum = createEEnum(MODULE_ELEMENT_KIND);
@@ -652,8 +691,12 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		initEAttribute(getAcceleoMainClass_ClassShortName(), ecorePackage.getEString(), "classShortName", null, 1, 1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoMainClass_ModuleFileShortName(), ecorePackage.getEString(), "moduleFileShortName", null, 1, 1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoMainClass_TemplateNames(), ecorePackage.getEString(), "templateNames", null, 1, -1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getAcceleoMainClass_Packages(), ecorePackage.getEString(), "packages", null, 1, -1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoMainClass_ResolvedClassPath(), ecorePackage.getEString(), "resolvedClassPath", null, 1, -1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getAcceleoMainClass_Packages(), this.getAcceleoPackage(), null, "packages", null, 1, -1, AcceleoMainClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(acceleoPackageEClass, AcceleoPackage.class, "AcceleoPackage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getAcceleoPackage_Class(), theEcorePackage.getEString(), "class", null, 1, 1, AcceleoPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoPackage_Path(), theEcorePackage.getEString(), "path", null, 1, 1, AcceleoPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		// Initialize enums and add enum literals
 		initEEnum(moduleElementKindEEnum, ModuleElementKind.class, "ModuleElementKind"); //$NON-NLS-1$
