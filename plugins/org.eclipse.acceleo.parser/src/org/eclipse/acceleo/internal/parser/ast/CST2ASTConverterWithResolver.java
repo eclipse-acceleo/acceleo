@@ -1163,6 +1163,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					context = ((CollectionType)context).getElementType();
 				}
 			}
+			if (context != null) {
+				factory.getOCL().pushContext(context);
+			}
 
 			org.eclipse.ocl.ecore.Variable iterationCount = null;
 			if (oLoopVariable == null || !"i".equals(oLoopVariable.getName())) { //$NON-NLS-1$
@@ -1199,6 +1202,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			} finally {
 				if (iLoopVariable != null && oLoopVariable != null) {
 					transformStepResolveRemoveVariable(iLoopVariable);
+				}
+				if (context != null) {
+					factory.getOCL().popContext();
 				}
 				if (iterationCount != null) {
 					factory.getOCL().removeVariableFromScope(iterationCount);
