@@ -260,12 +260,11 @@ public class AcceleoProject {
 			acceleoFilePath = fileAcceleo.getLocation();
 		}
 
-		IPath filePath = acceleoFilePath.makeRelativeTo(projectPath);
-
+		IPath filePath = makeRelativeTo(acceleoFilePath, projectPath);
 		IFolder folder = getOutputFolder(project);
 		if (folder != null) {
 			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
-				IPath sourcePath = itSourceFolders.next().makeRelativeTo(project.getFullPath());
+				IPath sourcePath = makeRelativeTo(itSourceFolders.next(), project.getFullPath());
 				if (sourcePath.isPrefixOf(filePath)) {
 					IPath relativePath = filePath.removeFirstSegments(sourcePath.segmentCount());
 					return folder.getFullPath().append(
@@ -343,9 +342,9 @@ public class AcceleoProject {
 			acceleoFilePath = fileAcceleo.getLocation();
 		}
 
-		IPath filePath = acceleoFilePath.makeRelativeTo(projectPath);
+		IPath filePath = makeRelativeTo(acceleoFilePath, projectPath);
 		for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
-			IPath sourcePath = itSourceFolders.next().makeRelativeTo(project.getFullPath());
+			IPath sourcePath = makeRelativeTo(itSourceFolders.next(), project.getFullPath());
 			if (sourcePath.isPrefixOf(filePath)) {
 				StringBuffer name = new StringBuffer();
 				String[] segments = filePath.removeFirstSegments(sourcePath.segmentCount())
@@ -968,6 +967,7 @@ public class AcceleoProject {
 			if (newSegmentLength == 0) {
 				return Path.EMPTY;
 			}
+			path = new Path(""); //$NON-NLS-1$
 			String[] newSegments = new String[newSegmentLength];
 			// add parent references for each segment different from the base
 			Arrays.fill(newSegments, 0, differenceLength, ".."); //$NON-NLS-1$
@@ -975,7 +975,7 @@ public class AcceleoProject {
 			System.arraycopy(path1.segments(), commonLength, newSegments, differenceLength, newSegmentLength
 					- differenceLength);
 			for (String segment : newSegments) {
-				path.append(segment);
+				path = path.append(segment);
 			}
 		}
 

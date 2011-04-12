@@ -177,10 +177,10 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 								acceleoMainClass.setModuleFileShortName(moduleFileShortName);
 								AcceleoUIGenerator.getDefault().generateAntFiles(
 										acceleoMainClass,
-										eclipsePathRelativeToFile.makeRelativeTo(antFolder.getLocation())
-												.toString(),
-										workspacePathRelativeToFile.makeRelativeTo(antFolder.getLocation())
-												.toString(), antFolder);
+										AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile,
+												antFolder.getLocation()).toString(),
+										AcceleoProject.makeRelativeTo(workspacePathRelativeToFile,
+												antFolder.getLocation()).toString(), antFolder);
 							}
 							// else : We don't want to create the ANT folder if it doesn't exist
 						}
@@ -215,7 +215,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 		List<IPath> sourceFolders = project.getSourceFolders();
 		for (IPath sourceFolderPath : sourceFolders) {
 			if (sourceFolderPath.isPrefixOf(fullPath)) {
-				moduleFilePath = fullPath.makeRelativeTo(sourceFolderPath);
+				moduleFilePath = AcceleoProject.makeRelativeTo(fullPath, sourceFolderPath);
 			}
 		}
 
