@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
@@ -308,10 +309,20 @@ public final class AcceleoUIGenerator {
 			if (moduleTmp != null) {
 				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
+
+				boolean traceabilityEnabled = AcceleoPreferences.isTraceabilityEnabled();
+				if (traceabilityEnabled) {
+					AcceleoPreferences.switchTraceability(false);
+				}
+
 				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject,
 						generationRoot, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+
+				if (traceabilityEnabled) {
+					AcceleoPreferences.switchTraceability(true);
+				}
 			}
 		} catch (IOException e) {
 			AcceleoUIActivator.log(e, true);
