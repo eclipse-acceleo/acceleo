@@ -15,11 +15,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
@@ -518,19 +521,39 @@ public abstract class AbstractAcceleoGenerator {
 	 * This will be called by the engine when the generation stops. By default, we'll use this opportunity to
 	 * unload the resources we've loaded in the resource set.
 	 * 
-	 * @param rs
+	 * @param resourceSet
 	 *            The resource set from which to unload resources.
 	 * @since 3.0
 	 */
-	protected void postGenerate(ResourceSet rs) {
-		List<Resource> unload = new ArrayList<Resource>(rs.getResources());
+	protected void postGenerate(ResourceSet resourceSet) {
+		List<Resource> unload = new ArrayList<Resource>(resourceSet.getResources());
 		unload.removeAll(originalResources);
 		for (Resource res : unload) {
 			res.unload();
-			rs.getResources().remove(res);
+			resourceSet.getResources().remove(res);
 		}
 
-		rs.setResourceFactoryRegistry(resourceFactoryRegistry);
+		clearPackageRegistry();
+
+		resourceSet.setResourceFactoryRegistry(resourceFactoryRegistry);
+	}
+
+	/**
+	 * Clears the package registry from the package registrations coming from the workspace.
+	 */
+	private void clearPackageRegistry() {
+		AcceleoPackageRegistry instance = AcceleoPackageRegistry.INSTANCE;
+		Set<Entry<String, Object>> entrySet = new LinkedHashSet<Map.Entry<String, Object>>(instance
+				.entrySet());
+		for (Entry<String, Object> entry : entrySet) {
+			Object object = entry.getValue();
+			if (object instanceof EPackage) {
+				EPackage ePackage = (EPackage)object;
+				if (AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackage.getClass())) {
+					instance.remove(entry.getKey());
+				}
+			}
+		}
 	}
 
 	/**
