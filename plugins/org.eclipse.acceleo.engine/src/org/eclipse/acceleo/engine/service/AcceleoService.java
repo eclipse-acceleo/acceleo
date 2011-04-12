@@ -96,6 +96,11 @@ public final class AcceleoService {
 	private String generationID;
 
 	/**
+	 * Indicates if we should deactivate the traceability.
+	 */
+	private boolean deactivateTraceability;
+
+	/**
 	 * Instantiates an instance of the service with a default generation strategy.
 	 * 
 	 * @since 3.0
@@ -317,6 +322,51 @@ public final class AcceleoService {
 		}
 
 		return previewResult;
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template given its name and containing module.
+	 * <p>
+	 * This is a convenience method that can only be used with single argument templates. The input model will
+	 * be iterated over for objects matching the template's parameter type.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param blockTraceability
+	 *            This will indicate if we should deactivate the traceability (even if a listener register
+	 *            thanks to the extension point requires it).
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 * @since 3.1
+	 */
+	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
+			File generationRoot, boolean blockTraceability, Monitor monitor) {
+		this.deactivateTraceability = blockTraceability;
+		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, monitor);
 	}
 
 	/**
@@ -573,6 +623,46 @@ public final class AcceleoService {
 	 * @param generationRoot
 	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
 	 *            which case the user home directory will be used as root.
+	 * @param blockTraceability
+	 *            This will indicate if we should deactivate the traceability (even if listener register
+	 *            thanks to the extension point requires it).
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 * @since 3.1
+	 */
+	public Map<String, String> doGenerateTemplate(Template template, List<? extends Object> arguments,
+			File generationRoot, boolean blockTraceability, Monitor monitor) {
+		this.deactivateTraceability = blockTraceability;
+		return doGenerateTemplate(template, arguments, generationRoot, monitor);
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template with the given arguments.
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line <tt>&quot;processing class &lt;className&gt;&quot;</tt> for each class of the input
+	 * model.
+	 * </p>
+	 * 
+	 * @param template
+	 *            The template that is to be generated
+	 * @param arguments
+	 *            Arguments that must be passed on to the template for evaluation.
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
@@ -613,34 +703,36 @@ public final class AcceleoService {
 		}
 
 		boolean forceTraceability = false;
-		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
-			IAcceleoTextGenerationListener listener = acceleoListenerDescriptor.getTraceabilityListener();
-			if (listener instanceof AbstractAcceleoTextGenerationListener) {
-				AbstractAcceleoTextGenerationListener textGenerationListener = (AbstractAcceleoTextGenerationListener)listener;
-				textGenerationListener.setGenerationID(generationID);
+		if (!deactivateTraceability) {
+			for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+				IAcceleoTextGenerationListener listener = acceleoListenerDescriptor.getTraceabilityListener();
+				if (listener instanceof AbstractAcceleoTextGenerationListener) {
+					AbstractAcceleoTextGenerationListener textGenerationListener = (AbstractAcceleoTextGenerationListener)listener;
+					textGenerationListener.setGenerationID(generationID);
+				}
+
+				// If one of the listeners wants to force the traceability it will have it.
+				if (!AcceleoPreferences.isTraceabilityEnabled()
+						&& acceleoListenerDescriptor.isForceTraceability()) {
+					AcceleoPreferences.switchTraceability(true);
+					forceTraceability = true;
+				}
 			}
 
-			// If one of the listeners wants to force the traceability it will have it.
-			if (!AcceleoPreferences.isTraceabilityEnabled()
-					&& acceleoListenerDescriptor.isForceTraceability()) {
-				AcceleoPreferences.switchTraceability(true);
-				forceTraceability = true;
-			}
-		}
+			// We create the engine once again if someone has forced the traceability
+			if (forceTraceability) {
+				createEngine();
 
-		// We create the engine once again if someone has forced the traceability
-		if (forceTraceability) {
-			createEngine();
-
-			// We restore all the content of the previous engine
-			for (IAcceleoTextGenerationListener listener : this.addedListeners) {
-				generationEngine.addListener(listener);
-			}
-			for (Map<String, String> properties : this.addedProperties) {
-				generationEngine.addProperties(properties);
-			}
-			for (String propertiesFiles : this.addedPropertiesfiles) {
-				generationEngine.addProperties(propertiesFiles);
+				// We restore all the content of the previous engine
+				for (IAcceleoTextGenerationListener listener : this.addedListeners) {
+					generationEngine.addListener(listener);
+				}
+				for (Map<String, String> properties : this.addedProperties) {
+					generationEngine.addProperties(properties);
+				}
+				for (String propertiesFiles : this.addedPropertiesfiles) {
+					generationEngine.addProperties(propertiesFiles);
+				}
 			}
 		}
 
