@@ -12,6 +12,7 @@ package org.eclipse.acceleo.common.internal.utils;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -34,16 +35,15 @@ public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
 	@Override
 	protected Resource delegatedGetResource(URI uri, boolean loadOnDemand) {
 		URIConverter converter = this.getURIConverter();
-		if (converter != null) {
+		if (converter != null && EMFPlugin.IS_ECLIPSE_RUNNING) {
 			for (Resource resource : this.resources) {
 				URI resourceURI = resource.getURI();
 				for (Resource resource2 : this.resources) {
 					URI resourceURI2 = resource2.getURI();
 
-					// SBE FIXME IPath !!
 					IPath path = new Path(resourceURI.path());
 					IPath path2 = new Path(resourceURI2.path());
-					if (!path.equals(path2)
+					if (!resourceURI.path().equals(resourceURI2.path())
 							&& path2.makeRelativeTo(path.removeLastSegments(1)).toString().equals(
 									uri.toString())) {
 						return resource2;
