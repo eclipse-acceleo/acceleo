@@ -732,7 +732,8 @@ public class CSTParser {
 				ePackage = ModelUtils.getEPackage(ePackageKey);
 				if (ePackage == null) {
 					try {
-						ePackageKey = AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ePackageKey);
+						ePackageKey = AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ePackageKey,
+								AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 					} catch (WrappedException ex) {
 						// swallow exception
 					}

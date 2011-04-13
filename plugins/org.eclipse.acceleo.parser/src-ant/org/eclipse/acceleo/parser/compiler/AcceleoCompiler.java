@@ -331,7 +331,8 @@ public class AcceleoCompiler extends Task {
 				members(ecoreFiles, requiredFolder, "ecore"); //$NON-NLS-1$
 				for (File ecoreFile : ecoreFiles) {
 					URI ecoreURI = URI.createFileURI(ecoreFile.getAbsolutePath());
-					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreURI.toString());
+					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreURI.toString(),
+							AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 				}
 			}
 		}
