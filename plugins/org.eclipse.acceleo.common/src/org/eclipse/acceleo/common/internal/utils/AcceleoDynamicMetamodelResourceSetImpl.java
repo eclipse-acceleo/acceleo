@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
@@ -44,7 +46,7 @@ public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
 					IPath path = new Path(resourceURI.path());
 					IPath path2 = new Path(resourceURI2.path());
 					if (!resourceURI.path().equals(resourceURI2.path())
-							&& path2.makeRelativeTo(path.removeLastSegments(1)).toString().equals(
+							&& makeRelativeTo(path2, path.removeLastSegments(1)).toString().equals(
 									uri.toString())) {
 						return resource2;
 					}
@@ -52,5 +54,42 @@ public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
 			}
 		}
 		return super.delegatedGetResource(uri, loadOnDemand);
+	}
+
+	/**
+	 * Make relative to.
+	 * 
+	 * @param path1
+	 *            The first path
+	 * @param path2
+	 *            the second path
+	 * @return The first path relative to the second path.
+	 * @since 3.1
+	 */
+	public static IPath makeRelativeTo(IPath path1, IPath path2) {
+		IPath path = path1;
+
+		// can't make relative if devices are not equal
+		if (path1.getDevice() == path2.getDevice()
+				|| (path1.getDevice() != null && path1.getDevice().equalsIgnoreCase(path2.getDevice()))) {
+			int commonLength = path1.matchingFirstSegments(path2);
+			final int differenceLength = path2.segmentCount() - commonLength;
+			final int newSegmentLength = differenceLength + path1.segmentCount() - commonLength;
+			if (newSegmentLength == 0) {
+				return Path.EMPTY;
+			}
+			path = new Path(""); //$NON-NLS-1$
+			String[] newSegments = new String[newSegmentLength];
+			// add parent references for each segment different from the base
+			Arrays.fill(newSegments, 0, differenceLength, ".."); //$NON-NLS-1$
+			// append the segments of this path not in common with the base
+			System.arraycopy(path1.segments(), commonLength, newSegments, differenceLength, newSegmentLength
+					- differenceLength);
+			for (String segment : newSegments) {
+				path = path.append(segment);
+			}
+		}
+
+		return path;
 	}
 }
