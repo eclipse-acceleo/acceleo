@@ -437,7 +437,7 @@ public final class ModelUtils {
 	 */
 	@Deprecated
 	public static String registerEcorePackages(String pathName) {
-		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName);
+		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName, AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 	}
 
 	/**

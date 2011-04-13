@@ -486,7 +486,8 @@ public class AcceleoCommonPlugin extends Plugin {
 					if (event.getResource() != null
 							&& event.getResource().getFileExtension().endsWith("ecore")) { //$NON-NLS-1$
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(event.getResource()
-								.getFullPath().toString());
+								.getFullPath().toString(),
+								AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 					}
 					break;
 				default:

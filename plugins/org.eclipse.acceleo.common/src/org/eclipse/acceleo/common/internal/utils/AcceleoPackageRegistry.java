@@ -16,6 +16,7 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +26,8 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * This registry will act as an extension of the global package registry : dynamic models will be registered
@@ -45,6 +47,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @since 3.0
  */
 public final class AcceleoPackageRegistry extends HashMap<String, Object> implements EPackage.Registry {
+	/** The resource set used by all the dynamic metamodels. */
+	public static final ResourceSet DYNAMIC_METAMODEL_RESOURCE_SET = new AcceleoDynamicMetamodelResourceSetImpl();
+
 	/** Singleton instance of our dynamic registry. */
 	public static final AcceleoPackageRegistry INSTANCE = new AcceleoPackageRegistry();
 
@@ -234,28 +239,30 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 * 
 	 * @param pathName
 	 *            is the path of the ecore file to register
+	 * @param resourceSet
+	 *            The resource set.
 	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
 	 *         corresponding NsURI
 	 */
-	public String registerEcorePackages(String pathName) {
+	public String registerEcorePackages(String pathName, ResourceSet resourceSet) {
 		EObject eObject = null;
 		// Specifically get rid of Ecore.ecore so that we never dynamically register it
 		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://") //$NON-NLS-1$ //$NON-NLS-2$
 				&& !pathName.endsWith("Ecore.ecore")) { //$NON-NLS-1$
 			// Try and load the ecore file with its URI as-is
 			URI metaURI = URI.createURI(pathName, false);
-			eObject = safeLoad(metaURI);
+			eObject = safeLoad(metaURI, resourceSet);
 
 			// If that failed, try and load the ecore file with a platform:/resource URI
 			if (!(eObject instanceof EPackage)) {
 				metaURI = URI.createPlatformResourceURI(pathName, false);
-				eObject = safeLoad(metaURI);
+				eObject = safeLoad(metaURI, resourceSet);
 			}
 
 			// If all failed, try and load the model with a platform:/plugin URI
 			if (!(eObject instanceof EPackage)) {
 				metaURI = URI.createPlatformPluginURI(pathName, false);
-				eObject = safeLoad(metaURI);
+				eObject = safeLoad(metaURI, resourceSet);
 			}
 		}
 
@@ -276,7 +283,14 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	@Override
 	public Object remove(Object key) {
 		if (dynamicEcorePackagePaths.containsKey(key)) {
-			return super.remove(key);
+			List<Resource> resources = DYNAMIC_METAMODEL_RESOURCE_SET.getResources();
+			Iterator<Resource> iterator = resources.iterator();
+			while (iterator.hasNext()) {
+				Resource resource = iterator.next();
+				if (key instanceof String && key.equals(resource.getURI().toString())) {
+					iterator.remove();
+				}
+			}
 		}
 		return delegate.remove(key);
 	}
@@ -357,12 +371,14 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 * 
 	 * @param uri
 	 *            The URI to try and load.
+	 * @param resourceSet
+	 *            The resource set.
 	 * @return The loaded {@link EPackage} if any, <code>null</code> otherwise.
 	 */
-	private EObject safeLoad(URI uri) {
+	private EObject safeLoad(URI uri, ResourceSet resourceSet) {
 		EObject result = null;
 		try {
-			result = ModelUtils.load(uri, new ResourceSetImpl());
+			result = ModelUtils.load(uri, resourceSet);
 		} catch (IOException e) {
 			// swallow and return null
 		} catch (WrappedException e) {
