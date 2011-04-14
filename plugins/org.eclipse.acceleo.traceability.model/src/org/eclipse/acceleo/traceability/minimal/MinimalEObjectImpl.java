@@ -12,7 +12,6 @@
  *
  * </copyright>
  *
- * $Id: MinimalEObjectImpl.java,v 1.3 2011/03/22 15:15:53 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.traceability.minimal;
 

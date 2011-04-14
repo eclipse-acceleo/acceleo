@@ -12,7 +12,6 @@
  *
  * </copyright>
  *
- * $Id: ArrayDelegatingEList.java,v 1.1 2011/03/08 13:55:40 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.traceability.minimal;
 
