@@ -13,8 +13,6 @@
  *   Obeo - Fork for Acceleo
  *
  * </copyright>
- *
- * $Id: AcceleoTypeResolver.java,v 1.1 2011/03/25 15:40:05 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
