@@ -975,7 +975,7 @@ public class AcceleoProject {
 			System.arraycopy(path1.segments(), commonLength, newSegments, differenceLength, newSegmentLength
 					- differenceLength);
 			for (String segment : newSegments) {
-				path = path.append(segment);
+				path = path.append(new Path(segment));
 			}
 		}
 
