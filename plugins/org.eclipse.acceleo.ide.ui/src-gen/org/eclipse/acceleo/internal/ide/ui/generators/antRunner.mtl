@@ -16,6 +16,8 @@
 [**
  * Generate the Ant task to launch the generation from Ant.
  * @param anAcceleoMainClass The Acceleo main class.
+ * @param eclipseHome The relative path of the eclipse installation folder.
+ * @param workspaceHome The relative path of the workspace.
  */]
 [template public genAntRunner(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
 [file (anAcceleoMainClass.moduleFileShortName + '.xml', false, 'UTF-8')]
