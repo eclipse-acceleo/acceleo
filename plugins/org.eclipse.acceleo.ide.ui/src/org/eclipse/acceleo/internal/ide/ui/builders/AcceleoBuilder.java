@@ -13,6 +13,7 @@ package org.eclipse.acceleo.internal.ide.ui.builders;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,9 @@ import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
+import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
@@ -37,6 +40,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -154,8 +159,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * It checks the build configuration of the Acceleo module. It creates the build.acceleo file if it
-	 * doesn't exist.
+	 * It checks the build configuration of the Acceleo module. It creates the build.acceleo file and the
+	 * build.xml file if they don't exist.
 	 * 
 	 * @param monitor
 	 *            is the monitor
@@ -164,7 +169,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void validateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
-		if (buildProperties.exists() && outputFolder != null && outputFolder.segmentCount() > 1) {
+		if (outputFolder != null && outputFolder.segmentCount() > 1) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
 			AcceleoProject project = new AcceleoProject(getProject());
 			List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
@@ -177,6 +182,36 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 
 			AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
+
+			List<String> resolvedClasspath = new ArrayList<String>();
+			Iterator<IPath> entries = project.getResolvedClasspath().iterator();
+			IPath eclipseWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+			IPath eclipseHome = new Path(Platform.getInstallLocation().getURL().getPath());
+			while (entries.hasNext()) {
+				IPath path = entries.next();
+				if (eclipseWorkspace.isPrefixOf(path)) {
+					resolvedClasspath.add("${ECLIPSE_WORKSPACE}/" //$NON-NLS-1$
+							+ path.toString().substring(eclipseWorkspace.toString().length()));
+				} else if (eclipseHome.isPrefixOf(path)) {
+					resolvedClasspath.add("${ECLIPSE_HOME}/" //$NON-NLS-1$
+							+ path.toString().substring(eclipseHome.toString().length()));
+				}
+			}
+
+			AcceleoMainClass acceleoMainClass = AcceleowizardmodelFactory.eINSTANCE.createAcceleoMainClass();
+			acceleoMainClass.setProjectName(getProject().getName());
+			List<String> classPath = acceleoMainClass.getResolvedClassPath();
+			classPath.addAll(resolvedClasspath);
+
+			IPath workspacePathRelativeToFile = CreateRunnableAcceleoOperation.computeWorkspacePath();
+			IPath eclipsePathRelativeToFile = CreateRunnableAcceleoOperation.computeEclipsePath();
+
+			AcceleoUIGenerator.getDefault().generateBuildXML(
+					acceleoMainClass,
+					AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile,
+							getProject().getFile("build.xml").getLocation()).toString(), //$NON-NLS-1$
+					AcceleoProject.makeRelativeTo(workspacePathRelativeToFile,
+							getProject().getFile("build.xml").getLocation()).toString(), getProject()); //$NON-NLS-1$
 
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
 					buildAcceleo.getName()) == -1) {

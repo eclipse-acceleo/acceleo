@@ -108,6 +108,11 @@ public final class AcceleoUIGenerator {
 	private static Module buildProperties;
 
 	/**
+	 * The Acceleo module that will generate the build.xml file.
+	 */
+	private static Module buildXML;
+
+	/**
 	 * The Acceleo module that will generate the Activator file.
 	 */
 	private static Module activator;
@@ -257,6 +262,28 @@ public final class AcceleoUIGenerator {
 		generate(buildProperties, acceleoProject, outputContainer,
 				IAcceleoGenerationConstants.PROJECT_BUILD_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_BUILD_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the Ant files.
+	 * 
+	 * @param acceleoMainClass
+	 *            The Acceleo main class.
+	 * @param eclipseFilePath
+	 *            The eclipse file path.
+	 * @param workspaceFilePath
+	 *            the workspace file path
+	 * @param outputContainer
+	 *            The output folder.
+	 */
+	public void generateBuildXML(AcceleoMainClass acceleoMainClass, String eclipseFilePath,
+			String workspaceFilePath, IContainer outputContainer) {
+		List<String> args = new ArrayList<String>();
+		args.add(eclipseFilePath);
+		args.add(workspaceFilePath);
+		generate(buildXML, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_BUILD_XML_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_BUILD_XML_TEMPLATE_URI, args);
 	}
 
 	/**

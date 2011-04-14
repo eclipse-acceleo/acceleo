@@ -239,7 +239,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	 * @return The workspace path.
 	 * @since 3.1
 	 */
-	private IPath computeWorkspacePath() {
+	public static IPath computeWorkspacePath() {
 		return new Path(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
 	}
 
@@ -249,7 +249,7 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 	 * @return The Eclipse path.
 	 * @since 3.1
 	 */
-	private IPath computeEclipsePath() {
+	public static IPath computeEclipsePath() {
 		URL fileURL = Platform.getInstallLocation().getURL();
 		try {
 			String filepath = FileLocator.toFileURL(fileURL).getFile();

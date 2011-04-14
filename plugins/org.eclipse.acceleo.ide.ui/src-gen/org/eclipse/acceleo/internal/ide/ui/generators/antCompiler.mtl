@@ -1,0 +1,77 @@
+[comment encoding = UTF-8 /]
+[**
+ * Copyright (c) 2008, 2011 Obeo.<br/>
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ * @author sbegaudeau
+ */]
+[module antCompiler('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')]
+
+[**
+ * Generate the Ant task to launch the compilation from Ant.
+ * @param anAcceleoMainClass The Acceleo main class.
+ * @param eclipseHome The relative path of the eclipse installation folder.
+ * @param workspaceHome The relative path of the workspace.
+ */]
+[template public genAntCompiler(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
+[file ('build.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="[anAcceleoMainClass.projectName/]">
+    <property name="SOURCE_FOLDERS" value="${basedir}/src/"/>    
+    <property name="ECLIPSE_HOME" value="[eclipseHome/]"/>
+    <property name="ECLIPSE_WORKSPACE" value="[workspaceHome/]"/>
+
+
+
+<!-- 
+[protected ('to add new properties')]
+-->
+    <!-- You can add new properties here but do not touch the previous and following comments.-->
+<!-- 
+[/protected]
+-->
+
+
+
+    <!--
+         In order to compile with this task, you need to add the following projects as dependencies of your project.
+          * org.eclipse.acceleo.parser
+          * org.eclipse.acceleo.common
+         Those projects are not automatically added as dependencies because inside of Eclipse the Acceleo UI will
+         realize the compilation. If deleted, this file will be recreated with a full build (Project -> Clean...).
+    -->
+
+    <!-- The classpath with only the dependencies used by the project -->
+    <path id="[anAcceleoMainClass.projectName/].libraryclasspath">
+        <pathelement location="${ECLIPSE_WORKSPACE}/[anAcceleoMainClass.projectName/]/bin"/>
+        [for (classpathEntry : String | anAcceleoMainClass.resolvedClassPath)]
+        <pathelement location="[classpathEntry/]"/>
+        [/for]
+    </path>
+
+    <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
+    <target name="compile">
+        <acceleoCompiler sourcefolders="${SOURCE_FOLDERS}" >
+                         dependencies=""
+                         binaryResource="true">
+        </acceleoCompiler>
+    </target>
+
+
+
+<!-- 
+[protected ('to add new targets')]
+-->
+    <!-- You can add new targets here but do not touch the previous and following comments.-->
+<!-- 
+[/protected]
+-->
+
+</project>
+[/file]
+[/template]

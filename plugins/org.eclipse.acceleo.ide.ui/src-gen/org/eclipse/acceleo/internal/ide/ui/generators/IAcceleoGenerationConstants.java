@@ -126,4 +126,14 @@ public interface IAcceleoGenerationConstants {
 	 * The name of the main template in the activator generator.
 	 */
 	String PROJECT_ACTIVATOR_TEMPLATE_URI = "genActivator"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the build.xml generator.
+	 */
+	String PROJECT_BUILD_XML_GENERATOR_URI = "antCompiler.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the build.xml generator.
+	 */
+	String PROJECT_BUILD_XML_TEMPLATE_URI = "genAntCompiler"; //$NON-NLS-1$
 }
