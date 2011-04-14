@@ -36,8 +36,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -58,6 +58,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 
@@ -135,11 +137,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	private Button computeProfiling;
 
 	/**
-	 * The arguments text widget.
-	 */
-	private Text argumentsText;
-
-	/**
 	 * Available launching strategies in the current Eclipse instance. An internal extension point is defined
 	 * to specify multiple launching strategies.
 	 */
@@ -198,19 +195,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		} else {
 			createAcceleoProfileModelEditor(mainComposite, false);
 		}
-		createAcceleoArgumentsEditor(mainComposite);
 
-		new Label(mainComposite, SWT.NONE);
-		Composite endCompositeLeft = createComposite(mainComposite, parent.getFont(), 3, 1,
-				GridData.FILL_HORIZONTAL, 0, 0);
-		createAcceleoLaunchingStrategyEditor(endCompositeLeft);
-
-		createAcceleoTraceabilityEditor(endCompositeLeft);
-		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
-			createAcceleoProfilingEditor(endCompositeLeft, true);
-		} else {
-			createAcceleoProfilingEditor(endCompositeLeft, false);
-		}
+		createAcceleoLaunchconfiguration(mainComposite);
 
 		// Add help to the JDT tabs
 		Composite mainClassParent = this.fMainText.getParent();
@@ -218,6 +204,28 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 
 		Composite projectParent = this.fProjText.getParent();
 		createHelpButton(projectParent, AcceleoUIMessages.getString("AcceleoMainTab.Help.Project")); //$NON-NLS-1$
+	}
+
+	/**
+	 * Creates the configuration group.
+	 * 
+	 * @param parent
+	 *            The parent composite.
+	 */
+	private void createAcceleoLaunchconfiguration(Composite parent) {
+		Font font = parent.getFont();
+		Group mainGroup = createGroup(parent, "Configuration", 2, 1, //$NON-NLS-1$
+				GridData.FILL_HORIZONTAL);
+		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+
+		createAcceleoLaunchingStrategyEditor(comp);
+
+		createAcceleoTraceabilityEditor(comp);
+		if (PROFILE_MODE.equals(getLaunchConfigurationDialog().getMode())) {
+			createAcceleoProfilingEditor(comp, true);
+		} else {
+			createAcceleoProfilingEditor(comp, false);
+		}
 	}
 
 	/**
@@ -273,7 +281,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 * @return The toolbar with the button.
 	 */
 	private ToolBar createHelpButton(Composite parent, String helpMessage) {
-		Image image = JFaceResources.getImage(DLG_IMG_HELP);
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
 		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
 		((GridLayout)parent.getLayout()).numColumns++;
 		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
@@ -478,33 +486,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	}
 
 	/**
-	 * Creates the widgets for specifying the arguments.
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 */
-	protected void createAcceleoArgumentsEditor(Composite parent) {
-		Font font = parent.getFont();
-		Group mainGroup = createGroup(parent, AcceleoUIMessages.getString("AcceleoMainTab.Arguments"), 2, 1, //$NON-NLS-1$
-				GridData.FILL_HORIZONTAL);
-		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
-		argumentsText = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
-		GridData gd = new GridData(GridData.FILL_BOTH);
-		final int heightHint = 30;
-		gd.heightHint = heightHint;
-		gd.widthHint = 100;
-		gd.horizontalSpan = 2;
-		argumentsText.setLayoutData(gd);
-		argumentsText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				updateLaunchConfigurationDialog();
-			}
-		});
-
-		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Properties")); //$NON-NLS-1$
-	}
-
-	/**
 	 * Creates the widgets for specifying if we compute the traceability information.
 	 * 
 	 * @param parent
@@ -512,14 +493,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	protected void createAcceleoTraceabilityEditor(Composite parent) {
 		Font font = parent.getFont();
-		Group traceabilityGroup = createGroup(parent, AcceleoUIMessages
-				.getString("AcceleoMainTab.Traceability"), 2, 1, //$NON-NLS-1$
-				GridData.FILL_VERTICAL);
-
-		Composite comp = createComposite(traceabilityGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		Composite comp = createComposite(parent, font, 1, 2, GridData.FILL_BOTH, 0, 0);
 		computeTraceability = new Button(comp, SWT.CHECK);
 		computeTraceability.setFont(font);
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 1;
 		computeTraceability.setLayoutData(gd);
 		computeTraceability.setText(AcceleoUIMessages.getString("AcceleoMainTab.ComputeTraceability")); //$NON-NLS-1$
@@ -547,14 +524,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	protected void createAcceleoProfilingEditor(Composite parent, boolean checkedByDefault) {
 		Font font = parent.getFont();
 
-		Group profilingGroup = createGroup(parent,
-				AcceleoUIMessages.getString("AcceleoMainTab.Profiling"), 2, 1, //$NON-NLS-1$
-				GridData.FILL_VERTICAL);
-
-		Composite comp = createComposite(profilingGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
+		Composite comp = createComposite(parent, font, 1, 2, GridData.FILL_BOTH, 0, 0);
 		computeProfiling = new Button(comp, SWT.CHECK);
 		computeProfiling.setFont(font);
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 1;
 		computeProfiling.setLayoutData(gd);
 		computeProfiling.setText(AcceleoUIMessages.getString("AcceleoMainTab.ComputeProfiling")); //$NON-NLS-1$
@@ -586,16 +559,16 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 *            the parent composite
 	 */
 	protected void createAcceleoLaunchingStrategyEditor(Composite parent) {
-		Font font = parent.getFont();
+		Composite comp = createComposite(parent, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0, 0);
 
-		Group launchingGroup = createGroup(parent, AcceleoUIMessages
-				.getString("AcceleoMainTab.LaunchingStrategy"), 2, 1, //$NON-NLS-1$
-				GridData.FILL_VERTICAL);
-
-		Composite comp = createComposite(launchingGroup, font, 2, 2, GridData.HORIZONTAL_ALIGN_BEGINNING, 0,
-				0);
-		launchingStrategyCombo = new Combo(comp, SWT.READ_ONLY);
+		Label label = new Label(comp, SWT.NONE);
+		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.Configuration")); //$NON-NLS-1$
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gridData.horizontalSpan = 1;
+		label.setLayoutData(gridData);
+
+		launchingStrategyCombo = new Combo(comp, SWT.READ_ONLY);
+		gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 1;
 		launchingStrategyCombo.setLayoutData(gridData);
 		launchingStrategyCombo.addSelectionListener(new SelectionListener() {
@@ -751,7 +724,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		updateAcceleoProfileModelFromConfig(config);
 		updateAcceleoTargetFromConfig(config);
 		updateAcceleoTraceabilityFromConfig(config);
-		updateAcceleoArgumentsFromConfig(config);
 		updateAcceleoLaunchingStrategyFromConfig(config);
 		updateSettingsVisibility();
 	}
@@ -826,22 +798,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
 		computeTraceability.setSelection(traceability);
-	}
-
-	/**
-	 * Loads the arguments from the launch configuration's preference store.
-	 * 
-	 * @param config
-	 *            the configuration to load the arguments
-	 */
-	protected void updateAcceleoArgumentsFromConfig(ILaunchConfiguration config) {
-		String args = ""; //$NON-NLS-1$
-		try {
-			args = config.getAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, ""); //$NON-NLS-1$
-		} catch (CoreException e) {
-			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-		}
-		argumentsText.setText(args);
 	}
 
 	/**
@@ -924,8 +880,19 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		if (javaArgumentsTab != null) {
+			AcceleoPropertiesFilesTab acceleoPropertiesFilesTab = null;
+			ILaunchConfigurationTab[] tabs = this.getLaunchConfigurationDialog().getTabs();
+			for (ILaunchConfigurationTab iLaunchConfigurationTab : tabs) {
+				if (iLaunchConfigurationTab instanceof AcceleoPropertiesFilesTab) {
+					acceleoPropertiesFilesTab = (AcceleoPropertiesFilesTab)iLaunchConfigurationTab;
+				}
+			}
+			String arguments = null;
+			if (acceleoPropertiesFilesTab != null) {
+				arguments = acceleoPropertiesFilesTab.getPropertiesFiles();
+			}
 			javaArgumentsTab.updateArguments(config, modelText.getText().trim(), targetText.getText().trim(),
-					argumentsText.getText());
+					arguments);
 		}
 		super.performApply(config);
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_MODEL_PATH, modelText.getText().trim());
@@ -939,7 +906,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 				.trim());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_COMPUTE_TRACEABILITY,
 				computeTraceability.getSelection());
-		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_ARGUMENTS, argumentsText.getText());
 		config.setAttribute(IAcceleoLaunchConfigurationConstants.ATTR_LAUNCHING_STRATEGY_DESCRIPTION,
 				launchingStrategyCombo.getText());
 	}
@@ -1010,6 +976,24 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		Collections.sort(acceleoStrategies);
 		launchingStrategies.addAll(0, acceleoStrategies);
 		return launchingStrategies;
+	}
+
+	/**
+	 * Returns the model.
+	 * 
+	 * @return The model
+	 */
+	public String getModel() {
+		return this.modelText.getText();
+	}
+
+	/**
+	 * Returns the target folder.
+	 * 
+	 * @return The target folder.
+	 */
+	public String getTarget() {
+		return this.targetText.getText();
 	}
 
 }

@@ -45,9 +45,10 @@ public class AcceleoApplicationTabGroup extends AbstractLaunchConfigurationTabGr
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		javaArgumentsTab = new AcceleoJavaArgumentsTab();
 		AcceleoMainTab mainTab = new AcceleoMainTab(javaArgumentsTab);
-		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {mainTab, javaArgumentsTab,
-				new JavaJRETab(), new JavaClasspathTab(), new SourceLookupTab(), new EnvironmentTab(),
-				new CommonTab(), };
+		AcceleoPropertiesFilesTab propertiesFilesTab = new AcceleoPropertiesFilesTab();
+		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {mainTab, propertiesFilesTab,
+				javaArgumentsTab, new JavaJRETab(), new JavaClasspathTab(), new SourceLookupTab(),
+				new EnvironmentTab(), new CommonTab(), };
 		setTabs(tabs);
 	}
 
