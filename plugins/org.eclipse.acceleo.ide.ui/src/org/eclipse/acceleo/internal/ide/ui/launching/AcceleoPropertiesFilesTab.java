@@ -76,7 +76,7 @@ public class AcceleoPropertiesFilesTab extends AbstractLaunchConfigurationTab {
 		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
 		argumentsText = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		final int heightHint = 100;
+		final int heightHint = 150;
 		gd.heightHint = heightHint;
 		gd.widthHint = 100;
 		gd.horizontalSpan = 2;
@@ -103,7 +103,8 @@ public class AcceleoPropertiesFilesTab extends AbstractLaunchConfigurationTab {
 		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
 		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
 		((GridLayout)parent.getLayout()).numColumns++;
-		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER
+				| GridData.VERTICAL_ALIGN_BEGINNING));
 		ToolItem item = new ToolItem(result, SWT.NONE);
 		item.setImage(image);
 		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$

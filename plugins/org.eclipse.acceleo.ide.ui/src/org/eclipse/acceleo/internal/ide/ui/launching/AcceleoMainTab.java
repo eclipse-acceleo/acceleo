@@ -214,7 +214,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	private void createAcceleoLaunchconfiguration(Composite parent) {
 		Font font = parent.getFont();
-		Group mainGroup = createGroup(parent, "Configuration", 2, 1, //$NON-NLS-1$
+		Group mainGroup = createGroup(parent,
+				AcceleoUIMessages.getString("AcceleoMainTab.Configuration"), 2, 1, //$NON-NLS-1$
 				GridData.FILL_HORIZONTAL);
 		Composite comp = createComposite(mainGroup, font, 2, 2, GridData.FILL_BOTH, 0, 0);
 
@@ -562,7 +563,7 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		Composite comp = createComposite(parent, parent.getFont(), 2, 2, GridData.FILL_BOTH, 0, 0);
 
 		Label label = new Label(comp, SWT.NONE);
-		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.Configuration")); //$NON-NLS-1$
+		label.setText(AcceleoUIMessages.getString("AcceleoMainTab.LaunchingStrategy")); //$NON-NLS-1$
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gridData.horizontalSpan = 1;
 		label.setLayoutData(gridData);
