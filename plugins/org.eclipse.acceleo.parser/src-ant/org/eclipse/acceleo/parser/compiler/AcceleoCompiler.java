@@ -36,6 +36,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 /**
  * The Acceleo Compiler ANT Task.
@@ -352,5 +353,7 @@ public class AcceleoCompiler extends Task {
 			registry.getContentTypeToFactoryMap().put(IAcceleoConstants.XMI_CONTENT_TYPE,
 					new EMtlBinaryResourceFactoryImpl());
 		}
+
+		registry.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl()); //$NON-NLS-1$
 	}
 }
