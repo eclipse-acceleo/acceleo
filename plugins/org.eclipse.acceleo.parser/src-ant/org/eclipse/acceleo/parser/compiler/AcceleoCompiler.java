@@ -11,6 +11,8 @@
 package org.eclipse.acceleo.parser.compiler;
 
 import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,7 +27,9 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
@@ -35,8 +39,15 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.ExpressionsPackage;
 
 /**
  * The Acceleo Compiler ANT Task.
@@ -46,14 +57,24 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 public class AcceleoCompiler extends Task {
 
 	/**
+	 * The ecore file extension.
+	 */
+	private static final String ECORE = "ecore"; //$NON-NLS-1$
+
+	/**
 	 * Indicates if we should use binary resources for the serialization of the EMTL files.
 	 */
 	private boolean binaryResource = true;
 
 	/**
-	 * The source folders to compile.
+	 * The source folder to compile.
 	 */
-	private List<File> sourceFolders = new ArrayList<File>();
+	private File sourceFolder;
+
+	/**
+	 * The output folder to place the compiled files.
+	 */
+	private File outputFolder;
 
 	/**
 	 * The dependencies folders.
@@ -97,23 +118,23 @@ public class AcceleoCompiler extends Task {
 	}
 
 	/**
-	 * Sets the source folders to compile. They are separated by ';'.
+	 * Sets the source folder to compile.
 	 * 
-	 * @param allSourceFolders
-	 *            are the source folders to compile
+	 * @param theSourceFolder
+	 *            are the source folder to compile
 	 */
-	public void setSourceFolders(String allSourceFolders) {
-		sourceFolders.clear();
-		StringTokenizer st = new StringTokenizer(allSourceFolders, ";"); //$NON-NLS-1$
-		while (st.hasMoreTokens()) {
-			String path = st.nextToken().trim();
-			if (path.length() > 0) {
-				File folder = new Path(path).toFile();
-				if (!sourceFolders.contains(folder)) {
-					sourceFolders.add(folder);
-				}
-			}
-		}
+	public void setSourceFolder(String theSourceFolder) {
+		this.sourceFolder = new Path(theSourceFolder).toFile();
+	}
+
+	/**
+	 * Sets the output folder.
+	 * 
+	 * @param theOutputFolder
+	 *            The output folder.
+	 */
+	public void setOutputFolder(String theOutputFolder) {
+		this.outputFolder = new Path(theOutputFolder).toFile();
 	}
 
 	/**
@@ -171,23 +192,16 @@ public class AcceleoCompiler extends Task {
 	 */
 	@Override
 	public void execute() throws BuildException {
+		registerResourceFactories();
+		registerPackages();
+		registerLibraries();
+
 		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
 			standaloneInit();
 		}
 		StringBuffer message = new StringBuffer();
 		List<MTLFileInfo> fileInfos = new ArrayList<MTLFileInfo>();
-		for (File sourceFolder : sourceFolders) {
-			if (sourceFolder != null && sourceFolder.exists() && sourceFolder.isDirectory()) {
-				fileInfos.addAll(computeFileInfos(sourceFolder));
-			} else if (sourceFolder != null) {
-				// The ANT Task localization doesn't work.
-				message.append("The folder '"); //$NON-NLS-1$
-				message.append(sourceFolder.getName());
-				message.append('\'');
-				message.append(" doesn't exist."); //$NON-NLS-1$
-				message.append('\n');
-			}
-		}
+		fileInfos.addAll(computeFileInfos(sourceFolder));
 		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
 		List<URI> emtlAbsoluteURIs = new ArrayList<URI>();
 		for (MTLFileInfo mtlFileInfo : fileInfos) {
@@ -198,6 +212,8 @@ public class AcceleoCompiler extends Task {
 		Map<URI, URI> mapURIs = new HashMap<URI, URI>();
 		computeDependencies(dependenciesURIs, mapURIs);
 		loadEcoreFiles();
+
+		createOutputFiles(emtlAbsoluteURIs);
 
 		AcceleoParser parser = new AcceleoParser(binaryResource);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, new BasicMonitor());
@@ -228,18 +244,32 @@ public class AcceleoCompiler extends Task {
 	}
 
 	/**
+	 * Create the output folders for the output files.
+	 * 
+	 * @param emtlAbsoluteURIs
+	 *            The emtl file uris.
+	 */
+	private void createOutputFiles(List<URI> emtlAbsoluteURIs) {
+		for (URI uri : emtlAbsoluteURIs) {
+			if (!new File(uri.toString()).getParentFile().exists()) {
+				new File(uri.toString()).getParentFile().mkdirs();
+			}
+		}
+	}
+
+	/**
 	 * Computes the properties of the MTL files of the given source folder.
 	 * 
-	 * @param sourceFolder
+	 * @param theSourceFolder
 	 *            the current source folder
 	 * @return the MTL files properties
 	 */
-	private List<MTLFileInfo> computeFileInfos(File sourceFolder) {
+	private List<MTLFileInfo> computeFileInfos(File theSourceFolder) {
 		List<MTLFileInfo> fileInfosOutput = new ArrayList<MTLFileInfo>();
-		if (sourceFolder.exists()) {
-			String sourceFolderAbsolutePath = sourceFolder.getAbsolutePath();
+		if (theSourceFolder.exists()) {
+			String sourceFolderAbsolutePath = theSourceFolder.getAbsolutePath();
 			List<File> mtlFiles = new ArrayList<File>();
-			members(mtlFiles, sourceFolder, IAcceleoConstants.MTL_FILE_EXTENSION);
+			members(mtlFiles, theSourceFolder, IAcceleoConstants.MTL_FILE_EXTENSION);
 			for (File mtlFile : mtlFiles) {
 				String mtlFileAbsolutePath = mtlFile.getAbsolutePath();
 				if (mtlFileAbsolutePath != null) {
@@ -249,9 +279,16 @@ public class AcceleoCompiler extends Task {
 					} else {
 						relativePath = mtlFile.getName();
 					}
-					URI emtlAbsoluteURI = URI.createFileURI(new Path(mtlFileAbsolutePath)
-							.removeFileExtension().addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION)
-							.toString());
+
+					String inputPath = sourceFolder.getAbsolutePath();
+					String outputPath = outputFolder.getAbsolutePath();
+					String temp = new Path(mtlFileAbsolutePath).removeFileExtension().addFileExtension(
+							IAcceleoConstants.EMTL_FILE_EXTENSION).toString();
+					int segments = new Path(temp).matchingFirstSegments(new Path(inputPath));
+					IPath path = new Path(temp).removeFirstSegments(segments);
+					IPath emtlPath = new Path(outputPath).append(path);
+
+					URI emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
 					MTLFileInfo fileInfo = new MTLFileInfo();
 					fileInfo.mtlFile = mtlFile;
 					fileInfo.emtlAbsoluteURI = emtlAbsoluteURI;
@@ -329,7 +366,7 @@ public class AcceleoCompiler extends Task {
 		for (File requiredFolder : dependencies) {
 			if (requiredFolder != null && requiredFolder.exists() && requiredFolder.isDirectory()) {
 				List<File> ecoreFiles = new ArrayList<File>();
-				members(ecoreFiles, requiredFolder, "ecore"); //$NON-NLS-1$
+				members(ecoreFiles, requiredFolder, ECORE);
 				for (File ecoreFile : ecoreFiles) {
 					URI ecoreURI = URI.createFileURI(ecoreFile.getAbsolutePath());
 					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreURI.toString(),
@@ -354,6 +391,85 @@ public class AcceleoCompiler extends Task {
 					new EMtlBinaryResourceFactoryImpl());
 		}
 
-		registry.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl()); //$NON-NLS-1$
+		registry.getExtensionToFactoryMap().put(ECORE, new EcoreResourceFactoryImpl());
+		registerPackages();
+	}
+
+	/**
+	 * Returns the package containing the OCL standard library.
+	 * 
+	 * @return The package containing the OCL standard library.
+	 */
+	protected EPackage getOCLStdLibPackage() {
+		EcoreEnvironmentFactory factory = new EcoreEnvironmentFactory();
+		EcoreEnvironment environment = (EcoreEnvironment)factory.createEnvironment();
+		EPackage oclStdLibPackage = (EPackage)EcoreUtil.getRootContainer(environment.getOCLStandardLibrary()
+				.getBag());
+		environment.dispose();
+		return oclStdLibPackage;
+	}
+
+	/**
+	 * This will update the resource set's package registry with all usual EPackages.
+	 */
+	protected void registerPackages() {
+		EPackage.Registry.INSTANCE.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
+
+		EPackage.Registry.INSTANCE.put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
+				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(ExpressionsPackage.eINSTANCE.getNsURI(), ExpressionsPackage.eINSTANCE);
+
+		EPackage.Registry.INSTANCE.put(MtlPackage.eINSTANCE.getNsURI(), MtlPackage.eINSTANCE);
+
+		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
+				getOCLStdLibPackage());
+
+		// Uncomment if you need to use UML models
+		// EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+
+		// Uncomment if you need to use UML models saved with on old version of MDT/UML (you might need to
+		// change the URI's version number)
+		//EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.1.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
+	}
+
+	/**
+	 * Register the resource factories.
+	 */
+	public void registerResourceFactories() {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ECORE,
+				new EcoreResourceFactoryImpl());
+		Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().put(
+				IAcceleoConstants.BINARY_CONTENT_TYPE, new EMtlBinaryResourceFactoryImpl());
+		Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().put(
+				IAcceleoConstants.XMI_CONTENT_TYPE, new EMtlResourceFactoryImpl());
+
+		// Uncomment the following if you need to use UML models
+		// Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
+		// UMLResource.Factory.INSTANCE);
+	}
+
+	/**
+	 * Register the libraries.
+	 */
+	public void registerLibraries() {
+		CodeSource acceleoModel = MtlPackage.class.getProtectionDomain().getCodeSource();
+		if (acceleoModel != null) {
+
+			String libraryLocation = acceleoModel.getLocation().toString();
+
+			if (libraryLocation.endsWith(".jar")) { //$NON-NLS-1$
+				libraryLocation = "jar:" + libraryLocation + '!'; //$NON-NLS-1$
+			}
+
+			URL stdlib = MtlPackage.class.getResource("/model/mtlstdlib.ecore"); //$NON-NLS-1$
+			URL resource = MtlPackage.class.getResource("/model/mtlnonstdlib.ecore"); //$NON-NLS-1$
+
+			URIConverter.URI_MAP
+					.put(URI.createURI("http://www.eclipse.org/acceleo/mtl/3.0/mtlstdlib.ecore"), URI.createURI(stdlib.toString())); //$NON-NLS-1$
+			URIConverter.URI_MAP
+					.put(URI.createURI("http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore"), URI.createURI(resource.toString())); //$NON-NLS-1$
+		} else {
+			System.err.println("Coudln't retrieve location of plugin 'org.eclipse.acceleo.model'."); //$NON-NLS-1$
+		}
 	}
 }
