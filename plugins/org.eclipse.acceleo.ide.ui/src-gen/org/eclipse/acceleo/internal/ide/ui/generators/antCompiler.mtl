@@ -19,19 +19,19 @@
  * @param workspaceHome The relative path of the workspace.
  */]
 [template public genAntCompiler(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
-[file ('buildall.xml', false, 'UTF-8')]
+[file ('buildstandalone.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="compile" name="[anAcceleoMainClass.projectName/]">
-    <property name="SOURCE_FOLDERS" value="${basedir}/src/"/>    
+    
     <property name="ECLIPSE_HOME" value="[eclipseHome/]"/>
     <property name="ECLIPSE_WORKSPACE" value="[workspaceHome/]"/>
-
-
 
 <!-- 
 [protected ('to add new properties')]
 -->
     <!-- You can add new properties here but do not touch the previous and following comments.-->
+    <property name="SOURCE_FOLDER" value="${basedir}/src/"/>    
+    <property name="OUTPUT_FOLDER" value="${basedir}/bin/"/>
 <!-- 
 [/protected]
 -->
@@ -39,12 +39,13 @@
 
 
     <!--
-         In order to compile with this task, you need to add the following projects as dependencies of your project.
-          * org.eclipse.acceleo.parser
-          * org.eclipse.acceleo.common
-         Those projects are not automatically added as dependencies because inside of Eclipse the Acceleo UI will
-         realize the compilation. If deleted, this file will be recreated with a full build (Project -> Clean...).
+         If deleted, this file will be recreated with a full build (Project -> Clean...).
     -->
+
+
+    <path id="[anAcceleoMainClass.projectName/].classpath">
+        <path refid="[anAcceleoMainClass.projectName/].libraryclasspath" />
+    </path>
 
     <!-- The classpath with only the dependencies used by the project -->
     <path id="[anAcceleoMainClass.projectName/].libraryclasspath">
@@ -54,14 +55,18 @@
         [/for]
     </path>
 
+    
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="[anAcceleoMainClass.projectName/].libraryclasspath" >
+    </taskdef>
+
     <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
     <target name="compile">
-        <acceleoCompiler sourcefolders="${SOURCE_FOLDERS}"
+        <acceleoCompiler sourceFolder="${SOURCE_FOLDER}"
+                         outputFolder="${OUTPUT_FOLDER}"
                          dependencies=""
                          binaryResource="true">
         </acceleoCompiler>
     </target>
-
 
 
 <!-- 
