@@ -423,13 +423,6 @@ public class AcceleoCompiler extends Task {
 
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", //$NON-NLS-1$
 				getOCLStdLibPackage());
-
-		// Uncomment if you need to use UML models
-		// EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-
-		// Uncomment if you need to use UML models saved with on old version of MDT/UML (you might need to
-		// change the URI's version number)
-		//EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.1.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 	}
 
 	/**
@@ -442,10 +435,6 @@ public class AcceleoCompiler extends Task {
 				IAcceleoConstants.BINARY_CONTENT_TYPE, new EMtlBinaryResourceFactoryImpl());
 		Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().put(
 				IAcceleoConstants.XMI_CONTENT_TYPE, new EMtlResourceFactoryImpl());
-
-		// Uncomment the following if you need to use UML models
-		// Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-		// UMLResource.Factory.INSTANCE);
 	}
 
 	/**
