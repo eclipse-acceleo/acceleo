@@ -136,4 +136,14 @@ public interface IAcceleoGenerationConstants {
 	 * The name of the main template in the build.xml generator.
 	 */
 	String PROJECT_BUILD_XML_TEMPLATE_URI = "genAntCompiler"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the pom.xml generator.
+	 */
+	String PROJECT_POM_XML_GENERATOR_URI = "pom.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the pom.xml generator.
+	 */
+	String PROJECT_POM_XML_TEMPLATE_URI = "genPom"; //$NON-NLS-1$
 }

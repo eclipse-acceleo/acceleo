@@ -159,8 +159,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * It checks the build configuration of the Acceleo module. It creates the build.acceleo file and the
-	 * build.xml file if they don't exist.
+	 * It checks the build configuration of the Acceleo module. It creates the build.acceleo file, the
+	 * build.xml file and the pom.xm file if they don't exist.
 	 * 
 	 * @param monitor
 	 *            is the monitor
@@ -220,6 +220,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
 										.getName(), })));
 			}
+
+			AcceleoUIGenerator.getDefault().generatePom(acceleoMainClass, getProject());
 		}
 	}
 

@@ -118,6 +118,11 @@ public final class AcceleoUIGenerator {
 	private static Module activator;
 
 	/**
+	 * The Acceleo module that will generate the pom.xml file.
+	 */
+	private static Module pom;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -298,6 +303,20 @@ public final class AcceleoUIGenerator {
 		generate(activator, acceleoProject, outputContainer,
 				IAcceleoGenerationConstants.PROJECT_ACTIVATOR_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_ACTIVATOR_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the pom.xml file.
+	 * 
+	 * @param acceleoMainClass
+	 *            The Acceleo main class.
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generatePom(AcceleoMainClass acceleoMainClass, IContainer outputContainer) {
+		generate(pom, acceleoMainClass, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI);
 	}
 
 	/**
