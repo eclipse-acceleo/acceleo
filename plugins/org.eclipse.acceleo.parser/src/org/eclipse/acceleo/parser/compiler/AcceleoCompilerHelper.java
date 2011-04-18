@@ -260,43 +260,54 @@ public final class AcceleoCompilerHelper {
 	 */
 	private List<MTLFileInfo> computeFileInfos(File theSourceFolder) {
 		List<MTLFileInfo> fileInfosOutput = new ArrayList<MTLFileInfo>();
-		if (theSourceFolder.exists()) {
-			String sourceFolderAbsolutePath = theSourceFolder.getAbsolutePath();
-			List<File> mtlFiles = new ArrayList<File>();
-			members(mtlFiles, theSourceFolder, IAcceleoConstants.MTL_FILE_EXTENSION);
-			for (File mtlFile : mtlFiles) {
-				String mtlFileAbsolutePath = mtlFile.getAbsolutePath();
-				if (mtlFileAbsolutePath != null) {
-					String relativePath;
-					if (mtlFileAbsolutePath.startsWith(sourceFolderAbsolutePath)) {
-						relativePath = mtlFileAbsolutePath.substring(sourceFolderAbsolutePath.length());
-					} else {
-						relativePath = mtlFile.getName();
-					}
+		String inputPath = sourceFolder.getAbsolutePath();
+		String file = "file:"; //$NON-NLS-1$
+		if (inputPath.startsWith(file)) {
+			inputPath = inputPath.substring(file.length());
+		}
 
-					String inputPath = sourceFolder.getAbsolutePath();
-					URI emtlAbsoluteURI = null;
-					if (outputFolder == null) {
-						String outputPath = outputFolder.getAbsolutePath();
-						String temp = new Path(mtlFileAbsolutePath).removeFileExtension().addFileExtension(
-								IAcceleoConstants.EMTL_FILE_EXTENSION).toString();
-						int segments = new Path(temp).matchingFirstSegments(new Path(inputPath));
-						IPath path = new Path(temp).removeFirstSegments(segments);
-						IPath emtlPath = new Path(outputPath).append(path);
-						emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
-					} else {
-						emtlAbsoluteURI = URI.createFileURI(new Path(inputPath).removeFileExtension()
-								.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString());
-					}
-
-					MTLFileInfo fileInfo = new MTLFileInfo();
-					fileInfo.mtlFile = mtlFile;
-					fileInfo.emtlAbsoluteURI = emtlAbsoluteURI;
-					fileInfo.fullModuleName = AcceleoFile.relativePathToFullModuleName(relativePath);
-					fileInfosOutput.add(fileInfo);
+		if (!theSourceFolder.exists()) {
+			return fileInfosOutput;
+		}
+		String sourceFolderAbsolutePath = theSourceFolder.getAbsolutePath();
+		List<File> mtlFiles = new ArrayList<File>();
+		members(mtlFiles, theSourceFolder, IAcceleoConstants.MTL_FILE_EXTENSION);
+		for (File mtlFile : mtlFiles) {
+			String mtlFileAbsolutePath = mtlFile.getAbsolutePath();
+			if (mtlFileAbsolutePath != null) {
+				String relativePath;
+				if (mtlFileAbsolutePath.startsWith(sourceFolderAbsolutePath)) {
+					relativePath = mtlFileAbsolutePath.substring(sourceFolderAbsolutePath.length());
+				} else {
+					relativePath = mtlFile.getName();
 				}
+
+				URI emtlAbsoluteURI = null;
+				if (outputFolder != null) {
+					String outputPath = outputFolder.getAbsolutePath();
+					if (outputPath.startsWith(file)) {
+						outputPath = outputPath.substring(file.length());
+					}
+
+					String temp = new Path(mtlFileAbsolutePath).removeFileExtension().addFileExtension(
+							IAcceleoConstants.EMTL_FILE_EXTENSION).toString();
+					int segments = new Path(temp).matchingFirstSegments(new Path(inputPath));
+					IPath path = new Path(temp).removeFirstSegments(segments);
+					IPath emtlPath = new Path(outputPath).append(path);
+					emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
+				} else {
+					emtlAbsoluteURI = URI.createFileURI(new Path(inputPath).removeFileExtension()
+							.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString());
+				}
+
+				MTLFileInfo fileInfo = new MTLFileInfo();
+				fileInfo.mtlFile = mtlFile;
+				fileInfo.emtlAbsoluteURI = emtlAbsoluteURI;
+				fileInfo.fullModuleName = AcceleoFile.relativePathToFullModuleName(relativePath);
+				fileInfosOutput.add(fileInfo);
 			}
 		}
+
 		return fileInfosOutput;
 	}
 
