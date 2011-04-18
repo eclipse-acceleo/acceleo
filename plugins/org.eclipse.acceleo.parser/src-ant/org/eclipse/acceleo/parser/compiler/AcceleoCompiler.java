@@ -53,6 +53,7 @@ import org.eclipse.ocl.expressions.ExpressionsPackage;
  * The Acceleo Compiler ANT Task.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @since 3.1
  */
 public class AcceleoCompiler extends Task {
 
@@ -281,14 +282,20 @@ public class AcceleoCompiler extends Task {
 					}
 
 					String inputPath = sourceFolder.getAbsolutePath();
-					String outputPath = outputFolder.getAbsolutePath();
-					String temp = new Path(mtlFileAbsolutePath).removeFileExtension().addFileExtension(
-							IAcceleoConstants.EMTL_FILE_EXTENSION).toString();
-					int segments = new Path(temp).matchingFirstSegments(new Path(inputPath));
-					IPath path = new Path(temp).removeFirstSegments(segments);
-					IPath emtlPath = new Path(outputPath).append(path);
+					URI emtlAbsoluteURI = null;
+					if (outputFolder == null) {
+						String outputPath = outputFolder.getAbsolutePath();
+						String temp = new Path(mtlFileAbsolutePath).removeFileExtension().addFileExtension(
+								IAcceleoConstants.EMTL_FILE_EXTENSION).toString();
+						int segments = new Path(temp).matchingFirstSegments(new Path(inputPath));
+						IPath path = new Path(temp).removeFirstSegments(segments);
+						IPath emtlPath = new Path(outputPath).append(path);
+						emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
+					} else {
+						emtlAbsoluteURI = URI.createFileURI(new Path(inputPath).removeFileExtension()
+								.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString());
+					}
 
-					URI emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
 					MTLFileInfo fileInfo = new MTLFileInfo();
 					fileInfo.mtlFile = mtlFile;
 					fileInfo.emtlAbsoluteURI = emtlAbsoluteURI;

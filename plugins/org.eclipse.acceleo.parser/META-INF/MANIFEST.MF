@@ -25,6 +25,7 @@ Export-Package: org.eclipse.acceleo.internal.parser;x-friends:="org.eclipse.acce
    org.eclipse.acceleo.parser.tests,
    org.eclipse.acceleo.compatibility.ui",
  org.eclipse.acceleo.parser,
+ org.eclipse.acceleo.parser.compiler,
  org.eclipse.acceleo.parser.cst,
  org.eclipse.acceleo.parser.cst.impl;x-friends:="org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.parser.cst.util;x-friends:="org.eclipse.acceleo.parser.tests"
