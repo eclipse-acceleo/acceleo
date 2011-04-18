@@ -169,7 +169,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void validateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
-		if (outputFolder != null && outputFolder.segmentCount() > 1) {
+		if (outputFolder != null && outputFolder.segmentCount() >= 1) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
 			AcceleoProject project = new AcceleoProject(getProject());
 			List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
@@ -206,14 +206,12 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IPath workspacePathRelativeToFile = CreateRunnableAcceleoOperation.computeWorkspacePath();
 			IPath eclipsePathRelativeToFile = CreateRunnableAcceleoOperation.computeEclipsePath();
 
-			AcceleoUIGenerator
-					.getDefault()
-					.generateBuildXML(
-							acceleoMainClass,
-							AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile,
-									getProject().getFile("buildstandalone.xml").getLocation()).toString(), //$NON-NLS-1$
-							AcceleoProject.makeRelativeTo(workspacePathRelativeToFile,
-									getProject().getFile("buildstandalone.xml").getLocation()).toString(), getProject()); //$NON-NLS-1$
+			AcceleoUIGenerator.getDefault().generateBuildXML(
+					acceleoMainClass,
+					AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile, getProject().getLocation())
+							.toString(),
+					AcceleoProject.makeRelativeTo(workspacePathRelativeToFile, getProject().getLocation())
+							.toString(), getProject());
 
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
 					buildAcceleo.getName()) == -1) {
