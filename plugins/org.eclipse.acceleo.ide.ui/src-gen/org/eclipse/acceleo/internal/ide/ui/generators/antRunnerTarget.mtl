@@ -20,15 +20,15 @@
 [file (anAcceleoMainClass.moduleFileShortName + 'Target.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Rename this file, put it in the target project and call it with "External Tools > Run As > Ant Build" -->
+<!-- Place this file in the target project and call it with "External Tools > Run As > Ant Build" -->
 <!-- You have to change the MODEL and the TARGET values -->
 
 <project basedir="." default="[anAcceleoMainClass.moduleFileShortName/]Sample" name="[anAcceleoMainClass.projectName/]Sample">
 	<import file="../../[anAcceleoMainClass.projectName/]/tasks/[anAcceleoMainClass.moduleFileShortName/].xml"/>
 
     <!-- Change the values of MODEL and TARGET to point to your model and output folder -->
-	<property name="MODEL" value="basedir/model/file.xmi"/>
-	<property name="TARGET" value="basedir/src-gen"/>
+	<property name="MODEL" value="${basedir}/model/file.xmi"/>
+	<property name="TARGET" value="${basedir}/src-gen"/>
 
 	<target name="[anAcceleoMainClass.moduleFileShortName/]Sample" description="Generate files in 'TARGET'">
 		<antcall target="[anAcceleoMainClass.moduleFileShortName/]" >
