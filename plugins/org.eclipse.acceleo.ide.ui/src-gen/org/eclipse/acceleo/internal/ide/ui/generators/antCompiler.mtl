@@ -43,10 +43,6 @@
     -->
 
 
-    <path id="[anAcceleoMainClass.projectName/].classpath">
-        <path refid="[anAcceleoMainClass.projectName/].libraryclasspath" />
-    </path>
-
     <!-- The classpath with only the dependencies used by the project -->
     <path id="[anAcceleoMainClass.projectName/].libraryclasspath">
         <pathelement location="${ECLIPSE_WORKSPACE}/[anAcceleoMainClass.projectName/]/bin"/>
@@ -55,8 +51,12 @@
         [/for]
     </path>
 
+
+    <path id="[anAcceleoMainClass.projectName/].classpath">
+        <path refid="[anAcceleoMainClass.projectName/].libraryclasspath" />
+    </path>
     
-    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="[anAcceleoMainClass.projectName/].libraryclasspath" >
+    <taskdef id="acceleoCompiler" name="acceleoCompiler" classname="org.eclipse.acceleo.parser.compiler.AcceleoCompiler" classpathref="[anAcceleoMainClass.projectName/].classpath" >
     </taskdef>
 
     <!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->
