@@ -34,15 +34,17 @@ public final class AcceleoMainCompiler {
 	 *            The arguments.
 	 */
 	public static void main(String[] args) {
-		if (args.length < 4) {
+		if (args.length < 3) {
 			throw new IllegalArgumentException(AcceleoParserMessages
 					.getString("AcceleoMainCompiler.NotEnoughParameters")); //$NON-NLS-1$
 		}
 		AcceleoCompilerHelper acceleoCompilerHelper = new AcceleoCompilerHelper();
 		acceleoCompilerHelper.setSourceFolder(args[0]);
 		acceleoCompilerHelper.setOutputFolder(args[1]);
-		acceleoCompilerHelper.setDependencies(args[2]);
-		acceleoCompilerHelper.setBinaryResource(Boolean.valueOf(args[3]).booleanValue());
+		acceleoCompilerHelper.setBinaryResource(Boolean.valueOf(args[2]).booleanValue());
+		if (args.length == 4) {
+			acceleoCompilerHelper.setDependencies(args[3]);
+		}
 		acceleoCompilerHelper.execute();
 	}
 
