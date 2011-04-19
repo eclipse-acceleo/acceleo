@@ -22,7 +22,6 @@ import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.AcceleoOutlinePage;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
@@ -144,11 +143,6 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private AcceleoSourceContent content;
 
 	/**
-	 * Color manager for the syntax highlighting of this editor.
-	 */
-	private AcceleoColorManager colorManager;
-
-	/**
 	 * Content outline page.
 	 */
 	private AcceleoOutlinePage contentOutlinePage;
@@ -208,7 +202,6 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	public AcceleoEditor() {
 		super();
 		content = new AcceleoSourceContent();
-		colorManager = new AcceleoColorManager();
 		blockMatcher = new AcceleoPairMatcher();
 	}
 
@@ -219,15 +212,6 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	public AcceleoSourceContent getContent() {
 		return content;
-	}
-
-	/**
-	 * Gets the color manager. It is often used for syntax highlighting.
-	 * 
-	 * @return the color manager
-	 */
-	public AcceleoColorManager getColorManager() {
-		return colorManager;
 	}
 
 	/**
@@ -413,7 +397,6 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			content.cancelTasks();
 		}
 		super.dispose();
-		colorManager.dispose();
 		/*
 		 * Dispose the block matcher
 		 */

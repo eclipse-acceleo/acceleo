@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.hover;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -24,18 +23,11 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public class AcceleoDocViewerConfiguration extends SourceViewerConfiguration {
-
-	/**
-	 * The color manager.
-	 */
-	private AcceleoColorManager colorManager;
-
 	/**
 	 * The constructor.
 	 */
 	public AcceleoDocViewerConfiguration() {
 		super();
-		this.colorManager = new AcceleoColorManager();
 	}
 
 	/**
@@ -79,10 +71,9 @@ public class AcceleoDocViewerConfiguration extends SourceViewerConfiguration {
 	 */
 	private AbstractAcceleoScanner[] getScanners() {
 		AbstractAcceleoScanner[] array = new AbstractAcceleoScanner[3];
-		array[0] = new AcceleoDocDefaultScanner(this.colorManager);
-		array[1] = new AcceleoDocBoldScanner(this.colorManager);
-		array[2] = new AcceleoDocTitleScanner(this.colorManager);
+		array[0] = new AcceleoDocDefaultScanner();
+		array[1] = new AcceleoDocBoldScanner();
+		array[2] = new AcceleoDocTitleScanner();
 		return array;
 	}
-
 }

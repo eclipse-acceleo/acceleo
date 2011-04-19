@@ -37,12 +37,6 @@ import org.eclipse.swt.graphics.Image;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class FileBlocksLabelProvider extends AdapterFactoryLabelProvider {
-
-	/**
-	 * The color manager.
-	 */
-	private AcceleoColorManager manager = new AcceleoColorManager();
-
 	/**
 	 * Construct an instance that wraps this factory.
 	 * 
@@ -61,20 +55,9 @@ public class FileBlocksLabelProvider extends AdapterFactoryLabelProvider {
 	@Override
 	public Color getBackground(Object object) {
 		if (object instanceof FileBlocksProjectHandler && !((FileBlocksProjectHandler)object).isResolved()) {
-			return manager.getColor(AcceleoColor.RED);
+			return AcceleoColorManager.getColor(AcceleoColor.RED);
 		}
 		return super.getBackground(object);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider#dispose()
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-		manager.dispose();
 	}
 
 	/**

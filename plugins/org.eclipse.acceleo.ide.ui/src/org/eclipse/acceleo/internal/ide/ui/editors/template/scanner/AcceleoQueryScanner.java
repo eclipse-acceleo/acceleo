@@ -36,67 +36,58 @@ import org.eclipse.swt.SWT;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoQueryScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoQueryScanner(AcceleoColorManager manager) {
+	public AcceleoQueryScanner() {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.LITERAL)))));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL)))));
 
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
-		rules.add(computeFirstParenthesisRule(manager));
+		rules.add(computeFirstParenthesisRule());
 
-		rules.addAll(computeKeywordRules(manager));
-		rules.addAll(computeDelimiterRules(manager));
-		rules.add(computeVariableRule(manager));
-		rules.add(computeQueryNameRule(manager));
-		rules.add(computeReturnTypeRule(manager));
-		rules.addAll(computeOCLKeywordRules(manager));
+		rules.addAll(computeKeywordRules());
+		rules.addAll(computeDelimiterRules());
+		rules.add(computeVariableRule());
+		rules.add(computeQueryNameRule());
+		rules.add(computeReturnTypeRule());
+		rules.addAll(computeOCLKeywordRules());
 
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.OCL_EXPRESSION))));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager
+				.getColor(AcceleoColor.OCL_EXPRESSION))));
 	}
 
 	/**
 	 * Creates the rule for the first parenthesis of the signature. Needs special handling as it is not
 	 * preceded nor followed by a predictable keyword.
 	 * 
-	 * @param manager
-	 *            is the color manager
 	 * @return The created rule.
 	 */
-	private IRule computeFirstParenthesisRule(AcceleoColorManager manager) {
-		return new FirstParenthesisRule(IAcceleoConstants.QUERY, new Token(new TextAttribute(manager
-				.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
+	private IRule computeFirstParenthesisRule() {
+		return new FirstParenthesisRule(IAcceleoConstants.QUERY, new Token(new TextAttribute(
+				AcceleoColorManager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
 	}
 
 	/**
 	 * Creates all keyword rules pertaining to an Acceleo Query.
 	 * 
-	 * @param manager
-	 *            is the color manager
 	 * @return The created rules.
 	 */
-	private List<IRule> computeKeywordRules(AcceleoColorManager manager) {
+	private List<IRule> computeKeywordRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
-		rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.QUERY, null, manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.QUERY, null));
 		rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_END_BODY_CHAR, IAcceleoConstants.QUERY,
-				IAcceleoConstants.DEFAULT_END, manager));
+				IAcceleoConstants.DEFAULT_END));
 
 		// Visibility keywords
-		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, IAcceleoConstants.VISIBILITY_KIND_PUBLIC, null,
-				manager));
+		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, IAcceleoConstants.VISIBILITY_KIND_PUBLIC, null));
 		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, IAcceleoConstants.VISIBILITY_KIND_PROTECTED,
-				null, manager));
-		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, IAcceleoConstants.VISIBILITY_KIND_PRIVATE,
-				null, manager));
+				null));
+		rules.add(computeKeywordRule(IAcceleoConstants.QUERY, IAcceleoConstants.VISIBILITY_KIND_PRIVATE, null));
 
 		return rules;
 	}
@@ -110,53 +101,47 @@ public class AcceleoQueryScanner extends AbstractAcceleoScanner {
 	 *            The keyword we need to detect.
 	 * @param followingDelimiter
 	 *            The delimiter that needs to follow the keyword.
-	 * @param manager
-	 *            is the color manager
 	 * @return The created rule.
 	 */
-	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter,
-			AcceleoColorManager manager) {
+	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter) {
 		return new KeywordSequenceRule(precedingDelimiter, keyword, followingDelimiter, new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
 	}
 
 	/**
 	 * Creates all delimiter rules pertaining to an Acceleo Query.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rules.
 	 */
-	private List<IRule> computeDelimiterRules(AcceleoColorManager manager) {
+	private List<IRule> computeDelimiterRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		// The "[" delimiter must be followed by the "query" keyword or the "/" of a closing tag
-		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.QUERY,
-				manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN, IAcceleoConstants.QUERY));
 		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, manager));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR));
 
 		// The "/" of a body's end must be either preceded by "[" or followed by "]"
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, null, manager));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, null));
 		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_END_BODY_CHAR,
-				IAcceleoConstants.DEFAULT_END, manager));
+				IAcceleoConstants.DEFAULT_END));
 
 		// The "]" is a delimiter, wherever it may be
-		rules.add(computeDelimiterRule((String)null, IAcceleoConstants.DEFAULT_END, null, manager));
+		rules.add(computeDelimiterRule((String)null, IAcceleoConstants.DEFAULT_END, null));
 
 		// The ":" is a delimiter if it is directly following a ")"
 		rules.add(computeDelimiterRule(IAcceleoConstants.PARENTHESIS_END,
-				IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, null, manager));
+				IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, null));
 
 		// The "=" is a delimiter if it is following the return type of the query
 		rules.add(computeDelimiterRule(new String[] {IAcceleoConstants.PARENTHESIS_END,
 				IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, "*", }, //$NON-NLS-1$
-				IAcceleoConstants.VARIABLE_INIT_SEPARATOR, null, manager));
+				IAcceleoConstants.VARIABLE_INIT_SEPARATOR, null));
 
 		// The only "delimiter" parenthesis of a query is the one before the return type declaration
 		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END,
-				IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR, manager));
+				IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR));
 
 		return rules;
 	}
@@ -170,14 +155,11 @@ public class AcceleoQueryScanner extends AbstractAcceleoScanner {
 	 *            The delimiter we need to detect.
 	 * @param followingText
 	 *            The text that needs to follow the keyword. Can be <code>null</code>.
-	 * @param manager
-	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText,
-			AcceleoColorManager manager) {
+	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText) {
 		return new KeywordSequenceRule(precedingText, delimiter, followingText, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
 	}
 
 	/**
@@ -189,64 +171,53 @@ public class AcceleoQueryScanner extends AbstractAcceleoScanner {
 	 *            The delimiter we need to detect.
 	 * @param followingWords
 	 *            The words that needs to follow the delimiter. Can be <code>null</code>.
-	 * @param manager
-	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String[] precedingWords, String delimiter, String[] followingWords,
-			AcceleoColorManager manager) {
+	private IRule computeDelimiterRule(String[] precedingWords, String delimiter, String[] followingWords) {
 		return new KeywordSequenceRule(precedingWords, delimiter, followingWords, new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.QUERY), null, SWT.BOLD)));
 	}
 
 	/**
 	 * Computes a rule matching the query name.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rule.
 	 */
-	private IRule computeQueryNameRule(AcceleoColorManager manager) {
-		return new BlockNameRule(IAcceleoConstants.QUERY, new Token(new TextAttribute(manager
+	private IRule computeQueryNameRule() {
+		return new BlockNameRule(IAcceleoConstants.QUERY, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.QUERY_NAME), null, SWT.NONE)));
 	}
 
 	/**
 	 * Creates a rule matching the query parameters.
 	 * 
-	 * @param manager
-	 *            is the color manager
 	 * @return the new variable rule
 	 */
-	private IRule computeVariableRule(AcceleoColorManager manager) {
-		return new VariableRule(new String[] {}, new Token(new TextAttribute(manager
+	private IRule computeVariableRule() {
+		return new VariableRule(new String[] {}, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.QUERY_PARAMETER), null, SWT.NONE)));
 	}
 
 	/**
 	 * Creates a rule matching the query's return type.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rules.
 	 */
-	private IRule computeReturnTypeRule(AcceleoColorManager manager) {
-		return new ReturnTypeRule(new Token(new TextAttribute(manager.getColor(AcceleoColor.QUERY_RETURN),
-				null, SWT.NONE)));
+	private IRule computeReturnTypeRule() {
+		return new ReturnTypeRule(new Token(new TextAttribute(AcceleoColorManager
+				.getColor(AcceleoColor.QUERY_RETURN), null, SWT.NONE)));
 	}
 
 	/**
 	 * Computes a rule to match all OCL keywords in our query.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rules.
 	 */
-	private List<IRule> computeOCLKeywordRules(AcceleoColorManager manager) {
+	private List<IRule> computeOCLKeywordRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		for (String keyword : AcceleoOCLReflection.getReservedKeywords()) {
-			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(AcceleoColorManager
 					.getColor(AcceleoColor.OCL_KEYWORD), null, SWT.BOLD))));
 		}
 

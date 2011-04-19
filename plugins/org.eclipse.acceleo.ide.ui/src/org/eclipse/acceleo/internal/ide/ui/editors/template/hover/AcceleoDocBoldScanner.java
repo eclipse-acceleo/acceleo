@@ -25,7 +25,6 @@ import org.eclipse.swt.graphics.Color;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public class AcceleoDocBoldScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * The default bold character.
 	 */
@@ -43,12 +42,9 @@ public class AcceleoDocBoldScanner extends AbstractAcceleoScanner {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoDocBoldScanner(AcceleoColorManager manager) {
-		final Color black = manager.getColor(AcceleoColor.BLACK);
+	public AcceleoDocBoldScanner() {
+		final Color black = AcceleoColorManager.getColor(AcceleoColor.BLACK);
 		final IToken boldToken = new Token(new TextAttribute(black, null, SWT.BOLD));
 
 		// IRule[] rules = new IRule[3];
@@ -69,5 +65,4 @@ public class AcceleoDocBoldScanner extends AbstractAcceleoScanner {
 	public String getConfiguredContentType() {
 		return AcceleoDocPartitionScanner.BOLD;
 	}
-
 }

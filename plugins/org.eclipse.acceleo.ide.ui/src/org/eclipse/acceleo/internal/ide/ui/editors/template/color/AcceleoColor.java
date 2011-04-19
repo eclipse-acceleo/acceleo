@@ -28,9 +28,6 @@ public enum AcceleoColor {
 	/** This will be used wherever we need the default "template-red" color. No associated preference. */
 	RED(new RGB(192, 0, 0)),
 
-	/** Color constant for Acceleo Blocks. */
-	BLOCK("org.eclipse.acceleo.block.color", new RGB(80, 80, 255)), //$NON-NLS-1$
-
 	/** Color constant for Acceleo Comments. */
 	COMMENT("org.eclipse.acceleo.comment.color", new RGB(63, 127, 95)), //$NON-NLS-1$
 
@@ -56,43 +53,43 @@ public enum AcceleoColor {
 	MACRO("org.eclipse.acceleo.macro.color", new RGB(192, 0, 0)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Module names. */
-	MODULE_NAME("org.eclipse.acceleo.module.name.color", new RGB(80, 80, 255)), //$NON-NLS-1$
+	MODULE_NAME("org.eclipse.acceleo.module.name.color", new RGB(0, 102, 255)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo OCL expressions (iteration, before, after...). */
 	OCL_EXPRESSION("org.eclipse.acceleo.ocl.expression.color", new RGB(80, 80, 255)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo OCL keywords (iteration, before, after...). */
-	OCL_KEYWORD("org.eclipse.acceleo.ocl.keyword.color", new RGB(80, 80, 255)), //$NON-NLS-1$
+	OCL_KEYWORD("org.eclipse.acceleo.ocl.keyword.color", new RGB(60, 60, 205)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Protected Areas. */
 	PROTECTED_AREA("org.eclipse.acceleo.protected.color", new RGB(130, 160, 190)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Queries. */
-	QUERY("org.eclipse.acceleo.query.color", new RGB(127, 0, 85)), //$NON-NLS-1$
+	QUERY("org.eclipse.acceleo.query.color", new RGB(25, 25, 112)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Query names. */
-	QUERY_NAME("org.eclipse.acceleo.query.name.color", new RGB(127, 0, 85)), //$NON-NLS-1$
+	QUERY_NAME("org.eclipse.acceleo.query.name.color", new RGB(25, 25, 112)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Queries' parameters. */
-	QUERY_PARAMETER("org.eclipse.acceleo.query.parameter.color", new RGB(127, 0, 85)), //$NON-NLS-1$
+	QUERY_PARAMETER("org.eclipse.acceleo.query.parameter.color", new RGB(138, 43, 226)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Query return types. */
-	QUERY_RETURN("org.eclipse.acceleo.query.return.color", new RGB(127, 0, 85)), //$NON-NLS-1$
+	QUERY_RETURN("org.eclipse.acceleo.query.return.color", new RGB(60, 0, 200)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Templates. */
-	TEMPLATE("org.eclipse.acceleo.template.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+	TEMPLATE("org.eclipse.acceleo.template.color", new RGB(0, 0, 139)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Template names. */
-	TEMPLATE_NAME("org.eclipse.acceleo.template.name.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+	TEMPLATE_NAME("org.eclipse.acceleo.template.name.color", new RGB(0, 0, 139)), //$NON-NLS-1$
 
 	/** Color constant for OCL expressions located in template signatures. */
-	TEMPLATE_OCL_EXPRESSION("org.eclipse.acceleo.template.ocl.expression.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+	TEMPLATE_OCL_EXPRESSION("org.eclipse.acceleo.template.ocl.expression.color", new RGB(80, 80, 255)), //$NON-NLS-1$
 
 	/** Color constant for OCL keywords located in template signatures. */
-	TEMPLATE_OCL_KEYWORD("org.eclipse.acceleo.template.ocl.keyword.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+	TEMPLATE_OCL_KEYWORD("org.eclipse.acceleo.template.ocl.keyword.color", new RGB(60, 60, 205)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo Templates' parameters. */
-	TEMPLATE_PARAMETER("org.eclipse.acceleo.template.parameter.color", new RGB(192, 0, 0)), //$NON-NLS-1$
+	TEMPLATE_PARAMETER("org.eclipse.acceleo.template.parameter.color", new RGB(138, 43, 226)), //$NON-NLS-1$
 
 	/** Color constant for Acceleo variable declarations. */
 	VARIABLE("org.eclipse.acceleo.variable.color", new RGB(80, 80, 255)); //$NON-NLS-1$

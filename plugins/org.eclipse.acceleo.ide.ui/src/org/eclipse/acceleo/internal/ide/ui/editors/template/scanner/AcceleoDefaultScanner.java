@@ -24,18 +24,14 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoDefaultScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoDefaultScanner(AcceleoColorManager manager) {
+	public AcceleoDefaultScanner() {
 		IRule[] rules = new IRule[1];
 		rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.DEFAULT))));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.DEFAULT))));
 	}
 
 	/**
@@ -47,5 +43,4 @@ public class AcceleoDefaultScanner extends AbstractAcceleoScanner {
 	public String getConfiguredContentType() {
 		return IDocument.DEFAULT_CONTENT_TYPE;
 	}
-
 }

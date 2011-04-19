@@ -14,9 +14,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -70,13 +75,14 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		super.stop(context);
 		Iterator<Image> imageIterator = imageMap.values().iterator();
 		while (imageIterator.hasNext()) {
 			Image image = imageIterator.next();
 			image.dispose();
 		}
 		imageMap.clear();
+		AcceleoColorManager.dispose();
+		super.stop(context);
 	}
 
 	/**
@@ -86,6 +92,36 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 */
 	public static AcceleoUIActivator getDefault() {
 		return plugin;
+	}
+
+	/**
+	 * Returns the value of the given preference in the Acceleo UI.
+	 * 
+	 * @param key
+	 *            Key of the preference we seek to retrieve.
+	 * @return The value of the given preference.
+	 */
+	public static String getPreferenceValue(String key) {
+		IEclipsePreferences defaultScope = new DefaultScope().getNode(PLUGIN_ID);
+		IEclipsePreferences instanceScope = new InstanceScope().getNode(PLUGIN_ID);
+		IEclipsePreferences[] lookupOrder = new IEclipsePreferences[] {instanceScope, defaultScope, };
+
+		return getPreferenceValue(key, lookupOrder);
+	}
+
+	/**
+	 * Returns the value of the given preference in the Acceleo UI.
+	 * 
+	 * @param key
+	 *            Key of the preference we seek to retrieve.
+	 * @param lookupOrder
+	 *            Order in which to look for preferences.
+	 * @return The value of the given preference.
+	 */
+	public static String getPreferenceValue(String key, IEclipsePreferences[] lookupOrder) {
+		String preferenceValue = Platform.getPreferencesService().get(key, null, lookupOrder);
+
+		return preferenceValue;
 	}
 
 	/**

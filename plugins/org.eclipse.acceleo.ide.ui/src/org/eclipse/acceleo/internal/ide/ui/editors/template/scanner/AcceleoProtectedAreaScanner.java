@@ -27,23 +27,19 @@ import org.eclipse.swt.SWT;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoProtectedAreaScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoProtectedAreaScanner(AcceleoColorManager manager) {
+	public AcceleoProtectedAreaScanner() {
 		IRule[] rules = new IRule[2];
 
 		rules[0] = new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.LITERAL), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL), null, SWT.BOLD)));
 		rules[1] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.PROTECTED_AREA),
-				null, SWT.BOLD)));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager
+				.getColor(AcceleoColor.PROTECTED_AREA), null, SWT.BOLD)));
 	}
 
 	/**
@@ -55,5 +51,4 @@ public class AcceleoProtectedAreaScanner extends AbstractAcceleoScanner {
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_PROTECTED_AREA;
 	}
-
 }

@@ -1113,5 +1113,23 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.wizards.module.example.JavaServicesWrapperInitializationStrategy">
        </initializationStrategy>
     </extension>
+    <extension
+          point="org.eclipse.ui.preferencePages">
+       <page
+       		 class="org.eclipse.acceleo.internal.ide.ui.preferences.AcceleoPreferences"
+       		 id="org.eclipse.acceleo.ide.ui.acceleoPreferences"
+       		 name="%acceleoPreferences"/>
+       <page
+             class="org.eclipse.acceleo.internal.ide.ui.preferences.AcceleoEditorColoringPreferencePage"
+             id="org.eclipse.acceleo.ide.ui.editorPreferences"
+             category="org.eclipse.acceleo.ide.ui.acceleoPreferences"
+             name="%editorPreferences"/>
+    </extension>
+    <extension
+          point="org.eclipse.core.runtime.preferences">
+       <initializer
+             class="org.eclipse.acceleo.internal.ide.ui.preferences.AcceleoPreferenceInitializer">
+       </initializer>
+    </extension>
 
 </plugin>

@@ -25,23 +25,19 @@ import org.eclipse.swt.SWT;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoCommentScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoCommentScanner(AcceleoColorManager manager) {
+	public AcceleoCommentScanner() {
 		IRule[] rules = new IRule[3];
 		rules[0] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[1] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[2] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.COMMENT))));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT))));
 	}
 
 	/**
@@ -53,5 +49,4 @@ public class AcceleoCommentScanner extends AbstractAcceleoScanner {
 	public String getConfiguredContentType() {
 		return AcceleoPartitionScanner.ACCELEO_COMMENT;
 	}
-
 }

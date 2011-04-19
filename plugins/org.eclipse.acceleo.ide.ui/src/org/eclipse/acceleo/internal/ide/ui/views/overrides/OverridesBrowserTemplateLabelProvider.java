@@ -38,12 +38,6 @@ import org.eclipse.swt.graphics.Image;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelProvider {
-
-	/**
-	 * The color manager.
-	 */
-	private AcceleoColorManager manager = new AcceleoColorManager();
-
 	/**
 	 * Construct an instance that wraps this factory.
 	 * 
@@ -62,20 +56,9 @@ public class OverridesBrowserTemplateLabelProvider extends AdapterFactoryLabelPr
 	@Override
 	public Color getBackground(Object object) {
 		if (object instanceof ModuleProjectHandler && !((ModuleProjectHandler)object).isResolved()) {
-			return manager.getColor(AcceleoColor.RED);
+			return AcceleoColorManager.getColor(AcceleoColor.RED);
 		}
 		return super.getBackground(object);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider#dispose()
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-		manager.dispose();
 	}
 
 	/**

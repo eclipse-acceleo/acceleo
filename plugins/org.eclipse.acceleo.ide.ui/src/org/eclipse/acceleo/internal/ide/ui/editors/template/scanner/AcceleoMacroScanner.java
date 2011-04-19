@@ -30,24 +30,20 @@ import org.eclipse.swt.SWT;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoMacroScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoMacroScanner(AcceleoColorManager manager) {
+	public AcceleoMacroScanner() {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.LITERAL)))));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL)))));
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
-		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN, manager));
-		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END, manager));
-		rules.add(computeKeywordRule(IAcceleoConstants.MACRO, manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN));
+		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END));
+		rules.add(computeKeywordRule(IAcceleoConstants.MACRO));
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.MACRO))));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.MACRO))));
 	}
 
 	/**
@@ -55,12 +51,10 @@ public class AcceleoMacroScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @param keyword
 	 *            is the keyword
-	 * @param manager
-	 *            is the color manager
 	 * @return the new keyword rule
 	 */
-	private IRule computeKeywordRule(String keyword, AcceleoColorManager manager) {
-		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+	private IRule computeKeywordRule(String keyword) {
+		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.MACRO), null, SWT.BOLD)));
 	}
 
@@ -69,12 +63,10 @@ public class AcceleoMacroScanner extends AbstractAcceleoScanner {
 	 * 
 	 * @param delimiter
 	 *            is the delimiter text
-	 * @param manager
-	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String delimiter, AcceleoColorManager manager) {
-		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(manager
+	private IRule computeDelimiterRule(String delimiter) {
+		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.MACRO), null, SWT.BOLD)));
 	}
 

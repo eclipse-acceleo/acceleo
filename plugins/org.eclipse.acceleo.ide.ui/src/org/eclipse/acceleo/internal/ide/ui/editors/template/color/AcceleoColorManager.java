@@ -15,34 +15,52 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * The color manager for the template editor. It is often used for syntax highlighting.
+ * This will manage the colors needed by the various parts of the Acceleo UI : syntax highlighting, Overrides
+ * view...
+ * <p>
+ * This class is a singleton which will be cleared when the UI plugin is stopped.
+ * </p>
  * 
- * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoColorManager {
-	/** References the Acceleo UI preference store. */
-	private IPreferenceStore preferenceStore = AcceleoUIActivator.getDefault().getPreferenceStore();
+public final class AcceleoColorManager {
+	/** Keeps track of the colors we created. */
+	private static Map<RGB, Color> colors = new HashMap<RGB, Color>(10);
+
+	/** Utility classes don't need to be instantiated. */
+	private AcceleoColorManager() {
+		// Hides default constructor.
+	}
 
 	/**
-	 * Created colors.
+	 * Disposes the cached colors. This will be called from plugin.stop and shouldn't be called manually.
 	 */
-	private Map<RGB, Color> fColorTable = new HashMap<RGB, Color>(10);
-
-	/**
-	 * It disposes color manager.
-	 */
-	public void dispose() {
-		Iterator<Color> e = fColorTable.values().iterator();
+	public static void dispose() {
+		Iterator<Color> e = colors.values().iterator();
 		while (e.hasNext()) {
 			e.next().dispose();
 		}
+		colors.clear();
+	}
+
+	/**
+	 * Retrieves the SWT Color corresponding to the given Acceleo color constant.
+	 * 
+	 * @param color
+	 *            The color we are to retrieve.
+	 * @param preferenceLookupOrder
+	 *            Order in which to look for plugin preferences.
+	 * @return The SWT Color corresponding to the given Acceleo constant.
+	 */
+	public static Color getColor(AcceleoColor color, IEclipsePreferences[] preferenceLookupOrder) {
+		return getColor(color.getPreferenceKey(), color.getDefault(), preferenceLookupOrder);
 	}
 
 	/**
@@ -52,8 +70,8 @@ public class AcceleoColorManager {
 	 *            The color we are to retrieve.
 	 * @return The SWT Color corresponding to the given Acceleo constant.
 	 */
-	public Color getColor(AcceleoColor color) {
-		return getColor(color.getPreferenceKey(), color.getDefault());
+	public static Color getColor(AcceleoColor color) {
+		return getColor(color, null);
 	}
 
 	/**
@@ -63,10 +81,12 @@ public class AcceleoColorManager {
 	 *            Key of the color we seek.
 	 * @param defaultValue
 	 *            Default value that is to be returned if there is no color associated to this key.
+	 * @param preferenceLookupOrder
+	 *            Order in which to look for plugin preferences.
 	 * @return The retrieved color.
 	 */
-	private Color getColor(String key, RGB defaultValue) {
-		RGB rgbValue = getPreference(key, defaultValue);
+	private static Color getColor(String key, RGB defaultValue, IEclipsePreferences[] preferenceLookupOrder) {
+		RGB rgbValue = getPreference(key, defaultValue, preferenceLookupOrder);
 		return getColor(rgbValue);
 	}
 
@@ -77,27 +97,32 @@ public class AcceleoColorManager {
 	 *            Key of the color we need to retrieve.
 	 * @param defaultValue
 	 *            Default value that is to be returned if there is no color associated to this key.
+	 * @param preferenceLookupOrder
+	 *            Order in which to look for plugin preferences.
 	 * @return The retrieved preference, or the default value if no preference is associated to this key.
 	 */
-	private RGB getPreference(String key, RGB defaultValue) {
-		if (key.length() > 0 && preferenceStore.contains(key)) {
-			return PreferenceConverter.getColor(preferenceStore, key);
+	private static RGB getPreference(String key, RGB defaultValue, IEclipsePreferences[] preferenceLookupOrder) {
+		if (key.length() > 0) {
+			String rgbValue = AcceleoUIActivator.getPreferenceValue(key, preferenceLookupOrder);
+			if (rgbValue != null) {
+				return StringConverter.asRGB(rgbValue);
+			}
 		}
 		return defaultValue;
 	}
 
 	/**
-	 * Gets the color for the given description (Red, Green, Blue).
+	 * Gets the color for the given RGB description. It will be created and cached if not already in cache.
 	 * 
 	 * @param rgb
-	 *            is the description of color
-	 * @return the color
+	 *            RGB description of the color we seek.
+	 * @return The created color.
 	 */
-	private Color getColor(RGB rgb) {
-		Color color = fColorTable.get(rgb);
+	private static Color getColor(RGB rgb) {
+		Color color = colors.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
-			fColorTable.put(rgb, color);
+			colors.put(rgb, color);
 		}
 		return color;
 	}

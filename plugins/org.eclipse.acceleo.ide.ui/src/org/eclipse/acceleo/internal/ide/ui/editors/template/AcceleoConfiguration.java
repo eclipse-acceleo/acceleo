@@ -65,7 +65,6 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoConfiguration extends TextSourceViewerConfiguration {
-
 	/**
 	 * The delay after which the content assistant is automatically invoked if the cursor is behind an auto
 	 * activation character.
@@ -83,6 +82,16 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	private AbstractAcceleoScanner[] scanners;
 
 	/**
+	 * Instantiates our configuration independent of an {@link AcceleoEditor}.
+	 * 
+	 * @param preferenceStore
+	 *            The preference store, can be read-only.
+	 */
+	public AcceleoConfiguration(IPreferenceStore preferenceStore) {
+		super(preferenceStore);
+	}
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param editor
@@ -91,8 +100,8 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 *            The preference store, can be read-only.
 	 */
 	public AcceleoConfiguration(AcceleoEditor editor, IPreferenceStore preferenceStore) {
+		this(preferenceStore);
 		this.editor = editor;
-		this.fPreferenceStore = preferenceStore;
 	}
 
 	/**
@@ -103,17 +112,17 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	protected AbstractAcceleoScanner[] getScanners() {
 		if (scanners == null) {
 			List<AbstractAcceleoScanner> list = new ArrayList<AbstractAcceleoScanner>();
-			list.add(new AcceleoTemplateScanner(editor.getColorManager()));
-			list.add(new AcceleoQueryScanner(editor.getColorManager()));
-			list.add(new AcceleoMacroScanner(editor.getColorManager()));
-			list.add(new AcceleoForScanner(editor.getColorManager()));
-			list.add(new AcceleoIfScanner(editor.getColorManager()));
-			list.add(new AcceleoLetScanner(editor.getColorManager()));
-			list.add(new AcceleoProtectedAreaScanner(editor.getColorManager()));
-			list.add(new AcceleoCommentScanner(editor.getColorManager()));
-			list.add(new AcceleoDocumentationScanner(editor.getColorManager()));
-			list.add(new AcceleoBlockScanner(editor.getColorManager()));
-			list.add(new AcceleoDefaultScanner(editor.getColorManager()));
+			list.add(new AcceleoTemplateScanner());
+			list.add(new AcceleoQueryScanner());
+			list.add(new AcceleoMacroScanner());
+			list.add(new AcceleoForScanner());
+			list.add(new AcceleoIfScanner());
+			list.add(new AcceleoLetScanner());
+			list.add(new AcceleoProtectedAreaScanner());
+			list.add(new AcceleoCommentScanner());
+			list.add(new AcceleoDocumentationScanner());
+			list.add(new AcceleoBlockScanner());
+			list.add(new AcceleoDefaultScanner());
 			scanners = list.toArray(new AbstractAcceleoScanner[list.size()]);
 		}
 		return scanners;
@@ -147,11 +156,13 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 			@Override
 			public void doubleClicked(ITextViewer part) {
 				super.doubleClicked(part);
-				Point point = part.getSelectedRange();
-				if (point != null) {
-					int posBegin = point.x;
-					int posEnd = point.y;
-					editor.updateSelection(posBegin, posEnd);
+				if (editor != null) {
+					Point point = part.getSelectedRange();
+					if (point != null) {
+						int posBegin = point.x;
+						int posEnd = point.y;
+						editor.updateSelection(posBegin, posEnd);
+					}
 				}
 			}
 
@@ -192,7 +203,7 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
 		assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-		IContentAssistProcessor processor = new AcceleoCompletionProcessor(editor.getContent());
+		IContentAssistProcessor processor = createContentAssistProcessor(sourceViewer);
 		AbstractAcceleoScanner[] acceleoScanners = getScanners();
 		for (int i = 0; i < acceleoScanners.length; i++) {
 			AbstractAcceleoScanner scanner = acceleoScanners[i];
@@ -206,6 +217,26 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
 		assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 		return assistant;
+	}
+
+	/**
+	 * This will be in charge of creating the actual completion processor called out by the content assistant.
+	 * 
+	 * @param sourceViewer
+	 *            The viewer on which is displayed the expressions for which we need content assist.
+	 * @return The completion processor that is to be used.
+	 */
+	public IContentAssistProcessor createContentAssistProcessor(ISourceViewer sourceViewer) {
+		IContentAssistProcessor processor;
+		if (editor != null) {
+			processor = new AcceleoCompletionProcessor(editor.getContent());
+		} else {
+			// Initialize a new source content
+			AcceleoSourceContent content = new AcceleoSourceContent();
+			content.init(new StringBuffer(sourceViewer.getDocument().get()));
+			processor = new AcceleoCompletionProcessor(content);
+		}
+		return processor;
 	}
 
 	/**
@@ -241,7 +272,10 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	@Override
 	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
-		return new AcceleoHover(editor);
+		if (editor != null) {
+			return new AcceleoHover(editor);
+		}
+		return super.getAnnotationHover(sourceViewer);
 	}
 
 	/**
@@ -252,7 +286,10 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	@Override
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-		return new AcceleoTextHover(editor);
+		if (editor != null) {
+			return new AcceleoTextHover(editor);
+		}
+		return super.getTextHover(sourceViewer, contentType);
 	}
 
 	/**
@@ -262,7 +299,10 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	@Override
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
-		return new MonoReconciler(new AcceleoTemplateReconcilingStrategy(editor), false);
+		if (editor != null) {
+			return new MonoReconciler(new AcceleoTemplateReconcilingStrategy(editor), false);
+		}
+		return super.getReconciler(sourceViewer);
 	}
 
 	/**
@@ -273,9 +313,12 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	@SuppressWarnings({"rawtypes", "unchecked" })
 	@Override
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
-		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
-		targets.put("org.eclipse.acceleo.ide.ui.AcceleoTemplateSource", editor); //$NON-NLS-1$
-		return targets;
+		if (editor != null) {
+			Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+			targets.put("org.eclipse.acceleo.ide.ui.AcceleoTemplateSource", editor); //$NON-NLS-1$
+			return targets;
+		}
+		return super.getHyperlinkDetectorTargets(sourceViewer);
 	}
 
 	/**

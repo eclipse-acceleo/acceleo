@@ -25,14 +25,10 @@ import org.eclipse.swt.SWT;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public class AcceleoDocumentationScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * The constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoDocumentationScanner(AcceleoColorManager manager) {
+	public AcceleoDocumentationScanner() {
 		// indices declaration, viva checkstyle
 		final int seven = 7;
 		final int eight = 8;
@@ -40,25 +36,25 @@ public class AcceleoDocumentationScanner extends AbstractAcceleoScanner {
 
 		IRule[] rules = new IRule[nine];
 		rules[0] = new KeywordRule(IAcceleoConstants.TAG_AUTHOR, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[1] = new KeywordRule(IAcceleoConstants.TAG_DEPRECATED, true, false, new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[2] = new KeywordRule(IAcceleoConstants.TAG_INHERITDOC, true, false, new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[3] = new KeywordRule(IAcceleoConstants.TAG_PARAM, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[4] = new KeywordRule(IAcceleoConstants.TAG_SINCE, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[5] = new KeywordRule(IAcceleoConstants.TAG_VERSION, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[6] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[seven] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		rules[eight] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.COMMENT))));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT))));
 	}
 
 	/**

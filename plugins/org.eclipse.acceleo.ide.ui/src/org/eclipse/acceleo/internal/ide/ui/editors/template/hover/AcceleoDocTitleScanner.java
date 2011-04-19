@@ -23,7 +23,6 @@ import org.eclipse.swt.graphics.Color;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 public class AcceleoDocTitleScanner extends AbstractAcceleoScanner {
-
 	/**
 	 * The h1 start sequence.
 	 */
@@ -31,12 +30,9 @@ public class AcceleoDocTitleScanner extends AbstractAcceleoScanner {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoDocTitleScanner(AcceleoColorManager manager) {
-		final Color green = manager.getColor(AcceleoColor.BLACK);
+	public AcceleoDocTitleScanner() {
+		final Color green = AcceleoColorManager.getColor(AcceleoColor.BLACK);
 
 		// IRule[] rules = new IRule[2];
 		// rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
