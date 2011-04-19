@@ -42,6 +42,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -191,6 +195,9 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 */
 	private Image warningTitleImage;
 
+	/** This will allow us to react to preference changes. */
+	private IPreferenceChangeListener preferenceListener;
+
 	/**
 	 * The original title image, this image will be shown in the editor's tab.
 	 */
@@ -332,7 +339,27 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * @return the source viewer configuration
 	 */
 	protected SourceViewerConfiguration createSourceViewerConfiguration() {
-		return new AcceleoConfiguration(this, getPreferenceStore());
+		final AcceleoConfiguration configuration = new AcceleoConfiguration(this, getPreferenceStore());
+		final IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
+
+		preferenceListener = new IPreferenceChangeListener() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener#preferenceChange(org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent)
+			 */
+			public void preferenceChange(PreferenceChangeEvent event) {
+				configuration.adaptToPreferenceChanges(event);
+				ISourceViewer viewer = getSourceViewer();
+				if (viewer != null) {
+					getSourceViewer().invalidateTextPresentation();
+				}
+			}
+		};
+
+		instanceScope.addPreferenceChangeListener(preferenceListener);
+
+		return configuration;
 	}
 
 	/**
@@ -366,6 +393,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		if (this.occurrencesFinderJob != null) {
 			this.occurrencesFinderJob.cancel();
 		}
+
+		final IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
+		instanceScope.removePreferenceChangeListener(preferenceListener);
+
 		if (content != null && content.getFile() != null && content.getFile().exists()) {
 			try {
 				IMarker[] markers = content.getFile().findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
