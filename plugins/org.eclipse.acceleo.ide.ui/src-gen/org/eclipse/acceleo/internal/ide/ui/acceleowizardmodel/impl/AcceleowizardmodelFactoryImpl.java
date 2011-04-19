@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelFactoryImpl.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelFactoryImpl.java,v 1.3 2011/04/19 13:28:36 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -67,6 +67,8 @@ public class AcceleowizardmodelFactoryImpl extends EFactoryImpl implements Accel
 			case AcceleowizardmodelPackage.ACCELEO_MODULE_ELEMENT: return createAcceleoModuleElement();
 			case AcceleowizardmodelPackage.ACCELEO_MAIN_CLASS: return createAcceleoMainClass();
 			case AcceleowizardmodelPackage.ACCELEO_PACKAGE: return createAcceleoPackage();
+			case AcceleowizardmodelPackage.ACCELEO_POM: return createAcceleoPom();
+			case AcceleowizardmodelPackage.ACCELEO_POM_DEPENDENCY: return createAcceleoPomDependency();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -160,6 +162,26 @@ public class AcceleowizardmodelFactoryImpl extends EFactoryImpl implements Accel
 	public AcceleoPackage createAcceleoPackage() {
 		AcceleoPackageImpl acceleoPackage = new AcceleoPackageImpl();
 		return acceleoPackage;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AcceleoPom createAcceleoPom() {
+		AcceleoPomImpl acceleoPom = new AcceleoPomImpl();
+		return acceleoPom;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AcceleoPomDependency createAcceleoPomDependency() {
+		AcceleoPomDependencyImpl acceleoPomDependency = new AcceleoPomDependencyImpl();
+		return acceleoPomDependency;
 	}
 
 	/**

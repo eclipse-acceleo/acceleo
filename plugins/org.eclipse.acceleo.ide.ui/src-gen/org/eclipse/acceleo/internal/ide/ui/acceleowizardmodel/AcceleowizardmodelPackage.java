@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackage.java,v 1.4 2011/04/12 15:01:49 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackage.java,v 1.5 2011/04/19 13:28:36 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;
 
@@ -486,13 +486,105 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_PACKAGE_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomImpl <em>Acceleo Pom</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomImpl
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPom()
+	 * @generated
+	 */
+	int ACCELEO_POM = 6;
+
+	/**
+	 * The feature id for the '<em><b>Artifact Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM__ARTIFACT_ID = 0;
+
+	/**
+	 * The feature id for the '<em><b>Dependencies</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM__DEPENDENCIES = 1;
+
+	/**
+	 * The number of structural features of the '<em>Acceleo Pom</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_FEATURE_COUNT = 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomDependencyImpl <em>Acceleo Pom Dependency</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomDependencyImpl
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPomDependency()
+	 * @generated
+	 */
+	int ACCELEO_POM_DEPENDENCY = 7;
+
+	/**
+	 * The feature id for the '<em><b>Group Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_DEPENDENCY__GROUP_ID = 0;
+
+	/**
+	 * The feature id for the '<em><b>Artifact Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_DEPENDENCY__ARTIFACT_ID = 1;
+
+	/**
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_DEPENDENCY__VERSION = 2;
+
+	/**
+	 * The feature id for the '<em><b>System Path</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_DEPENDENCY__SYSTEM_PATH = 3;
+
+	/**
+	 * The number of structural features of the '<em>Acceleo Pom Dependency</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_POM_DEPENDENCY_FEATURE_COUNT = 4;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind <em>Module Element Kind</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind
 	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getModuleElementKind()
 	 * @generated
 	 */
-	int MODULE_ELEMENT_KIND = 6;
+	int MODULE_ELEMENT_KIND = 8;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject <em>Acceleo Project</em>}'.
@@ -903,6 +995,92 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EAttribute getAcceleoPackage_Path();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom <em>Acceleo Pom</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Acceleo Pom</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom
+	 * @generated
+	 */
+	EClass getAcceleoPom();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom#getArtifactId <em>Artifact Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Artifact Id</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom#getArtifactId()
+	 * @see #getAcceleoPom()
+	 * @generated
+	 */
+	EAttribute getAcceleoPom_ArtifactId();
+
+	/**
+	 * Returns the meta object for the reference list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom#getDependencies <em>Dependencies</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Dependencies</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom#getDependencies()
+	 * @see #getAcceleoPom()
+	 * @generated
+	 */
+	EReference getAcceleoPom_Dependencies();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency <em>Acceleo Pom Dependency</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Acceleo Pom Dependency</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency
+	 * @generated
+	 */
+	EClass getAcceleoPomDependency();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getGroupId <em>Group Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Group Id</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getGroupId()
+	 * @see #getAcceleoPomDependency()
+	 * @generated
+	 */
+	EAttribute getAcceleoPomDependency_GroupId();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getArtifactId <em>Artifact Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Artifact Id</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getArtifactId()
+	 * @see #getAcceleoPomDependency()
+	 * @generated
+	 */
+	EAttribute getAcceleoPomDependency_ArtifactId();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getVersion <em>Version</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Version</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getVersion()
+	 * @see #getAcceleoPomDependency()
+	 * @generated
+	 */
+	EAttribute getAcceleoPomDependency_Version();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getSystemPath <em>System Path</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>System Path</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency#getSystemPath()
+	 * @see #getAcceleoPomDependency()
+	 * @generated
+	 */
+	EAttribute getAcceleoPomDependency_SystemPath();
+
+	/**
 	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass#getResolvedClassPath <em>Resolved Class Path</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Resolved Class Path</em>'.
@@ -1273,6 +1451,74 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACCELEO_PACKAGE__PATH = eINSTANCE.getAcceleoPackage_Path();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomImpl <em>Acceleo Pom</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomImpl
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPom()
+		 * @generated
+		 */
+		EClass ACCELEO_POM = eINSTANCE.getAcceleoPom();
+
+		/**
+		 * The meta object literal for the '<em><b>Artifact Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_POM__ARTIFACT_ID = eINSTANCE.getAcceleoPom_ArtifactId();
+
+		/**
+		 * The meta object literal for the '<em><b>Dependencies</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACCELEO_POM__DEPENDENCIES = eINSTANCE.getAcceleoPom_Dependencies();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomDependencyImpl <em>Acceleo Pom Dependency</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoPomDependencyImpl
+		 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleowizardmodelPackageImpl#getAcceleoPomDependency()
+		 * @generated
+		 */
+		EClass ACCELEO_POM_DEPENDENCY = eINSTANCE.getAcceleoPomDependency();
+
+		/**
+		 * The meta object literal for the '<em><b>Group Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_POM_DEPENDENCY__GROUP_ID = eINSTANCE.getAcceleoPomDependency_GroupId();
+
+		/**
+		 * The meta object literal for the '<em><b>Artifact Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_POM_DEPENDENCY__ARTIFACT_ID = eINSTANCE.getAcceleoPomDependency_ArtifactId();
+
+		/**
+		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_POM_DEPENDENCY__VERSION = eINSTANCE.getAcceleoPomDependency_Version();
+
+		/**
+		 * The meta object literal for the '<em><b>System Path</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_POM_DEPENDENCY__SYSTEM_PATH = eINSTANCE.getAcceleoPomDependency_SystemPath();
 
 		/**
 		 * The meta object literal for the '<em><b>Resolved Class Path</b></em>' attribute list feature. <!--

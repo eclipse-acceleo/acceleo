@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelAdapterFactory.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelAdapterFactory.java,v 1.3 2011/04/19 13:28:35 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.util;
 
@@ -94,6 +94,14 @@ public class AcceleowizardmodelAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseAcceleoPackage(AcceleoPackage object) {
 				return createAcceleoPackageAdapter();
+			}
+			@Override
+			public Adapter caseAcceleoPom(AcceleoPom object) {
+				return createAcceleoPomAdapter();
+			}
+			@Override
+			public Adapter caseAcceleoPomDependency(AcceleoPomDependency object) {
+				return createAcceleoPomDependencyAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -196,6 +204,34 @@ public class AcceleowizardmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAcceleoPackageAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom <em>Acceleo Pom</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom
+	 * @generated
+	 */
+	public Adapter createAcceleoPomAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency <em>Acceleo Pom Dependency</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency
+	 * @generated
+	 */
+	public Adapter createAcceleoPomDependencyAdapter() {
 		return null;
 	}
 

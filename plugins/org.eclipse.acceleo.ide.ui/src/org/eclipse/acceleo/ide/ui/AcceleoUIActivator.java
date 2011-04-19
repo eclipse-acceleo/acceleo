@@ -100,6 +100,7 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 * @param key
 	 *            Key of the preference we seek to retrieve.
 	 * @return The value of the given preference.
+	 * @since 3.1
 	 */
 	public static String getPreferenceValue(String key) {
 		IEclipsePreferences defaultScope = new DefaultScope().getNode(PLUGIN_ID);
@@ -117,6 +118,7 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 * @param lookupOrder
 	 *            Order in which to look for preferences.
 	 * @return The value of the given preference.
+	 * @since 3.1
 	 */
 	public static String getPreferenceValue(String key, IEclipsePreferences[] lookupOrder) {
 		String preferenceValue = Platform.getPreferencesService().get(key, null, lookupOrder);

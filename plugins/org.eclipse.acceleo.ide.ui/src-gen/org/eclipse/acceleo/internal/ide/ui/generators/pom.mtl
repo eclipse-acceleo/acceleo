@@ -15,170 +15,79 @@
 
 [**
  * Generates the pom.xml file.
- * @param aAcceleoMainClass The Acceleo main class
+ * @param anAcceleoPom The Acceleo Pom
  */]
-[template public genPom(anAcceleoMainClass : AcceleoMainClass)]
+[template public genPom(anAcceleoPom : AcceleoPom)]
 [file ('pom.xml', false, 'UTF-8')]
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-   Copyright (C) 2009, Igor Fedorenko <igor@ifedorenko.com>
-   Copyright (C) 2010, Chris Aniszczyk <caniszczyk@gmail.com>
-    
-   All rights reserved. This program and the accompanying materials
-   are made available under the terms of the Eclipse Public License v1.0
-   which accompanies this distribution, and is available at
-   http://www.eclipse.org/legal/epl-v10.html
--->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
-
-  <groupId>acceleo_generator</groupId>
-  <artifactId>[anAcceleoMainClass.projectName/]</artifactId>
-  <version>1.0.0.qualifier</version>
-  <packaging>pom</packaging>
-
-  <name>Acceleo Generator</name>
-  <licenses>
-    <license>
-      <name>insert licence name</name>
-      <comments>
-            insert licence here.
-      </comments>
-    </license>
-  </licenses>
-
-  <properties>
-    <acceleo-version>3.1.0-SNAPSHOT</acceleo-version>
-    <tycho-version>0.11.0</tycho-version>
-    <acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/nightly/3.1</acceleo-site>
-  </properties>
-
-  <profiles>
-    <profile>
-      <id>platform-indigo</id>
-      <activation>
-        <property>
-          <name>platform-version-name</name>
-          <value>indigo</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
-        <platform-version>['['/]3.7,3.8)</platform-version>
-      </properties>
-    </profile>
-  </profiles>
-
-  <repositories>
-    <repository>
-      <id>acceleo</id>
-      <layout>p2</layout>
-      <url>${acceleo-site}</url>
-    </repository>
-    <repository>
-      <id>eclipse-platform</id>
-      <layout>p2</layout>
-      <url>${eclipse-site}</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus.snapshots</id>
-      <url>http://snapshots.repository.codehaus.org/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.sonatype.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <resolver>p2</resolver>
-          <pomDependencies>consider</pomDependencies>
-        </configuration>
-      </plugin>
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.sonatype.tycho</groupId>
-          <artifactId>maven-osgi-compiler-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <!-- TODO remove workaround when
-             https://issues.sonatype.org/browse/TYCHO-473
-             is fixed -->
-          <groupId>org.sonatype.tycho</groupId>
-          <artifactId>maven-osgi-source-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <executions>
-            <execution>
-              <id>attach-source</id>
-              <phase>process-classes</phase>
-              <goals>
-                <goal>plugin-source</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.1</version>
-          <configuration>
-            <encoding>ISO-8859-1</encoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <version>2.3.2-SNAPSHOT</version>
-          <configuration>
-            <findbugsXmlOutput>true</findbugsXmlOutput>
-            <failOnError>false</failOnError>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
-  <dependencies>
-  </dependencies>
-
-  <dependencyManagement>
-  </dependencyManagement>
+    <groupId>acceleo</groupId>
+    <artifactId>[anAcceleoPom.artifactId/]</artifactId>
+    <version>1.0.0.SNAPSHOT</version>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>  
+                    <groupId>org.codehaus.mojo</groupId>  
+                    <artifactId>exec-maven-plugin</artifactId>  
+                    <version>1.1.1</version>  
+                    <executions>  
+                        <execution>  
+                            <phase>compile</phase>  
+                            <goals>  
+                                <goal>java</goal>  
+                            </goals>
+                            <configuration>
+                                <!--
+                                    Calls the AcceleoMainCompiler to launch the compilation.
+                                -->
+                                <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
+                                <arguments>  
+                                    <argument>${basedir}/src/</argument>  
+                                    <argument>${basedir}/bin/</argument>
+                                    <argument></argument>
+                                    <argument>true</argument>  
+                                </arguments>  
+                            </configuration>  
+                        </execution>  
+                    </executions>  
+                </plugin>
+                <!--
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <phase>process-test-resources</phase>
+                            <configuration>
+                                <tasks name="generate">
+                                    <ant antfile="${basedir}/buildstandalone.xml" />
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                -->
+            </plugins>
+        </pluginManagement>
+    </build>
+    <dependencies>
+[for (anAcceleoPomDependency : AcceleoPomDependency | anAcceleoPom.dependencies)]
+        <dependency>
+            <groupId>[anAcceleoPomDependency.groupId/]</groupId>
+            <artifactId>[anAcceleoPomDependency.artifactId/]</artifactId>
+            <version>[anAcceleoPomDependency.version/]</version>
+            <scope>system</scope>
+            <systemPath>[anAcceleoPomDependency.systemPath/]</systemPath>
+        </dependency>
+[/for]
+    </dependencies>
 </project>
 [/file]
 [/template]

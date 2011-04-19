@@ -23,6 +23,8 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
@@ -43,6 +45,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -221,7 +224,52 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 										.getName(), })));
 			}
 
-			AcceleoUIGenerator.getDefault().generatePom(acceleoMainClass, getProject());
+			AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
+			acceleoPom.setArtifactId(getProject().getName());
+			EList<AcceleoPomDependency> pomDependencies = acceleoPom.getDependencies();
+
+			entries = project.getResolvedClasspath().iterator();
+			while (entries.hasNext()) {
+				IPath iPath = entries.next();
+				String classpathEntry = null;
+				if (eclipseWorkspace.isPrefixOf(iPath)) {
+					classpathEntry = iPath.toString().substring(eclipseWorkspace.toString().length());
+				} else if (eclipseHome.isPrefixOf(iPath)) {
+					classpathEntry = iPath.toString().substring(eclipseHome.toString().length());
+				}
+
+				if (classpathEntry == null) {
+					continue;
+				}
+
+				AcceleoPomDependency acceleoPomDependency = AcceleowizardmodelFactory.eINSTANCE
+						.createAcceleoPomDependency();
+
+				String artifactId = classpathEntry;
+				if (artifactId.contains("_")) { //$NON-NLS-1$
+					artifactId = artifactId.substring(0, artifactId.indexOf('_'));
+				}
+				if (artifactId.startsWith("plugins/")) { //$NON-NLS-1$
+					artifactId = artifactId.substring("plugins/".length()); //$NON-NLS-1$
+				}
+				acceleoPomDependency.setArtifactId(artifactId);
+				acceleoPomDependency.setGroupId("eclipse"); //$NON-NLS-1$
+
+				String version = classpathEntry;
+				if (version.contains("_") && version.indexOf('_') <= version.length()) { //$NON-NLS-1$
+					version = version.substring(version.indexOf('_') + 1);
+				}
+				if (version.endsWith(".jar")) { //$NON-NLS-1$
+					version = version.substring(0, version.length() - ".jar".length()); //$NON-NLS-1$
+				}
+				acceleoPomDependency.setVersion(version);
+				acceleoPomDependency.setSystemPath("${basedir}/" //$NON-NLS-1$
+						+ AcceleoProject
+								.makeRelativeTo(eclipsePathRelativeToFile, getProject().getLocation())
+								.toString() + '/' + classpathEntry);
+				pomDependencies.add(acceleoPomDependency);
+			}
+			AcceleoUIGenerator.getDefault().generatePom(acceleoPom, getProject());
 		}
 	}
 

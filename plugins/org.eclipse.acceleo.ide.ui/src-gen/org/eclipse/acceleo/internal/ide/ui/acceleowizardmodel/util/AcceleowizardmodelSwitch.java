@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelSwitch.java,v 1.2 2011/04/12 15:01:49 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelSwitch.java,v 1.3 2011/04/19 13:28:35 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.util;
 
@@ -123,6 +123,18 @@ public class AcceleowizardmodelSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleowizardmodelPackage.ACCELEO_POM: {
+				AcceleoPom acceleoPom = (AcceleoPom)theEObject;
+				T result = caseAcceleoPom(acceleoPom);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleowizardmodelPackage.ACCELEO_POM_DEPENDENCY: {
+				AcceleoPomDependency acceleoPomDependency = (AcceleoPomDependency)theEObject;
+				T result = caseAcceleoPomDependency(acceleoPomDependency);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -214,6 +226,36 @@ public class AcceleowizardmodelSwitch<T> {
 	 * @generated
 	 */
 	public T caseAcceleoPackage(AcceleoPackage object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Acceleo Pom</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Acceleo Pom</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAcceleoPom(AcceleoPom object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Acceleo Pom Dependency</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Acceleo Pom Dependency</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAcceleoPomDependency(AcceleoPomDependency object) {
 		return null;
 	}
 

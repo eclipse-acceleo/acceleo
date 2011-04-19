@@ -26,6 +26,7 @@ import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -308,14 +309,13 @@ public final class AcceleoUIGenerator {
 	/**
 	 * Generates the pom.xml file.
 	 * 
-	 * @param acceleoMainClass
-	 *            The Acceleo main class.
+	 * @param acceleoPom
+	 *            The Acceleo pom.
 	 * @param outputContainer
 	 *            The output container.
 	 */
-	public void generatePom(AcceleoMainClass acceleoMainClass, IContainer outputContainer) {
-		generate(pom, acceleoMainClass, outputContainer,
-				IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
+	public void generatePom(AcceleoPom acceleoPom, IContainer outputContainer) {
+		generate(pom, acceleoPom, outputContainer, IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI);
 	}
 

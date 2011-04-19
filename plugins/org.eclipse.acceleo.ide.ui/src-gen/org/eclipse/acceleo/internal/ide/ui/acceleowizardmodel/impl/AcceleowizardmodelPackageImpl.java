@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: AcceleowizardmodelPackageImpl.java,v 1.4 2011/04/12 15:01:49 sbegaudeau Exp $
+ * $Id: AcceleowizardmodelPackageImpl.java,v 1.5 2011/04/19 13:28:36 sbegaudeau Exp $
  */
 package org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl;
 
@@ -10,6 +10,8 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleElement;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPackage;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
+import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
@@ -73,6 +75,20 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * @generated
 	 */
 	private EClass acceleoPackageEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass acceleoPomEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass acceleoPomDependencyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -519,6 +535,78 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getAcceleoPom() {
+		return acceleoPomEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPom_ArtifactId() {
+		return (EAttribute)acceleoPomEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAcceleoPom_Dependencies() {
+		return (EReference)acceleoPomEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getAcceleoPomDependency() {
+		return acceleoPomDependencyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPomDependency_GroupId() {
+		return (EAttribute)acceleoPomDependencyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPomDependency_ArtifactId() {
+		return (EAttribute)acceleoPomDependencyEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPomDependency_Version() {
+		return (EAttribute)acceleoPomDependencyEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAcceleoPomDependency_SystemPath() {
+		return (EAttribute)acceleoPomDependencyEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getAcceleoMainClass_ResolvedClassPath() {
 		return (EAttribute)acceleoMainClassEClass.getEStructuralFeatures().get(5);
 	}
@@ -607,6 +695,16 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		acceleoPackageEClass = createEClass(ACCELEO_PACKAGE);
 		createEAttribute(acceleoPackageEClass, ACCELEO_PACKAGE__CLASS);
 		createEAttribute(acceleoPackageEClass, ACCELEO_PACKAGE__PATH);
+
+		acceleoPomEClass = createEClass(ACCELEO_POM);
+		createEAttribute(acceleoPomEClass, ACCELEO_POM__ARTIFACT_ID);
+		createEReference(acceleoPomEClass, ACCELEO_POM__DEPENDENCIES);
+
+		acceleoPomDependencyEClass = createEClass(ACCELEO_POM_DEPENDENCY);
+		createEAttribute(acceleoPomDependencyEClass, ACCELEO_POM_DEPENDENCY__GROUP_ID);
+		createEAttribute(acceleoPomDependencyEClass, ACCELEO_POM_DEPENDENCY__ARTIFACT_ID);
+		createEAttribute(acceleoPomDependencyEClass, ACCELEO_POM_DEPENDENCY__VERSION);
+		createEAttribute(acceleoPomDependencyEClass, ACCELEO_POM_DEPENDENCY__SYSTEM_PATH);
 
 		// Create enums
 		moduleElementKindEEnum = createEEnum(MODULE_ELEMENT_KIND);
@@ -697,6 +795,16 @@ public class AcceleowizardmodelPackageImpl extends EPackageImpl implements Accel
 		initEClass(acceleoPackageEClass, AcceleoPackage.class, "AcceleoPackage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getAcceleoPackage_Class(), theEcorePackage.getEString(), "class", null, 1, 1, AcceleoPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAcceleoPackage_Path(), theEcorePackage.getEString(), "path", null, 1, 1, AcceleoPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(acceleoPomEClass, AcceleoPom.class, "AcceleoPom", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getAcceleoPom_ArtifactId(), theEcorePackage.getEString(), "artifactId", null, 1, 1, AcceleoPom.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(getAcceleoPom_Dependencies(), this.getAcceleoPomDependency(), null, "dependencies", null, 0, -1, AcceleoPom.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(acceleoPomDependencyEClass, AcceleoPomDependency.class, "AcceleoPomDependency", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getAcceleoPomDependency_GroupId(), theEcorePackage.getEString(), "groupId", null, 1, 1, AcceleoPomDependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoPomDependency_ArtifactId(), theEcorePackage.getEString(), "artifactId", null, 1, 1, AcceleoPomDependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoPomDependency_Version(), theEcorePackage.getEString(), "version", null, 1, 1, AcceleoPomDependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getAcceleoPomDependency_SystemPath(), theEcorePackage.getEString(), "systemPath", null, 1, 1, AcceleoPomDependency.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		// Initialize enums and add enum literals
 		initEEnum(moduleElementKindEEnum, ModuleElementKind.class, "ModuleElementKind"); //$NON-NLS-1$
