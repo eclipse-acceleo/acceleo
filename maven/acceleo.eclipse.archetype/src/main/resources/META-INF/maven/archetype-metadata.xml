@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="acceleo.eclipse.archetype"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <requiredProperties>
+      <requiredProperty key="groupId">
+         <defaultValue>acceleo.generator</defaultValue>
+      </requiredProperty>
+      <requiredProperty key="artifactId">
+        <defaultValue>org.eclipse.acceleo.module.sample</defaultValue>
+      </requiredProperty>
+      <requiredProperty key="package">
+        <defaultValue>generator</defaultValue>
+      </requiredProperty>
+    </requiredProperties>
+  <modules>
+    <module id="${rootArtifactId}" dir="__rootArtifactId__" name="${rootArtifactId}">
+      <fileSets>
+        <fileSet encoding="UTF-8" packaged="false" filtered="true">
+          <directory></directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <excludes>
+            <exclude>**/*.java</exclude>
+            <exclude>**/*.mtl</exclude>
+          </excludes>
+        </fileSet>
+        <fileSet encoding="UTF-8" packaged="false" filtered="true">
+          <directory>src/main/java/__package__</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module id="${rootArtifactId}.feature" dir="__rootArtifactId__.feature" name="${rootArtifactId}.feature">
+      <fileSets>
+        <fileSet filtered="true" packaged="false" encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>**/.project</include>
+            <include>**/build.properties</include>
+            <include>**/feature.xml</include>
+            <include>**/pom.xml</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module id="${rootArtifactId}.ui" dir="__rootArtifactId__.ui" name="${rootArtifactId}.ui">
+      <fileSets>
+        <fileSet encoding="UTF-8" packaged="false" filtered="true">
+          <directory></directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <excludes>
+            <exclude>**/*.java</exclude>
+          </excludes>
+        </fileSet>        
+        <fileSet encoding="UTF-8" packaged="false" filtered="true">
+          <directory>src/main/java/__package__</directory>
+          <includes>
+            <include>**/*</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module id="${rootArtifactId}.ui.feature" dir="__rootArtifactId__.ui.feature" name="${rootArtifactId}.ui.feature">
+      <fileSets>
+        <fileSet filtered="true" packaged="false" encoding="UTF-8">
+           <directory></directory>
+          <includes>
+            <include>**/.project</include>
+            <include>**/build.properties</include>
+            <include>**/feature.xml</include>
+            <include>**/pom.xml</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+    <module id="${rootArtifactId}.updatesite" dir="__rootArtifactId__.updatesite" name="${rootArtifactId}.updatesite">
+      <fileSets>
+        <fileSet filtered="true" packaged="false" encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>**/.project</include>
+            <include>**/site.xml</include>
+            <include>**/pom.xml</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
+  </modules>
+</archetype-descriptor>

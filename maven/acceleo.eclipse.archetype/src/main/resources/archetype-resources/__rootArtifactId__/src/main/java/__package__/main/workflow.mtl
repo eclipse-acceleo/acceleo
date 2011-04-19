@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module workflow.
+ * @author sbegaudeau
+ */]
+[module workflow('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import genFile /]
+
+[**
+ * This template is the entry point of the generation.
+ * @param anEClass An EClass.
+ */]
+[template public main(anEClass : EClass)]
+[comment @main/]
+[anEClass.generateFile()/]
+[/template]

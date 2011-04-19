@@ -1,0 +1,27 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module genFile.
+ * @author sbegaudeau
+ */]
+[module genFile('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import common /]
+
+[**
+ * This template will generate a file for the given EClass.
+ * @param anEClass An ECLass.
+ */]
+[template public generateFile(anEClass : EClass)]
+
+[file (anEClass.genFileName(), false, 'UTF-8')]
+Attributes:
+[for (anEAttribute : EAttribute | anEClass.eAllAttributes)]
+[anEAttribute.name/]
+[/for]
+
+Operations:
+[for (anEOperation : EOperation | anEClass.eAllOperations)]
+[anEOperation.name/]
+[/for]
+[/file]
+[/template]

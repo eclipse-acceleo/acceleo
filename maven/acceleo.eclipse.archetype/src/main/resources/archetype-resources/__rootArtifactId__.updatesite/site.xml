@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/${rootArtifactId}.feature_${version}.jar" id="${rootArtifactId}.feature" version="${version}"/>
+   <feature url="features/${rootArtifactId}.ui.feature_${version}.jar" id="${rootArtifactId}.ui.feature" version="${version}"/>
+</site>

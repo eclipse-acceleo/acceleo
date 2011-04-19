@@ -1,0 +1,13 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module common.
+ * @author sbegaudeau
+ */]
+[module common('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[**
+ * This query will return the name of the file created for the given EClass.
+ * @param anEClass An EClass
+ */]
+[query public genFileName (anEClass : EClass) : String = anEClass.name/]

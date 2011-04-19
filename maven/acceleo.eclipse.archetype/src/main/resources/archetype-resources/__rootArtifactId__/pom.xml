@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${rootArtifactId}.parent</artifactId>
+    <version>${version}</version>
+  </parent>
+
+  <artifactId>${artifactId}</artifactId>
+  <packaging>eclipse-plugin</packaging>
+  <name>Acceleo Generator Project</name>
+  <url>http://www.eclipse.org/acceleo</url>
+  
+  <build>  
+    <plugins>  
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>exec-maven-plugin</artifactId>  
+        <version>1.1.1</version>  
+        <executions>  
+          <execution>  
+            <phase>compile</phase>  
+            <goals>  
+              <goal>java</goal>  
+            </goals>
+            <configuration>
+              <!--
+                 Calls the AcceleoMainCompiler to launch the compilation.
+              -->
+              <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
+              <arguments>  
+                <argument>${basedir}/src/main/java</argument>  
+                <argument>${basedir}/target/classes</argument>
+                <argument></argument>
+                <argument>true</argument>  
+              </arguments>  
+            </configuration>  
+          </execution>  
+        </executions>  
+      </plugin>
+      <!-- 
+          You can also import this project in Eclipse in order to let
+          the Acceleo tooling generate the buildstandalone.xml file.
+          This Ant file can then be called from maven with the following
+          instructions.
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <executions><execution>
+        <phase>compile</phase>
+        <configuration>
+           <tasks name="compile">
+              <ant antfile="${basedir}/buildstandalone.xml" />
+           </tasks>
+        </configuration>
+	    <goals>
+	      <goal>run</goal>
+	    </goals>
+	    </execution>
+	    </executions>
+	  </plugin>
+	   -->
+    </plugins>  
+  </build>  
+  
+</project>
+
