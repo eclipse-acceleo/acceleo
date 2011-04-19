@@ -20,6 +20,8 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoParti
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.PreferencePage;
@@ -38,6 +40,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -67,7 +71,7 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	private IEclipsePreferences instanceScope;
 
 	/** This will be used as a proxy between the preference page and the instance scope. */
-	private IEclipsePreferences proxyScope;
+	private ProxyPreferenceStore proxyScope;
 
 	/** This will keep a reference to the Tree viewer displaying the different available colors. */
 	private TreeViewer colorViewer;
@@ -86,7 +90,7 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	public void init(IWorkbench workbench) {
 		defaultScope = new DefaultScope().getNode(AcceleoUIActivator.PLUGIN_ID);
 		instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
-		proxyScope = new ProxyPreferenceStore(instanceScope);
+		proxyScope = new ProxyPreferenceStore(instanceScope, defaultScope);
 
 		AcceleoColor[] templateColors = new AcceleoColor[] {AcceleoColor.TEMPLATE,
 				AcceleoColor.TEMPLATE_NAME, AcceleoColor.TEMPLATE_PARAMETER,
@@ -110,6 +114,29 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 		colorCategories.add(templateCategory);
 		colorCategories.add(queryCategory);
 		colorCategories.add(generalCategory);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
+	 */
+	@Override
+	protected void performDefaults() {
+		super.performDefaults();
+		proxyScope.resetToDefault();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.preference.PreferencePage#performOk()
+	 */
+	@Override
+	public boolean performOk() {
+		proxyScope.propagate();
+
+		return super.performOk();
 	}
 
 	/**
@@ -241,13 +268,21 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	 */
 	private RGB getRGB(AcceleoColor color) {
 		IPreferencesService service = Platform.getPreferencesService();
-		IEclipsePreferences[] scopes = new IEclipsePreferences[] {proxyScope, instanceScope, defaultScope, };
 		String defaultValue = StringConverter.asString(color.getDefault());
 
-		String value = service.get(color.getPreferenceKey(), defaultValue, scopes);
+		String value = service.get(color.getPreferenceKey(), defaultValue, getPreferenceLookupOrder());
 		RGB rgbValue = StringConverter.asRGB(value);
 
 		return rgbValue;
+	}
+
+	/**
+	 * Returns the order in which preferences should be looked up.
+	 * 
+	 * @return The order in which preferences should be looked up.
+	 */
+	private IEclipsePreferences[] getPreferenceLookupOrder() {
+		return new IEclipsePreferences[] {proxyScope, instanceScope, defaultScope, };
 	}
 
 	/**
@@ -258,11 +293,10 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	 * @return The preview editor.
 	 */
 	private Control createPreviewViewer(Composite parent) {
-		SourceViewer previewViewer = new SourceViewer(parent, null, null, false, SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL);
-
-		AcceleoConfiguration configuration = new AcceleoConfiguration(AcceleoUIActivator.getDefault()
-				.getPreferenceStore());
+		final SourceViewer previewViewer = new SourceViewer(parent, null, null, false, SWT.BORDER
+				| SWT.V_SCROLL | SWT.H_SCROLL);
+		final AcceleoConfiguration configuration = new AcceleoConfiguration(AcceleoUIActivator.getDefault()
+				.getPreferenceStore(), getPreferenceLookupOrder());
 
 		IDocument document = new Document();
 		previewViewer.setDocument(document);
@@ -278,6 +312,25 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 				AcceleoPartitionScanner.LEGAL_CONTENT_TYPES);
 		partitioner.connect(document);
 		document.setDocumentPartitioner(partitioner);
+
+		final IPreferenceChangeListener preferenceListener = new IPreferenceChangeListener() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener#preferenceChange(org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent)
+			 */
+			public void preferenceChange(PreferenceChangeEvent event) {
+				configuration.adaptToPreferenceChanges(event);
+				previewViewer.invalidateTextPresentation();
+			}
+		};
+
+		proxyScope.addPreferenceChangeListener(preferenceListener);
+		previewViewer.getTextWidget().addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				proxyScope.removePreferenceChangeListener(preferenceListener);
+			}
+		});
 
 		return previewViewer.getControl();
 	}

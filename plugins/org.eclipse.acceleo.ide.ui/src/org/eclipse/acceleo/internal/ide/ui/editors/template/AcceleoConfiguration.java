@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoHover;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoHoverInformationControl;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.hover.AcceleoTextHover;
@@ -31,7 +33,10 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoParti
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoProtectedAreaScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoQueryScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoTemplateScanner;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoToken;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;
@@ -55,6 +60,7 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
@@ -71,24 +77,38 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 */
 	private static final int COMPLETION_AUTO_ACTIVATION_DELAY = 1000;
 
-	/**
-	 * The editor.
-	 */
+	/** The editor. */
 	protected AcceleoEditor editor;
 
-	/**
-	 * The scanners of the source configuration.
-	 */
+	/** The scanners of the source configuration. */
 	private AbstractAcceleoScanner[] scanners;
 
+	/** Order in which to look preferences up. Might be <code>null</code>. */
+	private IEclipsePreferences[] lookupOrder;
+
 	/**
-	 * Instantiates our configuration independent of an {@link AcceleoEditor}.
+	 * Instantiates our configuration independently of an {@link AcceleoEditor}.
 	 * 
 	 * @param preferenceStore
 	 *            The preference store, can be read-only.
 	 */
 	public AcceleoConfiguration(IPreferenceStore preferenceStore) {
 		super(preferenceStore);
+	}
+
+	/**
+	 * We may need to change the default order in which the Acceleo preferences are sought; this constructor
+	 * may be used in this event.
+	 * 
+	 * @param preferenceStore
+	 *            The preference store, can be read-only.
+	 * @param lookupOrder
+	 *            {@link IEclipsePreferences} in the order in which we should look preferences up. The default
+	 *            order is instanceScope, then defaultScope.
+	 */
+	public AcceleoConfiguration(IPreferenceStore preferenceStore, IEclipsePreferences[] lookupOrder) {
+		this(preferenceStore);
+		this.lookupOrder = lookupOrder;
 	}
 
 	/**
@@ -112,20 +132,41 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	protected AbstractAcceleoScanner[] getScanners() {
 		if (scanners == null) {
 			List<AbstractAcceleoScanner> list = new ArrayList<AbstractAcceleoScanner>();
-			list.add(new AcceleoTemplateScanner());
-			list.add(new AcceleoQueryScanner());
-			list.add(new AcceleoMacroScanner());
-			list.add(new AcceleoForScanner());
-			list.add(new AcceleoIfScanner());
-			list.add(new AcceleoLetScanner());
-			list.add(new AcceleoProtectedAreaScanner());
-			list.add(new AcceleoCommentScanner());
-			list.add(new AcceleoDocumentationScanner());
-			list.add(new AcceleoBlockScanner());
-			list.add(new AcceleoDefaultScanner());
+			list.add(new AcceleoTemplateScanner(lookupOrder));
+			list.add(new AcceleoQueryScanner(lookupOrder));
+			list.add(new AcceleoMacroScanner(lookupOrder));
+			list.add(new AcceleoForScanner(lookupOrder));
+			list.add(new AcceleoIfScanner(lookupOrder));
+			list.add(new AcceleoLetScanner(lookupOrder));
+			list.add(new AcceleoProtectedAreaScanner(lookupOrder));
+			list.add(new AcceleoCommentScanner(lookupOrder));
+			list.add(new AcceleoDocumentationScanner(lookupOrder));
+			list.add(new AcceleoBlockScanner(lookupOrder));
+			list.add(new AcceleoDefaultScanner(lookupOrder));
 			scanners = list.toArray(new AbstractAcceleoScanner[list.size()]);
 		}
 		return scanners;
+	}
+
+	/**
+	 * This can be called to force the scanners to adapt to a new color or style as dictated by the
+	 * preferences' {@link #lookupOrder}.
+	 * 
+	 * @param event
+	 *            The event we are to adapt to.
+	 */
+	public void adaptToPreferenceChanges(PreferenceChangeEvent event) {
+		String preferenceKey = event.getKey();
+		if (preferenceKey != null && preferenceKey.endsWith(".color")) { //$NON-NLS-1$
+			for (AbstractAcceleoScanner scanner : getScanners()) {
+				List<AcceleoToken> affectedTokens = scanner.getAffectedToken(preferenceKey);
+				for (AcceleoToken token : affectedTokens) {
+					AcceleoColor color = AcceleoColor.getColor(preferenceKey);
+					Color newColor = AcceleoColorManager.getColor(color, lookupOrder);
+					token.update(newColor);
+				}
+			}
+		}
 	}
 
 	/**

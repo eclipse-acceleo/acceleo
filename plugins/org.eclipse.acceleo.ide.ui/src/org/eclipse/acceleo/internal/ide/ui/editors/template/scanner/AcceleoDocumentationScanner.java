@@ -12,11 +12,9 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
-import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.swt.SWT;
 
 /**
@@ -26,35 +24,48 @@ import org.eclipse.swt.SWT;
  */
 public class AcceleoDocumentationScanner extends AbstractAcceleoScanner {
 	/**
-	 * The constructor.
+	 * Instantiates our scanner given the preference lookup order.
+	 * 
+	 * @param lookupOrder
+	 *            Order in which to look preferences up.
 	 */
-	public AcceleoDocumentationScanner() {
+	public AcceleoDocumentationScanner(IEclipsePreferences[] lookupOrder) {
+		super(lookupOrder);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		// indices declaration, viva checkstyle
 		final int seven = 7;
 		final int eight = 8;
 		final int nine = 9;
 
 		IRule[] rules = new IRule[nine];
-		rules[0] = new KeywordRule(IAcceleoConstants.TAG_AUTHOR, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[1] = new KeywordRule(IAcceleoConstants.TAG_DEPRECATED, true, false, new Token(
-				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[2] = new KeywordRule(IAcceleoConstants.TAG_INHERITDOC, true, false, new Token(
-				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[3] = new KeywordRule(IAcceleoConstants.TAG_PARAM, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[4] = new KeywordRule(IAcceleoConstants.TAG_SINCE, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[5] = new KeywordRule(IAcceleoConstants.TAG_VERSION, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[6] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[seven] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
-		rules[eight] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.COMMENT), null, SWT.BOLD)));
+		rules[0] = new KeywordRule(IAcceleoConstants.TAG_AUTHOR, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[1] = new KeywordRule(IAcceleoConstants.TAG_DEPRECATED, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[2] = new KeywordRule(IAcceleoConstants.TAG_INHERITDOC, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[3] = new KeywordRule(IAcceleoConstants.TAG_PARAM, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[4] = new KeywordRule(IAcceleoConstants.TAG_SINCE, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[5] = new KeywordRule(IAcceleoConstants.TAG_VERSION, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[6] = new KeywordRule(IAcceleoConstants.TAG_FIXME, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[seven] = new KeywordRule(IAcceleoConstants.TAG_TODO, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
+		rules[eight] = new KeywordRule(IAcceleoConstants.TAG_MAIN, true, false, createToken(
+				AcceleoColor.COMMENT, null, SWT.BOLD));
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.COMMENT))));
+		setDefaultReturnToken(createToken(AcceleoColor.COMMENT));
 	}
 
 	/**

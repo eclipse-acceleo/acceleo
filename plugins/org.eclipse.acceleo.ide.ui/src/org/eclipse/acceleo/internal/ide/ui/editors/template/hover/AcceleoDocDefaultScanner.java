@@ -30,6 +30,16 @@ public class AcceleoDocDefaultScanner extends AbstractAcceleoScanner {
 	 * Constructor.
 	 */
 	public AcceleoDocDefaultScanner() {
+		super(null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		IRule[] rules = new IRule[1];
 		rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		this.setRules(rules);

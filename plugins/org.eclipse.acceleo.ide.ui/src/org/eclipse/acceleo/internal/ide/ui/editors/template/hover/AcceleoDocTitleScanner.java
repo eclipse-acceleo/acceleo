@@ -32,6 +32,16 @@ public class AcceleoDocTitleScanner extends AbstractAcceleoScanner {
 	 * Constructor.
 	 */
 	public AcceleoDocTitleScanner() {
+		super(null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		final Color green = AcceleoColorManager.getColor(AcceleoColor.BLACK);
 
 		// IRule[] rules = new IRule[2];

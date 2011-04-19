@@ -16,14 +16,12 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordSequenceRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.VariableRule;
-import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.swt.SWT;
 
@@ -34,13 +32,27 @@ import org.eclipse.swt.SWT;
  */
 public class AcceleoLetScanner extends AbstractAcceleoScanner {
 	/**
-	 * Constructor.
+	 * Instantiates our scanner given the preference lookup order.
+	 * 
+	 * @param lookupOrder
+	 *            Order in which to look preferences up.
 	 */
-	public AcceleoLetScanner() {
+	public AcceleoLetScanner(IEclipsePreferences[] lookupOrder) {
+		super(lookupOrder);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		List<IRule> rules = new ArrayList<IRule>();
+		AcceleoToken literalToken = createToken(AcceleoColor.LITERAL);
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
-				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL)))));
+				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE),
+				literalToken));
 
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		rules.addAll(computeKeywordRules());
@@ -49,8 +61,7 @@ public class AcceleoLetScanner extends AbstractAcceleoScanner {
 		rules.addAll(computeOCLKeywordRules());
 
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager
-				.getColor(AcceleoColor.OCL_EXPRESSION))));
+		setDefaultReturnToken(createToken(AcceleoColor.OCL_EXPRESSION));
 	}
 
 	/**
@@ -83,9 +94,8 @@ public class AcceleoLetScanner extends AbstractAcceleoScanner {
 	 * @return The created rule.
 	 */
 	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter) {
-		return new KeywordSequenceRule(precedingDelimiter, keyword, followingDelimiter,
-				new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LET), null, SWT.ITALIC
-						| SWT.BOLD)));
+		return new KeywordSequenceRule(precedingDelimiter, keyword, followingDelimiter, createToken(
+				AcceleoColor.LET, null, SWT.ITALIC | SWT.BOLD));
 	}
 
 	/**
@@ -136,8 +146,8 @@ public class AcceleoLetScanner extends AbstractAcceleoScanner {
 	 * @return the new delimiter rule
 	 */
 	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText) {
-		return new KeywordSequenceRule(precedingText, delimiter, followingText, new Token(new TextAttribute(
-				AcceleoColorManager.getColor(AcceleoColor.LET), null, SWT.BOLD)));
+		return new KeywordSequenceRule(precedingText, delimiter, followingText, createToken(AcceleoColor.LET,
+				null, SWT.BOLD));
 	}
 
 	/**
@@ -146,8 +156,7 @@ public class AcceleoLetScanner extends AbstractAcceleoScanner {
 	 * @return the new delimiter rule
 	 */
 	private IRule computeVariableRule() {
-		return new VariableRule(new String[] {}, new Token(new TextAttribute(AcceleoColorManager
-				.getColor(AcceleoColor.VARIABLE), null, SWT.NONE)));
+		return new VariableRule(new String[] {}, createToken(AcceleoColor.VARIABLE, null, SWT.NONE));
 	}
 
 	/**
@@ -159,8 +168,8 @@ public class AcceleoLetScanner extends AbstractAcceleoScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		for (String keyword : AcceleoOCLReflection.getReservedKeywords()) {
-			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(AcceleoColorManager
-					.getColor(AcceleoColor.OCL_KEYWORD), null, SWT.BOLD))));
+			rules.add(new KeywordRule(keyword, true, false, createToken(AcceleoColor.OCL_KEYWORD, null,
+					SWT.BOLD)));
 		}
 
 		return rules;

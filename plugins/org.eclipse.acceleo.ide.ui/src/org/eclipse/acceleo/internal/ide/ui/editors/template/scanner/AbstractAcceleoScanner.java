@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.swt.graphics.Color;
 
@@ -26,15 +33,26 @@ import org.eclipse.swt.graphics.Color;
  */
 public abstract class AbstractAcceleoScanner extends RuleBasedScanner {
 	/** This will determine the order in which we'll look preferences up. */
-	private IEclipsePreferences[] lookupOrder;
+	private final IEclipsePreferences[] lookupOrder;
+
+	/** Keeps track of the rules used by this scanner. */
+	private IRule[] rules;
 
 	/**
-	 * Default constructor.
+	 * Instantiates our scanner given the order into which we should seek the colors for syntax coloring.
+	 * 
+	 * @param lookupOrder
+	 *            This will determine the order in which we'll look preferences up. Can be <code>null</code>.
 	 */
-	public AbstractAcceleoScanner() {
-		IEclipsePreferences defaultScope = new DefaultScope().getNode(AcceleoUIActivator.PLUGIN_ID);
-		IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
-		lookupOrder = new IEclipsePreferences[] {instanceScope, defaultScope, };
+	public AbstractAcceleoScanner(IEclipsePreferences[] lookupOrder) {
+		if (lookupOrder != null && lookupOrder.length > 0) {
+			this.lookupOrder = lookupOrder;
+		} else {
+			IEclipsePreferences defaultScope = new DefaultScope().getNode(AcceleoUIActivator.PLUGIN_ID);
+			IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
+			this.lookupOrder = new IEclipsePreferences[] {instanceScope, defaultScope, };
+		}
+		createRules();
 	}
 
 	/**
@@ -60,10 +78,88 @@ public abstract class AbstractAcceleoScanner extends RuleBasedScanner {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.text.rules.RuleBasedScanner#setRules(org.eclipse.jface.text.rules.IRule[])
+	 */
+	@Override
+	public void setRules(IRule[] rules) {
+		super.setRules(rules);
+		this.rules = rules;
+	}
+
+	/**
+	 * Creates a token with the given foreground.
+	 * 
+	 * @param foreground
+	 *            Foreground color of the newly created token.
+	 * @return The newly created token.
+	 */
+	protected AcceleoToken createToken(AcceleoColor foreground) {
+		Color swtForeground = getColor(foreground);
+
+		TextAttribute tokenData = new TextAttribute(swtForeground);
+		return new AcceleoToken(tokenData, foreground.getPreferenceKey());
+	}
+
+	/**
+	 * Creates a token with the given colors and style.
+	 * 
+	 * @param foreground
+	 *            Foreground color of the newly created token.
+	 * @param background
+	 *            Background color of the newly created token.
+	 * @param style
+	 *            Style of the newly created token.
+	 * @return The newly created token.
+	 */
+	protected AcceleoToken createToken(AcceleoColor foreground, AcceleoColor background, int style) {
+		Color swtForeground = getColor(foreground);
+
+		Color swtBackground = null;
+		if (background != null) {
+			swtBackground = getColor(background);
+		}
+
+		TextAttribute tokenData = new TextAttribute(swtForeground, swtBackground, style);
+		return new AcceleoToken(tokenData, foreground.getPreferenceKey());
+	}
+
+	/** This will be called to initialize this scanner's rules. */
+	protected abstract void createRules();
+
+	/**
 	 * Returns the type of the tokens read by this scanner.
 	 * 
 	 * @return the type of the tokens
 	 */
 	public abstract String getConfiguredContentType();
 
+	/**
+	 * This will be used to check whether this scanner is affected by a change to the given preference, and
+	 * retrieve the affected tokens.
+	 * 
+	 * @param preferenceKey
+	 *            Key of the preference we need to react to.
+	 * @return The affected tokens if any, an empty list otherwise.
+	 */
+	public List<AcceleoToken> getAffectedToken(String preferenceKey) {
+		List<AcceleoToken> affectedTokens = new ArrayList<AcceleoToken>();
+		if (preferenceKey == null || "".equals(preferenceKey)) { //$NON-NLS-1$
+			return affectedTokens;
+		}
+
+		for (IRule rule : rules) {
+			if (rule instanceof IPredicateRule) {
+				IToken token = ((IPredicateRule)rule).getSuccessToken();
+				if (token instanceof AcceleoToken) {
+					String tokenKey = ((AcceleoToken)token).getColorKey();
+					if (tokenKey != null && tokenKey.equals(preferenceKey)) {
+						affectedTokens.add((AcceleoToken)token);
+					}
+				}
+			}
+		}
+		return affectedTokens;
+	}
 }

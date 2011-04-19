@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.preferences;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +32,10 @@ import org.osgi.service.prefs.Preferences;
  */
 public class ProxyPreferenceStore implements IEclipsePreferences {
 	/** The preference store to which we are to propagate changes. */
-	private final IEclipsePreferences delegate;
+	private final IEclipsePreferences instanceScope;
+
+	/** The preference store that holds our default values. */
+	private final IEclipsePreferences defaultScope;
 
 	/** The buffer in which we'll store preference changes until propagation. */
 	private final Map<String, String> preferences = new HashMap<String, String>();
@@ -45,24 +49,44 @@ public class ProxyPreferenceStore implements IEclipsePreferences {
 	/**
 	 * Instantiates our preference store given its delegate.
 	 * 
-	 * @param delegate
+	 * @param instanceScope
 	 *            The preference store to which we are to propagate changes.
+	 * @param defaultScope
+	 *            The preference store that holds our default values.
 	 */
-	public ProxyPreferenceStore(IEclipsePreferences delegate) {
-		this.delegate = delegate;
+	public ProxyPreferenceStore(IEclipsePreferences instanceScope, IEclipsePreferences defaultScope) {
+		this.instanceScope = instanceScope;
+		this.defaultScope = defaultScope;
 		load();
 		delegateChangesListener = new DelegateChangesListener();
-		delegate.addPreferenceChangeListener(delegateChangesListener);
+		instanceScope.addPreferenceChangeListener(delegateChangesListener);
+	}
+
+	/**
+	 * Resets this preference store to its default values.
+	 */
+	public void resetToDefault() {
+		try {
+			for (String key : defaultScope.keys()) {
+				put(key, defaultScope.get(key, "")); //$NON-NLS-1$
+			}
+		} catch (BackingStoreException e) {
+			// FIXME Shouldnt happen
+		}
 	}
 
 	/**
 	 * Disposes of this preference store.
 	 */
 	public void dispose() {
-		delegate.removePreferenceChangeListener(delegateChangesListener);
+		instanceScope.removePreferenceChangeListener(delegateChangesListener);
 		delegateChangesListener = null;
 		preferenceChangeListeners.clear();
-		preferences.clear();
+		try {
+			clear();
+		} catch (BackingStoreException e) {
+			// FIXME Shouldnt happen
+		}
 	}
 
 	/**
@@ -102,7 +126,7 @@ public class ProxyPreferenceStore implements IEclipsePreferences {
 	 * @see org.osgi.service.prefs.Preferences#clear()
 	 */
 	public void clear() throws BackingStoreException {
-		for (String key : preferences.keySet()) {
+		for (String key : new LinkedHashSet<String>(preferences.keySet())) {
 			remove(key);
 		}
 	}
@@ -341,10 +365,16 @@ public class ProxyPreferenceStore implements IEclipsePreferences {
 	 */
 	public void propagate() {
 		for (Map.Entry<String, String> entry : preferences.entrySet()) {
-			String originValue = delegate.get(entry.getKey(), entry.getValue());
+			String originValue = instanceScope.get(entry.getKey(), null);
 			if (originValue == null || !originValue.equals(entry.getValue())) {
-				delegate.put(entry.getKey(), entry.getValue());
+				instanceScope.put(entry.getKey(), entry.getValue());
 			}
+		}
+
+		try {
+			instanceScope.flush();
+		} catch (BackingStoreException e) {
+			// FIXME log
 		}
 	}
 
@@ -352,10 +382,14 @@ public class ProxyPreferenceStore implements IEclipsePreferences {
 	 * Loads up all key<->value pairs from the delegate store.
 	 */
 	private void load() {
-		// FIXME we might need to load the Default scope's pairs too
 		try {
-			for (String key : delegate.keys()) {
-				preferences.put(key, delegate.get(key, "")); //$NON-NLS-1$
+			// First load all default values
+			for (String key : defaultScope.keys()) {
+				preferences.put(key, defaultScope.get(key, "")); //$NON-NLS-1$
+			}
+			// Then override them with instance values
+			for (String key : instanceScope.keys()) {
+				preferences.put(key, instanceScope.get(key, "")); //$NON-NLS-1$
 			}
 		} catch (BackingStoreException e) {
 			// FIXME shouldn't happen, log anyways

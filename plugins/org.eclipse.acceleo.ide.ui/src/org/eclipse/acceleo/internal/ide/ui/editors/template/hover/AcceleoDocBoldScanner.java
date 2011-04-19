@@ -44,6 +44,16 @@ public class AcceleoDocBoldScanner extends AbstractAcceleoScanner {
 	 * Constructor.
 	 */
 	public AcceleoDocBoldScanner() {
+		super(null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		final Color black = AcceleoColorManager.getColor(AcceleoColor.BLACK);
 		final IToken boldToken = new Token(new TextAttribute(black, null, SWT.BOLD));
 

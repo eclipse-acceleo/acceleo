@@ -11,11 +11,9 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template.scanner;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 
 /**
@@ -25,13 +23,26 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
  */
 public class AcceleoDefaultScanner extends AbstractAcceleoScanner {
 	/**
-	 * Constructor.
+	 * Instantiates our scanner given the preference lookup order.
+	 * 
+	 * @param lookupOrder
+	 *            Order in which to look preferences up.
 	 */
-	public AcceleoDefaultScanner() {
+	public AcceleoDefaultScanner(IEclipsePreferences[] lookupOrder) {
+		super(lookupOrder);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		IRule[] rules = new IRule[1];
 		rules[0] = new WhitespaceRule(new AcceleoWhitespaceDetector());
 		setRules(rules);
-		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.DEFAULT))));
+		setDefaultReturnToken(createToken(AcceleoColor.DEFAULT));
 	}
 
 	/**

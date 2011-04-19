@@ -15,12 +15,10 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.KeywordRule;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.rules.SequenceBlockRule;
-import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.rules.IRule;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.swt.SWT;
 
@@ -31,19 +29,35 @@ import org.eclipse.swt.SWT;
  */
 public class AcceleoMacroScanner extends AbstractAcceleoScanner {
 	/**
-	 * Constructor.
+	 * Instantiates our scanner given the preference lookup order.
+	 * 
+	 * @param lookupOrder
+	 *            Order in which to look preferences up.
 	 */
-	public AcceleoMacroScanner() {
+	public AcceleoMacroScanner(IEclipsePreferences[] lookupOrder) {
+		super(lookupOrder);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AbstractAcceleoScanner#createRules()
+	 */
+	@Override
+	protected void createRules() {
 		List<IRule> rules = new ArrayList<IRule>();
+		AcceleoToken literalToken = createToken(AcceleoColor.LITERAL);
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
-				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL)))));
+				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE),
+				literalToken));
+
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END));
 		rules.add(computeKeywordRule(IAcceleoConstants.MACRO));
+
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.MACRO))));
+		setDefaultReturnToken(createToken(AcceleoColor.MACRO));
 	}
 
 	/**
@@ -54,8 +68,7 @@ public class AcceleoMacroScanner extends AbstractAcceleoScanner {
 	 * @return the new keyword rule
 	 */
 	private IRule computeKeywordRule(String keyword) {
-		return new KeywordRule(keyword, true, false, new Token(new TextAttribute(AcceleoColorManager
-				.getColor(AcceleoColor.MACRO), null, SWT.BOLD)));
+		return new KeywordRule(keyword, true, false, createToken(AcceleoColor.MACRO, null, SWT.BOLD));
 	}
 
 	/**
@@ -66,8 +79,7 @@ public class AcceleoMacroScanner extends AbstractAcceleoScanner {
 	 * @return the new delimiter rule
 	 */
 	private IRule computeDelimiterRule(String delimiter) {
-		return new KeywordRule(delimiter, false, false, new Token(new TextAttribute(AcceleoColorManager
-				.getColor(AcceleoColor.MACRO), null, SWT.BOLD)));
+		return new KeywordRule(delimiter, false, false, createToken(AcceleoColor.MACRO, null, SWT.BOLD));
 	}
 
 	/**
