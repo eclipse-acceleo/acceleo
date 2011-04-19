@@ -35,9 +35,9 @@
                     <version>1.1.1</version>  
                     <executions>  
                         <execution>  
-                            <phase>compile</phase>  
-                            <goals>  
-                                <goal>java</goal>  
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>java</goal>
                             </goals>
                             <configuration>
                                 <!--
@@ -45,10 +45,10 @@
                                 -->
                                 <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
                                 <arguments>  
-                                    <argument>${basedir}/src/</argument>  
-                                    <argument>${basedir}/bin/</argument>
-                                    <argument></argument>
-                                    <argument>true</argument>  
+                                    <argument>${basedir}/src/main/java</argument>   <!-- input folder -->
+                                    <argument>${basedir}/target/classes/</argument> <!-- output folder -->
+                                    <argument>true</argument>   <!-- use binary resources -->
+                                    <argument></argument>  <!-- dependencies -->
                                 </arguments>  
                             </configuration>  
                         </execution>  
@@ -77,6 +77,43 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>acceleo-compilation</id>
+            <build>
+                <plugins>
+                    <plugin>  
+                        <groupId>org.codehaus.mojo</groupId>  
+                        <artifactId>exec-maven-plugin</artifactId>  
+                        <version>1.1.1</version>  
+                        <executions>  
+                            <execution>  
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <!--
+                                        Calls the AcceleoMainCompiler to launch the compilation.
+                                    -->
+                                    <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
+                                    <arguments>  
+                                        <argument>${basedir}/src/main/java</argument>  <!-- input folder -->
+                                        <argument>${basedir}/target/classes/</argument>  <!-- output folder -->
+                                        <argument>true</argument> <!-- use binary resources -->
+                                        <argument></argument> <!-- dependencies -->  
+                                    </arguments>  
+                                </configuration>  
+                            </execution>  
+                        </executions>  
+                    </plugin>
+                </plugins>
+            </build>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
     <dependencies>
 [for (anAcceleoPomDependency : AcceleoPomDependency | anAcceleoPom.dependencies)]
         <dependency>
