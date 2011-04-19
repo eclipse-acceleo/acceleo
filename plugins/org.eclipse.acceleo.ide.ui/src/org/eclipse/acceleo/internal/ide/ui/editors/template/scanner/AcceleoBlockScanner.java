@@ -44,49 +44,47 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param manager
-	 *            is the color manager
 	 */
-	public AcceleoBlockScanner(AcceleoColorManager manager) {
+	public AcceleoBlockScanner() {
 		List<IRule> rules = new ArrayList<IRule>();
 		rules.add(new SequenceBlockRule(new KeywordRule(IAcceleoConstants.LITERAL_BEGIN), new KeywordRule(
 				IAcceleoConstants.LITERAL_END), new KeywordRule(IAcceleoConstants.LITERAL_ESCAPE), new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.LITERAL)))));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.LITERAL)))));
 
 		rules.add(new WhitespaceRule(new AcceleoWhitespaceDetector()));
-		rules.addAll(computeKeywordRules(manager));
-		rules.addAll(computeDelimiterRules(manager));
-		rules.add(computeVariableRule(manager));
-		rules.addAll(computeModuleNameRules(manager));
-		rules.addAll(computeOCLKeywordRules(manager));
+		rules.addAll(computeKeywordRules());
+		rules.addAll(computeDelimiterRules());
+		rules.add(computeVariableRule());
+		rules.addAll(computeModuleNameRules());
+		rules.addAll(computeOCLKeywordRules());
 
 		setRules(rules.toArray(new IRule[rules.size()]));
-		setDefaultReturnToken(new Token(new TextAttribute(manager.getColor(AcceleoColor.OCL_EXPRESSION),
-				null, SWT.NONE)));
+		setDefaultReturnToken(new Token(new TextAttribute(AcceleoColorManager
+				.getColor(AcceleoColor.OCL_EXPRESSION), null, SWT.NONE)));
 	}
 
 	/**
 	 * Creates all keyword rules pertaining to an Acceleo regular block (neither template, query, macro, for,
 	 * let, nor if).
 	 * 
-	 * @param manager
-	 *            is the color manager
 	 * @return The created rules.
 	 */
-	private List<IRule> computeKeywordRules(AcceleoColorManager manager) {
+	private List<IRule> computeKeywordRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		// "block" keywords : these are the blocks that do not have their own scanner.
 		for (String keyword : KEYWORDS) {
-			rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, keyword, null, manager));
+			// keyword must be directly followed by either a space or parenthesis
+			rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, keyword,
+					IAcceleoConstants.PARENTHESIS_BEGIN));
+			rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_BEGIN, keyword, " ")); //$NON-NLS-1$
 			rules.add(computeKeywordRule(IAcceleoConstants.DEFAULT_END_BODY_CHAR, keyword,
-					IAcceleoConstants.DEFAULT_END, manager));
+					IAcceleoConstants.DEFAULT_END));
 		}
 
 		// "extends" keyword will follow a closing parenthesis
 		rules.add(computeKeywordRule(new String[] {IAcceleoConstants.PARENTHESIS_END, },
-				IAcceleoConstants.EXTENDS, null, manager));
+				IAcceleoConstants.EXTENDS, null));
 
 		return rules;
 	}
@@ -100,14 +98,11 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 *            The keyword we need to detect.
 	 * @param followingDelimiter
 	 *            The delimiter that needs to follow the keyword.
-	 * @param manager
-	 *            is the color manager
 	 * @return The created rule.
 	 */
-	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter,
-			AcceleoColorManager manager) {
+	private IRule computeKeywordRule(String precedingDelimiter, String keyword, String followingDelimiter) {
 		return new KeywordSequenceRule(precedingDelimiter, keyword, followingDelimiter, new Token(
-				new TextAttribute(manager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
+				new TextAttribute(AcceleoColorManager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
 	}
 
 	/**
@@ -119,60 +114,52 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 *            The delimiter we need to detect.
 	 * @param followingWords
 	 *            The words that needs to follow the keyword. Can be <code>null</code>.
-	 * @param manager
-	 *            is the color manager
 	 * @return the new keyword rule
 	 */
-	private IRule computeKeywordRule(String[] precedingWords, String keyword, String[] followingWords,
-			AcceleoColorManager manager) {
+	private IRule computeKeywordRule(String[] precedingWords, String keyword, String[] followingWords) {
 		return new KeywordSequenceRule(precedingWords, keyword, followingWords, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
 	}
 
 	/**
 	 * Creates all delimiter rules pertaining to an Acceleo regular block (neither template, query, macro,
 	 * for, let, nor if).
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rules.
 	 */
-	private List<IRule> computeDelimiterRules(AcceleoColorManager manager) {
+	private List<IRule> computeDelimiterRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		// Take care of all the rules that need to iterate on the keywords
 		for (String keyword : KEYWORDS) {
 			// The "[" is a delimiter if before a keyword or the "/" of a closing tag
-			rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN, keyword, manager));
+			rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_BEGIN, keyword));
 
 			// The "]" character can be preceded by either ")", "}", or a keyword
-			rules.add(computeDelimiterRule(keyword, IAcceleoConstants.DEFAULT_END, null, manager));
+			rules.add(computeDelimiterRule(keyword, IAcceleoConstants.DEFAULT_END, null));
 
 			// Parenthesis are delimiter themselves if and only if the are preceded or followed by a keyword
-			rules.add(computeDelimiterRule(keyword, IAcceleoConstants.PARENTHESIS_BEGIN, null, manager));
-			rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, keyword, manager));
+			rules.add(computeDelimiterRule(keyword, IAcceleoConstants.PARENTHESIS_BEGIN, null));
+			rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, keyword));
 		}
 
 		// The "[" is a delimiter wherever it might be
-		rules.add(computeDelimiterRule((String)null, IAcceleoConstants.DEFAULT_BEGIN, null, manager));
+		rules.add(computeDelimiterRule((String)null, IAcceleoConstants.DEFAULT_BEGIN, null));
 
 		// The "/" of a body's end must be either preceded by "[" or followed by "]"
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_BEGIN,
-				IAcceleoConstants.DEFAULT_END_BODY_CHAR, null, manager));
+				IAcceleoConstants.DEFAULT_END_BODY_CHAR, null));
 		rules.add(computeDelimiterRule(null, IAcceleoConstants.DEFAULT_END_BODY_CHAR,
-				IAcceleoConstants.DEFAULT_END, manager));
+				IAcceleoConstants.DEFAULT_END));
 
 		// parenthesis are delimiters if directly followed by a closing tag
-		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END,
-				IAcceleoConstants.DEFAULT_END, manager));
+		rules.add(computeDelimiterRule(null, IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.DEFAULT_END));
 
 		// The "]" character can be preceded by either ")", "}", or "/"
-		rules.add(computeDelimiterRule(IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.DEFAULT_END,
-				null, manager));
-		rules.add(computeDelimiterRule(IAcceleoConstants.BRACKETS_END, IAcceleoConstants.DEFAULT_END, null,
-				manager));
+		rules.add(computeDelimiterRule(IAcceleoConstants.PARENTHESIS_END, IAcceleoConstants.DEFAULT_END, null));
+		rules.add(computeDelimiterRule(IAcceleoConstants.BRACKETS_END, IAcceleoConstants.DEFAULT_END, null));
 		rules.add(computeDelimiterRule(IAcceleoConstants.DEFAULT_END_BODY_CHAR,
-				IAcceleoConstants.DEFAULT_END, null, manager));
+				IAcceleoConstants.DEFAULT_END, null));
 
 		return rules;
 	}
@@ -186,45 +173,38 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	 *            The delimiter we need to detect.
 	 * @param followingText
 	 *            The text that needs to follow the keyword. Can be <code>null</code>.
-	 * @param manager
-	 *            is the color manager
 	 * @return the new delimiter rule
 	 */
-	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText,
-			AcceleoColorManager manager) {
+	private IRule computeDelimiterRule(String precedingText, String delimiter, String followingText) {
 		return new KeywordSequenceRule(precedingText, delimiter, followingText, new Token(new TextAttribute(
-				manager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
+				AcceleoColorManager.getColor(AcceleoColor.KEYWORD), null, SWT.BOLD)));
 	}
 
 	/**
 	 * Creates a rule matching the template parameters.
 	 * 
-	 * @param manager
-	 *            is the color manager
 	 * @return the new variable rule
 	 */
-	private IRule computeVariableRule(AcceleoColorManager manager) {
-		return new VariableRule(new String[] {}, new Token(new TextAttribute(manager
+	private IRule computeVariableRule() {
+		return new VariableRule(new String[] {}, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.VARIABLE), null, SWT.NONE)));
 	}
 
 	/**
 	 * Computes a rule matching the module name.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rule.
 	 */
-	private List<IRule> computeModuleNameRules(AcceleoColorManager manager) {
+	private List<IRule> computeModuleNameRules() {
 		/*
 		 * Module names can be preceded by either "module", "import" or "extends". "Extends" is handled by the
 		 * "module" rule.
 		 */
 		List<IRule> rules = new ArrayList<IRule>();
 
-		rules.add(new BlockNameRule(IAcceleoConstants.MODULE, new Token(new TextAttribute(manager
+		rules.add(new BlockNameRule(IAcceleoConstants.MODULE, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.MODULE_NAME), null, SWT.NONE))));
-		rules.add(new BlockNameRule(IAcceleoConstants.IMPORT, new Token(new TextAttribute(manager
+		rules.add(new BlockNameRule(IAcceleoConstants.IMPORT, new Token(new TextAttribute(AcceleoColorManager
 				.getColor(AcceleoColor.MODULE_NAME), null, SWT.NONE))));
 
 		return rules;
@@ -233,15 +213,13 @@ public class AcceleoBlockScanner extends AbstractAcceleoScanner {
 	/**
 	 * Computes a rule to match all OCL keywords in our query.
 	 * 
-	 * @param manager
-	 *            The color manager.
 	 * @return The created rules.
 	 */
-	private List<IRule> computeOCLKeywordRules(AcceleoColorManager manager) {
+	private List<IRule> computeOCLKeywordRules() {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		for (String keyword : AcceleoOCLReflection.getReservedKeywords()) {
-			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(manager
+			rules.add(new KeywordRule(keyword, true, false, new Token(new TextAttribute(AcceleoColorManager
 					.getColor(AcceleoColor.OCL_KEYWORD), null, SWT.BOLD))));
 		}
 
