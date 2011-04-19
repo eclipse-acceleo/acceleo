@@ -121,7 +121,12 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 * @since 3.1
 	 */
 	public static String getPreferenceValue(String key, IEclipsePreferences[] lookupOrder) {
-		String preferenceValue = Platform.getPreferencesService().get(key, null, lookupOrder);
+		final String preferenceValue;
+		if (lookupOrder != null && lookupOrder.length > 0) {
+			preferenceValue = Platform.getPreferencesService().get(key, null, lookupOrder);
+		} else {
+			preferenceValue = getPreferenceValue(key);
+		}
 
 		return preferenceValue;
 	}

@@ -53,8 +53,11 @@ public class AcceleoToken extends Token {
 	 */
 	public void update(Color foreground) {
 		TextAttribute oldAttribute = (TextAttribute)getData();
-		TextAttribute newAttribute = new TextAttribute(foreground, oldAttribute.getBackground(), oldAttribute
-				.getStyle());
-		setData(newAttribute);
+		Color oldColor = oldAttribute.getForeground();
+		if (!oldColor.equals(foreground)) {
+			TextAttribute newAttribute = new TextAttribute(foreground, oldAttribute.getBackground(),
+					oldAttribute.getStyle());
+			setData(newAttribute);
+		}
 	}
 }

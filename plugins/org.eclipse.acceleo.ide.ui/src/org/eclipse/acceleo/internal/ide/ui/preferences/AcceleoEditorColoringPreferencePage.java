@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoConfiguration;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
@@ -61,8 +62,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-// FIXME externalize Strings and remove this suppressWarnings
-@SuppressWarnings("nls")
 public class AcceleoEditorColoringPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 	/** Holds a reference to the preferences node providing default values for our preferences. */
 	private IEclipsePreferences defaultScope;
@@ -96,19 +95,19 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 				AcceleoColor.TEMPLATE_NAME, AcceleoColor.TEMPLATE_PARAMETER,
 				AcceleoColor.TEMPLATE_OCL_EXPRESSION, AcceleoColor.TEMPLATE_OCL_KEYWORD, };
 		ColorCategory templateCategory = new ColorCategory(AcceleoColorMessages
-				.getString("org.eclipse.acceleo.template.category"), templateColors);
+				.getString("org.eclipse.acceleo.template.category"), templateColors); //$NON-NLS-1$
 
 		AcceleoColor[] queryColors = new AcceleoColor[] {AcceleoColor.QUERY, AcceleoColor.QUERY_NAME,
 				AcceleoColor.QUERY_PARAMETER, AcceleoColor.QUERY_RETURN, };
 		ColorCategory queryCategory = new ColorCategory(AcceleoColorMessages
-				.getString("org.eclipse.acceleo.query.category"), queryColors);
+				.getString("org.eclipse.acceleo.query.category"), queryColors); //$NON-NLS-1$
 
 		AcceleoColor[] generalColors = new AcceleoColor[] {AcceleoColor.COMMENT, AcceleoColor.MODULE_NAME,
 				AcceleoColor.FOR, AcceleoColor.IF, AcceleoColor.LET, AcceleoColor.DEFAULT,
 				AcceleoColor.KEYWORD, AcceleoColor.LITERAL, AcceleoColor.OCL_EXPRESSION,
 				AcceleoColor.OCL_KEYWORD, AcceleoColor.VARIABLE, AcceleoColor.PROTECTED_AREA, };
 		ColorCategory generalCategory = new ColorCategory(AcceleoColorMessages
-				.getString("org.eclipse.acceleo.general.category"), generalColors);
+				.getString("org.eclipse.acceleo.general.category"), generalColors); //$NON-NLS-1$
 
 		colorCategories = new ArrayList<ColorCategory>();
 		colorCategories.add(templateCategory);
@@ -150,7 +149,8 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 		colorComposite.setLayout(new GridLayout());
 
 		Label foregroundLabel = new Label(colorComposite, SWT.LEFT);
-		foregroundLabel.setText("Foreground color:");
+		foregroundLabel.setText(AcceleoUIMessages
+				.getString("AcceleoEditorColoringPreferencePage.foreground.label") + ':'); //$NON-NLS-1$
 		foregroundLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Color list area
@@ -181,7 +181,8 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 		styleComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Label colorChoiceLabel = new Label(styleComposite, SWT.LEFT);
-		colorChoiceLabel.setText("Color:");
+		colorChoiceLabel.setText(AcceleoUIMessages
+				.getString("AcceleoEditorColoringPreferencePage.color.label") + ':'); //$NON-NLS-1$
 		gd = new GridData();
 		gd.horizontalAlignment = GridData.BEGINNING;
 		colorChoiceLabel.setLayoutData(gd);
@@ -195,7 +196,8 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 
 		// Preview Area
 		Label previewLabel = new Label(colorComposite, SWT.LEFT);
-		previewLabel.setText("Preview:");
+		previewLabel
+				.setText(AcceleoUIMessages.getString("AcceleoEditorColoringPreferencePage.preview.label") + ':'); //$NON-NLS-1$
 		previewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Control previewEditor = createPreviewViewer(colorComposite);
