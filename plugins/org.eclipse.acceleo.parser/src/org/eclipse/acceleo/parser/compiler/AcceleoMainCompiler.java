@@ -42,7 +42,7 @@ public final class AcceleoMainCompiler {
 		acceleoCompilerHelper.setSourceFolder(args[0]);
 		acceleoCompilerHelper.setOutputFolder(args[1]);
 		acceleoCompilerHelper.setBinaryResource(Boolean.valueOf(args[2]).booleanValue());
-		if (args.length == 4) {
+		if (args.length == 4 && args[3] != null && !"".equals(args[3])) { //$NON-NLS-1$
 			acceleoCompilerHelper.setDependencies(args[3]);
 		}
 		acceleoCompilerHelper.execute();
