@@ -186,9 +186,6 @@ public class KeywordSequenceRule implements ISequenceRule {
 				result = false;
 			}
 		}
-		if (result) {
-			shift += readWhitespace(scanner);
-		}
 
 		// Then validate that our keyword is followed by the needed delimiter
 		if (result) {
@@ -201,6 +198,11 @@ public class KeywordSequenceRule implements ISequenceRule {
 			if (followingDelimiter != null) {
 				actualDelimiters.add(followingDelimiter);
 			}
+
+			if (actualDelimiters.size() > 0 && !isWhitespace(actualDelimiters.get(0))) {
+				shift += readWhitespace(scanner);
+			}
+
 			int followingShift = 0;
 			for (String delim : actualDelimiters) {
 				if (ANY_WORD.equals(delim)) {
@@ -285,5 +287,22 @@ public class KeywordSequenceRule implements ISequenceRule {
 		}
 		scanner.unread();
 		return n;
+	}
+
+	/**
+	 * This will be used in order to determine whether the given String is composed of whitespaces only.
+	 * 
+	 * @param string
+	 *            String we are to check.
+	 * @return <code>true</code> if <code>string</code> contains only whitespace, <code>false</code>
+	 *         otherwise.
+	 */
+	private boolean isWhitespace(String string) {
+		for (char c : string.toCharArray()) {
+			if (!Character.isWhitespace(c)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
