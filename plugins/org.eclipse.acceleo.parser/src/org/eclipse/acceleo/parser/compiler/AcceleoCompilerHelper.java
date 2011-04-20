@@ -245,8 +245,14 @@ public final class AcceleoCompilerHelper {
 	 */
 	private void createOutputFiles(List<URI> emtlAbsoluteURIs) {
 		for (URI uri : emtlAbsoluteURIs) {
-			if (!new File(uri.toString()).getParentFile().exists()) {
-				new File(uri.toString()).getParentFile().mkdirs();
+			String tmpUri = uri.toString();
+			String file = "file:"; //$NON-NLS-1$
+			if (tmpUri.startsWith(file)) {
+				tmpUri.substring(file.length());
+			}
+
+			if (!new File(tmpUri).getParentFile().exists()) {
+				new File(tmpUri).getParentFile().mkdirs();
 			}
 		}
 	}
