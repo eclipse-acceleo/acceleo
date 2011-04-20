@@ -243,6 +243,43 @@ public final class AcceleoUIDocumentationUtils {
 	}
 
 	/**
+	 * Returns the text from the EOperation.
+	 * 
+	 * @param eOperation
+	 *            The eOperation
+	 * @return The text from the EOperation.
+	 */
+	public static String getTextFrom(final EOperation eOperation) {
+		StringBuffer buffer = new StringBuffer();
+
+		String parameters = ""; //$NON-NLS-1$
+		for (EParameter eParameter : eOperation.getEParameters()) {
+			parameters += eParameter.getEType().getName() + ' ' + eParameter.getName();
+			if (!eParameter.equals(eOperation.getEParameters().get(eOperation.getEParameters().size() - 1))) {
+				parameters += ", "; //$NON-NLS-1$
+			}
+		}
+
+		buffer.append(HTML_BOLD_BEGIN + eOperation.getEType().getName() + ' ' + eOperation.getName() + '('
+				+ parameters + ')' + HTML_BOLD_END + EOL);
+
+		String name = eOperation.getName();
+		if (name.contains("=")) { //$NON-NLS-1$
+			name = name.replaceAll("=", "EQUALS"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+
+		String documentation = AcceleoUIDocumentationMessages.getString(name + '_'
+				+ eOperation.getEParameters().size());
+		if (!documentation.startsWith("!") && !documentation.endsWith("!")) { //$NON-NLS-1$ //$NON-NLS-2$!
+			buffer.append(documentation.replaceAll("\n", EOL) + EOL); //$NON-NLS-1$
+		} else {
+			return getSignatureFrom((EObject)eOperation);
+		}
+
+		return buffer.toString();
+	}
+
+	/**
 	 * Returns the text from the documentation.
 	 * 
 	 * @param documentation

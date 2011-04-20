@@ -611,6 +611,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 			replacementStringWithArgsAfter += ')';
+			description = AcceleoUIDocumentationUtils.getTextFrom(eOperation);
 			if (description.length() == 0) {
 				if (eOperation.getEContainingClass() != null) {
 					description = "\n" + eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$ //$NON-NLS-2$

@@ -19,6 +19,7 @@ import org.eclipse.acceleo.model.mtl.Documentation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -93,6 +94,8 @@ public class AcceleoDocViewer extends SourceViewer {
 		String text = null;
 		if (input instanceof Documentation) {
 			text = AcceleoUIDocumentationUtils.getTextFrom((Documentation)input);
+		} else if (input instanceof EOperation) {
+			text = AcceleoUIDocumentationUtils.getTextFrom((EOperation)input);
 		} else if (input instanceof EObject) {
 			text = AcceleoUIDocumentationUtils.getSignatureFrom((EObject)input);
 		} else if (input instanceof String) {
