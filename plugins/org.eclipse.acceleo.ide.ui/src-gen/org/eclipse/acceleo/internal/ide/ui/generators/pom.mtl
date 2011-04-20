@@ -23,6 +23,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+         This file will only be created once by Acceleo, it will not be modified after that by Acceleo.
+         If you want Acceleo to recreate this file, delete it and rebuild your project.
+    -->
+
     <groupId>acceleo</groupId>
     <artifactId>[anAcceleoPom.artifactId/]</artifactId>
     <version>1.0.0.SNAPSHOT</version>
@@ -48,32 +53,12 @@
                                     <argument>${basedir}/src/main/java</argument>   <!-- input folder -->
                                     <argument>${basedir}/target/classes/</argument> <!-- output folder -->
                                     <argument>true</argument>   <!-- use binary resources -->
-                                    <argument></argument>  <!-- dependencies -->
+                                    <argument></argument>  <!-- dependencies with other projects -->
                                 </arguments>  
                             </configuration>  
                         </execution>  
                     </executions>  
                 </plugin>
-                <!--
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.6</version>
-                    <executions>
-                        <execution>
-                            <phase>process-test-resources</phase>
-                            <configuration>
-                                <tasks name="generate">
-                                    <ant antfile="${basedir}/buildstandalone.xml" />
-                                </tasks>
-                            </configuration>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                -->
             </plugins>
         </pluginManagement>
     </build>
@@ -101,7 +86,7 @@
                                         <argument>${basedir}/src/main/java</argument>  <!-- input folder -->
                                         <argument>${basedir}/target/classes/</argument>  <!-- output folder -->
                                         <argument>true</argument> <!-- use binary resources -->
-                                        <argument></argument> <!-- dependencies -->  
+                                        <argument></argument> <!-- dependencies with other projects -->  
                                     </arguments>  
                                 </configuration>  
                             </execution>  
