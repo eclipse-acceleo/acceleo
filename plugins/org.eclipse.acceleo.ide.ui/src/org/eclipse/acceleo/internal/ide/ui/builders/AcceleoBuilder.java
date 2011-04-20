@@ -137,7 +137,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
-			validateAcceleoBuildFile(monitor);
+			generateAcceleoBuildFile(monitor);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private void validateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
+	private void generateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
 		if (outputFolder != null && outputFolder.segmentCount() >= 1) {
 			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
@@ -224,52 +224,53 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 										.getName(), })));
 			}
 
-			AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
-			acceleoPom.setArtifactId(getProject().getName());
-			EList<AcceleoPomDependency> pomDependencies = acceleoPom.getDependencies();
+			if (!getProject().getFile("pom.xml").exists()) { //$NON-NLS-1$
+				AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
+				acceleoPom.setArtifactId(getProject().getName());
+				EList<AcceleoPomDependency> pomDependencies = acceleoPom.getDependencies();
 
-			entries = project.getResolvedClasspath().iterator();
-			while (entries.hasNext()) {
-				IPath iPath = entries.next();
-				String classpathEntry = null;
-				if (eclipseWorkspace.isPrefixOf(iPath)) {
-					classpathEntry = iPath.toString().substring(eclipseWorkspace.toString().length());
-				} else if (eclipseHome.isPrefixOf(iPath)) {
-					classpathEntry = iPath.toString().substring(eclipseHome.toString().length());
-				}
+				entries = project.getResolvedClasspath().iterator();
+				while (entries.hasNext()) {
+					IPath iPath = entries.next();
+					String classpathEntry = null;
+					if (eclipseWorkspace.isPrefixOf(iPath)) {
+						classpathEntry = iPath.toString().substring(eclipseWorkspace.toString().length());
+					} else if (eclipseHome.isPrefixOf(iPath)) {
+						classpathEntry = iPath.toString().substring(eclipseHome.toString().length());
+					}
 
-				if (classpathEntry == null) {
-					continue;
-				}
+					if (classpathEntry == null) {
+						continue;
+					}
 
-				AcceleoPomDependency acceleoPomDependency = AcceleowizardmodelFactory.eINSTANCE
-						.createAcceleoPomDependency();
+					AcceleoPomDependency acceleoPomDependency = AcceleowizardmodelFactory.eINSTANCE
+							.createAcceleoPomDependency();
 
-				String artifactId = classpathEntry;
-				if (artifactId.contains("_")) { //$NON-NLS-1$
-					artifactId = artifactId.substring(0, artifactId.indexOf('_'));
-				}
-				if (artifactId.startsWith("plugins/")) { //$NON-NLS-1$
-					artifactId = artifactId.substring("plugins/".length()); //$NON-NLS-1$
-				}
-				acceleoPomDependency.setArtifactId(artifactId);
-				acceleoPomDependency.setGroupId("eclipse"); //$NON-NLS-1$
+					String artifactId = classpathEntry;
+					if (artifactId.contains("_")) { //$NON-NLS-1$
+						artifactId = artifactId.substring(0, artifactId.indexOf('_'));
+					}
+					if (artifactId.startsWith("plugins/")) { //$NON-NLS-1$
+						artifactId = artifactId.substring("plugins/".length()); //$NON-NLS-1$
+					}
+					acceleoPomDependency.setArtifactId(artifactId);
+					acceleoPomDependency.setGroupId("eclipse"); //$NON-NLS-1$
 
-				String version = classpathEntry;
-				if (version.contains("_") && version.indexOf('_') <= version.length()) { //$NON-NLS-1$
-					version = version.substring(version.indexOf('_') + 1);
+					String version = classpathEntry;
+					if (version.contains("_") && version.indexOf('_') <= version.length()) { //$NON-NLS-1$
+						version = version.substring(version.indexOf('_') + 1);
+					}
+					if (version.endsWith(".jar")) { //$NON-NLS-1$
+						version = version.substring(0, version.length() - ".jar".length()); //$NON-NLS-1$
+					}
+					acceleoPomDependency.setVersion(version);
+					acceleoPomDependency.setSystemPath("${basedir}/" //$NON-NLS-1$
+							+ AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile,
+									getProject().getLocation()).toString() + '/' + classpathEntry);
+					pomDependencies.add(acceleoPomDependency);
 				}
-				if (version.endsWith(".jar")) { //$NON-NLS-1$
-					version = version.substring(0, version.length() - ".jar".length()); //$NON-NLS-1$
-				}
-				acceleoPomDependency.setVersion(version);
-				acceleoPomDependency.setSystemPath("${basedir}/" //$NON-NLS-1$
-						+ AcceleoProject
-								.makeRelativeTo(eclipsePathRelativeToFile, getProject().getLocation())
-								.toString() + '/' + classpathEntry);
-				pomDependencies.add(acceleoPomDependency);
+				AcceleoUIGenerator.getDefault().generatePom(acceleoPom, getProject());
 			}
-			AcceleoUIGenerator.getDefault().generatePom(acceleoPom, getProject());
 		}
 	}
 
@@ -316,7 +317,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
 			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
 			compileOperation.run(monitor);
-			validateAcceleoBuildFile(monitor);
+			generateAcceleoBuildFile(monitor);
 		} else {
 			// We have deleted a file, let's build the whole project.
 			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
@@ -325,7 +326,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				this.fullBuild(monitor);
 			}
 		}
-
 	}
 
 	/**
