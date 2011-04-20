@@ -112,10 +112,10 @@ public class AcceleoClasspathContainerWizard extends NewElementWizardPage implem
 
 			if (engineButton.getSelection() && !parserButton.getSelection()) {
 				this.classpathEntry = JavaCore
-						.newContainerEntry(AcceleoClasspathContainer.ACCELEO_CLASSPATH_CONTAINER_PATH_PARSER);
+						.newContainerEntry(AcceleoClasspathContainer.ACCELEO_CLASSPATH_CONTAINER_PATH_ENGINE);
 			} else if (!engineButton.getSelection() && parserButton.getSelection()) {
 				this.classpathEntry = JavaCore
-						.newContainerEntry(AcceleoClasspathContainer.ACCELEO_CLASSPATH_CONTAINER_PATH_ENGINE);
+						.newContainerEntry(AcceleoClasspathContainer.ACCELEO_CLASSPATH_CONTAINER_PATH_PARSER);
 			}
 
 			JavaCore.setClasspathContainer(this.classpathEntry.getPath(), javaProjects, containers, null);
