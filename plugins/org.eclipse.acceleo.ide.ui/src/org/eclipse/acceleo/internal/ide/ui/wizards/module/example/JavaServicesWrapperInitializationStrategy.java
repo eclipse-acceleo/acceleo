@@ -196,6 +196,7 @@ public class JavaServicesWrapperInitializationStrategy implements IAcceleoInitia
 			for (int i = 0; i < types.length; i++) {
 				String typeQualifiedName = types[i].getFullyQualifiedName();
 				AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(exampleFile.getProject());
+				AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
 				try {
 					final Class<?> javaClass = AcceleoWorkspaceUtil.INSTANCE.getClass(typeQualifiedName,
 							false);
