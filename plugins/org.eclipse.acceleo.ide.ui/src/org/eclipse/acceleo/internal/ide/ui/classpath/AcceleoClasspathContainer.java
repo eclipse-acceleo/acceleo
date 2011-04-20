@@ -141,6 +141,8 @@ public class AcceleoClasspathContainer implements IClasspathContainer {
 		}
 		IPath path = new Path(bundlePath);
 
+		System.out.println(path);
+
 		IClasspathEntry libraryEntry = JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
 				new IClasspathAttribute[0], false);
 
@@ -159,6 +161,8 @@ public class AcceleoClasspathContainer implements IClasspathContainer {
 			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
 		}
 		IPath path = new Path(bundlePath);
+
+		System.out.println(path);
 
 		IClasspathEntry libraryEntry = JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
 				new IClasspathAttribute[0], false);
