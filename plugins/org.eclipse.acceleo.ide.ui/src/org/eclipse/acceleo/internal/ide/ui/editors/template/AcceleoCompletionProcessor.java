@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -550,8 +551,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private String getReplacementStringFor(String choiceValue) {
 		if (content.getOCLEnvironment() instanceof AcceleoEnvironment) {
-			AcceleoEnvironment env = (AcceleoEnvironment)content.getOCLEnvironment();
-			if (env.getOCLStandardLibraryReflection().getReservedKeywords().contains(choiceValue)) {
+			if (AcceleoOCLReflection.getReservedKeywords().contains(choiceValue)) {
 				return '_' + choiceValue;
 			}
 		}
