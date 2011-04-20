@@ -1131,5 +1131,20 @@ Contributors:
              class="org.eclipse.acceleo.internal.ide.ui.preferences.AcceleoPreferenceInitializer">
        </initializer>
     </extension>
+    <extension
+          point="org.eclipse.jdt.core.classpathContainerInitializer">
+       <classpathContainerInitializer
+             class="org.eclipse.acceleo.internal.ide.ui.classpath.AcceleoClasspathContainerInitializer"
+             id="org.eclipse.acceleo.ide.ui.ACCELEO_RUNTIME">
+       </classpathContainerInitializer>
+    </extension>
+    <extension
+          point="org.eclipse.jdt.ui.classpathContainerPage">
+       <classpathContainerPage
+             class="org.eclipse.acceleo.internal.ide.ui.classpath.AcceleoClasspathContainerWizard"
+             id="org.eclipse.acceleo.ide.ui.ACCELEO_RUNTIME"
+             name="%containerName">
+       </classpathContainerPage>
+    </extension>
 
 </plugin>
