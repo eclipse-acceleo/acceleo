@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.wizards.IClasspathContainerPage;
 import org.eclipse.jdt.ui.wizards.IClasspathContainerPageExtension;
 import org.eclipse.jdt.ui.wizards.NewElementWizardPage;
@@ -40,6 +39,7 @@ public class AcceleoClasspathContainerWizard extends NewElementWizardPage implem
 	/**
 	 * The Java project.
 	 */
+	@SuppressWarnings("unused")
 	private IJavaProject javaProject;
 
 	/**
@@ -76,7 +76,7 @@ public class AcceleoClasspathContainerWizard extends NewElementWizardPage implem
 		super(AcceleoUIMessages.getString("AcceleoClasspathContainerWizard.PageName")); //$NON-NLS-1$
 		setTitle(AcceleoUIMessages.getString("AcceleoClasspathContainerWizard.PageTitle")); //$NON-NLS-1$
 		setDescription(AcceleoUIMessages.getString("AcceleoClasspathContainerWizard.PageDescription")); //$NON-NLS-1$
-		setImageDescriptor(JavaPluginImages.DESC_WIZBAN_ADD_LIBRARY);
+		setImageDescriptor(AcceleoUIActivator.getImageDescriptor("icons/AcceleoWizard.gif")); //$NON-NLS-1$
 
 		this.classpathEntry = JavaCore
 				.newContainerEntry(AcceleoClasspathContainer.ACCELEO_CLASSPATH_CONTAINER_PATH_RUNTIME);

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.classpath;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.ant.core.Task;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IAccessRule;
@@ -152,73 +155,110 @@ public class AcceleoClasspathContainer implements IClasspathContainer {
 	 */
 	public static List<IClasspathEntry> getAcceleoParserLibraryEntry() {
 		List<IClasspathEntry> libraryEntries = new ArrayList<IClasspathEntry>();
+		final String root = "/"; //$NON-NLS-1$
+		final String jarfile = "jar:file:"; //$NON-NLS-1$
+		final String file = "file:"; //$NON-NLS-1$
+		final String suffix = "!/"; //$NON-NLS-1$
 
-		// parser
-		Bundle bundle = AcceleoWorkspaceUtil.getBundle(AcceleoParser.class);
-		String bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
+		try {
+			// parser
+			Bundle bundle = AcceleoWorkspaceUtil.getBundle(AcceleoParser.class);
+			String bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			IPath path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// common
+			bundle = AcceleoWorkspaceUtil.getBundle(AcceleoCommonPlugin.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// model
+			bundle = AcceleoWorkspaceUtil.getBundle(Template.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// ant
+			bundle = AcceleoWorkspaceUtil.getBundle(Task.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// runtime
+			bundle = AcceleoWorkspaceUtil.getBundle(IPath.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// ocl
+			bundle = AcceleoWorkspaceUtil.getBundle(OCL.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
 		}
-		IPath path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// common
-		bundle = AcceleoWorkspaceUtil.getBundle(AcceleoCommonPlugin.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// model
-		bundle = AcceleoWorkspaceUtil.getBundle(Template.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// ant
-		bundle = AcceleoWorkspaceUtil.getBundle(Task.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// runtime
-		bundle = AcceleoWorkspaceUtil.getBundle(IPath.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// ocl
-		bundle = AcceleoWorkspaceUtil.getBundle(OCL.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
 		return libraryEntries;
 	}
 
@@ -230,61 +270,94 @@ public class AcceleoClasspathContainer implements IClasspathContainer {
 	public static List<IClasspathEntry> getAcceleoEngineLibraryEntry() {
 		List<IClasspathEntry> libraryEntries = new ArrayList<IClasspathEntry>();
 
-		// engine
-		Bundle bundle = AcceleoWorkspaceUtil.getBundle(AcceleoEngine.class);
-		String bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
+		final String root = "/"; //$NON-NLS-1$
+		final String jarfile = "jar:file:"; //$NON-NLS-1$
+		final String file = "file:"; //$NON-NLS-1$
+		final String suffix = "!/"; //$NON-NLS-1$
+
+		try {
+			// engine
+			Bundle bundle = AcceleoWorkspaceUtil.getBundle(AcceleoEngine.class);
+			String bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			IPath path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// common
+			bundle = AcceleoWorkspaceUtil.getBundle(AcceleoCommonPlugin.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// model
+			bundle = AcceleoWorkspaceUtil.getBundle(Template.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// profiler
+			bundle = AcceleoWorkspaceUtil.getBundle(Profiler.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+
+			// ocl
+			bundle = AcceleoWorkspaceUtil.getBundle(OCL.class);
+			bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
+			if (bundlePath.startsWith(jarfile)) {
+				bundlePath = bundlePath.substring(jarfile.length());
+			} else if (bundlePath.startsWith(file)) {
+				bundlePath = bundlePath.substring(file.length());
+			}
+			if (bundlePath.endsWith(suffix)) {
+				bundlePath = bundlePath.substring(0, bundlePath.length() - suffix.length());
+			}
+			path = new Path(bundlePath);
+
+			libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
+					new IClasspathAttribute[0], false));
+		} catch (IOException e) {
+			AcceleoUIActivator.log(e, true);
 		}
-		IPath path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// common
-		bundle = AcceleoWorkspaceUtil.getBundle(AcceleoCommonPlugin.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// model
-		bundle = AcceleoWorkspaceUtil.getBundle(Template.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// profiler
-		bundle = AcceleoWorkspaceUtil.getBundle(Profiler.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
-		// ocl
-		bundle = AcceleoWorkspaceUtil.getBundle(OCL.class);
-		bundlePath = bundle.getLocation();
-		if (bundlePath.startsWith(REFERENCCE_ENTRY)) {
-			bundlePath = bundlePath.substring(REFERENCCE_ENTRY.length());
-		}
-		path = new Path(bundlePath);
-
-		libraryEntries.add(JavaCore.newLibraryEntry(path, null, null, new IAccessRule[0],
-				new IClasspathAttribute[0], false));
-
 		return libraryEntries;
 	}
 
