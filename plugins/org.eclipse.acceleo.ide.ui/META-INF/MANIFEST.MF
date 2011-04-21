@@ -39,7 +39,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.traceability.model,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
- org.eclipse.jdt.core.manipulation
+ org.eclipse.jdt.core.manipulation,
+ org.eclipse.ant.core
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
