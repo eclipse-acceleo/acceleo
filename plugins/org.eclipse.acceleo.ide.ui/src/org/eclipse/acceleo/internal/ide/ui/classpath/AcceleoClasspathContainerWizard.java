@@ -24,9 +24,15 @@ import org.eclipse.jdt.ui.wizards.IClasspathContainerPage;
 import org.eclipse.jdt.ui.wizards.IClasspathContainerPageExtension;
 import org.eclipse.jdt.ui.wizards.NewElementWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The Acceleo Classpath Container wizard.
@@ -90,12 +96,32 @@ public class AcceleoClasspathContainerWizard extends NewElementWizardPage implem
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setFont(parent.getFont());
-		composite.setLayout(new GridLayout(1, false));
+		composite.setLayout(new GridLayout(2, false));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 
 		engineButton = new Button(composite, SWT.CHECK);
+		engineButton.setLayoutData(gridData);
 		engineButton.setText(AcceleoUIMessages.getString("AcceleoClasspathContainerWizard.AcceleoEngine")); //$NON-NLS-1$
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		ToolBar result = new ToolBar(composite, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+		item.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoClasspathContainerWizard.AcceleoEngineDescription")); //$NON-NLS-1$
+
 		parserButton = new Button(composite, SWT.CHECK);
+		parserButton.setLayoutData(gridData);
 		parserButton.setText(AcceleoUIMessages.getString("AcceleoClasspathContainerWizard.AcceleoParser")); //$NON-NLS-1$
+
+		image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		result = new ToolBar(composite, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+		item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+		item.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoClasspathContainerWizard.AcceleoParserDescription")); //$NON-NLS-1$
 
 		setControl(composite);
 	}

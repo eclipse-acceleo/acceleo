@@ -260,8 +260,12 @@ public final class AcceleoUIDocumentationUtils {
 			}
 		}
 
-		buffer.append(HTML_BOLD_BEGIN + eOperation.getEType().getName() + ' ' + eOperation.getName() + '('
-				+ parameters + ')' + HTML_BOLD_END + EOL);
+		String type = ""; //$NON-NLS-1$
+		if (eOperation.getEType() != null) {
+			type = eOperation.getEType().getName();
+		}
+		buffer.append(HTML_BOLD_BEGIN + type + ' ' + eOperation.getName() + '(' + parameters + ')'
+				+ HTML_BOLD_END + EOL);
 
 		String name = eOperation.getName();
 		if (name.contains("=")) { //$NON-NLS-1$
