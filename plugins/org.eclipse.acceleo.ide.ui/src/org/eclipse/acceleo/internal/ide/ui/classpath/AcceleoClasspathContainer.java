@@ -286,7 +286,7 @@ public class AcceleoClasspathContainer implements IClasspathContainer {
 
 		try {
 			Bundle bundle = Platform.getBundle(name);
-			if (bundle != null) {
+			if (bundle != null && bundle.getResource(root) != null) {
 				String bundlePath = FileLocator.resolve(bundle.getResource(root)).toString();
 				if (bundlePath.startsWith(jarfile)) {
 					bundlePath = bundlePath.substring(jarfile.length());
