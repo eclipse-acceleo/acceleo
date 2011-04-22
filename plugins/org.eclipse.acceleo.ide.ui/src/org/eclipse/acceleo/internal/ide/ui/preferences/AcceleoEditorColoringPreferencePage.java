@@ -148,11 +148,9 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	@Override
 	protected Control createContents(Composite parent) {
 		// Link to the general color pages
-		// TODO externalize string
-		final PreferenceLinkArea textEditorLink = new PreferenceLinkArea(parent,
-				SWT.NONE,
+		final PreferenceLinkArea textEditorLink = new PreferenceLinkArea(parent, SWT.NONE,
 				"org.eclipse.ui.preferencePages.GeneralTextEditor", //$NON-NLS-1$
-				"Default colors and font can be configured on the <a>{0}</a> preference page.",
+				AcceleoUIMessages.getString("AcceleoEditorColoringPreferencePage.link"), //$NON-NLS-1$
 				(IWorkbenchPreferenceContainer)getContainer(), null);
 		final GridData linkGrid = new GridData();
 		linkGrid.grabExcessHorizontalSpace = true;
