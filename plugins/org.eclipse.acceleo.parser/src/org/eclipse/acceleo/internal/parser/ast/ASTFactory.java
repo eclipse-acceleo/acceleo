@@ -599,4 +599,11 @@ public class ASTFactory {
 		}
 	}
 
+	/**
+	 * Clears some cache of the ASTFactory.
+	 */
+	public void clear() {
+		this.pOCL.dispose();
+	}
+
 }

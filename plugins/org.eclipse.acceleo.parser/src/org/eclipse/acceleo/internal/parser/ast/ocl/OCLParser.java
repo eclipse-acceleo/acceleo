@@ -1152,6 +1152,7 @@ public class OCLParser {
 	public void dispose() {
 		saveVariableContainer.clear();
 		saveVariableContainingFeature.clear();
+		eOperation2ModuleElement.clear();
 	}
 
 	/**

@@ -1596,4 +1596,11 @@ public class CST2ASTConverter {
 		isCanceled = cancel;
 	}
 
+	/**
+	 * Clears some cache of the CST2ASTConverter.
+	 */
+	public void clear() {
+		this.factory.clear();
+	}
+
 }
