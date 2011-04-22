@@ -55,6 +55,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.dialogs.PreferenceLinkArea;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 /**
  * This page will provide the users a mean to change the colors of the Acceleo template editor, along with a
@@ -145,6 +147,19 @@ public class AcceleoEditorColoringPreferencePage extends PreferencePage implemen
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
+		// Link to the general color pages
+		// TODO externalize string
+		final PreferenceLinkArea textEditorLink = new PreferenceLinkArea(parent,
+				SWT.NONE,
+				"org.eclipse.ui.preferencePages.GeneralTextEditor", //$NON-NLS-1$
+				"Default colors and font can be configured on the <a>{0}</a> preference page.",
+				(IWorkbenchPreferenceContainer)getContainer(), null);
+		final GridData linkGrid = new GridData();
+		linkGrid.grabExcessHorizontalSpace = true;
+		linkGrid.horizontalSpan = 3;
+		linkGrid.horizontalAlignment = GridData.FILL;
+		textEditorLink.getControl().setLayoutData(linkGrid);
+
 		Composite colorComposite = new Composite(parent, SWT.NONE);
 		colorComposite.setLayout(new GridLayout());
 
