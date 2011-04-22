@@ -61,6 +61,9 @@ public class AcceleoRemoveAnnotationJob extends Job {
 			synchronized(getLockObject(model)) {
 				Iterator<Annotation> annotations = model.getAnnotationIterator();
 				while (annotations.hasNext()) {
+					if (monitor.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
 					Annotation annotation = annotations.next();
 					if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
 							.getType())) {
@@ -93,4 +96,14 @@ public class AcceleoRemoveAnnotationJob extends Job {
 		return annotationModel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.jobs.Job#canceling()
+	 */
+	@Override
+	protected void canceling() {
+		this.acceleoEditor = null;
+		super.canceling();
+	}
 }

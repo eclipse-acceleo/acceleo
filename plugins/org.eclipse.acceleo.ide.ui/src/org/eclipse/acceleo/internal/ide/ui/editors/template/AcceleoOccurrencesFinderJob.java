@@ -101,7 +101,9 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
-		if (this.editor.getDocumentProvider() != null && this.editor.getEditorInput() != null) {
+		boolean shouldContinue = this.editor != null && this.editor.getDocumentProvider() != null
+				&& this.editor.getEditorInput() != null;
+		if (!monitor.isCanceled() && shouldContinue) {
 			final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
 					this.editor.getEditorInput());
 			if (annotationModel != null) {
@@ -305,6 +307,18 @@ public class AcceleoOccurrencesFinderJob extends Job {
 		list = OpenDeclarationUtils.getMatchesFromTheFile(list, file);
 
 		return list;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.runtime.jobs.Job#canceling()
+	 */
+	@Override
+	protected void canceling() {
+		this.editor = null;
+		this.query = null;
+		super.canceling();
 	}
 
 }
