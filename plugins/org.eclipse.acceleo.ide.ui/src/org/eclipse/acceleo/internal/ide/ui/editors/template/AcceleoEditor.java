@@ -389,9 +389,13 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		}
 		if (this.removeAnnotationJob != null) {
 			this.removeAnnotationJob.cancel();
+			this.removeAnnotationJob.clear();
+			this.removeAnnotationJob = null;
 		}
 		if (this.occurrencesFinderJob != null) {
 			this.occurrencesFinderJob.cancel();
+			this.occurrencesFinderJob.clear();
+			this.occurrencesFinderJob = null;
 		}
 
 		final IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
@@ -880,6 +884,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			public void textChanged(TextEvent event) {
 				if (removeAnnotationJob != null) {
 					removeAnnotationJob.cancel();
+					removeAnnotationJob.clear();
+					removeAnnotationJob = null;
 				}
 				if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null
 						&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -906,6 +912,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	protected void findOccurrences() {
 		if (occurrencesFinderJob != null) {
 			occurrencesFinderJob.cancel();
+			occurrencesFinderJob.clear();
+			occurrencesFinderJob = null;
 		}
 		int offset;
 		final ISelection selection = this.getSelectionProvider().getSelection();

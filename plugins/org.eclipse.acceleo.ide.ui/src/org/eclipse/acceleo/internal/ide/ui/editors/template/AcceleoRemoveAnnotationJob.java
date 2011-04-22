@@ -106,4 +106,11 @@ public class AcceleoRemoveAnnotationJob extends Job {
 		this.acceleoEditor = null;
 		super.canceling();
 	}
+
+	/**
+	 * Clears the attributes.
+	 */
+	public void clear() {
+		this.acceleoEditor = null;
+	}
 }

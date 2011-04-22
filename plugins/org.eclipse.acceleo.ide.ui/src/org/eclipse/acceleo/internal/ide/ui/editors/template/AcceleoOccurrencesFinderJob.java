@@ -144,6 +144,8 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
+		editor = null;
+		query = null;
 		return status;
 	}
 
@@ -169,7 +171,9 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			Block block = (Block)astNode;
 			if (block.getBody() != null && block.getBody().size() > 0) {
 				OCLExpression startBody = block.getBody().get(0);
-				if (!startBody.eIsProxy()) {
+				if (!startBody.eIsProxy()
+						|| (startBody.getStartPosition() >= block.getStartPosition() && startBody
+								.getStartPosition() <= block.getEndPosition())) {
 					Position startPosition = new Position(block.getStartPosition(), startBody
 							.getStartPosition()
 							- 1 - block.getStartPosition());
@@ -319,6 +323,14 @@ public class AcceleoOccurrencesFinderJob extends Job {
 		this.editor = null;
 		this.query = null;
 		super.canceling();
+	}
+
+	/**
+	 * Clears the attributes.
+	 */
+	public void clear() {
+		this.editor = null;
+		this.query = null;
 	}
 
 }
