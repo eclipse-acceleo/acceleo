@@ -268,10 +268,10 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 	 * @return The completion processor that is to be used.
 	 */
 	public IContentAssistProcessor createContentAssistProcessor(ISourceViewer sourceViewer) {
-		IContentAssistProcessor processor;
+		IContentAssistProcessor processor = null;
 		if (editor != null) {
 			processor = new AcceleoCompletionProcessor(editor.getContent());
-		} else {
+		} else if (sourceViewer.getDocument() != null) {
 			// Initialize a new source content
 			AcceleoSourceContent content = new AcceleoSourceContent();
 			content.init(new StringBuffer(sourceViewer.getDocument().get()));
