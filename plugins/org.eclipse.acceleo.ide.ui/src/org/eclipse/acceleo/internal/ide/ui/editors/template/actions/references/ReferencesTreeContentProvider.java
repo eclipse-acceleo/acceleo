@@ -162,7 +162,9 @@ public class ReferencesTreeContentProvider implements ITreeContentProvider {
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
 	public void dispose() {
-		// nothing to do here
+		viewer = null;
+		result = null;
+		map.clear();
 	}
 
 	/**

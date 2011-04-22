@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -21,7 +23,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.search.ui.text.AbstractTextSearchViewPage;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.IShowInTargetList;
 
 /**
@@ -134,9 +137,14 @@ public class ReferencesSearchViewPage extends AbstractTextSearchViewPage impleme
 			fileURI = null;
 		}
 		if (fileURI != null) {
-			IWorkbenchPage page = entry.getEditor().getSite().getPage();
-			OpenDeclarationUtils
-					.showEObject(page, fileURI, new Region(currentOffset, currentLength), eObject);
+			IFile moduleFile = entry.getTemplateFile();
+			try {
+				IDE.openEditor(getSite().getPage(), moduleFile);
+				OpenDeclarationUtils.showEObject(getSite().getPage(), fileURI, new Region(currentOffset,
+						currentLength), eObject);
+			} catch (PartInitException e) {
+				AcceleoUIActivator.log(e, false);
+			}
 		}
 	}
 }
