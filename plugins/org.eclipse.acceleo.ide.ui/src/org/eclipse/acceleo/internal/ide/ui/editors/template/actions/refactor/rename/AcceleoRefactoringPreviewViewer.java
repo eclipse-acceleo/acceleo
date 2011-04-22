@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.actions.refactor.re
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoConfiguration;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.contentmergeviewer.TextMergeViewer;
@@ -23,9 +22,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * This class define the viewer that compose the preview system during the refactoring.
@@ -54,30 +50,8 @@ public class AcceleoRefactoringPreviewViewer extends TextMergeViewer {
 	@Override
 	protected void configureTextViewer(TextViewer textViewer) {
 		if (textViewer instanceof ISourceViewer) {
-			if (PlatformUI.getWorkbench() == null
-					|| PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
-					|| PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null) {
-				return;
-			}
-
-			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-			if (page.getActiveEditor() instanceof AcceleoEditor) {
-				AcceleoEditor editor = (AcceleoEditor)page.getActiveEditor();
-
-				((SourceViewer)textViewer).configure(new AcceleoConfiguration(editor, AcceleoUIActivator
-						.getDefault().getPreferenceStore()));
-			} else {
-				IEditorReference[] editors = page.getEditorReferences();
-				for (IEditorReference iEditorReference : editors) {
-					if (iEditorReference.getEditor(false) instanceof AcceleoEditor) {
-						AcceleoEditor editor = (AcceleoEditor)iEditorReference.getEditor(false);
-						((SourceViewer)textViewer).configure(new AcceleoConfiguration(editor,
-								AcceleoUIActivator.getDefault().getPreferenceStore()));
-						break;
-					}
-				}
-			}
+			((SourceViewer)textViewer).configure(new AcceleoConfiguration(AcceleoUIActivator.getDefault()
+					.getPreferenceStore()));
 		}
 		textViewer.refresh();
 	}
