@@ -20,8 +20,6 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * The folding viewer, used to show the folded code.
@@ -68,12 +66,7 @@ public class AcceleoFoldingViewer extends SourceViewer {
 	protected void createControl(Composite parent, int styles) {
 		super.createControl(parent, styles);
 
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (page.getActiveEditor() instanceof AcceleoEditor) {
-			AcceleoEditor editor = (AcceleoEditor)page.getActiveEditor();
-			this.configure(new AcceleoConfiguration(editor, AcceleoUIActivator.getDefault()
-					.getPreferenceStore()));
-		}
+		this.configure(new AcceleoConfiguration(AcceleoUIActivator.getDefault().getPreferenceStore()));
 	}
 
 	/**
