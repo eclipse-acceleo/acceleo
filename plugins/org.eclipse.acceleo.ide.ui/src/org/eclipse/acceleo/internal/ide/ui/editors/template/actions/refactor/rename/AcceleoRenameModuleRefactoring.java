@@ -367,17 +367,22 @@ public class AcceleoRenameModuleRefactoring extends Refactoring {
 				public ChangeDescriptor getDescriptor() {
 					Map<String, String> arguments = new HashMap<String, String>();
 					final String project = fProject.getName();
-					final String description = AcceleoUIMessages
-							.getString("AcceleoEditorRenameModuleRefactoring.RenamingModule") //$NON-NLS-1$
-							+ " " //$NON-NLS-1$
-							+ fModule.getName();
-					final String comment = AcceleoUIMessages.getString(
-							"AcceleoEditorRenameModuleRefactoring.RenamingModuleWithNewName", //$NON-NLS-1$
-							fModule.getName(), fNewModuleName);
-					arguments.put(MODULE, fModule.getName());
-					arguments.put(NEWNAME, fNewModuleName);
+					if (fModule != null) {
+						final String description = AcceleoUIMessages
+								.getString("AcceleoEditorRenameModuleRefactoring.RenamingModule") //$NON-NLS-1$
+								+ " " //$NON-NLS-1$
+								+ fModule.getName();
+						final String comment = AcceleoUIMessages.getString(
+								"AcceleoEditorRenameModuleRefactoring.RenamingModuleWithNewName", //$NON-NLS-1$
+								fModule.getName(), fNewModuleName);
+						arguments.put(MODULE, fModule.getName());
+						arguments.put(NEWNAME, fNewModuleName);
+						return new RefactoringChangeDescriptor(new AcceleoRenameVariableDescriptor(project,
+								description, comment, arguments));
+					}
 					return new RefactoringChangeDescriptor(new AcceleoRenameVariableDescriptor(project,
-							description, comment, arguments));
+							"", "", //$NON-NLS-1$ //$NON-NLS-2$
+							arguments));
 				}
 			};
 
