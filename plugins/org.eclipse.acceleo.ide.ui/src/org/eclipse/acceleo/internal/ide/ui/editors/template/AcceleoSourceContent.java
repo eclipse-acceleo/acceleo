@@ -850,12 +850,15 @@ public class AcceleoSourceContent {
 						oclParser.pushContext(eContext);
 					}
 					try {
-						return order(oclParser.getSyntaxHelp(text), oclParser);
+						Collection<Choice> order = order(oclParser.getSyntaxHelp(text), oclParser);
+						oclParser.dispose();
+						return order;
 					} finally {
 						if (eContext != null) {
 							oclParser.popContext();
 						}
 						syntaxHelpUnloadJob.run();
+						oclParser.dispose();
 					}
 				}
 			}
@@ -1219,6 +1222,7 @@ public class AcceleoSourceContent {
 				while (resources.hasNext()) {
 					resources.next().unload();
 				}
+				oclParser.dispose();
 				return result;
 			}
 		}
