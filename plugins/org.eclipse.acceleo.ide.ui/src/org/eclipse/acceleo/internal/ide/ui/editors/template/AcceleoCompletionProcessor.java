@@ -1130,7 +1130,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementStringBefore = '[' + IAcceleoConstants.TEMPLATE + ' '
 					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
 			String replacementStringAfter = "${name}(" + "${arg}" + " : ${" + defaultVariableType + "})]\n" + tab //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					+ '\t' + '\n' + tab + '[' + '/' + IAcceleoConstants.TEMPLATE + ']';
+					+ '\t'
+					+ "${template_expression}" + '\n' + tab + '[' + '/' + IAcceleoConstants.TEMPLATE + ']'; //$NON-NLS-1$
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
 					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.TEMPLATE + ']',
@@ -1211,6 +1212,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private void computeBlocksPatternsProposalsSub(List<ICompletionProposal> proposals, String start,
 			String tab, Image patternImage) {
+		final String cursor = "${block_expression}"; //$NON-NLS-1$
 		if (IAcceleoConstants.DEFAULT_BEGIN.startsWith(start.toLowerCase())) {
 			String replacementStringBefore = "[${expression}"; //$NON-NLS-1$
 			String replacementStringAfter = "/]"; //$NON-NLS-1$
@@ -1228,7 +1230,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						tab + virtualText + tab + '[' + '/' + IAcceleoConstants.FOR + ']' + '\n';
 			} else {
 				replacementStringAfter = "${it} : ${" + defaultVariableType + "} | ${expression})]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$
-						+ '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
+						+ cursor + '\n' + tab + '[' + '/' + IAcceleoConstants.FOR + ']';
 			}
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length()
@@ -1244,7 +1246,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				replacementStringAfter = "${condition})]\n" + tab + virtualText + tab + '[' //$NON-NLS-1$
 						+ '/' + IAcceleoConstants.IF + ']' + '\n';
 			} else {
-				replacementStringAfter = "${condition})]\n" + tab + '\t' + '\n' + tab + '[' //$NON-NLS-1$
+				replacementStringAfter = "${condition})]\n" + tab + '\t' + cursor + '\n' + tab + '[' //$NON-NLS-1$
 						+ '/' + IAcceleoConstants.IF + ']';
 			}
 			String replacementString = replacementStringBefore + replacementStringAfter;
@@ -1260,7 +1262,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (IAcceleoConstants.LET.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.LET).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.LET + ' ';
-			String replacementStringAfter = "${var}" + " : ${" + defaultVariableType + "} = ${self}]\n" + tab + '\t' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String replacementStringAfter = "${var}" + " : ${" + defaultVariableType + "} = ${self}]\n" + tab + '\t' + cursor //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ '\n' + tab + '[' + '/' + IAcceleoConstants.LET + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
@@ -1270,7 +1272,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (IAcceleoConstants.TRACE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.TRACE).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.TRACE + " ('"; //$NON-NLS-1$
-			String replacementStringAfter = "${message}')]\n" + tab + '\t' + '\n' + tab + '[' //$NON-NLS-1$
+			String replacementStringAfter = "${message}')]\n" + tab + '\t' + cursor + '\n' + tab + '[' //$NON-NLS-1$
 					+ '/' + IAcceleoConstants.TRACE + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
@@ -1280,7 +1282,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (IAcceleoConstants.PROTECTED_AREA.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.PROTECTED_AREA).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.PROTECTED_AREA + " ('"; //$NON-NLS-1$
-			String replacementStringAfter = "${protected}')]\n" + tab + '\t' + '\n' + tab + '[' //$NON-NLS-1$
+			String replacementStringAfter = "${protected}')]\n" + tab + '\t' + cursor + '\n' + tab + '[' //$NON-NLS-1$
 					+ '/' + IAcceleoConstants.PROTECTED_AREA + ']';
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
@@ -1393,7 +1395,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			defaultEncoding = System.getProperty("file.encoding"); //$NON-NLS-1$
 		}
 		String replacementStringAfter = ", ${false}, '" + defaultEncoding //$NON-NLS-1$
-				+ "')]\n" + tab + '\t' + '\n' + tab + '[' + '/' //$NON-NLS-1$
+				+ "')]\n" + tab + '\t' + "${file_expression}" + '\n' + tab + '[' + '/' //$NON-NLS-1$ //$NON-NLS-2$
 				+ IAcceleoConstants.FILE + ']';
 		String replacementString = replacementStringBefore + replacementStringAfter;
 		String displayString = '[' + IAcceleoConstants.FILE + ']';
