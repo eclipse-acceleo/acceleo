@@ -49,6 +49,7 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This class provides utility methods to launch the generation of an Acceleo template.
@@ -467,12 +468,15 @@ public final class AcceleoService {
 					"AcceleoService.TypeIsProxy", templateName)); //$NON-NLS-1$
 		}
 
+		boolean generatedHasOccurred = false;
+
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			final List<Object> actualArguments = new ArrayList<Object>();
 			actualArguments.add(model);
 			actualArguments.addAll(arguments);
 			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
+			generatedHasOccurred = true;
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -482,7 +486,13 @@ public final class AcceleoService {
 				actualArguments.add(potentialTarget);
 				actualArguments.addAll(arguments);
 				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
+				generatedHasOccurred = true;
 			}
+		}
+
+		if (!generatedHasOccurred) {
+			AcceleoEnginePlugin.log(AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred", //$NON-NLS-1$
+					templateName, EcoreUtil.getURI(argumentType)), false);
 		}
 
 		return previewResult;
@@ -544,10 +554,14 @@ public final class AcceleoService {
 		// Calls the template with each potential arguments
 		final EClassifier argumentType = template.getParameter().get(0).getType();
 		final List<Object> arguments = new ArrayList<Object>();
+
+		boolean generatedHasOccurred = false;
+
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			arguments.add(model);
 			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+			generatedHasOccurred = true;
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -556,7 +570,13 @@ public final class AcceleoService {
 				arguments.clear();
 				arguments.add(potentialTarget);
 				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+				generatedHasOccurred = true;
 			}
+		}
+
+		if (!generatedHasOccurred) {
+			AcceleoEnginePlugin.log(AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred", //$NON-NLS-1$
+					template.getName(), EcoreUtil.getURI(argumentType)), false);
 		}
 
 		return previewResult;
