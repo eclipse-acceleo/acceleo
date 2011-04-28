@@ -704,7 +704,7 @@ public final class AcceleoService {
 			if (acceleoListenerDescriptor.getNature() == null) {
 				// If we are in stand alone, only use the descriptors without nature
 				descriptorsUsed.add(acceleoListenerDescriptor);
-			} else if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			} else if (EMFPlugin.IS_ECLIPSE_RUNNING && generationRoot != null) {
 				// Check the nature of the output project
 				IPath location = new Path(generationRoot.getAbsolutePath());
 				IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
