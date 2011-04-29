@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.rules;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
@@ -97,6 +98,7 @@ public class KeywordRule implements ISequenceRule {
 	 * @see org.eclipse.acceleo.ide.ui.editors.template.rules.ISequenceRule#read(org.eclipse.jface.text.rules.ICharacterScanner)
 	 */
 	public int read(ICharacterScanner scanner) {
+		int result = 0;
 		if (keyword.length() > 0) {
 			int shift = 0;
 			boolean valid = true;
@@ -116,8 +118,33 @@ public class KeywordRule implements ISequenceRule {
 				}
 			}
 			if (valid && (!wholeWord || nextIsNotIdentifierPart(scanner))) {
-				return keyword.length();
+				result = keyword.length();
 			}
+
+			if (result != 0 && IAcceleoConstants.LITERAL_ESCAPE.equals(keyword)) {
+				int tmpShift = shift;
+				while (shift > 0) {
+					scanner.unread();
+					shift--;
+				}
+				// Read the previous character
+				scanner.unread();
+				int read = scanner.read();
+				// Check if "\" is before "\'"
+				if (read == '\\') {
+					result = 0;
+				} else if (shift < tmpShift) {
+					while (shift < tmpShift) {
+						scanner.read();
+						shift++;
+					}
+				}
+			}
+
+			if (result != 0) {
+				return result;
+			}
+
 			while (shift > 0) {
 				scanner.unread();
 				shift--;
