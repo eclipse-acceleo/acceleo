@@ -184,6 +184,9 @@ public final class JavaServicesUtils {
 				if (lastDot > -1) {
 					result = result.substring(lastDot + 1);
 				}
+				if (result.endsWith(";")) { //$NON-NLS-1$
+					result = result.substring(0, result.length() - 1);
+				}
 			}
 		} else {
 			result = "OclVoid"; //$NON-NLS-1$
