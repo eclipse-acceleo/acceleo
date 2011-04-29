@@ -247,7 +247,9 @@ public class AcceleoSourceContent {
 				protected IStatus run(IProgressMonitor monitor) {
 					ast = null;
 					runCreateAST();
-					astCreator.canceling(false);
+					if (astCreator != null) {
+						astCreator.canceling(false);
+					}
 					return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, "OK"); //$NON-NLS-1$
 				}
 

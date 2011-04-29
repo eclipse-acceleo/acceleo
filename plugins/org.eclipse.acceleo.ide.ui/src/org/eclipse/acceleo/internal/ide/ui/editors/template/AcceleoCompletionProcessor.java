@@ -98,17 +98,17 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	/**
 	 * The current text viewer.
 	 */
-	private ITextViewer textViewer;
+	protected ITextViewer textViewer;
 
 	/**
 	 * The source content.
 	 */
-	private AcceleoSourceContent content;
+	protected AcceleoSourceContent content;
 
 	/**
 	 * The text used to compute the proposals.
 	 */
-	private String text;
+	protected String text;
 
 	/**
 	 * An offset within the text for which completions should be computed.
@@ -161,17 +161,16 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int pos) {
 		textViewer = viewer;
+		setText(viewer);
 		if (viewer != null) {
-			text = viewer.getDocument().get();
 			ITextSelection selection = (ITextSelection)viewer.getSelectionProvider().getSelection();
 			if (selection != null && selection.getOffset() == pos) {
-				offset = selection.getOffset() + selection.getLength();
+				setCompletionOffset(selection.getOffset() + selection.getLength());
 			} else {
-				offset = pos;
+				setCompletionOffset(pos);
 			}
 		} else {
-			text = content.getText();
-			offset = pos;
+			setCompletionOffset(pos);
 		}
 		cstNode = content.getCSTNode(offset, offset);
 		if (cstNode instanceof InitSection && offset == cstNode.getStartPosition()
@@ -184,7 +183,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		} finally {
 			textViewer = null;
 			text = null;
-			offset = 0;
+			setCompletionOffset(0);
 			cstNode = null;
 		}
 	}
@@ -439,7 +438,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 							}
 							if (!duplicated.contains(next.getDescription())) {
 								duplicated.add(next.getDescription());
-								proposals.add(new CompletionProposal(replacementString, offset
+								proposals.add(createCompletionProposal(replacementString, offset
 										- start.length(), start.length(), replacementString.length(), image,
 										next.getDescription(), null, description));
 							}
@@ -500,18 +499,18 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						}
 						if (!duplicated.contains(displayProperty)) {
 							duplicated.add(displayProperty);
-							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
-									.length(), replacement.length(), AcceleoUIActivator.getDefault()
-									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.PROPERTY),
+							proposals.add(createCompletionProposal(replacement, offset - start.length(),
+									start.length(), replacement.length(), AcceleoUIActivator.getDefault()
+											.getImage("icons/template-editor/completion/Property.gif"), //$NON-NLS-1$
 									displayProperty, null, descriptionProperty));
 						}
 						break;
 					case ENUMERATION_LITERAL:
 						if (!duplicated.contains(choiceValue)) {
 							duplicated.add(choiceValue);
-							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
-									.length(), replacement.length(), AcceleoUIActivator.getDefault()
-									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.ENUM_LITERAL),
+							proposals.add(createCompletionProposal(replacement, offset - start.length(),
+									start.length(), replacement.length(), AcceleoUIActivator.getDefault()
+											.getImage("icons/template-editor/completion/EnumLiteral.gif"), //$NON-NLS-1$
 									choiceValue, null, next.getDescription()));
 						}
 						break;
@@ -527,9 +526,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						}
 						if (!duplicated.contains(displayVariable)) {
 							duplicated.add(displayVariable);
-							proposals.add(new CompletionProposal(replacement, offset - start.length(), start
-									.length(), replacement.length(), AcceleoUIActivator.getDefault()
-									.getImage(IAcceleoContantsImage.TemplateEditor.Completion.VARIABLE),
+							proposals.add(createCompletionProposal(replacement, offset - start.length(),
+									start.length(), replacement.length(), AcceleoUIActivator.getDefault()
+											.getImage("icons/template-editor/completion/Variable.gif"), //$NON-NLS-1$
 									displayVariable, null, description));
 						}
 						break;
@@ -635,7 +634,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 					replacementString = getReplacementStringFor(replacementString.substring(0,
 							replacementString.indexOf('(')));
 				}
-				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+				proposals.add(createCompletionProposal(replacementString, offset - start.length(), start
 						.length(), replacementString.length(), image, nextOperationChoice.getDescription(),
 						null, nextOperationChoice.getDescription() + description));
 			}
@@ -765,7 +764,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		while (entries.hasNext()) {
 			String pURI = entries.next();
 			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
-				proposals.add(new CompletionProposal(pURI, offset - start.length(), start.length(), pURI
+				proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(), pURI
 						.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI, null, pURI));
 			}
 		}
@@ -777,7 +776,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (ePackage != null) {
 					String shortName = ePackage.getName();
 					if (shortName.startsWith(start.toLowerCase())) {
-						proposals.add(new CompletionProposal(pURI, offset - start.length(), start.length(),
+						proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(),
 								pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
 								null, pURI));
 					}
@@ -790,14 +789,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			for (IFile ecoreFile : ecoreFiles) {
 				String ecorePath = ecoreFile.getFullPath().toString();
 				if (ecorePath.toLowerCase().startsWith(start.toLowerCase())) {
-					proposals.add(new CompletionProposal(ecorePath, offset - start.length(), start.length(),
-							ecorePath.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath),
-							ecorePath, null, ecorePath));
+					proposals.add(createCompletionProposal(ecorePath, offset - start.length(),
+							start.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
+									uriImagePath), ecorePath, null, ecorePath));
 				}
 				if (start.length() > 0) {
 					String shortName = new Path(ecorePath).removeFileExtension().lastSegment();
 					if (shortName.startsWith(start.toLowerCase())) {
-						proposals.add(new CompletionProposal(ecorePath, offset - start.length(), start
+						proposals.add(createCompletionProposal(ecorePath, offset - start.length(), start
 								.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
 								uriImagePath), ecorePath, null, ecorePath));
 					}
@@ -878,11 +877,11 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 										IAcceleoContantsImage.TemplateEditor.Completion.TYPE), eClassifier
 										.getName(), null, name));
 					} else {
-						proposals.add(new CompletionProposal(eClassifier.getName(), offset - start.length(),
-								start.length(), eClassifier.getName().length(), AcceleoUIActivator
-										.getDefault().getImage(
-												IAcceleoContantsImage.TemplateEditor.Completion.TYPE),
-								eClassifier.getName(), null, eClassifier.getName()));
+						proposals.add(createCompletionProposal(eClassifier.getName(),
+								offset - start.length(), start.length(), eClassifier.getName().length(),
+								AcceleoUIActivator.getDefault().getImage(
+										"icons/template-editor/completion/Type.gif"), eClassifier.getName(), //$NON-NLS-1$
+								null, eClassifier.getName()));
 					}
 
 				}
@@ -1038,7 +1037,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (IAcceleoConstants.ELSE.startsWith(start.toLowerCase())
 						|| ('[' + IAcceleoConstants.ELSE).startsWith(start.toLowerCase())) {
 					String replacementString = '[' + IAcceleoConstants.ELSE + ']' + '\n' + tab + '\t';
-					proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+					proposals.add(createCompletionProposal(replacementString, offset - start.length(), start
 							.length(), replacementString.length(), patternImage,
 							'[' + IAcceleoConstants.ELSE + ']', null, replacementString));
 				}
@@ -1058,7 +1057,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (IAcceleoConstants.ELSE.startsWith(start.toLowerCase())
 						|| ('[' + IAcceleoConstants.ELSE).startsWith(start.toLowerCase())) {
 					String replacementString = '[' + IAcceleoConstants.ELSE + ']' + '\n' + tab + '\t';
-					proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+					proposals.add(createCompletionProposal(replacementString, offset - start.length(), start
 							.length(), replacementString.length(), patternImage,
 							'[' + IAcceleoConstants.ELSE + ']', null, replacementString));
 				}
@@ -1072,7 +1071,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				String replacementStringBefore = '[' + IAcceleoConstants.COMMENT + ' ';
 				String replacementStringAfter = " /]\n" + tab; //$NON-NLS-1$
 				String replacementString = replacementStringBefore + replacementStringAfter;
-				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+				proposals.add(createCompletionProposal(replacementString, offset - start.length(), start
 						.length(), replacementStringBefore.length(), patternImage,
 						'[' + IAcceleoConstants.COMMENT + ']', null, replacementString));
 			}
@@ -1104,7 +1103,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				String replacementStringBefore = '[' + IAcceleoConstants.COMMENT + ' '
 						+ IAcceleoConstants.TAG_MAIN + ' ' + "/]\n" + tab; //$NON-NLS-1$
 				String replacementString = replacementStringBefore;
-				proposals.add(new CompletionProposal(replacementString, offset - start.length(), start
+				proposals.add(createCompletionProposal(replacementString, offset - start.length(), start
 						.length(), replacementStringBefore.length(), patternImage,
 						IAcceleoConstants.TAG_MAIN, null, replacementString));
 			}
@@ -1293,19 +1292,21 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				|| ('[' + IAcceleoConstants.SUPER).startsWith(start.toLowerCase())) {
 			String replacementStringBefore = '[' + IAcceleoConstants.SUPER + "/]\n" + tab; //$NON-NLS-1$
 			String replacementString = replacementStringBefore;
-			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), patternImage, '[' + IAcceleoConstants.SUPER + ']',
-					null, replacementString));
+			proposals.add(createCompletionProposal(replacementString, offset - start.length(),
+					start.length(), replacementStringBefore.length(), patternImage,
+					'[' + IAcceleoConstants.SUPER + ']', null, replacementString));
 		}
 		if (IAcceleoConstants.DEFAULT_BEGIN.startsWith(start.toLowerCase())) {
 			String replacementString = "[ '[' /] "; //$NON-NLS-1$
-			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementString.length(), patternImage, "'['", null, replacementString)); //$NON-NLS-1$
+			proposals
+					.add(createCompletionProposal(replacementString, offset - start.length(), start.length(),
+							replacementString.length(), patternImage, "'['", null, replacementString)); //$NON-NLS-1$
 		}
 		if ("".equals(start.toLowerCase())) { //$NON-NLS-1$
 			String replacementString = "[ ']' /] "; //$NON-NLS-1$
-			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementString.length(), patternImage, "']'", null, replacementString)); //$NON-NLS-1$
+			proposals
+					.add(createCompletionProposal(replacementString, offset - start.length(), start.length(),
+							replacementString.length(), patternImage, "']'", null, replacementString)); //$NON-NLS-1$
 		}
 	}
 
@@ -1691,8 +1692,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String replacementStringBefore, String replacementStringAfter, Image keywordImage) {
 		String replacementString = replacementStringBefore + replacementStringAfter;
 		if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
-			proposals.add(new CompletionProposal(replacementString, offset - start.length(), start.length(),
-					replacementStringBefore.length(), keywordImage, replacementString, null,
+			proposals.add(createCompletionProposal(replacementString, offset - start.length(),
+					start.length(), replacementStringBefore.length(), keywordImage, replacementString, null,
 					replacementString));
 		}
 	}
@@ -1767,7 +1768,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 *            the additional information associated with this proposal
 	 */
 	// CHECKSTYLE:OFF (8 parameters)
-	private ICompletionProposal createTemplateProposal(String replacementString, int replacementOffset,
+	protected ICompletionProposal createTemplateProposal(String replacementString, int replacementOffset,
 			int replacementLength, int cursorPosition, Image image, String displayString,
 			IContextInformation contextInformation, String additionalProposalInfo) {
 		String info = additionalProposalInfo;
@@ -1783,8 +1784,63 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			Region region = new Region(replacementOffset, replacementLength);
 			return new AcceleoCompletionTemplateProposal(template, context, region, image, info);
 		}
-		return new CompletionProposal(replacementString, replacementOffset, replacementLength,
+		return createCompletionProposal(replacementString, replacementOffset, replacementLength,
 				cursorPosition, image, displayString, contextInformation, info);
 	}
+
+	/**
+	 * Creates an instance of {@link CompletionProposal} given all of the mandatory information.
+	 * 
+	 * @param replacementString
+	 *            the actual string to be inserted into the document.
+	 * @param replacementOffset
+	 *            the offset of the text to be replaced.
+	 * @param replacementLength
+	 *            the length of the text to be replaced.
+	 * @param cursorPosition
+	 *            the position of the cursor following the insert relative to replacementOffset.
+	 * @param image
+	 *            the image to display for this proposal.
+	 * @param displayString
+	 *            the string to be displayed for the proposal.
+	 * @param contextInformation
+	 *            the context information associated with this proposal.
+	 * @param additionalProposalInfo
+	 *            the additional information associated with this proposal.
+	 * @return The created completion proposal instance.
+	 */
+	protected ICompletionProposal createCompletionProposal(String replacementString, int replacementOffset,
+			int replacementLength, int cursorPosition, Image image, String displayString,
+			IContextInformation contextInformation, String additionalProposalInfo) {
+		return new CompletionProposal(replacementString, replacementOffset, replacementLength,
+				cursorPosition, image, displayString, contextInformation, additionalProposalInfo);
+	}
+
 	// CHECKSTYLE:ON
+
+	/**
+	 * This will be used to write the "offset" field in order to alter the point in the text where completion
+	 * is demanded.
+	 * 
+	 * @param newOffset
+	 *            The new offset.
+	 */
+	protected void setCompletionOffset(int newOffset) {
+		offset = newOffset;
+	}
+
+	/**
+	 * This will be used to write the "text" field with the whole text for which completion is needed.
+	 * 
+	 * @param viewer
+	 *            Viewer from which to retrieve the text.
+	 */
+	protected void setText(ITextViewer viewer) {
+		if (viewer != null) {
+			text = viewer.getDocument().get();
+		} else {
+			text = content.getText();
+		}
+	}
+
 }
