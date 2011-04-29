@@ -13,6 +13,8 @@ package org.eclipse.acceleo.internal.parser.cst.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
+
 /**
  * The configuration of a sequence to parse.
  * 
@@ -152,6 +154,13 @@ public class Sequence implements ISequence {
 		} else {
 			result = true;
 		}
+
+		if (result && IAcceleoConstants.LITERAL_ESCAPE.equals(tag) && pos > 1
+				&& "\\".equals(buffer.substring(pos - 1, pos))) { //$NON-NLS-1$
+			// We have found the string escape token but we have the escape token before.
+			result = false;
+		}
+
 		return result;
 	}
 
