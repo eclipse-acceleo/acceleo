@@ -708,6 +708,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			List<? extends TypedElement<EClassifier>> args) {
 		Variable<EClassifier, EParameter> vdlc = null;
 
+		boolean found = false;
+
 		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
 		Collection<Deque<VariableEntry>> values = last.values();
 		for (Deque<VariableEntry> deque : values) {
@@ -715,18 +717,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				vdlc = variableEntry.variable;
 				EClassifier owner = vdlc.getType();
 
-				if (variableEntry.isExplicit || owner == null || lookupOperation(owner, name, args) == null) {
-					vdlc = null;
+				if (!variableEntry.isExplicit && owner != null) {
+					EOperation operation = lookupOperation(owner, name, args);
+					if (operation != null) {
+						found = true;
+						break;
+					}
 				}
+			}
+			if (found) {
+				break;
 			}
 		}
 
-		if (vdlc == null) {
+		if (!found) {
 			vdlc = getSelfVariable();
 			if (vdlc != null) {
 				EClassifier owner = vdlc.getType();
-				if (owner == null || lookupOperation(owner, name, args) == null) {
-					vdlc = null;
+				if (owner != null && lookupOperation(owner, name, args) != null) {
+					return vdlc;
 				}
 			}
 		}
@@ -743,6 +752,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	public Variable<EClassifier, EParameter> lookupImplicitSourceForProperty(String name) {
 		Variable<EClassifier, EParameter> vdlc = null;
 
+		boolean found = false;
+
 		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
 		Collection<Deque<VariableEntry>> values = last.values();
 		for (Deque<VariableEntry> deque : values) {
@@ -750,18 +761,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				vdlc = variableEntry.variable;
 				EClassifier owner = vdlc.getType();
 
-				if (variableEntry.isExplicit || owner == null || safeTryLookupProperty(owner, name) == null) {
-					vdlc = null;
+				if (!variableEntry.isExplicit && owner != null) {
+					EStructuralFeature property = safeTryLookupProperty(owner, name);
+					if (property != null) {
+						found = true;
+						break;
+					}
 				}
+			}
+			if (found) {
+				break;
 			}
 		}
 
-		if (vdlc == null) {
+		if (!found) {
 			vdlc = getSelfVariable();
 			if (vdlc != null) {
 				EClassifier owner = vdlc.getType();
-				if (owner == null || safeTryLookupProperty(owner, name) == null) {
-					vdlc = null;
+				if (owner != null && safeTryLookupProperty(owner, name) != null) {
+					return vdlc;
 				}
 			}
 		}
@@ -904,6 +922,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	public Variable<EClassifier, EParameter> lookupImplicitSourceForAssociationClass(String name) {
 		Variable<EClassifier, EParameter> vdlc = null;
 
+		boolean found = false;
+
 		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
 		Collection<Deque<VariableEntry>> values = last.values();
 		for (Deque<VariableEntry> deque : values) {
@@ -911,19 +931,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				vdlc = variableEntry.variable;
 				EClassifier owner = vdlc.getType();
 
-				if (variableEntry.isExplicit || owner == null
-						|| lookupAssociationClassReference(owner, name) == null) {
-					vdlc = null;
+				if (!variableEntry.isExplicit && (owner != null)) {
+					EClassifier reference = lookupAssociationClassReference(owner, name);
+					if (reference != null) {
+						found = true;
+						break;
+					}
 				}
+			}
+			if (found) {
+				break;
 			}
 		}
 
-		if (vdlc == null) {
+		if (!found) {
 			vdlc = getSelfVariable();
 			if (vdlc != null) {
 				EClassifier owner = vdlc.getType();
-				if (owner == null || lookupAssociationClassReference(owner, name) == null) {
-					vdlc = null;
+				if (owner != null && lookupAssociationClassReference(owner, name) != null) {
+					return vdlc;
 				}
 			}
 		}
@@ -942,6 +968,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			List<? extends TypedElement<EClassifier>> args) {
 		Variable<EClassifier, EParameter> vdlc = null;
 
+		boolean found = false;
+
 		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
 		Collection<Deque<VariableEntry>> values = last.values();
 		for (Deque<VariableEntry> deque : values) {
@@ -949,18 +977,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				vdlc = variableEntry.variable;
 				EClassifier owner = vdlc.getType();
 
-				if (variableEntry.isExplicit || owner == null || lookupSignal(owner, name, args) == null) {
-					vdlc = null;
+				if (!variableEntry.isExplicit && owner != null) {
+					EClassifier signal = lookupSignal(owner, name, args);
+					if (signal != null) {
+						found = true;
+						break;
+					}
 				}
+			}
+			if (found) {
+				break;
 			}
 		}
 
-		if (vdlc == null) {
+		if (!found) {
 			vdlc = getSelfVariable();
 			if (vdlc != null) {
 				EClassifier owner = vdlc.getType();
-				if (owner == null || lookupSignal(owner, name, args) == null) {
-					vdlc = null;
+				if (owner != null && lookupSignal(owner, name, args) != null) {
+					return vdlc;
 				}
 			}
 		}
@@ -978,6 +1013,8 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 			throws LookupException {
 		Variable<EClassifier, EParameter> vdlc = null;
 
+		boolean found = true;
+
 		Map<String, Deque<VariableEntry>> last = scopedVariableMap.getLast();
 		Collection<Deque<VariableEntry>> values = last.values();
 		for (Deque<VariableEntry> deque : values) {
@@ -985,18 +1022,25 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 				vdlc = variableEntry.variable;
 				EClassifier owner = vdlc.getType();
 
-				if (variableEntry.isExplicit || owner == null || lookupState(owner, path) == null) {
-					vdlc = null;
+				if (!variableEntry.isExplicit && owner != null) {
+					EObject state = lookupState(owner, path);
+					if (state != null) {
+						found = true;
+						break;
+					}
 				}
+			}
+			if (found) {
+				break;
 			}
 		}
 
-		if (vdlc == null) {
+		if (!found) {
 			vdlc = getSelfVariable();
 			if (vdlc != null) {
 				EClassifier owner = vdlc.getType();
-				if (owner == null || lookupState(owner, path) == null) {
-					vdlc = null;
+				if (owner != null && lookupState(owner, path) != null) {
+					return vdlc;
 				}
 			}
 		}
