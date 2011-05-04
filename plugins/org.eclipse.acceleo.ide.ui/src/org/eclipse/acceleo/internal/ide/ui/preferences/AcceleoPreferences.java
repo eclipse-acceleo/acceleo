@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.preferences;
 
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
@@ -22,8 +25,13 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-// FIXME This is an empty page for now
 public class AcceleoPreferences extends PreferencePage implements IWorkbenchPreferencePage {
+
+	/**
+	 * The activate query cache button.
+	 */
+	private Button toggleQueryCache;
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -40,6 +48,53 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
-		return new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout());
+
+		toggleQueryCache = new Button(composite, SWT.CHECK);
+		toggleQueryCache.setText(AcceleoUIMessages.getString("AcceleoPreferences.QueryCacheButton")); //$NON-NLS-1$
+		toggleQueryCache.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoPreferences.QueryCacheButtonTooltip")); //$NON-NLS-1$
+		toggleQueryCache.setSelection(org.eclipse.acceleo.common.preference.AcceleoPreferences
+				.isQueryCacheEnabled());
+
+		return composite;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
+	 */
+	@Override
+	protected void performDefaults() {
+		toggleQueryCache.setSelection(true);
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
+				.getSelection());
+		super.performDefaults();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.preference.PreferencePage#performApply()
+	 */
+	@Override
+	protected void performApply() {
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
+				.getSelection());
+		super.performApply();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.preference.PreferencePage#performOk()
+	 */
+	@Override
+	public boolean performOk() {
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
+				.getSelection());
+		return super.performOk();
 	}
 }
