@@ -375,6 +375,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			source = lastEObjectSelfValue;
 		}
 
+		context.getProgressMonitor().subTask(
+				AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.Generatingfile", filePath)); //$NON-NLS-1$
 		if ("stdout".equals(filePath)) { //$NON-NLS-1$
 			context.openNested(System.out);
 		} else {
@@ -387,6 +389,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			fireGenerationEvent = fireEvents;
 		}
 		context.closeContext(fileBlock, source);
+		context.getProgressMonitor().worked(2);
 	}
 
 	/**
