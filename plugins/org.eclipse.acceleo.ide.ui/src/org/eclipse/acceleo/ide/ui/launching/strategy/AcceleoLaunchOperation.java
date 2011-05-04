@@ -116,6 +116,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 
 			final long start = System.currentTimeMillis();
 			if (generator != null) {
+				monitor.subTask(AcceleoUIMessages.getString("AcceleoLaunchOperation.Initialize")); //$NON-NLS-1$
 				URI modelURI = URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getFile(
 						new Path(model)).getLocation().toString());
 				modelURI = URI.createURI(URI.decode(modelURI.toString()));
@@ -123,6 +124,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				for (String argument : args) {
 					generator.addPropertiesFile(argument);
 				}
+				monitor.worked(10);
 				IContainer target = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(
 						new Path(targetFolder.getAbsolutePath()));
 				String generationID = AcceleoLaunchingUtil.computeLaunchConfigID(project.getName(),
