@@ -264,7 +264,6 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	 */
 	private StringBuffer getTextForQuery(org.eclipse.acceleo.parser.cst.Query eQuery) {
 		StringBuffer text = new StringBuffer();
-		text.append("query "); //$NON-NLS-1$
 		text.append(eQuery.getName());
 		text.append("("); //$NON-NLS-1$
 		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eQuery.getParameter().iterator(); eParameters
@@ -277,7 +276,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 				text.append(IAcceleoConstants.COMMA_SEPARATOR + " "); //$NON-NLS-1$
 			}
 		}
-		text.append(")"); //$NON-NLS-1$
+		text.append(") : "); //$NON-NLS-1$
+		text.append(eQuery.getType());
 		return text;
 	}
 
@@ -290,7 +290,6 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	 */
 	private StringBuffer getTextForTemplate(org.eclipse.acceleo.parser.cst.Template eTemplate) {
 		StringBuffer text = new StringBuffer();
-		text.append("template "); //$NON-NLS-1$
 		text.append(eTemplate.getName());
 		text.append("("); //$NON-NLS-1$
 		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eTemplate.getParameter()
@@ -303,7 +302,7 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 				text.append(", "); //$NON-NLS-1$
 			}
 		}
-		text.append(")"); //$NON-NLS-1$
+		text.append(") : String"); //$NON-NLS-1$
 		return text;
 	}
 

@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions;
 
-import org.eclipse.acceleo.parser.cst.Query;
-import org.eclipse.acceleo.parser.cst.Template;
+import org.eclipse.acceleo.parser.cst.ModuleElement;
 import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -33,22 +32,12 @@ public class AcceleoOutlineViewerSorter extends ViewerSorter {
 	public int compare(Viewer treeViewer, Object e1, Object e2) {
 		// Rules:
 		// 1-TypedModel always come first.
-		// 2-If we are comparing two templates or two queries, we compare them with their name.
-		// 3-Queries come before templates.
-		// 4-We don't care of the rest.
+		// 2- Module elements are ordered by their names.
 		int result = 0;
-		if (e1 instanceof Template && e2 instanceof Template) {
-			Template temp1 = (Template)e1;
-			Template temp2 = (Template)e2;
-			result = temp1.getName().compareTo(temp2.getName());
-		} else if (e1 instanceof Query && e2 instanceof Query) {
-			Query q1 = (Query)e1;
-			Query q2 = (Query)e2;
-			result = q1.getName().compareTo(q2.getName());
-		} else if (e1 instanceof Template && e2 instanceof Query) {
-			result = 1;
-		} else if (e1 instanceof Query && e2 instanceof Template) {
-			result = -1;
+		if (e1 instanceof ModuleElement && e2 instanceof ModuleElement) {
+			ModuleElement mod1 = (ModuleElement)e1;
+			ModuleElement mod2 = (ModuleElement)e2;
+			result = mod1.getName().compareTo(mod2.getName());
 		} else if (e1 instanceof TypedModel) {
 			result = -1;
 		} else if (e2 instanceof TypedModel) {
