@@ -437,7 +437,8 @@ public final class ModelUtils {
 	 */
 	@Deprecated
 	public static String registerEcorePackages(String pathName) {
-		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName, AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName,
+				AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 	}
 
 	/**
@@ -474,11 +475,11 @@ public final class ModelUtils {
 	 */
 	private static void ensureResourceFactoryPresent(ResourceSet resourceSet) {
 		// Ensure the registration of the resource factories by content type.
-		if (Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
+		if (resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
 				IAcceleoConstants.XMI_CONTENT_TYPE) == null
-				|| Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
+				|| resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
 						IAcceleoConstants.BINARY_CONTENT_TYPE) == null) {
-			Object binaryFactory = resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
+			Object binaryFactory = Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
 					IAcceleoConstants.BINARY_CONTENT_TYPE);
 			if (binaryFactory == null) {
 				Object binaryResourceFactory = Resource.Factory.Registry.INSTANCE
@@ -486,7 +487,7 @@ public final class ModelUtils {
 				resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
 						IAcceleoConstants.BINARY_CONTENT_TYPE, binaryResourceFactory);
 			}
-			Object xmiFactory = resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().get(
+			Object xmiFactory = Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().get(
 					IAcceleoConstants.XMI_CONTENT_TYPE);
 			if (xmiFactory == null) {
 				Object xmiResourceFactory = Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap()
