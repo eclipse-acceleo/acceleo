@@ -18,6 +18,7 @@
  * @param acceleoProject The Acceleo project.
  */]
 [template public genBuildProperties(acceleoProject : AcceleoProject)]
+[comment @main /]
 [file ('build.properties', false, 'UTF-8')]
 source.. = src/
 output.. = bin/

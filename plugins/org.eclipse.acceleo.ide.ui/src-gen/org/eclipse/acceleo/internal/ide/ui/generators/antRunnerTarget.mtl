@@ -17,6 +17,7 @@
  * @param anAcceleoMainClass The Acceleo main class.
  */]
 [template public genAntRunnerTarget(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
+[comment @main /]
 [file (anAcceleoMainClass.moduleFileShortName + 'Target.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 

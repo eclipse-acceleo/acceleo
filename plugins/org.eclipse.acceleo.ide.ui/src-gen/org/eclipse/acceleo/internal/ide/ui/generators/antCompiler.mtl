@@ -19,6 +19,7 @@
  * @param workspaceHome The relative path of the workspace.
  */]
 [template public genAntCompiler(anAcceleoMainClass : AcceleoMainClass, eclipseHome : String, workspaceHome : String)]
+[comment @main /]
 [file ('buildstandalone.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="compile" name="[anAcceleoMainClass.projectName/]">

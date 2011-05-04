@@ -18,6 +18,7 @@
  * @param acceleoProject The Acceleo project.
  */]
 [template public genManifestMF(acceleoProject : AcceleoProject)]
+[comment @main /]
 [file ('META-INF/MANIFEST.MF', false, 'UTF-8')]
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
