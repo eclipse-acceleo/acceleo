@@ -17,6 +17,10 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -25,19 +29,19 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.IAction;
+import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
  * The action to toggle (add/remove) the Acceleo nature.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-public class AcceleoToggleNatureAction implements IObjectActionDelegate {
+public class AcceleoToggleNatureAction extends AbstractHandler {
 
 	/**
 	 * The current selection.
@@ -45,11 +49,41 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 	private ISelection selection;
 
 	/**
+	 * Indicating if the action is enabled.
+	 */
+	private boolean enabled;
+
+	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
-	public void run(IAction action) {
+	@SuppressWarnings("unchecked")
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Object applicationContext = event.getApplicationContext();
+		if (applicationContext instanceof EvaluationContext) {
+			EvaluationContext context = (EvaluationContext)applicationContext;
+			Object defaultVariable = context.getDefaultVariable();
+			if (defaultVariable instanceof List) {
+				List<Object> variables = (List<Object>)defaultVariable;
+				List<IProject> projects = new ArrayList<IProject>();
+				for (Object object : variables) {
+					if (object instanceof IProject) {
+						IProject project = (IProject)object;
+						projects.add(project);
+					} else if (object instanceof JavaProject) {
+						JavaProject javaProject = (JavaProject)object;
+						projects.add(javaProject.getProject());
+					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+						projects.add((IProject)Platform.getAdapterManager()
+								.getAdapter(object, IProject.class));
+					}
+				}
+				if (!projects.isEmpty()) {
+					selection = new StructuredSelection(projects);
+				}
+			}
+		}
 		if (selection instanceof IStructuredSelection) {
 			for (Iterator<?> it = ((IStructuredSelection)selection).iterator(); it.hasNext();) {
 				Object element = it.next();
@@ -64,25 +98,17 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 				}
 			}
 		}
+		return null;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Sets the selection.
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @param s
+	 *            The new selection.
 	 */
-	public void selectionChanged(IAction action, ISelection aSelection) {
-		this.selection = aSelection;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
-	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+	public void setSelection(ISelection s) {
+		this.selection = s;
 	}
 
 	/**
@@ -108,8 +134,10 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 					for (Iterator<IFile> itFiles = files.iterator(); itFiles.hasNext();) {
 						IFile file = itFiles.next();
 						try {
-							file.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false, IResource.DEPTH_ZERO);
-							file.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, false, IResource.DEPTH_ZERO);
+							file.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false,
+									IResource.DEPTH_ZERO);
+							file.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, false,
+									IResource.DEPTH_ZERO);
 							file.deleteMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, false, IResource.DEPTH_ZERO);
 						} catch (CoreException e) {
 							AcceleoUIActivator.getDefault().getLog()
@@ -160,4 +188,27 @@ public class AcceleoToggleNatureAction implements IObjectActionDelegate {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.commands.AbstractHandler#setEnabled(java.lang.Object)
+	 */
+	@Override
+	public void setEnabled(Object evaluationContext) {
+		if (evaluationContext instanceof EvaluationContext) {
+			EvaluationContext context = (EvaluationContext)evaluationContext;
+			enabled = context.getDefaultVariable() instanceof IProject;
+		}
+		enabled = true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.core.commands.AbstractHandler#isEnabled()
+	 */
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 }

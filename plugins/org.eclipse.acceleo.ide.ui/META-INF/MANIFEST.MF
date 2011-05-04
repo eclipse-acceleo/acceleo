@@ -40,7 +40,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ltk.ui.refactoring,
  org.eclipse.jdt.core.manipulation,
- org.eclipse.ant.core
+ org.eclipse.ant.core,
+ org.eclipse.core.expressions
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -108,13 +108,6 @@ Contributors:
          <menu id="org.eclipse.acceleo.ide.ui.menu" label="Acceleo" path="additionsAcceleo">
                <groupMarker name="acceleo"/> 
          </menu>
-         <action
-               class="org.eclipse.acceleo.internal.ide.ui.natures.AcceleoToggleNatureAction"
-               enablesFor="+"
-               id="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureAction"
-               icon = "icons/AcceleoNature.gif"
-               label="%AcceleoNatureRemoveActionLabel"
-               menubarPath="org.eclipse.acceleo.ide.ui.menu/acceleo"/>
          <filter
                name="nature"
                value="org.eclipse.acceleo.ide.ui.acceleoNature"/>
@@ -340,6 +333,12 @@ Contributors:
                 id="org.eclipse.acceleo.ide.ui.refactor.pullup"
                 name="%acceleoEditorCommandsPullUp.Name">
         </command>
+  <command
+        categoryId="org.eclipse.ui.category.file"
+        defaultHandler="org.eclipse.acceleo.internal.ide.ui.natures.AcceleoToggleNatureAction"
+        id="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureCommand"
+        name="%AcceleoNatureRemoveActionLabel">
+  </command>
    </extension>
 
    <extension
@@ -475,6 +474,15 @@ Contributors:
              </command>       
          </menu>
       </menuContribution>
+     <menuContribution
+           locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+        <command
+              commandId="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureCommand"
+              icon="icons/AcceleoNature.gif"
+              label="%AcceleoNatureRemoveActionLabel"
+              style="push">
+        </command>
+     </menuContribution>
     </extension>
     <extension point="org.eclipse.core.expressions.definitions">
       <definition id="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet">
