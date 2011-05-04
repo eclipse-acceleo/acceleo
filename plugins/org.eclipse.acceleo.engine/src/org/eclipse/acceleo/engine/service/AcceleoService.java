@@ -49,7 +49,6 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This class provides utility methods to launch the generation of an Acceleo template.
@@ -63,6 +62,9 @@ public final class AcceleoService {
 	/** This message will be set for all NPE thrown because of null arguments for this utility's methods. */
 	private static final String TEMPLATE_CALL_NPE = AcceleoEngineMessages
 			.getString("AcceleoService.NullArguments"); //$NON-NLS-1$
+
+	/** The key of the undefined template message. */
+	private static final String UNDEFINED_TEMPLATE = "AcceleoService.UndefinedTemplate"; //$NON-NLS-1$
 
 	/** The engine we'll use for all generations through this service instance. */
 	private IAcceleoEngine generationEngine;
@@ -100,6 +102,11 @@ public final class AcceleoService {
 	 * Indicates if we should deactivate the traceability.
 	 */
 	private boolean deactivateTraceability;
+
+	/**
+	 * Indicates if the generation has occurred.
+	 */
+	private boolean generationHasOccurred;
 
 	/**
 	 * Instantiates an instance of the service with a default generation strategy.
@@ -275,6 +282,7 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, Monitor monitor) {
+		generationHasOccurred = false;
 		if (templates == null || model == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -282,14 +290,17 @@ public final class AcceleoService {
 		Map<EClassifier, Set<Template>> templateTypes = new HashMap<EClassifier, Set<Template>>();
 		for (Map.Entry<Module, Set<String>> entry : templates.entrySet()) {
 			for (String templateName : entry.getValue()) {
-				Template template = findTemplate(entry.getKey(), templateName, 1);
-				EClassifier templateType = template.getParameter().get(0).getType();
-				if (templateTypes.containsKey(templateType)) {
-					templateTypes.get(templateType).add(template);
-				} else {
-					Set<Template> temp = new CompactHashSet<Template>();
-					temp.add(template);
-					templateTypes.put(templateType, temp);
+				List<Template> templateList = findTemplates(entry.getKey(), templateName, 1);
+
+				for (Template template : templateList) {
+					EClassifier templateType = template.getParameter().get(0).getType();
+					if (templateTypes.containsKey(templateType)) {
+						templateTypes.get(templateType).add(template);
+					} else {
+						Set<Template> temp = new CompactHashSet<Template>();
+						temp.add(template);
+						templateTypes.put(templateType, temp);
+					}
 				}
 			}
 		}
@@ -322,6 +333,11 @@ public final class AcceleoService {
 			}
 		}
 
+		if (!generationHasOccurred) {
+			AcceleoEnginePlugin.log(
+					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+		}
+		generationHasOccurred = false;
 		return previewResult;
 	}
 
@@ -367,7 +383,13 @@ public final class AcceleoService {
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			File generationRoot, boolean blockTraceability, Monitor monitor) {
 		this.deactivateTraceability = blockTraceability;
-		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, monitor);
+		Map<String, String> result = new HashMap<String, String>();
+		List<Template> templates = findTemplates(module, templateName, 1);
+
+		for (Template template : templates) {
+			result.putAll(doGenerate(template, model, generationRoot, monitor));
+		}
+		return result;
 	}
 
 	/**
@@ -408,7 +430,13 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			File generationRoot, Monitor monitor) {
-		return doGenerate(findTemplate(module, templateName, 1), model, generationRoot, monitor);
+		Map<String, String> result = new HashMap<String, String>();
+		List<Template> templates = findTemplates(module, templateName, 1);
+
+		for (Template template : templates) {
+			result.putAll(doGenerate(template, model, generationRoot, monitor));
+		}
+		return result;
 	}
 
 	/**
@@ -452,48 +480,57 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
+		generationHasOccurred = false;
 		if (model == null || arguments == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
 		}
-		final Template template = findTemplate(module, templateName, arguments.size() + 1);
+		final List<Template> templates = findTemplates(module, templateName, arguments.size() + 1);
 		// #findTemplate never returns private templates.
 
-		final Map<String, String> previewResult = new HashMap<String, String>();
-
-		// Calls the template with each potential arguments
-		final EClassifier argumentType = template.getParameter().get(0).getType();
-		if (argumentType.eIsProxy()) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-					"AcceleoService.TypeIsProxy", templateName)); //$NON-NLS-1$
-		}
-
-		boolean generatedHasOccurred = false;
-
-		// The input model itself is a potential argument
-		if (argumentType.isInstance(model)) {
-			final List<Object> actualArguments = new ArrayList<Object>();
-			actualArguments.add(model);
-			actualArguments.addAll(arguments);
-			previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
-			generatedHasOccurred = true;
-		}
-		final TreeIterator<EObject> targetElements = model.eAllContents();
-		while (targetElements.hasNext()) {
-			final EObject potentialTarget = targetElements.next();
-			if (argumentType.isInstance(potentialTarget)) {
-				final List<Object> actualArguments = new ArrayList<Object>();
-				actualArguments.add(potentialTarget);
-				actualArguments.addAll(arguments);
-				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
-				generatedHasOccurred = true;
+		List<Template> mainTemplates = new ArrayList<Template>();
+		for (Template template : templates) {
+			if (template.isMain()) {
+				mainTemplates.add(template);
 			}
 		}
 
-		if (!generatedHasOccurred) {
-			AcceleoEnginePlugin.log(AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred", //$NON-NLS-1$
-					templateName, EcoreUtil.getURI(argumentType)), false);
+		final Map<String, String> previewResult = new HashMap<String, String>();
+
+		for (Template template : mainTemplates) {
+			// Calls the template with each potential arguments
+			final EClassifier argumentType = template.getParameter().get(0).getType();
+			if (argumentType.eIsProxy()) {
+				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoService.TypeIsProxy", templateName)); //$NON-NLS-1$
+			}
+
+			// The input model itself is a potential argument
+			if (argumentType.isInstance(model)) {
+				final List<Object> actualArguments = new ArrayList<Object>();
+				actualArguments.add(model);
+				actualArguments.addAll(arguments);
+				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
+				generationHasOccurred = true;
+			}
+			final TreeIterator<EObject> targetElements = model.eAllContents();
+			while (targetElements.hasNext()) {
+				final EObject potentialTarget = targetElements.next();
+				if (argumentType.isInstance(potentialTarget)) {
+					final List<Object> actualArguments = new ArrayList<Object>();
+					actualArguments.add(potentialTarget);
+					actualArguments.addAll(arguments);
+					previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot,
+							monitor));
+					generationHasOccurred = true;
+				}
+			}
 		}
+		if (!generationHasOccurred) {
+			AcceleoEnginePlugin.log(
+					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+		}
+		generationHasOccurred = false;
 
 		return previewResult;
 	}
@@ -555,13 +592,11 @@ public final class AcceleoService {
 		final EClassifier argumentType = template.getParameter().get(0).getType();
 		final List<Object> arguments = new ArrayList<Object>();
 
-		boolean generatedHasOccurred = false;
-
 		// The input model itself is a potential argument
 		if (argumentType.isInstance(model)) {
 			arguments.add(model);
 			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
-			generatedHasOccurred = true;
+			generationHasOccurred = true;
 		}
 		final TreeIterator<EObject> targetElements = model.eAllContents();
 		while (targetElements.hasNext()) {
@@ -570,13 +605,8 @@ public final class AcceleoService {
 				arguments.clear();
 				arguments.add(potentialTarget);
 				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
-				generatedHasOccurred = true;
+				generationHasOccurred = true;
 			}
-		}
-
-		if (!generatedHasOccurred) {
-			AcceleoEnginePlugin.log(AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred", //$NON-NLS-1$
-					template.getName(), EcoreUtil.getURI(argumentType)), false);
 		}
 
 		return previewResult;
@@ -615,8 +645,14 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerateTemplate(Module module, String templateName,
 			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
-		return doGenerateTemplate(findTemplate(module, templateName, arguments), arguments, generationRoot,
-				monitor);
+		Map<String, String> result = new HashMap<String, String>();
+		List<Template> templates = findTemplates(module, templateName, arguments);
+		// filter only main templates
+
+		for (Template template : templates) {
+			result.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+		}
+		return result;
 	}
 
 	/**
@@ -806,7 +842,7 @@ public final class AcceleoService {
 
 	/**
 	 * This will iterate through the module's elements to find public templates named <tt>templateName</tt>
-	 * with the given count of arguments and return the first found.
+	 * with the given count of arguments.
 	 * 
 	 * @param module
 	 *            The module in which we seek a template <tt>templateName</tt>.
@@ -814,22 +850,26 @@ public final class AcceleoService {
 	 *            Name of the sought template.
 	 * @param argumentCount
 	 *            Number of arguments of the sought template.
-	 * @return The first public template of this name contained by <tt>module</tt>. Will fail in
+	 * @return The templates of this name contained by <tt>module</tt>. Will fail in
 	 *         {@link AcceleoEvaluationException} if none can be found.
 	 */
-	private Template findTemplate(Module module, String templateName, int argumentCount) {
+	private List<Template> findTemplates(Module module, String templateName, int argumentCount) {
+		List<Template> templates = new ArrayList<Template>();
 		for (ModuleElement element : module.getOwnedModuleElement()) {
 			if (element instanceof Template) {
 				Template template = (Template)element;
 				if (template.getVisibility() == VisibilityKind.PUBLIC
 						&& templateName.equals(template.getName())
 						&& template.getParameter().size() == argumentCount) {
-					return template;
+					templates.add(template);
 				}
 			}
 		}
-		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-				"AcceleoService.UndefinedTemplate", templateName, module.getName())); //$NON-NLS-1$
+		if (templates.isEmpty()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(UNDEFINED_TEMPLATE,
+					templateName, module.getName()));
+		}
+		return templates;
 	}
 
 	/**
@@ -842,10 +882,11 @@ public final class AcceleoService {
 	 *            Name of the sought template.
 	 * @param arguments
 	 *            Values of the argument we wish to pass on to the template.
-	 * @return The first public template of this name with matching arguments contained by <tt>module</tt>.
-	 *         Will fail in {@link AcceleoEvaluationException} if none can be found.
+	 * @return The templates of this name with matching arguments contained by <tt>module</tt>. Will fail in
+	 *         {@link AcceleoEvaluationException} if none can be found.
 	 */
-	private Template findTemplate(Module module, String templateName, List<? extends Object> arguments) {
+	private List<Template> findTemplates(Module module, String templateName, List<? extends Object> arguments) {
+		List<Template> templates = new ArrayList<Template>();
 		for (ModuleElement element : module.getOwnedModuleElement()) {
 			if (element instanceof Template) {
 				Template template = (Template)element;
@@ -859,13 +900,16 @@ public final class AcceleoService {
 						}
 					}
 					if (parameterMatch) {
-						return template;
+						templates.add(template);
 					}
 				}
 			}
 		}
-		throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-				"AcceleoService.UndefinedTemplate", templateName, module.getName())); //$NON-NLS-1$
+		if (templates.isEmpty()) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(UNDEFINED_TEMPLATE,
+					templateName, module.getName()));
+		}
+		return templates;
 	}
 
 	/**
