@@ -1246,8 +1246,8 @@ call : The particular call that is to be converted to an equivalent.
 		'sortedBy('.concat(call.arguments->first().convertExpressionToOCL())
 			.concat(')->asOrderedSet()->asSequence()')
 	else if call.name = 'sep' then
-		'sep(\''.concat(arguments->first().convertExpressionToOCL()
-			.formatStringForOCL()).concat('\')')
+		'sep('.concat(arguments->first().convertExpressionToOCL()
+			.formatStringForOCL()).concat(')')
 	else if call.name = 'sepStr' then
 		'sep(\''.concat(call.arguments->first().convertExpressionToOCL())
 			.concat('\')')
