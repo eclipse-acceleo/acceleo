@@ -711,9 +711,14 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		if (areaContent != null) {
 			String currentIndent = context.getLastFileIndentation();
-			delegateAppend(
-					areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$ 
-					lastEObjectSelfValue, fireGenerationEvent);
+			if (protectedArea.eContainer() instanceof FileBlock && protectedArea.eContainingFeature() != null
+					&& "body".equals(protectedArea.eContainingFeature().getName())) { //$NON-NLS-1$
+				delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
+			} else {
+				delegateAppend(
+						areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$ 
+						lastEObjectSelfValue, fireGenerationEvent);
+			}
 		} else {
 			context.openNested();
 			fireGenerationEvent = false;
