@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -770,7 +771,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (Variable var : query.getParameter()) {
 				getEvaluationEnvironment().remove(var.getName());
 			}
-			if (QueryCache.isInvalid(cachedResult)) {
+			if (QueryCache.isInvalid(cachedResult) && AcceleoPreferences.isDebugMessagesEnabled()) {
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				final AcceleoEvaluationException exception = context.createAcceleoException(query,
 						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
@@ -807,7 +808,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		// Store result of the query invocation
 		delegateCacheResult(query, arguments, result);
-		if (isInvalid(result)) {
+		if (isInvalid(result) && AcceleoPreferences.isDebugMessagesEnabled()) {
 			final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 			final AcceleoEvaluationException exception = context.createAcceleoException(query,
 					(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$

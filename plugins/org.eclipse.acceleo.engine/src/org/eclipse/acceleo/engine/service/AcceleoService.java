@@ -333,7 +333,7 @@ public final class AcceleoService {
 			}
 		}
 
-		if (!generationHasOccurred) {
+		if (!generationHasOccurred && AcceleoPreferences.isDebugMessagesEnabled()) {
 			AcceleoEnginePlugin.log(
 					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 		}
@@ -526,7 +526,7 @@ public final class AcceleoService {
 				}
 			}
 		}
-		if (!generationHasOccurred) {
+		if (!generationHasOccurred && AcceleoPreferences.isDebugMessagesEnabled()) {
 			AcceleoEnginePlugin.log(
 					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 		}
