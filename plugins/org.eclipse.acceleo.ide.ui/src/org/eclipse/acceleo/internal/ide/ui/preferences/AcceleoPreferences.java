@@ -33,6 +33,11 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 	private Button toggleQueryCache;
 
 	/**
+	 * The activate debug messages button.
+	 */
+	private Button toggleDebugMessages;
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
@@ -58,6 +63,13 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 		toggleQueryCache.setSelection(org.eclipse.acceleo.common.preference.AcceleoPreferences
 				.isQueryCacheEnabled());
 
+		toggleDebugMessages = new Button(composite, SWT.CHECK);
+		toggleDebugMessages.setText(AcceleoUIMessages.getString("AcceleoPreferences.DebugMessagesButton")); //$NON-NLS-1$
+		toggleDebugMessages.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoPreferences.DebugMessagesButtonTooltip")); //$NON-NLS-1$
+		toggleDebugMessages.setSelection(org.eclipse.acceleo.common.preference.AcceleoPreferences
+				.isDebugMessagesEnabled());
+
 		return composite;
 	}
 
@@ -71,6 +83,9 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 		toggleQueryCache.setSelection(true);
 		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
 				.getSelection());
+		toggleDebugMessages.setSelection(true);
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchDebugMessages(toggleDebugMessages
+				.getSelection());
 		super.performDefaults();
 	}
 
@@ -83,6 +98,8 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 	protected void performApply() {
 		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
 				.getSelection());
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchDebugMessages(toggleDebugMessages
+				.getSelection());
 		super.performApply();
 	}
 
@@ -94,6 +111,8 @@ public class AcceleoPreferences extends PreferencePage implements IWorkbenchPref
 	@Override
 	public boolean performOk() {
 		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchQueryCache(toggleQueryCache
+				.getSelection());
+		org.eclipse.acceleo.common.preference.AcceleoPreferences.switchDebugMessages(toggleDebugMessages
 				.getSelection());
 		return super.performOk();
 	}
