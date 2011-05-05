@@ -13,7 +13,6 @@ package org.eclipse.acceleo.internal.ide.ui.builders;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,7 @@ import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
-import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
-import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
-import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
@@ -42,10 +37,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -186,90 +178,12 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 			AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
 
-			List<String> resolvedClasspath = new ArrayList<String>();
-			Iterator<IPath> entries = project.getResolvedClasspath().iterator();
-			IPath eclipseWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-			IPath eclipseHome = new Path(Platform.getInstallLocation().getURL().getPath());
-			while (entries.hasNext()) {
-				IPath path = entries.next();
-				if (eclipseWorkspace.isPrefixOf(path)) {
-					resolvedClasspath.add("${ECLIPSE_WORKSPACE}/" //$NON-NLS-1$
-							+ path.toString().substring(eclipseWorkspace.toString().length()));
-				} else if (eclipseHome.isPrefixOf(path)) {
-					resolvedClasspath.add("${ECLIPSE_HOME}/" //$NON-NLS-1$
-							+ path.toString().substring(eclipseHome.toString().length()));
-				}
-			}
-
-			AcceleoMainClass acceleoMainClass = AcceleowizardmodelFactory.eINSTANCE.createAcceleoMainClass();
-			acceleoMainClass.setProjectName(getProject().getName());
-			List<String> classPath = acceleoMainClass.getResolvedClassPath();
-			classPath.addAll(resolvedClasspath);
-
-			IPath workspacePathRelativeToFile = CreateRunnableAcceleoOperation.computeWorkspacePath();
-			IPath eclipsePathRelativeToFile = CreateRunnableAcceleoOperation.computeEclipsePath();
-
-			AcceleoUIGenerator.getDefault().generateBuildXML(
-					acceleoMainClass,
-					AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile, getProject().getLocation())
-							.toString(),
-					AcceleoProject.makeRelativeTo(workspacePathRelativeToFile, getProject().getLocation())
-							.toString(), getProject());
-
 			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
 					buildAcceleo.getName()) == -1) {
 				AcceleoUIActivator.getDefault().getLog().log(
 						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages.getString(
 								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
 										.getName(), })));
-			}
-
-			if (!getProject().getFile("pom.xml").exists()) { //$NON-NLS-1$
-				AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
-				acceleoPom.setArtifactId(getProject().getName());
-				EList<AcceleoPomDependency> pomDependencies = acceleoPom.getDependencies();
-
-				entries = project.getResolvedClasspath().iterator();
-				while (entries.hasNext()) {
-					IPath iPath = entries.next();
-					String classpathEntry = null;
-					if (eclipseWorkspace.isPrefixOf(iPath)) {
-						classpathEntry = iPath.toString().substring(eclipseWorkspace.toString().length());
-					} else if (eclipseHome.isPrefixOf(iPath)) {
-						classpathEntry = iPath.toString().substring(eclipseHome.toString().length());
-					}
-
-					if (classpathEntry == null) {
-						continue;
-					}
-
-					AcceleoPomDependency acceleoPomDependency = AcceleowizardmodelFactory.eINSTANCE
-							.createAcceleoPomDependency();
-
-					String artifactId = classpathEntry;
-					if (artifactId.contains("_")) { //$NON-NLS-1$
-						artifactId = artifactId.substring(0, artifactId.indexOf('_'));
-					}
-					if (artifactId.startsWith("plugins/")) { //$NON-NLS-1$
-						artifactId = artifactId.substring("plugins/".length()); //$NON-NLS-1$
-					}
-					acceleoPomDependency.setArtifactId(artifactId);
-					acceleoPomDependency.setGroupId("eclipse"); //$NON-NLS-1$
-
-					String version = classpathEntry;
-					if (version.contains("_") && version.indexOf('_') <= version.length()) { //$NON-NLS-1$
-						version = version.substring(version.indexOf('_') + 1);
-					}
-					if (version.endsWith(".jar")) { //$NON-NLS-1$
-						version = version.substring(0, version.length() - ".jar".length()); //$NON-NLS-1$
-					}
-					acceleoPomDependency.setVersion(version);
-					acceleoPomDependency.setSystemPath("${basedir}/" //$NON-NLS-1$
-							+ AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile,
-									getProject().getLocation()).toString() + '/' + classpathEntry);
-					pomDependencies.add(acceleoPomDependency);
-				}
-				AcceleoUIGenerator.getDefault().generatePom(acceleoPom, getProject());
 			}
 		}
 	}

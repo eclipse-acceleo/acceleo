@@ -339,6 +339,18 @@ Contributors:
         id="org.eclipse.acceleo.ide.ui.natures.addRemoveNatureCommand"
         name="%AcceleoNatureRemoveActionLabel">
   </command>
+  <command
+        categoryId="org.eclipse.ui.category.file"
+        defaultHandler="org.eclipse.acceleo.internal.ide.ui.commands.CreatePomCommandHandler"
+        id="org.eclipse.acceleo.ide.ui.configure.pom"
+        name="%acceleoGeneratePom.Label">
+  </command>
+  <command
+        categoryId="org.eclipse.ui.category.file"
+        defaultHandler="org.eclipse.acceleo.internal.ide.ui.commands.CreateAntCommandHandler"
+        id="org.eclipse.acceleo.ide.ui.configure.antStandAlone"
+        name="%acceleoGenerateAnt.Label">
+  </command>
    </extension>
 
    <extension
@@ -481,6 +493,56 @@ Contributors:
               icon="icons/AcceleoNature.gif"
               label="%AcceleoNatureRemoveActionLabel"
               style="push">
+        </command>
+        <command
+              commandId="org.eclipse.acceleo.ide.ui.configure.pom"
+              label="%acceleoGeneratePom.Label"
+              style="push">
+           <visibleWhen
+                 checkEnabled="false">
+              <iterate
+                    ifEmpty="false"
+                    operator="and">
+                 <adapt
+                       type="org.eclipse.core.resources.IProject">
+                    <and>
+                       <test
+                             property="org.eclipse.core.resources.projectNature"
+                             value="org.eclipse.acceleo.ide.ui.acceleoNature">
+                       </test>
+                       <test
+                             property="org.eclipse.core.resources.open"
+                             value="true">
+                       </test>
+                    </and>
+                 </adapt>
+              </iterate>
+           </visibleWhen>
+        </command>
+        <command
+              commandId="org.eclipse.acceleo.ide.ui.configure.antStandAlone"
+              label="%acceleoGenerateAnt.Label"
+              style="push">
+           <visibleWhen
+                 checkEnabled="false">
+              <iterate
+                    ifEmpty="false"
+                    operator="and">
+                 <adapt
+                       type="org.eclipse.core.resources.IProject">
+                    <and>
+                       <test
+                             property="org.eclipse.core.resources.projectNature"
+                             value="org.eclipse.acceleo.ide.ui.acceleoNature">
+                       </test>
+                       <test
+                             property="org.eclipse.core.resources.open"
+                             value="true">
+                       </test>
+                    </and>
+                 </adapt>
+              </iterate>
+           </visibleWhen>
         </command>
      </menuContribution>
     </extension>

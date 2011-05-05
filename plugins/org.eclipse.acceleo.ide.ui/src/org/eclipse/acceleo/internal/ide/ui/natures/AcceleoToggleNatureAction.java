@@ -197,9 +197,20 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 	public void setEnabled(Object evaluationContext) {
 		if (evaluationContext instanceof EvaluationContext) {
 			EvaluationContext context = (EvaluationContext)evaluationContext;
-			enabled = context.getDefaultVariable() instanceof IProject;
+			Object defaultVariable = context.getDefaultVariable();
+			if (defaultVariable instanceof List && ((List)defaultVariable).size() > 0) {
+				List<Object> variables = (List<Object>)defaultVariable;
+				for (Object object : variables) {
+					if (object instanceof IProject) {
+						enabled = true;
+					} else if (object instanceof JavaProject) {
+						enabled = true;
+					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+						enabled = true;
+					}
+				}
+			}
 		}
-		enabled = true;
 	}
 
 	/**
