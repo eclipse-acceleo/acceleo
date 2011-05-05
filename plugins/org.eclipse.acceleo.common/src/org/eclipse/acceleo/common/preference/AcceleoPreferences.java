@@ -30,6 +30,9 @@ public final class AcceleoPreferences {
 	/** Preference key for the activation of Acceleo's query caches. */
 	private static final String PREFERENCE_KEY_ENABLE_QUERY_CACHE = "org.eclipse.acceleo.query.cache.enable"; //$NON-NLS-1$
 
+	/** Preference key for the activation of Acceleo's debug messages. */
+	private static final String PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES = "org.eclipse.acceleo.debug.messages.enable"; //$NON-NLS-1$
+
 	/** Default value for the profiler enablement. */
 	private static final boolean DEFAULT_ENABLE_PROFILER = false;
 
@@ -38,6 +41,9 @@ public final class AcceleoPreferences {
 
 	/** Default value for the query cache enablement. */
 	private static final boolean DEFAULT_ENABLE_QUERY_CACHE = true;
+
+	/** Default value for the debug messages enablement. */
+	private static final boolean DEFAULT_ENABLE_DEBUG_MESSAGES = true;
 
 	/** Preferences scope for the Acceleo common plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
@@ -107,5 +113,27 @@ public final class AcceleoPreferences {
 	 */
 	public static boolean isProfilerEnabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_PROFILER, DEFAULT_ENABLE_PROFILER);
+	}
+
+	/**
+	 * Switches the debug messages on and off.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the debug messages, <code>false</code> to disable it.
+	 * @since 3.1
+	 */
+	public static void switchDebugMessages(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES, state);
+	}
+
+	/**
+	 * Returns whether the debug messages are enabled or not.
+	 * 
+	 * @return <code>true</code> if the debug messages are enabled, <code>false</code> otherwise.
+	 * @since 3.1
+	 */
+	public static boolean isDebugMessagesEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES,
+				DEFAULT_ENABLE_DEBUG_MESSAGES);
 	}
 }
