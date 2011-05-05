@@ -119,6 +119,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
 	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
 
+	/** The marker of the lies generated inside of the protected area. */
+	private static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
+
 	/** Generation context of this visitor. */
 	private final AcceleoEvaluationContext<C> context;
 
@@ -277,6 +280,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public String fitIndentationTo(String source, String indentation) {
 		// Do not alter the very first line (^)
+		// FIXME SBE Change the indentation mechanism
 		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
 		String replacement = "$0" + indentation; //$NON-NLS-1$
 
@@ -688,6 +692,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
+		// FIXME SBE add marker
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
 		final Object markerValue = getVisitor().visitExpression((OCLExpression<C>)protectedArea.getMarker());
@@ -706,7 +711,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		if (areaContent != null) {
 			String currentIndent = context.getLastFileIndentation();
-			delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, "$1"), protectedArea, //$NON-NLS-1$ //$NON-NLS-2$
+			delegateAppend(
+					areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$ 
 					lastEObjectSelfValue, fireGenerationEvent);
 		} else {
 			context.openNested();
@@ -910,6 +916,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (evaluatingInitSection) {
 			return invocationResult;
 		}
+
+		if (invocation.eContainer() instanceof FileBlock && invocation.eContainingFeature() != null
+				&& "body".equals(invocation.eContainingFeature().getName())) { //$NON-NLS-1$
+			String sep = System.getProperty("line.separator"); //$NON-NLS-1$
+			invocationResult = invocationResult.replaceAll(PROTECTED_AREA_MARKER, sep);
+		}
+
 		return delegateFitIndentation(invocationResult);
 	}
 
