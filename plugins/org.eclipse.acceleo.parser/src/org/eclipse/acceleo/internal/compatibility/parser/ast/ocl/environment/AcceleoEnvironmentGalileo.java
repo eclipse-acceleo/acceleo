@@ -22,6 +22,7 @@ import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironmen
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoTypeResolver;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -241,7 +242,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				oclType2 = getEnvironment().getUMLReflection().getOCLType(type2);
 			}
 
-			final int relationship;
+			int relationship;
 			if (oclType1 == oclType2) {
 				relationship = UMLReflection.SAME_TYPE;
 			} else if (oclType1 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
@@ -251,6 +252,16 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			} else {
 				relationship = super.getRelationship(type1, type2);
 			}
+
+			// If everything fails, let's try to see if we don't have two instances of the same metatype.
+			if (relationship == UMLReflection.UNRELATED_TYPE) {
+				URI uri1 = EcoreUtil.getURI(oclType1);
+				URI uri2 = EcoreUtil.getURI(oclType2);
+				if (uri1 != null && uri1.equals(uri2)) {
+					relationship = UMLReflection.SAME_TYPE;
+				}
+			}
+
 			return relationship;
 		}
 
