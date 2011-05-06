@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
  */
 public final class AcceleoUIDocumentationMessages {
 	/** Qualified path to the properties file in which to seek the keys. */
-	private static final String BUNDLE_NAME = "org.eclipse.acceleo.internal.ide.ui..editors.template.utils.acceleodocumentation"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.acceleo.internal.ide.ui.editors.template.utils.acceleodocumentation"; //$NON-NLS-1$
 
 	/** Contains the locale specific {@link String}s needed by this plug-in. */
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
