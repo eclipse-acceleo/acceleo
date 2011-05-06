@@ -22,6 +22,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
+import org.eclipse.acceleo.parser.AcceleoParserInfo;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
@@ -42,6 +43,7 @@ import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.VoidType;
 import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.expressions.StringLiteralExp;
 
 /**
  * The main class used to transform a CST model to an AST model. This class is able to run the 'Resolve' step.
@@ -764,6 +766,18 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					logWarning(AcceleoParserMessages.getString(
 							"CST2ASTConverterWithResolver.IncompatibleComparison", source.getType() //$NON-NLS-1$
 									.getName(), argument.get(0).getType().getName()), oOCLExpression
+							.getStartPosition(), oOCLExpression.getEndPosition());
+				}
+			}
+			if (oOCLExpression instanceof OperationCallExp
+					&& ((OperationCallExp)oOCLExpression).getReferredOperation() != null
+					&& "invoke".equals(((OperationCallExp)oOCLExpression).getReferredOperation().getName())) { //$NON-NLS-1$
+				OperationCallExp operationCallExp = (OperationCallExp)oOCLExpression;
+				List<OCLExpression<EClassifier>> arguments = operationCallExp.getArgument();
+				if (arguments.size() > 0 && arguments.get(0) instanceof StringLiteralExp) {
+					StringLiteralExp stringLiteralExp = (StringLiteralExp)arguments.get(0);
+					String stringSymbol = stringLiteralExp.getStringSymbol();
+					this.logInfo(AcceleoParserInfo.SERVICE_INVOCATION + stringSymbol, oOCLExpression
 							.getStartPosition(), oOCLExpression.getEndPosition());
 				}
 			}

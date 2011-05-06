@@ -39,6 +39,11 @@ public class AcceleoParserInfo implements AcceleoParserMessage {
 	public static final String FIXME_COMMENT = "AcceleoParserInfo.FIXME"; //$NON-NLS-1$
 
 	/**
+	 * The message for a service invocation.
+	 */
+	public static final String SERVICE_INVOCATION = "AcceleoParserInfo.SERVICE_INVOCATION"; //$NON-NLS-1$
+
+	/**
 	 * The message.
 	 */
 	private String message;
