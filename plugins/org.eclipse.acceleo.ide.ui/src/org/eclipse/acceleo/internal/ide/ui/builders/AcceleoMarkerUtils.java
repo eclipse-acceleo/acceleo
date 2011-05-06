@@ -10,10 +10,23 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
+import java.util.List;
+
+import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.parser.AcceleoParserInfo;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.JavaProject;
+import org.eclipse.osgi.service.resolver.BundleDescription;
+import org.eclipse.osgi.service.resolver.ExportPackageDescription;
+import org.eclipse.pde.core.plugin.IPluginModelBase;
+import org.eclipse.pde.core.plugin.PluginRegistry;
 
 /**
  * Acceleo Marker Utils.
@@ -106,7 +119,63 @@ public final class AcceleoMarkerUtils {
 				marker.setAttribute(IMarker.USER_EDITABLE, false);
 				marker.setAttribute(IMarker.MESSAGE, message.substring(AcceleoParserInfo.FIXME_COMMENT
 						.length()));
+			} else if (message.startsWith(AcceleoParserInfo.SERVICE_INVOCATION)) {
+				computeAccessibleService(file, message, marker);
 			}
+		}
+	}
+
+	/**
+	 * Computes if the java service described in the message is accessible from the given file.
+	 * 
+	 * @param file
+	 *            The file
+	 * @param message
+	 *            The message describing the service
+	 * @param marker
+	 *            The marker to use if the service is not accessible
+	 * @throws JavaModelException
+	 *             In case of problem during the search of the service class.
+	 * @throws CoreException
+	 *             In case of problem during the search of the service class.
+	 */
+	private static void computeAccessibleService(IFile file, String message, IMarker marker)
+			throws JavaModelException, CoreException {
+		boolean exported = false;
+		boolean found = false;
+
+		String projectName = ""; //$NON-NLS-1$
+
+		IProject project = file.getProject();
+		AcceleoProject acceleoProject = new AcceleoProject(project);
+		List<IProject> recursivelyAccessibleProjects = acceleoProject.getRecursivelyAccessibleProjects();
+		for (IProject iProject : recursivelyAccessibleProjects) {
+			if (iProject.isAccessible() && iProject.hasNature(JavaCore.NATURE_ID)) {
+				JavaProject javaProject = new JavaProject();
+				javaProject.setProject(iProject);
+				IType type = javaProject.findType(message.substring(AcceleoParserInfo.SERVICE_INVOCATION
+						.length()));
+				if (type != null) {
+					found = true;
+					projectName = iProject.getName();
+					IPluginModelBase plugin = PluginRegistry.findModel(iProject);
+					BundleDescription bundleDescription = plugin.getBundleDescription();
+					ExportPackageDescription[] exportPackages = bundleDescription.getExportPackages();
+					for (ExportPackageDescription exportPackageDescription : exportPackages) {
+						if (exportPackageDescription.getName().equals(
+								type.getPackageFragment().getElementName())) {
+							exported = true;
+						}
+					}
+				}
+			}
+		}
+		if (found && !exported) {
+			marker.setAttribute(IMarker.MESSAGE, AcceleoUIMessages.getString(
+					"AcceleoMarkerUtils.JavaServiceClassNotExported", message //$NON-NLS-1$
+							.substring(AcceleoParserInfo.SERVICE_INVOCATION.length()), projectName));
+		} else {
+			marker.delete();
 		}
 	}
 
