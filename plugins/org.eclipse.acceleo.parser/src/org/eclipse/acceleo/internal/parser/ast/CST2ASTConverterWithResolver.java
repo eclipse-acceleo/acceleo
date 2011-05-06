@@ -777,8 +777,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				if (arguments.size() > 0 && arguments.get(0) instanceof StringLiteralExp) {
 					StringLiteralExp stringLiteralExp = (StringLiteralExp)arguments.get(0);
 					String stringSymbol = stringLiteralExp.getStringSymbol();
-					this.logInfo(AcceleoParserInfo.SERVICE_INVOCATION + stringSymbol, oOCLExpression
-							.getStartPosition(), oOCLExpression.getEndPosition());
+					this.logInfo(AcceleoParserInfo.SERVICE_INVOCATION + stringSymbol, stringLiteralExp
+							.getStartPosition(), stringLiteralExp.getEndPosition());
 				}
 			}
 			if (oOCLExpression instanceof TemplateInvocation) {
