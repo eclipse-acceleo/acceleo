@@ -1184,7 +1184,7 @@ public class CSTParser {
 				}
 				if (eTemplate.getParameter().isEmpty()) {
 					logWarning(
-							AcceleoParserMessages.getString("CSTParser.MissingParameters"), posBegin, posEnd); //$NON-NLS-1$
+							AcceleoParserMessages.getString("CSTParser.MissingParameters"), eTemplate.getStartPosition(), eTemplate.getEndPosition()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1654,7 +1654,7 @@ public class CSTParser {
 				}
 				if (eQuery.getParameter().isEmpty()) {
 					logWarning(
-							AcceleoParserMessages.getString("CSTParser.MissingParameters"), posBegin, posEnd); //$NON-NLS-1$
+							AcceleoParserMessages.getString("CSTParser.MissingParameters"), eQuery.getStartPosition(), eQuery.getEndPosition()); //$NON-NLS-1$
 				}
 			}
 		}
