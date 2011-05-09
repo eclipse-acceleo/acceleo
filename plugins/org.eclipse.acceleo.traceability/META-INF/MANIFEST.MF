@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.acceleo.traceability.model,
 Bundle-Vendor: %providerName
 Bundle-Localization: traceability
 Bundle-Activator: org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin
+Bundle-ActivationPolicy: lazy
