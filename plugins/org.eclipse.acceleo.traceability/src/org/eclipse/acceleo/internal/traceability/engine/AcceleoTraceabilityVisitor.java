@@ -42,7 +42,6 @@ import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.IfBlock;
-import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
@@ -626,19 +625,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
 		if (invocation.getDefinition().getParameter().size() > 0) {
 			scopeEObjects.add(invocation.getDefinition().getParameter().get(0));
-		} else {
-			// Query without parameters
-			Query query = invocation.getDefinition();
-			EObject eContainer = query.eContainer();
-			String message = ""; //$NON-NLS-1$
-			if (eContainer instanceof Module) {
-				Module module = (Module)eContainer;
-				message = AcceleoTraceabilityMessages.getString(
-						"AcceleoTraceabilityVisitor.QueryWithoutParameters", query.getName(), module //$NON-NLS-1$
-								.getName(), Integer.valueOf(query.getStartPosition()), Integer.valueOf(query
-								.getEndPosition()));
-				AcceleoTraceabilityPlugin.log(message, false);
-			}
 		}
 
 		// If this invocation isn't cached yet, we'll need to record all of its traces
