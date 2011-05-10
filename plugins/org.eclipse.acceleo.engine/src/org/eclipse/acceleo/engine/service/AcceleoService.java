@@ -536,6 +536,54 @@ public final class AcceleoService {
 	}
 
 	/**
+	 * Launches the generation of an Acceleo template given its name and containing module.
+	 * <p>
+	 * This is a convenience method that can be used with multiple argument templates. The input model will be
+	 * iterated over for objects matching the template's <b>first</b> parameter type. The template will then
+	 * be called with these objects as first arguments, and the given list of <code>arguments</code> for the
+	 * remaining template parameters.
+	 * </p>
+	 * <p>
+	 * <tt>generationRoot</tt> will be used as the root of all generated files. For example, a template such
+	 * as
+	 * 
+	 * <pre>
+	 * [template generate(c:EClass)]
+	 * [file(log.log, true)]processing class [c.name/][/file]
+	 * [/template]
+	 * </pre>
+	 * 
+	 * evaluated with <tt>file:\\c:\</tt> as <tt>generationRoot</tt> would create the file <tt>c:\log.log</tt>
+	 * and generate a line &quot;processing class &lt;className&gt;&quot; for each class of the input model.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param arguments
+	 *            Arguments of the template call, excluding the very first one (<code>model</code> object).
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param blockTraceability
+	 *            Indicates if we should deactivate the traceability.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 * @since 3.1
+	 */
+	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
+			List<? extends Object> arguments, File generationRoot, boolean blockTraceability, Monitor monitor) {
+		this.deactivateTraceability = blockTraceability;
+		return doGenerate(module, templateName, model, arguments, generationRoot, monitor);
+	}
+
+	/**
 	 * Launches the generation of a single-argument Acceleo template for all matching EObjects in the given
 	 * model.
 	 * <p>
