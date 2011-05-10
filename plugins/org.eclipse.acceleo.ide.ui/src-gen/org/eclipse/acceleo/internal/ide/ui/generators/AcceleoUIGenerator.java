@@ -416,7 +416,7 @@ public final class AcceleoUIGenerator {
 				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
 				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject, args,
-						generationRoot, new BasicMonitor());
+						generationRoot, true, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 			}
