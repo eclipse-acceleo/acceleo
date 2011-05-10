@@ -23,6 +23,7 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
+import org.eclipse.acceleo.parser.cst.FileBlock;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.acceleo.parser.cst.Query;
@@ -215,7 +216,12 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 					text.append("[let/]"); //$NON-NLS-1$
 					break;
 				case CstPackage.FILE_BLOCK:
-					text.append("[file/]"); //$NON-NLS-1$
+					if (eObject instanceof FileBlock && ((FileBlock)eObject).getFileUrl() != null) {
+						FileBlock fileBlock = (FileBlock)eObject;
+						text.append("[file(" + fileBlock.getFileUrl().getBody() + ")/]"); //$NON-NLS-1$ //$NON-NLS-2$
+					} else {
+						text.append("[file/]"); //$NON-NLS-1$
+					}
 					break;
 				case CstPackage.TRACE_BLOCK:
 					text.append("[trace/]"); //$NON-NLS-1$
