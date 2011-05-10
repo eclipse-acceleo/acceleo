@@ -540,8 +540,10 @@ public abstract class AbstractAcceleoGenerator {
 
 	/**
 	 * Clears the package registry from the package registrations coming from the workspace.
+	 * 
+	 * @since 3.1
 	 */
-	private void clearPackageRegistry() {
+	protected void clearPackageRegistry() {
 		AcceleoPackageRegistry instance = AcceleoPackageRegistry.INSTANCE;
 		Set<Entry<String, Object>> entrySet = new LinkedHashSet<Map.Entry<String, Object>>(instance
 				.entrySet());
