@@ -1,0 +1,51 @@
+[comment encoding = UTF-8 /]
+[module templatePostTrim5('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)]
+[file (eClass.name + '.txt', false, 'UTF-8')][eClass.templateTrimmed()/][/file]
+[/template]
+
+[template public templateTrimmed(eClass : EClass) post(trim())]
+[if (true or true or true)]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[eClass.doSequence().doStuff()/]
+
+
+
+[/if]
+[/template]
+
+[query public doSequence(anEClass : EClass) : Sequence(EClass) = Sequence{anEClass} /]
+
+[template public doStuff(eClass : EClass)]
+[eClass.name/]
+[/template]
