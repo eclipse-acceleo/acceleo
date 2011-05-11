@@ -424,7 +424,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			((List<Object>)actualIteration).add(iteration);
 		}
 		if (actualIteration.size() > 0 && forBlock.getBefore() != null) {
-			visitExpression((OCLExpression<C>)forBlock.getBefore());
+			getVisitor().visitExpression((OCLExpression<C>)forBlock.getBefore());
 		}
 		final Iterator<Object> contentIterator = actualIteration.iterator();
 		// This will be used to only record and log a single CCE if many arise with this loop
@@ -521,7 +521,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 		}
 		if (actualIteration.size() > 0 && forBlock.getAfter() != null) {
-			visitExpression((OCLExpression<C>)forBlock.getAfter());
+			getVisitor().visitExpression((OCLExpression<C>)forBlock.getAfter());
 		}
 	}
 
@@ -553,7 +553,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		if (conditionValue != null && ((Boolean)conditionValue).booleanValue()) {
 			for (final org.eclipse.ocl.ecore.OCLExpression nested : ifBlock.getBody()) {
-				visitExpression((OCLExpression<C>)nested);
+				getVisitor().visitExpression((OCLExpression<C>)nested);
 			}
 		} else {
 			if (ifBlock.getElseIf().size() > 0) {
@@ -582,7 +582,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				}
 				if (temp != null) {
 					for (final org.eclipse.ocl.ecore.OCLExpression nested : temp.getBody()) {
-						visitExpression((OCLExpression<C>)nested);
+						getVisitor().visitExpression((OCLExpression<C>)nested);
 					}
 				} else if (ifBlock.getElse() != null) {
 					visitAcceleoBlock(ifBlock.getElse());
@@ -642,7 +642,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				varName = var.getName();
 				getEvaluationEnvironment().add(varName, value);
 				for (final org.eclipse.ocl.ecore.OCLExpression nested : letBlock.getBody()) {
-					visitExpression((OCLExpression<C>)nested);
+					getVisitor().visitExpression((OCLExpression<C>)nested);
 				}
 			} else {
 				if (letBlock.getElseLet().size() > 0) {
@@ -668,7 +668,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					}
 					if (temp != null) {
 						for (final org.eclipse.ocl.ecore.OCLExpression nested : temp.getBody()) {
-							visitExpression((OCLExpression<C>)nested);
+							getVisitor().visitExpression((OCLExpression<C>)nested);
 						}
 					} else if (letBlock.getElse() != null) {
 						visitAcceleoBlock(letBlock.getElse());
@@ -888,7 +888,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		context.openNested();
 		if (invocation.getBefore() != null) {
-			visitExpression((OCLExpression<C>)invocation.getBefore());
+			getVisitor().visitExpression((OCLExpression<C>)invocation.getBefore());
 		}
 		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (source instanceof EObject) {
@@ -913,7 +913,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 		}
 		if (invocation.getAfter() != null) {
-			visitExpression((OCLExpression<C>)invocation.getAfter());
+			getVisitor().visitExpression((OCLExpression<C>)invocation.getAfter());
 		}
 		// Close the invoked template's variable scope now
 		((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).removeVariableScope();
