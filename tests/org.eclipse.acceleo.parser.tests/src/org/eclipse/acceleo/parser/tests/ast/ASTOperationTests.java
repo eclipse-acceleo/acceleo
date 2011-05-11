@@ -75,8 +75,8 @@ public class ASTOperationTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
-			checkASTResolution(0, 0, 0);
-			checkASTDocumentationResolution(0, 0, 0);
+			checkASTResolution(1, 0, 0);
+			checkASTDocumentationResolution(1, 0, 0);
 		} else {
 			fail();
 		}
