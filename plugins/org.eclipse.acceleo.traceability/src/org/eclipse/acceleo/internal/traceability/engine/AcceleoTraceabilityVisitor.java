@@ -1151,7 +1151,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} else if (record && !recordedTraces.isEmpty() && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					recordedTraces.getLast().addTrace(propertyCallInput, text, result);
-				} else if (iterationTraces != null) {
+				} else if (iterationTraces != null && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					iterationTraces.addTrace(propertyCallInput, text, result);
 				}
