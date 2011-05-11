@@ -40,7 +40,7 @@ Non-standard OclAny operations
 [eClass.getProperty('')/]
 [eClass.getProperty('e', Sequence{})/]
 [eClass.getProperty('e', 'i')/]
-[eClass.invoke('e', 'i', Sequence{})/]
+[eClass.invoke('org.eclipse.acceleo.UnknownTestMethod', 'i', Sequence{})/]
 [eClass.toString()/]
 
 Non-standard Collection operations
