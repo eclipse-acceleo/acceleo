@@ -278,7 +278,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		considerTrace = considerTrace && currentFiles != null && !currentFiles.isEmpty();
 		considerTrace = considerTrace && recordedTraces != null && !recordedTraces.isEmpty();
 		// Lastly, we need to ignore those events corresponding to TemplateInvocation nested in OperationCalls
-		considerTrace = considerTrace && (!(sourceBlock instanceof Template) || !evaluatingOperationCall);
+		// We will look for the root source block to ensure the same condition for nested if/let/for.
+		Block rootSourceBlock = sourceBlock;
+		if (!(rootSourceBlock instanceof Template)) {
+			while (rootSourceBlock.eContainer() instanceof Block) {
+				rootSourceBlock = (Block)rootSourceBlock.eContainer();
+			}
+		}
+		considerTrace = considerTrace && (!(rootSourceBlock instanceof Template) || !evaluatingOperationCall);
 		if (considerTrace) {
 			GeneratedFile generatedFile = currentFiles.getLast();
 			ExpressionTrace<C> trace;
