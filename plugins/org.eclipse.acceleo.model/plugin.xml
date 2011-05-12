@@ -16,7 +16,7 @@ Contributors:
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://www.eclipse.org/acceleo/mtl/3.0/" 
+       uri = "http://www.eclipse.org/acceleo/mtl/3.0" 
        class = "org.eclipse.acceleo.model.mtl.MtlPackage"
        genModel = "model/mtl.genmodel" /> 
   </extension>
