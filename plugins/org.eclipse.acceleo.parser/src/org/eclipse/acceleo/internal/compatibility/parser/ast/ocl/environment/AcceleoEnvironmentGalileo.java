@@ -254,7 +254,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			}
 
 			// If everything fails, let's try to see if we don't have two instances of the same metatype.
-			if (relationship == UMLReflection.UNRELATED_TYPE) {
+			if (relationship == UMLReflection.UNRELATED_TYPE && oclType1 != null && oclType2 != null) {
 				URI uri1 = EcoreUtil.getURI(oclType1);
 				URI uri2 = EcoreUtil.getURI(oclType2);
 				if (uri1 != null && uri1.equals(uri2)) {
