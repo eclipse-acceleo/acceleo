@@ -312,6 +312,7 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public void initialize(EObject element, File folder, List<? extends Object> arguments) throws IOException {
 		ResourceSet resourceSet = new AcceleoResourceSetImpl();
+		resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 
 		resourceFactoryRegistry = resourceSet.getResourceFactoryRegistry();
 		resourceSet.setResourceFactoryRegistry(new AcceleoResourceFactoryRegistry(resourceFactoryRegistry));
@@ -368,6 +369,7 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
 		ResourceSet resourceSet = new AcceleoResourceSetImpl();
+		resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			resourceSet.setURIConverter(createURIConverter());
 		}
