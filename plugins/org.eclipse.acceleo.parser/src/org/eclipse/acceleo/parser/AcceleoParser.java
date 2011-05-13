@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -154,6 +155,7 @@ public class AcceleoParser {
 		monitor.beginTask(AcceleoParserMessages.getString("AcceleoParser.ParseFiles", //$NON-NLS-1$
 				new Object[] {Integer.valueOf(acceleoFiles.size()), }), acceleoFiles.size() * 3);
 		ResourceSet oResourceSet = new AcceleoResourceSetImpl();
+		oResourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 		List<Resource> newResources = new ArrayList<Resource>();
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
 		Iterator<URI> itOutputURIs = outputURIs.iterator();
@@ -209,6 +211,24 @@ public class AcceleoParser {
 				}
 			}
 		}
+
+		resolveAST(oResourceSet, mapURIs, sources, monitor);
+	}
+
+	/**
+	 * Resolves the AST.
+	 * 
+	 * @param oResourceSet
+	 *            The resource set.
+	 * @param mapURIs
+	 *            The map uris.
+	 * @param sources
+	 *            The sources.
+	 * @param monitor
+	 *            The monitor.
+	 */
+	private void resolveAST(ResourceSet oResourceSet, Map<URI, URI> mapURIs,
+			List<AcceleoSourceBuffer> sources, Monitor monitor) {
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
 				&& itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
