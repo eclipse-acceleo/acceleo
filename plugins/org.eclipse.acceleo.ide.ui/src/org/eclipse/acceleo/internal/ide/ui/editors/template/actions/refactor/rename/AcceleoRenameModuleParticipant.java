@@ -69,11 +69,12 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 	 */
 	@Override
 	protected boolean initialize(Object element) {
+		boolean result = false;
+
 		if (element instanceof IFile
 				&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)element).getFileExtension())
 				&& ((IFile)element).exists()) {
 
-			boolean result = true;
 			String newName = this.getArguments().getNewName();
 
 			if (newName.length() > 0 && newName.endsWith("." + IAcceleoConstants.MTL_FILE_EXTENSION) //$NON-NLS-1$
@@ -82,26 +83,33 @@ public class AcceleoRenameModuleParticipant extends RenameParticipant {
 				this.project = this.file.getProject();
 				this.module = AcceleoRefactoringUtils.getModuleFromFile(file);
 
+				if (this.module == null) {
+					AcceleoUIActivator.log(AcceleoUIMessages.getString(
+							"AcceleoEditorRenameModuleRefactoring.ModuleNotCompiled", this.file.getName()), //$NON-NLS-1$
+							false);
+					return false;
+				}
 				try {
 					IMarker[] markers = file.findMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true,
 							IResource.DEPTH_INFINITE);
 					if (markers.length > 0) {
 						result = false;
 					} else {
-						// We don't rename the file of the module because the main refactoring process will do
-						// it
+						// We don't rename the file of the module because the main refactoring process
+						// will do it
 						this.refactoring = new AcceleoRenameModuleRefactoring(false);
+						result = true;
 					}
 				} catch (CoreException e) {
 					AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 					result = false;
 				}
+
 			} else {
 				result = false;
 			}
-			return result;
 		}
-		return false;
+		return result;
 	}
 
 	/**

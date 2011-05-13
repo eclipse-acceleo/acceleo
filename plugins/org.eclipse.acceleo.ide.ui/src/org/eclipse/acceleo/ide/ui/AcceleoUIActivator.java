@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -178,5 +179,60 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 		}
 		ILog log = getDefault().getLog();
 		log.log(new Status(severity, PLUGIN_ID, exception.getMessage(), exception));
+	}
+
+	/**
+	 * Puts the given status in the error log view.
+	 * 
+	 * @param status
+	 *            Error Status.
+	 * @since 3.1
+	 */
+	public static void log(IStatus status) {
+		// Eclipse platform displays NullPointer on standard error instead of throwing it.
+		// We'll handle this by throwing it ourselves.
+		if (status == null) {
+			throw new NullPointerException(AcceleoEngineMessages
+					.getString("AcceleoUIActivator.LogNullStatus")); //$NON-NLS-1$
+		}
+
+		if (getDefault() != null) {
+			getDefault().getLog().log(status);
+		} else {
+			// We are out of eclipse. Prints the message on standard error.
+			// CHECKSTYLE:OFF
+			System.err.println(status.getMessage());
+			status.getException().printStackTrace();
+			// CHECKSTYLE:ON
+		}
+	}
+
+	/**
+	 * Puts the given message in the error log view, as error or warning.
+	 * 
+	 * @param message
+	 *            The message to put in the error log view.
+	 * @param blocker
+	 *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
+	 *            warning.
+	 * @since 3.1
+	 */
+	public static void log(String message, boolean blocker) {
+		if (getDefault() == null) {
+			// We are out of eclipse. Prints the message on standard error.
+			// CHECKSTYLE:OFF
+			System.err.println(message);
+			// CHECKSTYLE:ON
+		} else {
+			int severity = IStatus.WARNING;
+			if (blocker) {
+				severity = IStatus.ERROR;
+			}
+			String errorMessage = message;
+			if (errorMessage == null || "".equals(errorMessage)) { //$NON-NLS-1$
+				errorMessage = AcceleoEngineMessages.getString("AcceleoUIActivator.UnexpectedException"); //$NON-NLS-1$
+			}
+			log(new Status(severity, PLUGIN_ID, errorMessage));
+		}
 	}
 }
