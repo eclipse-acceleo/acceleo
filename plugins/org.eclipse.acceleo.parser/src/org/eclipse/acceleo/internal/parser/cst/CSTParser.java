@@ -723,10 +723,6 @@ public class CSTParser {
 			}
 			setPositions(typedModel, currentPos, e);
 			String ePackageKey = source.getBuffer().substring(currentPos, e).trim();
-			if (ePackageKey.startsWith(IAcceleoConstants.LITERAL_BEGIN)
-					&& ePackageKey.endsWith(IAcceleoConstants.LITERAL_END)) {
-				ePackageKey = ePackageKey.substring(1, ePackageKey.length() - 1);
-			}
 			EPackage ePackage = ModelUtils.getEPackage(ePackageKey);
 			if (ePackage == null && ePackageKey.startsWith(IAcceleoConstants.LITERAL_BEGIN)
 					&& ePackageKey.endsWith(IAcceleoConstants.LITERAL_END)) {
