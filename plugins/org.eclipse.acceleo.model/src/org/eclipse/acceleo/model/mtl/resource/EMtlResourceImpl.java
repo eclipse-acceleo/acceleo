@@ -76,6 +76,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		}
 		// Record unknown features so that we can load emtl files compiled under 3.1 with 3.0
 		actualOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
+		actualOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoXMIURIHandler());
 		// New loading options to improve loading time
 		// actualOptions.put(XMLResource.OPTION_DEFER_ATTACHMENT, Boolean.TRUE);
 		// actualOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
@@ -96,10 +97,17 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doSave(java.io.OutputStream, java.util.Map)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 		// deactivate the notifications to work with EMF transaction
 		eSetDeliver(false);
+
+		Map<Object, Object> actualOptions = (Map<Object, Object>)options;
+		if (actualOptions == null) {
+			actualOptions = new HashMap<Object, Object>();
+		}
+		actualOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoXMIURIHandler());
 
 		EAnnotation positions = getPositions(true);
 		fixVariablesAndPositions(positions);
