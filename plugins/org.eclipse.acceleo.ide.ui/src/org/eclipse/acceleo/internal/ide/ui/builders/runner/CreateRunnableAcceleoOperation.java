@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
@@ -31,6 +32,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TypedModel;
+import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -50,7 +52,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
  * The operation that compiles the FileBlock elements of the module in a background task. It creates a java
@@ -120,7 +121,8 @@ public class CreateRunnableAcceleoOperation implements IWorkspaceRunnable {
 					}
 					URI moduleURI = URI.createPlatformResourceURI(acceleoProject.getOutputFilePath(
 							fileAcceleo).toString(), true);
-					ResourceSet resourceSet = new ResourceSetImpl();
+					ResourceSet resourceSet = new AcceleoResourceSetImpl();
+					resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 					try {
 						registerPackages(resourceSet);
 						List<AcceleoPackage> packages = new ArrayList<AcceleoPackage>();
