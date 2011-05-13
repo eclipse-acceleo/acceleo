@@ -368,17 +368,29 @@ public abstract class AbstractAcceleoGenerator {
 	 *             the model cannot be loaded.
 	 */
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
-		ResourceSet resourceSet = new AcceleoResourceSetImpl();
-		resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
+		ResourceSet modulesResourceSet = new AcceleoResourceSetImpl();
+		modulesResourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			resourceSet.setURIConverter(createURIConverter());
+			modulesResourceSet.setURIConverter(createURIConverter());
 		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
-		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+		modulesResourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 
-		registerResourceFactories(resourceSet);
-		registerPackages(resourceSet);
+		registerResourceFactories(modulesResourceSet);
+		registerPackages(modulesResourceSet);
+
+		ResourceSet modelResourceSet = new AcceleoResourceSetImpl();
+		modelResourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			modelResourceSet.setURIConverter(createURIConverter());
+		}
+
+		// make sure that metamodel projects in the workspace override those in plugins
+		modelResourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+
+		registerResourceFactories(modelResourceSet);
+		registerPackages(modelResourceSet);
 
 		addListeners();
 		addProperties();
@@ -398,10 +410,10 @@ public abstract class AbstractAcceleoGenerator {
 		}
 		URI moduleURI = createTemplateURI(moduleURL.toString());
 		moduleURI = URI.createURI(moduleURI.toString(), true);
-		module = (Module)ModelUtils.load(moduleURI, resourceSet);
+		module = (Module)ModelUtils.load(moduleURI, modulesResourceSet);
 
 		URI newModelURI = URI.createURI(modelURI.toString(), true);
-		model = ModelUtils.load(newModelURI, resourceSet);
+		model = ModelUtils.load(newModelURI, modelResourceSet);
 		targetFolder = folder;
 		generationArguments = arguments;
 	}
