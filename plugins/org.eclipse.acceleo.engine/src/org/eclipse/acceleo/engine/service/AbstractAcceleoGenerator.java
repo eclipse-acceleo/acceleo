@@ -544,15 +544,17 @@ public abstract class AbstractAcceleoGenerator {
 	 * @since 3.1
 	 */
 	protected void clearPackageRegistry() {
-		AcceleoPackageRegistry instance = AcceleoPackageRegistry.INSTANCE;
-		Set<Entry<String, Object>> entrySet = new LinkedHashSet<Map.Entry<String, Object>>(instance
-				.entrySet());
-		for (Entry<String, Object> entry : entrySet) {
-			Object object = entry.getValue();
-			if (object instanceof EPackage) {
-				EPackage ePackage = (EPackage)object;
-				if (AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackage.getClass())) {
-					instance.remove(entry.getKey());
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			AcceleoPackageRegistry instance = AcceleoPackageRegistry.INSTANCE;
+			Set<Entry<String, Object>> entrySet = new LinkedHashSet<Map.Entry<String, Object>>(instance
+					.entrySet());
+			for (Entry<String, Object> entry : entrySet) {
+				Object object = entry.getValue();
+				if (object instanceof EPackage) {
+					EPackage ePackage = (EPackage)object;
+					if (AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackage.getClass())) {
+						instance.remove(entry.getKey());
+					}
 				}
 			}
 		}
