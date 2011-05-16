@@ -163,8 +163,11 @@ public class CreatePomCommandHandler extends AbstractHandler {
 			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 			newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
 			javaProject.setRawClasspath(newEntries, null);
-			AcceleoUIGenerator.getDefault().generateAcceleoCompiler(
-					AcceleowizardmodelFactory.eINSTANCE.createAcceleoProject(), sourceFolder);
+
+			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoModelProject = AcceleowizardmodelFactory.eINSTANCE
+					.createAcceleoProject();
+			acceleoModelProject.setName(project.getName());
+			AcceleoUIGenerator.getDefault().generateAcceleoCompiler(acceleoModelProject, sourceFolder);
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
 		}

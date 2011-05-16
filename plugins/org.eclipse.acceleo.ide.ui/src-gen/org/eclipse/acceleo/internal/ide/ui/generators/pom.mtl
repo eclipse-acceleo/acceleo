@@ -20,97 +20,153 @@
 [template public genPom(anAcceleoPom : AcceleoPom)]
 [comment @main /]
 [file ('pom.xml', false, 'UTF-8')]
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <!--
-         This file will only be created once by Acceleo, it will not be modified after that by Acceleo.
-         If you want Acceleo to recreate this file, delete it and rebuild your project.
-    -->
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
 
-    <groupId>acceleo</groupId>
-    <artifactId>[anAcceleoPom.artifactId/]</artifactId>
-    <version>1.0.0.SNAPSHOT</version>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>  
-                    <groupId>org.codehaus.mojo</groupId>  
-                    <artifactId>exec-maven-plugin</artifactId>  
-                    <version>1.1.1</version>  
-                    <executions>  
-                        <execution>  
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>java</goal>
-                            </goals>
-                            <configuration>
-                                <!--
-                                    Calls the AcceleoMainCompiler to launch the compilation.
-                                -->
-                                <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
-                                <arguments>  
-                                    <argument>${basedir}/src/main/java</argument>   <!-- input folder -->
-                                    <argument>${basedir}/target/classes/</argument> <!-- output folder -->
-                                    <argument>true</argument>   <!-- use binary resources -->
-                                    <argument></argument>  <!-- dependencies with other projects -->
-                                </arguments>  
-                            </configuration>  
-                        </execution>  
-                    </executions>  
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-    <profiles>
-        <profile>
-            <id>acceleo-compilation</id>
-            <build>
-                <plugins>
-                    <plugin>  
-                        <groupId>org.codehaus.mojo</groupId>  
-                        <artifactId>exec-maven-plugin</artifactId>  
-                        <version>1.1.1</version>  
-                        <executions>  
-                            <execution>  
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <!--
-                                        Calls the AcceleoMainCompiler to launch the compilation.
-                                    -->
-                                    <mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler</mainClass>  
-                                    <arguments>  
-                                        <argument>${basedir}/src/main/java</argument>  <!-- input folder -->
-                                        <argument>${basedir}/target/classes/</argument>  <!-- output folder -->
-                                        <argument>true</argument> <!-- use binary resources -->
-                                        <argument></argument> <!-- dependencies with other projects -->  
-                                    </arguments>  
-                                </configuration>  
-                            </execution>  
-                        </executions>  
-                    </plugin>
-                </plugins>
-            </build>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-    <dependencies>
-[for (anAcceleoPomDependency : AcceleoPomDependency | anAcceleoPom.dependencies)]
-        <dependency>
-            <groupId>[anAcceleoPomDependency.groupId/]</groupId>
-            <artifactId>[anAcceleoPomDependency.artifactId/]</artifactId>
-            <version>[anAcceleoPomDependency.version/]</version>
-            <scope>system</scope>
-            <systemPath>[anAcceleoPomDependency.systemPath/]</systemPath>
-        </dependency>
-[/for]
-    </dependencies>
+  <groupId>org.eclipse.acceleo</groupId>
+  <artifactId>[anAcceleoPom.artifactId/]</artifactId>
+  <version>1.0.0.qualifier</version>
+  <packaging>eclipse-plugin</packaging>
+  <name>Acceleo Generator Project</name>
+
+  <modules>
+    <module>[anAcceleoPom.artifactId/]</module>
+  </modules>
+
+  <properties>
+    <acceleo-version>3.1.0-SNAPSHOT</acceleo-version>
+    <tycho-version>0.12.0</tycho-version>
+    <acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/release/3.1</acceleo-site>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>platform-indigo</id>
+      <activation>
+         <activeByDefault>true</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>indigo</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
+        <platform-version>['['/]3.7,3.8)</platform-version>
+      </properties>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <id>eclipse-platform</id>
+      <layout>p2</layout>
+      <url>${eclipse-site}</url>
+    </repository>
+    <repository>
+      <id>acceleo</id>
+      <layout>p2</layout>
+      <url>${acceleo-site}</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <!-- need maven-findbugs-2.3.2-SNAPSHOT, see http://jira.codehaus.org/browse/MFINDBUGS-122 remove this when this version is released -->
+      <id>codehaus.snapshots</id>
+      <url>http://snapshots.repository.codehaus.org/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <resolver>p2</resolver>
+          <pomDependencies>consider</pomDependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-compiler-plugin</artifactId>
+          <version>${tycho-version}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <!-- TODO remove workaround when https://issues.sonatype.org/browse/TYCHO-473 is fixed -->
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-source-plugin</artifactId>
+          <version>${tycho-version}</version>
+          <executions>
+            <execution>
+              <id>attach-source</id>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>plugin-source</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.4.1</version>
+          <configuration>
+            <encoding>ISO-8859-1</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.3</version>
+        </plugin>
+        <plugin>  
+          <groupId>org.codehaus.mojo</groupId>  
+          <artifactId>exec-maven-plugin</artifactId>  
+          <version>1.1.1</version>  
+          <executions>  
+            <execution>  
+              <phase>compile</phase>  
+              <goals>  
+                <goal>java</goal>  
+              </goals>
+              <configuration>
+                <!--
+                   Calls the AcceleoCompiler to launch the compilation.
+                -->
+                <mainClass>[anAcceleoPom.artifactId/].AcceleoCompiler</mainClass>  
+                <arguments>  
+                  <argument>${basedir}/src/</argument> <!-- The source folder -->  
+                  <argument>${basedir}/target/classes</argument> <!-- The output folder -->
+                  <argument>true</argument> <!-- Indicates if we should use binary resources serializations -->
+                  <argument></argument>   <!-- The project dependencies in the workspace -->
+                </arguments>  
+              </configuration>  
+            </execution>  
+          </executions>  
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
 [/file]
 [/template]

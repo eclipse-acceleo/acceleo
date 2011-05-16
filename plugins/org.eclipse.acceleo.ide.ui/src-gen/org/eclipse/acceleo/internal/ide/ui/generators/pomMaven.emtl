@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="pom" nsURI="org::eclipse::acceleo::module::sample::main::pom" startHeaderPosition="411" endHeaderPosition="562">
+  <mtl:Module name="pomMaven" nsURI="org::eclipse::acceleo::module::sample::main::pomMaven" startHeaderPosition="411" endHeaderPosition="567">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="32" endPosition="408" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
     </documentation>
@@ -9,7 +9,7 @@
     </input>
     <ownedModuleElement xsi:type="mtl:Template" name="genPom" visibility="Public" main="true">
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;&#xA;    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xA;    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;>&#xA;  &lt;modelVersion>4.0.0&lt;/modelVersion>&#xA;&#xA;  &lt;prerequisites>&#xA;    &lt;maven>3.0&lt;/maven>&#xA;  &lt;/prerequisites>&#xA;&#xA;  &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;  &lt;artifactId>"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xA;    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;>&#xA;    &lt;modelVersion>4.0.0&lt;/modelVersion>&#xA;&#xA;    &lt;!--&#xA;         This file will only be created once by Acceleo, it will not be modified after that by Acceleo.&#xA;         If you want Acceleo to recreate this file, delete it and rebuild your project.&#xA;    -->&#xA;&#xA;    &lt;groupId>acceleo&lt;/groupId>&#xA;    &lt;artifactId>"/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPom/anAcceleoPom">
@@ -17,27 +17,52 @@
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;  &lt;version>1.0.0.qualifier&lt;/version>&#xA;  &lt;packaging>eclipse-plugin&lt;/packaging>&#xA;  &lt;name>Acceleo Generator Project&lt;/name>&#xA;&#xA;  &lt;modules>&#xA;    &lt;module>"/>
-        <body xsi:type="ocl.ecore:PropertyCallExp">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-          <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPom/anAcceleoPom">
-            <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
-          </source>
-          <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;    &lt;version>1.0.0.SNAPSHOT&lt;/version>&#xA;    &lt;build>&#xA;        &lt;pluginManagement>&#xA;            &lt;plugins>&#xA;                &lt;plugin>  &#xA;                    &lt;groupId>org.codehaus.mojo&lt;/groupId>  &#xA;                    &lt;artifactId>exec-maven-plugin&lt;/artifactId>  &#xA;                    &lt;version>1.1.1&lt;/version>  &#xA;                    &lt;executions>  &#xA;                        &lt;execution>  &#xA;                            &lt;phase>compile&lt;/phase>&#xA;                            &lt;goals>&#xA;                                &lt;goal>java&lt;/goal>&#xA;                            &lt;/goals>&#xA;                            &lt;configuration>&#xA;                                &lt;!--&#xA;                                    Calls the AcceleoMainCompiler to launch the compilation.&#xA;                                -->&#xA;                                &lt;mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler&lt;/mainClass>  &#xA;                                &lt;arguments>  &#xA;                                    &lt;argument>${basedir}/src/main/java&lt;/argument>   &lt;!-- input folder -->&#xA;                                    &lt;argument>${basedir}/target/classes/&lt;/argument> &lt;!-- output folder -->&#xA;                                    &lt;argument>true&lt;/argument>   &lt;!-- use binary resources -->&#xA;                                    &lt;argument>&lt;/argument>  &lt;!-- dependencies with other projects -->&#xA;                                &lt;/arguments>  &#xA;                            &lt;/configuration>  &#xA;                        &lt;/execution>  &#xA;                    &lt;/executions>  &#xA;                &lt;/plugin>&#xA;            &lt;/plugins>&#xA;        &lt;/pluginManagement>&#xA;    &lt;/build>&#xA;    &lt;profiles>&#xA;        &lt;profile>&#xA;            &lt;id>acceleo-compilation&lt;/id>&#xA;            &lt;build>&#xA;                &lt;plugins>&#xA;                    &lt;plugin>  &#xA;                        &lt;groupId>org.codehaus.mojo&lt;/groupId>  &#xA;                        &lt;artifactId>exec-maven-plugin&lt;/artifactId>  &#xA;                        &lt;version>1.1.1&lt;/version>  &#xA;                        &lt;executions>  &#xA;                            &lt;execution>  &#xA;                                &lt;phase>compile&lt;/phase>&#xA;                                &lt;goals>&#xA;                                    &lt;goal>java&lt;/goal>&#xA;                                &lt;/goals>&#xA;                                &lt;configuration>&#xA;                                    &lt;!--&#xA;                                        Calls the AcceleoMainCompiler to launch the compilation.&#xA;                                    -->&#xA;                                    &lt;mainClass>org.eclipse.acceleo.parser.compiler.AcceleoMainCompiler&lt;/mainClass>  &#xA;                                    &lt;arguments>  &#xA;                                        &lt;argument>${basedir}/src/main/java&lt;/argument>  &lt;!-- input folder -->&#xA;                                        &lt;argument>${basedir}/target/classes/&lt;/argument>  &lt;!-- output folder -->&#xA;                                        &lt;argument>true&lt;/argument> &lt;!-- use binary resources -->&#xA;                                        &lt;argument>&lt;/argument> &lt;!-- dependencies with other projects -->  &#xA;                                    &lt;/arguments>  &#xA;                                &lt;/configuration>  &#xA;                            &lt;/execution>  &#xA;                        &lt;/executions>  &#xA;                    &lt;/plugin>&#xA;                &lt;/plugins>&#xA;            &lt;/build>&#xA;            &lt;activation>&#xA;                &lt;activeByDefault>true&lt;/activeByDefault>&#xA;            &lt;/activation>&#xA;        &lt;/profile>&#xA;    &lt;/profiles>&#xA;    &lt;dependencies>&#xA;"/>
+        <body xsi:type="mtl:ForBlock">
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="        &lt;dependency>&#xA;            &lt;groupId>"/>
+          <body xsi:type="ocl.ecore:PropertyCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPomDependency" referredVariable="/0/genPom/@body.0/@body.3/anAcceleoPomDependency">
+              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+            </source>
+            <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency/groupId"/>
+          </body>
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/groupId>&#xA;            &lt;artifactId>"/>
+          <body xsi:type="ocl.ecore:PropertyCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPomDependency" referredVariable="/0/genPom/@body.0/@body.3/anAcceleoPomDependency">
+              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+            </source>
+            <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency/artifactId"/>
+          </body>
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;            &lt;version>"/>
+          <body xsi:type="ocl.ecore:PropertyCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPomDependency" referredVariable="/0/genPom/@body.0/@body.3/anAcceleoPomDependency">
+              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+            </source>
+            <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency/version"/>
+          </body>
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/version>&#xA;            &lt;scope>system&lt;/scope>&#xA;            &lt;systemPath>"/>
+          <body xsi:type="ocl.ecore:PropertyCallExp">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPomDependency" referredVariable="/0/genPom/@body.0/@body.3/anAcceleoPomDependency">
+              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+            </source>
+            <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency/systemPath"/>
+          </body>
+          <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/systemPath>&#xA;        &lt;/dependency>&#xA;"/>
+          <loopVariable name="anAcceleoPomDependency">
+            <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+          </loopVariable>
+          <iterSet xsi:type="ocl.ecore:PropertyCallExp" eType="/9/OrderedSet(AcceleoPomDependency)">
+            <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPom/anAcceleoPom">
+              <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
+            </source>
+            <referredProperty xsi:type="ecore:EReference" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/dependencies"/>
+          </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/module>&#xA;  &lt;/modules>&#xA;&#xA;  &lt;properties>&#xA;    &lt;acceleo-version>3.1.0-SNAPSHOT&lt;/acceleo-version>&#xA;    &lt;tycho-version>0.12.0&lt;/tycho-version>&#xA;    &lt;acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/release/3.1&lt;/acceleo-site>&#xA;  &lt;/properties>&#xA;&#xA;  &lt;profiles>&#xA;    &lt;profile>&#xA;      &lt;id>platform-indigo&lt;/id>&#xA;      &lt;activation>&#xA;         &lt;activeByDefault>true&lt;/activeByDefault>&#xA;        &lt;property>&#xA;          &lt;name>platform-version-name&lt;/name>&#xA;          &lt;value>indigo&lt;/value>&#xA;        &lt;/property>&#xA;      &lt;/activation>&#xA;      &lt;properties>&#xA;        &lt;eclipse-site>http://download.eclipse.org/releases/indigo&lt;/eclipse-site>&#xA;        &lt;platform-version>"/>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="3.7,3.8)&lt;/platform-version>&#xA;      &lt;/properties>&#xA;    &lt;/profile>&#xA;  &lt;/profiles>&#xA;&#xA;  &lt;repositories>&#xA;    &lt;repository>&#xA;      &lt;id>eclipse-platform&lt;/id>&#xA;      &lt;layout>p2&lt;/layout>&#xA;      &lt;url>${eclipse-site}&lt;/url>&#xA;    &lt;/repository>&#xA;    &lt;repository>&#xA;      &lt;id>acceleo&lt;/id>&#xA;      &lt;layout>p2&lt;/layout>&#xA;      &lt;url>${acceleo-site}&lt;/url>&#xA;    &lt;/repository>&#xA;  &lt;/repositories>&#xA;&#xA;  &lt;pluginRepositories>&#xA;    &lt;pluginRepository>&#xA;      &lt;!-- need maven-findbugs-2.3.2-SNAPSHOT, see http://jira.codehaus.org/browse/MFINDBUGS-122 remove this when this version is released -->&#xA;      &lt;id>codehaus.snapshots&lt;/id>&#xA;      &lt;url>http://snapshots.repository.codehaus.org/&lt;/url>&#xA;    &lt;/pluginRepository>&#xA;  &lt;/pluginRepositories>&#xA;&#xA;  &lt;build>&#xA;    &lt;plugins>&#xA;      &lt;plugin>&#xA;        &lt;groupId>org.eclipse.tycho&lt;/groupId>&#xA;        &lt;artifactId>tycho-maven-plugin&lt;/artifactId>&#xA;        &lt;version>${tycho-version}&lt;/version>&#xA;        &lt;extensions>true&lt;/extensions>&#xA;      &lt;/plugin>&#xA;      &lt;plugin>&#xA;        &lt;groupId>org.eclipse.tycho&lt;/groupId>&#xA;        &lt;artifactId>target-platform-configuration&lt;/artifactId>&#xA;        &lt;version>${tycho-version}&lt;/version>&#xA;        &lt;configuration>&#xA;          &lt;resolver>p2&lt;/resolver>&#xA;          &lt;pomDependencies>consider&lt;/pomDependencies>&#xA;        &lt;/configuration>&#xA;      &lt;/plugin>&#xA;    &lt;/plugins>&#xA;    &lt;pluginManagement>&#xA;      &lt;plugins>&#xA;        &lt;plugin>&#xA;          &lt;groupId>org.eclipse.tycho&lt;/groupId>&#xA;          &lt;artifactId>tycho-compiler-plugin&lt;/artifactId>&#xA;          &lt;version>${tycho-version}&lt;/version>&#xA;          &lt;configuration>&#xA;            &lt;encoding>UTF-8&lt;/encoding>&#xA;          &lt;/configuration>&#xA;        &lt;/plugin>&#xA;        &lt;plugin>&#xA;          &lt;!-- TODO remove workaround when https://issues.sonatype.org/browse/TYCHO-473 is fixed -->&#xA;          &lt;groupId>org.eclipse.tycho&lt;/groupId>&#xA;          &lt;artifactId>tycho-source-plugin&lt;/artifactId>&#xA;          &lt;version>${tycho-version}&lt;/version>&#xA;          &lt;executions>&#xA;            &lt;execution>&#xA;              &lt;id>attach-source&lt;/id>&#xA;              &lt;phase>process-classes&lt;/phase>&#xA;              &lt;goals>&#xA;                &lt;goal>plugin-source&lt;/goal>&#xA;              &lt;/goals>&#xA;            &lt;/execution>&#xA;          &lt;/executions>&#xA;        &lt;/plugin>&#xA;        &lt;plugin>&#xA;          &lt;groupId>org.apache.maven.plugins&lt;/groupId>&#xA;          &lt;artifactId>maven-resources-plugin&lt;/artifactId>&#xA;          &lt;version>2.4.1&lt;/version>&#xA;          &lt;configuration>&#xA;            &lt;encoding>ISO-8859-1&lt;/encoding>&#xA;          &lt;/configuration>&#xA;        &lt;/plugin>&#xA;        &lt;plugin>&#xA;          &lt;groupId>org.apache.maven.plugins&lt;/groupId>&#xA;          &lt;artifactId>maven-antrun-plugin&lt;/artifactId>&#xA;          &lt;version>1.3&lt;/version>&#xA;        &lt;/plugin>&#xA;        &lt;plugin>  &#xA;          &lt;groupId>org.codehaus.mojo&lt;/groupId>  &#xA;          &lt;artifactId>exec-maven-plugin&lt;/artifactId>  &#xA;          &lt;version>1.1.1&lt;/version>  &#xA;          &lt;executions>  &#xA;            &lt;execution>  &#xA;              &lt;phase>compile&lt;/phase>  &#xA;              &lt;goals>  &#xA;                &lt;goal>java&lt;/goal>  &#xA;              &lt;/goals>&#xA;              &lt;configuration>&#xA;                &lt;!--&#xA;                   Calls the AcceleoCompiler to launch the compilation.&#xA;                -->&#xA;                &lt;mainClass>"/>
-        <body xsi:type="ocl.ecore:PropertyCallExp">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-          <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPom/anAcceleoPom">
-            <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
-          </source>
-          <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
-        </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=".AcceleoCompiler&lt;/mainClass>  &#xA;                &lt;arguments>  &#xA;                  &lt;argument>${basedir}/src/&lt;/argument> &lt;!-- The source folder -->  &#xA;                  &lt;argument>${basedir}/target/classes&lt;/argument> &lt;!-- The output folder -->&#xA;                  &lt;argument>true&lt;/argument> &lt;!-- Indicates if we should use binary resources serializations -->&#xA;                  &lt;argument>&lt;/argument>   &lt;!-- The project dependencies in the workspace -->&#xA;                &lt;/arguments>  &#xA;              &lt;/configuration>  &#xA;            &lt;/execution>  &#xA;          &lt;/executions>  &#xA;        &lt;/plugin>&#xA;      &lt;/plugins>&#xA;    &lt;/pluginManagement>&#xA;  &lt;/build>&#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="    &lt;/dependencies>&#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="pom.xml">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -46,7 +71,7 @@
         </charset>
       </body>
       <documentation xsi:type="mtl:ModuleElementDocumentation">
-        <body startPosition="489" endPosition="562" value="&#xA;Generates the pom.xml file.&#xA;@param anAcceleoPom The Acceleo Pom&#xA;&#xA;"/>
+        <body startPosition="494" endPosition="567" value="&#xA;Generates the pom.xml file.&#xA;@param anAcceleoPom The Acceleo Pom&#xA;&#xA;"/>
         <parametersDocumentation name="anAcceleoPom">
           <body value=" The Acceleo Pom"/>
         </parametersDocumentation>
@@ -518,11 +543,31 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
   </ocl.ecore:Variable>
+  <ecore:EPackage name="collections">
+    <eClassifiers xsi:type="ocl.ecore:OrderedSetType" name="OrderedSet(AcceleoPomDependency)" instanceClassName="java.util.LinkedHashSet">
+      <elementType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+    </eClassifiers>
+  </ecore:EPackage>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
-    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="i">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
+  </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="self">
+    <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPomDependency"/>
   </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
@@ -537,98 +582,148 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genPom">
-      <details key="start" value="565"/>
-      <details key="end" value="5658"/>
+      <details key="start" value="570"/>
+      <details key="end" value="5140"/>
       <details key="line" value="20"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genPom/@body.0">
-      <details key="start" value="635"/>
-      <details key="end" value="5646"/>
+      <details key="start" value="640"/>
+      <details key="end" value="5128"/>
       <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genPom/@body.0/@body.0">
-      <details key="start" value="670"/>
-      <details key="end" value="1034"/>
+      <details key="start" value="675"/>
+      <details key="end" value="1181"/>
       <details key="line" value="23"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/genPom/@body.0/@body.1">
-      <details key="start" value="1035"/>
-      <details key="end" value="1058"/>
+      <details key="start" value="1182"/>
+      <details key="end" value="1205"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/genPom/@body.0/@body.1/anAcceleoPom">
-      <details key="start" value="1035"/>
-      <details key="end" value="1047"/>
+      <details key="start" value="1182"/>
+      <details key="end" value="1194"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/genPom/@body.0/@body.2">
-      <details key="start" value="1060"/>
-      <details key="end" value="1217"/>
+      <details key="start" value="1207"/>
+      <details key="end" value="4646"/>
       <details key="line" value="33"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/genPom/@body.0/@body.3">
-      <details key="start" value="1218"/>
-      <details key="end" value="1241"/>
+      <details key="start" value="4646"/>
+      <details key="end" value="5089"/>
+      <details key="line" value="104"/>
+    </eAnnotations>
+    <eAnnotations source="positions.8" references="/0/genPom/@body.0/@body.3/@body.0">
+      <details key="start" value="4728"/>
+      <details key="end" value="4770"/>
+      <details key="line" value="105"/>
+    </eAnnotations>
+    <eAnnotations source="positions.9" references="/0/genPom/@body.0/@body.3/@body.1">
+      <details key="start" value="4771"/>
+      <details key="end" value="4801"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.8" references="/0/genPom/@body.0/@body.3/anAcceleoPom">
-      <details key="start" value="1218"/>
-      <details key="end" value="1230"/>
+    <eAnnotations source="positions.10" references="/0/genPom/@body.0/@body.3/@body.1/anAcceleoPomDependency">
+      <details key="start" value="4771"/>
+      <details key="end" value="4793"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.9" references="/0/genPom/@body.0/@body.4">
-      <details key="start" value="1243"/>
-      <details key="end" value="1885"/>
-      <details key="line" value="39"/>
+    <eAnnotations source="positions.11" references="/0/genPom/@body.0/@body.3/@body.2">
+      <details key="start" value="4803"/>
+      <details key="end" value="4838"/>
+      <details key="line" value="106"/>
     </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/genPom/@body.0/@body.5">
-      <details key="start" value="1886"/>
-      <details key="end" value="1889"/>
+    <eAnnotations source="positions.12" references="/0/genPom/@body.0/@body.3/@body.3">
+      <details key="start" value="4839"/>
+      <details key="end" value="4872"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.11" references="/0/genPom/@body.0/@body.6">
-      <details key="start" value="1891"/>
-      <details key="end" value="4973"/>
-      <details key="line" value="60"/>
-    </eAnnotations>
-    <eAnnotations source="positions.12" references="/0/genPom/@body.0/@body.7">
-      <details key="start" value="4974"/>
-      <details key="end" value="4997"/>
+    <eAnnotations source="positions.13" references="/0/genPom/@body.0/@body.3/@body.3/anAcceleoPomDependency">
+      <details key="start" value="4839"/>
+      <details key="end" value="4861"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.13" references="/0/genPom/@body.0/@body.7/anAcceleoPom">
-      <details key="start" value="4974"/>
-      <details key="end" value="4986"/>
+    <eAnnotations source="positions.14" references="/0/genPom/@body.0/@body.3/@body.4">
+      <details key="start" value="4874"/>
+      <details key="end" value="4909"/>
+      <details key="line" value="107"/>
+    </eAnnotations>
+    <eAnnotations source="positions.15" references="/0/genPom/@body.0/@body.3/@body.5">
+      <details key="start" value="4910"/>
+      <details key="end" value="4940"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.14" references="/0/genPom/@body.0/@body.8">
-      <details key="start" value="4999"/>
-      <details key="end" value="5639"/>
-      <details key="line" value="156"/>
-    </eAnnotations>
-    <eAnnotations source="positions.15" references="/0/genPom/@body.0/@fileUrl">
-      <details key="start" value="642"/>
-      <details key="end" value="651"/>
+    <eAnnotations source="positions.16" references="/0/genPom/@body.0/@body.3/@body.5/anAcceleoPomDependency">
+      <details key="start" value="4910"/>
+      <details key="end" value="4932"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.16" references="/0/genPom/@body.0/@charset">
-      <details key="start" value="660"/>
-      <details key="end" value="667"/>
+    <eAnnotations source="positions.17" references="/0/genPom/@body.0/@body.3/@body.6">
+      <details key="start" value="4942"/>
+      <details key="end" value="5011"/>
+      <details key="line" value="108"/>
+    </eAnnotations>
+    <eAnnotations source="positions.18" references="/0/genPom/@body.0/@body.3/@body.7">
+      <details key="start" value="5012"/>
+      <details key="end" value="5045"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.17" references="/0/genPom/@documentation">
-      <details key="start" value="486"/>
-      <details key="end" value="564"/>
+    <eAnnotations source="positions.19" references="/0/genPom/@body.0/@body.3/@body.7/anAcceleoPomDependency">
+      <details key="start" value="5012"/>
+      <details key="end" value="5034"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.18" references="/0/genPom/@documentation/anAcceleoPom">
+    <eAnnotations source="positions.20" references="/0/genPom/@body.0/@body.3/@body.8">
+      <details key="start" value="5047"/>
+      <details key="end" value="5083"/>
+      <details key="line" value="110"/>
+    </eAnnotations>
+    <eAnnotations source="positions.21" references="/0/genPom/@body.0/@body.3/anAcceleoPomDependency">
+      <details key="start" value="4652"/>
+      <details key="end" value="4697"/>
+      <details key="line" value="104"/>
+    </eAnnotations>
+    <eAnnotations source="positions.22" references="/0/genPom/@body.0/@body.3/@iterSet">
+      <details key="start" value="4700"/>
+      <details key="end" value="4725"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.23" references="/0/genPom/@body.0/@body.3/@iterSet/anAcceleoPom">
+      <details key="start" value="4700"/>
+      <details key="end" value="4712"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.24" references="/0/genPom/@body.0/@body.4">
+      <details key="start" value="5090"/>
+      <details key="end" value="5121"/>
+      <details key="line" value="113"/>
+    </eAnnotations>
+    <eAnnotations source="positions.25" references="/0/genPom/@body.0/@fileUrl">
+      <details key="start" value="647"/>
+      <details key="end" value="656"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.26" references="/0/genPom/@body.0/@charset">
+      <details key="start" value="665"/>
+      <details key="end" value="672"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.27" references="/0/genPom/@documentation">
+      <details key="start" value="491"/>
+      <details key="end" value="569"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.28" references="/0/genPom/@documentation/anAcceleoPom">
       <details key="start" value="-1"/>
       <details key="end" value="-1"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.19" references="/0/genPom/anAcceleoPom">
-      <details key="start" value="589"/>
-      <details key="end" value="614"/>
+    <eAnnotations source="positions.29" references="/0/genPom/anAcceleoPom">
+      <details key="start" value="594"/>
+      <details key="end" value="619"/>
       <details key="line" value="20"/>
     </eAnnotations>
   </ecore:EAnnotation>
