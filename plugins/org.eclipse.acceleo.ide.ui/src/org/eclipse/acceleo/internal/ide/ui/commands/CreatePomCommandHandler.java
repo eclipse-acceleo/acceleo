@@ -26,6 +26,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -33,6 +34,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.core.JavaProject;
 
 /**
@@ -65,8 +70,8 @@ public class CreatePomCommandHandler extends AbstractHandler {
 					if (object instanceof IProject) {
 						IProject project = (IProject)object;
 						projects.add(project);
-					} else if (object instanceof JavaProject) {
-						JavaProject javaProject = (JavaProject)object;
+					} else if (object instanceof IJavaProject) {
+						IJavaProject javaProject = (IJavaProject)object;
 						projects.add(javaProject.getProject());
 					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
 						projects.add((IProject)Platform.getAdapterManager()
@@ -147,6 +152,22 @@ public class CreatePomCommandHandler extends AbstractHandler {
 			pomDependencies.add(acceleoPomDependency);
 		}
 		AcceleoUIGenerator.getDefault().generatePom(acceleoPom, project);
+
+		try {
+			IJavaProject javaProject = JavaCore.create(project);
+			IFolder sourceFolder = project.getFolder("src-acceleo-build"); //$NON-NLS-1$
+			sourceFolder.create(false, true, null);
+			IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
+			IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+			IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+			newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
+			javaProject.setRawClasspath(newEntries, null);
+			AcceleoUIGenerator.getDefault().generateAcceleoCompiler(
+					AcceleowizardmodelFactory.eINSTANCE.createAcceleoProject(), sourceFolder);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
 	}
 
 	/**

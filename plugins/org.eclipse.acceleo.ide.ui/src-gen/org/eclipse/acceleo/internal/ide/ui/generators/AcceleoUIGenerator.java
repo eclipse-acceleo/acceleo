@@ -124,6 +124,11 @@ public final class AcceleoUIGenerator {
 	private static Module pom;
 
 	/**
+	 * The Acceleo module that will generate the acceleo compiler.
+	 */
+	private static Module acceleoCompiler;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -317,6 +322,20 @@ public final class AcceleoUIGenerator {
 	public void generatePom(AcceleoPom acceleoPom, IContainer outputContainer) {
 		generate(pom, acceleoPom, outputContainer, IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the acceleo compiler file.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo Project.
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateAcceleoCompiler(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(pom, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_TEMPLATE_URI);
 	}
 
 	/**
