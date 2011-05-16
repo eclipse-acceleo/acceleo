@@ -13,6 +13,7 @@ package org.eclipse.acceleo.internal.ide.ui.commands;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -31,6 +32,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
@@ -38,7 +40,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.core.JavaProject;
 
 /**
  * The handler of the command used to create the pom.xml file.
@@ -154,6 +155,14 @@ public class CreatePomCommandHandler extends AbstractHandler {
 		AcceleoUIGenerator.getDefault().generatePom(acceleoPom, project);
 
 		try {
+			// Add the dependency to org.eclipse.acceleo.parser
+			// IPluginModelBase plugin = PluginRegistry.findModel(project);
+			// IPluginModelFactory factory = plugin.getPluginFactory();
+			// IPluginImport importNode = factory.createImport();
+			//importNode.setId("org.eclipse.acceleo.parser"); //$NON-NLS-1$
+			// IPluginBase pluginBase = plugin.getPluginBase();
+			// pluginBase.add(importNode);
+
 			IJavaProject javaProject = JavaCore.create(project);
 			IFolder sourceFolder = project.getFolder("src-acceleo-build"); //$NON-NLS-1$
 			sourceFolder.create(false, true, null);
@@ -163,6 +172,15 @@ public class CreatePomCommandHandler extends AbstractHandler {
 			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
 			newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
 			javaProject.setRawClasspath(newEntries, null);
+
+			StringTokenizer tokenizer = new StringTokenizer(project.getName(), "."); //$NON-NLS-1$
+			while (tokenizer.hasMoreTokens()) {
+				String nextToken = tokenizer.nextToken();
+				sourceFolder = sourceFolder.getFolder(nextToken);
+				if (!sourceFolder.exists()) {
+					sourceFolder.create(true, true, new NullProgressMonitor());
+				}
+			}
 
 			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoModelProject = AcceleowizardmodelFactory.eINSTANCE
 					.createAcceleoProject();
@@ -191,8 +209,8 @@ public class CreatePomCommandHandler extends AbstractHandler {
 							IProject project = (IProject)object;
 							enabled = project.isAccessible()
 									&& project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
-						} else if (object instanceof JavaProject) {
-							IProject project = ((JavaProject)object).getProject();
+						} else if (object instanceof IJavaProject) {
+							IProject project = ((IJavaProject)object).getProject();
 							enabled = project.isAccessible()
 									&& project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
 						} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
