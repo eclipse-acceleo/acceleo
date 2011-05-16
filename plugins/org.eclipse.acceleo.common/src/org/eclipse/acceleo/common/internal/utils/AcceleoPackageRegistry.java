@@ -282,6 +282,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 */
 	@Override
 	public Object remove(Object key) {
+		boolean hasBeenRemoved = false;
 		if (dynamicEcorePackagePaths.containsKey(key)) {
 			List<Resource> resources = DYNAMIC_METAMODEL_RESOURCE_SET.getResources();
 			Iterator<Resource> iterator = resources.iterator();
@@ -289,10 +290,24 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 				Resource resource = iterator.next();
 				if (key instanceof String && key.equals(resource.getURI().toString())) {
 					iterator.remove();
+					super.remove(key);
+					hasBeenRemoved = true;
+				} else {
+					String value = dynamicEcorePackagePaths.get(key);
+					if (value.equals(resource.getURI().toString())) {
+						iterator.remove();
+						super.remove(key);
+						hasBeenRemoved = true;
+					}
 				}
 			}
 		}
-		return delegate.remove(key);
+		if (!hasBeenRemoved) {
+			// if we found it in this package registry, it means that it was in the workspace.
+			// no need to delete another version in the plugin.
+			return delegate.remove(key);
+		}
+		return null;
 	}
 
 	/**
