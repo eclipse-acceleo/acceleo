@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.compiler;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.StringTokenizer;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The Acceleo Compiler ANT Task.
@@ -21,6 +26,11 @@ import org.apache.tools.ant.Task;
  * @since 3.1
  */
 public class AcceleoCompiler extends Task {
+
+	/**
+	 * The packages to register.
+	 */
+	private String packagesToRegister;
 
 	/**
 	 * The compiler helper.
@@ -68,6 +78,16 @@ public class AcceleoCompiler extends Task {
 	}
 
 	/**
+	 * Sets the packages to register.
+	 * 
+	 * @param packages
+	 *            the semicolon separated packages.
+	 */
+	public void setPackagesToRegister(String packages) {
+		this.packagesToRegister = packages;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.apache.tools.ant.Task#execute()
@@ -76,6 +96,25 @@ public class AcceleoCompiler extends Task {
 	public void execute() throws BuildException {
 		// CHECKSTYLE:OFF
 		try {
+			if (packagesToRegister != null) {
+				StringTokenizer tokenizer = new StringTokenizer(packagesToRegister, ";"); //$NON-NLS-1$
+				while (tokenizer.hasMoreElements()) {
+					String nextPackage = tokenizer.nextToken();
+					Class<?> packageClass = Class.forName(nextPackage);
+					Field field = packageClass.getField("eINSTANCE"); //$NON-NLS-1$
+					if (field != null) {
+						Object packageInstance = field.get(packageClass);
+						Method method = packageInstance.getClass().getMethod("getNsURI"); //$NON-NLS-1$
+						Object packageNsUri = method.invoke(packageInstance);
+						if (packageInstance instanceof EPackage && packageNsUri instanceof String) {
+							EPackage ePackage = (EPackage)packageInstance;
+							String uri = (String)packageNsUri;
+							EPackage.Registry.INSTANCE.put(uri, ePackage);
+						}
+					}
+				}
+			}
+
 			helper.execute();
 		} catch (Throwable e) {
 			log(e.getMessage(), Project.MSG_ERR);
