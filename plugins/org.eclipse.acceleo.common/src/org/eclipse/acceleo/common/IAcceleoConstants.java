@@ -491,4 +491,11 @@ public interface IAcceleoConstants {
 	 * @since 3.1
 	 */
 	String PLUGIN_NATURE_ID = "org.eclipse.pde.PluginNature"; //$NON-NLS-1$
+
+	/**
+	 * The ecore file extension.
+	 * 
+	 * @since 3.1
+	 */
+	String ECORE_FILE_EXTENSION = "ecore"; //$NON-NLS-1$
 }
