@@ -37,7 +37,9 @@ import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 import org.eclipse.ocl.ecore.internal.TupleFactory;
 
 /**
- * The Acceleo type resolver.
+ * The Acceleo type resolver. Used in Eclipse 3.5+ only by
+ * {@link org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment.AcceleoEnvironmentGalileo}. It
+ * will not compile under Eclipse 4.3 and before, it is expected.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
