@@ -201,7 +201,8 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 
 		if (pkg != null) {
 			for (EClassifier next : pkg.getEClassifiers()) {
-				if (getShadowedClassifier(next) == type || classifierEqual(getShadowedClassifier(next), type)) {
+				EClassifier shadow = getShadowedClassifier(next);
+				if (shadow == type || shadow != null && classifierEqual(shadow, type)) {
 					return next;
 				}
 			}
