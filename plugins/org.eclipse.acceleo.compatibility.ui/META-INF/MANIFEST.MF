@@ -21,4 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.acceleo.internal.compatibility.mtl.gen;x-friends:="org.eclipse.acceleo.compatibility.tests"
+Export-Package: org.eclipse.acceleo.internal.compatibility.mtl.gen;x-friends:="org.eclipse.acceleo.compatibility.tests",
+ org.eclipse.acceleo.internal.compatibility.ui;x-internal:=true
