@@ -9,6 +9,8 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.acceleo.traceability,
  org.eclipse.acceleo.traceability.impl,
+ org.eclipse.acceleo.traceability.minimal;x-internal:=true,
+ org.eclipse.acceleo.traceability.spec;x-internal:=true,
  org.eclipse.acceleo.traceability.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
