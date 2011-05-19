@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -168,7 +169,21 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 				return (EPackage)ePackage;
 			}
 		}
-		return delegate.getEPackage(nsURI);
+		EPackage result = delegate.getEPackage(nsURI);
+		if (result == null && nsURI != null && !nsURI.startsWith(IAcceleoConstants.LITERAL_BEGIN)) {
+			Collection<Object> values = this.values();
+			for (Object object : values) {
+				if (object instanceof EPackage && ((EPackage)object).eResource() != null) {
+					EPackage ePackage = (EPackage)object;
+					Resource eResource = ePackage.eResource();
+					URI uri = eResource.getURI();
+					if (uri != null && nsURI.equals(uri.toString())) {
+						result = ePackage;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
