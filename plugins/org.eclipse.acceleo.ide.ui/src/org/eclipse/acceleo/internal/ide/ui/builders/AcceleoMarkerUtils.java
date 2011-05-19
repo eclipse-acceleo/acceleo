@@ -19,6 +19,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -153,9 +156,26 @@ public final class AcceleoMarkerUtils {
 			if (iProject.isAccessible() && iProject.hasNature(JavaCore.NATURE_ID)) {
 				JavaProject javaProject = new JavaProject();
 				javaProject.setProject(iProject);
-				IType type = javaProject.findType(message.substring(AcceleoParserInfo.SERVICE_INVOCATION
-						.length()));
-				if (type != null) {
+
+				IType type = null;
+
+				IPackageFragment[] packageFragments = javaProject.getPackageFragments();
+				for (IPackageFragment iPackageFragment : packageFragments) {
+					if (iPackageFragment.getKind() == IPackageFragmentRoot.K_SOURCE) {
+						ICompilationUnit[] compilationUnits = iPackageFragment.getCompilationUnits();
+						for (ICompilationUnit iCompilationUnit : compilationUnits) {
+							IType[] types = iCompilationUnit.getTypes();
+							for (IType iType : types) {
+								if (iType.getFullyQualifiedName().equals(
+										message.substring(AcceleoParserInfo.SERVICE_INVOCATION.length()))) {
+									type = iType;
+								}
+							}
+						}
+					}
+				}
+
+				if (type != null && PluginRegistry.findModel(iProject) != null) {
 					found = true;
 					projectName = iProject.getName();
 					IPluginModelBase plugin = PluginRegistry.findModel(iProject);
