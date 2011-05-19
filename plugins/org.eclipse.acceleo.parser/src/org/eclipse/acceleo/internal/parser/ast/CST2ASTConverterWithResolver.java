@@ -19,6 +19,8 @@ import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
@@ -780,6 +782,8 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 					this.logInfo(AcceleoParserInfo.SERVICE_INVOCATION + stringSymbol, stringLiteralExp
 							.getStartPosition(), stringLiteralExp.getEndPosition());
 				}
+				detectServiceInQueryReturningString(operationCallExp);
+				detectServiceInTemplate(operationCallExp);
 			}
 			if (oOCLExpression instanceof TemplateInvocation) {
 				TemplateInvocation oTemplateInvocation = (TemplateInvocation)oOCLExpression;
@@ -843,6 +847,45 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Detects the Java services in a query returning a String.
+	 * 
+	 * @param operationCallExp
+	 *            The invoke operation call.
+	 */
+	private void detectServiceInQueryReturningString(OperationCallExp operationCallExp) {
+		if (operationCallExp.eContainer() instanceof Query) {
+			Query query = (Query)operationCallExp.eContainer();
+			if (String.class.equals(query.getType().getInstanceClass())) {
+				this.logWarning(AcceleoParserMessages
+						.getString("CST2ASTConverterWithResolver.ServiceInQueryReturningAString"), query //$NON-NLS-1$
+						.getStartPosition(), query.getEndPosition());
+			}
+		}
+	}
+
+	/**
+	 * Detects the Java services in a template.
+	 * 
+	 * @param operationCallExp
+	 *            The invoke operation call.
+	 */
+	private void detectServiceInTemplate(OperationCallExp operationCallExp) {
+		EObject container = operationCallExp.eContainer();
+		while (!(container instanceof ModuleElement)) {
+			if (container.eContainer() != null) {
+				container = container.eContainer();
+			}
+		}
+
+		if (container instanceof org.eclipse.acceleo.model.mtl.Template) {
+			this.logWarning(
+					AcceleoParserMessages.getString("CST2ASTConverterWithResolver.ServiceInTemplate"), //$NON-NLS-1$
+					operationCallExp.getStartPosition(), operationCallExp.getEndPosition());
+		}
+
 	}
 
 	/**
