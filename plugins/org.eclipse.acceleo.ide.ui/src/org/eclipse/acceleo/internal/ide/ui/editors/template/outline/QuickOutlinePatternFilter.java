@@ -36,8 +36,6 @@ public class QuickOutlinePatternFilter extends PatternFilter {
 			return false;
 		}
 
-		// The label starts with the element type (template, query, ...) : trim it
-		String elementName = labelText.substring(labelText.indexOf(' ') + 1);
-		return wordMatches(elementName);
+		return wordMatches(labelText);
 	}
 }
