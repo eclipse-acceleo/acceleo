@@ -18,11 +18,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 
 /**
- * This action will sort the element of the treeviewer by name.
+ * This action will sort the element of the treeviewer by the type of their first parameter.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class SortElementAction extends Action {
+public class SortTypeAction extends Action {
 
 	/**
 	 * The tree viewer of the outline view.
@@ -32,7 +32,7 @@ public class SortElementAction extends Action {
 	/**
 	 * The sorter.
 	 */
-	private final AcceleoOutlineViewerSorter sorter;
+	private final AcceleoOutlineViewerTypeSorter sorter;
 
 	/**
 	 * The constructor.
@@ -40,10 +40,10 @@ public class SortElementAction extends Action {
 	 * @param treeViewer
 	 *            The treeviewer of the outline view
 	 */
-	public SortElementAction(TreeViewer treeViewer) {
-		super(AcceleoUIMessages.getString("AcceleoEditorOutline.Actions.Sort"), SWT.TOGGLE); //$NON-NLS-1$
+	public SortTypeAction(TreeViewer treeViewer) {
+		super(AcceleoUIMessages.getString("AcceleoEditorOutline.Actions.SortType"), SWT.TOGGLE); //$NON-NLS-1$
 		this.viewer = treeViewer;
-		this.sorter = new AcceleoOutlineViewerSorter();
+		this.sorter = new AcceleoOutlineViewerTypeSorter();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SortElementAction extends Action {
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return AcceleoUIActivator.getImageDescriptor("icons/template-editor/outline/Sort.gif"); //$NON-NLS-1$
+		return AcceleoUIActivator.getImageDescriptor("icons/template-editor/outline/SortType.gif"); //$NON-NLS-1$
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class SortElementAction extends Action {
 	 */
 	@Override
 	public String getToolTipText() {
-		return AcceleoUIMessages.getString("AcceleoEditorOutline.Actions.Sort"); //$NON-NLS-1$
+		return AcceleoUIMessages.getString("AcceleoEditorOutline.Actions.SortType"); //$NON-NLS-1$
 	}
 
 }

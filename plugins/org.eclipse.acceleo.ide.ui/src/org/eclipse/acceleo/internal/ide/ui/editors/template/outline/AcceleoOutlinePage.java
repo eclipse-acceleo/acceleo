@@ -20,6 +20,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.Hide
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.HideQueriesAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.HideTemplatesAction;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.SortElementAction;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.actions.SortTypeAction;
 import org.eclipse.acceleo.parser.cst.Module;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -209,6 +210,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 		super.setActionBars(actionBars);
 		IToolBarManager toolBarManager = actionBars.getToolBarManager();
 		toolBarManager.add(new SortElementAction(this.treeViewer));
+		toolBarManager.add(new SortTypeAction(this.treeViewer));
 		toolBarManager.add(new HideNonPublicAction(this.treeViewer));
 		toolBarManager.add(new HideQueriesAction(this.treeViewer));
 		toolBarManager.add(new HideTemplatesAction(this.treeViewer));
