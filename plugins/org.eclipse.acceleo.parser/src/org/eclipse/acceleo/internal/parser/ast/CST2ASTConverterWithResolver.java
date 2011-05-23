@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.OperationCallExp;
+import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VoidType;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.StringLiteralExp;
@@ -856,12 +857,17 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            The invoke operation call.
 	 */
 	private void detectServiceInQueryReturningString(OperationCallExp operationCallExp) {
-		if (operationCallExp.eContainer() instanceof Query) {
+		if (operationCallExp.eContainer() instanceof Query
+				&& ((Query)operationCallExp.eContainer()).getParameter().size() > 0) {
 			Query query = (Query)operationCallExp.eContainer();
-			if (String.class.equals(query.getType().getInstanceClass())) {
-				this.logWarning(AcceleoParserMessages
-						.getString("CST2ASTConverterWithResolver.ServiceInQueryReturningAString"), query //$NON-NLS-1$
-						.getStartPosition(), query.getEndPosition());
+			Variable variable = query.getParameter().get(0);
+			if (query.getType() != null && variable.getType() != null) {
+				if (String.class.equals(query.getType().getInstanceClass())
+						&& String.class.equals(variable.getType().getInstanceClass())) {
+					this.logWarning(AcceleoParserMessages
+							.getString("CST2ASTConverterWithResolver.ServiceInQueryReturningAString"), query //$NON-NLS-1$
+							.getStartPosition(), query.getEndPosition());
+				}
 			}
 		}
 	}
@@ -1657,6 +1663,13 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				while (iParameterIt.hasNext()) {
 					org.eclipse.acceleo.parser.cst.Variable iNext = iParameterIt.next();
 					transformStepResolveRemoveVariable(iNext);
+				}
+
+				org.eclipse.ocl.ecore.OCLExpression oOCLExpression = oQuery.getExpression();
+				if (oOCLExpression instanceof OperationCallExp
+						&& ((OperationCallExp)oOCLExpression).getReferredOperation() != null
+						&& "invoke".equals(((OperationCallExp)oOCLExpression).getReferredOperation().getName())) { //$NON-NLS-1$
+					detectServiceInQueryReturningString((OperationCallExp)oOCLExpression);
 				}
 			} finally {
 				if (oFirst != null && oFirst.getType() != null) {
