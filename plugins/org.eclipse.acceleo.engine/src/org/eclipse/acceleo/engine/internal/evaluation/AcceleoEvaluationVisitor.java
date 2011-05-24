@@ -98,6 +98,9 @@ import org.eclipse.ocl.utilities.PredefinedType;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
+	/** The marker of the lies generated inside of the protected area. */
+	static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
+
 	/** This will be set by launch configs to debug AST evaluations. */
 	private static IDebugAST debug;
 
@@ -118,9 +121,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 	/** Key of the "undefined guard" error message in acceleoenginemessages.properties. */
 	private static final String UNDEFINED_GUARD_MESSAGE_KEY = "AcceleoEvaluationVisitor.UndefinedGuard"; //$NON-NLS-1$
-
-	/** The marker of the lies generated inside of the protected area. */
-	private static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
 
 	/** Generation context of this visitor. */
 	private final AcceleoEvaluationContext<C> context;
@@ -712,7 +712,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (areaContent != null) {
 			String currentIndent = context.getLastFileIndentation();
 			if (protectedArea.eContainer() instanceof FileBlock && protectedArea.eContainingFeature() != null
-					&& "body".equals(protectedArea.eContainingFeature().getName())) { //$NON-NLS-1$
+					&& protectedArea.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
 				delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			} else {
 				delegateAppend(
