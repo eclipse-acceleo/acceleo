@@ -38,7 +38,6 @@ import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
-import org.eclipse.acceleo.engine.generation.writers.AcceleoFileWriter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -170,19 +169,6 @@ public class AcceleoEvaluationContext<C> {
 		try {
 			if (!writers.isEmpty()) {
 				final Writer currentWriter = writers.getLast();
-
-				String actualString = string;
-				if (currentWriter instanceof AcceleoFileWriter) {
-					// TODO SBE there should be a better way to do this.
-					/*
-					 * Make sure the protected area indentation marker never makes its way to the generated
-					 * files.
-					 */
-					String sep = System.getProperty("line.separator"); //$NON-NLS-1$
-					actualString = actualString.replaceAll(AcceleoEvaluationVisitor.PROTECTED_AREA_MARKER,
-							sep);
-				}
-
 				currentWriter.append(string);
 				if (fireEvent && string.length() > 0) {
 					fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));

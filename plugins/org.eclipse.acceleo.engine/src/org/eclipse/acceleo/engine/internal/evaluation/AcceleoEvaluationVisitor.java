@@ -711,8 +711,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		if (areaContent != null) {
 			String currentIndent = context.getLastFileIndentation();
-			if (protectedArea.eContainer() instanceof FileBlock && protectedArea.eContainingFeature() != null
-					&& protectedArea.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
+			if (isInFileBlock(protectedArea)) {
 				delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			} else {
 				delegateAppend(
@@ -736,6 +735,24 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 			delegateAppend(buffer.toString(), protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 		}
+	}
+
+	/**
+	 * This will be in order to check whether the given protected area is directly contained within a file
+	 * block : such areas will not need to see their indentation restored.
+	 * 
+	 * @param protectedArea
+	 *            The area which containing hierarchy is to be checked.
+	 * @return <code>true</code> if we encounter a {@link FileBlock} before a {@link Template} in this area's
+	 *         containing hierarchy.
+	 */
+	private boolean isInFileBlock(ProtectedAreaBlock protectedArea) {
+		EObject container = protectedArea.eContainer();
+		boolean isInFileBlock = false;
+		while (container != null && !isInFileBlock && !(container instanceof Template)) {
+			isInFileBlock = container instanceof FileBlock;
+		}
+		return isInFileBlock;
 	}
 
 	/**
@@ -922,11 +939,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			return invocationResult;
 		}
 
-		if (invocation.eContainer() instanceof FileBlock && invocation.eContainingFeature() != null
-				&& "body".equals(invocation.eContainingFeature().getName())) { //$NON-NLS-1$
-			String sep = System.getProperty("line.separator"); //$NON-NLS-1$
-			invocationResult = invocationResult.replaceAll(PROTECTED_AREA_MARKER, sep);
-		}
+		// Whatever we do, never leave the marker in
+		String sep = System.getProperty("line.separator"); //$NON-NLS-1$
+		invocationResult = invocationResult.replaceAll(PROTECTED_AREA_MARKER, sep);
 
 		return delegateFitIndentation(invocationResult);
 	}
