@@ -753,6 +753,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		boolean isInFileBlock = false;
 		while (container != null && !isInFileBlock && !(container instanceof Template)) {
 			isInFileBlock = container instanceof FileBlock;
+			container = container.eContainer();
 		}
 		return isInFileBlock;
 	}
