@@ -315,6 +315,7 @@ public final class AcceleoService {
 			if (entry.getKey().isInstance(model)) {
 				for (Template template : entry.getValue()) {
 					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+					generationHasOccurred = true;
 				}
 			}
 		}
@@ -328,6 +329,7 @@ public final class AcceleoService {
 					for (Template template : entry.getValue()) {
 						previewResult
 								.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+						generationHasOccurred = true;
 					}
 				}
 			}
