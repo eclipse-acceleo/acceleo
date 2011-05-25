@@ -99,7 +99,10 @@ import org.eclipse.ocl.utilities.PredefinedType;
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
 	/** The marker of the lies generated inside of the protected area. */
-	static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
+	private static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
+
+	/** Keeps track of the System's line separator. */
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** This will be set by launch configs to debug AST evaluations. */
 	private static IDebugAST debug;
@@ -710,12 +713,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			lastEObjectSelfValue = (EObject)source;
 		}
 		if (areaContent != null) {
-			String currentIndent = context.getLastFileIndentation();
 			if (isInFileBlock(protectedArea)) {
 				delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			} else {
-				delegateAppend(
-						areaContent.replaceAll("(\r\n|\n|\r)" + currentIndent, PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$ 
+				// the content of the protected area has its own indentation. Do not touch it.
+				delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)", PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$
 						lastEObjectSelfValue, fireGenerationEvent);
 			}
 		} else {
@@ -938,10 +940,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (evaluatingInitSection) {
 			return invocationResult;
 		}
-
-		// Whatever we do, never leave the marker in
-		String sep = System.getProperty("line.separator"); //$NON-NLS-1$
-		invocationResult = invocationResult.replaceAll(PROTECTED_AREA_MARKER, sep);
 
 		return delegateFitIndentation(invocationResult);
 	}
@@ -1198,10 +1196,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            Tells us whether we should fire generation events.
 	 */
 	private void delegateAppend(String string, Block sourceBlock, EObject source, boolean fireEvent) {
+		// Make sure that the protected marker never makes its way down to the generated file
+		String actualString = string;
+		if (sourceBlock instanceof FileBlock || sourceBlock.eContainer() instanceof FileBlock
+				&& sourceBlock.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
+			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
+		}
+
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			getAcceleoVisitor().append(string, sourceBlock, source, fireEvent);
+			getAcceleoVisitor().append(actualString, sourceBlock, source, fireEvent);
 		} else {
-			append(string, sourceBlock, source, fireEvent);
+			append(actualString, sourceBlock, source, fireEvent);
 		}
 	}
 
