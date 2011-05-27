@@ -740,8 +740,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
-	 * This will be in order to check whether the given protected area is directly contained within a file
-	 * block : such areas will not need to see their indentation restored.
+	 * This will be used in order to check whether the given protected area is directly contained within a
+	 * file block : such areas will not need to see their indentation restored.
 	 * 
 	 * @param protectedArea
 	 *            The area which containing hierarchy is to be checked.
