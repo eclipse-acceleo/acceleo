@@ -300,7 +300,9 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 		// Search matching module in the current generation context
 		Set<Module> candidateModules = searchCurrentModuleForCandidateMatches(moduleName);
 		for (Module candidateModule : candidateModules) {
-			candidateURIs.add(candidateModule.eResource().getURI());
+			if (candidateModule.eResource() != null) {
+				candidateURIs.add(candidateModule.eResource().getURI());
+			}
 		}
 		// If there were no matching module, search in their ResourceSet(s)
 		if (candidateURIs.size() == 0) {
