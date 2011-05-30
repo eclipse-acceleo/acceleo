@@ -584,7 +584,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *         save the properties files.
 	 * @since 3.1
 	 */
-	protected AbstractAcceleoPropertiesLoaderService getPropertiesLoaderService(AcceleoService acceleoService) {
+	public AbstractAcceleoPropertiesLoaderService getPropertiesLoaderService(AcceleoService acceleoService) {
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			Bundle bundle = AcceleoWorkspaceUtil.getBundle(getClass());
 			return new BundleAcceleoPropertiesLoaderService(acceleoService, bundle);
