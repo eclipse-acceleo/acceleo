@@ -1,0 +1,36 @@
+= Frequently Asked Questions =
+
+== Where can I find online resources for Acceleo ? ==
+
+The official website of the Acceleo project can be found here: [http://www.eclipse.org/Acceleo]
+It is the best place to find all the informations about the Acceleo project, including where to download the latest version of Acceleo and links to the forums, the documentation and videos about Acceleo. You can also find a lot of resources on the Acceleo wiki: [http://wiki.eclipse.org/acceleo]
+
+== I want to learn to use Acceleo, where should I start ? ==
+
+You can find in this documentation a small tutorial to help you with the creation of your first Acceleo project. You have also access to the complete documentation of the Acceleo language. You may want to have a look at the Acceleo examples (File -> New -> Examples) in order to understand the basic concepts used in Acceleo.
+
+== I want to see what Acceleo is capable of, where can I find more information ? ==
+
+On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a complete user guide for Acceleo with lots of screenshots and dozens of videos showing all the features of Acceleo. You can also find videos from presentations of Acceleo for different conferences. 
+
+== Is there a guide with all the good pratices for Acceleo available ? ==
+
+You can find a guide with all the good practices written by the Acceleo development team on the [http://docs.obeonetwork.com/acceleo Obeo Network].
+
+== I need help, what can I do ? ==
+
+If you have a problem, you can post your problem on the official forum for Acceleo and all the Model to Text software of the Eclipse foundation here: [http://www.eclipse.org/forums/index.php?t=thread&frm_id=24&]
+
+You can also contribute there by answering to the questions of other persons.
+
+== Is there any commercial support ? ==
+
+The Acceleo team can be contacted through the official Eclipse M2T forums and newsgroup. Yet this form of support may not meet daily needs of an enterprise adopter as far as response delays are involved. Most of the developpers of Acceleo are from Obeo, and are then the best source to provide [http://www.obeo.fr/pages/maintenance-and-support/ competent and professional support].
+
+* On demand support (based on hour)
+* Long term support (integration and maintenance inside your eclipse bundle)
+* Coaching
+* Creation of your own generators
+
+
+

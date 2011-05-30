@@ -34,4 +34,7 @@ Each document of the documentation set shipped with this plug-in deals with a di
 |-
 | [../html/acceleo_text_production_rules.html Text production rules]
 | This document is more of a normative document than it is an end-user documentation; it will help you understand the rules that Acceleo uses under the hood in order to determine when indentation should be swallowed, when lines should be indented, when lines should be trimmed, ...
+|-
+| [faq.html FAQ]
+| Frequently Asked Questions
 |} 

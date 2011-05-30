@@ -20,6 +20,8 @@
     <topic href="doc/html/acceleo_text_production_rules.html" label="Text Production Rules">
     </topic>
     <anchor id="org.eclipse.acceleo.doc.userguide.anchor"/>
+    <topic href="doc/textile/faq.html" label="FAQ">
+    </topic>
  </topic>
  <anchor id="org.eclipse.acceleo.doc.anchor"/>
  <topic href="doc/Legal.html" label="Legal">
