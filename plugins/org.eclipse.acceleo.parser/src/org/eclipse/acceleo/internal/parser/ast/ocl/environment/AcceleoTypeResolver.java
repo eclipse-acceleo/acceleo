@@ -222,39 +222,45 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	private boolean classifierEqual(EClassifier shadowedClassifier, EClassifier type) {
 		boolean result = true;
-		// Same name
-		result = result && shadowedClassifier.getName().equals(type.getName());
 
-		// Same container
-		EObject shadowedEContainer = shadowedClassifier.eContainer();
-		EObject typeEContainer = type.eContainer();
-		result = result
-				&& (shadowedEContainer instanceof ENamedElement && typeEContainer instanceof ENamedElement)
-				&& (((ENamedElement)shadowedEContainer).getName().equals(((ENamedElement)typeEContainer)
-						.getName()));
+		if (shadowedClassifier != null && type != null) {
+			// Same name
+			result = result && shadowedClassifier.getName().equals(type.getName());
 
-		result = result && EcoreUtil.getURI(shadowedEContainer).equals(EcoreUtil.getURI(typeEContainer));
+			// Same container
+			EObject shadowedEContainer = shadowedClassifier.eContainer();
+			EObject typeEContainer = type.eContainer();
+			result = result
+					&& (shadowedEContainer instanceof ENamedElement && typeEContainer instanceof ENamedElement)
+					&& (((ENamedElement)shadowedEContainer).getName().equals(((ENamedElement)typeEContainer)
+							.getName()));
 
-		// Same features
-		if (shadowedClassifier instanceof EClass && type instanceof EClass) {
-			EClass shadowClass = (EClass)shadowedClassifier;
-			EClass typeClass = (EClass)type;
+			if (shadowedEContainer != null && typeEContainer != null) {
+				result = result
+						&& EcoreUtil.getURI(shadowedEContainer).equals(EcoreUtil.getURI(typeEContainer));
+			}
 
-			EList<EAttribute> shadowEAllAttributes = shadowClass.getEAllAttributes();
-			EList<EAttribute> typeEAllAttributes = typeClass.getEAllAttributes();
+			// Same features
+			if (shadowedClassifier instanceof EClass && type instanceof EClass) {
+				EClass shadowClass = (EClass)shadowedClassifier;
+				EClass typeClass = (EClass)type;
 
-			result = result && shadowEAllAttributes.size() == typeEAllAttributes.size();
-			if (result) {
-				for (int i = 0; i < shadowEAllAttributes.size(); i++) {
-					result = result
-							&& shadowEAllAttributes.get(i).getName().equals(
-									typeEAllAttributes.get(i).getName());
-					result = result
-							&& shadowEAllAttributes.get(i).getLowerBound() == typeEAllAttributes.get(i)
-									.getLowerBound();
-					result = result
-							&& shadowEAllAttributes.get(i).getUpperBound() == typeEAllAttributes.get(i)
-									.getUpperBound();
+				EList<EAttribute> shadowEAllAttributes = shadowClass.getEAllAttributes();
+				EList<EAttribute> typeEAllAttributes = typeClass.getEAllAttributes();
+
+				result = result && shadowEAllAttributes.size() == typeEAllAttributes.size();
+				if (result) {
+					for (int i = 0; i < shadowEAllAttributes.size(); i++) {
+						result = result
+								&& shadowEAllAttributes.get(i).getName().equals(
+										typeEAllAttributes.get(i).getName());
+						result = result
+								&& shadowEAllAttributes.get(i).getLowerBound() == typeEAllAttributes.get(i)
+										.getLowerBound();
+						result = result
+								&& shadowEAllAttributes.get(i).getUpperBound() == typeEAllAttributes.get(i)
+										.getUpperBound();
+					}
 				}
 			}
 		}
