@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.debug.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -28,7 +29,7 @@ import org.eclipse.debug.core.model.IStreamsProxy;
  */
 public class AcceleoProcess implements IProcess {
 	/** Table of client defined attributes. */
-	private Map<String, String> attributes;
+	private Map<String, String> attributes = new HashMap<String, String>();
 
 	/** This will be set to true if this process is terminated. */
 	private boolean terminated;

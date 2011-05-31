@@ -548,7 +548,7 @@ public final class OpenDeclarationUtils {
 				final Iterator<Map.Entry<URI, URI>> iterator = URIConverter.URI_MAP.entrySet().iterator();
 				while (iterator.hasNext() && result == null) {
 					Map.Entry<URI, URI> uriMapEntry = iterator.next();
-					if (uriMapEntry.getKey().toString().equals(fileURI)) {
+					if (uriMapEntry.getKey().toString().equals(fileURI.toString())) {
 						result = uriMapEntry.getValue();
 					}
 				}

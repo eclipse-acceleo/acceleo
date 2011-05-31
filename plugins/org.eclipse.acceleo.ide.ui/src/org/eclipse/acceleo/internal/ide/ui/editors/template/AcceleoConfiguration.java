@@ -249,7 +249,7 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		for (int i = 0; i < acceleoScanners.length; i++) {
 			AbstractAcceleoScanner scanner = acceleoScanners[i];
 			if (!(scanner instanceof AcceleoCommentScanner)
-					|| !(scanner instanceof AcceleoDocumentationScanner)) {
+					&& !(scanner instanceof AcceleoDocumentationScanner)) {
 				assistant.setContentAssistProcessor(processor, scanner.getConfiguredContentType());
 			}
 		}
