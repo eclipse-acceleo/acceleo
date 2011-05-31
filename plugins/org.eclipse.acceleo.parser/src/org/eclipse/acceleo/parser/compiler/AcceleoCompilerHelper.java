@@ -248,7 +248,7 @@ public final class AcceleoCompilerHelper {
 			String tmpUri = uri.toString();
 			String file = "file:"; //$NON-NLS-1$
 			if (tmpUri.startsWith(file)) {
-				tmpUri.substring(file.length());
+				tmpUri = tmpUri.substring(file.length());
 			}
 
 			if (!new File(tmpUri).getParentFile().exists()) {
