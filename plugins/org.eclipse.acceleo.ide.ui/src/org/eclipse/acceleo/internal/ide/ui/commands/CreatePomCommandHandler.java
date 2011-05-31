@@ -29,6 +29,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -152,7 +153,15 @@ public class CreatePomCommandHandler extends AbstractHandler {
 							.toString() + '/' + classpathEntry);
 			pomDependencies.add(acceleoPomDependency);
 		}
-		AcceleoUIGenerator.getDefault().generatePom(acceleoPom, project);
+		if (project.getParent() != null) {
+			String parentName = project.getParent().getName();
+			if (project.getParent() instanceof IWorkspaceRoot) {
+				IWorkspaceRoot workspaceRoot = (IWorkspaceRoot)project.getParent();
+				parentName = workspaceRoot.getLocation().lastSegment();
+			}
+			AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project, parentName);
+			AcceleoUIGenerator.getDefault().generatePom(acceleoPom, project.getParent(), parentName);
+		}
 
 		try {
 			// Add the dependency to org.eclipse.acceleo.parser
@@ -196,6 +205,7 @@ public class CreatePomCommandHandler extends AbstractHandler {
 	 * 
 	 * @see org.eclipse.core.commands.AbstractHandler#setEnabled(java.lang.Object)
 	 */
+	@SuppressWarnings({"unchecked", "rawtypes" })
 	@Override
 	public void setEnabled(Object evaluationContext) {
 		if (evaluationContext instanceof EvaluationContext) {

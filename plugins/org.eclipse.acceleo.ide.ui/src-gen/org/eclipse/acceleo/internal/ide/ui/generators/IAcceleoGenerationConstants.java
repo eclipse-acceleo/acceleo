@@ -148,6 +148,16 @@ public interface IAcceleoGenerationConstants {
 	String PROJECT_POM_XML_TEMPLATE_URI = "genPom"; //$NON-NLS-1$
 
 	/**
+	 * The uri of the pom.xml child generator.
+	 */
+	String PROJECT_POM_XML_CHILD_GENERATOR_URI = "pomChild.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the pom.xml child generator.
+	 */
+	String PROJECT_POM_XML_CHILD_TEMPLATE_URI = "genPom"; //$NON-NLS-1$
+
+	/**
 	 * The uri of the acceleo compiler generator.
 	 */
 	String PROJECT_ACCELEO_COMPILER_GENERATOR_URI = "acceleoCompiler.emtl"; //$NON-NLS-1$

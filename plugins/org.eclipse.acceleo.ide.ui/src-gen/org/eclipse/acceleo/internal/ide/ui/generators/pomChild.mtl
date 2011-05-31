@@ -1,0 +1,72 @@
+[comment encoding = UTF-8 /]
+[**
+ * Copyright (c) 2008, 2011 Obeo.<br/>
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ * @author sbegaudeau
+ */]
+[module pomChild('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')]
+
+
+[**
+ * Generates the pom.xml file.
+ * @param anAcceleoPom The Acceleo Pom
+ */]
+[template public genPom(anAcceleoPom : AcceleoPom, parent : String)]
+[comment @main /]
+[file ('pom.xml', false, 'UTF-8')]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>[parent/]</artifactId>
+    <version>1.0.0.qualifier</version>
+  </parent>
+
+  <groupId>acceleo</groupId>
+  <artifactId>[anAcceleoPom.artifactId/]</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>  
+          <groupId>org.codehaus.mojo</groupId>  
+          <artifactId>exec-maven-plugin</artifactId>  
+          <version>1.1.1</version>  
+          <executions>  
+            <execution>  
+              <phase>compile</phase>  
+              <goals>  
+                <goal>java</goal>  
+              </goals>
+              <configuration>
+                <!--
+                   Calls the AcceleoCompiler to launch the compilation.
+                -->
+                <mainClass>[anAcceleoPom.artifactId/].AcceleoCompiler</mainClass>  
+                <arguments>  
+                  <argument>${basedir}/src/</argument>  <!-- The source folder -->  
+                  <argument>${basedir}/target/classes</argument>  <!-- The output folder -->
+                  <argument>true</argument>  <!-- Indicates if we should use binary resources serializations -->
+                  <argument></argument>  <!-- The project dependencies in the workspace -->
+                </arguments>  
+              </configuration>  
+            </execution>  
+          </executions>  
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
+[/file]
+[/template]

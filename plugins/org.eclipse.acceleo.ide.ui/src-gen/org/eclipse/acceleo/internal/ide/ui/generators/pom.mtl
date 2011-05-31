@@ -16,8 +16,9 @@
 [**
  * Generates the pom.xml file.
  * @param anAcceleoPom The Acceleo Pom
+ * @param parent The parent id
  */]
-[template public genPom(anAcceleoPom : AcceleoPom)]
+[template public genPom(anAcceleoPom : AcceleoPom, parent : String)]
 [comment @main /]
 [file ('pom.xml', false, 'UTF-8')]
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -30,9 +31,9 @@
   </prerequisites>
 
   <groupId>org.eclipse.acceleo</groupId>
-  <artifactId>[anAcceleoPom.artifactId/]</artifactId>
+  <artifactId>[parent/]</artifactId>
   <version>1.0.0.qualifier</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>pom</packaging>
   <name>Acceleo Generator Project</name>
 
   <modules>
@@ -138,31 +139,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.3</version>
-        </plugin>
-        <plugin>  
-          <groupId>org.codehaus.mojo</groupId>  
-          <artifactId>exec-maven-plugin</artifactId>  
-          <version>1.1.1</version>  
-          <executions>  
-            <execution>  
-              <phase>compile</phase>  
-              <goals>  
-                <goal>java</goal>  
-              </goals>
-              <configuration>
-                <!--
-                   Calls the AcceleoCompiler to launch the compilation.
-                -->
-                <mainClass>[anAcceleoPom.artifactId/].AcceleoCompiler</mainClass>  
-                <arguments>  
-                  <argument>${basedir}/src/</argument> <!-- The source folder -->  
-                  <argument>${basedir}/target/classes</argument> <!-- The output folder -->
-                  <argument>true</argument> <!-- Indicates if we should use binary resources serializations -->
-                  <argument></argument>   <!-- The project dependencies in the workspace -->
-                </arguments>  
-              </configuration>  
-            </execution>  
-          </executions>  
         </plugin>
       </plugins>
     </pluginManagement>

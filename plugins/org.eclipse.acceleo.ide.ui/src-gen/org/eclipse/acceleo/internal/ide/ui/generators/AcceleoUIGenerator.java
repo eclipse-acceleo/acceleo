@@ -124,6 +124,11 @@ public final class AcceleoUIGenerator {
 	private static Module pom;
 
 	/**
+	 * The Acceleo module that will generate the pom.xml child file.
+	 */
+	private static Module pomChild;
+
+	/**
 	 * The Acceleo module that will generate the acceleo compiler.
 	 */
 	private static Module acceleoCompiler;
@@ -318,10 +323,32 @@ public final class AcceleoUIGenerator {
 	 *            The Acceleo pom.
 	 * @param outputContainer
 	 *            The output container.
+	 * @param parentName
+	 *            The name of the parent.
 	 */
-	public void generatePom(AcceleoPom acceleoPom, IContainer outputContainer) {
+	public void generatePom(AcceleoPom acceleoPom, IContainer outputContainer, String parentName) {
+		List<String> args = new ArrayList<String>();
+		args.add(parentName);
 		generate(pom, acceleoPom, outputContainer, IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
-				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI);
+				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI, args);
+	}
+
+	/**
+	 * Generates the pom.xml child file.
+	 * 
+	 * @param acceleoPom
+	 *            The Acceleo pom.
+	 * @param outputContainer
+	 *            The output container.
+	 * @param parentName
+	 *            The name of the parent.
+	 */
+	public void generatePomChild(AcceleoPom acceleoPom, IContainer outputContainer, String parentName) {
+		List<String> args = new ArrayList<String>();
+		args.add(parentName);
+		generate(pomChild, acceleoPom, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_POM_XML_CHILD_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_POM_XML_CHILD_TEMPLATE_URI, args);
 	}
 
 	/**
@@ -333,7 +360,7 @@ public final class AcceleoUIGenerator {
 	 *            The output container.
 	 */
 	public void generateAcceleoCompiler(AcceleoProject acceleoProject, IContainer outputContainer) {
-		generate(pom, acceleoProject, outputContainer,
+		generate(acceleoCompiler, acceleoProject, outputContainer,
 				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_TEMPLATE_URI);
 	}
