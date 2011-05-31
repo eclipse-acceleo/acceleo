@@ -17,6 +17,10 @@ On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a comple
 
 You can find a guide with all the good practices written by the Acceleo development team on the [http://docs.obeonetwork.com/acceleo Obeo Network].
 
+== I want to integrate Acceleo in my workflow, what can I do ? ==
+
+Acceleo creates a Java class as the entry point of the generation for each modules with a main template. You can use this Java class to launch the generation from Eclipse or in stand alone (without any dependencies with Eclipse). You can also create an Ant task file or a Maven file to launch the compilation of your generators (right click on an Acceleo project -> Configure). You can also find an Ant task to launch the generation in the "/tasks" folder of your Acceleo project.
+
 == I need help, what can I do ? ==
 
 If you have a problem, you can post your problem on the official forum for Acceleo and all the Model to Text software of the Eclipse foundation here: [http://www.eclipse.org/forums/index.php?t=thread&frm_id=24&]
