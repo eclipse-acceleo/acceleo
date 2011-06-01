@@ -351,9 +351,13 @@ public final class ModelUtils {
 		}
 		List<Resource> resources = resourceSet.getResources();
 		for (Resource resource : resources) {
-			List<Diagnostic> errors = resource.getErrors();
-			for (Diagnostic diagnostic : errors) {
-				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+			if (resource != null) {
+				List<Diagnostic> errors = resource.getErrors();
+				for (Diagnostic diagnostic : errors) {
+					if (diagnostic != null) {
+						AcceleoCommonPlugin.log(diagnostic.toString(), false);
+					}
+				}
 			}
 		}
 		return result;
