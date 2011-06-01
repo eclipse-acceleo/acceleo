@@ -3,7 +3,7 @@
 == Where can I find online resources for Acceleo ? ==
 
 The official website of the Acceleo project can be found here: [http://www.eclipse.org/Acceleo]
-It is the best place to find all the informations about the Acceleo project, including where to download the latest version of Acceleo and links to the forums, the documentation and videos about Acceleo. You can also find a lot of resources on the Acceleo wiki: [http://wiki.eclipse.org/acceleo]
+It is the best place to find all the information about the Acceleo project, including where to download the latest version of Acceleo and links to the forums, the documentation and videos about Acceleo. You can also find a lot of resources on the Acceleo wiki: [http://wiki.eclipse.org/acceleo]
 
 == I want to learn to use Acceleo, where should I start ? ==
 
