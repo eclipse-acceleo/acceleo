@@ -11,11 +11,15 @@ You can find in this documentation a small tutorial to help you with the creatio
 
 == I want to see what Acceleo is capable of, where can I find more information ? ==
 
-On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a complete user guide for Acceleo with lots of screenshots and dozens of videos showing all the features of Acceleo. You can also find videos from presentations of Acceleo for different conferences. 
+On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a complete user guide for Acceleo with lots of screenshots and dozens of videos presenting all the features of Acceleo. You can also find videos from presentations of Acceleo for different conferences. 
 
 == Is there a guide with all the good pratices for Acceleo available ? ==
 
 You can find a guide with all the good practices written by the Acceleo development team on the [http://docs.obeonetwork.com/acceleo Obeo Network].
+
+== Where can I find the members of the Acceleo community ? ==
+
+The Acceleo community can be found on the [http://docs.obeonetwork.com/acceleo Obeo Network] with a group dedicated to Acceleo users. You can also find all the latest news about Acceleo on [http://twitter.com/acceleo twitter]. Finally, you can find the blog posts of the member of the Acceleo community on [http://www.acceleo.org/pages/planet-acceleo/ planet acceleo].
 
 == I want to integrate Acceleo in my workflow, what can I do ? ==
 
