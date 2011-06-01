@@ -1174,9 +1174,11 @@ public class AcceleoSourceContent {
 	 */
 	private org.eclipse.acceleo.model.mtl.Module getModule(ResourceSet resourceSet, URI uri) {
 		try {
-			EObject root = ModelUtils.load(uri, resourceSet);
-			if (root instanceof org.eclipse.acceleo.model.mtl.Module) {
-				return (org.eclipse.acceleo.model.mtl.Module)root;
+			if (resourceSet != null) {
+				EObject root = ModelUtils.load(uri, resourceSet);
+				if (root instanceof org.eclipse.acceleo.model.mtl.Module) {
+					return (org.eclipse.acceleo.model.mtl.Module)root;
+				}
 			}
 		} catch (IOException e) {
 			AcceleoUIActivator.getDefault().getLog().log(
