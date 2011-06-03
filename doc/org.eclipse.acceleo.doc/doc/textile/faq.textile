@@ -7,11 +7,11 @@ It is the best place to find all the information about the Acceleo project, incl
 
 == I want to learn to use Acceleo, where should I start ? ==
 
-You can find in this documentation a small tutorial to help you with the creation of your first Acceleo project. You have also access to the complete documentation of the Acceleo language. You may want to have a look at the Acceleo examples (File -> New -> Examples) in order to understand the basic concepts used in Acceleo.
+You can find in this documentation a small tutorial to help you with the creation of your first Acceleo project. You have also access to the complete documentation of the Acceleo language. You may want to have a look at the Acceleo examples (File -> New -> Examples) in order to understand the basic concepts used in Acceleo. Finally, you can also find an open source UML to Java code generator on [https://github.com/ObeoNetwork/UML-Java-Generation Github] that you can checkout, fork and contribute to.
 
 == I want to see what Acceleo is capable of, where can I find more information ? ==
 
-On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a complete user guide for Acceleo with lots of screenshots and dozens of videos presenting all the features of Acceleo. You can also find videos from presentations of Acceleo for different conferences. 
+On the [http://docs.obeonetwork.com/acceleo Obeo Network], you can find a complete user guide for Acceleo with lots of screenshots and dozens of videos presenting all the features of Acceleo. You can also find videos from presentations of Acceleo for different conferences.
 
 == Is there a guide with all the good pratices for Acceleo available ? ==
 
@@ -24,6 +24,7 @@ The Acceleo community can be found on the [http://docs.obeonetwork.com/acceleo O
 == I want to integrate Acceleo in my workflow, what can I do ? ==
 
 Acceleo creates a Java class as the entry point of the generation for each modules with a main template. You can use this Java class to launch the generation from Eclipse or in stand alone (without any dependencies with Eclipse). You can also create an Ant task file or a Maven file to launch the compilation of your generators (right click on an Acceleo project -> Configure). You can also find an Ant task to launch the generation in the "/tasks" folder of your Acceleo project.
+You can find an extensive documentation for the integration of an Acceleo generator in an Ant, Maven or Java based workflow in the Acceleo 3.1.0 User Guide on the [http://docs.obeonetwork.com/acceleo Obeo Network].
 
 == I need help, what can I do ? ==
 
