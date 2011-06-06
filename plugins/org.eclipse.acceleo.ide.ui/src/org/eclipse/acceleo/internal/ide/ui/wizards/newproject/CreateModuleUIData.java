@@ -11,7 +11,9 @@
 package org.eclipse.acceleo.internal.ide.ui.wizards.newproject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -85,6 +87,11 @@ public class CreateModuleUIData {
 	private String targetFolderAccess;
 
 	/**
+	 * Mapping between the Java class and the project name.
+	 */
+	private Map<String, String> javaClass2ProjectName = new HashMap<String, String>();
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param wizard
@@ -153,6 +160,7 @@ public class CreateModuleUIData {
 							String javaClassName = acceleoProject.getPackageName(fileAcceleo) + "." //$NON-NLS-1$
 									+ javaFileName.removeFileExtension().lastSegment();
 							moduleJavaClasses.add(javaClassName);
+							javaClass2ProjectName.put(javaClassName, container.getProject().getName());
 						}
 					} else if (member instanceof IContainer) {
 						computeModuleJavaClasses(acceleoProject, (IContainer)member);
@@ -256,4 +264,14 @@ public class CreateModuleUIData {
 		return targetFolderAccess;
 	}
 
+	/**
+	 * Returns the project name containing the java class.
+	 * 
+	 * @param className
+	 *            The class name
+	 * @return The project name containing the java class.
+	 */
+	public String getProjectFromClass(String className) {
+		return this.javaClass2ProjectName.get(className);
+	}
 }
