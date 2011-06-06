@@ -397,7 +397,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			fireGenerationEvent = fireEvents;
 		}
 		context.closeContext(fileBlock, source);
-		context.getProgressMonitor().worked(2);
+		context.getProgressMonitor().worked(1);
 	}
 
 	/**
