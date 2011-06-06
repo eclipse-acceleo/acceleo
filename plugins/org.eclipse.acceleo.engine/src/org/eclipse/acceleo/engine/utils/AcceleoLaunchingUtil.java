@@ -53,6 +53,55 @@ public final class AcceleoLaunchingUtil {
 	}
 
 	/**
+	 * This will create a launch ID assuming that the generation has been called from an UI project.
+	 * 
+	 * @param project
+	 *            Project where the generation module is located.
+	 * @param qualifiedName
+	 *            Qualified name of the {@link org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator}
+	 *            allowing this generation.
+	 * @param model
+	 *            Path to the model with which to launch this generation.
+	 * @param targetFolder
+	 *            Target folder of this generation.
+	 * @param args
+	 *            Arguments of the generation.
+	 * @return The created launcher ID.
+	 */
+	public static String computeUIProjectID(String project, String qualifiedName, String model,
+			String targetFolder, List<String> args) {
+		String launcherID = LAUNCH_ID_LAUNCHER + Launcher.UI_PROJECT.ordinal();
+		String launcherPath = LAUNCH_ID_LAUNCHER_PATH + project + LAUNCHER_ID_ELEMENT_SEPARATOR
+				+ qualifiedName;
+		String modelPath = LAUNCH_ID_MODEL_PATH + model;
+		String targetPath = LAUNCH_ID_TARGET_PATH + targetFolder;
+
+		StringBuilder arguments = new StringBuilder(LAUNCH_ID_ARGUMENTS);
+		Iterator<String> argIterator = args.iterator();
+		while (argIterator.hasNext()) {
+			arguments.append(argIterator.next());
+			if (argIterator.hasNext()) {
+				arguments.append(LAUNCHER_ID_ELEMENT_SEPARATOR);
+			}
+		}
+
+		StringBuilder launchID = new StringBuilder();
+		launchID.append(launcherID);
+		launchID.append(LAUNCHER_ID_SEPARATOR);
+		launchID.append(launcherPath);
+		launchID.append(LAUNCHER_ID_SEPARATOR);
+		launchID.append(modelPath);
+		launchID.append(LAUNCHER_ID_SEPARATOR);
+		launchID.append(targetPath);
+		if (!args.isEmpty()) {
+			launchID.append(LAUNCHER_ID_SEPARATOR);
+			launchID.append(arguments.toString());
+		}
+
+		return launchID.toString();
+	}
+
+	/**
 	 * This will create a launch ID assuming that the generation has been called from a launch configuration.
 	 * 
 	 * @param project
@@ -252,6 +301,11 @@ public final class AcceleoLaunchingUtil {
 		 * configuration.
 		 */
 		LAUNCH_CONFIG,
+
+		/**
+		 * This will be used to indicate that the generation has been launched from an Acceleo UI Project.
+		 */
+		UI_PROJECT,
 	}
 
 }
