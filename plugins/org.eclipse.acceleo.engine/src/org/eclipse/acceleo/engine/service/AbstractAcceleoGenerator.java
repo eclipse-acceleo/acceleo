@@ -178,7 +178,7 @@ public abstract class AbstractAcceleoGenerator {
 
 		postGenerate(getModule().eResource().getResourceSet());
 		originalResources.clear();
-
+		service.clearCaches();
 		return result;
 	}
 

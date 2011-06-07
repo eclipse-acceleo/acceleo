@@ -340,6 +340,7 @@ public final class AcceleoService {
 					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 		}
 		generationHasOccurred = false;
+		this.clearCaches();
 		return previewResult;
 	}
 
@@ -658,7 +659,7 @@ public final class AcceleoService {
 				generationHasOccurred = true;
 			}
 		}
-
+		this.clearCaches();
 		return previewResult;
 	}
 
@@ -702,6 +703,7 @@ public final class AcceleoService {
 		for (Template template : templates) {
 			result.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 		}
+
 		return result;
 	}
 
@@ -856,14 +858,23 @@ public final class AcceleoService {
 			for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
 				generationEngine.removeListener(acceleoListenerDescriptor.getTraceabilityListener());
 			}
-			// Clear the cache
-			addedListeners.clear();
-			addedProperties.clear();
-			addedPropertiesfiles.clear();
+
 			if (forceTraceability) {
 				AcceleoPreferences.switchTraceability(false);
 			}
 		}
+	}
+
+	/**
+	 * Clear the traceability caches.
+	 * 
+	 * @since 3.1
+	 */
+	public void clearCaches() {
+		// Clear the cache
+		addedListeners.clear();
+		addedProperties.clear();
+		addedPropertiesfiles.clear();
 	}
 
 	/**
