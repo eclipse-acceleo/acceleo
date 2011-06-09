@@ -459,12 +459,21 @@ public final class AcceleoUIGenerator {
 			}
 
 			if (moduleTmp != null) {
+				boolean traceabilityEnabled = AcceleoPreferences.isTraceabilityEnabled();
+				if (traceabilityEnabled) {
+					AcceleoPreferences.switchTraceability(false);
+				}
+
 				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
 				new AcceleoService(new DefaultStrategy()).doGenerate(moduleTmp, templateName, eObject, args,
 						generationRoot, true, new BasicMonitor());
 
 				outputContainer.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+
+				if (traceabilityEnabled) {
+					AcceleoPreferences.switchTraceability(true);
+				}
 			}
 		} catch (IOException e) {
 			AcceleoUIActivator.log(e, true);
