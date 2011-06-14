@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Uml2java Module Example
 Bundle-SymbolicName: org.eclipse.acceleo.module.example.uml2java
-Bundle-Version: 3.0.2.qualifier
+Bundle-Version: 3.0.5.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.example.uml2java.Uml2JavaPlugin
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.core.runtime,
