@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.tests"
       label="%featureName"
-      version="3.0.3.qualifier"
+      version="3.0.5.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -23,8 +23,8 @@
    </url>
 
    <requires>
-      <import feature="org.eclipse.acceleo" version="3.0.3.qualifier"/>
-      <import feature="org.eclipse.acceleo.runtime" version="3.0.3.qualifier"/>
+      <import feature="org.eclipse.acceleo" version="3.0.5.qualifier"/>
+      <import feature="org.eclipse.acceleo.runtime" version="3.0.5.qualifier"/>
    </requires>
 
    <plugin
