@@ -12,16 +12,22 @@ Contributors:
 <feature
       id="org.eclipse.acceleo"
       label="%featureName"
-      version="3.0.3.qualifier"
+      version="3.0.5.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.acceleo.common">
 
-   <description>%description</description>
+   <description>
+      %description
+   </description>
 
-   <copyright url="%copyrightURL">%copyright</copyright>
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
 
-   <license url="%licenseURL">%license</license>
-   
+   <license url="%licenseURL">
+      %license
+   </license>
+
    <url>
       <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
