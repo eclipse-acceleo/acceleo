@@ -12,7 +12,7 @@ package org.eclipse.acceleo.engine.event;
 
 /**
  * Instances of this listener will be notified whenever text is generated from an Acceleo Block. From 3.1
- * onwards, clients can also extend {@link AbstractAcceleoTextGenerationListener}.
+ * onwards, clients should also extend {@link AbstractAcceleoTextGenerationListener}.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @since 0.8
@@ -49,8 +49,8 @@ public interface IAcceleoTextGenerationListener {
 	void fileGenerated(AcceleoTextGenerationEvent event);
 
 	/**
-	 * This will be called by the engine once all generations end. Event implementations sent along when this
-	 * is fired typically hold no information.
+	 * This will be called by the engine once the evaluation of a main template ends. Event implementations
+	 * sent along when this is fired typically hold no information.
 	 * 
 	 * @param event
 	 *            Placeholder for potential overriding engines.
