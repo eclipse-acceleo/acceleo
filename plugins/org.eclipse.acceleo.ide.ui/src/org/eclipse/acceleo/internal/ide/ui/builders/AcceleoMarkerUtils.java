@@ -175,11 +175,14 @@ public final class AcceleoMarkerUtils {
 					}
 				}
 
+				BundleDescription bundleDescription = null;
 				if (type != null && PluginRegistry.findModel(iProject) != null) {
 					found = true;
 					projectName = iProject.getName();
 					IPluginModelBase plugin = PluginRegistry.findModel(iProject);
-					BundleDescription bundleDescription = plugin.getBundleDescription();
+					bundleDescription = plugin.getBundleDescription();
+				}
+				if (type != null && PluginRegistry.findModel(iProject) != null && bundleDescription != null) {
 					ExportPackageDescription[] exportPackages = bundleDescription.getExportPackages();
 					for (ExportPackageDescription exportPackageDescription : exportPackages) {
 						if (exportPackageDescription.getName().equals(
