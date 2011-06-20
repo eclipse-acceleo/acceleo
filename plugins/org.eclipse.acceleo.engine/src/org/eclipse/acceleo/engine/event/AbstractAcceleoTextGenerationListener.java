@@ -24,6 +24,13 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 	protected String generationID;
 
 	/**
+	 * Indicates that the generation has started.
+	 */
+	public void generationStart() {
+		// Empty implementation
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener#fileGenerated(org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent)
@@ -58,6 +65,14 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 	public boolean listensToGenerationEnd() {
 		// Empty implementation
 		return false;
+	}
+
+	/**
+	 * This method is called when a generation is completed in order to indicates the result of the complete
+	 * generation. It is called after {@link #generationEnd(AcceleoTextGenerationEvent)}.
+	 */
+	public void generationCompleted() {
+		// Empty implementation
 	}
 
 	/**
