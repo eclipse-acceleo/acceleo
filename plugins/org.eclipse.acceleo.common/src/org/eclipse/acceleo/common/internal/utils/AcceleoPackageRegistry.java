@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.emf.common.util.URI;
@@ -266,6 +267,19 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 				&& !pathName.endsWith("Ecore.ecore")) { //$NON-NLS-1$
 			// Try and load the ecore file with its URI as-is
 			URI metaURI = URI.createURI(pathName, false);
+
+			List<Resource> resources = resourceSet.getResources();
+			for (Resource resource : resources) {
+				if (resource.getURI() != null && resource.getURI().equals(metaURI)) {
+					resource.unload();
+					try {
+						resource.load(new HashMap<String, String>());
+					} catch (IOException e) {
+						AcceleoCommonPlugin.log(e, false);
+					}
+				}
+			}
+
 			eObject = safeLoad(metaURI, resourceSet);
 
 			// If that failed, try and load the ecore file with a platform:/resource URI

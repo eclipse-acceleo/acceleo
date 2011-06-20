@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -483,16 +484,44 @@ public class AcceleoCommonPlugin extends Plugin {
 					}
 					break;
 				case IResourceChangeEvent.POST_CHANGE:
-					if (event.getResource() != null
-							&& event.getResource().getFileExtension().endsWith("ecore")) { //$NON-NLS-1$
-						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(event.getResource()
-								.getFullPath().toString(),
-								AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+					IResource resource = null;
+					if (event.getResource() != null) {
+						resource = event.getResource();
+					} else if (getResources(event.getDelta()).size() > 0) {
+						List<IResource> resources = getResources(event.getDelta());
+						resource = resources.get(0);
+					}
+					if (resource != null && resource.getFileExtension() != null
+							&& resource.getFileExtension().endsWith("ecore")) { //$NON-NLS-1$
+						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(resource.getFullPath()
+								.toString(), AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 					}
 					break;
 				default:
 					// no default action
 			}
+		}
+
+		/**
+		 * Computes the resources available in a resource delta.
+		 * 
+		 * @param delta
+		 *            the resource delta.
+		 * @return The lsit of resources in a resource delta.
+		 */
+		private List<IResource> getResources(IResourceDelta delta) {
+			List<IResource> resources = new ArrayList<IResource>();
+			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
+			for (IResourceDelta iResourceDelta : affectedChildren) {
+				IResource resource = iResourceDelta.getResource();
+				if (resource instanceof IFile && ((IFile)resource).getFileExtension() != null
+						&& ((IFile)resource).getFileExtension().equals("ecore")) {
+					resources.add(resource);
+				}
+
+				resources.addAll(getResources(iResourceDelta));
+			}
+			return resources;
 		}
 
 		/**
