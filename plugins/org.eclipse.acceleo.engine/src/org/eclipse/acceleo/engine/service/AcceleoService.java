@@ -38,7 +38,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -107,6 +107,21 @@ public final class AcceleoService {
 	 * Indicates if the generation has occurred.
 	 */
 	private boolean generationHasOccurred;
+
+	/**
+	 * Indicates if the generation has started.
+	 */
+	private boolean generationIsOccurring;
+
+	/**
+	 * The list of descriptor used during this generation.
+	 */
+	private List<AcceleoListenerDescriptor> descriptorsUsed;
+
+	/**
+	 * Indicates if this generation uses a forced traceability.
+	 */
+	private boolean forceTraceability;
 
 	/**
 	 * Instantiates an instance of the service with a default generation strategy.
@@ -307,6 +322,10 @@ public final class AcceleoService {
 
 		final Map<String, String> previewResult = new HashMap<String, String>();
 
+		// Start
+		this.generationIsOccurring = true;
+		this.prepareGeneration(generationRoot);
+
 		// Calls all templates with each of their potential arguments
 		final List<Object> arguments = new ArrayList<Object>();
 		// The input model itself is a potential argument
@@ -339,7 +358,13 @@ public final class AcceleoService {
 			AcceleoEnginePlugin.log(
 					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 		}
+
+		// End
+		this.generationIsOccurring = false;
+		this.finalizeGeneration();
+
 		generationHasOccurred = false;
+
 		this.clearCaches();
 		return previewResult;
 	}
@@ -389,9 +414,17 @@ public final class AcceleoService {
 		Map<String, String> result = new HashMap<String, String>();
 		List<Template> templates = findTemplates(module, templateName, 1);
 
+		// Start
+		this.generationIsOccurring = true;
+		this.prepareGeneration(generationRoot);
+
 		for (Template template : templates) {
 			result.putAll(doGenerate(template, model, generationRoot, monitor));
 		}
+
+		// End
+		this.generationIsOccurring = false;
+		this.finalizeGeneration();
 		return result;
 	}
 
@@ -436,9 +469,17 @@ public final class AcceleoService {
 		Map<String, String> result = new HashMap<String, String>();
 		List<Template> templates = findTemplates(module, templateName, 1);
 
+		// Start
+		this.generationIsOccurring = true;
+		this.prepareGeneration(generationRoot);
+
 		for (Template template : templates) {
 			result.putAll(doGenerate(template, model, generationRoot, monitor));
 		}
+
+		// End
+		this.generationIsOccurring = false;
+		this.finalizeGeneration();
 		return result;
 	}
 
@@ -484,6 +525,15 @@ public final class AcceleoService {
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
 		generationHasOccurred = false;
+
+		// Start
+		boolean shouldNotify = false;
+		if (!this.generationIsOccurring) {
+			this.generationIsOccurring = true;
+			shouldNotify = true;
+			this.prepareGeneration(generationRoot);
+		}
+
 		if (model == null || arguments == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -533,6 +583,14 @@ public final class AcceleoService {
 			AcceleoEnginePlugin.log(
 					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 		}
+
+		// End
+		if (shouldNotify) {
+			shouldNotify = false;
+			this.generationIsOccurring = false;
+			this.finalizeGeneration();
+		}
+
 		generationHasOccurred = false;
 
 		return previewResult;
@@ -624,6 +682,14 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Template template, EObject model, File generationRoot,
 			Monitor monitor) {
+		boolean shouldNotify = false;
+		if (!generationIsOccurring) {
+			// Start
+			this.generationIsOccurring = true;
+			shouldNotify = true;
+			this.prepareGeneration(generationRoot);
+		}
+
 		if (template == null || model == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -659,6 +725,14 @@ public final class AcceleoService {
 				generationHasOccurred = true;
 			}
 		}
+
+		if (shouldNotify) {
+			// End
+			this.generationIsOccurring = false;
+			shouldNotify = false;
+			this.finalizeGeneration();
+		}
+
 		this.clearCaches();
 		return previewResult;
 	}
@@ -700,9 +774,17 @@ public final class AcceleoService {
 		List<Template> templates = findTemplates(module, templateName, arguments);
 		// filter only main templates
 
+		// Start
+		this.generationIsOccurring = true;
+		this.prepareGeneration(generationRoot);
+
 		for (Template template : templates) {
 			result.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 		}
+
+		// End
+		this.generationIsOccurring = false;
+		this.finalizeGeneration();
 
 		return result;
 	}
@@ -780,11 +862,36 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerateTemplate(Template template, List<? extends Object> arguments,
 			File generationRoot, Monitor monitor) {
+		try {
+			return generationEngine.evaluate(template, arguments, generationRoot, strategy, monitor);
+		} finally {
+			// do nothing, just catch everything
+		}
+	}
+
+	/**
+	 * Prepare the generation and send an event indicating the start of the generation to all the listeners.
+	 * 
+	 * @param generationRoot
+	 *            The generation root.
+	 */
+	public void doPrepareGeneration(File generationRoot) {
+		this.generationIsOccurring = true;
+		this.prepareGeneration(generationRoot);
+	}
+
+	/**
+	 * Prepare the generation and send an event indicating the start of the generation to all the listeners.
+	 * 
+	 * @param generationRoot
+	 *            The generation root.
+	 */
+	private void prepareGeneration(File generationRoot) {
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
 
-		List<AcceleoListenerDescriptor> descriptorsUsed = new ArrayList<AcceleoListenerDescriptor>();
+		descriptorsUsed = new ArrayList<AcceleoListenerDescriptor>();
 
 		List<AcceleoListenerDescriptor> descriptors = AcceleoTraceabilityRegistryListenerUils
 				.getListenerDescriptors();
@@ -795,9 +902,10 @@ public final class AcceleoService {
 			} else if (EMFPlugin.IS_ECLIPSE_RUNNING && generationRoot != null) {
 				// Check the nature of the output project
 				IPath location = new Path(generationRoot.getAbsolutePath());
-				IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-				if (iFile != null) {
-					IProject project = iFile.getProject();
+				IContainer container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(
+						location);
+				if (container != null) {
+					IProject project = container.getProject();
 					try {
 						if (project != null && project.isAccessible()
 								&& project.hasNature(acceleoListenerDescriptor.getNature())) {
@@ -810,7 +918,7 @@ public final class AcceleoService {
 			}
 		}
 
-		boolean forceTraceability = false;
+		forceTraceability = false;
 		if (!deactivateTraceability) {
 			for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
 				IAcceleoTextGenerationListener listener = acceleoListenerDescriptor.getTraceabilityListener();
@@ -849,19 +957,54 @@ public final class AcceleoService {
 			generationEngine.addListener(acceleoListenerDescriptor.getTraceabilityListener());
 		}
 
-		try {
-			return generationEngine.evaluate(template, arguments, generationRoot, strategy, monitor);
-		} finally {
-			for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
-				generationEngine.removeListener(listener);
-			}
-			for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
-				generationEngine.removeListener(acceleoListenerDescriptor.getTraceabilityListener());
-			}
+		// notify every listeners that the generation is starting.
+		List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
+		listeners.addAll(STATIC_LISTENERS);
+		listeners.addAll(addedListeners);
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+			listeners.add(acceleoListenerDescriptor.getTraceabilityListener());
+		}
 
-			if (forceTraceability) {
-				AcceleoPreferences.switchTraceability(false);
+		for (IAcceleoTextGenerationListener listener : listeners) {
+			if (listener instanceof AbstractAcceleoTextGenerationListener) {
+				AbstractAcceleoTextGenerationListener abstractListener = (AbstractAcceleoTextGenerationListener)listener;
+				abstractListener.generationStart();
 			}
+		}
+	}
+
+	/**
+	 * Indicates that the generation has been completed and send an event indicating the end of the
+	 * generation. It also removes all the listeners just when the generation is over.
+	 */
+	public void finalizeGeneration() {
+		// notify every listeners that the generation is over.
+		List<IAcceleoTextGenerationListener> listeners = new ArrayList<IAcceleoTextGenerationListener>();
+		listeners.addAll(STATIC_LISTENERS);
+		listeners.addAll(addedListeners);
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+			listeners.add(acceleoListenerDescriptor.getTraceabilityListener());
+		}
+
+		for (IAcceleoTextGenerationListener listener : listeners) {
+			if (listener instanceof AbstractAcceleoTextGenerationListener) {
+				AbstractAcceleoTextGenerationListener abstractListener = (AbstractAcceleoTextGenerationListener)listener;
+				abstractListener.generationCompleted();
+			}
+		}
+
+		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
+			generationEngine.removeListener(listener);
+		}
+		for (AcceleoListenerDescriptor acceleoListenerDescriptor : descriptorsUsed) {
+			generationEngine.removeListener(acceleoListenerDescriptor.getTraceabilityListener());
+		}
+		for (IAcceleoTextGenerationListener listener : addedListeners) {
+			generationEngine.removeListener(listener);
+		}
+
+		if (forceTraceability) {
+			AcceleoPreferences.switchTraceability(false);
 		}
 	}
 

@@ -171,10 +171,17 @@ public abstract class AbstractAcceleoGenerator {
 		AcceleoService service = createAcceleoService();
 		String[] templateNames = getTemplateNames();
 		Map<String, String> result = new HashMap<String, String>();
+
+		// Start
+		service.doPrepareGeneration(target);
+
 		for (int i = 0; i < templateNames.length; i++) {
 			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
 					target, monitor));
 		}
+
+		// End
+		service.finalizeGeneration();
 
 		postGenerate(getModule().eResource().getResourceSet());
 		originalResources.clear();
