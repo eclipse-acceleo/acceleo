@@ -123,7 +123,7 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 			if (o instanceof EPackage) {
 				EPackage epkg = (EPackage)o;
 
-				if (name.equals(epkg.getName())) {
+				if (name != null && name.equals(epkg.getName())) {
 					result = epkg;
 					break;
 				}
@@ -140,7 +140,9 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	@Override
 	protected void addClassifier(EPackage pkg, EClassifier classifier) {
-		pkg.getEClassifiers().add(classifier);
+		if (pkg != null) {
+			pkg.getEClassifiers().add(classifier);
+		}
 	}
 
 	/**
@@ -150,7 +152,9 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	@Override
 	protected void addOperation(EClassifier owner, EOperation operation) {
-		((EClass)owner).getEOperations().add(operation);
+		if (owner instanceof EClass) {
+			((EClass)owner).getEOperations().add(operation);
+		}
 	}
 
 	/**
@@ -160,7 +164,9 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	@Override
 	protected void addProperty(EClassifier owner, EStructuralFeature property) {
-		((EClass)owner).getEStructuralFeatures().add(property);
+		if (owner instanceof EClass) {
+			((EClass)owner).getEStructuralFeatures().add(property);
+		}
 	}
 
 	/**
