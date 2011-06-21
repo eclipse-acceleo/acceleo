@@ -17,6 +17,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.natures.AcceleoToggleNatureAction;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -171,7 +172,8 @@ public class AcceleoConvertProjectWizard extends Wizard implements INewWizard {
 				AcceleoToggleNatureAction action = new AcceleoToggleNatureAction();
 				action.setSelection(new StructuredSelection(newProjects));
 				try {
-					action.execute(null);
+					ExecutionEvent event = new ExecutionEvent();
+					action.execute(event);
 				} catch (ExecutionException e) {
 					AcceleoUIActivator.log(e, true);
 				}
