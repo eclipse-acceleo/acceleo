@@ -229,7 +229,7 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	private boolean classifierEqual(EClassifier shadowedClassifier, EClassifier type) {
 		boolean result = true;
 
-		if (shadowedClassifier != null && type != null) {
+		if (shadowedClassifier != null && type != null && shadowedClassifier.getName() != null) {
 			// Same name
 			result = result && shadowedClassifier.getName().equals(type.getName());
 
