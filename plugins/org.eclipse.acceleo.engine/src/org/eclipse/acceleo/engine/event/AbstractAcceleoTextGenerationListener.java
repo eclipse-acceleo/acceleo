@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.event;
 
+import java.io.File;
+
+import org.eclipse.emf.common.util.Monitor;
+
 /**
  * Default implementation of an {@link IAcceleoTextGenerationListener}.
  * 
@@ -25,8 +29,13 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 
 	/**
 	 * Indicates that the generation has started.
+	 * 
+	 * @param monitor
+	 *            The monitor
+	 * @param targetFolder
+	 *            The target folder
 	 */
-	public void generationStart() {
+	public void generationStart(Monitor monitor, File targetFolder) {
 		// Empty implementation
 	}
 

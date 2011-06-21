@@ -324,7 +324,7 @@ public final class AcceleoService {
 
 		// Start
 		this.generationIsOccurring = true;
-		this.prepareGeneration(generationRoot);
+		this.prepareGeneration(monitor, generationRoot);
 
 		// Calls all templates with each of their potential arguments
 		final List<Object> arguments = new ArrayList<Object>();
@@ -416,7 +416,7 @@ public final class AcceleoService {
 
 		// Start
 		this.generationIsOccurring = true;
-		this.prepareGeneration(generationRoot);
+		this.prepareGeneration(monitor, generationRoot);
 
 		for (Template template : templates) {
 			result.putAll(doGenerate(template, model, generationRoot, monitor));
@@ -471,7 +471,7 @@ public final class AcceleoService {
 
 		// Start
 		this.generationIsOccurring = true;
-		this.prepareGeneration(generationRoot);
+		this.prepareGeneration(monitor, generationRoot);
 
 		for (Template template : templates) {
 			result.putAll(doGenerate(template, model, generationRoot, monitor));
@@ -531,7 +531,7 @@ public final class AcceleoService {
 		if (!this.generationIsOccurring) {
 			this.generationIsOccurring = true;
 			shouldNotify = true;
-			this.prepareGeneration(generationRoot);
+			this.prepareGeneration(monitor, generationRoot);
 		}
 
 		if (model == null || arguments == null
@@ -687,7 +687,7 @@ public final class AcceleoService {
 			// Start
 			this.generationIsOccurring = true;
 			shouldNotify = true;
-			this.prepareGeneration(generationRoot);
+			this.prepareGeneration(monitor, generationRoot);
 		}
 
 		if (template == null || model == null
@@ -776,7 +776,7 @@ public final class AcceleoService {
 
 		// Start
 		this.generationIsOccurring = true;
-		this.prepareGeneration(generationRoot);
+		this.prepareGeneration(monitor, generationRoot);
 
 		for (Template template : templates) {
 			result.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
@@ -872,21 +872,25 @@ public final class AcceleoService {
 	/**
 	 * Prepare the generation and send an event indicating the start of the generation to all the listeners.
 	 * 
+	 * @param monitor
+	 *            The basic monitor
 	 * @param generationRoot
 	 *            The generation root.
 	 */
-	public void doPrepareGeneration(File generationRoot) {
+	public void doPrepareGeneration(Monitor monitor, File generationRoot) {
 		this.generationIsOccurring = true;
-		this.prepareGeneration(generationRoot);
+		this.prepareGeneration(monitor, generationRoot);
 	}
 
 	/**
 	 * Prepare the generation and send an event indicating the start of the generation to all the listeners.
 	 * 
+	 * @param monitor
+	 *            The basic monitor
 	 * @param generationRoot
 	 *            The generation root.
 	 */
-	private void prepareGeneration(File generationRoot) {
+	private void prepareGeneration(Monitor monitor, File generationRoot) {
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
@@ -968,7 +972,7 @@ public final class AcceleoService {
 		for (IAcceleoTextGenerationListener listener : listeners) {
 			if (listener instanceof AbstractAcceleoTextGenerationListener) {
 				AbstractAcceleoTextGenerationListener abstractListener = (AbstractAcceleoTextGenerationListener)listener;
-				abstractListener.generationStart();
+				abstractListener.generationStart(monitor, generationRoot);
 			}
 		}
 	}

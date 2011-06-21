@@ -39,7 +39,6 @@ import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceFactoryRegistry;
 import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceFactoryImpl;
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -173,7 +172,7 @@ public abstract class AbstractAcceleoGenerator {
 		Map<String, String> result = new HashMap<String, String>();
 
 		// Start
-		service.doPrepareGeneration(target);
+		service.doPrepareGeneration(monitor, target);
 
 		for (int i = 0; i < templateNames.length; i++) {
 			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
@@ -446,7 +445,6 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public void registerPackages(ResourceSet resourceSet) {
 		resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put(GenModelPackage.eINSTANCE.getNsURI(), GenModelPackage.eINSTANCE);
 
 		resourceSet.getPackageRegistry().put(org.eclipse.ocl.ecore.EcorePackage.eINSTANCE.getNsURI(),
 				org.eclipse.ocl.ecore.EcorePackage.eINSTANCE);
