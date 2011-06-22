@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.eclipse.acceleo" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.doc" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.examples" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.runtime" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.sdk" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.ui.capabilities" version="0.0.0">
+      <category name="acceleo"/>
+   </feature>
+   <category-def name="acceleo" label="Acceleo">
+      <description>
+         Acceleo features.
+      </description>
+   </category-def>
+</site>
