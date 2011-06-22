@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rmap xmlns="http://www.eclipse.org/buckminster/RMap-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0">
-    <rm:property key="git.remote.uri" value="git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git"/>
+    <property key="git.remote.uri" value="git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git"/>
 
 	<locator pattern="^org\.eclipse\.acceleo\.releng(?:\..+)?$" searchPathRef="releng" />
 	<locator pattern="^org\.eclipse\.acceleo(?:\..+)?$" searchPathRef="acceleo" />
