@@ -876,6 +876,7 @@ public final class AcceleoService {
 	 *            The basic monitor
 	 * @param generationRoot
 	 *            The generation root.
+	 * @since 3.1
 	 */
 	public void doPrepareGeneration(Monitor monitor, File generationRoot) {
 		this.generationIsOccurring = true;
@@ -980,6 +981,8 @@ public final class AcceleoService {
 	/**
 	 * Indicates that the generation has been completed and send an event indicating the end of the
 	 * generation. It also removes all the listeners just when the generation is over.
+	 * 
+	 * @since 3.1
 	 */
 	public void finalizeGeneration() {
 		// notify every listeners that the generation is over.

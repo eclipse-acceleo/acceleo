@@ -34,6 +34,7 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 	 *            The monitor
 	 * @param targetFolder
 	 *            The target folder
+	 * @since 3.1
 	 */
 	public void generationStart(Monitor monitor, File targetFolder) {
 		// Empty implementation
@@ -79,6 +80,8 @@ public abstract class AbstractAcceleoTextGenerationListener implements IAcceleoT
 	/**
 	 * This method is called when a generation is completed in order to indicates the result of the complete
 	 * generation. It is called after {@link #generationEnd(AcceleoTextGenerationEvent)}.
+	 * 
+	 * @since 3.1
 	 */
 	public void generationCompleted() {
 		// Empty implementation
