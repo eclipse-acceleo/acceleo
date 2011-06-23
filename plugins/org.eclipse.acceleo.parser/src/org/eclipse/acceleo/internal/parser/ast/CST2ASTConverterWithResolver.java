@@ -270,17 +270,18 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		List<org.eclipse.acceleo.model.mtl.TypedModel> moduleInput = oModule.getInput();
 
 		boolean hasCommonInput = false;
+		List<EPackage> takesTypesFrom = new ArrayList<EPackage>();
+		List<EPackage> extendedTakesTypesFrom = new ArrayList<EPackage>();
 		for (org.eclipse.acceleo.model.mtl.TypedModel typedModel : moduleInput) {
 			for (org.eclipse.acceleo.model.mtl.TypedModel extendTypedModel : extendInput) {
-				List<EPackage> takesTypesFrom = typedModel.getTakesTypesFrom();
-				List<EPackage> extendedTakesTypesFrom = extendTypedModel.getTakesTypesFrom();
+				takesTypesFrom.addAll(typedModel.getTakesTypesFrom());
+				extendedTakesTypesFrom.addAll(extendTypedModel.getTakesTypesFrom());
+			}
+		}
 
-				for (EPackage ePackage : takesTypesFrom) {
-					for (EPackage extendEPackage : extendedTakesTypesFrom) {
-						hasCommonInput = hasCommonInput
-								|| ePackage.getNsURI().equals(extendEPackage.getNsURI());
-					}
-				}
+		for (EPackage ePackage : takesTypesFrom) {
+			for (EPackage extendEPackage : extendedTakesTypesFrom) {
+				hasCommonInput = hasCommonInput || ePackage.getNsURI().equals(extendEPackage.getNsURI());
 			}
 		}
 
