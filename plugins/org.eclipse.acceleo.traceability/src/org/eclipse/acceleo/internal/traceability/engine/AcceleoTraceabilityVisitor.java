@@ -1068,8 +1068,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		evaluatingOperationCall = true;
 
 		final Object result;
+
+		boolean isGuard = callExp.eContainingFeature().getFeatureID() == MtlPackage.TEMPLATE__GUARD;
+		isGuard = isGuard && callExp.eContainer() instanceof Template;
 		try {
-			if (record && isTraceabilityImpactingOperation(callExp)) {
+			if (record && isTraceabilityImpactingOperation(callExp) && !isGuard) {
 				// Boolean and Integer returning operations evaluation won't be intercepted
 				// But we'll alter their trace information
 				if (isBooleanReturningOperation(callExp)) {
