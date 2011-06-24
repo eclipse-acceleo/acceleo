@@ -751,6 +751,11 @@ public class AcceleoModuleComposite extends Composite {
 		metamodelType.setText("Type"); //$NON-NLS-1$
 		metamodelType.setText("EClass"); //$NON-NLS-1$
 		metamodelType.setText("Class"); //$NON-NLS-1$
+
+		if (metamodelType.getText() == null || "".equals(metamodelType.getText())) { //$NON-NLS-1$
+			// Empty combo box, so select the first one.
+			metamodelType.select(0);
+		}
 	}
 
 	/**
