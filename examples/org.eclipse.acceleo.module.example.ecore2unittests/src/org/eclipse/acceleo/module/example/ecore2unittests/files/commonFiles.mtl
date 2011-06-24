@@ -7,7 +7,7 @@
   
   author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 [/comment]
-[module CommonFiles('http://www.eclipse.org/emf/2002/GenModel')/]
+[module commonFiles('http://www.eclipse.org/emf/2002/GenModel')/]
 
 [template public manifest(model : GenModel)]
 [file ('META-INF/MANIFEST.MF', false)]

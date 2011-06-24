@@ -7,8 +7,8 @@
   
   author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 [/comment]
-[module SwitchTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
-[import Common/]
+[module switchTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+[import org::eclipse::acceleo::module::example::ecore2unittests::common::common/]
 
 [template public switchTest(pack : GenPackage)]
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('SwitchTest.java'), false)]

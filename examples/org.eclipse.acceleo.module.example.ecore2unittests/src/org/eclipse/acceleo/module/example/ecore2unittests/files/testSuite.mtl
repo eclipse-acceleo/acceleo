@@ -7,8 +7,8 @@
   
   author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 [/comment]
-[module TestSuite('http://www.eclipse.org/emf/2002/GenModel')/]
-[import Common/]
+[module testSuite('http://www.eclipse.org/emf/2002/GenModel')/]
+[import org::eclipse::acceleo::module::example::ecore2unittests::common::common/]
 
 [template public testSuite(pack : GenPackage)]
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/suite/')).concat(pack.prefix.toUpperFirst()).concat('TestSuite.java'), false)]

@@ -7,8 +7,10 @@
   
   author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 [/comment]
-[module FactoryTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
-[import Common/]
+[module factoryTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import org::eclipse::acceleo::module::example::ecore2unittests::common::common/]
+[import org::eclipse::acceleo::module::example::ecore2unittests::services::stringService /]
 
 [template public factoryTest(pack : GenPackage)]
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('FactoryTest.java'), false)]
@@ -48,7 +50,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 		assertNotNull(result);
 		assertTrue(result instanceof [genClass.ecoreClass.name/]);
 
-		result = [pack.modelFactoryClassName()/].eINSTANCE.create([pack.modelPackageClassName()/].Literals.[invoke('fr.obeo.mda.acceleo.test.codegen.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{genClass.ecoreClass.name.toUpperFirst()})/]);
+		result = [pack.modelFactoryClassName()/].eINSTANCE.create([pack.modelPackageClassName()/].Literals.[genClass.ecoreClass.name.toUpperFirst().convertToPackageString()/]);
 		assertNotNull(result);
 		assertTrue(result instanceof [genClass.ecoreClass.name/]);
 	}
@@ -78,7 +80,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 */
 	public void testConvert[genEnum.ecoreEnum.name.toUpperFirst()/]ToString() {
 		for ([genEnum.ecoreEnum.name.toUpperFirst()/] value : [genEnum.ecoreEnum.name.toUpperFirst()/].VALUES) {
-			Object result = [pack.modelFactoryClassName()/].eINSTANCE.convertToString([pack.modelPackageClassName()/].Literals.[invoke('fr.obeo.mda.acceleo.test.codegen.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{genEnum.ecoreEnum.name.toUpperFirst()})/], value);
+			Object result = [pack.modelFactoryClassName()/].eINSTANCE.convertToString([pack.modelPackageClassName()/].Literals.[genEnum.ecoreEnum.name.toUpperFirst().convertToPackageString()/], value);
 			assertNotNull(result);
 			assertEquals(value.toString(), result);
 		}
@@ -110,12 +112,12 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 */
 	public void testCreate[genEnum.ecoreEnum.name.toUpperFirst()/]FromString() {
 		for ([genEnum.ecoreEnum.name.toUpperFirst()/] value : [genEnum.ecoreEnum.name.toUpperFirst()/].VALUES) {
-			Object result = [pack.modelFactoryClassName()/].eINSTANCE.createFromString([pack.modelPackageClassName()/].Literals.[invoke('fr.obeo.mda.acceleo.test.codegen.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{genEnum.ecoreEnum.name.toUpperFirst()})/], value.getLiteral());
+			Object result = [pack.modelFactoryClassName()/].eINSTANCE.createFromString([pack.modelPackageClassName()/].Literals.[genEnum.ecoreEnum.name.toUpperFirst().convertToPackageString()/], value.getLiteral());
 			assertNotNull(result);
 			assertSame(value, result);
 
 			try {
-				[pack.modelFactoryClassName()/].eINSTANCE.createFromString([pack.modelPackageClassName()/].Literals.[invoke('fr.obeo.mda.acceleo.test.codegen.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{genEnum.ecoreEnum.name.toUpperFirst()})/], "ThisShouldntBeAKnownEEnumLiteral");
+				[pack.modelFactoryClassName()/].eINSTANCE.createFromString([pack.modelPackageClassName()/].Literals.[genEnum.ecoreEnum.name.toUpperFirst().convertToPackageString()/], "ThisShouldntBeAKnownEEnumLiteral");
 				fail("Expected IllegalArgumentException hasn't been thrown");
 			} catch (IllegalArgumentException e) {
 				// Expected behavior

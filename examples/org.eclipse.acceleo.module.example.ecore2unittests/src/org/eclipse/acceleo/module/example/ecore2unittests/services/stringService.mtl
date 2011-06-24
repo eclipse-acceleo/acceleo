@@ -1,0 +1,6 @@
+[comment encoding = Cp1252 /]
+[module stringService('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[query public convertToPackageString(aString : String) : String
+	= invoke('org.eclipse.acceleo.module.example.ecore2unittests.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{aString}) /]
+

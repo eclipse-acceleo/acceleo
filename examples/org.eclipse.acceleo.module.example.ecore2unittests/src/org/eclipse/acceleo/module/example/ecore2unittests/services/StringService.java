@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package fr.obeo.mda.acceleo.test.codegen.services;
+package org.eclipse.acceleo.module.example.ecore2unittests.services;
 
 public class StringService {
 	public String convertToPackageString(String s) {

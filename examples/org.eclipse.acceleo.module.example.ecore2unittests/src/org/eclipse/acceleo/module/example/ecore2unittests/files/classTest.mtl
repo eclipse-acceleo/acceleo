@@ -7,8 +7,9 @@
   
   author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 [/comment]
-[module ClassTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
-[import Common/]
+[module classTest('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import org::eclipse::acceleo::module::example::ecore2unittests::common::common/]
 
 [template public classTest(class : GenClass) ? (not class.ecoreClass.abstract and not class.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
 [file ('src-gen/'.concat(class.testPackage().substituteAll('.', '/')).concat('/unit/').concat(class.ecoreClass.name.toUpperFirst()).concat('Test.java'), false)]
