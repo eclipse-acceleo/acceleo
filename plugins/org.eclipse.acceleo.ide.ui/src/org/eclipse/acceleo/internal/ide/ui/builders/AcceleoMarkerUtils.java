@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
@@ -159,19 +161,20 @@ public final class AcceleoMarkerUtils {
 
 				IType type = null;
 
+				List<IType> types = new ArrayList<IType>();
 				IPackageFragment[] packageFragments = javaProject.getPackageFragments();
 				for (IPackageFragment iPackageFragment : packageFragments) {
 					if (iPackageFragment.getKind() == IPackageFragmentRoot.K_SOURCE) {
 						ICompilationUnit[] compilationUnits = iPackageFragment.getCompilationUnits();
 						for (ICompilationUnit iCompilationUnit : compilationUnits) {
-							IType[] types = iCompilationUnit.getTypes();
-							for (IType iType : types) {
-								if (iType.getFullyQualifiedName().equals(
-										message.substring(AcceleoParserInfo.SERVICE_INVOCATION.length()))) {
-									type = iType;
-								}
-							}
+							types.addAll(Arrays.asList(iCompilationUnit.getTypes()));
 						}
+					}
+				}
+				for (IType iType : types) {
+					if (iType.getFullyQualifiedName().equals(
+							message.substring(AcceleoParserInfo.SERVICE_INVOCATION.length()))) {
+						type = iType;
 					}
 				}
 

@@ -471,7 +471,8 @@ public class AcceleoCommonPlugin extends Plugin {
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
 						try {
-							List<IFile> ecoreFiles = members((IContainer)event.getResource(), "ecore"); //$NON-NLS-1$
+							List<IFile> ecoreFiles = members((IContainer)event.getResource(),
+									IAcceleoConstants.ECORE_FILE_EXTENSION);
 							if (!ecoreFiles.isEmpty()) {
 								for (IFile ecoreFile : ecoreFiles) {
 									AcceleoPackageRegistry.INSTANCE.unregisterEcorePackages(ecoreFile
@@ -492,7 +493,7 @@ public class AcceleoCommonPlugin extends Plugin {
 						resource = resources.get(0);
 					}
 					if (resource != null && resource.getFileExtension() != null
-							&& resource.getFileExtension().endsWith("ecore")) { //$NON-NLS-1$
+							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(resource.getFullPath()
 								.toString(), AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
 					}
@@ -514,8 +515,10 @@ public class AcceleoCommonPlugin extends Plugin {
 			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
 			for (IResourceDelta iResourceDelta : affectedChildren) {
 				IResource resource = iResourceDelta.getResource();
-				if (resource instanceof IFile && ((IFile)resource).getFileExtension() != null
-						&& ((IFile)resource).getFileExtension().equals("ecore")) {
+				if (resource instanceof IFile
+						&& ((IFile)resource).getFileExtension() != null
+						&& ((IFile)resource).getFileExtension()
+								.equals(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
 					resources.add(resource);
 				}
 
