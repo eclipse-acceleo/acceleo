@@ -242,6 +242,31 @@ public final class AcceleoWorkspaceUtil {
 	}
 
 	/**
+	 * Returns the bundles with the given name.
+	 * 
+	 * @param bundleName
+	 *            The bundle name.
+	 * @return The bundles with the given name.
+	 */
+	public static Bundle[] getBundles(String bundleName) {
+		Bundle[] bundle = null;
+		BundleContext context = AcceleoCommonPlugin.getDefault().getContext();
+		ServiceReference packageAdminReference = context.getServiceReference(PackageAdmin.class.getName());
+		PackageAdmin packageAdmin = null;
+		if (packageAdminReference != null) {
+			packageAdmin = (PackageAdmin)context.getService(packageAdminReference);
+		}
+
+		if (packageAdmin != null) {
+			bundle = packageAdmin.getBundles(bundleName, null);
+		}
+		if (packageAdminReference != null) {
+			context.ungetService(packageAdminReference);
+		}
+		return bundle;
+	}
+
+	/**
 	 * This will try and resolve the given {@link java.io.File} within the workspace and return it if found.
 	 * 
 	 * @param file
