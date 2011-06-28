@@ -302,7 +302,7 @@ public final class AcceleoCompilerHelper {
 					IPath emtlPath = new Path(outputPath).append(path);
 					emtlAbsoluteURI = URI.createFileURI(emtlPath.toString());
 				} else {
-					emtlAbsoluteURI = URI.createFileURI(new Path(inputPath).removeFileExtension()
+					emtlAbsoluteURI = URI.createFileURI(new Path(mtlFileAbsolutePath).removeFileExtension()
 							.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString());
 				}
 
