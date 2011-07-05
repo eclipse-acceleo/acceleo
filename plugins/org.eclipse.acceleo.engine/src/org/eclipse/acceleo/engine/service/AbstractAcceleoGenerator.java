@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -454,6 +455,7 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	protected void postGenerate(ResourceSet rs) {
 		AcceleoServicesRegistry.INSTANCE.clearRegistry();
+		AcceleoServicesEclipseUtil.clearRegistry();
 		List<Resource> unload = new ArrayList<Resource>(rs.getResources());
 		unload.removeAll(originalResources);
 		for (Resource res : unload) {
