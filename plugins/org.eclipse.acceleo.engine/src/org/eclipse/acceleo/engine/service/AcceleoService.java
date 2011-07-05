@@ -297,7 +297,6 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, Monitor monitor) {
-		generationHasOccurred = false;
 		if (templates == null || model == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -354,16 +353,9 @@ public final class AcceleoService {
 			}
 		}
 
-		if (!generationHasOccurred && AcceleoPreferences.isDebugMessagesEnabled()) {
-			AcceleoEnginePlugin.log(
-					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
-		}
-
 		// End
 		this.generationIsOccurring = false;
 		this.finalizeGeneration();
-
-		generationHasOccurred = false;
 
 		this.clearCaches();
 		return previewResult;
@@ -524,7 +516,6 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
-		generationHasOccurred = false;
 
 		// Start
 		boolean shouldNotify = false;
@@ -579,10 +570,6 @@ public final class AcceleoService {
 				}
 			}
 		}
-		if (!generationHasOccurred && AcceleoPreferences.isDebugMessagesEnabled()) {
-			AcceleoEnginePlugin.log(
-					AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
-		}
 
 		// End
 		if (shouldNotify) {
@@ -590,8 +577,6 @@ public final class AcceleoService {
 			this.generationIsOccurring = false;
 			this.finalizeGeneration();
 		}
-
-		generationHasOccurred = false;
 
 		return previewResult;
 	}
@@ -892,6 +877,7 @@ public final class AcceleoService {
 	 *            The generation root.
 	 */
 	private void prepareGeneration(Monitor monitor, File generationRoot) {
+		generationHasOccurred = false;
 		for (IAcceleoTextGenerationListener listener : STATIC_LISTENERS) {
 			generationEngine.addListener(listener);
 		}
@@ -1132,5 +1118,15 @@ public final class AcceleoService {
 	 */
 	public void setGenerationID(String generationID) {
 		this.generationID = generationID;
+	}
+
+	/**
+	 * Indicates if the generator has executed a template.
+	 * 
+	 * @return <code>true</code> if the generator has been used, <code>false</code> otherwise.
+	 * @since 3.1
+	 */
+	public boolean hasGenerationOccurred() {
+		return this.generationHasOccurred;
 	}
 }

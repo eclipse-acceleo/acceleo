@@ -24,10 +24,14 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
@@ -186,6 +190,16 @@ public abstract class AbstractAcceleoGenerator {
 		postGenerate(getModule().eResource().getResourceSet());
 		originalResources.clear();
 		service.clearCaches();
+
+		if (!service.hasGenerationOccurred()) {
+			if (EMFPlugin.IS_ECLIPSE_RUNNING  && AcceleoPreferences.isDebugMessagesEnabled()) {				
+				AcceleoEnginePlugin.log(
+						AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+			} else {
+				AcceleoEnginePlugin.log(
+						AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+			}
+		}
 		return result;
 	}
 
@@ -547,6 +561,7 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	protected void postGenerate(ResourceSet resourceSet) {
 		AcceleoServicesRegistry.INSTANCE.clearRegistry();
+		AcceleoServicesEclipseUtil.clearRegistry();
 		List<Resource> unload = new ArrayList<Resource>(resourceSet.getResources());
 		unload.removeAll(originalResources);
 		for (Resource res : unload) {

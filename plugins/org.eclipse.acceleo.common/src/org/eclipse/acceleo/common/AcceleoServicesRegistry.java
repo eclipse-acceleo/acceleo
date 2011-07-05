@@ -262,5 +262,6 @@ public final class AcceleoServicesRegistry {
 	 */
 	public void clearRegistry() {
 		registeredServices.clear();
+		serviceInstances.clear();
 	}
 }
