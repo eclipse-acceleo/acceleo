@@ -872,10 +872,11 @@ public class OCLParser {
 							iModelExpression);
 					return handleArguments(acceleoInvocation, iModelExpression);
 				}
-			} else if (eCall.getReferredOperation() != null
-					&& eCall.getReferredOperation().getEAnnotation(ANNOTATION_NON_STANDARD_SOURCE) != null) {
+			} else if (eCall.getReferredOperation() != null) {
 				// try to see if the arguments of the non standard operation contains an Acceleo invocation
 				// example: 'a string' + ('another string' + aQueryInvocation())
+				// also applicable for OCL standard operations
+				// example 'a string'.concat('another string'.concat(aQueryInvocation()))
 				List<org.eclipse.ocl.expressions.OCLExpression<EClassifier>> argument = eCall.getArgument();
 				for (org.eclipse.ocl.expressions.OCLExpression<EClassifier> oclExpression : argument) {
 					createAcceleoInvocation(oclExpression, iModelExpression);
