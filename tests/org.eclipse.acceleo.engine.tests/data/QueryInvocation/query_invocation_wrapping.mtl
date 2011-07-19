@@ -1,0 +1,11 @@
+[module query_invocation_wrapping(http://www.eclipse.org/emf/2002/Ecore)/]
+
+[template public test(e : EClass)]
+[file ('query_invocation_wrapping', false, 'UTF-8')]
+[report1('Attributes ' + e.AttributesOfEClass().name->sep(', ') + ' end')/]
+[/file]
+[/template]
+
+[query public AttributesOfEClass(anEClass : EClass) : OrderedSet(EAttribute) = eAllAttributes /]
+
+[query public report1(anEClass : EClass, message : String) : String = message /]

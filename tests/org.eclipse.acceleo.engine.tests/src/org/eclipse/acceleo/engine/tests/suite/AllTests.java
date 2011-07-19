@@ -18,6 +18,7 @@ import junit.textui.TestRunner;
 import org.eclipse.acceleo.engine.tests.unit.blocks.forBlock.ForBlockTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.ifBlock.IfBlockTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.protectedareablock.ProtectedAreaBlockTest;
+import org.eclipse.acceleo.engine.tests.unit.blocks.queryinvocation.QueryInvocationWrapping;
 import org.eclipse.acceleo.engine.tests.unit.blocks.template.TemplateTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.DualTemplateInvocationTest;
 import org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation.QueryPropertyInvocationTest;
@@ -75,6 +76,7 @@ public class AllTests extends TestCase {
 		suite.addTestSuite(DualTemplateInvocationTest.class);
 		suite.addTestSuite(QueryPropertyInvocationTest.class);
 		suite.addTestSuite(RecursiveTemplateInvocation.class);
+		suite.addTestSuite(QueryInvocationWrapping.class);
 
 		// Encoding
 		suite.addTestSuite(GenerationEncodingTest.class);
