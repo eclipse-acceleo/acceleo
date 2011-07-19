@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.EvaluationEnvironment;
+import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
 import org.eclipse.ocl.options.EvaluationOptions;
 import org.eclipse.ocl.utilities.PredefinedType;
@@ -679,6 +680,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			isApplicable = ((Class<?>)expectedType).isAssignableFrom((Class<?>)argumentType);
 		} else if (expectedType instanceof EDataType && argumentType instanceof Class<?>) {
 			isApplicable = ((EDataType)expectedType).getInstanceClass() == argumentType;
+		} else if (expectedType instanceof AnyType) {
+			isApplicable = true;
 		} else {
 			isApplicable = expectedType.getClass().isInstance(argumentType);
 		}
