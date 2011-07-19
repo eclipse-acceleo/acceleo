@@ -12,7 +12,9 @@ package org.eclipse.acceleo.internal.parser.ast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -84,6 +86,12 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * the upper bound. Remark : The -1 value means everywhere.
 	 */
 	private int resolveEndPosition = -1;
+
+	/**
+	 * The set of modules reached by import or by extend. This is a temporary variable for a recursive call.
+	 * It is cleared afterward.
+	 */
+	private Set<org.eclipse.acceleo.model.mtl.Module> modulesReached = new LinkedHashSet<org.eclipse.acceleo.model.mtl.Module>();
 
 	/**
 	 * Constructor.
@@ -216,11 +224,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, oImportedModule
 						.getName()), startPosition, endPosition);
 			}
+			this.modulesReached.clear();
+			this.modulesReached.add(oModule);
 			if (isRecursiveImports(oModule, oImportedModule)) {
 				logProblem(AcceleoParserMessages.getString(
 						"CST2ASTConverterWithResolver.RecursiveModuleImports", new Object[] { //$NON-NLS-1$
 						oModule.getName(), oImportedModule.getName(), }), startPosition, endPosition);
 			}
+			this.modulesReached.clear();
 		}
 	}
 
@@ -243,11 +254,14 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						"CST2ASTConverterWithResolver.ModuleExtendssIncompatibleModule", //$NON-NLS-1$
 						oExtendedModule.getName()), startPosition, endPosition);
 			}
+			this.modulesReached.clear();
+			this.modulesReached.add(oModule);
 			if (isRecursiveExtends(oModule, oExtendedModule)) {
 				logProblem(AcceleoParserMessages.getString(
 						"CST2ASTConverterWithResolver.RecursiveModuleExtends", new Object[] { //$NON-NLS-1$
 						oModule.getName(), oExtendedModule.getName(), }), startPosition, endPosition);
 			}
+			this.modulesReached.clear();
 			if (oExtendedModule.isDeprecated()) {
 				logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, oExtendedModule
 						.getName()), startPosition, endPosition);
@@ -299,6 +313,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	private boolean isRecursiveExtends(org.eclipse.acceleo.model.mtl.Module module,
 			org.eclipse.acceleo.model.mtl.Module extendedModule) {
+		this.modulesReached.add(extendedModule);
 		boolean res = false;
 		if (module != null && extendedModule != null) {
 			if (module == extendedModule
@@ -307,7 +322,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				res = true;
 			} else {
 				for (org.eclipse.acceleo.model.mtl.Module extended : extendedModule.getExtends()) {
-					if (isRecursiveExtends(module, extended)) {
+					if (this.modulesReached.contains(extended) || isRecursiveExtends(module, extended)) {
 						res = true;
 						break;
 					}
@@ -328,6 +343,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 */
 	private boolean isRecursiveImports(org.eclipse.acceleo.model.mtl.Module module,
 			org.eclipse.acceleo.model.mtl.Module importedModule) {
+		this.modulesReached.add(importedModule);
 		boolean res = false;
 		if (module != null && importedModule != null) {
 			if (module == importedModule
@@ -336,7 +352,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				res = true;
 			} else {
 				for (org.eclipse.acceleo.model.mtl.Module imported : importedModule.getImports()) {
-					if (isRecursiveImports(module, imported)) {
+					if (this.modulesReached.contains(imported) || isRecursiveImports(module, imported)) {
 						res = true;
 						break;
 					}
