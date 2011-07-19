@@ -72,6 +72,11 @@ public class OCLParser {
 	public static final String ANNOTATION_SOURCE = "MTL"; //$NON-NLS-1$
 
 	/**
+	 * To set the value of the 'Source' attribute for each Acceleo MTL non-standard annotation.
+	 */
+	public static final String ANNOTATION_NON_STANDARD_SOURCE = "MTL non-standard"; //$NON-NLS-1$
+
+	/**
 	 * To set the value of the 'type' key for each Acceleo annotation.
 	 */
 	public static final String ANNOTATION_KEY_TYPE = "type"; //$NON-NLS-1$
@@ -870,6 +875,14 @@ public class OCLParser {
 					OCLExpression acceleoInvocation = createAcceleoInvocation(eCall, eModuleElement,
 							iModelExpression);
 					return handleArguments(acceleoInvocation, iModelExpression);
+				}
+			} else if (eCall.getReferredOperation() != null
+					&& eCall.getReferredOperation().getEAnnotation(ANNOTATION_NON_STANDARD_SOURCE) != null) {
+				// try to see if the arguments of the non standard operation contains an Acceleo invocation
+				// example: 'a string' + ('another string' + aQueryInvocation())
+				List<org.eclipse.ocl.expressions.OCLExpression<EClassifier>> argument = eCall.getArgument();
+				for (org.eclipse.ocl.expressions.OCLExpression<EClassifier> oclExpression : argument) {
+					createAcceleoInvocation(oclExpression, iModelExpression);
 				}
 			}
 		}
