@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="acceleoCompiler" nsURI="org::eclipse::acceleo::module::sample::main::acceleoCompiler" startHeaderPosition="411" endHeaderPosition="624">
+  <mtl:Module name="acceleoCompiler" nsURI="org::eclipse::acceleo::module::sample::files::acceleoCompiler" startHeaderPosition="411" endHeaderPosition="624">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
-      <body startPosition="32" endPosition="408" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
+      <body startPosition="32" endPosition="408" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
     <input>
       <takesTypesFrom href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#/"/>
@@ -45,7 +45,7 @@
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[3]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;        }&#xA;        acceleoCompiler.doCompile(new BasicMonitor());&#xA;    }&#xA;    &#xA;    /**&#xA;     * Launches the compilation of the mtl files in the generator.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#doCompile(org.eclipse.emf.common.util.Monitor)&#xA;     */&#xA;    @Override&#xA;    public void doCompile(Monitor monitor) {&#xA;        super.doCompile(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * Registers the packages of the metamodels used in the generator.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#registerPackages()&#xA;     */&#xA;    @Override&#xA;    protected void registerPackages() {&#xA;        super.registerPackages();&#xA;        /*&#xA;         * If you want to add the other packages used by your generator, for example UML:&#xA;         * org.eclipse.emf.ecore.EPackage.Registry.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;         **/&#xA;    }&#xA;&#xA;    /**&#xA;     * Registers the resource factories.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#registerResourceFactories()&#xA;     */&#xA;    @Override&#xA;    protected void registerResourceFactories() {&#xA;        super.registerResourceFactories();&#xA;        /*&#xA;         * If you want to add other resource factories, for example if your metamodel uses a specific serialization:&#xA;         * org.eclipse.emf.ecore.resource.Resource.Factory.Registry.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;         **/&#xA;    }&#xA;}&#xA;&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;        }&#xA;        acceleoCompiler.doCompile(new BasicMonitor());&#xA;    }&#xA;    &#xA;    /**&#xA;     * Launches the compilation of the mtl files in the generator.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#doCompile(org.eclipse.emf.common.util.Monitor)&#xA;     */&#xA;    @Override&#xA;    public void doCompile(Monitor monitor) {&#xA;        super.doCompile(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * Registers the packages of the metamodels used in the generator.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#registerPackages()&#xA;     */&#xA;    @Override&#xA;    protected void registerPackages() {&#xA;        super.registerPackages();&#xA;        /*&#xA;         * If you want to add the other packages used by your generator, for example UML:&#xA;         * org.eclipse.emf.ecore.EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;         **/&#xA;    }&#xA;&#xA;    /**&#xA;     * Registers the resource factories.&#xA;     * &#xA;     * @see org.eclipse.acceleo.parser.compiler.AbstractAcceleoCompiler#registerResourceFactories()&#xA;     */&#xA;    @Override&#xA;    protected void registerResourceFactories() {&#xA;        super.registerResourceFactories();&#xA;        /*&#xA;         * If you want to add other resource factories, for example if your metamodel uses a specific serialization and it is not contained in a &quot;.ecore&quot; file:&#xA;         * org.eclipse.emf.ecore.resource.Resource.Factory.Registry.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;         **/&#xA;    }&#xA;}&#xA;&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="AcceleoCompiler.java">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -54,7 +54,7 @@
         </charset>
       </body>
       <documentation xsi:type="mtl:ModuleElementDocumentation">
-        <body startPosition="501" endPosition="624" value="&#xA;Generates the AcceleoCompiler.java file for stand alone compilation.&#xA;@param anAcceleoProject The acceleo project.&#xA;&#xA;"/>
+        <body startPosition="501" endPosition="624" value="&#xD;&#xA;Generates the AcceleoCompiler.java file for stand alone compilation.&#xD;&#xA;@param anAcceleoProject The acceleo project.&#xD;&#xA;&#xD;&#xA;"/>
         <parametersDocumentation name="anAcceleoProject">
           <body value=" The acceleo project."/>
         </parametersDocumentation>
@@ -558,12 +558,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/generateElement">
       <details key="start" value="627"/>
-      <details key="end" value="4080"/>
+      <details key="end" value="4132"/>
       <details key="line" value="20"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/generateElement/@body.0">
       <details key="start" value="713"/>
-      <details key="end" value="4068"/>
+      <details key="end" value="4120"/>
       <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/generateElement/@body.0/@body.0">
@@ -653,7 +653,7 @@
     </eAnnotations>
     <eAnnotations source="positions.20" references="/0/generateElement/@body.0/@body.16">
       <details key="start" value="2596"/>
-      <details key="end" value="4061"/>
+      <details key="end" value="4113"/>
       <details key="line" value="64"/>
     </eAnnotations>
     <eAnnotations source="positions.21" references="/0/generateElement/@body.0/@fileUrl">

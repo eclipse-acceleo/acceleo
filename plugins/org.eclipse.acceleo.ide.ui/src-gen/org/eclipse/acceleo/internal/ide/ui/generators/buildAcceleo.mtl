@@ -34,7 +34,8 @@
     <!-- ================================================================= -->
     <target name="post.compile.@dot">
         <acceleoCompiler 
-            sourceFolder="${target.folder}" 
+            sourceFolder="${target.folder}"
+            outputFolder="${target.folder}"
             dependencies="[for(dependency : String | anAcceleoProject.pluginDependencies)]${target.folder}/../../[dependency/];[/for]"
             binaryResource="true">
         </acceleoCompiler>
