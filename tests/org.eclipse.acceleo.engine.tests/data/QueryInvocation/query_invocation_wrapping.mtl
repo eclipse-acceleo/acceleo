@@ -3,6 +3,7 @@
 [template public test(e : EClass)]
 [file ('query_invocation_wrapping', false, 'UTF-8')]
 [report1('Attributes ' + e.AttributesOfEClass().name->sep(', ') + ' end')/]
+[report1('Attributes '.concat(e.AttributesOfEClass().name->sep(', ')->toString()) + ' end')/]
 [/file]
 [/template]
 

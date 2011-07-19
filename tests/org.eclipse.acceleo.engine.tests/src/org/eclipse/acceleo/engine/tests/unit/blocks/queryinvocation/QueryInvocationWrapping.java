@@ -54,7 +54,7 @@ public class QueryInvocationWrapping extends AbstractAcceleoTest {
 		for (File generated : getFiles(generationRoot)) {
 			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
 			// We expect two protected areas to have been created
-			assertEquals(content, "Attributes  end"); //$NON-NLS-1$ 
+			assertEquals("Attributes  end" + "Attributes  end", content); //$NON-NLS-1$ //$NON-NLS-2$ 
 		}
 	}
 }
