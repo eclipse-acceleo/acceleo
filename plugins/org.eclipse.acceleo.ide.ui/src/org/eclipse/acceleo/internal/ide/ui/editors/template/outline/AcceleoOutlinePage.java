@@ -354,6 +354,7 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 		if (element instanceof Module) {
 			int selection = -1;
 			if (getTreeViewer().getControl() instanceof Scrollable
+					&& !((Scrollable)getTreeViewer().getControl()).isDisposed()
 					&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
 				selection = ((Scrollable)getTreeViewer().getControl()).getVerticalBar().getSelection();
 			}
