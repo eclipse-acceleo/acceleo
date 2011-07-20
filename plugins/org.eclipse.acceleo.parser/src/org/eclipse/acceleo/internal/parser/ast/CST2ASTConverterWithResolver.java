@@ -12,9 +12,7 @@ package org.eclipse.acceleo.internal.parser.ast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -91,7 +89,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 * The set of modules reached by import or by extend. This is a temporary variable for a recursive call.
 	 * It is cleared afterward.
 	 */
-	private Set<org.eclipse.acceleo.model.mtl.Module> modulesReached = new LinkedHashSet<org.eclipse.acceleo.model.mtl.Module>();
+	private List<org.eclipse.acceleo.model.mtl.Module> modulesReached = new ArrayList<org.eclipse.acceleo.model.mtl.Module>();
 
 	/**
 	 * Constructor.
@@ -314,22 +312,26 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private boolean isRecursiveExtends(org.eclipse.acceleo.model.mtl.Module module,
 			org.eclipse.acceleo.model.mtl.Module extendedModule) {
 		this.modulesReached.add(extendedModule);
-		boolean res = false;
-		if (module != null && extendedModule != null) {
-			if (module == extendedModule
-					|| (EcoreUtil.getURI(module) != null && (EcoreUtil.getURI(module).equals(EcoreUtil
-							.getURI(extendedModule))))) {
-				res = true;
-			} else {
-				for (org.eclipse.acceleo.model.mtl.Module extended : extendedModule.getExtends()) {
-					if (this.modulesReached.contains(extended) || isRecursiveExtends(module, extended)) {
-						res = true;
-						break;
-					}
+		for (org.eclipse.acceleo.model.mtl.Module extended : extendedModule.getExtends()) {
+			boolean alreadyContained = false;
+			for (org.eclipse.acceleo.model.mtl.Module moduleReached : this.modulesReached) {
+				if (moduleReached == extended
+						|| (EcoreUtil.getURI(moduleReached) != null && (EcoreUtil.getURI(moduleReached)
+								.equals(EcoreUtil.getURI(extended))))) {
+					alreadyContained = true;
+					break;
 				}
 			}
+
+			if (!alreadyContained) {
+				isRecursiveExtends(module, extended);
+			} else {
+				return true;
+			}
 		}
-		return res;
+		this.modulesReached.removeAll(extendedModule.getExtends());
+		this.modulesReached.remove(extendedModule);
+		return false;
 	}
 
 	/**
@@ -344,22 +346,26 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private boolean isRecursiveImports(org.eclipse.acceleo.model.mtl.Module module,
 			org.eclipse.acceleo.model.mtl.Module importedModule) {
 		this.modulesReached.add(importedModule);
-		boolean res = false;
-		if (module != null && importedModule != null) {
-			if (module == importedModule
-					|| (EcoreUtil.getURI(module) != null && (EcoreUtil.getURI(module).equals(EcoreUtil
-							.getURI(importedModule))))) {
-				res = true;
-			} else {
-				for (org.eclipse.acceleo.model.mtl.Module imported : importedModule.getImports()) {
-					if (this.modulesReached.contains(imported) || isRecursiveImports(module, imported)) {
-						res = true;
-						break;
-					}
+		for (org.eclipse.acceleo.model.mtl.Module imported : importedModule.getImports()) {
+			boolean alreadyContained = false;
+			for (org.eclipse.acceleo.model.mtl.Module moduleReached : this.modulesReached) {
+				if (moduleReached == imported
+						|| (EcoreUtil.getURI(moduleReached) != null && (EcoreUtil.getURI(moduleReached)
+								.equals(EcoreUtil.getURI(imported))))) {
+					alreadyContained = true;
+					break;
 				}
 			}
+
+			if (!alreadyContained) {
+				isRecursiveImports(module, imported);
+			} else {
+				return true;
+			}
 		}
-		return res;
+		this.modulesReached.removeAll(importedModule.getImports());
+		this.modulesReached.remove(importedModule);
+		return false;
 	}
 
 	/**
