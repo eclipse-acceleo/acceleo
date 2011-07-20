@@ -21,7 +21,7 @@
 				<bc:propertyRef key="buckminster.component" />
 			</uri>
 		</provider>
-		<provider componentTypes="osgi.bundle" readerType="git" mutable="false">
+		<provider componentTypes="osgi.bundle" readerType="git"  mutable="false">
 			<uri format="{0},doc/{1}">
 				<bc:propertyRef key="workspace.root" />
 				<bc:propertyRef key="buckminster.component" />
