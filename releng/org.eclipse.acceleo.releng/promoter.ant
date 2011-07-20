@@ -18,7 +18,7 @@
 			<entry key="eclipse.home" value="${eclipse.home}" />
 			<entry key="build.id" value="${build.id}" />
 			<entry key="hudson.build.id" value="${hudson.build.id}" />
-			<entry key="build.root" value="/shared/jobs/m2t-acceleo-3.1/lastSuccessful" />
+			<entry key="build.root" value="/shared/jobs/m2t-acceleo-master/lastSuccessful" />
 			<entry key="packages.base" value="Acceleo.downloads" />
 			<entry key="downloads.area" value="/home/data/httpd/download.eclipse.org/modeling/m2t/acceleo" />
 		</propertyfile>
@@ -160,7 +160,7 @@
 		<fail message="saved.downloads.area property must be defined" unless="saved.downloads.area" />
 
 		<!-- defaults -->
-		<property name="version" value="3.1.0" />
+		<property name="version" value="3.2.0" />
 
 		<property name="packages.directory" location="${saved.build.root}/archive/${saved.packages.base}" />
 
