@@ -673,8 +673,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		if (argumentType == NULL_ARGUMENT) {
 			isApplicable = true;
 		} else if (expectedType instanceof EClass && argumentType instanceof EClass) {
-			isApplicable = expectedType == argumentType
-					|| isSubTypeOf((EClass)expectedType, (EClass)argumentType);
+			isApplicable = expectedType == argumentType || isSubTypeOf(expectedType, argumentType);
 		} else if (expectedType instanceof Class<?> && argumentType instanceof Class<?>) {
 			isApplicable = ((Class<?>)expectedType).isAssignableFrom((Class<?>)argumentType);
 		} else if (expectedType instanceof EDataType && argumentType instanceof Class<?>) {
@@ -698,13 +697,21 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return <code>true</code> if <code>eClass</code> is a sub-type of <code>superType</code>,
 	 *         <code>false</code> otherwise.
 	 */
-	private boolean isSubTypeOf(EClass superType, EClass eClass) {
-		for (final EClass candidate : eClass.getEAllSuperTypes()) {
-			if (candidate == superType) {
-				return true;
+	private boolean isSubTypeOf(Object superType, Object eClass) {
+		// if both types are EClass(es) then do the usual stuff
+		boolean result = false;
+		if (superType instanceof EClass && eClass instanceof EClass) {
+			for (final EClass candidate : ((EClass)eClass).getEAllSuperTypes()) {
+				if (candidate == superType) {
+					result = true;
+					break;
+				}
 			}
+		} else if (superType instanceof AnyType) {
+			result = true;
 		}
-		return false;
+
+		return result;
 	}
 
 	/**
@@ -911,7 +918,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				continue;
 			}
 			if (actualArgumentType instanceof EObject) {
-				if (isSubTypeOf((EClass)template1Type, (EClass)template2Type)) {
+				if (isSubTypeOf(template1Type, template2Type)) {
 					template2SpecificArgumentCount++;
 				} else {
 					template1SpecificArgumentCount++;
