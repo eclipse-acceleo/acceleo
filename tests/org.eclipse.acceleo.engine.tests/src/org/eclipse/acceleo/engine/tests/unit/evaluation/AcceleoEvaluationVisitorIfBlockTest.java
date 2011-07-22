@@ -136,8 +136,9 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 				.getEClass()));
 
 		final IfBlock elseIf = MtlFactory.eINSTANCE.createIfBlock();
-		elseIf.setIfExpr(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
-				.getEClass()));
+		elseIf.setIfExpr(createOCLExpression(
+				"not eSuperTypes->first().oclIsUndefined()", EcorePackage.eINSTANCE //$NON-NLS-1$
+						.getEClass()));
 		elseIf.getBody().add(createOCLExpression('\'' + ELSEIF + '\''));
 		ifBlock.getElseIf().add(elseIf);
 
