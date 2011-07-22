@@ -189,7 +189,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		elseLetVar.setName(ELSE_LET_VAR_NAME);
 		elseLetVar.setType(EcorePackage.eINSTANCE.getEObject());
 		elseLetVar.setInitExpression(createOCLExpression(
-				"eSuperTypes->select(oclIsKindOf(EReference))->first()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
+				"eSuperTypes->select(oclIsKindOf(EClass))->first()", EcorePackage.eINSTANCE.getEClass())); //$NON-NLS-1$
 		elseLet.setLetVariable(elseLetVar);
 		letBlock.getElseLet().add(elseLet);
 
@@ -198,7 +198,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 		Map.Entry<String, String> entry = getPreview().entrySet().iterator().next();
 		assertEquals("Unexpected file URL.", //$NON-NLS-1$
 				generationRoot.getAbsolutePath() + File.separatorChar + FILE_NAME, entry.getKey());
-		assertEquals("Unexpected content generated from the let block.", OUTPUT + ELSE + OUTPUT, entry //$NON-NLS-1$
+		assertEquals("Unexpected content generated from the let block.", OUTPUT + ELSELET + OUTPUT, entry //$NON-NLS-1$
 				.getValue().toString());
 	}
 
