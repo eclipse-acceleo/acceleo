@@ -37,6 +37,31 @@ import org.eclipse.acceleo.parser.tests.cst.CSTParserTemplateTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserTests;
 import org.eclipse.acceleo.parser.tests.cst.utils.FileContentTests;
 import org.eclipse.acceleo.parser.tests.cst.utils.SequenceTests;
+import org.eclipse.acceleo.parser.tests.unit.BlockTest;
+import org.eclipse.acceleo.parser.tests.unit.CommentTest;
+import org.eclipse.acceleo.parser.tests.unit.CstAdapterFactoryTest;
+import org.eclipse.acceleo.parser.tests.unit.CstFactoryTest;
+import org.eclipse.acceleo.parser.tests.unit.CstSwitchTest;
+import org.eclipse.acceleo.parser.tests.unit.FileBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.ForBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.IfBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.InitSectionTest;
+import org.eclipse.acceleo.parser.tests.unit.LetBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.MacroTest;
+import org.eclipse.acceleo.parser.tests.unit.ModelExpressionTest;
+import org.eclipse.acceleo.parser.tests.unit.ModuleExtendsValueTest;
+import org.eclipse.acceleo.parser.tests.unit.ModuleImportsValueTest;
+import org.eclipse.acceleo.parser.tests.unit.ModuleTest;
+import org.eclipse.acceleo.parser.tests.unit.OpenModeKindTest;
+import org.eclipse.acceleo.parser.tests.unit.ProtectedAreaBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.QueryTest;
+import org.eclipse.acceleo.parser.tests.unit.TemplateOverridesValueTest;
+import org.eclipse.acceleo.parser.tests.unit.TemplateTest;
+import org.eclipse.acceleo.parser.tests.unit.TextExpressionTest;
+import org.eclipse.acceleo.parser.tests.unit.TraceBlockTest;
+import org.eclipse.acceleo.parser.tests.unit.TypedModelTest;
+import org.eclipse.acceleo.parser.tests.unit.VariableTest;
+import org.eclipse.acceleo.parser.tests.unit.VisibilityKindTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -54,7 +79,13 @@ import org.junit.runners.Suite.SuiteClasses;
 		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class,
 		ASTScopeForTests.class, ASTScopeLetTests.class, ASTScopeQueryTests.class,
 		ASTScopeTemplateTests.class, ASTContextForTests.class, ASTContextLetTests.class,
-		AcceleoTypeResolverTests.class })
+		AcceleoTypeResolverTests.class, ModuleTest.class, ModuleExtendsValueTest.class,
+		ModuleImportsValueTest.class, TypedModelTest.class, CommentTest.class, TemplateTest.class,
+		TemplateOverridesValueTest.class, VariableTest.class, ModelExpressionTest.class,
+		TextExpressionTest.class, BlockTest.class, InitSectionTest.class, ProtectedAreaBlockTest.class,
+		ForBlockTest.class, IfBlockTest.class, LetBlockTest.class, FileBlockTest.class, TraceBlockTest.class,
+		MacroTest.class, QueryTest.class, VisibilityKindTest.class, OpenModeKindTest.class,
+		CstAdapterFactoryTest.class, CstFactoryTest.class, CstSwitchTest.class, })
 public class AllTests {
 
 	/**
