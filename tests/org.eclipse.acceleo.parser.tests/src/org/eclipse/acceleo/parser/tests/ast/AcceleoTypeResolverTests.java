@@ -194,9 +194,9 @@ public class AcceleoTypeResolverTests {
 		EAttribute attribute1 = EcoreFactory.eINSTANCE.createEAttribute();
 		EAttribute attribute2 = EcoreFactory.eINSTANCE.createEAttribute();
 
-		eClassifier.getEAttributes().add(attribute0);
-		eClassifier.getEAttributes().add(attribute1);
-		type.getEAttributes().add(attribute2);
+		eClassifier.getEStructuralFeatures().add(attribute0);
+		eClassifier.getEStructuralFeatures().add(attribute1);
+		type.getEStructuralFeatures().add(attribute2);
 
 		AcceleoTypeResolver.classifierEqual(eClassifier, type);
 	}
@@ -219,10 +219,10 @@ public class AcceleoTypeResolverTests {
 		EAttribute attribute2 = EcoreFactory.eINSTANCE.createEAttribute();
 		EAttribute attribute3 = EcoreFactory.eINSTANCE.createEAttribute();
 
-		eClassifier.getEAttributes().add(attribute0);
-		eClassifier.getEAttributes().add(attribute1);
-		type.getEAttributes().add(attribute2);
-		type.getEAttributes().add(attribute3);
+		eClassifier.getEStructuralFeatures().add(attribute0);
+		eClassifier.getEStructuralFeatures().add(attribute1);
+		type.getEStructuralFeatures().add(attribute2);
+		type.getEStructuralFeatures().add(attribute3);
 
 		AcceleoTypeResolver.classifierEqual(eClassifier, type);
 	}
@@ -257,10 +257,10 @@ public class AcceleoTypeResolverTests {
 		attribute3.setLowerBound(1);
 		attribute3.setUpperBound(0);
 
-		eClassifier.getEAttributes().add(attribute0);
-		eClassifier.getEAttributes().add(attribute1);
-		type.getEAttributes().add(attribute2);
-		type.getEAttributes().add(attribute3);
+		eClassifier.getEStructuralFeatures().add(attribute0);
+		eClassifier.getEStructuralFeatures().add(attribute1);
+		type.getEStructuralFeatures().add(attribute2);
+		type.getEStructuralFeatures().add(attribute3);
 
 		AcceleoTypeResolver.classifierEqual(eClassifier, type);
 	}
