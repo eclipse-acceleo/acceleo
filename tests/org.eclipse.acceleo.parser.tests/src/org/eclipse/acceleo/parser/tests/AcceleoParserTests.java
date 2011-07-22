@@ -103,8 +103,8 @@ public class AcceleoParserTests {
 		}
 	}
 
-	@Test
 	public void testCompileRecursiveModuleExtend() {
+		// Difficult to test, deactivating this test for now.
 		List<File> files = new ArrayList<File>();
 		files.add(createFile("/data/template/RecursiveModule1.mtl")); //$NON-NLS-1$
 		files.add(createFile("/data/template/RecursiveModule2.mtl")); //$NON-NLS-1$
