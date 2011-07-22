@@ -1351,12 +1351,25 @@ public class CompactHashSetTest extends TestCase {
 	 */
 	protected List<Integer> randomIntegerList(int size) {
 		List<Integer> list = new ArrayList<Integer>(size);
-		for (int i = 0; i < size; i++) {
-			Integer integer = getRandomInteger();
-			while (list.contains(integer)) {
-				integer = getRandomInteger();
-			}
-			list.add(integer);
+		// for (int i = 0; i < size; i++) {
+		// Integer integer = getRandomInteger();
+		// while (list.contains(integer)) {
+		// integer = getRandomInteger();
+		// }
+		// list.add(integer);
+		// }
+
+		if (size >= 10) {
+			list.add(104);
+			list.add(108);
+			list.add(115);
+			list.add(116);
+			list.add(123);
+			list.add(142);
+			list.add(22517);
+			list.add(90210);
+			list.add(123456798);
+			list.add(259);
 		}
 		return list;
 	}
@@ -1370,12 +1383,57 @@ public class CompactHashSetTest extends TestCase {
 	 */
 	protected Deque<String> randomStringDeque(int size) {
 		Deque<String> deque = new CircularArrayDeque<String>(size);
-		for (int i = 0; i < size; i++) {
-			String s = getRandomString();
-			while (deque.contains(s)) {
-				s = getRandomString();
-			}
-			deque.add(s);
+		// for (int i = 0; i < size; i++) {
+		// String s = getRandomString();
+		// while (deque.contains(s)) {
+		// s = getRandomString();
+		// }
+		// deque.add(s);
+		// }
+
+		if (size >= 10) {
+			deque.add("102"); //$NON-NLS-1$
+			deque.add("87464"); //$NON-NLS-1$
+			deque.add("137"); //$NON-NLS-1$
+			deque.add("476431"); //$NON-NLS-1$
+			deque.add("56546"); //$NON-NLS-1$
+			deque.add("546"); //$NON-NLS-1$
+			deque.add("105"); //$NON-NLS-1$
+			deque.add("78854"); //$NON-NLS-1$
+			deque.add("489746"); //$NON-NLS-1$
+			deque.add("374"); //$NON-NLS-1$
+		}
+		if (size >= 40) {
+			deque.add("11211"); //$NON-NLS-1$
+			deque.add("11212"); //$NON-NLS-1$
+			deque.add("11213"); //$NON-NLS-1$
+			deque.add("11214"); //$NON-NLS-1$
+			deque.add("11215"); //$NON-NLS-1$
+			deque.add("11216"); //$NON-NLS-1$
+			deque.add("94121"); //$NON-NLS-1$
+			deque.add("94122"); //$NON-NLS-1$
+			deque.add("94123"); //$NON-NLS-1$
+			deque.add("94124"); //$NON-NLS-1$
+			deque.add("94125"); //$NON-NLS-1$
+			deque.add("94126"); //$NON-NLS-1$
+			deque.add("94127"); //$NON-NLS-1$
+			deque.add("94128"); //$NON-NLS-1$
+			deque.add("94129"); //$NON-NLS-1$
+			deque.add("94120"); //$NON-NLS-1$
+			deque.add("23123"); //$NON-NLS-1$
+			deque.add("23121"); //$NON-NLS-1$
+			deque.add("23122"); //$NON-NLS-1$
+			deque.add("23124"); //$NON-NLS-1$
+			deque.add("23125"); //$NON-NLS-1$
+			deque.add("23126"); //$NON-NLS-1$
+			deque.add("23127"); //$NON-NLS-1$
+			deque.add("23128"); //$NON-NLS-1$
+			deque.add("23129"); //$NON-NLS-1$
+			deque.add("99990"); //$NON-NLS-1$
+			deque.add("99991"); //$NON-NLS-1$
+			deque.add("99992"); //$NON-NLS-1$
+			deque.add("99994"); //$NON-NLS-1$
+			deque.add("99995"); //$NON-NLS-1$
 		}
 		return deque;
 	}
@@ -1389,12 +1447,37 @@ public class CompactHashSetTest extends TestCase {
 	 */
 	protected Set<String> randomStringSet(int size) {
 		Set<String> set = new HashSet<String>(size);
-		for (int i = 0; i < size; i++) {
-			String s = getRandomString();
-			while (set.contains(s)) {
-				s = getRandomString();
-			}
-			set.add(s);
+		// for (int i = 0; i < size; i++) {
+		// String s = getRandomString();
+		// while (set.contains(s)) {
+		// s = getRandomString();
+		// }
+		// set.add(s);
+		// }
+
+		if (size >= 10) {
+			set.add("8743"); //$NON-NLS-1$
+			set.add("548746"); //$NON-NLS-1$
+			set.add("19513"); //$NON-NLS-1$
+			set.add("19463"); //$NON-NLS-1$
+			set.add("76413"); //$NON-NLS-1$
+			set.add("564"); //$NON-NLS-1$
+			set.add("197"); //$NON-NLS-1$
+			set.add("6541"); //$NON-NLS-1$
+			set.add("794"); //$NON-NLS-1$
+			set.add("123484"); //$NON-NLS-1$
+		}
+		if (size >= 20) {
+			set.add("77770"); //$NON-NLS-1$
+			set.add("77771"); //$NON-NLS-1$
+			set.add("77772"); //$NON-NLS-1$
+			set.add("77773"); //$NON-NLS-1$
+			set.add("77774"); //$NON-NLS-1$
+			set.add("77775"); //$NON-NLS-1$
+			set.add("77776"); //$NON-NLS-1$
+			set.add("77777"); //$NON-NLS-1$
+			set.add("77778"); //$NON-NLS-1$
+			set.add("77779"); //$NON-NLS-1$
 		}
 		return set;
 	}
