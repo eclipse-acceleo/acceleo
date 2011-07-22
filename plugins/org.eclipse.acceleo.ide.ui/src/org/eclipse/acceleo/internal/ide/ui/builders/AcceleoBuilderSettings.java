@@ -91,18 +91,18 @@ public class AcceleoBuilderSettings {
 					compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				}
 				arg = command.getArguments().get(BUILD_RESOURCE_KIND);
-				if (BUILD_XMI_RESOURCE.equals(arg)) {
-					resourceKind = BUILD_XMI_RESOURCE;
-				} else {
+				if (BUILD_BINARY_RESOURCE.equals(arg)) {
 					resourceKind = BUILD_BINARY_RESOURCE;
+				} else {
+					resourceKind = BUILD_XMI_RESOURCE;
 				}
 			} else {
 				compliance = BUILD_PRAGMATIC_COMPLIANCE;
-				resourceKind = BUILD_BINARY_RESOURCE;
+				resourceKind = BUILD_XMI_RESOURCE;
 			}
 		} catch (CoreException e) {
 			compliance = BUILD_PRAGMATIC_COMPLIANCE;
-			resourceKind = BUILD_BINARY_RESOURCE;
+			resourceKind = BUILD_XMI_RESOURCE;
 		}
 	}
 
