@@ -197,7 +197,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 		boolean fileFound = false;
 		for (Map.Entry<String, String> filePreview : generatedPreview.entrySet()) {
 			if (filePreview.getKey().endsWith(fileName)) {
-				assertEquals(OUTPUT, filePreview.getValue().toString());
+				assertEquals(OUTPUT.trim(), filePreview.getValue().toString().trim());
 				fileFound = true;
 			}
 		}
