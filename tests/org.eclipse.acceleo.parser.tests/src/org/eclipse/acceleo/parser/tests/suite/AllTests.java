@@ -29,6 +29,7 @@ import org.eclipse.acceleo.parser.tests.ast.ASTScopeForTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTScopeLetTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTScopeQueryTests;
 import org.eclipse.acceleo.parser.tests.ast.ASTScopeTemplateTests;
+import org.eclipse.acceleo.parser.tests.ast.AcceleoTypeResolverTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserBlockTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserModuleTests;
 import org.eclipse.acceleo.parser.tests.cst.CSTParserQueryTests;
@@ -52,7 +53,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		ASTParserQueryTests.class, ASTParserTemplateTests.class, ASTParserMacroTests.class,
 		ASTModelExpressionsTests.class, ASTDocumentationTests.class, AcceleoParserMessagesTests.class,
 		ASTScopeForTests.class, ASTScopeLetTests.class, ASTScopeQueryTests.class,
-		ASTScopeTemplateTests.class, ASTContextForTests.class, ASTContextLetTests.class, })
+		ASTScopeTemplateTests.class, ASTContextForTests.class, ASTContextLetTests.class,
+		AcceleoTypeResolverTests.class })
 public class AllTests {
 
 	/**
