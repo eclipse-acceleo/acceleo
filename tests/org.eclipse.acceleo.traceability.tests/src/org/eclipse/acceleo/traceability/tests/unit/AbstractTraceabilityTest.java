@@ -198,8 +198,10 @@ public abstract class AbstractTraceabilityTest {
 			String modelPath, boolean listenGenerationEnd) {
 
 		// Parse the file
-		Resource modelResource = parse(modulePath);
-		EObject rootTemplate = modelResource.getContents().get(0);
+		Resource moduleResource = parse(modulePath);
+		EObject rootTemplate = moduleResource.getContents().get(0);
+		ResourceSet moduleResourceSet = new ResourceSetImpl();
+		moduleResourceSet.getResources().add(moduleResource);
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
