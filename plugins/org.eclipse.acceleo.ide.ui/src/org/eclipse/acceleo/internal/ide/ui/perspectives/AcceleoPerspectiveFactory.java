@@ -79,6 +79,7 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
 
 		// actions - creation wizard
+		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoModuleWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newfile.AcceleoNewTemplatesWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newfile.main.AcceleoNewMainTemplateWizard"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard"); //$NON-NLS-1$
