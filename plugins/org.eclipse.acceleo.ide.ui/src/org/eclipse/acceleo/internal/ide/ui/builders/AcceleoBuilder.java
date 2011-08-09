@@ -178,8 +178,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 			AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
 
-			if (FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
-					buildAcceleo.getName()) == -1) {
+			if (buildProperties.exists()
+					&& FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
+							buildAcceleo.getName()) == -1) {
 				AcceleoUIActivator.getDefault().getLog().log(
 						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages.getString(
 								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
