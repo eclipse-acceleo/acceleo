@@ -183,7 +183,7 @@ public class OCLParser {
 			EStructuralFeature eContainingFeature = newVariable.eContainingFeature();
 			saveVariableContainer.put(newVariable, eContainer);
 			saveVariableContainingFeature.put(newVariable, eContainingFeature);
-			environment.addElement(newVariable.getName(), newVariable, true);
+			helper.getOCL().getEnvironment().addElement(newVariable.getName(), newVariable, true);
 		}
 	}
 
