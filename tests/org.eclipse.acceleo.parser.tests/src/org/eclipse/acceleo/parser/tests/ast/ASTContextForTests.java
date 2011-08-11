@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -23,8 +25,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 public class ASTContextForTests extends AbstractASTParserTests {
 
@@ -83,6 +83,23 @@ public class ASTContextForTests extends AbstractASTParserTests {
 	}
 
 	@Test
+	public void testParserContextForValid3() {
+		File file = this.getFileFromPath("/data/ast/context/forContextValid3.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/context/for/files"), project, //$NON-NLS-1$
+				"forContextValid3.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 0);
+			checkASTDocumentationResolution(0, 0, 0);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
 	public void testParserContextForInvalid() {
 		File file = this.getFileFromPath("/data/ast/context/forContextInvalid.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
@@ -106,6 +123,23 @@ public class ASTContextForTests extends AbstractASTParserTests {
 		IFile moduleFile = createFile(buffer,
 				new Path("/org/eclipse/acceleo/parser/tests/context/for/files"), project, //$NON-NLS-1$
 				"forContextInvalid2.mtl"); //$NON-NLS-1$
+		if (moduleFile.exists() && buffer.length() > 0) {
+			checkCSTParsing(moduleFile, 0, 0, 0);
+			checkCST2ASTConvertion(0, 0, 0);
+			checkASTResolution(0, 0, 1);
+			checkASTDocumentationResolution(0, 0, 1);
+		} else {
+			fail();
+		}
+	}
+
+	@Test
+	public void testParserContextForInvalid3() {
+		File file = this.getFileFromPath("/data/ast/context/forContextInvalid3.mtl"); //$NON-NLS-1$
+		StringBuffer buffer = FileContent.getFileContent(file);
+		IFile moduleFile = createFile(buffer,
+				new Path("/org/eclipse/acceleo/parser/tests/context/for/files"), project, //$NON-NLS-1$
+				"forContextInvalid3.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);

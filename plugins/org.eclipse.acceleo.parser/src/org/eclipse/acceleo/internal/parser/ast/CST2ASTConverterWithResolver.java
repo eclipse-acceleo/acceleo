@@ -17,9 +17,11 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
+import org.eclipse.acceleo.model.mtl.ForBlock;
 import org.eclipse.acceleo.model.mtl.MacroInvocation;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
@@ -1259,6 +1261,11 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				iterationCount = org.eclipse.ocl.ecore.EcoreFactory.eINSTANCE.createVariable();
 				iterationCount.setName("i"); //$NON-NLS-1$
 				iterationCount.setType(factory.getOCL().getIntegerType());
+
+				// Necessary container for the "i" variable
+				ForBlock iterationCountForBlock = MtlFactory.eINSTANCE.createForBlock();
+				iterationCountForBlock.setLoopVariable(iterationCount);
+
 				factory.getOCL().addVariableToScope(iterationCount);
 			}
 
