@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -874,9 +876,20 @@ public final class AcceleoWorkspaceUtil {
 	private void installBundle(IPluginModelBase model) {
 		try {
 			final IResource candidateManifest = model.getUnderlyingResource();
+			final IProject project = candidateManifest.getProject();
+
+			URL url = null;
+			try {
+				url = candidateManifest.getProject().getLocationURI().toURL();
+			} catch (MalformedURLException e) {
+				URI uri = new URI("file", "/" //$NON-NLS-1$//$NON-NLS-2$
+						+ ResourcesPlugin.getWorkspace().getRoot().getLocation().append(
+								project.getFullPath().toString()), null);
+				url = uri.toURL();
+			}
+
 			final String candidateLocationReference = REFERENCE_URI_PREFIX
-					+ URLDecoder.decode(candidateManifest.getProject().getLocationURI().toURL()
-							.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
+					+ URLDecoder.decode(url.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
 			Bundle bundle = getBundle(candidateLocationReference);
 
@@ -888,7 +901,6 @@ public final class AcceleoWorkspaceUtil {
 			if (bundle == null) {
 				checkRequireBundleDependencies(model);
 				bundle = installBundle(candidateLocationReference);
-				final IProject project = model.getUnderlyingResource().getProject();
 				setBundleClasspath(project, bundle);
 				workspaceInstalledBundles.put(model, bundle);
 				checkImportPackagesDependencies(model);
@@ -898,6 +910,8 @@ public final class AcceleoWorkspaceUtil {
 			AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
 					AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", model //$NON-NLS-1$
 							.getBundleDescription().getName()), e));
+		} catch (URISyntaxException e) {
+			AcceleoCommonPlugin.log(e, false);
 		} catch (MalformedURLException e) {
 			AcceleoCommonPlugin.log(e, false);
 		} catch (UnsupportedEncodingException e) {
