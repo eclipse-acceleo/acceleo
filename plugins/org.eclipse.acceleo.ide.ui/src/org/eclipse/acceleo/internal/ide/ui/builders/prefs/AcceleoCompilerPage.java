@@ -18,15 +18,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The preference page to configure the Acceleo compiler. We can define for instance the standard compliance
@@ -170,7 +175,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	 *            The parent composite.
 	 */
 	private void createResourceKindGroup(Composite parent) {
-		Group group = new Group(parent, SWT.BORDER);
+		Group group = new Group(parent, SWT.NONE);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gridData);
 		group.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.ResourceKind")); //$NON-NLS-1$
@@ -202,6 +207,17 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		} else {
 			xmiResourceButton.setSelection(false);
 			binaryResourceButton.setSelection(true);
+		}
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+
+		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.ResourceSerialization"); //$NON-NLS-1$
+		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
+			item.setToolTipText(helpMessage);
 		}
 	}
 }
