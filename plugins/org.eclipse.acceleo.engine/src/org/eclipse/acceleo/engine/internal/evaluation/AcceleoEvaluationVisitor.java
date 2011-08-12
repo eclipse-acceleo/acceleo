@@ -1204,6 +1204,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
 		}
 
+		if (sourceBlock instanceof ProtectedAreaBlock) {
+			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
+		}
+
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			getAcceleoVisitor().append(actualString, sourceBlock, source, fireEvent);
 		} else {
