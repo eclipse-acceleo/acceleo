@@ -138,7 +138,8 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 					Annotation annotation = (Annotation)it.next();
 					Position position = annotationModel.getPosition(annotation);
 					try {
-						if (document != null && document.getLineOfOffset(position.offset) == lineNumber) {
+						if (document != null && position != null
+								&& document.getLineOfOffset(position.offset) == lineNumber) {
 							annotations.add(annotation);
 						}
 					} catch (BadLocationException e) {
