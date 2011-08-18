@@ -470,4 +470,51 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		generate("test_protected_area_template_file_template_for_let_block_merge"); //$NON-NLS-1$
 	}
 
+	public void testProtectedAreaTemplateFileTemplateIfForBlock() throws IOException {
+		generate("test_protected_area_template_file_template_if_for_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateIfForBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_if_for_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateIfLetBlock() throws IOException {
+		generate("test_protected_area_template_file_template_if_let_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateIfLetBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_if_let_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateIfIfBlock() throws IOException {
+		generate("test_protected_area_template_file_template_if_if_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateIfIfBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_if_if_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetForBlock() throws IOException {
+		generate("test_protected_area_template_file_template_let_for_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetForBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_let_for_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetLetBlock() throws IOException {
+		generate("test_protected_area_template_file_template_let_let_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetLetBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_let_let_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetIfBlock() throws IOException {
+		generate("test_protected_area_template_file_template_let_if_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateFileTemplateLetIfBlockMerge() throws IOException {
+		generate("test_protected_area_template_file_template_let_if_block_merge"); //$NON-NLS-1$
+	}
 }
