@@ -30,8 +30,8 @@ Book : [b.title/]
 [trace]
 [/trace]
 
-[let s1:String ]
-[elselet s2:String ]
+[let s1:String = '']
+[elselet s2:String = '']
 [else]
 [/let]
 

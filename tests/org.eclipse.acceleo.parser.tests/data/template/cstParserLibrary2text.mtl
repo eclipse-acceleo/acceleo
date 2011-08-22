@@ -31,7 +31,7 @@ Book : [b.title/]
 [trace]
 [/trace]
 
-[let w:Writer]
+[let w:Writer = null]
 [/let]
 
 [protected ('identifier')]
