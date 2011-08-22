@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -38,6 +40,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +53,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
+import org.osgi.framework.Bundle;
 
 /**
  * The Acceleo project wizard.
@@ -281,7 +286,6 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 		if (!(currentPage instanceof WizardNewProjectCreationPage)) {
 			for (AcceleoModule acceleoModule : allModules) {
 				String parentFolder = acceleoModule.getParentFolder();
-
 				IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 						acceleoModule.getProjectName());
 				if (moduleProject.exists() && moduleProject.isAccessible()
@@ -293,20 +297,25 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 							folder.getProjectRelativePath().removeFirstSegments(1).toString().replaceAll("/", //$NON-NLS-1$
 									"\\.")); //$NON-NLS-1$
 				}
+				// Calculate project dependencies
+				List<String> metamodelURIs = acceleoModule.getMetamodelURIs();
+				for (String metamodelURI : metamodelURIs) {
+					// Find the project containing this metamodel and add a dependency to it.
+					EPackage ePackage = AcceleoPackageRegistry.INSTANCE.getEPackage(metamodelURI);
+					if (ePackage != null && !(ePackage instanceof EcorePackage)) {
+						Bundle bundle = AcceleoWorkspaceUtil.getBundle(ePackage.getClass());
+						acceleoProject.getPluginDependencies().add(bundle.getSymbolicName());
+					}
+				}
 			}
 		}
-		// Prepare Ant folder
-		IFolder antTasksFolder = project.getFolder("tasks"); //$NON-NLS-1$
-		if (!antTasksFolder.exists()) {
-			try {
-				antTasksFolder.create(true, false, monitor);
-			} catch (CoreException e) {
-				AcceleoUIActivator.log(e, true);
-			}
-		}
-
 		// Generate files
 		try {
+			// Prepare Ant folder
+			IFolder antTasksFolder = project.getFolder("tasks"); //$NON-NLS-1$
+			if (!antTasksFolder.exists()) {
+				antTasksFolder.create(true, false, monitor);
+			}
 			IProjectDescription description = project.getDescription();
 			String[] natureIds = new String[] {IAcceleoConstants.ACCELEO_NATURE_ID,
 					IAcceleoConstants.PLUGIN_NATURE_ID, IAcceleoConstants.JAVA_NATURE_ID, };
@@ -333,14 +342,12 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 		for (AcceleoModule acceleoModule : allModules) {
 			monitor.worked(10);
 			String parentFolder = acceleoModule.getParentFolder();
-
 			IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 					acceleoModule.getProjectName());
 			if (moduleProject.exists() && moduleProject.isAccessible()) {
 				IPath parentFolderPath = new Path(parentFolder);
 				IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
 				AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
-
 				if (acceleoModule.isIsInitialized()) {
 					String initializationKind = acceleoModule.getInitializationKind();
 					IAcceleoInitializationStrategy strategy = null;
@@ -353,17 +360,14 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 							break;
 						}
 					}
-
 					IFile file = folder.getFile(acceleoModule.getName()
 							+ "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
 					IFile exampleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 							new Path(acceleoModule.getInitializationPath()));
-
 					String moduleElementKind = IAcceleoInitializationStrategy.TEMPLATE_KIND;
 					if (acceleoModule.getModuleElement().getKind().equals(ModuleElementKind.QUERY)) {
 						moduleElementKind = IAcceleoInitializationStrategy.QUERY_KIND;
 					}
-
 					if (strategy != null && file.exists()) {
 						try {
 							strategy.configure(moduleElementKind, acceleoModule.getModuleElement()
@@ -383,9 +387,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 					}
 				}
 			}
-
 		}
-
 	}
 
 	/**
