@@ -99,7 +99,7 @@ public final class DocumentationUtils {
 		while (index != -1 && index != body.length()) {
 			index = body.indexOf(keyword, index + 1);
 			if (index != -1) {
-				int eol = body.indexOf('\n', index);
+				int eol = body.indexOf(System.getProperty("line.separator"), index); //$NON-NLS-1$
 				String message = ""; //$NON-NLS-1$
 				int end = 0;
 
