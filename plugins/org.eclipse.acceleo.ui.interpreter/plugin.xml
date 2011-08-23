@@ -13,19 +13,22 @@ Contributors:
 -->
 
 <plugin>
+   <extension-point id="org.eclipse.acceleo.ui.language.interpreter" name="%languageInterpreterExtensionPointName" schema="schema/language.interpreter.exsd"/>
+   
    <extension
          point="org.eclipse.ui.views">
       <view
       		category="org.eclipse.acceleo.ide.ui"
-            class="org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterView"
-            id="org.eclipse.acceleo.ui.interpreter.acceleointerpreterview"
-            name="Acceleo Interpreter"
+            class="org.eclipse.acceleo.ui.interpreter.view.InterpreterView"
+            id="org.eclipse.acceleo.ui.interpreter.view"
+            name="%interpreterViewName"
             restorable="true">
          <description>
             %acceleoInterpreterViewDescription
          </description>
       </view>
    </extension>
+   
    <extension
          point="org.eclipse.ui.commands">
       <command
@@ -33,6 +36,7 @@ Contributors:
             name="%AcceleoInterpreter.action.evaluate.label">
       </command>
    </extension>
+   
    <extension
          point="org.eclipse.ui.bindings">
       <key
@@ -42,6 +46,7 @@ Contributors:
             sequence="M1+M2+D">
       </key>
    </extension>
+   
    <extension
          point="org.eclipse.ui.contexts">
       <context
@@ -50,12 +55,21 @@ Contributors:
             parentId="org.eclipse.ui.contexts.dialogAndWindow">
       </context>
    </extension>
+   
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="org.eclipse.acceleo.ui.interpreter.internal.action.AcceleoActionHandler"
             commandId="org.eclipse.acceleo.ui.interpreter.evaluateaction">
       </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.acceleo.ui.language.interpreter">
+      <languageInterpreter
+            class="org.eclipse.acceleo.ui.interpreter.internal.language.acceleo.AcceleoInterpreter"
+            label="Acceleo">
+      </languageInterpreter>
    </extension>
 
 </plugin>

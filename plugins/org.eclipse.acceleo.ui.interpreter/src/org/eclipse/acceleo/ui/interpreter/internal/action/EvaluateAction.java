@@ -19,7 +19,7 @@ import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory
 import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterView;
+import org.eclipse.acceleo.ui.interpreter.internal.view.OldAcceleoInterpreterView;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -45,7 +45,7 @@ import org.eclipse.ocl.ecore.SendSignalAction;
  */
 public class EvaluateAction extends Action {
 	/** References the interpreter from which the action was triggered. */
-	private AcceleoInterpreterView interpreterView;
+	private OldAcceleoInterpreterView interpreterView;
 
 	/**
 	 * Initializes the evaluation action given the interpreter from which it was triggered.
@@ -53,7 +53,7 @@ public class EvaluateAction extends Action {
 	 * @param view
 	 *            The interpreter view from which this evaluation was triggered.
 	 */
-	public void initialize(AcceleoInterpreterView view) {
+	public void initialize(OldAcceleoInterpreterView view) {
 		interpreterView = view;
 	}
 

@@ -68,7 +68,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public final class AcceleoInterpreterView extends ViewPart {
+public final class OldAcceleoInterpreterView extends ViewPart {
 	/**
 	 * Keeps a reference towards the text area in which we'll display the expression that will have to be
 	 * evaluated.

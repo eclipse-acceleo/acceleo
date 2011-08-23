@@ -1,0 +1,100 @@
+/*******************************************************************************
+ * Copyright (c) 2011 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+
+/**
+ * This action can be used in order to delete a variable from the evaluation context.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
+public class DeleteVariableAction extends Action {
+	/** Keeps a reference to the variable viewer. */
+	private final TreeViewer variableViewer;
+
+	/**
+	 * Instantiates the "delete variable" action given the variable viewer.
+	 * 
+	 * @param viewer
+	 *            The variable viewer.
+	 */
+	public DeleteVariableAction(TreeViewer viewer) {
+		super("Delete variable");
+		this.variableViewer = viewer;
+	}
+
+	/**
+	 * Returns the Tree this action will affect.
+	 * 
+	 * @return The Tree this action will affect.
+	 */
+	public Tree getTree() {
+		if (variableViewer == null) {
+			return null;
+		}
+		return variableViewer.getTree();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.action.Action#isEnabled()
+	 */
+	@Override
+	public boolean isEnabled() {
+		return !getCurrentVariables().isEmpty();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.action.Action#run()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void run() {
+		List<Variable> variables = getCurrentVariables();
+		Object input = variableViewer.getInput();
+		if (input instanceof List<?>) {
+			((List<Variable>)variableViewer.getInput()).removeAll(variables);
+			variableViewer.refresh();
+		}
+	}
+
+	/**
+	 * Returns the currently selected Variable(s).
+	 * 
+	 * @return The currently selected Variable(s).
+	 */
+	protected List<Variable> getCurrentVariables() {
+		List<Variable> result = new ArrayList<Variable>();
+		if (getTree() != null && !getTree().isDisposed()) {
+			TreeItem[] selectedtems = getTree().getSelection();
+			if (selectedtems != null && selectedtems.length > 0) {
+				for (int i = 0; i < selectedtems.length; i++) {
+					TreeItem item = selectedtems[i];
+					if (item.getData() instanceof Variable) {
+						result.add((Variable)item.getData());
+					}
+				}
+			}
+		}
+		return result;
+	}
+}

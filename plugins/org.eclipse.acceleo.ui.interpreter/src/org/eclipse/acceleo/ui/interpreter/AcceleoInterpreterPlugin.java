@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter;
 
+import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
+import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistryListener;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,6 +28,9 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 
 	/** This plug-in's shared instance. */
 	private static AcceleoInterpreterPlugin plugin;
+
+	/** The registry listener that will be used to listen to language interpreter changes. */
+	private final LanguageInterpreterRegistryListener interpreterListener = new LanguageInterpreterRegistryListener();
 
 	/**
 	 * Default constructor for the plugin.
@@ -41,6 +48,12 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		plugin = this;
 		super.start(context);
+
+		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		registry.addListener(interpreterListener,
+				LanguageInterpreterRegistryListener.LANGUAGE_INTERPRETER_EXTENSION_POINT_ID);
+
+		interpreterListener.parseInitialContributions();
 	}
 
 	/**
@@ -52,6 +65,11 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+
+		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		registry.removeListener(interpreterListener);
+
+		LanguageInterpreterRegistry.clearRegistry();
 	}
 
 	/**

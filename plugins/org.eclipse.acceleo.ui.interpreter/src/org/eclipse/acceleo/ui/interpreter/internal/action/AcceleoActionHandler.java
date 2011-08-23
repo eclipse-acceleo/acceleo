@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.action;
 
-import org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterView;
+import org.eclipse.acceleo.ui.interpreter.internal.view.OldAcceleoInterpreterView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -34,9 +34,9 @@ public class AcceleoActionHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		if (EVALUTE_ACTION_ID.equals(event.getCommand().getId())) {
 			final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-			if (activePart instanceof AcceleoInterpreterView) {
+			if (activePart instanceof OldAcceleoInterpreterView) {
 				EvaluateAction action = new EvaluateAction();
-				action.initialize((AcceleoInterpreterView)activePart);
+				action.initialize((OldAcceleoInterpreterView)activePart);
 				action.run();
 			}
 		}

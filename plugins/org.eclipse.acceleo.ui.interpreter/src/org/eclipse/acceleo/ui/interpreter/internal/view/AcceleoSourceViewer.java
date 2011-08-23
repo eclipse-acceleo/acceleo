@@ -84,7 +84,7 @@ public class AcceleoSourceViewer extends SourceViewer {
 	private int gap;
 
 	/** The interpreter view on which is displayed this viewer. */
-	private AcceleoInterpreterView interpreterView;
+	private OldAcceleoInterpreterView interpreterView;
 
 	/**
 	 * Simply delegates to the super constructor.
@@ -99,7 +99,7 @@ public class AcceleoSourceViewer extends SourceViewer {
 	 *            Style bits of this viewer.
 	 * @see SourceViewer(Composite, IVerticalRuler, int)
 	 */
-	public AcceleoSourceViewer(AcceleoInterpreterView view, Composite parent, IVerticalRuler ruler, int style) {
+	public AcceleoSourceViewer(OldAcceleoInterpreterView view, Composite parent, IVerticalRuler ruler, int style) {
 		super(parent, ruler, style);
 		interpreterView = view;
 	}
