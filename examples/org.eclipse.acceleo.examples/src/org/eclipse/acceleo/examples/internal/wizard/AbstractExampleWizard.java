@@ -28,6 +28,7 @@ import java.util.zip.ZipInputStream;
 import org.eclipse.acceleo.examples.internal.AcceleoExamplesMessages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -157,6 +158,7 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 		try {
 			// We make sure that the project is created from this point forward.
 			project.create(monitor);
+			monitor.worked(1);
 
 			final ZipInputStream zipFileStream = new ZipInputStream(interpreterZipUrl.openStream());
 			ZipEntry zipEntry = zipFileStream.getNextEntry();
@@ -208,12 +210,18 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			}
 
 			project.open(monitor);
+			monitor.worked(1);
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+			monitor.worked(1);
 
 			// Close and re-open the project to force eclipse to re-evaluate
 			// any natures that this project may have.
 			project.close(monitor);
 			project.open(monitor);
+			monitor.worked(1);
+
+			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+			monitor.worked(1);
 		} catch (final IOException e) {
 			log(e);
 		} catch (final CoreException e) {
