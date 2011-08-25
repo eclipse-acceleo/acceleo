@@ -29,6 +29,9 @@ public class CreateVariableAction extends Action {
 	/** Keeps a reference to the variable viewer. */
 	private final TreeViewer variableViewer;
 
+	/** Value of this new variable. */
+	private Object value;
+
 	/**
 	 * Instantiates the "new variable" action given the variable viewer.
 	 * 
@@ -37,7 +40,20 @@ public class CreateVariableAction extends Action {
 	 */
 	public CreateVariableAction(TreeViewer viewer) {
 		super("New variable");
-		variableViewer = viewer;
+		this.variableViewer = viewer;
+	}
+
+	/**
+	 * Instantiates the "new variable" action given the variable viewer and the new variable's value.
+	 * 
+	 * @param viewer
+	 *            The variable viewer.
+	 * @param value
+	 *            Value of the new variable;
+	 */
+	public CreateVariableAction(TreeViewer viewer, Object value) {
+		this(viewer);
+		this.value = value;
 	}
 
 	/**
@@ -53,6 +69,9 @@ public class CreateVariableAction extends Action {
 		int result = dialog.open();
 		if (result == Window.OK) {
 			Variable newVar = new Variable(dialog.getValue());
+			if (value != null) {
+				newVar.setValue(value);
+			}
 			Object input = variableViewer.getInput();
 			if (input instanceof List<?>) {
 				((List<Variable>)variableViewer.getInput()).add(newVar);

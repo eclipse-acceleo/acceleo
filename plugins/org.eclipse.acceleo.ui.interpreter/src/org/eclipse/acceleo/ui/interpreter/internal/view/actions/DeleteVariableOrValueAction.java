@@ -20,11 +20,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * This action can be used in order to delete a variable from the evaluation context.
+ * This action can be used in order to delete a variable (or one of its values) from the evaluation context.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class DeleteVariableAction extends Action {
+public class DeleteVariableOrValueAction extends Action {
 	/** Keeps a reference to the variable viewer. */
 	private final TreeViewer variableViewer;
 
@@ -34,7 +34,7 @@ public class DeleteVariableAction extends Action {
 	 * @param viewer
 	 *            The variable viewer.
 	 */
-	public DeleteVariableAction(TreeViewer viewer) {
+	public DeleteVariableOrValueAction(TreeViewer viewer) {
 		super("Delete variable");
 		this.variableViewer = viewer;
 	}
@@ -58,7 +58,13 @@ public class DeleteVariableAction extends Action {
 	 */
 	@Override
 	public boolean isEnabled() {
-		return !getCurrentVariables().isEmpty();
+		if (getTree() != null && !getTree().isDisposed()) {
+			TreeItem[] selectedtems = getTree().getSelection();
+			if (selectedtems != null && selectedtems.length > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -69,12 +75,31 @@ public class DeleteVariableAction extends Action {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		List<Variable> variables = getCurrentVariables();
-		Object input = variableViewer.getInput();
-		if (input instanceof List<?>) {
-			((List<Variable>)variableViewer.getInput()).removeAll(variables);
-			variableViewer.refresh();
+		if (getTree() == null || getTree().isDisposed()) {
+			return;
 		}
+
+		Object input = variableViewer.getInput();
+
+		TreeItem[] selectedtems = getTree().getSelection();
+		if (selectedtems != null && selectedtems.length > 0) {
+			for (int i = 0; i < selectedtems.length; i++) {
+				TreeItem item = selectedtems[i];
+				if (item.getData() instanceof Variable) {
+					((List<Variable>)input).remove(item.getData());
+				} else if (item.getParentItem().getData() instanceof Variable) {
+					Variable variable = (Variable)item.getParentItem().getData();
+					Object variableValue = variable.getValue();
+					if (item.getData().equals(variableValue)) {
+						((List<Variable>)input).remove(variable);
+					} else {
+						((List<Object>)variableValue).remove(item.getData());
+					}
+				}
+			}
+		}
+
+		variableViewer.refresh();
 	}
 
 	/**

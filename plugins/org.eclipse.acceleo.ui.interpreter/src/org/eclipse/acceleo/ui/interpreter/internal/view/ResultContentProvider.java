@@ -10,39 +10,38 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
-import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
 /**
- * This will act as the label provider for the "variables" Tree Viewer.
+ * This will act as the content provider for the "result" Tree Viewer.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class VariableLabelProvider extends AdapterFactoryLabelProvider {
+public class ResultContentProvider extends AdapterFactoryContentProvider {
 	/**
-	 * Instantiates this label provider given its adapter factory.
+	 * Instantiates this content provider given its adapter factory.
 	 * 
 	 * @param adapterFactory
-	 *            The adapter factory for this label provider.
+	 *            The adapter factory for this content provider.
 	 */
-	public VariableLabelProvider(AdapterFactory adapterFactory) {
+	public ResultContentProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
 	 */
 	@Override
-	public String getText(Object element) {
-		String text = ""; //$NON-NLS-1$
-		if (element instanceof Variable) {
-			text = ((Variable)element).getName();
-		} else {
-			text = super.getText(element);
+	public Object[] getElements(Object inputElement) {
+		Object[] elements = super.getElements(inputElement);
+		if (elements == null || elements.length == 0) {
+			if (inputElement != null) {
+				return new Object[] {inputElement.toString(), };
+			}
 		}
-		return text;
+		return elements;
 	}
 }

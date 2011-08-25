@@ -21,10 +21,10 @@ Contributors:
       		category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.ui.interpreter.view.InterpreterView"
             id="org.eclipse.acceleo.ui.interpreter.view"
-            name="%interpreterViewName"
+            name="%InterpreterViewName"
             restorable="true">
          <description>
-            %acceleoInterpreterViewDescription
+            %InterpreterViewDescription
          </description>
       </view>
    </extension>
@@ -33,7 +33,7 @@ Contributors:
          point="org.eclipse.ui.commands">
       <command
             id="org.eclipse.acceleo.ui.interpreter.evaluateaction"
-            name="%AcceleoInterpreter.action.evaluate.label">
+            name="%InterpreterView.actions.evaluate.label">
       </command>
    </extension>
    
@@ -51,7 +51,7 @@ Contributors:
          point="org.eclipse.ui.contexts">
       <context
             id="org.eclipse.acceleo.ui.interpreter.interpreterview"
-            name="%AcceleoInterpreterContext"
+            name="%InterpreterContextName"
             parentId="org.eclipse.ui.contexts.dialogAndWindow">
       </context>
    </extension>
@@ -59,7 +59,7 @@ Contributors:
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="org.eclipse.acceleo.ui.interpreter.internal.action.AcceleoActionHandler"
+            class="org.eclipse.acceleo.ui.interpreter.internal.view.actions.InterpreterActionHandler"
             commandId="org.eclipse.acceleo.ui.interpreter.evaluateaction">
       </handler>
    </extension>
@@ -68,7 +68,7 @@ Contributors:
          point="org.eclipse.acceleo.ui.language.interpreter">
       <languageInterpreter
             class="org.eclipse.acceleo.ui.interpreter.internal.language.acceleo.AcceleoInterpreter"
-            label="Acceleo">
+            label="%Acceleo.language.interpreter.label">
       </languageInterpreter>
    </extension>
 

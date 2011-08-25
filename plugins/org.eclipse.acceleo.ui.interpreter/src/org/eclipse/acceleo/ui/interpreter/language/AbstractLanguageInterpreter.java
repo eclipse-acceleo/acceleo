@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.language;
 
-import java.util.List;
-import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -71,14 +68,11 @@ public abstract class AbstractLanguageInterpreter {
 	}
 
 	/**
-	 * This will be called each time the selection of EObjects in the workspace is updated so that the
-	 * language interpreter can react to the change. This list correspond to the EObjects for which the viewer
-	 * should provide completion proposals and against which the evaluation will be run.
-	 * 
-	 * @param targets
-	 *            The list of target EObjects.
+	 * This will be called when the user has selected a new language from the interpreter view. If this
+	 * interpreter has registered listeners or keeps references to one of the Viewers it has created, they
+	 * should be disposed of here.
 	 */
-	public void setTargetEObject(List<EObject> targets) {
+	public void dispose() {
 		// Do nothing
 	}
 
@@ -93,14 +87,19 @@ public abstract class AbstractLanguageInterpreter {
 	 * started.
 	 * </p>
 	 * <p>
-	 * The IStatus returned by the compilation task will be treated as a MultiStatus representing all of the
-	 * problems that have been encountered while trying to compile the expression.
+	 * The {@link CompilationResult} object returned by this Callable should hold both the compiled expression
+	 * (if any) and the problem(s) encountered during the compilation (if any). This(These) problem(s) will be
+	 * displayed on the interpreter UI.
 	 * </p>
 	 * 
+	 * @param context
+	 *            The current interpreter context.
 	 * @return Cancellable task that can be run by the interpreter view to know whether the expression is
-	 *         well-formed. Can be <code>null</code>.
+	 *         well-formed. Can be <code>null</code> if this language cannot (or does not need to) be
+	 *         compiled.
+	 * @see org.eclipse.acceleo.ui.interpreter.language.CompilationResult
 	 */
-	public Future<IStatus> getCompilationTask() {
+	public Callable<CompilationResult> getCompilationTask(InterpreterContext context) {
 		return null;
 	}
 
@@ -115,12 +114,16 @@ public abstract class AbstractLanguageInterpreter {
 	 * started.
 	 * </p>
 	 * <p>
-	 * The list of Objects returned by the evaluation task will be considered as the results to be displayed
-	 * to the user. Runtime exceptions can be logged in the error log.
+	 * The {@link EvaluationResult} object returned by this Callable should hold both the actual result of the
+	 * evaluation (if any) that will be displayed in the "result" part of the interpreter view, and the
+	 * problem(s) encountered during the evaluation (if any). This(These) problem(s) will be displayed on the
+	 * interpreter UI.
 	 * </p>
 	 * 
+	 * @param context
+	 *            The current interpreter context.
 	 * @return Cancellable task that can be run by the interpreter view to compute the results of a given
 	 *         evaluation. Cannot be <code>null</code>.
 	 */
-	public abstract Future<List<Object>> getEvaluationTask();
+	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
 }

@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * This listener will be registered against the "Variables" TreeViewer in order to allow drop operations on
@@ -48,12 +52,53 @@ public class VariableDropListener extends DropTargetAdapter {
 	public void drop(DropTargetEvent event) {
 		Collection<?> selection = getSelection(event);
 		if (!selection.isEmpty()) {
-			Object target = getDropTarget(event);
+			Widget targetItem = event.item;
 
-			if (target == null) {
+			if (targetItem instanceof TreeItem) {
+				Object targetVariable = targetItem.getData();
+				while (!(targetVariable instanceof Variable)) {
+					targetItem = ((TreeItem)targetItem).getParentItem();
+					targetVariable = targetItem.getData();
+				}
+				addToVariable((Variable)targetVariable, selection);
+			} else {
 				createNewVariable(selection);
 			}
 		}
+	}
+
+	/**
+	 * Adds the given selection to the values of <code>targetVariable</code>.
+	 * 
+	 * @param targetVariable
+	 *            Variable into which we are to add values.
+	 * @param selection
+	 *            The values that are to be added to <code>targetVariable</code>.
+	 */
+	@SuppressWarnings("unchecked")
+	private void addToVariable(Variable targetVariable, Collection<?> selection) {
+		Collection<Object> newValue;
+
+		final Object currentValue = targetVariable.getValue();
+		if (currentValue instanceof Collection<?>) {
+			newValue = (Collection<Object>)currentValue;
+		} else {
+			newValue = new ArrayList<Object>();
+			if (currentValue != null) {
+				newValue.add(currentValue);
+			}
+		}
+
+		newValue.addAll(selection);
+
+		// if there is but a single value, simply use it
+		if (newValue.size() == 1) {
+			targetVariable.setValue(newValue.iterator().next());
+		} else {
+			targetVariable.setValue(newValue);
+		}
+
+		viewer.refresh();
 	}
 
 	/**
@@ -63,15 +108,15 @@ public class VariableDropListener extends DropTargetAdapter {
 	 *            The selection for which to create a Variable.
 	 */
 	private void createNewVariable(Collection<?> selection) {
+		final Object variableValue;
 		if (selection.size() == 1) {
-			Object variableValue = selection.iterator().next();
-
-			// Do we have a name that can be used for this variable?
-			if (variableValue instanceof ENamedElement) {
-				final String variableName = ((ENamedElement)variableValue).getName();
-
-			}
+			variableValue = selection.iterator().next();
+		} else {
+			variableValue = selection;
 		}
+
+		CreateVariableAction action = new CreateVariableAction(viewer, variableValue);
+		action.run();
 	}
 
 	/**
@@ -81,24 +126,10 @@ public class VariableDropListener extends DropTargetAdapter {
 	 *            The drop event from which to extract a selection.
 	 * @return The list containing the event's selection, an empty list if none.
 	 */
-	public Collection<?> getSelection(DropTargetEvent event) {
+	private Collection<?> getSelection(DropTargetEvent event) {
 		if (event.data instanceof IStructuredSelection) {
 			return ((IStructuredSelection)event.data).toList();
 		}
 		return Collections.emptyList();
-	}
-
-	/**
-	 * Tries and extract the target Object of the given drop event.
-	 * 
-	 * @param event
-	 *            The drop event from which to extract a target.
-	 * @return The target of this drop event, <code>null</code> if none.
-	 */
-	public Object getDropTarget(DropTargetEvent event) {
-		if (event.item != null) {
-			return event.item.getData();
-		}
-		return null;
 	}
 }

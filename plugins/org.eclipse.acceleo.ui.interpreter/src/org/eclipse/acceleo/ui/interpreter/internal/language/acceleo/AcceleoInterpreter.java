@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
-import java.util.List;
-import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
+import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
+import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 
 /**
  * This implementation of an {@link AbstractLanguageInterpreter} will be able to provide completion, syntax
@@ -25,10 +26,10 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#getEvaluationTask()
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#getEvaluationTask(org.eclipse.acceleo.ui.interpreter.language.EvaluationContext)
 	 */
 	@Override
-	public Future<List<Object>> getEvaluationTask() {
+	public Callable<EvaluationResult> getEvaluationTask(EvaluationContext context) {
 		// TODO Auto-generated method stub
 		return null;
 	}

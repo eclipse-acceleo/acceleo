@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.action;
+package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,11 +39,11 @@ import org.eclipse.ocl.ecore.SendSignalAction;
 
 /**
  * This action will be called by the "ctrl+shift+d" shortcut on a text selection in the "Acceleo Interpreter"
- * view. It will be used to parse, compile and evaluate the selected Acceleo expression.
+ * view. It will be used to parse, compile and evaluate the selected expression.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class EvaluateAction extends Action {
+public class OldEvaluateAction extends Action {
 	/** References the interpreter from which the action was triggered. */
 	private OldAcceleoInterpreterView interpreterView;
 

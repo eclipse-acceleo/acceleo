@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
-import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 
@@ -19,14 +18,14 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class VariableLabelProvider extends AdapterFactoryLabelProvider {
+public class ResultLabelProvider extends AdapterFactoryLabelProvider {
 	/**
 	 * Instantiates this label provider given its adapter factory.
 	 * 
 	 * @param adapterFactory
 	 *            The adapter factory for this label provider.
 	 */
-	public VariableLabelProvider(AdapterFactory adapterFactory) {
+	public ResultLabelProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -37,12 +36,6 @@ public class VariableLabelProvider extends AdapterFactoryLabelProvider {
 	 */
 	@Override
 	public String getText(Object element) {
-		String text = ""; //$NON-NLS-1$
-		if (element instanceof Variable) {
-			text = ((Variable)element).getName();
-		} else {
-			text = super.getText(element);
-		}
-		return text;
+		return super.getText(element);
 	}
 }

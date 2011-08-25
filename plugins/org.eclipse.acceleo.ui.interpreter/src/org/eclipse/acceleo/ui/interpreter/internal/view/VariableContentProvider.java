@@ -11,10 +11,12 @@
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
-import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
@@ -22,17 +24,18 @@ import org.eclipse.jface.viewers.Viewer;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class VariableContentProvider implements ITreeContentProvider {
+public class VariableContentProvider extends AdapterFactoryContentProvider {
 	/** Keeps a reference to this viewer's input. */
 	private List<Variable> input;
 
 	/**
-	 * {@inheritDoc}
+	 * Instantiates this content provider given its adapter factory.
 	 * 
-	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+	 * @param adapterFactory
+	 *            The adapter factory for this content provider.
 	 */
-	public void dispose() {
-		// Nothing to dispose
+	public VariableContentProvider(AdapterFactory adapterFactory) {
+		super(adapterFactory);
 	}
 
 	/**
@@ -41,8 +44,10 @@ public class VariableContentProvider implements ITreeContentProvider {
 	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
 	 *      java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
+		super.inputChanged(aViewer, oldInput, newInput);
 		if (newInput instanceof List<?>) {
 			input = (List<Variable>)newInput;
 		} else if (newInput instanceof Variable) {
@@ -58,11 +63,12 @@ public class VariableContentProvider implements ITreeContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof List<?>) {
-			return ((List<?>)inputElement).toArray(new Variable[((List<?>)inputElement).size()]);
+		if (inputElement instanceof Collection<?>) {
+			return ((Collection<?>)inputElement).toArray(new Variable[((Collection<?>)inputElement).size()]);
 		}
-		return null;
+		return super.getElements(inputElement);
 	}
 
 	/**
@@ -70,11 +76,20 @@ public class VariableContentProvider implements ITreeContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren(Object parentElement) {
+		Object[] children = null;
 		if (parentElement instanceof Variable) {
-			return new Object[] {((Variable)parentElement).getValue(), };
+			Object variableValue = ((Variable)parentElement).getValue();
+			if (variableValue instanceof Collection<?>) {
+				children = ((Collection<?>)variableValue).toArray(new Object[((Collection<?>)variableValue)
+						.size()]);
+			} else {
+				children = new Object[] {variableValue, };
+			}
+			return children;
 		}
-		return null;
+		return super.getChildren(parentElement);
 	}
 
 	/**
@@ -82,13 +97,14 @@ public class VariableContentProvider implements ITreeContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
 	 */
+	@Override
 	public Object getParent(Object element) {
 		for (Variable var : input) {
 			if (var.getValue() == element) {
 				return var;
 			}
 		}
-		return null;
+		return super.getParent(element);
 	}
 
 	/**
@@ -96,7 +112,11 @@ public class VariableContentProvider implements ITreeContentProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
+	@Override
 	public boolean hasChildren(Object element) {
-		return element instanceof Variable && ((Variable)element).getValue() != null;
+		if (element instanceof Variable) {
+			return ((Variable)element).getValue() != null;
+		}
+		return super.hasChildren(element);
 	}
 }

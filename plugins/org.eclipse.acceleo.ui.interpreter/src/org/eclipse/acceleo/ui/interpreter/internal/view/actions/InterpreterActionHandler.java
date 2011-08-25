@@ -8,9 +8,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.action;
+package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
-import org.eclipse.acceleo.ui.interpreter.internal.view.OldAcceleoInterpreterView;
+import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -18,12 +18,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * This will be used as the action handler for all of Acceleo's source viewer operations.
+ * This will be used as the action handler for the "evaluate" action of the interpreter view.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoActionHandler extends AbstractHandler {
-	/** Action ID of the "Evaluate" action. */
+public class InterpreterActionHandler extends AbstractHandler {
+	/** Action ID of the "Evaluate" action. Must be kept in sync with the plugin.xml declaration. */
 	public static final String EVALUTE_ACTION_ID = "org.eclipse.acceleo.ui.interpreter.evaluateaction"; //$NON-NLS-1$
 
 	/**
@@ -34,9 +34,9 @@ public class AcceleoActionHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		if (EVALUTE_ACTION_ID.equals(event.getCommand().getId())) {
 			final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-			if (activePart instanceof OldAcceleoInterpreterView) {
+			if (activePart instanceof InterpreterView) {
 				EvaluateAction action = new EvaluateAction();
-				action.initialize((OldAcceleoInterpreterView)activePart);
+				action.initialize((InterpreterView)activePart);
 				action.run();
 			}
 		}
