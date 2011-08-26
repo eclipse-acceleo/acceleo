@@ -192,7 +192,7 @@ public class AcceleoSourceContent {
 	 * 
 	 * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
 	 */
-	private class AcceleoSourceBufferWithASTJob extends AcceleoSourceBuffer {
+	protected class AcceleoSourceBufferWithASTJob extends AcceleoSourceBuffer {
 
 		/**
 		 * The job to compute the AST.
