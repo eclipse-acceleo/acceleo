@@ -8,20 +8,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.view;
+package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
+import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
+import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.jface.text.GapTextStore;
 import org.eclipse.jface.text.ITextStore;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.util.Bag;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -30,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoSourceViewer extends SourceViewer {
+public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSourceViewer {
 	/**
 	 * This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...).
 	 */
@@ -43,19 +58,19 @@ public class AcceleoSourceViewer extends SourceViewer {
 	 * If the text doesn't start with "[module", we'll use this as the template's signature. Otherwise, we'll
 	 * assume the user specified both module and query/template in his expression.
 	 */
-	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(self : {0}, model : {1})]"; //$NON-NLS-1$ 
+	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$ 
 
 	/**
-	 * If the text doesn't start with "[module", we'll use this to close the query. Otherwise, we'll assume
+	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
 	 * the user specified both module and query/template in his expression.
 	 */
-	private static final String DUMMY_TAIL = "[/template]"; //$NON-NLS-1$
+	private static final String DUMMY_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
 
 	/** This will hold the Acceleo source of the expressions entered in the viewer. */
 	private AcceleoInterpreterSourceContent content;
 
 	/**
-	 * This will be set to <code>true</code> if the user explicitely defined a module signature in his
+	 * This will be set to <code>true</code> if the user explicitly defined a module signature in his
 	 * expression.
 	 */
 	private boolean hasExplicitModule;
@@ -69,28 +84,14 @@ public class AcceleoSourceViewer extends SourceViewer {
 	/** This will contain the full expression as it will be parsed. */
 	private String fullExpression;
 
-	/** This flag will be updated whenever the user modified the expression. */
-	private boolean needsRebuilding;
-
-	/**
-	 * We'll use this to keep a reference to the length of the document the last time we asked for an update
-	 * of the CST.
-	 */
-	private int lastUpdateLength;
-
 	/**
 	 * This is the gap between the text as entered by the user and the text that is actually getting parsed.
 	 */
 	private int gap;
 
-	/** The interpreter view on which is displayed this viewer. */
-	private OldAcceleoInterpreterView interpreterView;
-
 	/**
 	 * Simply delegates to the super constructor.
 	 * 
-	 * @param view
-	 *            The interpreter view on which is displayed this viewer.
 	 * @param parent
 	 *            Parent composite for this viewer.
 	 * @param ruler
@@ -99,9 +100,8 @@ public class AcceleoSourceViewer extends SourceViewer {
 	 *            Style bits of this viewer.
 	 * @see SourceViewer(Composite, IVerticalRuler, int)
 	 */
-	public AcceleoSourceViewer(OldAcceleoInterpreterView view, Composite parent, IVerticalRuler ruler, int style) {
+	public AcceleoSourceViewer(Composite parent, IVerticalRuler ruler, int style) {
 		super(parent, ruler, style);
-		interpreterView = view;
 	}
 
 	/**
@@ -154,43 +154,40 @@ public class AcceleoSourceViewer extends SourceViewer {
 				hasExplicitModule = false;
 			}
 		}
-		needsRebuilding = true;
-	}
-
-	/**
-	 * This will be called whenever the EObjects selected as targets of the interpreter change.
-	 */
-	public void handleSelectionUpdate() {
-		needsRebuilding = true;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.text.source.SourceViewer#doOperation(int)
+	 * @see org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer#showContentAssist(org.eclipse.acceleo.ui.interpreter.language.InterpreterContext)
 	 */
-	@Override
-	public void doOperation(int operation) {
-		if (operation != CONTENTASSIST_PROPOSALS) {
-			super.doOperation(operation);
-		}
-
-		updateCST();
+	public void showContentAssist(InterpreterContext context) {
+		updateCST(context);
 		fContentAssistant.showPossibleCompletions();
 	}
 
 	/**
 	 * Asks for a full update of the CST according to the text contained in {@link #buffer}.
+	 * 
+	 * @param context
+	 *            The current interpreter context.
 	 */
-	public void updateCST() {
-		if (needsRebuilding) {
-			fullExpression = rebuildFullExpression();
-		}
-		getContent().updateCST(0, lastUpdateLength, fullExpression);
+	public void updateCST(InterpreterContext context) {
+		fullExpression = rebuildFullExpression(context);
+
+		getContent().updateCST(0, fullExpression.length(), fullExpression);
 		if (getContent() instanceof AcceleoInterpreterSourceContent) {
 			((AcceleoInterpreterSourceContent)getContent()).setGap(gap);
 		}
-		lastUpdateLength = fullExpression.length();
+	}
+
+	/**
+	 * Returns the full expression as it was last rebuilt.
+	 * 
+	 * @return The full expression as it was last rebuilt.
+	 */
+	protected String getFullExpression() {
+		return fullExpression;
 	}
 
 	/**
@@ -202,9 +199,11 @@ public class AcceleoSourceViewer extends SourceViewer {
 	 * unaltered.
 	 * </p>
 	 * 
+	 * @param context
+	 *            The current interpreter context.
 	 * @return The full expression that is to be parsed in order to get its CST.
 	 */
-	private String rebuildFullExpression() {
+	protected String rebuildFullExpression(InterpreterContext context) {
 		gap = 0;
 		String expression = buffer.get(0, buffer.getLength());
 		if (hasExplicitModule) {
@@ -214,7 +213,10 @@ public class AcceleoSourceViewer extends SourceViewer {
 		StringBuilder expressionBuffer = new StringBuilder();
 
 		String moduleSignature = DUMMY_MODULE;
-		EObject root = interpreterView.getTargetRoot();
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = context.getTargetEObjects().get(0);
+		}
 		String targetNsURI = null;
 		if (root != null) {
 			targetNsURI = root.eClass().getEPackage().getNsURI();
@@ -235,7 +237,7 @@ public class AcceleoSourceViewer extends SourceViewer {
 		if (!expression.contains("[template") && !expression.contains("[query")) { //$NON-NLS-1$ //$NON-NLS-2$ 
 			appendTail = true;
 			String templateSignature = DUMMY_TEMPLATE;
-			List<EObject> target = interpreterView.getTargetObjects();
+			List<EObject> target = Collections.emptyList();
 
 			String argumentType = null;
 			if (target != null && !target.isEmpty()) {
@@ -253,27 +255,33 @@ public class AcceleoSourceViewer extends SourceViewer {
 				modelType = root.eClass().getName();
 			}
 
-			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType);
+			StringBuilder additionalVariables = new StringBuilder();
+			Iterator<Variable> variables = context.getVariables().iterator();
+			while (variables.hasNext()) {
+				Variable variable = variables.next();
+				final String varName = variable.getName();
+				final String varType = inferOCLType(variable.getValue());
+
+				if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
+					additionalVariables.append(", ");
+					additionalVariables.append(varName);
+					additionalVariables.append(" : "); //$NON-NLS-1$
+					additionalVariables.append(varType);
+				}
+			}
+
+			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType,
+					additionalVariables);
 			expressionBuffer.append(templateSignature);
 			gap += templateSignature.length();
 		}
 
-		if (!expression.startsWith("[")) { //$NON-NLS-1$
-			expressionBuffer.append('[');
-			gap += 1;
-		}
-
 		expressionBuffer.append(expression);
-
-		if (!expression.endsWith("/]")) { //$NON-NLS-1$
-			expressionBuffer.append("/]"); //$NON-NLS-1$
-		}
 
 		if (appendTail) {
 			expressionBuffer.append(DUMMY_TAIL);
 		}
 
-		needsRebuilding = false;
 		return expressionBuffer.toString();
 	}
 
@@ -332,23 +340,104 @@ public class AcceleoSourceViewer extends SourceViewer {
 	}
 
 	/**
-	 * This can be used to retrieve the whole expression as it is parsed.
-	 * 
-	 * @return The whole expression.
-	 */
-	public String getFullExpression() {
-		if (needsRebuilding) {
-			fullExpression = rebuildFullExpression();
-		}
-		return fullExpression;
-	}
-
-	/**
 	 * Returns the offset gap between the displayed text and the actual parsed expression.
 	 * 
 	 * @return The offset gap between the displayed text and the actual parsed expression.
 	 */
 	public int getGap() {
 		return gap;
+	}
+
+	/**
+	 * Tries and infer the OCL type of the given Object.
+	 * 
+	 * @param obj
+	 *            Object for which we need an OCL type.
+	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
+	 */
+	private String inferOCLType(Object obj) {
+		String oclType = "OCLAny"; //$NON-NLS-1$
+		EcoreEnvironment env = (EcoreEnvironment)new EcoreEnvironmentFactory().createEnvironment();
+		if (obj instanceof Collection<?>) {
+			EClassifier elementType = inferCollectionContentOCLType(env, (Collection<?>)obj);
+			CollectionKind kind = CollectionKind.SEQUENCE_LITERAL;
+			if (obj instanceof LinkedHashSet<?>) {
+				kind = CollectionKind.ORDERED_SET_LITERAL;
+			} else if (obj instanceof Set<?>) {
+				kind = CollectionKind.SET_LITERAL;
+			} else if (obj instanceof Bag<?>) {
+				kind = CollectionKind.BAG_LITERAL;
+			}
+			oclType = env.getTypeResolver().resolveCollectionType(kind, elementType).getName();
+		} else {
+			oclType = getOCLType(env, obj).getName();
+		}
+		return oclType;
+	}
+
+	/**
+	 * Returns the OCL type of the given Object.
+	 * 
+	 * @param env
+	 *            the ecore environment from which to seek types.
+	 * @param obj
+	 *            The Object we need an OCL type for.
+	 * @return The OCL type of the given Object.
+	 */
+	private EClassifier getOCLType(EcoreEnvironment env, Object obj) {
+		EClassifier oclType = env.getOCLStandardLibrary().getOclAny();
+		if (obj instanceof Number) {
+			if (obj instanceof BigDecimal || obj instanceof Double || obj instanceof Float) {
+				oclType = env.getOCLStandardLibrary().getReal();
+			} else {
+				oclType = env.getOCLStandardLibrary().getInteger();
+			}
+		} else if (obj instanceof String) {
+			oclType = env.getOCLStandardLibrary().getString();
+		} else if (obj instanceof Boolean) {
+			oclType = env.getOCLStandardLibrary().getBoolean();
+		} else if (obj instanceof EObject) {
+			oclType = env.getUMLReflection().asOCLType(((EObject)obj).eClass());
+		} else if (obj instanceof Collection<?>) {
+			if (obj instanceof LinkedHashSet<?>) {
+				oclType = env.getOCLStandardLibrary().getOrderedSet();
+			} else if (obj instanceof Set<?>) {
+				oclType = env.getOCLStandardLibrary().getSet();
+			} else if (obj instanceof Bag<?>) {
+				oclType = env.getOCLStandardLibrary().getBag();
+			} else {
+				oclType = env.getOCLStandardLibrary().getSequence();
+			}
+		}
+		return oclType;
+	}
+
+	/**
+	 * Tries and infer the OCL type of the given Collection's content.
+	 * 
+	 * @param env
+	 *            the ecore environment from which to seek types.
+	 * @param coll
+	 *            Collection for which we need an OCL type.
+	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
+	 */
+	private EClassifier inferCollectionContentOCLType(EcoreEnvironment env, Collection<?> coll) {
+		if (coll.isEmpty()) {
+			return env.getOCLStandardLibrary().getOclAny();
+		}
+
+		Set<EClassifier> types = new HashSet<EClassifier>();
+		for (Object child : coll) {
+			types.add(getOCLType(env, child));
+		}
+
+		Iterator<EClassifier> iterator = types.iterator();
+
+		EClassifier elementType = iterator.next();
+		while (iterator.hasNext()) {
+			elementType = env.getUMLReflection().getCommonSuperType(elementType, iterator.next());
+		}
+
+		return elementType;
 	}
 }

@@ -22,8 +22,6 @@ import java.util.concurrent.Future;
 
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
-import org.eclipse.acceleo.ui.interpreter.internal.view.ResultContentProvider;
-import org.eclipse.acceleo.ui.interpreter.internal.view.ResultLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ToggleVariableVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableContentProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableDropListener;
@@ -35,7 +33,9 @@ import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
+import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -53,8 +53,8 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -87,7 +87,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.handlers.IHandlerActivation;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 /**
  * The Actual "Interpreter" view that will be displayed in the Eclipse workbench.
@@ -112,6 +115,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Context activation token. This will be needed to deactivate it. */
 	private IContextActivation contextActivationToken;
+
+	/** Content assist activation token. This will be needed to deactivate our handler. */
+	private IHandlerActivation contentAssistActivationToken;
 
 	/** Currently selected language descriptor. */
 	private LanguageInterpreterDescriptor currentLanguage;
@@ -249,6 +255,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		IContextService contextService = (IContextService)getSite().getService(IContextService.class);
 		contextService.deactivateContext(contextActivationToken);
 
+		IHandlerService handlerService = (IHandlerService)getSite().getService(IHandlerService.class);
+		handlerService.deactivateHandler(contentAssistActivationToken);
+
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (workbenchWindow != null && workbenchWindow.getActivePage() != null
 				&& eobjectSelectionListener != null) {
@@ -281,12 +290,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	public InterpreterContext getInterpreterContext() {
 		String fullExpression = expressionViewer.getTextWidget().getText();
 
-		String partialExpression = fullExpression;
-		ISelection sourceSelection = expressionViewer.getSelection();
-		if (sourceSelection instanceof ITextSelection) {
-			partialExpression = ((ITextSelection)sourceSelection).getText();
-		}
-
 		List<EObject> targetEObjects = selectedEObjects;
 		if (targetEObjects == null) {
 			targetEObjects = Collections.emptyList();
@@ -300,7 +303,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			variables = Collections.emptyList();
 		}
 
-		return new InterpreterContext(fullExpression, partialExpression, targetEObjects, variables);
+		return new InterpreterContext(fullExpression, expressionViewer.getSelection(), targetEObjects,
+				variables);
 	}
 
 	/**
@@ -536,17 +540,11 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		Viewer viewer = getCurrentLanguageInterpreter().createResultViewer(parent);
 		if (viewer == null) {
 			viewer = new TreeViewer(parent);
-		}
-		if (viewer instanceof TreeViewer) {
-			// Make sure the viewer has content and label providers
-			TreeViewer treeViewer = (TreeViewer)viewer;
+
 			AdapterFactory adapterFactory = createAdapterFactory();
-			if (treeViewer.getContentProvider() == null) {
-				treeViewer.setContentProvider(new ResultContentProvider(adapterFactory));
-			}
-			if (treeViewer.getLabelProvider() == null) {
-				treeViewer.setLabelProvider(new ResultLabelProvider(adapterFactory));
-			}
+			TreeViewer treeViewer = (TreeViewer)viewer;
+			treeViewer.setContentProvider(new ResultContentProvider(adapterFactory));
+			treeViewer.setLabelProvider(new ResultLabelProvider(adapterFactory));
 		}
 		return viewer;
 	}
@@ -564,6 +562,22 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			viewer = new SourceViewer(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
 		}
 		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
+
+		if (viewer instanceof IInterpreterSourceViewer) {
+			final String actionDefinitionID = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
+			final IInterpreterSourceViewer interpreterSourceViewer = ((IInterpreterSourceViewer)viewer);
+
+			IAction action = new Action() {
+				@Override
+				public void run() {
+					interpreterSourceViewer.showContentAssist(getInterpreterContext());
+				}
+			};
+			IHandler handler = new ActionHandler(action);
+
+			IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
+			contentAssistActivationToken = service.activateHandler(actionDefinitionID, handler);
+		}
 
 		return viewer;
 	}
@@ -969,7 +983,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 				final EvaluationResult result = evaluationTask.get();
 
-				if (result.getProblems() != null) {
+				if (result != null && result.getProblems() != null) {
 					Display.getDefault().asyncExec(new Runnable() {
 						/**
 						 * {@inheritDoc}
@@ -1045,7 +1059,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			try {
 				final CompilationResult result = compilationTask.get();
 
-				if (result.getProblems() != null) {
+				if (result != null && result.getProblems() != null) {
 					Display.getDefault().asyncExec(new Runnable() {
 						/**
 						 * {@inheritDoc}

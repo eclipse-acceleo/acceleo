@@ -8,7 +8,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.view;
+package org.eclipse.acceleo.ui.interpreter.view;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
@@ -36,10 +38,16 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 	 */
 	@Override
 	public Object[] getElements(Object inputElement) {
-		Object[] elements = super.getElements(inputElement);
-		if (elements == null || elements.length == 0) {
-			if (inputElement != null) {
-				return new Object[] {inputElement.toString(), };
+		Object[] elements = new Object[0];
+		if (inputElement instanceof Collection<?>) {
+			elements = ((Collection<?>)inputElement)
+					.toArray(new Object[((Collection<?>)inputElement).size()]);
+		} else {
+			elements = super.getElements(inputElement);
+			if (elements == null || elements.length == 0) {
+				if (inputElement != null) {
+					return new Object[] {inputElement.toString(), };
+				}
 			}
 		}
 		return elements;

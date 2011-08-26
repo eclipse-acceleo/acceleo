@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.ISelection;
 
 /**
  * This will be used to pass the current compilation context to the language interpreter.
@@ -32,25 +33,24 @@ public class InterpreterContext {
 	private final String expression;
 
 	/**
-	 * The part of the full expression that was selected by the user. Only useful if the interpreter can
-	 * operate on partial expressions.
+	 * Current selection in the source viewer.
 	 */
-	private final String selectedExpression;
+	private final ISelection selection;
 
 	/**
 	 * Instantiates this context.
 	 * 
 	 * @param expression
 	 *            The full expression currently written in the interpreter's source viewer.
-	 * @param selectedExpression
+	 * @param selection
 	 *            The selected part of the source viewer's expression.
 	 * @param variables
 	 *            The variables currently accessible by the interpreter.
 	 */
-	public InterpreterContext(String expression, String selectedExpression, List<EObject> targetEObjects,
+	public InterpreterContext(String expression, ISelection selection, List<EObject> targetEObjects,
 			List<Variable> variables) {
 		this.expression = expression;
-		this.selectedExpression = selectedExpression;
+		this.selection = selection;
 		this.targetEObjects = targetEObjects;
 		this.variables = variables;
 	}
@@ -63,7 +63,7 @@ public class InterpreterContext {
 	 */
 	public InterpreterContext(InterpreterContext context) {
 		this.expression = context.expression;
-		this.selectedExpression = context.selectedExpression;
+		this.selection = context.selection;
 		this.targetEObjects = new ArrayList<EObject>(context.targetEObjects);
 		this.variables = new ArrayList<Variable>(context.variables);
 	}
@@ -100,7 +100,7 @@ public class InterpreterContext {
 	 * 
 	 * @return The part of this expression that was selected in the source viewer.
 	 */
-	public String getPartialExpression() {
-		return selectedExpression;
+	public ISelection getSelection() {
+		return selection;
 	}
 }
