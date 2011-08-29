@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
@@ -243,6 +244,23 @@ public final class AcceleoService {
 	public void addPropertiesFile(String propertiesFile) throws MissingResourceException {
 		generationEngine.addProperties(propertiesFile);
 		this.addedPropertiesfiles.add(propertiesFile);
+	}
+
+	/**
+	 * This can be used to add custom properties to the engine. These will be available through the
+	 * getProperty() services.
+	 * 
+	 * @param resourceBundle
+	 *            The resource bundle.
+	 * @param fileName
+	 *            The name of the properties file.
+	 * @since 3.1
+	 */
+	public void addProperties(PropertyResourceBundle resourceBundle, String fileName) {
+		if (generationEngine instanceof AcceleoEngine) {
+			AcceleoEngine engine = (AcceleoEngine)generationEngine;
+			engine.addProperties(resourceBundle, fileName);
+		}
 	}
 
 	/**
