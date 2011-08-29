@@ -141,6 +141,8 @@ public class AcceleoOCLReflection {
 			reservedKeywords.add("derive"); //$NON-NLS-1$
 			reservedKeywords.add("init"); //$NON-NLS-1$
 			reservedKeywords.add("static"); //$NON-NLS-1$
+			reservedKeywords.add("null"); //$NON-NLS-1$
+			reservedKeywords.add("invalid"); //$NON-NLS-1$
 		} else {
 			reservedKeywords.add("attr"); //$NON-NLS-1$
 			reservedKeywords.add("oper"); //$NON-NLS-1$
