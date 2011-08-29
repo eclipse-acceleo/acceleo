@@ -179,6 +179,11 @@ public abstract class AbstractAcceleoGenerator {
 		// Start
 		service.doPrepareGeneration(monitor, target);
 
+		acceleoPropertiesLoaderService = getPropertiesLoaderService(service);
+		if (acceleoPropertiesLoaderService != null) {
+			acceleoPropertiesLoaderService.initializeService(getProperties());
+		}
+
 		for (int i = 0; i < templateNames.length; i++) {
 			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
 					target, monitor));
@@ -192,12 +197,12 @@ public abstract class AbstractAcceleoGenerator {
 		service.clearCaches();
 
 		if (!service.hasGenerationOccurred()) {
-			if (EMFPlugin.IS_ECLIPSE_RUNNING  && AcceleoPreferences.isDebugMessagesEnabled()) {				
-				AcceleoEnginePlugin.log(
-						AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
+				AcceleoEnginePlugin.log(AcceleoEngineMessages
+						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 			} else {
-				AcceleoEnginePlugin.log(
-						AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
+				AcceleoEnginePlugin.log(AcceleoEngineMessages
+						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 			}
 		}
 		return result;
@@ -395,8 +400,10 @@ public abstract class AbstractAcceleoGenerator {
 			modulesResourceSet.setURIConverter(createURIConverter());
 		}
 
+		Map<URI, URI> uriMap = EcorePlugin.computePlatformURIMap();
+
 		// make sure that metamodel projects in the workspace override those in plugins
-		modulesResourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+		modulesResourceSet.getURIConverter().getURIMap().putAll(uriMap);
 
 		registerResourceFactories(modulesResourceSet);
 		registerPackages(modulesResourceSet);
@@ -408,7 +415,7 @@ public abstract class AbstractAcceleoGenerator {
 		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
-		modelResourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+		modelResourceSet.getURIConverter().getURIMap().putAll(uriMap);
 
 		registerResourceFactories(modelResourceSet);
 		registerPackages(modelResourceSet);
@@ -543,10 +550,6 @@ public abstract class AbstractAcceleoGenerator {
 		}
 
 		service.setGenerationID(generationID);
-		acceleoPropertiesLoaderService = getPropertiesLoaderService(service);
-		if (acceleoPropertiesLoaderService != null) {
-			acceleoPropertiesLoaderService.initializeService(getProperties());
-		}
 
 		return service;
 	}
