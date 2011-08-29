@@ -28,6 +28,7 @@ import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.runtime.IStatus;
@@ -186,7 +187,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		}
 
 		MultiStatus status = new MultiStatus(AcceleoInterpreterPlugin.PLUGIN_ID, 1,
-				"Problems encountered while compiling expression", null);
+				InterpreterMessages.getString("acceleo.interpreter.compilation.issue"), null); //$NON-NLS-1$
 		for (IStatus child : problems) {
 			status.add(child);
 		}

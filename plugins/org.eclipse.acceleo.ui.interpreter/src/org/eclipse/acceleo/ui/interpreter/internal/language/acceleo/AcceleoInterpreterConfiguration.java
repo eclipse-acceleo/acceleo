@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoConfiguration;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -23,7 +22,8 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoInterpreterConfiguration extends AcceleoConfiguration {
+@SuppressWarnings("restriction")
+public class AcceleoInterpreterConfiguration extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoConfiguration {
 	/**
 	 * Simply delegates to the super constructor.
 	 * 

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -18,7 +17,8 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoInterpreterSourceContent extends AcceleoSourceContent {
+@SuppressWarnings("restriction")
+public class AcceleoInterpreterSourceContent extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent {
 	/**
 	 * This is the gap between the text as entered by the user and the text that is actually getting parsed.
 	 */

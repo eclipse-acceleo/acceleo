@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -22,14 +20,16 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoInterpreterCompletionProcessor extends AcceleoCompletionProcessor {
+@SuppressWarnings("restriction")
+public class AcceleoInterpreterCompletionProcessor extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor {
 	/**
 	 * Delegates to the super constructor.
 	 * 
 	 * @param content
 	 *            The Acceleo content for which completion should be displayed.
 	 */
-	public AcceleoInterpreterCompletionProcessor(AcceleoSourceContent content) {
+	public AcceleoInterpreterCompletionProcessor(
+			org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent content) {
 		super(content);
 	}
 

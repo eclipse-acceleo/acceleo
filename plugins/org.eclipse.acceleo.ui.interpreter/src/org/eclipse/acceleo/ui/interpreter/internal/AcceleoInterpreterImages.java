@@ -8,13 +8,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.view;
+package org.eclipse.acceleo.ui.interpreter.internal;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
-import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;

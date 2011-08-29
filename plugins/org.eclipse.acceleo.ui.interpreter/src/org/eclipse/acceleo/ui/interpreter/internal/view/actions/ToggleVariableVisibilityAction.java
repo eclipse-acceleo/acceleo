@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
+import org.eclipse.acceleo.ui.interpreter.internal.AcceleoInterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
-import org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterImages;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.layout.GridData;
@@ -26,7 +27,8 @@ import org.eclipse.ui.forms.widgets.Form;
  */
 public class ToggleVariableVisibilityAction extends Action {
 	/** The tooltip we'll show for this action. */
-	private static final String TOOLTIP_TEXT = "Show variables";
+	private static final String TOOLTIP_TEXT = InterpreterMessages
+			.getString("intepreter.action.showvariables.tooltip"); //$NON-NLS-1$
 
 	/** The form that will have to be re-laid out when changing visibilities. */
 	private Form form;

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
 import java.util.List;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -25,12 +26,12 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class CreateVariableAction extends Action {
+public final class CreateVariableAction extends Action {
 	/** Value of this new variable. */
 	private Object value;
 
 	/** Keeps a reference to the variable viewer. */
-	private final TreeViewer variableViewer;
+	protected final TreeViewer variableViewer;
 
 	/**
 	 * Instantiates the "new variable" action given the variable viewer.
@@ -39,7 +40,7 @@ public class CreateVariableAction extends Action {
 	 *            The variable viewer.
 	 */
 	public CreateVariableAction(TreeViewer viewer) {
-		super("New variable");
+		super(InterpreterMessages.getString("interpreter.action.createvariable.name")); //$NON-NLS-1$
 		this.variableViewer = viewer;
 	}
 
@@ -65,7 +66,9 @@ public class CreateVariableAction extends Action {
 	@Override
 	public void run() {
 		InputDialog dialog = new InputDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-				"Enter variable name", "Variable name:", "", new VariableNameValidator());
+				InterpreterMessages.getString("interpreter.action.createvariable.popup.title"), //$NON-NLS-1$
+				InterpreterMessages.getString("interpreter.action.createvariable.popup.message") + ':', "", //$NON-NLS-1$ //$NON-NLS-2$
+				new VariableNameValidator());
 		int result = dialog.open();
 		if (result == Window.OK) {
 			Variable newVar = new Variable(dialog.getValue());
@@ -78,23 +81,6 @@ public class CreateVariableAction extends Action {
 				variableViewer.refresh();
 			}
 		}
-	}
-
-	/**
-	 * Returns <code>true</code> if each of the given String's character is a valid Java identifier part.
-	 * 
-	 * @param name
-	 *            Name of which we need to check the validity.
-	 * @return <code>true</code> if the given <code>name</code> can be considered a valid Java identifier,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isJavaIdentifier(String name) {
-		for (char character : name.toCharArray()) {
-			if (!Character.isJavaIdentifierPart(character)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -111,20 +97,40 @@ public class CreateVariableAction extends Action {
 		public String isValid(String newText) {
 			String errorMessage = null;
 			if (newText == null || newText.equals("")) { //$NON-NLS-1$
-				errorMessage = "Please enter a variable name";
+				errorMessage = InterpreterMessages
+						.getString("interpreter.action.createvariable.popup.error.noname"); //$NON-NLS-1$
 			} else if (!isJavaIdentifier(newText)) {
-				errorMessage = "'" + newText + "' is not a valid Java identifier";
+				errorMessage = InterpreterMessages.getString(
+						"interpreter.action.createvariable.popup.error.invalid", newText); //$NON-NLS-1$
 			} else {
 				Object input = variableViewer.getInput();
 				if (input instanceof List<?>) {
 					for (Object var : (List<?>)input) {
 						if (var instanceof Variable && newText.equals(((Variable)var).getName())) {
-							errorMessage = "A variable of that name already exists";
+							errorMessage = InterpreterMessages
+									.getString("interpreter.action.createvariable.popup.error.duplicate"); //$NON-NLS-1$
 						}
 					}
 				}
 			}
 			return errorMessage;
+		}
+
+		/**
+		 * Returns <code>true</code> if each of the given String's character is a valid Java identifier part.
+		 * 
+		 * @param name
+		 *            Name of which we need to check the validity.
+		 * @return <code>true</code> if the given <code>name</code> can be considered a valid Java identifier,
+		 *         <code>false</code> otherwise.
+		 */
+		private boolean isJavaIdentifier(String name) {
+			for (char character : name.toCharArray()) {
+				if (!Character.isJavaIdentifierPart(character)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }

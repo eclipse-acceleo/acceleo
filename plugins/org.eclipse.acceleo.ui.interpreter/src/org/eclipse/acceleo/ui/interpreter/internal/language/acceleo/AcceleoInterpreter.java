@@ -13,7 +13,6 @@ package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -46,6 +45,7 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
 	 */
+	@SuppressWarnings("restriction")
 	@Override
 	public void configureSourceViewer(final SourceViewer viewer) {
 		if (viewer instanceof AcceleoSourceViewer) {
@@ -56,8 +56,9 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 			((AcceleoSourceViewer)viewer).initializeContent();
 
 			// Setup syntax highlighting and partitioning
-			IDocumentPartitioner partitioner = new FastPartitioner(new AcceleoPartitionScanner(),
-					AcceleoPartitionScanner.LEGAL_CONTENT_TYPES);
+			IDocumentPartitioner partitioner = new FastPartitioner(
+					new org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner(),
+					org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner.LEGAL_CONTENT_TYPES);
 			document.setDocumentPartitioner(partitioner);
 			partitioner.connect(document);
 

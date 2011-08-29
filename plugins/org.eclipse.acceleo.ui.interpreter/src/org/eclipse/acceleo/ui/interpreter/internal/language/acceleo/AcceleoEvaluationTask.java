@@ -20,14 +20,12 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
-import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
-import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
@@ -74,11 +72,12 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 * 
 	 * @see java.util.concurrent.Callable#call()
 	 */
+	@SuppressWarnings("restriction")
 	public EvaluationResult call() throws Exception {
 		CompilationResult compilationResult = context.getCompilationResult();
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
 			return new EvaluationResult(new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID,
-					"Unresolved Compilation Problems"));
+					InterpreterMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
 		}
 
 		Object compiledExpression = compilationResult.getCompiledExpression();
@@ -135,10 +134,12 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			final Module module = (Module)EcoreUtil.getRootContainer(expression);
 			// We won't have listeners or property files here
 			List<IAcceleoTextGenerationListener> listeners = Collections.emptyList();
-			AcceleoEnvironmentFactory factory = new AcceleoEnvironmentFactory(null, module, listeners,
-					new AcceleoPropertiesLookup(), new PreviewStrategy(), new BasicMonitor());
+			org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory factory = new org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory(
+					null, module, listeners,
+					new org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup(),
+					new PreviewStrategy(), new BasicMonitor());
 			OCL ocl = OCL.newInstance(factory);
-			AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> evaluationVisitor = (AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
+			org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> evaluationVisitor = (org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 					.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(),
 							ocl.getExtentMap());
 

@@ -22,7 +22,7 @@ import org.eclipse.jface.action.Action;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class EvaluateAction extends Action {
+public final class EvaluateAction extends Action {
 	/** References the interpreter from which the action was triggered. */
 	private InterpreterView interpreterView;
 

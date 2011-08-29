@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
@@ -76,6 +77,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -108,6 +110,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** ID of the interpreter view context. Must be kept in sync with the plugin.xml declaration. */
 	private static final String INTERPRETER_VIEW_CONTEXT_ID = "org.eclipse.acceleo.ui.interpreter.interpreterview"; //$NON-NLS-1$
+
+	/** Key for the currently selected language as stored in this view's memento. */
+	private static final String MEMENTO_CURRENT_LANGUAGE_KEY = "org.eclipse.acceleo.ui.interpreter.current.language"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
@@ -165,6 +170,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
+
+	/** Memento from which to restore this view's state. */
+	private IMemento partMemento;
 
 	/**
 	 * Keeps a reference to the "result" section of the interpreter form. This will be used to re-create the
@@ -312,12 +320,12 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ui.part.ViewPart#init(org.eclipse.ui.IViewSite)
+	 * @see org.eclipse.ui.part.ViewPart#init(org.eclipse.ui.IViewSite, org.eclipse.ui.IMemento)
 	 */
 	@Override
-	public void init(IViewSite site) throws PartInitException {
-		super.init(site);
-		// FIXME use the init(IMemento) instead and restore the view to the proper selected language
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+		this.partMemento = memento;
 
 		IContextService contextService = (IContextService)site.getService(IContextService.class);
 		contextActivationToken = contextService.activateContext(INTERPRETER_VIEW_CONTEXT_ID);
@@ -338,6 +346,21 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	public void menuAboutToShow(IMenuManager manager) {
 		manager.add(new CreateVariableAction(variableViewer));
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.part.ViewPart#saveState(org.eclipse.ui.IMemento)
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		if (partMemento != null) {
+			// Part had not been restored, keep old state
+			memento.putMemento(partMemento);
+		} else {
+			memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
+		}
 	}
 
 	/**
@@ -451,7 +474,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 */
 	protected void createExpressionSection(FormToolkit toolkit, Composite leftColumn) {
 		expressionSection = toolkit.createSection(leftColumn, ExpandableComposite.TITLE_BAR);
-		expressionSection.setText("Expression");
+		expressionSection.setText(InterpreterMessages.getString("interpreter.view.expression.section.name")); //$NON-NLS-1$
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		expressionSection.setLayoutData(gridData);
 
@@ -483,7 +506,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 		populateLanguageMenu(interpreterForm.getMenuManager());
 
-		interpreterForm.setText(getCurrentLanguageDescriptor().getLabel() + " Interpreter");
+		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
+				getCurrentLanguageDescriptor().getLabel()));
 
 		Composite formBody = interpreterForm.getBody();
 		GridLayout formLayout = new GridLayout(2, false);
@@ -522,7 +546,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 */
 	protected void createResultSection(FormToolkit toolkit, Composite leftColumn) {
 		resultSection = toolkit.createSection(leftColumn, ExpandableComposite.TITLE_BAR);
-		resultSection.setText("Evaluation Result");
+		resultSection.setText(InterpreterMessages.getString("interpreter.view.result.section.name")); //$NON-NLS-1$
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		resultSection.setLayoutData(gridData);
 
@@ -635,7 +659,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 */
 	protected void createVariableSection(FormToolkit toolkit, Composite rightColumn) {
 		Section variableSection = toolkit.createSection(rightColumn, ExpandableComposite.TITLE_BAR);
-		variableSection.setText("Variables");
+		variableSection.setText(InterpreterMessages.getString("interpreter.view.variable.section.name")); //$NON-NLS-1$
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		variableSection.setLayoutData(gridData);
 
@@ -707,8 +731,14 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			IAction action = new ChangeLanguageAction(descriptor);
 			menuManager.add(action);
 			if (getCurrentLanguageDescriptor() == null) {
-				currentLanguage = descriptor;
-				action.setChecked(true);
+				if (partMemento == null) {
+					currentLanguage = descriptor;
+					action.setChecked(true);
+				} else if (partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY).equals(
+						descriptor.getClassName())) {
+					currentLanguage = descriptor;
+					action.setChecked(true);
+				}
 			}
 		}
 	}
@@ -740,7 +770,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		currentLanguageInterpreter = null;
 
 		currentLanguage = selectedLanguage;
-		interpreterForm.setText(getCurrentLanguageDescriptor().getLabel() + " Interpreter");
+		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
+				getCurrentLanguageDescriptor().getLabel()));
 
 		if (expressionSection != null) {
 			Composite expressionSectionBody = (Composite)expressionSection.getClient();

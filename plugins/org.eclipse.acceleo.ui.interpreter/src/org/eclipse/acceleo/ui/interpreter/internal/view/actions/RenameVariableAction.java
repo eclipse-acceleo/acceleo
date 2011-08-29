@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
@@ -52,7 +53,7 @@ public final class RenameVariableAction extends Action {
 	private TreeEditor treeEditor;
 
 	/** Keeps a reference towards the TreeViewer displaying our variables. */
-	private final TreeViewer variableViewer;
+	protected final TreeViewer variableViewer;
 
 	/**
 	 * Instantiates a rename action for the given variable TreeViewer.
@@ -61,7 +62,7 @@ public final class RenameVariableAction extends Action {
 	 *            The TreeViewer displaying the variables to rename.
 	 */
 	public RenameVariableAction(TreeViewer variableViewer) {
-		super("Rename variable");
+		super(InterpreterMessages.getString("interpreter.action.renamevariable.name")); //$NON-NLS-1$
 		this.variableViewer = variableViewer;
 		this.treeEditor = new TreeEditor(getTree());
 	}

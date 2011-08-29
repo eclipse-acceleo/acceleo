@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
+import org.eclipse.acceleo.ui.interpreter.internal.AcceleoInterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
-import org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterImages;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -24,7 +25,8 @@ import org.eclipse.jface.action.IAction;
  */
 public class ToggleRealTimeAction extends Action {
 	/** The tooltip we'll show for this action. */
-	private static final String TOOLTIP_TEXT = "Enable real-time compilation";
+	private static final String TOOLTIP_TEXT = InterpreterMessages
+			.getString("intepreter.action.realtime.tooltip"); //$NON-NLS-1$
 
 	/** Keeps a reference to the interpreter view. */
 	private InterpreterView view;

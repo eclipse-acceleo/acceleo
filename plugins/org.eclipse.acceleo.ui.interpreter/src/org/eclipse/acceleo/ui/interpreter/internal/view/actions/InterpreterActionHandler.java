@@ -22,7 +22,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class InterpreterActionHandler extends AbstractHandler {
+public final class InterpreterActionHandler extends AbstractHandler {
 	/** Action ID of the "Evaluate" action. Must be kept in sync with the plugin.xml declaration. */
 	public static final String EVALUTE_ACTION_ID = "org.eclipse.acceleo.ui.interpreter.evaluateaction"; //$NON-NLS-1$
 

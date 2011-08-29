@@ -13,6 +13,7 @@ package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -24,7 +25,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class DeleteVariableOrValueAction extends Action {
+public final class DeleteVariableOrValueAction extends Action {
 	/** Keeps a reference to the variable viewer. */
 	private final TreeViewer variableViewer;
 
@@ -35,7 +36,7 @@ public class DeleteVariableOrValueAction extends Action {
 	 *            The variable viewer.
 	 */
 	public DeleteVariableOrValueAction(TreeViewer viewer) {
-		super("Delete variable");
+		super(InterpreterMessages.getString("interpreter.action.deletevariable.name")); //$NON-NLS-1$
 		this.variableViewer = viewer;
 	}
 

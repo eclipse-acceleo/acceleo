@@ -20,7 +20,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
 import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
@@ -40,8 +39,8 @@ import org.eclipse.ocl.util.Bag;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This subclass of a {@link SourceViewer} will allow us to maintain an {@link AcceleoSourceContent} while the
- * user changes the source.
+ * This subclass of a {@link SourceViewer} will allow us to maintain an AcceleoSourceContent while the user
+ * changes the source.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
@@ -109,7 +108,8 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * 
 	 * @return The Acceleo source content of this viewer.
 	 */
-	public AcceleoSourceContent getContent() {
+	@SuppressWarnings("restriction")
+	public org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent getContent() {
 		return content;
 	}
 
@@ -160,6 +160,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	/**
 	 * Creates and initialize the content of this viewer.
 	 */
+	@SuppressWarnings("restriction")
 	public void initializeContent() {
 		content = new AcceleoInterpreterSourceContent();
 		content.init(new StringBuffer(getDocument().get()));
@@ -181,6 +182,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * @param context
 	 *            The current interpreter context.
 	 */
+	@SuppressWarnings("restriction")
 	public void updateCST(InterpreterContext context) {
 		fullExpression = rebuildFullExpression(context);
 
