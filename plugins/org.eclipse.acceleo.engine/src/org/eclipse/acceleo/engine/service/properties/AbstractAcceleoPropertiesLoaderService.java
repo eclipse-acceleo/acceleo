@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.service.properties;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
 
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.service.AcceleoService;
@@ -34,6 +36,13 @@ public abstract class AbstractAcceleoPropertiesLoaderService extends AbstractAcc
 	protected AcceleoService acceleoService;
 
 	/**
+	 * Indicates if the properties loaded should be forced.
+	 * 
+	 * @since 3.1
+	 */
+	protected boolean forceProperties;
+
+	/**
 	 * Initialize the Acceleo service with the list of properties files.
 	 * 
 	 * @param propertiesFiles
@@ -44,24 +53,43 @@ public abstract class AbstractAcceleoPropertiesLoaderService extends AbstractAcc
 			try {
 				acceleoService.addPropertiesFile(propertiesFile);
 			} catch (MissingResourceException e) {
-				Properties loadedProperties = this.loadProperties(propertiesFile);
-				if (loadedProperties != null) {
-					Map<String, String> propertiesToAdd = new HashMap<String, String>();
-					Enumeration<?> propertiesNames = loadedProperties.propertyNames();
-					while (propertiesNames.hasMoreElements()) {
-						String propertyName = (String)propertiesNames.nextElement();
-						String propertyValue = loadedProperties.getProperty(propertyName);
-						propertiesToAdd.put(propertyName, propertyValue);
+				if (forceProperties) {
+					Properties loadedProperties = this.loadProperties(propertiesFile);
+					if (loadedProperties == null) {
+						loadedProperties = alternatePropertiesLoading(propertiesFile);
 					}
-					if (!propertiesToAdd.isEmpty()) {
-						try {
-							acceleoService.addProperties(propertiesToAdd);
-						} catch (MissingResourceException ex) {
-							AcceleoEnginePlugin.log(ex, false);
+					if (loadedProperties != null) {
+						Map<String, String> propertiesToAdd = new HashMap<String, String>();
+						Enumeration<?> propertiesNames = loadedProperties.propertyNames();
+						while (propertiesNames.hasMoreElements()) {
+							String propertyName = (String)propertiesNames.nextElement();
+							String propertyValue = loadedProperties.getProperty(propertyName);
+							propertiesToAdd.put(propertyName, propertyValue);
+						}
+						if (!propertiesToAdd.isEmpty()) {
+							try {
+								acceleoService.addProperties(propertiesToAdd);
+							} catch (MissingResourceException ex) {
+								AcceleoEnginePlugin.log(ex, false);
+							}
 						}
 					}
 				} else {
-					AcceleoEnginePlugin.log(e, false);
+					PropertyResourceBundle propertyResourceBundle = this
+							.loadPropertiesResourceBundle(propertiesFile);
+					if (propertyResourceBundle == null) {
+						propertyResourceBundle = alternatePropertiesResourceBundleLoading(propertiesFile);
+					}
+					if (propertyResourceBundle != null) {
+						try {
+							acceleoService.addProperties(propertyResourceBundle, new File(propertiesFile)
+									.getName());
+						} catch (MissingResourceException ex) {
+							AcceleoEnginePlugin.log(ex, false);
+						}
+					} else {
+						AcceleoEnginePlugin.log(e, false);
+					}
 				}
 			}
 		}
