@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -29,6 +28,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.GapTextStore;
 import org.eclipse.jface.text.ITextStore;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -215,7 +215,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		String moduleSignature = DUMMY_MODULE;
 		EObject root = null;
 		if (!context.getTargetEObjects().isEmpty()) {
-			root = context.getTargetEObjects().get(0);
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
 		}
 		String targetNsURI = null;
 		if (root != null) {
@@ -237,7 +237,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		if (!expression.contains("[template") && !expression.contains("[query")) { //$NON-NLS-1$ //$NON-NLS-2$ 
 			appendTail = true;
 			String templateSignature = DUMMY_TEMPLATE;
-			List<EObject> target = Collections.emptyList();
+			List<EObject> target = context.getTargetEObjects();
 
 			String argumentType = null;
 			if (target != null && !target.isEmpty()) {

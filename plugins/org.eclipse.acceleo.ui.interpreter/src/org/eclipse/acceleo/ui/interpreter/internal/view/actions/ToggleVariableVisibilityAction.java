@@ -8,9 +8,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.view;
+package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
+import org.eclipse.acceleo.ui.interpreter.internal.view.AcceleoInterpreterImages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.layout.GridData;
@@ -25,7 +26,7 @@ import org.eclipse.ui.forms.widgets.Form;
  */
 public class ToggleVariableVisibilityAction extends Action {
 	/** The tooltip we'll show for this action. */
-	private static final String tooltipText = "Show/Hide Variables";
+	private static final String TOOLTIP_TEXT = "Show variables";
 
 	/** The form that will have to be re-laid out when changing visibilities. */
 	private Form form;
@@ -49,7 +50,7 @@ public class ToggleVariableVisibilityAction extends Action {
 		super(null, IAction.AS_CHECK_BOX);
 		setImageDescriptor(AcceleoInterpreterImages
 				.getImageDescriptor(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON));
-		setToolTipText(tooltipText);
+		setToolTipText(TOOLTIP_TEXT);
 		this.form = interpreterForm;
 		this.rightColumn = variableContainer;
 	}

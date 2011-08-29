@@ -23,13 +23,14 @@ import java.util.concurrent.Future;
 
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
-import org.eclipse.acceleo.ui.interpreter.internal.view.ToggleVariableVisibilityAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableContentProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableDropListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleVariableVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -547,6 +548,11 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			treeViewer.setContentProvider(new ResultContentProvider(adapterFactory));
 			treeViewer.setLabelProvider(new ResultLabelProvider(adapterFactory));
 		}
+
+		if (viewer instanceof TreeViewer) {
+			setUpResultDragSupport((TreeViewer)viewer);
+		}
+
 		return viewer;
 	}
 
@@ -597,6 +603,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Enables (or disables) the real-time compilation of expressions.
+	 */
+	public void toggleRealTime() {
+
+	}
+
+	/**
 	 * Creates the right click menu that will be displayed for the variable viewer.
 	 * 
 	 * @param viewer
@@ -644,7 +657,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            Parent composite of the TreeViewer.
 	 */
 	protected TreeViewer createVariableViewer(FormToolkit toolkit, Composite sectionBody) {
-		Tree variableTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
+		Tree variableTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI
+				| SWT.FULL_SELECTION);
 
 		TreeViewer viewer = new TreeViewer(variableTree);
 		AdapterFactory adapterFactory = createAdapterFactory();
@@ -802,6 +816,19 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Sets up the drag and drop support for the result viewer.
+	 * 
+	 * @param viewer
+	 *            The result viewer.
+	 */
+	protected void setUpResultDragSupport(TreeViewer viewer) {
+		int operations = DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
+		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
+
+		viewer.addDragSupport(operations, transfers, new ResultDragListener(viewer));
+	}
+
+	/**
 	 * Sets the result of the compilation to the given instance.
 	 * 
 	 * @param compilationResult
@@ -821,7 +848,11 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		List<Object> input = new ArrayList<Object>();
 		Object evaluationResult = result.getEvaluationResult();
 		if (evaluationResult instanceof Collection<?>) {
-			input.addAll((Collection<?>)evaluationResult);
+			for (Object child : (Collection<?>)evaluationResult) {
+				if (child != null) {
+					input.add(child);
+				}
+			}
 		} else if (evaluationResult != null) {
 			input.add(evaluationResult);
 		}

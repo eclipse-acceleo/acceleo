@@ -74,6 +74,7 @@ public final class AcceleoInterpreterImages {
 
 		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,
 				IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON);
+		createImage(IInterpreterConstants.TOGGLE_REALTIME_ICON, IInterpreterConstants.TOGGLE_REALTIME_ICON);
 	}
 
 	/**

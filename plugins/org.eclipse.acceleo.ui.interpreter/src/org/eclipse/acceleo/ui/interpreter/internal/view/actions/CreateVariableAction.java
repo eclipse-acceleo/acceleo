@@ -95,14 +95,36 @@ public class CreateVariableAction extends Action {
 			String errorMessage = null;
 			if (newText == null || newText.equals("")) { //$NON-NLS-1$
 				errorMessage = "Please enter a variable name";
+			} else if (!isJavaIdentifier(newText)) {
+				errorMessage = "'" + newText + "' is not a valid Java identifier";
 			} else {
-				for (char character : newText.toCharArray()) {
-					if (!Character.isJavaIdentifierPart(character)) {
-						errorMessage = "'" + newText + "' is not a valid Java identifier";
+				Object input = variableViewer.getInput();
+				if (input instanceof List<?>) {
+					for (Object var : (List<?>)input) {
+						if (var instanceof Variable && newText.equals(((Variable)var).getName())) {
+							errorMessage = "A variable of that name already exists";
+						}
 					}
 				}
 			}
 			return errorMessage;
 		}
+	}
+
+	/**
+	 * Returns <code>true</code> if each of the given String's character is a valid Java identifier part.
+	 * 
+	 * @param name
+	 *            Name of which we need to check the validity.
+	 * @return <code>true</code> if the given <code>name</code> can be considered a valid Java identifier,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isJavaIdentifier(String name) {
+		for (char character : name.toCharArray()) {
+			if (!Character.isJavaIdentifierPart(character)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -91,6 +91,14 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 				ITextSelection textSelection = (ITextSelection)selection;
 				int startOffset = textSelection.getOffset() + acceleoSource.getGap();
 				int endOffset = startOffset + textSelection.getLength();
+
+				if (textSelection.getText().startsWith("[")) { //$NON-NLS-1$
+					startOffset++;
+				}
+				if (textSelection.getText().endsWith("/]")) { //$NON-NLS-1$
+					endOffset -= 2;
+				}
+
 				selectedNode = getChildrenCandidate(module, startOffset, endOffset);
 
 				if (textSelection.getLength() == 0) {
