@@ -23,9 +23,12 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.util.Monitor;
@@ -39,7 +42,7 @@ import org.eclipse.ocl.ecore.Variable;
  * @noextend This class is not intended to be subclassed by clients.
  * @since 3.0
  */
-public class AcceleoEngine implements IAcceleoEngine {
+public class AcceleoEngine implements IAcceleoEngine2 {
 	/** Externalized name of the "self" context variable to avoid too many distinct uses. */
 	private static final String SELF_CONTEXT_VARIABLE_NAME = "context$0"; //$NON-NLS-1$
 
@@ -109,17 +112,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 */
 	public Map<String, String> evaluate(Template template, List<? extends Object> arguments,
 			File generationRoot, IAcceleoGenerationStrategy strategy, Monitor monitor) {
-		if (template == null || arguments == null) {
-			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
-		}
-		if (template.getVisibility() != VisibilityKind.PUBLIC) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEngine.IllegalTemplateInvocation")); //$NON-NLS-1$
-		}
-		if (template.getParameter().size() != arguments.size()) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEngine.IllegalArguments")); //$NON-NLS-1$
-		}
+		checkEvaluation(template, arguments);
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
 		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(generationRoot, (Module)template
@@ -146,11 +139,90 @@ public class AcceleoEngine implements IAcceleoEngine {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine2#evaluate(org.eclipse.acceleo.model.mtl.Template,
+	 *      java.util.List, org.eclipse.emf.common.util.Monitor)
+	 */
+	public Object evaluate(Template template, List<? extends Object> arguments, Monitor monitor) {
+		checkEvaluation(template, arguments);
+
+		// We need to create an OCL instance for each generation since the environment factory is contextual
+		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(null, (Module)template
+				.eContainer(), new PreviewStrategy(), monitor);
+		ocl = OCL.newInstance(factory);
+
+		try {
+			return doEvaluate(template, arguments);
+		} catch (AcceleoEvaluationCancelledException e) {
+			// All necessary disposal should have been made
+		} finally {
+			hookGenerationEnd(factory);
+			factory.dispose();
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine2#evaluate(org.eclipse.acceleo.model.mtl.Query,
+	 *      java.util.List, org.eclipse.emf.common.util.Monitor)
+	 */
+	public Object evaluate(Query query, List<? extends Object> arguments, Monitor monitor) {
+		checkEvaluation(query, arguments);
+
+		// We need to create an OCL instance for each generation since the environment factory is contextual
+		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(null,
+				(Module)query.eContainer(), new PreviewStrategy(), monitor);
+		ocl = OCL.newInstance(factory);
+
+		try {
+			return doEvaluate(query, arguments);
+		} catch (AcceleoEvaluationCancelledException e) {
+			// All necessary disposal should have been made
+		} finally {
+			hookGenerationEnd(factory);
+			factory.dispose();
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine#removeListener(org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener)
 	 * @since 0.8
 	 */
 	public void removeListener(IAcceleoTextGenerationListener listener) {
 		listeners.remove(listener);
+	}
+
+	/**
+	 * Checks that the given module element can be evaluated with the given arguments.
+	 * 
+	 * @param moduleElement
+	 *            The module element we need to evaluate.
+	 * @param arguments
+	 *            The arguments with which to evaluate <code>moduleElement</code>.
+	 * @since 3.2
+	 */
+	protected void checkEvaluation(ModuleElement moduleElement, List<? extends Object> arguments) {
+		if (moduleElement == null || arguments == null) {
+			throw new NullPointerException(AcceleoEngineMessages.getString("AcceleoEngine.NullArguments")); //$NON-NLS-1$
+		}
+		if (moduleElement.getVisibility() != VisibilityKind.PUBLIC) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalInvocation")); //$NON-NLS-1$
+		}
+		boolean illegalParams = moduleElement instanceof Template
+				&& ((Template)moduleElement).getParameter().size() != arguments.size();
+		illegalParams = illegalParams || moduleElement instanceof Query
+				&& ((Query)moduleElement).getParameter().size() != arguments.size();
+		if (illegalParams) {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEngine.IllegalArguments")); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -210,7 +282,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 	 * @param arguments
 	 *            These will be passed as the template arguments.
 	 */
-	private void doEvaluate(Template template, List<? extends Object> arguments) {
+	private Object doEvaluate(Template template, List<? extends Object> arguments) {
 		// Guard Evaluation
 		boolean guardValue = true;
 		if (template.getGuard() != null) {
@@ -262,7 +334,7 @@ public class AcceleoEngine implements IAcceleoEngine {
 				}
 			}
 			try {
-				query.evaluate();
+				return query.evaluate();
 			} finally {
 				// reset variables
 				for (Variable var : template.getParameter()) {
@@ -272,6 +344,50 @@ public class AcceleoEngine implements IAcceleoEngine {
 					query.getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
 					query.getEvaluationEnvironment().remove(SELF_CONTEXT_VARIABLE_NAME);
 				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * This does the actual work of query evaluation. It will be called from the public API methods exposed by
+	 * the engine.
+	 * 
+	 * @param acceleoQuery
+	 *            The query which is to be evaluated.
+	 * @param arguments
+	 *            These will be passed as the query arguments.
+	 */
+	private Object doEvaluate(Query acceleoQuery, List<? extends Object> arguments) {
+		final OCL.Query query = ocl.createQuery(acceleoQuery.getExpression());
+
+		// Sets all needed variables for the query evaluation
+		for (int i = 0; i < acceleoQuery.getParameter().size(); i++) {
+			Variable param = acceleoQuery.getParameter().get(i);
+			Object value = arguments.get(i);
+			if (param.getType().isInstance(value)) {
+				query.getEvaluationEnvironment().add(param.getName(), value);
+			} else {
+				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoEngine.ArgumentMismatch", acceleoQuery.getName())); //$NON-NLS-1$
+			}
+			// [255379] also sets "self" variable to match the very first parameter
+			if (i == 0) {
+				query.getEvaluationEnvironment().add(SELF_VARIABLE_NAME, value);
+				query.getEvaluationEnvironment().add(SELF_CONTEXT_VARIABLE_NAME, value);
+			}
+		}
+		try {
+			return query.evaluate();
+		} finally {
+			// reset variables
+			for (Variable var : acceleoQuery.getParameter()) {
+				query.getEvaluationEnvironment().remove(var.getName());
+			}
+			if (acceleoQuery.getParameter().size() > 0) {
+				query.getEvaluationEnvironment().remove(SELF_VARIABLE_NAME);
+				query.getEvaluationEnvironment().remove(SELF_CONTEXT_VARIABLE_NAME);
 			}
 		}
 	}
