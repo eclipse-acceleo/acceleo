@@ -32,16 +32,6 @@ public class AcceleoInterpreterSourceContent extends AcceleoSourceContent {
 	}
 
 	/**
-	 * Sets the new value of the offset gap.
-	 * 
-	 * @param newGap
-	 *            The new offset gap.
-	 */
-	public void setGap(int newGap) {
-		gap = newGap;
-	}
-
-	/**
 	 * Returns the offset gap between the displayed text and the actual parsed expression.
 	 * 
 	 * @return The offset gap between the displayed text and the actual parsed expression.
@@ -55,5 +45,15 @@ public class AcceleoInterpreterSourceContent extends AcceleoSourceContent {
 		source.resolveAST();
 		source.resolveASTDocumentation();
 		return source.getAST();
+	}
+
+	/**
+	 * Sets the new value of the offset gap.
+	 * 
+	 * @param newGap
+	 *            The new offset gap.
+	 */
+	public void setGap(int newGap) {
+		gap = newGap;
 	}
 }

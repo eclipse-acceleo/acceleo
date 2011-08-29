@@ -30,16 +30,15 @@ import org.eclipse.swt.widgets.Composite;
 @SuppressWarnings("unused")
 public abstract class AbstractLanguageInterpreter {
 	/**
-	 * If editing this language needs a custom implementation of a SourceViewer, this method can be used to
-	 * instantiate it.
+	 * This can be used to configure the source viewer to fit the language needs. Document scanner, document
+	 * partitioner, source viewer configuration... can be set accordingly.
 	 * 
-	 * @param parent
-	 *            The parent composite for this source viewer.
-	 * @return The source viewer that is to be used for this language. Can be <code>null</code>, in which case
-	 *         a default {@link SourceViewer} will be instantiated.
+	 * @param viewer
+	 *            The viewer that will be displayed to the user for the edition of expressions in this
+	 *            language.
 	 */
-	public SourceViewer createSourceViewer(Composite parent) {
-		return null;
+	public void configureSourceViewer(SourceViewer viewer) {
+		// Do nothing
 	}
 
 	/**
@@ -56,15 +55,16 @@ public abstract class AbstractLanguageInterpreter {
 	}
 
 	/**
-	 * This can be used to configure the source viewer to fit the language needs. Document scanner, document
-	 * partitioner, source viewer configuration... can be set accordingly.
+	 * If editing this language needs a custom implementation of a SourceViewer, this method can be used to
+	 * instantiate it.
 	 * 
-	 * @param viewer
-	 *            The viewer that will be displayed to the user for the edition of expressions in this
-	 *            language.
+	 * @param parent
+	 *            The parent composite for this source viewer.
+	 * @return The source viewer that is to be used for this language. Can be <code>null</code>, in which case
+	 *         a default {@link SourceViewer} will be instantiated.
 	 */
-	public void configureSourceViewer(SourceViewer viewer) {
-		// Do nothing
+	public SourceViewer createSourceViewer(Composite parent) {
+		return null;
 	}
 
 	/**

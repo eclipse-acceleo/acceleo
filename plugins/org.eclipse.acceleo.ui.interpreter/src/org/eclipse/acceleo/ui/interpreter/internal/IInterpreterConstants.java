@@ -19,9 +19,9 @@ public interface IInterpreterConstants {
 	/** Path to the icons of the interpreter. */
 	String INTERPRETER_ICONS = "icons"; //$NON-NLS-1$
 
-	/** Path to the icon for the "toggle variable visibility" action. */
-	String TOGGLE_VARIABLE_VISIBILITY_ICON = "variable_action.gif"; //$NON-NLS-1$
-
 	/** Path to the icon for the "toggle real-time compilation" action. */
 	String TOGGLE_REALTIME_ICON = "realtime_action.gif"; //$NON-NLS-1$
+
+	/** Path to the icon for the "toggle variable visibility" action. */
+	String TOGGLE_VARIABLE_VISIBILITY_ICON = "variable_action.gif"; //$NON-NLS-1$
 }

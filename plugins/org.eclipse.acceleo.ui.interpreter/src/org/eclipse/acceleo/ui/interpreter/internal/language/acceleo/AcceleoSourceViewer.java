@@ -55,31 +55,25 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule(''{0}'')]" + LINE_SEPARATOR; //$NON-NLS-1$
 
 	/**
+	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
+	 * the user specified both module and query/template in his expression.
+	 */
+	private static final String DUMMY_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
+
+	/**
 	 * If the text doesn't start with "[module", we'll use this as the template's signature. Otherwise, we'll
 	 * assume the user specified both module and query/template in his expression.
 	 */
 	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$ 
 
 	/**
-	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
-	 * the user specified both module and query/template in his expression.
-	 */
-	private static final String DUMMY_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
-
-	/** This will hold the Acceleo source of the expressions entered in the viewer. */
-	private AcceleoInterpreterSourceContent content;
-
-	/**
-	 * This will be set to <code>true</code> if the user explicitly defined a module signature in his
-	 * expression.
-	 */
-	private boolean hasExplicitModule;
-
-	/**
 	 * This will be updated with the exact text as entered by the user and displayed on the viewer. However,
 	 * this is not what will be parsed : it will be inserted into {@link #fullExpression}.
 	 */
 	private ITextStore buffer = new GapTextStore();
+
+	/** This will hold the Acceleo source of the expressions entered in the viewer. */
+	private AcceleoInterpreterSourceContent content;
 
 	/** This will contain the full expression as it will be parsed. */
 	private String fullExpression;
@@ -88,6 +82,12 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * This is the gap between the text as entered by the user and the text that is actually getting parsed.
 	 */
 	private int gap;
+
+	/**
+	 * This will be set to <code>true</code> if the user explicitly defined a module signature in his
+	 * expression.
+	 */
+	private boolean hasExplicitModule;
 
 	/**
 	 * Simply delegates to the super constructor.
@@ -105,20 +105,21 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	}
 
 	/**
-	 * Creates and initialize the content of this viewer.
-	 */
-	public void initializeContent() {
-		content = new AcceleoInterpreterSourceContent();
-		content.init(new StringBuffer(getDocument().get()));
-	}
-
-	/**
 	 * Returns the Acceleo source content of this viewer.
 	 * 
 	 * @return The Acceleo source content of this viewer.
 	 */
 	public AcceleoSourceContent getContent() {
 		return content;
+	}
+
+	/**
+	 * Returns the offset gap between the displayed text and the actual parsed expression.
+	 * 
+	 * @return The offset gap between the displayed text and the actual parsed expression.
+	 */
+	public int getGap() {
+		return gap;
 	}
 
 	/**
@@ -154,6 +155,14 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 				hasExplicitModule = false;
 			}
 		}
+	}
+
+	/**
+	 * Creates and initialize the content of this viewer.
+	 */
+	public void initializeContent() {
+		content = new AcceleoInterpreterSourceContent();
+		content.init(new StringBuffer(getDocument().get()));
 	}
 
 	/**
@@ -286,32 +295,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	}
 
 	/**
-	 * This will try and infer a meaningful argument String given the list of actual arguments. In short, if
-	 * the list's size is equal to <code>1</code>, we'll consider the argument to be this list's single
-	 * element. Otherwise we'll assume the argument should be a Sequence of this list's elements' common
-	 * supertype.
-	 * 
-	 * @param arguments
-	 *            The list of arguments for which we need an OCL argument String.
-	 * @return The inferred OCL type String.
-	 */
-	private String inferArgumentType(List<EObject> arguments) {
-		if (arguments.size() == 1) {
-			return arguments.get(0).eClass().getName();
-		}
-		EClass commonSuperType = null;
-		for (EObject argument : arguments) {
-			if (commonSuperType == null) {
-				commonSuperType = argument.eClass();
-			} else {
-				commonSuperType = getCommonSuperType(commonSuperType, argument.eClass());
-			}
-		}
-		assert commonSuperType != null;
-		return "Sequence(" + commonSuperType.getName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	/**
 	 * This will return the lowest (in the type hierarchy) common super type of the two given EClasses. If no
 	 * common super type is found, we'll return EObject.
 	 * 
@@ -337,42 +320,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			}
 		}
 		return commonSuperType;
-	}
-
-	/**
-	 * Returns the offset gap between the displayed text and the actual parsed expression.
-	 * 
-	 * @return The offset gap between the displayed text and the actual parsed expression.
-	 */
-	public int getGap() {
-		return gap;
-	}
-
-	/**
-	 * Tries and infer the OCL type of the given Object.
-	 * 
-	 * @param obj
-	 *            Object for which we need an OCL type.
-	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
-	 */
-	private String inferOCLType(Object obj) {
-		String oclType = "OCLAny"; //$NON-NLS-1$
-		EcoreEnvironment env = (EcoreEnvironment)new EcoreEnvironmentFactory().createEnvironment();
-		if (obj instanceof Collection<?>) {
-			EClassifier elementType = inferCollectionContentOCLType(env, (Collection<?>)obj);
-			CollectionKind kind = CollectionKind.SEQUENCE_LITERAL;
-			if (obj instanceof LinkedHashSet<?>) {
-				kind = CollectionKind.ORDERED_SET_LITERAL;
-			} else if (obj instanceof Set<?>) {
-				kind = CollectionKind.SET_LITERAL;
-			} else if (obj instanceof Bag<?>) {
-				kind = CollectionKind.BAG_LITERAL;
-			}
-			oclType = env.getTypeResolver().resolveCollectionType(kind, elementType).getName();
-		} else {
-			oclType = getOCLType(env, obj).getName();
-		}
-		return oclType;
 	}
 
 	/**
@@ -413,6 +360,32 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	}
 
 	/**
+	 * This will try and infer a meaningful argument String given the list of actual arguments. In short, if
+	 * the list's size is equal to <code>1</code>, we'll consider the argument to be this list's single
+	 * element. Otherwise we'll assume the argument should be a Sequence of this list's elements' common
+	 * supertype.
+	 * 
+	 * @param arguments
+	 *            The list of arguments for which we need an OCL argument String.
+	 * @return The inferred OCL type String.
+	 */
+	private String inferArgumentType(List<EObject> arguments) {
+		if (arguments.size() == 1) {
+			return arguments.get(0).eClass().getName();
+		}
+		EClass commonSuperType = null;
+		for (EObject argument : arguments) {
+			if (commonSuperType == null) {
+				commonSuperType = argument.eClass();
+			} else {
+				commonSuperType = getCommonSuperType(commonSuperType, argument.eClass());
+			}
+		}
+		assert commonSuperType != null;
+		return "Sequence(" + commonSuperType.getName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/**
 	 * Tries and infer the OCL type of the given Collection's content.
 	 * 
 	 * @param env
@@ -439,5 +412,32 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		}
 
 		return elementType;
+	}
+
+	/**
+	 * Tries and infer the OCL type of the given Object.
+	 * 
+	 * @param obj
+	 *            Object for which we need an OCL type.
+	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
+	 */
+	private String inferOCLType(Object obj) {
+		String oclType = "OCLAny"; //$NON-NLS-1$
+		EcoreEnvironment env = (EcoreEnvironment)new EcoreEnvironmentFactory().createEnvironment();
+		if (obj instanceof Collection<?>) {
+			EClassifier elementType = inferCollectionContentOCLType(env, (Collection<?>)obj);
+			CollectionKind kind = CollectionKind.SEQUENCE_LITERAL;
+			if (obj instanceof LinkedHashSet<?>) {
+				kind = CollectionKind.ORDERED_SET_LITERAL;
+			} else if (obj instanceof Set<?>) {
+				kind = CollectionKind.SET_LITERAL;
+			} else if (obj instanceof Bag<?>) {
+				kind = CollectionKind.BAG_LITERAL;
+			}
+			oclType = env.getTypeResolver().resolveCollectionType(kind, elementType).getName();
+		} else {
+			oclType = getOCLType(env, obj).getName();
+		}
+		return oclType;
 	}
 }

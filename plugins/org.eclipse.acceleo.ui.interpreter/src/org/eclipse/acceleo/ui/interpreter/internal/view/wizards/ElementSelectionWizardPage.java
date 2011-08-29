@@ -83,6 +83,15 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+	 */
+	public void menuAboutToShow(IMenuManager manager) {
+		manager.add(new LoadResourceAction(editingDomain));
+	}
+
+	/**
 	 * Creates the context menu of the ResourceSet's TreeViewer.
 	 * 
 	 * @param viewer
@@ -94,14 +103,5 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 		menuManager.addMenuListener(this);
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
-	 */
-	public void menuAboutToShow(IMenuManager manager) {
-		manager.add(new LoadResourceAction(editingDomain));
 	}
 }

@@ -37,17 +37,6 @@ public class CompilationResult {
 	private IStatus problems;
 
 	/**
-	 * Creates a compilation result given the compiled expression. This assumes that no issues were
-	 * encountered during the compilation.
-	 * 
-	 * @param compiledExpression
-	 *            Result of the compilation.
-	 */
-	public CompilationResult(Object compiledExpression) {
-		this.compiledExpression = compiledExpression;
-	}
-
-	/**
 	 * Creates a compilation result given the compilation issues. This assumes that critical errors were
 	 * encountered during the compilation, and that the expression could not be compiled.
 	 * 
@@ -57,6 +46,17 @@ public class CompilationResult {
 	 */
 	public CompilationResult(IStatus problems) {
 		this.problems = problems;
+	}
+
+	/**
+	 * Creates a compilation result given the compiled expression. This assumes that no issues were
+	 * encountered during the compilation.
+	 * 
+	 * @param compiledExpression
+	 *            Result of the compilation.
+	 */
+	public CompilationResult(Object compiledExpression) {
+		this.compiledExpression = compiledExpression;
 	}
 
 	/**
@@ -84,6 +84,15 @@ public class CompilationResult {
 	}
 
 	/**
+	 * Returns the problems encountered during this compilation.
+	 * 
+	 * @return The problems encountered during this compilation.
+	 */
+	public IStatus getProblems() {
+		return problems;
+	}
+
+	/**
 	 * Sets the compiled expression that resulted from this compilation.
 	 * 
 	 * @param compiledExpression
@@ -91,15 +100,6 @@ public class CompilationResult {
 	 */
 	public void setCompiledExpression(Object compiledExpression) {
 		this.compiledExpression = compiledExpression;
-	}
-
-	/**
-	 * Returns the problems encountered during this compilation.
-	 * 
-	 * @return The problems encountered during this compilation.
-	 */
-	public IStatus getProblems() {
-		return problems;
 	}
 
 	/**

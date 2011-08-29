@@ -23,12 +23,6 @@ import org.eclipse.jface.viewers.ISelection;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class InterpreterContext {
-	/** This will be initialized with the list of EObjects that have been selected in the workbench. */
-	private final List<EObject> targetEObjects;
-
-	/** List of the variables currently accessible by the interpreter. */
-	private final List<Variable> variables;
-
 	/** The full expression currently written in the interpreter's source viewer. */
 	private final String expression;
 
@@ -36,6 +30,25 @@ public class InterpreterContext {
 	 * Current selection in the source viewer.
 	 */
 	private final ISelection selection;
+
+	/** This will be initialized with the list of EObjects that have been selected in the workbench. */
+	private final List<EObject> targetEObjects;
+
+	/** List of the variables currently accessible by the interpreter. */
+	private final List<Variable> variables;
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param context
+	 *            The context we are to copy.
+	 */
+	public InterpreterContext(InterpreterContext context) {
+		this.expression = context.expression;
+		this.selection = context.selection;
+		this.targetEObjects = new ArrayList<EObject>(context.targetEObjects);
+		this.variables = new ArrayList<Variable>(context.variables);
+	}
 
 	/**
 	 * Instantiates this context.
@@ -56,25 +69,21 @@ public class InterpreterContext {
 	}
 
 	/**
-	 * Copy constructor.
-	 * 
-	 * @param context
-	 *            The context we are to copy.
-	 */
-	public InterpreterContext(InterpreterContext context) {
-		this.expression = context.expression;
-		this.selection = context.selection;
-		this.targetEObjects = new ArrayList<EObject>(context.targetEObjects);
-		this.variables = new ArrayList<Variable>(context.variables);
-	}
-
-	/**
 	 * Returns the expression currently written in the interpreter's source viewer.
 	 * 
 	 * @return The expression currently written in the interpreter's source viewer.
 	 */
 	public String getExpression() {
 		return expression;
+	}
+
+	/**
+	 * Returns the part of this expression that was selected in the source viewer.
+	 * 
+	 * @return The part of this expression that was selected in the source viewer.
+	 */
+	public ISelection getSelection() {
+		return selection;
 	}
 
 	/**
@@ -93,14 +102,5 @@ public class InterpreterContext {
 	 */
 	public List<Variable> getVariables() {
 		return variables;
-	}
-
-	/**
-	 * Returns the part of this expression that was selected in the source viewer.
-	 * 
-	 * @return The part of this expression that was selected in the source viewer.
-	 */
-	public ISelection getSelection() {
-		return selection;
 	}
 }

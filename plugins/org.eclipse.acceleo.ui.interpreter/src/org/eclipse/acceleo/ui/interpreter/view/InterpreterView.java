@@ -109,17 +109,26 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/** ID of the interpreter view context. Must be kept in sync with the plugin.xml declaration. */
 	private static final String INTERPRETER_VIEW_CONTEXT_ID = "org.eclipse.acceleo.ui.interpreter.interpreterview"; //$NON-NLS-1$
 
-	/** This executor service will be used in order to launch the compilation tasks of this interpreter. */
-	private ExecutorService compilationPool = Executors.newSingleThreadExecutor();
+	/**
+	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
+	 * an evaluation task can legally be created while this is <code>null</code>.
+	 */
+	protected CompilationResult compilationResult;
+
+	/** Thread which purpose is to compile the expression and update the context with the result. */
+	protected CompilationThread compilationThread;
 
 	/** This executor service will be used in order to launch the evaluation tasks of this interpreter. */
 	ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
 
-	/** Context activation token. This will be needed to deactivate it. */
-	private IContextActivation contextActivationToken;
+	/** This executor service will be used in order to launch the compilation tasks of this interpreter. */
+	private ExecutorService compilationPool = Executors.newSingleThreadExecutor();
 
 	/** Content assist activation token. This will be needed to deactivate our handler. */
 	private IHandlerActivation contentAssistActivationToken;
+
+	/** Context activation token. This will be needed to deactivate it. */
+	private IContextActivation contextActivationToken;
 
 	/** Currently selected language descriptor. */
 	private LanguageInterpreterDescriptor currentLanguage;
@@ -132,6 +141,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** This will be used to listen to EObject selection within the workbench. */
 	private ISelectionListener eobjectSelectionListener;
+
+	/** Thread which purpose is to evaluate the expression and update the view with the result. */
+	private EvaluationThread evaluationThread;
 
 	/**
 	 * Keeps a reference to the "expression" section of the interpreter form. This will be used to re-create
@@ -153,18 +165,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
-
-	/** Thread which purpose is to compile the expression and update the context with the result. */
-	protected CompilationThread compilationThread;
-
-	/** Thread which purpose is to evaluate the expression and update the view with the result. */
-	private EvaluationThread evaluationThread;
-
-	/**
-	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
-	 * an evaluation task can legally be created while this is <code>null</code>.
-	 */
-	protected CompilationResult compilationResult;
 
 	/**
 	 * Keeps a reference to the "result" section of the interpreter form. This will be used to re-create the
@@ -212,18 +212,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		}
 	}
 
-	public void evaluate() {
-		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
-			evaluationThread.interrupt();
-		}
-
-		// Clear previous evaluation messages
-		getForm().getMessageManager().removeMessages(resultSection);
-
-		evaluationThread = new EvaluationThread(getInterpreterContext());
-		evaluationThread.start();
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -268,6 +256,18 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		clearSelection();
 
 		super.dispose();
+	}
+
+	public void evaluate() {
+		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
+			evaluationThread.interrupt();
+		}
+
+		// Clear previous evaluation messages
+		getForm().getMessageManager().removeMessages(resultSection);
+
+		evaluationThread = new EvaluationThread(getInterpreterContext());
+		evaluationThread.start();
 	}
 
 	/**
@@ -350,6 +350,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		if (expressionViewer != null) {
 			expressionViewer.getControl().setFocus();
 		}
+	}
+
+	/**
+	 * Enables (or disables) the real-time compilation of expressions.
+	 */
+	public void toggleRealTime() {
+
 	}
 
 	/**
@@ -603,13 +610,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
-	 * Enables (or disables) the real-time compilation of expressions.
-	 */
-	public void toggleRealTime() {
-
-	}
-
-	/**
 	 * Creates the right click menu that will be displayed for the variable viewer.
 	 * 
 	 * @param viewer
@@ -776,6 +776,50 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Sets the result of the compilation to the given instance.
+	 * 
+	 * @param compilationResult
+	 *            The current expression's compilation result.
+	 */
+	protected final void setCompilationResult(CompilationResult compilationResult) {
+		this.compilationResult = compilationResult;
+	}
+
+	/**
+	 * Update the result viewer.
+	 * 
+	 * @param result
+	 *            The current expressions's evaluation result.
+	 */
+	protected final void setEvaluationResult(EvaluationResult result) {
+		List<Object> input = new ArrayList<Object>();
+		Object evaluationResult = result.getEvaluationResult();
+		if (evaluationResult instanceof Collection<?>) {
+			for (Object child : (Collection<?>)evaluationResult) {
+				if (child != null) {
+					input.add(child);
+				}
+			}
+		} else if (evaluationResult != null) {
+			input.add(evaluationResult);
+		}
+		resultViewer.setInput(input);
+	}
+
+	/**
+	 * Sets up the drag and drop support for the result viewer.
+	 * 
+	 * @param viewer
+	 *            The result viewer.
+	 */
+	protected void setUpResultDragSupport(TreeViewer viewer) {
+		int operations = DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
+		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
+
+		viewer.addDragSupport(operations, transfers, new ResultDragListener(viewer));
+	}
+
+	/**
 	 * This will be called in order to set up the actions available on the given variable viewer.
 	 * 
 	 * @param viewer
@@ -813,50 +857,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
 
 		viewer.addDropSupport(operations, transfers, new VariableDropListener(viewer));
-	}
-
-	/**
-	 * Sets up the drag and drop support for the result viewer.
-	 * 
-	 * @param viewer
-	 *            The result viewer.
-	 */
-	protected void setUpResultDragSupport(TreeViewer viewer) {
-		int operations = DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
-
-		viewer.addDragSupport(operations, transfers, new ResultDragListener(viewer));
-	}
-
-	/**
-	 * Sets the result of the compilation to the given instance.
-	 * 
-	 * @param compilationResult
-	 *            The current expression's compilation result.
-	 */
-	protected final void setCompilationResult(CompilationResult compilationResult) {
-		this.compilationResult = compilationResult;
-	}
-
-	/**
-	 * Update the result viewer.
-	 * 
-	 * @param result
-	 *            The current expressions's evaluation result.
-	 */
-	protected final void setEvaluationResult(EvaluationResult result) {
-		List<Object> input = new ArrayList<Object>();
-		Object evaluationResult = result.getEvaluationResult();
-		if (evaluationResult instanceof Collection<?>) {
-			for (Object child : (Collection<?>)evaluationResult) {
-				if (child != null) {
-					input.add(child);
-				}
-			}
-		} else if (evaluationResult != null) {
-			input.add(evaluationResult);
-		}
-		resultViewer.setInput(input);
 	}
 
 	/**
@@ -921,6 +921,73 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		@Override
 		public void run() {
 			selectLanguage(language);
+		}
+	}
+
+	/**
+	 * This implementation of a Thread will be used to wrap a compilation task as returned by the
+	 * LanguageInterpreter, then asynchronously update the form with all error messages (if any) that were
+	 * raised by this compilation task. Afterwards, this Thread will update the interpreter context with the
+	 * compilation result.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private class CompilationThread extends Thread {
+		/** The compilation thread which result we are to wait for. */
+		private Future<CompilationResult> compilationTask;
+
+		/**
+		 * Instantiates a compilation thread given the compilation task of which we are to check the result.
+		 * 
+		 * @param compilationTask
+		 *            Thread which result we are to wait for.
+		 */
+		public CompilationThread(Future<CompilationResult> compilationTask) {
+			super("InterpreterCompilationThread"); //$NON-NLS-1$
+			this.compilationTask = compilationTask;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Thread#interrupt()
+		 */
+		@Override
+		public void interrupt() {
+			super.interrupt();
+			compilationTask.cancel(true);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
+		@Override
+		public void run() {
+			try {
+				final CompilationResult result = compilationTask.get();
+
+				if (result != null && result.getProblems() != null) {
+					Display.getDefault().asyncExec(new Runnable() {
+						/**
+						 * {@inheritDoc}
+						 * 
+						 * @see java.lang.Runnable#run()
+						 */
+						public void run() {
+							addStatusMessages(result.getProblems(), COMPILATION_MESSAGE_PREFIX);
+						}
+					});
+				}
+
+				// Whether there were problems or not, update the context with this result.
+				setCompilationResult(result);
+			} catch (InterruptedException e) {
+				// Thread is expected to be cancelled if another is started
+			} catch (ExecutionException e) {
+				// FIXME log
+			}
 		}
 	}
 
@@ -1046,73 +1113,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 						setEvaluationResult(result);
 					}
 				});
-			} catch (InterruptedException e) {
-				// Thread is expected to be cancelled if another is started
-			} catch (ExecutionException e) {
-				// FIXME log
-			}
-		}
-	}
-
-	/**
-	 * This implementation of a Thread will be used to wrap a compilation task as returned by the
-	 * LanguageInterpreter, then asynchronously update the form with all error messages (if any) that were
-	 * raised by this compilation task. Afterwards, this Thread will update the interpreter context with the
-	 * compilation result.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	private class CompilationThread extends Thread {
-		/** The compilation thread which result we are to wait for. */
-		private Future<CompilationResult> compilationTask;
-
-		/**
-		 * Instantiates a compilation thread given the compilation task of which we are to check the result.
-		 * 
-		 * @param compilationTask
-		 *            Thread which result we are to wait for.
-		 */
-		public CompilationThread(Future<CompilationResult> compilationTask) {
-			super("InterpreterCompilationThread"); //$NON-NLS-1$
-			this.compilationTask = compilationTask;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see java.lang.Thread#interrupt()
-		 */
-		@Override
-		public void interrupt() {
-			super.interrupt();
-			compilationTask.cancel(true);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see java.lang.Thread#run()
-		 */
-		@Override
-		public void run() {
-			try {
-				final CompilationResult result = compilationTask.get();
-
-				if (result != null && result.getProblems() != null) {
-					Display.getDefault().asyncExec(new Runnable() {
-						/**
-						 * {@inheritDoc}
-						 * 
-						 * @see java.lang.Runnable#run()
-						 */
-						public void run() {
-							addStatusMessages(result.getProblems(), COMPILATION_MESSAGE_PREFIX);
-						}
-					});
-				}
-
-				// Whether there were problems or not, update the context with this result.
-				setCompilationResult(result);
 			} catch (InterruptedException e) {
 				// Thread is expected to be cancelled if another is started
 			} catch (ExecutionException e) {

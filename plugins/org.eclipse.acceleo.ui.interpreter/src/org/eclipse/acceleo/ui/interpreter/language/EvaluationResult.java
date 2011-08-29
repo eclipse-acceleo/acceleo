@@ -44,17 +44,6 @@ public class EvaluationResult {
 	private IStatus problems;
 
 	/**
-	 * Creates an evaluation result given the actual result. This assumes that no issues were encountered
-	 * during the evaluation.
-	 * 
-	 * @param evaluationResult
-	 *            Result of the evaluation.
-	 */
-	public EvaluationResult(Object evaluationResult) {
-		this.evaluationResult = evaluationResult;
-	}
-
-	/**
 	 * Creates an evaluation result given the evaluation issues. This assumes that critical errors were
 	 * encountered during the evaluation or compilation, and that the evaluation itself could not be run.
 	 * 
@@ -64,6 +53,17 @@ public class EvaluationResult {
 	 */
 	public EvaluationResult(IStatus problems) {
 		this.problems = problems;
+	}
+
+	/**
+	 * Creates an evaluation result given the actual result. This assumes that no issues were encountered
+	 * during the evaluation.
+	 * 
+	 * @param evaluationResult
+	 *            Result of the evaluation.
+	 */
+	public EvaluationResult(Object evaluationResult) {
+		this.evaluationResult = evaluationResult;
 	}
 
 	/**
@@ -91,6 +91,15 @@ public class EvaluationResult {
 	}
 
 	/**
+	 * Returns the problems encountered during this evaluation.
+	 * 
+	 * @return The problems encountered during this evaluation.
+	 */
+	public IStatus getProblems() {
+		return problems;
+	}
+
+	/**
 	 * Sets the actual evaluation result.
 	 * 
 	 * @param evaluationResult
@@ -98,15 +107,6 @@ public class EvaluationResult {
 	 */
 	public void setEvaluationResult(Object evaluationResult) {
 		this.evaluationResult = evaluationResult;
-	}
-
-	/**
-	 * Returns the problems encountered during this evaluation.
-	 * 
-	 * @return The problems encountered during this evaluation.
-	 */
-	public IStatus getProblems() {
-		return problems;
 	}
 
 	/**

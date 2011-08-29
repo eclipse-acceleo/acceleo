@@ -39,20 +39,20 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class RenameVariableAction extends Action {
-	/** Keeps a reference towards the TreeViewer displaying our variables. */
-	private final TreeViewer variableViewer;
-
-	/** The tree editing widget. */
-	private TreeEditor treeEditor;
-
-	/** Parent of our text editor. */
-	protected Composite textEditorParent;
+	/** Will be set to <code>true</code> whenever we start saving a Variable change. */
+	protected boolean saving = false;
 
 	/** The actual text editor widget. */
 	protected Text textEditor;
 
-	/** Will be set to <code>true</code> whenever we start saving a Variable change. */
-	protected boolean saving = false;
+	/** Parent of our text editor. */
+	protected Composite textEditorParent;
+
+	/** The tree editing widget. */
+	private TreeEditor treeEditor;
+
+	/** Keeps a reference towards the TreeViewer displaying our variables. */
+	private final TreeViewer variableViewer;
 
 	/**
 	 * Instantiates a rename action for the given variable TreeViewer.
@@ -103,6 +103,18 @@ public final class RenameVariableAction extends Action {
 	}
 
 	/**
+	 * Close the text widget and reset the editorText field.
+	 */
+	protected void disposeTextWidget() {
+		if (textEditorParent != null) {
+			textEditorParent.dispose();
+			textEditorParent = null;
+			textEditor = null;
+			treeEditor.setEditor(null, null);
+		}
+	}
+
+	/**
 	 * Returns the currently selected Variable, or the first Variable of the current selection.
 	 * <code>null</code> if none.
 	 * 
@@ -125,32 +137,43 @@ public final class RenameVariableAction extends Action {
 	}
 
 	/**
-	 * Runs the actual rename action.
+	 * Save the changes and dispose of the text widget.
 	 * 
 	 * @param variable
-	 *            Variable that is to be renamed.
+	 *            The resource which name is to change.
 	 */
-	private void runRename(Variable variable) {
-		if (textEditorParent == null) {
-			createTextEditor(variable);
+	protected void saveChangesAndDispose(Variable variable) {
+		if (saving == true) {
+			return;
 		}
-		String currentName = variable.getName();
-		if (currentName == null) {
-			currentName = ""; //$NON-NLS-1$
-		}
-		textEditor.setText(currentName);
 
-		// Open text editor with initial size.
-		textEditorParent.setVisible(true);
-		Point textSize = textEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		textSize.x += textSize.y; // Add extra space for new characters.
-		Point parentSize = textEditorParent.getSize();
-		// border width
-		int inset = 1;
-		textEditor.setBounds(2, inset, Math.min(textSize.x, parentSize.x - 4), parentSize.y - 2 * inset);
-		textEditorParent.redraw();
-		textEditor.selectAll();
-		textEditor.setFocus();
+		saving = true;
+
+		final Variable renamedVariable = variable;
+		final String newName = textEditor.getText();
+
+		Runnable renameQuery = new Runnable() {
+			public void run() {
+				try {
+					if (!newName.equals(renamedVariable.getName())) {
+						renamedVariable.setName(newName);
+					}
+
+					// Dispose the text widget regardless
+					disposeTextWidget();
+
+					// Ensure the Navigator tree has focus, which it may not if
+					// the text widget previously had focus.
+					if (getTree() != null && !getTree().isDisposed()) {
+						variableViewer.refresh();
+						getTree().setFocus();
+					}
+				} finally {
+					saving = false;
+				}
+			}
+		};
+		getTree().getShell().getDisplay().asyncExec(renameQuery);
 	}
 
 	/**
@@ -236,54 +259,31 @@ public final class RenameVariableAction extends Action {
 	}
 
 	/**
-	 * Close the text widget and reset the editorText field.
-	 */
-	protected void disposeTextWidget() {
-		if (textEditorParent != null) {
-			textEditorParent.dispose();
-			textEditorParent = null;
-			textEditor = null;
-			treeEditor.setEditor(null, null);
-		}
-	}
-
-	/**
-	 * Save the changes and dispose of the text widget.
+	 * Runs the actual rename action.
 	 * 
 	 * @param variable
-	 *            The resource which name is to change.
+	 *            Variable that is to be renamed.
 	 */
-	protected void saveChangesAndDispose(Variable variable) {
-		if (saving == true) {
-			return;
+	private void runRename(Variable variable) {
+		if (textEditorParent == null) {
+			createTextEditor(variable);
 		}
+		String currentName = variable.getName();
+		if (currentName == null) {
+			currentName = ""; //$NON-NLS-1$
+		}
+		textEditor.setText(currentName);
 
-		saving = true;
-
-		final Variable renamedVariable = variable;
-		final String newName = textEditor.getText();
-
-		Runnable renameQuery = new Runnable() {
-			public void run() {
-				try {
-					if (!newName.equals(renamedVariable.getName())) {
-						renamedVariable.setName(newName);
-					}
-
-					// Dispose the text widget regardless
-					disposeTextWidget();
-
-					// Ensure the Navigator tree has focus, which it may not if
-					// the text widget previously had focus.
-					if (getTree() != null && !getTree().isDisposed()) {
-						variableViewer.refresh();
-						getTree().setFocus();
-					}
-				} finally {
-					saving = false;
-				}
-			}
-		};
-		getTree().getShell().getDisplay().asyncExec(renameQuery);
+		// Open text editor with initial size.
+		textEditorParent.setVisible(true);
+		Point textSize = textEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		textSize.x += textSize.y; // Add extra space for new characters.
+		Point parentSize = textEditorParent.getSize();
+		// border width
+		int inset = 1;
+		textEditor.setBounds(2, inset, Math.min(textSize.x, parentSize.x - 4), parentSize.y - 2 * inset);
+		textEditorParent.redraw();
+		textEditor.selectAll();
+		textEditor.setFocus();
 	}
 }

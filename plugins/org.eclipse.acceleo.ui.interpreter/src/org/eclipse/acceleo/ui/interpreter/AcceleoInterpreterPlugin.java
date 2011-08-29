@@ -40,6 +40,15 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 	}
 
 	/**
+	 * Returns the shared instance.
+	 * 
+	 * @return the shared instance
+	 */
+	public static AcceleoInterpreterPlugin getDefault() {
+		return plugin;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -70,14 +79,5 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 		registry.removeListener(interpreterListener);
 
 		LanguageInterpreterRegistry.clearRegistry();
-	}
-
-	/**
-	 * Returns the shared instance.
-	 * 
-	 * @return the shared instance
-	 */
-	public static AcceleoInterpreterPlugin getDefault() {
-		return plugin;
 	}
 }

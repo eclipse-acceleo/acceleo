@@ -47,11 +47,11 @@ import org.eclipse.ocl.utilities.ASTNode;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoCompilationTask implements Callable<CompilationResult> {
-	/** Current interpreter context. */
-	private final InterpreterContext context;
-
 	/** Acceleo's compilation task is deeply tied to its Viewer. */
 	private AcceleoSourceViewer acceleoSource;
+
+	/** Current interpreter context. */
+	private final InterpreterContext context;
 
 	/**
 	 * Instantiates our compilation task given the current interpreter context.
@@ -118,43 +118,6 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
-	 * Compiles the given list of Acceleo parser messages into a single MultiStatus.
-	 * 
-	 * @param errors
-	 *            List of the errors that arose during the compilation.
-	 * @param warnings
-	 *            List of the warnings that arose during the compilation.
-	 * @param infos
-	 *            List of the infos that arose during the compilation.
-	 * @return A single MultiStatus referenging all issues.
-	 */
-	private IStatus parseProblems(AcceleoParserProblems errors, AcceleoParserWarnings warnings,
-			AcceleoParserInfos infos) {
-		List<IStatus> problems = new ArrayList<IStatus>();
-
-		for (AcceleoParserProblem error : errors.getList()) {
-			problems.add(new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, error.getMessage()));
-		}
-		for (AcceleoParserWarning warning : warnings.getList()) {
-			problems.add(new Status(IStatus.WARNING, AcceleoInterpreterPlugin.PLUGIN_ID, warning.getMessage()));
-		}
-		for (AcceleoParserInfo info : infos.getList()) {
-			problems.add(new Status(IStatus.INFO, AcceleoInterpreterPlugin.PLUGIN_ID, info.getMessage()));
-		}
-
-		if (problems.isEmpty()) {
-			return null;
-		}
-
-		MultiStatus status = new MultiStatus(AcceleoInterpreterPlugin.PLUGIN_ID, 1,
-				"Problems encountered while compiling expression", null);
-		for (IStatus child : problems) {
-			status.add(child);
-		}
-		return status;
-	}
-
-	/**
 	 * Gets the nearest AST child at the given position. It browses the children of the given candidate and
 	 * returns the nearest children if it exists.
 	 * 
@@ -191,5 +154,42 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		}
 
 		return child;
+	}
+
+	/**
+	 * Compiles the given list of Acceleo parser messages into a single MultiStatus.
+	 * 
+	 * @param errors
+	 *            List of the errors that arose during the compilation.
+	 * @param warnings
+	 *            List of the warnings that arose during the compilation.
+	 * @param infos
+	 *            List of the infos that arose during the compilation.
+	 * @return A single MultiStatus referenging all issues.
+	 */
+	private IStatus parseProblems(AcceleoParserProblems errors, AcceleoParserWarnings warnings,
+			AcceleoParserInfos infos) {
+		List<IStatus> problems = new ArrayList<IStatus>();
+
+		for (AcceleoParserProblem error : errors.getList()) {
+			problems.add(new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, error.getMessage()));
+		}
+		for (AcceleoParserWarning warning : warnings.getList()) {
+			problems.add(new Status(IStatus.WARNING, AcceleoInterpreterPlugin.PLUGIN_ID, warning.getMessage()));
+		}
+		for (AcceleoParserInfo info : infos.getList()) {
+			problems.add(new Status(IStatus.INFO, AcceleoInterpreterPlugin.PLUGIN_ID, info.getMessage()));
+		}
+
+		if (problems.isEmpty()) {
+			return null;
+		}
+
+		MultiStatus status = new MultiStatus(AcceleoInterpreterPlugin.PLUGIN_ID, 1,
+				"Problems encountered while compiling expression", null);
+		for (IStatus child : problems) {
+			status.add(child);
+		}
+		return status;
 	}
 }

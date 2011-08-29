@@ -41,39 +41,6 @@ public class VariableContentProvider extends AdapterFactoryContentProvider {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
-		super.inputChanged(aViewer, oldInput, newInput);
-		if (newInput instanceof List<?>) {
-			input = (List<Variable>)newInput;
-		} else if (newInput instanceof Variable) {
-			input = new ArrayList<Variable>();
-			input.add((Variable)newInput);
-		} else {
-			input = null;
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
-	 */
-	@Override
-	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof Collection<?>) {
-			return ((Collection<?>)inputElement).toArray(new Variable[((Collection<?>)inputElement).size()]);
-		}
-		return super.getElements(inputElement);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
 	@Override
@@ -90,6 +57,19 @@ public class VariableContentProvider extends AdapterFactoryContentProvider {
 			return children;
 		}
 		return super.getChildren(parentElement);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
+	 */
+	@Override
+	public Object[] getElements(Object inputElement) {
+		if (inputElement instanceof Collection<?>) {
+			return ((Collection<?>)inputElement).toArray(new Variable[((Collection<?>)inputElement).size()]);
+		}
+		return super.getElements(inputElement);
 	}
 
 	/**
@@ -118,5 +98,25 @@ public class VariableContentProvider extends AdapterFactoryContentProvider {
 			return ((Variable)element).getValue() != null;
 		}
 		return super.hasChildren(element);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public void inputChanged(Viewer aViewer, Object oldInput, Object newInput) {
+		super.inputChanged(aViewer, oldInput, newInput);
+		if (newInput instanceof List<?>) {
+			input = (List<Variable>)newInput;
+		} else if (newInput instanceof Variable) {
+			input = new ArrayList<Variable>();
+			input.add((Variable)newInput);
+		} else {
+			input = null;
+		}
 	}
 }

@@ -25,11 +25,11 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class AcceleoInterpreterImages {
-	/** The image registry containing <code>Image</code>s and the <code>ImageDescriptor</code>s. */
-	private static ImageRegistry imageRegistry;
-
 	/** Base URL for all "icon" images. This will be initialized to this bundle's "icons" folder. */
 	private static URL BASE_URL = null;
+
+	/** The image registry containing <code>Image</code>s and the <code>ImageDescriptor</code>s. */
+	private static ImageRegistry imageRegistry;
 
 	static {
 		BASE_URL = AcceleoInterpreterPlugin.getDefault().getBundle()
@@ -44,18 +44,6 @@ public final class AcceleoInterpreterImages {
 	}
 
 	/**
-	 * Provides access to the image registry.
-	 * 
-	 * @return The image registry.
-	 */
-	public static ImageRegistry getImageRegistry() {
-		if (imageRegistry == null) {
-			initializeRegistry();
-		}
-		return imageRegistry;
-	}
-
-	/**
 	 * Returns the image descriptor associated with the given key in this registry.
 	 * 
 	 * @param key
@@ -67,14 +55,15 @@ public final class AcceleoInterpreterImages {
 	}
 
 	/**
-	 * Initializes the image registry with all needed images.
+	 * Provides access to the image registry.
+	 * 
+	 * @return The image registry.
 	 */
-	private static void initializeRegistry() {
-		imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
-
-		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,
-				IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON);
-		createImage(IInterpreterConstants.TOGGLE_REALTIME_ICON, IInterpreterConstants.TOGGLE_REALTIME_ICON);
+	public static ImageRegistry getImageRegistry() {
+		if (imageRegistry == null) {
+			initializeRegistry();
+		}
+		return imageRegistry;
 	}
 
 	/**
@@ -97,5 +86,16 @@ public final class AcceleoInterpreterImages {
 			}
 		}
 		imageRegistry.put(key, image);
+	}
+
+	/**
+	 * Initializes the image registry with all needed images.
+	 */
+	private static void initializeRegistry() {
+		imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
+
+		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,
+				IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON);
+		createImage(IInterpreterConstants.TOGGLE_REALTIME_ICON, IInterpreterConstants.TOGGLE_REALTIME_ICON);
 	}
 }

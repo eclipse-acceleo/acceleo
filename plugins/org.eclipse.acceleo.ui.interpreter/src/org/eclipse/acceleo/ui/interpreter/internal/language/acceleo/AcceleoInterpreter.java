@@ -44,17 +44,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#createSourceViewer(org.eclipse.swt.widgets.Composite)
-	 */
-	@Override
-	public SourceViewer createSourceViewer(Composite parent) {
-		acceleoSource = new AcceleoSourceViewer(parent, null, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
-		return acceleoSource;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
 	 */
 	@Override
@@ -83,6 +72,17 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 			viewer.configure(new AcceleoInterpreterConfiguration(AcceleoUIActivator.getDefault()
 					.getPreferenceStore()));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#createSourceViewer(org.eclipse.swt.widgets.Composite)
+	 */
+	@Override
+	public SourceViewer createSourceViewer(Composite parent) {
+		acceleoSource = new AcceleoSourceViewer(parent, null, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		return acceleoSource;
 	}
 
 	/**

@@ -36,34 +36,6 @@ public class AcceleoInterpreterCompletionProcessor extends AcceleoCompletionProc
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor#setCompletionOffset(int)
-	 */
-	@Override
-	protected void setCompletionOffset(int newOffset) {
-		if (textViewer == null || !(content instanceof AcceleoInterpreterSourceContent)) {
-			super.setCompletionOffset(newOffset);
-		} else {
-			super.setCompletionOffset(newOffset + ((AcceleoInterpreterSourceContent)content).getGap());
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor#setText(org.eclipse.jface.text.ITextViewer)
-	 */
-	@Override
-	protected void setText(ITextViewer viewer) {
-		if (viewer == null || !(viewer instanceof AcceleoSourceViewer)) {
-			super.setText(viewer);
-		} else {
-			text = ((AcceleoSourceViewer)viewer).getFullExpression();
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor#createCompletionProposal(java.lang.String,
 	 *      int, int, int, org.eclipse.swt.graphics.Image, java.lang.String,
 	 *      org.eclipse.jface.text.contentassist.IContextInformation, java.lang.String)
@@ -109,5 +81,33 @@ public class AcceleoInterpreterCompletionProcessor extends AcceleoCompletionProc
 		}
 		return super.createTemplateProposal(replacementString, replacementOffset, replacementLength,
 				cursorPosition, image, displayString, contextInformation, additionalProposalInfo);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor#setCompletionOffset(int)
+	 */
+	@Override
+	protected void setCompletionOffset(int newOffset) {
+		if (textViewer == null || !(content instanceof AcceleoInterpreterSourceContent)) {
+			super.setCompletionOffset(newOffset);
+		} else {
+			super.setCompletionOffset(newOffset + ((AcceleoInterpreterSourceContent)content).getGap());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor#setText(org.eclipse.jface.text.ITextViewer)
+	 */
+	@Override
+	protected void setText(ITextViewer viewer) {
+		if (viewer == null || !(viewer instanceof AcceleoSourceViewer)) {
+			super.setText(viewer);
+		} else {
+			text = ((AcceleoSourceViewer)viewer).getFullExpression();
+		}
 	}
 }

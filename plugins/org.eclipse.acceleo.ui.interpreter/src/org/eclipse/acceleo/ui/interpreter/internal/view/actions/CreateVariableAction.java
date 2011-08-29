@@ -26,11 +26,11 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class CreateVariableAction extends Action {
-	/** Keeps a reference to the variable viewer. */
-	private final TreeViewer variableViewer;
-
 	/** Value of this new variable. */
 	private Object value;
+
+	/** Keeps a reference to the variable viewer. */
+	private final TreeViewer variableViewer;
 
 	/**
 	 * Instantiates the "new variable" action given the variable viewer.
@@ -81,6 +81,23 @@ public class CreateVariableAction extends Action {
 	}
 
 	/**
+	 * Returns <code>true</code> if each of the given String's character is a valid Java identifier part.
+	 * 
+	 * @param name
+	 *            Name of which we need to check the validity.
+	 * @return <code>true</code> if the given <code>name</code> can be considered a valid Java identifier,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isJavaIdentifier(String name) {
+		for (char character : name.toCharArray()) {
+			if (!Character.isJavaIdentifierPart(character)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * This basic validator only checks that the variable name is a valid Java identifier.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
@@ -109,22 +126,5 @@ public class CreateVariableAction extends Action {
 			}
 			return errorMessage;
 		}
-	}
-
-	/**
-	 * Returns <code>true</code> if each of the given String's character is a valid Java identifier part.
-	 * 
-	 * @param name
-	 *            Name of which we need to check the validity.
-	 * @return <code>true</code> if the given <code>name</code> can be considered a valid Java identifier,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isJavaIdentifier(String name) {
-		for (char character : name.toCharArray()) {
-			if (!Character.isJavaIdentifierPart(character)) {
-				return false;
-			}
-		}
-		return true;
 	}
 }

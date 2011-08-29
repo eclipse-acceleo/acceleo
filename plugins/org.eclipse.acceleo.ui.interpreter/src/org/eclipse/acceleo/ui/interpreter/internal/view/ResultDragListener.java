@@ -23,11 +23,11 @@ import org.eclipse.swt.dnd.DragSourceEvent;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ResultDragListener extends DragSourceAdapter {
-	/** Keeps a reference towards the viewer against which this listener is registered. */
-	private TreeViewer viewer;
-
 	/** Keeps track of the elements selected at the time the user starts the drag operation. */
 	protected ISelection selection;
+
+	/** Keeps a reference towards the viewer against which this listener is registered. */
+	private TreeViewer viewer;
 
 	/**
 	 * Creates a new drag listener for the given <code>viewer</code>.
@@ -37,16 +37,6 @@ public class ResultDragListener extends DragSourceAdapter {
 	 */
 	public ResultDragListener(TreeViewer viewer) {
 		this.viewer = viewer;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.swt.dnd.DragSourceAdapter#dragStart(org.eclipse.swt.dnd.DragSourceEvent)
-	 */
-	@Override
-	public void dragStart(DragSourceEvent event) {
-		selection = viewer.getSelection();
 	}
 
 	/**
@@ -70,5 +60,15 @@ public class ResultDragListener extends DragSourceAdapter {
 		if (LocalTransfer.getInstance().isSupportedType(event.dataType)) {
 			event.data = selection;
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.swt.dnd.DragSourceAdapter#dragStart(org.eclipse.swt.dnd.DragSourceEvent)
+	 */
+	@Override
+	public void dragStart(DragSourceEvent event) {
+		selection = viewer.getSelection();
 	}
 }
