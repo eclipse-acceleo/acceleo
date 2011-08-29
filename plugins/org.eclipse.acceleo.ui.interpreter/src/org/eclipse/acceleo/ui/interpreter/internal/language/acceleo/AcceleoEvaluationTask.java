@@ -10,17 +10,22 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
+import org.eclipse.acceleo.engine.generation.AcceleoEngine;
+import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.Query;
+import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -83,9 +88,66 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		}
 
 		Object result = null;
-		if (compiledExpression instanceof ModuleElement) {
-			// FIXME open API to evaluate query
-			// FIXME evaluate template
+		if (compiledExpression instanceof Template) {
+			Template template = (Template)compiledExpression;
+
+			// Prepare arguments
+			List<Object> arguments = new ArrayList<Object>();
+			List<Variable> variables = context.getVariables();
+			Iterator<EObject> targetItr = target.iterator();
+
+			for (org.eclipse.ocl.ecore.Variable param : template.getParameter()) {
+				boolean found = false;
+				Iterator<Variable> vars = variables.iterator();
+				while (!found && vars.hasNext()) {
+					Variable next = vars.next();
+					if (param.getName().equals(next.getName())) {
+						arguments.add(next.getValue());
+						vars.remove();
+						found = true;
+					}
+				}
+				if (!found && targetItr.hasNext()) {
+					arguments.add(targetItr.next());
+					found = true;
+				}
+				if (!found) {
+					// FIXME throw exception from here
+				}
+			}
+
+			IAcceleoEngine2 engine = new AcceleoEngine();
+			result = engine.evaluate(template, arguments, new BasicMonitor());
+		} else if (compiledExpression instanceof Query) {
+			Query query = (Query)compiledExpression;
+
+			// Prepare arguments
+			List<Object> arguments = new ArrayList<Object>();
+			List<Variable> variables = context.getVariables();
+			Iterator<EObject> targetItr = target.iterator();
+
+			for (org.eclipse.ocl.ecore.Variable param : query.getParameter()) {
+				boolean found = false;
+				Iterator<Variable> vars = variables.iterator();
+				while (!found && vars.hasNext()) {
+					Variable next = vars.next();
+					if (param.getName().equals(next.getName())) {
+						arguments.add(next.getValue());
+						vars.remove();
+						found = true;
+					}
+				}
+				if (!found && targetItr.hasNext()) {
+					arguments.add(targetItr.next());
+					found = true;
+				}
+				if (!found) {
+					// FIXME throw exception from here
+				}
+			}
+
+			IAcceleoEngine2 engine = new AcceleoEngine();
+			result = engine.evaluate(query, arguments, new BasicMonitor());
 		} else if (compiledExpression instanceof OCLExpression) {
 			OCLExpression expression = (OCLExpression)compiledExpression;
 

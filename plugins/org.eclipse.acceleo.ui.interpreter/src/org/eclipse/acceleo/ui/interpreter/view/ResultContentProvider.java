@@ -13,6 +13,7 @@ package org.eclipse.acceleo.ui.interpreter.view;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 
 /**
@@ -44,9 +45,11 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 					.toArray(new Object[((Collection<?>)inputElement).size()]);
 		} else {
 			elements = super.getElements(inputElement);
-			if (elements == null || elements.length == 0) {
-				if (inputElement != null) {
-					return new Object[] {inputElement.toString(), };
+			if (elements == null || elements.length == 0 && inputElement != null) {
+				if (inputElement instanceof EObject) {
+					elements = new Object[] {inputElement, };
+				} else {
+					elements = new Object[] {inputElement.toString(), };
 				}
 			}
 		}

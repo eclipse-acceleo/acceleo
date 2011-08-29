@@ -263,7 +263,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 				final String varType = inferOCLType(variable.getValue());
 
 				if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
-					additionalVariables.append(", ");
+					additionalVariables.append(", "); //$NON-NLS-1$
 					additionalVariables.append(varName);
 					additionalVariables.append(" : "); //$NON-NLS-1$
 					additionalVariables.append(varType);

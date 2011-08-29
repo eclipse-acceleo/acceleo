@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.ui.interpreter.view;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -153,7 +154,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	private int messageCount;
 
 	/** Thread which purpose is to compile the expression and update the context with the result. */
-	CompilationThread compilationThread;
+	protected CompilationThread compilationThread;
 
 	/** Thread which purpose is to evaluate the expression and update the view with the result. */
 	private EvaluationThread evaluationThread;
@@ -162,7 +163,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
 	 * an evaluation task can legally be created while this is <code>null</code>.
 	 */
-	private CompilationResult compilationResult;
+	protected CompilationResult compilationResult;
 
 	/**
 	 * Keeps a reference to the "result" section of the interpreter form. This will be used to re-create the
@@ -817,7 +818,14 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            The current expressions's evaluation result.
 	 */
 	protected final void setEvaluationResult(EvaluationResult result) {
-		resultViewer.setInput(result.getEvaluationResult());
+		List<Object> input = new ArrayList<Object>();
+		Object evaluationResult = result.getEvaluationResult();
+		if (evaluationResult instanceof Collection<?>) {
+			input.addAll((Collection<?>)evaluationResult);
+		} else if (evaluationResult != null) {
+			input.add(evaluationResult);
+		}
+		resultViewer.setInput(input);
 	}
 
 	/**
