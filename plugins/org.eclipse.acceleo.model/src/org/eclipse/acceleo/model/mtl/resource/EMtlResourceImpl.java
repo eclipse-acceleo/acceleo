@@ -53,6 +53,13 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	private List<String> variableNames;
 
 	/**
+	 * Indicates if the position should be trimmed.
+	 * 
+	 * @since 3.2
+	 */
+	private boolean trimPosition;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param uri
@@ -85,10 +92,12 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 
 		super.doLoad(inputStream, actualOptions);
 
-		EAnnotation positions = getPositions(false);
-		if (positions != null) {
-			restorePositions(positions);
-			getContents().remove(positions);
+		if (!trimPosition) {
+			EAnnotation positions = getPositions(false);
+			if (positions != null) {
+				restorePositions(positions);
+				getContents().remove(positions);
+			}
 		}
 	}
 
@@ -109,12 +118,17 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		}
 		actualOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoXMIURIHandler());
 
-		EAnnotation positions = getPositions(true);
-		fixVariablesAndPositions(positions);
+		EAnnotation positions = null;
+		if (!trimPosition) {
+			positions = getPositions(true);
+			fixVariablesAndPositions(positions);
+		}
 		try {
 			super.doSave(outputStream, options);
 		} finally {
-			getContents().remove(positions);
+			if (!trimPosition && positions != null) {
+				getContents().remove(positions);
+			}
 		}
 
 		// re-activate the notifications
@@ -274,4 +288,14 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		return positions;
 	}
 
+	/**
+	 * Sets the boolean indicating if the position should be trimmed.
+	 * 
+	 * @param trimPosition
+	 *            <code>true</code> to trim the position, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public void setTrimPosition(boolean trimPosition) {
+		this.trimPosition = trimPosition;
+	}
 }
