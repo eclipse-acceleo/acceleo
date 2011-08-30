@@ -57,6 +57,13 @@ public class AcceleoBuilderSettings {
 	private static final String BUILD_COMPLIANCE_KEYWORD = "compliance"; //$NON-NLS-1$
 
 	/**
+	 * Indicates if we should trim the position from the compiled resources.
+	 * 
+	 * @since 3.2
+	 */
+	private static final String TRIM_POSITION_RESOURCE_KEYWORD = "trim-position"; //$NON-NLS-1$
+
+	/**
 	 * The project.
 	 */
 	private IProject project;
@@ -70,6 +77,13 @@ public class AcceleoBuilderSettings {
 	 * The kind of resource that will be built.
 	 */
 	private String resourceKind;
+
+	/**
+	 * Indicates if the positions should be trimmed.
+	 * 
+	 * @since 3.2
+	 */
+	private boolean trimmedPositions;
 
 	/**
 	 * Constructor.
@@ -90,19 +104,28 @@ public class AcceleoBuilderSettings {
 				} else {
 					compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				}
+
 				arg = command.getArguments().get(BUILD_RESOURCE_KIND);
 				if (BUILD_BINARY_RESOURCE.equals(arg)) {
 					resourceKind = BUILD_BINARY_RESOURCE;
 				} else {
 					resourceKind = BUILD_XMI_RESOURCE;
 				}
+
+				arg = command.getArguments().get(TRIM_POSITION_RESOURCE_KEYWORD);
+				if (arg instanceof Boolean && ((Boolean)arg).booleanValue()) {
+					trimmedPositions = true;
+				}
+
 			} else {
 				compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				resourceKind = BUILD_XMI_RESOURCE;
+				trimmedPositions = false;
 			}
 		} catch (CoreException e) {
 			compliance = BUILD_PRAGMATIC_COMPLIANCE;
 			resourceKind = BUILD_XMI_RESOURCE;
+			trimmedPositions = false;
 		}
 	}
 
@@ -181,6 +204,27 @@ public class AcceleoBuilderSettings {
 			desc.setBuildSpec(commands);
 			project.setDescription(desc, null);
 		}
+	}
+
+	/**
+	 * Indicates if the positions should be trimmed from the emtl files.
+	 * 
+	 * @return <code>true</code> if the positions should be trimmed, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public boolean isTrimmedPositions() {
+		return trimmedPositions;
+	}
+
+	/**
+	 * Sets the boolean indicating if the positions should be trimmed from the emtl files.
+	 * 
+	 * @param trimmedPositions
+	 *            The boolean
+	 * @since 3.2
+	 */
+	public void setTrimmedPositions(boolean trimmedPositions) {
+		this.trimmedPositions = trimmedPositions;
 	}
 
 }

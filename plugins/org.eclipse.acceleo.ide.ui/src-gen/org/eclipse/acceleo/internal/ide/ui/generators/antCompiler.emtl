@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="antCompiler" nsURI="org::eclipse::acceleo::module::sample::files::antCompiler" startHeaderPosition="411" endHeaderPosition="749">
+  <mtl:Module name="antCompiler" nsURI="org::eclipse::acceleo::module::sample::main::antCompiler" startHeaderPosition="411" endHeaderPosition="749">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
-      <body startPosition="32" endPosition="408" value="&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;Obeo - initial API and implementation&#xA;@author sbegaudeau&#xA;&#xA;"/>
+      <body startPosition="32" endPosition="408" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
     <input>
       <takesTypesFrom href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#/"/>
@@ -82,7 +82,7 @@
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass/projectName"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=".libraryclasspath&quot; >&#xA;    &lt;/taskdef>&#xA;&#xA;    &lt;!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->&#xA;    &lt;target name=&quot;compile&quot;>&#xA;        &lt;acceleoCompiler sourceFolder=&quot;${SOURCE_FOLDER}&quot;&#xA;                         outputFolder=&quot;${OUTPUT_FOLDER}&quot;&#xA;                         dependencies=&quot;&quot;&#xA;                         binaryResource=&quot;true&quot;&#xA;                         packagesToRegister=&quot;&quot;> &lt;!-- example: org.eclipse.uml2.uml.UMLPackage;org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage-->&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>&#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=".libraryclasspath&quot; >&#xA;    &lt;/taskdef>&#xA;&#xA;    &lt;!-- Change the value of the property SOURCE_FOLDERS to match the configuration of your project. -->&#xA;    &lt;target name=&quot;compile&quot;>&#xA;        &lt;acceleoCompiler sourceFolder=&quot;${SOURCE_FOLDER}&quot;&#xA;                         outputFolder=&quot;${OUTPUT_FOLDER}&quot;&#xA;                         dependencies=&quot;&quot;&#xA;                         binaryResource=&quot;false&quot;&#xA;                         packagesToRegister=&quot;&quot; &lt;!-- example: org.eclipse.uml2.uml.UMLPackage;org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage-->&#xA;                         trimPosition=&quot;false&quot;>&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>&#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="buildstandalone.xml">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -91,7 +91,7 @@
         </charset>
       </body>
       <documentation xsi:type="mtl:ModuleElementDocumentation">
-        <body startPosition="496" endPosition="749" value="&#xA;Generate the Ant task to launch the compilation from Ant.&#xA;@param anAcceleoMainClass The Acceleo main class.&#xA;@param eclipseHome The relative path of the eclipse installation folder.&#xA;@param workspaceHome The relative path of the workspace.&#xA;&#xA;"/>
+        <body startPosition="496" endPosition="749" value="&#xD;&#xA;Generate the Ant task to launch the compilation from Ant.&#xD;&#xA;@param anAcceleoMainClass The Acceleo main class.&#xD;&#xA;@param eclipseHome The relative path of the eclipse installation folder.&#xD;&#xA;@param workspaceHome The relative path of the workspace.&#xD;&#xA;&#xD;&#xA;"/>
         <parametersDocumentation name="anAcceleoMainClass">
           <body value=" The Acceleo main class."/>
         </parametersDocumentation>
@@ -616,9 +616,6 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   </ocl.ecore:Variable>
-  <ocl.ecore:Variable name="i">
-    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-  </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   </ocl.ecore:Variable>
@@ -631,221 +628,4 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
-  <ecore:EAnnotation source="positions">
-    <eAnnotations source="positions.0" references="/0/@documentation">
-      <details key="start" value="29"/>
-      <details key="end" value="410"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.1" references="/0/genAntCompiler">
-      <details key="start" value="752"/>
-      <details key="end" value="2664"/>
-      <details key="line" value="21"/>
-    </eAnnotations>
-    <eAnnotations source="positions.2" references="/0/genAntCompiler/@body.0">
-      <details key="start" value="870"/>
-      <details key="end" value="2652"/>
-      <details key="line" value="22"/>
-    </eAnnotations>
-    <eAnnotations source="positions.3" references="/0/genAntCompiler/@body.0/@body.0">
-      <details key="start" value="933"/>
-      <details key="end" value="1017"/>
-      <details key="line" value="23"/>
-    </eAnnotations>
-    <eAnnotations source="positions.4" references="/0/genAntCompiler/@body.0/@body.1">
-      <details key="start" value="1018"/>
-      <details key="end" value="1048"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.5" references="/0/genAntCompiler/@body.0/@body.1/anAcceleoMainClass">
-      <details key="start" value="1018"/>
-      <details key="end" value="1036"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.6" references="/0/genAntCompiler/@body.0/@body.2">
-      <details key="start" value="1050"/>
-      <details key="end" value="1099"/>
-      <details key="line" value="24"/>
-    </eAnnotations>
-    <eAnnotations source="positions.7" references="/0/genAntCompiler/@body.0/eclipseHome">
-      <details key="start" value="1100"/>
-      <details key="end" value="1111"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.8" references="/0/genAntCompiler/@body.0/@body.4">
-      <details key="start" value="1113"/>
-      <details key="end" value="1163"/>
-      <details key="line" value="26"/>
-    </eAnnotations>
-    <eAnnotations source="positions.9" references="/0/genAntCompiler/@body.0/workspaceHome">
-      <details key="start" value="1164"/>
-      <details key="end" value="1177"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/genAntCompiler/@body.0/@body.6">
-      <details key="start" value="1179"/>
-      <details key="end" value="1325"/>
-      <details key="line" value="27"/>
-    </eAnnotations>
-    <eAnnotations source="positions.11" references="/0/genAntCompiler/@body.0/@body.7">
-      <details key="start" value="1326"/>
-      <details key="end" value="1356"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.12" references="/0/genAntCompiler/@body.0/@body.7/anAcceleoMainClass">
-      <details key="start" value="1326"/>
-      <details key="end" value="1344"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.13" references="/0/genAntCompiler/@body.0/@body.8">
-      <details key="start" value="1358"/>
-      <details key="end" value="1392"/>
-      <details key="line" value="32"/>
-    </eAnnotations>
-    <eAnnotations source="positions.14" references="/0/genAntCompiler/@body.0/@body.9">
-      <details key="start" value="1393"/>
-      <details key="end" value="1423"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.15" references="/0/genAntCompiler/@body.0/@body.9/anAcceleoMainClass">
-      <details key="start" value="1393"/>
-      <details key="end" value="1411"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.16" references="/0/genAntCompiler/@body.0/@body.10">
-      <details key="start" value="1425"/>
-      <details key="end" value="1591"/>
-      <details key="line" value="33"/>
-    </eAnnotations>
-    <eAnnotations source="positions.17" references="/0/genAntCompiler/@body.0/@body.11">
-      <details key="start" value="1592"/>
-      <details key="end" value="1622"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.18" references="/0/genAntCompiler/@body.0/@body.11/anAcceleoMainClass">
-      <details key="start" value="1592"/>
-      <details key="end" value="1610"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.19" references="/0/genAntCompiler/@body.0/@body.12">
-      <details key="start" value="1624"/>
-      <details key="end" value="1696"/>
-      <details key="line" value="37"/>
-    </eAnnotations>
-    <eAnnotations source="positions.20" references="/0/genAntCompiler/@body.0/@body.13">
-      <details key="start" value="1697"/>
-      <details key="end" value="1727"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.21" references="/0/genAntCompiler/@body.0/@body.13/anAcceleoMainClass">
-      <details key="start" value="1697"/>
-      <details key="end" value="1715"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.22" references="/0/genAntCompiler/@body.0/@body.14">
-      <details key="start" value="1729"/>
-      <details key="end" value="1737"/>
-      <details key="line" value="38"/>
-    </eAnnotations>
-    <eAnnotations source="positions.23" references="/0/genAntCompiler/@body.0/@body.15">
-      <details key="start" value="1745"/>
-      <details key="end" value="1882"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.24" references="/0/genAntCompiler/@body.0/@body.15/@body.0">
-      <details key="start" value="1816"/>
-      <details key="end" value="1847"/>
-      <details key="line" value="40"/>
-    </eAnnotations>
-    <eAnnotations source="positions.25" references="/0/genAntCompiler/@body.0/@body.15/classpathEntry">
-      <details key="start" value="1848"/>
-      <details key="end" value="1862"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.26" references="/0/genAntCompiler/@body.0/@body.15/@body.2">
-      <details key="start" value="1864"/>
-      <details key="end" value="1868"/>
-      <details key="line" value="40"/>
-    </eAnnotations>
-    <eAnnotations source="positions.27" references="/0/genAntCompiler/@body.0/@body.15/classpathEntry.1">
-      <details key="start" value="1751"/>
-      <details key="end" value="1774"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.28" references="/0/genAntCompiler/@body.0/@body.15/@iterSet">
-      <details key="start" value="1777"/>
-      <details key="end" value="1813"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.29" references="/0/genAntCompiler/@body.0/@body.15/@iterSet/anAcceleoMainClass">
-      <details key="start" value="1777"/>
-      <details key="end" value="1795"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.30" references="/0/genAntCompiler/@body.0/@body.16">
-      <details key="start" value="1883"/>
-      <details key="end" value="2036"/>
-      <details key="line" value="42"/>
-    </eAnnotations>
-    <eAnnotations source="positions.31" references="/0/genAntCompiler/@body.0/@body.17">
-      <details key="start" value="2037"/>
-      <details key="end" value="2067"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.32" references="/0/genAntCompiler/@body.0/@body.17/anAcceleoMainClass">
-      <details key="start" value="2037"/>
-      <details key="end" value="2055"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.33" references="/0/genAntCompiler/@body.0/@body.18">
-      <details key="start" value="2069"/>
-      <details key="end" value="2645"/>
-      <details key="line" value="45"/>
-    </eAnnotations>
-    <eAnnotations source="positions.34" references="/0/genAntCompiler/@body.0/@fileUrl">
-      <details key="start" value="877"/>
-      <details key="end" value="898"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.35" references="/0/genAntCompiler/@body.0/@charset">
-      <details key="start" value="907"/>
-      <details key="end" value="914"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.36" references="/0/genAntCompiler/@documentation">
-      <details key="start" value="493"/>
-      <details key="end" value="751"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.37" references="/0/genAntCompiler/@documentation/anAcceleoMainClass">
-      <details key="start" value="-1"/>
-      <details key="end" value="-1"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.38" references="/0/genAntCompiler/@documentation/eclipseHome">
-      <details key="start" value="-1"/>
-      <details key="end" value="-1"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.39" references="/0/genAntCompiler/@documentation/workspaceHome">
-      <details key="start" value="-1"/>
-      <details key="end" value="-1"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.40" references="/0/genAntCompiler/anAcceleoMainClass">
-      <details key="start" value="784"/>
-      <details key="end" value="821"/>
-      <details key="line" value="21"/>
-    </eAnnotations>
-    <eAnnotations source="positions.41" references="/0/genAntCompiler/eclipseHome">
-      <details key="start" value="823"/>
-      <details key="end" value="843"/>
-      <details key="line" value="21"/>
-    </eAnnotations>
-    <eAnnotations source="positions.42" references="/0/genAntCompiler/workspaceHome">
-      <details key="start" value="845"/>
-      <details key="end" value="867"/>
-      <details key="line" value="21"/>
-    </eAnnotations>
-  </ecore:EAnnotation>
 </xmi:XMI>

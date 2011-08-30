@@ -56,8 +56,9 @@
                 <arguments>  
                   <argument>${basedir}/src/</argument>  <!-- The source folder -->  
                   <argument>${basedir}/target/classes</argument>  <!-- The output folder -->
-                  <argument>true</argument>  <!-- Indicates if we should use binary resources serializations -->
+                  <argument>false</argument>  <!-- Indicates if we should use binary resources serializations -->
                   <argument></argument>  <!-- The project dependencies in the workspace -->
+                  <argument>false</argument>  <!-- Indicates if the position should be trimmed from the emtl file. -->
                 </arguments>  
               </configuration>  
             </execution>  
