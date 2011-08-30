@@ -164,9 +164,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		String resourceKind = settings.getResourceKind();
 		if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind)) {
-			parser = new AcceleoParser(false);
+			parser = new AcceleoParser(false, settings.isTrimmedPositions());
 		} else {
-			parser = new AcceleoParser(true);
+			parser = new AcceleoParser(true, settings.isTrimmedPositions());
 		}
 		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
 

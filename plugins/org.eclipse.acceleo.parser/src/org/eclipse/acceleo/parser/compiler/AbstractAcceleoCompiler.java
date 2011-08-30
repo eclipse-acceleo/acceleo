@@ -71,6 +71,13 @@ public abstract class AbstractAcceleoCompiler {
 	protected File outputFolder;
 
 	/**
+	 * Indicates if we should trim the position.
+	 * 
+	 * @since 3.2
+	 */
+	protected boolean trimPosition;
+
+	/**
 	 * The dependencies folders.
 	 */
 	protected List<File> dependencies = new ArrayList<File>();
@@ -216,6 +223,17 @@ public abstract class AbstractAcceleoCompiler {
 	}
 
 	/**
+	 * Sets the boolean indicating if Acceleo should trim the positions from the emtl.
+	 * 
+	 * @param trimPosition
+	 *            The boolean
+	 * @since 3.2
+	 */
+	public void setTrimPosition(boolean trimPosition) {
+		this.trimPosition = trimPosition;
+	}
+
+	/**
 	 * Launches the compilation of the mtl files.
 	 * 
 	 * @param monitor
@@ -255,7 +273,7 @@ public abstract class AbstractAcceleoCompiler {
 
 		createOutputFiles(emtlAbsoluteURIs);
 
-		AcceleoParser parser = new AcceleoParser(binaryResource);
+		AcceleoParser parser = new AcceleoParser(binaryResource, trimPosition);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, monitor);
 		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile acceleoFile = iterator.next();

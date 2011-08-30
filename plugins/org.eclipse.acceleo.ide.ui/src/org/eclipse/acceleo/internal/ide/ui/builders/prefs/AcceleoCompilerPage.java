@@ -62,6 +62,11 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	private Button binaryResourceButton;
 
 	/**
+	 * The trimmed position checkbox.
+	 */
+	private Button trimmedPositionButton;
+
+	/**
 	 * Constructor.
 	 */
 	public AcceleoCompilerPage() {
@@ -98,6 +103,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 			} else {
 				settings.setResourceKind(AcceleoBuilderSettings.BUILD_BINARY_RESOURCE);
 			}
+			settings.setTrimmedPositions(trimmedPositionButton.getSelection());
 			try {
 				settings.save();
 			} catch (CoreException e) {
@@ -136,8 +142,9 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		composite.setLayout(layout);
-		createComplianceGroup(composite);
 		createResourceKindGroup(composite);
+		createComplianceGroup(composite);
+		createTrimmmedPositionGroup(composite);
 		return composite;
 	}
 
@@ -151,7 +158,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		strictCompliance = new Button(parent, SWT.CHECK);
 		strictCompliance.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.StrictMTLCompliance")); //$NON-NLS-1$
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
+		gridData.horizontalSpan = 1;
 		strictCompliance.setLayoutData(gridData);
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
@@ -165,6 +172,17 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 			}
 		} else {
 			strictCompliance.setSelection(false);
+		}
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+
+		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.StrictMTLComplianceHelp"); //$NON-NLS-1$
+		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
+			item.setToolTipText(helpMessage);
 		}
 	}
 
@@ -216,6 +234,38 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		item.setImage(image);
 
 		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.ResourceSerialization"); //$NON-NLS-1$
+		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
+			item.setToolTipText(helpMessage);
+		}
+	}
+
+	/**
+	 * Creates a group for compliance settings.
+	 * 
+	 * @param parent
+	 *            is the parent composite
+	 */
+	private void createTrimmmedPositionGroup(Composite parent) {
+		trimmedPositionButton = new Button(parent, SWT.CHECK);
+		trimmedPositionButton.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.TrimmedPosition")); //$NON-NLS-1$
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 1;
+		trimmedPositionButton.setLayoutData(gridData);
+		if (element instanceof IProject) {
+			IProject project = (IProject)element;
+			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+			trimmedPositionButton.setSelection(settings.isTrimmedPositions());
+		} else {
+			trimmedPositionButton.setSelection(false);
+		}
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+
+		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.TrimmedPositionHelp"); //$NON-NLS-1$
 		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
 			item.setToolTipText(helpMessage);
 		}

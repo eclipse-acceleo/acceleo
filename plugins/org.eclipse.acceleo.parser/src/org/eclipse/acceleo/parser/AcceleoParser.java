@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -25,15 +26,28 @@ import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.Query;
+import org.eclipse.acceleo.model.mtl.QueryInvocation;
+import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceImpl;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.ocl.ecore.OperationCallExp;
+import org.eclipse.ocl.ecore.Variable;
 
 /**
  * The main class of the Acceleo Parser. Creates an AST from a list of Acceleo files, using a CST step. You
@@ -66,6 +80,11 @@ public class AcceleoParser {
 	private boolean asBinaryResource;
 
 	/**
+	 * Indicates if we will trimmed the compilation.
+	 */
+	private boolean trimmedCompilation;
+
+	/**
 	 * The constructor.
 	 */
 	public AcceleoParser() {
@@ -76,11 +95,25 @@ public class AcceleoParser {
 	 * The constructor.
 	 * 
 	 * @param asBinaryResource
-	 *            Indicates if we will compile the mtl file as a binary resource.
+	 *            Indicates if we will compile the mtl file as a binary resource (default: false).
 	 * @since 3.1
 	 */
 	public AcceleoParser(boolean asBinaryResource) {
 		this.asBinaryResource = asBinaryResource;
+	}
+
+	/**
+	 * The constructor.
+	 * 
+	 * @param asBinaryResource
+	 *            Indicates if we will compile the mtl file as a binary resource (default: false).
+	 * @param trimmedCompilation
+	 *            Indicates if we will trimmed the emtl produced (default: false).
+	 * @since 3.2
+	 */
+	public AcceleoParser(boolean asBinaryResource, boolean trimmedCompilation) {
+		this.asBinaryResource = asBinaryResource;
+		this.trimmedCompilation = trimmedCompilation;
 	}
 
 	/**
@@ -169,6 +202,14 @@ public class AcceleoParser {
 			AcceleoSourceBuffer source = new AcceleoSourceBuffer(acceleoFile);
 			sources.add(source);
 			Resource oResource = createResource(oURI, oResourceSet);
+			if (oResource instanceof EMtlBinaryResourceImpl) {
+				EMtlBinaryResourceImpl binaryResourceImpl = (EMtlBinaryResourceImpl)oResource;
+				binaryResourceImpl.setTrimPosition(trimmedCompilation);
+			} else if (oResource instanceof EMtlResourceImpl) {
+				EMtlResourceImpl resourceImpl = (EMtlResourceImpl)oResource;
+				resourceImpl.setTrimPosition(trimmedCompilation);
+			}
+
 			newResources.add(oResource);
 			source.createCST();
 			for (ModuleImportsValue importValue : source.getCST().getImports()) {
@@ -251,6 +292,7 @@ public class AcceleoParser {
 				}
 			}
 		}
+		// trimEnvironment(oResourceSet);
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
 				&& itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
@@ -288,6 +330,167 @@ public class AcceleoParser {
 		while (resources.hasNext()) {
 			resources.next().unload();
 		}
+	}
+
+	/**
+	 * Trim the useless data in the given resource set by removing the signature of non used EOperations,
+	 * Templates and Queries.
+	 * 
+	 * @param oResourceSet
+	 *            The resource set.
+	 */
+	private void trimEnvironment(ResourceSet oResourceSet) {
+		List<Resource> resources = oResourceSet.getResources();
+		ConcurrentLinkedQueue<Resource> conResources = new ConcurrentLinkedQueue<Resource>(resources);
+		for (Resource resource : conResources) {
+			List<EObject> contents = resource.getContents();
+			Module module = (Module)contents.get(0);
+			List<EOperation> eOperations = new ArrayList<EOperation>();
+
+			for (int i = 1; i < contents.size(); i++) {
+				EObject eObject = contents.get(i);
+				TreeIterator<EObject> eAllContents = eObject.eAllContents();
+				while (eAllContents.hasNext()) {
+					EObject next = eAllContents.next();
+					if (next instanceof EOperation && !operationUsed((EOperation)next, module)) {
+						eOperations.add((EOperation)next);
+					}
+				}
+			}
+
+			// Trim environment
+			for (EOperation eOperation : eOperations) {
+				EcoreUtil.remove(eOperation);
+			}
+		}
+	}
+
+	/**
+	 * Indicates if the given operation represents an element (EOperation, Template or Query) used in the
+	 * given module.
+	 * 
+	 * @param operation
+	 *            The operation
+	 * @param module
+	 *            The module
+	 * @return <code>true</code> if the operation is usefull, <code>false</code> otherwise.
+	 */
+	private boolean operationUsed(EOperation operation, Module module) {
+		boolean result = false;
+		TreeIterator<EObject> eAllContents = module.eAllContents();
+		while (eAllContents.hasNext() && !result) {
+			EObject next = eAllContents.next();
+			if (next instanceof OperationCallExp) {
+				OperationCallExp operationCallExp = (OperationCallExp)next;
+				if (rootModule(operationCallExp.eContainer()) == module
+						&& operationCallExp.getReferredOperation().equals(operation)) {
+					result = true;
+				}
+			} else if (next instanceof TemplateInvocation) {
+				TemplateInvocation templateInvocation = (TemplateInvocation)next;
+				if (templateInvocation.getDefinition().eContainer() == module
+						|| module.getExtends().contains(templateInvocation.getDefinition().eContainer())
+						|| module.getImports().contains(templateInvocation.getDefinition().eContainer())) {
+					result = templateEqual(templateInvocation.getDefinition(), operation);
+				}
+			} else if (next instanceof Template) {
+				if (next.eContainer() == module || module.getExtends().contains(next.eContainer())
+						|| module.getImports().contains(next.eContainer())) {
+					result = templateEqual((Template)next, operation);
+				}
+			} else if (next instanceof QueryInvocation) {
+				QueryInvocation queryInvocation = (QueryInvocation)next;
+				if (queryInvocation.getDefinition().eContainer() == module
+						|| module.getExtends().contains(queryInvocation.getDefinition().eContainer())
+						|| module.getImports().contains(queryInvocation.getDefinition().eContainer())) {
+					result = queryEqual(queryInvocation.getDefinition(), operation);
+				}
+			} else if (next instanceof Query) {
+				if (next.eContainer() == module || module.getExtends().contains(next.eContainer())
+						|| module.getImports().contains(next.eContainer())) {
+					result = queryEqual((Query)next, operation);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the module from a given element in a module.
+	 * 
+	 * @param eObject
+	 *            the element.
+	 * @return The module from containing the given element.
+	 */
+	private Module rootModule(EObject eObject) {
+		Module module = null;
+
+		if (eObject.eContainer() != null) {
+			EObject eContainer = eObject.eContainer();
+			if (eContainer instanceof Module) {
+				module = (Module)eContainer;
+			} else {
+				module = rootModule(eContainer);
+			}
+		}
+
+		return module;
+	}
+
+	/**
+	 * Indicates if the query matches the given operation.
+	 * 
+	 * @param definition
+	 *            The definition of the query.
+	 * @param operation
+	 *            The operation.
+	 * @return <code>true</code> if the operation represents the query, <code>false</code> otherwise.
+	 */
+	private boolean queryEqual(Query definition, EOperation operation) {
+		boolean result = true;
+		result = result && definition.getName().equals(operation.getName());
+		List<Variable> parameters = definition.getParameter();
+		List<EParameter> eParameters = operation.getEParameters();
+
+		result = result && parameters.size() == eParameters.size();
+		if (result) {
+			for (int i = 0; i < parameters.size(); i++) {
+				Variable variable = parameters.get(i);
+				EParameter eParameter = eParameters.get(i);
+				result = variable.getName().equals(eParameter.getName());
+				result = variable.getEType().equals(eParameter.getEType());
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Indicates if the template matches the given operation.
+	 * 
+	 * @param definition
+	 *            The template definition.
+	 * @param operation
+	 *            the operation.
+	 * @return <code>true</code> if the operation represents the template, <code>false</code> otherwise.
+	 */
+	private boolean templateEqual(Template definition, EOperation operation) {
+		boolean result = true;
+		result = result && definition.getName().equals(operation.getName());
+		List<Variable> parameters = definition.getParameter();
+		List<EParameter> eParameters = operation.getEParameters();
+
+		result = result && parameters.size() == eParameters.size();
+		if (result) {
+			for (int i = 0; i < parameters.size(); i++) {
+				Variable variable = parameters.get(i);
+				EParameter eParameter = eParameters.get(i);
+				result = variable.getName().equals(eParameter.getName());
+				result = variable.getEType().equals(eParameter.getEType());
+			}
+		}
+
+		return result;
 	}
 
 	/**

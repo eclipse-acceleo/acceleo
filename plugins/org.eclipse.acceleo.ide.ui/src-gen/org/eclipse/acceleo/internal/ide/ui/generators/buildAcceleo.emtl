@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="buildAcceleo" nsURI="org::eclipse::acceleo::module::sample::files::buildAcceleo" startHeaderPosition="412" endHeaderPosition="492">
+  <mtl:Module name="buildAcceleo" nsURI="org::eclipse::acceleo::module::sample::main::buildAcceleo" startHeaderPosition="412" endHeaderPosition="492">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="33" endPosition="409" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
@@ -26,7 +26,7 @@
             <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/pluginDependencies"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&quot;&#xA;            binaryResource=&quot;true&quot;>&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>    &#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&quot;&#xA;            binaryResource=&quot;false&quot;&#xA;            trimPosition=&quot;false&quot;>&#xA;        &lt;/acceleoCompiler>&#xA;    &lt;/target>    &#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="build.acceleo">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -509,9 +509,6 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   </ocl.ecore:Variable>
-  <ocl.ecore:Variable name="i">
-    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-  </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
   </ocl.ecore:Variable>
@@ -521,81 +518,4 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
-  <ecore:EAnnotation source="positions">
-    <eAnnotations source="positions.0" references="/0/@documentation">
-      <details key="start" value="30"/>
-      <details key="end" value="411"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.1" references="/0/genBuildAcceleo">
-      <details key="start" value="496"/>
-      <details key="end" value="2071"/>
-      <details key="line" value="16"/>
-    </eAnnotations>
-    <eAnnotations source="positions.2" references="/0/genBuildAcceleo/@body.0">
-      <details key="start" value="583"/>
-      <details key="end" value="2059"/>
-      <details key="line" value="18"/>
-    </eAnnotations>
-    <eAnnotations source="positions.3" references="/0/genBuildAcceleo/@body.0/@body.0">
-      <details key="start" value="624"/>
-      <details key="end" value="1852"/>
-      <details key="line" value="19"/>
-    </eAnnotations>
-    <eAnnotations source="positions.4" references="/0/genBuildAcceleo/@body.0/@body.1">
-      <details key="start" value="1852"/>
-      <details key="end" value="1959"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.5" references="/0/genBuildAcceleo/@body.0/@body.1/@body.0">
-      <details key="start" value="1916"/>
-      <details key="end" value="1939"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.6" references="/0/genBuildAcceleo/@body.0/@body.1/dependency">
-      <details key="start" value="1940"/>
-      <details key="end" value="1950"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.7" references="/0/genBuildAcceleo/@body.0/@body.1/@body.2">
-      <details key="start" value="1952"/>
-      <details key="end" value="1953"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.8" references="/0/genBuildAcceleo/@body.0/@body.1/dependency.1">
-      <details key="start" value="1857"/>
-      <details key="end" value="1876"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.9" references="/0/genBuildAcceleo/@body.0/@body.1/@iterSet">
-      <details key="start" value="1879"/>
-      <details key="end" value="1914"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/genBuildAcceleo/@body.0/@body.1/@iterSet/anAcceleoProject">
-      <details key="start" value="1879"/>
-      <details key="end" value="1895"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.11" references="/0/genBuildAcceleo/@body.0/@body.2">
-      <details key="start" value="1959"/>
-      <details key="end" value="2052"/>
-      <details key="line" value="39"/>
-    </eAnnotations>
-    <eAnnotations source="positions.12" references="/0/genBuildAcceleo/@body.0/@fileUrl">
-      <details key="start" value="590"/>
-      <details key="end" value="605"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.13" references="/0/genBuildAcceleo/@body.0/@charset">
-      <details key="start" value="614"/>
-      <details key="end" value="621"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.14" references="/0/genBuildAcceleo/anAcceleoProject">
-      <details key="start" value="529"/>
-      <details key="end" value="562"/>
-      <details key="line" value="16"/>
-    </eAnnotations>
-  </ecore:EAnnotation>
 </xmi:XMI>

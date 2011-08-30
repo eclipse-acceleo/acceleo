@@ -57,32 +57,39 @@ public final class AcceleoCompilerHelper {
 	/**
 	 * The ecore file extension.
 	 */
-	private static final String ECORE = "ecore"; //$NON-NLS-1$
+	protected static final String ECORE = "ecore"; //$NON-NLS-1$
 
 	/**
 	 * Indicates if we should use binary resources for the serialization of the EMTL files.
 	 */
-	private boolean binaryResource = true;
+	protected boolean binaryResource = true;
 
 	/**
 	 * The source folder to compile.
 	 */
-	private File sourceFolder;
+	protected File sourceFolder;
 
 	/**
 	 * The output folder to place the compiled files.
 	 */
-	private File outputFolder;
+	protected File outputFolder;
 
 	/**
 	 * The dependencies folders.
 	 */
-	private List<File> dependencies = new ArrayList<File>();
+	protected List<File> dependencies = new ArrayList<File>();
 
 	/**
 	 * The dependencies identifiers.
 	 */
-	private List<String> dependenciesIDs = new ArrayList<String>();
+	protected List<String> dependenciesIDs = new ArrayList<String>();
+
+	/**
+	 * Indicates if we should trim the position.
+	 * 
+	 * @since 3.2
+	 */
+	protected boolean trimPosition;
 
 	/**
 	 * The MTL file properties.
@@ -184,6 +191,17 @@ public final class AcceleoCompilerHelper {
 	}
 
 	/**
+	 * Sets the boolean indicating if Acceleo should trim the positions from the emtl.
+	 * 
+	 * @param trimPosition
+	 *            The boolean
+	 * @since 3.2
+	 */
+	public void setTrimPosition(boolean trimPosition) {
+		this.trimPosition = trimPosition;
+	}
+
+	/**
 	 * Executes the compilation.
 	 */
 	public void execute() {
@@ -210,7 +228,7 @@ public final class AcceleoCompilerHelper {
 
 		createOutputFiles(emtlAbsoluteURIs);
 
-		AcceleoParser parser = new AcceleoParser(binaryResource);
+		AcceleoParser parser = new AcceleoParser(binaryResource, trimPosition);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, new BasicMonitor());
 		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile acceleoFile = iterator.next();
