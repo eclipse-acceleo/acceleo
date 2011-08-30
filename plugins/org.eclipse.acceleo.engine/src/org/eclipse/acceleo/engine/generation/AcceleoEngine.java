@@ -49,6 +49,9 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 	/** Externalized name of the "self" OCL variable to avoid too many distinct uses. */
 	private static final String SELF_VARIABLE_NAME = "self"; //$NON-NLS-1$
 
+	/** The key of the externalized message for argument mismatch. */
+	private static final String ARGUMENT_MISMATCH_KEY = "AcceleoEngine.ArgumentMismatch"; //$NON-NLS-1$
+
 	/**
 	 * This will hold the list of all listeners registered for notification on text generation from this
 	 * engine.
@@ -281,6 +284,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 	 *            The template which is to be evaluated.
 	 * @param arguments
 	 *            These will be passed as the template arguments.
+	 * @return The result of the evaluation of the template with the given arguments.
 	 */
 	private Object doEvaluate(Template template, List<? extends Object> arguments) {
 		// Guard Evaluation
@@ -295,7 +299,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 					guard.getEvaluationEnvironment().add(param.getName(), value);
 				} else {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-							"AcceleoEngine.ArgumentMismatch", template.getName())); //$NON-NLS-1$
+							ARGUMENT_MISMATCH_KEY, template.getName()));
 				}
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
@@ -325,7 +329,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 					query.getEvaluationEnvironment().add(param.getName(), value);
 				} else {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-							"AcceleoEngine.ArgumentMismatch", template.getName())); //$NON-NLS-1$
+							ARGUMENT_MISMATCH_KEY, template.getName()));
 				}
 				// [255379] also sets "self" variable to match the very first parameter
 				if (i == 0) {
@@ -358,6 +362,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 	 *            The query which is to be evaluated.
 	 * @param arguments
 	 *            These will be passed as the query arguments.
+	 * @return The result of the evaluation of the query with the given arguments.
 	 */
 	private Object doEvaluate(Query acceleoQuery, List<? extends Object> arguments) {
 		final OCL.Query query = ocl.createQuery(acceleoQuery.getExpression());
@@ -369,8 +374,8 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 			if (param.getType().isInstance(value)) {
 				query.getEvaluationEnvironment().add(param.getName(), value);
 			} else {
-				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
-						"AcceleoEngine.ArgumentMismatch", acceleoQuery.getName())); //$NON-NLS-1$
+				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(ARGUMENT_MISMATCH_KEY,
+						acceleoQuery.getName()));
 			}
 			// [255379] also sets "self" variable to match the very first parameter
 			if (i == 0) {
