@@ -68,6 +68,7 @@ Contributors:
          point="org.eclipse.acceleo.ui.language.interpreter">
       <languageInterpreter
             class="org.eclipse.acceleo.ui.interpreter.internal.language.acceleo.AcceleoInterpreter"
+            icon="icons/acceleo_language.gif"
             label="%Acceleo.language.interpreter.label">
       </languageInterpreter>
    </extension>
