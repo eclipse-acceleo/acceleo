@@ -118,7 +118,12 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 					found = true;
 				}
 				if (!found) {
-					// FIXME throw exception from here
+					// Is it our "root" dummy template's parameter?
+					if ("model".equals(param.getName()) && target.size() > 0) {//$NON-NLS-1$
+						arguments.add(EcoreUtil.getRootContainer(target.get(0)));
+					} else {
+						// FIXME throw exception from here
+					}
 				}
 			}
 

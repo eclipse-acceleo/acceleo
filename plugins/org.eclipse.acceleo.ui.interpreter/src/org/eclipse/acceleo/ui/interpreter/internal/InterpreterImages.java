@@ -93,6 +93,7 @@ public final class InterpreterImages {
 	private static void initializeRegistry() {
 		imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
 
+		createImage(IInterpreterConstants.BUTTON_CLEAR_ICON, IInterpreterConstants.BUTTON_CLEAR_ICON);
 		createImage(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON,
 				IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON);
 		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,

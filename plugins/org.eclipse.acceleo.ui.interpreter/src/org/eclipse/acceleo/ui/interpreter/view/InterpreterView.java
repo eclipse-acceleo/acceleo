@@ -30,6 +30,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableContentProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableDropListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
@@ -59,10 +60,14 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -72,8 +77,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -82,6 +90,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
@@ -138,8 +147,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/** This executor service will be used in order to launch the evaluation tasks of this interpreter. */
 	/* package */ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
 
-	/** This will hold the real-time compilation thread. */
-	/* package */RealTimeCompilationThread realTimeCompilationThread;
+	/** This will hold the real-time evaluation thread. */
+	/* package */RealTimeThread realTimeThread;
 
 	/** This executor service will be used in order to launch the compilation tasks of this interpreter. */
 	private ExecutorService compilationPool = Executors.newSingleThreadExecutor();
@@ -206,6 +215,38 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Viewer in which we'll display the accessible variables. */
 	private TreeViewer variableViewer;
+
+	/**
+	 * Creates a tool bar for the given section.
+	 * 
+	 * @param section
+	 *            The section for which we need a tool bar.
+	 * @return The created tool bar.
+	 */
+	protected static ToolBarManager createSectionToolBar(Section section) {
+		ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+		ToolBar toolBar = toolBarManager.createControl(section);
+
+		final Cursor handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
+		toolBar.setCursor(handCursor);
+		// Cursor needs to be explicitly disposed
+		toolBar.addDisposeListener(new DisposeListener() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
+			 */
+			public void widgetDisposed(DisposeEvent e) {
+				if (!handCursor.isDisposed()) {
+					handCursor.dispose();
+				}
+			}
+		});
+
+		section.setTextClient(toolBar);
+
+		return toolBarManager;
+	}
 
 	/**
 	 * Asks for the compilation of the current expression.
@@ -338,8 +379,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			variables = Collections.emptyList();
 		}
 
-		return new InterpreterContext(fullExpression, expressionViewer.getSelection(), targetEObjects,
-				variables);
+		ISelection selection = expressionViewer.getSelection();
+		if (selection == null
+				|| (selection instanceof ITextSelection && ((ITextSelection)selection).getLength() == 0)) {
+			selection = new TextSelection(expressionViewer.getDocument(), 0, fullExpression.length());
+		}
+
+		return new InterpreterContext(fullExpression, selection, targetEObjects, variables);
 	}
 
 	/**
@@ -403,17 +449,17 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
-	 * Enables (or disables) the real-time compilation of expressions.
+	 * Enables (or disables) the real-time evaluation of expressions.
 	 */
 	public synchronized void toggleRealTime() {
 		realTime = !realTime;
 		if (realTime) {
-			realTimeCompilationThread = new RealTimeCompilationThread();
-			realTimeCompilationThread.start();
+			realTimeThread = new RealTimeThread();
+			realTimeThread.start();
 		} else {
-			if (realTimeCompilationThread != null) {
-				realTimeCompilationThread.interrupt();
-				realTimeCompilationThread = null;
+			if (realTimeThread != null) {
+				realTimeThread.interrupt();
+				realTimeThread = null;
 			}
 		}
 	}
@@ -523,6 +569,10 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		gridData.heightHint = 80;
 		expressionViewer.getControl().setLayoutData(gridData);
 
+		ToolBarManager toolBarManager = createSectionToolBar(expressionSection);
+		toolBarManager.add(new ClearViewerAction(expressionViewer));
+		toolBarManager.update(true);
+
 		toolkit.paintBordersFor(expressionSectionBody);
 		expressionSection.setClient(expressionSectionBody);
 	}
@@ -548,7 +598,16 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		 */
 		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
 				getCurrentLanguageDescriptor().getLabel()));
-		interpreterForm.setImage(getCurrentLanguageDescriptor().getIcon().createImage());
+		final ImageDescriptor titleImageDescriptor = getCurrentLanguageDescriptor().getIcon();
+		final Image titleImage;
+		if (titleImageDescriptor != null) {
+			titleImage = titleImageDescriptor.createImage();
+		} else {
+			titleImage = InterpreterImages.getImageDescriptor(
+					IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage();
+		}
+		setTitleImage(titleImage);
+		interpreterForm.setImage(titleImage);
 
 		Composite formBody = interpreterForm.getBody();
 		GridLayout formLayout = new GridLayout(2, false);
@@ -598,6 +657,10 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		resultViewer = createResultViewer(resultSectionBody);
 		gridData = new GridData(GridData.FILL_BOTH);
 		resultViewer.getControl().setLayoutData(gridData);
+
+		ToolBarManager toolBarManager = createSectionToolBar(resultSection);
+		toolBarManager.add(new ClearViewerAction(resultViewer));
+		toolBarManager.update(true);
 
 		toolkit.paintBordersFor(resultSectionBody);
 		resultSection.setClient(resultSectionBody);
@@ -713,6 +776,10 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		variableSectionBody.setLayout(new FillLayout());
 
 		variableViewer = createVariableViewer(toolkit, variableSectionBody);
+
+		ToolBarManager toolBarManager = createSectionToolBar(variableSection);
+		toolBarManager.add(new ClearViewerAction(variableViewer));
+		toolBarManager.update(true);
 
 		toolkit.paintBordersFor(variableSectionBody);
 		variableSection.setClient(variableSectionBody);
@@ -939,9 +1006,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			 * @see org.eclipse.jface.text.ITextListener#textChanged(org.eclipse.jface.text.TextEvent)
 			 */
 			public void textChanged(TextEvent event) {
-				if (realTimeCompilationThread != null) {
-					realTimeCompilationThread.reset();
-					realTimeCompilationThread.setDirty();
+				if (realTimeThread != null) {
+					realTimeThread.reset();
+					realTimeThread.setDirty();
 				}
 			}
 		});
@@ -1248,23 +1315,30 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 				}
 			} catch (InterruptedException e) {
 				// Thread is expected to be cancelled if another is started
+				System.out.println();
 			} catch (ExecutionException e) {
 				// FIXME log
+				System.out.println();
 			}
 		}
 	}
 
 	/**
 	 * This daemon thread will be launched whenever the "real-time" toggle is activated, and will only be
-	 * stopped when the view is disposed or the "real-time" toggle is disabled. This Thread will be constantly
-	 * reset on modifications of the expression viewer, and will only really start its work if the expression
-	 * is left untouched for a given count of seconds.
+	 * stopped when the view is disposed or the "real-time" toggle is disabled.
+	 * <p>
+	 * This Thread will be constantly reset on modifications of the expression viewer, and will only really
+	 * start its work if the expression is left untouched for a given count of seconds.
+	 * </p>
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private class RealTimeCompilationThread extends Thread {
-		/** Time to wait before launching the compilation (2 seconds by default). */
+	private class RealTimeThread extends Thread {
+		/** Time to wait before launching the evaluation (2 seconds by default). */
 		private static final int DELAY = 2000;
+
+		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
+		private boolean dirty;
 
 		/** The lock we'll acquire for this thread's work. */
 		private final Object lock = new Object();
@@ -1272,16 +1346,22 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		/** This will be set to <code>true</code> whenever we should reset this thread's timer. */
 		private boolean reset;
 
-		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
-		private boolean dirty;
-
 		/**
-		 * Instantiates the real-time compilation thread.
+		 * Instantiates the real-time evaluation thread.
 		 */
-		public RealTimeCompilationThread() {
-			super("InterpreterRealTimeCompilationThread"); //$NON-NLS-1$
+		public RealTimeThread() {
+			super("InterpreterRealTimeThread"); //$NON-NLS-1$
 			setPriority(Thread.MIN_PRIORITY);
 			setDaemon(true);
+		}
+
+		/**
+		 * Resets this thread's timer.
+		 */
+		public void reset() {
+			synchronized(this) {
+				reset = true;
+			}
 		}
 
 		/**
@@ -1322,17 +1402,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 					 */
 					public void run() {
 						compileExpression();
+						evaluate();
 					}
 				});
-			}
-		}
-
-		/**
-		 * Resets this thread's timer.
-		 */
-		public void reset() {
-			synchronized(this) {
-				reset = true;
 			}
 		}
 

@@ -16,6 +16,9 @@ package org.eclipse.acceleo.ui.interpreter.internal;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public interface IInterpreterConstants {
+	/** Path to the icon for the "clear" action. */
+	String BUTTON_CLEAR_ICON = "clear_action.gif"; //$NON-NLS-1$
+
 	/** Path to the icons of the interpreter. */
 	String INTERPRETER_ICONS = "icons"; //$NON-NLS-1$
 

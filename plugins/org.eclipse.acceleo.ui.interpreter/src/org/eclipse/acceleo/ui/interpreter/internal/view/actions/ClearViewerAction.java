@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Obeo.
+ * Copyright (c) 2010, 2011 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,35 +13,36 @@ package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
-import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.viewers.Viewer;
 
 /**
- * This action will be displayed on the interpreter view's toolbar. It will make it possible to enable or
- * disable the real-time evaluation of expressions.
+ * This action will be added to the result section's tool bar and will allow users to clear all previous
+ * evaluation results.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class ToggleRealTimeAction extends Action {
+public class ClearViewerAction extends Action {
 	/** The tooltip we'll show for this action. */
 	private static final String TOOLTIP_TEXT = InterpreterMessages
-			.getString("intepreter.action.realtime.tooltip"); //$NON-NLS-1$
+			.getString("interpreter.action.clear.tooltip"); //$NON-NLS-1$
 
-	/** Keeps a reference to the interpreter view. */
-	private InterpreterView view;
+	/** The viewer that should be cleared through this action. */
+	private final Viewer viewer;
 
 	/**
-	 * Instantiates the real-time enablement toggle given the interpreter view in should operate on.
+	 * Instantiates the "clear" action given the viewer it should operate on.
 	 * 
-	 * @param view
-	 *            The view on which this action operates.
+	 * @param viewer
+	 *            The viewer that should be cleared through this action.
 	 */
-	public ToggleRealTimeAction(InterpreterView view) {
-		super(null, IAction.AS_CHECK_BOX);
-		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.TOGGLE_REALTIME_ICON));
+	public ClearViewerAction(Viewer viewer) {
+		super(null, IAction.AS_PUSH_BUTTON);
 		setToolTipText(TOOLTIP_TEXT);
-		this.view = view;
+		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.BUTTON_CLEAR_ICON));
+		this.viewer = viewer;
 	}
 
 	/**
@@ -51,8 +52,13 @@ public class ToggleRealTimeAction extends Action {
 	 */
 	@Override
 	public void run() {
-		if (view != null) {
-			view.toggleRealTime();
+		if (viewer.getControl().isDisposed()) {
+			return;
+		}
+		if (viewer instanceof TextViewer) {
+			((TextViewer)viewer).getTextWidget().setText(""); //$NON-NLS-1$
+		} else {
+			viewer.setInput(null);
 		}
 	}
 }
