@@ -74,7 +74,7 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  This icon will be used as the view&apos;s icon when this language is selected.
+                  This icon will be used as the view&apos;s icon when this language is selected. If no image is provided, a default icon will be used instead.
                </documentation>
                <appinfo>
                   <meta.attribute kind="resource"/>
