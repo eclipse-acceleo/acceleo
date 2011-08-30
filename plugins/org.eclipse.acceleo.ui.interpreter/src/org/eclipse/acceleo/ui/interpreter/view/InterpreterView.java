@@ -31,6 +31,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleVariableVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
@@ -58,6 +59,8 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -112,7 +115,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	private static final String INTERPRETER_VIEW_CONTEXT_ID = "org.eclipse.acceleo.ui.interpreter.interpreterview"; //$NON-NLS-1$
 
 	/** Key for the currently selected language as stored in this view's memento. */
-	private static final String MEMENTO_CURRENT_LANGUAGE_KEY = "org.eclipse.acceleo.ui.interpreter.current.language"; //$NON-NLS-1$
+	private static final String MEMENTO_CURRENT_LANGUAGE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.current.language"; //$NON-NLS-1$
+
+	/** Key for the expression as stored in this view's memento. */
+	private static final String MEMENTO_EXPRESSION_KEY = "org.eclipse.acceleo.ui.interpreter.memento.expression"; //$NON-NLS-1$
+
+	/** Key for the real-time compilation state as stored in this view's memento. */
+	private static final String MEMENTO_REAL_TIME_KEY = "org.eclipse.acceleo.ui.interpreter.memento.realtime"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
@@ -124,7 +133,10 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	protected CompilationThread compilationThread;
 
 	/** This executor service will be used in order to launch the evaluation tasks of this interpreter. */
-	ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
+	/* package */ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
+
+	/** This will hold the real-time compilation thread. */
+	/* package */RealTimeCompilationThread realTimeCompilationThread;
 
 	/** This executor service will be used in order to launch the compilation tasks of this interpreter. */
 	private ExecutorService compilationPool = Executors.newSingleThreadExecutor();
@@ -173,6 +185,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Memento from which to restore this view's state. */
 	private IMemento partMemento;
+
+	/** This indicates whether we should be compiling the expression in real-time. */
+	private boolean realTime;
 
 	/**
 	 * Keeps a reference to the "result" section of the interpreter form. This will be used to re-create the
@@ -241,6 +256,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		formToolkit = new FormToolkit(rootContainer.getDisplay());
 
 		createInterpreterForm(formToolkit, rootContainer);
+
+		// The view's state has been restored on-the-fly. We can now discard the memento.
+		partMemento = null;
 	}
 
 	/**
@@ -250,11 +268,15 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 */
 	@Override
 	public void dispose() {
-		IContextService contextService = (IContextService)getSite().getService(IContextService.class);
-		contextService.deactivateContext(contextActivationToken);
+		if (contextActivationToken != null) {
+			IContextService contextService = (IContextService)getSite().getService(IContextService.class);
+			contextService.deactivateContext(contextActivationToken);
+		}
 
-		IHandlerService handlerService = (IHandlerService)getSite().getService(IHandlerService.class);
-		handlerService.deactivateHandler(contentAssistActivationToken);
+		if (contentAssistActivationToken != null) {
+			IHandlerService handlerService = (IHandlerService)getSite().getService(IHandlerService.class);
+			handlerService.deactivateHandler(contentAssistActivationToken);
+		}
 
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (workbenchWindow != null && workbenchWindow.getActivePage() != null
@@ -360,6 +382,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			memento.putMemento(partMemento);
 		} else {
 			memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
+			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
+			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 		}
 	}
 
@@ -378,8 +402,17 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/**
 	 * Enables (or disables) the real-time compilation of expressions.
 	 */
-	public void toggleRealTime() {
-
+	public synchronized void toggleRealTime() {
+		realTime = !realTime;
+		if (realTime) {
+			realTimeCompilationThread = new RealTimeCompilationThread();
+			realTimeCompilationThread.start();
+		} else {
+			if (realTimeCompilationThread != null) {
+				realTimeCompilationThread.interrupt();
+				realTimeCompilationThread = null;
+			}
+		}
 	}
 
 	/**
@@ -602,21 +635,16 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
 
 		if (viewer instanceof IInterpreterSourceViewer) {
-			final String actionDefinitionID = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
-			final IInterpreterSourceViewer interpreterSourceViewer = ((IInterpreterSourceViewer)viewer);
-
-			IAction action = new Action() {
-				@Override
-				public void run() {
-					interpreterSourceViewer.showContentAssist(getInterpreterContext());
-				}
-			};
-			IHandler handler = new ActionHandler(action);
-
-			IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
-			contentAssistActivationToken = service.activateHandler(actionDefinitionID, handler);
+			setUpContentAssist((IInterpreterSourceViewer)viewer);
+			setUpRealTimeCompilation(viewer);
 		}
 
+		if (partMemento != null) {
+			String expression = partMemento.getString(MEMENTO_EXPRESSION_KEY);
+			if (expression != null) {
+				viewer.getTextWidget().setText(expression);
+			}
+		}
 		return viewer;
 	}
 
@@ -629,6 +657,16 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            The right column of our form, containing the variable section.
 	 */
 	protected void createToolBar(Form form, Composite variableColumn) {
+		IAction realTimeAction = new ToggleRealTimeAction(this);
+		if (partMemento != null) {
+			Boolean isRealTime = partMemento.getBoolean(MEMENTO_REAL_TIME_KEY);
+			if (isRealTime != null && isRealTime.booleanValue()) {
+				toggleRealTime();
+				realTimeAction.setChecked(realTime);
+			}
+		}
+
+		form.getToolBarManager().add(realTimeAction);
 		form.getToolBarManager().add(new ToggleVariableVisibilityAction(form, variableColumn));
 		form.getToolBarManager().update(true);
 	}
@@ -835,6 +873,51 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			input.add(evaluationResult);
 		}
 		resultViewer.setInput(input);
+	}
+
+	/**
+	 * Sets up the content assist action for the given source viewer.
+	 * 
+	 * @param viewer
+	 *            The viewer we need content assist on.
+	 */
+	protected final void setUpContentAssist(final IInterpreterSourceViewer viewer) {
+		final String actionDefinitionID = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
+
+		IAction action = new Action() {
+			@Override
+			public void run() {
+				viewer.showContentAssist(getInterpreterContext());
+			}
+		};
+		IHandler handler = new ActionHandler(action);
+
+		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
+		contentAssistActivationToken = service.activateHandler(actionDefinitionID, handler);
+	}
+
+	/**
+	 * Sets up the real-time compilation action on the given viewer. The real-time thread specifically needs
+	 * to be told whenever the expression is dirty as well as when the timer should be reset (in order not to
+	 * compile when the user is entering the expression).
+	 * 
+	 * @param viewer
+	 *            The viewer for which to set up the real-time compilation thread.
+	 */
+	protected void setUpRealTimeCompilation(SourceViewer viewer) {
+		viewer.addTextListener(new ITextListener() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.jface.text.ITextListener#textChanged(org.eclipse.jface.text.TextEvent)
+			 */
+			public void textChanged(TextEvent event) {
+				if (realTimeCompilationThread != null) {
+					realTimeCompilationThread.reset();
+					realTimeCompilationThread.setDirty();
+				}
+			}
+		});
 	}
 
 	/**
@@ -1120,7 +1203,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 				final EvaluationResult result = evaluationTask.get();
 
-				if (result != null && result.getProblems() != null) {
+				if (result != null) {
 					Display.getDefault().asyncExec(new Runnable() {
 						/**
 						 * {@inheritDoc}
@@ -1128,12 +1211,82 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 						 * @see java.lang.Runnable#run()
 						 */
 						public void run() {
-							addStatusMessages(result.getProblems(), EVALUATION_MESSAGE_PREFIX);
+							if (result.getProblems() != null) {
+								addStatusMessages(result.getProblems(), EVALUATION_MESSAGE_PREFIX);
+							}
+							// whether there were problems or not, try and update the result viewer.
+							setEvaluationResult(result);
 						}
 					});
 				}
+			} catch (InterruptedException e) {
+				// Thread is expected to be cancelled if another is started
+			} catch (ExecutionException e) {
+				// FIXME log
+			}
+		}
+	}
 
-				// whether there were problems or not, try and update the result viewer.
+	/**
+	 * This daemon thread will be launched whenever the "real-time" toggle is activated, and will only be
+	 * stopped when the view is disposed or the "real-time" toggle is disabled. This Thread will be constantly
+	 * reset on modifications of the expression viewer, and will only really start its work if the expression
+	 * is left untouched for a given count of seconds.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private class RealTimeCompilationThread extends Thread {
+		/** Time to wait before launching the compilation (2 seconds by default). */
+		private static final int DELAY = 2000;
+
+		/** The lock we'll acquire for this thread's work. */
+		private final Object lock = new Object();
+
+		/** This will be set to <code>true</code> whenever we should reset this thread's timer. */
+		private boolean reset;
+
+		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
+		private boolean dirty;
+
+		/**
+		 * Instantiates the real-time compilation thread.
+		 */
+		public RealTimeCompilationThread() {
+			super("InterpreterRealTimeCompilationThread"); //$NON-NLS-1$
+			setPriority(Thread.MIN_PRIORITY);
+			setDaemon(true);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
+		@Override
+		public void run() {
+			while (!Thread.interrupted()) {
+				synchronized(lock) {
+					try {
+						lock.wait(DELAY);
+					} catch (InterruptedException e) {
+						// This is expected
+					}
+				}
+
+				synchronized(this) {
+					if (reset) {
+						reset = false;
+						// If a reset has been asked for, stop this iteration
+						continue;
+					}
+					if (dirty) {
+						dirty = false;
+					} else {
+						// The expression does not need to be recompiled
+						continue;
+					}
+				}
+
 				Display.getDefault().asyncExec(new Runnable() {
 					/**
 					 * {@inheritDoc}
@@ -1141,13 +1294,27 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
-						setEvaluationResult(result);
+						compileExpression();
 					}
 				});
-			} catch (InterruptedException e) {
-				// Thread is expected to be cancelled if another is started
-			} catch (ExecutionException e) {
-				// FIXME log
+			}
+		}
+
+		/**
+		 * Resets this thread's timer.
+		 */
+		public void reset() {
+			synchronized(this) {
+				reset = true;
+			}
+		}
+
+		/**
+		 * Sets the "dirty" state of this thread to indicate the expression needs to be recompiled.
+		 */
+		public void setDirty() {
+			synchronized(this) {
+				dirty = true;
 			}
 		}
 	}
