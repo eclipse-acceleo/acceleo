@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
-import org.eclipse.acceleo.ui.interpreter.internal.AcceleoInterpreterImages;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
@@ -39,7 +39,7 @@ public class ToggleRealTimeAction extends Action {
 	 */
 	public ToggleRealTimeAction(InterpreterView view) {
 		super(null, IAction.AS_CHECK_BOX);
-		setImageDescriptor(AcceleoInterpreterImages
+		setImageDescriptor(InterpreterImages
 				.getImageDescriptor(IInterpreterConstants.TOGGLE_REALTIME_ICON));
 		setToolTipText(TOOLTIP_TEXT);
 		this.view = view;

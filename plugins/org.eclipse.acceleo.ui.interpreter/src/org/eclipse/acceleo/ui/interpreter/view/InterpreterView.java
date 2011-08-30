@@ -21,6 +21,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
@@ -72,6 +74,7 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -539,8 +542,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 		populateLanguageMenu(interpreterForm.getMenuManager());
 
+		/*
+		 * This will be called at initialization only. When initializing the "languages" menu, we do select
+		 * the accurate descriptor, but we do not set the language text and icon.
+		 */
 		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
 				getCurrentLanguageDescriptor().getLabel()));
+		interpreterForm.setImage(getCurrentLanguageDescriptor().getIcon().createImage());
 
 		Composite formBody = interpreterForm.getBody();
 		GridLayout formLayout = new GridLayout(2, false);
@@ -769,7 +777,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			IAction action = new ChangeLanguageAction(descriptor);
 			menuManager.add(action);
 			if (getCurrentLanguageDescriptor() == null) {
-				if (partMemento == null) {
+				if (partMemento == null || partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY) == null) {
 					currentLanguage = descriptor;
 					action.setChecked(true);
 				} else if (partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY).equals(
@@ -804,12 +812,31 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		IContributionItem[] changeLanguageActions = getForm().getMenuManager().getItems();
 		getForm().getMessageManager().removeAllMessages();
 
-		currentLanguageInterpreter.dispose();
+		getCurrentLanguageInterpreter().dispose();
 		currentLanguageInterpreter = null;
 
+		LanguageInterpreterDescriptor previousLanguage = getCurrentLanguageDescriptor();
 		currentLanguage = selectedLanguage;
+
+		// Change interpreter title
 		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
 				getCurrentLanguageDescriptor().getLabel()));
+
+		// Change view's icon
+		Image previousImage = null;
+		if (previousLanguage.getIcon() != null || getCurrentLanguageDescriptor().getIcon() != null) {
+			previousImage = getTitleImage();
+		}
+		if (getCurrentLanguageDescriptor().getIcon() != null) {
+			setTitleImage(getCurrentLanguageDescriptor().getIcon().createImage());
+		} else if (previousLanguage.getIcon() != null) {
+			setTitleImage(InterpreterImages.getImageDescriptor(
+					IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage());
+		}
+		if (previousImage != null) {
+			previousImage.dispose();
+		}
+		interpreterForm.setImage(getTitleImage());
 
 		if (expressionSection != null) {
 			Composite expressionSectionBody = (Composite)expressionSection.getClient();

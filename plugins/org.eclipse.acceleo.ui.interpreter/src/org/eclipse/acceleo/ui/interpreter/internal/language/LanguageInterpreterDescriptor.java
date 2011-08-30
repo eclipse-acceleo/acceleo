@@ -13,6 +13,8 @@ package org.eclipse.acceleo.ui.interpreter.internal.language;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Describes a language interpreter as contributed to the extension point.
@@ -23,6 +25,9 @@ public final class LanguageInterpreterDescriptor {
 	/** Name of the extension point's languageInterpreter tag "class" attribute. */
 	public static final String LANGUAGE_INTERPRETER_ATTRIBUTE_CLASS = "class"; //$NON-NLS-1$
 
+	/** Name of the extension point's languageInterpreter tag "icon" atribute. */
+	private static final String LANGUAGE_INTERPRETER_ATTRIBUTE_ICON = "icon"; //$NON-NLS-1$
+
 	/** Name of the extension point's languageInterpreter tag "label" atribute. */
 	private static final String LANGUAGE_INTERPRETER_ATTRIBUTE_LABEL = "label"; //$NON-NLS-1$
 
@@ -31,6 +36,9 @@ public final class LanguageInterpreterDescriptor {
 
 	/** Qualified class name of this language interpreter. */
 	private final String interpreterClassName;
+
+	/** Icon provided by this interpreter. Could be <code>null</code>. */
+	private final ImageDescriptor icon;
 
 	/** Label of this particular interpreter. */
 	private final String label;
@@ -45,6 +53,16 @@ public final class LanguageInterpreterDescriptor {
 		this.element = element;
 		this.label = element.getAttribute(LANGUAGE_INTERPRETER_ATTRIBUTE_LABEL);
 		this.interpreterClassName = element.getAttribute(LANGUAGE_INTERPRETER_ATTRIBUTE_CLASS);
+
+		ImageDescriptor parsedIcon = null;
+		final String iconPath = element.getAttribute(LANGUAGE_INTERPRETER_ATTRIBUTE_ICON);
+		if (iconPath != null) {
+			final String extendingPluginId = element.getContributor().getName();
+			if (extendingPluginId != null && extendingPluginId.length() > 0) {
+				parsedIcon = AbstractUIPlugin.imageDescriptorFromPlugin(extendingPluginId, iconPath);
+			}
+		}
+		this.icon = parsedIcon;
 	}
 
 	/**
@@ -69,6 +87,15 @@ public final class LanguageInterpreterDescriptor {
 	 */
 	public String getClassName() {
 		return interpreterClassName;
+	}
+
+	/**
+	 * Returns the icon of this interpreter.
+	 * 
+	 * @return The icon of this interpreter.
+	 */
+	public ImageDescriptor getIcon() {
+		return icon;
 	}
 
 	/**

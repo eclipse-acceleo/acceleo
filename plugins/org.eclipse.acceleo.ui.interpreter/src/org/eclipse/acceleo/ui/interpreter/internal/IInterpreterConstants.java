@@ -19,6 +19,9 @@ public interface IInterpreterConstants {
 	/** Path to the icons of the interpreter. */
 	String INTERPRETER_ICONS = "icons"; //$NON-NLS-1$
 
+	/** Path to the default interpreter view's icon. */
+	String INTERPRETER_VIEW_DEFAULT_ICON = "view_icon.gif"; //$NON-NLS-1$
+
 	/** Path to the icon for the "toggle real-time compilation" action. */
 	String TOGGLE_REALTIME_ICON = "realtime_action.gif"; //$NON-NLS-1$
 

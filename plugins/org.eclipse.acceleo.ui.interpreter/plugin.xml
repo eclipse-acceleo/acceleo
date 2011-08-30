@@ -18,8 +18,9 @@ Contributors:
    <extension
          point="org.eclipse.ui.views">
       <view
-      		category="org.eclipse.acceleo.ide.ui"
+            category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.ui.interpreter.view.InterpreterView"
+            icon="icons/view_icon.gif"
             id="org.eclipse.acceleo.ui.interpreter.view"
             name="%InterpreterViewName"
             restorable="true">

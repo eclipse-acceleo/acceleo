@@ -23,7 +23,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public final class AcceleoInterpreterImages {
+public final class InterpreterImages {
 	/** Base URL for all "icon" images. This will be initialized to this bundle's "icons" folder. */
 	private static URL BASE_URL = null;
 
@@ -38,7 +38,7 @@ public final class AcceleoInterpreterImages {
 	/**
 	 * Utility classes don't need a default constructor.
 	 */
-	private AcceleoInterpreterImages() {
+	private InterpreterImages() {
 		// Hides default constructor
 	}
 
@@ -93,6 +93,8 @@ public final class AcceleoInterpreterImages {
 	private static void initializeRegistry() {
 		imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
 
+		createImage(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON,
+				IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON);
 		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,
 				IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON);
 		createImage(IInterpreterConstants.TOGGLE_REALTIME_ICON, IInterpreterConstants.TOGGLE_REALTIME_ICON);

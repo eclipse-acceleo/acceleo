@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
-import org.eclipse.acceleo.ui.interpreter.internal.AcceleoInterpreterImages;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.jface.action.Action;
@@ -50,7 +50,7 @@ public class ToggleVariableVisibilityAction extends Action {
 	 */
 	public ToggleVariableVisibilityAction(Form interpreterForm, Composite variableContainer) {
 		super(null, IAction.AS_CHECK_BOX);
-		setImageDescriptor(AcceleoInterpreterImages
+		setImageDescriptor(InterpreterImages
 				.getImageDescriptor(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON));
 		setToolTipText(TOOLTIP_TEXT);
 		this.form = interpreterForm;
