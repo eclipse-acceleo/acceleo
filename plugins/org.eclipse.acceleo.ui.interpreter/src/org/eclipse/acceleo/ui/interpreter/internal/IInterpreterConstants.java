@@ -16,8 +16,17 @@ package org.eclipse.acceleo.ui.interpreter.internal;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public interface IInterpreterConstants {
-	/** Path to the icon for the "clear" action. */
-	String BUTTON_CLEAR_ICON = "clear_action.gif"; //$NON-NLS-1$
+	/** Path to the icon for the "clear" action when enabled. */
+	String CLEAR_ACTION_ICON = "clear_action.gif"; //$NON-NLS-1$
+
+	/** Path to the icon for the "delete" action when disabled. */
+	String DELETE_ACTION_DISABLED_ICON = "delete_action_disabled.gif"; //$NON-NLS-1$	
+
+	/** Path to the icon for the "delete" action when enabled. */
+	String DELETE_ACTION_ICON = "delete_action.gif"; //$NON-NLS-1$
+
+	/** Path to the icon for the "evaluate" action. */
+	String EVALUATE_ACTION_ICON = "evaluate_action.gif"; //$NON-NLS-1$
 
 	/** Path to the icons of the interpreter. */
 	String INTERPRETER_ICONS = "icons"; //$NON-NLS-1$
@@ -26,8 +35,8 @@ public interface IInterpreterConstants {
 	String INTERPRETER_VIEW_DEFAULT_ICON = "view_icon.gif"; //$NON-NLS-1$
 
 	/** Path to the icon for the "toggle real-time compilation" action. */
-	String TOGGLE_REALTIME_ICON = "realtime_action.gif"; //$NON-NLS-1$
+	String REALTIME_TOGGLE_ICON = "realtime_action.gif"; //$NON-NLS-1$
 
 	/** Path to the icon for the "toggle variable visibility" action. */
-	String TOGGLE_VARIABLE_VISIBILITY_ICON = "variable_action.gif"; //$NON-NLS-1$
+	String VARIABLE_VISIBILITY_TOGGLE_ICON = "variable_action.gif"; //$NON-NLS-1$
 }

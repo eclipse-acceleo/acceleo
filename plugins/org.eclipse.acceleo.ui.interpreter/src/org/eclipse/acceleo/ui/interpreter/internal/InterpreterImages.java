@@ -93,11 +93,15 @@ public final class InterpreterImages {
 	private static void initializeRegistry() {
 		imageRegistry = new ImageRegistry(PlatformUI.getWorkbench().getDisplay());
 
-		createImage(IInterpreterConstants.BUTTON_CLEAR_ICON, IInterpreterConstants.BUTTON_CLEAR_ICON);
+		createImage(IInterpreterConstants.CLEAR_ACTION_ICON, IInterpreterConstants.CLEAR_ACTION_ICON);
+		createImage(IInterpreterConstants.DELETE_ACTION_DISABLED_ICON,
+				IInterpreterConstants.DELETE_ACTION_DISABLED_ICON);
+		createImage(IInterpreterConstants.DELETE_ACTION_ICON, IInterpreterConstants.DELETE_ACTION_ICON);
+		createImage(IInterpreterConstants.EVALUATE_ACTION_ICON, IInterpreterConstants.EVALUATE_ACTION_ICON);
 		createImage(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON,
 				IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON);
-		createImage(IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON,
-				IInterpreterConstants.TOGGLE_VARIABLE_VISIBILITY_ICON);
-		createImage(IInterpreterConstants.TOGGLE_REALTIME_ICON, IInterpreterConstants.TOGGLE_REALTIME_ICON);
+		createImage(IInterpreterConstants.VARIABLE_VISIBILITY_TOGGLE_ICON,
+				IInterpreterConstants.VARIABLE_VISIBILITY_TOGGLE_ICON);
+		createImage(IInterpreterConstants.REALTIME_TOGGLE_ICON, IInterpreterConstants.REALTIME_TOGGLE_ICON);
 	}
 }

@@ -24,7 +24,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public final class InterpreterActionHandler extends AbstractHandler {
 	/** Action ID of the "Evaluate" action. Must be kept in sync with the plugin.xml declaration. */
-	public static final String EVALUTE_ACTION_ID = "org.eclipse.acceleo.ui.interpreter.evaluateaction"; //$NON-NLS-1$
+	public static final String EVALUATE_ACTION_ID = "org.eclipse.acceleo.ui.interpreter.evaluateaction"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}
@@ -32,7 +32,7 @@ public final class InterpreterActionHandler extends AbstractHandler {
 	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		if (EVALUTE_ACTION_ID.equals(event.getCommand().getId())) {
+		if (EVALUATE_ACTION_ID.equals(event.getCommand().getId())) {
 			final IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 			if (activePart instanceof InterpreterView) {
 				EvaluateAction action = new EvaluateAction();

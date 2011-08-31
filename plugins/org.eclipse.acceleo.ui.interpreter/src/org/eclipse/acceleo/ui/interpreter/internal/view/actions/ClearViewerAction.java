@@ -29,6 +29,9 @@ public class ClearViewerAction extends Action {
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("interpreter.action.clear.tooltip"); //$NON-NLS-1$
 
+	/** Name of this action. */
+	private static final String NAME = InterpreterMessages.getString("interpreter.action.clear.name"); //$NON-NLS-1$
+
 	/** The viewer that should be cleared through this action. */
 	private final Viewer viewer;
 
@@ -38,10 +41,10 @@ public class ClearViewerAction extends Action {
 	 * @param viewer
 	 *            The viewer that should be cleared through this action.
 	 */
-	public ClearViewerAction(Viewer viewer) {
-		super(null, IAction.AS_PUSH_BUTTON);
+	public ClearViewerAction(final Viewer viewer) {
+		super(NAME, IAction.AS_PUSH_BUTTON);
 		setToolTipText(TOOLTIP_TEXT);
-		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.BUTTON_CLEAR_ICON));
+		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.CLEAR_ACTION_ICON));
 		this.viewer = viewer;
 	}
 

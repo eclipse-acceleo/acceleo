@@ -115,8 +115,8 @@ public class VariableContentProvider extends AdapterFactoryContentProvider {
 		} else if (newInput instanceof Variable) {
 			input = new ArrayList<Variable>();
 			input.add((Variable)newInput);
-		} else {
-			input = null;
+		} else if (newInput == null) {
+			input = new ArrayList<Variable>();
 		}
 	}
 }

@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
@@ -33,6 +34,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleVariableVisibilityAction;
@@ -45,6 +47,7 @@ import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -65,6 +68,7 @@ import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextSelection;
@@ -96,6 +100,7 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -116,7 +121,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class InterpreterView extends ViewPart implements IMenuListener {
+public class InterpreterView extends ViewPart {
 	/** Prefix of the messages corresponding to compilation problems. */
 	protected static final String COMPILATION_MESSAGE_PREFIX = "compilation.message"; //$NON-NLS-1$
 
@@ -131,6 +136,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 
 	/** Key for the expression as stored in this view's memento. */
 	private static final String MEMENTO_EXPRESSION_KEY = "org.eclipse.acceleo.ui.interpreter.memento.expression"; //$NON-NLS-1$
+
+	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
+	private static final String MEMENTO_VARIABLES_HIDDEN_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
 	/** Key for the real-time compilation state as stored in this view's memento. */
 	private static final String MEMENTO_REAL_TIME_KEY = "org.eclipse.acceleo.ui.interpreter.memento.realtime"; //$NON-NLS-1$
@@ -150,11 +158,17 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/** This will hold the real-time evaluation thread. */
 	/* package */RealTimeThread realTimeThread;
 
+	/** Content assist activation token. This will be needed to deactivate our handler. */
+	private IHandlerActivation activationTokenContentAssist;
+
+	/** Redo activation token. This will be needed to deactivate our handler. */
+	private IHandlerActivation activationTokenRedo;
+
+	/** Undo action activation token. This will be needed to deactivate our handler. */
+	private IHandlerActivation activationTokenUndo;
+
 	/** This executor service will be used in order to launch the compilation tasks of this interpreter. */
 	private ExecutorService compilationPool = Executors.newSingleThreadExecutor();
-
-	/** Content assist activation token. This will be needed to deactivate our handler. */
-	private IHandlerActivation contentAssistActivationToken;
 
 	/** Context activation token. This will be needed to deactivate it. */
 	private IContextActivation contextActivationToken;
@@ -223,9 +237,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            The section for which we need a tool bar.
 	 * @return The created tool bar.
 	 */
-	protected static ToolBarManager createSectionToolBar(Section section) {
-		ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
-		ToolBar toolBar = toolBarManager.createControl(section);
+	protected static final ToolBarManager createSectionToolBar(Section section) {
+		final ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+		final ToolBar toolBar = toolBarManager.createControl(section);
 
 		final Cursor handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
 		toolBar.setCursor(handCursor);
@@ -244,8 +258,38 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		});
 
 		section.setTextClient(toolBar);
+		toolBar.setData(toolBarManager);
+		toolBar.addDisposeListener(new DisposeListener() {
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
+			 */
+			public void widgetDisposed(DisposeEvent e) {
+				toolBar.setData(null);
+			}
+		});
 
 		return toolBarManager;
+	}
+
+	/**
+	 * Returns the toolbar of the given section if any.
+	 * 
+	 * @param section
+	 *            The section of which we need the toolbar.
+	 * @return The toolbar of the given section if any.
+	 */
+	protected static final ToolBarManager getSectionToolBar(Section section) {
+		Control textClient = section.getTextClient();
+		if (textClient instanceof ToolBar) {
+			ToolBar toolBar = (ToolBar)textClient;
+			Object data = toolBar.getData();
+			if (data instanceof ToolBarManager) {
+				return (ToolBarManager)data;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -317,9 +361,15 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			contextService.deactivateContext(contextActivationToken);
 		}
 
-		if (contentAssistActivationToken != null) {
-			IHandlerService handlerService = (IHandlerService)getSite().getService(IHandlerService.class);
-			handlerService.deactivateHandler(contentAssistActivationToken);
+		IHandlerService handlerService = (IHandlerService)getSite().getService(IHandlerService.class);
+		if (activationTokenContentAssist != null) {
+			handlerService.deactivateHandler(activationTokenContentAssist);
+		}
+		if (activationTokenRedo != null) {
+			handlerService.deactivateHandler(activationTokenRedo);
+		}
+		if (activationTokenUndo != null) {
+			handlerService.deactivateHandler(activationTokenUndo);
 		}
 
 		IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -412,16 +462,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
-	 */
-	public void menuAboutToShow(IMenuManager manager) {
-		manager.add(new CreateVariableAction(variableViewer));
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.ui.part.ViewPart#saveState(org.eclipse.ui.IMemento)
 	 */
 	@Override
@@ -431,8 +471,10 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			memento.putMemento(partMemento);
 		} else {
 			memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
-			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
+			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
+			memento.putBoolean(MEMENTO_VARIABLES_HIDDEN_KEY,
+					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
 
@@ -475,8 +517,6 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            Type of the message as defined in {@link IMessageProvider}.
 	 */
 	protected final void addMessage(String messageKey, String message, int messageType) {
-		// Adds this message to the appropriate control
-		// FIXME find a way to alter the way messages are shown on controls
 		Control targetControl = null;
 		if (messageKey.startsWith(COMPILATION_MESSAGE_PREFIX)) {
 			targetControl = expressionSection;
@@ -546,6 +586,16 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Creates the expression viewer menu listener. This listener is in charge of filling the menu's actions.
+	 * 
+	 * @param viewer
+	 *            The expression viewer.
+	 */
+	protected IMenuListener createExpressionMenuListener(SourceViewer viewer) {
+		return new ExpressionMenuListener(viewer);
+	}
+
+	/**
 	 * This will be called to create the "Expression" section (top part of the left column) of the
 	 * "Interpreter" form.
 	 * 
@@ -564,17 +614,47 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		GridLayout expressionSectionLayout = new GridLayout();
 		expressionSectionBody.setLayout(expressionSectionLayout);
 
-		expressionViewer = createSourceViewer(expressionSectionBody);
+		expressionViewer = createExpressionViewer(expressionSectionBody);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 80;
 		expressionViewer.getControl().setLayoutData(gridData);
 
-		ToolBarManager toolBarManager = createSectionToolBar(expressionSection);
-		toolBarManager.add(new ClearViewerAction(expressionViewer));
-		toolBarManager.update(true);
+		createSectionToolBar(expressionSection);
+		populateExpressionSectionToolbar(expressionSection);
 
 		toolkit.paintBordersFor(expressionSectionBody);
 		expressionSection.setClient(expressionSectionBody);
+	}
+
+	/**
+	 * Creates the source viewer for the currently selected language.
+	 * 
+	 * @param parent
+	 *            Parent Composite of the result viewer.
+	 * @return The source viewer for the currently selected language.
+	 */
+	protected SourceViewer createExpressionViewer(Composite parent) {
+		SourceViewer viewer = getCurrentLanguageInterpreter().createSourceViewer(parent);
+		if (viewer == null) {
+			viewer = new SourceViewer(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
+		}
+		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
+
+		if (viewer instanceof IInterpreterSourceViewer) {
+			setUpContentAssist((IInterpreterSourceViewer)viewer);
+		}
+		setUpRealTimeCompilation(viewer);
+		setUpDefaultTextAction(viewer);
+
+		createExpressionMenu(viewer);
+
+		if (partMemento != null) {
+			String expression = partMemento.getString(MEMENTO_EXPRESSION_KEY);
+			if (expression != null) {
+				viewer.getTextWidget().setText(expression);
+			}
+		}
+		return viewer;
 	}
 
 	/**
@@ -622,17 +702,32 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		createResultSection(toolkit, leftColumn);
 
 		// The right column is invisible by default
+		boolean variableVisible = false;
+		if (partMemento != null) {
+			Boolean state = partMemento.getBoolean(MEMENTO_VARIABLES_HIDDEN_KEY);
+			variableVisible = state != null && state.booleanValue();
+		}
 		Composite rightColumn = toolkit.createComposite(formBody);
-		rightColumn.setVisible(false);
+		rightColumn.setVisible(variableVisible);
 		gridData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		gridData.widthHint = 300;
-		gridData.exclude = true;
+		gridData.exclude = !variableVisible;
 		rightColumn.setLayoutData(gridData);
 		rightColumn.setLayout(new GridLayout());
 
 		createVariableSection(toolkit, rightColumn);
 
 		createToolBar(interpreterForm, rightColumn);
+	}
+
+	/**
+	 * Creates the result viewer menu listener. This listener is in charge of filling the menu's actions.
+	 * 
+	 * @param viewer
+	 *            The result viewer.
+	 */
+	protected IMenuListener createResultMenuListener(Viewer viewer) {
+		return new ResultMenuListener(viewer);
 	}
 
 	/**
@@ -658,9 +753,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		gridData = new GridData(GridData.FILL_BOTH);
 		resultViewer.getControl().setLayoutData(gridData);
 
-		ToolBarManager toolBarManager = createSectionToolBar(resultSection);
-		toolBarManager.add(new ClearViewerAction(resultViewer));
-		toolBarManager.update(true);
+		createSectionToolBar(resultSection);
+		populateResultSectionToolbar(resultSection);
 
 		toolkit.paintBordersFor(resultSectionBody);
 		resultSection.setClient(resultSectionBody);
@@ -688,34 +782,8 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			setUpResultDragSupport((TreeViewer)viewer);
 		}
 
-		return viewer;
-	}
+		createResultMenu(viewer);
 
-	/**
-	 * Creates the source viewer for the currently selected language.
-	 * 
-	 * @param parent
-	 *            Parent Composite of the result viewer.
-	 * @return The source viewer for the currently selected language.
-	 */
-	protected SourceViewer createSourceViewer(Composite parent) {
-		SourceViewer viewer = getCurrentLanguageInterpreter().createSourceViewer(parent);
-		if (viewer == null) {
-			viewer = new SourceViewer(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
-		}
-		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
-
-		if (viewer instanceof IInterpreterSourceViewer) {
-			setUpContentAssist((IInterpreterSourceViewer)viewer);
-			setUpRealTimeCompilation(viewer);
-		}
-
-		if (partMemento != null) {
-			String expression = partMemento.getString(MEMENTO_EXPRESSION_KEY);
-			if (expression != null) {
-				viewer.getTextWidget().setText(expression);
-			}
-		}
 		return viewer;
 	}
 
@@ -737,24 +805,23 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			}
 		}
 
+		IAction variableVisibilityAction = new ToggleVariableVisibilityAction(form, variableColumn);
+		variableVisibilityAction.setChecked(variableColumn.getLayoutData() instanceof GridData
+				&& !((GridData)variableColumn.getLayoutData()).exclude);
+
 		form.getToolBarManager().add(realTimeAction);
-		form.getToolBarManager().add(new ToggleVariableVisibilityAction(form, variableColumn));
+		form.getToolBarManager().add(variableVisibilityAction);
 		form.getToolBarManager().update(true);
 	}
 
 	/**
-	 * Creates the right click menu that will be displayed for the variable viewer.
+	 * Creates the variable viewer menu listener. This listener is in charge of filling the menu's actions.
 	 * 
 	 * @param viewer
 	 *            The variable viewer.
 	 */
-	protected void createVariableMenu(TreeViewer viewer) {
-		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(this);
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
+	protected IMenuListener createVariableMenuListener(TreeViewer viewer) {
+		return new VariableMenuListener(viewer);
 	}
 
 	/**
@@ -833,6 +900,21 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Populates the {@link #expressionSection}'s toolbar.
+	 * 
+	 * @param section
+	 *            the expresssion section.
+	 */
+	protected void populateExpressionSectionToolbar(Section section) {
+		ToolBarManager toolBarManager = getSectionToolBar(section);
+		if (toolBarManager != null) {
+			toolBarManager.add(new EvaluateAction(this));
+			toolBarManager.add(new ClearViewerAction(expressionViewer));
+			toolBarManager.update(true);
+		}
+	}
+
+	/**
 	 * Adds the "language selection" radio buttons to the interpreter's menu.
 	 * 
 	 * @param menuManager
@@ -853,6 +935,21 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 					action.setChecked(true);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Populates the {@link #resultSection}'s toolbar.
+	 * 
+	 * @param section
+	 *            the result section.
+	 */
+	protected void populateResultSectionToolbar(Section section) {
+		ToolBarManager toolBarManager = getSectionToolBar(section);
+		if (toolBarManager != null) {
+			toolBarManager.removeAll();
+			toolBarManager.add(new ClearViewerAction(resultViewer));
+			toolBarManager.update(true);
 		}
 	}
 
@@ -909,7 +1006,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			Composite expressionSectionBody = (Composite)expressionSection.getClient();
 			expressionViewer.getControl().dispose();
 
-			expressionViewer = createSourceViewer(expressionSectionBody);
+			expressionViewer = createExpressionViewer(expressionSectionBody);
 			GridData gridData = new GridData(GridData.FILL_BOTH);
 			gridData.heightHint = 80;
 			expressionViewer.getControl().setLayoutData(gridData);
@@ -936,6 +1033,9 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		for (IContributionItem action : changeLanguageActions) {
 			getForm().getMenuManager().add(action);
 		}
+		// re-fill the sections' toolbars
+		populateExpressionSectionToolbar(expressionSection);
+		populateResultSectionToolbar(resultSection);
 	}
 
 	/**
@@ -976,18 +1076,17 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	 *            The viewer we need content assist on.
 	 */
 	protected final void setUpContentAssist(final IInterpreterSourceViewer viewer) {
-		final String actionDefinitionID = ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS;
-
-		IAction action = new Action() {
+		IAction contentAssistAction = new Action() {
 			@Override
 			public void run() {
 				viewer.showContentAssist(getInterpreterContext());
 			}
 		};
-		IHandler handler = new ActionHandler(action);
+		IHandler contentAssistHandler = new ActionHandler(contentAssistAction);
 
 		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
-		contentAssistActivationToken = service.activateHandler(actionDefinitionID, handler);
+		activationTokenContentAssist = service.activateHandler(
+				ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, contentAssistHandler);
 	}
 
 	/**
@@ -1093,12 +1192,178 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 	}
 
 	/**
+	 * Creates the right-click menu that will be displayed for the expression viewer.
+	 * 
+	 * @param viewer
+	 *            The expression viewer.
+	 */
+	private void createExpressionMenu(SourceViewer viewer) {
+		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(createExpressionMenuListener(viewer));
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+
+	/**
+	 * Creates the right-click menu that will be displayed for the result viewer.
+	 * 
+	 * @param viewer
+	 *            The result viewer.
+	 */
+	private void createResultMenu(Viewer viewer) {
+		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(createResultMenuListener(viewer));
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+
+	/**
+	 * Creates the right-click menu that will be displayed for the variable viewer.
+	 * 
+	 * @param viewer
+	 *            The variable viewer.
+	 */
+	private void createVariableMenu(TreeViewer viewer) {
+		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(createVariableMenuListener(viewer));
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
+
+	/**
 	 * Returns the currently selected language's descriptor.
 	 * 
 	 * @return The currently selected language's descriptor.
 	 */
 	private LanguageInterpreterDescriptor getCurrentLanguageDescriptor() {
 		return currentLanguage;
+	}
+
+	/**
+	 * Sets up the default text actions (undo, redo) on the given source viewer.
+	 * 
+	 * @param viewer
+	 *            The viewer on which to activate default text actions.
+	 */
+	private final void setUpDefaultTextAction(final SourceViewer viewer) {
+		IAction redoAction = new Action() {
+			@Override
+			public void run() {
+				viewer.doOperation(ITextOperationTarget.REDO);
+			}
+		};
+		IHandler redoHandler = new ActionHandler(redoAction);
+
+		IAction undoAction = new Action() {
+			@Override
+			public void run() {
+				viewer.doOperation(ITextOperationTarget.UNDO);
+			}
+		};
+		IHandler undoHandler = new ActionHandler(undoAction);
+
+		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
+		activationTokenRedo = service.activateHandler(IWorkbenchCommandConstants.EDIT_REDO, redoHandler);
+		activationTokenUndo = service.activateHandler(IWorkbenchCommandConstants.EDIT_UNDO, undoHandler);
+	}
+
+	/**
+	 * This class will be used in order to populate the right-click menu of the Expression viewer.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class ExpressionMenuListener implements IMenuListener {
+		/** The viewer on which this menu listener operates. */
+		private final SourceViewer sourceViewer;
+
+		/**
+		 * Creates this menu listener given the viewer on which it operates.
+		 * 
+		 * @param sourceViewer
+		 *            The viewer on which this menu listener operates.
+		 */
+		public ExpressionMenuListener(SourceViewer sourceViewer) {
+			this.sourceViewer = sourceViewer;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+		 */
+		public void menuAboutToShow(IMenuManager manager) {
+			manager.add(new EvaluateAction(InterpreterView.this));
+			manager.add(new ClearViewerAction(sourceViewer));
+			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
+	}
+
+	/**
+	 * This class will be used in order to populate the right-click menu of the result viewer.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class ResultMenuListener implements IMenuListener {
+		/** The viewer on which this menu listener operates. */
+		private Viewer resultViewer;
+
+		/**
+		 * Creates this menu listener given the viewer on which it operates.
+		 * 
+		 * @param resultViewer
+		 *            The viewer on which this menu listener operates.
+		 */
+		public ResultMenuListener(Viewer resultViewer) {
+			this.resultViewer = resultViewer;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+		 */
+		public void menuAboutToShow(IMenuManager manager) {
+			manager.add(new ClearViewerAction(resultViewer));
+			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
+	}
+
+	/**
+	 * This class will be used in order to populate the right-click menu of the Variable viewer.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class VariableMenuListener implements IMenuListener {
+		/** The viewer on which this menu listener operates. */
+		private TreeViewer variableViewer;
+
+		/**
+		 * Creates this menu listener given the viewer on which it operates.
+		 * 
+		 * @param variableViewer
+		 *            The viewer on which this menu listener operates.
+		 */
+		public VariableMenuListener(TreeViewer variableViewer) {
+			this.variableViewer = variableViewer;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+		 */
+		public void menuAboutToShow(IMenuManager manager) {
+			manager.add(new CreateVariableAction(variableViewer));
+			manager.add(new DeleteVariableOrValueAction(variableViewer));
+			manager.add(new ClearViewerAction(variableViewer));
+			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
 	}
 
 	/**
@@ -1194,7 +1459,13 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 			} catch (InterruptedException e) {
 				// Thread is expected to be cancelled if another is started
 			} catch (ExecutionException e) {
-				// FIXME log
+				String message = e.getMessage();
+				if (e.getCause() != null) {
+					message = e.getCause().getMessage();
+				}
+				final IStatus status = new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, message);
+				final CompilationResult result = new CompilationResult(status);
+				setCompilationResult(result);
 			}
 		}
 	}
@@ -1315,10 +1586,24 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 				}
 			} catch (InterruptedException e) {
 				// Thread is expected to be cancelled if another is started
-				System.out.println();
 			} catch (ExecutionException e) {
-				// FIXME log
-				System.out.println();
+				String message = e.getMessage();
+				if (e.getCause() != null) {
+					message = e.getCause().getMessage();
+				}
+				final IStatus status = new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, message);
+				final EvaluationResult result = new EvaluationResult(status);
+
+				Display.getDefault().asyncExec(new Runnable() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					public void run() {
+						setEvaluationResult(result);
+					}
+				});
 			}
 		}
 	}
@@ -1338,7 +1623,7 @@ public class InterpreterView extends ViewPart implements IMenuListener {
 		private static final int DELAY = 2000;
 
 		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
-		private boolean dirty;
+		private boolean dirty = true;
 
 		/** The lock we'll acquire for this thread's work. */
 		private final Object lock = new Object();

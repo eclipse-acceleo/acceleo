@@ -39,8 +39,8 @@ public class ToggleRealTimeAction extends Action {
 	 */
 	public ToggleRealTimeAction(InterpreterView view) {
 		super(null, IAction.AS_CHECK_BOX);
-		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.TOGGLE_REALTIME_ICON));
 		setToolTipText(TOOLTIP_TEXT);
+		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.REALTIME_TOGGLE_ICON));
 		this.view = view;
 	}
 
