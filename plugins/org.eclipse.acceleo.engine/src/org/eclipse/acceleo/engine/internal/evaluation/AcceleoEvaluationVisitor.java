@@ -1199,12 +1199,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private void delegateAppend(String string, Block sourceBlock, EObject source, boolean fireEvent) {
 		// Make sure that the protected marker never makes its way down to the generated file
 		String actualString = string;
-		if (sourceBlock instanceof FileBlock || sourceBlock.eContainer() instanceof FileBlock
-				&& sourceBlock.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
-			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
-		}
-
-		if (sourceBlock instanceof ProtectedAreaBlock) {
+		if (shouldRemoveProtectedMarker(sourceBlock)) {
 			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
 		}
 
@@ -1213,6 +1208,35 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		} else {
 			append(actualString, sourceBlock, source, fireEvent);
 		}
+	}
+
+	/**
+	 * Indicates if the source block qualifies for the removal of the protected area marker.
+	 * 
+	 * @param sourceBlock
+	 *            The source block.
+	 * @return <code>true</code> if the protected area marker should be removed, <code>false</code> otherwise.
+	 */
+	private boolean shouldRemoveProtectedMarker(Block sourceBlock) {
+		boolean result = false;
+
+		// If file block -> ok
+		if (sourceBlock instanceof FileBlock) {
+			result = true;
+		} else {
+			// If inside a file block -> ok (not after a template/query call).
+			EObject parent = sourceBlock.eContainer();
+			while (parent != null
+					&& !(parent instanceof FileBlock && sourceBlock.eContainingFeature() == MtlPackage.eINSTANCE
+							.getBlock_Body())) {
+				parent = parent.eContainer();
+			}
+			if (parent instanceof FileBlock) {
+				result = true;
+			}
+		}
+
+		return result;
 	}
 
 	/**
