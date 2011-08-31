@@ -50,7 +50,7 @@
         <acceleoCompiler sourceFolder="${SOURCE_FOLDER}"
                          outputFolder="${OUTPUT_FOLDER}"
                          dependencies=""
-                         binaryResource="true"
+                         binaryResource="false"
                          packagesToRegister=""> <!-- example: org.eclipse.uml2.uml.UMLPackage;org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage-->
         </acceleoCompiler>
     </target>
