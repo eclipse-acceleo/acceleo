@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.standalone.tests.generation;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,11 +29,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * Stand alone test for the generation with Acceleo binary and xmi resources.
