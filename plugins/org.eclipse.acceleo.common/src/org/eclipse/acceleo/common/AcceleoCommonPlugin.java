@@ -492,7 +492,7 @@ public class AcceleoCommonPlugin extends Plugin {
 						List<IResource> resources = getResources(event.getDelta());
 						resource = resources.get(0);
 					}
-					if (resource != null && resource.getFileExtension() != null
+					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
 							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(resource.getFullPath()
 								.toString(), AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
