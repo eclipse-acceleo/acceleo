@@ -36,6 +36,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAc
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleLinkWithEditorAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleVariableVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
@@ -809,6 +810,7 @@ public class InterpreterView extends ViewPart {
 		variableVisibilityAction.setChecked(variableColumn.getLayoutData() instanceof GridData
 				&& !((GridData)variableColumn.getLayoutData()).exclude);
 
+		form.getToolBarManager().add(new ToggleLinkWithEditorAction(this));
 		form.getToolBarManager().add(realTimeAction);
 		form.getToolBarManager().add(variableVisibilityAction);
 		form.getToolBarManager().update(true);
@@ -1203,7 +1205,6 @@ public class InterpreterView extends ViewPart {
 		menuManager.addMenuListener(createExpressionMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
 	}
 
 	/**
@@ -1218,7 +1219,6 @@ public class InterpreterView extends ViewPart {
 		menuManager.addMenuListener(createResultMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
 	}
 
 	/**
@@ -1233,7 +1233,6 @@ public class InterpreterView extends ViewPart {
 		menuManager.addMenuListener(createVariableMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuManager, viewer);
 	}
 
 	/**
@@ -1360,8 +1359,10 @@ public class InterpreterView extends ViewPart {
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
 			manager.add(new CreateVariableAction(variableViewer));
-			manager.add(new DeleteVariableOrValueAction(variableViewer));
 			manager.add(new ClearViewerAction(variableViewer));
+			manager.add(new Separator());
+			manager.add(new DeleteVariableOrValueAction(variableViewer));
+			manager.add(new RenameVariableAction(variableViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		}
 	}
