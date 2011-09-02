@@ -25,6 +25,7 @@ import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
+import org.eclipse.acceleo.ui.interpreter.internal.language.DefaultLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
@@ -402,7 +403,11 @@ public class InterpreterView extends ViewPart {
 	 */
 	public final AbstractLanguageInterpreter getCurrentLanguageInterpreter() {
 		if (currentLanguageInterpreter == null) {
-			currentLanguageInterpreter = getCurrentLanguageDescriptor().createLanguageInterpreter();
+			if (getCurrentLanguageDescriptor() != null) {
+				currentLanguageInterpreter = getCurrentLanguageDescriptor().createLanguageInterpreter();
+			} else {
+				currentLanguageInterpreter = new DefaultLanguageInterpreter();
+			}
 		}
 		return currentLanguageInterpreter;
 	}
@@ -471,7 +476,9 @@ public class InterpreterView extends ViewPart {
 			// Part had not been restored, keep old state
 			memento.putMemento(partMemento);
 		} else {
-			memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
+			if (getCurrentLanguageDescriptor() != null) {
+				memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
+			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
 			memento.putBoolean(MEMENTO_VARIABLES_HIDDEN_KEY,
@@ -675,11 +682,17 @@ public class InterpreterView extends ViewPart {
 
 		/*
 		 * This will be called at initialization only. When initializing the "languages" menu, we do select
-		 * the accurate descriptor, but we do not set the language text and icon.
+		 * the accurate descriptor, but we do not set the language text and icon. There is a chance that no
+		 * languages have been provided. Use a default text and image for these.
 		 */
+		String languageName = ""; //$NON-NLS-1$
+		ImageDescriptor titleImageDescriptor = null;
+		if (getCurrentLanguageDescriptor() != null) {
+			languageName = getCurrentLanguageDescriptor().getLabel();
+			titleImageDescriptor = getCurrentLanguageDescriptor().getIcon();
+		}
 		interpreterForm.setText(InterpreterMessages.getString("interpreter.view.title", //$NON-NLS-1$
-				getCurrentLanguageDescriptor().getLabel()));
-		final ImageDescriptor titleImageDescriptor = getCurrentLanguageDescriptor().getIcon();
+				languageName));
 		final Image titleImage;
 		if (titleImageDescriptor != null) {
 			titleImage = titleImageDescriptor.createImage();
@@ -990,12 +1003,13 @@ public class InterpreterView extends ViewPart {
 
 		// Change view's icon
 		Image previousImage = null;
-		if (previousLanguage.getIcon() != null || getCurrentLanguageDescriptor().getIcon() != null) {
+		if (previousLanguage != null && previousLanguage.getIcon() != null
+				|| getCurrentLanguageDescriptor().getIcon() != null) {
 			previousImage = getTitleImage();
 		}
 		if (getCurrentLanguageDescriptor().getIcon() != null) {
 			setTitleImage(getCurrentLanguageDescriptor().getIcon().createImage());
-		} else if (previousLanguage.getIcon() != null) {
+		} else if (previousLanguage != null && previousLanguage.getIcon() != null) {
 			setTitleImage(InterpreterImages.getImageDescriptor(
 					IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage());
 		}
