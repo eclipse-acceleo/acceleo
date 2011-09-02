@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.Deque;
@@ -41,6 +42,7 @@ import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
@@ -174,8 +176,11 @@ public class AcceleoEvaluationContext<C> {
 					fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
 				}
 			} else {
-				AcceleoEnginePlugin.log(AcceleoEngineMessages
-						.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"), false); //$NON-NLS-1$
+				final String message = AcceleoEngineMessages
+						.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
+				if (!EMFPlugin.IS_ECLIPSE_RUNNING || AcceleoPreferences.isDebugMessagesEnabled()) {
+					AcceleoEnginePlugin.log(message, false);
+				}
 			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
@@ -325,8 +330,11 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	public String closeContext(Block sourceBlock, EObject source) throws AcceleoEvaluationException {
 		if (writers.isEmpty()) {
-			AcceleoEnginePlugin.log(AcceleoEngineMessages
-					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"), false); //$NON-NLS-1$
+			final String message = AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
+			if (!EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
+				AcceleoEnginePlugin.log(message, false);
+			}
 			return ""; //$NON-NLS-1$
 		}
 
