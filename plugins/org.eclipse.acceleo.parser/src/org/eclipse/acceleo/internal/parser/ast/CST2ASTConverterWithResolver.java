@@ -1340,7 +1340,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		} else if (variableType instanceof AnyType) {
 			result = true;
 		} else if (initType instanceof VoidType) {
-			result = true;
+			result = false;
 		}
 
 		if (!result) {
@@ -1524,7 +1524,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 		} else if (variableType == oclAny) {
 			result = true;
 		} else if (initType == oclVoid) {
-			result = true;
+			result = false;
 		}
 
 		if (!result) {
