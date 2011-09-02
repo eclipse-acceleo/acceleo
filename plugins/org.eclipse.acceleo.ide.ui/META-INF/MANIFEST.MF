@@ -41,7 +41,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ltk.ui.refactoring,
  org.eclipse.jdt.core.manipulation,
  org.eclipse.ant.core,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.eclipse.acceleo.common.ui;bundle-version="3.2.0",
+ org.eclipse.acceleo.traceability;bundle-version="3.2.0"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -87,6 +89,7 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.internal.ide.ui.launching;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.launching.strategy;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.natures;x-internal:=true,
+ org.eclipse.acceleo.internal.ide.ui.notifications,
  org.eclipse.acceleo.internal.ide.ui.perspectives;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.popupMenus;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.preferences;x-internal:=true,

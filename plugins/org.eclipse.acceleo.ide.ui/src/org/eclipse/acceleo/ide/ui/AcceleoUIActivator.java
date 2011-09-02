@@ -14,8 +14,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.color.AcceleoColorManager;
+import org.eclipse.acceleo.internal.ide.ui.notifications.AcceleoLogListener;
+import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -46,6 +50,11 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	private static AcceleoUIActivator plugin;
 
 	/**
+	 * The log listener.
+	 */
+	private AcceleoLogListener listener;
+
+	/**
 	 * The images.
 	 */
 	private Map<String, Image> imageMap = new HashMap<String, Image>();
@@ -66,6 +75,11 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		AcceleoCommonPlugin.getDefault().getLog().addLogListener(listener);
+		AcceleoEnginePlugin.getDefault().getLog().addLogListener(listener);
+		AcceleoUIActivator.getDefault().getLog().addLogListener(listener);
+		AcceleoTraceabilityPlugin.getDefault().getLog().addLogListener(listener);
 	}
 
 	/**
@@ -76,6 +90,12 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+
+		AcceleoCommonPlugin.getDefault().getLog().removeLogListener(listener);
+		AcceleoEnginePlugin.getDefault().getLog().removeLogListener(listener);
+		AcceleoUIActivator.getDefault().getLog().removeLogListener(listener);
+		AcceleoTraceabilityPlugin.getDefault().getLog().removeLogListener(listener);
+
 		Iterator<Image> imageIterator = imageMap.values().iterator();
 		while (imageIterator.hasNext()) {
 			Image image = imageIterator.next();
