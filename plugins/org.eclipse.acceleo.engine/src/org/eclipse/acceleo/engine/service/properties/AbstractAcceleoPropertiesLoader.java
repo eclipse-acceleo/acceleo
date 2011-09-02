@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -54,11 +55,37 @@ public abstract class AbstractAcceleoPropertiesLoader {
 			}
 		}
 
-		if (properties == null) {
-			properties = alternatePropertiesLoading(filepath);
-		}
-
 		return properties;
+	}
+
+	/**
+	 * Loads the properties matching the given filepath.
+	 * 
+	 * @param filepath
+	 *            The absolute filepath
+	 * @return The properties resource bundle of the file
+	 * @since 3.1
+	 */
+	public PropertyResourceBundle loadPropertiesResourceBundle(String filepath) {
+		PropertyResourceBundle propertyResourceBundle = null;
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(filepath);
+			propertyResourceBundle = new PropertyResourceBundle(fis);
+		} catch (FileNotFoundException e) {
+			// do not log
+		} catch (IOException e) {
+			// do not log
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					// do not log
+				}
+			}
+		}
+		return propertyResourceBundle;
 	}
 
 	/**
@@ -72,6 +99,21 @@ public abstract class AbstractAcceleoPropertiesLoader {
 	 *         found.
 	 */
 	protected abstract Properties alternatePropertiesLoading(String filepath);
+
+	/**
+	 * Returns the properties from the file. This method is called by
+	 * {@link AbstractAcceleoPropertiesLoader#loadProperties(String)} if the properties file is not found.
+	 * 
+	 * @param filepath
+	 *            the filename
+	 * @return The properties resource bundle from the file. This method is called by
+	 *         {@link AbstractAcceleoPropertiesLoader#loadProperties(String)} if the properties file is not
+	 *         found.
+	 * @since 3.1
+	 */
+	protected PropertyResourceBundle alternatePropertiesResourceBundleLoading(String filepath) {
+		return null;
+	}
 
 	/**
 	 * Save the given properties file at the given location. The file path must be an absolute file path.

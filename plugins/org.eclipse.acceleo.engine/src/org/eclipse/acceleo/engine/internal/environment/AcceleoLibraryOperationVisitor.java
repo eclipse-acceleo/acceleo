@@ -1010,9 +1010,11 @@ public final class AcceleoLibraryOperationVisitor {
 	private static List<EObject> siblings(EObject source, EClassifier filter) {
 		final List<EObject> result = new ArrayList<EObject>();
 		EObject container = source.eContainer();
-		for (EObject child : getContents(container)) {
-			if (child != source && (filter == null || filter.isInstance(child))) {
-				result.add(child);
+		if (container != null) {
+			for (EObject child : getContents(container)) {
+				if (child != source && (filter == null || filter.isInstance(child))) {
+					result.add(child);
+				}
 			}
 		}
 		return result;

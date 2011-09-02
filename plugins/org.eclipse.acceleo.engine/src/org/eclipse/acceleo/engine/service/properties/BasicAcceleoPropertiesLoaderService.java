@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.engine.service.properties;
 
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
 
 import org.eclipse.acceleo.engine.service.AcceleoService;
 
@@ -33,6 +34,20 @@ public class BasicAcceleoPropertiesLoaderService extends AbstractAcceleoProperti
 	}
 
 	/**
+	 * The constructor.
+	 * 
+	 * @param acceleoService
+	 *            The Acceleo service.
+	 * @param forceProperties
+	 *            Indicates if the loaded properties should be forced
+	 * @since 3.1
+	 */
+	public BasicAcceleoPropertiesLoaderService(AcceleoService acceleoService, boolean forceProperties) {
+		this.acceleoService = acceleoService;
+		this.forceProperties = forceProperties;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoader#alternatePropertiesLoading(java.lang.String)
@@ -40,10 +55,22 @@ public class BasicAcceleoPropertiesLoaderService extends AbstractAcceleoProperti
 	@Override
 	protected Properties alternatePropertiesLoading(String filepath) {
 		/*
-		 * We won't try any other property loading here. You can override this method to try to look for the
-		 * properties file in a bundle for example.
+		 * We will consider the properties file path as an absolute path and try to load it.
 		 */
-		return null;
+		return this.loadProperties(filepath);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoader#alternatePropertiesResourceBundleLoading(java.lang.String)
+	 */
+	@Override
+	protected PropertyResourceBundle alternatePropertiesResourceBundleLoading(String filepath) {
+		/*
+		 * We will consider the properties file path as an absolute path and try to load it.
+		 */
+		return this.loadPropertiesResourceBundle(filepath);
 	}
 
 }

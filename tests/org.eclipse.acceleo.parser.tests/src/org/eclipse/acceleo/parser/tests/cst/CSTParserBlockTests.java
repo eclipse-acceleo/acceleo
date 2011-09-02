@@ -147,7 +147,7 @@ public class CSTParserBlockTests {
 
 	@Test
 	public void testParseLetWithVariable() {
-		StringBuffer buffer = new StringBuffer("[let c1 : Class] [/let]"); //$NON-NLS-1$
+		StringBuffer buffer = new StringBuffer("[let c1 : Class = null] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
@@ -159,20 +159,21 @@ public class CSTParserBlockTests {
 
 	@Test
 	public void testParseLetElse() {
-		StringBuffer buffer = new StringBuffer("[let c:Class] [else] [/let]"); //$NON-NLS-1$
+		StringBuffer buffer = new StringBuffer("[let c:Class = null] [else] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
 	@Test
 	public void testParseLetElseLet() {
-		StringBuffer buffer = new StringBuffer("[let c1:Class] [elselet c2:Class] [else] [/let]"); //$NON-NLS-1$
+		StringBuffer buffer = new StringBuffer(
+				"[let c1:Class = null] [elselet c2:Class = null] [else] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 
 	@Test
 	public void testParseLetWithOwnedLet() {
 		StringBuffer buffer = new StringBuffer(
-				"[let c1:Class] [let c2:Class] [elselet c3:Class] [else] [/let] [/let]"); //$NON-NLS-1$
+				"[let c1:Class = null] [let c2:Class = null] [elselet c3:Class = null] [else] [/let] [/let]"); //$NON-NLS-1$
 		testParseLet(buffer, 0);
 	}
 

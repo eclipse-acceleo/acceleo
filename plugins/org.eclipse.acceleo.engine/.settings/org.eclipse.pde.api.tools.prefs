@@ -1,4 +1,4 @@
-#Mon Apr 26 16:32:51 CEST 2010
+#Fri Sep 02 16:32:29 CEST 2011
 ANNOTATION_ELEMENT_TYPE_ADDED_CLASS_BOUND=Warning
 ANNOTATION_ELEMENT_TYPE_ADDED_FIELD=Warning
 ANNOTATION_ELEMENT_TYPE_ADDED_INTERFACE_BOUND=Warning
@@ -29,6 +29,9 @@ API_COMPONENT_ELEMENT_TYPE_REMOVED_API_TYPE=Warning
 API_COMPONENT_ELEMENT_TYPE_REMOVED_REEXPORTED_API_TYPE=Error
 API_COMPONENT_ELEMENT_TYPE_REMOVED_REEXPORTED_TYPE=Error
 API_COMPONENT_ELEMENT_TYPE_REMOVED_TYPE=Warning
+API_USE_SCAN_FIELD_SEVERITY=Error
+API_USE_SCAN_METHOD_SEVERITY=Error
+API_USE_SCAN_TYPE_SEVERITY=Error
 CLASS_ELEMENT_TYPE_ADDED_CLASS_BOUND=Warning
 CLASS_ELEMENT_TYPE_ADDED_INTERFACE_BOUND=Warning
 CLASS_ELEMENT_TYPE_ADDED_INTERFACE_BOUNDS=Warning
@@ -168,7 +171,7 @@ eclipse.preferences.version=1
 incompatible_api_component_version=Warning
 incompatible_api_component_version_include_major_without_breaking_change=Disabled
 incompatible_api_component_version_include_minor_without_api_change=Disabled
-invalid_since_tag_version=Error
+invalid_since_tag_version=Warning
 malformed_since_tag=Error
 missing_since_tag=Error
 report_api_breakage_when_major_version_incremented=Disabled

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.parser.cst;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.IAcceleoParserProblemsConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.ISequence;
@@ -764,7 +765,52 @@ public class CSTParserBlock {
 	 *            is the current object of the CST model, it will be modified in this method
 	 */
 	public void parseLetHeader(int posBegin, int posEnd, LetBlock eLet) {
-		Variable eVariable = pAcceleo.createVariable(posBegin, posEnd);
+		String variableBuffer = source.getBuffer().substring(posBegin, posEnd);
+		Variable eVariable;
+		int bDot = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR);
+		if (bDot == -1) {
+			logProblem(
+					AcceleoParserMessages.getString("CSTParser.InvalidVariable", variableBuffer.trim()), posBegin, //$NON-NLS-1$
+					posEnd);
+			eVariable = null;
+		} else {
+			String name = variableBuffer.substring(0, bDot);
+			String type = variableBuffer.substring(bDot
+					+ IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length());
+			eVariable = CstFactory.eINSTANCE.createVariable();
+			setPositions(eVariable, posBegin, posEnd);
+			int bInit = variableBuffer.indexOf(IAcceleoConstants.VARIABLE_INIT_SEPARATOR, bDot
+					+ IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length());
+			if (bInit != -1) {
+				type = variableBuffer.substring(bDot
+						+ IAcceleoConstants.VARIABLE_DECLARATION_SEPARATOR.length(), bInit);
+				String initExpression = variableBuffer.substring(bInit
+						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length());
+				ModelExpression eInitExpression = CstFactory.eINSTANCE.createModelExpression();
+				setPositions(eInitExpression, posBegin + bInit
+						+ IAcceleoConstants.VARIABLE_INIT_SEPARATOR.length(), posEnd);
+				eVariable.setInitExpression(eInitExpression);
+				eInitExpression.setBody(initExpression);
+				eVariable.setName(name.trim());
+				if (!ParserUtils.isIdentifier(name.trim())) {
+					logProblem(IAcceleoParserProblemsConstants.SYNTAX_NAME_NOT_VALID + name.trim(), posBegin,
+							posEnd);
+				}
+				if (CSTParser.ACCELEO_KEYWORDS.contains(name.trim())
+						|| AcceleoOCLReflection.getReservedKeywords().contains(name.trim())) {
+					pAcceleo.logWarning(AcceleoParserMessages
+							.getString("CSTParser.InvalidVariableName", name), posBegin, //$NON-NLS-1$
+							posEnd);
+				}
+
+				eVariable.setType(type.trim());
+			} else {
+				logProblem(AcceleoParserMessages.getString("CSTParser.InvalidLetVariable", variableBuffer //$NON-NLS-1$
+						.trim()), posBegin, posEnd);
+				eVariable = null;
+			}
+
+		}
 		if (eVariable != null) {
 			eLet.setLetVariable(eVariable);
 		}

@@ -18,10 +18,13 @@ Each document of the documentation set shipped with this plug-in deals with a di
 |This document is meant to help you get started with Acceleo as fast as possible. No details, no explanations, just the facts!
 |-
 | [getting_started.html First Acceleo Module]
-| This tutorial is meant to be a little more detailled version of an Acceleo quickstart. It will aim at getting you started with the main features of Acceleo.
+| This tutorial is meant to be a little more detailed version of an Acceleo quickstart. It will aim at getting you started with the main features of Acceleo.
 |-
 | [../html/acceleo_tutorial_android_example.html Android Tutorial]
 | This is meant to give beginners a tutorial to get them started with defining their own code generators ... and advanced users a way to discover some of Acceleo killer features.
+|-
+| [acceleo_launcher.html Acceleo Launcher Documentation]
+| More documentation on the Acceleo Java launcher and its behavior.
 |-
 | [../html/ocl_operation_reference.html OCL operations reference]
 | This is more of an OCL documentation, but this will give you an exhaustive list of the available OCL standard library operations, a short description and examples for each of them.

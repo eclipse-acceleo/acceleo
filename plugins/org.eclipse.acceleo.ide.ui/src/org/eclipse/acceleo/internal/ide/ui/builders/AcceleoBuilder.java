@@ -214,8 +214,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			} else {
 				computeOtherFilesToBuild(deltaFilesOutput);
 			}
-		} else {
-			computeOtherFilesToBuild(deltaFilesOutput);
 		}
 		if (deltaFilesOutput.size() > 0) {
 			Collections.sort(deltaFilesOutput, new Comparator<IFile>() {
@@ -234,11 +232,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			compileOperation.run(monitor);
 			generateAcceleoBuildFile(monitor);
 		} else {
-			// We have deleted a file, let's build the whole project.
-			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
-			if (affectedChildren.length == 2 && affectedChildren[0].getResource() instanceof IFolder
-					&& affectedChildren[1].getResource() instanceof IFolder) {
-				this.fullBuild(monitor);
+			List<IFile> deltaRemovedFilesOutput = new ArrayList<IFile>();
+			deltaRemovedMembers(deltaRemovedFilesOutput, delta, monitor);
+			if (deltaRemovedFilesOutput.size() > 0) {
+				for (IFile removedFile : deltaRemovedFilesOutput) {
+					if ("java".equals(removedFile.getFileExtension())) { //$NON-NLS-1$
+						this.fullBuild(monitor);
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -356,7 +358,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				}
 				if (delta.getKind() != IResourceDelta.REMOVED
 						&& (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension()) || "MANIFEST.MF" //$NON-NLS-1$
-						.equals(resource.getName()))) {
+						.equals(resource.getName())) || "plugin.xml".equals(resource.getName())) { //$NON-NLS-1$
 					deltaFilesOutput.add((IFile)resource);
 				}
 			} else {
@@ -364,6 +366,37 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					IResourceDelta[] children = delta.getAffectedChildren();
 					for (int i = 0; i < children.length; i++) {
 						deltaMembers(deltaFilesOutput, children[i], monitor);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Computes a list of all the removed files.
+	 * 
+	 * @param deltaFilesOutput
+	 *            an output parameter to get all the modified files
+	 * @param delta
+	 *            the resource delta represents changes in the state of a resource tree
+	 * @param monitor
+	 *            is the monitor
+	 * @throws CoreException
+	 *             contains a status object describing the cause of the exception
+	 */
+	private void deltaRemovedMembers(List<IFile> deltaFilesOutput, IResourceDelta delta,
+			IProgressMonitor monitor) throws CoreException {
+		if (delta != null) {
+			IResource resource = delta.getResource();
+			if (resource instanceof IFile) {
+				if (delta.getKind() == IResourceDelta.REMOVED) {
+					deltaFilesOutput.add((IFile)resource);
+				}
+			} else {
+				if (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath())) {
+					IResourceDelta[] children = delta.getAffectedChildren();
+					for (int i = 0; i < children.length; i++) {
+						deltaRemovedMembers(deltaFilesOutput, children[i], monitor);
 					}
 				}
 			}

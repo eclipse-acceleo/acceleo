@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
@@ -40,6 +41,26 @@ public class AcceleoPropertiesLookup {
 	 * over those contained within {@link #loadedProperties} no matter what.
 	 */
 	private final Properties customProperties = new Properties();
+
+	/**
+	 * This can be used to add custom properties to the engine. These will be available through the
+	 * getProperty() services.
+	 * 
+	 * @param resourceBundle
+	 *            The resource bundle.
+	 * @param fileName
+	 *            The name of the properties file.
+	 * @since 3.1
+	 */
+	public void addProperties(PropertyResourceBundle resourceBundle, String fileName) {
+		List<ResourceBundle> nameSakes = bundlesByFileName.get(fileName);
+		if (nameSakes == null) {
+			nameSakes = new ArrayList<ResourceBundle>();
+			bundlesByFileName.put(fileName, nameSakes);
+		}
+		nameSakes.add(resourceBundle);
+		bundles.add(resourceBundle);
+	}
 
 	/**
 	 * This can be used to add custom properties to the engine. These will be available through the

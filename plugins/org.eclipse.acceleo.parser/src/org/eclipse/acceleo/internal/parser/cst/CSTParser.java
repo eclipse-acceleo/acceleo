@@ -67,6 +67,20 @@ import org.eclipse.emf.ecore.EPackage;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class CSTParser {
+	/**
+	 * A Set of all Acceleo keywords.
+	 */
+	protected static final List<String> ACCELEO_KEYWORDS = Arrays.asList(new String[] {
+			IAcceleoConstants.AFTER, IAcceleoConstants.BEFORE, IAcceleoConstants.COMMENT,
+			IAcceleoConstants.ELSE, IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE_LET,
+			IAcceleoConstants.ENCODING, IAcceleoConstants.EXTENDS, IAcceleoConstants.FILE,
+			IAcceleoConstants.FOR, IAcceleoConstants.IF, IAcceleoConstants.IMPORT, IAcceleoConstants.LET,
+			IAcceleoConstants.MACRO, IAcceleoConstants.MODULE, IAcceleoConstants.OVERRIDES,
+			IAcceleoConstants.POST, IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.QUERY,
+			IAcceleoConstants.SELF, IAcceleoConstants.SUPER, IAcceleoConstants.TEMPLATE,
+			IAcceleoConstants.TRACE, IAcceleoConstants.VISIBILITY_KIND_PRIVATE,
+			IAcceleoConstants.VISIBILITY_KIND_PROTECTED, IAcceleoConstants.VISIBILITY_KIND_PUBLIC, });
+
 	/** Key of the error message that should be logged when the parser misses a character. */
 	private static final String MISSING_CHARACTER_KEY = "Parser.MissingCharacter"; //$NON-NLS-1$
 
@@ -75,20 +89,6 @@ public class CSTParser {
 
 	/** Key of the error message that should be logged when a statement isn't closed. */
 	private static final String INVALID_STMT = "CSTParser.InvalidStatement"; //$NON-NLS-1$
-
-	/**
-	 * A Set of all Acceleo keywords.
-	 */
-	private static final List<String> ACCELEO_KEYWORDS = Arrays.asList(new String[] {IAcceleoConstants.AFTER,
-			IAcceleoConstants.BEFORE, IAcceleoConstants.COMMENT, IAcceleoConstants.ELSE,
-			IAcceleoConstants.ELSE_IF, IAcceleoConstants.ELSE_LET, IAcceleoConstants.ENCODING,
-			IAcceleoConstants.EXTENDS, IAcceleoConstants.FILE, IAcceleoConstants.FOR, IAcceleoConstants.IF,
-			IAcceleoConstants.IMPORT, IAcceleoConstants.LET, IAcceleoConstants.MACRO,
-			IAcceleoConstants.MODULE, IAcceleoConstants.OVERRIDES, IAcceleoConstants.POST,
-			IAcceleoConstants.PROTECTED_AREA, IAcceleoConstants.QUERY, IAcceleoConstants.SELF,
-			IAcceleoConstants.SUPER, IAcceleoConstants.TEMPLATE, IAcceleoConstants.TRACE,
-			IAcceleoConstants.VISIBILITY_KIND_PRIVATE, IAcceleoConstants.VISIBILITY_KIND_PROTECTED,
-			IAcceleoConstants.VISIBILITY_KIND_PUBLIC, });
 
 	/**
 	 * The source buffer to parse.
@@ -1745,7 +1745,7 @@ public class CSTParser {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	private void logProblem(String message, int posBegin, int posEnd) {
+	protected void logProblem(String message, int posBegin, int posEnd) {
 		source.logProblem(message, posBegin, posEnd);
 	}
 
@@ -1759,7 +1759,7 @@ public class CSTParser {
 	 * @param posEnd
 	 *            is the ending index of the problem
 	 */
-	private void logWarning(String message, int posBegin, int posEnd) {
+	protected void logWarning(String message, int posBegin, int posEnd) {
 		source.logWarning(message, posBegin, posEnd);
 	}
 
@@ -1774,7 +1774,7 @@ public class CSTParser {
 	 *            is the ending index of the problem
 	 */
 	@SuppressWarnings("unused")
-	private void logInfo(String message, int posBegin, int posEnd) {
+	protected void logInfo(String message, int posBegin, int posEnd) {
 		source.logInfo(message, posBegin, posEnd);
 	}
 
