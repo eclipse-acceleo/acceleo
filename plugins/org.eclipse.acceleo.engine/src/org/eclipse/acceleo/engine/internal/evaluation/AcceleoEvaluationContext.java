@@ -39,6 +39,7 @@ import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.writers.AbstractAcceleoWriter;
+import org.eclipse.acceleo.engine.generation.writers.AcceleoFileWriter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -261,9 +262,31 @@ public class AcceleoEvaluationContext<C> {
 		String moduleName = ((Module)EcoreUtil.getRootContainer(node)).getName();
 		String message = AcceleoEngineMessages.getString(messageKey, Integer.valueOf(line), moduleName, node
 				.toString(), currentSelf, expression);
+
+		AcceleoFileWriter acceleoFileWriter = this.getAcceleoFileWriterFromContext();
+		if (acceleoFileWriter != null) {
+			message += " " + AcceleoEngineMessages.getString("AcceleoEvaluationContext.FileException", //$NON-NLS-1$ //$NON-NLS-2$
+					acceleoFileWriter.getTargetPath());
+		}
+
 		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 		exception.setStackTrace(createAcceleoStackTrace());
 		return exception;
+	}
+
+	/**
+	 * Returns the first Acceleo writer found in the context or <code>null</code> otherwise.
+	 * 
+	 * @return The first Acceleo writer found in the context or <code>null</code> otherwise.
+	 */
+	private AcceleoFileWriter getAcceleoFileWriterFromContext() {
+		for (int i = writers.size() - 1; i >= 0; i++) {
+			Writer writer = writers.get(i);
+			if (writer instanceof AcceleoFileWriter) {
+				return (AcceleoFileWriter)writer;
+			}
+		}
+		return null;
 	}
 
 	/**
