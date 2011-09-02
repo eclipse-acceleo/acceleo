@@ -713,9 +713,9 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 						StringBuffer currentText = new StringBuffer(currentBuffer.substring(
 								element.getStartPosition(), element.getEndPosition()).replace("$", "$$")); //$NON-NLS-1$ //$NON-NLS-2$
 						currentText.append("\n"); //$NON-NLS-1$
-						modifyModuleElementContent(element, currentText);
-						proposalBuffer.append(currentText);
-						proposalBuffer.append("\n"); //$NON-NLS-1$
+						StringBuffer result = modifyModuleElementContent(document.get(), element,
+								currentText, offset);
+						proposalBuffer.append(result);
 					}
 				}
 			}
@@ -724,9 +724,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 						AcceleoPartitionScanner.ACCELEO_BLOCK, proposalBuffer.toString(), true);
 				TemplateContextType type = new TemplateContextType(AcceleoPartitionScanner.ACCELEO_BLOCK,
 						AcceleoPartitionScanner.ACCELEO_BLOCK);
-				TemplateContext context = new DocumentTemplateContext(type, document,
-						offset - start.length(), start.length());
-				Region region = new Region(offset - start.length(), start.length());
+				TemplateContext context = new DocumentTemplateContext(type, document, 0, document.getLength());
+				Region region = new Region(0, document.getLength());
 				AcceleoCompletionTemplateProposal proposal = new AcceleoCompletionTemplateProposal(template,
 						context, region, AcceleoUIActivator.getDefault().getImage(
 								"icons/template-editor/completion/OverridesBrowser.gif")); //$NON-NLS-1$
@@ -769,23 +768,32 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 	/**
 	 * Modify the content of the given module element, by adding an 'overrides' value.
 	 * 
+	 * @param text
+	 *            The current text of the editor.
 	 * @param element
 	 *            is the module element
 	 * @param content
 	 *            is the text of the module element in the MTL file
+	 * @param offset
+	 *            the offset of the completion
+	 * @return The new text
 	 */
-	private void modifyModuleElementContent(ModuleElement element, StringBuffer content) {
+	private StringBuffer modifyModuleElementContent(String text, ModuleElement element, StringBuffer content,
+			int offset) {
+		StringBuffer result = new StringBuffer(text);
+		int off = offset;
+
 		int iBeginParenth = content.indexOf(IAcceleoConstants.PARENTHESIS_BEGIN);
 		if (iBeginParenth > -1) {
 			if (element instanceof org.eclipse.acceleo.model.mtl.Template) {
 				String templateName = ((org.eclipse.acceleo.model.mtl.Template)element).getName();
 				EObject eObject = ((org.eclipse.acceleo.model.mtl.Template)element).eContainer();
-				if (eObject instanceof Module) {
+				int moduleStart = text.indexOf("[module"); //$NON-NLS-1$
+				int moduleEnd = text.indexOf("]", moduleStart); //$NON-NLS-1$
+				if (eObject instanceof Module
+						&& !text.substring(moduleStart, moduleEnd).contains(" extends ")) { //$NON-NLS-1$
 					StringBuilder comment = new StringBuilder();
 					comment.append("[comment]\n\t"); //$NON-NLS-1$
-					comment.append(AcceleoUIMessages.getString(
-							"OverridesBrowser.SelectedOverridesComment1", ((Module)eObject).getName())); //$NON-NLS-1$
-					comment.append("\n\t"); //$NON-NLS-1$
 					comment.append(AcceleoUIMessages.getString("OverridesBrowser.SelectedOverridesComment2")); //$NON-NLS-1$
 					comment.append("\n[/comment]\n"); //$NON-NLS-1$
 					comment.append("[comment @Override "); //$NON-NLS-1$
@@ -793,8 +801,23 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 					comment.append("."); //$NON-NLS-1$
 					comment.append(templateName);
 					comment.append(" /]\n"); //$NON-NLS-1$
-					content.insert(0, comment.toString());
-					iBeginParenth += comment.length();
+
+					int iEndName = iBeginParenth;
+					while (iEndName > 0 && Character.isWhitespace(content.charAt(iEndName - 1))) {
+						iEndName--;
+					}
+					int iBeginName = iEndName;
+					while (iBeginName > 0 && Character.isJavaIdentifierPart(content.charAt(iBeginName - 1))) {
+						iBeginName--;
+					}
+					content.insert(iEndName, "}"); //$NON-NLS-1$
+					content.insert(iBeginName, "${"); //$NON-NLS-1$
+
+					content.insert(0, comment);
+
+					String textExtend = " extends " + ((Module)eObject).getName(); //$NON-NLS-1$
+					off = off + textExtend.length();
+					result.insert(moduleEnd, textExtend);
 				}
 				int iEndParenth = content.indexOf(IAcceleoConstants.PARENTHESIS_END, iBeginParenth);
 				if (iEndParenth > -1
@@ -805,17 +828,8 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 							+ space);
 				}
 			}
-			int iEndName = iBeginParenth;
-			while (iEndName > 0 && Character.isWhitespace(content.charAt(iEndName - 1))) {
-				iEndName--;
-			}
-			int iBeginName = iEndName;
-			while (iBeginName > 0 && Character.isJavaIdentifierPart(content.charAt(iBeginName - 1))) {
-				iBeginName--;
-			}
-			content.insert(iEndName, "}"); //$NON-NLS-1$
-			content.insert(iBeginName, "${"); //$NON-NLS-1$
 		}
+		result.insert(off, content);
+		return result;
 	}
-
 }
