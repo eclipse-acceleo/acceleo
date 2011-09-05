@@ -89,12 +89,12 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-
 		AcceleoCommonPlugin.getDefault().getLog().removeLogListener(listener);
 		AcceleoEnginePlugin.getDefault().getLog().removeLogListener(listener);
 		AcceleoUIActivator.getDefault().getLog().removeLogListener(listener);
 		AcceleoTraceabilityPlugin.getDefault().getLog().removeLogListener(listener);
+
+		plugin = null;
 
 		Iterator<Image> imageIterator = imageMap.values().iterator();
 		while (imageIterator.hasNext()) {
