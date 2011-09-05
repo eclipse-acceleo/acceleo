@@ -52,7 +52,7 @@ public class AcceleoUIActivator extends AbstractUIPlugin {
 	/**
 	 * The log listener.
 	 */
-	private AcceleoLogListener listener;
+	private AcceleoLogListener listener = new AcceleoLogListener();
 
 	/**
 	 * The images.
