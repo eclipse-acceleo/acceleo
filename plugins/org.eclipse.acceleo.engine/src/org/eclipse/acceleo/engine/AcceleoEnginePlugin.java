@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine;
 
+import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicModulesEclipseUtil;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoEngineRegistry;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoTraceabilityRegistryListenerUils;
+import org.eclipse.acceleo.engine.internal.utils.DynamicModulesRegistryListener;
 import org.eclipse.acceleo.engine.internal.utils.DynamicTemplatesRegistryListener;
 import org.eclipse.acceleo.engine.internal.utils.EngineRegistryListener;
 import org.eclipse.acceleo.engine.internal.utils.TraceabilityRegistryListeners;
@@ -35,6 +37,9 @@ public class AcceleoEnginePlugin extends Plugin {
 
 	/** This plug-in's shared instance. */
 	private static AcceleoEnginePlugin plugin;
+
+	/** The registry listener that will be used to listen to dynamic modules changes. */
+	private final DynamicModulesRegistryListener dynamicModulesListener = new DynamicModulesRegistryListener();
 
 	/** The registry listener that will be used to listen to dynamic templates changes. */
 	private final DynamicTemplatesRegistryListener dynamicTemplatesListener = new DynamicTemplatesRegistryListener();
@@ -162,11 +167,14 @@ public class AcceleoEnginePlugin extends Plugin {
 		plugin = this;
 		super.start(context);
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		registry.addListener(dynamicModulesListener,
+				DynamicModulesRegistryListener.DYNAMIC_MODULES_EXTENSION_POINT);
 		registry.addListener(dynamicTemplatesListener,
 				DynamicTemplatesRegistryListener.DYNAMIC_TEMPLATES_EXTENSION_POINT);
 		registry.addListener(engineCreatorListener, EngineRegistryListener.ENGINE_CREATORS_EXTENSION_POINT);
 		registry.addListener(traceabilityRegistryListener,
 				TraceabilityRegistryListeners.TRACEABILITY_LISTENERS_EXTENSION_POINT);
+		dynamicModulesListener.parseInitialContributions();
 		dynamicTemplatesListener.parseInitialContributions();
 		engineCreatorListener.parseInitialContributions();
 		traceabilityRegistryListener.parseInitialContributions();
@@ -182,9 +190,11 @@ public class AcceleoEnginePlugin extends Plugin {
 		super.stop(context);
 		plugin = null;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		registry.removeListener(dynamicModulesListener);
 		registry.removeListener(dynamicTemplatesListener);
 		registry.removeListener(engineCreatorListener);
 		registry.removeListener(traceabilityRegistryListener);
+		AcceleoDynamicModulesEclipseUtil.clearRegistry();
 		AcceleoDynamicTemplatesEclipseUtil.clearRegistry();
 		AcceleoEngineRegistry.clearRegistry();
 		AcceleoTraceabilityRegistryListenerUils.clearRegistry();

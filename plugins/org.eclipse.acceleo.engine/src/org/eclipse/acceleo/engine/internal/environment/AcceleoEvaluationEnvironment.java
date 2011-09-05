@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -33,6 +34,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
+import org.eclipse.acceleo.engine.service.AcceleoDynamicModulesRegistry;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -41,6 +43,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
@@ -495,15 +498,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private Set<Template> applicableTemplates(Set<Template> candidates, List<Object> argumentTypes) {
 		final Set<Template> applicableCandidates = new CompactLinkedHashSet<Template>(candidates);
 		for (final Template candidate : candidates) {
-			if (candidate.getParameter().size() != argumentTypes.size()) {
+			if (candidate.getParameter().size() != argumentTypes.size()
+					&& !(candidate.getParameter().size() == 0 && argumentTypes.size() == 1)) {
 				applicableCandidates.remove(candidate);
 			}
 		}
 		for (int i = 0; i < argumentTypes.size(); i++) {
 			for (final Template candidate : new CompactLinkedHashSet<Template>(applicableCandidates)) {
-				final Object parameterType = candidate.getParameter().get(i).getType();
-				if (!isApplicableArgument(parameterType, argumentTypes.get(i))) {
-					applicableCandidates.remove(candidate);
+				if (!(candidate.getParameter().size() == 0 && argumentTypes.size() == 1)) {
+					final Object parameterType = candidate.getParameter().get(i).getType();
+					if (!isApplicableArgument(parameterType, argumentTypes.get(i))) {
+						applicableCandidates.remove(candidate);
+					}
 				}
 			}
 		}
@@ -743,6 +749,34 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
 						this));
 			}
+			// We have a resource set, let's find out where its module are coming from
+			List<Resource> resources = resourceSet.getResources();
+			for (Resource resource : resources) {
+				URI uri = resource.getURI();
+				String generatorID = uri.toString();
+
+				// Chicken sacrifice done right! /!\ Warning voodoo magic /!\
+				if (uri.isPlatformPlugin() && uri.segments().length > 2) {
+					generatorID = uri.segment(1);
+				} else if (uri.isPlatformResource() && uri.segments().length > 2) {
+					// Not supposed to happen since extension point works only when deployed in eclipse
+					generatorID = uri.segment(1);
+				} else if (uri.isPlatform() && uri.segments().length > 2) {
+					// Not supposed to happen since extension point works only when deployed in eclipse
+					generatorID = uri.segment(1);
+				} else if (uri.isFile()) {
+					generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
+					if (generatorID != null
+							&& generatorID.startsWith("platform:/plugin/") && URI.createURI(generatorID).segments().length > 2) { //$NON-NLS-1$
+						URI tmpURI = URI.createURI(generatorID);
+						generatorID = tmpURI.segment(1);
+					}
+				}
+				final Set<File> dynamicAcceleoModulesFiles = AcceleoDynamicModulesRegistry.INSTANCE
+						.getRegisteredModules(generatorID);
+				dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
+			}
+
 			for (File moduleFile : dynamicModuleFiles) {
 				if (moduleFile.exists() && moduleFile.canRead()) {
 					try {
@@ -912,6 +946,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		int template2SpecificArgumentCount = 0;
 		for (int i = 0; i < actualArgumentTypes.size(); i++) {
 			final Object actualArgumentType = actualArgumentTypes.get(i);
+			if (template1.getParameter().size() == 0 && template2.getParameter().size() == 0) {
+				continue;
+			}
 			final EClassifier template1Type = template1.getParameter().get(i).getType();
 			final EClassifier template2Type = template2.getParameter().get(i).getType();
 			if (template1Type == template2Type) {

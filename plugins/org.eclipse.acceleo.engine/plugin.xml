@@ -16,4 +16,5 @@ Contributors:
   <extension-point id="org.eclipse.acceleo.engine.dynamic.templates" name="org.eclipse.engine.ui.dynamic.templates" schema="schema/dynamic.templates.exsd"/>
   <extension-point id="org.eclipse.acceleo.engine.creator" name="org.eclipse.acceleo.engine.creator" schema="schema/engine.creator.exsd"/>
   <extension-point id="org.eclipse.acceleo.engine.traceabilityListener" name="org.eclipse.acceleo.engine.traceabilityListener" schema="schema/engine.traceabilityListener.exsd"/>
+  <extension-point id="org.eclipse.acceleo.engine.dynamic.modules" name="org.eclipse.acceleo.engine.dynamic.modules" schema="schema/dynamic.modules.exsd"/>
 </plugin>
