@@ -139,11 +139,11 @@ public class InterpreterView extends ViewPart {
 	/** Key for the expression as stored in this view's memento. */
 	private static final String MEMENTO_EXPRESSION_KEY = "org.eclipse.acceleo.ui.interpreter.memento.expression"; //$NON-NLS-1$
 
-	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
-	private static final String MEMENTO_VARIABLES_HIDDEN_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
-
 	/** Key for the real-time compilation state as stored in this view's memento. */
 	private static final String MEMENTO_REAL_TIME_KEY = "org.eclipse.acceleo.ui.interpreter.memento.realtime"; //$NON-NLS-1$
+
+	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
+	private static final String MEMENTO_VARIABLES_HIDDEN_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus

@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ocl.ecore.CollectionItem;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
@@ -136,8 +137,13 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		Iterator<EObject> itContents = candidate.eContents().iterator();
 		while (itContents.hasNext()) {
 			EObject eContent = itContents.next();
+			ASTNode astNode = null;
 			if (eContent instanceof ASTNode) {
-				ASTNode astNode = (ASTNode)eContent;
+				astNode = (ASTNode)eContent;
+			} else if (eContent instanceof CollectionItem) {
+				astNode = ((CollectionItem)eContent).getItem();
+			}
+			if (astNode != null) {
 				int startPosition = astNode.getStartPosition();
 				int endPosition = astNode.getEndPosition();
 				if (startPosition > -1 && endPosition > -1) {

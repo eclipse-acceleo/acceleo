@@ -26,6 +26,7 @@ import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.GapTextStore;
@@ -51,7 +52,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** If the text doesn't start with "[module", we'll use this as the module's signature. */
-	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule(''{0}'')]" + LINE_SEPARATOR; //$NON-NLS-1$
+	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule({0})]" + LINE_SEPARATOR; //$NON-NLS-1$
 
 	/**
 	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
@@ -223,20 +224,28 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 
 		StringBuilder expressionBuffer = new StringBuilder();
 
-		String moduleSignature = DUMMY_MODULE;
 		EObject root = null;
 		if (!context.getTargetEObjects().isEmpty()) {
 			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
 		}
-		String targetNsURI = null;
-		if (root != null) {
-			targetNsURI = root.eClass().getEPackage().getNsURI();
-		}
-		if (targetNsURI == null || "".equals(targetNsURI)) { //$NON-NLS-1$
+
+		String moduleSignature = DUMMY_MODULE;
+		final Set<String> metamodelURIs = getMetamodelURIs(context);
+		if (metamodelURIs.size() == 0) {
 			// Use ecore as the default metamodel
-			targetNsURI = EcorePackage.eNS_URI;
+			metamodelURIs.add(EcorePackage.eNS_URI);
 		}
-		moduleSignature = MessageFormat.format(moduleSignature, targetNsURI);
+
+		StringBuilder nsURIs = new StringBuilder();
+		Iterator<String> uriIterator = metamodelURIs.iterator();
+		while (uriIterator.hasNext()) {
+			nsURIs.append('\'' + uriIterator.next() + '\'');
+			if (uriIterator.hasNext()) {
+				nsURIs.append(',');
+			}
+		}
+
+		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
 		expressionBuffer.append(moduleSignature);
 		gap += moduleSignature.length();
 
@@ -297,6 +306,50 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	}
 
 	/**
+	 * Tries and extract the NsURIs of the given object if it is an EObject, or of its children if it is a
+	 * Collection.
+	 * 
+	 * @param object
+	 *            The object from which to try and detect metamodel URIs.
+	 * @return The extracted URIs.
+	 */
+	private Set<String> extractNsURIs(Object object) {
+		final Set<String> uris = new HashSet<String>();
+		if (object instanceof EObject) {
+			final String uri = extractNsURI((EObject)object);
+			if (uri != null) {
+				uris.add(uri);
+			}
+		} else if (object instanceof Collection<?>) {
+			for (Object child : (Collection<?>)object) {
+				final Set<String> childURIs = extractNsURIs(child);
+				if (!childURIs.isEmpty()) {
+					uris.addAll(childURIs);
+				}
+			}
+		}
+		return uris;
+	}
+
+	/**
+	 * Extracts the NsURI of the given EObject's metamodel.
+	 * 
+	 * @param object
+	 *            The EObject for which we need the metamodel URI.
+	 * @return The NsURI of the given EObject's metamodel, <code>null</code> if we could not retrieve it.
+	 */
+	private String extractNsURI(EObject object) {
+		final EPackage pack = object.eClass().getEPackage();
+		if (pack != null) {
+			final String uri = pack.getNsURI();
+			if (uri != null && uri.length() > 0) {
+				return uri;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * This will return the lowest (in the type hierarchy) common super type of the two given EClasses. If no
 	 * common super type is found, we'll return EObject.
 	 * 
@@ -322,6 +375,38 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			}
 		}
 		return commonSuperType;
+	}
+
+	/**
+	 * Retrieve all metamodel URIs from the given context.
+	 * 
+	 * @param context
+	 *            The context from which to retrieve URIs.
+	 * @return All metamodel URIs from the given context.
+	 */
+	private Set<String> getMetamodelURIs(InterpreterContext context) {
+		Set<String> uris = new HashSet<String>();
+
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+		}
+		if (root != null) {
+			final String targetNsURI = extractNsURI(root);
+			if (targetNsURI != null) {
+				uris.add(targetNsURI);
+			}
+		}
+		Iterator<Variable> variables = context.getVariables().iterator();
+		while (variables.hasNext()) {
+			Variable variable = variables.next();
+			final Set<String> variableValueURIs = extractNsURIs(variable.getValue());
+			if (!variableValueURIs.isEmpty()) {
+				uris.addAll(variableValueURIs);
+			}
+		}
+
+		return uris;
 	}
 
 	/**

@@ -88,18 +88,24 @@ public final class DeleteVariableOrValueAction extends Action {
 		Object input = variableViewer.getInput();
 
 		TreeItem[] selectedtems = getTree().getSelection();
-		if (selectedtems != null && selectedtems.length > 0) {
-			for (int i = 0; i < selectedtems.length; i++) {
-				TreeItem item = selectedtems[i];
-				if (item.getData() instanceof Variable) {
-					((List<Variable>)input).remove(item.getData());
-				} else if (item.getParentItem().getData() instanceof Variable) {
-					Variable variable = (Variable)item.getParentItem().getData();
-					Object variableValue = variable.getValue();
-					if (item.getData().equals(variableValue)) {
-						((List<Variable>)input).remove(variable);
-					} else {
-						((List<Object>)variableValue).remove(item.getData());
+		if (selectedtems == null || selectedtems.length == 0) {
+			return;
+		}
+
+		for (int i = 0; i < selectedtems.length; i++) {
+			TreeItem item = selectedtems[i];
+			if (item.getData() instanceof Variable) {
+				((List<Variable>)input).remove(item.getData());
+			} else if (item.getParentItem().getData() instanceof Variable) {
+				Variable variable = (Variable)item.getParentItem().getData();
+				Object variableValue = variable.getValue();
+				if (item.getData().equals(variableValue)) {
+					((List<Variable>)input).remove(variable);
+				} else {
+					List<Object> value = ((List<Object>)variableValue);
+					value.remove(item.getData());
+					if (value.size() == 1) {
+						variable.setValue(value.get(0));
 					}
 				}
 			}
