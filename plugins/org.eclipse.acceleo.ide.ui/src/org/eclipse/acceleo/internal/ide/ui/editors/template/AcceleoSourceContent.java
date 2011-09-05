@@ -69,6 +69,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.Environment;
+import org.eclipse.ocl.ecore.CollectionItem;
 import org.eclipse.ocl.helper.Choice;
 import org.eclipse.ocl.helper.ChoiceKind;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -1427,9 +1428,14 @@ public class AcceleoSourceContent {
 	private ASTNode getChildrenCandidate(EObject candidate, int posBegin, int posEnd) {
 		Iterator<EObject> itContents = candidate.eContents().iterator();
 		while (itContents.hasNext()) {
+			ASTNode astNode = null;
 			EObject eContent = itContents.next();
 			if (eContent instanceof ASTNode) {
-				ASTNode astNode = (ASTNode)eContent;
+				astNode = (ASTNode)eContent;
+			} else if (eContent instanceof CollectionItem) {
+				astNode = ((CollectionItem)eContent).getItem();
+			}
+			if (astNode != null) {
 				int startPosition = astNode.getStartPosition();
 				int endPosition = astNode.getEndPosition();
 				if (startPosition > -1 && endPosition > -1) {
