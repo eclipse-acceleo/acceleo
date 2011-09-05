@@ -16,12 +16,18 @@ Contributors:
       provider-name="%providerName"
       plugin="org.eclipse.acceleo.common">
 
-   <description>%description</description>
+   <description>
+      %description
+   </description>
 
-   <copyright url="%copyrightURL">%copyright</copyright>
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
 
-   <license url="%licenseURL">%license</license>
-   
+   <license url="%licenseURL">
+      %license
+   </license>
+
    <url>
       <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
@@ -120,6 +126,13 @@ Contributors:
 
    <plugin
          id="org.eclipse.acceleo.traceability.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.acceleo.common.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
