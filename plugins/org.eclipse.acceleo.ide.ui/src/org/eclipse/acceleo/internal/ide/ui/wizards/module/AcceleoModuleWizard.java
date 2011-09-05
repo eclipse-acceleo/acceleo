@@ -39,6 +39,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 /**
@@ -140,10 +144,12 @@ public class AcceleoModuleWizard extends Wizard implements INewWizard, IExecutab
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(acceleoModule.getProjectName());
+		IFile file = null;
 		if (project.exists() && project.isAccessible()) {
 			IPath path = new Path(acceleoModule.getParentFolder());
 			IFolder folder = project.getFolder(path.removeFirstSegments(1));
 			AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
+			file = folder.getFile(acceleoModule.getName() + "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
 
 			if (acceleoModule.isIsInitialized()) {
 				String initializationKind = acceleoModule.getInitializationKind();
@@ -158,8 +164,6 @@ public class AcceleoModuleWizard extends Wizard implements INewWizard, IExecutab
 					}
 				}
 
-				IFile file = folder.getFile(acceleoModule.getName()
-						+ "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
 				IFile exampleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 						new Path(acceleoModule.getInitializationPath()));
 
@@ -189,6 +193,16 @@ public class AcceleoModuleWizard extends Wizard implements INewWizard, IExecutab
 
 		// Update the perspective.
 		BasicNewProjectResourceWizard.updatePerspective(this.configurationElement);
+
+		// Open the module created
+		if (file != null && file.isAccessible()) {
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			try {
+				IDE.openEditor(activePage, file);
+			} catch (PartInitException e) {
+				AcceleoUIActivator.log(e, true);
+			}
+		}
 		return true;
 	}
 }

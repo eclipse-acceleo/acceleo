@@ -51,7 +51,11 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.osgi.framework.Bundle;
 
@@ -309,7 +313,24 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 				}
 			}
 		}
+		generateFiles(acceleoProject, project, monitor);
+	}
+
+	/**
+	 * Generates the files from the information in the wizard.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo Project
+	 * @param project
+	 *            The project
+	 * @param monitor
+	 *            The progress monitor
+	 */
+	private void generateFiles(AcceleoProject acceleoProject, IProject project, IProgressMonitor monitor) {
 		// Generate files
+		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
+		IWizardContainer iWizardContainer = this.getContainer();
+		IWizardPage currentPage = iWizardContainer.getCurrentPage();
 		try {
 			// Prepare Ant folder
 			IFolder antTasksFolder = project.getFolder("tasks"); //$NON-NLS-1$
@@ -339,6 +360,8 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 		if (currentPage instanceof WizardNewProjectCreationPage) {
 			return;
 		}
+		IFile file = null;
+
 		for (AcceleoModule acceleoModule : allModules) {
 			monitor.worked(10);
 			String parentFolder = acceleoModule.getParentFolder();
@@ -347,6 +370,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			if (moduleProject.exists() && moduleProject.isAccessible()) {
 				IPath parentFolderPath = new Path(parentFolder);
 				IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
+				file = folder.getFile(acceleoModule.getName() + "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
 				AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
 				if (acceleoModule.isIsInitialized()) {
 					String initializationKind = acceleoModule.getInitializationKind();
@@ -360,8 +384,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 							break;
 						}
 					}
-					IFile file = folder.getFile(acceleoModule.getName()
-							+ "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
+
 					IFile exampleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
 							new Path(acceleoModule.getInitializationPath()));
 					String moduleElementKind = IAcceleoInitializationStrategy.TEMPLATE_KIND;
@@ -386,6 +409,16 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 						}
 					}
 				}
+			}
+		}
+
+		// Open last created module
+		if (file != null && file.isAccessible()) {
+			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			try {
+				IDE.openEditor(activePage, file);
+			} catch (PartInitException e) {
+				AcceleoUIActivator.log(e, true);
 			}
 		}
 	}
