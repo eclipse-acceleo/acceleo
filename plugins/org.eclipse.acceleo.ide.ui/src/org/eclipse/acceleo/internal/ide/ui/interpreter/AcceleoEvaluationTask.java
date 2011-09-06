@@ -80,11 +80,22 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 */
 	public EvaluationResult call() throws Exception {
 		CompilationResult compilationResult = context.getCompilationResult();
+		EvaluationResult shortcutResult = null;
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
-			return new EvaluationResult(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+			shortcutResult = new EvaluationResult(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
 					AcceleoUIMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
+		} else if (compilationResult.getCompiledExpression() instanceof ModuleElement
+				&& compilationResult.getProblems() != null
+				&& compilationResult.getProblems().getSeverity() == IStatus.ERROR) {
+			// We're trying to evaluate a module element whilst there are compilation problems. No use trying
+			// any further.
+			shortcutResult = new EvaluationResult(null);
+		}
+		if (shortcutResult != null) {
+			return shortcutResult;
 		}
 
+		assert compilationResult != null;
 		Object compiledExpression = compilationResult.getCompiledExpression();
 
 		List<EObject> target = context.getTargetEObjects();
