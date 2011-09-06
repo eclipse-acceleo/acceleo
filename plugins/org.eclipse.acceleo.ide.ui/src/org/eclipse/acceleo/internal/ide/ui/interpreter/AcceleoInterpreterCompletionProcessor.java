@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -20,7 +20,6 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings("restriction")
 public class AcceleoInterpreterCompletionProcessor extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoCompletionProcessor {
 	/**
 	 * Delegates to the super constructor.

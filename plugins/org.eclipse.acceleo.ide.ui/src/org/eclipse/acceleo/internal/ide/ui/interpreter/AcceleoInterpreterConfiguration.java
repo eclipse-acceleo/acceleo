@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -22,7 +22,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings("restriction")
 public class AcceleoInterpreterConfiguration extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoConfiguration {
 	/**
 	 * Simply delegates to the super constructor.

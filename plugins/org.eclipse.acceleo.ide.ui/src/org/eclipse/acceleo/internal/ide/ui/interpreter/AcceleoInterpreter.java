@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import java.util.concurrent.Callable;
 
@@ -51,7 +51,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
 	 */
-	@SuppressWarnings("restriction")
 	@Override
 	public void configureSourceViewer(final SourceViewer viewer) {
 		if (viewer instanceof AcceleoSourceViewer) {

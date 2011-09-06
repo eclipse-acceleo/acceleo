@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.parser.AcceleoParser;
@@ -28,8 +30,6 @@ import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
-import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
-import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.resources.IContainer;
@@ -91,12 +91,13 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(moduleFile.getFileExtension())) {
 			final IProject project = moduleFile.getProject();
 			if (project != null) {
-				final String compiledName = moduleFile.getFullPath().removeFileExtension()
-						.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).lastSegment();
+				final String compiledName = moduleFile.getFullPath().removeFileExtension().addFileExtension(
+						IAcceleoConstants.EMTL_FILE_EXTENSION).lastSegment();
 				compiledModule = findChild(project, compiledName);
 			}
 		}
 
+		Resource module = null;
 		if (compiledModule != null) {
 			String path = compiledModule.getFullPath().toString();
 			for (Resource resource : resourceSet.getResources()) {
@@ -105,12 +106,12 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 				}
 			}
 			try {
-				return ModelUtils.load(URI.createPlatformResourceURI(path, true), resourceSet).eResource();
+				module = ModelUtils.load(URI.createPlatformResourceURI(path, true), resourceSet).eResource();
 			} catch (IOException e) {
 				// FIXME log
 			}
 		}
-		return null;
+		return module;
 	}
 
 	/**
@@ -120,6 +121,8 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            The container under which to seek for a file.
 	 * @param fileName
 	 *            Name of the file we seek.
+	 * @return The IFile of name <code>fileName</code> under the given <code>container</code>.
+	 *         <code>null</code> if none could be found.
 	 */
 	private static IFile findChild(IContainer container, String fileName) {
 		IFile result = null;
@@ -148,8 +151,8 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		String fullExpression = acceleoSource.rebuildFullExpression(context);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = ModelUtils.createResource(
-				URI.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
+		Resource resource = ModelUtils.createResource(URI
+				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
 
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(fullExpression));
 
@@ -226,16 +229,15 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 			if (astNode != null) {
 				int startPosition = astNode.getStartPosition();
 				int endPosition = astNode.getEndPosition();
-				if (startPosition > -1 && endPosition > -1) {
-					if (startPosition <= posBegin && endPosition >= posEnd) {
-						ASTNode childCandidate = getChildrenCandidate(astNode, posBegin, posEnd);
-						if (childCandidate != null) {
-							child = childCandidate;
-						} else {
-							child = astNode;
-						}
-						break;
+				if (startPosition > -1 && endPosition > -1 && startPosition <= posBegin
+						&& endPosition >= posEnd) {
+					ASTNode childCandidate = getChildrenCandidate(astNode, posBegin, posEnd);
+					if (childCandidate != null) {
+						child = childCandidate;
+					} else {
+						child = astNode;
 					}
+					break;
 				}
 			}
 		}
@@ -259,21 +261,21 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		List<IStatus> problems = new ArrayList<IStatus>();
 
 		for (AcceleoParserProblem error : errors.getList()) {
-			problems.add(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, error.getMessage()));
+			problems.add(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, error.getMessage()));
 		}
 		for (AcceleoParserWarning warning : warnings.getList()) {
-			problems.add(new Status(IStatus.WARNING, InterpreterPlugin.PLUGIN_ID, warning.getMessage()));
+			problems.add(new Status(IStatus.WARNING, AcceleoUIActivator.PLUGIN_ID, warning.getMessage()));
 		}
 		for (AcceleoParserInfo info : infos.getList()) {
-			problems.add(new Status(IStatus.INFO, InterpreterPlugin.PLUGIN_ID, info.getMessage()));
+			problems.add(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID, info.getMessage()));
 		}
 
 		if (problems.isEmpty()) {
 			return null;
 		}
 
-		MultiStatus status = new MultiStatus(InterpreterPlugin.PLUGIN_ID, 1,
-				InterpreterMessages.getString("acceleo.interpreter.compilation.issue"), null); //$NON-NLS-1$
+		MultiStatus status = new MultiStatus(AcceleoUIActivator.PLUGIN_ID, 1, AcceleoUIMessages
+				.getString("acceleo.interpreter.compilation.issue"), null); //$NON-NLS-1$
 		for (IStatus child : problems) {
 			status.add(child);
 		}

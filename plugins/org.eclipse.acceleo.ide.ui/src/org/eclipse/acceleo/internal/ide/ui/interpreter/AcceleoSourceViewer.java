@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -117,7 +117,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * 
 	 * @return The Acceleo source content of this viewer.
 	 */
-	@SuppressWarnings("restriction")
 	public org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent getContent() {
 		return content;
 	}
@@ -178,7 +177,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	/**
 	 * Creates and initialize the content of this viewer.
 	 */
-	@SuppressWarnings("restriction")
 	public void initializeContent() {
 		content = new AcceleoInterpreterSourceContent();
 		content.init(new StringBuffer(getDocument().get()));
@@ -210,7 +208,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * @param context
 	 *            The current interpreter context.
 	 */
-	@SuppressWarnings("restriction")
 	public void updateCST(InterpreterContext context) {
 		fullExpression = rebuildFullExpression(context);
 
@@ -277,8 +274,8 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		gap += moduleSignature.length();
 
 		if (moduleImport != null) {
-			final String modulePath = MessageFormat.format(DUMMY_IMPORT,
-					getQualifiedName(moduleImport.getFullPath()));
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
+					.getFullPath()));
 			expressionBuffer.append(modulePath);
 			gap += modulePath.length();
 		}

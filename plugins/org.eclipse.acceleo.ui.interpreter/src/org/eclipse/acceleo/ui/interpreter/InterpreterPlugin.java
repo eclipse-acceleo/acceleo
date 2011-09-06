@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
  */
 public class InterpreterPlugin extends AbstractUIPlugin {
 	/** The plug-in ID. */
-	public static final String PLUGIN_ID = "org.eclipse.acceleo.interpreter"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.acceleo.ui.interpreter"; //$NON-NLS-1$
 
 	/** This plug-in's shared instance. */
 	private static InterpreterPlugin plugin;

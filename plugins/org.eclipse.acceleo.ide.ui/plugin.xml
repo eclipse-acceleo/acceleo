@@ -1216,5 +1216,14 @@ Contributors:
              name="%containerName">
        </classpathContainerPage>
     </extension>
+    
+    <extension
+         point="org.eclipse.acceleo.ui.language.interpreter">
+      <languageInterpreter
+            class="org.eclipse.acceleo.internal.ide.ui.interpreter.AcceleoInterpreter"
+            icon="icons/interpreter/acceleo_language.gif"
+            label="%Acceleo.language.interpreter.label">
+      </languageInterpreter>
+   </extension>
 
 </plugin>

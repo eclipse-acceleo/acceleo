@@ -12,7 +12,6 @@ package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -197,7 +196,7 @@ public final class RenameVariableAction extends Action {
 	 * 
 	 * @param variable
 	 *            The variable that is to be renamed
-	 * @see org.eclipse.ui.actions.RenameResourceAction#createTextEditor(IResource)
+	 * @see org.eclipse.ui.actions.RenameResourceAction#createTextEditor(org.eclipse.core.resources.IResource)
 	 */
 	private void createTextEditor(final Variable variable) {
 		// Create text editor parent. This draws a nice bounding rect.

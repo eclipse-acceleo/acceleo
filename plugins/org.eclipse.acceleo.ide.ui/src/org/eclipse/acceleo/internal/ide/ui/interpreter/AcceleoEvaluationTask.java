@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,12 +21,12 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
-import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
@@ -81,8 +81,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	public EvaluationResult call() throws Exception {
 		CompilationResult compilationResult = context.getCompilationResult();
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
-			return new EvaluationResult(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID,
-					InterpreterMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
+			return new EvaluationResult(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+					AcceleoUIMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
 		}
 
 		Object compiledExpression = compilationResult.getCompiledExpression();
@@ -171,7 +171,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			}
 			if (!found) {
 				// Is it our "root" dummy template's parameter?
-				if ("model".equals(param.getName()) && target.size() > 0) {//$NON-NLS-1$
+				if ("model".equals(param.getName()) && target.size() > 0) { //$NON-NLS-1$
 					arguments.add(EcoreUtil.getRootContainer(target.get(0)));
 				} else {
 					// FIXME throw exception from here
@@ -199,7 +199,6 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 *            element).
 	 * @return The result of this evaluation.
 	 */
-	@SuppressWarnings("restriction")
 	private Object evaluateOCLExpression(OCLExpression oclExpression, List<EObject> target) {
 		final Module module = (Module)EcoreUtil.getRootContainer(oclExpression);
 		// We won't have listeners or property files here
@@ -210,8 +209,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 				new PreviewStrategy(), new BasicMonitor());
 		OCL ocl = OCL.newInstance(factory);
 		org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> evaluationVisitor = (org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
-				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(),
-						ocl.getExtentMap());
+				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl
+						.getExtentMap());
 
 		Object actualArgument = target;
 		if (target.size() == 1) {
@@ -281,9 +280,9 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 				if (evaluationStatus instanceof MultiStatus) {
 					((MultiStatus)evaluationStatus).add(status);
 				} else {
-					evaluationStatus = new MultiStatus(InterpreterPlugin.PLUGIN_ID, 1,
-							new IStatus[] {evaluationStatus, },
-							InterpreterMessages.getString("acceleo.interpreter.evaluation.issue"), null); //$NON-NLS-1$
+					evaluationStatus = new MultiStatus(AcceleoUIActivator.PLUGIN_ID, 1,
+							new IStatus[] {evaluationStatus, }, AcceleoUIMessages
+									.getString("acceleo.interpreter.evaluation.issue"), null); //$NON-NLS-1$
 				}
 			}
 		}

@@ -8,16 +8,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
+package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * This implementation of a source content will allow us to maintain a gap between the text and the CST.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-@SuppressWarnings("restriction")
 public class AcceleoInterpreterSourceContent extends org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent {
 	/**
 	 * This is the gap between the text as entered by the user and the text that is actually getting parsed.
@@ -38,13 +36,6 @@ public class AcceleoInterpreterSourceContent extends org.eclipse.acceleo.interna
 	 */
 	public int getGap() {
 		return gap;
-	}
-
-	public EObject getResolvedAST() {
-		getAST();
-		source.resolveAST();
-		source.resolveASTDocumentation();
-		return source.getAST();
 	}
 
 	/**
