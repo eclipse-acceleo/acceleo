@@ -46,6 +46,7 @@ import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
+import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.common.notify.Adapter;
@@ -1717,8 +1718,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
 			}
 			result = ""; //$NON-NLS-1$
-		} else {
+		} else if (!(expression instanceof TemplateExpression)) {
 			result = super.visitExpression(expression);
+		} else {
+			throw new AcceleoEvaluationException(AcceleoEngineMessages
+					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationError")); //$NON-NLS-1$
 		}
 		return result;
 	}
