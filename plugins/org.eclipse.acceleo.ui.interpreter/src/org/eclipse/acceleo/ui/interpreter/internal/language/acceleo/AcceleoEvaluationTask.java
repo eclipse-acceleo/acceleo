@@ -45,6 +45,8 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
@@ -88,6 +90,21 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		List<EObject> target = context.getTargetEObjects();
 		if (target == null) {
 			target = Collections.emptyList();
+		}
+		final ResourceSet resourceSet;
+		if (compiledExpression instanceof EObject) {
+			resourceSet = ((EObject)compiledExpression).eResource().getResourceSet();
+		} else {
+			resourceSet = new ResourceSetImpl();
+		}
+		for (EObject targetEObject : new ArrayList<EObject>(target)) {
+			if (targetEObject.eIsProxy()) {
+				EObject resolved = EcoreUtil.resolve(targetEObject, resourceSet);
+				if (resolved != null && !resolved.eIsProxy()) {
+					target.remove(targetEObject);
+					target.add(resolved);
+				}
+			}
 		}
 
 		final EvaluationLogListener evaluationListener = new EvaluationLogListener();
@@ -210,7 +227,11 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		ocl.getEvaluationEnvironment().add("model", modelRoot); //$NON-NLS-1$
 
 		for (Variable variable : context.getVariables()) {
-			ocl.getEvaluationEnvironment().add(variable.getName(), variable.getValue());
+			Object value = variable.getValue();
+			if (value instanceof EObject && ((EObject)value).eIsProxy()) {
+				value = EcoreUtil.resolve((EObject)value, oclExpression.eResource().getResourceSet());
+			}
+			ocl.getEvaluationEnvironment().add(variable.getName(), value);
 		}
 
 		return evaluationVisitor.visitExpression(oclExpression);

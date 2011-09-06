@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.language.acceleo;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -31,12 +32,18 @@ import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
@@ -69,6 +76,70 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
+	 * Tries and find an Acceleo compiled module (emtl file) corresponding to the given module (mtl file),
+	 * then loads it as an EMF resource.
+	 * 
+	 * @param moduleFile
+	 *            The module file of which we seek the compiled version.
+	 * @param resourceSet
+	 *            The resource set in which to load the module.
+	 * @return The Acceleo compiled module (emtl file) corresponding to the given module (mtl file).
+	 *         <code>null</code> if none.
+	 */
+	private static Resource getModule(IFile moduleFile, ResourceSet resourceSet) {
+		IFile compiledModule = null;
+		if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(moduleFile.getFileExtension())) {
+			final IProject project = moduleFile.getProject();
+			if (project != null) {
+				final String compiledName = moduleFile.getFullPath().removeFileExtension()
+						.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).lastSegment();
+				compiledModule = findChild(project, compiledName);
+			}
+		}
+
+		if (compiledModule != null) {
+			String path = compiledModule.getFullPath().toString();
+			for (Resource resource : resourceSet.getResources()) {
+				if (resource.getURI().toString().equals(path)) {
+					return resource;
+				}
+			}
+			try {
+				return ModelUtils.load(URI.createPlatformResourceURI(path, true), resourceSet).eResource();
+			} catch (IOException e) {
+				// FIXME log
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Tries and find a file with the given name under the given container (recursively).
+	 * 
+	 * @param container
+	 *            The container under which to seek for a file.
+	 * @param fileName
+	 *            Name of the file we seek.
+	 */
+	private static IFile findChild(IContainer container, String fileName) {
+		IFile result = null;
+		try {
+			final IResource[] members = container.members();
+			for (int i = 0; i < members.length && result == null; i++) {
+				final IResource child = members[i];
+				if (child instanceof IContainer) {
+					result = findChild((IContainer)child, fileName);
+				} else if (child instanceof IFile && child.getName().equals(fileName)) {
+					result = (IFile)child;
+				}
+			}
+		} catch (CoreException e) {
+			// FIXME log
+		}
+		return result;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.util.concurrent.Callable#call()
@@ -76,13 +147,22 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	public CompilationResult call() throws Exception {
 		String fullExpression = acceleoSource.rebuildFullExpression(context);
 
+		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = ModelUtils.createResource(
-				URI.createURI("http://acceleo.eclipse.org/default.emtl"), new ResourceSetImpl()); //$NON-NLS-1$
+				URI.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
 
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(fullExpression));
 
+		List<URI> dependencies = new ArrayList<URI>();
+		if (acceleoSource.getModuleImport() != null) {
+			Resource moduleImport = getModule(acceleoSource.getModuleImport(), resourceSet);
+			if (moduleImport != null) {
+				dependencies.add(moduleImport.getURI());
+			}
+		}
+
 		AcceleoParser parser = new AcceleoParser();
-		parser.parse(source, resource, Collections.<URI> emptyList());
+		parser.parse(source, resource, dependencies);
 
 		ASTNode selectedNode = null;
 		if (!resource.getContents().isEmpty()) {

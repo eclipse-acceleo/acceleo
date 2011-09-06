@@ -50,12 +50,8 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.jface.action.Action;
@@ -75,6 +71,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -98,12 +95,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -138,6 +140,9 @@ public class InterpreterView extends ViewPart {
 
 	/** Key for the expression as stored in this view's memento. */
 	private static final String MEMENTO_EXPRESSION_KEY = "org.eclipse.acceleo.ui.interpreter.memento.expression"; //$NON-NLS-1$
+
+	/** Key for the "link with editor" state as stored in this view's memento. */
+	private static final String MEMENTO_LINK_WITH_EDITOR_KEY = "org.eclipse.acceleo.ui.interpreter.memento.linkwitheditor"; //$NON-NLS-1$
 
 	/** Key for the real-time compilation state as stored in this view's memento. */
 	private static final String MEMENTO_REAL_TIME_KEY = "org.eclipse.acceleo.ui.interpreter.memento.realtime"; //$NON-NLS-1$
@@ -181,8 +186,8 @@ public class InterpreterView extends ViewPart {
 	/** Currently selected language interpreter. */
 	private AbstractLanguageInterpreter currentLanguageInterpreter;
 
-	/** The editing domain that will serve as this interpreter's context. */
-	private EditingDomain editingDomain;
+	/** We'll add this listener to the current page whenever the "link with editor" action is enabled. */
+	private IPartListener2 editorPartListener = new InterpreterPartListener();
 
 	/** This will be used to listen to EObject selection within the workbench. */
 	private ISelectionListener eobjectSelectionListener;
@@ -207,6 +212,12 @@ public class InterpreterView extends ViewPart {
 
 	/** Form that will contain the interpreter itself (left part of the view). */
 	private Form interpreterForm;
+
+	/**
+	 * This boolean indicates whether we should send notifications to the language interpreter when a new
+	 * editor is given focus.
+	 */
+	private boolean linkWithEditor;
 
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
@@ -459,10 +470,6 @@ public class InterpreterView extends ViewPart {
 
 		eobjectSelectionListener = new EObjectSelectionListener();
 		site.getPage().addSelectionListener(eobjectSelectionListener);
-
-		AdapterFactory factory = createAdapterFactory();
-		CommandStack commandStack = new BasicCommandStack();
-		editingDomain = new AdapterFactoryEditingDomain(factory, commandStack);
 	}
 
 	/**
@@ -480,6 +487,7 @@ public class InterpreterView extends ViewPart {
 				memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
+			memento.putBoolean(MEMENTO_LINK_WITH_EDITOR_KEY, Boolean.valueOf(linkWithEditor));
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
 			memento.putBoolean(MEMENTO_VARIABLES_HIDDEN_KEY,
 					Boolean.valueOf(variableViewer.getControl().isVisible()));
@@ -495,6 +503,24 @@ public class InterpreterView extends ViewPart {
 	public void setFocus() {
 		if (expressionViewer != null) {
 			expressionViewer.getControl().setFocus();
+		}
+	}
+
+	/**
+	 * Enables (or disables) the language interpreter's link with the editor focus.
+	 */
+	public void toggleLinkWithEditor() {
+		linkWithEditor = !linkWithEditor;
+		IWorkbenchPage page = getSite().getPage();
+		if (linkWithEditor) {
+			page.addPartListener(editorPartListener);
+
+			IEditorPart activeEditor = page.getActiveEditor();
+			if (activeEditor != null) {
+				editorActivated(activeEditor);
+			}
+		} else {
+			page.removePartListener(editorPartListener);
 		}
 	}
 
@@ -784,7 +810,8 @@ public class InterpreterView extends ViewPart {
 	protected Viewer createResultViewer(Composite parent) {
 		Viewer viewer = getCurrentLanguageInterpreter().createResultViewer(parent);
 		if (viewer == null) {
-			viewer = new TreeViewer(parent);
+			viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			ColumnViewerToolTipSupport.enableFor((TreeViewer)viewer);
 
 			AdapterFactory adapterFactory = createAdapterFactory();
 			TreeViewer treeViewer = (TreeViewer)viewer;
@@ -819,11 +846,20 @@ public class InterpreterView extends ViewPart {
 			}
 		}
 
+		IAction linkAction = new ToggleLinkWithEditorAction(this);
+		if (partMemento != null) {
+			Boolean isLinkEnabled = partMemento.getBoolean(MEMENTO_LINK_WITH_EDITOR_KEY);
+			if (isLinkEnabled != null && isLinkEnabled.booleanValue()) {
+				toggleLinkWithEditor();
+				linkAction.setChecked(linkWithEditor);
+			}
+		}
+
 		IAction variableVisibilityAction = new ToggleVariableVisibilityAction(form, variableColumn);
 		variableVisibilityAction.setChecked(variableColumn.getLayoutData() instanceof GridData
 				&& !((GridData)variableColumn.getLayoutData()).exclude);
 
-		form.getToolBarManager().add(new ToggleLinkWithEditorAction(this));
+		form.getToolBarManager().add(linkAction);
 		form.getToolBarManager().add(realTimeAction);
 		form.getToolBarManager().add(variableVisibilityAction);
 		form.getToolBarManager().update(true);
@@ -880,6 +916,7 @@ public class InterpreterView extends ViewPart {
 				| SWT.FULL_SELECTION);
 
 		TreeViewer viewer = new TreeViewer(variableTree);
+		ColumnViewerToolTipSupport.enableFor(viewer);
 		AdapterFactory adapterFactory = createAdapterFactory();
 		viewer.setContentProvider(new VariableContentProvider(adapterFactory));
 		viewer.setLabelProvider(new VariableLabelProvider(adapterFactory));
@@ -891,6 +928,21 @@ public class InterpreterView extends ViewPart {
 		viewer.setInput(new ArrayList<Variable>());
 
 		return viewer;
+	}
+
+	/**
+	 * This will be called whenever an editor has been activated, the input of the active editor has changed,
+	 * or the last editor has been closed.
+	 * 
+	 * @param editorPart
+	 *            The editor that has been activated. May be <code>null</code>, in which case the last editor
+	 *            has been closed.
+	 */
+	protected void editorActivated(IEditorPart editorPart) {
+		AbstractLanguageInterpreter interpreter = getCurrentLanguageInterpreter();
+		if (interpreter != null) {
+			interpreter.linkWithEditor(editorPart);
+		}
 	}
 
 	/**
@@ -923,6 +975,7 @@ public class InterpreterView extends ViewPart {
 	protected void populateExpressionSectionToolbar(Section section) {
 		ToolBarManager toolBarManager = getSectionToolBar(section);
 		if (toolBarManager != null) {
+			toolBarManager.removeAll();
 			toolBarManager.add(new EvaluateAction(this));
 			toolBarManager.add(new ClearViewerAction(expressionViewer));
 			toolBarManager.update(true);
@@ -1314,6 +1367,94 @@ public class InterpreterView extends ViewPart {
 			manager.add(new EvaluateAction(InterpreterView.this));
 			manager.add(new ClearViewerAction(sourceViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
+	}
+
+	/**
+	 * This listener will be used when the "link with editor" action is enabled in order to notify the current
+	 * language interpreter that an editor has been given focus or changed input.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class InterpreterPartListener implements IPartListener2 {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partActivated(IWorkbenchPartReference partRef) {
+			if (partRef instanceof IEditorReference) {
+				editorActivated(((IEditorReference)partRef).getEditor(true));
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partBroughtToTop(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partClosed(IWorkbenchPartReference partRef) {
+			if (partRef instanceof IEditorReference && partRef.getPage() != null
+					&& partRef.getPage().getEditorReferences().length == 0) {
+				editorActivated(null);
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partDeactivated(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partHidden(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partInputChanged(IWorkbenchPartReference partRef) {
+			if (partRef instanceof IEditorReference && partRef.getPage() != null
+					&& partRef.getPage().getActivePartReference() == partRef) {
+				editorActivated(((IEditorReference)partRef).getEditor(true));
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partOpened(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partVisible(IWorkbenchPartReference partRef) {
+			// No need to react to this event
 		}
 	}
 

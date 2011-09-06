@@ -23,6 +23,8 @@ import java.util.Set;
 import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -53,6 +55,9 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 
 	/** If the text doesn't start with "[module", we'll use this as the module's signature. */
 	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule({0})]" + LINE_SEPARATOR; //$NON-NLS-1$
+
+	/** If we have an import, this will be added to the expression. */
+	private static final String DUMMY_IMPORT = "[import {0}]" + LINE_SEPARATOR; //$NON-NLS-1$
 
 	/**
 	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
@@ -89,6 +94,9 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 */
 	private boolean hasExplicitModule;
 
+	/** This will be set to the imported file when we are linked with an Acceleo editor. */
+	private IFile moduleImport;
+
 	/**
 	 * Simply delegates to the super constructor.
 	 * 
@@ -121,6 +129,15 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 */
 	public int getGap() {
 		return gap;
+	}
+
+	/**
+	 * Returns the current module import.
+	 * 
+	 * @return The current module import.
+	 */
+	public IFile getModuleImport() {
+		return moduleImport;
 	}
 
 	/**
@@ -165,6 +182,16 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	public void initializeContent() {
 		content = new AcceleoInterpreterSourceContent();
 		content.init(new StringBuffer(getDocument().get()));
+	}
+
+	/**
+	 * Sets the imported module for this viewer to the given file.
+	 * 
+	 * @param moduleImport
+	 *            The new imported module.
+	 */
+	public void setModuleImport(IFile moduleImport) {
+		this.moduleImport = moduleImport;
 	}
 
 	/**
@@ -248,6 +275,13 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
 		expressionBuffer.append(moduleSignature);
 		gap += moduleSignature.length();
+
+		if (moduleImport != null) {
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT,
+					getQualifiedName(moduleImport.getFullPath()));
+			expressionBuffer.append(modulePath);
+			gap += modulePath.length();
+		}
 
 		/*
 		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
@@ -375,6 +409,21 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			}
 		}
 		return commonSuperType;
+	}
+
+	/**
+	 * Returns the qualified name of the given module file.
+	 * 
+	 * @param moduleFile
+	 *            The file of which we need the qualified name.
+	 * @return The qualified name of the given module file.
+	 */
+	private static String getQualifiedName(IPath moduleFile) {
+		String path = moduleFile.removeFileExtension().toString();
+		if (path.contains("src/")) { //$NON-NLS-1$
+			path = path.substring(path.indexOf("src/") + 4); //$NON-NLS-1$
+		}
+		return path.replaceAll("/", "::"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**

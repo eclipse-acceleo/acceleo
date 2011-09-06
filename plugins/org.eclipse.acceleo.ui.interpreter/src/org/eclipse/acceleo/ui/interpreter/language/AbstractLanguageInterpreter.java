@@ -16,6 +16,7 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorPart;
 
 /**
  * This class describes the necessary contract for a language to be considered usable in the interpreter view.
@@ -126,4 +127,20 @@ public abstract class AbstractLanguageInterpreter {
 	 *         evaluation. Cannot be <code>null</code>.
 	 */
 	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
+
+	/**
+	 * This will be called whenever a new editor is given focus while the "link with editor" toggle is
+	 * enabled. The language interpreter can react to these changes, or ignore the event altogether.
+	 * <p>
+	 * When the "link with editor" toggle is disabled, this will be called with <code>null</code> as the
+	 * <code>editorPart</code>.
+	 * </p>
+	 * 
+	 * @param editorPart
+	 *            The editor part that has been given focus. Can be <code>null</code> when the last editor is
+	 *            closed or when the toggle is disabled.
+	 */
+	public void linkWithEditor(IEditorPart editorPart) {
+		// Do nothing
+	}
 }

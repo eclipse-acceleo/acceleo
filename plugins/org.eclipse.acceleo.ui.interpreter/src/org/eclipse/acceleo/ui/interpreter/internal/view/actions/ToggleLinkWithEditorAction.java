@@ -55,6 +55,8 @@ public class ToggleLinkWithEditorAction extends Action {
 	 */
 	@Override
 	public void run() {
-		super.run();
+		if (view != null) {
+			view.toggleLinkWithEditor();
+		}
 	}
 }
