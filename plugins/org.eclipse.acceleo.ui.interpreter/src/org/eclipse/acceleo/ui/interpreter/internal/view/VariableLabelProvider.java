@@ -10,11 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * This will act as the label provider for the "variables" Tree Viewer.
@@ -58,7 +61,11 @@ public class VariableLabelProvider extends CellLabelProvider {
 	@Override
 	public void update(ViewerCell cell) {
 		final Object element = cell.getElement();
-		cell.setText(getText(element));
+		final String text = getText(element);
+		if (InterpreterMessages.getString("interpreter.view.variable.placeholder").equals(text)) { //$NON-NLS-1$
+			cell.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		}
+		cell.setText(text);
 		cell.setImage(delegate.getImage(element));
 	}
 

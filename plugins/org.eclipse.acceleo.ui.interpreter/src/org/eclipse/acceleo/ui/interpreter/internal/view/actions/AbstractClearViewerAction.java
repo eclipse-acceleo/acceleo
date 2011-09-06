@@ -15,16 +15,14 @@ import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * This action will be added to the result section's tool bar and will allow users to clear all previous
- * evaluation results.
+ * This will serve as the base class for our "viewer clearing" actions.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class ClearViewerAction extends Action {
+public abstract class AbstractClearViewerAction extends Action {
 	/** The tooltip we'll show for this action. */
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("interpreter.action.clear.tooltip"); //$NON-NLS-1$
@@ -41,7 +39,7 @@ public class ClearViewerAction extends Action {
 	 * @param viewer
 	 *            The viewer that should be cleared through this action.
 	 */
-	public ClearViewerAction(final Viewer viewer) {
+	public AbstractClearViewerAction(final Viewer viewer) {
 		super(NAME, IAction.AS_PUSH_BUTTON);
 		setToolTipText(TOOLTIP_TEXT);
 		setImageDescriptor(InterpreterImages.getImageDescriptor(IInterpreterConstants.CLEAR_ACTION_ICON));
@@ -49,19 +47,11 @@ public class ClearViewerAction extends Action {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the viewer on which this action operates.
 	 * 
-	 * @see org.eclipse.jface.action.Action#run()
+	 * @return The viewer on which this action operates.
 	 */
-	@Override
-	public void run() {
-		if (viewer.getControl().isDisposed()) {
-			return;
-		}
-		if (viewer instanceof TextViewer) {
-			((TextViewer)viewer).getTextWidget().setText(""); //$NON-NLS-1$
-		} else {
-			viewer.setInput(null);
-		}
+	public Viewer getViewer() {
+		return viewer;
 	}
 }

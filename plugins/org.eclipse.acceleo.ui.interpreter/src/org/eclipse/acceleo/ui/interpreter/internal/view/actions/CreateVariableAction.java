@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
@@ -76,10 +77,12 @@ public final class CreateVariableAction extends Action {
 				newVar.setValue(value);
 			}
 			Object input = variableViewer.getInput();
-			if (input instanceof List<?>) {
-				((List<Variable>)variableViewer.getInput()).add(newVar);
-				variableViewer.refresh();
+			if (!(input instanceof List<?>)) {
+				input = new ArrayList<Variable>();
+				variableViewer.setInput(input);
 			}
+			((List<Variable>)variableViewer.getInput()).add(newVar);
+			variableViewer.refresh();
 		}
 	}
 

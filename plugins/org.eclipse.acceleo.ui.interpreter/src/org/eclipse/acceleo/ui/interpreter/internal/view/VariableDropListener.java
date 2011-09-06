@@ -56,11 +56,17 @@ public class VariableDropListener extends DropTargetAdapter {
 
 			if (targetItem instanceof TreeItem) {
 				Object targetVariable = targetItem.getData();
-				while (!(targetVariable instanceof Variable)) {
+				while (targetItem != null && !(targetVariable instanceof Variable)) {
 					targetItem = ((TreeItem)targetItem).getParentItem();
-					targetVariable = targetItem.getData();
+					if (targetItem != null) {
+						targetVariable = targetItem.getData();
+					}
 				}
-				addToVariable((Variable)targetVariable, selection);
+				if (targetVariable instanceof Variable) {
+					addToVariable((Variable)targetVariable, selection);
+				} else {
+					createNewVariable(selection);
+				}
 			} else {
 				createNewVariable(selection);
 			}

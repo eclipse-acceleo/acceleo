@@ -96,7 +96,7 @@ public final class DeleteVariableOrValueAction extends Action {
 			TreeItem item = selectedtems[i];
 			if (item.getData() instanceof Variable) {
 				((List<Variable>)input).remove(item.getData());
-			} else if (item.getParentItem().getData() instanceof Variable) {
+			} else if (item.getParentItem() != null && item.getParentItem().getData() instanceof Variable) {
 				Variable variable = (Variable)item.getParentItem().getData();
 				Object variableValue = variable.getValue();
 				if (item.getData().equals(variableValue)) {

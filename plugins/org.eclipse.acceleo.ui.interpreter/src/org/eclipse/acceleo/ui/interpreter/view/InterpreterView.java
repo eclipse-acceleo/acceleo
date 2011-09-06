@@ -32,7 +32,9 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableContentProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableDropListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearViewerAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearExpressionViewerAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearResultViewerAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
@@ -532,6 +534,11 @@ public class InterpreterView extends ViewPart {
 		realTime = !realTime;
 		if (realTime) {
 			realTimeThread = new RealTimeThread();
+
+			// Launch a compilation right from the get-go
+			compileExpression();
+			evaluate();
+
 			realTimeThread.start();
 		} else {
 			if (realTimeThread != null) {
@@ -845,6 +852,10 @@ public class InterpreterView extends ViewPart {
 				toggleRealTime();
 				realTimeAction.setChecked(realTime);
 			}
+		} else {
+			// Real-time is active by default
+			toggleRealTime();
+			realTimeAction.setChecked(realTime);
 		}
 
 		IAction linkAction = new ToggleLinkWithEditorAction(this);
@@ -901,7 +912,7 @@ public class InterpreterView extends ViewPart {
 		variableViewer = createVariableViewer(toolkit, variableSectionBody);
 
 		ToolBarManager toolBarManager = createSectionToolBar(variableSection);
-		toolBarManager.add(new ClearViewerAction(variableViewer));
+		toolBarManager.add(new ClearVariableViewerAction(variableViewer));
 		toolBarManager.update(true);
 
 		toolkit.paintBordersFor(variableSectionBody);
@@ -979,7 +990,7 @@ public class InterpreterView extends ViewPart {
 		if (toolBarManager != null) {
 			toolBarManager.removeAll();
 			toolBarManager.add(new EvaluateAction(this));
-			toolBarManager.add(new ClearViewerAction(expressionViewer));
+			toolBarManager.add(new ClearExpressionViewerAction(getSourceViewer()));
 			toolBarManager.update(true);
 		}
 	}
@@ -1018,7 +1029,7 @@ public class InterpreterView extends ViewPart {
 		ToolBarManager toolBarManager = getSectionToolBar(section);
 		if (toolBarManager != null) {
 			toolBarManager.removeAll();
-			toolBarManager.add(new ClearViewerAction(resultViewer));
+			toolBarManager.add(new ClearResultViewerAction(resultViewer));
 			toolBarManager.update(true);
 		}
 	}
@@ -1367,7 +1378,7 @@ public class InterpreterView extends ViewPart {
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
 			manager.add(new EvaluateAction(InterpreterView.this));
-			manager.add(new ClearViewerAction(sourceViewer));
+			manager.add(new ClearExpressionViewerAction(sourceViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		}
 	}
@@ -1485,7 +1496,7 @@ public class InterpreterView extends ViewPart {
 		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
-			manager.add(new ClearViewerAction(resultViewer));
+			manager.add(new ClearResultViewerAction(resultViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		}
 	}
@@ -1516,7 +1527,7 @@ public class InterpreterView extends ViewPart {
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
 			manager.add(new CreateVariableAction(variableViewer));
-			manager.add(new ClearViewerAction(variableViewer));
+			manager.add(new ClearVariableViewerAction(variableViewer));
 			manager.add(new Separator());
 			manager.add(new DeleteVariableOrValueAction(variableViewer));
 			manager.add(new RenameVariableAction(variableViewer));
@@ -1664,6 +1675,10 @@ public class InterpreterView extends ViewPart {
 						addToSelection((EObject)next);
 					}
 				}
+				// If the selection changed somehow, relaunch the real-time evaluation
+				if (cleared && realTimeThread != null) {
+					realTimeThread.setDirty();
+				}
 			}
 		}
 	}
@@ -1715,6 +1730,11 @@ public class InterpreterView extends ViewPart {
 		@Override
 		public void run() {
 			try {
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						getForm().setBusy(true);
+					}
+				});
 				// Cannot do anything before the current compilation thread stops.
 				if (compilationThread != null) {
 					compilationThread.join();
@@ -1762,6 +1782,12 @@ public class InterpreterView extends ViewPart {
 						setEvaluationResult(result);
 					}
 				});
+			} finally {
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						getForm().setBusy(false);
+					}
+				});
 			}
 		}
 	}
@@ -1777,11 +1803,11 @@ public class InterpreterView extends ViewPart {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private class RealTimeThread extends Thread {
-		/** Time to wait before launching the evaluation (2 seconds by default). */
-		private static final int DELAY = 2000;
+		/** Time to wait before launching the evaluation (0.5 second by default). */
+		private static final int DELAY = 500;
 
 		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
-		private boolean dirty = true;
+		private boolean dirty;
 
 		/** The lock we'll acquire for this thread's work. */
 		private final Object lock = new Object();
