@@ -427,29 +427,32 @@ public class AcceleoEvaluationContext<C> {
 	 * @return indentation of the very last line in context.
 	 */
 	public String getCurrentLineIndentation() {
-		Writer writer = writers.getLast();
-		if (writer instanceof AbstractAcceleoWriter) {
-			return ((AbstractAcceleoWriter)writer).getCurrentLineIndentation();
-		}
-		// Only String writers remain
-		String content = writer.toString();
-		int newLineIndex = -1;
-		if (content.contains(DOS_LINE_SEPARATOR)) {
-			newLineIndex = content.lastIndexOf(DOS_LINE_SEPARATOR) + DOS_LINE_SEPARATOR.length();
-		} else if (content.contains(UNIX_LINE_SEPARATOR)) {
-			newLineIndex = content.lastIndexOf(UNIX_LINE_SEPARATOR) + UNIX_LINE_SEPARATOR.length();
-		} else if (content.contains(MAC_LINE_SEPARATOR)) {
-			newLineIndex = content.lastIndexOf(MAC_LINE_SEPARATOR) + MAC_LINE_SEPARATOR.length();
-		}
 		StringBuffer currentIndentation = new StringBuffer();
-		if (newLineIndex == -1) {
-			newLineIndex = 0;
-		}
-		for (int i = newLineIndex; i < content.length(); i++) {
-			if (Character.isWhitespace(content.charAt(i))) {
-				currentIndentation.append(content.charAt(i));
-			} else {
-				break;
+		if (!writers.isEmpty()) {
+			Writer writer = writers.getLast();
+			if (writer instanceof AbstractAcceleoWriter) {
+				return ((AbstractAcceleoWriter)writer).getCurrentLineIndentation();
+			}
+			// Only String writers remain
+			String content = writer.toString();
+			int newLineIndex = -1;
+			if (content.contains(DOS_LINE_SEPARATOR)) {
+				newLineIndex = content.lastIndexOf(DOS_LINE_SEPARATOR) + DOS_LINE_SEPARATOR.length();
+			} else if (content.contains(UNIX_LINE_SEPARATOR)) {
+				newLineIndex = content.lastIndexOf(UNIX_LINE_SEPARATOR) + UNIX_LINE_SEPARATOR.length();
+			} else if (content.contains(MAC_LINE_SEPARATOR)) {
+				newLineIndex = content.lastIndexOf(MAC_LINE_SEPARATOR) + MAC_LINE_SEPARATOR.length();
+			}
+
+			if (newLineIndex == -1) {
+				newLineIndex = 0;
+			}
+			for (int i = newLineIndex; i < content.length(); i++) {
+				if (Character.isWhitespace(content.charAt(i))) {
+					currentIndentation.append(content.charAt(i));
+				} else {
+					break;
+				}
 			}
 		}
 		return currentIndentation.toString();
