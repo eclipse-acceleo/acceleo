@@ -25,7 +25,7 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -81,7 +81,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	public EvaluationResult call() throws Exception {
 		CompilationResult compilationResult = context.getCompilationResult();
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
-			return new EvaluationResult(new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID,
+			return new EvaluationResult(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID,
 					InterpreterMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
 		}
 
@@ -281,7 +281,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 				if (evaluationStatus instanceof MultiStatus) {
 					((MultiStatus)evaluationStatus).add(status);
 				} else {
-					evaluationStatus = new MultiStatus(AcceleoInterpreterPlugin.PLUGIN_ID, 1,
+					evaluationStatus = new MultiStatus(InterpreterPlugin.PLUGIN_ID, 1,
 							new IStatus[] {evaluationStatus, },
 							InterpreterMessages.getString("acceleo.interpreter.evaluation.issue"), null); //$NON-NLS-1$
 				}

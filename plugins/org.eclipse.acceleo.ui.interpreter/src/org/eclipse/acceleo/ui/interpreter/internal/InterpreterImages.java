@@ -13,7 +13,7 @@ package org.eclipse.acceleo.ui.interpreter.internal;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
@@ -31,7 +31,7 @@ public final class InterpreterImages {
 	private static ImageRegistry imageRegistry;
 
 	static {
-		BASE_URL = AcceleoInterpreterPlugin.getDefault().getBundle()
+		BASE_URL = InterpreterPlugin.getDefault().getBundle()
 				.getEntry(IInterpreterConstants.INTERPRETER_ICONS);
 	}
 

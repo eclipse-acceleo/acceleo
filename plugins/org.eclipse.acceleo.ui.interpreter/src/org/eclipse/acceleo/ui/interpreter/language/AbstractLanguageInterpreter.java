@@ -12,6 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.language;
 
 import java.util.concurrent.Callable;
 
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -30,6 +31,16 @@ import org.eclipse.ui.IEditorPart;
  */
 @SuppressWarnings("unused")
 public abstract class AbstractLanguageInterpreter {
+	/**
+	 * If the language interpreter needs to add custom actions to the interpreter form, do it from here.
+	 * 
+	 * @param toolBarManager
+	 *            The manager for the form tool bar.
+	 */
+	public void addToolBarActions(IToolBarManager toolBarManager) {
+		// Do nothing
+	}
+
 	/**
 	 * This can be used to configure the source viewer to fit the language needs. Document scanner, document
 	 * partitioner, source viewer configuration... can be set accordingly.

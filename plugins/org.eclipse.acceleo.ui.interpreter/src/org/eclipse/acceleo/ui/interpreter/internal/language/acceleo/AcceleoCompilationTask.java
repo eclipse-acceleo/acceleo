@@ -28,7 +28,7 @@ import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
-import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
@@ -259,20 +259,20 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		List<IStatus> problems = new ArrayList<IStatus>();
 
 		for (AcceleoParserProblem error : errors.getList()) {
-			problems.add(new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, error.getMessage()));
+			problems.add(new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, error.getMessage()));
 		}
 		for (AcceleoParserWarning warning : warnings.getList()) {
-			problems.add(new Status(IStatus.WARNING, AcceleoInterpreterPlugin.PLUGIN_ID, warning.getMessage()));
+			problems.add(new Status(IStatus.WARNING, InterpreterPlugin.PLUGIN_ID, warning.getMessage()));
 		}
 		for (AcceleoParserInfo info : infos.getList()) {
-			problems.add(new Status(IStatus.INFO, AcceleoInterpreterPlugin.PLUGIN_ID, info.getMessage()));
+			problems.add(new Status(IStatus.INFO, InterpreterPlugin.PLUGIN_ID, info.getMessage()));
 		}
 
 		if (problems.isEmpty()) {
 			return null;
 		}
 
-		MultiStatus status = new MultiStatus(AcceleoInterpreterPlugin.PLUGIN_ID, 1,
+		MultiStatus status = new MultiStatus(InterpreterPlugin.PLUGIN_ID, 1,
 				InterpreterMessages.getString("acceleo.interpreter.compilation.issue"), null); //$NON-NLS-1$
 		for (IStatus child : problems) {
 			status.add(child);

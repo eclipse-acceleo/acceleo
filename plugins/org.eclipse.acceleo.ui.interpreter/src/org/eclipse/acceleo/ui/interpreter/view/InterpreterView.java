@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.eclipse.acceleo.ui.interpreter.AcceleoInterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
@@ -59,6 +59,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -859,10 +860,14 @@ public class InterpreterView extends ViewPart {
 		variableVisibilityAction.setChecked(variableColumn.getLayoutData() instanceof GridData
 				&& !((GridData)variableColumn.getLayoutData()).exclude);
 
-		form.getToolBarManager().add(linkAction);
-		form.getToolBarManager().add(realTimeAction);
-		form.getToolBarManager().add(variableVisibilityAction);
-		form.getToolBarManager().update(true);
+		IToolBarManager toolBarManager = form.getToolBarManager();
+		toolBarManager.add(linkAction);
+		toolBarManager.add(realTimeAction);
+		toolBarManager.add(variableVisibilityAction);
+
+		getCurrentLanguageInterpreter().addToolBarActions(toolBarManager);
+
+		toolBarManager.update(true);
 	}
 
 	/**
@@ -939,10 +944,7 @@ public class InterpreterView extends ViewPart {
 	 *            has been closed.
 	 */
 	protected void editorActivated(IEditorPart editorPart) {
-		AbstractLanguageInterpreter interpreter = getCurrentLanguageInterpreter();
-		if (interpreter != null) {
-			interpreter.linkWithEditor(editorPart);
-		}
+		getCurrentLanguageInterpreter().linkWithEditor(editorPart);
 	}
 
 	/**
@@ -1619,7 +1621,7 @@ public class InterpreterView extends ViewPart {
 				if (e.getCause() != null) {
 					message = e.getCause().getMessage();
 				}
-				final IStatus status = new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, message);
+				final IStatus status = new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, message);
 				final CompilationResult result = new CompilationResult(status);
 				setCompilationResult(result);
 			}
@@ -1747,7 +1749,7 @@ public class InterpreterView extends ViewPart {
 				if (e.getCause() != null) {
 					message = e.getCause().getMessage();
 				}
-				final IStatus status = new Status(IStatus.ERROR, AcceleoInterpreterPlugin.PLUGIN_ID, message);
+				final IStatus status = new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, message);
 				final EvaluationResult result = new EvaluationResult(status);
 
 				Display.getDefault().asyncExec(new Runnable() {

@@ -22,12 +22,12 @@ import org.osgi.framework.BundleContext;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
+public class InterpreterPlugin extends AbstractUIPlugin {
 	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.interpreter"; //$NON-NLS-1$
 
 	/** This plug-in's shared instance. */
-	private static AcceleoInterpreterPlugin plugin;
+	private static InterpreterPlugin plugin;
 
 	/** The registry listener that will be used to listen to language interpreter changes. */
 	private final LanguageInterpreterRegistryListener interpreterListener = new LanguageInterpreterRegistryListener();
@@ -35,7 +35,7 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 	/**
 	 * Default constructor for the plugin.
 	 */
-	public AcceleoInterpreterPlugin() {
+	public InterpreterPlugin() {
 		// Empty implementation
 	}
 
@@ -44,7 +44,7 @@ public class AcceleoInterpreterPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static AcceleoInterpreterPlugin getDefault() {
+	public static InterpreterPlugin getDefault() {
 		return plugin;
 	}
 
