@@ -197,10 +197,7 @@ public abstract class AbstractAcceleoGenerator {
 		service.clearCaches();
 
 		if (!service.hasGenerationOccurred()) {
-			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
-				AcceleoEnginePlugin.log(AcceleoEngineMessages
-						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
-			} else {
+			if (!EMFPlugin.IS_ECLIPSE_RUNNING || AcceleoPreferences.isDebugMessagesEnabled()) {
 				AcceleoEnginePlugin.log(AcceleoEngineMessages
 						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 			}

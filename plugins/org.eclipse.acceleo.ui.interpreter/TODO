@@ -1,0 +1,4 @@
+ - Syntax highlighting on partial expressions
+ - Allow imports in the expression
+ - UI feedback on compilation errors
+ - CTRL+Z, CTRL+Y
