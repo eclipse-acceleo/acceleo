@@ -125,6 +125,16 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#acceptLinkWithEditor()
+	 */
+	@Override
+	public boolean acceptLinkWithEditor() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#linkWithEditor(org.eclipse.ui.IEditorPart)
 	 */
 	@Override

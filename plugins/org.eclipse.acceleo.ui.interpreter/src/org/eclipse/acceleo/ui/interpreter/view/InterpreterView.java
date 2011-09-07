@@ -231,6 +231,9 @@ public class InterpreterView extends ViewPart {
 	 */
 	private boolean linkWithEditor;
 
+	/** Keeps a reference to the "link with editor" action. */
+	private IAction linkWithEditorAction;
+
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
 
@@ -522,17 +525,19 @@ public class InterpreterView extends ViewPart {
 	 * Enables (or disables) the language interpreter's link with the editor focus.
 	 */
 	public void toggleLinkWithEditor() {
-		linkWithEditor = !linkWithEditor;
-		IWorkbenchPage page = getSite().getPage();
-		if (linkWithEditor) {
-			page.addPartListener(editorPartListener);
+		if (linkWithEditorAction.isEnabled()) {
+			linkWithEditor = !linkWithEditor;
+			IWorkbenchPage page = getSite().getPage();
+			if (linkWithEditor) {
+				page.addPartListener(editorPartListener);
 
-			IEditorPart activeEditor = page.getActiveEditor();
-			if (activeEditor != null) {
-				editorActivated(activeEditor);
+				IEditorPart activeEditor = page.getActiveEditor();
+				if (activeEditor != null) {
+					editorActivated(activeEditor);
+				}
+			} else {
+				page.removePartListener(editorPartListener);
 			}
-		} else {
-			page.removePartListener(editorPartListener);
 		}
 	}
 
@@ -906,12 +911,13 @@ public class InterpreterView extends ViewPart {
 			realTimeAction.setChecked(realTime);
 		}
 
-		IAction linkAction = new ToggleLinkWithEditorAction(this);
+		linkWithEditorAction = new ToggleLinkWithEditorAction(this);
+		linkWithEditorAction.setEnabled(getCurrentLanguageInterpreter().acceptLinkWithEditor());
 		if (partMemento != null) {
 			Boolean isLinkEnabled = partMemento.getBoolean(MEMENTO_LINK_WITH_EDITOR_KEY);
 			if (isLinkEnabled != null && isLinkEnabled.booleanValue()) {
 				toggleLinkWithEditor();
-				linkAction.setChecked(linkWithEditor);
+				linkWithEditorAction.setChecked(linkWithEditor);
 			}
 		}
 
@@ -920,7 +926,7 @@ public class InterpreterView extends ViewPart {
 				&& !((GridData)variableColumn.getLayoutData()).exclude);
 
 		IToolBarManager toolBarManager = form.getToolBarManager();
-		toolBarManager.add(linkAction);
+		toolBarManager.add(linkWithEditorAction);
 		toolBarManager.add(realTimeAction);
 		toolBarManager.add(variableVisibilityAction);
 
@@ -1166,6 +1172,12 @@ public class InterpreterView extends ViewPart {
 		// re-fill the sections' toolbars
 		populateExpressionSectionToolbar(expressionSection);
 		populateResultSectionToolbar(resultSection);
+		// Change the state of the link with editor action
+		boolean linkEnabledForLanguage = getCurrentLanguageInterpreter().acceptLinkWithEditor();
+		linkWithEditorAction.setEnabled(linkEnabledForLanguage);
+		if (linkEnabledForLanguage != realTime) {
+			toggleLinkWithEditor();
+		}
 	}
 
 	/**

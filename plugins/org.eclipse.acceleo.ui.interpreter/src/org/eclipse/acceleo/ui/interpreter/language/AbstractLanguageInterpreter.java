@@ -140,6 +140,17 @@ public abstract class AbstractLanguageInterpreter {
 	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
 
 	/**
+	 * If this editor reacts to the "link with editor" action of the interpreter view, this should return
+	 * <code>true</code>. Will return <code>false</code> by default.
+	 * 
+	 * @return <code>true</code> if this interpreter cares for the "link with editor" action,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean acceptLinkWithEditor() {
+		return false;
+	}
+
+	/**
 	 * This will be called whenever a new editor is given focus while the "link with editor" toggle is
 	 * enabled. The language interpreter can react to these changes, or ignore the event altogether.
 	 * <p>
