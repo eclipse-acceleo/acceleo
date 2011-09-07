@@ -627,6 +627,7 @@ public class AcceleoModuleComposite extends Composite {
 		addButton = new Button(tableButtonComposite, SWT.PUSH);
 		Image addImage = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ADD);
 		addButton.setImage(addImage);
+		addButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.AddButton")); //$NON-NLS-1$
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -639,6 +640,7 @@ public class AcceleoModuleComposite extends Composite {
 		Image removeImage = PlatformUI.getWorkbench().getSharedImages().getImage(
 				ISharedImages.IMG_ETOOL_DELETE);
 		removeButton.setImage(removeImage);
+		removeButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.RemoveButton")); //$NON-NLS-1$
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -881,6 +883,7 @@ public class AcceleoModuleComposite extends Composite {
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		metamodelType.setLayoutData(gridData);
+		metamodelTable.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.Type")); //$NON-NLS-1$
 		metamodelType.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// nothing to do here
@@ -1123,6 +1126,13 @@ public class AcceleoModuleComposite extends Composite {
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		initializeContentFile.setLayoutData(gridData);
 		initializeContentFile.setEnabled(false);
+		initializeContentFile.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				updateModule();
+
+			}
+		});
 		initializeContentFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
