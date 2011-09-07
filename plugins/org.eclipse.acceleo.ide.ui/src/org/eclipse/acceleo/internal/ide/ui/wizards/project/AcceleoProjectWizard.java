@@ -42,16 +42,18 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
@@ -79,12 +81,12 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	/**
 	 * The "Resource working set" ID.
 	 */
-	private static final String RESOURCE_WORKING_SET_ID = "org.eclipse.ui.resourceWorkingSetPage"; //$NON-NLS-1$
+	protected static final String RESOURCE_WORKING_SET_ID = "org.eclipse.ui.resourceWorkingSetPage"; //$NON-NLS-1$
 
 	/**
 	 * The "Java working set" ID.
 	 */
-	private static final String JAVA_WORKING_SET_ID = "org.eclipse.jdt.ui.JavaWorkingSetPage"; //$NON-NLS-1$
+	protected static final String JAVA_WORKING_SET_ID = "org.eclipse.jdt.ui.JavaWorkingSetPage"; //$NON-NLS-1$
 
 	/**
 	 * The configuration element.
@@ -104,7 +106,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	/**
 	 * This is the first page of the new project wizard.
 	 */
-	protected WizardNewProjectCreationPage newProjectPage;
+	protected AcceleoProjectPage newProjectPage;
 
 	/**
 	 * This is the second page of the new project wizard.
@@ -144,20 +146,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	public void addPages() {
 		// The first page with the project name, its default location and the working set selection
 		String newProjectWizardName = AcceleoUIMessages.getString("AcceleoNewProjectWizard.Page.Name"); //$NON-NLS-1$
-		newProjectPage = new WizardNewProjectCreationPage(newProjectWizardName) {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.ui.dialogs.WizardNewProjectCreationPage#createControl(org.eclipse.swt.widgets.Composite)
-			 */
-			@Override
-			public void createControl(org.eclipse.swt.widgets.Composite parent) {
-				super.createControl(parent);
-				createWorkingSetGroup((Composite)getControl(), getSelection(), new String[] {
-						RESOURCE_WORKING_SET_ID, JAVA_WORKING_SET_ID, });
-				Dialog.applyDialogFont(getControl());
-			}
-		};
+		newProjectPage = new AcceleoProjectPage(newProjectWizardName, getSelection());
 		newProjectPage.setInitialProjectName(INITIAL_PROJECT_NAME);
 		newProjectPage.setTitle(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Title")); //$NON-NLS-1$
 		newProjectPage
@@ -247,7 +236,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 							desc.setLocation(location);
 							project.create(desc, monitor);
 							project.open(monitor);
-							convert(project, AcceleoProjectWizard.this, monitor);
+							convert(project, monitor);
 						}
 					} catch (CoreException e) {
 						AcceleoUIActivator.log(e, true);
@@ -272,17 +261,19 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	 * 
 	 * @param project
 	 *            The newly created project.
-	 * @param wizard
-	 *            The project wizard.
 	 * @param monitor
 	 *            The monitor.
 	 */
-	private void convert(IProject project, AcceleoProjectWizard wizard, IProgressMonitor monitor) {
-		String projectName = wizard.newProjectPage.getProjectName();
+	private void convert(IProject project, IProgressMonitor monitor) {
+		String projectName = this.newProjectPage.getProjectName();
 		String generatorName = this.computeGeneratorName(projectName);
 		AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE.createAcceleoProject();
 		acceleoProject.setName(projectName);
 		acceleoProject.setGeneratorName(generatorName);
+
+		// Default JRE value
+		acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$
+		acceleoProject.setJre(newProjectPage.getSelectedJVM());
 
 		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
 		IWizardContainer iWizardContainer = this.getContainer();
@@ -314,6 +305,35 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			}
 		}
 		generateFiles(acceleoProject, project, monitor);
+
+		try {
+			IClasspathEntry newContainerEntry = JavaCore.newContainerEntry(newProjectPage
+					.getJREContainerPath());
+			IJavaProject iJavaProject = JavaCore.create(project);
+			IClasspathEntry[] rawClasspath = iJavaProject.getRawClasspath();
+			IClasspathEntry[] newRawClasspath = new IClasspathEntry[rawClasspath.length];
+
+			// Do not change
+			final String jreContainerPrefix = "org.eclipse.jdt.launching.JRE_CONTAINER/"; //$NON-NLS-1$
+
+			int cpt = 0;
+			for (IClasspathEntry iClasspathEntry : rawClasspath) {
+				if (iClasspathEntry.getPath() != null
+						&& iClasspathEntry.getPath().toString().startsWith(jreContainerPrefix)) {
+					newRawClasspath[cpt] = newContainerEntry;
+				} else {
+					newRawClasspath[cpt] = iClasspathEntry;
+				}
+				cpt++;
+			}
+
+			iJavaProject.setRawClasspath(newRawClasspath, monitor);
+
+			IWorkingSet[] workingSets = newProjectPage.getSelectedWorkingSets();
+			getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
 	}
 
 	/**

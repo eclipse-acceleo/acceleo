@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getAcceleoModules <em>Acceleo Modules</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getPluginDependencies <em>Plugin Dependencies</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getExportedPackages <em>Exported Packages</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoProjectImpl#getJre <em>Jre</em>}</li>
  * </ul>
  * </p>
  *
@@ -114,6 +115,26 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 	 * @ordered
 	 */
 	protected EList<String> exportedPackages;
+
+	/**
+	 * The default value of the '{@link #getJre() <em>Jre</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJre()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String JRE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getJre() <em>Jre</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJre()
+	 * @generated
+	 * @ordered
+	 */
+	protected String jre = JRE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -217,6 +238,27 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getJre() {
+		return jre;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setJre(String newJre) {
+		String oldJre = jre;
+		jre = newJre;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleowizardmodelPackage.ACCELEO_PROJECT__JRE, oldJre, jre));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -244,6 +286,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				return getPluginDependencies();
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
 				return getExportedPackages();
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__JRE:
+				return getJre();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -275,6 +319,9 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				getExportedPackages().clear();
 				getExportedPackages().addAll((Collection<? extends String>)newValue);
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__JRE:
+				setJre((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -302,6 +349,9 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
 				getExportedPackages().clear();
 				return;
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__JRE:
+				setJre(JRE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -324,6 +374,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 				return pluginDependencies != null && !pluginDependencies.isEmpty();
 			case AcceleowizardmodelPackage.ACCELEO_PROJECT__EXPORTED_PACKAGES:
 				return exportedPackages != null && !exportedPackages.isEmpty();
+			case AcceleowizardmodelPackage.ACCELEO_PROJECT__JRE:
+				return JRE_EDEFAULT == null ? jre != null : !JRE_EDEFAULT.equals(jre);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -346,6 +398,8 @@ public class AcceleoProjectImpl extends EObjectImpl implements AcceleoProject {
 		result.append(pluginDependencies);
 		result.append(", exportedPackages: "); //$NON-NLS-1$
 		result.append(exportedPackages);
+		result.append(", jre: "); //$NON-NLS-1$
+		result.append(jre);
 		result.append(')');
 		return result.toString();
 	}

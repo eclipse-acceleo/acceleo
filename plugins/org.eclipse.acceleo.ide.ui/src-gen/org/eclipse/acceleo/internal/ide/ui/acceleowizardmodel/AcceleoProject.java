@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getAcceleoModules <em>Acceleo Modules</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getPluginDependencies <em>Plugin Dependencies</em>}</li>
  *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getExportedPackages <em>Exported Packages</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getJre <em>Jre</em>}</li>
  * </ul>
  * </p>
  *
@@ -131,5 +132,31 @@ public interface AcceleoProject extends EObject {
 	 * @generated
 	 */
 	EList<String> getExportedPackages();
+
+	/**
+	 * Returns the value of the '<em><b>Jre</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Jre</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Jre</em>' attribute.
+	 * @see #setJre(String)
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage#getAcceleoProject_Jre()
+	 * @model
+	 * @generated
+	 */
+	String getJre();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getJre <em>Jre</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Jre</em>' attribute.
+	 * @see #getJre()
+	 * @generated
+	 */
+	void setJre(String value);
 
 } // AcceleoProject

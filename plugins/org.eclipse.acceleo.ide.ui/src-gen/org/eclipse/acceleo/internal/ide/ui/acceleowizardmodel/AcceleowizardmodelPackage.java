@@ -111,13 +111,22 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	int ACCELEO_PROJECT__EXPORTED_PACKAGES = EcorePackage.EOBJECT_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Jre</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACCELEO_PROJECT__JRE = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Acceleo Project</em>' class.
 	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACCELEO_PROJECT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 5;
+	int ACCELEO_PROJECT_FEATURE_COUNT = EcorePackage.EOBJECT_FEATURE_COUNT + 6;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl <em>Acceleo UI Project</em>}' class.
@@ -647,6 +656,17 @@ public interface AcceleowizardmodelPackage extends EPackage {
 	EAttribute getAcceleoProject_ExportedPackages();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getJre <em>Jre</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Jre</em>'.
+	 * @see org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject#getJre()
+	 * @see #getAcceleoProject()
+	 * @generated
+	 */
+	EAttribute getAcceleoProject_Jre();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoUIProject <em>Acceleo UI Project</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Acceleo UI Project</em>'.
@@ -1167,6 +1187,14 @@ public interface AcceleowizardmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ACCELEO_PROJECT__EXPORTED_PACKAGES = eINSTANCE.getAcceleoProject_ExportedPackages();
+
+		/**
+		 * The meta object literal for the '<em><b>Jre</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ACCELEO_PROJECT__JRE = eINSTANCE.getAcceleoProject_Jre();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.impl.AcceleoUIProjectImpl <em>Acceleo UI Project</em>}' class.
