@@ -52,8 +52,10 @@ import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -1726,13 +1728,21 @@ public class InterpreterView extends ViewPart {
 				final Iterator<Object> selectionIterator = ((IStructuredSelection)selection).iterator();
 				while (selectionIterator.hasNext()) {
 					final Object next = selectionIterator.next();
+					final EObject nextEObject;
 					if (next instanceof EObject) {
+						nextEObject = (EObject)next;
+					} else if (next instanceof IAdaptable) {
+						nextEObject = (EObject)((IAdaptable)next).getAdapter(EObject.class);
+					} else {
+						nextEObject = (EObject)Platform.getAdapterManager().getAdapter(next, EObject.class);
+					}
+					if (nextEObject != null) {
 						// At least one of the selected objects is an EObject, clear current selection
 						if (!cleared) {
 							clearSelection();
 							cleared = true;
 						}
-						addToSelection((EObject)next);
+						addToSelection(nextEObject);
 					}
 				}
 				// If the selection changed somehow, relaunch the real-time evaluation
