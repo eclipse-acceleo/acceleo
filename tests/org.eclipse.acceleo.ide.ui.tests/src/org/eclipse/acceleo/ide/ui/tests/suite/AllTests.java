@@ -10,20 +10,23 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.tests.suite;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.ide.ui.tests.editors.template.AcceleoCompletionProcessorTests;
+import org.eclipse.acceleo.ide.ui.tests.wizards.WizardTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo Eclipse User Interface Tests Plug-in.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-@SuppressWarnings("nls")
+@RunWith(Suite.class)
+@SuiteClasses({WizardTests.class, })
 public class AllTests {
-
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -40,9 +43,6 @@ public class AllTests {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo User Interface test suite");
-		suite.addTestSuite(AcceleoCompletionProcessorTests.class);
-		return suite;
+		return new JUnit4TestAdapter(AllTests.class);
 	}
-
 }

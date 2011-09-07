@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.tests;
 
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +35,8 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.BeforeClass;
 import org.osgi.framework.Bundle;
+
+import static org.junit.Assert.fail;
 
 /**
  * Class containing all the utility methods used by SWTBot tests.
@@ -93,7 +93,7 @@ public class AbstractSWTBotTests {
 
 	public static final String ADVANCED = "Advanced >>"; //$NON-NLS-1$
 
-	public static final String INITIALIZE_CONTENT = "Initialize contents"; //$NON-NLS-1$
+	public static final String INITIALIZE_CONTENT = "Initialize Contents"; //$NON-NLS-1$
 
 	public static final String FILE_COLON = "File:"; //$NON-NLS-1$
 
@@ -119,6 +119,42 @@ public class AbstractSWTBotTests {
 
 	public static final String APPLY = "Apply"; //$NON-NLS-1$
 
+	public static final String YES = "Yes"; //$NON-NLS-1$
+
+	public static final String NO = "No"; //$NON-NLS-1$
+
+	public static final String ERROR_BUILD_PATH_JAVA = "There are errors in the project: Build path specifies execution environment J2SE-1.5. There are no JREs installed in the workspace that are strictly compatible with this environment."; //$NON-NLS-1$
+
+	public static final String MODULE_NAME = "Module Name:"; //$NON-NLS-1$
+
+	public static final String QUERY_NAME = "Query Name:"; //$NON-NLS-1$
+
+	public static final String TEMPLATE_NAME = "Template Name:"; //$NON-NLS-1$
+
+	public static final String GENERATE_DOCUMENTATION = "Generate documentation"; //$NON-NLS-1$
+
+	public static final String QUERY = "Query"; //$NON-NLS-1$
+
+	public static final String TEMPLATE = "Template"; //$NON-NLS-1$
+
+	public static final String OK = "OK"; //$NON-NLS-1$
+
+	public static final String CANCEL = "Cancel"; //$NON-NLS-1$
+
+	public static final String TYPE = "Type:"; //$NON-NLS-1$
+
+	public static final String ADD_METAMODEL_BUTTON_TOOLTIP = "Add metamodels to the module definition"; //$NON-NLS-1$
+
+	public static final String REMOVE_METAMODEL_BUTTON_TOOLTIP = "Remove metamodels from the module definition"; //$NON-NLS-1$
+
+	public static final String JAVA = "Java"; //$NON-NLS-1$
+
+	public static final String METAMODEL_TYPE_TOOLTIP = "Select the type of the first parameter of the module element."; //$NON-NLS-1$
+
+	public static final String MAIN_TEMPLATE = "Main template"; //$NON-NLS-1$
+
+	public static final String GENERATE_FILE = "Generate file"; //$NON-NLS-1$
+
 	/**
 	 * The SWTBot.
 	 */
@@ -134,6 +170,7 @@ public class AbstractSWTBotTests {
 		bundle = Platform.getBundle("org.eclipse.acceleo.ide.ui.tests"); //$NON-NLS-1$		
 		bot = new SWTWorkbenchBot();
 		bot.viewByTitle(WELCOME).close();
+		bot.perspectiveByLabel(JAVA).activate();
 	}
 
 	/**
@@ -143,7 +180,7 @@ public class AbstractSWTBotTests {
 	 *            The name of the project
 	 * @return The project created
 	 */
-	protected static IProject createProject(String projectName) {
+	protected static IProject createProject(String projectName, boolean switchPerspective) {
 		bot.menu(FILE).menu(NEW).menu(PROJECT).click();
 
 		SWTBotShell shell = bot.shell(NEW_PROJECT);
@@ -153,6 +190,12 @@ public class AbstractSWTBotTests {
 
 		bot.textWithLabel(PROJECT_NAME).setText(projectName);
 		bot.button(FINISH).click();
+
+		if (switchPerspective) {
+			bot.button(YES).click();
+		} else {
+			bot.button(NO).click();
+		}
 
 		IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		return iProject;
@@ -163,13 +206,8 @@ public class AbstractSWTBotTests {
 	 * 
 	 * @param projectName
 	 *            The name of the project
-	 * @param metamodelUri
-	 *            The uri of the metamodel
-	 * @param fileName
-	 *            The name of the file
-	 * @return The project created
 	 */
-	protected static IProject createProjectWithFile(String projectName, String metamodelUri, String fileName) {
+	protected static void startProjectCreation(String projectName) {
 		bot.menu(FILE).menu(NEW).menu(PROJECT).click();
 
 		SWTBotShell shell = bot.shell(NEW_PROJECT);
@@ -179,13 +217,81 @@ public class AbstractSWTBotTests {
 
 		bot.textWithLabel(PROJECT_NAME).setText(projectName);
 		bot.button(NEXT).click();
+	}
 
-		bot.textWithLabel(NAME).setText(fileName);
-		bot.textWithLabel(METAMODEL_URI).setText(metamodelUri);
+	protected static void continueWithModuleCreationWithQuery(String moduleName, String queryName,
+			String type, boolean hasDocumentation, String serviceInit, String... metamodelURIs) {
+		// Module name
+		bot.textWithLabel(MODULE_NAME).setText(moduleName);
+
+		// Metamodel
+		bot.buttonWithTooltip(ADD_METAMODEL_BUTTON_TOOLTIP).click();
+		for (String metamodelURI : metamodelURIs) {
+			bot.table().getTableItem(metamodelURI).select();
+		}
+		bot.button(OK).click();
+
+		// Query name
+		bot.radio(QUERY).click();
+		bot.textWithLabel(QUERY_NAME).setText(queryName);
+
+		// Type
+		bot.comboBox(0).setSelection(type);
+
+		// Documentation
+		if (hasDocumentation) {
+			bot.checkBox(GENERATE_DOCUMENTATION).click();
+		}
+
+		if (serviceInit != null) {
+			bot.checkBox(INITIALIZE_CONTENT).click();
+			bot.comboBox(1).setSelection(1);
+			bot.textWithLabel(FILE).setText(serviceInit);
+		}
+	}
+
+	protected static void continueWithModuleCreationWithTemplate(String moduleName, String templateName,
+			String type, boolean hasDocumentation, boolean isMain, boolean generatesFile,
+			String initFilePath, String... metamodelURIs) {
+		// Module name
+		bot.textWithLabel(MODULE_NAME).setText(moduleName);
+
+		// Metamodel
+		bot.buttonWithTooltip(ADD_METAMODEL_BUTTON_TOOLTIP).click();
+		for (String metamodelURI : metamodelURIs) {
+			bot.table().getTableItem(metamodelURI).select();
+		}
+		bot.button(OK).click();
+
+		// Template name
+		bot.radio(TEMPLATE).click();
+		bot.textWithLabel(TEMPLATE_NAME).setText(templateName);
+
+		// Type
+		bot.comboBox(0).setSelection(type);
+
+		// Documentation
+		if (hasDocumentation) {
+			bot.checkBox(GENERATE_DOCUMENTATION).click();
+		}
+
+		if (isMain) {
+			bot.checkBox(MAIN_TEMPLATE).click();
+		}
+
+		if (generatesFile) {
+			bot.checkBox(GENERATE_FILE).click();
+		}
+
+		if (initFilePath != null) {
+			bot.checkBox(INITIALIZE_CONTENT).click();
+			bot.comboBox(1).setSelection(0);
+			bot.textWithLabel(FILE).setText(initFilePath);
+		}
+	}
+
+	protected static void finish() {
 		bot.button(FINISH).click();
-
-		IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		return iProject;
 	}
 
 	protected static IProject createProjectWithFiles(String projectName, String metamodelUri,
@@ -340,6 +446,7 @@ public class AbstractSWTBotTests {
 	 */
 	protected static void deleteProject(IProject project) {
 		try {
+			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 			project.delete(true, new NullProgressMonitor());
 		} catch (CoreException e) {
 			fail(e.getMessage());
@@ -369,6 +476,39 @@ public class AbstractSWTBotTests {
 	 */
 	protected static String createFileRootPath(String projectName) {
 		return "/" + projectName + "/src/" + projectName.replaceAll("\\.", "/") + "/files/"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+	}
+
+	/**
+	 * Creates a file's path from a project's name.
+	 * 
+	 * @param projectName
+	 *            the name of the project
+	 * @return the path of the root of the file in the project
+	 */
+	protected static String createRequestRootPath(String projectName) {
+		return "/" + projectName + "/src/" + projectName.replaceAll("\\.", "/") + "/request/"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+	}
+
+	/**
+	 * Creates a file's path from a project's name.
+	 * 
+	 * @param projectName
+	 *            the name of the project
+	 * @return the path of the root of the file in the project
+	 */
+	protected static String createCommonRootPath(String projectName) {
+		return "/" + projectName + "/src/" + projectName.replaceAll("\\.", "/") + "/common/"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+	}
+
+	/**
+	 * Creates a file's path from a project's name.
+	 * 
+	 * @param projectName
+	 *            the name of the project
+	 * @return the path of the root of the file in the project
+	 */
+	protected static String createMainRootPath(String projectName) {
+		return "/" + projectName + "/src/" + projectName.replaceAll("\\.", "/") + "/main/"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 
 	/**
