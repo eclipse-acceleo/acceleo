@@ -240,11 +240,13 @@ public final class NotificationDialogUtil {
 			List<Shell> modifiable = new ArrayList<Shell>(activeShells);
 			Collections.reverse(modifiable);
 			for (Shell activeShell : modifiable) {
-				Point curLoc = activeShell.getLocation();
-				activeShell.setLocation(curLoc.x, curLoc.y - minHeight);
-				if (curLoc.y - minHeight < 0) {
-					activeShells.remove(activeShell);
-					activeShell.dispose();
+				if (!activeShell.isDisposed()) {
+					Point curLoc = activeShell.getLocation();
+					activeShell.setLocation(curLoc.x, curLoc.y - minHeight);
+					if (curLoc.y - minHeight < 0) {
+						activeShells.remove(activeShell);
+						activeShell.dispose();
+					}
 				}
 			}
 		}
