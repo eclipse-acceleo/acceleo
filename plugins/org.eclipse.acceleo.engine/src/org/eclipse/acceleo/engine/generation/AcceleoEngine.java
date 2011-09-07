@@ -24,7 +24,6 @@ import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
-import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -158,14 +157,16 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine2#evaluate(org.eclipse.acceleo.model.mtl.Template,
-	 *      java.util.List, org.eclipse.emf.common.util.Monitor)
+	 *      java.util.List, org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy,
+	 *      org.eclipse.emf.common.util.Monitor)
 	 */
-	public Object evaluate(Template template, List<? extends Object> arguments, Monitor monitor) {
+	public Object evaluate(Template template, List<? extends Object> arguments,
+			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		checkEvaluation(template, arguments);
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
 		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(null, (Module)template
-				.eContainer(), new PreviewStrategy(), monitor);
+				.eContainer(), strategy, monitor);
 		ocl = OCL.newInstance(factory);
 
 		try {
@@ -184,14 +185,16 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.IAcceleoEngine2#evaluate(org.eclipse.acceleo.model.mtl.Query,
-	 *      java.util.List, org.eclipse.emf.common.util.Monitor)
+	 *      java.util.List, org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy,
+	 *      org.eclipse.emf.common.util.Monitor)
 	 */
-	public Object evaluate(Query query, List<? extends Object> arguments, Monitor monitor) {
+	public Object evaluate(Query query, List<? extends Object> arguments,
+			IAcceleoGenerationStrategy strategy, Monitor monitor) {
 		checkEvaluation(query, arguments);
 
 		// We need to create an OCL instance for each generation since the environment factory is contextual
 		AbstractAcceleoEnvironmentFactory factory = createEnvironmentFactory(null,
-				(Module)query.eContainer(), new PreviewStrategy(), monitor);
+				(Module)query.eContainer(), strategy, monitor);
 		ocl = OCL.newInstance(factory);
 
 		try {

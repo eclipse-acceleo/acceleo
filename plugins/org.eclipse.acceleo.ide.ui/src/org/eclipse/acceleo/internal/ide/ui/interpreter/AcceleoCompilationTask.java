@@ -191,10 +191,10 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 						selectedNode = (ASTNode)selectedNode.eContainer();
 					}
 				}
-			} else {
-				if (!module.getOwnedModuleElement().isEmpty()) {
-					selectedNode = module.getOwnedModuleElement().get(0);
-				}
+			}
+
+			if (selectedNode == null && module != null && !module.getOwnedModuleElement().isEmpty()) {
+				selectedNode = module.getOwnedModuleElement().get(0);
 			}
 		}
 

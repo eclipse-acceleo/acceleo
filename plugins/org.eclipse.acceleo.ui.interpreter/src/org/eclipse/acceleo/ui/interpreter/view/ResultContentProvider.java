@@ -43,6 +43,8 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 		if (inputElement instanceof Collection<?>) {
 			elements = ((Collection<?>)inputElement)
 					.toArray(new Object[((Collection<?>)inputElement).size()]);
+		} else if (inputElement instanceof InterpreterFile) {
+			elements = new Object[] {((InterpreterFile)inputElement).getFileContent(), };
 		} else {
 			elements = super.getElements(inputElement);
 			if (elements == null || elements.length == 0 && inputElement != null) {
@@ -54,5 +56,31 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 			}
 		}
 		return elements;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getChildren(java.lang.Object)
+	 */
+	@Override
+	public Object[] getChildren(Object object) {
+		if (object instanceof InterpreterFile) {
+			return new Object[] {((InterpreterFile)object).getFileContent(), };
+		}
+		return super.getChildren(object);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#hasChildren(java.lang.Object)
+	 */
+	@Override
+	public boolean hasChildren(Object object) {
+		if (object instanceof InterpreterFile) {
+			return true;
+		}
+		return super.hasChildren(object);
 	}
 }

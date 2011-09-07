@@ -28,7 +28,9 @@ import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.internal.language.DefaultLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
+import org.eclipse.acceleo.ui.interpreter.internal.view.InterpreterFileStorage;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
+import org.eclipse.acceleo.ui.interpreter.internal.view.StorageEditorInput;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableContentProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableDropListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
@@ -49,6 +51,7 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -75,6 +78,8 @@ import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -98,12 +103,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPage;
@@ -114,6 +122,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -829,6 +838,45 @@ public class InterpreterView extends ViewPart {
 
 		if (viewer instanceof TreeViewer) {
 			setUpResultDragSupport((TreeViewer)viewer);
+
+			((TreeViewer)viewer).addDoubleClickListener(new IDoubleClickListener() {
+				/**
+				 * {@inheritDoc}
+				 * 
+				 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+				 */
+				public void doubleClick(DoubleClickEvent event) {
+					if (event.getSelection().isEmpty()
+							|| !(event.getSelection() instanceof IStructuredSelection)) {
+						return;
+					}
+					final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
+					if (target instanceof InterpreterFile) {
+						final IWorkbench workbench = PlatformUI.getWorkbench();
+						if (workbench.getActiveWorkbenchWindow() == null
+								|| workbench.getActiveWorkbenchWindow().getActivePage() == null) {
+							return;
+						}
+						final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+						final IStorage storage = new InterpreterFileStorage((InterpreterFile)target);
+						final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
+								((InterpreterFile)target).getFileName());
+						final IEditorInput input = new StorageEditorInput(storage);
+
+						try {
+							final String editorID;
+							if (editor == null) {
+								editorID = EditorsUI.DEFAULT_TEXT_EDITOR_ID;
+							} else {
+								editorID = editor.getId();
+							}
+							page.openEditor(input, editorID);
+						} catch (PartInitException e) {
+							// swallow : we just won't open editors
+						}
+					}
+				}
+			});
 		}
 
 		createResultMenu(viewer);

@@ -13,14 +13,17 @@ package org.eclipse.acceleo.internal.ide.ui.interpreter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
-import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -30,6 +33,7 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
+import org.eclipse.acceleo.ui.interpreter.view.InterpreterFile;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
@@ -192,11 +196,35 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 		Object result = null;
 		IAcceleoEngine2 engine = new AcceleoEngine();
+		IAcceleoGenerationStrategy strategy = new AcceleoInterpreterStrategy();
 		if (moduleElement instanceof Template) {
-			result = engine.evaluate((Template)moduleElement, arguments, new BasicMonitor());
+			result = engine.evaluate((Template)moduleElement, arguments, strategy, new BasicMonitor());
 		} else if (moduleElement instanceof Query) {
-			result = engine.evaluate((Query)moduleElement, arguments, new BasicMonitor());
+			result = engine.evaluate((Query)moduleElement, arguments, strategy, new BasicMonitor());
 		}
+
+		Map<String, String> preview = strategy.preparePreview(null);
+		Set<InterpreterFile> generatedFiles = null;
+		if (preview != null && !preview.isEmpty()) {
+			generatedFiles = new LinkedHashSet<InterpreterFile>();
+			for (Map.Entry<String, String> file : preview.entrySet()) {
+				generatedFiles.add(new InterpreterFile(file.getKey(), file.getValue()));
+			}
+		}
+
+		if (result != null && generatedFiles != null) {
+			if (result instanceof String && ((String)result).length() > 0) {
+				final List<Object> actualResult = new ArrayList<Object>();
+				actualResult.add(result);
+				actualResult.addAll(generatedFiles);
+				result = actualResult;
+			} else {
+				result = generatedFiles;
+			}
+		} else if (result == null) {
+			result = generatedFiles;
+		}
+
 		return result;
 	}
 
@@ -214,10 +242,12 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		final Module module = (Module)EcoreUtil.getRootContainer(oclExpression);
 		// We won't have listeners or property files here
 		List<IAcceleoTextGenerationListener> listeners = Collections.emptyList();
+		// The strategy will allow us to retrieve "file" results
+		IAcceleoGenerationStrategy strategy = new AcceleoInterpreterStrategy();
 		org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory factory = new org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironmentFactory(
 				null, module, listeners,
-				new org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup(),
-				new PreviewStrategy(), new BasicMonitor());
+				new org.eclipse.acceleo.engine.internal.environment.AcceleoPropertiesLookup(), strategy,
+				new BasicMonitor());
 		OCL ocl = OCL.newInstance(factory);
 		org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> evaluationVisitor = (org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject>)factory
 				.createEvaluationVisitor(ocl.getEnvironment(), ocl.getEvaluationEnvironment(), ocl
@@ -244,7 +274,31 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			ocl.getEvaluationEnvironment().add(variable.getName(), value);
 		}
 
-		return evaluationVisitor.visitExpression(oclExpression);
+		Object result = evaluationVisitor.visitExpression(oclExpression);
+
+		Map<String, String> preview = factory.getEvaluationPreview();
+		Set<InterpreterFile> generatedFiles = null;
+		if (preview != null && !preview.isEmpty()) {
+			generatedFiles = new LinkedHashSet<InterpreterFile>();
+			for (Map.Entry<String, String> file : preview.entrySet()) {
+				generatedFiles.add(new InterpreterFile(file.getKey(), file.getValue()));
+			}
+		}
+
+		if (result != null && generatedFiles != null) {
+			if (result instanceof String && ((String)result).length() > 0) {
+				final List<Object> actualResult = new ArrayList<Object>();
+				actualResult.add(result);
+				actualResult.addAll(generatedFiles);
+				result = actualResult;
+			} else {
+				result = generatedFiles;
+			}
+		} else if (result == null) {
+			result = generatedFiles;
+		}
+
+		return result;
 	}
 
 	/**

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.engine.generation;
 
 import java.util.List;
 
+import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.Monitor;
@@ -31,11 +32,14 @@ public interface IAcceleoEngine2 extends IAcceleoEngine {
 	 *            The Acceleo query which is to be evaluated.
 	 * @param arguments
 	 *            List of the template's arguments.
+	 * @param strategy
+	 *            The generation strategy that's to be used by this engine.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return The result of this query's evaluation.
 	 */
-	Object evaluate(Query query, List<? extends Object> arguments, Monitor monitor);
+	Object evaluate(Query query, List<? extends Object> arguments, IAcceleoGenerationStrategy strategy,
+			Monitor monitor);
 
 	/**
 	 * Evaluates the given Acceleo template with the given arguments.
@@ -44,9 +48,12 @@ public interface IAcceleoEngine2 extends IAcceleoEngine {
 	 *            The Acceleo template which is to be evaluated.
 	 * @param arguments
 	 *            List of the template's arguments.
+	 * @param strategy
+	 *            The generation strategy that's to be used by this engine.
 	 * @param monitor
 	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
 	 * @return The result of this query's evaluation.
 	 */
-	Object evaluate(Template template, List<? extends Object> arguments, Monitor monitor);
+	Object evaluate(Template template, List<? extends Object> arguments, IAcceleoGenerationStrategy strategy,
+			Monitor monitor);
 }

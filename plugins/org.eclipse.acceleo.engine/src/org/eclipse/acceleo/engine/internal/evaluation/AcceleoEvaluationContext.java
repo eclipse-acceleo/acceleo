@@ -119,6 +119,12 @@ public class AcceleoEvaluationContext<C> {
 	private final Deque<Writer> writers = new CircularArrayDeque<Writer>();
 
 	/**
+	 * If we try and generate something out of any context (for example, an "if" block outside of any Template
+	 * or File), we'll use this "default" writer in order not to lose the generated text.
+	 */
+	private StringWriter defaultWriter;
+
+	/**
 	 * Instantiates an evaluation context given the root of the to-be-generated files.
 	 * 
 	 * @param root
@@ -181,6 +187,10 @@ public class AcceleoEvaluationContext<C> {
 				if (!EMFPlugin.IS_ECLIPSE_RUNNING || AcceleoPreferences.isDebugMessagesEnabled()) {
 					AcceleoEnginePlugin.log(message, false);
 				}
+				if (defaultWriter == null) {
+					defaultWriter = new StringWriter(DEFAULT_BUFFER_SIZE);
+				}
+				defaultWriter.append(string);
 			}
 		} catch (final IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
@@ -456,6 +466,21 @@ public class AcceleoEvaluationContext<C> {
 			}
 		}
 		return currentIndentation.toString();
+	}
+
+	/**
+	 * Returns the text that has been appended to the default writer, if any.
+	 * 
+	 * @return The text that has been appended to the default writer, <code>null</code> if none.
+	 */
+	public String getDefaultText() {
+		if (defaultWriter != null) {
+			defaultWriter.flush();
+			String text = defaultWriter.toString();
+			defaultWriter = null;
+			return text;
+		}
+		return null;
 	}
 
 	/**

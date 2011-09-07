@@ -1677,21 +1677,30 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoIfBlock((IfBlock)expression);
 			}
-			result = ""; //$NON-NLS-1$
+			result = context.getDefaultText();
+			if (result == null) {
+				result = ""; //$NON-NLS-1$
+			}
 		} else if (expression instanceof ForBlock) {
 			if (delegate != null) {
 				delegate.visitAcceleoForBlock((ForBlock)expression);
 			} else {
 				visitAcceleoForBlock((ForBlock)expression);
 			}
-			result = ""; //$NON-NLS-1$
+			result = context.getDefaultText();
+			if (result == null) {
+				result = ""; //$NON-NLS-1$
+			}
 		} else if (expression instanceof FileBlock) {
 			if (delegate != null) {
 				delegate.visitAcceleoFileBlock((FileBlock)expression);
 			} else {
 				visitAcceleoFileBlock((FileBlock)expression);
 			}
-			result = ""; //$NON-NLS-1$
+			result = context.getDefaultText();
+			if (result == null) {
+				result = ""; //$NON-NLS-1$
+			}
 		} else if (expression instanceof TemplateInvocation) {
 			if (delegate != null) {
 				result = delegate.visitAcceleoTemplateInvocation((TemplateInvocation)expression);
@@ -1710,14 +1719,20 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoLetBlock((LetBlock)expression);
 			}
-			result = ""; //$NON-NLS-1$
+			result = context.getDefaultText();
+			if (result == null) {
+				result = ""; //$NON-NLS-1$
+			}
 		} else if (expression instanceof ProtectedAreaBlock) {
 			if (delegate != null) {
 				delegate.visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
 			} else {
 				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
 			}
-			result = ""; //$NON-NLS-1$
+			result = context.getDefaultText();
+			if (result == null) {
+				result = ""; //$NON-NLS-1$
+			}
 		} else if (!(expression instanceof TemplateExpression)) {
 			result = super.visitExpression(expression);
 		} else {

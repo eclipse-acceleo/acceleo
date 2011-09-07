@@ -10,10 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This will act as the label provider for the "variables" Tree Viewer.
@@ -23,6 +29,9 @@ import org.eclipse.jface.viewers.ViewerCell;
 public class ResultLabelProvider extends CellLabelProvider {
 	/** The delegate label provider. */
 	private final AdapterFactoryLabelProvider delegate;
+
+	/** Keeps track of the images we created through this label provider. */
+	private Map<String, Image> images = new HashMap<String, Image>();
 
 	/**
 	 * Instantiates this label provider given its adapter factory.
@@ -42,7 +51,7 @@ public class ResultLabelProvider extends CellLabelProvider {
 	 */
 	@Override
 	public String getToolTipText(Object element) {
-		final String text = delegate.getText(element);
+		final String text = getText(element);
 		if (text.indexOf('\n') != -1 || text.indexOf('\r') != -1) {
 			return text;
 		}
@@ -57,7 +66,98 @@ public class ResultLabelProvider extends CellLabelProvider {
 	@Override
 	public void update(ViewerCell cell) {
 		final Object element = cell.getElement();
-		cell.setText(delegate.getText(element));
-		cell.setImage(delegate.getImage(element));
+		final String text = getText(element);
+		int indexOfNewLine = text.indexOf("\n\r"); //$NON-NLS-1$
+		if (indexOfNewLine == -1) {
+			indexOfNewLine = text.indexOf("\n"); //$NON-NLS-1$
+		}
+		if (indexOfNewLine == -1) {
+			indexOfNewLine = text.indexOf("\r"); //$NON-NLS-1$
+		}
+		if (indexOfNewLine != -1) {
+			cell.setText(text.substring(0, indexOfNewLine) + "  (...)"); //$NON-NLS-1$
+		} else {
+			cell.setText(text);
+		}
+		cell.setImage(getImage(element));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
+	 */
+	@Override
+	public void dispose() {
+		for (Image image : images.values()) {
+			image.dispose();
+		}
+		images.clear();
+		super.dispose();
+	}
+
+	/**
+	 * Returns the text to be displayed for the given element.
+	 * 
+	 * @param element
+	 *            Element for which we need a label.
+	 * @return The text to be displayed for the given element.
+	 */
+	private String getText(Object element) {
+		if (element instanceof InterpreterFile) {
+			return ((InterpreterFile)element).getFileName();
+		}
+		return delegate.getText(element);
+	}
+
+	/**
+	 * Returns the image to be displayed for the given element.
+	 * 
+	 * @param element
+	 *            Element for which we need an icon.
+	 * @return The image to be displayed for the given element.
+	 */
+	private Image getImage(Object element) {
+		Image result = null;
+		if (element instanceof InterpreterFile) {
+			String key = ((InterpreterFile)element).getFileName();
+			if (key.indexOf('.') != -1) {
+				key = key.substring(key.indexOf('.') + 1);
+			}
+			result = images.get(key);
+
+			if (result == null) {
+				result = createEditorIcon(((InterpreterFile)element).getFileName());
+				if (result != null) {
+					images.put(key, result);
+				}
+			}
+
+			if (result != null) {
+				return result;
+			}
+		}
+		return delegate.getImage(element);
+	}
+
+	/**
+	 * Search for an editor associated with the given fileName, and return its icon.
+	 * 
+	 * @param fileName
+	 *            The name of the file for which we search an editor icon.
+	 * @return The icon of the editor associated with the given file name.
+	 */
+	private Image createEditorIcon(String fileName) {
+		IEditorDescriptor[] descriptors = PlatformUI.getWorkbench().getEditorRegistry().getEditors(fileName);
+		if (descriptors != null) {
+			for (int i = 0; i < descriptors.length; i++) {
+				IEditorDescriptor descriptor = descriptors[i];
+				if (descriptor.getImageDescriptor() != null) {
+					Image image = descriptor.getImageDescriptor().createImage();
+					return image;
+				}
+			}
+		}
+		return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName).createImage();
 	}
 }
