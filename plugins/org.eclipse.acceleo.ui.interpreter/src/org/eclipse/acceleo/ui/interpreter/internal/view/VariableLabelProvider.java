@@ -64,6 +64,8 @@ public class VariableLabelProvider extends CellLabelProvider {
 		final String text = getText(element);
 		if (InterpreterMessages.getString("interpreter.view.variable.placeholder").equals(text)) { //$NON-NLS-1$
 			cell.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		} else {
+			cell.setBackground(null);
 		}
 		cell.setText(text);
 		cell.setImage(delegate.getImage(element));

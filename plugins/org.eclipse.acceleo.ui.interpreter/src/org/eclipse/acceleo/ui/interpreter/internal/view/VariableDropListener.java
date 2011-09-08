@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -121,7 +121,7 @@ public class VariableDropListener extends DropTargetAdapter {
 			variableValue = selection;
 		}
 
-		CreateVariableAction action = new CreateVariableAction(viewer, variableValue);
+		NewVariableAction action = new NewVariableAction(viewer, variableValue);
 		action.run();
 	}
 

@@ -37,9 +37,14 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearExpressionViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearResultViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableViewerAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.CreateVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewBooleanValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewEObjectValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewFloatValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewIntegerValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewStringValueAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleLinkWithEditorAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
@@ -105,6 +110,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -275,11 +281,6 @@ public class InterpreterView extends ViewPart {
 		toolBar.setCursor(handCursor);
 		// Cursor needs to be explicitly disposed
 		toolBar.addDisposeListener(new DisposeListener() {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
-			 */
 			public void widgetDisposed(DisposeEvent e) {
 				if (!handCursor.isDisposed()) {
 					handCursor.dispose();
@@ -290,11 +291,6 @@ public class InterpreterView extends ViewPart {
 		section.setTextClient(toolBar);
 		toolBar.setData(toolBarManager);
 		toolBar.addDisposeListener(new DisposeListener() {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(org.eclipse.swt.events.DisposeEvent)
-			 */
 			public void widgetDisposed(DisposeEvent e) {
 				toolBar.setData(null);
 			}
@@ -527,10 +523,10 @@ public class InterpreterView extends ViewPart {
 	 * Enables (or disables) the language interpreter's link with the editor focus.
 	 */
 	public void toggleLinkWithEditor() {
+		IWorkbenchPage page = getSite().getPage();
 		if (linkWithEditorAction.isEnabled()) {
 			linkWithEditor = !linkWithEditor;
-			IWorkbenchPage page = getSite().getPage();
-			if (linkWithEditor) {
+			if (linkWithEditor && linkWithEditorAction.isEnabled()) {
 				page.addPartListener(editorPartListener);
 
 				IEditorPart activeEditor = page.getActiveEditor();
@@ -540,6 +536,8 @@ public class InterpreterView extends ViewPart {
 			} else {
 				page.removePartListener(editorPartListener);
 			}
+		} else {
+			page.removePartListener(editorPartListener);
 		}
 	}
 
@@ -551,9 +549,12 @@ public class InterpreterView extends ViewPart {
 		if (realTime) {
 			realTimeThread = new RealTimeThread();
 
-			// Launch a compilation right from the get-go
-			compileExpression();
-			evaluate();
+			final String text = expressionViewer.getTextWidget().getText();
+			if (text != null && text.length() > 0) {
+				// Launch a compilation right from the get-go
+				compileExpression();
+				evaluate();
+			}
 
 			realTimeThread.start();
 		} else {
@@ -665,16 +666,13 @@ public class InterpreterView extends ViewPart {
 	protected void createExpressionSection(FormToolkit toolkit, Composite leftColumn) {
 		expressionSection = toolkit.createSection(leftColumn, ExpandableComposite.TITLE_BAR);
 		expressionSection.setText(InterpreterMessages.getString("interpreter.view.expression.section.name")); //$NON-NLS-1$
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
-		expressionSection.setLayoutData(gridData);
 
 		Composite expressionSectionBody = toolkit.createComposite(expressionSection);
 		GridLayout expressionSectionLayout = new GridLayout();
 		expressionSectionBody.setLayout(expressionSectionLayout);
 
 		expressionViewer = createExpressionViewer(expressionSectionBody);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.heightHint = 80;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		expressionViewer.getControl().setLayoutData(gridData);
 
 		createSectionToolBar(expressionSection);
@@ -757,13 +755,15 @@ public class InterpreterView extends ViewPart {
 		GridLayout formLayout = new GridLayout(2, false);
 		formBody.setLayout(formLayout);
 
-		Composite leftColumn = toolkit.createComposite(formBody);
+		SashForm leftColumn = new SashForm(formBody, SWT.VERTICAL);
+		toolkit.adapt(leftColumn);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		leftColumn.setLayoutData(gridData);
-		leftColumn.setLayout(new GridLayout());
 
 		createExpressionSection(toolkit, leftColumn);
 		createResultSection(toolkit, leftColumn);
+
+		leftColumn.setWeights(new int[] {1, 2, });
 
 		// The right column is invisible by default
 		boolean variableVisible = false;
@@ -777,7 +777,7 @@ public class InterpreterView extends ViewPart {
 		gridData.widthHint = 300;
 		gridData.exclude = !variableVisible;
 		rightColumn.setLayoutData(gridData);
-		rightColumn.setLayout(new GridLayout());
+		rightColumn.setLayout(new FillLayout());
 
 		createVariableSection(toolkit, rightColumn);
 
@@ -806,15 +806,13 @@ public class InterpreterView extends ViewPart {
 	protected void createResultSection(FormToolkit toolkit, Composite leftColumn) {
 		resultSection = toolkit.createSection(leftColumn, ExpandableComposite.TITLE_BAR);
 		resultSection.setText(InterpreterMessages.getString("interpreter.view.result.section.name")); //$NON-NLS-1$
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		resultSection.setLayoutData(gridData);
 
 		Composite resultSectionBody = toolkit.createComposite(resultSection);
 		GridLayout resultLayout = new GridLayout();
 		resultSectionBody.setLayout(resultLayout);
 
 		resultViewer = createResultViewer(resultSectionBody);
-		gridData = new GridData(GridData.FILL_BOTH);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		resultViewer.getControl().setLayoutData(gridData);
 
 		createSectionToolBar(resultSection);
@@ -847,11 +845,6 @@ public class InterpreterView extends ViewPart {
 			setUpResultDragSupport((TreeViewer)viewer);
 
 			((TreeViewer)viewer).addDoubleClickListener(new IDoubleClickListener() {
-				/**
-				 * {@inheritDoc}
-				 * 
-				 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
-				 */
 				public void doubleClick(DoubleClickEvent event) {
 					if (event.getSelection().isEmpty()
 							|| !(event.getSelection() instanceof IStructuredSelection)) {
@@ -959,8 +952,6 @@ public class InterpreterView extends ViewPart {
 	protected void createVariableSection(FormToolkit toolkit, Composite rightColumn) {
 		Section variableSection = toolkit.createSection(rightColumn, ExpandableComposite.TITLE_BAR);
 		variableSection.setText(InterpreterMessages.getString("interpreter.view.variable.section.name")); //$NON-NLS-1$
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		variableSection.setLayoutData(gridData);
 
 		Composite variableSectionBody = toolkit.createComposite(variableSection);
 		variableSectionBody.setLayout(new FillLayout());
@@ -984,8 +975,7 @@ public class InterpreterView extends ViewPart {
 	 *            Parent composite of the TreeViewer.
 	 */
 	protected TreeViewer createVariableViewer(FormToolkit toolkit, Composite sectionBody) {
-		Tree variableTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI
-				| SWT.FULL_SELECTION);
+		Tree variableTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
 
 		TreeViewer viewer = new TreeViewer(variableTree);
 		ColumnViewerToolTipSupport.enableFor(viewer);
@@ -1177,9 +1167,11 @@ public class InterpreterView extends ViewPart {
 		// Change the state of the link with editor action
 		boolean linkEnabledForLanguage = getCurrentLanguageInterpreter().acceptLinkWithEditor();
 		linkWithEditorAction.setEnabled(linkEnabledForLanguage);
-		if (linkEnabledForLanguage != realTime) {
-			toggleLinkWithEditor();
+		if (linkEnabledForLanguage && linkWithEditor) {
+			// Force the activation of the link
+			linkWithEditor = false;
 		}
+		toggleLinkWithEditor();
 	}
 
 	/**
@@ -1243,11 +1235,6 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void setUpRealTimeCompilation(SourceViewer viewer) {
 		viewer.addTextListener(new ITextListener() {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.jface.text.ITextListener#textChanged(org.eclipse.jface.text.TextEvent)
-			 */
 			public void textChanged(TextEvent event) {
 				if (realTimeThread != null) {
 					realTimeThread.reset();
@@ -1588,12 +1575,57 @@ public class InterpreterView extends ViewPart {
 		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
-			manager.add(new CreateVariableAction(variableViewer));
+			manager.add(new NewVariableAction(variableViewer));
+			final Variable variable = getCurrentVariable();
+			if (variable != null) {
+				final IMenuManager submenu = new MenuManager(
+						InterpreterMessages.getString("interpreter.action.newvalue.submenu.name")); //$NON-NLS-1$
+				submenu.add(new NewEObjectValueAction(variableViewer, variable));
+				submenu.add(new NewStringValueAction(variableViewer, variable));
+				submenu.add(new NewIntegerValueAction(variableViewer, variable));
+				submenu.add(new NewFloatValueAction(variableViewer, variable));
+				submenu.add(new NewBooleanValueAction(variableViewer, variable));
+				manager.add(submenu);
+			}
 			manager.add(new ClearVariableViewerAction(variableViewer));
 			manager.add(new Separator());
 			manager.add(new DeleteVariableOrValueAction(variableViewer));
 			manager.add(new RenameVariableAction(variableViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
+
+		/**
+		 * Returns the first of the currently selected Variable(s).
+		 * 
+		 * @return The first of the currently selected Variable(s)
+		 */
+		private Variable getCurrentVariable() {
+			if (variableViewer == null || variableViewer.getTree() == null
+					|| variableViewer.getTree().isDisposed()) {
+				return null;
+			}
+			Tree tree = variableViewer.getTree();
+
+			TreeItem[] selectedItems = tree.getSelection();
+			Variable selectedVariable = null;
+			if (selectedItems != null && selectedItems.length > 0) {
+				for (int i = 0; i < selectedItems.length && selectedVariable == null; i++) {
+					TreeItem item = selectedItems[i];
+					if (item.getData() instanceof Variable) {
+						selectedVariable = (Variable)item.getData();
+					}
+				}
+				for (int i = 0; i < selectedItems.length && selectedVariable == null; i++) {
+					TreeItem item = selectedItems[i].getParentItem();
+					while (item != null && selectedVariable == null) {
+						if (item.getData() instanceof Variable) {
+							selectedVariable = (Variable)item.getData();
+						}
+						item = item.getParentItem();
+					}
+				}
+			}
+			return selectedVariable;
 		}
 	}
 
@@ -1877,7 +1909,7 @@ public class InterpreterView extends ViewPart {
 		private static final int DELAY = 500;
 
 		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
-		private boolean dirty;
+		private boolean dirty = false;
 
 		/** The lock we'll acquire for this thread's work. */
 		private final Object lock = new Object();

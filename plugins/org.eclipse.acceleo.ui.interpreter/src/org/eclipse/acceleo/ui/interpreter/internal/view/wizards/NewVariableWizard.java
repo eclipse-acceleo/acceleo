@@ -10,7 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.command.CommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
@@ -28,14 +34,19 @@ public class NewVariableWizard extends Wizard {
 	 */
 	private ElementSelectionWizardPage elementSelectionPage;
 
+	private EObject result;
+
 	/**
 	 * Instantiates this wizard given the editing domain from which this wizard can take values.
 	 * 
 	 * @param editingDomain
 	 *            The editing domain from which this wizard can take values.
 	 */
-	public NewVariableWizard(EditingDomain editingDomain) {
-		this.editingDomain = editingDomain;
+	public NewVariableWizard() {
+		final AdapterFactory factory = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		final CommandStack commandStack = new BasicCommandStack();
+		this.editingDomain = new AdapterFactoryEditingDomain(factory, commandStack);
 	}
 
 	/**
@@ -57,7 +68,11 @@ public class NewVariableWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
-		return false;
+		result = elementSelectionPage.getResult();
+		return result instanceof EObject;
+	}
+
+	public EObject getResult() {
+		return result;
 	}
 }

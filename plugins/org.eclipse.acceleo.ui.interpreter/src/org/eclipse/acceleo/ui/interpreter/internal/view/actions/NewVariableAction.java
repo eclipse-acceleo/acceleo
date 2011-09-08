@@ -27,7 +27,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public final class CreateVariableAction extends Action {
+public final class NewVariableAction extends Action {
 	/** Value of this new variable. */
 	private Object value;
 
@@ -40,7 +40,7 @@ public final class CreateVariableAction extends Action {
 	 * @param viewer
 	 *            The variable viewer.
 	 */
-	public CreateVariableAction(TreeViewer viewer) {
+	public NewVariableAction(TreeViewer viewer) {
 		super(InterpreterMessages.getString("interpreter.action.createvariable.name")); //$NON-NLS-1$
 		this.variableViewer = viewer;
 	}
@@ -53,7 +53,7 @@ public final class CreateVariableAction extends Action {
 	 * @param value
 	 *            Value of the new variable;
 	 */
-	public CreateVariableAction(TreeViewer viewer, Object value) {
+	public NewVariableAction(TreeViewer viewer, Object value) {
 		this(viewer);
 		this.value = value;
 	}

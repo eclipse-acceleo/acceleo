@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -21,9 +22,13 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 
@@ -40,6 +45,8 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 	/** The editing domain on which to operate. */
 	protected final EditingDomain editingDomain;
 
+	private EObject result;
+
 	/**
 	 * Instantiates this wizard page given the editing domain on which to operate.
 	 * 
@@ -49,6 +56,7 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 	public ElementSelectionWizardPage(EditingDomain editingDomain) {
 		super("Variable value selection");
 		setDescription("Please select the elements for which you need a variable.");
+		setPageComplete(false);
 
 		this.editingDomain = editingDomain;
 	}
@@ -70,12 +78,24 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
-		TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		final TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		AdapterFactory adapterFactory = createAdapterFactory();
 		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 		viewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 
 		createContextMenu(viewer);
+
+		viewer.getTree().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				ISelection selection = viewer.getSelection();
+				if (selection instanceof IStructuredSelection && !selection.isEmpty()
+						&& ((IStructuredSelection)selection).getFirstElement() instanceof EObject) {
+					result = (EObject)((IStructuredSelection)selection).getFirstElement();
+					setPageComplete(true);
+				}
+			}
+		});
 
 		viewer.setInput(editingDomain.getResourceSet());
 
@@ -103,5 +123,9 @@ public final class ElementSelectionWizardPage extends WizardPage implements IMen
 		menuManager.addMenuListener(this);
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
+	}
+
+	public EObject getResult() {
+		return result;
 	}
 }
