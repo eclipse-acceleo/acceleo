@@ -544,6 +544,10 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			elementType = env.getUMLReflection().getCommonSuperType(elementType, iterator.next());
 		}
 
+		if (elementType == null) {
+			elementType = env.getOCLStandardLibrary().getOclAny();
+		}
+
 		return elementType;
 	}
 
