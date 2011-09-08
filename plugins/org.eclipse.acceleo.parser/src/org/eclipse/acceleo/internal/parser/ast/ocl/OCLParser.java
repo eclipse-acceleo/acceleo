@@ -1210,10 +1210,11 @@ public class OCLParser {
 		List<Choice> result = new ArrayList<Choice>();
 		try {
 			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
-			pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
 		} catch (NullPointerException e) {
 			// do not log, it can happen during the parsing.
 		}
+
+		pushContext(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getEObject());
 
 		try {
 			result.addAll(helper.getSyntaxHelp(ConstraintKind.INVARIANT, text));
