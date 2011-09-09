@@ -83,6 +83,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public EvaluationResult call() throws Exception {
+		boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
+		AcceleoPreferences.switchNotifications(true);
 		CompilationResult compilationResult = context.getCompilationResult();
 		EvaluationResult shortcutResult = null;
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
@@ -144,6 +146,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		} finally {
 			AcceleoPreferences.switchDebugMessages(debugMessagesState);
 			Platform.removeLogListener(evaluationListener);
+			AcceleoPreferences.switchNotifications(notificationsState);
 		}
 	}
 

@@ -168,6 +168,7 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This will be thrown if any of the output files cannot be saved to disk.
 	 */
 	public Map<String, String> generate(Monitor monitor) throws IOException {
+		boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
 		AcceleoPreferences.switchNotifications(true);
 		File target = getTargetFolder();
 		if (!target.exists() && !target.mkdirs()) {
@@ -203,7 +204,7 @@ public abstract class AbstractAcceleoGenerator {
 						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 			}
 		}
-		AcceleoPreferences.switchNotifications(false);
+		AcceleoPreferences.switchNotifications(notificationsState);
 		return result;
 	}
 
