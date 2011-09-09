@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
-import org.eclipse.acceleo.ui.interpreter.internal.view.wizards.NewVariableWizard;
+import org.eclipse.acceleo.ui.interpreter.internal.view.wizards.NewEObjectValueWizard;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreePath;
@@ -57,7 +57,7 @@ public final class NewEObjectValueAction extends Action {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		final NewVariableWizard wizard = new NewVariableWizard();
+		final NewEObjectValueWizard wizard = new NewEObjectValueWizard();
 		final WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 				wizard);
 		int result = dialog.open();

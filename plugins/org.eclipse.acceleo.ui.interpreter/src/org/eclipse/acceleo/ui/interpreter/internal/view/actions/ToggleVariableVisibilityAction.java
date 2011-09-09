@@ -13,11 +13,10 @@ package org.eclipse.acceleo.ui.interpreter.internal.view.actions;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
+import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.Form;
 
 /**
  * This action will be displayed on the interpreter view's toolbar. It will make it possible to show or hide
@@ -30,31 +29,22 @@ public class ToggleVariableVisibilityAction extends Action {
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("intepreter.action.showvariables.tooltip"); //$NON-NLS-1$
 
-	/** The form that will have to be re-laid out when changing visibilities. */
-	private Form form;
-
-	/**
-	 * Keeps a reference towards the right column of our form. (The Composite that is to be show/hidden by
-	 * this action.)
-	 */
-	private Composite rightColumn;
+	/** Keeps a reference to the interpreter view. */
+	private InterpreterView view;
 
 	/**
 	 * Instantiates our action given the {@link Composite} that is to be hidden or shown, and the form
 	 * containing this Composite.
 	 * 
-	 * @param form
-	 *            The interpreter form.
-	 * @param variableContainer
-	 *            The Variable Section's container (right column of the form).
+	 * @param view
+	 *            The interpreter view.
 	 */
-	public ToggleVariableVisibilityAction(Form interpreterForm, Composite variableContainer) {
+	public ToggleVariableVisibilityAction(InterpreterView view) {
 		super(null, IAction.AS_CHECK_BOX);
 		setToolTipText(TOOLTIP_TEXT);
 		setImageDescriptor(InterpreterImages
 				.getImageDescriptor(IInterpreterConstants.VARIABLE_VISIBILITY_TOGGLE_ICON));
-		this.form = interpreterForm;
-		this.rightColumn = variableContainer;
+		this.view = view;
 	}
 
 	/**
@@ -64,12 +54,8 @@ public class ToggleVariableVisibilityAction extends Action {
 	 */
 	@Override
 	public void run() {
-		if (rightColumn != null && !rightColumn.isDisposed()
-				&& rightColumn.getLayoutData() instanceof GridData) {
-			boolean hide = rightColumn.getVisible();
-			rightColumn.setVisible(!hide);
-			((GridData)rightColumn.getLayoutData()).exclude = hide;
-			form.layout();
+		if (view != null) {
+			view.toggleVariableVisibility();
 		}
 	}
 }

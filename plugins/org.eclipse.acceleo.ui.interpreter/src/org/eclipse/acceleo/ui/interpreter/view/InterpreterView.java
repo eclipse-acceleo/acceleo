@@ -40,7 +40,6 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableVie
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewBooleanValueAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewEObjectValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewFloatValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewIntegerValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewStringValueAction;
@@ -168,7 +167,7 @@ public class InterpreterView extends ViewPart {
 	private static final String MEMENTO_REAL_TIME_KEY = "org.eclipse.acceleo.ui.interpreter.memento.realtime"; //$NON-NLS-1$
 
 	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
-	private static final String MEMENTO_VARIABLES_HIDDEN_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
+	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
@@ -227,6 +226,9 @@ public class InterpreterView extends ViewPart {
 	 */
 	private SourceViewer expressionViewer;
 
+	/** We'll create this {@link SashForm} as the main body of the interpreter form. */
+	private SashForm formBody;
+
 	/** Keeps a reference to the toolkit used to create our form. This will be used when switching languages. */
 	private FormToolkit formToolkit;
 
@@ -263,8 +265,14 @@ public class InterpreterView extends ViewPart {
 	/** This will hold the current selection of EObjects (in the workspace). */
 	private List<EObject> selectedEObjects;
 
+	/** The "right column" composite of the interpreter form, displaying the variables when not hidden. */
+	private Composite variableColumn;
+
 	/** Viewer in which we'll display the accessible variables. */
 	private TreeViewer variableViewer;
+
+	/** Indicates whether the variable viewer is visible. */
+	private boolean variableVisible = false;
 
 	/**
 	 * Creates a tool bar for the given section.
@@ -502,7 +510,7 @@ public class InterpreterView extends ViewPart {
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_LINK_WITH_EDITOR_KEY, Boolean.valueOf(linkWithEditor));
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_HIDDEN_KEY,
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
 					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
@@ -562,6 +570,24 @@ public class InterpreterView extends ViewPart {
 				realTimeThread.interrupt();
 				realTimeThread = null;
 			}
+		}
+	}
+
+	/**
+	 * Shows or hides the variables viewer.
+	 */
+	public void toggleVariableVisibility() {
+		if (variableColumn != null && !variableColumn.isDisposed()) {
+			variableVisible = !variableVisible;
+			variableColumn.setVisible(variableVisible);
+			final int[] newWeights;
+			if (variableVisible) {
+				newWeights = new int[] {3, 1, };
+			} else {
+				newWeights = new int[] {1, 0, };
+			}
+			formBody.setWeights(newWeights);
+			getForm().layout();
 		}
 	}
 
@@ -751,37 +777,33 @@ public class InterpreterView extends ViewPart {
 		setTitleImage(titleImage);
 		interpreterForm.setImage(titleImage);
 
-		Composite formBody = interpreterForm.getBody();
-		GridLayout formLayout = new GridLayout(2, false);
-		formBody.setLayout(formLayout);
+		Composite mainBody = interpreterForm.getBody();
+		mainBody.setLayout(new GridLayout());
+		formBody = new SashForm(mainBody, SWT.HORIZONTAL | SWT.SMOOTH);
+		toolkit.adapt(formBody);
+		formBody.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		SashForm leftColumn = new SashForm(formBody, SWT.VERTICAL);
+		SashForm leftColumn = new SashForm(formBody, SWT.VERTICAL | SWT.SMOOTH);
 		toolkit.adapt(leftColumn);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		leftColumn.setLayoutData(gridData);
 
 		createExpressionSection(toolkit, leftColumn);
 		createResultSection(toolkit, leftColumn);
 
-		leftColumn.setWeights(new int[] {1, 2, });
+		leftColumn.setWeights(new int[] {2, 3, });
 
-		// The right column is invisible by default
-		boolean variableVisible = false;
-		if (partMemento != null) {
-			Boolean state = partMemento.getBoolean(MEMENTO_VARIABLES_HIDDEN_KEY);
-			variableVisible = state != null && state.booleanValue();
-		}
-		Composite rightColumn = toolkit.createComposite(formBody);
-		rightColumn.setVisible(variableVisible);
-		gridData = new GridData(SWT.FILL, SWT.FILL, false, true);
-		gridData.widthHint = 300;
-		gridData.exclude = !variableVisible;
-		rightColumn.setLayoutData(gridData);
-		rightColumn.setLayout(new FillLayout());
+		variableColumn = toolkit.createComposite(formBody);
+		variableColumn.setLayout(new FillLayout());
+		/*
+		 * Variables are invisible by default. The toolbar initialization will restore their state, making
+		 * them visible if they were previously.
+		 */
+		variableColumn.setVisible(false);
 
-		createVariableSection(toolkit, rightColumn);
+		createVariableSection(toolkit, variableColumn);
 
-		createToolBar(interpreterForm, rightColumn);
+		formBody.setWeights(new int[] {3, 1, });
+
+		createToolBar(interpreterForm);
 	}
 
 	/**
@@ -889,10 +911,8 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @param form
 	 *            The interpreter form.
-	 * @param variableColumn
-	 *            The right column of our form, containing the variable section.
 	 */
-	protected void createToolBar(Form form, Composite variableColumn) {
+	protected void createToolBar(Form form) {
 		IAction realTimeAction = new ToggleRealTimeAction(this);
 		if (partMemento != null) {
 			Boolean isRealTime = partMemento.getBoolean(MEMENTO_REAL_TIME_KEY);
@@ -916,9 +936,14 @@ public class InterpreterView extends ViewPart {
 			}
 		}
 
-		IAction variableVisibilityAction = new ToggleVariableVisibilityAction(form, variableColumn);
-		variableVisibilityAction.setChecked(variableColumn.getLayoutData() instanceof GridData
-				&& !((GridData)variableColumn.getLayoutData()).exclude);
+		IAction variableVisibilityAction = new ToggleVariableVisibilityAction(this);
+		if (partMemento != null) {
+			Boolean isVariableVisible = partMemento.getBoolean(MEMENTO_VARIABLES_VISIBLE_KEY);
+			if (isVariableVisible != null && isVariableVisible.booleanValue()) {
+				toggleVariableVisibility();
+				variableVisibilityAction.setChecked(variableVisible);
+			}
+		}
 
 		IToolBarManager toolBarManager = form.getToolBarManager();
 		toolBarManager.add(linkWithEditorAction);
@@ -1580,7 +1605,6 @@ public class InterpreterView extends ViewPart {
 			if (variable != null) {
 				final IMenuManager submenu = new MenuManager(
 						InterpreterMessages.getString("interpreter.action.newvalue.submenu.name")); //$NON-NLS-1$
-				submenu.add(new NewEObjectValueAction(variableViewer, variable));
 				submenu.add(new NewStringValueAction(variableViewer, variable));
 				submenu.add(new NewIntegerValueAction(variableViewer, variable));
 				submenu.add(new NewFloatValueAction(variableViewer, variable));

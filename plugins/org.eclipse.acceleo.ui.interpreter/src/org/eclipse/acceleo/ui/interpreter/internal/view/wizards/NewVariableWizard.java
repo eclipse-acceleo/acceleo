@@ -10,55 +10,35 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * This wizard will be used in order to allow users to create new variables and select their values.
+ * This wizard will be used
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class NewVariableWizard extends Wizard {
-	/** The editing domain from which this wizard can take values. */
-	private final EditingDomain editingDomain;
+	/** If there was a variable selected in the viewer, this will hold a reference to it. */
+	private final Variable selectedVariable;
 
 	/**
-	 * The wizard page on which users may (have) select(ed) one or more elements as values of the new
-	 * variable.
-	 */
-	private ElementSelectionWizardPage elementSelectionPage;
-
-	private EObject result;
-
-	/**
-	 * Instantiates this wizard given the editing domain from which this wizard can take values.
-	 * 
-	 * @param editingDomain
-	 *            The editing domain from which this wizard can take values.
+	 * Instantiates The new variable wizard with no initial selection.
 	 */
 	public NewVariableWizard() {
-		final AdapterFactory factory = new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		final CommandStack commandStack = new BasicCommandStack();
-		this.editingDomain = new AdapterFactoryEditingDomain(factory, commandStack);
+		super();
+		this.selectedVariable = null;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Instantiates the new variable wizard given the initially selected variable.
 	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
+	 * @param selectedVariable
+	 *            The variable that was selected in the viewer when this wizard has been created.
 	 */
-	@Override
-	public void addPages() {
-		elementSelectionPage = new ElementSelectionWizardPage(editingDomain);
-
-		addPage(elementSelectionPage);
+	public NewVariableWizard(Variable selectedVariable) {
+		super();
+		this.selectedVariable = selectedVariable;
 	}
 
 	/**
@@ -68,11 +48,7 @@ public class NewVariableWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		result = elementSelectionPage.getResult();
-		return result instanceof EObject;
-	}
-
-	public EObject getResult() {
-		return result;
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
