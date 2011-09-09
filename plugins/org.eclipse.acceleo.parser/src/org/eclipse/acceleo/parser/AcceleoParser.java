@@ -13,6 +13,7 @@ package org.eclipse.acceleo.parser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,10 +27,12 @@ import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.QueryInvocation;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
+import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceImpl;
 import org.eclipse.acceleo.model.mtl.resource.EMtlResourceImpl;
@@ -39,8 +42,10 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -114,6 +119,286 @@ public class AcceleoParser {
 	public AcceleoParser(boolean asBinaryResource, boolean trimmedCompilation) {
 		this.asBinaryResource = asBinaryResource;
 		this.trimmedCompilation = trimmedCompilation;
+	}
+
+	/**
+	 * This will create and return the list of signatures for the given Acceleo module. The list will contain
+	 * all signatures in a particular order :
+	 * <ul>
+	 * <li>The module itself (in the form
+	 * <code>&lt;moduleName&gt;(&lt;metamodeluri&gt[,&lt;metamodeluri&gt;]*)</code>).</li>
+	 * <li>All of the <b>template</b> signatures (in the form
+	 * <code>&lt;visibility&gt; &lt;templateName&gt;(&lt;templateParam&gt;[,&lt;templateParam&gt;]*)</code>,
+	 * "templateParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>).</li>
+	 * <li>All of the <b>query</b> signatures (in the form
+	 * <code>&lt;visibility&gt; &lt;queryName&gt;(&lt;queryParam&gt;[,&lt;queryParam&gt;]*):&lt;queryType&gt;</code>
+	 * , "queryParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>).</li>
+	 * </ul>
+	 * 
+	 * @param module
+	 *            The module from which to extract the signatures.
+	 * @return The list of signatures for the given Acceleo module.
+	 */
+	private static List<String> createSignatureList(org.eclipse.acceleo.parser.cst.Module module) {
+		if (module == null) {
+			return Collections.emptyList();
+		}
+
+		final List<String> signatures = new ArrayList<String>();
+
+		StringBuilder moduleSignature = new StringBuilder();
+		if (module.getName() != null) {
+			moduleSignature.append(module.getName());
+		}
+		moduleSignature.append('(');
+		Iterator<org.eclipse.acceleo.parser.cst.TypedModel> modelIterator = module.getInput().iterator();
+		while (modelIterator.hasNext()) {
+			org.eclipse.acceleo.parser.cst.TypedModel model = modelIterator.next();
+			for (EPackage packaje : model.getTakesTypesFrom()) {
+				moduleSignature.append(packaje.getNsURI());
+			}
+			if (modelIterator.hasNext()) {
+				moduleSignature.append(',');
+			}
+		}
+		moduleSignature.append(')');
+
+		final List<String> templateSignatures = new ArrayList<String>();
+		final List<String> querySignatures = new ArrayList<String>();
+		for (org.eclipse.acceleo.parser.cst.ModuleElement moduleElement : module.getOwnedModuleElement()) {
+			if (moduleElement instanceof org.eclipse.acceleo.parser.cst.Template) {
+				templateSignatures
+						.add(createTemplateSignature((org.eclipse.acceleo.parser.cst.Template)moduleElement));
+			} else if (moduleElement instanceof org.eclipse.acceleo.parser.cst.Query) {
+				querySignatures
+						.add(createQuerySignature((org.eclipse.acceleo.parser.cst.Query)moduleElement));
+			}
+		}
+
+		signatures.add(moduleSignature.toString());
+		signatures.addAll(templateSignatures);
+		signatures.addAll(querySignatures);
+
+		return signatures;
+	}
+
+	/**
+	 * This will create a String representing the signature of the given template. The form of this String is
+	 * fixed and will be :
+	 * <code>&lt;visibility&gt; &lt;templateName&gt;(&lt;templateParam&gt;[,&lt;templateParam&gt;]*)</code>,
+	 * "templateParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>.
+	 * 
+	 * @param template
+	 *            The template for which we need a signature.
+	 * @return The signature of <code>template</code>.
+	 */
+	private static String createTemplateSignature(org.eclipse.acceleo.parser.cst.Template template) {
+		StringBuilder signature = new StringBuilder();
+		if (template.getVisibility() != null) {
+			signature.append(template.getVisibility().getLiteral());
+		}
+		signature.append(' ');
+		if (template.getName() != null) {
+			signature.append(template.getName());
+		}
+		signature.append('(');
+		Iterator<org.eclipse.acceleo.parser.cst.Variable> paramIterator = template.getParameter().iterator();
+		while (paramIterator.hasNext()) {
+			org.eclipse.acceleo.parser.cst.Variable param = paramIterator.next();
+			if (param.getName() != null) {
+				signature.append(param.getName());
+			}
+			signature.append(':');
+			if (param.getType() != null) {
+				signature.append(param.getType());
+			}
+			if (paramIterator.hasNext()) {
+				signature.append(',');
+			}
+		}
+		signature.append(')');
+		return signature.toString();
+	}
+
+	/**
+	 * This will create a String representing the signature of the given query. The form of this String is
+	 * fixed and will be :
+	 * <code>&lt;visibility&gt; &lt;queryName&gt;(&lt;queryParam&gt;[,&lt;queryParam&gt;]*):&lt;queryType&gt;</code>
+	 * , "queryParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>
+	 * 
+	 * @param query
+	 *            The query for which we need a signature.
+	 * @return The signature of <code>query</code>.
+	 */
+	private static String createQuerySignature(org.eclipse.acceleo.parser.cst.Query query) {
+		StringBuilder signature = new StringBuilder();
+		if (query.getVisibility() != null) {
+			signature.append(query.getVisibility().getLiteral());
+		}
+		signature.append(' ');
+		if (query.getName() != null) {
+			signature.append(query.getName());
+		}
+		signature.append('(');
+		Iterator<org.eclipse.acceleo.parser.cst.Variable> paramIterator = query.getParameter().iterator();
+		while (paramIterator.hasNext()) {
+			org.eclipse.acceleo.parser.cst.Variable param = paramIterator.next();
+			if (param.getName() != null) {
+				signature.append(param.getName());
+			}
+			signature.append(':');
+			if (param.getType() != null) {
+				signature.append(param.getType());
+			}
+			if (paramIterator.hasNext()) {
+				signature.append(',');
+			}
+		}
+		signature.append(')');
+		signature.append(':');
+		if (query.getType() != null) {
+			signature.append(query.getType());
+		}
+		return signature.toString();
+	}
+
+	/**
+	 * This will create and return the list of signatures for the given Acceleo module. The list will contain
+	 * all signatures in a particular order :
+	 * <ul>
+	 * <li>The module itself (in the form
+	 * <code>&lt;moduleName&gt;(&lt;metamodeluri&gt[,&lt;metamodeluri&gt;]*)</code>).</li>
+	 * <li>All of the <b>template</b> signatures (in the form
+	 * <code>&lt;visibility&gt; &lt;templateName&gt;(&lt;templateParam&gt;[,&lt;templateParam&gt;]*)</code>,
+	 * "templateParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>).</li>
+	 * <li>All of the <b>query</b> signatures (in the form
+	 * <code>&lt;visibility&gt; &lt;queryName&gt;(&lt;queryParam&gt;[,&lt;queryParam&gt;]*):&lt;queryType&gt;</code>
+	 * , "queryParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>).</li>
+	 * </ul>
+	 * 
+	 * @param module
+	 *            The module from which to extract the signatures.
+	 * @return The list of signatures for the given Acceleo module.
+	 */
+	private static List<String> createSignatureList(Module module) {
+		if (module == null) {
+			return Collections.emptyList();
+		}
+
+		final List<String> signatures = new ArrayList<String>();
+
+		StringBuilder moduleSignature = new StringBuilder();
+		if (module.getName() != null) {
+			moduleSignature.append(module.getName());
+		}
+		moduleSignature.append('(');
+		Iterator<TypedModel> modelIterator = module.getInput().iterator();
+		while (modelIterator.hasNext()) {
+			TypedModel model = modelIterator.next();
+			for (EPackage packaje : model.getTakesTypesFrom()) {
+				moduleSignature.append(packaje.getNsURI());
+			}
+			if (modelIterator.hasNext()) {
+				moduleSignature.append(',');
+			}
+		}
+		moduleSignature.append(')');
+
+		final List<String> templateSignatures = new ArrayList<String>();
+		final List<String> querySignatures = new ArrayList<String>();
+		for (ModuleElement moduleElement : module.getOwnedModuleElement()) {
+			if (moduleElement instanceof Template) {
+				templateSignatures.add(createTemplateSignature((Template)moduleElement));
+			} else if (moduleElement instanceof Query) {
+				querySignatures.add(createQuerySignature((Query)moduleElement));
+			}
+		}
+
+		signatures.add(moduleSignature.toString());
+		signatures.addAll(templateSignatures);
+		signatures.addAll(querySignatures);
+
+		return signatures;
+	}
+
+	/**
+	 * This will create a String representing the signature of the given template. The form of this String is
+	 * fixed and will be :
+	 * <code>&lt;visibility&gt; &lt;templateName&gt;(&lt;templateParam&gt;[,&lt;templateParam&gt;]*)</code>,
+	 * "templateParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>.
+	 * 
+	 * @param template
+	 *            The template for which we need a signature.
+	 * @return The signature of <code>template</code>.
+	 */
+	private static String createTemplateSignature(Template template) {
+		StringBuilder signature = new StringBuilder();
+		if (template.getVisibility() != null) {
+			signature.append(template.getVisibility().getLiteral());
+		}
+		signature.append(' ');
+		if (template.getName() != null) {
+			signature.append(template.getName());
+		}
+		signature.append('(');
+		Iterator<Variable> paramIterator = template.getParameter().iterator();
+		while (paramIterator.hasNext()) {
+			Variable param = paramIterator.next();
+			if (param.getName() != null) {
+				signature.append(param.getName());
+			}
+			signature.append(':');
+			if (param.getType() != null) {
+				signature.append(param.getType().getName());
+			}
+			if (paramIterator.hasNext()) {
+				signature.append(',');
+			}
+		}
+		signature.append(')');
+		return signature.toString();
+	}
+
+	/**
+	 * This will create a String representing the signature of the given query. The form of this String is
+	 * fixed and will be :
+	 * <code>&lt;visibility&gt; &lt;queryName&gt;(&lt;queryParam&gt;[,&lt;queryParam&gt;]*):&lt;queryType&gt;</code>
+	 * , "queryParam" being of the form <code>&lt;paramName&gt;:&lt;paramType&gt;</code>
+	 * 
+	 * @param query
+	 *            The query for which we need a signature.
+	 * @return The signature of <code>query</code>.
+	 */
+	private static String createQuerySignature(Query query) {
+		StringBuilder signature = new StringBuilder();
+		if (query.getVisibility() != null) {
+			signature.append(query.getVisibility().getLiteral());
+		}
+		signature.append(' ');
+		if (query.getName() != null) {
+			signature.append(query.getName());
+		}
+		signature.append('(');
+		Iterator<Variable> paramIterator = query.getParameter().iterator();
+		while (paramIterator.hasNext()) {
+			Variable param = paramIterator.next();
+			if (param.getName() != null) {
+				signature.append(param.getName());
+			}
+			signature.append(':');
+			if (param.getType() != null) {
+				signature.append(param.getType().getName());
+			}
+			if (paramIterator.hasNext()) {
+				signature.append(',');
+			}
+		}
+		signature.append(')');
+		signature.append(':');
+		if (query.getType() != null) {
+			signature.append(query.getType().getName());
+		}
+		return signature.toString();
 	}
 
 	/**
@@ -193,14 +478,42 @@ public class AcceleoParser {
 		List<AcceleoSourceBuffer> sources = new ArrayList<AcceleoSourceBuffer>();
 		Iterator<URI> itOutputURIs = outputURIs.iterator();
 		Set<String> allImportedFiles = new CompactHashSet<String>();
+		/*
+		 * These boolean will be used in order to break the building loop if the signatures of the first
+		 * resource (the only "modified" one) have remained the same after the recompilation. If true, we will
+		 * also build the files dependant on this "first resource". If false, the loop will be broken.
+		 */
+		boolean firstIteration = true;
+		boolean buildDependantFiles = true;
 		for (Iterator<AcceleoFile> itAcceleoFiles = acceleoFiles.iterator(); !monitor.isCanceled()
-				&& itAcceleoFiles.hasNext() && itOutputURIs.hasNext();) {
+				&& itAcceleoFiles.hasNext() && itOutputURIs.hasNext() && buildDependantFiles;) {
 			AcceleoFile acceleoFile = itAcceleoFiles.next();
 			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", //$NON-NLS-1$
 					new Object[] {acceleoFile.getMtlFile().getName() }));
 			URI oURI = itOutputURIs.next();
 			AcceleoSourceBuffer source = new AcceleoSourceBuffer(acceleoFile);
 			sources.add(source);
+
+			ResourceSet previousRS = new AcceleoResourceSetImpl();
+			List<String> previousSignatures = new ArrayList<String>();
+			if (firstIteration) {
+				try {
+					EObject previousRoot = ModelUtils.load(oURI, previousRS);
+					if (previousRoot instanceof Module) {
+						previousSignatures = createSignatureList((Module)previousRoot);
+					}
+				} catch (IOException e) {
+					// Swallow this : we just didn't have a precompiled state
+				} catch (WrappedException e) {
+					// Swallow this : we just didn't have a precompiled state
+				} finally {
+					for (Resource res : previousRS.getResources()) {
+						res.unload();
+					}
+					previousRS.getResources().clear();
+				}
+			}
+
 			Resource oResource = createResource(oURI, oResourceSet);
 			if (oResource instanceof EMtlBinaryResourceImpl) {
 				EMtlBinaryResourceImpl binaryResourceImpl = (EMtlBinaryResourceImpl)oResource;
@@ -236,6 +549,12 @@ public class AcceleoParser {
 			}
 			source.createAST(oResource);
 			monitor.worked(1);
+
+			if (firstIteration) {
+				List<String> newSignatures = createSignatureList(source.getCST());
+
+				buildDependantFiles = !previousSignatures.equals(newSignatures);
+			}
 		}
 		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); !monitor.isCanceled()
 				&& itDependenciesURIs.hasNext();) {

@@ -110,19 +110,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				files[i].deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 				files[i].deleteMarkers(IMarker.TASK, true, IResource.DEPTH_INFINITE);
 				files[i].deleteMarkers(AcceleoMarkerUtils.OVERRIDE_MARKER_ID, true, IResource.DEPTH_INFINITE);
-				IPath outputPath = acceleoProject.getOutputFilePath(files[i]);
-				if (outputPath != null) {
-					IFile outputFile = project.getFile(outputPath.removeFirstSegments(1));
-					if (outputFile != null && outputFile.exists()) {
-						try {
-							outputFile.delete(true, monitor);
-						} catch (CoreException e) {
-							// continue
-							// do nothing because it occurs when we have locked the file to write it again
-							AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-						}
-					}
-				}
 			}
 		}
 		if (!isClean) {
