@@ -1225,5 +1225,12 @@ Contributors:
             label="%Acceleo.language.interpreter.label">
       </languageInterpreter>
    </extension>
+    <extension
+          point="org.eclipse.acceleo.engine.traceabilityListener">
+       <traceabilityListener
+             class="org.eclipse.acceleo.internal.ide.ui.notifications.AcceleoGenerationListener"
+             forceTraceability="false">
+       </traceabilityListener>
+    </extension>
 
 </plugin>
