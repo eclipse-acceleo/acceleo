@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.ui.notification.NotificationDialogUtil;
 import org.eclipse.acceleo.common.ui.notification.NotificationType;
 import org.eclipse.acceleo.engine.event.AbstractAcceleoTextGenerationListener;
@@ -88,7 +89,8 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 		File file = new File(event.getText());
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 				new Path(file.getAbsolutePath()));
-		if (iFile != null && AcceleoGenerationListener.shouldNotify(iFile)) {
+		if (iFile != null && AcceleoGenerationListener.shouldNotify(iFile)
+				&& AcceleoPreferences.areNotificationsEnabled()) {
 			String text = event.getText();
 			filesGenerated.add(new Path(text).lastSegment());
 		}
@@ -106,7 +108,6 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 		try {
 			if (iFile.getProject().isAccessible()
 					&& iFile.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
-				result = false;
 				// TODO Detection of the files generated for which a notification should not be fired
 			}
 		} catch (CoreException e) {

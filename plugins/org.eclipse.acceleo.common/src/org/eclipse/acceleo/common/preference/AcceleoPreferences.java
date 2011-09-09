@@ -33,6 +33,9 @@ public final class AcceleoPreferences {
 	/** Preference key for the activation of Acceleo's debug messages. */
 	private static final String PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES = "org.eclipse.acceleo.debug.messages.enable"; //$NON-NLS-1$
 
+	/** Preference key for the activation of Acceleo's notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS = "org.eclipse.acceleo.ui.notification"; //$NON-NLS-1$
+
 	/** Default value for the profiler enablement. */
 	private static final boolean DEFAULT_ENABLE_PROFILER = false;
 
@@ -44,6 +47,9 @@ public final class AcceleoPreferences {
 
 	/** Default value for the debug messages enablement. */
 	private static final boolean DEFAULT_ENABLE_DEBUG_MESSAGES = true;
+
+	/** Default value for the notifications enablement. */
+	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS = false;
 
 	/** Preferences scope for the Acceleo common plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
@@ -135,5 +141,27 @@ public final class AcceleoPreferences {
 	public static boolean isDebugMessagesEnabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES,
 				DEFAULT_ENABLE_DEBUG_MESSAGES);
+	}
+
+	/**
+	 * Switches the notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS, state);
+	}
+
+	/**
+	 * Returns whether the notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areNotificationsEnabled() {
+		return PREFERENCES_SCOPE
+				.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS, DEFAULT_ENABLE_NOTIFICATIONS);
 	}
 }

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.notifications;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.ui.notification.NotificationDialogUtil;
 import org.eclipse.acceleo.common.ui.notification.NotificationType;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -37,7 +38,9 @@ public class AcceleoLogListener implements ILogListener {
 	public void logging(final IStatus status, final String plugin) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
-				delegateLog(status, plugin);
+				if (AcceleoPreferences.areNotificationsEnabled()) {
+					delegateLog(status, plugin);
+				}
 			}
 		});
 	}
