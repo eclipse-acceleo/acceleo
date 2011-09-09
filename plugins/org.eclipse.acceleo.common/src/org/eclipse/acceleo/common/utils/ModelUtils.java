@@ -46,6 +46,11 @@ public final class ModelUtils {
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
 
 	/**
+	 * The key for the loading error message.
+	 */
+	private static final String LOADING_ERROR_KEY = "ModelUtils.LoadingError"; //$NON-NLS-1$
+
+	/**
 	 * Utility classes don't need to (and shouldn't) be instantiated.
 	 */
 	private ModelUtils() {
@@ -256,11 +261,12 @@ public final class ModelUtils {
 			result = modelResource.getContents().get(0);
 		}
 
-		List<Resource> resources = resourceSet.getResources();
-		for (Resource resource : resources) {
-			List<Diagnostic> errors = resource.getErrors();
-			for (Diagnostic diagnostic : errors) {
-				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+		List<Diagnostic> errors = modelResource.getErrors();
+		for (Diagnostic diagnostic : errors) {
+			if (diagnostic != null) {
+				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, fileName);
+				errorMessage += '\n' + diagnostic.toString();
+				AcceleoCommonPlugin.log(errorMessage, false);
 			}
 		}
 
@@ -316,11 +322,14 @@ public final class ModelUtils {
 		if (result == null) {
 			throw new IOException(AcceleoCommonMessages.getString("ModelUtils.LoadFailure", path)); //$NON-NLS-1$
 		}
-		List<Resource> resources = resourceSet.getResources();
-		for (Resource resource : resources) {
-			List<Diagnostic> errors = resource.getErrors();
+		if (result.eResource() != null) {
+			List<Diagnostic> errors = result.eResource().getErrors();
 			for (Diagnostic diagnostic : errors) {
-				AcceleoCommonPlugin.log(diagnostic.toString(), false);
+				if (diagnostic != null) {
+					String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, path);
+					errorMessage += '\n' + diagnostic.toString();
+					AcceleoCommonPlugin.log(errorMessage, false);
+				}
 			}
 		}
 		return result;
@@ -349,15 +358,12 @@ public final class ModelUtils {
 		if (modelResource.getContents().size() > 0) {
 			result = modelResource.getContents().get(0);
 		}
-		List<Resource> resources = resourceSet.getResources();
-		for (Resource resource : resources) {
-			if (resource != null) {
-				List<Diagnostic> errors = resource.getErrors();
-				for (Diagnostic diagnostic : errors) {
-					if (diagnostic != null) {
-						AcceleoCommonPlugin.log(diagnostic.toString(), false);
-					}
-				}
+		List<Diagnostic> errors = modelResource.getErrors();
+		for (Diagnostic diagnostic : errors) {
+			if (diagnostic != null) {
+				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, modelURI.toString());
+				errorMessage += '\n' + diagnostic.toString();
+				AcceleoCommonPlugin.log(errorMessage, false);
 			}
 		}
 		return result;
