@@ -292,7 +292,7 @@ public class AcceleoParser {
 				}
 			}
 		}
-		// trimEnvironment(oResourceSet);
+		trimEnvironment(oResourceSet);
 		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
 				&& itSources.hasNext();) {
 			AcceleoSourceBuffer source = itSources.next();
