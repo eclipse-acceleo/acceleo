@@ -318,7 +318,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		 *      java.lang.String)
 		 */
 		public void logging(IStatus status, String plugin) {
-			if (status.getPlugin().startsWith("org.eclipse.acceleo")) { //$NON-NLS-1$
+			if (status.getPlugin().startsWith("org.eclipse.acceleo") || status.getPlugin().startsWith("org.eclipse.ocl")) { //$NON-NLS-1$ //$NON-NLS-2$
 				addStatus(status);
 			}
 		}
