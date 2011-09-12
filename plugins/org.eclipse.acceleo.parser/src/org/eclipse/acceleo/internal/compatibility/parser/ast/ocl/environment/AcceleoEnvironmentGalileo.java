@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,7 @@ import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.options.ParsingOptions;
 import org.eclipse.ocl.types.CollectionType;
+import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.ocl.types.TupleType;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
@@ -158,6 +160,11 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 * hierarchy. Keys of this map will be <code>EClassifier.hashCode() + featureName.hasCode()</code>.
 		 */
 		private final Map<Long, EStructuralFeature> hierarchyFeatureCache = new HashMap<Long, EStructuralFeature>();
+
+		/**
+		 * A cache for the previously found EOperations.
+		 */
+		private final Map<EOperationSignatureElement, EOperation> eOperationCache = new HashMap<AcceleoEnvironmentGalileo.AcceleoTypeChecker.EOperationSignatureElement, EOperation>();
 
 		/**
 		 * Delegates instantiation to the super constructor.
@@ -371,6 +378,141 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		}
 
 		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#findOperationMatching(java.lang.Object, java.lang.String,
+		 *      java.util.List)
+		 */
+		@Override
+		public EOperation findOperationMatching(EClassifier owner, String name,
+				List<? extends TypedElement<EClassifier>> args) {
+			EOperationSignatureElement operationSignatureElement = new EOperationSignatureElement(owner,
+					name, args);
+			EOperation operation = eOperationCache.get(operationSignatureElement);
+
+			if (operation == null) {
+				List<? extends TypedElement<EClassifier>> arguments = args;
+				if (arguments == null) {
+					arguments = Collections.emptyList();
+				}
+
+				UMLReflection<?, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> uml = getEnvironment()
+						.getUMLReflection();
+				List<EOperation> operations = getOperations(owner);
+				List<EOperation> matches = null;
+
+				for (EOperation oper : operations) {
+					if (name.equals(uml.getName(oper))
+							&& matchArgs(owner, uml.getParameters(oper), arguments)) {
+
+						if (uml.getOwningClassifier(oper) == owner) {
+							eOperationCache.put(operationSignatureElement, oper);
+							return oper; // obviously the most specific definition
+						}
+
+						if (matches == null) {
+							// assume a small number of redefinitions
+							matches = new java.util.ArrayList<EOperation>(3);
+						}
+
+						matches.add(oper);
+					}
+				}
+
+				if (matches != null) {
+					if (matches.size() == 1) {
+						operation = matches.get(0);
+					} else if (!matches.isEmpty()) {
+						operation = mostSpecificRedefinition(matches, uml);
+					}
+				}
+
+				if (operation == null) {
+					// special handling for null and invalid values, whose types conform
+					// to all others
+					OCLStandardLibrary<EClassifier> lib = getEnvironment().getOCLStandardLibrary();
+					if ((owner == lib.getOclVoid()) || (owner == lib.getOclInvalid())) {
+						operation = findOperationForVoidOrInvalid(owner, name, arguments);
+					}
+				}
+				eOperationCache.put(operationSignatureElement, operation);
+			}
+
+			return operation;
+		}
+
+		/**
+		 * Finds the most specific redefinition in a given list of features from a classifier hierarchy.
+		 * 
+		 * @param <F>
+		 *            The generic type for the feature
+		 * @param features
+		 *            the definitions of a feature; must have at least one element
+		 * @param uml
+		 *            the UML introspector to use in determining the classifiers that define the various
+		 *            feature definitions
+		 * @return the most specific redefinition of the list of features
+		 */
+		private <F> F mostSpecificRedefinition(List<? extends F> features,
+				UMLReflection<?, EClassifier, ?, ?, ?, ?, ?, ?, ?, ?> uml) {
+
+			Map<EClassifier, F> redefinitions = new java.util.HashMap<EClassifier, F>();
+
+			for (F next : features) {
+				redefinitions.put(uml.getOwningClassifier(next), next);
+			}
+
+			List<EClassifier> classifiers = new java.util.ArrayList<EClassifier>(redefinitions.keySet());
+
+			// remove all classifiers that are ancestors of another classifier
+			// in the map
+			outer: while (true) {
+				for (EClassifier next : classifiers) {
+					if (classifiers.removeAll(uml.getAllSupertypes(next))) {
+						continue outer; // don't want a concurrent modification
+					}
+				}
+
+				break outer;
+			}
+
+			// there will at least be one remaining
+			return redefinitions.get(classifiers.get(0));
+		}
+
+		/**
+		 * The <tt>OclVoid</tt> and <tt>OclInvalid</tt> types are defined as conforming to all other types.
+		 * Therefore, we can try a little harder to match certain operations that it is useful to support,
+		 * such as <tt>{@literal =}</tt> and <tt>{@literal <>}</tt>.
+		 * 
+		 * @param owner
+		 *            the classifier to search (void or invalid)
+		 * @param name
+		 *            the name of the operation
+		 * @param args
+		 *            a list of arguments to match against the operation signature, as either expressions or
+		 *            variables
+		 * @return the matching operation, or <code>null</code> if not found
+		 */
+		private EOperation findOperationForVoidOrInvalid(EClassifier owner, String name,
+				List<? extends TypedElement<EClassifier>> args) {
+
+			EOperation result = null;
+
+			if (args.size() == 1) {
+				EClassifier argType = args.get(0).getType();
+
+				if (argType != owner) {
+					// let us search the type of the argument to determine whether
+					// we can find this operation
+					result = findOperationMatching(argType, name, args);
+				}
+			}
+
+			return result;
+		}
+
+		/**
 		 * Searches the given type for a feature named <code>featureName</code>.
 		 * 
 		 * @param type
@@ -558,6 +700,107 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				scope.eResource().eAdapters().add(referencer);
 			}
 			return referencer;
+		}
+
+		/**
+		 * An utility class to store the data used to find an operation.
+		 * 
+		 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+		 */
+		private class EOperationSignatureElement {
+
+			/**
+			 * The owner of the operation.
+			 */
+			private EClassifier classifier;
+
+			/**
+			 * The name of the operation.
+			 */
+			private String name;
+
+			/**
+			 * The arguments of the operation.
+			 */
+			private List<? extends TypedElement<EClassifier>> arguments;
+
+			/**
+			 * The constructor.
+			 * 
+			 * @param classifier
+			 *            The owner of the operation.
+			 * @param name
+			 *            The name of the operation.
+			 * @param arguments
+			 *            The arguments of the operation.
+			 */
+			public EOperationSignatureElement(EClassifier classifier, String name,
+					List<? extends TypedElement<EClassifier>> arguments) {
+				super();
+				this.classifier = classifier;
+				this.name = name;
+				this.arguments = arguments;
+			}
+
+			/**
+			 * Returns the classifier.
+			 * 
+			 * @return the classifier
+			 */
+			public EClassifier getClassifier() {
+				return classifier;
+			}
+
+			/**
+			 * Returns the name.
+			 * 
+			 * @return the name
+			 */
+			public String getName() {
+				return name;
+			}
+
+			/**
+			 * Returns the arguments.
+			 * 
+			 * @return the arguments
+			 */
+			public List<? extends TypedElement<EClassifier>> getArguments() {
+				return arguments;
+			}
+
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see java.lang.Object#hashCode()
+			 */
+			@Override
+			public int hashCode() {
+				// CHECKSTYLE:OFF
+				int hashcode = name.hashCode() * 9;
+				hashcode += classifier.hashCode() * 13;
+				hashcode += arguments.hashCode() * 17;
+				// CHECKSTYLE:ON
+				return hashcode;
+			}
+
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see java.lang.Object#equals(java.lang.Object)
+			 */
+			@Override
+			public boolean equals(Object arg0) {
+				if (arg0 instanceof EOperationSignatureElement) {
+					EOperationSignatureElement operationSignatureElement = (EOperationSignatureElement)arg0;
+					boolean result = operationSignatureElement.getArguments().equals(arguments);
+					result = result && operationSignatureElement.getName().equals(name);
+					result = result && operationSignatureElement.getClassifier().equals(classifier);
+					return result;
+				}
+				return false;
+			}
+
 		}
 	}
 }
