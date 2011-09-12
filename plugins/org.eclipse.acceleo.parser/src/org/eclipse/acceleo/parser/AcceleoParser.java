@@ -194,6 +194,7 @@ public class AcceleoParser {
 	 */
 	private static String createTemplateSignature(org.eclipse.acceleo.parser.cst.Template template) {
 		StringBuilder signature = new StringBuilder();
+		signature.append("Template "); //$NON-NLS-1$
 		if (template.getVisibility() != null) {
 			signature.append(template.getVisibility().getLiteral());
 		}
@@ -232,6 +233,7 @@ public class AcceleoParser {
 	 */
 	private static String createQuerySignature(org.eclipse.acceleo.parser.cst.Query query) {
 		StringBuilder signature = new StringBuilder();
+		signature.append("Query "); //$NON-NLS-1$
 		if (query.getVisibility() != null) {
 			signature.append(query.getVisibility().getLiteral());
 		}
@@ -333,6 +335,7 @@ public class AcceleoParser {
 	 */
 	private static String createTemplateSignature(Template template) {
 		StringBuilder signature = new StringBuilder();
+		signature.append("Template "); //$NON-NLS-1$
 		if (template.getVisibility() != null) {
 			signature.append(template.getVisibility().getLiteral());
 		}
@@ -371,6 +374,7 @@ public class AcceleoParser {
 	 */
 	private static String createQuerySignature(Query query) {
 		StringBuilder signature = new StringBuilder();
+		signature.append("Query "); //$NON-NLS-1$
 		if (query.getVisibility() != null) {
 			signature.append(query.getVisibility().getLiteral());
 		}
