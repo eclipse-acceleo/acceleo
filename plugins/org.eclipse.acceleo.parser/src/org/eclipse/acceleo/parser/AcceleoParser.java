@@ -812,8 +812,12 @@ public class AcceleoParser {
 			for (int i = 0; i < parameters.size(); i++) {
 				Variable variable = parameters.get(i);
 				EParameter eParameter = eParameters.get(i);
-				result = variable.getName().equals(eParameter.getName());
-				result = variable.getEType().equals(eParameter.getEType());
+				if (variable.getName() != null) {
+					result = result && variable.getName().equals(eParameter.getName());
+				}
+				if (variable.getEType() != null) {
+					result = result && variable.getEType().equals(eParameter.getEType());
+				}
 			}
 		}
 
