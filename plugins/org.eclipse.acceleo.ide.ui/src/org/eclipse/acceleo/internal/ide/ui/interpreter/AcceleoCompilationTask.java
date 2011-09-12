@@ -13,7 +13,9 @@ package org.eclipse.acceleo.internal.ide.ui.interpreter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -45,6 +47,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ocl.ecore.CollectionItem;
@@ -143,6 +146,30 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
+	 * Computes the import list given the <b>initial</b> imported file. This will recursively walk the import
+	 * tree of that initial file.
+	 * 
+	 * @param initialImport
+	 *            The initial imported file from which to compute the imort list.
+	 * @param resourceSet
+	 *            The resource set in which the list will be loaded.
+	 * @return The whole import list.
+	 */
+	public Set<URI> computeImportList(IFile initialImport, ResourceSet resourceSet) {
+		Resource moduleImport = getModule(initialImport, resourceSet);
+		if (moduleImport != null) {
+			EcoreUtil.resolveAll(resourceSet);
+		}
+
+		final Set<URI> dependencies = new LinkedHashSet<URI>();
+		for (Resource res : resourceSet.getResources()) {
+			dependencies.add(res.getURI());
+		}
+
+		return dependencies;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.util.concurrent.Callable#call()
@@ -158,10 +185,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 
 		List<URI> dependencies = new ArrayList<URI>();
 		if (acceleoSource.getModuleImport() != null) {
-			Resource moduleImport = getModule(acceleoSource.getModuleImport(), resourceSet);
-			if (moduleImport != null) {
-				dependencies.add(moduleImport.getURI());
-			}
+			dependencies.addAll(computeImportList(acceleoSource.getModuleImport(), resourceSet));
 		}
 
 		AcceleoParser parser = new AcceleoParser();
