@@ -280,7 +280,7 @@ public class AcceleoEvaluationContext<C> {
 	 * @return The first Acceleo writer found in the context or <code>null</code> otherwise.
 	 */
 	private AcceleoFileWriter getAcceleoFileWriterFromContext() {
-		for (int i = writers.size() - 1; i >= 0; i++) {
+		for (int i = writers.size() - 1; i >= 0; i--) {
 			Writer writer = writers.get(i);
 			if (writer instanceof AcceleoFileWriter) {
 				return (AcceleoFileWriter)writer;
