@@ -219,7 +219,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	private void checkModuleImports(org.eclipse.acceleo.model.mtl.Module oModule, int startPosition,
 			int endPosition) {
 		List<Module> imports = oModule.getImports();
-		for (Module oImportedModule : imports) {
+		for (Module oImportedModule : new ArrayList<Module>(imports)) {
 			if (oImportedModule.isDeprecated()) {
 				logWarning(AcceleoParserMessages.getString(DEPRECATED_MODULE_MESSAGE, oImportedModule
 						.getName()), startPosition, endPosition);
