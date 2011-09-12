@@ -508,7 +508,7 @@ public class AcceleoParser {
 			AcceleoSourceBuffer source = new AcceleoSourceBuffer(acceleoFile);
 			sources.add(source);
 
-			ResourceSet previousRS = new AcceleoResourceSetImpl();
+			final ResourceSet previousRS = new AcceleoResourceSetImpl();
 			List<String> previousSignatures = new ArrayList<String>();
 			if (firstIteration) {
 				try {
@@ -521,10 +521,21 @@ public class AcceleoParser {
 				} catch (WrappedException e) {
 					// Swallow this : we just didn't have a precompiled state
 				} finally {
-					for (Resource res : previousRS.getResources()) {
-						res.unload();
-					}
-					previousRS.getResources().clear();
+					Thread unloadThread = new Thread() {
+						/**
+						 * {@inheritDoc}
+						 * 
+						 * @see java.lang.Thread#run()
+						 */
+						@Override
+						public void run() {
+							for (Resource res : previousRS.getResources()) {
+								res.unload();
+							}
+							previousRS.getResources().clear();
+						}
+					};
+					unloadThread.start();
 				}
 			}
 
@@ -602,67 +613,82 @@ public class AcceleoParser {
 	 * @param monitor
 	 *            The monitor.
 	 */
-	private void resolveAST(ResourceSet oResourceSet, Map<URI, URI> mapURIs,
+	private void resolveAST(final ResourceSet oResourceSet, Map<URI, URI> mapURIs,
 			List<AcceleoSourceBuffer> sources, Monitor monitor) {
-		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
-				&& itSources.hasNext();) {
-			AcceleoSourceBuffer source = itSources.next();
-			if (source.getFile() != null) {
-				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileAST", //$NON-NLS-1$
-						new Object[] {source.getFile().getName() }));
+		try {
+			for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
+					&& itSources.hasNext();) {
+				AcceleoSourceBuffer source = itSources.next();
+				if (source.getFile() != null) {
+					monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileAST", //$NON-NLS-1$
+							new Object[] {source.getFile().getName() }));
+				}
+				source.resolveAST();
+				source.resolveASTDocumentation();
+				monitor.worked(1);
 			}
-			source.resolveAST();
-			source.resolveASTDocumentation();
-			monitor.worked(1);
-		}
-		if (mapURIs != null) {
-			for (Resource resource : oResourceSet.getResources()) {
-				URI resourceURI = resource.getURI();
-				if (resourceURI != null) {
-					URI reusableURI = mapURIs.get(resourceURI);
-					if (reusableURI != null) {
-						resource.setURI(reusableURI);
+			if (mapURIs != null) {
+				for (Resource resource : oResourceSet.getResources()) {
+					URI resourceURI = resource.getURI();
+					if (resourceURI != null) {
+						URI reusableURI = mapURIs.get(resourceURI);
+						if (reusableURI != null) {
+							resource.setURI(reusableURI);
+						}
 					}
 				}
 			}
-		}
-		trimEnvironment(oResourceSet);
-		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
-				&& itSources.hasNext();) {
-			AcceleoSourceBuffer source = itSources.next();
-			if (source.getFile() != null) {
-				monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", new Object[] {source //$NON-NLS-1$
-						.getFile().getName(), }));
-			}
-			Module eModule = source.getAST();
-			if (eModule != null) {
-				Resource newResource = eModule.eResource();
-				Map<String, String> options = new HashMap<String, String>();
-				if (!asBinaryResource) {
-					String encoding = source.getEncoding();
-					if (encoding == null) {
-						encoding = "UTF-8"; //$NON-NLS-1$
-					}
-					options.put(XMLResource.OPTION_ENCODING, encoding);
+			trimEnvironment(oResourceSet);
+			for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
+					&& itSources.hasNext();) {
+				AcceleoSourceBuffer source = itSources.next();
+				if (source.getFile() != null) {
+					monitor.subTask(AcceleoParserMessages.getString(
+							"AcceleoParser.SaveAST", new Object[] {source //$NON-NLS-1$
+									.getFile().getName(), }));
 				}
-				try {
-					newResource.save(options);
-				} catch (IOException e) {
+				Module eModule = source.getAST();
+				if (eModule != null) {
+					Resource newResource = eModule.eResource();
+					Map<String, String> options = new HashMap<String, String>();
+					if (!asBinaryResource) {
+						String encoding = source.getEncoding();
+						if (encoding == null) {
+							encoding = "UTF-8"; //$NON-NLS-1$
+						}
+						options.put(XMLResource.OPTION_ENCODING, encoding);
+					}
+					try {
+						newResource.save(options);
+					} catch (IOException e) {
+						source.logProblem(AcceleoParserMessages.getString(
+								"AcceleoParser.Error.FileSaving", newResource //$NON-NLS-1$
+										.getURI().lastSegment(), e.getMessage()), 0, -1);
+					}
+				} else {
 					source.logProblem(AcceleoParserMessages.getString(
-							"AcceleoParser.Error.FileSaving", newResource //$NON-NLS-1$
-									.getURI().lastSegment(), e.getMessage()), 0, -1);
+							"AcceleoParser.Error.InvalidAST", source.getFile() //$NON-NLS-1$
+									.getName()), 0, -1);
 				}
-			} else {
-				source.logProblem(AcceleoParserMessages.getString(
-						"AcceleoParser.Error.InvalidAST", source.getFile() //$NON-NLS-1$
-								.getName()), 0, -1);
+				monitor.worked(1);
 			}
-			monitor.worked(1);
-		}
-		this.manageParsingResult(sources);
-		Iterator<Resource> resources = oResourceSet.getResources().iterator();
-		while (resources.hasNext()) {
-			resources.next().unload();
+			this.manageParsingResult(sources);
+		} finally {
+			Thread unloadThread = new Thread() {
+				/**
+				 * {@inheritDoc}
+				 * 
+				 * @see java.lang.Thread#run()
+				 */
+				@Override
+				public void run() {
+					Iterator<Resource> resources = oResourceSet.getResources().iterator();
+					while (resources.hasNext()) {
+						resources.next().unload();
+					}
+				}
+			};
+			unloadThread.start();
 		}
 	}
 
