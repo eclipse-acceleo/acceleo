@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,6 +57,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.Variable;
+import org.eclipse.ocl.utilities.ASTNode;
 
 /**
  * The main class of the Acceleo Parser. Creates an AST from a list of Acceleo files, using a CST step. You
@@ -88,6 +93,11 @@ public class AcceleoParser {
 	 * Indicates if we will trimmed the compilation.
 	 */
 	private boolean trimmedCompilation;
+
+	/**
+	 * The operations in the module.
+	 */
+	private Multimap<Module, ASTNode> operationsInModule = ArrayListMultimap.create();
 
 	/**
 	 * The constructor.
@@ -668,23 +678,56 @@ public class AcceleoParser {
 		ConcurrentLinkedQueue<Resource> conResources = new ConcurrentLinkedQueue<Resource>(resources);
 		for (Resource resource : conResources) {
 			List<EObject> contents = resource.getContents();
-			Module module = (Module)contents.get(0);
-			List<EOperation> eOperations = new ArrayList<EOperation>();
+			if (contents.size() > 0 && contents.get(0) instanceof Module) {
+				Module module = (Module)contents.get(0);
+				fillCache(module);
 
-			for (int i = 1; i < contents.size(); i++) {
-				EObject eObject = contents.get(i);
-				TreeIterator<EObject> eAllContents = eObject.eAllContents();
-				while (eAllContents.hasNext()) {
-					EObject next = eAllContents.next();
-					if (next instanceof EOperation && !operationUsed((EOperation)next, module)) {
-						eOperations.add((EOperation)next);
+				List<EOperation> eOperations = new ArrayList<EOperation>();
+
+				for (int i = 1; i < contents.size(); i++) {
+					EObject eObject = contents.get(i);
+					TreeIterator<EObject> eAllContents = eObject.eAllContents();
+					while (eAllContents.hasNext()) {
+						EObject next = eAllContents.next();
+						if (next instanceof EOperation && !operationUsed((EOperation)next, module)) {
+							eOperations.add((EOperation)next);
+						}
 					}
 				}
-			}
 
-			// Trim environment
-			for (EOperation eOperation : eOperations) {
-				EcoreUtil.remove(eOperation);
+				// Trim environment
+				for (EOperation eOperation : eOperations) {
+					EcoreUtil.remove(eOperation);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Fills the cache with the data from a given module.
+	 * 
+	 * @param module
+	 *            The module
+	 */
+	private void fillCache(Module module) {
+		TreeIterator<EObject> eAllContents = module.eAllContents();
+		while (eAllContents.hasNext()) {
+			EObject next = eAllContents.next();
+			if (next instanceof OperationCallExp) {
+				OperationCallExp operationCallExp = (OperationCallExp)next;
+				operationsInModule.put(module, operationCallExp);
+			} else if (next instanceof TemplateInvocation) {
+				TemplateInvocation templateInvocation = (TemplateInvocation)next;
+				operationsInModule.put(module, templateInvocation);
+			} else if (next instanceof Template) {
+				Template template = (Template)next;
+				operationsInModule.put(module, template);
+			} else if (next instanceof QueryInvocation) {
+				QueryInvocation queryInvocation = (QueryInvocation)next;
+				operationsInModule.put(module, queryInvocation);
+			} else if (next instanceof Query) {
+				Query query = (Query)next;
+				operationsInModule.put(module, query);
 			}
 		}
 	}
@@ -701,39 +744,45 @@ public class AcceleoParser {
 	 */
 	private boolean operationUsed(EOperation operation, Module module) {
 		boolean result = false;
-		TreeIterator<EObject> eAllContents = module.eAllContents();
-		while (eAllContents.hasNext() && !result) {
-			EObject next = eAllContents.next();
-			if (next instanceof OperationCallExp) {
-				OperationCallExp operationCallExp = (OperationCallExp)next;
-				if (rootModule(operationCallExp.eContainer()) == module
-						&& operationCallExp.getReferredOperation().equals(operation)) {
-					result = true;
+
+		Collection<ASTNode> nodes = operationsInModule.get(module);
+		for (ASTNode astNode : nodes) {
+			if (astNode.eResource() != null && astNode.eResource().equals(module.eResource())) {
+				if (astNode instanceof OperationCallExp) {
+					OperationCallExp operationCallExp = (OperationCallExp)astNode;
+					if (rootModule(operationCallExp.eContainer()) == module
+							&& operationCallExp.getReferredOperation().equals(operation)) {
+						result = true;
+					}
+				} else if (astNode instanceof TemplateInvocation) {
+					TemplateInvocation templateInvocation = (TemplateInvocation)astNode;
+					if (templateInvocation.getDefinition().eContainer() == module
+							|| module.getExtends().contains(templateInvocation.getDefinition().eContainer())
+							|| module.getImports().contains(templateInvocation.getDefinition().eContainer())) {
+						result = templateEqual(templateInvocation.getDefinition(), operation);
+					}
+				} else if (astNode instanceof Template) {
+					if (astNode.eContainer() == module || module.getExtends().contains(astNode.eContainer())
+							|| module.getImports().contains(astNode.eContainer())) {
+						result = templateEqual((Template)astNode, operation);
+					}
+				} else if (astNode instanceof QueryInvocation) {
+					QueryInvocation queryInvocation = (QueryInvocation)astNode;
+					if (queryInvocation.getDefinition().eContainer() == module
+							|| module.getExtends().contains(queryInvocation.getDefinition().eContainer())
+							|| module.getImports().contains(queryInvocation.getDefinition().eContainer())) {
+						result = queryEqual(queryInvocation.getDefinition(), operation);
+					}
+				} else if (astNode instanceof Query) {
+					if (astNode.eContainer() == module || module.getExtends().contains(astNode.eContainer())
+							|| module.getImports().contains(astNode.eContainer())) {
+						result = queryEqual((Query)astNode, operation);
+					}
 				}
-			} else if (next instanceof TemplateInvocation) {
-				TemplateInvocation templateInvocation = (TemplateInvocation)next;
-				if (templateInvocation.getDefinition().eContainer() == module
-						|| module.getExtends().contains(templateInvocation.getDefinition().eContainer())
-						|| module.getImports().contains(templateInvocation.getDefinition().eContainer())) {
-					result = templateEqual(templateInvocation.getDefinition(), operation);
-				}
-			} else if (next instanceof Template) {
-				if (next.eContainer() == module || module.getExtends().contains(next.eContainer())
-						|| module.getImports().contains(next.eContainer())) {
-					result = templateEqual((Template)next, operation);
-				}
-			} else if (next instanceof QueryInvocation) {
-				QueryInvocation queryInvocation = (QueryInvocation)next;
-				if (queryInvocation.getDefinition().eContainer() == module
-						|| module.getExtends().contains(queryInvocation.getDefinition().eContainer())
-						|| module.getImports().contains(queryInvocation.getDefinition().eContainer())) {
-					result = queryEqual(queryInvocation.getDefinition(), operation);
-				}
-			} else if (next instanceof Query) {
-				if (next.eContainer() == module || module.getExtends().contains(next.eContainer())
-						|| module.getImports().contains(next.eContainer())) {
-					result = queryEqual((Query)next, operation);
-				}
+			}
+
+			if (result) {
+				break;
 			}
 		}
 		return result;
