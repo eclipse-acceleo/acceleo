@@ -558,6 +558,7 @@ public class AcceleoParser {
 				List<String> newSignatures = createSignatureList(source.getCST());
 
 				buildDependantFiles = !previousSignatures.equals(newSignatures);
+				firstIteration = false;
 			}
 		}
 		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); !monitor.isCanceled()
