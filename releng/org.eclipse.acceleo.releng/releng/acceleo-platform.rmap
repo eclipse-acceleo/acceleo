@@ -9,6 +9,7 @@
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.apache\.log4j(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
+  <rm:locator pattern="^com\.google(?:\..+)?$" searchPathRef="orbit"/>
   <rm:locator searchPathRef="platform"/>
   <rm:searchPath name="local.releng">
     <rm:provider componentTypes="buckminster" readerType="local" mutable="false">
@@ -42,6 +43,13 @@
   <rm:searchPath name="platform">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/eclipse/updates/3.7">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="orbit">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/tools/orbit/downloads/drops/R20110523182458/repository">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
