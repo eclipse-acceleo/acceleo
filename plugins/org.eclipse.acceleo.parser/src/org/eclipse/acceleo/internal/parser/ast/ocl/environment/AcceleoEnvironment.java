@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -98,6 +101,9 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 
 	/** Used to generate implicit iterator variables. */
 	private int generatorInt;
+
+	/** This will be used in order to cache the result of {@link #getAdditionalOperations(EClassifier)}. */
+	private ListMultimap<EClassifier, EOperation> operationCache = ArrayListMultimap.create();
 
 	/**
 	 * Delegates instantiation to the super constructor.
@@ -247,11 +253,16 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	@Override
 	public List<EOperation> getAdditionalOperations(EClassifier classifier) {
+		final List<EOperation> operations = operationCache.get(classifier);
+		if (!operations.isEmpty()) {
+			return operations;
+		}
 		List<EOperation> result = new ArrayList<EOperation>();
 		result.addAll(super.getAdditionalOperations(classifier));
 		if (!(classifier instanceof PrimitiveType)) {
 			result.addAll(super.getAdditionalOperations(EcorePackage.eINSTANCE.getEObject()));
 		}
+		operationCache.putAll(classifier, result);
 		return result;
 	}
 

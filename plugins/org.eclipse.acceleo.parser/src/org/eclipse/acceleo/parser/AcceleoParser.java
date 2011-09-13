@@ -11,12 +11,11 @@
 package org.eclipse.acceleo.parser;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ListMultimap;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -97,7 +96,7 @@ public class AcceleoParser {
 	/**
 	 * The operations in the module.
 	 */
-	private Multimap<Module, ASTNode> operationsInModule = ArrayListMultimap.create();
+	private ListMultimap<Module, ASTNode> operationsInModule = ArrayListMultimap.create();
 
 	/**
 	 * The constructor.
@@ -715,7 +714,7 @@ public class AcceleoParser {
 					TreeIterator<EObject> eAllContents = eObject.eAllContents();
 					while (eAllContents.hasNext()) {
 						EObject next = eAllContents.next();
-						if (next instanceof EOperation && !operationUsed((EOperation)next, module)) {
+						if (next instanceof EOperation && !operationUsed((EOperation)next, module, resource)) {
 							eOperations.add((EOperation)next);
 						}
 					}
@@ -766,14 +765,18 @@ public class AcceleoParser {
 	 *            The operation
 	 * @param module
 	 *            The module
+	 * @param resource
+	 *            The {@link Resource} containing this module.
 	 * @return <code>true</code> if the operation is usefull, <code>false</code> otherwise.
 	 */
-	private boolean operationUsed(EOperation operation, Module module) {
+	private boolean operationUsed(EOperation operation, Module module, Resource resource) {
 		boolean result = false;
 
-		Collection<ASTNode> nodes = operationsInModule.get(module);
-		for (ASTNode astNode : nodes) {
-			if (astNode.eResource() != null && astNode.eResource().equals(module.eResource())) {
+		List<ASTNode> nodes = operationsInModule.get(module);
+		for (int i = 0; i < nodes.size(); i++) {
+			ASTNode astNode = nodes.get(i);
+			final Resource astResource = astNode.eResource();
+			if (astResource != null && astResource.equals(resource)) {
 				if (astNode instanceof OperationCallExp) {
 					OperationCallExp operationCallExp = (OperationCallExp)astNode;
 					if (rootModule(operationCallExp.eContainer()) == module
