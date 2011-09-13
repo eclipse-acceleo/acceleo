@@ -162,7 +162,7 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 	 */
 	public String getAdditionalProposalInfo() {
-		return "Project Name :\n " + getModuleProjectName() + "\n\nPath :\n " + getModulePackage(); //$NON-NLS-1$ //$NON-NLS-2$
+		return "Project Name: " + getModuleProjectName() + "<br/>Path: " + getModulePackage(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
