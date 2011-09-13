@@ -12,8 +12,8 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.io.IOException;
 
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -103,7 +102,7 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 		try {
 			EObject eObject;
 			try {
-				eObject = ModelUtils.load(emtlURI, new ResourceSetImpl());
+				eObject = AcceleoUIResourceSet.getResource(emtlURI);
 			} catch (IOException e) {
 				eObject = null;
 				AcceleoUIActivator.getDefault().getLog().log(

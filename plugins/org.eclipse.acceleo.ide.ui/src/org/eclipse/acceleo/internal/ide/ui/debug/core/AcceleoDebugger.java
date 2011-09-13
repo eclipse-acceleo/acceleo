@@ -20,11 +20,11 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.eclipse.acceleo.common.utils.CompactHashSet;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IFile;
@@ -35,9 +35,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.utilities.ASTNode;
 
 /**
@@ -151,44 +148,36 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 *            is the current Acceleo project
 	 */
 	private void init(IProject project) {
-		ResourceSet oResourceSet = new ResourceSetImpl();
-		try {
-			Map<File, Module> mtlFiles = getInputOutputAcceleoFiles(project, oResourceSet);
-			breakpointsASTFragments.clear();
-			allASTFragments.clear();
-			Set<ASTFragment> conflicts = new CompactHashSet<ASTFragment>();
-			Iterator<Map.Entry<File, Module>> mtlFilesIt = mtlFiles.entrySet().iterator();
-			while (mtlFilesIt.hasNext()) {
-				Map.Entry<File, Module> entry = mtlFilesIt.next();
-				File file = entry.getKey();
-				StringBuffer buffer = FileContent.getFileContent(file);
-				Module eModule = entry.getValue();
-				Iterator<EObject> eAllContents = eModule.eAllContents();
-				while (eAllContents.hasNext()) {
-					EObject eObject = eAllContents.next();
-					if (eObject instanceof ASTNode) {
-						ASTFragment fragment = new ASTFragment((ASTNode)eObject);
-						if (!conflicts.contains(fragment)) {
-							conflicts.add(fragment);
-							int start = ((ASTNode)eObject).getStartPosition();
-							int end = ((ASTNode)eObject).getEndPosition();
-							int line = lineNumber(buffer, start);
-							if (start > -1) {
-								FileRegion region = new FileRegion();
-								region.file = file;
-								region.line = line;
-								region.start = start;
-								region.end = end;
-								allASTFragments.put(fragment, region);
-							}
+		Map<File, Module> mtlFiles = getInputOutputAcceleoFiles(project);
+		breakpointsASTFragments.clear();
+		allASTFragments.clear();
+		Set<ASTFragment> conflicts = new CompactHashSet<ASTFragment>();
+		Iterator<Map.Entry<File, Module>> mtlFilesIt = mtlFiles.entrySet().iterator();
+		while (mtlFilesIt.hasNext()) {
+			Map.Entry<File, Module> entry = mtlFilesIt.next();
+			File file = entry.getKey();
+			StringBuffer buffer = FileContent.getFileContent(file);
+			Module eModule = entry.getValue();
+			Iterator<EObject> eAllContents = eModule.eAllContents();
+			while (eAllContents.hasNext()) {
+				EObject eObject = eAllContents.next();
+				if (eObject instanceof ASTNode) {
+					ASTFragment fragment = new ASTFragment((ASTNode)eObject);
+					if (!conflicts.contains(fragment)) {
+						conflicts.add(fragment);
+						int start = ((ASTNode)eObject).getStartPosition();
+						int end = ((ASTNode)eObject).getEndPosition();
+						int line = lineNumber(buffer, start);
+						if (start > -1) {
+							FileRegion region = new FileRegion();
+							region.file = file;
+							region.line = line;
+							region.start = start;
+							region.end = end;
+							allASTFragments.put(fragment, region);
 						}
 					}
 				}
-			}
-		} finally {
-			Iterator<Resource> resources = oResourceSet.getResources().iterator();
-			while (resources.hasNext()) {
-				resources.next().unload();
 			}
 		}
 		state = ITemplateDebugger.RESUMED;
@@ -205,11 +194,9 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * 
 	 * @param project
 	 *            is the project that contains the Acceleo Application to launch
-	 * @param oResourceSet
-	 *            is the resource set where to put the AST models.
 	 * @return a map of the accessible Acceleo files and their corresponding AST models
 	 */
-	private Map<File, Module> getInputOutputAcceleoFiles(IProject project, ResourceSet oResourceSet) {
+	private Map<File, Module> getInputOutputAcceleoFiles(IProject project) {
 		Map<File, Module> result = new HashMap<File, Module>();
 		Iterator<AcceleoProject> acceleoProjects = new AcceleoProject(project)
 				.getRecursivelyAccessibleAcceleoProjects().iterator();
@@ -223,7 +210,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 					if (outputFilePath != null) {
 						URI outputFileURI = URI.createPlatformResourceURI(outputFilePath.toString(), false);
 						try {
-							EObject root = ModelUtils.load(outputFileURI, oResourceSet);
+							EObject root = AcceleoUIResourceSet.getResource(outputFileURI);
 							if (root instanceof Module) {
 								result.put(mtlFile.getLocation().toFile(), (Module)root);
 							}
@@ -290,8 +277,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	public void stepDebugOutput(ASTFragment astFragment, Object input, Object output) {
 		if (isBreakpoint(astFragment, true)) {
 			final Map<String, Object> map = new HashMap<String, Object>();
-			map.put("output", output); //$NON-NLS-1$
-			waitForEvent(map);
+			map.put("output", output); // $N//waitForEvent(map);
 		}
 	}
 

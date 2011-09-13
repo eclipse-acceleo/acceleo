@@ -13,8 +13,8 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.model.mtl.Documentation;
 import org.eclipse.acceleo.model.mtl.DocumentedElement;
 import org.eclipse.acceleo.model.mtl.Macro;
@@ -35,8 +35,6 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.swt.graphics.Image;
@@ -113,10 +111,10 @@ public final class AcceleoUIDocumentationUtils {
 		/*
 		 * [Doc unloading] unloading resource loaded from AcceleoUIDocumentationUtils#getDocumentationFromFile
 		 */
-		if (documentation != null && documentation.eResource() != null
-				&& documentation.eResource() != element.eResource()) {
-			documentation.eResource().unload();
-		}
+		// if (documentation != null && documentation.eResource() != null
+		// && documentation.eResource() != element.eResource()) {
+		// documentation.eResource().unload();
+		// }
 
 		return result;
 	}
@@ -198,9 +196,8 @@ public final class AcceleoUIDocumentationUtils {
 		Resource eResource = element.eResource();
 		Documentation documentation = null;
 		if (eResource != null) {
-			ResourceSet resourceSet = new ResourceSetImpl();
 			try {
-				EObject eObject = ModelUtils.load(eResource.getURI(), resourceSet);
+				EObject eObject = AcceleoUIResourceSet.getResource(eResource.getURI());
 				if (eObject instanceof Module) {
 					Module module = (Module)eObject;
 					if (element instanceof Module) {

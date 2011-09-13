@@ -22,6 +22,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.parser.AcceleoFile;
@@ -158,6 +159,13 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			parser = new AcceleoParser(true, settings.isTrimmedPositions());
 		}
 		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
+		for (URI uri : oURIs) {
+			try {
+				AcceleoUIResourceSet.removeResource(uri);
+			} catch (IOException e) {
+				AcceleoUIActivator.log(e, true);
+			}
+		}
 
 		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
 			AcceleoFile iFile = iterator.next();

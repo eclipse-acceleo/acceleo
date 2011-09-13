@@ -17,11 +17,11 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -44,9 +44,6 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
@@ -239,11 +236,12 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				}
 			}
 		}
-		ResourceSet newResourceSet = new ResourceSetImpl();
+
+		EObject eObject = null;
 		for (URI uri : allURIs) {
 			try {
 				if (!monitor.isCanceled() && this.resourceAtURIExist(uri)) {
-					ModelUtils.load(uri, newResourceSet);
+					eObject = AcceleoUIResourceSet.getResource(uri);
 				}
 			} catch (IOException e) {
 				// do nothing
@@ -251,16 +249,11 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				// do nothing
 			}
 		}
-		if (!monitor.isCanceled()) {
-			EcoreUtil.resolveAll(newResourceSet);
-			for (Resource resource : newResourceSet.getResources()) {
-				if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
-					scanModuleForDeclaration((Module)resource.getContents().get(0));
-				}
+		if (!monitor.isCanceled() && eObject != null) {
+			EcoreUtil.resolveAll(eObject.eResource());
+			if (eObject instanceof Module) {
+				scanModuleForDeclaration((Module)eObject);
 			}
-		}
-		for (Resource resource : newResourceSet.getResources()) {
-			resource.unload();
 		}
 	}
 

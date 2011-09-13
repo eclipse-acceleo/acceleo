@@ -20,7 +20,6 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -29,6 +28,7 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelPackage;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
@@ -391,7 +391,7 @@ public final class AcceleoUIGenerator {
 				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 
 				URI moduleURI = this.convertToURI(generatorURI);
-				EObject load = ModelUtils.load(moduleURI, resourceSet);
+				EObject load = AcceleoUIResourceSet.getResource(moduleURI);
 
 				if (load instanceof Module) {
 					moduleTmp = (Module)load;
@@ -451,7 +451,7 @@ public final class AcceleoUIGenerator {
 				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 
 				URI moduleURI = this.convertToURI(generatorURI);
-				EObject load = ModelUtils.load(moduleURI, resourceSet);
+				EObject load = AcceleoUIResourceSet.getResource(moduleURI);
 
 				if (load instanceof Module) {
 					moduleTmp = (Module)load;

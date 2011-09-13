@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoMarkerUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -29,9 +29,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -148,7 +146,6 @@ public final class AcceleoRefactoringUtils {
 
 		AcceleoProject acceleoProject = new AcceleoProject(moduleFile.getProject());
 		List<URI> uriList = acceleoProject.getOutputFiles();
-		ResourceSet newResourceSet = new ResourceSetImpl();
 
 		for (URI uri : uriList) {
 			IPath path = acceleoProject.getOutputFilePath(moduleFile);
@@ -159,15 +156,12 @@ public final class AcceleoRefactoringUtils {
 
 			if (uri.equals(moduleFileURI)) {
 				try {
-					ModelUtils.load(uri, newResourceSet);
+					EObject eObject = AcceleoUIResourceSet.getResource(moduleFileURI);
 
-					EcoreUtil.resolveAll(newResourceSet);
-					for (Resource resource : newResourceSet.getResources()) {
-						if (resource.getContents().size() > 0
-								&& resource.getContents().get(0) instanceof Module) {
-							mod = (Module)resource.getContents().get(0);
-							break;
-						}
+					EcoreUtil.resolveAll(eObject.eResource());
+					if (eObject instanceof Module) {
+						mod = (Module)eObject;
+						break;
 					}
 				} catch (IOException e) {
 					AcceleoUIActivator.log(e, true);
