@@ -38,7 +38,8 @@ public class AcceleoLogListener implements ILogListener {
 	public void logging(final IStatus status, final String plugin) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
-				if (AcceleoPreferences.areNotificationsEnabled()) {
+				if (AcceleoPreferences.areNotificationsEnabled()
+						&& !AcceleoPreferences.areNotificationsForcedDisabled()) {
 					delegateLog(status, plugin);
 				}
 			}
@@ -66,27 +67,36 @@ public class AcceleoLogListener implements ILogListener {
 		}
 
 		NotificationType type = null;
+		boolean shouldNotity = true;
 		int severity = status.getSeverity();
 		switch (severity) {
 			case IStatus.CANCEL:
 				type = NotificationType.CANCEL;
+				shouldNotity = AcceleoPreferences.areCancelNotificationsEnabled();
 				break;
 			case IStatus.WARNING:
 				type = NotificationType.WARNING;
+				shouldNotity = AcceleoPreferences.areWarningNotificationsEnabled();
 				break;
 			case IStatus.ERROR:
 				type = NotificationType.ERROR;
+				shouldNotity = AcceleoPreferences.areErrorNotificationsEnabled();
 				break;
 			case IStatus.INFO:
 				type = NotificationType.INFO;
+				shouldNotity = AcceleoPreferences.areInfoNotificationsEnabled();
 				break;
 			case IStatus.OK:
 				type = NotificationType.OK;
+				shouldNotity = AcceleoPreferences.areOKNotificationsEnabled();
 				break;
 			default:
 				type = NotificationType.ERROR;
+				shouldNotity = AcceleoPreferences.areErrorNotificationsEnabled();
 				break;
 		}
-		NotificationDialogUtil.notify(title, status.getMessage(), type);
+		if (shouldNotity) {
+			NotificationDialogUtil.notify(title, status.getMessage(), type);
+		}
 	}
 }

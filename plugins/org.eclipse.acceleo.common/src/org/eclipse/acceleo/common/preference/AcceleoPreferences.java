@@ -36,6 +36,27 @@ public final class AcceleoPreferences {
 	/** Preference key for the activation of Acceleo's notifications. */
 	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS = "org.eclipse.acceleo.ui.notification"; //$NON-NLS-1$
 
+	/** Preference key for the forced deactivation of Acceleo's notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_FORCED_DEACTIVATION = "org.eclipse.acceleo.ui.notification.forced.deactivation"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's error notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_ERROR = "org.eclipse.acceleo.ui.notification.error"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's warning notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_WARNING = "org.eclipse.acceleo.ui.notification.warning"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's ok notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_OK = "org.eclipse.acceleo.ui.notification.ok"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's success notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_SUCCESS = "org.eclipse.acceleo.ui.notification.success"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's info notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_INFO = "org.eclipse.acceleo.ui.notification.info"; //$NON-NLS-1$
+
+	/** Preference key for the activation of Acceleo's cancel notifications. */
+	private static final String PREFERENCE_KEY_ENABLE_NOTIFICATIONS_CANCEL = "org.eclipse.acceleo.ui.notification.cancel"; //$NON-NLS-1$
+
 	/** Default value for the profiler enablement. */
 	private static final boolean DEFAULT_ENABLE_PROFILER = false;
 
@@ -50,6 +71,9 @@ public final class AcceleoPreferences {
 
 	/** Default value for the notifications enablement. */
 	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS = false;
+
+	/** Default value for the notifications type enablement. */
+	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS_TYPE = true;
 
 	/** Preferences scope for the Acceleo common plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
@@ -163,5 +187,160 @@ public final class AcceleoPreferences {
 	public static boolean areNotificationsEnabled() {
 		return PREFERENCES_SCOPE
 				.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS, DEFAULT_ENABLE_NOTIFICATIONS);
+	}
+
+	/**
+	 * Switches the forced deactivation of the notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the forced deactivation of the notifications, <code>false</code>
+	 *            to disable it.
+	 * @since 3.2
+	 */
+	public static void switchForceDeactivationNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_FORCED_DEACTIVATION, state);
+	}
+
+	/**
+	 * Returns whether the notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areNotificationsForcedDisabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_FORCED_DEACTIVATION,
+				DEFAULT_ENABLE_NOTIFICATIONS);
+	}
+
+	/**
+	 * Switches the error notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the error notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchErrorNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_ERROR, state);
+	}
+
+	/**
+	 * Returns whether the error notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the error notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areErrorNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_ERROR,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Switches the warning notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the warning notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchWarningNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_WARNING, state);
+	}
+
+	/**
+	 * Returns whether the warning notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the warning notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areWarningNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_WARNING,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Switches the ok notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the ok notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchOKNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_OK, state);
+	}
+
+	/**
+	 * Returns whether the ok notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the ok notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areOKNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_OK,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Switches the success notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the success notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchSuccessNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_SUCCESS, state);
+	}
+
+	/**
+	 * Returns whether the success notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the success notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areSuccessNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_SUCCESS,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Switches the info notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the info notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchInfoNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_INFO, state);
+	}
+
+	/**
+	 * Returns whether the info notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the info notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areInfoNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_INFO,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Switches the cancel notifications to <code>state</code>.
+	 * 
+	 * @param state
+	 *            <code>true</code> to enable the cancel notifications, <code>false</code> to disable it.
+	 * @since 3.2
+	 */
+	public static void switchCancelNotifications(boolean state) {
+		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_CANCEL, state);
+	}
+
+	/**
+	 * Returns whether the cancel notifications are enabled or not.
+	 * 
+	 * @return <code>true</code> if the cancel notifications are enabled, <code>false</code> otherwise.
+	 * @since 3.2
+	 */
+	public static boolean areCancelNotificationsEnabled() {
+		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_CANCEL,
+				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
 	}
 }

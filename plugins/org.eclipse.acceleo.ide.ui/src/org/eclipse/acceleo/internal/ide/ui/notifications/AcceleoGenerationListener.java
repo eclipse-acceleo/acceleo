@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -41,6 +42,16 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 	private ArrayList<String> filesGenerated = new ArrayList<String>();
 
 	/**
+	 * The start time of the generation.
+	 */
+	private long start;
+
+	@Override
+	public void generationStart(Monitor monitor, File targetFolder) {
+		start = System.currentTimeMillis();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.event.AbstractAcceleoTextGenerationListener#generationCompleted()
@@ -48,19 +59,18 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 	@Override
 	public void generationCompleted() {
 		super.generationCompleted();
-		if (filesGenerated.size() > 0) {
+		if (filesGenerated.size() > 0 && AcceleoPreferences.areNotificationsEnabled()
+				&& !AcceleoPreferences.areNotificationsForcedDisabled()
+				&& AcceleoPreferences.areSuccessNotificationsEnabled()) {
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
-					StringBuffer buffer = new StringBuffer(AcceleoUIMessages
-							.getString("AcceleoNotifications.FollowingFilesGenerated") + "\n"); //$NON-NLS-1$//$NON-NLS-2$
-					for (String file : filesGenerated) {
-						buffer.append(file);
-						buffer.append("\n"); //$NON-NLS-1$
-					}
+					long time = System.currentTimeMillis() - start;
+					Double finalTime = Double.valueOf(Double.valueOf(time).doubleValue() / 1000d);
 
 					NotificationDialogUtil.notify(AcceleoUIMessages
-							.getString("AcceleoNotifications.FollowingFilesGenerated"), buffer.toString(), //$NON-NLS-1$
-							NotificationType.SUCCESS);
+							.getString("AcceleoNotifications.FilesGeneratedTitle"), AcceleoUIMessages //$NON-NLS-1$
+							.getString("AcceleoNotifications.FilesGeneratedMessage", Integer //$NON-NLS-1$
+									.valueOf(filesGenerated.size()), finalTime), NotificationType.SUCCESS);
 				}
 			});
 		}
@@ -89,8 +99,7 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 		File file = new File(event.getText());
 		IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 				new Path(file.getAbsolutePath()));
-		if (iFile != null && AcceleoGenerationListener.shouldNotify(iFile)
-				&& AcceleoPreferences.areNotificationsEnabled()) {
+		if (iFile != null && AcceleoGenerationListener.shouldNotify(iFile)) {
 			String text = event.getText();
 			filesGenerated.add(new Path(text).lastSegment());
 		}

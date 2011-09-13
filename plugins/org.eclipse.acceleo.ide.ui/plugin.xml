@@ -1194,6 +1194,12 @@ Contributors:
              id="org.eclipse.acceleo.ide.ui.editorPreferences"
              category="org.eclipse.acceleo.ide.ui.acceleoPreferences"
              name="%editorPreferences"/>
+       <page
+             category="org.eclipse.acceleo.ide.ui.acceleoPreferences"
+             class="org.eclipse.acceleo.internal.ide.ui.preferences.AcceleoNotificationsPreferences"
+             id="org.eclipse.acceleo.ide.ui.notificationsPreferences"
+             name="%notificationsPreferences">
+       </page>
     </extension>
     <extension
           point="org.eclipse.core.runtime.preferences">
