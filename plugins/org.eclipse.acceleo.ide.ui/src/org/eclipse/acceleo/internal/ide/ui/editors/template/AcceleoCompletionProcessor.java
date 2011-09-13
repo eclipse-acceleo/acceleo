@@ -60,7 +60,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -581,17 +580,6 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 
 			image = this.computeImage(acceleoElement);
 			description = this.computeDescription(acceleoElement);
-
-			if (acceleoElement != null) {
-				EObject eContainer = acceleoElement.eContainer();
-				if (eContainer instanceof org.eclipse.acceleo.model.mtl.Module
-						&& ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI() != null) {
-					description = "\nModule Name :\n " //$NON-NLS-1$
-							+ ((org.eclipse.acceleo.model.mtl.Module)eContainer).getName()
-							+ "\n\nModule Full Name ID :\n " //$NON-NLS-1$
-							+ ((org.eclipse.acceleo.model.mtl.Module)eContainer).getNsURI();
-				}
-			}
 		} else {
 			image = AcceleoUIActivator.getDefault().getImage(
 					IAcceleoContantsImage.TemplateEditor.Completion.OPERATION);
@@ -610,7 +598,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 			replacementStringWithArgsAfter += ')';
-			description = AcceleoUIDocumentationUtils.getTextFrom(eOperation);
+			if (description.length() == 0) {
+				description = AcceleoUIDocumentationUtils.getTextFrom(eOperation);
+			}
 			if (description.length() == 0) {
 				if (eOperation.getEContainingClass() != null) {
 					description = "\n" + eOperation.getEContainingClass().getName() + "." //$NON-NLS-1$ //$NON-NLS-2$
