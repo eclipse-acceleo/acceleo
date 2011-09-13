@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -714,7 +715,8 @@ public class AcceleoParser {
 					TreeIterator<EObject> eAllContents = eObject.eAllContents();
 					while (eAllContents.hasNext()) {
 						EObject next = eAllContents.next();
-						if (next instanceof EOperation && !operationUsed((EOperation)next, module, resource)) {
+						if (next instanceof EOperation && !eOperations.contains(next)
+								&& !operationUsed((EOperation)next, module, resource)) {
 							eOperations.add((EOperation)next);
 						}
 					}
@@ -738,6 +740,10 @@ public class AcceleoParser {
 		TreeIterator<EObject> eAllContents = module.eAllContents();
 		while (eAllContents.hasNext()) {
 			EObject next = eAllContents.next();
+			if (next.eResource() != module.eResource()) {
+				eAllContents.prune();
+				continue;
+			}
 			if (next instanceof OperationCallExp) {
 				OperationCallExp operationCallExp = (OperationCallExp)next;
 				operationsInModule.put(module, operationCallExp);
@@ -773,70 +779,45 @@ public class AcceleoParser {
 		boolean result = false;
 
 		List<ASTNode> nodes = operationsInModule.get(module);
-		for (int i = 0; i < nodes.size(); i++) {
-			ASTNode astNode = nodes.get(i);
-			final Resource astResource = astNode.eResource();
-			if (astResource != null && astResource.equals(resource)) {
-				if (astNode instanceof OperationCallExp) {
-					OperationCallExp operationCallExp = (OperationCallExp)astNode;
-					if (rootModule(operationCallExp.eContainer()) == module
-							&& operationCallExp.getReferredOperation().equals(operation)) {
-						result = true;
-					}
-				} else if (astNode instanceof TemplateInvocation) {
-					TemplateInvocation templateInvocation = (TemplateInvocation)astNode;
-					if (templateInvocation.getDefinition().eContainer() == module
-							|| module.getExtends().contains(templateInvocation.getDefinition().eContainer())
-							|| module.getImports().contains(templateInvocation.getDefinition().eContainer())) {
-						result = templateEqual(templateInvocation.getDefinition(), operation);
-					}
-				} else if (astNode instanceof Template) {
-					if (astNode.eContainer() == module || module.getExtends().contains(astNode.eContainer())
-							|| module.getImports().contains(astNode.eContainer())) {
-						result = templateEqual((Template)astNode, operation);
-					}
-				} else if (astNode instanceof QueryInvocation) {
-					QueryInvocation queryInvocation = (QueryInvocation)astNode;
-					if (queryInvocation.getDefinition().eContainer() == module
-							|| module.getExtends().contains(queryInvocation.getDefinition().eContainer())
-							|| module.getImports().contains(queryInvocation.getDefinition().eContainer())) {
-						result = queryEqual(queryInvocation.getDefinition(), operation);
-					}
-				} else if (astNode instanceof Query) {
-					if (astNode.eContainer() == module || module.getExtends().contains(astNode.eContainer())
-							|| module.getImports().contains(astNode.eContainer())) {
-						result = queryEqual((Query)astNode, operation);
-					}
+		final Set<Module> importedModules = new HashSet<Module>(module.getImports());
+		final Set<Module> extendedModules = new HashSet<Module>(module.getExtends());
+		for (int i = 0; i < nodes.size() && !result; i++) {
+			final ASTNode astNode = nodes.get(i);
+			if (astNode instanceof OperationCallExp) {
+				OperationCallExp operationCallExp = (OperationCallExp)astNode;
+				if (operationCallExp.getReferredOperation().equals(operation)) {
+					result = true;
+				}
+			} else if (astNode instanceof TemplateInvocation) {
+				final TemplateInvocation templateInvocation = (TemplateInvocation)astNode;
+				final EObject definitionContainer = templateInvocation.getDefinition().eContainer();
+				if (definitionContainer == module || importedModules.contains(definitionContainer)
+						|| extendedModules.contains(definitionContainer)) {
+					result = templateEqual(templateInvocation.getDefinition(), operation);
+				}
+			} else if (astNode instanceof Template) {
+				final EObject astNodeContainer = astNode.eContainer();
+				if (astNodeContainer == module || importedModules.contains(astNodeContainer)
+						|| extendedModules.contains(astNodeContainer)) {
+					result = templateEqual((Template)astNode, operation);
+				}
+			} else if (astNode instanceof QueryInvocation) {
+				final QueryInvocation queryInvocation = (QueryInvocation)astNode;
+				final EObject definitionContainer = queryInvocation.getDefinition().eContainer();
+				if (definitionContainer == module || importedModules.contains(definitionContainer)
+						|| extendedModules.contains(definitionContainer)) {
+					result = queryEqual(queryInvocation.getDefinition(), operation);
+				}
+			} else if (astNode instanceof Query) {
+				final EObject astNodeContainer = astNode.eContainer();
+				if (astNodeContainer == module || importedModules.contains(astNodeContainer)
+						|| extendedModules.contains(astNodeContainer)) {
+					result = queryEqual((Query)astNode, operation);
 				}
 			}
-
-			if (result) {
-				break;
-			}
 		}
+
 		return result;
-	}
-
-	/**
-	 * Returns the module from a given element in a module.
-	 * 
-	 * @param eObject
-	 *            the element.
-	 * @return The module from containing the given element.
-	 */
-	private Module rootModule(EObject eObject) {
-		Module module = null;
-
-		if (eObject.eContainer() != null) {
-			EObject eContainer = eObject.eContainer();
-			if (eContainer instanceof Module) {
-				module = (Module)eContainer;
-			} else {
-				module = rootModule(eContainer);
-			}
-		}
-
-		return module;
 	}
 
 	/**

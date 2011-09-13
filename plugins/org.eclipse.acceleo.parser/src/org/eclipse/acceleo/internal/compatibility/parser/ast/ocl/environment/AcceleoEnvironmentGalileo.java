@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
-import java.util.ArrayList;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +168,9 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 */
 		private final Map<EOperationSignatureElement, EOperation> eOperationCache = new HashMap<AcceleoEnvironmentGalileo.AcceleoTypeChecker.EOperationSignatureElement, EOperation>();
 
+		/** Caches the result of {@link #getOperations(EClassifier)}. */
+		private ListMultimap<EClassifier, EOperation> classifierOperations = ArrayListMultimap.create();
+
 		/**
 		 * Delegates instantiation to the super constructor.
 		 * 
@@ -222,9 +227,12 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 */
 		@Override
 		public List<EOperation> getOperations(EClassifier owner) {
-			final List<EOperation> result = new ArrayList<EOperation>(super.getOperations(owner));
-			if (!(owner instanceof PrimitiveType)) {
-				result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
+			final List<EOperation> result = classifierOperations.get(owner);
+			if (result.isEmpty()) {
+				result.addAll(super.getOperations(owner));
+				if (!(owner instanceof PrimitiveType)) {
+					result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
+				}
 			}
 			return result;
 		}
