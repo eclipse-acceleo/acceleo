@@ -60,7 +60,10 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Object applicationContext = event.getApplicationContext();
+		Object applicationContext = null;
+		if (event != null) {
+			applicationContext = event.getApplicationContext();
+		}
 		if (applicationContext instanceof EvaluationContext) {
 			EvaluationContext context = (EvaluationContext)applicationContext;
 			Object defaultVariable = context.getDefaultVariable();
