@@ -16,6 +16,7 @@
  */
 package org.eclipse.acceleo.internal.parser.ast.ocl.environment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -36,6 +37,8 @@ import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.internal.OCLEcorePlugin;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 import org.eclipse.ocl.ecore.internal.TupleFactory;
+import org.eclipse.ocl.util.TypeUtil;
+import org.eclipse.ocl.utilities.UMLReflection;
 
 /**
  * The Acceleo type resolver. Used in Eclipse 3.5+ only by
@@ -68,154 +71,6 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	public AcceleoTypeResolver(EcoreEnvironment env, Resource resource) {
 		super(env, resource);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#createResource()
-	 */
-	@Override
-	protected Resource createResource() {
-		Resource.Factory factory = OCLEcorePlugin.getEcoreResourceFactory();
-
-		return factory.createResource(URI.createURI("ocl:///oclenv.ecore")); //$NON-NLS-1$
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#createTuplePackage()
-	 */
-	@Override
-	protected EPackage createTuplePackage() {
-		EPackage result = super.createTuplePackage();
-
-		result.setEFactoryInstance(new TupleFactory());
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#createPackage(java.lang.String)
-	 */
-	@Override
-	protected EPackage createPackage(String name) {
-		EPackage result = EcoreFactory.eINSTANCE.createEPackage();
-
-		result.setName(name);
-		getResource().getContents().add(result);
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#findPackage(java.lang.String)
-	 */
-	@Override
-	protected EPackage findPackage(String name) {
-		EPackage result = null;
-
-		for (EObject o : getResource().getContents()) {
-			if (o instanceof EPackage) {
-				EPackage epkg = (EPackage)o;
-
-				if (name != null && name.equals(epkg.getName())) {
-					result = epkg;
-					break;
-				}
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#addClassifier(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	protected void addClassifier(EPackage pkg, EClassifier classifier) {
-		if (pkg != null) {
-			pkg.getEClassifiers().add(classifier);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#addOperation(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	protected void addOperation(EClassifier owner, EOperation operation) {
-		if (owner instanceof EClass) {
-			((EClass)owner).getEOperations().add(operation);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#addProperty(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	protected void addProperty(EClassifier owner, EStructuralFeature property) {
-		if (owner instanceof EClass) {
-			((EClass)owner).getEStructuralFeatures().add(property);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#createShadowClass(java.lang.Object)
-	 */
-	@Override
-	protected EClass createShadowClass(EClassifier type) {
-		return OCLStandardLibraryImpl.createShadowClass(type);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#getShadowedClassifier(java.lang.Object)
-	 */
-	@Override
-	protected EClassifier getShadowedClassifier(EClassifier shadow) {
-		if (shadow instanceof EClass) {
-			return OCLStandardLibraryImpl.getRealClassifier((EClass)shadow);
-		}
-
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#findShadowClass(java.lang.Object)
-	 */
-	@Override
-	protected EClassifier findShadowClass(EClassifier type) {
-		EPackage pkg = null;
-		if (hasAdditionalFeatures()) {
-			pkg = getAdditionalFeaturesPackage();
-		}
-
-		if (pkg != null) {
-			for (EClassifier next : pkg.getEClassifiers()) {
-				EClassifier shadow = getShadowedClassifier(next);
-				if (shadow == type || shadow != null && classifierEqual(shadow, type)) {
-					return next;
-				}
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -281,5 +136,260 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 		}
 
 		return result;
+	}
+
+	/**
+	 * Returns the additional operations defined on the given classifier in the context of this environment.
+	 * This should always be preferred to {@link #getAdditionalOperations(EClassifier)}.
+	 * 
+	 * @param owner
+	 *            The classifier on which to seek additional operations.
+	 * @param name
+	 *            The name filter for the classifier's operations.
+	 * @return The additional operations defined on the given classifier in the context of this environment.
+	 */
+	public List<EOperation> getAdditionalOperations(EClassifier owner, String name) {
+		final List<EOperation> result = new ArrayList<EOperation>();
+		if (hasAdditionalFeatures()) {
+			EClassifier shadow = findShadowClass(owner);
+
+			if (shadow == null) {
+				return result;
+			}
+
+			final UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> umlReflection = getEnvironment()
+					.getUMLReflection();
+
+			if (umlReflection instanceof AcceleoUMLReflection) {
+				result.addAll(((AcceleoUMLReflection)umlReflection).getOperations(shadow, name));
+			} else {
+				final List<EOperation> candidates = umlReflection.getOperations(shadow);
+				for (EOperation candidate : candidates) {
+					if (name.equals(candidate.getName())) {
+						result.add(candidate);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#addClassifier(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	protected void addClassifier(EPackage pkg, EClassifier classifier) {
+		if (pkg != null) {
+			pkg.getEClassifiers().add(classifier);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#addOperation(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	protected void addOperation(EClassifier owner, EOperation operation) {
+		if (owner instanceof EClass) {
+			((EClass)owner).getEOperations().add(operation);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#addProperty(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	protected void addProperty(EClassifier owner, EStructuralFeature property) {
+		if (owner instanceof EClass) {
+			((EClass)owner).getEStructuralFeatures().add(property);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#createPackage(java.lang.String)
+	 */
+	@Override
+	protected EPackage createPackage(String name) {
+		EPackage result = EcoreFactory.eINSTANCE.createEPackage();
+
+		result.setName(name);
+		getResource().getContents().add(result);
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#createResource()
+	 */
+	@Override
+	protected Resource createResource() {
+		Resource.Factory factory = OCLEcorePlugin.getEcoreResourceFactory();
+
+		return factory.createResource(URI.createURI("ocl:///oclenv.ecore")); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#createShadowClass(java.lang.Object)
+	 */
+	@Override
+	protected EClass createShadowClass(EClassifier type) {
+		return OCLStandardLibraryImpl.createShadowClass(type);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#createTuplePackage()
+	 */
+	@Override
+	protected EPackage createTuplePackage() {
+		EPackage result = super.createTuplePackage();
+
+		result.setEFactoryInstance(new TupleFactory());
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#findMatchingOperation(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	protected EOperation findMatchingOperation(EClassifier shadow, EOperation operation) {
+		final UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> umlReflection = getEnvironment()
+				.getUMLReflection();
+		final String operationName = umlReflection.getName(operation);
+
+		final List<EOperation> candidates;
+		if (umlReflection instanceof AcceleoUMLReflection) {
+			candidates = ((AcceleoUMLReflection)umlReflection).getOperations(shadow, operationName);
+		} else {
+			candidates = umlReflection.getOperations(shadow);
+		}
+
+		for (EOperation next : candidates) {
+			if (next == operation
+					|| (umlReflection.getName(next).equals(operationName) && matchParameters(next, operation))) {
+				return next;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#findPackage(java.lang.String)
+	 */
+	@Override
+	protected EPackage findPackage(String name) {
+		EPackage result = null;
+
+		for (EObject o : getResource().getContents()) {
+			if (o instanceof EPackage) {
+				EPackage epkg = (EPackage)o;
+
+				if (name != null && name.equals(epkg.getName())) {
+					result = epkg;
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#findShadowClass(java.lang.Object)
+	 */
+	@Override
+	protected EClassifier findShadowClass(EClassifier type) {
+		EPackage pkg = null;
+		if (hasAdditionalFeatures()) {
+			pkg = getAdditionalFeaturesPackage();
+		}
+
+		if (pkg != null) {
+			for (EClassifier next : pkg.getEClassifiers()) {
+				EClassifier shadow = getShadowedClassifier(next);
+				if (shadow == type || shadow != null && classifierEqual(shadow, type)) {
+					return next;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ocl.AbstractTypeResolver#getShadowedClassifier(java.lang.Object)
+	 */
+	@Override
+	protected EClassifier getShadowedClassifier(EClassifier shadow) {
+		if (shadow instanceof EClass) {
+			return OCLStandardLibraryImpl.getRealClassifier((EClass)shadow);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Determines whether two operations have the same parameter signature.
+	 * <p>
+	 * Copied from org.eclipse.ocl.AbstractTypeResolver.
+	 * </p>
+	 * 
+	 * @param a
+	 *            an operation
+	 * @param b
+	 *            another operation
+	 * @return <code>true</code> if they have the same formal parameters in the same order; <code>false</code>
+	 *         , otherwise.
+	 * @see org.eclipse.ocl.AbstractTypeResolver#matchParameters(Object, Object)
+	 */
+	private boolean matchParameters(EOperation a, EOperation b) {
+		final UMLReflection<EPackage, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> umlReflection = getEnvironment()
+				.getUMLReflection();
+		List<EParameter> aparms = umlReflection.getParameters(a);
+		List<EParameter> bparms = umlReflection.getParameters(b);
+
+		boolean matching = false;
+		if (aparms.size() == bparms.size()) {
+			int count = aparms.size();
+
+			for (int i = 0; i < count; i++) {
+				EParameter aparm = aparms.get(i);
+				EParameter bparm = bparms.get(i);
+
+				if (!umlReflection.getName(aparm).equals(umlReflection.getName(bparm))
+						|| TypeUtil.getRelationship(getEnvironment(),
+								resolve(umlReflection.getOCLType(aparm)), resolve(umlReflection
+										.getOCLType(bparm))) != UMLReflection.SAME_TYPE) {
+
+					return false;
+				}
+			}
+
+			matching = true;
+		}
+
+		return matching;
 	}
 }

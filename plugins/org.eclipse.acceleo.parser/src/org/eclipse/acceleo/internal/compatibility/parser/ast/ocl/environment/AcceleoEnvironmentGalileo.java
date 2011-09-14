@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Iterables;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +55,12 @@ import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.TypeExp;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.options.ParsingOptions;
+import org.eclipse.ocl.types.AnyType;
 import org.eclipse.ocl.types.CollectionType;
 import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.ocl.types.TupleType;
+import org.eclipse.ocl.types.TypeType;
+import org.eclipse.ocl.utilities.PredefinedType;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
 
@@ -72,8 +75,19 @@ import org.eclipse.ocl.utilities.UMLReflection;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
+	/** Will contain the names of the relational operators (<, >, <=, =>). */
+	private static final Set<String> RELATIONAL_OPERATORS;
+
 	/** Type checker created for this environment. */
 	private AcceleoTypeChecker typeChecker;
+
+	static {
+		RELATIONAL_OPERATORS = new java.util.HashSet<String>();
+		RELATIONAL_OPERATORS.add(PredefinedType.LESS_THAN_NAME);
+		RELATIONAL_OPERATORS.add(PredefinedType.LESS_THAN_EQUAL_NAME);
+		RELATIONAL_OPERATORS.add(PredefinedType.GREATER_THAN_NAME);
+		RELATIONAL_OPERATORS.add(PredefinedType.GREATER_THAN_EQUAL_NAME);
+	}
 
 	/**
 	 * Delegates instantiation to the super constructor.
@@ -114,6 +128,17 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment#dispose()
+	 */
+	@Override
+	public void dispose() {
+		super.dispose();
+		typeChecker.dispose();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.ocl.ecore.EcoreEnvironment#createTypeResolver()
 	 */
 	@Override
@@ -132,17 +157,6 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment#dispose()
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-		typeChecker.dispose();
-	}
-
-	/**
 	 * This will allow us to type our standard and non standard operations.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
@@ -154,8 +168,10 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 */
 		private final Map<EClassifier, Set<EClassifier>> alteredTypes = new HashMap<EClassifier, Set<EClassifier>>();
 
-		/** This will allow us to maintain the subtypes hierarchy of our metamodel. */
-		private final Map<EClassifier, Set<EClassifier>> subTypes = new HashMap<EClassifier, Set<EClassifier>>();
+		/**
+		 * A cache for the previously found EOperations.
+		 */
+		private final Map<EOperationSignatureElement, EOperation> eOperationCache = new HashMap<AcceleoEnvironmentGalileo.AcceleoTypeChecker.EOperationSignatureElement, EOperation>();
 
 		/**
 		 * This will map a duet EClassifier-featureName to the actual EStructuralFeature in the subtypes
@@ -163,13 +179,8 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 */
 		private final Map<Long, EStructuralFeature> hierarchyFeatureCache = new HashMap<Long, EStructuralFeature>();
 
-		/**
-		 * A cache for the previously found EOperations.
-		 */
-		private final Map<EOperationSignatureElement, EOperation> eOperationCache = new HashMap<AcceleoEnvironmentGalileo.AcceleoTypeChecker.EOperationSignatureElement, EOperation>();
-
-		/** Caches the result of {@link #getOperations(EClassifier)}. */
-		private ListMultimap<EClassifier, EOperation> classifierOperations = ArrayListMultimap.create();
+		/** This will allow us to maintain the subtypes hierarchy of our metamodel. */
+		private final Map<EClassifier, Set<EClassifier>> subTypes = new HashMap<EClassifier, Set<EClassifier>>();
 
 		/**
 		 * Delegates instantiation to the super constructor.
@@ -223,16 +234,113 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		/**
 		 * {@inheritDoc}
 		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#exactTypeMatch(java.lang.Object, java.lang.Object)
+		 */
+		@Override
+		public boolean exactTypeMatch(EClassifier type1, EClassifier type2) {
+			boolean match = false;
+			Set<EClassifier> alteredType1 = alteredTypes.get(type1);
+			Set<EClassifier> alteredType2 = alteredTypes.get(type2);
+			if (alteredType1 != null) {
+				for (EClassifier alteredType : alteredType1) {
+					if (alteredType == type2) {
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match && alteredType2 != null) {
+				for (EClassifier alteredType : alteredType2) {
+					if (alteredType == type1) {
+						match = true;
+						break;
+					}
+				}
+			}
+			if (!match) {
+				return super.exactTypeMatch(type1, type2);
+			}
+			return true;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#findOperationMatching(java.lang.Object, java.lang.String,
+		 *      java.util.List)
+		 */
+		@Override
+		public EOperation findOperationMatching(EClassifier owner, String name,
+				List<? extends TypedElement<EClassifier>> args) {
+			EOperationSignatureElement operationSignatureElement = new EOperationSignatureElement(owner,
+					name, args);
+			EOperation operation = eOperationCache.get(operationSignatureElement);
+
+			if (operation == null) {
+				List<? extends TypedElement<EClassifier>> arguments = args;
+				if (arguments == null) {
+					arguments = Collections.emptyList();
+				}
+
+				UMLReflection<?, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> uml = getEnvironment()
+						.getUMLReflection();
+				List<EOperation> operations = getOperations(owner, name);
+				List<EOperation> matches = null;
+
+				for (EOperation oper : operations) {
+					if (name.equals(uml.getName(oper))
+							&& matchArgs(owner, uml.getParameters(oper), arguments)) {
+
+						if (uml.getOwningClassifier(oper) == owner) {
+							eOperationCache.put(operationSignatureElement, oper);
+							return oper; // obviously the most specific definition
+						}
+
+						if (matches == null) {
+							// assume a small number of redefinitions
+							matches = new java.util.ArrayList<EOperation>(3);
+						}
+
+						matches.add(oper);
+					}
+				}
+
+				if (matches != null) {
+					if (matches.size() == 1) {
+						operation = matches.get(0);
+					} else if (!matches.isEmpty()) {
+						operation = mostSpecificRedefinition(matches, uml);
+					}
+				}
+
+				if (operation == null) {
+					// special handling for null and invalid values, whose types conform
+					// to all others
+					OCLStandardLibrary<EClassifier> lib = getEnvironment().getOCLStandardLibrary();
+					if ((owner == lib.getOclVoid()) || (owner == lib.getOclInvalid())) {
+						operation = findOperationForVoidOrInvalid(owner, name, arguments);
+					}
+				}
+				eOperationCache.put(operationSignatureElement, operation);
+			}
+
+			return operation;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
 		 * @see org.eclipse.ocl.AbstractTypeChecker#getOperations(java.lang.Object)
 		 */
 		@Override
 		public List<EOperation> getOperations(EClassifier owner) {
-			final List<EOperation> result = classifierOperations.get(owner);
-			if (result.isEmpty()) {
-				result.addAll(super.getOperations(owner));
-				if (!(owner instanceof PrimitiveType)) {
-					result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
-				}
+			/*
+			 * This will (probably) never be used again. OCL may call it, but #getOperations(EClassifier,
+			 * String) is preferred.
+			 */
+			final List<EOperation> result = new ArrayList<EOperation>(super.getOperations(owner));
+			if (!(owner instanceof PrimitiveType)) {
+				result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
 			}
 			return result;
 		}
@@ -388,65 +496,359 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.AbstractTypeChecker#findOperationMatching(java.lang.Object, java.lang.String,
-		 *      java.util.List)
+		 * @see org.eclipse.ocl.AbstractTypeChecker#resolve(java.lang.Object)
 		 */
 		@Override
-		public EOperation findOperationMatching(EClassifier owner, String name,
-				List<? extends TypedElement<EClassifier>> args) {
-			EOperationSignatureElement operationSignatureElement = new EOperationSignatureElement(owner,
-					name, args);
-			EOperation operation = eOperationCache.get(operationSignatureElement);
+		protected EClassifier resolve(EClassifier type) {
+			return getEnvironment().getTypeResolver().resolve(type);
+		}
 
-			if (operation == null) {
-				List<? extends TypedElement<EClassifier>> arguments = args;
-				if (arguments == null) {
-					arguments = Collections.emptyList();
-				}
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#resolveCollectionType(org.eclipse.ocl.expressions.CollectionKind,
+		 *      java.lang.Object)
+		 */
+		@Override
+		protected CollectionType<EClassifier, EOperation> resolveCollectionType(CollectionKind kind,
+				EClassifier elementType) {
+			return getEnvironment().getTypeResolver().resolveCollectionType(kind, elementType);
+		}
 
-				UMLReflection<?, EClassifier, EOperation, EStructuralFeature, ?, EParameter, ?, ?, ?, ?> uml = getEnvironment()
-						.getUMLReflection();
-				List<EOperation> operations = getOperations(owner);
-				List<EOperation> matches = null;
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ocl.AbstractTypeChecker#resolveTupleType(org.eclipse.emf.common.util.EList)
+		 */
+		@Override
+		protected TupleType<EOperation, EStructuralFeature> resolveTupleType(
+				EList<? extends TypedElement<EClassifier>> parts) {
+			return getEnvironment().getTypeResolver().resolveTupleType(parts);
+		}
 
-				for (EOperation oper : operations) {
-					if (name.equals(uml.getName(oper))
-							&& matchArgs(owner, uml.getParameters(oper), arguments)) {
+		/**
+		 * Creates and stores the subtypes hierarchy of <code>classifier</code>.
+		 * 
+		 * @param classifier
+		 *            The classifier we need the subtypes hierarchy of.
+		 */
+		private void createSubTypesHierarchy(EClassifier classifier) {
+			if (subTypes.get(classifier) == null) {
+				final Set<EClassifier> hierarchy = new CompactHashSet<EClassifier>();
 
-						if (uml.getOwningClassifier(oper) == owner) {
-							eOperationCache.put(operationSignatureElement, oper);
-							return oper; // obviously the most specific definition
-						}
-
-						if (matches == null) {
-							// assume a small number of redefinitions
-							matches = new java.util.ArrayList<EOperation>(3);
-						}
-
-						matches.add(oper);
+				ECrossReferenceAdapter referencer = getCrossReferencer(classifier);
+				for (EStructuralFeature.Setting setting : referencer.getInverseReferences(classifier, false)) {
+					if (setting.getEStructuralFeature() == EcorePackage.eINSTANCE.getEClass_ESuperTypes()) {
+						EClassifier subType = (EClassifier)setting.getEObject();
+						hierarchy.add(subType);
+						createSubTypesHierarchy(subType);
 					}
 				}
 
-				if (matches != null) {
-					if (matches.size() == 1) {
-						operation = matches.get(0);
-					} else if (!matches.isEmpty()) {
-						operation = mostSpecificRedefinition(matches, uml);
-					}
-				}
+				subTypes.put(classifier, hierarchy);
+			}
+		}
 
-				if (operation == null) {
-					// special handling for null and invalid values, whose types conform
-					// to all others
-					OCLStandardLibrary<EClassifier> lib = getEnvironment().getOCLStandardLibrary();
-					if ((owner == lib.getOclVoid()) || (owner == lib.getOclInvalid())) {
-						operation = findOperationForVoidOrInvalid(owner, name, arguments);
-					}
+		/**
+		 * Goes down the <code>base</code> classifier's subtypes hierachy in search of a feature named
+		 * <code>featureName</code> and returns it.
+		 * 
+		 * @param base
+		 *            The starting point of the hierachy lookup.
+		 * @param featureName
+		 *            Name of the sought feature.
+		 * @return The feature named <code>featureName</code> in <code>base</code>'s hierarchy.
+		 */
+		private EStructuralFeature findFeatureInSubTypesHierarchy(EClassifier base, String featureName) {
+			EStructuralFeature feature = null;
+			for (EClassifier subType : subTypes.get(base)) {
+				feature = findFeatureInType(subType, featureName);
+				if (feature == null) {
+					feature = findFeatureInSubTypesHierarchy(subType, featureName);
 				}
-				eOperationCache.put(operationSignatureElement, operation);
+				if (feature != null) {
+					break;
+				}
+			}
+			return feature;
+		}
+
+		/**
+		 * Searches the given type for a feature named <code>featureName</code>.
+		 * 
+		 * @param type
+		 *            The type in which to search the feature.
+		 * @param featureName
+		 *            Name of the sought feature.
+		 * @return The feature named <code>featureName</code> in <code>type</code> if it exists,
+		 *         <code>null</code> otherwise.
+		 */
+		private EStructuralFeature findFeatureInType(EClassifier type, String featureName) {
+			final Long key = Long.valueOf(type.hashCode() + featureName.hashCode());
+			if (hierarchyFeatureCache.containsKey(key)) {
+				return hierarchyFeatureCache.get(key);
 			}
 
-			return operation;
+			EStructuralFeature feature = null;
+			for (EObject child : type.eContents()) {
+				if (child instanceof EStructuralFeature
+						&& ((EStructuralFeature)child).getName().equals(featureName)) {
+					feature = (EStructuralFeature)child;
+					hierarchyFeatureCache.put(key, feature);
+					break;
+				}
+			}
+
+			return feature;
+		}
+
+		/**
+		 * The <tt>OclVoid</tt> and <tt>OclInvalid</tt> types are defined as conforming to all other types.
+		 * Therefore, we can try a little harder to match certain operations that it is useful to support,
+		 * such as <tt>{@literal =}</tt> and <tt>{@literal <>}</tt>.
+		 * 
+		 * @param owner
+		 *            the classifier to search (void or invalid)
+		 * @param name
+		 *            the name of the operation
+		 * @param args
+		 *            a list of arguments to match against the operation signature, as either expressions or
+		 *            variables
+		 * @return the matching operation, or <code>null</code> if not found
+		 */
+		private EOperation findOperationForVoidOrInvalid(EClassifier owner, String name,
+				List<? extends TypedElement<EClassifier>> args) {
+
+			EOperation result = null;
+
+			if (args.size() == 1) {
+				EClassifier argType = args.get(0).getType();
+
+				if (argType != owner) {
+					// let us search the type of the argument to determine whether
+					// we can find this operation
+					result = findOperationMatching(argType, name, args);
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * This will retrieve (and create if needed) a cross referencer adapter for the resource
+		 * <code>scope</code> is in.
+		 * 
+		 * @param scope
+		 *            Object that will serve as the scope of our new cross referencer.
+		 * @return The <code>scope</code>'s resource cross referencer.
+		 */
+		private ECrossReferenceAdapter getCrossReferencer(EObject scope) {
+			ECrossReferenceAdapter referencer = null;
+			for (Adapter adapter : scope.eResource().eAdapters()) {
+				if (adapter instanceof ECrossReferenceAdapter) {
+					referencer = (ECrossReferenceAdapter)adapter;
+					break;
+				}
+			}
+			if (referencer == null) {
+				referencer = new ECrossReferenceAdapter();
+				scope.eResource().eAdapters().add(referencer);
+			}
+			return referencer;
+		}
+
+		/**
+		 * Obtains the implicit root class specified as an option in the environment, if it is specified and
+		 * it is a class.
+		 * <p>
+		 * Copied from org.eclipse.ocl.AbstractTypeChecker.
+		 * </p>
+		 * 
+		 * @return The implicit root class, if any.
+		 * @see org.eclipse.ocl.AbstractTypeChecker#getImplicitRootClass()
+		 */
+		private EClassifier getImplicitRootClass() {
+			EClassifier result = ParsingOptions.getValue(getEnvironment(), ParsingOptions
+					.implicitRootClass(getEnvironment()));
+
+			// check that, if there is a value for this option, it is a class
+			if ((result != null) && !getEnvironment().getUMLReflection().isClass(result)) {
+				result = null;
+			}
+
+			return result;
+		}
+
+		/**
+		 * This will return the list of EOperations going by the given name on the given classifier. This
+		 * should be preferred to {@link #getOperations(EClassifier)} at all times.
+		 * 
+		 * @param owner
+		 *            The classifier on which to seek EOperations.
+		 * @param name
+		 *            The name filter for the classifier's operations.
+		 * @return The list of EOperations going by the given name on the given classifier.
+		 */
+		private List<EOperation> getOperations(EClassifier owner, String name) {
+			final List<EOperation> result;
+
+			if (owner instanceof TypeType<?, ?>) {
+				@SuppressWarnings("unchecked")
+				final TypeType<EClassifier, EOperation> source = (TypeType<EClassifier, EOperation>)owner;
+				return getTypeTypeOperations(source, name);
+			}
+			if (owner instanceof PredefinedType<?>) {
+				@SuppressWarnings("unchecked")
+				final PredefinedType<EOperation> source = (PredefinedType<EOperation>)owner;
+				result = getPredefinedTypeOperations(source, name);
+			} else {
+				// it's a user type. Try to convert it to an OCL standard type
+				EClassifier oclTypeOwner = getUMLReflection().asOCLType(owner);
+
+				if (oclTypeOwner instanceof PredefinedType<?>) {
+					@SuppressWarnings("unchecked")
+					final PredefinedType<EOperation> source = (PredefinedType<EOperation>)oclTypeOwner;
+					result = getPredefinedTypeOperations(source, name);
+				} else {
+					result = getUserTypeOperations(oclTypeOwner, name);
+				}
+			}
+
+			if (getEnvironment() instanceof AcceleoEnvironment) {
+				final List<EOperation> additionalOperations = ((AcceleoEnvironment)getEnvironment())
+						.getAdditionalOperations(owner, name);
+				result.addAll(additionalOperations);
+			} else {
+				final List<EOperation> additionalOperations = getEnvironment().getAdditionalOperations(owner);
+				if (additionalOperations != null) {
+					for (EOperation candidate : additionalOperations) {
+						if (name.equals(candidate.getName())) {
+							result.add(candidate);
+						}
+					}
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns the list of EOperations going by the given name on the given OCL PredefinedType.
+		 * 
+		 * @param owner
+		 *            The classifier on which to seek EOperations.
+		 * @param name
+		 *            The name filter for the classifier's operations.
+		 * @return The list of EOperations going by the given name on the given classifier.
+		 */
+		private List<EOperation> getPredefinedTypeOperations(PredefinedType<EOperation> owner, String name) {
+			final List<EOperation> result = new ArrayList<EOperation>();
+
+			if (owner instanceof AnyType<?> && RELATIONAL_OPERATORS.contains(name)) {
+				return result;
+			}
+
+			final List<EOperation> candidates = owner.oclOperations();
+
+			for (EOperation candidate : candidates) {
+				if (name.equals(candidate.getName())) {
+					result.add(candidate);
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns the list of EOperations going by the given name on the given OCL TypeType.
+		 * 
+		 * @param owner
+		 *            The classifier on which to seek EOperations.
+		 * @param name
+		 *            The name filter for the classifier's operations.
+		 * @return The list of EOperations going by the given name on the given classifier.
+		 */
+		private List<EOperation> getTypeTypeOperations(TypeType<EClassifier, EOperation> owner, String name) {
+			final List<EOperation> result = new ArrayList<EOperation>();
+			final List<EOperation> candidates = owner.oclOperations();
+
+			for (EOperation candidate : candidates) {
+				if (name.equals(candidate.getName())) {
+					result.add(candidate);
+				}
+			}
+
+			// also include the static operations of the referred type
+			for (EOperation operation : getOperations(owner.getReferredType(), name)) {
+				if (getUMLReflection().isStatic(operation)) {
+					result.add(operation);
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * Returns the list of EOperations going by the given name on the given classifier (known as being a
+		 * user type, i.e not a predefined OCL type).
+		 * 
+		 * @param owner
+		 *            The classifier on which to seek EOperations.
+		 * @param name
+		 *            The name filter for the classifier's operations.
+		 * @return The list of EOperations going by the given name on the given classifier.
+		 */
+		private List<EOperation> getUserTypeOperations(EClassifier owner, String name) {
+			final List<EOperation> result = new ArrayList<EOperation>();
+
+			final Iterable<EOperation> userTypeCandidates = getUMLReflection().getOperations(owner);
+			final Iterable<EOperation> oclAnyCandidates = getOperations(getOCLStandardLibrary().getOclAny(),
+					name);
+
+			final Iterable<EOperation> candidates;
+
+			EClassifier implictBaseClassifier = getImplicitRootClass();
+			if (implictBaseClassifier != null && implictBaseClassifier != owner) {
+				final Iterable<EOperation> implicitRootCandidates = getUMLReflection().getOperations(
+						implictBaseClassifier);
+				candidates = Iterables.concat(userTypeCandidates, oclAnyCandidates, implicitRootCandidates);
+			} else {
+				candidates = Iterables.concat(userTypeCandidates, oclAnyCandidates);
+			}
+
+			for (EOperation candidate : candidates) {
+				if (name.equals(candidate.getName())) {
+					result.add(candidate);
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * Tries and determine the static type of the given <code>feature</code>'s value.
+		 * 
+		 * @param feature
+		 *            Feature we need a static type of.
+		 * @return The determined type for this feature.
+		 */
+		@SuppressWarnings("unchecked")
+		private EClassifier inferTypeFromFeature(EStructuralFeature feature) {
+			EClassifier type = feature.getEType();
+			// FIXME handle lists
+			if (feature.isMany()) {
+				if (feature.isOrdered() && feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createOrderedSetType();
+				} else if (feature.isOrdered() && !feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createSequenceType();
+				} else if (!feature.isOrdered() && feature.isUnique()) {
+					type = EcoreFactory.eINSTANCE.createSetType();
+				} else {
+					type = EcoreFactory.eINSTANCE.createBagType();
+				}
+				((CollectionType<EClassifier, EOperation>)type).setElementType(feature.getEType());
+			}
+			return type;
 		}
 
 		/**
@@ -489,233 +891,16 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		}
 
 		/**
-		 * The <tt>OclVoid</tt> and <tt>OclInvalid</tt> types are defined as conforming to all other types.
-		 * Therefore, we can try a little harder to match certain operations that it is useful to support,
-		 * such as <tt>{@literal =}</tt> and <tt>{@literal <>}</tt>.
-		 * 
-		 * @param owner
-		 *            the classifier to search (void or invalid)
-		 * @param name
-		 *            the name of the operation
-		 * @param args
-		 *            a list of arguments to match against the operation signature, as either expressions or
-		 *            variables
-		 * @return the matching operation, or <code>null</code> if not found
-		 */
-		private EOperation findOperationForVoidOrInvalid(EClassifier owner, String name,
-				List<? extends TypedElement<EClassifier>> args) {
-
-			EOperation result = null;
-
-			if (args.size() == 1) {
-				EClassifier argType = args.get(0).getType();
-
-				if (argType != owner) {
-					// let us search the type of the argument to determine whether
-					// we can find this operation
-					result = findOperationMatching(argType, name, args);
-				}
-			}
-
-			return result;
-		}
-
-		/**
-		 * Searches the given type for a feature named <code>featureName</code>.
-		 * 
-		 * @param type
-		 *            The type in which to search the feature.
-		 * @param featureName
-		 *            Name of the sought feature.
-		 * @return The feature named <code>featureName</code> in <code>type</code> if it exists,
-		 *         <code>null</code> otherwise.
-		 */
-		private EStructuralFeature findFeatureInType(EClassifier type, String featureName) {
-			final Long key = Long.valueOf(type.hashCode() + featureName.hashCode());
-			if (hierarchyFeatureCache.containsKey(key)) {
-				return hierarchyFeatureCache.get(key);
-			}
-
-			EStructuralFeature feature = null;
-			for (EObject child : type.eContents()) {
-				if (child instanceof EStructuralFeature
-						&& ((EStructuralFeature)child).getName().equals(featureName)) {
-					feature = (EStructuralFeature)child;
-					hierarchyFeatureCache.put(key, feature);
-					break;
-				}
-			}
-
-			return feature;
-		}
-
-		/**
-		 * Goes down the <code>base</code> classifier's subtypes hierachy in search of a feature named
-		 * <code>featureName</code> and returns it.
-		 * 
-		 * @param base
-		 *            The starting point of the hierachy lookup.
-		 * @param featureName
-		 *            Name of the sought feature.
-		 * @return The feature named <code>featureName</code> in <code>base</code>'s hierarchy.
-		 */
-		private EStructuralFeature findFeatureInSubTypesHierarchy(EClassifier base, String featureName) {
-			EStructuralFeature feature = null;
-			for (EClassifier subType : subTypes.get(base)) {
-				feature = findFeatureInType(subType, featureName);
-				if (feature == null) {
-					feature = findFeatureInSubTypesHierarchy(subType, featureName);
-				}
-				if (feature != null) {
-					break;
-				}
-			}
-			return feature;
-		}
-
-		/**
-		 * Tries and determine the static type of the given <code>feature</code>'s value.
-		 * 
-		 * @param feature
-		 *            Feature we need a static type of.
-		 * @return The determined type for this feature.
-		 */
-		@SuppressWarnings("unchecked")
-		private EClassifier inferTypeFromFeature(EStructuralFeature feature) {
-			EClassifier type = feature.getEType();
-			// FIXME handle lists
-			if (feature.isMany()) {
-				if (feature.isOrdered() && feature.isUnique()) {
-					type = EcoreFactory.eINSTANCE.createOrderedSetType();
-				} else if (feature.isOrdered() && !feature.isUnique()) {
-					type = EcoreFactory.eINSTANCE.createSequenceType();
-				} else if (!feature.isOrdered() && feature.isUnique()) {
-					type = EcoreFactory.eINSTANCE.createSetType();
-				} else {
-					type = EcoreFactory.eINSTANCE.createBagType();
-				}
-				((CollectionType<EClassifier, EOperation>)type).setElementType(feature.getEType());
-			}
-			return type;
-		}
-
-		/**
-		 * Creates and stores the subtypes hierarchy of <code>classifier</code>.
-		 * 
-		 * @param classifier
-		 *            The classifier we need the subtypes hierarchy of.
-		 */
-		private void createSubTypesHierarchy(EClassifier classifier) {
-			if (subTypes.get(classifier) == null) {
-				final Set<EClassifier> hierarchy = new CompactHashSet<EClassifier>();
-
-				ECrossReferenceAdapter referencer = getCrossReferencer(classifier);
-				for (EStructuralFeature.Setting setting : referencer.getInverseReferences(classifier, false)) {
-					if (setting.getEStructuralFeature() == EcorePackage.eINSTANCE.getEClass_ESuperTypes()) {
-						EClassifier subType = (EClassifier)setting.getEObject();
-						hierarchy.add(subType);
-						createSubTypesHierarchy(subType);
-					}
-				}
-
-				subTypes.put(classifier, hierarchy);
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.ocl.AbstractTypeChecker#exactTypeMatch(java.lang.Object, java.lang.Object)
-		 */
-		@Override
-		public boolean exactTypeMatch(EClassifier type1, EClassifier type2) {
-			boolean match = false;
-			Set<EClassifier> alteredType1 = alteredTypes.get(type1);
-			Set<EClassifier> alteredType2 = alteredTypes.get(type2);
-			if (alteredType1 != null) {
-				for (EClassifier alteredType : alteredType1) {
-					if (alteredType == type2) {
-						match = true;
-						break;
-					}
-				}
-			}
-			if (!match && alteredType2 != null) {
-				for (EClassifier alteredType : alteredType2) {
-					if (alteredType == type1) {
-						match = true;
-						break;
-					}
-				}
-			}
-			if (!match) {
-				return super.exactTypeMatch(type1, type2);
-			}
-			return true;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.ocl.AbstractTypeChecker#resolve(java.lang.Object)
-		 */
-		@Override
-		protected EClassifier resolve(EClassifier type) {
-			return getEnvironment().getTypeResolver().resolve(type);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.ocl.AbstractTypeChecker#resolveCollectionType(org.eclipse.ocl.expressions.CollectionKind,
-		 *      java.lang.Object)
-		 */
-		@Override
-		protected CollectionType<EClassifier, EOperation> resolveCollectionType(CollectionKind kind,
-				EClassifier elementType) {
-			return getEnvironment().getTypeResolver().resolveCollectionType(kind, elementType);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.ocl.AbstractTypeChecker#resolveTupleType(org.eclipse.emf.common.util.EList)
-		 */
-		@Override
-		protected TupleType<EOperation, EStructuralFeature> resolveTupleType(
-				EList<? extends TypedElement<EClassifier>> parts) {
-			return getEnvironment().getTypeResolver().resolveTupleType(parts);
-		}
-
-		/**
-		 * This will retrieve (and create if needed) a cross referencer adapter for the resource
-		 * <code>scope</code> is in.
-		 * 
-		 * @param scope
-		 *            Object that will serve as the scope of our new cross referencer.
-		 * @return The <code>scope</code>'s resource cross referencer.
-		 */
-		private ECrossReferenceAdapter getCrossReferencer(EObject scope) {
-			ECrossReferenceAdapter referencer = null;
-			for (Adapter adapter : scope.eResource().eAdapters()) {
-				if (adapter instanceof ECrossReferenceAdapter) {
-					referencer = (ECrossReferenceAdapter)adapter;
-					break;
-				}
-			}
-			if (referencer == null) {
-				referencer = new ECrossReferenceAdapter();
-				scope.eResource().eAdapters().add(referencer);
-			}
-			return referencer;
-		}
-
-		/**
 		 * An utility class to store the data used to find an operation.
 		 * 
 		 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
 		 */
 		private class EOperationSignatureElement {
+
+			/**
+			 * The arguments of the operation.
+			 */
+			private List<? extends TypedElement<EClassifier>> arguments;
 
 			/**
 			 * The owner of the operation.
@@ -726,11 +911,6 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			 * The name of the operation.
 			 */
 			private String name;
-
-			/**
-			 * The arguments of the operation.
-			 */
-			private List<? extends TypedElement<EClassifier>> arguments;
 
 			/**
 			 * The constructor.
@@ -748,6 +928,32 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				this.classifier = classifier;
 				this.name = name;
 				this.arguments = arguments;
+			}
+
+			/**
+			 * {@inheritDoc}
+			 * 
+			 * @see java.lang.Object#equals(java.lang.Object)
+			 */
+			@Override
+			public boolean equals(Object arg0) {
+				if (arg0 instanceof EOperationSignatureElement) {
+					EOperationSignatureElement operationSignatureElement = (EOperationSignatureElement)arg0;
+					boolean result = operationSignatureElement.getArguments().equals(arguments);
+					result = result && operationSignatureElement.getName().equals(name);
+					result = result && operationSignatureElement.getClassifier().equals(classifier);
+					return result;
+				}
+				return false;
+			}
+
+			/**
+			 * Returns the arguments.
+			 * 
+			 * @return the arguments
+			 */
+			public List<? extends TypedElement<EClassifier>> getArguments() {
+				return arguments;
 			}
 
 			/**
@@ -769,15 +975,6 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			}
 
 			/**
-			 * Returns the arguments.
-			 * 
-			 * @return the arguments
-			 */
-			public List<? extends TypedElement<EClassifier>> getArguments() {
-				return arguments;
-			}
-
-			/**
 			 * {@inheritDoc}
 			 * 
 			 * @see java.lang.Object#hashCode()
@@ -790,23 +987,6 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				hashcode += arguments.hashCode() * 17;
 				// CHECKSTYLE:ON
 				return hashcode;
-			}
-
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see java.lang.Object#equals(java.lang.Object)
-			 */
-			@Override
-			public boolean equals(Object arg0) {
-				if (arg0 instanceof EOperationSignatureElement) {
-					EOperationSignatureElement operationSignatureElement = (EOperationSignatureElement)arg0;
-					boolean result = operationSignatureElement.getArguments().equals(arguments);
-					result = result && operationSignatureElement.getName().equals(name);
-					result = result && operationSignatureElement.getClassifier().equals(classifier);
-					return result;
-				}
-				return false;
 			}
 
 		}

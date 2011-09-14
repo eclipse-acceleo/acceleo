@@ -311,6 +311,35 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 	}
 
 	/**
+	 * Obtains all of the operations going by the given name that are defined by the specified classifier.
+	 * This should always be preferred to {@link #getOperations(EClassifier)}.
+	 * <p>
+	 * Base implementation copied from org.eclipse.ocl.utilities.UMLReflection.
+	 * </p>
+	 * 
+	 * @param classifier
+	 *            A classifier in the model.
+	 * @param name
+	 *            The name filter for the classifier's operations.
+	 * @return The operations applicable to the specified classifier, or an empty list if none.
+	 * @see org.eclipse.ocl.utilities.UMLReflection#getOperations(EClassifier)
+	 */
+	public synchronized List<EOperation> getOperations(EClassifier classifier, String name) {
+		final List<EOperation> result = new ArrayList<EOperation>();
+
+		if (classifier instanceof EClass) {
+			final List<EOperation> candidates = ((EClass)classifier).getEOperations();
+			for (EOperation candidate : candidates) {
+				if (name.equals(candidate.getName())) {
+					result.add(candidate);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ocl.utilities.UMLReflection#getOwningClassifier(java.lang.Object)
