@@ -5,19 +5,25 @@ Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
 Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.common,
- org.eclipse.acceleo.common.internal.utils;x-friends:="org.eclipse.acceleo.engine,org.eclipse.acceleo.parser,org.eclipse.acceleo.ide.ui",
+ org.eclipse.acceleo.common.internal.utils;
+  x-friends:="org.eclipse.acceleo.engine,
+   org.eclipse.acceleo.parser,
+   org.eclipse.acceleo.ide.ui,
+   org.eclipse.acceleo.model",
  org.eclipse.acceleo.common.internal.utils.compatibility;
   x-friends:="org.eclipse.acceleo.engine,
    org.eclipse.acceleo.engine.tests,
    org.eclipse.acceleo.parser,
    org.eclipse.acceleo.parser.tests,
    org.eclipse.acceleo.ide.ui,
-   org.eclipse.acceleo.examples",
+   org.eclipse.acceleo.examples,
+   org.eclipse.acceleo.model",
  org.eclipse.acceleo.common.internal.utils.workspace;
   x-friends:="org.eclipse.acceleo.ide.ui,
    org.eclipse.acceleo.compatibility,
    org.eclipse.acceleo.engine,
-   org.eclipse.acceleo.traceability",
+   org.eclipse.acceleo.traceability,
+   org.eclipse.acceleo.model",
  org.eclipse.acceleo.common.library.connector,
  org.eclipse.acceleo.common.preference,
  org.eclipse.acceleo.common.utils
