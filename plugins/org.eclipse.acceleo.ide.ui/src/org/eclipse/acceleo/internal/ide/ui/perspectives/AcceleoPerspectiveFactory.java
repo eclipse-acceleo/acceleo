@@ -50,6 +50,7 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 
 		IFolderLayout bottomFolder = layout.createFolder(
 				"bottom", IPageLayout.BOTTOM, threeQuarter, editorArea); //$NON-NLS-1$
+		bottomFolder.addView("org.eclipse.acceleo.ui.interpreter.view"); //$NON-NLS-1$
 		bottomFolder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottomFolder.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 		bottomFolder.addPlaceholder(NewSearchUI.SEARCH_VIEW_ID);
@@ -67,6 +68,7 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"); //$NON-NLS-1$
+		layout.addShowViewShortcut("org.eclipse.acceleo.ui.interpreter.view"); //$NON-NLS-1$
 
 		// views - java
 		layout.addShowViewShortcut(JavaUI.ID_PACKAGES);
@@ -90,6 +92,8 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.editors.wizards.UntitledTextFileWizard"); //$NON-NLS-1$
+
+		layout.addPerspectiveShortcut("org.eclipse.acceleo.ide.ui.AcceleoPerspective"); //$NON-NLS-1$
 	}
 
 }
