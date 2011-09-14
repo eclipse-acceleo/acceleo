@@ -152,7 +152,7 @@ Contributors:
       <actionSet
             label="%AcceleoEditorActionSet"
             description="%AcceleoEditorActionSet"
-            visible="false"
+            visible="true"
             id="org.eclipse.acceleo.ide.ui.editors.template.actionSet">
         <action
            allowLabelUpdate="true"
