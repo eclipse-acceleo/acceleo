@@ -44,4 +44,23 @@ public class AcceleoXMIURIHandler extends PlatformSchemeAware {
 		}
 		return super.deresolve(uri);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl#resolve(URI)
+	 */
+	@Override
+	public URI resolve(URI uri) {
+		Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
+				.getDynamicEcorePackagePaths();
+		Iterator<Entry<String, String>> iterator = dynamicEcorePackagePaths.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<String, String> next = iterator.next();
+			if (next.getKey().equals(uri.trimFragment().toString())) {
+				return URI.createURI(next.getValue()).appendFragment(uri.fragment());
+			}
+		}
+		return super.resolve(uri);
+	}
 }
