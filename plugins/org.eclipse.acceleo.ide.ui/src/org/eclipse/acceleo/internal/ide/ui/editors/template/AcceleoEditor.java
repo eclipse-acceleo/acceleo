@@ -27,6 +27,7 @@ import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutline
 import org.eclipse.acceleo.internal.ide.ui.editors.template.outline.QuickOutlineInformationProvider;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIPreferences;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoResourceSetCleanerJob;
 import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -88,9 +89,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -103,6 +108,9 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * The Acceleo template editor (Acceleo editor).
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ */
+/**
+ * @author sbegaudeau
  */
 public class AcceleoEditor extends TextEditor implements IResourceChangeListener {
 
@@ -127,6 +135,11 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	 * Eclipse instance.
 	 */
 	private static boolean natureDialogShown;
+
+	/**
+	 * The resource set cleaner job.
+	 */
+	private static AcceleoResourceSetCleanerJob resourceSetCleanerJob;
 
 	/**
 	 * TODO JMU/SBE : We should use a clear method to clear the current AST selection. Keeps a reference to
@@ -210,6 +223,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 		super();
 		content = new AcceleoSourceContent();
 		blockMatcher = new AcceleoPairMatcher();
+
+		if (resourceSetCleanerJob != null) {
+			resourceSetCleanerJob.cancel();
+		}
 	}
 
 	/**
@@ -396,6 +413,35 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			this.occurrencesFinderJob.cancel();
 			this.occurrencesFinderJob.clear();
 			this.occurrencesFinderJob = null;
+		}
+
+		if (resourceSetCleanerJob == null) {
+			resourceSetCleanerJob = new AcceleoResourceSetCleanerJob();
+		}
+		resourceSetCleanerJob.cancel();
+
+		IWorkbenchPage activePage = null;
+
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		if (workbench != null) {
+			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+			if (activeWorkbenchWindow != null) {
+				activePage = activeWorkbenchWindow.getActivePage();
+			}
+		}
+		if (activePage != null) {
+			boolean shouldClear = true;
+			IEditorReference[] editorReferences = activePage.getEditorReferences();
+			for (IEditorReference editorReference : editorReferences) {
+				if (AcceleoEditor.ACCELEO_EDITOR_ID.equals(editorReference.getId())) {
+					shouldClear = false;
+				}
+			}
+			if (shouldClear) {
+				resourceSetCleanerJob.setSystem(true);
+				resourceSetCleanerJob.setPriority(Job.DECORATE);
+				resourceSetCleanerJob.schedule(5000);
+			}
 		}
 
 		final IEclipsePreferences instanceScope = new InstanceScope().getNode(AcceleoUIActivator.PLUGIN_ID);
@@ -996,4 +1042,16 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	/* package */ISourceViewer getAcceleoSourceViewer() {
 		return this.getSourceViewer();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#close(boolean)
+	 */
+	@Override
+	public void close(boolean save) {
+
+		super.close(save);
+	}
+
 }

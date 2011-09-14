@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.resource;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -73,6 +74,18 @@ public final class AcceleoUIResourceSet {
 	public static EObject getResource(URI uri) throws IOException {
 		synchronized(RESOURCE_SET) {
 			return ModelUtils.load(uri, RESOURCE_SET);
+		}
+	}
+
+	/**
+	 * Unload all the resources in the resource set.
+	 */
+	public static void clear() {
+		synchronized(RESOURCE_SET) {
+			List<Resource> resources = RESOURCE_SET.getResources();
+			for (Resource resource : resources) {
+				resource.unload();
+			}
 		}
 	}
 }
