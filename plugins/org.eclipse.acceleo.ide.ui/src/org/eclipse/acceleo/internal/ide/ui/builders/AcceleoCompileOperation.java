@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
@@ -34,6 +36,8 @@ import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoParserWarnings;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
+import org.eclipse.acceleo.parser.cst.Module;
+import org.eclipse.acceleo.parser.cst.TypedModel;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -51,6 +55,7 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.ecore.OperationCallExp;
@@ -207,6 +212,18 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				}
 			}
 		}
+
+		if (iFiles.size() > 0) {
+			AcceleoFile acceleoFile = iFiles.get(0);
+			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+					new Path(acceleoFile.getMtlFile().getAbsolutePath()));
+
+			// FIXME Performance problem? We will only check for the first file to compile.
+			AcceleoSourceBuffer buffer = new AcceleoSourceBuffer(acceleoFile);
+			buffer.createCST();
+			Module module = buffer.getCST();
+			this.checkDependenciesWithDynamicMetamodels(module, workspaceFile);
+		}
 		checkCanceled(monitor);
 		List<IFile> filesWithMainTag = new ArrayList<IFile>();
 		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
@@ -229,6 +246,65 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				AcceleoFile iFile = itFiles.next();
 				URI oURI = itURIs.next();
 				checkFullOMGCompliance(iFile.getMtlFile(), oURI);
+			}
+		}
+	}
+
+	/**
+	 * This method will ensure that the Acceleo project has a dependency with all the project containing a
+	 * dynamic metamodels used in the module.
+	 */
+	private void checkDependenciesWithDynamicMetamodels(Module module, IFile inputFile) {
+		List<TypedModel> input = module.getInput();
+		for (TypedModel typedModel : input) {
+			List<EPackage> takesTypesFrom = typedModel.getTakesTypesFrom();
+			for (EPackage ePackage : takesTypesFrom) {
+				Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
+						.getDynamicEcorePackagePaths();
+				String packagePath = dynamicEcorePackagePaths.get(ePackage.getNsURI());
+				IPath path = new Path(packagePath);
+				IFile metamodelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+				if (metamodelFile != null && metamodelFile.isAccessible()) {
+					// We have found the "ecore" file for the dynamic metamodel
+					IProject metamodelProject = metamodelFile.getProject();
+					IProject inputProject = inputFile.getProject();
+					if (!inputProject.equals(metamodelProject)) {
+						// The dynamic metamodel is not in the project of the generator, let's find if
+						// this dynamic metamodel is in a dependency of the project of the generator.
+						boolean foundProject = false;
+
+						AcceleoProject acceleoProject = new AcceleoProject(inputProject);
+						List<IProject> recursivelyAccessibleProjects = acceleoProject
+								.getRecursivelyAccessibleProjects();
+						for (IProject iProject : recursivelyAccessibleProjects) {
+							if (iProject.equals(metamodelProject)) {
+								foundProject = true;
+							}
+						}
+
+						if (!foundProject) {
+							// The dynamic metamodel is not in a dependency of the current project, log a
+							// warning.
+							try {
+								AcceleoMarkerUtils
+										.createMarkerOnFile(
+												AcceleoMarkerUtils.WARNING_MARKER_ID,
+												inputFile,
+												0,
+												typedModel.getStartPosition(),
+												typedModel.getEndPosition(),
+												AcceleoUIMessages
+														.getString(
+																"AcceleoCompileOperation.NoDependencyWithDynamicMetamodelProject", //$NON-NLS-1$
+																metamodelProject.getName(), inputProject
+																		.getName()));
+							} catch (CoreException e) {
+								AcceleoUIActivator.log(e, true);
+							}
+						}
+					}
+
+				}
 			}
 		}
 	}
