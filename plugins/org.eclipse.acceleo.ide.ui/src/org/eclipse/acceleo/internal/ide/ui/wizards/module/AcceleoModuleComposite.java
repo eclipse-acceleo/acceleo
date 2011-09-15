@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -764,7 +765,7 @@ public class AcceleoModuleComposite extends Composite {
 	 * Dialog to select the metamodel URI.
 	 */
 	private void handleSelectMetamodelURI() {
-		RegisteredPackageDialog registeredPackageDialog = new RegisteredPackageDialog(getShell());
+		RegisteredPackageDialog registeredPackageDialog = new AcceleoRegisteredPackageDialog(getShell());
 		registeredPackageDialog.open();
 		Object[] result = registeredPackageDialog.getResult();
 		if (result != null) {
@@ -774,6 +775,7 @@ public class AcceleoModuleComposite extends Composite {
 				StringBuffer uris = new StringBuffer();
 				try {
 					ResourceSet resourceSet = new ResourceSetImpl();
+					resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 					resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
 					Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
 							.getEPackageNsURIToGenModelLocationMap();
