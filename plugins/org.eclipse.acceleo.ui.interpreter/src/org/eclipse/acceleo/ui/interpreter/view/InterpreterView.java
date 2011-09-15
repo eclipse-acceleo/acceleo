@@ -356,8 +356,20 @@ public class InterpreterView extends ViewPart {
 		}
 
 		// Clear previous compilation messages
+		/*
+		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug in
+		 * FormHeading.MessageRegion#showMessage().
+		 */
+		final String dummyMessageKey = "none"; //$NON-NLS-1$
+		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
+		// Remove all actual messages
 		getForm().getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
 		getForm().getMessageManager().removeMessages(expressionSection);
+		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
+		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.NONE); //$NON-NLS-1$
+		// Finally, remove our dummy
+		getForm().getMessageManager().removeMessage(dummyMessageKey);
 
 		if (compilationTask != null) {
 			Future<CompilationResult> compilationFuture = compilationPool.submit(compilationTask);
@@ -431,8 +443,20 @@ public class InterpreterView extends ViewPart {
 		}
 
 		// Clear previous evaluation messages
-		getForm().getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
+		/*
+		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug in
+		 * FormHeading.MessageRegion#showMessage().
+		 */
+		final String dummyMessageKey = "none"; //$NON-NLS-1$
+		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
+		// Remove all actual messages
 		getForm().getMessageManager().removeMessages(resultSection);
+		getForm().getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
+		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
+		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.NONE); //$NON-NLS-1$
+		// Finally, remove our dummy
+		getForm().getMessageManager().removeMessage(dummyMessageKey);
 
 		evaluationThread = new EvaluationThread(getInterpreterContext());
 		evaluationThread.start();

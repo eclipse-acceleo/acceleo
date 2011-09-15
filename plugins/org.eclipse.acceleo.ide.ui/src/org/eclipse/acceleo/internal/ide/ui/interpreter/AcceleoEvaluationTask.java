@@ -190,7 +190,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 */
 	public EvaluationResult call() throws Exception {
 		boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
-		AcceleoPreferences.switchNotifications(true);
+		AcceleoPreferences.switchNotifications(false);
 		CompilationResult compilationResult = context.getCompilationResult();
 		EvaluationResult shortcutResult = null;
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {

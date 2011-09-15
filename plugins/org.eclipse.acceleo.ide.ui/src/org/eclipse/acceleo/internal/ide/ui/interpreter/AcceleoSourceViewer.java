@@ -505,19 +505,11 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * @return The inferred OCL type String.
 	 */
 	private String inferArgumentType(List<EObject> arguments) {
+		Object actualArgument = arguments;
 		if (arguments.size() == 1) {
-			return arguments.get(0).eClass().getName();
+			actualArgument = arguments.get(0);
 		}
-		EClass commonSuperType = null;
-		for (EObject argument : arguments) {
-			if (commonSuperType == null) {
-				commonSuperType = argument.eClass();
-			} else {
-				commonSuperType = getCommonSuperType(commonSuperType, argument.eClass());
-			}
-		}
-		assert commonSuperType != null;
-		return "Sequence(" + commonSuperType.getName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return inferOCLType(actualArgument);
 	}
 
 	/**
