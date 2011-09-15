@@ -1301,6 +1301,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				}
 				if (iterationCount != null) {
 					factory.getOCL().removeVariableFromScope(iterationCount);
+					Resource eResource = oForBlock.eResource();
+					if (eResource != null) {
+						eResource.getContents().add(iterationCount);
+					}
 				}
 			}
 		}
