@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -54,9 +57,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.EcoreEnvironment;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.SendSignalAction;
+import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.types.OCLStandardLibrary;
+import org.eclipse.ocl.util.Bag;
 
 /**
  * This will be used by the interpreter in order to evaluate Acceleo expressions from the interpreter.
@@ -78,6 +86,104 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	}
 
 	/**
+	 * Returns the OCL type of the given Object.
+	 * 
+	 * @param env
+	 *            the ecore environment from which to seek types.
+	 * @param obj
+	 *            The Object we need an OCL type for.
+	 * @return The OCL type of the given Object.
+	 */
+	private static EClassifier getOCLType(EcoreEnvironment env, Object obj) {
+		OCLStandardLibrary<EClassifier> library = env.getOCLStandardLibrary();
+		EClassifier oclType = library.getOclAny();
+		if (obj instanceof Number) {
+			if (obj instanceof BigDecimal || obj instanceof Double || obj instanceof Float) {
+				oclType = library.getReal();
+			} else {
+				oclType = library.getInteger();
+			}
+		} else if (obj instanceof String) {
+			oclType = library.getString();
+		} else if (obj instanceof Boolean) {
+			oclType = library.getBoolean();
+		} else if (obj instanceof EObject) {
+			oclType = env.getUMLReflection().asOCLType(((EObject)obj).eClass());
+		} else if (obj instanceof Collection<?>) {
+			if (obj instanceof LinkedHashSet<?>) {
+				oclType = library.getOrderedSet();
+			} else if (obj instanceof Set<?>) {
+				oclType = library.getSet();
+			} else if (obj instanceof Bag<?>) {
+				oclType = library.getBag();
+			} else {
+				oclType = library.getSequence();
+			}
+		}
+		return oclType;
+	}
+
+	/**
+	 * Tries and infer the OCL type of the given Collection's content.
+	 * 
+	 * @param env
+	 *            the ecore environment from which to seek types.
+	 * @param coll
+	 *            Collection for which we need an OCL type.
+	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
+	 */
+	private static EClassifier inferCollectionContentOCLType(EcoreEnvironment env, Collection<?> coll) {
+		if (coll.isEmpty()) {
+			return env.getOCLStandardLibrary().getOclAny();
+		}
+
+		Set<EClassifier> types = new HashSet<EClassifier>();
+		for (Object child : coll) {
+			types.add(getOCLType(env, child));
+		}
+
+		Iterator<EClassifier> iterator = types.iterator();
+
+		EClassifier elementType = iterator.next();
+		while (iterator.hasNext()) {
+			elementType = env.getUMLReflection().getCommonSuperType(elementType, iterator.next());
+		}
+
+		if (elementType == null) {
+			elementType = env.getOCLStandardLibrary().getOclAny();
+		}
+
+		return elementType;
+	}
+
+	/**
+	 * Tries and infer the OCL type of the given Object.
+	 * 
+	 * @param obj
+	 *            Object for which we need an OCL type.
+	 * @return The inferred OCL type. OCLAny if we could not infer anything more sensible.
+	 */
+	private static String inferOCLType(Object obj) {
+		String oclType = "OCLAny"; //$NON-NLS-1$
+		EcoreEnvironment env = (EcoreEnvironment)new EcoreEnvironmentFactory().createEnvironment();
+		if (obj instanceof Collection<?>) {
+			EClassifier elementType = inferCollectionContentOCLType(env, (Collection<?>)obj);
+			CollectionKind kind = CollectionKind.SEQUENCE_LITERAL;
+			if (obj instanceof LinkedHashSet<?>) {
+				kind = CollectionKind.ORDERED_SET_LITERAL;
+			} else if (obj instanceof Set<?>) {
+				kind = CollectionKind.SET_LITERAL;
+			} else if (obj instanceof Bag<?>) {
+				kind = CollectionKind.BAG_LITERAL;
+			}
+			oclType = env.getTypeResolver().resolveCollectionType(kind, elementType).getName();
+		} else {
+			oclType = getOCLType(env, obj).getName();
+		}
+		return oclType;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.util.concurrent.Callable#call()
@@ -91,8 +197,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			shortcutResult = new EvaluationResult(new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
 					AcceleoUIMessages.getString("acceleo.interpreter.unresolved.compilation.issue"))); //$NON-NLS-1$
 		} else if (compilationResult.getCompiledExpression() instanceof ModuleElement
-				&& compilationResult.getProblems() != null
-				&& compilationResult.getProblems().getSeverity() == IStatus.ERROR) {
+				&& compilationResult.getStatus() != null
+				&& compilationResult.getStatus().getSeverity() == IStatus.ERROR) {
 			// We're trying to evaluate a module element whilst there are compilation problems. No use trying
 			// any further.
 			shortcutResult = new EvaluationResult(null);
@@ -141,13 +247,56 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 				result = evaluateOCLExpression(expression, target);
 			}
 
-			final IStatus accumulatedProblems = evaluationListener.getAccumulatedProblems();
+			IStatus accumulatedProblems = evaluationListener.getAccumulatedProblems();
+			final IStatus resultStatus = createResultStatus(result);
+
+			if (accumulatedProblems instanceof MultiStatus
+					&& accumulatedProblems.getSeverity() != IStatus.ERROR) {
+				((MultiStatus)accumulatedProblems).add(resultStatus);
+			} else if (accumulatedProblems != null && accumulatedProblems.getSeverity() != IStatus.ERROR) {
+				accumulatedProblems = new MultiStatus(AcceleoUIActivator.PLUGIN_ID, 1, new IStatus[] {
+						accumulatedProblems, resultStatus, }, AcceleoUIMessages
+						.getString("acceleo.interpreter.evaluation.issue"), null); //$NON-NLS-1$
+			} else if (accumulatedProblems == null) {
+				accumulatedProblems = resultStatus;
+			}
+
 			return new EvaluationResult(result, accumulatedProblems);
 		} finally {
 			AcceleoPreferences.switchDebugMessages(debugMessagesState);
 			Platform.removeLogListener(evaluationListener);
 			AcceleoPreferences.switchNotifications(notificationsState);
 		}
+	}
+
+	/**
+	 * This will create the status that allows the interpreter to display the type and size of the resulting
+	 * object.
+	 * 
+	 * @param result
+	 *            The result of the evaluation.
+	 * @return Status that allows the interpreter to display the type and size of the result.
+	 */
+	private IStatus createResultStatus(Object result) {
+		final String oclType;
+		if (result == null) {
+			oclType = "OCLVoid"; //$NON-NLS-1$
+		} else {
+			oclType = inferOCLType(result);
+		}
+		String size = null;
+		if (result instanceof String) {
+			size = String.valueOf(((String)result).length());
+		} else if (result instanceof Collection<?>) {
+			size = String.valueOf(((Collection<?>)result).size());
+		}
+
+		String message = AcceleoUIMessages.getString("acceleo.interpreter.result.type", oclType); //$NON-NLS-1$
+		if (size != null) {
+			message += ' ' + AcceleoUIMessages.getString("acceleo.interpreter.result.size", size); //$NON-NLS-1$
+		}
+
+		return new Status(IStatus.OK, AcceleoUIActivator.PLUGIN_ID, message);
 	}
 
 	/**
@@ -315,6 +464,15 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		private IStatus evaluationStatus;
 
 		/**
+		 * Returns the accumulated status of this log listener.
+		 * 
+		 * @return The accumulated status of this log listener.
+		 */
+		public IStatus getAccumulatedProblems() {
+			return evaluationStatus;
+		}
+
+		/**
 		 * {@inheritDoc}
 		 * 
 		 * @see org.eclipse.core.runtime.ILogListener#logging(org.eclipse.core.runtime.IStatus,
@@ -324,15 +482,6 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			if (status.getPlugin().startsWith("org.eclipse.acceleo") || status.getPlugin().startsWith("org.eclipse.ocl")) { //$NON-NLS-1$ //$NON-NLS-2$
 				addStatus(status);
 			}
-		}
-
-		/**
-		 * Returns the accumulated status of this log listener.
-		 * 
-		 * @return The accumulated status of this log listener.
-		 */
-		public IStatus getAccumulatedProblems() {
-			return evaluationStatus;
 		}
 
 		/**

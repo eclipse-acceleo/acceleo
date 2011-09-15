@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IStatus;
  * result viewer) or a {@link Collection} of {@link Object}s (one line for each of them in the result viewer).
  * </p>
  * <p>
- * {@link #problems} can be populated with either a simple {@link org.eclipse.core.runtime.Status} or a
+ * {@link #status} can be populated with either a simple {@link org.eclipse.core.runtime.Status} or a
  * {@link org.eclipse.core.runtime.MultiStatus}. If this is not <code>null</code>, the issue(s) will be
  * reported on the interpreter UI.
  * </p>
@@ -41,18 +41,17 @@ public class EvaluationResult {
 	 * This can hold any info, warning or error that has been encountered by the evaluation. This can legally
 	 * be <code>null</code> if no problem was encountered.
 	 */
-	private IStatus problems;
+	private IStatus status;
 
 	/**
 	 * Creates an evaluation result given the evaluation issues. This assumes that critical errors were
 	 * encountered during the evaluation or compilation, and that the evaluation itself could not be run.
 	 * 
-	 * @param problems
-	 *            The problems encountered during the evaluation. Can be a
-	 *            {@link org.eclipse.core.runtime.MultiStatus}.
+	 * @param status
+	 *            The status to report to the user. Can be a {@link org.eclipse.core.runtime.MultiStatus}.
 	 */
-	public EvaluationResult(IStatus problems) {
-		this.problems = problems;
+	public EvaluationResult(IStatus status) {
+		this.status = status;
 	}
 
 	/**
@@ -67,18 +66,16 @@ public class EvaluationResult {
 	}
 
 	/**
-	 * Creates an evaluation result given the actual result and the problems encountered while avaluating the
-	 * expression it.
+	 * Creates an evaluation result given the actual result and the status of the evaluation.
 	 * 
 	 * @param evaluationResult
 	 *            Result of the evaluation.
-	 * @param problems
-	 *            The problems encountered during the evaluation. Can be a
-	 *            {@link org.eclipse.core.runtime.MultiStatus}.
+	 * @param status
+	 *            The status to report to the user. Can be a {@link org.eclipse.core.runtime.MultiStatus}.
 	 */
-	public EvaluationResult(Object evaluationResult, IStatus problems) {
+	public EvaluationResult(Object evaluationResult, IStatus status) {
 		this.evaluationResult = evaluationResult;
-		this.problems = problems;
+		this.status = status;
 	}
 
 	/**
@@ -91,12 +88,12 @@ public class EvaluationResult {
 	}
 
 	/**
-	 * Returns the problems encountered during this evaluation.
+	 * Returns the status of this evaluation.
 	 * 
-	 * @return The problems encountered during this evaluation.
+	 * @return The status of this evaluation.
 	 */
-	public IStatus getProblems() {
-		return problems;
+	public IStatus getStatus() {
+		return status;
 	}
 
 	/**
@@ -110,12 +107,12 @@ public class EvaluationResult {
 	}
 
 	/**
-	 * Sets the problems encountered during this evaluation to the given new status.
+	 * Sets the status of this evaluation to the given new status.
 	 * 
-	 * @param problems
-	 *            The problems encountered during this evaluation.
+	 * @param status
+	 *            The status of this evaluation.
 	 */
-	public void setProblems(IStatus problems) {
-		this.problems = problems;
+	public void setStatus(IStatus status) {
+		this.status = status;
 	}
 }

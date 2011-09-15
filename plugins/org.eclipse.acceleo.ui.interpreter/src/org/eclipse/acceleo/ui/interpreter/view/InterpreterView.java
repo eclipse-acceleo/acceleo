@@ -166,6 +166,18 @@ public class InterpreterView extends ViewPart {
 	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
 	/**
+	 * This will be used as the key for the "information" message that the interpreter will display for
+	 * compilation "OK" status. There will only be one.
+	 */
+	private static final String COMPILATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
+
+	/**
+	 * This will be used as the key for the "information" message that the interpreter will display for
+	 * evaluation "OK" status. There will only be one.
+	 */
+	private static final String EVALUATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
+
+	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
 	 * an evaluation task can legally be created while this is <code>null</code>.
 	 */
@@ -344,6 +356,7 @@ public class InterpreterView extends ViewPart {
 		}
 
 		// Clear previous compilation messages
+		getForm().getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
 		getForm().getMessageManager().removeMessages(expressionSection);
 
 		if (compilationTask != null) {
@@ -418,6 +431,7 @@ public class InterpreterView extends ViewPart {
 		}
 
 		// Clear previous evaluation messages
+		getForm().getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
 		getForm().getMessageManager().removeMessages(resultSection);
 
 		evaluationThread = new EvaluationThread(getInterpreterContext());
@@ -599,9 +613,9 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected final void addMessage(String messageKey, String message, int messageType) {
 		Control targetControl = null;
-		if (messageKey.startsWith(COMPILATION_MESSAGE_PREFIX)) {
+		if (messageType != IMessageProvider.NONE && messageKey.startsWith(COMPILATION_MESSAGE_PREFIX)) {
 			targetControl = expressionSection;
-		} else if (messageKey.startsWith(EVALUATION_MESSAGE_PREFIX)) {
+		} else if (messageType != IMessageProvider.NONE && messageKey.startsWith(EVALUATION_MESSAGE_PREFIX)) {
 			targetControl = resultSection;
 		}
 
@@ -627,7 +641,16 @@ public class InterpreterView extends ViewPart {
 				addStatusMessages(child, keyPrefix);
 			}
 		} else {
-			String messageKey = keyPrefix + "." + messageCount++; //$NON-NLS-1$
+			String messageKey;
+			if (status.getSeverity() == IStatus.OK) {
+				if (keyPrefix.equals(COMPILATION_MESSAGE_PREFIX)) {
+					messageKey = COMPILATION_INFO_MESSAGE_KEY;
+				} else {
+					messageKey = EVALUATION_INFO_MESSAGE_KEY;
+				}
+			} else {
+				messageKey = keyPrefix + "." + messageCount++; //$NON-NLS-1$
+			}
 
 			addMessage(messageKey, status.getMessage(), convertStatusToMessageSeverity(status.getSeverity()));
 		}
@@ -1715,7 +1738,7 @@ public class InterpreterView extends ViewPart {
 			try {
 				final CompilationResult result = compilationTask.get();
 
-				if (result != null && result.getProblems() != null) {
+				if (result != null && result.getStatus() != null) {
 					Display.getDefault().asyncExec(new Runnable() {
 						/**
 						 * {@inheritDoc}
@@ -1723,7 +1746,7 @@ public class InterpreterView extends ViewPart {
 						 * @see java.lang.Runnable#run()
 						 */
 						public void run() {
-							addStatusMessages(result.getProblems(), COMPILATION_MESSAGE_PREFIX);
+							addStatusMessages(result.getStatus(), COMPILATION_MESSAGE_PREFIX);
 						}
 					});
 				}
@@ -1867,8 +1890,8 @@ public class InterpreterView extends ViewPart {
 						 * @see java.lang.Runnable#run()
 						 */
 						public void run() {
-							if (result.getProblems() != null) {
-								addStatusMessages(result.getProblems(), EVALUATION_MESSAGE_PREFIX);
+							if (result.getStatus() != null) {
+								addStatusMessages(result.getStatus(), EVALUATION_MESSAGE_PREFIX);
 							}
 							// whether there were problems or not, try and update the result viewer.
 							setEvaluationResult(result);

@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IStatus;
  * This should be used as the result of a language interpreter's compilation task. Later on, it will be passed
  * to the evaluation task of the language interpreter.
  * <p>
- * {@link #problems} can be populated with either a simple {@link org.eclipse.core.runtime.Status} or a
+ * {@link #status} can be populated with either a simple {@link org.eclipse.core.runtime.Status} or a
  * {@link org.eclipse.core.runtime.MultiStatus}. If this is not <code>null</code>, the issue(s) will be
  * reported on the interpreter UI.
  * </p>
@@ -34,18 +34,17 @@ public class CompilationResult {
 	 * This can hold any info, warning or error that has been encountered by the compilation. This can legally
 	 * be <code>null</code> if no problem was encountered.
 	 */
-	private IStatus problems;
+	private IStatus status;
 
 	/**
 	 * Creates a compilation result given the compilation issues. This assumes that critical errors were
 	 * encountered during the compilation, and that the expression could not be compiled.
 	 * 
-	 * @param problems
-	 *            The problems encountered during the compilation. Can be a
-	 *            {@link org.eclipse.core.runtime.MultiStatus}.
+	 * @param status
+	 *            The status of the compilation. Can be a {@link org.eclipse.core.runtime.MultiStatus}.
 	 */
-	public CompilationResult(IStatus problems) {
-		this.problems = problems;
+	public CompilationResult(IStatus status) {
+		this.status = status;
 	}
 
 	/**
@@ -60,18 +59,16 @@ public class CompilationResult {
 	}
 
 	/**
-	 * Creates a compilation result given the compiled expression and the problems encountered while compiling
-	 * it.
+	 * Creates a compilation result given the compiled expression and the status of the compilation.
 	 * 
 	 * @param compiledExpression
 	 *            Result of the compilation.
-	 * @param problems
-	 *            The problems encountered during the compilation. Can be a
-	 *            {@link org.eclipse.core.runtime.MultiStatus}.
+	 * @param status
+	 *            The status of the compilation. Can be a {@link org.eclipse.core.runtime.MultiStatus}.
 	 */
-	public CompilationResult(Object compiledExpression, IStatus problems) {
+	public CompilationResult(Object compiledExpression, IStatus status) {
 		this.compiledExpression = compiledExpression;
-		this.problems = problems;
+		this.status = status;
 	}
 
 	/**
@@ -84,12 +81,12 @@ public class CompilationResult {
 	}
 
 	/**
-	 * Returns the problems encountered during this compilation.
+	 * Returns the status of the compilation.
 	 * 
-	 * @return The problems encountered during this compilation.
+	 * @return The status of the compilation
 	 */
-	public IStatus getProblems() {
-		return problems;
+	public IStatus getStatus() {
+		return status;
 	}
 
 	/**
@@ -103,12 +100,12 @@ public class CompilationResult {
 	}
 
 	/**
-	 * Sets the problems encountered during this compilation to the given new status.
+	 * Sets the status of the compilation to the given new status.
 	 * 
-	 * @param problems
-	 *            The problems encountered during this compilation.
+	 * @param status
+	 *            The status of the compilation
 	 */
-	public void setProblems(IStatus problems) {
-		this.problems = problems;
+	public void setStatus(IStatus status) {
+		this.status = status;
 	}
 }

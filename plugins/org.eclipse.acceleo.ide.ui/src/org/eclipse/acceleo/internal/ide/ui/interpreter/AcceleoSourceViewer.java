@@ -38,6 +38,7 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.CollectionKind;
+import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.ocl.util.Bag;
 import org.eclipse.swt.widgets.Composite;
 
@@ -465,28 +466,29 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * @return The OCL type of the given Object.
 	 */
 	private EClassifier getOCLType(EcoreEnvironment env, Object obj) {
-		EClassifier oclType = env.getOCLStandardLibrary().getOclAny();
+		OCLStandardLibrary<EClassifier> library = env.getOCLStandardLibrary();
+		EClassifier oclType = library.getOclAny();
 		if (obj instanceof Number) {
 			if (obj instanceof BigDecimal || obj instanceof Double || obj instanceof Float) {
-				oclType = env.getOCLStandardLibrary().getReal();
+				oclType = library.getReal();
 			} else {
-				oclType = env.getOCLStandardLibrary().getInteger();
+				oclType = library.getInteger();
 			}
 		} else if (obj instanceof String) {
-			oclType = env.getOCLStandardLibrary().getString();
+			oclType = library.getString();
 		} else if (obj instanceof Boolean) {
-			oclType = env.getOCLStandardLibrary().getBoolean();
+			oclType = library.getBoolean();
 		} else if (obj instanceof EObject) {
 			oclType = env.getUMLReflection().asOCLType(((EObject)obj).eClass());
 		} else if (obj instanceof Collection<?>) {
 			if (obj instanceof LinkedHashSet<?>) {
-				oclType = env.getOCLStandardLibrary().getOrderedSet();
+				oclType = library.getOrderedSet();
 			} else if (obj instanceof Set<?>) {
-				oclType = env.getOCLStandardLibrary().getSet();
+				oclType = library.getSet();
 			} else if (obj instanceof Bag<?>) {
-				oclType = env.getOCLStandardLibrary().getBag();
+				oclType = library.getBag();
 			} else {
-				oclType = env.getOCLStandardLibrary().getSequence();
+				oclType = library.getSequence();
 			}
 		}
 		return oclType;
