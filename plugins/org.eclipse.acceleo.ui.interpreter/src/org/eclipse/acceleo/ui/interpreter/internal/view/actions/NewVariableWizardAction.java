@@ -124,29 +124,6 @@ public class NewVariableWizardAction extends Action {
 	}
 
 	/**
-	 * Returns the list of pre-existing variables.
-	 * 
-	 * @return The list of pre-existing variables.
-	 */
-	private List<Variable> getExistingVariables() {
-		final List<Variable> result = new ArrayList<Variable>();
-
-		Object input = variableViewer.getInput();
-		if (input instanceof Iterable<?>) {
-			@SuppressWarnings("unchecked")
-			Iterator<Variable> existingVariablesIterator = ((Iterable<Variable>)input).iterator();
-			while (existingVariablesIterator.hasNext()) {
-				Variable candidate = existingVariablesIterator.next();
-				result.add(candidate);
-			}
-		} else if (input instanceof Variable) {
-			result.add((Variable)input);
-		}
-
-		return result;
-	}
-
-	/**
 	 * Searches for an existing variable with the given name.
 	 * 
 	 * @param name
@@ -170,6 +147,29 @@ public class NewVariableWizardAction extends Action {
 		if (input instanceof Variable && name.equals(((Variable)input).getName())) {
 			result = (Variable)input;
 		}
+		return result;
+	}
+
+	/**
+	 * Returns the list of pre-existing variables.
+	 * 
+	 * @return The list of pre-existing variables.
+	 */
+	private List<Variable> getExistingVariables() {
+		final List<Variable> result = new ArrayList<Variable>();
+
+		Object input = variableViewer.getInput();
+		if (input instanceof Iterable<?>) {
+			@SuppressWarnings("unchecked")
+			Iterator<Variable> existingVariablesIterator = ((Iterable<Variable>)input).iterator();
+			while (existingVariablesIterator.hasNext()) {
+				Variable candidate = existingVariablesIterator.next();
+				result.add(candidate);
+			}
+		} else if (input instanceof Variable) {
+			result.add((Variable)input);
+		}
+
 		return result;
 	}
 }

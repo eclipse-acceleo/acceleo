@@ -47,6 +47,20 @@ public class ResultLabelProvider extends CellLabelProvider {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
+	 */
+	@Override
+	public void dispose() {
+		for (Image image : images.values()) {
+			image.dispose();
+		}
+		images.clear();
+		super.dispose();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipText(java.lang.Object)
 	 */
 	@Override
@@ -83,31 +97,24 @@ public class ResultLabelProvider extends CellLabelProvider {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Search for an editor associated with the given fileName, and return its icon.
 	 * 
-	 * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
+	 * @param fileName
+	 *            The name of the file for which we search an editor icon.
+	 * @return The icon of the editor associated with the given file name.
 	 */
-	@Override
-	public void dispose() {
-		for (Image image : images.values()) {
-			image.dispose();
+	private Image createEditorIcon(String fileName) {
+		IEditorDescriptor[] descriptors = PlatformUI.getWorkbench().getEditorRegistry().getEditors(fileName);
+		if (descriptors != null) {
+			for (int i = 0; i < descriptors.length; i++) {
+				IEditorDescriptor descriptor = descriptors[i];
+				if (descriptor.getImageDescriptor() != null) {
+					Image image = descriptor.getImageDescriptor().createImage();
+					return image;
+				}
+			}
 		}
-		images.clear();
-		super.dispose();
-	}
-
-	/**
-	 * Returns the text to be displayed for the given element.
-	 * 
-	 * @param element
-	 *            Element for which we need a label.
-	 * @return The text to be displayed for the given element.
-	 */
-	private String getText(Object element) {
-		if (element instanceof InterpreterFile) {
-			return ((InterpreterFile)element).getFileName();
-		}
-		return delegate.getText(element);
+		return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName).createImage();
 	}
 
 	/**
@@ -141,23 +148,16 @@ public class ResultLabelProvider extends CellLabelProvider {
 	}
 
 	/**
-	 * Search for an editor associated with the given fileName, and return its icon.
+	 * Returns the text to be displayed for the given element.
 	 * 
-	 * @param fileName
-	 *            The name of the file for which we search an editor icon.
-	 * @return The icon of the editor associated with the given file name.
+	 * @param element
+	 *            Element for which we need a label.
+	 * @return The text to be displayed for the given element.
 	 */
-	private Image createEditorIcon(String fileName) {
-		IEditorDescriptor[] descriptors = PlatformUI.getWorkbench().getEditorRegistry().getEditors(fileName);
-		if (descriptors != null) {
-			for (int i = 0; i < descriptors.length; i++) {
-				IEditorDescriptor descriptor = descriptors[i];
-				if (descriptor.getImageDescriptor() != null) {
-					Image image = descriptor.getImageDescriptor().createImage();
-					return image;
-				}
-			}
+	private String getText(Object element) {
+		if (element instanceof InterpreterFile) {
+			return ((InterpreterFile)element).getFileName();
 		}
-		return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName).createImage();
+		return delegate.getText(element);
 	}
 }

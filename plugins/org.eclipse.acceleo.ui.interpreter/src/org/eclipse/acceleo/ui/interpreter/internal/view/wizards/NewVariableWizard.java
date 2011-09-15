@@ -26,14 +26,14 @@ import org.eclipse.jface.wizard.Wizard;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class NewVariableWizard extends Wizard {
-	/** If there was a variable selected in the viewer, this will hold a reference to it. */
-	private final Variable selectedVariable;
+	/** This will contain the list of pre-existing variables, if any. */
+	private final List<Variable> existingVariables;
 
 	/** The one and only page of this wizard. */
 	private NewVariableWizardPage page;
 
-	/** This will contain the list of pre-existing variables, if any. */
-	private final List<Variable> existingVariables;
+	/** If there was a variable selected in the viewer, this will hold a reference to it. */
+	private final Variable selectedVariable;
 
 	/**
 	 * Instantiates the new variable wizard given the initially selected variable.
@@ -69,16 +69,6 @@ public class NewVariableWizard extends Wizard {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish() {
-		return true;
-	}
-
-	/**
 	 * Returns the variable name.
 	 * 
 	 * @return The variable name.
@@ -100,5 +90,15 @@ public class NewVariableWizard extends Wizard {
 			return page.getVariableValue();
 		}
 		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	@Override
+	public boolean performFinish() {
+		return true;
 	}
 }

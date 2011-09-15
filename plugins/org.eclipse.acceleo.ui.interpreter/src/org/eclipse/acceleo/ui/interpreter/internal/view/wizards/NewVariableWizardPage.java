@@ -62,8 +62,14 @@ public class NewVariableWizardPage extends WizardPage {
 	/** The currently selected type. */
 	protected Type currentType;
 
+	/** This will contain the list of pre-existing variables, if any. */
+	protected final List<Variable> existingVariables;
+
 	/** The control allowing users to select a new variable value. */
 	protected Control valueControl;
+
+	/** The text widget allowing users to select the variable name. */
+	protected Text variableText;
 
 	/** The name of the variable initially selected in the interpreter view's variable viewer. */
 	private final String initialVariableName;
@@ -71,17 +77,11 @@ public class NewVariableWizardPage extends WizardPage {
 	/** Will be updated with the final Variable name. */
 	private String variableName;
 
-	/** The text widget allowing users to select the variable name. */
-	protected Text variableText;
-
 	/** Validator we'll use for the variable name. */
 	private IInputValidator variableValidator = new VariableNameValidator();
 
 	/** Will be updated with the final Variable value. */
 	private Object variableValue;
-
-	/** This will contain the list of pre-existing variables, if any. */
-	protected final List<Variable> existingVariables;
 
 	/**
 	 * Instantiates our wizard page.

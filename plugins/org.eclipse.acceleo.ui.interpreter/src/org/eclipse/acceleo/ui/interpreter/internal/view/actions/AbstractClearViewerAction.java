@@ -23,12 +23,12 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public abstract class AbstractClearViewerAction extends Action {
+	/** Name of this action. */
+	private static final String NAME = InterpreterMessages.getString("interpreter.action.clear.name"); //$NON-NLS-1$
+
 	/** The tooltip we'll show for this action. */
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("interpreter.action.clear.tooltip"); //$NON-NLS-1$
-
-	/** Name of this action. */
-	private static final String NAME = InterpreterMessages.getString("interpreter.action.clear.name"); //$NON-NLS-1$
 
 	/** The viewer that should be cleared through this action. */
 	private final Viewer viewer;

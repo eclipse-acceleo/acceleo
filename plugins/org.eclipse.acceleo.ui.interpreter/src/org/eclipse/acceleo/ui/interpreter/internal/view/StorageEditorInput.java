@@ -42,10 +42,21 @@ public class StorageEditorInput extends PlatformObject implements IStorageEditor
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ui.IStorageEditorInput#getStorage()
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public IStorage getStorage() {
-		return storage;
+	@Override
+	public boolean equals(Object object) {
+		return object instanceof StorageEditorInput
+				&& getStorage().equals(((StorageEditorInput)object).getStorage());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IEditorInput#exists()
+	 */
+	public boolean exists() {
+		return false;
 	}
 
 	/**
@@ -78,21 +89,19 @@ public class StorageEditorInput extends PlatformObject implements IStorageEditor
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ui.IEditorInput#getToolTipText()
+	 * @see org.eclipse.ui.IStorageEditorInput#getStorage()
 	 */
-	public String getToolTipText() {
-		return getStorage().getFullPath().toOSString();
+	public IStorage getStorage() {
+		return storage;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see org.eclipse.ui.IEditorInput#getToolTipText()
 	 */
-	@Override
-	public boolean equals(Object object) {
-		return object instanceof StorageEditorInput
-				&& getStorage().equals(((StorageEditorInput)object).getStorage());
+	public String getToolTipText() {
+		return getStorage().getFullPath().toOSString();
 	}
 
 	/**
@@ -103,14 +112,5 @@ public class StorageEditorInput extends PlatformObject implements IStorageEditor
 	@Override
 	public int hashCode() {
 		return getStorage().hashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IEditorInput#exists()
-	 */
-	public boolean exists() {
-		return false;
 	}
 }

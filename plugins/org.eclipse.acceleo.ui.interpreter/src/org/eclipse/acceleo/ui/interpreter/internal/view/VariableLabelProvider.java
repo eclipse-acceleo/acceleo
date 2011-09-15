@@ -44,6 +44,30 @@ public class VariableLabelProvider extends CellLabelProvider implements ILabelPr
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
+	 */
+	public Image getImage(Object element) {
+		return delegate.getImage(element);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
+	 */
+	public String getText(Object element) {
+		String text = ""; //$NON-NLS-1$
+		if (element instanceof Variable) {
+			text = ((Variable)element).getName();
+		} else {
+			text = delegate.getText(element);
+		}
+		return text;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.viewers.CellLabelProvider#getToolTipText(java.lang.Object)
 	 */
 	@Override
@@ -71,29 +95,5 @@ public class VariableLabelProvider extends CellLabelProvider implements ILabelPr
 		}
 		cell.setText(text);
 		cell.setImage(getImage(element));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
-	 */
-	public String getText(Object element) {
-		String text = ""; //$NON-NLS-1$
-		if (element instanceof Variable) {
-			text = ((Variable)element).getName();
-		} else {
-			text = delegate.getText(element);
-		}
-		return text;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
-	 */
-	public Image getImage(Object element) {
-		return delegate.getImage(element);
 	}
 }

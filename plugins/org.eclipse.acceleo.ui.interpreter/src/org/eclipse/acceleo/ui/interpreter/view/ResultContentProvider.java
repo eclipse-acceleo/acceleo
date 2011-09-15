@@ -35,6 +35,19 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getChildren(java.lang.Object)
+	 */
+	@Override
+	public Object[] getChildren(Object object) {
+		if (object instanceof InterpreterFile) {
+			return new Object[] {((InterpreterFile)object).getFileContent(), };
+		}
+		return super.getChildren(object);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
 	 */
 	@Override
@@ -56,19 +69,6 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 			}
 		}
 		return elements;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider#getChildren(java.lang.Object)
-	 */
-	@Override
-	public Object[] getChildren(Object object) {
-		if (object instanceof InterpreterFile) {
-			return new Object[] {((InterpreterFile)object).getFileContent(), };
-		}
-		return super.getChildren(object);
 	}
 
 	/**

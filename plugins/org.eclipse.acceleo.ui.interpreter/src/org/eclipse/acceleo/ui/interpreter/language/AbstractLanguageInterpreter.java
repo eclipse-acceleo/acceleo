@@ -32,6 +32,17 @@ import org.eclipse.ui.IEditorPart;
 @SuppressWarnings("unused")
 public abstract class AbstractLanguageInterpreter {
 	/**
+	 * If this editor reacts to the "link with editor" action of the interpreter view, this should return
+	 * <code>true</code>. Will return <code>false</code> by default.
+	 * 
+	 * @return <code>true</code> if this interpreter cares for the "link with editor" action,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean acceptLinkWithEditor() {
+		return false;
+	}
+
+	/**
 	 * If the language interpreter needs to add custom actions to the interpreter form, do it from here.
 	 * 
 	 * @param toolBarManager
@@ -138,17 +149,6 @@ public abstract class AbstractLanguageInterpreter {
 	 *         evaluation. Cannot be <code>null</code>.
 	 */
 	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
-
-	/**
-	 * If this editor reacts to the "link with editor" action of the interpreter view, this should return
-	 * <code>true</code>. Will return <code>false</code> by default.
-	 * 
-	 * @return <code>true</code> if this interpreter cares for the "link with editor" action,
-	 *         <code>false</code> otherwise.
-	 */
-	public boolean acceptLinkWithEditor() {
-		return false;
-	}
 
 	/**
 	 * This will be called whenever a new editor is given focus while the "link with editor" toggle is

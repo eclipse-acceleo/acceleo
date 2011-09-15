@@ -48,11 +48,11 @@ public final class RenameVariableAction extends Action {
 	/** Parent of our text editor. */
 	protected Composite textEditorParent;
 
-	/** The tree editing widget. */
-	private TreeEditor treeEditor;
-
 	/** Keeps a reference towards the TreeViewer displaying our variables. */
 	protected final TreeViewer variableViewer;
+
+	/** The tree editing widget. */
+	private TreeEditor treeEditor;
 
 	/**
 	 * Instantiates a rename action for the given variable TreeViewer.

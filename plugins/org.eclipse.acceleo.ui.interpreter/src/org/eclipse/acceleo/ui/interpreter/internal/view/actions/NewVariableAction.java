@@ -28,11 +28,11 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class NewVariableAction extends Action {
-	/** Value of this new variable. */
-	private Object value;
-
 	/** Keeps a reference to the variable viewer. */
 	protected final TreeViewer variableViewer;
+
+	/** Value of this new variable. */
+	private Object value;
 
 	/**
 	 * Instantiates the "new variable" action given the variable viewer.

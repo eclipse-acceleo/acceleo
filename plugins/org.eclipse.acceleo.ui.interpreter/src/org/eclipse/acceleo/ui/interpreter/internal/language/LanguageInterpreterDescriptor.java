@@ -34,11 +34,11 @@ public final class LanguageInterpreterDescriptor {
 	/** Configuration element of this descriptor. */
 	private final IConfigurationElement element;
 
-	/** Qualified class name of this language interpreter. */
-	private final String interpreterClassName;
-
 	/** Icon provided by this interpreter. Could be <code>null</code>. */
 	private final ImageDescriptor icon;
+
+	/** Qualified class name of this language interpreter. */
+	private final String interpreterClassName;
 
 	/** Label of this particular interpreter. */
 	private final String label;

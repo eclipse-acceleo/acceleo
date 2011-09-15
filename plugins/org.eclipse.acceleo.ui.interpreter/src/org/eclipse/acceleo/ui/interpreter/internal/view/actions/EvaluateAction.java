@@ -27,12 +27,12 @@ import org.eclipse.jface.action.IAction;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class EvaluateAction extends Action {
+	/** Name of this action. */
+	private static final String NAME = InterpreterMessages.getString("interpreter.action.evaluate.name"); //$NON-NLS-1$
+
 	/** The tooltip we'll show for this action. */
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("interpreter.action.evaluate.tooltip"); //$NON-NLS-1$
-
-	/** Name of this action. */
-	private static final String NAME = InterpreterMessages.getString("interpreter.action.evaluate.name"); //$NON-NLS-1$
 
 	/** References the interpreter from which the action was triggered. */
 	private InterpreterView interpreterView;
