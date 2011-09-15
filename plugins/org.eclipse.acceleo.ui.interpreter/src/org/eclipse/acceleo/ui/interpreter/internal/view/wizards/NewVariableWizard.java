@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
+import java.util.List;
+
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.wizard.Wizard;
@@ -30,24 +32,22 @@ public class NewVariableWizard extends Wizard {
 	/** The one and only page of this wizard. */
 	private NewVariableWizardPage page;
 
-	/**
-	 * Instantiates The new variable wizard with no initial selection.
-	 */
-	public NewVariableWizard() {
-		super();
-		this.selectedVariable = null;
-	}
+	/** This will contain the list of pre-existing variables, if any. */
+	private final List<Variable> existingVariables;
 
 	/**
 	 * Instantiates the new variable wizard given the initially selected variable.
 	 * 
 	 * @param selectedVariable
 	 *            The variable that was selected in the viewer when this wizard has been created.
+	 * @param existingVariables
+	 *            This will contain the list of pre-existing variables, if any.
 	 */
-	public NewVariableWizard(Variable selectedVariable) {
+	public NewVariableWizard(Variable selectedVariable, List<Variable> existingVariables) {
 		super();
 		setWindowTitle(InterpreterMessages.getString("interpreter.wizard.newvariable.wizardtitle")); //$NON-NLS-1$
 		this.selectedVariable = selectedVariable;
+		this.existingVariables = existingVariables;
 	}
 
 	/**
@@ -63,7 +63,8 @@ public class NewVariableWizard extends Wizard {
 		} else {
 			initialVariableName = null;
 		}
-		page = new NewVariableWizardPage(initialVariableName);
+
+		page = new NewVariableWizardPage(initialVariableName, existingVariables);
 		addPage(page);
 	}
 

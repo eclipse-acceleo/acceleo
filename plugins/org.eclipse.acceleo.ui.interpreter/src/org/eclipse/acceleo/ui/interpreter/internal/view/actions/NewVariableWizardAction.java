@@ -59,7 +59,7 @@ public class NewVariableWizardAction extends Action {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		final NewVariableWizard wizard = new NewVariableWizard(variable);
+		final NewVariableWizard wizard = new NewVariableWizard(variable, getExistingVariables());
 		final WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 				wizard);
 		int result = dialog.open();
@@ -118,6 +118,29 @@ public class NewVariableWizardAction extends Action {
 
 		if (input instanceof Collection<?>) {
 			((Collection<Variable>)input).add(result);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Returns the list of pre-existing variables.
+	 * 
+	 * @return The list of pre-existing variables.
+	 */
+	private List<Variable> getExistingVariables() {
+		final List<Variable> result = new ArrayList<Variable>();
+
+		Object input = variableViewer.getInput();
+		if (input instanceof Iterable<?>) {
+			@SuppressWarnings("unchecked")
+			Iterator<Variable> existingVariablesIterator = ((Iterable<Variable>)input).iterator();
+			while (existingVariablesIterator.hasNext()) {
+				Variable candidate = existingVariablesIterator.next();
+				result.add(candidate);
+			}
+		} else if (input instanceof Variable) {
+			result.add((Variable)input);
 		}
 
 		return result;

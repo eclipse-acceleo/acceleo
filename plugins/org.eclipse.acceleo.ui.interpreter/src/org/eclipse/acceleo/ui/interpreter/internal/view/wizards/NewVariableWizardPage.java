@@ -10,11 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
+import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -30,6 +37,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 /**
  * Wizard page to create a new variable, or add new values to an existing variable.
@@ -64,7 +72,7 @@ public class NewVariableWizardPage extends WizardPage {
 	private String variableName;
 
 	/** The text widget allowing users to select the variable name. */
-	private Text variableText;
+	protected Text variableText;
 
 	/** Validator we'll use for the variable name. */
 	private IInputValidator variableValidator = new VariableNameValidator();
@@ -72,18 +80,24 @@ public class NewVariableWizardPage extends WizardPage {
 	/** Will be updated with the final Variable value. */
 	private Object variableValue;
 
+	/** This will contain the list of pre-existing variables, if any. */
+	protected final List<Variable> existingVariables;
+
 	/**
 	 * Instantiates our wizard page.
 	 * 
 	 * @param initialVariableName
 	 *            The name of the variable initially selected in the interpreter view's variable viewer.
+	 * @param existingVariables
+	 *            This will contain the list of pre-existing variables, if any.
 	 */
-	public NewVariableWizardPage(String initialVariableName) {
+	public NewVariableWizardPage(String initialVariableName, List<Variable> existingVariables) {
 		super(PAGE_NAME);
 		setTitle(PAGE_TITLE);
 		setDescription(PAGE_DESCRIPTION);
 		setPageComplete(false);
 		this.initialVariableName = initialVariableName;
+		this.existingVariables = existingVariables;
 	}
 
 	/**
@@ -233,8 +247,24 @@ public class NewVariableWizardPage extends WizardPage {
 	 * This will be used in order to validate the variable name.
 	 */
 	protected void validateVariableName() {
-		String errorMessage = variableValidator.isValid(variableText.getText());
+		final String name = variableText.getText();
+		String errorMessage = variableValidator.isValid(name);
 		setErrorMessage(errorMessage);
+
+		if (errorMessage == null) {
+			boolean exists = false;
+			Iterator<Variable> variables = existingVariables.iterator();
+			while (variables.hasNext() && !exists) {
+				exists = name.equals(variables.next().getName());
+			}
+
+			if (exists) {
+				setMessage(InterpreterMessages.getString(
+						"interpreter.wizard.newvariable.info.existingvariable", name), SWT.NONE); //$NON-NLS-1$
+			} else {
+				setMessage(null);
+			}
+		}
 	}
 
 	/**
@@ -385,6 +415,25 @@ public class NewVariableWizardPage extends WizardPage {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = false;
 		gridData.widthHint = getButtonWidthHint(browseButton);
+		browseButton.setLayoutData(gridData);
+		browseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ElementListSelectionDialog dialog = new ElementListSelectionDialog(browseButton.getShell(),
+						new VariableLabelProvider(new ComposedAdapterFactory(
+								ComposedAdapterFactory.Descriptor.Registry.INSTANCE)));
+				dialog.setElements(existingVariables.toArray());
+				if (dialog.open() == Window.OK) {
+					final Object result = dialog.getFirstResult();
+					if (result instanceof Variable) {
+						variableText.setText(((Variable)result).getName());
+					}
+				}
+			}
+		});
+		if (existingVariables.isEmpty()) {
+			browseButton.setEnabled(false);
+		}
 	}
 
 	/**

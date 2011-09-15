@@ -15,8 +15,10 @@ import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -24,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class VariableLabelProvider extends CellLabelProvider {
+public class VariableLabelProvider extends CellLabelProvider implements ILabelProvider {
 	/** The delegate label provider. */
 	private final AdapterFactoryLabelProvider delegate;
 
@@ -68,17 +70,15 @@ public class VariableLabelProvider extends CellLabelProvider {
 			cell.setBackground(null);
 		}
 		cell.setText(text);
-		cell.setImage(delegate.getImage(element));
+		cell.setImage(getImage(element));
 	}
 
 	/**
-	 * Returns the text to be displayed for the given element.
+	 * {@inheritDoc}
 	 * 
-	 * @param element
-	 *            Element for which we need a label.
-	 * @return The text to be displayed for the given element.
+	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
 	 */
-	private String getText(Object element) {
+	public String getText(Object element) {
 		String text = ""; //$NON-NLS-1$
 		if (element instanceof Variable) {
 			text = ((Variable)element).getName();
@@ -86,5 +86,14 @@ public class VariableLabelProvider extends CellLabelProvider {
 			text = delegate.getText(element);
 		}
 		return text;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
+	 */
+	public Image getImage(Object element) {
+		return delegate.getImage(element);
 	}
 }
