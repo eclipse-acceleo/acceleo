@@ -147,6 +147,18 @@ public class InterpreterView extends ViewPart {
 	/** Prefix of the messages corresponding to evaluation problems. */
 	protected static final String EVALUATION_MESSAGE_PREFIX = "evaluation.message"; //$NON-NLS-1$
 
+	/**
+	 * This will be used as the key for the "information" message that the interpreter will display for
+	 * compilation "OK" status. There will only be one.
+	 */
+	private static final String COMPILATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
+
+	/**
+	 * This will be used as the key for the "information" message that the interpreter will display for
+	 * evaluation "OK" status. There will only be one.
+	 */
+	private static final String EVALUATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
+
 	/** ID of the interpreter view context. Must be kept in sync with the plugin.xml declaration. */
 	private static final String INTERPRETER_VIEW_CONTEXT_ID = "org.eclipse.acceleo.ui.interpreter.interpreterview"; //$NON-NLS-1$
 
@@ -164,18 +176,6 @@ public class InterpreterView extends ViewPart {
 
 	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
 	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
-
-	/**
-	 * This will be used as the key for the "information" message that the interpreter will display for
-	 * compilation "OK" status. There will only be one.
-	 */
-	private static final String COMPILATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
-
-	/**
-	 * This will be used as the key for the "information" message that the interpreter will display for
-	 * evaluation "OK" status. There will only be one.
-	 */
-	private static final String EVALUATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
