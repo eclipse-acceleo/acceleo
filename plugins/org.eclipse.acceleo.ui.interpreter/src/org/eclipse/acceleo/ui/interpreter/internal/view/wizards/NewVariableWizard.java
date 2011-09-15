@@ -10,17 +10,25 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view.wizards;
 
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * This wizard will be used
+ * This wizard will be used in order to create new variables.
+ * <p>
+ * Similar to the "new class" wizard, it will allow for the create new values for existing variables, new
+ * empty variables, or new variables with initial values.
+ * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class NewVariableWizard extends Wizard {
 	/** If there was a variable selected in the viewer, this will hold a reference to it. */
 	private final Variable selectedVariable;
+
+	/** The one and only page of this wizard. */
+	private NewVariableWizardPage page;
 
 	/**
 	 * Instantiates The new variable wizard with no initial selection.
@@ -38,7 +46,25 @@ public class NewVariableWizard extends Wizard {
 	 */
 	public NewVariableWizard(Variable selectedVariable) {
 		super();
+		setWindowTitle(InterpreterMessages.getString("interpreter.wizard.newvariable.wizardtitle")); //$NON-NLS-1$
 		this.selectedVariable = selectedVariable;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#addPages()
+	 */
+	@Override
+	public void addPages() {
+		final String initialVariableName;
+		if (selectedVariable != null) {
+			initialVariableName = selectedVariable.getName();
+		} else {
+			initialVariableName = null;
+		}
+		page = new NewVariableWizardPage(initialVariableName);
+		addPage(page);
 	}
 
 	/**
@@ -48,7 +74,30 @@ public class NewVariableWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+
+	/**
+	 * Returns the variable name.
+	 * 
+	 * @return The variable name.
+	 */
+	public String getVariableName() {
+		if (page != null) {
+			return page.getVariableName();
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the value of the new variable.
+	 * 
+	 * @return The value of the new variable.
+	 */
+	public Object getVariableValue() {
+		if (page != null) {
+			return page.getVariableValue();
+		}
+		return null;
 	}
 }

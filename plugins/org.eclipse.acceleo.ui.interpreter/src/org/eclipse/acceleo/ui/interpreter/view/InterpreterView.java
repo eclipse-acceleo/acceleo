@@ -39,11 +39,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearResultViewe
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewBooleanValueAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewFloatValueAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewIntegerValueAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewStringValueAction;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableWizardAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleLinkWithEditorAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
@@ -1600,17 +1596,8 @@ public class InterpreterView extends ViewPart {
 		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
-			manager.add(new NewVariableAction(variableViewer));
 			final Variable variable = getCurrentVariable();
-			if (variable != null) {
-				final IMenuManager submenu = new MenuManager(
-						InterpreterMessages.getString("interpreter.action.newvalue.submenu.name")); //$NON-NLS-1$
-				submenu.add(new NewStringValueAction(variableViewer, variable));
-				submenu.add(new NewIntegerValueAction(variableViewer, variable));
-				submenu.add(new NewFloatValueAction(variableViewer, variable));
-				submenu.add(new NewBooleanValueAction(variableViewer, variable));
-				manager.add(submenu);
-			}
+			manager.add(new NewVariableWizardAction(variableViewer, variable));
 			manager.add(new ClearVariableViewerAction(variableViewer));
 			manager.add(new Separator());
 			manager.add(new DeleteVariableOrValueAction(variableViewer));
