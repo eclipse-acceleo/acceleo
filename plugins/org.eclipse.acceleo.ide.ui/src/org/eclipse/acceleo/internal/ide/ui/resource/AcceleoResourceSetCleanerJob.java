@@ -6,6 +6,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+/**
+ * This job will clean the global resource set of the UI 5s after the closure of the latest Acceleo editor.
+ * 
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ */
 public class AcceleoResourceSetCleanerJob extends Job {
 
 	/**

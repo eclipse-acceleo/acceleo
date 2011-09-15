@@ -107,7 +107,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	 */
 	public void run(IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(AcceleoUIMessages.getString("AcceleoCompileOperation.Task.Compile"), files.length); //$NON-NLS-1$
-		AcceleoProject acceleoProject = new AcceleoProject(project);
 		for (int i = 0; i < files.length; i++) {
 			checkCanceled(monitor);
 			monitor.subTask(AcceleoUIMessages.getString(
@@ -253,6 +252,11 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 	/**
 	 * This method will ensure that the Acceleo project has a dependency with all the project containing a
 	 * dynamic metamodels used in the module.
+	 * 
+	 * @param module
+	 *            The Acceleo module
+	 * @param inputFile
+	 *            The file in the Acceleo editor
 	 */
 	private void checkDependenciesWithDynamicMetamodels(Module module, IFile inputFile) {
 		List<TypedModel> input = module.getInput();
@@ -262,6 +266,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 				Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
 						.getDynamicEcorePackagePaths();
 				String packagePath = dynamicEcorePackagePaths.get(ePackage.getNsURI());
+				if (packagePath == null) {
+					return;
+				}
 				IPath path = new Path(packagePath);
 				IFile metamodelFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 				if (metamodelFile != null && metamodelFile.isAccessible()) {

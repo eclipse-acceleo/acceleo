@@ -109,9 +109,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
-/**
- * @author sbegaudeau
- */
 public class AcceleoEditor extends TextEditor implements IResourceChangeListener {
 
 	/**
@@ -440,7 +437,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 			if (shouldClear) {
 				resourceSetCleanerJob.setSystem(true);
 				resourceSetCleanerJob.setPriority(Job.DECORATE);
-				resourceSetCleanerJob.schedule(5000);
+				final int time = 5000;
+				resourceSetCleanerJob.schedule(time);
 			}
 		}
 
