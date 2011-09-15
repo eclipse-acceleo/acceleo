@@ -7,4 +7,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="class2"/>
   <eClassifiers xsi:type="ecore:EClass" name="class3"/>
   <eClassifiers xsi:type="ecore:EClass" name="class4"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="MyEnum"/>
 </ecore:EPackage>

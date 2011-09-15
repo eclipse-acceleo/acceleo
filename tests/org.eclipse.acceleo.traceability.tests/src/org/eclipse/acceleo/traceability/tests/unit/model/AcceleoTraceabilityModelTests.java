@@ -19,6 +19,7 @@ import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.tests.unit.AbstractTraceabilityTest;
 import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ecore.PropertyCallExp;
@@ -177,6 +178,91 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			EObject modelElement = sourceElement.getModelElement();
 			assertTrue(modelElement instanceof EClass);
 			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityModelEnum() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate("data/model/modelEnum.mtl", //$NON-NLS-1$
+				"main", "data/model/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(1, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("MyEnum").length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(1, sourceElements.size()); // the class and its name
+			assertEquals("MyEnum", sourceElements.get(0).toString()); //$NON-NLS-1$ 
+			assertEquals("enum.txt", generatedFile.getPath()); //$NON-NLS-1$ 
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("MyEnum").length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCall = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCall.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eEnum.name", propertyCall.toString()); //$NON-NLS-1$
+			assertEquals(164, propertyCall.getStartPosition());
+			assertEquals(164 + "eEnum.name".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EEnum);
+			assertEquals("MyEnum", ((EEnum)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityModelEnumToString() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/model/modelEnumToString.mtl", //$NON-NLS-1$
+				"main", "data/model/model.uml", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(1, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("Private").length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(1, sourceElements.size()); // the class and its name
+			assertEquals("MyEnum", sourceElements.get(0).toString()); //$NON-NLS-1$ 
+			assertEquals("enum.txt", generatedFile.getPath()); //$NON-NLS-1$ 
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("MyEnum").length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCall = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCall.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eEnum.name", propertyCall.toString()); //$NON-NLS-1$
+			assertEquals(178, propertyCall.getStartPosition());
+			assertEquals(178 + "eEnum.name".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EEnum);
+			assertEquals("MyEnum" + cpt, ((EEnum)modelElement).getName()); //$NON-NLS-1$
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 			cpt++;

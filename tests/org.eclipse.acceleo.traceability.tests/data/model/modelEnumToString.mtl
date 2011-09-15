@@ -1,0 +1,5 @@
+[comment encoding = UTF-8 /]
+[module modelEnumToString('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[template public main(operation : Operation)][file ('operation.txt', false, 'UTF-8')][operation.visibility.toString()/][/file][/template]
+
