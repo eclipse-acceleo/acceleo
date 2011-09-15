@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module blockTemplateForForTemplateForForTemplateForForTemplateForFor('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')][Sequence{'tictac'}.blockFor1()/][/file][/template]
+
+[template public blockFor1(s : String)][for(str : String |Sequence{'caramel'})][for(str1 : String |Sequence{'caramel'})][s.blockFor2()/][/for][/for][/template]
+
+[template public blockFor2(s : String)][for(str : String |Sequence{'caramel'})][for(str1 : String |Sequence{'caramel'})][s.blockFor3()/][/for][/for][/template]
+
+[template public blockFor3(s : String)][for(str : String |Sequence{'caramel'})][for(str1 : String |Sequence{'caramel'})][s/][/for][/for][/template]
