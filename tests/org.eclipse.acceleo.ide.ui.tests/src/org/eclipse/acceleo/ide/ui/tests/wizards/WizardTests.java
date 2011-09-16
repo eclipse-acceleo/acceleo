@@ -143,7 +143,6 @@ public class WizardTests extends AbstractSWTBotTests {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (IProject iProject : projects) {
 			deleteProject(iProject);
-			botWait(2000);
 		}
 	}
 

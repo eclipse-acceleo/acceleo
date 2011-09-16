@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.junit.BeforeClass;
 import org.osgi.framework.Bundle;
@@ -155,6 +156,26 @@ public class AbstractSWTBotTests {
 
 	public static final String GENERATE_FILE = "Generate file"; //$NON-NLS-1$
 
+	public static final String EXAMPLE = "Example..."; //$NON-NLS-1$
+
+	public static final String ACCELEO_PLUGINS = "Acceleo Plug-ins"; //$NON-NLS-1$
+
+	public static final String UML_TO_Java = "UML to Java"; //$NON-NLS-1$
+
+	public static final String ECORE_TO_PYTHON = "Ecore to Python"; //$NON-NLS-1$
+
+	public static final String ECORE_TO_UNIT_TESTS = "Ecore to Unit tests"; //$NON-NLS-1$
+
+	public static final String ENABLE_PROFILING = "Enable profiling"; //$NON-NLS-1$
+
+	public static final String PROFILE_RESULT = "Profile result:"; //$NON-NLS-1$
+
+	public static final String CONTRIBUTE_TRACEABILITY = "Contribute traceability information to Result View"; //$NON-NLS-1$
+
+	public static final String RUNNER = "Runner:"; //$NON-NLS-1$
+
+	public static final String NEW_EXAMPLE = "New Example"; //$NON-NLS-1$
+
 	/**
 	 * The SWTBot.
 	 */
@@ -169,7 +190,12 @@ public class AbstractSWTBotTests {
 	public static void setUp() {
 		bundle = Platform.getBundle("org.eclipse.acceleo.ide.ui.tests"); //$NON-NLS-1$		
 		bot = new SWTWorkbenchBot();
-		bot.viewByTitle(WELCOME).close();
+		List<SWTBotView> views = bot.views();
+		for (SWTBotView view : views) {
+			if (WELCOME.equals(view.getTitle())) {
+				view.close();
+			}
+		}
 		bot.perspectiveByLabel(JAVA).activate();
 	}
 
@@ -198,6 +224,12 @@ public class AbstractSWTBotTests {
 		}
 
 		IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		try {
+			iProject.close(new NullProgressMonitor());
+			iProject.open(new NullProgressMonitor());
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
 		return iProject;
 	}
 
@@ -547,11 +579,23 @@ public class AbstractSWTBotTests {
 	 * Launch an acceleo generation with the given parameters.
 	 * 
 	 * @param projectName
+	 *            The name of the project
 	 * @param javaClass
+	 *            The name of the Java launcher
 	 * @param model
+	 *            The workspace relative path of the model
 	 * @param targetFolder
+	 *            The workspace relative path of the target folder.
+	 * @param standAlone
+	 *            Indicates if we should run in stand alone mode.
+	 * @param profilePath
+	 *            The path of the profile model (<code>null</code> indicates that the profiling should not be
+	 *            activated)
+	 * @param traceability
+	 *            Indicates if we should active the traceability
 	 */
-	protected static void generate(String projectName, String javaClass, String model, String targetFolder) {
+	protected static void generate(String projectName, String javaClass, String model, String targetFolder,
+			boolean standAlone, String profilePath, boolean traceability) {
 		bot.menu(RUN).menu(RUN_CONFIGURATIONS).click();
 		SWTBotShell shell = bot.shell(RUN_CONFIGURATIONS_SHELL);
 		shell.activate();
@@ -559,14 +603,30 @@ public class AbstractSWTBotTests {
 		bot.tree().getTreeItem(ACCELEO_APPLICATION).click().select().setFocus();
 		bot.tree().getTreeItem(ACCELEO_APPLICATION).click().select().doubleClick();
 
-		botWait(10000);
+		botWait(5000);
 
 		bot.textInGroup(PROJECT_LABEL).setText(projectName);
 		bot.textInGroup(MAIN_CLASS_LABEL).setText(javaClass);
 		bot.textInGroup(MODEL_LABEL).setText(model);
 		bot.textInGroup(TARGET_LABEL).setText(targetFolder);
 
+		if (profilePath != null) {
+			bot.checkBoxWithLabel(ENABLE_PROFILING).click();
+			bot.textInGroup(PROFILE_RESULT).setText(profilePath);
+		}
+
+		if (traceability) {
+			bot.checkBoxWithLabel(CONTRIBUTE_TRACEABILITY).click();
+		}
+
+		if (standAlone) {
+			bot.comboBox(RUNNER).setSelection(1);
+		}
+
 		bot.button(APPLY).click();
+
+		botWait(2000);
+
 		bot.button(RUN).click();
 	}
 
@@ -578,6 +638,15 @@ public class AbstractSWTBotTests {
 	 */
 	protected static void botWait(long millis) {
 		bot.sleep(millis);
+	}
+
+	protected static void importAcceleoExample(String name) {
+		bot.menu(FILE).menu(NEW).menu(EXAMPLE).click();
+
+		SWTBotShell shell = bot.shell(NEW_EXAMPLE);
+		shell.activate();
+		bot.tree().expandNode(ACCELEO_PLUGINS).getNode(name).select();
+		bot.button(FINISH).click();
 	}
 
 }
