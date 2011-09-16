@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.ui.interpreter.internal.SWTUtil;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -88,6 +89,7 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	@Override
 	public SourceViewer createSourceViewer(Composite parent) {
 		acceleoSource = new AcceleoSourceViewer(parent, null, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		SWTUtil.setUpScrollableListener(acceleoSource.getTextWidget());
 		return acceleoSource;
 	}
 

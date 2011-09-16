@@ -25,9 +25,11 @@ import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
 import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
+import org.eclipse.acceleo.ui.interpreter.internal.SWTUtil;
 import org.eclipse.acceleo.ui.interpreter.internal.language.DefaultLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
+import org.eclipse.acceleo.ui.interpreter.internal.view.GeneratedTextDialog;
 import org.eclipse.acceleo.ui.interpreter.internal.view.InterpreterFileStorage;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
 import org.eclipse.acceleo.ui.interpreter.internal.view.StorageEditorInput;
@@ -358,8 +360,8 @@ public class InterpreterView extends ViewPart {
 		// Clear previous compilation messages
 		/*
 		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
-		 * color without having _all_ messages removed, lest the color stays at its previous state : bug in
-		 * FormHeading.MessageRegion#showMessage().
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
+		 * 357906 in FormHeading.MessageRegion#showMessage().
 		 */
 		final String dummyMessageKey = "none"; //$NON-NLS-1$
 		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
@@ -445,8 +447,8 @@ public class InterpreterView extends ViewPart {
 		// Clear previous evaluation messages
 		/*
 		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
-		 * color without having _all_ messages removed, lest the color stays at its previous state : bug in
-		 * FormHeading.MessageRegion#showMessage().
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
+		 * 357906 in FormHeading.MessageRegion#showMessage().
 		 */
 		final String dummyMessageKey = "none"; //$NON-NLS-1$
 		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
@@ -761,7 +763,8 @@ public class InterpreterView extends ViewPart {
 	protected SourceViewer createExpressionViewer(Composite parent) {
 		SourceViewer viewer = getCurrentLanguageInterpreter().createSourceViewer(parent);
 		if (viewer == null) {
-			viewer = new SourceViewer(parent, null, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
+			viewer = SWTUtil.createScrollableSourceViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI
+					| SWT.BORDER);
 		}
 		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
 
@@ -909,39 +912,7 @@ public class InterpreterView extends ViewPart {
 		if (viewer instanceof TreeViewer) {
 			setUpResultDragSupport((TreeViewer)viewer);
 
-			((TreeViewer)viewer).addDoubleClickListener(new IDoubleClickListener() {
-				public void doubleClick(DoubleClickEvent event) {
-					if (event.getSelection().isEmpty()
-							|| !(event.getSelection() instanceof IStructuredSelection)) {
-						return;
-					}
-					final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
-					if (target instanceof InterpreterFile) {
-						final IWorkbench workbench = PlatformUI.getWorkbench();
-						if (workbench.getActiveWorkbenchWindow() == null
-								|| workbench.getActiveWorkbenchWindow().getActivePage() == null) {
-							return;
-						}
-						final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
-						final IStorage storage = new InterpreterFileStorage((InterpreterFile)target);
-						final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
-								((InterpreterFile)target).getFileName());
-						final IEditorInput input = new StorageEditorInput(storage);
-
-						try {
-							final String editorID;
-							if (editor == null) {
-								editorID = EditorsUI.DEFAULT_TEXT_EDITOR_ID;
-							} else {
-								editorID = editor.getId();
-							}
-							page.openEditor(input, editorID);
-						} catch (PartInitException e) {
-							// swallow : we just won't open editors
-						}
-					}
-				}
-			});
+			((TreeViewer)viewer).addDoubleClickListener(new ResultDoubleClickListener());
 		}
 
 		createResultMenu(viewer);
@@ -2043,6 +2014,65 @@ public class InterpreterView extends ViewPart {
 		public void setDirty() {
 			synchronized(this) {
 				dirty = true;
+			}
+		}
+	}
+
+	/**
+	 * This will allow us to react to double click events in the result view in order to display the long
+	 * Strings and generated files in a more suitable way.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class ResultDoubleClickListener implements IDoubleClickListener {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+		 */
+		public void doubleClick(DoubleClickEvent event) {
+			if (event.getSelection().isEmpty() || !(event.getSelection() instanceof IStructuredSelection)) {
+				return;
+			}
+			final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
+			if (target instanceof InterpreterFile) {
+				showGeneratedFile((InterpreterFile)target);
+			} else if (target instanceof String
+					&& (((String)target).indexOf('\n') >= 0 || ((String)target).indexOf('\r') >= 0)) {
+				GeneratedTextDialog dialog = new GeneratedTextDialog(Display.getCurrent().getActiveShell(),
+						"Evaluation result", (String)target); //$NON-NLS-1$
+				dialog.open();
+			}
+		}
+
+		/**
+		 * Displays the given generated file in its own read-only editor.
+		 * 
+		 * @param file
+		 *            The file we are to display.
+		 */
+		private void showGeneratedFile(InterpreterFile file) {
+			final IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench.getActiveWorkbenchWindow() == null
+					|| workbench.getActiveWorkbenchWindow().getActivePage() == null) {
+				return;
+			}
+			final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+			final IStorage storage = new InterpreterFileStorage(file);
+			final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
+					file.getFileName());
+			final IEditorInput input = new StorageEditorInput(storage);
+
+			try {
+				final String editorID;
+				if (editor == null) {
+					editorID = EditorsUI.DEFAULT_TEXT_EDITOR_ID;
+				} else {
+					editorID = editor.getId();
+				}
+				page.openEditor(input, editorID);
+			} catch (PartInitException e) {
+				// swallow : we just won't open editors
 			}
 		}
 	}
