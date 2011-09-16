@@ -153,6 +153,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** Caches the result of searching for the plugin URL of the metamodels. */
 	private final Map<String, String> ecoreURLCache = new HashMap<String, String>();
 
+	/** This will be set to <code>true</code> whenever we begin the evaluation of an iterator's set. */
+	private boolean evaluatingIterationSet;
+
 	/**
 	 * This boolean will allow us to ignore Template Invocation traces when they're nested in Operation Calls.
 	 */
@@ -723,6 +726,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		boolean oldRecordingValue = switchRecordState(expression);
+		boolean oldIterSet = evaluatingIterationSet;
+		evaluatingIterationSet = expression.eContainingFeature() == MtlPackage.eINSTANCE
+				.getForBlock_IterSet();
 		boolean oldEvaluatingPostCall = evaluatingPostCall;
 		evaluatingPostCall = evaluatingPostCall
 				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
@@ -752,6 +758,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			throw e;
 		} finally {
 			record = oldRecordingValue;
+			evaluatingIterationSet = oldIterSet;
 			evaluatingPostCall = oldEvaluatingPostCall;
 			// Advance Acceleo iterator (for loops) iteration count
 			if (iterationBody == expression
@@ -2286,7 +2293,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@SuppressWarnings("unchecked")
 	private boolean shouldRecordTrace(OCLExpression<C> expression) {
 		boolean result = true;
-		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getForBlock_IterSet() || !record) {
+		if (evaluatingIterationSet || !record) {
 			return false;
 		}
 		if (isPropertyCallSource(expression)) {

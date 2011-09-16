@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.block;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
@@ -30,9 +33,6 @@ import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 
@@ -1775,9 +1775,9 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("'tictac'", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(0, string.getStartPosition());
-			assertEquals(0 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("tictac", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(195, string.getStartPosition());
+			assertEquals(195 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1817,9 +1817,9 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("'tictac'", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(0, string.getStartPosition());
-			assertEquals(0 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("tictac", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(197, string.getStartPosition());
+			assertEquals(197 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1859,9 +1859,9 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("'tictac'", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(0, string.getStartPosition());
-			assertEquals(0 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("tictac", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(198, string.getStartPosition());
+			assertEquals(198 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1901,9 +1901,9 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("'tictac'", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(0, string.getStartPosition());
-			assertEquals(0 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("tictac", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(200, string.getStartPosition());
+			assertEquals(200 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -1943,9 +1943,9 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
-			assertEquals("'tictac'", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(0, string.getStartPosition());
-			assertEquals(0 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals("tictac", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(240, string.getStartPosition());
+			assertEquals(240 + "'tictac'".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
