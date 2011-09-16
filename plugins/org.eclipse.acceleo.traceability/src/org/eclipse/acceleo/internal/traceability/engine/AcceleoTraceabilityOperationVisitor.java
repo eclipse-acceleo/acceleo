@@ -733,13 +733,19 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			String result = source.toString();
 			buffer.append(result);
 
+			final EObject scope;
 			if (source instanceof EObject) {
+				scope = (EObject)source;
+			} else {
+				scope = visitor.retrieveScopeEObjectValue();
+			}
+			if (scope != null) {
 				final AbstractTrace trace = visitor.getLastExpressionTrace();
 				GeneratedText region = TraceabilityFactory.eINSTANCE.createGeneratedText();
 
 				region.setModuleElement(moduleElement);
 
-				trace.addTrace(visitor.getInputElement((EObject)source), region, result);
+				trace.addTrace(visitor.getInputElement(scope), region, result);
 			}
 		}
 		return buffer.toString();

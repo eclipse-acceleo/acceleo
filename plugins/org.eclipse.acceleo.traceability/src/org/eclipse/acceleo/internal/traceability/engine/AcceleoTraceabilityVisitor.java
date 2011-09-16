@@ -130,14 +130,28 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** Initial size of our "cache" maps. */
 	private static final int INITIAL_CACHE_SIZE = 128;
 
+	/**
+	 * As we add and remove the "scope" object for templates at a different times, we need to remember whether
+	 * the template actually had a scope or not.
+	 */
+	private boolean addedTemplateScope;
+
+	/** This will be used to keep pointers towards the input elements created for the current trace. */
+	private Map<EObject, Set<InputElement>> cachedInputElements = new HashMap<EObject, Set<InputElement>>(
+			INITIAL_CACHE_SIZE);
+
+	/** This will be used to keep pointers towards the module elements created for the current trace. */
+	private Map<EObject, ModuleElement> cachedModuleElements = new HashMap<EObject, ModuleElement>(
+			INITIAL_CACHE_SIZE);
+
 	/** Traceability needs to know what expression is being processed at all times. */
 	private OCLExpression<C> currentExpression;
 
 	/** This will hold the stack of generated files. */
 	private Deque<GeneratedFile> currentFiles = new CircularArrayDeque<GeneratedFile>();
 
-	/** All traceability information for this session will be saved in this instance. */
-	private final TraceabilityModel evaluationTrace;
+	/** Caches the result of searching for the plugin URL of the metamodels. */
+	private final Map<String, String> ecoreURLCache = new HashMap<String, String>();
 
 	/**
 	 * This boolean will allow us to ignore Template Invocation traces when they're nested in Operation Calls.
@@ -147,17 +161,14 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** This will be set to <code>true</code> whenever we begin the evaluation of a template post-invocation. */
 	private boolean evaluatingPostCall;
 
+	/** All traceability information for this session will be saved in this instance. */
+	private final TraceabilityModel evaluationTrace;
+
 	/** Keeps track of the variable currently being initialized. */
 	private Variable<C, PM> initializingVariable;
 
 	/** This will be used to keep pointers towards the latest template invocation traces. */
 	private Deque<ExpressionTrace<C>> invocationTraces;
-
-	/**
-	 * This will allow us to restore generated files' offsets in the case where traceability information is
-	 * wrong in any way.
-	 */
-	private int lastInvocationTracesLength;
 
 	/** This will allow us to determine when we finish the evaluation of an iteration. */
 	private OCLExpression<C> iterationBody;
@@ -178,28 +189,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private Variable<C, PM> iterationVariable;
 
-	/** This will be used to keep pointers towards the input elements created for the current trace. */
-	private Map<EObject, Set<InputElement>> cachedInputElements = new HashMap<EObject, Set<InputElement>>(
-			INITIAL_CACHE_SIZE);
-
-	/** This will be used to keep pointers towards the module elements created for the current trace. */
-	private Map<EObject, ModuleElement> cachedModuleElements = new HashMap<EObject, ModuleElement>(
-			INITIAL_CACHE_SIZE);
+	/**
+	 * This will allow us to restore generated files' offsets in the case where traceability information is
+	 * wrong in any way.
+	 */
+	private int lastInvocationTracesLength;
 
 	/**
 	 * We'll use this to record accurate trace information for the library's traceability-impacting
 	 * operations.
 	 */
 	private ExpressionTrace<C> operationArgumentTrace;
-
-	/**
-	 * As we add and remove the "scope" object for templates at a different times, we need to remember whether
-	 * the template actually had a scope or not.
-	 */
-	private boolean addedTemplateScope;
-
-	/** Query results are cached, thus we need to cache their traces too. */
-	private QueryTraceCache<C> queryTraceCache = new QueryTraceCache<C>();
 
 	/**
 	 * Along with {@link #operationCallSourceExpression}, this allows us to retrieve the source value of an
@@ -230,6 +230,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private InputElement protectedAreaSource;
 
+	/** Query results are cached, thus we need to cache their traces too. */
+	private QueryTraceCache<C> queryTraceCache = new QueryTraceCache<C>();
+
 	/** This will be used internally to prevent trace recording for set expressions. */
 	private boolean record = true;
 
@@ -243,9 +246,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * Records all variable traces for this session. Note that only primitive type variables will be recorded.
 	 */
 	private final Map<Variable<C, PM>, VariableTrace<C, PM>> variableTraces = new HashMap<Variable<C, PM>, VariableTrace<C, PM>>();
-
-	/** Caches the result of searching for the plugin URL of the metamodels. */
-	private final Map<String, String> ecoreURLCache = new HashMap<String, String>();
 
 	/**
 	 * Default constructor.
@@ -354,6 +354,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see AcceleoEvaluationVisitorDecorator#cacheResult(Query, List, Object)
+	 */
+	@Override
+	public void cacheResult(Query query, List<Object> arguments, Object result) {
+		queryTraceCache.cacheTrace(query, arguments, new ExpressionTrace<C>(recordedTraces.getLast()));
+
+		super.cacheResult(query, arguments, result);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator#createFileWriter(java.io.File,
 	 *      org.eclipse.acceleo.model.mtl.Block, org.eclipse.emf.ecore.EObject, boolean, java.lang.String)
 	 */
@@ -417,18 +429,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see AcceleoEvaluationVisitorDecorator#cacheResult(Query, List, Object)
-	 */
-	@Override
-	public void cacheResult(Query query, List<Object> arguments, Object result) {
-		queryTraceCache.cacheTrace(query, arguments, new ExpressionTrace<C>(recordedTraces.getLast()));
-
-		super.cacheResult(query, arguments, result);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see AcceleoEvaluationVisitorDecorator#getCachedResult(Query, List)
 	 */
 	@Override
@@ -441,93 +441,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		}
 
 		return super.getCachedResult(query, arguments);
-	}
-
-	/**
-	 * Returns the stack of generated files.
-	 * 
-	 * @return The stack of generated files.
-	 */
-	Deque<GeneratedFile> getCurrentFiles() {
-		return currentFiles;
-	}
-
-	/**
-	 * Returns the traces of the current variable initialization.
-	 * 
-	 * @return The traces of the current variable initialization.
-	 */
-	AbstractTrace getInitializingVariableTrace() {
-		return variableTraces.get(initializingVariable);
-	}
-
-	/**
-	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
-	 * model element and neither structural feature nor operation linked. Note that it will be created if
-	 * needed.
-	 * 
-	 * @param modelElement
-	 *            Model element we seek the corresponding InputElement of.
-	 * @return {@link InputElement} contained in the {@link #evaluationTrace} model.
-	 */
-	InputElement getInputElement(EObject modelElement) {
-		ModelFile soughtModel = getModelFile(modelElement);
-
-		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
-		if (candidateInputs == null) {
-			candidateInputs = new CompactHashSet<InputElement>();
-			cachedInputElements.put(modelElement, candidateInputs);
-		}
-		for (InputElement input : candidateInputs) {
-			if (input.getFeature() == null && input.getOperation() == null) {
-				return input;
-			}
-		}
-
-		// If we're here, such an InputElement does not already exist
-		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
-		soughtElement.setModelElement(modelElement);
-		soughtModel.getInputElements().add(soughtElement);
-		candidateInputs.add(soughtElement);
-		return soughtElement;
-	}
-
-	/**
-	 * Returns the last invocation's recorded traces.
-	 * 
-	 * @return The last invocation's recorded traces.
-	 */
-	Deque<ExpressionTrace<C>> getInvocationTraces() {
-		return invocationTraces;
-	}
-
-	/**
-	 * Returns the last recorded expression trace.
-	 * 
-	 * @return The last recorded expression trace.
-	 */
-	AbstractTrace getLastExpressionTrace() {
-		return recordedTraces.getLast();
-	}
-
-	/**
-	 * Returns the value of {@link #evaluatingPostCall}. Package visibility as this is only meant for the
-	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
-	 * 
-	 * @return The value of {@link #evaluatingPostCall}.
-	 */
-	boolean isEvaluatingPostCall() {
-		return evaluatingPostCall;
-	}
-
-	/**
-	 * Returns the value of {@link #initializingVariable}. Package visibility as this is only meant for the
-	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
-	 * 
-	 * @return The value of {@link #initializingVariable}.
-	 */
-	boolean isInitializingVariable() {
-		return initializingVariable != null;
 	}
 
 	/**
@@ -1358,6 +1271,102 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * Returns the stack of generated files.
+	 * 
+	 * @return The stack of generated files.
+	 */
+	Deque<GeneratedFile> getCurrentFiles() {
+		return currentFiles;
+	}
+
+	/**
+	 * Returns the traces of the current variable initialization.
+	 * 
+	 * @return The traces of the current variable initialization.
+	 */
+	AbstractTrace getInitializingVariableTrace() {
+		return variableTraces.get(initializingVariable);
+	}
+
+	/**
+	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
+	 * model element and neither structural feature nor operation linked. Note that it will be created if
+	 * needed.
+	 * 
+	 * @param modelElement
+	 *            Model element we seek the corresponding InputElement of.
+	 * @return {@link InputElement} contained in the {@link #evaluationTrace} model.
+	 */
+	InputElement getInputElement(EObject modelElement) {
+		ModelFile soughtModel = getModelFile(modelElement);
+
+		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
+		if (candidateInputs == null) {
+			candidateInputs = new CompactHashSet<InputElement>();
+			cachedInputElements.put(modelElement, candidateInputs);
+		}
+		for (InputElement input : candidateInputs) {
+			if (input.getFeature() == null && input.getOperation() == null) {
+				return input;
+			}
+		}
+
+		// If we're here, such an InputElement does not already exist
+		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
+		soughtElement.setModelElement(modelElement);
+		soughtModel.getInputElements().add(soughtElement);
+		candidateInputs.add(soughtElement);
+		return soughtElement;
+	}
+
+	/**
+	 * Returns the last invocation's recorded traces.
+	 * 
+	 * @return The last invocation's recorded traces.
+	 */
+	Deque<ExpressionTrace<C>> getInvocationTraces() {
+		return invocationTraces;
+	}
+
+	/**
+	 * Returns the last recorded expression trace.
+	 * 
+	 * @return The last recorded expression trace.
+	 */
+	AbstractTrace getLastExpressionTrace() {
+		return recordedTraces.getLast();
+	}
+
+	/**
+	 * Returns the value of {@link #evaluatingPostCall}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
+	 * 
+	 * @return The value of {@link #evaluatingPostCall}.
+	 */
+	boolean isEvaluatingPostCall() {
+		return evaluatingPostCall;
+	}
+
+	/**
+	 * Returns the value of {@link #initializingVariable}. Package visibility as this is only meant for the
+	 * {@link AcceleoTraceabilityOperationVisitor} to know which traces to consider.
+	 * 
+	 * @return The value of {@link #initializingVariable}.
+	 */
+	boolean isInitializingVariable() {
+		return initializingVariable != null;
+	}
+
+	/**
+	 * Retrieve the scope value of the currently evaluated expression.
+	 * 
+	 * @return The scope value of the currently evaluated expression.
+	 */
+	EObject retrieveScopeEObjectValue() {
+		return retrieveScopeEObjectValue(scopeEObjects.size() - 1);
+	}
+
+	/**
 	 * This will be used to create the evaluation trace for a given protected area's content and alter the
 	 * trace for its marker; indeed traces aren't recorded anywhere else than for the marker evaluation as the
 	 * remainder are mainly hard-coded strings.
@@ -1742,6 +1751,102 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
+	 * Returns the list of all operations that will impact traceability information.
+	 * 
+	 * @return The list of all operations that will impact traceability information.
+	 */
+	private List<String> getTraceabilityImpactingCollectionOperationNames() {
+		List<String> operationNames = new ArrayList<String>();
+
+		// Operations returning Integer or Boolean values are handled otherwise
+
+		// non standard library
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
+
+		// OCL
+		operationNames.add(PredefinedType.FIRST_NAME);
+		operationNames.add(PredefinedType.LAST_NAME);
+
+		return operationNames;
+	}
+
+	/**
+	 * Returns the list of all operations that will impact traceability information.
+	 * 
+	 * @return The list of all operations that will impact traceability information.
+	 */
+	private List<String> getTraceabilityImpactingStringOperationNames() {
+		List<String> operationNames = new ArrayList<String>();
+
+		// Operations returning Integer or Boolean values are handled otherwise
+
+		// standard library
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_LAST);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
+		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
+
+		// non standard library
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
+		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
+
+		// OCL
+		operationNames.add(PredefinedType.SUBSTRING_NAME);
+
+		return operationNames;
+	}
+
+	/**
+	 * Handles the call to a non-standard MTL operation that impacts traceability.
+	 * 
+	 * @param callExp
+	 *            The operation call to visit.
+	 * @param source
+	 *            Source of the call.
+	 * @return Result of the call.
+	 */
+	@SuppressWarnings("unchecked")
+	private Object internalVisitNonStandardOperation(OperationCallExp<C, O> callExp, Object source) {
+		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
+		final Object result;
+
+		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
+		for (OCLExpression<C> expression : callExp.getArgument()) {
+			// FIXME handle invalid and null
+			boolean oldRecordingValue = record;
+			record = false;
+			arguments.add(super.visitExpression(expression));
+			record = oldRecordingValue;
+		}
+
+		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
+			result = operationVisitor.visitTrimOperation((String)source);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING)) {
+			int startIndex = Integer.valueOf(((Integer)arguments.get(0)).intValue() - 1).intValue();
+			result = operationVisitor.visitSubstringOperation((String)source, startIndex);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
+			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
+			String delims = (String)arguments.get(0);
+			result = operationVisitor.visitTokenizeOperation((String)source, delims);
+		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING)) {
+			// toString on non-primitives will need to create its own trace.
+			ModuleElement moduleElement = getModuleElement(callExp);
+			result = operationVisitor.visitTostringOperation(source, moduleElement);
+		} else {
+			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
+			throw new UnsupportedOperationException();
+		}
+
+		return result;
+	}
+
+	/**
 	 * Handles the call to a standard OCL operation that impacts traceability.
 	 * 
 	 * @param callExp
@@ -1867,51 +1972,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Handles the call to a non-standard MTL operation that impacts traceability.
-	 * 
-	 * @param callExp
-	 *            The operation call to visit.
-	 * @param source
-	 *            Source of the call.
-	 * @return Result of the call.
-	 */
-	@SuppressWarnings("unchecked")
-	private Object internalVisitNonStandardOperation(OperationCallExp<C, O> callExp, Object source) {
-		final String operationName = ((EOperation)callExp.getReferredOperation()).getName();
-		final Object result;
-
-		final List<Object> arguments = new ArrayList<Object>(callExp.getArgument().size());
-		for (OCLExpression<C> expression : callExp.getArgument()) {
-			// FIXME handle invalid and null
-			boolean oldRecordingValue = record;
-			record = false;
-			arguments.add(super.visitExpression(expression));
-			record = oldRecordingValue;
-		}
-
-		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM)) {
-			result = operationVisitor.visitTrimOperation((String)source);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING)) {
-			int startIndex = Integer.valueOf(((Integer)arguments.get(0)).intValue() - 1).intValue();
-			result = operationVisitor.visitSubstringOperation((String)source, startIndex);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE)) {
-			result = operationVisitor.visitReverseOperation((Collection<Object>)source);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE)) {
-			String delims = (String)arguments.get(0);
-			result = operationVisitor.visitTokenizeOperation((String)source, delims);
-		} else if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING)) {
-			// toString on non-primitives will need to create its own trace.
-			ModuleElement moduleElement = getModuleElement(callExp);
-			result = operationVisitor.visitTostringOperation(source, moduleElement);
-		} else {
-			// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known operations
-			throw new UnsupportedOperationException();
-		}
-
-		return result;
-	}
-
-	/**
 	 * Handles the call to a standard MTL operation that impacts traceability.
 	 * 
 	 * @param callExp
@@ -1964,6 +2024,34 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				.getBoolean();
 
 		return booleanClassifier == operationReturnEType;
+	}
+
+	/**
+	 * Returns <code>true</code> if the given expression is the source of an iteration.
+	 * 
+	 * @param expression
+	 *            Expression to compare.
+	 * @return <code>true</code> if <code>expression</code> is the source of an iteration call,
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean isIteratorCallSource(OCLExpression<?> expression) {
+		boolean isSource = false;
+		EObject eContainer = expression.eContainer();
+		if (eContainer instanceof IteratorExp) {
+			IteratorExp<?, ?> iteratorExp = (IteratorExp<?, ?>)eContainer;
+			OCLExpression<?> source = iteratorExp.getSource();
+			isSource = (source == expression) || isIteratorCallSource(iteratorExp);
+		} else if (eContainer instanceof CollectionItem) {
+			CollectionItem<?> collectionItem = (CollectionItem<?>)eContainer;
+			eContainer = collectionItem.eContainer();
+			if (eContainer instanceof CollectionLiteralExp<?>) {
+				CollectionLiteralExp<?> collectionLiteralExp = (CollectionLiteralExp<?>)eContainer;
+				isSource = isIteratorCallSource(collectionLiteralExp);
+			}
+		} else if (eContainer instanceof ForBlock) {
+			isSource = EcoreUtil.isAncestor(iterationTraces.getReferredExpression(), expression);
+		}
+		return isSource;
 	}
 
 	/**
@@ -2043,57 +2131,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Returns the list of all operations that will impact traceability information.
-	 * 
-	 * @return The list of all operations that will impact traceability information.
-	 */
-	private List<String> getTraceabilityImpactingCollectionOperationNames() {
-		List<String> operationNames = new ArrayList<String>();
-
-		// Operations returning Integer or Boolean values are handled otherwise
-
-		// non standard library
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP);
-
-		// OCL
-		operationNames.add(PredefinedType.FIRST_NAME);
-		operationNames.add(PredefinedType.LAST_NAME);
-
-		return operationNames;
-	}
-
-	/**
-	 * Returns the list of all operations that will impact traceability information.
-	 * 
-	 * @return The list of all operations that will impact traceability information.
-	 */
-	private List<String> getTraceabilityImpactingStringOperationNames() {
-		List<String> operationNames = new ArrayList<String>();
-
-		// Operations returning Integer or Boolean values are handled otherwise
-
-		// standard library
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_FIRST);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_LAST);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
-		operationNames.add(AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
-
-		// non standard library
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE);
-		operationNames.add(AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
-
-		// OCL
-		operationNames.add(PredefinedType.SUBSTRING_NAME);
-
-		return operationNames;
-	}
-
-	/**
 	 * Records information for the evaluation of literal expressions.
 	 * 
 	 * @param literalExp
@@ -2132,15 +2169,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			GeneratedText text = createGeneratedTextFor(literalExp);
 			operationArgumentTrace.addTrace(input, text, result);
 		}
-	}
-
-	/**
-	 * Retrieve the scope value of the currently evaluated expression.
-	 * 
-	 * @return The scope value of the currently evaluated expression.
-	 */
-	private EObject retrieveScopeEObjectValue() {
-		return retrieveScopeEObjectValue(scopeEObjects.size() - 1);
 	}
 
 	/**
@@ -2277,34 +2305,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			result = false;
 		}
 		return result;
-	}
-
-	/**
-	 * Returns <code>true</code> if the given expression is the source of an iteration.
-	 * 
-	 * @param expression
-	 *            Expression to compare.
-	 * @return <code>true</code> if <code>expression</code> is the source of an iteration call,
-	 *         <code>false</code> otherwise.
-	 */
-	private boolean isIteratorCallSource(OCLExpression<?> expression) {
-		boolean isSource = false;
-		EObject eContainer = expression.eContainer();
-		if (eContainer instanceof IteratorExp) {
-			IteratorExp<?, ?> iteratorExp = (IteratorExp<?, ?>)eContainer;
-			OCLExpression<?> source = iteratorExp.getSource();
-			isSource = (source == expression) || isIteratorCallSource(iteratorExp);
-		} else if (eContainer instanceof CollectionItem) {
-			CollectionItem<?> collectionItem = (CollectionItem<?>)eContainer;
-			eContainer = collectionItem.eContainer();
-			if (eContainer instanceof CollectionLiteralExp<?>) {
-				CollectionLiteralExp<?> collectionLiteralExp = (CollectionLiteralExp<?>)eContainer;
-				isSource = isIteratorCallSource(collectionLiteralExp);
-			}
-		} else if (eContainer instanceof ForBlock) {
-			isSource = EcoreUtil.isAncestor(iterationTraces.getReferredExpression(), expression);
-		}
-		return isSource;
 	}
 
 	/**
