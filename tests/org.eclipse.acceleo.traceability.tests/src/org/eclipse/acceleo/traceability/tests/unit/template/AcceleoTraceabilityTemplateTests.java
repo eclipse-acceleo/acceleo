@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.template;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +42,6 @@ import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
@@ -1600,8 +1600,8 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals(" templatePostTrim ", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(292, string.getStartPosition());
-			assertEquals(292 + " templatePostTrim ".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(305, string.getStartPosition());
+			assertEquals(305 + " templatePostTrim ".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();

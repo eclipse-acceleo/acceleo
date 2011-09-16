@@ -726,13 +726,17 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean oldEvaluatingPostCall = evaluatingPostCall;
 		evaluatingPostCall = evaluatingPostCall
 				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
-		if (shouldRecordTrace((EReference)expression.eContainingFeature())
-				&& !(expression.eContainer() instanceof ProtectedAreaBlock) && !evaluatingOperationCall) {
+		final EReference containingFeature = (EReference)expression.eContainingFeature();
+		if (shouldRecordTrace(containingFeature) && !(expression.eContainer() instanceof ProtectedAreaBlock)
+				&& !evaluatingOperationCall) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
 			recordedTraces.add(trace);
 			if (invocationTraces != null) {
 				invocationTraces.add(trace);
 			}
+		} else if (shouldRecordTrace(containingFeature)
+				&& !(expression.eContainer() instanceof ProtectedAreaBlock) && invocationTraces != null) {
+			invocationTraces.add(recordedTraces.getLast());
 		}
 		Object result = null;
 		try {
