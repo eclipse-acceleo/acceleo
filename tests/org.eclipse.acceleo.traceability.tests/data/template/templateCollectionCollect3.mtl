@@ -1,0 +1,25 @@
+[comment encoding = UTF-8 /]
+[module templateCollectionCollect3('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[template public main(aClassifier : Classifier)]
+[comment @main /]
+[file ('result.txt', true, 'UTF-8')]
+[aClassifier.genPackagePath()/]
+[/file]
+[/template]
+
+[template public genPackagePath(aType : Type)]
+[aType.packagePath().normalizeName()->reverse()->sep('.')/]
+[/template]
+
+[query public packagePath(aType : Type) : Sequence(Package) =
+    Sequence{aType.getNearestPackage()}->union(aType.getNearestPackage().ancestors()->filter(Package))->select(pack : Package | pack.oclIsTypeOf(Package))
+/]
+
+[template private normalizeName(anElement : NamedElement) post(trim())]
+[if ((anElement.name = 'package') or (anElement.name = 'interface') or (anElement.name = 'class'))]
+[anElement.name.concat('_')/]
+[else]
+[anElement.name/]
+[/if]
+[/template] 

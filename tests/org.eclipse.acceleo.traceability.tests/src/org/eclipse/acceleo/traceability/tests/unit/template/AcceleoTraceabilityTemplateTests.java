@@ -10,16 +10,30 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.template;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import junit.framework.Assert;
+
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
+import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
+import org.eclipse.acceleo.engine.service.AcceleoService;
+import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.acceleo.traceability.ModuleElement;
 import org.eclipse.acceleo.traceability.tests.unit.AbstractTraceabilityTest;
 import org.eclipse.acceleo.traceability.tests.unit.AcceleoTraceabilityListener;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
@@ -27,6 +41,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
@@ -949,6 +964,47 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 					modelElement.eResource().getURI().path());
 			cpt++;
 		}
+	}
+
+	@Test
+	public void testTraceabilityTemplateCollectionCollect3() {
+		// Parse the file
+		Resource moduleResource = parse("data/template/templateCollectionCollect3.mtl"); //$NON-NLS-1$
+		EObject rootTemplate = moduleResource.getContents().get(0);
+		ResourceSet moduleResourceSet = new ResourceSetImpl();
+		moduleResourceSet.getResources().add(moduleResource);
+		if (rootTemplate instanceof Module) {
+			module = (Module)rootTemplate;
+		} else {
+			Assert.fail("Couldn't load the input template."); //$NON-NLS-1$
+		}
+
+		// Activate the traceability
+		AcceleoTraceabilityListener traceabilityListener = new AcceleoTraceabilityListener(true);
+		AcceleoPreferences.switchTraceability(true);
+		AcceleoService.addStaticListener(traceabilityListener);
+
+		// Load the model
+		try {
+			final URI inputModelURI = URI.createPlatformPluginURI('/' + AbstractTraceabilityTest.PLUGIN_ID
+					+ '/' + "data/template/NonRegressionModel.uml", true); //$NON-NLS-1$
+			inputModel = ModelUtils.load(inputModelURI, resourceSet);
+		} catch (IOException e) {
+			fail("Error loading the input model."); //$NON-NLS-1$
+		}
+
+		// Launch the generation
+		Map<String, String> map = new AcceleoService(new PreviewStrategy()).doGenerate(module,
+				"main", inputModel, null, //$NON-NLS-1$
+				new BasicMonitor());
+
+		// Desactivate the traceability
+		AcceleoPreferences.switchTraceability(false);
+		AcceleoService.removeStaticListener(traceabilityListener);
+
+		String generatedFile = map.get("result.txt"); //$NON-NLS-1$
+		assertTrue(generatedFile.length() > 0);
+
 	}
 
 	@Test
