@@ -22,8 +22,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.utilities.ASTNode;
+import org.eclipse.uml2.uml.Operation;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -238,32 +240,32 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
-			assertEquals(("Private").length(), generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals(("private").length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(1, sourceElements.size()); // the class and its name
-			assertEquals("MyEnum", sourceElements.get(0).toString()); //$NON-NLS-1$ 
-			assertEquals("enum.txt", generatedFile.getPath()); //$NON-NLS-1$ 
+			assertEquals("myoperation", sourceElements.get(0).toString()); //$NON-NLS-1$ 
+			assertEquals("operation.txt", generatedFile.getPath()); //$NON-NLS-1$ 
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals(("MyEnum").length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals(("private").length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof PropertyCallExp);
-			PropertyCallExp propertyCall = (PropertyCallExp)element;
-			EGenericType eGenericType = propertyCall.getEGenericType();
+			assertTrue(element instanceof OperationCallExp);
+			OperationCallExp operationCall = (OperationCallExp)element;
+			EGenericType eGenericType = operationCall.getEGenericType();
 			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
-			assertEquals("eEnum.name", propertyCall.toString()); //$NON-NLS-1$
-			assertEquals(178, propertyCall.getStartPosition());
-			assertEquals(178 + "eEnum.name".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
+			assertEquals("operation.visibility.toString()", operationCall.toString()); //$NON-NLS-1$
+			assertEquals(185, operationCall.getStartPosition());
+			assertEquals(185 + "operation.visibility.toString()".length(), operationCall.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
-			assertTrue(modelElement instanceof EEnum);
-			assertEquals("MyEnum" + cpt, ((EEnum)modelElement).getName()); //$NON-NLS-1$
-			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.ecore", //$NON-NLS-1$
+			assertTrue(modelElement instanceof Operation);
+			assertEquals("myoperation", ((Operation)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.uml", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 			cpt++;
 		}
