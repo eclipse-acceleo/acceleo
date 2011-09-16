@@ -41,6 +41,42 @@ public class SWTUtil {
 	}
 
 	/**
+	 * Creates a {@link SourceViewer} widget that knows how to hide its scroll bars.
+	 * 
+	 * @param parent
+	 *            The parent composite for this viewer.
+	 * @param style
+	 *            Style of the created viewer.
+	 * @return The created {@link SourceViewer}.
+	 */
+	public static SourceViewer createScrollableSourceViewer(Composite parent, int style) {
+		return new ScrollableSourceViewer(parent, null, style);
+	}
+
+	/**
+	 * Creates a {@link StyledText} widget that knows how to hide its scroll bars.
+	 * 
+	 * @param parent
+	 *            The parent composite for this text.
+	 * @param style
+	 *            Style of the created text.
+	 * @return The created {@link StyledText} widget.
+	 */
+	public static StyledText createScrollableStyledText(Composite parent, int style) {
+		final StyledText text = new StyledText(parent, style);
+
+		// If this text has no scroll bars, simply return it.
+		if ((style & (SWT.H_SCROLL | SWT.V_SCROLL)) == 0) {
+			return text;
+		}
+
+		// Otherwise, set up its listeners
+		setUpScrollableListener(text);
+
+		return text;
+	}
+
+	/**
 	 * Creates a {@link Text} widget that knows how to hide its scroll bars.
 	 * 
 	 * @param parent
@@ -94,42 +130,6 @@ public class SWTUtil {
 	}
 
 	/**
-	 * Creates a {@link SourceViewer} widget that knows how to hide its scroll bars.
-	 * 
-	 * @param parent
-	 *            The parent composite for this viewer.
-	 * @param style
-	 *            Style of the created viewer.
-	 * @return The created {@link SourceViewer}.
-	 */
-	public static SourceViewer createScrollableSourceViewer(Composite parent, int style) {
-		return new ScrollableSourceViewer(parent, null, style);
-	}
-
-	/**
-	 * Creates a {@link StyledText} widget that knows how to hide its scroll bars.
-	 * 
-	 * @param parent
-	 *            The parent composite for this text.
-	 * @param style
-	 *            Style of the created text.
-	 * @return The created {@link StyledText} widget.
-	 */
-	public static StyledText createScrollableStyledText(Composite parent, int style) {
-		final StyledText text = new StyledText(parent, style);
-
-		// If this text has no scroll bars, simply return it.
-		if ((style & (SWT.H_SCROLL | SWT.V_SCROLL)) == 0) {
-			return text;
-		}
-
-		// Otherwise, set up its listeners
-		setUpScrollableListener(text);
-
-		return text;
-	}
-
-	/**
 	 * Computes the size of the text displayed by the given {@link Text} widget.
 	 * 
 	 * @param widget
@@ -155,39 +155,6 @@ public class SWTUtil {
 		gc.dispose();
 
 		return new Point(textWidth, textHeight);
-	}
-
-	/**
-	 * This subclass of a source viewer will only show its scroll bars if they are needed.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	protected static class ScrollableSourceViewer extends SourceViewer {
-		/**
-		 * Constructs a new source viewer. The vertical ruler is initially visible. The viewer has not yet
-		 * been initialized with a source viewer configuration.
-		 * 
-		 * @param parent
-		 *            the parent of the viewer's control.
-		 * @param ruler
-		 *            the vertical ruler used by this source viewer.
-		 * @param styles
-		 *            the SWT style bits for the viewer's control,
-		 *            <em>if <code>SWT.WRAP</code> is set then a custom document adapter needs to be provided, see {@link #createDocumentAdapter()}.
-		 */
-		public ScrollableSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
-			super(parent, ruler, styles);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.jface.text.TextViewer#createTextWidget(org.eclipse.swt.widgets.Composite, int)
-		 */
-		@Override
-		protected StyledText createTextWidget(Composite parent, int styles) {
-			return super.createTextWidget(parent, styles);
-		}
 	}
 
 	/**
@@ -246,14 +213,14 @@ public class SWTUtil {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	protected static class ScrollableResizeListener extends ControlAdapter {
-		/** The {@link Scrollable} widget against which this listener has been registered. */
-		private final Scrollable text;
+		/** Keeps a reference to the last size we computed. */
+		private Point lastSize;
 
 		/** Keeps a reference to the last text we computed a size for. */
 		private String lastText;
 
-		/** Keeps a reference to the last size we computed. */
-		private Point lastSize;
+		/** The {@link Scrollable} widget against which this listener has been registered. */
+		private final Scrollable text;
 
 		/**
 		 * Instantiates our resize listener for the given text widget.
@@ -297,6 +264,39 @@ public class SWTUtil {
 			} else if (text.getVerticalBar() != null) {
 				text.getVerticalBar().setVisible(true);
 			}
+		}
+	}
+
+	/**
+	 * This subclass of a source viewer will only show its scroll bars if they are needed.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected static class ScrollableSourceViewer extends SourceViewer {
+		/**
+		 * Constructs a new source viewer. The vertical ruler is initially visible. The viewer has not yet
+		 * been initialized with a source viewer configuration.
+		 * 
+		 * @param parent
+		 *            the parent of the viewer's control.
+		 * @param ruler
+		 *            the vertical ruler used by this source viewer.
+		 * @param styles
+		 *            the SWT style bits for the viewer's control,
+		 *            <em>if <code>SWT.WRAP</code> is set then a custom document adapter needs to be provided, see {@link #createDocumentAdapter()}.
+		 */
+		public ScrollableSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+			super(parent, ruler, styles);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.text.TextViewer#createTextWidget(org.eclipse.swt.widgets.Composite, int)
+		 */
+		@Override
+		protected StyledText createTextWidget(Composite parent, int styles) {
+			return super.createTextWidget(parent, styles);
 		}
 	}
 }
