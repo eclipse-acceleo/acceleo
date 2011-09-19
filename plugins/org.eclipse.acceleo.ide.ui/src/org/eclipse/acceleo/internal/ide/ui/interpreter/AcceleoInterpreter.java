@@ -172,5 +172,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 		super.addToolBarActions(interpreterView, toolBarManager);
 		saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
 		toolBarManager.add(saveExpressionAction);
+		toolBarManager.add(new ToggleModuleContext(acceleoSource, interpreterView, toolBarManager));
 	}
 }

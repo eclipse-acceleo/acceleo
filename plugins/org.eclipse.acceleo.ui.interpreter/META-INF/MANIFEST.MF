@@ -19,7 +19,7 @@ Export-Package: org.eclipse.acceleo.ui.interpreter,
  org.eclipse.acceleo.ui.interpreter.internal;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.ui.interpreter.internal.language;x-internal:=true,
  org.eclipse.acceleo.ui.interpreter.internal.view;x-internal:=true,
- org.eclipse.acceleo.ui.interpreter.internal.view.actions;x-internal:=true,
+ org.eclipse.acceleo.ui.interpreter.internal.view.actions;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.ui.interpreter.internal.view.wizards;x-internal:=true,
  org.eclipse.acceleo.ui.interpreter.language,
  org.eclipse.acceleo.ui.interpreter.view
