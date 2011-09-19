@@ -12,6 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.language;
 
 import java.util.concurrent.Callable;
 
+import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -45,10 +46,12 @@ public abstract class AbstractLanguageInterpreter {
 	/**
 	 * If the language interpreter needs to add custom actions to the interpreter form, do it from here.
 	 * 
+	 * @param interpreterView
+	 *            The interpreter view
 	 * @param toolBarManager
 	 *            The manager for the form tool bar.
 	 */
-	public void addToolBarActions(IToolBarManager toolBarManager) {
+	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
 		// Do nothing
 	}
 

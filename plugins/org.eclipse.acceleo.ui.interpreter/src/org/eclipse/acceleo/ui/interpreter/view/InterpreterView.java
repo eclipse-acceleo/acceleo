@@ -546,8 +546,8 @@ public class InterpreterView extends ViewPart {
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_LINK_WITH_EDITOR_KEY, Boolean.valueOf(linkWithEditor));
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
-					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
+					.isVisible()));
 		}
 	}
 
@@ -579,6 +579,7 @@ public class InterpreterView extends ViewPart {
 				}
 			} else {
 				page.removePartListener(editorPartListener);
+				getCurrentLanguageInterpreter().linkWithEditor(null);
 			}
 		} else {
 			page.removePartListener(editorPartListener);
@@ -964,7 +965,7 @@ public class InterpreterView extends ViewPart {
 		toolBarManager.add(realTimeAction);
 		toolBarManager.add(variableVisibilityAction);
 
-		getCurrentLanguageInterpreter().addToolBarActions(toolBarManager);
+		getCurrentLanguageInterpreter().addToolBarActions(this, toolBarManager);
 
 		toolBarManager.update(true);
 	}

@@ -14,14 +14,17 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.ui.interpreter.internal.SWTUtil;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -32,7 +35,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * This implementation of an {@link AbstractLanguageInterpreter} will be able to provide completion, syntax
@@ -46,6 +48,11 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	 * it around.
 	 */
 	private AcceleoSourceViewer acceleoSource;
+
+	/**
+	 * The save expression action.
+	 */
+	private SaveExpressionAction saveExpressionAction;
 
 	/**
 	 * {@inheritDoc}
@@ -102,6 +109,7 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	public void dispose() {
 		// Null out references
 		acceleoSource = null;
+		this.saveExpressionAction.dispose();
 	}
 
 	/**
@@ -141,14 +149,28 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	 */
 	@Override
 	public void linkWithEditor(IEditorPart editorPart) {
-		if (editorPart == null) {
-			acceleoSource.setModuleImport(null);
-		} else if (editorPart instanceof ITextEditor) {
+		if (editorPart instanceof AcceleoEditor) {
+			this.saveExpressionAction.setCurrentEditor((AcceleoEditor)editorPart);
 			final IEditorInput input = editorPart.getEditorInput();
 			final IFile file = (IFile)Platform.getAdapterManager().getAdapter(input, IFile.class);
 			if (file != null && IAcceleoConstants.MTL_FILE_EXTENSION.equals(file.getFileExtension())) {
 				acceleoSource.setModuleImport(file);
 			}
+		} else {
+			this.saveExpressionAction.setCurrentEditor(null);
+			acceleoSource.setModuleImport(null);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#addToolBarActions(org.eclipse.jface.action.IToolBarManager)
+	 */
+	@Override
+	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
+		super.addToolBarActions(interpreterView, toolBarManager);
+		saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
+		toolBarManager.add(saveExpressionAction);
 	}
 }
