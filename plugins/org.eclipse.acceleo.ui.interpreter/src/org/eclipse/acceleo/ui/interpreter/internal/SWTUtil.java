@@ -141,13 +141,15 @@ public class SWTUtil {
 	protected static Point computeTextSize(Control widget, String text) {
 		String[] lines = text.split("\r\n|\n|\r"); //$NON-NLS-1$
 
-		String longestLine = lines[0];
-		for (int i = 0; i < lines.length; i++) {
-			if (lines[i].length() > longestLine.length()) {
-				longestLine = lines[i];
+		String longestLine = ""; //$NON-NLS-1$
+		if (lines.length > 0) {
+			longestLine = lines[0];
+			for (int i = 0; i < lines.length; i++) {
+				if (lines[i].length() > longestLine.length()) {
+					longestLine = lines[i];
+				}
 			}
 		}
-
 		GC gc = new GC(widget);
 		gc.setFont(widget.getFont());
 		final int textWidth = gc.stringExtent(longestLine).x;
