@@ -55,6 +55,11 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	private SaveExpressionAction saveExpressionAction;
 
 	/**
+	 * The load module action.
+	 */
+	private LoadModuleAction loadModuleAction;
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
@@ -110,6 +115,7 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 		// Null out references
 		acceleoSource = null;
 		this.saveExpressionAction.dispose();
+		this.loadModuleAction.dispose();
 	}
 
 	/**
@@ -149,14 +155,14 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	 */
 	@Override
 	public void linkWithEditor(IEditorPart editorPart) {
-		if (editorPart instanceof AcceleoEditor) {
+		if (editorPart instanceof AcceleoEditor && this.saveExpressionAction != null) {
 			this.saveExpressionAction.setCurrentEditor((AcceleoEditor)editorPart);
 			final IEditorInput input = editorPart.getEditorInput();
 			final IFile file = (IFile)Platform.getAdapterManager().getAdapter(input, IFile.class);
 			if (file != null && IAcceleoConstants.MTL_FILE_EXTENSION.equals(file.getFileExtension())) {
 				acceleoSource.setModuleImport(file);
 			}
-		} else {
+		} else if (this.saveExpressionAction != null) {
 			this.saveExpressionAction.setCurrentEditor(null);
 			acceleoSource.setModuleImport(null);
 		}
@@ -170,8 +176,17 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	@Override
 	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
 		super.addToolBarActions(interpreterView, toolBarManager);
-		saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
+		this.saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
 		toolBarManager.add(saveExpressionAction);
-		toolBarManager.add(new ToggleModuleContext(acceleoSource, interpreterView, toolBarManager));
+		this.loadModuleAction = new LoadModuleAction(acceleoSource, interpreterView, toolBarManager);
+		toolBarManager.add(loadModuleAction);
+	}
+
+	/**
+	 * Runs the load module action.
+	 */
+	public void runLoadModuleAction() {
+		this.loadModuleAction.setChecked(true);
+		this.loadModuleAction.run();
 	}
 }

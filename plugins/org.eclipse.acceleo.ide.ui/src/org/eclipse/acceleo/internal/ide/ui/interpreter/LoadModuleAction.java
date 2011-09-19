@@ -30,12 +30,12 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
- * The ToggleModuleContext action is used to use an Acceleo module in the current context instead of the
- * content of a linked Acceleo editor.
+ * The LoadModuleAction is used to use an Acceleo module in the current context instead of the content of a
+ * linked Acceleo editor.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class ToggleModuleContext extends Action {
+public class LoadModuleAction extends Action {
 
 	/**
 	 * The Acceleo source viewer.
@@ -62,7 +62,7 @@ public class ToggleModuleContext extends Action {
 	 * @param toolBarManager
 	 *            the toolbar manager
 	 */
-	public ToggleModuleContext(AcceleoSourceViewer source, InterpreterView interpreterView,
+	public LoadModuleAction(AcceleoSourceViewer source, InterpreterView interpreterView,
 			IToolBarManager toolBarManager) {
 		super(null, IAction.AS_CHECK_BOX);
 		this.acceleoSource = source;
@@ -135,5 +135,14 @@ public class ToggleModuleContext extends Action {
 			acceleoSource.setModuleImport(null);
 			this.acceleoSource.updateCST(this.interpreterView.getInterpreterContext());
 		}
+	}
+
+	/**
+	 * This will be called in order to clear all the references of this.
+	 */
+	public void dispose() {
+		this.acceleoSource = null;
+		this.interpreterView = null;
+		this.toolBarManager = null;
 	}
 }
