@@ -33,8 +33,10 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.GapTextStore;
 import org.eclipse.jface.text.ITextStore;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.expressions.CollectionKind;
@@ -49,10 +51,19 @@ import org.eclipse.swt.widgets.Composite;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSourceViewer {
+	/** The query prefix. */
+	protected static final String QUERY = "[query"; //$NON-NLS-1$
+
+	/** The template prefix. */
+	protected static final String TEMPLATE = "[template"; //$NON-NLS-1$
+
+	/** The module prefix. */
+	protected static final String MODULE = "[module"; //$NON-NLS-1$
+
 	/**
 	 * This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...).
 	 */
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
+	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** If the text doesn't start with "[module", we'll use this as the module's signature. */
 	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule({0})]" + LINE_SEPARATOR; //$NON-NLS-1$
@@ -64,13 +75,23 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
 	 * the user specified both module and query/template in his expression.
 	 */
-	private static final String DUMMY_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
+	private static final String DUMMY_TEMPLATE_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
 
 	/**
 	 * If the text doesn't start with "[module", we'll use this as the template's signature. Otherwise, we'll
 	 * assume the user specified both module and query/template in his expression.
 	 */
-	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$ 
+	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$
+
+	/**
+	 * If the text doesn't start with "[module", we'll use this as a query signature.
+	 */
+	private static final String DUMMY_QUERY = "[query public temporaryInterpreterQuery(target : {0}, model : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$
+
+	/**
+	 * The default query end.
+	 */
+	private static final String DUMMY_QUERY_TAIL = LINE_SEPARATOR + "/]"; //$NON-NLS-1$
 
 	/**
 	 * This will be updated with the exact text as entered by the user and displayed on the viewer. However,
@@ -164,7 +185,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		buffer.replace(offset, replacementLength, newText);
 
 		// Did the user alter the signatures in any way?
-		final String moduleSignature = "[module"; //$NON-NLS-1$
+		final String moduleSignature = MODULE;
 		if (offset <= moduleSignature.length()) {
 			if (buffer.getLength() >= moduleSignature.length()
 					&& moduleSignature.equals(buffer.get(0, buffer.getLength()))) {
@@ -286,7 +307,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		 * offset. For now we'll assume the expression past the import section is well formed with a query.
 		 */
 		boolean appendTail = false;
-		if (!expression.contains("[template") && !expression.contains("[query")) { //$NON-NLS-1$ //$NON-NLS-2$ 
+		if (!expression.contains(TEMPLATE) && !expression.contains(QUERY)) {
 			appendTail = true;
 			String templateSignature = DUMMY_TEMPLATE;
 			List<EObject> target = context.getTargetEObjects();
@@ -307,20 +328,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 				modelType = root.eClass().getName();
 			}
 
-			StringBuilder additionalVariables = new StringBuilder();
-			Iterator<Variable> variables = context.getVariables().iterator();
-			while (variables.hasNext()) {
-				Variable variable = variables.next();
-				final String varName = variable.getName();
-				final String varType = inferOCLType(variable.getValue());
-
-				if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
-					additionalVariables.append(", "); //$NON-NLS-1$
-					additionalVariables.append(varName);
-					additionalVariables.append(" : "); //$NON-NLS-1$
-					additionalVariables.append(varType);
-				}
-			}
+			StringBuilder additionalVariables = computeVariables(context);
 
 			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType,
 					additionalVariables);
@@ -331,7 +339,244 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		expressionBuffer.append(expression);
 
 		if (appendTail) {
-			expressionBuffer.append(DUMMY_TAIL);
+			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
+		}
+
+		return expressionBuffer.toString();
+	}
+
+	/**
+	 * Computes the signature of the variables.
+	 * 
+	 * @param context
+	 *            The interpreter context
+	 * @return The signature of the variables to be used for a template or a query declaration.
+	 */
+	private StringBuilder computeVariables(InterpreterContext context) {
+		StringBuilder additionalVariables = new StringBuilder();
+		Iterator<Variable> variables = context.getVariables().iterator();
+		while (variables.hasNext()) {
+			Variable variable = variables.next();
+			final String varName = variable.getName();
+			final String varType = inferOCLType(variable.getValue());
+
+			if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
+				additionalVariables.append(", "); //$NON-NLS-1$
+				additionalVariables.append(varName);
+				additionalVariables.append(" : "); //$NON-NLS-1$
+				additionalVariables.append(varType);
+			}
+		}
+		return additionalVariables;
+	}
+
+	/**
+	 * Creates a module with the selected content of the source viewer in a template.
+	 * 
+	 * @param context
+	 *            The current interpreter context.
+	 * @param templateName
+	 *            The name of the template to be used or <code>null</code> if the dummy name should be used
+	 * @return The module content.
+	 */
+	protected String computeTemplateFromContext(InterpreterContext context, String templateName) {
+		StringBuilder expressionBuffer = new StringBuilder();
+
+		String text = this.getTextWidget().getText();
+		ISelection selection = this.getSelection();
+		if (selection != null && selection instanceof TextSelection
+				&& ((TextSelection)selection).getLength() == 0) {
+			// No selection, let's build a whole module
+		} else if (selection != null && selection instanceof TextSelection) {
+			// Only the selection will be used
+			text = ((TextSelection)selection).getText();
+		}
+
+		// Does the text contains a whole module? If yes, do not touch it
+		if (text.contains(MODULE)) {
+			return text;
+		}
+
+		// Otherwise, let's build new module with a template inside
+
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+		}
+
+		String moduleSignature = DUMMY_MODULE;
+		final Set<String> metamodelURIs = getMetamodelURIs(context);
+		if (metamodelURIs.size() == 0) {
+			// Use ecore as the default metamodel
+			metamodelURIs.add(EcorePackage.eNS_URI);
+		}
+
+		StringBuilder nsURIs = new StringBuilder();
+		Iterator<String> uriIterator = metamodelURIs.iterator();
+		while (uriIterator.hasNext()) {
+			nsURIs.append('\'' + uriIterator.next() + '\'');
+			if (uriIterator.hasNext()) {
+				nsURIs.append(',');
+			}
+		}
+
+		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
+		expressionBuffer.append(moduleSignature);
+
+		if (moduleImport != null) {
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
+					.getFullPath()));
+			expressionBuffer.append(modulePath);
+		}
+
+		/*
+		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
+		 * offset. For now we'll assume the expression past the import section is well formed with a query.
+		 */
+		boolean appendTail = false;
+		if (!text.contains(TEMPLATE) && !text.contains(QUERY)) {
+			appendTail = true;
+			String templateSignature = ""; //$NON-NLS-1$
+			if (templateName == null) {
+				templateSignature = DUMMY_TEMPLATE;
+			} else {
+				templateSignature = "[template public " + templateName + "(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			List<EObject> target = context.getTargetEObjects();
+
+			String argumentType = null;
+			if (target != null && !target.isEmpty()) {
+				argumentType = inferArgumentType(target);
+			}
+			if (argumentType == null) {
+				// We use ecore as the default metamodel, we'll use EObject as the default argument type
+				argumentType = EcorePackage.eINSTANCE.getEObject().getName();
+			}
+
+			String modelType;
+			if (root == null) {
+				modelType = EcorePackage.eINSTANCE.getEPackage().getName();
+			} else {
+				modelType = root.eClass().getName();
+			}
+
+			StringBuilder additionalVariables = computeVariables(context);
+
+			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType,
+					additionalVariables);
+			expressionBuffer.append(templateSignature);
+		}
+
+		expressionBuffer.append(text);
+
+		if (appendTail) {
+			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
+		}
+
+		return expressionBuffer.toString();
+	}
+
+	/**
+	 * Creates a module with the selected content of the source viewer in a query.
+	 * 
+	 * @param context
+	 *            The current interpreter context.
+	 * @param queryName
+	 *            The name of the query to be used or <code>null</code> if the dummy name should be used
+	 * @return The module content.
+	 */
+	protected String computeQueryFromContext(InterpreterContext context, String queryName) {
+		StringBuilder expressionBuffer = new StringBuilder();
+
+		String text = this.getTextWidget().getText();
+		ISelection selection = this.getSelection();
+		if (selection != null && selection instanceof TextSelection
+				&& ((TextSelection)selection).getLength() == 0) {
+			// No selection, let's build a whole module
+		} else if (selection != null && selection instanceof TextSelection) {
+			// Only the selection will be used
+			text = ((TextSelection)selection).getText();
+		}
+
+		// Does the text contains a whole module? If yes, do not touch it
+		if (text.contains(MODULE)) {
+			return text;
+		}
+
+		// Otherwise, let's build new module with a query inside
+
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+		}
+
+		String moduleSignature = DUMMY_MODULE;
+		final Set<String> metamodelURIs = getMetamodelURIs(context);
+		if (metamodelURIs.size() == 0) {
+			// Use ecore as the default metamodel
+			metamodelURIs.add(EcorePackage.eNS_URI);
+		}
+
+		StringBuilder nsURIs = new StringBuilder();
+		Iterator<String> uriIterator = metamodelURIs.iterator();
+		while (uriIterator.hasNext()) {
+			nsURIs.append('\'' + uriIterator.next() + '\'');
+			if (uriIterator.hasNext()) {
+				nsURIs.append(',');
+			}
+		}
+
+		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
+		expressionBuffer.append(moduleSignature);
+
+		if (moduleImport != null) {
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
+					.getFullPath()));
+			expressionBuffer.append(modulePath);
+		}
+
+		/*
+		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
+		 * offset. For now we'll assume the expression past the import section is well formed with a query.
+		 */
+		boolean appendTail = false;
+		if (!text.contains(TEMPLATE) && !text.contains(QUERY)) {
+			appendTail = true;
+			String querySignature = ""; //$NON-NLS-1$
+			if (queryName == null) {
+				querySignature = DUMMY_QUERY;
+			} else {
+				querySignature = "[query public " + queryName + "(target : {0}, model : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			List<EObject> target = context.getTargetEObjects();
+
+			String argumentType = null;
+			if (target != null && !target.isEmpty()) {
+				argumentType = inferArgumentType(target);
+			}
+			if (argumentType == null) {
+				// We use ecore as the default metamodel, we'll use EObject as the default argument type
+				argumentType = EcorePackage.eINSTANCE.getEObject().getName();
+			}
+
+			String modelType;
+			if (root == null) {
+				modelType = EcorePackage.eINSTANCE.getEPackage().getName();
+			} else {
+				modelType = root.eClass().getName();
+			}
+
+			StringBuilder additionalVariables = computeVariables(context);
+
+			querySignature = MessageFormat.format(querySignature, argumentType, modelType,
+					additionalVariables);
+			expressionBuffer.append(querySignature);
+		}
+
+		expressionBuffer.append(text);
+
+		if (appendTail) {
+			expressionBuffer.append(DUMMY_QUERY_TAIL);
 		}
 
 		return expressionBuffer.toString();
