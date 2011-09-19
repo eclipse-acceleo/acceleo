@@ -646,10 +646,13 @@ public class InterpreterView extends ViewPart {
 			targetControl = resultSection;
 		}
 
-		if (targetControl != null) {
-			getForm().getMessageManager().addMessage(messageKey, message, null, messageType, targetControl);
-		} else {
-			getForm().getMessageManager().addMessage(messageKey, message, null, messageType);
+		if (!getForm().isDisposed()) {
+			if (targetControl != null) {
+				getForm().getMessageManager().addMessage(messageKey, message, null, messageType,
+						targetControl);
+			} else {
+				getForm().getMessageManager().addMessage(messageKey, message, null, messageType);
+			}
 		}
 	}
 
