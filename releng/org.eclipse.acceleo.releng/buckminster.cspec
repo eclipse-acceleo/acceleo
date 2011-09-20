@@ -14,6 +14,7 @@
         <cs:dependency name="org.eclipse.swtbot.go" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.swtbot.junit4_x" componentType="osgi.bundle"/>
         <cs:dependency name="org.eclipse.swtbot.swt.finder" componentType="osgi.bundle"/>
+        <cs:dependency name="org.eclipse.uml2.uml" componentType="osgi.bundle"/>
         <cs:dependency name="org.hamcrest" componentType="osgi.bundle"/>
         <cs:dependency name="org.junit4" componentType="osgi.bundle"/>
         <cs:dependency name="com.google.collect" componentType="osgi.bundle"/>
