@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_tW_IId-jEeCxRNHBAZnN0Q">
+  <packagedElement xmi:type="uml:Class" xmi:id="_upnNoN-jEeCxRNHBAZnN0Q">
+    <ownedOperation xmi:id="_vL9FsN-jEeCxRNHBAZnN0Q" name="myoperation" visibility="private"/>
+  </packagedElement>
+</uml:Model>

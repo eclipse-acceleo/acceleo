@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.traceability.tests.unit.template;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +35,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.jface.text.Region;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -276,6 +279,39 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/template/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
 			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityTemplateIndentation() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/template/templateIndentation.mtl", //$NON-NLS-1$
+				"main", "data/template/model.uml", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(1, generatedFiles.size());
+
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedText = generatedFile.getGeneratedRegions();
+			List<Region> regions = new ArrayList<Region>();
+			for (GeneratedText text : generatedText) {
+				Region region = new Region(text.getStartOffset(), text.getEndOffset() - text.getStartOffset());
+
+				boolean collision = false;
+				for (Region otherRegion : regions) {
+					if (otherRegion.getOffset() <= region.getOffset()
+							&& region.getOffset() < (otherRegion.getOffset() + otherRegion.getLength())) {
+						collision = true;
+					} else if (otherRegion.getOffset() <= (region.getOffset() + region.getLength())
+							&& (region.getOffset() + region.getLength()) < (otherRegion.getOffset() + otherRegion
+									.getLength())) {
+						collision = true;
+					}
+				}
+				regions.add(region);
+				assertFalse(
+						"The region [" + region.getOffset() + "," + (region.getLength() + region.getOffset()) //$NON-NLS-1$//$NON-NLS-2$
+								+ "] has entered in collision with another traceability region.", collision); //$NON-NLS-1$
+			}
 		}
 	}
 

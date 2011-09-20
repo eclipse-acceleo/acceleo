@@ -1,0 +1,22 @@
+[module templateIndentation('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[template public main(c : Class)]
+[comment @main /]
+[file ('indentation.txt', false)]
+[c.generateClassBody()/]
+[/file]
+[/template]
+
+[template public generateClassBody(c : Class)]
+    [c.genOperations()/]
+[/template]
+
+[template public genOperations(aClass : Class)]
+[for (s1 : String | Sequence{'bacon is awesome'})]
+// [protected ('caramel')]
+[for (s2 : String | Sequence{s1})]
+[s2/]
+[/for]
+// [/protected]
+[/for]
+[/template]
