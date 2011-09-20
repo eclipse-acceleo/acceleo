@@ -5,7 +5,7 @@
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl"/>
-  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="uml2"/>
+  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="indigo"/>
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.apache\.log4j(?:\..+)?$" searchPathRef="swtbot"/>
@@ -34,9 +34,9 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  <rm:searchPath name="uml2">
+  <rm:searchPath name="indigo">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/modeling/mdt/uml2/updates">
+      <rm:uri format="{0}/releases/indigo">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
