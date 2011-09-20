@@ -134,7 +134,7 @@ Convert post trim in the header
 script : Acceleo script that will be converted to an Acceleo MTL query.
 [/comment]
 [query public genPostTrim(script : Script) : String = 
-if script.descriptor._post->isEmpty() then
+if script.descriptor._post.oclIsUndefined() then
 	''
 else
 	let setcall : CallSet =
