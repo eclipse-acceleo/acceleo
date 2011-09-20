@@ -193,7 +193,6 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
 		assertEquals(1, generatedFiles.size());
 
-		int cpt = 1;
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
@@ -224,7 +223,6 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			assertEquals("MyEnum", ((EEnum)modelElement).getName()); //$NON-NLS-1$
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.ecore", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
-			cpt++;
 		}
 	}
 
@@ -236,7 +234,6 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
 		assertEquals(1, generatedFiles.size());
 
-		int cpt = 1;
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
@@ -267,7 +264,47 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			assertEquals("myoperation", ((Operation)modelElement).getName()); //$NON-NLS-1$
 			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.uml", //$NON-NLS-1$
 					modelElement.eResource().getURI().path());
-			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityModelEnumString() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/model/modelEnumString.mtl", //$NON-NLS-1$
+				"main", "data/model/model.uml", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(1, generatedFiles.size());
+
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("private").length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(1, sourceElements.size()); // the class and its name
+			assertEquals("myoperation", sourceElements.get(0).toString()); //$NON-NLS-1$ 
+			assertEquals("operation.txt", generatedFile.getPath()); //$NON-NLS-1$ 
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("private").length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof OperationCallExp);
+			OperationCallExp operationCall = (OperationCallExp)element;
+			EGenericType eGenericType = operationCall.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("operation.visibility", operationCall.toString()); //$NON-NLS-1$
+			assertEquals(183, operationCall.getStartPosition());
+			assertEquals(183 + "operation.visibility".length(), operationCall.getEndPosition()); //$NON-NLS-1$
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof Operation);
+			assertEquals("myoperation", ((Operation)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/model/model.uml", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
 		}
 	}
 }

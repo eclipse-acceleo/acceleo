@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.template;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +38,10 @@ import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
@@ -1115,7 +1115,7 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(1, generatedRegions.size());
-			assertEquals("m".length(), generatedFile.getLength()); //$NON-NLS-1$
+			assertEquals("mp".length(), generatedFile.getLength()); //$NON-NLS-1$
 
 			List<InputElement> sourceElements = generatedFile.getSourceElements();
 			assertEquals(2, sourceElements.size()); // the class and its name
@@ -1125,15 +1125,15 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
 			GeneratedText generatedText = generatedRegions.get(0);
 			assertEquals(0, generatedText.getStartOffset());
-			assertEquals("m".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			assertEquals("mp".length(), generatedText.getEndOffset()); //$NON-NLS-1$
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals(" templatePostTrim ", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(292, string.getStartPosition());
-			assertEquals(292 + " templatePostTrim ".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(306, string.getStartPosition());
+			assertEquals(306 + " templatePostTrim ".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
