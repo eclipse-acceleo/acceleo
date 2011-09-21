@@ -32,6 +32,7 @@ import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.Variable;
 
@@ -343,7 +344,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 			for (int i = 0; i < template.getParameter().size(); i++) {
 				Variable param = template.getParameter().get(i);
 				Object value = arguments.get(i);
-				if (param.getType().isInstance(value)) {
+				if (param.getType() instanceof AnyType || param.getType().isInstance(value)) {
 					query.getEvaluationEnvironment().add(param.getName(), value);
 				} else {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
