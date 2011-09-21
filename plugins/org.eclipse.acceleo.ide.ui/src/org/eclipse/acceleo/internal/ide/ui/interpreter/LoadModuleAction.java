@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleLinkWithEditorAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.LinkWithEditorContextAction;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.ui.dialogs.WorkspaceResourceDialog;
@@ -103,7 +103,7 @@ public class LoadModuleAction extends Action {
 			if (items.length > 0) {
 				IContributionItem contributionItem = items[0];
 				if (contributionItem instanceof ActionContributionItem
-						&& ((ActionContributionItem)contributionItem).getAction() instanceof ToggleLinkWithEditorAction) {
+						&& ((ActionContributionItem)contributionItem).getAction() instanceof LinkWithEditorContextAction) {
 					(((ActionContributionItem)contributionItem).getAction()).setChecked(false);
 				}
 			}

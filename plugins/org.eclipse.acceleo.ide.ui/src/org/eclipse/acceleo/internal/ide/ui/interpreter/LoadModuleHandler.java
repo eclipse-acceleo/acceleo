@@ -44,7 +44,7 @@ public class LoadModuleHandler extends AbstractHandler {
 						.getCurrentLanguageInterpreter();
 				if (currentLanguageInterpreter instanceof AcceleoInterpreter) {
 					AcceleoInterpreter acceleoInterpreter = (AcceleoInterpreter)currentLanguageInterpreter;
-					acceleoInterpreter.runLoadModuleAction();
+					// acceleoInterpreter.runLoadModuleAction();
 				}
 			}
 		}

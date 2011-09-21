@@ -55,11 +55,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	private SaveExpressionAction saveExpressionAction;
 
 	/**
-	 * The load module action.
-	 */
-	private LoadModuleAction loadModuleAction;
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
@@ -115,7 +110,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 		// Null out references
 		acceleoSource = null;
 		this.saveExpressionAction.dispose();
-		this.loadModuleAction.dispose();
 	}
 
 	/**
@@ -141,10 +135,10 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#acceptLinkWithEditor()
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#acceptLinkWithEditorContext()
 	 */
 	@Override
-	public boolean acceptLinkWithEditor() {
+	public boolean acceptLinkWithEditorContext() {
 		return true;
 	}
 
@@ -178,15 +172,5 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 		super.addToolBarActions(interpreterView, toolBarManager);
 		this.saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
 		toolBarManager.add(saveExpressionAction);
-		this.loadModuleAction = new LoadModuleAction(acceleoSource, interpreterView, toolBarManager);
-		toolBarManager.add(loadModuleAction);
-	}
-
-	/**
-	 * Runs the load module action.
-	 */
-	public void runLoadModuleAction() {
-		this.loadModuleAction.setChecked(true);
-		this.loadModuleAction.run();
 	}
 }

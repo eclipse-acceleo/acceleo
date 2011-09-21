@@ -39,12 +39,16 @@ public abstract class AbstractLanguageInterpreter {
 	 * @return <code>true</code> if this interpreter cares for the "link with editor" action,
 	 *         <code>false</code> otherwise.
 	 */
-	public boolean acceptLinkWithEditor() {
+	public boolean acceptLinkWithEditorContext() {
 		return false;
 	}
 
 	/**
 	 * If the language interpreter needs to add custom actions to the interpreter form, do it from here.
+	 * <p>
+	 * Do note that this will be called each time the interpreter is set. Clients are not expected to dispose
+	 * of their actions, but are expected to create them each time this is called.
+	 * </p>
 	 * 
 	 * @param interpreterView
 	 *            The interpreter view

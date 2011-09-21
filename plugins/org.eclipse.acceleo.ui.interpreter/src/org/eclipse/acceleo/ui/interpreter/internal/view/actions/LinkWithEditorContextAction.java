@@ -26,7 +26,7 @@ import org.eclipse.jface.action.IAction;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class ToggleLinkWithEditorAction extends Action {
+public class LinkWithEditorContextAction extends Action {
 	/** The tooltip we'll show for this action. */
 	private static final String TOOLTIP_TEXT = InterpreterMessages
 			.getString("intepreter.action.link.tooltip"); //$NON-NLS-1$
@@ -40,11 +40,13 @@ public class ToggleLinkWithEditorAction extends Action {
 	 * @param view
 	 *            The interpreter view it should operate on.
 	 */
-	public ToggleLinkWithEditorAction(InterpreterView view) {
-		super(null, IAction.AS_CHECK_BOX);
+	public LinkWithEditorContextAction(InterpreterView view) {
+		super(null, IAction.AS_PUSH_BUTTON);
 		setToolTipText(TOOLTIP_TEXT);
 		setImageDescriptor(InterpreterImages
-				.getImageDescriptor(IInterpreterConstants.LINK_WITH_EDITOR_TOGGLE_ICON));
+				.getImageDescriptor(IInterpreterConstants.LINK_WITH_EDITOR_CONTEXT_ACTION_ICON));
+		setDisabledImageDescriptor(InterpreterImages
+				.getImageDescriptor(IInterpreterConstants.LINK_WITH_EDITOR_CONTEXT_ACTION_DISABLED_ICON));
 		this.view = view;
 	}
 
@@ -56,7 +58,7 @@ public class ToggleLinkWithEditorAction extends Action {
 	@Override
 	public void run() {
 		if (view != null) {
-			view.toggleLinkWithEditor();
+			view.linkWithEditorContext();
 		}
 	}
 }
