@@ -64,5 +64,21 @@ Contributors:
             commandId="org.eclipse.acceleo.ui.interpreter.evaluateaction">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="org.eclipse.acceleo.ui.interpreter.debug.VariableViewActions"
+            targetID="org.eclipse.debug.ui.VariableView">
+         <action
+               class="org.eclipse.acceleo.ui.interpreter.internal.debug.AddVariablesDebugViewActionDelegate"
+               icon="icons/add_variable_action.gif"
+               id="org.eclipse.acceleo.ui.interpreter.debug.AddVariablesToInterpreterAction"
+               label="%AddVariableToInterpreterAction.Label"
+               style="push"
+               toolbarPath="additions"
+               tooltip="%AddVariableToInterpreterAction.Tooltip">
+         </action>
+      </viewContribution>
+   </extension>
 
 </plugin>
