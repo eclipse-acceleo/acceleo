@@ -36,7 +36,7 @@ public final class NotificationUtils {
 	 * @return The default preferences.
 	 */
 	public static IEclipsePreferences getDefaultPreferences() {
-		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(AcceleoCommonUIPlugin.PLUGIN_ID);
+		IEclipsePreferences preferences = new InstanceScope().getNode(AcceleoCommonUIPlugin.PLUGIN_ID);
 		return preferences;
 	}
 
