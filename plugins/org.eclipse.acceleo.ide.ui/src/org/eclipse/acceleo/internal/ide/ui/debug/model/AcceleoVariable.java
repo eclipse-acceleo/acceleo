@@ -14,6 +14,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * An Acceleo variable in a variable of an Acceleo Stack Frame. They are shown in the Variables view.
@@ -203,6 +204,19 @@ public class AcceleoVariable extends AbstractDebugElement implements IVariable, 
 			ret = name.compareTo(arg0.name);
 		}
 		return ret;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.internal.ide.ui.debug.model.AbstractDebugElement#getAdapter(java.lang.Class)
+	 */
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == EObject.class && this.value instanceof EObject) {
+			return this.value;
+		}
+		return super.getAdapter(adapter);
 	}
 
 }
