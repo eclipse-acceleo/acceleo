@@ -13,15 +13,21 @@ package org.eclipse.acceleo.ui.interpreter.internal.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.views.navigator.LocalSelectionTransfer;
 
 /**
  * This listener will be registered against the "Variables" TreeViewer in order to allow drop operations on
@@ -41,6 +47,20 @@ public class VariableDropListener extends DropTargetAdapter {
 	 */
 	public VariableDropListener(TreeViewer viewer) {
 		this.viewer = viewer;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.swt.dnd.DropTargetAdapter#dragEnter(org.eclipse.swt.dnd.DropTargetEvent)
+	 */
+	@Override
+	public void dragEnter(DropTargetEvent event) {
+		if (!LocalSelectionTransfer.getInstance().isSupportedType(event.currentDataType)) {
+			return;
+		}
+
+		event.detail = DND.DROP_COPY;
 	}
 
 	/**
@@ -134,7 +154,25 @@ public class VariableDropListener extends DropTargetAdapter {
 	 */
 	private Collection<?> getSelection(DropTargetEvent event) {
 		if (event.data instanceof IStructuredSelection) {
-			return ((IStructuredSelection)event.data).toList();
+			@SuppressWarnings("unchecked")
+			List<Object> objectList = ((IStructuredSelection)event.data).toList();
+
+			List<EObject> variablesValues = new ArrayList<EObject>();
+			for (Object object : objectList) {
+				EObject variableEObject = null;
+				if (object instanceof EObject) {
+					variableEObject = (EObject)object;
+				} else if (object instanceof IAdaptable) {
+					variableEObject = (EObject)((IAdaptable)object).getAdapter(EObject.class);
+				} else {
+					variableEObject = (EObject)Platform.getAdapterManager().getAdapter(object, EObject.class);
+				}
+
+				if (variableEObject != null) {
+					variablesValues.add(variableEObject);
+				}
+			}
+			return variablesValues;
 		}
 		return Collections.emptyList();
 	}

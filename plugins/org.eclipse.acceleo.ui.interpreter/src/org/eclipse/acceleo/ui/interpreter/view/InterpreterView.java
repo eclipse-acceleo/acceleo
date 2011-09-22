@@ -42,6 +42,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableVie
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.LinkWithEditorContextAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableWizardAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
@@ -133,6 +134,7 @@ import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
+import org.eclipse.ui.views.navigator.LocalSelectionTransfer;
 
 /**
  * The Actual "Interpreter" view that will be displayed in the Eclipse workbench.
@@ -533,8 +535,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
-					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
+					.isVisible()));
 		}
 	}
 
@@ -601,6 +603,15 @@ public class InterpreterView extends ViewPart {
 			formBody.setWeights(newWeights);
 			getForm().layout();
 		}
+	}
+
+	/**
+	 * Indicates if the variables are visible in the view.
+	 * 
+	 * @return <code>true</code> if the variables are visible, <code>false</code> otherwise.
+	 */
+	public boolean isVariableVisible() {
+		return variableVisible;
 	}
 
 	/**
@@ -1318,7 +1329,8 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void setUpVariableDropSupport(TreeViewer viewer) {
 		int operations = DND.DROP_DEFAULT | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
+		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(),
+				LocalSelectionTransfer.getTransfer() };
 
 		viewer.addDropSupport(operations, transfers, new VariableDropListener(viewer));
 	}
@@ -1425,6 +1437,17 @@ public class InterpreterView extends ViewPart {
 		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
 		activationTokenRedo = service.activateHandler(IWorkbenchCommandConstants.EDIT_REDO, redoHandler);
 		activationTokenUndo = service.activateHandler(IWorkbenchCommandConstants.EDIT_UNDO, undoHandler);
+	}
+
+	/**
+	 * Opens the "add variable" wizard in order to create a new variable with the given value.
+	 * 
+	 * @param variableValue
+	 *            The variable value
+	 */
+	public void addVariables(EObject variableValue) {
+		NewVariableAction action = new NewVariableAction(variableViewer, variableValue);
+		action.run();
 	}
 
 	/**
