@@ -38,7 +38,7 @@
             outputFolder="${target.folder}"
             dependencies="[for(dependency : String | anAcceleoProject.pluginDependencies)]${target.folder}/../../[dependency/];[/for]"
             binaryResource="false"
-            trimPosition="false">
+            packagesToRegister="">
         </acceleoCompiler>
     </target>    
 </project>

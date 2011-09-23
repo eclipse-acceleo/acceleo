@@ -17,8 +17,11 @@
 	<!-- ================================================================= -->
 	<target name="post.compile.@dot">
 		<acceleoCompiler 
-			sourceFolders="${target.folder}" 
-			dependencies="">
+			sourceFolder="${target.folder}"
+            outputFolder="${target.folder}"
+            dependencies=""
+            binaryResource="false"
+            packagesToRegister="">
 		</acceleoCompiler>
 	</target>	
 
