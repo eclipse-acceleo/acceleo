@@ -11,16 +11,20 @@
 package org.eclipse.acceleo.parser.compiler;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -60,6 +64,11 @@ public final class AcceleoCompilerHelper {
 	protected static final String ECORE = "ecore"; //$NON-NLS-1$
 
 	/**
+	 * The jar file extension.
+	 */
+	private static final String JAR_EXTENSION = ".jar"; //$NON-NLS-1$
+
+	/**
 	 * Indicates if we should use binary resources for the serialization of the EMTL files.
 	 */
 	protected boolean binaryResource = true;
@@ -83,6 +92,11 @@ public final class AcceleoCompilerHelper {
 	 * The dependencies identifiers.
 	 */
 	protected List<String> dependenciesIDs = new ArrayList<String>();
+
+	/**
+	 * The URIs of the emtl files inside the jars.
+	 */
+	protected List<URI> jarEmtlsURI = new ArrayList<URI>();
 
 	/**
 	 * Indicates if we should trim the position.
@@ -153,7 +167,7 @@ public final class AcceleoCompilerHelper {
 		StringTokenizer st = new StringTokenizer(allDependencies, ";"); //$NON-NLS-1$
 		while (st.hasMoreTokens()) {
 			String path = st.nextToken().trim();
-			if (path.length() > 0) {
+			if (path.length() > 0 && !path.endsWith(JAR_EXTENSION)) {
 				File parent = new Path(path).removeLastSegments(1).toFile();
 				if (parent != null && parent.exists() && parent.isDirectory()) {
 					String segmentID = new Path(path).lastSegment();
@@ -176,6 +190,27 @@ public final class AcceleoCompilerHelper {
 						dependenciesIDs.add(segmentID);
 					}
 				}
+			} else if (path.length() > 0 && path.endsWith(JAR_EXTENSION)) {
+				// Let's compute the uris of the emtl files inside of the jar
+				try {
+					JarFile jarFile = new JarFile(path);
+					Enumeration<JarEntry> entries = jarFile.entries();
+					while (entries.hasMoreElements()) {
+						JarEntry nextElement = entries.nextElement();
+						String name = nextElement.getName();
+						if (!nextElement.isDirectory()
+								&& name.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+							URI jarFileURI = URI.createFileURI(path);
+							URI entryURI = URI.createURI(name);
+							URI uri = URI
+									.createURI("jar:" + jarFileURI.toString() + "!/" + entryURI.toString()); //$NON-NLS-1$//$NON-NLS-2$
+							this.jarEmtlsURI.add(uri);
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
 			}
 		}
 	}
@@ -224,6 +259,7 @@ public final class AcceleoCompilerHelper {
 		List<URI> dependenciesURIs = new ArrayList<URI>();
 		Map<URI, URI> mapURIs = new HashMap<URI, URI>();
 		computeDependencies(dependenciesURIs, mapURIs);
+		computeJarDependencies(dependenciesURIs, mapURIs);
 		loadEcoreFiles();
 
 		createOutputFiles(emtlAbsoluteURIs);
@@ -252,6 +288,34 @@ public final class AcceleoCompilerHelper {
 		if (message.length() > 0) {
 			String log = message.toString();
 			throw new RuntimeException(log);
+		}
+	}
+
+	/**
+	 * This method will compute add the emtls from the jar in the list of dependencies to be loaded for the
+	 * compilation and map their URIs to the logical URIs used by Acceleo.
+	 * 
+	 * @param dependenciesURIs
+	 *            The dependencies to be loaded
+	 * @param mapURIs
+	 *            The jars URIs.
+	 */
+	private void computeJarDependencies(List<URI> dependenciesURIs, Map<URI, URI> mapURIs) {
+		for (URI uri : this.jarEmtlsURI) {
+			String uriStr = uri.toString();
+			int i = uriStr.indexOf("!/"); //$NON-NLS-1$
+			if (i > 0) {
+				String fileURI = uriStr.substring(i + 2);
+				String authority = uri.authority();
+				int lastIndexOf = authority.lastIndexOf("/"); //$NON-NLS-1$
+				int indexOf = authority.lastIndexOf("_"); //$NON-NLS-1$
+				if (lastIndexOf > 0 && indexOf > 0) {
+					authority = authority.substring(lastIndexOf, indexOf);
+				}
+				URI platformPluginURI = URI.createPlatformPluginURI(authority + "/" + fileURI, true); //$NON-NLS-1$
+				mapURIs.put(uri, platformPluginURI);
+				dependenciesURIs.add(uri);
+			}
 		}
 	}
 
