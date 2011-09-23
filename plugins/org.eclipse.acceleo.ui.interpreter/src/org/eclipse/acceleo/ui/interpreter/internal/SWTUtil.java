@@ -50,7 +50,11 @@ public class SWTUtil {
 	 * @return The created {@link SourceViewer}.
 	 */
 	public static SourceViewer createScrollableSourceViewer(Composite parent, int style) {
-		return new ScrollableSourceViewer(parent, null, style);
+		SourceViewer viewer = new ScrollableSourceViewer(parent, null, style);
+
+		setUpScrollableListener(viewer.getTextWidget());
+
+		return viewer;
 	}
 
 	/**
