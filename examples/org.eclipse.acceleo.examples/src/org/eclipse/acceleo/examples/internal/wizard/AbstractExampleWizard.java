@@ -220,7 +220,18 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			project.open(monitor);
 			monitor.worked(1);
 
+			// Build the project
 			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+
+			// Close and re-open the project to force eclipse to re-evaluate
+			// any natures that this project may have.
+			project.close(monitor);
+			project.open(monitor);
+			monitor.worked(1);
+
+			// Clean it
+			project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+
 			monitor.worked(1);
 		} catch (final IOException e) {
 			log(e);
