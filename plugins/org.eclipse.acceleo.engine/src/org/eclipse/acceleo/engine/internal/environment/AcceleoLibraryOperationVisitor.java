@@ -120,7 +120,9 @@ public final class AcceleoLibraryOperationVisitor {
 			result = toString(source);
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_INVOKE.equals(operationName)) {
 			if (args.length == 3) {
-				result = invoke(operation.eResource().getURI(), source, args);
+				URI uri = operation.eResource().getURI();
+				uri = URI.createURI(URI.decode(uri.toString()));
+				result = invoke(uri, source, args);
 			}
 			// fall through : let else fail in UnsupportedOperationException
 		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_CURRENT.equals(operationName)) {
