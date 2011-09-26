@@ -17,6 +17,8 @@ package org.eclipse.acceleo.traceability.minimal;
 
 import java.util.Arrays;
 
+import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
+import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.NotificationImpl;
@@ -269,6 +271,9 @@ public class MinimalEObjectImpl extends BasicEObjectImpl implements EObject, ESt
 
 	@Override
 	protected BasicEList<Adapter> eBasicAdapters() {
+		if (AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() == OCLVersion.GANYMEDE) {
+			return null;
+		}
 		throw new UnsupportedOperationException();
 	}
 

@@ -13,5 +13,6 @@ Export-Package: org.eclipse.acceleo.traceability,
  org.eclipse.acceleo.traceability.spec;x-internal:=true,
  org.eclipse.acceleo.traceability.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.acceleo.common
 Bundle-ActivationPolicy: lazy
