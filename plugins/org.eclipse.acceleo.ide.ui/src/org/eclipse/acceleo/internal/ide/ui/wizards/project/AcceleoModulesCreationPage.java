@@ -42,8 +42,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * The modules creation page of the Acceleo project wizard.
@@ -220,8 +218,10 @@ public class AcceleoModulesCreationPage extends WizardPage implements IAcceleoMo
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		addButton = new Button(buttonGroup, SWT.NONE);
-		Image addImage = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ADD);
+		Image addImage = AcceleoUIActivator.getDefault().getImage("icons/add_obj.gif"); //$NON-NLS-1$
 		addButton.setImage(addImage);
+		addButton.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.AddButton.Tooltip")); //$NON-NLS-1$
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -235,9 +235,10 @@ public class AcceleoModulesCreationPage extends WizardPage implements IAcceleoMo
 		gridData.verticalAlignment = SWT.TOP;
 		addButton.setLayoutData(gridData);
 		removeButton = new Button(buttonGroup, SWT.NONE);
-		Image removeImage = PlatformUI.getWorkbench().getSharedImages().getImage(
-				ISharedImages.IMG_ETOOL_DELETE);
+		Image removeImage = AcceleoUIActivator.getDefault().getImage("icons/delete_obj.gif"); //$NON-NLS-1$
 		removeButton.setImage(removeImage);
+		removeButton.setToolTipText(AcceleoUIMessages
+				.getString("AcceleoNewTemplateWizardPage.RemoveButton.Tooltip")); //$NON-NLS-1$
 		removeButton.setLayoutData(gridData);
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			@Override

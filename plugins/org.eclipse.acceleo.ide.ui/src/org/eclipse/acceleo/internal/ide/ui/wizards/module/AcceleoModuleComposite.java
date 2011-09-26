@@ -626,7 +626,7 @@ public class AcceleoModuleComposite extends Composite {
 		tableButtonComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 		tableButtonComposite.setLayout(layout);
 		addButton = new Button(tableButtonComposite, SWT.PUSH);
-		Image addImage = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ADD);
+		Image addImage = AcceleoUIActivator.getDefault().getImage("icons/add_obj.gif"); //$NON-NLS-1$
 		addButton.setImage(addImage);
 		addButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.AddButton")); //$NON-NLS-1$
 		addButton.addSelectionListener(new SelectionAdapter() {
@@ -638,8 +638,7 @@ public class AcceleoModuleComposite extends Composite {
 			}
 		});
 		removeButton = new Button(tableButtonComposite, SWT.PUSH);
-		Image removeImage = PlatformUI.getWorkbench().getSharedImages().getImage(
-				ISharedImages.IMG_ETOOL_DELETE);
+		Image removeImage = AcceleoUIActivator.getDefault().getImage("icons/delete_obj.gif"); //$NON-NLS-1$
 		removeButton.setImage(removeImage);
 		removeButton.setToolTipText(AcceleoUIMessages.getString("AcceleoModuleComposite.RemoveButton")); //$NON-NLS-1$
 		removeButton.addSelectionListener(new SelectionAdapter() {
