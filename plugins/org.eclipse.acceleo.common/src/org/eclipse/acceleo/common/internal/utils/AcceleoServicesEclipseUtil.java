@@ -163,8 +163,11 @@ public final class AcceleoServicesEclipseUtil {
 			} else {
 				final URI workspaceRootURI = URI.createURI(URI.decode(workspaceRoot.getLocationURI()
 						.toString()));
-				final URI workspaceRelative = uri.deresolve(workspaceRootURI);
+				URI workspaceRelative = uri.deresolve(workspaceRootURI);
 				if (!workspaceRelative.equals(uri)) {
+					// Have a look at the workspaceRelative uri to see if it starts with "../../"
+					workspaceRelative = trimDoubleDot(workspaceRelative);
+
 					projectName = workspaceRelative.segment(1);
 				}
 			}
@@ -190,6 +193,40 @@ public final class AcceleoServicesEclipseUtil {
 			REGISTERED_SERVICES.add(qualifiedName);
 		}
 		return clazz;
+	}
+
+	/**
+	 * Trims the ".." at the beginning of the uri.
+	 * 
+	 * @param workspaceRelative
+	 *            The given uri
+	 * @return The uri without the ".." at the beginning.
+	 */
+	private static URI trimDoubleDot(URI workspaceRelative) {
+		int segmentToTrim = 0;
+		String[] segments = workspaceRelative.segments();
+		for (String segment : segments) {
+			if ("..".equals(segment)) { //$NON-NLS-1$
+				segmentToTrim++;
+			} else {
+				break;
+			}
+		}
+
+		if (segmentToTrim != 0 && workspaceRelative.segments().length > (segmentToTrim * 2)) {
+			String[] newSegments = new String[segments.length - (segmentToTrim * 2)];
+			System.arraycopy(segments, segmentToTrim * 2, newSegments, 0, segments.length
+					- (segmentToTrim * 2));
+
+			if (newSegments.length > 0) {
+				URI uriTmp = URI.createURI(newSegments[0]);
+				for (int i = 1; i < newSegments.length; i++) {
+					uriTmp = uriTmp.appendSegment(newSegments[i]);
+				}
+				return uriTmp;
+			}
+		}
+		return workspaceRelative;
 	}
 
 	/**
