@@ -13,6 +13,7 @@ package org.eclipse.acceleo.internal.ide.ui.editors.template;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.OpenDeclarationUtils;
 import org.eclipse.acceleo.parser.cst.CSTNode;
@@ -359,8 +360,15 @@ public class AcceleoElementHyperlinkDetector extends AbstractHyperlinkDetector {
 		 * @see org.eclipse.jface.text.hyperlink.IHyperlink#open()
 		 */
 		public void open() {
-			OpenDeclarationUtils.showEObject(sourceEditor.getSite().getPage(), target.eResource().getURI(),
-					OpenDeclarationUtils.createRegion(target), target);
+			if (target.eResource() != null && sourceEditor.getSite() != null
+					&& sourceEditor.getSite().getPage() != null) {
+				OpenDeclarationUtils.showEObject(sourceEditor.getSite().getPage(), target.eResource()
+						.getURI(), OpenDeclarationUtils.createRegion(target), target);
+			} else {
+				AcceleoUIActivator.log(AcceleoUIMessages.getString(
+						"AcceleoElementHyperlinkDetector.MetamodelNotInAResource", target.eClass() //$NON-NLS-1$
+								.getName()), false);
+			}
 		}
 	}
 }
