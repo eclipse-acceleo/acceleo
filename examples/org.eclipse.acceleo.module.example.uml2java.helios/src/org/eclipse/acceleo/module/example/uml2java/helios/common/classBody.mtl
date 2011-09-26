@@ -77,15 +77,13 @@ public[if (c.isAbstract)] abstract[/if] class [c.name.toUpperFirst()/][for (supe
 [/if]
      */
     public [o.returnTypeOperation()/]([o.getInParameter()/]) {
-[if (not o.type.oclIsUndefined())]
         // [protected ('for operation '.concat(o.name))]
+[if (not o.type.oclIsUndefined())]
         // TODO should be implemented
         return null;
-        // [/protected]
 [else]
-        // [protected ('for operation '.concat(o.name))]
         // TODO should be implemented
-        // [/protected]
 [/if]
+        // [/protected]
     }
 [/template]
