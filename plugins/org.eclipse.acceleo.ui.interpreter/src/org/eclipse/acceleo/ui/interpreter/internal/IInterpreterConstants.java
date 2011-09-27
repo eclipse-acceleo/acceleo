@@ -29,7 +29,7 @@ public interface IInterpreterConstants {
 	String EVALUATE_ACTION_ICON = "evaluate_action.gif"; //$NON-NLS-1$
 
 	/** Path to the icons of the interpreter. */
-	String INTERPRETER_ICONS = "icons"; //$NON-NLS-1$
+	String INTERPRETER_ICONS = "icons/"; //$NON-NLS-1$
 
 	/** Path to the default interpreter view's icon. */
 	String INTERPRETER_VIEW_DEFAULT_ICON = "view_icon.gif"; //$NON-NLS-1$
