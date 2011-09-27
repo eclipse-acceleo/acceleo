@@ -1371,7 +1371,7 @@ public class InterpreterView extends ViewPart {
 	protected void setUpVariableDropSupport(TreeViewer viewer) {
 		int operations = DND.DROP_DEFAULT | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
 		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(),
-				LocalSelectionTransfer.getTransfer() };
+				LocalSelectionTransfer.getTransfer(), };
 
 		viewer.addDropSupport(operations, transfers, new VariableDropListener(viewer));
 	}
