@@ -157,7 +157,7 @@ public class VariableDropListener extends DropTargetAdapter {
 			@SuppressWarnings("unchecked")
 			List<Object> objectList = ((IStructuredSelection)event.data).toList();
 
-			List<EObject> variablesValues = new ArrayList<EObject>();
+			List<Object> variablesValues = new ArrayList<Object>();
 			for (Object object : objectList) {
 				EObject variableEObject = null;
 				if (object instanceof EObject) {
@@ -170,6 +170,8 @@ public class VariableDropListener extends DropTargetAdapter {
 
 				if (variableEObject != null) {
 					variablesValues.add(variableEObject);
+				} else {
+					variablesValues.add(object);
 				}
 			}
 			return variablesValues;
