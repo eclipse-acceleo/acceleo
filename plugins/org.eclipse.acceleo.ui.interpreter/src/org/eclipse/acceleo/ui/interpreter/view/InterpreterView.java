@@ -1768,6 +1768,18 @@ public class InterpreterView extends ViewPart {
 				}
 				final IStatus status = new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, message);
 				final CompilationResult result = new CompilationResult(status);
+
+				Display.getDefault().asyncExec(new Runnable() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					public void run() {
+						addStatusMessages(status, COMPILATION_MESSAGE_PREFIX);
+					}
+				});
+
 				setCompilationResult(result);
 			}
 		}
@@ -1921,6 +1933,7 @@ public class InterpreterView extends ViewPart {
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
+						addStatusMessages(status, EVALUATION_MESSAGE_PREFIX);
 						setEvaluationResult(result);
 					}
 				});
