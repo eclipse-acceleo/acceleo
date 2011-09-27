@@ -26,6 +26,8 @@ import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.internal.SWTUtil;
+import org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.FormMessageManagerFactory;
+import org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessageManager;
 import org.eclipse.acceleo.ui.interpreter.internal.language.DefaultLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
@@ -117,7 +119,6 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -177,6 +178,20 @@ public class InterpreterView extends ViewPart {
 
 	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
 	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
+
+	/**
+	 * Id for command "Redo" in category "Edit". This should be directly referenced from
+	 * org.eclipse.ui.IWorkbenchCommandConstants.EDIT_REDO ... though that would break our Eclipse 3.4
+	 * compatibility.
+	 */
+	private static final String WORKBENCH_CONSTANT_EDIT_REDO = "org.eclipse.ui.edit.redo"; //$NON-NLS-1$
+
+	/**
+	 * Id for command "Undo" in category "Edit". This should be directly referenced from
+	 * org.eclipse.ui.IWorkbenchCommandConstants.EDIT_UNDO ... though that would break our Eclipse 3.4
+	 * compatibility.
+	 */
+	private static final String WORKBENCH_CONSTANT_EDIT_UNDO = "org.eclipse.ui.edit.undo"; //$NON-NLS-1$
 
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
@@ -246,6 +261,12 @@ public class InterpreterView extends ViewPart {
 
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
+
+	/**
+	 * We'll use this indirection layer for the form's message manager in order to bypass the API breakage for
+	 * Ganymede.
+	 */
+	private IFormMessageManager messageManager;
 
 	/** Memento from which to restore this view's state. */
 	private IMemento partMemento;
@@ -327,6 +348,17 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
+	 * Opens the "add variable" wizard in order to create a new variable with the given value.
+	 * 
+	 * @param variableValue
+	 *            The variable value
+	 */
+	public void addVariables(EObject variableValue) {
+		NewVariableAction action = new NewVariableAction(variableViewer, variableValue);
+		action.run();
+	}
+
+	/**
 	 * Asks for the compilation of the current expression.
 	 * <p>
 	 * This will take a snapshot of the current interpreter context and launch a new thread for the
@@ -354,14 +386,14 @@ public class InterpreterView extends ViewPart {
 		 * 357906 in FormHeading.MessageRegion#showMessage().
 		 */
 		final String dummyMessageKey = "none"; //$NON-NLS-1$
-		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
 		// Remove all actual messages
-		getForm().getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
-		getForm().getMessageManager().removeMessages(expressionSection);
+		getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
+		getMessageManager().removeMessages(expressionSection);
 		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
-		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.NONE); //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
 		// Finally, remove our dummy
-		getForm().getMessageManager().removeMessage(dummyMessageKey);
+		getMessageManager().removeMessage(dummyMessageKey);
 
 		if (compilationTask != null) {
 			Future<CompilationResult> compilationFuture = compilationPool.submit(compilationTask);
@@ -441,14 +473,14 @@ public class InterpreterView extends ViewPart {
 		 * 357906 in FormHeading.MessageRegion#showMessage().
 		 */
 		final String dummyMessageKey = "none"; //$NON-NLS-1$
-		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.ERROR); //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
 		// Remove all actual messages
-		getForm().getMessageManager().removeMessages(resultSection);
-		getForm().getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
+		getMessageManager().removeMessages(resultSection);
+		getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
 		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
-		getForm().getMessageManager().addMessage(dummyMessageKey, "", null, IMessageProvider.NONE); //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
 		// Finally, remove our dummy
-		getForm().getMessageManager().removeMessage(dummyMessageKey);
+		getMessageManager().removeMessage(dummyMessageKey);
 
 		evaluationThread = new EvaluationThread(getInterpreterContext());
 		evaluationThread.start();
@@ -520,6 +552,28 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
+	 * Indicates if the variables are visible in the view.
+	 * 
+	 * @return <code>true</code> if the variables are visible, <code>false</code> otherwise.
+	 */
+	public boolean isVariableVisible() {
+		return variableVisible;
+	}
+
+	/** Link the current language interpreter with the current editor. */
+	public void linkWithEditorContext() {
+		IWorkbenchPage page = getSite().getPage();
+		if (linkWithEditorContextAction.isEnabled()) {
+			IEditorPart activeEditor = page.getActiveEditor();
+			if (activeEditor != null) {
+				editorActivated(activeEditor);
+			} else {
+				getCurrentLanguageInterpreter().linkWithEditor(null);
+			}
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.ui.part.ViewPart#saveState(org.eclipse.ui.IMemento)
@@ -535,8 +589,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
-					.isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
+					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
 
@@ -549,19 +603,6 @@ public class InterpreterView extends ViewPart {
 	public void setFocus() {
 		if (expressionViewer != null) {
 			expressionViewer.getControl().setFocus();
-		}
-	}
-
-	/** Link the current language interpreter with the current editor. */
-	public void linkWithEditorContext() {
-		IWorkbenchPage page = getSite().getPage();
-		if (linkWithEditorContextAction.isEnabled()) {
-			IEditorPart activeEditor = page.getActiveEditor();
-			if (activeEditor != null) {
-				editorActivated(activeEditor);
-			} else {
-				getCurrentLanguageInterpreter().linkWithEditor(null);
-			}
 		}
 	}
 
@@ -606,15 +647,6 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
-	 * Indicates if the variables are visible in the view.
-	 * 
-	 * @return <code>true</code> if the variables are visible, <code>false</code> otherwise.
-	 */
-	public boolean isVariableVisible() {
-		return variableVisible;
-	}
-
-	/**
 	 * Adds a new message to the form.
 	 * 
 	 * @param messageKey
@@ -634,10 +666,9 @@ public class InterpreterView extends ViewPart {
 
 		if (!getForm().isDisposed()) {
 			if (targetControl != null) {
-				getForm().getMessageManager().addMessage(messageKey, message, null, messageType,
-						targetControl);
+				getMessageManager().addMessage(messageKey, message, messageType, targetControl);
 			} else {
-				getForm().getMessageManager().addMessage(messageKey, message, null, messageType);
+				getMessageManager().addMessage(messageKey, message, messageType);
 			}
 		}
 	}
@@ -785,7 +816,8 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void createInterpreterForm(FormToolkit toolkit, Composite parent) {
 		interpreterForm = toolkit.createForm(parent);
-		getForm().getMessageManager().setDecorationPosition(SWT.LEFT | SWT.TOP);
+		messageManager = FormMessageManagerFactory.createFormMessageManager(interpreterForm);
+		getMessageManager().setDecorationPosition(SWT.LEFT | SWT.TOP);
 		toolkit.decorateFormHeading(getForm());
 
 		populateLanguageMenu(getForm().getMenuManager());
@@ -1038,6 +1070,15 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
+	 * Returns the indirection layer for the form's message manager.
+	 * 
+	 * @return The indirection layer for the form's message manager.
+	 */
+	protected IFormMessageManager getMessageManager() {
+		return messageManager;
+	}
+
+	/**
 	 * Returns the current source viewer.
 	 * <p>
 	 * Note that the source viewer can change and be disposed over time; don't keep references to it.
@@ -1125,7 +1166,7 @@ public class InterpreterView extends ViewPart {
 		 * this menu freeze is when we remove all messages from the message manager.
 		 */
 		IContributionItem[] changeLanguageActions = getForm().getMenuManager().getItems();
-		getForm().getMessageManager().removeAllMessages();
+		getMessageManager().removeAllMessages();
 
 		// Dispose of the language specific actions
 		IToolBarManager toolBarManager = getForm().getToolBarManager();
@@ -1435,19 +1476,8 @@ public class InterpreterView extends ViewPart {
 		IHandler undoHandler = new ActionHandler(undoAction);
 
 		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
-		activationTokenRedo = service.activateHandler(IWorkbenchCommandConstants.EDIT_REDO, redoHandler);
-		activationTokenUndo = service.activateHandler(IWorkbenchCommandConstants.EDIT_UNDO, undoHandler);
-	}
-
-	/**
-	 * Opens the "add variable" wizard in order to create a new variable with the given value.
-	 * 
-	 * @param variableValue
-	 *            The variable value
-	 */
-	public void addVariables(EObject variableValue) {
-		NewVariableAction action = new NewVariableAction(variableViewer, variableValue);
-		action.run();
+		activationTokenRedo = service.activateHandler(WORKBENCH_CONSTANT_EDIT_REDO, redoHandler);
+		activationTokenUndo = service.activateHandler(WORKBENCH_CONSTANT_EDIT_UNDO, undoHandler);
 	}
 
 	/**
@@ -1478,6 +1508,65 @@ public class InterpreterView extends ViewPart {
 			manager.add(new EvaluateAction(InterpreterView.this));
 			manager.add(new ClearExpressionViewerAction(sourceViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		}
+	}
+
+	/**
+	 * This will allow us to react to double click events in the result view in order to display the long
+	 * Strings and generated files in a more suitable way.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class ResultDoubleClickListener implements IDoubleClickListener {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+		 */
+		public void doubleClick(DoubleClickEvent event) {
+			if (event.getSelection().isEmpty() || !(event.getSelection() instanceof IStructuredSelection)) {
+				return;
+			}
+			final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
+			if (target instanceof InterpreterFile) {
+				showGeneratedFile((InterpreterFile)target);
+			} else if (target instanceof String
+					&& (((String)target).indexOf('\n') >= 0 || ((String)target).indexOf('\r') >= 0)) {
+				GeneratedTextDialog dialog = new GeneratedTextDialog(Display.getCurrent().getActiveShell(),
+						"Evaluation result", (String)target); //$NON-NLS-1$
+				dialog.open();
+			}
+		}
+
+		/**
+		 * Displays the given generated file in its own read-only editor.
+		 * 
+		 * @param file
+		 *            The file we are to display.
+		 */
+		private void showGeneratedFile(InterpreterFile file) {
+			final IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench.getActiveWorkbenchWindow() == null
+					|| workbench.getActiveWorkbenchWindow().getActivePage() == null) {
+				return;
+			}
+			final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+			final IStorage storage = new InterpreterFileStorage(file);
+			final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
+					file.getFileName());
+			final IEditorInput input = new StorageEditorInput(storage);
+
+			try {
+				final String editorID;
+				if (editor == null) {
+					editorID = EditorsUI.DEFAULT_TEXT_EDITOR_ID;
+				} else {
+					editorID = editor.getId();
+				}
+				page.openEditor(input, editorID);
+			} catch (PartInitException e) {
+				// swallow : we just won't open editors
+			}
 		}
 	}
 
@@ -1936,65 +2025,6 @@ public class InterpreterView extends ViewPart {
 		public void setDirty() {
 			synchronized(this) {
 				dirty = true;
-			}
-		}
-	}
-
-	/**
-	 * This will allow us to react to double click events in the result view in order to display the long
-	 * Strings and generated files in a more suitable way.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	protected class ResultDoubleClickListener implements IDoubleClickListener {
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
-		 */
-		public void doubleClick(DoubleClickEvent event) {
-			if (event.getSelection().isEmpty() || !(event.getSelection() instanceof IStructuredSelection)) {
-				return;
-			}
-			final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
-			if (target instanceof InterpreterFile) {
-				showGeneratedFile((InterpreterFile)target);
-			} else if (target instanceof String
-					&& (((String)target).indexOf('\n') >= 0 || ((String)target).indexOf('\r') >= 0)) {
-				GeneratedTextDialog dialog = new GeneratedTextDialog(Display.getCurrent().getActiveShell(),
-						"Evaluation result", (String)target); //$NON-NLS-1$
-				dialog.open();
-			}
-		}
-
-		/**
-		 * Displays the given generated file in its own read-only editor.
-		 * 
-		 * @param file
-		 *            The file we are to display.
-		 */
-		private void showGeneratedFile(InterpreterFile file) {
-			final IWorkbench workbench = PlatformUI.getWorkbench();
-			if (workbench.getActiveWorkbenchWindow() == null
-					|| workbench.getActiveWorkbenchWindow().getActivePage() == null) {
-				return;
-			}
-			final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
-			final IStorage storage = new InterpreterFileStorage(file);
-			final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
-					file.getFileName());
-			final IEditorInput input = new StorageEditorInput(storage);
-
-			try {
-				final String editorID;
-				if (editor == null) {
-					editorID = EditorsUI.DEFAULT_TEXT_EDITOR_ID;
-				} else {
-					editorID = editor.getId();
-				}
-				page.openEditor(input, editorID);
-			} catch (PartInitException e) {
-				// swallow : we just won't open editors
 			}
 		}
 	}

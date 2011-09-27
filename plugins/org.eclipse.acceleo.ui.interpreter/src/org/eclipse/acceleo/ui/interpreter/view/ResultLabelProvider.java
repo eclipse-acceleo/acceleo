@@ -81,14 +81,14 @@ public class ResultLabelProvider extends CellLabelProvider {
 	public void update(ViewerCell cell) {
 		final Object element = cell.getElement();
 		final String text = getText(element);
-		int indexOfNewLine = text.indexOf("\n\r"); //$NON-NLS-1$
-		if (indexOfNewLine == -1) {
-			indexOfNewLine = text.indexOf("\n"); //$NON-NLS-1$
+		int indexOfNewLine = text.indexOf("\n\r") - 2; //$NON-NLS-1$
+		if (indexOfNewLine < 0) {
+			indexOfNewLine = text.indexOf("\n") - 1; //$NON-NLS-1$
 		}
-		if (indexOfNewLine == -1) {
-			indexOfNewLine = text.indexOf("\r"); //$NON-NLS-1$
+		if (indexOfNewLine < 0) {
+			indexOfNewLine = text.indexOf("\r") - 1; //$NON-NLS-1$
 		}
-		if (indexOfNewLine != -1) {
+		if (indexOfNewLine >= 0) {
 			cell.setText(text.substring(0, indexOfNewLine) + "  (...)"); //$NON-NLS-1$
 		} else {
 			cell.setText(text);
