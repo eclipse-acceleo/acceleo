@@ -99,6 +99,8 @@ public class NewVariableWizard extends Wizard {
 	 */
 	@Override
 	public boolean performFinish() {
+		page.setVariableName();
+		page.setVariableValue();
 		return true;
 	}
 }

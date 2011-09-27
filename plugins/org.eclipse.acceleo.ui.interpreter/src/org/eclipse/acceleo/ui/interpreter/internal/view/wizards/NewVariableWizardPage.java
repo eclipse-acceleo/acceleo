@@ -144,13 +144,6 @@ public class NewVariableWizardPage extends WizardPage {
 		setControl(composite);
 	}
 
-	@Override
-	public void dispose() {
-		setVariableName();
-		setVariableValue();
-		super.dispose();
-	}
-
 	/**
 	 * Returns the variable name, as entered in {@link #variableText}.
 	 * 
@@ -448,14 +441,14 @@ public class NewVariableWizardPage extends WizardPage {
 	/**
 	 * Sets the variable name to the currently selected text.
 	 */
-	private void setVariableName() {
+	public void setVariableName() {
 		this.variableName = variableText.getText();
 	}
 
 	/**
 	 * Sets the variable value to the currently selected value.
 	 */
-	private void setVariableValue() {
+	public void setVariableValue() {
 		if (currentType == Type.STRING) {
 			variableValue = ((Text)valueControl).getText();
 		} else if (currentType == Type.INTEGER) {
