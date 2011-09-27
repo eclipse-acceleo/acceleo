@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
+import org.eclipse.acceleo.ui.interpreter.internal.SWTUtil;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -241,7 +242,8 @@ public class NewVariableWizardPage extends WizardPage {
 		if (valueControl != null) {
 			valueControl.dispose();
 		}
-		valueControl = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		valueControl = SWTUtil.createScrollableText(parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL
+				| SWT.V_SCROLL);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
