@@ -17,9 +17,9 @@ import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.internal.view.VariableLabelProvider;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
@@ -28,6 +28,9 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -108,9 +111,13 @@ public class NewVariableWizardPage extends WizardPage {
 	 * @return the width hint
 	 */
 	public static int getButtonWidthHint(Button button) {
-		button.setFont(JFaceResources.getDialogFont());
-		PixelConverter converter = new PixelConverter(button);
-		int widthHint = converter.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
+		Font font = JFaceResources.getDialogFont();
+		button.setFont(font);
+		GC gc = new GC(font.getDevice());
+		gc.setFont(font);
+		FontMetrics fontMetrics = gc.getFontMetrics();
+		gc.dispose();
+		int widthHint = Dialog.convertHorizontalDLUsToPixels(fontMetrics, IDialogConstants.BUTTON_WIDTH);
 		return Math.max(widthHint, button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 	}
 
