@@ -732,48 +732,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 
 		ResourceSet resourceSet = null;
 
-		// shortcut for the old extension point mechanism
-		if (dynamicModuleFiles.size() > 0) {
-			for (Module module : currentModules) {
-				if (module.eResource() != null && module.eResource().getResourceSet() != null) {
-					resourceSet = module.eResource().getResourceSet();
-					break;
-				}
-			}
-			// If we couldn't find a resourceSet, break the loading loop and log an exception
-			if (resourceSet == null) {
-				// set as a blocker so that it is logged as an error
-				AcceleoEnginePlugin.log(AcceleoEngineMessages
-						.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
-				return dynamicModules;
-			}
-			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
-				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
-						this));
-			}
-			for (File moduleFile : dynamicModuleFiles) {
-				if (moduleFile.exists() && moduleFile.canRead()) {
-					try {
-						Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
-						for (EObject root : res.getContents()) {
-							if (root instanceof Module) {
-								dynamicModules.add((Module)root);
-							}
-						}
-					} catch (IOException e) {
-						AcceleoEnginePlugin.log(e, false);
-					}
-				}
-			}
-		}
-
 		// Let's look for dynamic modules with the new extension point.
-		if (resourceSet == null) {
-			for (Module module : currentModules) {
-				if (module.eResource() != null && module.eResource().getResourceSet() != null) {
-					resourceSet = module.eResource().getResourceSet();
-					break;
-				}
+		for (Module module : currentModules) {
+			if (module.eResource() != null && module.eResource().getResourceSet() != null) {
+				resourceSet = module.eResource().getResourceSet();
+				break;
 			}
 		}
 
@@ -815,6 +778,41 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
 			}
 
+			for (File moduleFile : dynamicModuleFiles) {
+				if (moduleFile.exists() && moduleFile.canRead()) {
+					try {
+						Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
+						for (EObject root : res.getContents()) {
+							if (root instanceof Module) {
+								dynamicModules.add((Module)root);
+							}
+						}
+					} catch (IOException e) {
+						AcceleoEnginePlugin.log(e, false);
+					}
+				}
+			}
+		}
+
+		// shortcut for the old extension point mechanism
+		if (dynamicModuleFiles.size() > 0) {
+			for (Module module : currentModules) {
+				if (module.eResource() != null && module.eResource().getResourceSet() != null) {
+					resourceSet = module.eResource().getResourceSet();
+					break;
+				}
+			}
+			// If we couldn't find a resourceSet, break the loading loop and log an exception
+			if (resourceSet == null) {
+				// set as a blocker so that it is logged as an error
+				AcceleoEnginePlugin.log(AcceleoEngineMessages
+						.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
+				return dynamicModules;
+			}
+			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
+				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
+						this));
+			}
 			for (File moduleFile : dynamicModuleFiles) {
 				if (moduleFile.exists() && moduleFile.canRead()) {
 					try {
