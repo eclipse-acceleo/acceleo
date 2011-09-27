@@ -12,7 +12,6 @@ package org.eclipse.acceleo.internal.ide.ui.interpreter;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,7 +24,6 @@ import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -51,37 +49,25 @@ import org.eclipse.swt.widgets.Composite;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSourceViewer {
+	/**
+	 * This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...).
+	 */
+	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
+
+	/** The module prefix. */
+	protected static final String MODULE = "[module"; //$NON-NLS-1$
+
 	/** The query prefix. */
 	protected static final String QUERY = "[query"; //$NON-NLS-1$
 
 	/** The template prefix. */
 	protected static final String TEMPLATE = "[template"; //$NON-NLS-1$
 
-	/** The module prefix. */
-	protected static final String MODULE = "[module"; //$NON-NLS-1$
-
-	/**
-	 * This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...).
-	 */
-	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
-
-	/** If the text doesn't start with "[module", we'll use this as the module's signature. */
-	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule({0})]" + LINE_SEPARATOR; //$NON-NLS-1$
-
 	/** If we have an import, this will be added to the expression. */
 	private static final String DUMMY_IMPORT = "[import {0}]" + LINE_SEPARATOR; //$NON-NLS-1$
 
-	/**
-	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
-	 * the user specified both module and query/template in his expression.
-	 */
-	private static final String DUMMY_TEMPLATE_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
-
-	/**
-	 * If the text doesn't start with "[module", we'll use this as the template's signature. Otherwise, we'll
-	 * assume the user specified both module and query/template in his expression.
-	 */
-	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$
+	/** If the text doesn't start with "[module", we'll use this as the module's signature. */
+	private static final String DUMMY_MODULE = "[module temporaryInterpreterModule({0})]" + LINE_SEPARATOR; //$NON-NLS-1$
 
 	/**
 	 * If the text doesn't start with "[module", we'll use this as a query signature.
@@ -92,6 +78,24 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * The default query end.
 	 */
 	private static final String DUMMY_QUERY_TAIL = LINE_SEPARATOR + "/]"; //$NON-NLS-1$
+
+	/**
+	 * If the text doesn't start with "[module", we'll use this as the template's signature. Otherwise, we'll
+	 * assume the user specified both module and query/template in his expression.
+	 */
+	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate({0})]"; //$NON-NLS-1$
+
+	/** The "model" dummy template parameter. Will be set to the root of the selected target EObject. */
+	private static final String DUMMY_TEMPLATE_MODEL_PARAM = "model : {0}"; //$NON-NLS-1$
+
+	/**
+	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
+	 * the user specified both module and query/template in his expression.
+	 */
+	private static final String DUMMY_TEMPLATE_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
+
+	/** The "target" dummy template parameter. Will be set to the selected target EObject. */
+	private static final String DUMMY_TEMPLATE_TARGET_PARAM = "target : {0}"; //$NON-NLS-1$
 
 	/**
 	 * This will be updated with the exact text as entered by the user and displayed on the viewer. However,
@@ -132,6 +136,21 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 */
 	public AcceleoSourceViewer(Composite parent, IVerticalRuler ruler, int style) {
 		super(parent, ruler, style);
+	}
+
+	/**
+	 * Returns the qualified name of the given module file.
+	 * 
+	 * @param moduleFile
+	 *            The file of which we need the qualified name.
+	 * @return The qualified name of the given module file.
+	 */
+	private static String getQualifiedName(IPath moduleFile) {
+		String path = moduleFile.removeFileExtension().toString();
+		if (path.contains("src/")) { //$NON-NLS-1$
+			path = path.substring(path.indexOf("src/") + 4); //$NON-NLS-1$
+		}
+		return path.replaceAll("/", "::"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -237,243 +256,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		if (getContent() instanceof AcceleoInterpreterSourceContent) {
 			((AcceleoInterpreterSourceContent)getContent()).setGap(gap);
 		}
-	}
-
-	/**
-	 * Returns the full expression as it was last rebuilt.
-	 * 
-	 * @return The full expression as it was last rebuilt.
-	 */
-	protected String getFullExpression() {
-		return fullExpression;
-	}
-
-	/**
-	 * This will be used before any update of the CST in order to rebuild the expression that is to be parsed.
-	 * This expression should contain a module signature, a template signature, and the expression as
-	 * contained in {@link #buffer} nested within this template.
-	 * <p>
-	 * However, if the expression entered in {@link #buffer} starts with a module signature, we'll return it
-	 * unaltered.
-	 * </p>
-	 * 
-	 * @param context
-	 *            The current interpreter context.
-	 * @return The full expression that is to be parsed in order to get its CST.
-	 */
-	protected String rebuildFullExpression(InterpreterContext context) {
-		gap = 0;
-		String expression = buffer.get(0, buffer.getLength());
-		if (hasExplicitModule) {
-			return expression;
-		}
-
-		StringBuilder expressionBuffer = new StringBuilder();
-
-		EObject root = null;
-		if (!context.getTargetEObjects().isEmpty()) {
-			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
-		}
-
-		String moduleSignature = DUMMY_MODULE;
-		final Set<String> metamodelURIs = getMetamodelURIs(context);
-		if (metamodelURIs.size() == 0) {
-			// Use ecore as the default metamodel
-			metamodelURIs.add(EcorePackage.eNS_URI);
-		}
-
-		StringBuilder nsURIs = new StringBuilder();
-		Iterator<String> uriIterator = metamodelURIs.iterator();
-		while (uriIterator.hasNext()) {
-			nsURIs.append('\'' + uriIterator.next() + '\'');
-			if (uriIterator.hasNext()) {
-				nsURIs.append(',');
-			}
-		}
-
-		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
-		expressionBuffer.append(moduleSignature);
-		gap += moduleSignature.length();
-
-		if (moduleImport != null) {
-			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
-					.getFullPath()));
-			expressionBuffer.append(modulePath);
-			gap += modulePath.length();
-		}
-
-		/*
-		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
-		 * offset. For now we'll assume the expression past the import section is well formed with a query.
-		 */
-		boolean appendTail = false;
-		if (!expression.contains(TEMPLATE) && !expression.contains(QUERY)) {
-			appendTail = true;
-			String templateSignature = DUMMY_TEMPLATE;
-			List<EObject> target = context.getTargetEObjects();
-
-			String argumentType = null;
-			if (target != null && !target.isEmpty()) {
-				argumentType = inferArgumentType(target);
-			}
-			if (argumentType == null) {
-				// We use ecore as the default metamodel, we'll use EObject as the default argument type
-				argumentType = EcorePackage.eINSTANCE.getEObject().getName();
-			}
-
-			String modelType;
-			if (root == null) {
-				modelType = EcorePackage.eINSTANCE.getEPackage().getName();
-			} else {
-				modelType = root.eClass().getName();
-			}
-
-			StringBuilder additionalVariables = computeVariables(context);
-
-			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType,
-					additionalVariables);
-			expressionBuffer.append(templateSignature);
-			gap += templateSignature.length();
-		}
-
-		expressionBuffer.append(expression);
-
-		if (appendTail) {
-			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
-		}
-
-		return expressionBuffer.toString();
-	}
-
-	/**
-	 * Computes the signature of the variables.
-	 * 
-	 * @param context
-	 *            The interpreter context
-	 * @return The signature of the variables to be used for a template or a query declaration.
-	 */
-	private StringBuilder computeVariables(InterpreterContext context) {
-		StringBuilder additionalVariables = new StringBuilder();
-		Iterator<Variable> variables = context.getVariables().iterator();
-		while (variables.hasNext()) {
-			Variable variable = variables.next();
-			final String varName = variable.getName();
-			final String varType = inferOCLType(variable.getValue());
-
-			if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
-				additionalVariables.append(", "); //$NON-NLS-1$
-				additionalVariables.append(varName);
-				additionalVariables.append(" : "); //$NON-NLS-1$
-				additionalVariables.append(varType);
-			}
-		}
-		return additionalVariables;
-	}
-
-	/**
-	 * Creates a module with the selected content of the source viewer in a template.
-	 * 
-	 * @param context
-	 *            The current interpreter context.
-	 * @param templateName
-	 *            The name of the template to be used or <code>null</code> if the dummy name should be used
-	 * @return The module content.
-	 */
-	protected String computeTemplateFromContext(InterpreterContext context, String templateName) {
-		StringBuilder expressionBuffer = new StringBuilder();
-
-		String text = this.getTextWidget().getText();
-		ISelection selection = this.getSelection();
-		if (selection != null && selection instanceof TextSelection
-				&& ((TextSelection)selection).getLength() == 0) {
-			// No selection, let's build a whole module
-		} else if (selection != null && selection instanceof TextSelection) {
-			// Only the selection will be used
-			text = ((TextSelection)selection).getText();
-		}
-
-		// Does the text contains a whole module? If yes, do not touch it
-		if (text.contains(MODULE)) {
-			return text;
-		}
-
-		// Otherwise, let's build new module with a template inside
-
-		EObject root = null;
-		if (!context.getTargetEObjects().isEmpty()) {
-			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
-		}
-
-		String moduleSignature = DUMMY_MODULE;
-		final Set<String> metamodelURIs = getMetamodelURIs(context);
-		if (metamodelURIs.size() == 0) {
-			// Use ecore as the default metamodel
-			metamodelURIs.add(EcorePackage.eNS_URI);
-		}
-
-		StringBuilder nsURIs = new StringBuilder();
-		Iterator<String> uriIterator = metamodelURIs.iterator();
-		while (uriIterator.hasNext()) {
-			nsURIs.append('\'' + uriIterator.next() + '\'');
-			if (uriIterator.hasNext()) {
-				nsURIs.append(',');
-			}
-		}
-
-		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
-		expressionBuffer.append(moduleSignature);
-
-		if (moduleImport != null) {
-			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
-					.getFullPath()));
-			expressionBuffer.append(modulePath);
-		}
-
-		/*
-		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
-		 * offset. For now we'll assume the expression past the import section is well formed with a query.
-		 */
-		boolean appendTail = false;
-		if (!text.contains(TEMPLATE) && !text.contains(QUERY)) {
-			appendTail = true;
-			String templateSignature = ""; //$NON-NLS-1$
-			if (templateName == null) {
-				templateSignature = DUMMY_TEMPLATE;
-			} else {
-				templateSignature = "[template public " + templateName + "(target : {0}, model : {1}{2})]" + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			List<EObject> target = context.getTargetEObjects();
-
-			String argumentType = null;
-			if (target != null && !target.isEmpty()) {
-				argumentType = inferArgumentType(target);
-			}
-			if (argumentType == null) {
-				// We use ecore as the default metamodel, we'll use EObject as the default argument type
-				argumentType = EcorePackage.eINSTANCE.getEObject().getName();
-			}
-
-			String modelType;
-			if (root == null) {
-				modelType = EcorePackage.eINSTANCE.getEPackage().getName();
-			} else {
-				modelType = root.eClass().getName();
-			}
-
-			StringBuilder additionalVariables = computeVariables(context);
-
-			templateSignature = MessageFormat.format(templateSignature, argumentType, modelType,
-					additionalVariables);
-			expressionBuffer.append(templateSignature);
-		}
-
-		expressionBuffer.append(text);
-
-		if (appendTail) {
-			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
-		}
-
-		return expressionBuffer.toString();
 	}
 
 	/**
@@ -583,6 +365,273 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	}
 
 	/**
+	 * Creates a module with the selected content of the source viewer in a template.
+	 * 
+	 * @param context
+	 *            The current interpreter context.
+	 * @param templateName
+	 *            The name of the template to be used or <code>null</code> if the dummy name should be used
+	 * @return The module content.
+	 */
+	protected String computeTemplateFromContext(InterpreterContext context, String templateName) {
+		StringBuilder expressionBuffer = new StringBuilder();
+
+		String text = this.getTextWidget().getText();
+		ISelection selection = this.getSelection();
+		if (selection != null && selection instanceof TextSelection
+				&& ((TextSelection)selection).getLength() == 0) {
+			// No selection, let's build a whole module
+		} else if (selection != null && selection instanceof TextSelection) {
+			// Only the selection will be used
+			text = ((TextSelection)selection).getText();
+		}
+
+		// Does the text contains a whole module? If yes, do not touch it
+		if (text.contains(MODULE)) {
+			return text;
+		}
+
+		// Otherwise, let's build new module with a template inside
+
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+		}
+
+		String moduleSignature = DUMMY_MODULE;
+		final Set<String> metamodelURIs = getMetamodelURIs(context);
+		if (metamodelURIs.size() == 0) {
+			// Use ecore as the default metamodel
+			metamodelURIs.add(EcorePackage.eNS_URI);
+		}
+
+		StringBuilder nsURIs = new StringBuilder();
+		Iterator<String> uriIterator = metamodelURIs.iterator();
+		while (uriIterator.hasNext()) {
+			nsURIs.append('\'' + uriIterator.next() + '\'');
+			if (uriIterator.hasNext()) {
+				nsURIs.append(',');
+			}
+		}
+
+		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
+		expressionBuffer.append(moduleSignature);
+
+		if (moduleImport != null) {
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
+					.getFullPath()));
+			expressionBuffer.append(modulePath);
+		}
+
+		/*
+		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
+		 * offset. For now we'll assume the expression past the import section is well formed with a query.
+		 */
+		boolean appendTail = false;
+		if (!text.contains(TEMPLATE) && !text.contains(QUERY)) {
+			appendTail = true;
+			String templateSignature = ""; //$NON-NLS-1$
+			if (templateName == null) {
+				templateSignature = DUMMY_TEMPLATE;
+			} else {
+				templateSignature = "[template public " + templateName + "({0})]" + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			List<EObject> target = context.getTargetEObjects();
+
+			String targetType = null;
+			if (target != null && !target.isEmpty()) {
+				targetType = inferArgumentType(target);
+			}
+
+			String modelType = null;
+			if (root != null) {
+				modelType = root.eClass().getName();
+			}
+
+			StringBuilder templateParameters = new StringBuilder();
+			if (targetType != null) {
+				templateParameters.append(MessageFormat.format(DUMMY_TEMPLATE_TARGET_PARAM, targetType));
+			}
+			if (modelType != null) {
+				if (templateParameters.length() != 0) {
+					templateParameters.append(',').append(' ');
+				}
+				templateParameters.append(MessageFormat.format(DUMMY_TEMPLATE_MODEL_PARAM, modelType));
+			}
+
+			StringBuilder additionalVariables = computeVariables(context);
+			if (templateParameters.length() > 0 && additionalVariables.length() > 0) {
+				templateParameters.append(',').append(' ');
+			}
+			templateParameters.append(additionalVariables);
+
+			templateSignature = MessageFormat.format(templateSignature, templateParameters);
+			expressionBuffer.append(templateSignature);
+		}
+
+		expressionBuffer.append(text);
+
+		if (appendTail) {
+			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
+		}
+
+		return expressionBuffer.toString();
+	}
+
+	/**
+	 * Returns the full expression as it was last rebuilt.
+	 * 
+	 * @return The full expression as it was last rebuilt.
+	 */
+	protected String getFullExpression() {
+		return fullExpression;
+	}
+
+	/**
+	 * This will be used before any update of the CST in order to rebuild the expression that is to be parsed.
+	 * This expression should contain a module signature, a template signature, and the expression as
+	 * contained in {@link #buffer} nested within this template.
+	 * <p>
+	 * However, if the expression entered in {@link #buffer} starts with a module signature, we'll return it
+	 * unaltered.
+	 * </p>
+	 * 
+	 * @param context
+	 *            The current interpreter context.
+	 * @return The full expression that is to be parsed in order to get its CST.
+	 */
+	protected String rebuildFullExpression(InterpreterContext context) {
+		gap = 0;
+		String expression = buffer.get(0, buffer.getLength());
+		if (hasExplicitModule) {
+			return expression;
+		}
+
+		StringBuilder expressionBuffer = new StringBuilder();
+
+		EObject root = null;
+		if (!context.getTargetEObjects().isEmpty()) {
+			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+		}
+
+		String moduleSignature = DUMMY_MODULE;
+		final Set<String> metamodelURIs = getMetamodelURIs(context);
+		if (metamodelURIs.size() == 0) {
+			// Use ecore as the default metamodel
+			metamodelURIs.add(EcorePackage.eNS_URI);
+		}
+
+		StringBuilder nsURIs = new StringBuilder();
+		Iterator<String> uriIterator = metamodelURIs.iterator();
+		while (uriIterator.hasNext()) {
+			nsURIs.append('\'' + uriIterator.next() + '\'');
+			if (uriIterator.hasNext()) {
+				nsURIs.append(',');
+			}
+		}
+
+		moduleSignature = MessageFormat.format(moduleSignature, nsURIs.toString());
+		expressionBuffer.append(moduleSignature);
+		gap += moduleSignature.length();
+
+		if (moduleImport != null) {
+			final String modulePath = MessageFormat.format(DUMMY_IMPORT, getQualifiedName(moduleImport
+					.getFullPath()));
+			expressionBuffer.append(modulePath);
+			gap += modulePath.length();
+		}
+
+		/*
+		 * FIXME We should strip all the "import" section off the expression and continue treatment past that
+		 * offset. For now we'll assume the expression past the import section is well formed with a query.
+		 */
+		boolean appendTail = false;
+		if (!expression.contains(TEMPLATE) && !expression.contains(QUERY)) {
+			appendTail = true;
+			String templateSignature = DUMMY_TEMPLATE;
+			List<EObject> target = context.getTargetEObjects();
+
+			String targetType = null;
+			if (target != null && !target.isEmpty()) {
+				targetType = inferArgumentType(target);
+			}
+
+			String modelType = null;
+			if (root != null) {
+				modelType = root.eClass().getName();
+			}
+
+			StringBuilder templateParameters = new StringBuilder();
+			if (targetType != null) {
+				templateParameters.append(MessageFormat.format(DUMMY_TEMPLATE_TARGET_PARAM, targetType));
+			}
+			if (modelType != null) {
+				if (templateParameters.length() != 0) {
+					templateParameters.append(',').append(' ');
+				}
+				templateParameters.append(MessageFormat.format(DUMMY_TEMPLATE_MODEL_PARAM, modelType));
+			}
+
+			templateParameters.append(computeVariables(context));
+
+			templateSignature = MessageFormat.format(templateSignature, templateParameters);
+			expressionBuffer.append(templateSignature);
+			gap += templateSignature.length();
+		}
+
+		expressionBuffer.append(expression);
+
+		if (appendTail) {
+			expressionBuffer.append(DUMMY_TEMPLATE_TAIL);
+		}
+
+		return expressionBuffer.toString();
+	}
+
+	/**
+	 * Computes the signature of the variables.
+	 * 
+	 * @param context
+	 *            The interpreter context.
+	 * @return The signature of the variables to be used for a template or a query declaration.
+	 */
+	private StringBuilder computeVariables(InterpreterContext context) {
+		StringBuilder additionalVariables = new StringBuilder();
+		Iterator<Variable> variables = context.getVariables().iterator();
+		while (variables.hasNext()) {
+			Variable variable = variables.next();
+			final String varName = variable.getName();
+			final String varType = inferOCLType(variable.getValue());
+
+			if (varName != null && varName.length() > 0 && varType != null && varType.length() > 0) {
+				additionalVariables.append(',').append(' ');
+				additionalVariables.append(varName);
+				additionalVariables.append(" : "); //$NON-NLS-1$
+				additionalVariables.append(varType);
+			}
+		}
+		return additionalVariables;
+	}
+
+	/**
+	 * Extracts the NsURI of the given EObject's metamodel.
+	 * 
+	 * @param object
+	 *            The EObject for which we need the metamodel URI.
+	 * @return The NsURI of the given EObject's metamodel, <code>null</code> if we could not retrieve it.
+	 */
+	private String extractNsURI(EObject object) {
+		final EPackage pack = object.eClass().getEPackage();
+		if (pack != null) {
+			final String uri = pack.getNsURI();
+			if (uri != null && uri.length() > 0) {
+				return uri;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Tries and extract the NsURIs of the given object if it is an EObject, or of its children if it is a
 	 * Collection.
 	 * 
@@ -606,67 +655,6 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			}
 		}
 		return uris;
-	}
-
-	/**
-	 * Extracts the NsURI of the given EObject's metamodel.
-	 * 
-	 * @param object
-	 *            The EObject for which we need the metamodel URI.
-	 * @return The NsURI of the given EObject's metamodel, <code>null</code> if we could not retrieve it.
-	 */
-	private String extractNsURI(EObject object) {
-		final EPackage pack = object.eClass().getEPackage();
-		if (pack != null) {
-			final String uri = pack.getNsURI();
-			if (uri != null && uri.length() > 0) {
-				return uri;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * This will return the lowest (in the type hierarchy) common super type of the two given EClasses. If no
-	 * common super type is found, we'll return EObject.
-	 * 
-	 * @param eClass1
-	 *            The first of the two EClasses for which we need a super type.
-	 * @param eClass2
-	 *            The second of the two EClasses for which we need a super type.
-	 * @return The lowest common super type found in the hierarchy of the two given EClasses.
-	 */
-	private EClass getCommonSuperType(EClass eClass1, EClass eClass2) {
-		EClass commonSuperType = EcorePackage.eINSTANCE.getEObject();
-
-		if (eClass1.equals(eClass2) || eClass1.isSuperTypeOf(eClass2)) {
-			commonSuperType = eClass1;
-		} else if (eClass2.isSuperTypeOf(eClass1)) {
-			commonSuperType = eClass2;
-		} else {
-			List<EClass> allSuperTypes1 = new ArrayList<EClass>(eClass1.getEAllSuperTypes());
-			allSuperTypes1.retainAll(eClass2.getEAllSuperTypes());
-
-			if (!allSuperTypes1.isEmpty()) {
-				commonSuperType = allSuperTypes1.get(0);
-			}
-		}
-		return commonSuperType;
-	}
-
-	/**
-	 * Returns the qualified name of the given module file.
-	 * 
-	 * @param moduleFile
-	 *            The file of which we need the qualified name.
-	 * @return The qualified name of the given module file.
-	 */
-	private static String getQualifiedName(IPath moduleFile) {
-		String path = moduleFile.removeFileExtension().toString();
-		if (path.contains("src/")) { //$NON-NLS-1$
-			path = path.substring(path.indexOf("src/") + 4); //$NON-NLS-1$
-		}
-		return path.replaceAll("/", "::"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
