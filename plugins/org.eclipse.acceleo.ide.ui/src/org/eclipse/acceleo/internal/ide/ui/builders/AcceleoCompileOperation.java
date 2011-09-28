@@ -119,6 +119,17 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		}
 		if (!isClean) {
 			doCompileResources(monitor);
+		} else {
+			for (IFile file : this.files) {
+				AcceleoProject acceleoProject = new AcceleoProject(project);
+				IPath outputPath = acceleoProject.getOutputFilePath(file);
+				URI platformURI = URI.createPlatformResourceURI(outputPath.toString(), false);
+				try {
+					AcceleoUIResourceSet.removeResource(platformURI);
+				} catch (IOException e) {
+					AcceleoUIActivator.log(e, true);
+				}
+			}
 		}
 		monitor.done();
 	}
