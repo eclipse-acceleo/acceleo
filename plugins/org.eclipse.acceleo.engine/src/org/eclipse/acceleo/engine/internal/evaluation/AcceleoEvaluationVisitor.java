@@ -1227,9 +1227,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		} else {
 			// If inside a file block -> ok (not after a template/query call).
 			EObject parent = sourceBlock.eContainer();
-			while (parent != null
-					&& !(parent instanceof FileBlock && sourceBlock.eContainingFeature() == MtlPackage.eINSTANCE
-							.getBlock_Body())) {
+			while (parent != null && !(parent instanceof FileBlock)) {
 				parent = parent.eContainer();
 			}
 			if (parent instanceof FileBlock) {

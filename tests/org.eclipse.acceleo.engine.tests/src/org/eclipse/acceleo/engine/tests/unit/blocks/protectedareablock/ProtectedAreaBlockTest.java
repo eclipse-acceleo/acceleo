@@ -517,4 +517,28 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 	public void testProtectedAreaTemplateFileTemplateLetIfBlockMerge() throws IOException {
 		generate("test_protected_area_template_file_template_let_if_block_merge"); //$NON-NLS-1$
 	}
+
+	public void testProtectedAreaTemplateIfFileForIfElseTemplateBlock() throws IOException {
+		generate("test_protected_area_template_if_file_for_if_else_template_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateIfFileForIfElseTemplateBlockMerge() throws IOException {
+		generate("test_protected_area_template_if_file_for_if_else_template_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateIfFileForLetElseTemplateBlock() throws IOException {
+		generate("test_protected_area_template_if_file_for_let_else_template_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateIfFileForLetElseTemplateBlockMerge() throws IOException {
+		generate("test_protected_area_template_if_file_for_let_else_template_block_merge"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateIfFileForLetElseLetTemplateBlock() throws IOException {
+		generate("test_protected_area_template_if_file_for_let_elselet_template_block"); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaTemplateIfFileForLetElseLetTemplateBlockMerge() throws IOException {
+		generate("test_protected_area_template_if_file_for_let_elselet_template_block_merge"); //$NON-NLS-1$
+	}
 }
