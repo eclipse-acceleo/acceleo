@@ -275,7 +275,7 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 *      java.lang.Object, java.lang.Object)
 	 */
 	public void stepDebugOutput(ASTFragment astFragment, Object input, Object output) {
-		if (isBreakpoint(astFragment, true)) {
+		if (astFragment != null && isBreakpoint(astFragment, true)) {
 			final Map<String, Object> map = new HashMap<String, Object>();
 			map.put("output", output); // $N//waitForEvent(map);
 		}
@@ -634,7 +634,6 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 			stackInfo.setCharEnd(fileRegion.end);
 			stackDebugger.push(stackInfo);
 		}
-
 	}
 
 	/**
