@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.debug.model;
 
+import org.eclipse.acceleo.ui.interpreter.view.Variable;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IValue;
@@ -213,8 +214,14 @@ public class AcceleoVariable extends AbstractDebugElement implements IVariable, 
 	 */
 	@Override
 	public Object getAdapter(Class adapter) {
+		Object adapted = null;
 		if (adapter == EObject.class && this.value instanceof EObject) {
-			return this.value;
+			adapted = this.value;
+		} else if (adapter == Variable.class) {
+			adapted = new Variable(name, value);
+		}
+		if (adapted != null) {
+			return adapted;
 		}
 		return super.getAdapter(adapter);
 	}

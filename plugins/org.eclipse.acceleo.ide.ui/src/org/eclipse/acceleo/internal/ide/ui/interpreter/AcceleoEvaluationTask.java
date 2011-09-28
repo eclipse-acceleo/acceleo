@@ -27,6 +27,8 @@ import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
+import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -349,11 +351,14 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		Object result = null;
 		IAcceleoEngine2 engine = new AcceleoEngine();
 		IAcceleoGenerationStrategy strategy = new AcceleoInterpreterStrategy();
+		final IDebugAST debugger = AcceleoEvaluationVisitor.getDebug();
+		AcceleoEvaluationVisitor.setDebug(null);
 		if (moduleElement instanceof Template) {
 			result = engine.evaluate((Template)moduleElement, arguments, strategy, new BasicMonitor());
 		} else if (moduleElement instanceof Query) {
 			result = engine.evaluate((Query)moduleElement, arguments, strategy, new BasicMonitor());
 		}
+		AcceleoEvaluationVisitor.setDebug(debugger);
 
 		Map<String, String> preview = strategy.preparePreview(null);
 		Set<InterpreterFile> generatedFiles = null;
@@ -426,7 +431,10 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			ocl.getEvaluationEnvironment().add(variable.getName(), value);
 		}
 
+		final IDebugAST debugger = AcceleoEvaluationVisitor.getDebug();
+		AcceleoEvaluationVisitor.setDebug(null);
 		Object result = evaluationVisitor.visitExpression(oclExpression);
+		AcceleoEvaluationVisitor.setDebug(debugger);
 
 		Map<String, String> preview = factory.getEvaluationPreview();
 		Set<InterpreterFile> generatedFiles = null;

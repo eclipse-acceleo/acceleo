@@ -197,6 +197,15 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Returns the current debugger.
+	 * 
+	 * @return The current debugger.
+	 */
+	public static IDebugAST getDebug() {
+		return debug;
+	}
+
+	/**
 	 * To profile an AST evaluation.
 	 * 
 	 * @param acceleoProfile

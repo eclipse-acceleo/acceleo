@@ -31,6 +31,8 @@ import org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessa
 import org.eclipse.acceleo.ui.interpreter.internal.language.DefaultLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterDescriptor;
 import org.eclipse.acceleo.ui.interpreter.internal.language.LanguageInterpreterRegistry;
+import org.eclipse.acceleo.ui.interpreter.internal.optional.InterpreterDependencyChecks;
+import org.eclipse.acceleo.ui.interpreter.internal.optional.debug.DebugViewHelper;
 import org.eclipse.acceleo.ui.interpreter.internal.view.GeneratedTextDialog;
 import org.eclipse.acceleo.ui.interpreter.internal.view.InterpreterFileStorage;
 import org.eclipse.acceleo.ui.interpreter.internal.view.ResultDragListener;
@@ -520,7 +522,7 @@ public class InterpreterView extends ViewPart {
 		final List<Variable> variables;
 		Object variableViewerInput = variableViewer.getInput();
 		if (variableViewerInput instanceof List<?>) {
-			variables = (List<Variable>)variableViewerInput;
+			variables = new ArrayList<Variable>((List<Variable>)variableViewerInput);
 		} else {
 			variables = Collections.emptyList();
 		}
@@ -529,6 +531,20 @@ public class InterpreterView extends ViewPart {
 		if (selection == null
 				|| (selection instanceof ITextSelection && ((ITextSelection)selection).getLength() == 0)) {
 			selection = new TextSelection(expressionViewer.getDocument(), 0, fullExpression.length());
+		}
+
+		// Is the "debug" view currently active and showing an Acceleo thread?
+		if (InterpreterDependencyChecks.isDebugAccessible()) {
+			List<Variable> debugVariables = DebugViewHelper.getCurrentDebugThreadVariables();
+			for (Variable var : debugVariables) {
+				boolean duplicate = false;
+				for (int i = 0; i < variables.size() && !duplicate; i++) {
+					duplicate = variables.get(i).getName().equals(var.getName());
+				}
+				if (!duplicate) {
+					variables.addAll(debugVariables);
+				}
+			}
 		}
 
 		return new InterpreterContext(fullExpression, selection, targetEObjects, variables);
