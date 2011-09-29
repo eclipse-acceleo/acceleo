@@ -88,6 +88,7 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 	 */
 	public void run(IAction action) {
 		if (this.currentVariablesValues.size() > 0) {
+			List<Object> variables = new ArrayList<Object>(currentVariablesValues);
 			IViewReference interpreterViewReference = null;
 			IViewReference[] viewReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().getViewReferences();
@@ -130,7 +131,7 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 				if (!interpreterView.isVariableVisible()) {
 					interpreterView.toggleVariableVisibility();
 				}
-				for (Object variableEObject : this.currentVariablesValues) {
+				for (Object variableEObject : variables) {
 					interpreterView.addVariables(variableEObject);
 				}
 			}
