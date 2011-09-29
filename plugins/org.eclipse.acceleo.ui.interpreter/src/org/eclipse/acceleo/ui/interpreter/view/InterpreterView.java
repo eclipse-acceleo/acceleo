@@ -355,7 +355,7 @@ public class InterpreterView extends ViewPart {
 	 * @param variableValue
 	 *            The variable value
 	 */
-	public void addVariables(EObject variableValue) {
+	public void addVariables(Object variableValue) {
 		NewVariableAction action = new NewVariableAction(variableViewer, variableValue);
 		action.run();
 	}
@@ -605,8 +605,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
-					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
+					.isVisible()));
 		}
 	}
 

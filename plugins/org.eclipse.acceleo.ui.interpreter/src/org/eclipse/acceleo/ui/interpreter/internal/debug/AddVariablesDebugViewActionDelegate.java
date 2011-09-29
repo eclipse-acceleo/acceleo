@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.ui.interpreter.InterpreterPlugin;
+import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
@@ -40,7 +41,7 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 	/**
 	 * The EObject selected in the variables view.
 	 */
-	private List<EObject> currentVariablesValues = new ArrayList<EObject>();
+	private List<Object> currentVariablesValues = new ArrayList<Object>();
 
 	public void init(IViewPart view) {
 		// do nothing
@@ -71,7 +72,11 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 							EObject.class);
 				}
 
-				currentVariablesValues.add(variableEObject);
+				if (variableEObject != null) {
+					currentVariablesValues.add(variableEObject);
+				} else {
+					currentVariablesValues.add(variable);
+				}
 			}
 		}
 	}
@@ -113,6 +118,10 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 
 			if (interpreterViewPart != null) {
 				interpreterViewPart.setFocus();
+			} else {
+				InterpreterPlugin.getDefault().getLog().log(
+						new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, InterpreterMessages
+								.getString("AddVariablesDebug.InterpreterViewNotFound"))); //$NON-NLS-1$
 			}
 
 			// Let's add the variables
@@ -121,7 +130,7 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 				if (!interpreterView.isVariableVisible()) {
 					interpreterView.toggleVariableVisibility();
 				}
-				for (EObject variableEObject : this.currentVariablesValues) {
+				for (Object variableEObject : this.currentVariablesValues) {
 					interpreterView.addVariables(variableEObject);
 				}
 			}
