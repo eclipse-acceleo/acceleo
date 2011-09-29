@@ -21,11 +21,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.acceleo.examples.internal.AcceleoExamplesMessages;
+import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -37,9 +40,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.actions.BuildAction;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
 /**
@@ -63,7 +68,7 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
  * This class originally came from plugin <code>org.eclipse.emf.ocl.examples</code>.
  * </p>
  */
-public abstract class AbstractExampleWizard extends Wizard implements INewWizard {
+public abstract class AbstractExampleWizard extends Wizard implements INewWizard, IShellProvider {
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -214,23 +219,45 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 			monitor.worked(1);
 
-			// Close and re-open the project to force eclipse to re-evaluate
-			// any natures that this project may have.
-			project.close(monitor);
-			project.open(monitor);
-			monitor.worked(1);
-
 			// Build the project
-			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
-
-			// Close and re-open the project to force eclipse to re-evaluate
-			// any natures that this project may have.
-			project.close(monitor);
-			project.open(monitor);
-			monitor.worked(1);
-
-			// Clean it
 			project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+			project.build(IncrementalProjectBuilder.CLEAN_BUILD, "org.eclipse.acceleo.ide.ui.acceleoBuilder",
+					null, monitor);
+
+			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+			project.build(IncrementalProjectBuilder.AUTO_BUILD, "org.eclipse.acceleo.ide.ui.acceleoBuilder",
+					null, monitor);
+
+			BuildAction buildAction = new BuildAction(this, IncrementalProjectBuilder.FULL_BUILD) {
+				// SBE no @Override for compatibility with 3.7+
+				List getProjectsToBuild() {
+					List<IProject> projects = new ArrayList<IProject>();
+					projects.add(project);
+					return projects;
+				}
+
+				// SBE No @Override for compatibility with 3.6-
+				protected List getBuildConfigurationsToBuild() {
+					List configurationsToBuild = super.getBuildConfigurationsToBuild();
+					configurationsToBuild.add(new IBuildConfiguration() {
+
+						public Object getAdapter(Class adapter) {
+							return null;
+						}
+
+						public IProject getProject() {
+							return project;
+						}
+
+						public String getName() {
+							return "Compiling " + project.getName();
+						}
+
+					});
+					return configurationsToBuild;
+				}
+			};
+			buildAction.runInBackground(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
 
 			monitor.worked(1);
 		} catch (final IOException e) {
