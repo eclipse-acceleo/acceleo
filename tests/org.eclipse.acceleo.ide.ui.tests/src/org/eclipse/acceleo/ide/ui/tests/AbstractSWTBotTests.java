@@ -160,7 +160,7 @@ public class AbstractSWTBotTests {
 
 	public static final String ACCELEO_PLUGINS = "Acceleo Plug-ins"; //$NON-NLS-1$
 
-	public static final String UML_TO_Java = "UML to Java"; //$NON-NLS-1$
+	public static final String UML_TO_Java = "UML to Java (requires the installation of the UML project)"; //$NON-NLS-1$
 
 	public static final String ECORE_TO_PYTHON = "Ecore to Python"; //$NON-NLS-1$
 

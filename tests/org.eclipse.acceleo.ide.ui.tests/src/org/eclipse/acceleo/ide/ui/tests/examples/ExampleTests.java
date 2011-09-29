@@ -56,14 +56,8 @@ public class ExampleTests extends AbstractSWTBotTests {
 				"/org.eclipse.acceleo.module.example.uml2java.helios/model/example.uml", //$NON-NLS-1$
 				"/org.eclipse.acceleo.module.example.uml2java.helios/src", false, null, false); //$NON-NLS-1$
 
-		// FIXME Launch the generation a second time
-		generate("org.eclipse.acceleo.module.example.uml2java.helios", //$NON-NLS-1$
-				"org.eclipse.acceleo.module.example.uml2java.helios.GenerateJava", //$NON-NLS-1$
-				"/org.eclipse.acceleo.module.example.uml2java.helios/model/example.uml", //$NON-NLS-1$
-				"/org.eclipse.acceleo.module.example.uml2java.helios/src", false, null, false); //$NON-NLS-1$
-
 		// Check the result
-		botWait(50000);
+		botWait(5000);
 		IFolder outputFolder = iProject
 				.getFolder("src").getFolder("org").getFolder("eclipse").getFolder("acceleo").getFolder("java"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 		assertTrue(outputFolder.isAccessible());
