@@ -21,14 +21,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.acceleo.examples.internal.AcceleoExamplesMessages;
-import org.eclipse.core.resources.IBuildConfiguration;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -44,7 +41,6 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.actions.BuildAction;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
 /**
@@ -224,36 +220,7 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			project.build(IncrementalProjectBuilder.CLEAN_BUILD, "org.eclipse.acceleo.ide.ui.acceleoBuilder",
 					null, monitor);
 
-			BuildAction buildAction = new BuildAction(this, IncrementalProjectBuilder.FULL_BUILD) {
-				// SBE no @Override for compatibility with 3.7+
-				List getProjectsToBuild() {
-					List<IProject> projects = new ArrayList<IProject>();
-					projects.add(project);
-					return projects;
-				}
-
-				// SBE No @Override for compatibility with 3.6-
-				protected List getBuildConfigurationsToBuild() {
-					List configurationsToBuild = super.getBuildConfigurationsToBuild();
-					configurationsToBuild.add(new IBuildConfiguration() {
-
-						public Object getAdapter(Class adapter) {
-							return null;
-						}
-
-						public IProject getProject() {
-							return project;
-						}
-
-						public String getName() {
-							return "Compiling " + project.getName();
-						}
-
-					});
-					return configurationsToBuild;
-				}
-			};
-			buildAction.run();
+			ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 
 			monitor.worked(1);
 		} catch (final IOException e) {
