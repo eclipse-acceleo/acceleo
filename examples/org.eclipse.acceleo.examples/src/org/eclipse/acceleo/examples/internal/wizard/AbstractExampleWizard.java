@@ -228,6 +228,9 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			project.build(IncrementalProjectBuilder.AUTO_BUILD, "org.eclipse.acceleo.ide.ui.acceleoBuilder",
 					null, monitor);
 
+			project.close(monitor);
+			project.open(monitor);
+
 			BuildAction buildAction = new BuildAction(this, IncrementalProjectBuilder.FULL_BUILD) {
 				// SBE no @Override for compatibility with 3.7+
 				List getProjectsToBuild() {
@@ -258,6 +261,11 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 				}
 			};
 			buildAction.runInBackground(ResourcesPlugin.getWorkspace().getRuleFactory().buildRule());
+
+			project.close(monitor);
+			project.open(monitor);
+
+			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 
 			monitor.worked(1);
 		} catch (final IOException e) {
