@@ -57,6 +57,28 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#addToolBarActions(org.eclipse.jface.action.IToolBarManager)
+	 */
+	@Override
+	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
+		super.addToolBarActions(interpreterView, toolBarManager);
+		this.saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
+		toolBarManager.add(saveExpressionAction);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#canLinkWithEditor(org.eclipse.ui.IEditorPart)
+	 */
+	@Override
+	public boolean canLinkWithEditor(IEditorPart editorPart) {
+		return editorPart instanceof AcceleoEditor;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#configureSourceViewer(org.eclipse.jface.text.source.SourceViewer)
 	 */
 	@Override
@@ -135,16 +157,6 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#acceptLinkWithEditorContext()
-	 */
-	@Override
-	public boolean acceptLinkWithEditorContext() {
-		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#linkWithEditor(org.eclipse.ui.IEditorPart)
 	 */
 	@Override
@@ -160,17 +172,5 @@ public class AcceleoInterpreter extends AbstractLanguageInterpreter {
 			this.saveExpressionAction.setCurrentEditor(null);
 			acceleoSource.setModuleImport(null);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#addToolBarActions(org.eclipse.jface.action.IToolBarManager)
-	 */
-	@Override
-	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
-		super.addToolBarActions(interpreterView, toolBarManager);
-		this.saveExpressionAction = new SaveExpressionAction(acceleoSource, interpreterView);
-		toolBarManager.add(saveExpressionAction);
 	}
 }

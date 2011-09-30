@@ -14,8 +14,12 @@ import org.eclipse.acceleo.ui.interpreter.internal.IInterpreterConstants;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterImages;
 import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 
 /**
  * This action will allow us to link the current language interpreter with the currently focused editor.
@@ -28,8 +32,8 @@ import org.eclipse.jface.action.IAction;
  */
 public class LinkWithEditorContextAction extends Action {
 	/** The tooltip we'll show for this action. */
-	private static final String TOOLTIP_TEXT = InterpreterMessages
-			.getString("intepreter.action.link.tooltip"); //$NON-NLS-1$
+	private static final String DEFAULT_TOOLTIP_TEXT = InterpreterMessages
+			.getString("intepreter.action.link.default.tooltip"); //$NON-NLS-1$
 
 	/** Keeps a reference to the interpreter view. */
 	private InterpreterView view;
@@ -41,13 +45,33 @@ public class LinkWithEditorContextAction extends Action {
 	 *            The interpreter view it should operate on.
 	 */
 	public LinkWithEditorContextAction(InterpreterView view) {
-		super(null, IAction.AS_PUSH_BUTTON);
-		setToolTipText(TOOLTIP_TEXT);
+		super(null, IAction.AS_CHECK_BOX);
+		setToolTipText(DEFAULT_TOOLTIP_TEXT);
 		setImageDescriptor(InterpreterImages
 				.getImageDescriptor(IInterpreterConstants.LINK_WITH_EDITOR_CONTEXT_ACTION_ICON));
 		setDisabledImageDescriptor(InterpreterImages
 				.getImageDescriptor(IInterpreterConstants.LINK_WITH_EDITOR_CONTEXT_ACTION_DISABLED_ICON));
 		this.view = view;
+	}
+
+	/**
+	 * Changes the tooltip of this action to reflect that it is now linked with the given editor (or that the
+	 * link has been disabled).
+	 * 
+	 * @param editorPart
+	 *            The editor we are currently linked with. May be <code>null</code>.
+	 */
+	public void changeTooltip(IEditorPart editorPart) {
+		if (editorPart != null) {
+			final IEditorInput input = editorPart.getEditorInput();
+			final IFile file = (IFile)Platform.getAdapterManager().getAdapter(input, IFile.class);
+			if (file != null) {
+				setToolTipText(InterpreterMessages.getString("intepreter.action.link.active.tooltip", //$NON-NLS-1$
+						file.getName()));
+			}
+		} else {
+			setToolTipText(DEFAULT_TOOLTIP_TEXT);
+		}
 	}
 
 	/**

@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -116,13 +117,16 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -204,6 +208,9 @@ public class InterpreterView extends ViewPart {
 	/** Thread which purpose is to compile the expression and update the context with the result. */
 	protected CompilationThread compilationThread;
 
+	/** Keeps a reference to the "link with editor" action. */
+	protected LinkWithEditorContextAction linkWithEditorContextAction;
+
 	/** This executor service will be used in order to launch the evaluation tasks of this interpreter. */
 	/* package */ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
 
@@ -231,6 +238,9 @@ public class InterpreterView extends ViewPart {
 	/** Currently selected language interpreter. */
 	private AbstractLanguageInterpreter currentLanguageInterpreter;
 
+	/** This will be used to listen to editor focus changes in the workbench. */
+	private IPartListener2 editorPartListener = new InterpreterEditorPartListener();
+
 	/** This will be used to listen to EObject selection within the workbench. */
 	private ISelectionListener eobjectSelectionListener;
 
@@ -257,9 +267,6 @@ public class InterpreterView extends ViewPart {
 
 	/** Form that will contain the interpreter itself (left part of the view). */
 	private Form interpreterForm;
-
-	/** Keeps a reference to the "link with editor" action. */
-	private IAction linkWithEditorContextAction;
 
 	/** Kept as an instance member, this will allow us to set unique identifiers to the status messages. */
 	private int messageCount;
@@ -372,30 +379,16 @@ public class InterpreterView extends ViewPart {
 		final Callable<CompilationResult> compilationTask = getCurrentLanguageInterpreter()
 				.getCompilationTask(context);
 
-		// Cancel running evaluation task
-		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
-			evaluationThread.interrupt();
-		}
 		// Cancel previous compilation task
 		if (compilationThread != null && !compilationThread.isInterrupted()) {
 			compilationThread.interrupt();
 		}
+		// Cancel running evaluation task
+		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
+			evaluationThread.interrupt();
+		}
 
-		// Clear previous compilation messages
-		/*
-		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
-		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
-		 * 357906 in FormHeading.MessageRegion#showMessage().
-		 */
-		final String dummyMessageKey = "none"; //$NON-NLS-1$
-		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
-		// Remove all actual messages
-		getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
-		getMessageManager().removeMessages(expressionSection);
-		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
-		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
-		// Finally, remove our dummy
-		getMessageManager().removeMessage(dummyMessageKey);
+		clearCompilationMessages();
 
 		if (compilationTask != null) {
 			Future<CompilationResult> compilationFuture = compilationPool.submit(compilationTask);
@@ -460,6 +453,11 @@ public class InterpreterView extends ViewPart {
 		}
 		clearSelection();
 
+		IWorkbenchPage currentPage = getSite().getPage();
+		if (currentPage != null) {
+			currentPage.removePartListener(editorPartListener);
+		}
+
 		super.dispose();
 	}
 
@@ -468,21 +466,7 @@ public class InterpreterView extends ViewPart {
 			evaluationThread.interrupt();
 		}
 
-		// Clear previous evaluation messages
-		/*
-		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
-		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
-		 * 357906 in FormHeading.MessageRegion#showMessage().
-		 */
-		final String dummyMessageKey = "none"; //$NON-NLS-1$
-		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
-		// Remove all actual messages
-		getMessageManager().removeMessages(resultSection);
-		getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
-		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
-		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
-		// Finally, remove our dummy
-		getMessageManager().removeMessage(dummyMessageKey);
+		clearEvaluationMessages();
 
 		evaluationThread = new EvaluationThread(getInterpreterContext());
 		evaluationThread.start();
@@ -579,12 +563,26 @@ public class InterpreterView extends ViewPart {
 	/** Link the current language interpreter with the current editor. */
 	public void linkWithEditorContext() {
 		IWorkbenchPage page = getSite().getPage();
-		if (linkWithEditorContextAction.isEnabled()) {
-			IEditorPart activeEditor = page.getActiveEditor();
-			if (activeEditor != null) {
-				editorActivated(activeEditor);
+		if (!linkWithEditorContextAction.isEnabled() || page == null || page.getActiveEditor() == null) {
+			return;
+		}
+
+		IEditorPart activeEditor = page.getActiveEditor();
+		if (linkWithEditorContextAction.isChecked()) {
+			getCurrentLanguageInterpreter().linkWithEditor(activeEditor);
+			linkWithEditorContextAction.changeTooltip(activeEditor);
+		} else {
+			getCurrentLanguageInterpreter().linkWithEditor(null);
+			linkWithEditorContextAction.changeTooltip(null);
+			/*
+			 * Re-compute enablement : we may have left the toggle "enabled" while there is no active
+			 * "linkable with" editors
+			 */
+			if (activeEditor == null) {
+				linkWithEditorContextAction.setEnabled(false);
 			} else {
-				getCurrentLanguageInterpreter().linkWithEditor(null);
+				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
+						activeEditor));
 			}
 		}
 	}
@@ -731,6 +729,46 @@ public class InterpreterView extends ViewPart {
 			selectedEObjects = new ArrayList<EObject>(1);
 		}
 		selectedEObjects.add(object);
+	}
+
+	/**
+	 * Clears all compilation messages out of the interpreter view.
+	 */
+	protected void clearCompilationMessages() {
+		/*
+		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
+		 * 357906 in FormHeading.MessageRegion#showMessage().
+		 */
+		final String dummyMessageKey = "none"; //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
+		// Remove all actual messages
+		getMessageManager().removeMessage(COMPILATION_MESSAGE_PREFIX);
+		getMessageManager().removeMessages(expressionSection);
+		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
+		// Finally, remove our dummy
+		getMessageManager().removeMessage(dummyMessageKey);
+	}
+
+	/**
+	 * Clears all evaluation messages out of the interpreter view.
+	 */
+	protected void clearEvaluationMessages() {
+		/*
+		 * add a dummy message to ensure there is always one while we clear the rest (we'll need to reset the
+		 * color without having _all_ messages removed, lest the color stays at its previous state : bug
+		 * 357906 in FormHeading.MessageRegion#showMessage().
+		 */
+		final String dummyMessageKey = "none"; //$NON-NLS-1$
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.ERROR); //$NON-NLS-1$
+		// Remove all actual messages
+		getMessageManager().removeMessage(EVALUATION_INFO_MESSAGE_KEY);
+		getMessageManager().removeMessages(resultSection);
+		// Now, reset the color by modifying our (existing) dummy message to a lesser severity
+		getMessageManager().addMessage(dummyMessageKey, "", IMessageProvider.NONE); //$NON-NLS-1$
+		// Finally, remove our dummy
+		getMessageManager().removeMessage(dummyMessageKey);
 	}
 
 	/**
@@ -979,7 +1017,21 @@ public class InterpreterView extends ViewPart {
 		}
 
 		linkWithEditorContextAction = new LinkWithEditorContextAction(this);
-		linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().acceptLinkWithEditorContext());
+		final IWorkbenchPage currentPage = getSite().getPage();
+		if (currentPage != null) {
+			editorPartListener = new InterpreterEditorPartListener();
+			getSite().getPage().addPartListener(editorPartListener);
+
+			IEditorPart currentEditor = currentPage.getActiveEditor();
+			if (currentEditor == null) {
+				linkWithEditorContextAction.setEnabled(false);
+			} else {
+				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
+						currentEditor));
+			}
+		} else {
+			linkWithEditorContextAction.setEnabled(false);
+		}
 
 		IAction variableVisibilityAction = new ToggleVariableVisibilityAction(this);
 		if (partMemento != null) {
@@ -1062,18 +1114,6 @@ public class InterpreterView extends ViewPart {
 		viewer.setInput(new ArrayList<Variable>());
 
 		return viewer;
-	}
-
-	/**
-	 * This will be called whenever an editor has been activated, the input of the active editor has changed,
-	 * or the last editor has been closed.
-	 * 
-	 * @param editorPart
-	 *            The editor that has been activated. May be <code>null</code>, in which case the last editor
-	 *            has been closed.
-	 */
-	protected void editorActivated(IEditorPart editorPart) {
-		getCurrentLanguageInterpreter().linkWithEditor(editorPart);
 	}
 
 	/**
@@ -1176,6 +1216,9 @@ public class InterpreterView extends ViewPart {
 		if (compilationThread != null && !compilationThread.isInterrupted()) {
 			compilationThread.interrupt();
 		}
+		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
+			evaluationThread.interrupt();
+		}
 
 		/*
 		 * We need to remove all actions from the menu : it somehow freeze if we do not. The "trigger" for
@@ -1261,8 +1304,18 @@ public class InterpreterView extends ViewPart {
 		populateExpressionSectionToolbar(expressionSection);
 		populateResultSectionToolbar(resultSection);
 		// Change the state of the link with editor action
-		boolean linkEnabledForLanguage = getCurrentLanguageInterpreter().acceptLinkWithEditorContext();
-		linkWithEditorContextAction.setEnabled(linkEnabledForLanguage);
+		final IWorkbenchPage currentPage = getSite().getPage();
+		if (currentPage != null) {
+			IEditorPart currentEditor = currentPage.getActiveEditor();
+			if (currentEditor == null) {
+				linkWithEditorContextAction.setEnabled(false);
+			} else {
+				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
+						currentEditor));
+			}
+		} else {
+			linkWithEditorContextAction.setEnabled(false);
+		}
 		// re-add language specific actions to the toolbar
 		getCurrentLanguageInterpreter().addToolBarActions(this, toolBarManager);
 		toolBarManager.update(true);
@@ -1528,6 +1581,100 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
+	 * This implementation of a part listener will allow us to determine at all times whether the
+	 * "work in editor context" action should be enabled.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected class InterpreterEditorPartListener implements IPartListener2 {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partActivated(IWorkbenchPartReference partRef) {
+			// If the toggle is checked, defer enablement computing till we uncheck it
+			if (!linkWithEditorContextAction.isChecked() && partRef instanceof IEditorReference) {
+				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
+						((IEditorReference)partRef).getEditor(false)));
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partBroughtToTop(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partClosed(IWorkbenchPartReference partRef) {
+			// If the toggle is checked, defer enablement computing till we uncheck it
+			if (!linkWithEditorContextAction.isChecked() && partRef instanceof IEditorReference
+					&& getSite().getPage() != null) {
+				final IEditorPart editorPart = getSite().getPage().getActiveEditor();
+				if (editorPart == null) {
+					linkWithEditorContextAction.setEnabled(false);
+				} else {
+					linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
+							editorPart));
+				}
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partDeactivated(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partHidden(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partInputChanged(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partOpened(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+		 */
+		public void partVisible(IWorkbenchPartReference partRef) {
+			// No need to react to this event
+		}
+	}
+
+	/**
 	 * This will allow us to react to double click events in the result view in order to display the long
 	 * Strings and generated files in a more suitable way.
 	 * 
@@ -1725,6 +1872,13 @@ public class InterpreterView extends ViewPart {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private class CompilationThread extends Thread {
+		/**
+		 * We will set this flag on {@link #interrupt()} in order to determine whether the thread was
+		 * cancelled (which could happen <b>after</b> the thread has completed, which would make the
+		 * "interrupted" flag quiet.
+		 */
+		private boolean cancelled;
+
 		/** The compilation thread which result we are to wait for. */
 		private Future<CompilationResult> compilationTask;
 
@@ -1746,8 +1900,9 @@ public class InterpreterView extends ViewPart {
 		 */
 		@Override
 		public void interrupt() {
-			super.interrupt();
+			cancelled = true;
 			compilationTask.cancel(true);
+			super.interrupt();
 		}
 
 		/**
@@ -1759,6 +1914,7 @@ public class InterpreterView extends ViewPart {
 		public void run() {
 			try {
 				final CompilationResult result = compilationTask.get();
+				checkCancelled();
 
 				if (result != null && result.getStatus() != null) {
 					Display.getDefault().asyncExec(new Runnable() {
@@ -1768,6 +1924,8 @@ public class InterpreterView extends ViewPart {
 						 * @see java.lang.Runnable#run()
 						 */
 						public void run() {
+							clearCompilationMessages();
+							checkCancelled();
 							addStatusMessages(result.getStatus(), COMPILATION_MESSAGE_PREFIX);
 						}
 					});
@@ -1777,7 +1935,10 @@ public class InterpreterView extends ViewPart {
 				setCompilationResult(result);
 			} catch (InterruptedException e) {
 				// Thread is expected to be cancelled if another is started
+			} catch (CancellationException e) {
+				// Thread is expected to be cancelled if another is started
 			} catch (ExecutionException e) {
+				checkCancelled();
 				String message = e.getMessage();
 				if (e.getCause() != null) {
 					message = e.getCause().getMessage();
@@ -1792,11 +1953,22 @@ public class InterpreterView extends ViewPart {
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
+						clearCompilationMessages();
+						checkCancelled();
 						addStatusMessages(status, COMPILATION_MESSAGE_PREFIX);
 					}
 				});
 
 				setCompilationResult(result);
+			}
+		}
+
+		/**
+		 * Throws a new {@link CancellationException} if the current thread has been cancelled.
+		 */
+		protected void checkCancelled() {
+			if (cancelled) {
+				throw new CancellationException();
 			}
 		}
 	}
@@ -1862,6 +2034,13 @@ public class InterpreterView extends ViewPart {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private class EvaluationThread extends Thread {
+		/**
+		 * We will set this flag on {@link #interrupt()} in order to determine whether the thread was
+		 * cancelled (which could happen <b>after</b> the thread has completed, which would make the
+		 * "interrupted" flag quiet.
+		 */
+		private boolean cancelled;
+
 		/** The evaluation thread which result we are to wait for. */
 		private Future<EvaluationResult> evaluationTask;
 
@@ -1886,10 +2065,11 @@ public class InterpreterView extends ViewPart {
 		 */
 		@Override
 		public void interrupt() {
-			super.interrupt();
+			cancelled = true;
 			if (evaluationTask != null) {
 				evaluationTask.cancel(true);
 			}
+			super.interrupt();
 		}
 
 		/**
@@ -1900,6 +2080,7 @@ public class InterpreterView extends ViewPart {
 		@Override
 		public void run() {
 			try {
+				checkCancelled();
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						getForm().setBusy(true);
@@ -1909,12 +2090,14 @@ public class InterpreterView extends ViewPart {
 				if (compilationThread != null) {
 					compilationThread.join();
 				}
+				checkCancelled();
 
 				Callable<EvaluationResult> evaluationCallable = getCurrentLanguageInterpreter()
 						.getEvaluationTask(new EvaluationContext(interpreterContext, compilationResult));
 				evaluationTask = evaluationPool.submit(evaluationCallable);
 
 				final EvaluationResult result = evaluationTask.get();
+				checkCancelled();
 
 				if (result != null) {
 					Display.getDefault().asyncExec(new Runnable() {
@@ -1924,7 +2107,9 @@ public class InterpreterView extends ViewPart {
 						 * @see java.lang.Runnable#run()
 						 */
 						public void run() {
+							clearEvaluationMessages();
 							if (result.getStatus() != null) {
+								checkCancelled();
 								addStatusMessages(result.getStatus(), EVALUATION_MESSAGE_PREFIX);
 							}
 							// whether there were problems or not, try and update the result viewer.
@@ -1933,6 +2118,8 @@ public class InterpreterView extends ViewPart {
 					});
 				}
 			} catch (InterruptedException e) {
+				// Thread is expected to be cancelled if another is started
+			} catch (CancellationException e) {
 				// Thread is expected to be cancelled if another is started
 			} catch (ExecutionException e) {
 				String message = e.getMessage();
@@ -1949,6 +2136,8 @@ public class InterpreterView extends ViewPart {
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
+						clearEvaluationMessages();
+						checkCancelled();
 						addStatusMessages(status, EVALUATION_MESSAGE_PREFIX);
 						setEvaluationResult(result);
 					}
@@ -1959,6 +2148,15 @@ public class InterpreterView extends ViewPart {
 						getForm().setBusy(false);
 					}
 				});
+			}
+		}
+
+		/**
+		 * Throws a new {@link CancellationException} if the current thread has been cancelled.
+		 */
+		protected void checkCancelled() {
+			if (cancelled) {
+				throw new CancellationException();
 			}
 		}
 	}

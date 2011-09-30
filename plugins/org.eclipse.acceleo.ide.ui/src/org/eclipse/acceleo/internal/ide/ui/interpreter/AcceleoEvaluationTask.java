@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
@@ -191,8 +192,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public EvaluationResult call() throws Exception {
-		boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
-		AcceleoPreferences.switchNotifications(false);
+		checkCancelled();
+
 		CompilationResult compilationResult = context.getCompilationResult();
 		EvaluationResult shortcutResult = null;
 		if (compilationResult == null || compilationResult.getCompiledExpression() == null) {
@@ -209,6 +210,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			return shortcutResult;
 		}
 
+		checkCancelled();
+
 		assert compilationResult != null;
 		Object compiledExpression = compilationResult.getCompiledExpression();
 
@@ -224,6 +227,7 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		}
 		for (EObject targetEObject : new ArrayList<EObject>(target)) {
 			if (targetEObject.eIsProxy()) {
+				checkCancelled();
 				EObject resolved = EcoreUtil.resolve(targetEObject, resourceSet);
 				if (resolved != null && !resolved.eIsProxy()) {
 					target.remove(targetEObject);
@@ -233,11 +237,15 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		}
 
 		final EvaluationLogListener evaluationListener = new EvaluationLogListener();
+		final boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
+		AcceleoPreferences.switchNotifications(false);
 		final boolean debugMessagesState = AcceleoPreferences.isDebugMessagesEnabled();
 		AcceleoPreferences.switchDebugMessages(false);
 		Platform.addLogListener(evaluationListener);
 
 		try {
+			checkCancelled();
+
 			Object result = null;
 			if (compiledExpression instanceof ModuleElement) {
 				ModuleElement moduleElement = (ModuleElement)compiledExpression;
@@ -248,6 +256,8 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 				result = evaluateOCLExpression(expression, target);
 			}
+
+			checkCancelled();
 
 			IStatus accumulatedProblems = evaluationListener.getAccumulatedProblems();
 			final IStatus resultStatus = createResultStatus(result);
@@ -268,6 +278,15 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			AcceleoPreferences.switchDebugMessages(debugMessagesState);
 			Platform.removeLogListener(evaluationListener);
 			AcceleoPreferences.switchNotifications(notificationsState);
+		}
+	}
+
+	/**
+	 * Throws a new {@link CancellationException} if the current thread has been cancelled.
+	 */
+	private void checkCancelled() {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new CancellationException();
 		}
 	}
 

@@ -33,17 +33,6 @@ import org.eclipse.ui.IEditorPart;
 @SuppressWarnings("unused")
 public abstract class AbstractLanguageInterpreter {
 	/**
-	 * If this editor reacts to the "link with editor" action of the interpreter view, this should return
-	 * <code>true</code>. Will return <code>false</code> by default.
-	 * 
-	 * @return <code>true</code> if this interpreter cares for the "link with editor" action,
-	 *         <code>false</code> otherwise.
-	 */
-	public boolean acceptLinkWithEditorContext() {
-		return false;
-	}
-
-	/**
 	 * If the language interpreter needs to add custom actions to the interpreter form, do it from here.
 	 * <p>
 	 * Do note that this will be called each time the interpreter is set. Clients are not expected to dispose
@@ -57,6 +46,19 @@ public abstract class AbstractLanguageInterpreter {
 	 */
 	public void addToolBarActions(InterpreterView interpreterView, IToolBarManager toolBarManager) {
 		// Do nothing
+	}
+
+	/**
+	 * This will be called by the interpreter view in order to determine whether the "work in editor context"
+	 * action should be enabled for the given editor.
+	 * 
+	 * @param editorPart
+	 *            The editor part that has just been given focus.
+	 * @return <code>true</code> if this language interpreter can accept the current editor's context,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean canLinkWithEditor(IEditorPart editorPart) {
+		return false;
 	}
 
 	/**
@@ -158,16 +160,18 @@ public abstract class AbstractLanguageInterpreter {
 	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
 
 	/**
-	 * This will be called whenever a new editor is given focus while the "link with editor" toggle is
-	 * enabled. The language interpreter can react to these changes, or ignore the event altogether.
+	 * This will be called by the interpreter view when the "work in editor context" action is run by the
+	 * user.
 	 * <p>
-	 * When the "link with editor" toggle is disabled, this will be called with <code>null</code> as the
-	 * <code>editorPart</code>.
+	 * When the toggle get activated, the <em>editorPart</em> passed to this method will be the currently
+	 * active editor. When the toggle gets deactivated, <em>editorPart</em> will be <code>null</code>.
 	 * </p>
 	 * 
 	 * @param editorPart
-	 *            The editor part that has been given focus. Can be <code>null</code> when the last editor is
-	 *            closed or when the toggle is disabled.
+	 *            The currently active editor if the link toggle was just activated, <code>null</code> if it
+	 *            was just disabled.
+	 * @return <code>true</code> if this interpreter accepted the link with the given editor,
+	 *         <code>false</code> otherwise.
 	 */
 	public void linkWithEditor(IEditorPart editorPart) {
 		// Do nothing

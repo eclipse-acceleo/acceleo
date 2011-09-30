@@ -17,6 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -79,6 +80,34 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
+	 * Tries and find a file with the given name under the given container (recursively).
+	 * 
+	 * @param container
+	 *            The container under which to seek for a file.
+	 * @param fileName
+	 *            Name of the file we seek.
+	 * @return The IFile of name <code>fileName</code> under the given <code>container</code>.
+	 *         <code>null</code> if none could be found.
+	 */
+	private static IFile findChild(IContainer container, String fileName) {
+		IFile result = null;
+		try {
+			final IResource[] members = container.members();
+			for (int i = 0; i < members.length && result == null; i++) {
+				final IResource child = members[i];
+				if (child instanceof IContainer) {
+					result = findChild((IContainer)child, fileName);
+				} else if (child instanceof IFile && child.getName().equals(fileName)) {
+					result = (IFile)child;
+				}
+			}
+		} catch (CoreException e) {
+			// FIXME log
+		}
+		return result;
+	}
+
+	/**
 	 * Tries and find an Acceleo compiled module (emtl file) corresponding to the given module (mtl file),
 	 * then loads it as an EMF resource.
 	 * 
@@ -118,63 +147,13 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
-	 * Tries and find a file with the given name under the given container (recursively).
-	 * 
-	 * @param container
-	 *            The container under which to seek for a file.
-	 * @param fileName
-	 *            Name of the file we seek.
-	 * @return The IFile of name <code>fileName</code> under the given <code>container</code>.
-	 *         <code>null</code> if none could be found.
-	 */
-	private static IFile findChild(IContainer container, String fileName) {
-		IFile result = null;
-		try {
-			final IResource[] members = container.members();
-			for (int i = 0; i < members.length && result == null; i++) {
-				final IResource child = members[i];
-				if (child instanceof IContainer) {
-					result = findChild((IContainer)child, fileName);
-				} else if (child instanceof IFile && child.getName().equals(fileName)) {
-					result = (IFile)child;
-				}
-			}
-		} catch (CoreException e) {
-			// FIXME log
-		}
-		return result;
-	}
-
-	/**
-	 * Computes the import list given the <b>initial</b> imported file. This will recursively walk the import
-	 * tree of that initial file.
-	 * 
-	 * @param initialImport
-	 *            The initial imported file from which to compute the imort list.
-	 * @param resourceSet
-	 *            The resource set in which the list will be loaded.
-	 * @return The whole import list.
-	 */
-	public Set<URI> computeImportList(IFile initialImport, ResourceSet resourceSet) {
-		Resource moduleImport = getModule(initialImport, resourceSet);
-		if (moduleImport != null) {
-			EcoreUtil.resolveAll(resourceSet);
-		}
-
-		final Set<URI> dependencies = new LinkedHashSet<URI>();
-		for (Resource res : resourceSet.getResources()) {
-			dependencies.add(res.getURI());
-		}
-
-		return dependencies;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public CompilationResult call() throws Exception {
+		checkCancelled();
+
 		String fullExpression = acceleoSource.rebuildFullExpression(context);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -190,6 +169,8 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 
 		AcceleoParser parser = new AcceleoParser();
 		parser.parse(source, resource, dependencies);
+
+		checkCancelled();
 
 		ASTNode selectedNode = null;
 		if (!resource.getContents().isEmpty()) {
@@ -222,8 +203,43 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 			}
 		}
 
+		checkCancelled();
+
 		IStatus problems = parseProblems(source.getProblems(), source.getWarnings(), source.getInfos());
 		return new CompilationResult(selectedNode, problems);
+	}
+
+	/**
+	 * Computes the import list given the <b>initial</b> imported file. This will recursively walk the import
+	 * tree of that initial file.
+	 * 
+	 * @param initialImport
+	 *            The initial imported file from which to compute the imort list.
+	 * @param resourceSet
+	 *            The resource set in which the list will be loaded.
+	 * @return The whole import list.
+	 */
+	public Set<URI> computeImportList(IFile initialImport, ResourceSet resourceSet) {
+		Resource moduleImport = getModule(initialImport, resourceSet);
+		if (moduleImport != null) {
+			EcoreUtil.resolveAll(resourceSet);
+		}
+
+		final Set<URI> dependencies = new LinkedHashSet<URI>();
+		for (Resource res : resourceSet.getResources()) {
+			dependencies.add(res.getURI());
+		}
+
+		return dependencies;
+	}
+
+	/**
+	 * Throws a new {@link CancellationException} if the current thread has been cancelled.
+	 */
+	private void checkCancelled() {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new CancellationException();
+		}
 	}
 
 	/**
