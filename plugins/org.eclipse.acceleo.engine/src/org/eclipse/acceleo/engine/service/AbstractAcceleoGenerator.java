@@ -564,7 +564,9 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	protected void postGenerate(ResourceSet resourceSet) {
 		AcceleoServicesRegistry.INSTANCE.clearRegistry();
-		AcceleoServicesEclipseUtil.clearRegistry();
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			AcceleoServicesEclipseUtil.clearRegistry();
+		}
 		List<Resource> unload = new ArrayList<Resource>(resourceSet.getResources());
 		unload.removeAll(originalResources);
 		for (Resource res : unload) {
