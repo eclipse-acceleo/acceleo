@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
@@ -27,6 +28,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @since 3.1
  */
 public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
+
+	/** The resource set used by all the dynamic metamodels. */
+	public static final ResourceSet DYNAMIC_METAMODEL_RESOURCE_SET = new AcceleoDynamicMetamodelResourceSetImpl();
 
 	/**
 	 * {@inheritDoc}

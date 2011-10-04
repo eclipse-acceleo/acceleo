@@ -23,6 +23,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EFactory;
@@ -49,8 +50,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * @since 3.0
  */
 public final class AcceleoPackageRegistry extends HashMap<String, Object> implements EPackage.Registry {
-	/** The resource set used by all the dynamic metamodels. */
-	public static final ResourceSet DYNAMIC_METAMODEL_RESOURCE_SET = new AcceleoDynamicMetamodelResourceSetImpl();
 
 	/** Singleton instance of our dynamic registry. */
 	public static final AcceleoPackageRegistry INSTANCE = new AcceleoPackageRegistry();
@@ -312,8 +311,9 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	@Override
 	public Object remove(Object key) {
 		boolean hasBeenRemoved = false;
-		if (dynamicEcorePackagePaths.containsKey(key)) {
-			List<Resource> resources = DYNAMIC_METAMODEL_RESOURCE_SET.getResources();
+		if (dynamicEcorePackagePaths.containsKey(key) && EMFPlugin.IS_ECLIPSE_RUNNING) {
+			List<Resource> resources = AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET
+					.getResources();
 			Iterator<Resource> iterator = resources.iterator();
 			while (iterator.hasNext()) {
 				Resource resource = iterator.next();

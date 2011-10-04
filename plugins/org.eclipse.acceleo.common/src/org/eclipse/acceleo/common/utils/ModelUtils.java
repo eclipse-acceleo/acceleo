@@ -23,6 +23,7 @@ import java.util.Map;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -448,7 +449,7 @@ public final class ModelUtils {
 	@Deprecated
 	public static String registerEcorePackages(String pathName) {
 		return AcceleoPackageRegistry.INSTANCE.registerEcorePackages(pathName,
-				AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+				AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 	}
 
 	/**

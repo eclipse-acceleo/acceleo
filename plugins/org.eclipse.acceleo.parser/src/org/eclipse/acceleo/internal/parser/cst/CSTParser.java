@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -733,7 +734,7 @@ public class CSTParser {
 				if (ePackage == null) {
 					try {
 						ePackageKey = AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ePackageKey,
-								AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 					} catch (WrappedException ex) {
 						// swallow exception
 					}

@@ -27,6 +27,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceFactoryImpl;
@@ -469,7 +470,7 @@ public final class AcceleoCompilerHelper {
 				for (File ecoreFile : ecoreFiles) {
 					URI ecoreURI = URI.createFileURI(ecoreFile.getAbsolutePath());
 					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreURI.toString(),
-							AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+							AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 				}
 			}
 		}

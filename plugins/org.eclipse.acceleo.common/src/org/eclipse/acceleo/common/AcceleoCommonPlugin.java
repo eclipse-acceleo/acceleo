@@ -13,6 +13,7 @@ package org.eclipse.acceleo.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
@@ -461,12 +462,12 @@ public class AcceleoCommonPlugin extends Plugin {
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
-				/*
-				 * Project closing and deletion must trigger the removal of its models from the dynamic
-				 * registry. Model deletion must trigger its removal from the dynamic registry. Model change
-				 * must trigger its removal and re-adding in the registry. Model creation must trigger its
-				 * addition in the registry.
-				 */
+			/*
+			 * Project closing and deletion must trigger the removal of its models from the dynamic registry.
+			 * Model deletion must trigger its removal from the dynamic registry. Model change must trigger
+			 * its removal and re-adding in the registry. Model creation must trigger its addition in the
+			 * registry.
+			 */
 				case IResourceChangeEvent.PRE_CLOSE:
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
@@ -495,7 +496,8 @@ public class AcceleoCommonPlugin extends Plugin {
 					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
 							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
 						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(resource.getFullPath()
-								.toString(), AcceleoPackageRegistry.DYNAMIC_METAMODEL_RESOURCE_SET);
+								.toString(),
+								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 					}
 					break;
 				default:
