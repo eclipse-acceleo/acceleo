@@ -15,14 +15,12 @@ package org.eclipse.acceleo.model.mtl.resource;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.core.internal.content.ILazySource;
-
 /**
  * Forked from org.eclipse.core
  * 
  * @since 3.1
  */
-public class LazyInputStream extends InputStream implements ILazySource {
+public class LazyInputStream extends InputStream {
 	private int blockCapacity;
 
 	byte[][] blocks = {};
