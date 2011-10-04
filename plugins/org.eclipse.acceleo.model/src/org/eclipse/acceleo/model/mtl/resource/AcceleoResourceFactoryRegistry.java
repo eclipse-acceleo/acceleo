@@ -185,17 +185,22 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 
 				if (path.startsWith(jarPrefix) && path.contains(jarSeparator)) {
 					String jarPath = path.substring(jarPrefix.length(), path.indexOf(jarSeparator));
-					JarFile jar = new JarFile(jarPath);
-					ZipEntry entry = jar.getEntry(path.substring(path.indexOf(jarSeparator)
-							+ jarSeparator.length()));
-					if (entry != null) {
-						stream = jar.getInputStream(entry);
-						throw new RuntimeException("Found jar entry"); //$NON-NLS-1$
+					try {
+						JarFile jar = new JarFile(jarPath);
+						ZipEntry entry = jar.getEntry(path.substring(path.indexOf(jarSeparator)
+								+ jarSeparator.length()));
+						if (entry != null) {
+							stream = jar.getInputStream(entry);
+						}
+					} catch (IOException e) {
+						// do not log, the jar does not exists
 					}
 
 				} else {
 					File file = new File(path);
-					stream = new FileInputStream(file);
+					if (file.exists()) {
+						stream = new FileInputStream(file);
+					}
 				}
 
 				if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
@@ -240,9 +245,6 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 			if (IAcceleoConstants.BINARY_CONTENT_TYPE.equals(contentTypeIdentifier)) {
 				factory = new EMtlBinaryResourceFactoryImpl();
 			} else if (IAcceleoConstants.XMI_CONTENT_TYPE.equals(contentTypeIdentifier)) {
-				factory = new EMtlResourceFactoryImpl();
-			} else {
-				// Default choice = XMI resource
 				factory = new EMtlResourceFactoryImpl();
 			}
 		}
