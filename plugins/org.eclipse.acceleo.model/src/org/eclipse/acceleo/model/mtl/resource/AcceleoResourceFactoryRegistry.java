@@ -16,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -175,14 +177,30 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 		}
 
 		if (path != null) {
-			File file = new File(path);
-			if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
-					.equals(contentTypeIdentifier))
-					&& file.exists()) {
-				InputStream stream = null;
-				InputStream containingStream = null;
-				try {
+			InputStream stream = null;
+			InputStream containingStream = null;
+			try {
+				String jarPrefix = "jar:file:/"; //$NON-NLS-1$
+				String jarSeparator = "!/"; //$NON-NLS-1$
+
+				if (path.startsWith(jarPrefix) && path.contains(jarSeparator)) {
+					String jarPath = path.substring(jarPrefix.length(), path.indexOf(jarSeparator));
+					JarFile jar = new JarFile(jarPath);
+					ZipEntry entry = jar.getEntry(path.substring(path.indexOf(jarSeparator)
+							+ jarSeparator.length()));
+					if (entry != null) {
+						stream = jar.getInputStream(entry);
+						throw new RuntimeException("Found jar entry"); //$NON-NLS-1$
+					}
+
+				} else {
+					File file = new File(path);
 					stream = new FileInputStream(file);
+				}
+
+				if ((contentTypeIdentifier == null || ContentHandler.UNSPECIFIED_CONTENT_TYPE
+						.equals(contentTypeIdentifier))
+						&& stream != null) {
 
 					final int bufferSize = 1024;
 					containingStream = new LazyInputStream(stream, bufferSize);
@@ -196,25 +214,25 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 						factory = new EMtlResourceFactoryImpl();
 					}
 
-				} catch (FileNotFoundException e) {
-					AcceleoCommonPlugin.log(e, false);
+				}
+			} catch (FileNotFoundException e) {
+				AcceleoCommonPlugin.log(e, false);
+			} catch (IOException e) {
+				AcceleoCommonPlugin.log(e, false);
+			} finally {
+				try {
+					if (containingStream != null) {
+						containingStream.close();
+					}
 				} catch (IOException e) {
 					AcceleoCommonPlugin.log(e, false);
-				} finally {
-					try {
-						if (containingStream != null) {
-							containingStream.close();
-						}
-					} catch (IOException e) {
-						AcceleoCommonPlugin.log(e, false);
+				}
+				try {
+					if (stream != null) {
+						stream.close();
 					}
-					try {
-						if (stream != null) {
-							stream.close();
-						}
-					} catch (IOException e) {
-						AcceleoCommonPlugin.log(e, false);
-					}
+				} catch (IOException e) {
+					AcceleoCommonPlugin.log(e, false);
 				}
 			}
 		}
@@ -223,10 +241,10 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 				factory = new EMtlBinaryResourceFactoryImpl();
 			} else if (IAcceleoConstants.XMI_CONTENT_TYPE.equals(contentTypeIdentifier)) {
 				factory = new EMtlResourceFactoryImpl();
+			} else {
+				// Default choice = XMI resource
+				factory = new EMtlResourceFactoryImpl();
 			}
-		}
-		if (factory != null) {
-			throw new RuntimeException("Factory: " + factory.getClass().getName()); //$NON-NLS-1$			
 		}
 		return factory;
 	}
