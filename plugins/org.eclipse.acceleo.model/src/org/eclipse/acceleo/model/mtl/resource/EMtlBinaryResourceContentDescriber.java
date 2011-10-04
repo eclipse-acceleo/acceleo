@@ -15,7 +15,6 @@ import java.io.InputStream;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescriber;
 import org.eclipse.core.runtime.content.IContentDescription;
@@ -26,22 +25,7 @@ import org.eclipse.core.runtime.content.IContentDescription;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
-public class EMtlBinaryResourceContentDescriber implements IContentDescriber, IExecutableExtension {
-
-	/**
-	 * The configuration element.
-	 */
-	private IConfigurationElement configurationElement;
-
-	/**
-	 * The property name.
-	 */
-	private String property;
-
-	/**
-	 * The data.
-	 */
-	private Object initializationData;
+public class EMtlBinaryResourceContentDescriber implements IContentDescriber {
 
 	/**
 	 * {@inheritDoc}
@@ -51,9 +35,7 @@ public class EMtlBinaryResourceContentDescriber implements IContentDescriber, IE
 	 */
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
-		this.configurationElement = config;
-		this.property = propertyName;
-		this.initializationData = data;
+		// do nothing
 	}
 
 	/**
