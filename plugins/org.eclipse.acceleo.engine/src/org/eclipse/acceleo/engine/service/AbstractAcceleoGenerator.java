@@ -168,8 +168,11 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This will be thrown if any of the output files cannot be saved to disk.
 	 */
 	public Map<String, String> generate(Monitor monitor) throws IOException {
-		boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
-		AcceleoPreferences.switchNotifications(true);
+		boolean notificationsState = false;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			notificationsState = AcceleoPreferences.areNotificationsEnabled();
+			AcceleoPreferences.switchNotifications(true);
+		}
 		File target = getTargetFolder();
 		if (!target.exists() && !target.mkdirs()) {
 			throw new IOException("target directory " + target + " couldn't be created."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -204,7 +207,9 @@ public abstract class AbstractAcceleoGenerator {
 						.getString("AcceleoService.NoGenerationHasOccurred"), false); //$NON-NLS-1$
 			}
 		}
-		AcceleoPreferences.switchNotifications(notificationsState);
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			AcceleoPreferences.switchNotifications(notificationsState);
+		}
 		return result;
 	}
 
