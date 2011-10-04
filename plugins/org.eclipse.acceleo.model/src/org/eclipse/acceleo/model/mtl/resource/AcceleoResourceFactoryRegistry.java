@@ -225,7 +225,9 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 				factory = new EMtlResourceFactoryImpl();
 			}
 		}
-
+		if (factory != null) {
+			throw new RuntimeException("Factory: " + factory.getClass().getName()); //$NON-NLS-1$			
+		}
 		return factory;
 	}
 }
