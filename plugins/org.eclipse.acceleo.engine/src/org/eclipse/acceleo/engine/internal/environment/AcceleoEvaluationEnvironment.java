@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -766,7 +766,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 					// Not supposed to happen since extension point works only when deployed in eclipse
 					generatorID = uri.segment(1);
 				} else if (uri.isFile()) {
-					generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
+					BundleURLConverter converter = new BundleURLConverter(generatorID);
+					generatorID = converter.resolveAsPlatformPlugin();
+					// generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
 					if (generatorID != null
 							&& generatorID.startsWith("platform:/plugin/") && URI.createURI(generatorID).segments().length > 2) { //$NON-NLS-1$
 						URI tmpURI = URI.createURI(generatorID);
