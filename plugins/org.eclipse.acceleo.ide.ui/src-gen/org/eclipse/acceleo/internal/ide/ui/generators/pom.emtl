@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="pom" nsURI="org::eclipse::acceleo::module::sample::main::pom" startHeaderPosition="411" endHeaderPosition="593">
+  <mtl:Module name="pom" nsURI="org::eclipse::acceleo::module::example::uml2java::helios::pom" startHeaderPosition="411" endHeaderPosition="593">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="32" endPosition="408" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
@@ -21,7 +21,7 @@
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/module>&#xA;  &lt;/modules>&#xA;&#xA;  &lt;properties>&#xA;    &lt;acceleo-version>3.1.1-SNAPSHOT&lt;/acceleo-version>&#xA;    &lt;tycho-version>0.12.0&lt;/tycho-version>&#xA;    &lt;acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/release/3.1&lt;/acceleo-site>&#xA;  &lt;/properties>&#xA;&#xA;  &lt;profiles>&#xA;    &lt;profile>&#xA;      &lt;id>platform-indigo&lt;/id>&#xA;      &lt;activation>&#xA;         &lt;activeByDefault>true&lt;/activeByDefault>&#xA;        &lt;property>&#xA;          &lt;name>platform-version-name&lt;/name>&#xA;          &lt;value>indigo&lt;/value>&#xA;        &lt;/property>&#xA;      &lt;/activation>&#xA;      &lt;properties>&#xA;        &lt;eclipse-site>http://download.eclipse.org/releases/indigo&lt;/eclipse-site>&#xA;        &lt;platform-version>"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/module>&#xA;  &lt;/modules>&#xA;&#xA;  &lt;properties>&#xA;    &lt;acceleo-version>3.1.2-SNAPSHOT&lt;/acceleo-version>&#xA;    &lt;tycho-version>0.12.0&lt;/tycho-version>&#xA;    &lt;acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/releases/3.1&lt;/acceleo-site>&#xA;  &lt;/properties>&#xA;&#xA;  &lt;profiles>&#xA;    &lt;profile>&#xA;      &lt;id>platform-indigo&lt;/id>&#xA;      &lt;activation>&#xA;         &lt;activeByDefault>true&lt;/activeByDefault>&#xA;        &lt;property>&#xA;          &lt;name>platform-version-name&lt;/name>&#xA;          &lt;value>indigo&lt;/value>&#xA;        &lt;/property>&#xA;      &lt;/activation>&#xA;      &lt;properties>&#xA;        &lt;eclipse-site>http://download.eclipse.org/releases/indigo&lt;/eclipse-site>&#xA;        &lt;platform-version>"/>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
@@ -535,12 +535,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genPom">
       <details key="start" value="596"/>
-      <details key="end" value="4572"/>
+      <details key="end" value="4573"/>
       <details key="line" value="21"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genPom/@body.0">
       <details key="start" value="683"/>
-      <details key="end" value="4560"/>
+      <details key="end" value="4561"/>
       <details key="line" value="23"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genPom/@body.0/@body.0">
@@ -570,17 +570,17 @@
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/genPom/@body.0/@body.4">
       <details key="start" value="1263"/>
-      <details key="end" value="1905"/>
+      <details key="end" value="1906"/>
       <details key="line" value="40"/>
     </eAnnotations>
     <eAnnotations source="positions.9" references="/0/genPom/@body.0/@body.5">
-      <details key="start" value="1906"/>
-      <details key="end" value="1909"/>
+      <details key="start" value="1907"/>
+      <details key="end" value="1910"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.10" references="/0/genPom/@body.0/@body.6">
-      <details key="start" value="1911"/>
-      <details key="end" value="4553"/>
+      <details key="start" value="1912"/>
+      <details key="end" value="4554"/>
       <details key="line" value="61"/>
     </eAnnotations>
     <eAnnotations source="positions.11" references="/0/genPom/@body.0/@fileUrl">
