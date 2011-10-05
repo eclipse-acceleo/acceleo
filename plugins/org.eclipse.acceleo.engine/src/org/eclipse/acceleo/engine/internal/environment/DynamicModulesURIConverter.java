@@ -278,7 +278,7 @@ final class DynamicModulesURIConverter extends ExtensibleURIConverterImpl {
 	 */
 	private URI dynamicNormalize(URI uri) {
 		URI normalized = getURIMap().get(uri);
-		if (normalized == null) {
+		if (normalized == null && EMFPlugin.IS_ECLIPSE_RUNNING) {
 			BundleURLConverter conv = new BundleURLConverter(uri.toString());
 			if (conv.resolveBundle() != null) {
 				normalized = URI.createURI(conv.resolveAsPlatformPlugin());
