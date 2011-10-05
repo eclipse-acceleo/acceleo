@@ -63,9 +63,6 @@ public class AcceleoCompiler extends AbstractAcceleoCompiler {
         if (args.length >= 4 && args['[3]'/] != null && !"".equals(args['[3]'/])) { //$NON-NLS-1$
             acceleoCompiler.setDependencies(args['[3]'/]);
         }
-        if (args.length >= 5 && args['[4]'/] != null && !"".equals(args['[4]'/])) { //$NON-NLS-1$
-            acceleoCompiler.setTrimPosition(Boolean.valueOf(args['[4]'/]).booleanValue());
-        }
         acceleoCompiler.doCompile(new BasicMonitor());
     }
     
@@ -103,7 +100,7 @@ public class AcceleoCompiler extends AbstractAcceleoCompiler {
         super.registerResourceFactories();
         /*
          * If you want to add other resource factories, for example if your metamodel uses a specific serialization and it is not contained in a ".ecore" file:
-         * org.eclipse.emf.ecore.resource.Resource.Factory.Registry.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+         * org.eclipse.emf.ecore.resource.Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
          **/
     }
 }
