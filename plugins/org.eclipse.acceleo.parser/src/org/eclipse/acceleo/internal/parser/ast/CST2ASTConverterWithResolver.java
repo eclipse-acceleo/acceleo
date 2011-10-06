@@ -643,6 +643,13 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						} else {
 							parameterMatches = eParameterType == type
 									|| (eParameterType != null && eParameterType.equals(type));
+							// For OCL collections
+							boolean match = eParameterType != null
+									&& eParameterType.eClass() != null
+									&& EcoreUtil.getURI(eParameterType.eClass()) != null
+									&& EcoreUtil.getURI(eParameterType.eClass()).equals(
+											EcoreUtil.getURI(type.eClass()));
+							parameterMatches = parameterMatches || match;
 						}
 					}
 					if (parameterMatches) {
