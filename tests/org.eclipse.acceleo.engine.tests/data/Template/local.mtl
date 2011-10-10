@@ -97,3 +97,58 @@
 [template public test_template_collection_collection_collection_collection(eClass : EClass)]
 [file('template_collection_collection', false)][OrderedSet{Set{Sequence{Bag{templateCalled('collection_collection_collection_collection')}}}}/][/file]
 [/template]
+
+[template public test_collection_template(c:EClass)]
+[file('test_collection_template', false)]
+[collection_template(Sequence{c})/]
+[/file]
+[/template]
+
+[template public test_sequence_template(c:EClass)]
+[file('test_sequence_template', false)]
+[sequence_template(Sequence{c})/]
+[/file]
+[/template]
+
+[template public test_set_template(c:EClass)]
+[file('test_set_template', false)]
+[set_template(Set{c})/]
+[/file]
+[/template]
+
+[template public test_bag_template(c:EClass)]
+[file('test_bag_template', false)]
+[bag_template(Bag{c})/]
+[/file]
+[/template]
+
+[template public test_ordered_set_template(c:EClass)]
+[file('test_ordered_set_template', false)]
+[ordered_set_template(OrderedSet{c})/]
+[/file]
+[/template]
+
+
+
+
+
+[template public collection_template(c:Collection(EClass)) collection_template]
+extending_collection_template
+[/template]
+
+[template public sequence_template(c:Sequence(EClass)) overrides sequence_template]
+extending_sequence_template
+[/template]
+
+[template public set_template(c:Set(EClass)) overrides set_template]
+extending_set_template
+[/template]
+
+[template public bag_template(c:Bag(EClass)) overrides bag_template]
+extending_bag_template
+[/template]
+
+[template public ordered_set_template(c:OrderedSet(EClass)) overrides ordered_set_template]
+extending_ordered_set_template
+[/template]
+

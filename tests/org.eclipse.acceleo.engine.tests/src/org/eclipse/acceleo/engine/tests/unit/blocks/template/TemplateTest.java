@@ -331,6 +331,121 @@ public class TemplateTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the engine when calling a template extending another template with a collection
+	 * as parameter.
+	 */
+	public void testCollectionTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_collection_template", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("extending_collection_template")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template extending another template with a collection
+	 * as parameter.
+	 */
+	public void testSequenceTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_sequence_template", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("extending_sequence_template")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template extending another template with a collection
+	 * as parameter.
+	 */
+	public void testSetTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateOverrideSet")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSet")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_set_template", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("extending_set_template")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template extending another template with a collection
+	 * as parameter.
+	 */
+	public void testBagTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateOverrideBag")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateOverrideBag")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_bag_template", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("extending_bag_template")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Tests the behavior of the engine when calling a template extending another template with a collection
+	 * as parameter.
+	 */
+	public void testOrderedSetTemplate() throws IOException {
+		generationRoot = new File(getGenerationRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_ordered_set_template", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("extending_ordered_set_template")); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()

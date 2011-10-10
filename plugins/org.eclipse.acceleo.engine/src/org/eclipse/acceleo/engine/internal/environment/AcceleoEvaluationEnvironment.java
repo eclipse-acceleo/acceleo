@@ -56,8 +56,14 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.EvaluationEnvironment;
 import org.eclipse.ocl.ecore.AnyType;
+import org.eclipse.ocl.ecore.BagType;
+import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.EcoreEvaluationEnvironment;
+import org.eclipse.ocl.ecore.OrderedSetType;
+import org.eclipse.ocl.ecore.SequenceType;
+import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.options.EvaluationOptions;
+import org.eclipse.ocl.util.Bag;
 import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
@@ -683,7 +689,24 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		} else if (expectedType instanceof Class<?> && argumentType instanceof Class<?>) {
 			isApplicable = ((Class<?>)expectedType).isAssignableFrom((Class<?>)argumentType);
 		} else if (expectedType instanceof EDataType && argumentType instanceof Class<?>) {
-			isApplicable = ((EDataType)expectedType).getInstanceClass() == argumentType;
+			if (expectedType instanceof BagType && argumentType instanceof Class<?>) {
+				Class<?> clazz = (Class<?>)argumentType;
+				isApplicable = Bag.class.isAssignableFrom(clazz);
+			} else if (expectedType instanceof OrderedSetType && argumentType instanceof Class<?>) {
+				Class<?> clazz = (Class<?>)argumentType;
+				isApplicable = Set.class.isAssignableFrom(clazz);
+			} else if (expectedType instanceof SetType && argumentType instanceof Class<?>) {
+				Class<?> clazz = (Class<?>)argumentType;
+				isApplicable = Set.class.isAssignableFrom(clazz);
+			} else if (expectedType instanceof SequenceType && argumentType instanceof Class<?>) {
+				Class<?> clazz = (Class<?>)argumentType;
+				isApplicable = List.class.isAssignableFrom(clazz);
+			} else if (expectedType instanceof CollectionType && argumentType instanceof Class<?>) {
+				Class<?> clazz = (Class<?>)argumentType;
+				isApplicable = Collection.class.isAssignableFrom(clazz);
+			} else {
+				isApplicable = ((EDataType)expectedType).getInstanceClass() == argumentType;
+			}
 		} else if (expectedType instanceof AnyType) {
 			isApplicable = true;
 		} else {
