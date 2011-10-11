@@ -248,6 +248,11 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 				factory = new EMtlResourceFactoryImpl();
 			}
 		}
+
+		if (factory == null && path != null && path.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+			throw new RuntimeException("Content type identifier: " + contentTypeIdentifier); //$NON-NLS-1$
+		}
+
 		return factory;
 	}
 }
