@@ -800,6 +800,11 @@ public class AcceleoParser {
 				if (astNodeContainer == module || importedModules.contains(astNodeContainer)
 						|| extendedModules.contains(astNodeContainer)) {
 					result = templateEqual((Template)astNode, operation);
+					Template template = (Template)astNode;
+					List<Template> overrides = template.getOverrides();
+					for (Template overridenTemplates : overrides) {
+						result = result || templateEqual(overridenTemplates, operation);
+					}
 				}
 			} else if (astNode instanceof QueryInvocation) {
 				final QueryInvocation queryInvocation = (QueryInvocation)astNode;
