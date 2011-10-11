@@ -200,6 +200,8 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 					File file = new File(path);
 					if (file.exists()) {
 						stream = new FileInputStream(file);
+					} else {
+						throw new RuntimeException("File: " + path); //$NON-NLS-1$
 					}
 				}
 
@@ -247,10 +249,6 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 			} else if (IAcceleoConstants.XMI_CONTENT_TYPE.equals(contentTypeIdentifier)) {
 				factory = new EMtlResourceFactoryImpl();
 			}
-		}
-
-		if (factory == null && path != null && path.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
-			throw new RuntimeException("Content type identifier: " + contentTypeIdentifier); //$NON-NLS-1$
 		}
 
 		return factory;
