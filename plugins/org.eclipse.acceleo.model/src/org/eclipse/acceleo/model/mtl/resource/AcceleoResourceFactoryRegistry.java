@@ -200,8 +200,6 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 					File file = new File(path);
 					if (file.exists()) {
 						stream = new FileInputStream(file);
-					} else {
-						throw new RuntimeException("File: " + path); //$NON-NLS-1$
 					}
 				}
 
