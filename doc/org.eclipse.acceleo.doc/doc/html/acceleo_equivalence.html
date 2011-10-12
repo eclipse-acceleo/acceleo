@@ -254,12 +254,14 @@ to use a custom Java service for this need.</td>
 <tr><td>&lt;%x.replaceAll(&quot;test&quot;, &quot;replaced&quot;)%&gt;</td>
 <td>[x.replaceAll('test', 'replaced')/]</td>
 </tr>
-<tr><td colspan="2">&lt;%x.replaceAll(&quot;\w&quot;, &quot;$0&quot;)%&gt;                                   | [x.replaceAll('\\w', '$0')/]</td>
+<tr><td>&lt;%x.replaceAll(&quot;\w&quot;, &quot;$0&quot;)%&gt;</td>
+<td>[x.replaceAll('\\w', '$0')/]</td>
 </tr>
 <tr><td>&lt;%x.replaceFirst(&quot;test&quot;, &quot;replaced&quot;)%&gt;</td>
 <td>[x.replace('test', 'replaced')/]</td>
 </tr>
-<tr><td colspan="2">&lt;%x.replaceFirst(&quot;\w&quot;, &quot;$0&quot;)%&gt;                                 | [x.replace('\\w', '$0')/]</td>
+<tr><td>&lt;%x.replaceFirst(&quot;\w&quot;, &quot;$0&quot;)%&gt;</td>
+<td>[x.replace('\\w', '$0')/]</td>
 </tr>
 <tr><td>&lt;%x.trim%&gt;</td>
 <td>[x.trim()/]</td>
