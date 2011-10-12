@@ -554,8 +554,10 @@ ancestors (OclType oclType) : Sequence(oclType)
 ___________________________________________________________________________
 
    Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
-   The returned sequence's elements are typed with the expected type
-   (so there's no need to invoke ``oclAsType(oclType)`` on the sequence or its elements).
+   The returned sequence's elements are typed with the expected type (so there's no need to invoke
+   ``oclAsType(oclType)`` on the sequence or its elements). In this example, the element root is
+   also returned because Model is an instance of Package. All the element returned are ancestors
+   for which ``oclIsKindOf(oclType)`` returns true.
 
    examples:
 
@@ -564,9 +566,9 @@ ___________________________________________________________________________
    +------------------------------+--------------------------------------+
    | Expression                   | Result                               |
    +==============================+======================================+
-   | Class11.ancestors(Package)   | Sequence{package11, package1}        |
+   | Class11.ancestors(Package)   | Sequence{package11, package1, root}  |
    +------------------------------+--------------------------------------+
-   | package11.ancestors(Package) | Sequence{package1}                   |
+   | package11.ancestors(Package) | Sequence{package1, root}             |
    +------------------------------+--------------------------------------+
 
 back to Contents_

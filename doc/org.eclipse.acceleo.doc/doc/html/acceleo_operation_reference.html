@@ -881,8 +881,10 @@ String delim.</p>
 <h3><a class="toc-backref" href="#id36">ancestors (OclType oclType) : Sequence(oclType)</a></h3>
 <blockquote>
 <p>Returns the elements of the given type from the set of the receiver's ancestors as a Sequence.
-The returned sequence's elements are typed with the expected type
-(so there's no need to invoke <tt class="docutils literal">oclAsType(oclType)</tt> on the sequence or its elements).</p>
+The returned sequence's elements are typed with the expected type (so there's no need to invoke
+<tt class="docutils literal">oclAsType(oclType)</tt> on the sequence or its elements). In this example, the element root is
+also returned because Model is an instance of Package. All the element returned are ancestors
+for which <tt class="docutils literal">oclIsKindOf(oclType)</tt> returns true.</p>
 <p>examples:</p>
 <table border="1" class="exampletable docutils">
 <colgroup>
@@ -896,10 +898,10 @@ The returned sequence's elements are typed with the expected type
 </thead>
 <tbody valign="top">
 <tr><td>Class11.ancestors(Package)</td>
-<td>Sequence{package11, package1}</td>
+<td>Sequence{package11, package1, root}</td>
 </tr>
 <tr><td>package11.ancestors(Package)</td>
-<td>Sequence{package1}</td>
+<td>Sequence{package1, root}</td>
 </tr>
 </tbody>
 </table>
