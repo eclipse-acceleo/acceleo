@@ -520,6 +520,10 @@ public class AcceleoParser {
 					// Swallow this : we just didn't have a precompiled state
 				} catch (WrappedException e) {
 					// Swallow this : we just didn't have a precompiled state
+					// CHECKSTYLE:OFF
+				} catch (RuntimeException e) {
+					// CHECKSTYLE:ON
+					// Swallow this : we just didn't have a precompiled state (maven build)
 				} finally {
 					Thread unloadThread = new Thread() {
 						/**
@@ -547,7 +551,6 @@ public class AcceleoParser {
 				EMtlResourceImpl resourceImpl = (EMtlResourceImpl)oResource;
 				resourceImpl.setTrimPosition(trimmedCompilation);
 			}
-
 			newResources.add(oResource);
 			source.createCST();
 			for (ModuleImportsValue importValue : source.getCST().getImports()) {
