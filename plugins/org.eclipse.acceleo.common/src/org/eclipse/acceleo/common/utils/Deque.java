@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Interface of the Double-ended used throughout Acceleo.
+ * Interface of the Double-ended queue used throughout Acceleo.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
