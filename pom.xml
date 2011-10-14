@@ -57,7 +57,7 @@
 	<module>tests/org.eclipse.acceleo.parser.tests</module>
 	<module>tests/org.eclipse.acceleo.traceability.tests</module>
 	<!-- <module>tests/org.eclipse.acceleo.ide.ui.tests</module> SWTBot update site problem -->
-	<!-- <module>tests/org.eclipse.acceleo.tests</module> Teste failing cause Tycho to stop building-->
+	<!-- <module>tests/org.eclipse.acceleo.tests</module> Unit tests need to be fixed for jar files (FileContent.getFileContent(...))-->
 	
 	<module>features/org.eclipse.acceleo.doc-feature</module>
 	<module>features/org.eclipse.acceleo.examples-feature</module>
