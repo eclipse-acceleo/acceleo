@@ -30,3 +30,5 @@ Bundle-Activator: org.eclipse.acceleo.engine.AcceleoEnginePlugin
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Import-Package: com.google.common.base,
+ com.google.common.collect

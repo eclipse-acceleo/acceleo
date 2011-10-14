@@ -384,6 +384,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		final boolean appendMode = fileBlock.getOpenMode().getValue() == OpenModeKind.APPEND_VALUE;
+		if (!appendMode) {
+			context.generateFile(filePath);
+		}
 
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		final EObject source;

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.evaluation;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -124,6 +127,12 @@ public class AcceleoEvaluationContext<C> {
 	 * or File), we'll use this "default" writer in order not to lose the generated text.
 	 */
 	private StringWriter defaultWriter;
+
+	/**
+	 * This will allow us to determine whether a given generation tried to generate one or more file(s) more
+	 * than once.
+	 */
+	private Map<String, Integer> generateFiles = new HashMap<String, Integer>();
 
 	/**
 	 * Instantiates an evaluation context given the root of the to-be-generated files.
@@ -439,6 +448,22 @@ public class AcceleoEvaluationContext<C> {
 	}
 
 	/**
+	 * Notifies the context that a file at the given <em>filePath</em> will be generated.
+	 * 
+	 * @param filePath
+	 *            Path to the file.
+	 */
+	public void generateFile(String filePath) {
+		Integer timesGenerated = generateFiles.get(filePath);
+		if (timesGenerated == null) {
+			timesGenerated = Integer.valueOf(1);
+		} else {
+			timesGenerated = Integer.valueOf(timesGenerated.intValue() + 1);
+		}
+		generateFiles.put(filePath, timesGenerated);
+	}
+
+	/**
 	 * This will return the indentation of the very last line of the very last file writer in context.
 	 * 
 	 * @return indentation of the very last line in context.
@@ -584,6 +609,23 @@ public class AcceleoEvaluationContext<C> {
 		} catch (IOException e) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationContext.WriteError"), e); //$NON-NLS-1$
+		}
+
+		Map<String, Integer> filteredFiles = Maps.filterEntries(generateFiles,
+				new Predicate<Map.Entry<String, Integer>>() {
+					public boolean apply(Map.Entry<String, Integer> input) {
+						return input.getValue().intValue() > 1;
+					}
+				});
+
+		if (!filteredFiles.isEmpty()) {
+			final StringBuilder message = new StringBuilder(AcceleoEngineMessages
+					.getString("AcceleoEvaluationContext.OverrodeFiles")); //$NON-NLS-1$
+			message.append('\n').append('\n');
+			for (Map.Entry<String, Integer> file : filteredFiles.entrySet()) {
+				message.append(file.getKey() + " : " + file.getValue().toString() + "times" + '\n'); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			AcceleoEnginePlugin.log(message.toString(), false);
 		}
 	}
 
