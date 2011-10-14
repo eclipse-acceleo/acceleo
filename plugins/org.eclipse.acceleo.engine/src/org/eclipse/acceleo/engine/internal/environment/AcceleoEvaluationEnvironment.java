@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.environment;
 
+import com.google.common.collect.ListMultimap;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,10 +23,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
+import org.eclipse.acceleo.common.utils.AcceleoCollections;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -101,12 +105,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Allows us to totally get rid of the inherited map. This will mainly serve the purpose of allowing
 	 * multiple bindings against the same variable name.
 	 */
-	private final Deque<Map<String, Deque<Object>>> scopedVariableMap = new CircularArrayDeque<Map<String, Deque<Object>>>();
+	private final Deque<ListMultimap<String, Object>> scopedVariableMap = new CircularArrayDeque<ListMultimap<String, Object>>();
 
 	/**
 	 * This will contain variables that are global to a generation module.
 	 */
-	private final Map<String, Deque<Object>> globalVariableMap = new HashMap<String, Deque<Object>>();
+	private final ListMultimap<String, Object> globalVariableMap = AcceleoCollections
+			.newCircularArrayDequeMultimap();
 
 	/**
 	 * This constructor is needed by the factory.
@@ -123,7 +128,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			EvaluationEnvironment<EClassifier, EOperation, EStructuralFeature, EClass, EObject> parent,
 			Module module, AcceleoPropertiesLookup properties) {
 		super(parent);
-		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
+		scopedVariableMap.add(AcceleoCollections.<String, Object> newCircularArrayDequeMultimap());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
@@ -141,11 +146,47 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	public AcceleoEvaluationEnvironment(Module module, AcceleoPropertiesLookup properties) {
 		super();
-		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
+		scopedVariableMap.add(AcceleoCollections.<String, Object> newCircularArrayDequeMultimap());
 		mapAllTemplates(module);
 		mapDynamicOverrides();
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 		propertiesLookup = properties;
+	}
+
+	/**
+	 * Returns the last value of the given list.
+	 * <p>
+	 * Makes no effort to try and check whether the argument is valid.
+	 * </p>
+	 * 
+	 * @param values
+	 *            List we need the last value from.
+	 * @param <V>
+	 *            Type of the list's values.
+	 * @return The last value of the given list.
+	 */
+	private static <V> V getLast(List<V> values) {
+		final ListIterator<V> iterator = values.listIterator(values.size());
+		return iterator.previous();
+	}
+
+	/**
+	 * Removes the last value of the given list.
+	 * <p>
+	 * Makes no effort to try and check whether the argument is valid.
+	 * </p>
+	 * 
+	 * @param values
+	 *            List we need the last value from.
+	 * @param <V>
+	 *            Type of the list's values.
+	 * @return The last value of the given list.
+	 */
+	private static <V> V removeLast(List<V> values) {
+		final ListIterator<V> iterator = values.listIterator(values.size());
+		final V last = iterator.previous();
+		iterator.remove();
+		return last;
 	}
 
 	/**
@@ -155,18 +196,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void add(String name, Object value) {
-		Map<String, Deque<Object>> variableMap;
+		ListMultimap<String, Object> variableMap;
 		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
 			variableMap = globalVariableMap;
 		} else {
 			variableMap = scopedVariableMap.getLast();
 		}
-		Deque<Object> values = variableMap.get(name);
-		if (values == null) {
-			values = new CircularArrayDeque<Object>();
-			variableMap.put(name, values);
-		}
-		values.add(value);
+		variableMap.put(name, value);
 	}
 
 	/**
@@ -275,7 +311,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * QueryInvocation.
 	 */
 	public void createVariableScope() {
-		scopedVariableMap.add(new HashMap<String, Deque<Object>>());
+		scopedVariableMap.add(AcceleoCollections.<String, Object> newCircularArrayDequeMultimap());
 	}
 
 	/**
@@ -368,12 +404,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The map of currently available variables.
 	 */
 	public Map<String, Object> getCurrentVariables() {
-		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
+		ListMultimap<String, Object> variableMap = scopedVariableMap.getLast();
 		Map<String, Object> availableVariables = new HashMap<String, Object>();
-		for (Map.Entry<String, Deque<Object>> var : variableMap.entrySet()) {
-			if (!var.getValue().isEmpty()) {
-				availableVariables.put(var.getKey(), var.getValue().getLast());
-			}
+		for (String key : variableMap.keys()) {
+			List<Object> values = variableMap.get(key);
+			availableVariables.put(key, getLast(values));
 		}
 		return availableVariables;
 	}
@@ -396,11 +431,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	@Override
 	public Object getValueOf(String name) {
 		Object value = null;
-		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
+		ListMultimap<String, Object> variableMap = scopedVariableMap.getLast();
 		if (variableMap.containsKey(name)) {
-			value = variableMap.get(name).getLast();
+			value = getLast(variableMap.get(name));
 		} else if (globalVariableMap.containsKey(name)) {
-			value = globalVariableMap.get(name).getLast();
+			value = getLast(globalVariableMap.get(name));
 		}
 		return value;
 	}
@@ -436,7 +471,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public Object remove(String name) {
-		Map<String, Deque<Object>> variableMap;
+		ListMultimap<String, Object> variableMap;
 		if (scopedVariableMap.getLast().containsKey(name)) {
 			variableMap = scopedVariableMap.getLast();
 		} else if (globalVariableMap.containsKey(name)) {
@@ -445,11 +480,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			return null;
 		}
 
-		final Object removedValue = variableMap.get(name).removeLast();
-		if (variableMap.get(name).size() == 0) {
-			variableMap.remove(name);
-		}
-		return removedValue;
+		return removeLast(variableMap.get(name));
 	}
 
 	/**
@@ -457,8 +488,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * 
 	 * @return Removes and return the last variable scope.
 	 */
-	public Map<String, Deque<Object>> removeVariableScope() {
-		return scopedVariableMap.removeLast();
+	public Map<String, Collection<Object>> removeVariableScope() {
+		return scopedVariableMap.removeLast().asMap();
 	}
 
 	/**
@@ -468,7 +499,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public void replace(String name, Object value) {
-		Map<String, Deque<Object>> variableMap;
+		ListMultimap<String, Object> variableMap;
 		if (name.startsWith(TEMPORARY_CONTEXT_VAR_PREFIX) || name.startsWith(TEMPORARY_INVOCATION_ARG_PREFIX)) {
 			variableMap = globalVariableMap;
 		} else {
@@ -476,7 +507,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		if (variableMap.containsKey(name)) {
-			variableMap.get(name).removeLast();
+			removeLast(variableMap.get(name));
 		}
 		add(name, value);
 	}
@@ -488,7 +519,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 */
 	@Override
 	public String toString() {
-		Map<String, Deque<Object>> variableMap = scopedVariableMap.getLast();
+		ListMultimap<String, Object> variableMap = scopedVariableMap.getLast();
 		return variableMap.toString();
 	}
 
