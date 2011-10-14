@@ -75,15 +75,6 @@ public final class CircularArrayDeque<E> extends AbstractList<E> implements Dequ
 	transient int tail;
 
 	/**
-	 * The number of times this set has been structurally modified. Structural modifications are those that
-	 * change the number of elements in the set. This field is used to make iterators on Collection-views of
-	 * the {@link CompactHashSet} fail-fast.
-	 * 
-	 * @See {@link ConcurrentModificationException}
-	 */
-	transient volatile int modCount;
-
-	/**
 	 * Constructs an empty deque with an initial capacity of {@value #DEFAULT_INITIAL_CAPACITY} elements.
 	 */
 	@SuppressWarnings("unchecked")
