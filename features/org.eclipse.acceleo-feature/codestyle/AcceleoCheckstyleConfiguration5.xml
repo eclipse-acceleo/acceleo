@@ -12,6 +12,7 @@ Checkstyle 5 Configuration for Acceleo
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
+  	<property name="cacheFile" value="$\{cachefile\}"/> 
     <module name="FileContentsHolder"/>
     <module name="JavadocMethod">
       <property name="severity" value="error"/>
