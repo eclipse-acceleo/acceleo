@@ -13,6 +13,7 @@ package org.eclipse.acceleo.common.utils;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 
 import java.util.Collection;
 
@@ -41,5 +42,19 @@ public final class AcceleoCollections {
 	 */
 	public static <K, V> ListMultimap<K, V> newCircularArrayDequeMultimap() {
 		return Multimaps.<K, V> newListMultimap(Maps.<K, Collection<V>> newHashMap(), new DequeSupplier<V>());
+	}
+
+	/**
+	 * Creates a new Multimap using {@link CompactHashSet}s as its backing collection.
+	 * 
+	 * @param <K>
+	 *            Type of the new map's keys.
+	 * @param <V>
+	 *            Type of the new map's values.
+	 * @return A new Multimap using {@link CompactHashSet}s as its backing collection.
+	 */
+	public static <K, V> SetMultimap<K, V> newCompactLinkedHashSetMultimap() {
+		return Multimaps.<K, V> newSetMultimap(Maps.<K, Collection<V>> newHashMap(),
+				new CompactLinkedHashSupplier<V>());
 	}
 }

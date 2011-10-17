@@ -1343,7 +1343,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            Arguments of all templates. Those need to be set for guard evaluation.
 	 */
 	@SuppressWarnings("unchecked")
-	private void evaluateGuards(List<Template> candidates, List<Variable> arguments) {
+	private void evaluateGuards(Iterable<Template> candidates, List<Variable> arguments) {
 		final boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
 		AcceleoEvaluationException exception = null;
@@ -1351,7 +1351,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * NOTE : we depend on the ordering offered by List types. Do not change Collection implementation to
 		 * a non-ordered one.
 		 */
-		for (final Template candidate : new ArrayList<Template>(candidates)) {
+		final Iterator<Template> candidateIterator = candidates.iterator();
+		while (candidateIterator.hasNext()) {
+			final Template candidate = candidateIterator.next();
 			if (candidate.getGuard() == null) {
 				// no need to go any further
 				continue;
@@ -1389,16 +1391,16 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					exception = context.createAcceleoException(candidate, (OCLExpression<C>)candidate
 							.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
 				}
-				candidates.remove(candidate);
+				candidateIterator.remove();
 				continue;
 			}
 
 			// FIXME could be other than Boolean
 			if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
-				candidates.remove(candidate);
+				candidateIterator.remove();
 			}
 		}
-		if (candidates.size() == 0 && exception != null) {
+		if (!candidates.iterator().hasNext() && exception != null) {
 			throw exception;
 		}
 		fireGenerationEvent = fireEvents;
@@ -1547,13 +1549,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			fireGenerationEvent = fireEvents;
 			// retrieve all applicable candidates of the call
-			final List<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
+			final Iterable<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 					.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), template, argValues);
 			evaluateGuards(applicableCandidates, temporaryArgVars);
 			// We now know the actual template that's to be called ; create its variable scope
 			((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).createVariableScope();
 
-			if (applicableCandidates.size() > 0) {
+			if (applicableCandidates.iterator().hasNext()) {
 				actualTemplate = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 						.getMostSpecificTemplate(applicableCandidates, argValues);
 
