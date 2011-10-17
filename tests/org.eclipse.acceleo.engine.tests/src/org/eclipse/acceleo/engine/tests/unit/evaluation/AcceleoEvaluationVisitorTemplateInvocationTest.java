@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import com.google.common.collect.SetMultimap;
+
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
+import org.eclipse.acceleo.common.utils.AcceleoCollections;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -48,7 +48,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	private static final String TEMPLATE_OUTPUT = "templateBodyOutput"; //$NON-NLS-1$
 
 	/** This will need to be set through {@link #mapTemplates()} before any call to the visitor. */
-	private Map<String, Set<Template>> templates;
+	private SetMultimap<String, Template> templates;
 
 	/**
 	 * Tests the evaluation of a template invocation which body evaluates to null.
@@ -225,7 +225,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 		templateVariableExp.setReferredVariable(templateParam);
 		file.getBody().add(file.getBody().size() - 1, templateVariableExp);
 
-		templates.put(subTemplate.getName(), initSet(subTemplate));
+		templates.put(subTemplate.getName(), subTemplate);
 
 		/*
 		 * At this point we have a template with a parameter "s : EString" containing a string literal, a
@@ -272,8 +272,8 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 
 		mtlFileBlock.getBody().add(createOCLExpression('\'' + OUTPUT + '\''));
 
-		templates.put(dummyTemplate.getName(), initSet(dummyTemplate));
-		templates.put(container.getName(), initSet(container));
+		templates.put(dummyTemplate.getName(), dummyTemplate);
+		templates.put(container.getName(), container);
 
 		return dummy;
 	}
@@ -286,20 +286,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		templates = new HashMap<String, Set<Template>>();
-	}
-
-	/**
-	 * Initializes a set of templates containing a single template.
-	 * 
-	 * @param template
-	 *            Template that is to be wrapped into a Set.
-	 * @return The wrapper set.
-	 */
-	private Set<Template> initSet(Template template) {
-		final Set<Template> result = new LinkedHashSet<Template>(1);
-		result.add(template);
-		return result;
+		templates = AcceleoCollections.newCompactLinkedHashSetMultimap();
 	}
 
 	/**

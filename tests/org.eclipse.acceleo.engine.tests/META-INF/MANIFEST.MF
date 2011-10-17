@@ -18,3 +18,5 @@ Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.engine.tests.mock;x-friends:="org.eclipse.acceleo.dynamic.tests",
  org.eclipse.acceleo.engine.tests.suite;x-friends:="org.eclipse.acceleo.tests"
 Bundle-Localization: plugin
+Import-Package: com.google.common.base,
+ com.google.common.collect
