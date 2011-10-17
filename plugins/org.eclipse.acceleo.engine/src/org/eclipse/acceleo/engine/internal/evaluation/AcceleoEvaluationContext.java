@@ -623,7 +623,7 @@ public class AcceleoEvaluationContext<C> {
 					.getString("AcceleoEvaluationContext.OverrodeFiles")); //$NON-NLS-1$
 			message.append('\n').append('\n');
 			for (Map.Entry<String, Integer> file : filteredFiles.entrySet()) {
-				message.append(file.getKey() + " : " + file.getValue().toString() + "times" + '\n'); //$NON-NLS-1$ //$NON-NLS-2$
+				message.append(file.getKey() + " : " + file.getValue().toString() + " times" + '\n'); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			AcceleoEnginePlugin.log(message.toString(), false);
 		}
