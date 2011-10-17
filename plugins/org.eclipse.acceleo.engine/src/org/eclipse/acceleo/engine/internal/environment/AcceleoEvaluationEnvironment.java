@@ -16,6 +16,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 
@@ -44,13 +45,11 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
-import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicModulesRegistry;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -76,7 +75,6 @@ import org.eclipse.ocl.ecore.SetType;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.options.EvaluationOptions;
 import org.eclipse.ocl.util.Bag;
-import org.eclipse.ocl.utilities.PredefinedType;
 
 /**
  * This will allow us to accurately evaluate custom operations defined in the Acceleo standard library and
@@ -225,20 +223,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	@Override
 	public Object callOperation(EOperation operation, int opcode, Object source, Object[] args) {
 		Object result = null;
-		if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
-			result = AcceleoLibraryOperationVisitor.callStandardOperation(this, operation, source, args);
-		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
-			result = AcceleoLibraryOperationVisitor.callNonStandardOperation(this, operation, source, args);
+		/*
+		 * Shortcut OCL for operations returning "EJavaObject" : these could be collections, but OCL would
+		 * discard any value other than the first in such cases. See bug 287052.
+		 */
+		if (operation.getEType() == EcorePackage.eINSTANCE.getEJavaObject()) {
+			result = callOperationWorkaround287052(operation, opcode, source, args);
 		} else {
-			/*
-			 * Shortcut OCL for operations returning "EJavaObject" : these could be collections, but OCL would
-			 * discard any value other than the first in such cases. See bug 287052.
-			 */
-			if (operation.getEType() == EcorePackage.eINSTANCE.getEJavaObject()) {
-				result = callOperationWorkaround287052(operation, opcode, source, args);
-			} else {
-				result = super.callOperation(operation, opcode, source, args);
-			}
+			result = super.callOperation(operation, opcode, source, args);
 		}
 		return result;
 	}
@@ -337,13 +329,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Arguments of the call.
 	 * @return The set of all applicable templates for these arguments
 	 */
-	public Iterable<Template> getAllCandidates(Module origin, Template call, List<Object> arguments) {
-		final List<Object> argumentTypes = new ArrayList<Object>(arguments.size());
-		for (final Object arg : arguments) {
-			if (arg instanceof EObject) {
-				argumentTypes.add(((EObject)arg).eClass());
-			} else if (arg != null) {
-				argumentTypes.add(arg.getClass());
+	public List<Template> getAllCandidates(Module origin, Template call, Object[] arguments) {
+		final List<Object> argumentTypes = new ArrayList<Object>(arguments.length);
+		for (int i = 0; i < arguments.length; i++) {
+			if (arguments[i] instanceof EObject) {
+				argumentTypes.add(((EObject)arguments[i]).eClass());
+			} else if (arguments[i] != null) {
+				argumentTypes.add(arguments[i].getClass());
 			} else {
 				argumentTypes.add(NULL_ARGUMENT);
 			}
@@ -360,7 +352,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		final List<Template> overriding = getAllCandidateOverriding(origin, orderedNamesakes, argumentTypes);
 
 		// overriding templates come first, then namesakes
-		return Iterables.concat(dynamicOverriding, overriding, orderedNamesakes);
+		return Lists.newArrayList(Iterables.concat(dynamicOverriding, overriding, orderedNamesakes));
 	}
 
 	/**
@@ -372,20 +364,11 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Arguments of the call.
 	 * @return The most specific templates for <code>arguments</code>.
 	 */
-	public Template getMostSpecificTemplate(Iterable<Template> candidates, List<Object> arguments) {
+	public Template getMostSpecificTemplate(Iterable<Template> candidates, Object[] arguments) {
 		final Iterator<Template> candidateIterator = candidates.iterator();
 		Template mostSpecific = candidateIterator.next();
 		if (!candidateIterator.hasNext()) {
 			return mostSpecific;
-		}
-
-		final List<Object> argumentTypes = new ArrayList<Object>(arguments.size());
-		for (final Object arg : arguments) {
-			if (arg instanceof EObject) {
-				argumentTypes.add(((EObject)arg).eClass());
-			} else if (arg != null) {
-				argumentTypes.add(arg.getClass());
-			}
 		}
 
 		while (candidateIterator.hasNext()) {
@@ -445,30 +428,6 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			value = getLast(globalVariableMap.get(name));
 		}
 		return value;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ocl.AbstractEvaluationEnvironment#overrides(org.eclipse.emf.ecore.EOperation, int)
-	 */
-	@Override
-	public boolean overrides(EOperation operation, int opcode) {
-		boolean result = false;
-		if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
-			result = true;
-		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
-			if (opcode == PredefinedType.PLUS) {
-				Adapter adapter = EcoreUtil.getAdapter(operation.eAdapters(), AcceleoOverrideAdapter.class);
-				result = adapter != null;
-				operation.eAdapters().remove(adapter);
-			} else {
-				result = true;
-			}
-		} else {
-			result = super.overrides(operation, opcode);
-		}
-		return result;
 	}
 
 	/**
@@ -596,7 +555,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		if (namesakes.size() == 1) {
 			return namesakes;
 		}
-		namesakes.retainAll(applicableTemplates(candidates, argumentTypes));
+		namesakes.retainAll(applicableTemplates(namesakes, argumentTypes));
 		return namesakes;
 	}
 
@@ -618,7 +577,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 
 		List<Module> imports = module.getImports();
-		for (Module importedModule : imports) {
+		for (int i = 0; i < imports.size(); i++) {
+			final Module importedModule = imports.get(i);
 			scope = Sets.union(scope, Collections.singleton(importedModule));
 			scope = Sets.union(scope, getExtendedScope(importedModule));
 		}
@@ -663,8 +623,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private List<Template> getAllCandidateOverriding(Module origin, List<Template> overridenTemplates,
 			List<Object> argumentTypes) {
 		final List<Template> candidateOverriding = new ArrayList<Template>();
-		for (final Template overriden : overridenTemplates) {
-			final Set<Template> candidates = overridingTemplates.get(overriden);
+		for (int i = 0; i < overridenTemplates.size(); i++) {
+			final Set<Template> candidates = overridingTemplates.get(overridenTemplates.get(i));
 			if (candidates != null) {
 				final Set<Template> applicableCandidates = applicableTemplates(candidates, argumentTypes);
 				for (Template template : applicableCandidates) {
@@ -696,9 +656,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private Set<Template> getAllDynamicCandidateOverriding(List<Template> overridenTemplates,
 			List<Object> argumentTypes) {
 		final Set<Template> dynamicOverriding = new CompactLinkedHashSet<Template>();
-		for (final Template overriden : overridenTemplates) {
-			final Set<Template> candidates = dynamicOverrides.get(overriden);
-			if (candidates != null) {
+		for (int i = 0; i < overridenTemplates.size(); i++) {
+			final Set<Template> candidates = dynamicOverrides.get(overridenTemplates.get(i));
+			if (candidates != null && !candidates.isEmpty()) {
 				final Set<Template> applicableCandidates = applicableTemplates(candidates, argumentTypes);
 				dynamicOverriding.addAll(applicableCandidates);
 			}
@@ -1023,15 +983,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 *            Types of the actual arguments of the call.
 	 * @return The most specific templates for <code>actualArgumentTypes</code>.
 	 */
-	private Template mostSpecificTemplate(Template template1, Template template2,
-			List<Object> actualArgumentTypes) {
+	private Template mostSpecificTemplate(Template template1, Template template2, Object[] actualArgumentTypes) {
 		Template mostSpecific;
 		// number of arguments which are more specific on template1 as compared to template2
 		int template1SpecificArgumentCount = 0;
 		// ...
 		int template2SpecificArgumentCount = 0;
-		for (int i = 0; i < actualArgumentTypes.size(); i++) {
-			final Object actualArgumentType = actualArgumentTypes.get(i);
+		for (int i = 0; i < actualArgumentTypes.length; i++) {
+			final Object actualArgumentType = actualArgumentTypes[i];
 			if (template1.getParameter().size() == 0 && template2.getParameter().size() == 0) {
 				continue;
 			}
@@ -1182,7 +1141,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			int result = 0;
 			if (no1Override && no2Override) {
 				// same "level". Use the name's ordering
-				result = currentLevel1.getName().compareTo(currentLevel2.getName());
+				result = o1.getName().compareTo(o2.getName());
 			} else if (no1Override) {
 				result = 1;
 			} else if (no2Override) {

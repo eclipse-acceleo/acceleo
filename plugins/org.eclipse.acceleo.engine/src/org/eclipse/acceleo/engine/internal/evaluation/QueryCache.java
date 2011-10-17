@@ -37,7 +37,7 @@ public class QueryCache {
 	private final Object invalid;
 
 	/** The actual Map backing this cache. */
-	private final Map<Query, Map<List<Object>, Object>> queryResults = new HashMap<Query, Map<List<Object>, Object>>();
+	private final Map<Query, Map<Object, Object>> queryResults = new HashMap<Query, Map<Object, Object>>();
 
 	/**
 	 * We need to know the "invalid" instance.
@@ -99,18 +99,24 @@ public class QueryCache {
 		if (!AcceleoPreferences.isQueryCacheEnabled()) {
 			return;
 		}
-		Map<List<Object>, Object> cache = queryResults.get(query);
+
+		Object key = params;
+		if (params.size() == 1) {
+			key = params.get(0);
+		}
+
+		Map<Object, Object> cache = queryResults.get(query);
 		if (cache == null) {
-			cache = new HashMap<List<Object>, Object>();
+			cache = new HashMap<Object, Object>();
 			queryResults.put(query, cache);
 		}
 
 		if (result == invalid) {
-			cache.put(params, INVALID_QUERY_RESULT);
+			cache.put(key, INVALID_QUERY_RESULT);
 		} else if (result == null) {
-			cache.put(params, NULL_QUERY_RESULT);
+			cache.put(key, NULL_QUERY_RESULT);
 		} else {
-			cache.put(params, result);
+			cache.put(key, result);
 		}
 	}
 
@@ -130,9 +136,14 @@ public class QueryCache {
 			return NO_CACHED_RESULT;
 		}
 
-		Map<List<Object>, Object> cache = queryResults.get(query);
+		Object key = params;
+		if (params.size() == 1) {
+			key = params.get(0);
+		}
 
-		Object result = cache.get(params);
+		Map<Object, Object> cache = queryResults.get(query);
+
+		Object result = cache.get(key);
 		if (result == null) {
 			result = NO_CACHED_RESULT;
 		}

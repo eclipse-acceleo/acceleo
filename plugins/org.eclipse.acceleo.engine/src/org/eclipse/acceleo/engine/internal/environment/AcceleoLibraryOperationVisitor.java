@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -1126,17 +1128,13 @@ public final class AcceleoLibraryOperationVisitor {
 		if (substring == null || replacement == null) {
 			throw new NullPointerException();
 		}
-		// substitute replaces Strings, not regexes.
-		// Surrounding the regex with \Q [...] \E allows just that
-		final String regex = "\\Q" + substring + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
-		// We also need to escape backslashes and dollar signs in the replacement (scary!)
-		final String replacementValue = replacement.replaceAll("\\\\", "\\\\\\\\").replaceAll("\\$", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				"\\\\\\$"); //$NON-NLS-1$
 
 		if (substituteAll) {
-			return source.replaceAll(regex, replacementValue);
+			return Pattern.compile(substring, Pattern.LITERAL).matcher(source).replaceAll(
+					Matcher.quoteReplacement(replacement));
 		}
-		return source.replaceFirst(regex, replacementValue);
+		return Pattern.compile(substring, Pattern.LITERAL).matcher(source).replaceFirst(
+				Matcher.quoteReplacement(replacement));
 	}
 
 	/**

@@ -791,8 +791,8 @@ public class AcceleoEvaluationContext<C> {
 	 *            The generation event that is to be sent to registered listeners.
 	 */
 	private void fireTextGenerated(AcceleoTextGenerationEvent event) {
-		for (IAcceleoTextGenerationListener listener : listeners) {
-			listener.textGenerated(event);
+		for (int i = 0; i < listeners.size(); i++) {
+			listeners.get(i).textGenerated(event);
 		}
 	}
 

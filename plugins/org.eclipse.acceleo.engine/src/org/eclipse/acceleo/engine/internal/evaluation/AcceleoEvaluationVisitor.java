@@ -31,6 +31,7 @@ import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoLibraryOperationVisitor;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -51,8 +52,10 @@ import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -876,8 +879,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * Variables have been positionned by either the AcceleoEngine (first template) or this visitor
 		 * (template invocation).
 		 */
-		for (final org.eclipse.ocl.ecore.OCLExpression nested : template.getBody()) {
-			getVisitor().visitExpression((OCLExpression<C>)nested);
+		List<org.eclipse.ocl.ecore.OCLExpression> nestedExpressions = template.getBody();
+		for (int i = 0; i < nestedExpressions.size(); i++) {
+			getVisitor().visitExpression((OCLExpression<C>)nestedExpressions.get(i));
 		}
 		String result = context.closeContext();
 		if (template.getPost() != null) {
@@ -1098,19 +1102,51 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					|| callExp.getArgument().get(0).getType() == stringType) {
 				((EObject)callExp.getReferredOperation()).eAdapters().add(new AcceleoOverrideAdapter());
 			}
-		}
-		/*
-		 * OCL used "/" as operation name for the division ... Which means divisions will never be
-		 * serializable : its URI is invalid. We'll then try and "trick" OCL for these.
-		 */
-		if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
+		} else if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
+			/*
+			 * OCL used "/" as operation name for the division ... Which means divisions will never be
+			 * serializable : its URI is invalid. We'll then try and "trick" OCL for these.
+			 */
 			URI uri = ((InternalEObject)callExp.getReferredOperation()).eProxyURI();
 			if (uri.fragment() != null && uri.fragment().endsWith("%2F")) { //$NON-NLS-1$
 				callExp.setOperationCode(PredefinedType.DIVIDE);
 			}
 		}
+
+		// We know these are handled by us, no need to carry on with OCL.
+		final EOperation operation = (EOperation)callExp.getReferredOperation();
+		final Object result;
 		lastSourceExpression = callExp.getSource();
-		return getDelegate().visitOperationCallExp(callExp);
+		boolean isStandardOperation = false;
+		boolean isNonStandardOperation = false;
+		final List<EAnnotation> annotations = operation.getEAnnotations();
+		for (int i = 0; i < annotations.size(); i++) {
+			EAnnotation annotation = annotations.get(i);
+			if ("MTL non-standard".equals(annotation.getSource())) { //$NON-NLS-1$
+				isNonStandardOperation = true;
+				break;
+			} else if ("MTL".equals(annotation.getSource())) { //$NON-NLS-1$
+				isStandardOperation = true;
+				break;
+			}
+		}
+		if (isStandardOperation || isNonStandardOperation) {
+			final Object source = getDelegate().visitExpression(callExp.getSource());
+			final Object[] args = new Object[callExp.getArgument().size()];
+			for (int i = 0; i < callExp.getArgument().size(); i++) {
+				args[i] = getDelegate().visitExpression(callExp.getArgument().get(i));
+			}
+			if (isStandardOperation) {
+				result = AcceleoLibraryOperationVisitor.callStandardOperation(
+						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
+			} else {
+				result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
+			}
+		} else {
+			return getDelegate().visitOperationCallExp(callExp);
+		}
+		return result;
 	}
 
 	/**
@@ -1343,7 +1379,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            Arguments of all templates. Those need to be set for guard evaluation.
 	 */
 	@SuppressWarnings("unchecked")
-	private void evaluateGuards(Iterable<Template> candidates, List<Variable> arguments) {
+	private void evaluateGuards(List<Template> candidates, List<Variable> arguments) {
 		final boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
 		AcceleoEvaluationException exception = null;
@@ -1352,7 +1388,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * a non-ordered one.
 		 */
 		final Iterator<Template> candidateIterator = candidates.iterator();
-		while (candidateIterator.hasNext()) {
+		int current = 0;
+		int size = candidates.size();
+		while (current < size) {
+			current++;
 			final Template candidate = candidateIterator.next();
 			if (candidate.getGuard() == null) {
 				// no need to go any further
@@ -1392,15 +1431,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 							.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
 				}
 				candidateIterator.remove();
-				continue;
-			}
-
-			// FIXME could be other than Boolean
-			if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
+			} else if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
+				// FIXME could be other than Boolean
 				candidateIterator.remove();
 			}
 		}
-		if (!candidates.iterator().hasNext() && exception != null) {
+		if (candidates.isEmpty() && exception != null) {
 			throw exception;
 		}
 		fireGenerationEvent = fireEvents;
@@ -1520,16 +1556,17 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			fireGenerationEvent = fireEvents;
 		} else {
-			final List<Object> argValues = new ArrayList<Object>();
+			final int argumentCount = invocation.getArgument().size();
+			final Object[] argValues = new Object[argumentCount];
 			// Determine values of the arguments
 			boolean fireEvents = fireGenerationEvent;
 			fireGenerationEvent = false;
-			for (int i = 0; i < invocation.getArgument().size(); i++) {
+			for (int i = 0; i < argumentCount; i++) {
+				final OCLExpression<C> argument = (OCLExpression<C>)invocation.getArgument().get(i);
 				final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
 				tempVar.setName(TEMPORARY_INVOCATION_ARG_PREFIX + i);
-				tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation
-						.getArgument().get(i)));
-				tempVar.setType((EClassifier)((OCLExpression<C>)invocation.getArgument().get(i)).getType());
+				tempVar.setInitExpression(new ParameterInitExpression(argument));
+				tempVar.setType((EClassifier)argument.getType());
 				temporaryArgVars.add(tempVar);
 				// Evaluate the value of this new variable
 				getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
@@ -1537,19 +1574,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (isInvalid(argValue)) {
 					final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 					final AcceleoEvaluationException exception = context.createAcceleoException(invocation,
-							(OCLExpression<C>)invocation.getArgument().get(i),
-							"AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
+							argument, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
 					// Evaluation of this template failed. Remove all previously created variables
 					for (int j = 0; j <= i; j++) {
 						getEvaluationEnvironment().remove(invocation.getArgument().get(j).getName());
 					}
 					throw exception;
 				}
-				argValues.add(getEvaluationEnvironment().getValueOf(tempVar.getName()));
+				argValues[i] = getEvaluationEnvironment().getValueOf(tempVar.getName());
 			}
 			fireGenerationEvent = fireEvents;
 			// retrieve all applicable candidates of the call
-			final Iterable<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
+			final List<Template> applicableCandidates = ((AcceleoEvaluationEnvironment)getEvaluationEnvironment())
 					.getAllCandidates((Module)EcoreUtil.getRootContainer(invocation), template, argValues);
 			evaluateGuards(applicableCandidates, temporaryArgVars);
 			// We now know the actual template that's to be called ; create its variable scope
