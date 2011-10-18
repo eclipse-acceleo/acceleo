@@ -975,10 +975,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		context.addToStack(expression);
 
-		if (context.getProgressMonitor().isCanceled()) {
-			cancel(astFragment, debugInput, result);
-		}
-
 		if (debug != null && !(expression instanceof StringLiteralExp)) {
 			debugInput = lastEObjectSelfValue;
 			astFragment = new ASTFragment(expression);
@@ -1215,15 +1211,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * 
 	 * @param astFragment
 	 *            Current debug AST fragment.
-	 * @param debugInput
-	 *            Current debug input
-	 * @param result
-	 *            Result of the evaluation from which we detected the operation canceling.
 	 */
-	private void cancel(ASTFragment astFragment, EObject debugInput, Object result) {
+	private void cancel(ASTFragment astFragment) {
 		// #276667 "debug" can be null
 		if (debug != null) {
-			debug.stepDebugOutput(astFragment, debugInput, result);
 			debug.endDebug(astFragment);
 			debug = null;
 		}
@@ -1714,6 +1705,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
+			if (context.getProgressMonitor().isCanceled()) {
+				cancel(new ASTFragment(expression));
+			}
 			if (delegate != null) {
 				result = delegate.visitAcceleoTemplate((Template)expression);
 			} else {
@@ -1740,6 +1734,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				result = ""; //$NON-NLS-1$
 			}
 		} else if (expression instanceof FileBlock) {
+			if (context.getProgressMonitor().isCanceled()) {
+				cancel(new ASTFragment(expression));
+			}
 			if (delegate != null) {
 				delegate.visitAcceleoFileBlock((FileBlock)expression);
 			} else {
