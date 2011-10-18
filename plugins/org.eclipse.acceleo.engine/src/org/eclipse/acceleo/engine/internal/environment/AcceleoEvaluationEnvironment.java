@@ -540,13 +540,14 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	private Set<Template> getAllCandidateNamesakes(Module origin, Template call, List<Object> argumentTypes) {
 		final Set<Template> namesakes = new CompactLinkedHashSet<Template>();
 		final Set<Template> candidates = templates.get(call.getName());
-		if (candidates == null) {
+		final int candidateSize = candidates.size();
+		if (candidateSize == 0) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationEnvironment.ModuleResolutionError")); //$NON-NLS-1$
 		}
 		Set<Module> scope = new CompactHashSet<Module>();
 		scope.add(origin);
-		scope = Sets.union(scope, getScopeOf(origin));
+		scope.addAll(getScopeOf(origin));
 		for (Template candidate : candidates) {
 			if (scope.contains(candidate.eContainer())) {
 				namesakes.add(candidate);
