@@ -545,9 +545,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
 					.getString("AcceleoEvaluationEnvironment.ModuleResolutionError")); //$NON-NLS-1$
 		}
-		Set<Module> scope = new CompactHashSet<Module>();
-		scope.add(origin);
-		scope.addAll(getScopeOf(origin));
+		Set<Module> scope = Sets.union(Collections.singleton(origin), getScopeOf(origin));
 		for (Template candidate : candidates) {
 			if (scope.contains(candidate.eContainer())) {
 				namesakes.add(candidate);
