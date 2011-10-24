@@ -73,7 +73,10 @@ public final class AcceleoPreferences {
 	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS = false;
 
 	/** Default value for the notifications type enablement. */
-	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS_TYPE = true;
+	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS_TYPE = false;
+
+	/** Default value for the force disablement of the notifications. */
+	private static final boolean DEFAULT_FORCE_DISABLE_NOTIFICATIONS = true;
 
 	/** Preferences scope for the Acceleo common plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
@@ -209,7 +212,7 @@ public final class AcceleoPreferences {
 	 */
 	public static boolean areNotificationsForcedDisabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_FORCED_DEACTIVATION,
-				DEFAULT_ENABLE_NOTIFICATIONS);
+				DEFAULT_FORCE_DISABLE_NOTIFICATIONS);
 	}
 
 	/**
