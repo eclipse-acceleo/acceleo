@@ -169,7 +169,7 @@ public abstract class AbstractAcceleoGenerator {
 	 */
 	public Map<String, String> generate(Monitor monitor) throws IOException {
 		boolean notificationsState = false;
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.areNotificationsForcedDisabled()) {
 			notificationsState = AcceleoPreferences.areNotificationsEnabled();
 			AcceleoPreferences.switchNotifications(true);
 		}
@@ -209,7 +209,7 @@ public abstract class AbstractAcceleoGenerator {
 				System.err.println(AcceleoEngineMessages.getString("AcceleoService.NoGenerationHasOccurred")); //$NON-NLS-1$
 			}
 		}
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.areNotificationsForcedDisabled()) {
 			AcceleoPreferences.switchNotifications(notificationsState);
 		}
 		return result;
