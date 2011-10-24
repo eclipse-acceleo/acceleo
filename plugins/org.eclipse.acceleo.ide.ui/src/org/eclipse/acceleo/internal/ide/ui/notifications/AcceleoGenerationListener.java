@@ -118,6 +118,7 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 			if (iFile.getProject().isAccessible()
 					&& iFile.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 				// TODO Detection of the files generated for which a notification should not be fired
+				result = false;
 			}
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
