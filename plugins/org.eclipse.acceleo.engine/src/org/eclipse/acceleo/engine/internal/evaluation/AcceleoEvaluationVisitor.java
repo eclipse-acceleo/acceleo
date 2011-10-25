@@ -782,6 +782,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
+		if (context.getProgressMonitor().isCanceled()) {
+			cancel(new ASTFragment(invocation));
+		}
 		final Query query = invocation.getDefinition();
 		String implicitContextVariableName = null;
 
