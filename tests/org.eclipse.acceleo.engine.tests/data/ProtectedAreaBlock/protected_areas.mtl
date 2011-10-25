@@ -820,6 +820,83 @@ protected block
 [/if]
 [/template]
 
+[template public test_protected_area_multiple_generations(anEClass : EClass)]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[/template]
+
+[template public test_protected_area_performance_multiple_generations(anEClass : EClass)]
+[for (it : Integer | Sequence{1..10000})]
+[file ('test_protected_area_performance_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[/for]
+[/template]
+
+[template public test_protected_area_variable_marker_id_multiple_generations(anEClass : EClass)]
+[file ('test_protected_area_variable_marker_id_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_variable_marker_id_multiple_generations', false, 'Cp1252')]
+[protected ('protected_alt')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_variable_marker_id_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[/template]
+
+[template public test_protected_area_conditional_multiple_generations(anEClass : EClass)]
+[file ('test_protected_area_conditional_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[file ('test_protected_area_conditional_multiple_generations', false, 'Cp1252')]
+protected
+[/file]
+[file ('test_protected_area_conditional_multiple_generations', false, 'Cp1252')]
+[protected ('protected')]
+protected block
+[/protected]
+[/file]
+[/template]
+
 [template public protected_file_template_let_if(anEClass : EClass, path : String)]
 [file (path, false, 'Cp1252')]
 [let str : String = 'a']

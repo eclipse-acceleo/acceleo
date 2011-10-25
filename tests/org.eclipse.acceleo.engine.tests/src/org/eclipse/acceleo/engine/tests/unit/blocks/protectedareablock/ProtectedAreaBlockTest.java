@@ -195,6 +195,10 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 	}
 
 	private void generate(String templateName) throws IOException {
+		this.generate(templateName, 0);
+	}
+
+	private void generate(String templateName, int numberOfLostFile) throws IOException {
 		generationRoot = new File(getGenerationRootPath("ProtectedAreaIndent")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ProtectedAreaIndent")); //$NON-NLS-1$
 
@@ -235,7 +239,7 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 				lostFiles++;
 			}
 		}
-		assertEquals("A lost file has been created", 0, lostFiles); //$NON-NLS-1$
+		assertEquals(lostFiles + " lost files have been created", numberOfLostFile, lostFiles); //$NON-NLS-1$
 	}
 
 	public void testProtectedAreaFileBlock() throws IOException {
@@ -541,4 +545,21 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 	public void testProtectedAreaTemplateIfFileForLetElseLetTemplateBlockMerge() throws IOException {
 		generate("test_protected_area_template_if_file_for_let_elselet_template_block_merge"); //$NON-NLS-1$
 	}
+
+	public void testProtectedAreaMultipleGenerations() throws IOException {
+		generate("test_protected_area_multiple_generations", 0); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaPerforanceMultipleGenerations() throws IOException {
+		generate("test_protected_area_performance_multiple_generations", 0); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaVariableMarkerIdMultipleGenerations() throws IOException {
+		generate("test_protected_area_variable_marker_id_multiple_generations", 1); //$NON-NLS-1$
+	}
+
+	public void testProtectedAreaConditionalMultipleGenerations() throws IOException {
+		generate("test_protected_area_conditional_multiple_generations", 1); //$NON-NLS-1$
+	}
+
 }
