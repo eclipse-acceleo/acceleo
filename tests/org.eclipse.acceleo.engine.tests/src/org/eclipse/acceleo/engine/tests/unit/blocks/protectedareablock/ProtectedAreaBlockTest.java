@@ -217,12 +217,6 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		new AcceleoService().doGenerateTemplate(module, templateName, templateArgs, generationRoot,
 				new BasicMonitor());
 
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod + ':' + e.getMessage());
-		}
-
 		int lostFiles = 0;
 		for (File generated : getFiles(generationRoot)) {
 			if (generated.getName().equals(templateName)) {
