@@ -151,7 +151,7 @@ public final class NotificationDialogUtil {
 		initColor(preferences);
 
 		shell = new Shell(Display.getDefault().getActiveShell(), SWT.NO_FOCUS | SWT.NO_TRIM);
-		if (!shell.isDisposed()) {			
+		if (!shell.isDisposed()) {
 			shell.setLayout(new FillLayout());
 			shell.setForeground(fgColor);
 			shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
@@ -170,7 +170,7 @@ public final class NotificationDialogUtil {
 		gl.marginBottom = 5;
 
 		inner.setLayout(gl);
-		if (!shell.isDisposed()) {			
+		if (!shell.isDisposed()) {
 			shell.addListener(SWT.Resize, new Listener() {
 				public void handleEvent(Event e) {
 					NotificationDialogUtil.handleEventDelegate();
@@ -227,6 +227,7 @@ public final class NotificationDialogUtil {
 		text.setLayoutData(gd);
 		text.setForeground(fgColor);
 		text.setText(message);
+		text.addSelectionListener(hyperlinkListener);
 
 		if (!shell.isDisposed()) {
 			shell.setSize(NotificationUtils.getNotificationWidth(preferences), minHeight);
@@ -234,12 +235,14 @@ public final class NotificationDialogUtil {
 
 		fadeInAndOut(preferences, minHeight);
 	}
-	
+
 	/**
 	 * Fades in and out the notification.
 	 * 
-	 * @param preferences The preferences.
-	 * @param minHeight The minimal height of the notification.
+	 * @param preferences
+	 *            The preferences.
+	 * @param minHeight
+	 *            The minimal height of the notification.
 	 */
 	private static void fadeInAndOut(IEclipsePreferences preferences, int minHeight) {
 		if (Display.getDefault().getActiveShell() == null

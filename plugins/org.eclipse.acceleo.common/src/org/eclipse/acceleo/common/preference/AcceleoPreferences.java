@@ -71,13 +71,13 @@ public final class AcceleoPreferences {
 	private static final boolean DEFAULT_ENABLE_DEBUG_MESSAGES = true;
 
 	/** Default value for the notifications enablement. */
-	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS = false;
+	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS = true;
 
 	/** Default value for the notifications type enablement. */
-	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS_TYPE = false;
+	private static final boolean DEFAULT_ENABLE_NOTIFICATIONS_TYPE = true;
 
 	/** Default value for the force disablement of the notifications. */
-	private static final boolean DEFAULT_FORCE_DISABLE_NOTIFICATIONS = true;
+	private static final boolean DEFAULT_FORCE_DISABLE_NOTIFICATIONS = false;
 
 	/** Preferences scope for the Acceleo common plugin. */
 	private static final IEclipsePreferences PREFERENCES_SCOPE = new InstanceScope()
