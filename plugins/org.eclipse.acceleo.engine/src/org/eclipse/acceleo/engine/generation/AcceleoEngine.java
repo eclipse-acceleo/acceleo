@@ -326,7 +326,11 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 					guard.getEvaluationEnvironment().add(SELF_CONTEXT_VARIABLE_NAME, value);
 				}
 			}
-			guardValue = ((Boolean)guard.evaluate()).booleanValue();
+			// FIXME [362056]
+			Object result = guard.evaluate();
+			if (result instanceof Boolean) {
+				guardValue = ((Boolean)result).booleanValue();
+			}
 			// reset variables
 			for (Variable var : template.getParameter()) {
 				guard.getEvaluationEnvironment().remove(var.getName());
