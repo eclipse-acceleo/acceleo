@@ -10,14 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.notifications;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
-import org.eclipse.acceleo.common.ui.notification.NotificationDialogUtil;
-import org.eclipse.acceleo.common.ui.notification.NotificationType;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
-import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
-import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.widgets.Display;
@@ -29,6 +22,72 @@ import org.eclipse.swt.widgets.Display;
  * @since 3.2
  */
 public class AcceleoLogListener implements ILogListener {
+
+	/**
+	 * The number of errors that occurred during the generation.
+	 */
+	private static int errors;
+
+	/**
+	 * The number of cancel that occurred during the generation.
+	 */
+	private static int cancels;
+
+	/**
+	 * The number of warnings that occurred during the generation.
+	 */
+	private static int warnings;
+
+	/**
+	 * The number of infos that occurred during the generation.
+	 */
+	private static int infos;
+
+	/**
+	 * Reset the counters.
+	 */
+	public static void resetCounters() {
+		errors = 0;
+		cancels = 0;
+		warnings = 0;
+		infos = 0;
+	}
+
+	/**
+	 * Returns the number of errors found during the generation.
+	 * 
+	 * @return The number of errors found during the generation.
+	 */
+	public static int getErrors() {
+		return errors;
+	}
+
+	/**
+	 * Returns the number of warnings found during the generation.
+	 * 
+	 * @return The number of warnings found during the generation.
+	 */
+	public static int getWarnings() {
+		return warnings;
+	}
+
+	/**
+	 * Returns the number of cancels found during the generation.
+	 * 
+	 * @return The number of cancels found during the generation.
+	 */
+	public static int getCancels() {
+		return cancels;
+	}
+
+	/**
+	 * Returns the number of infos found during the generation.
+	 * 
+	 * @return The number of infos found during the generation.
+	 */
+	public static int getInfos() {
+		return infos;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -55,48 +114,37 @@ public class AcceleoLogListener implements ILogListener {
 	 *            The plugin launching the event.
 	 */
 	private static void delegateLog(IStatus status, String plugin) {
-		String title = ""; //$NON-NLS-1$
-		if (AcceleoCommonPlugin.PLUGIN_ID.equals(plugin)) {
-			title = AcceleoUIMessages.getString("AcceleoNotifications.CommonTitle"); //$NON-NLS-1$
-		} else if (AcceleoEnginePlugin.PLUGIN_ID.equals(plugin)) {
-			title = AcceleoUIMessages.getString("AcceleoNotifications.EngineTitle"); //$NON-NLS-1$
-		} else if (AcceleoUIActivator.PLUGIN_ID.equals(plugin)) {
-			title = AcceleoUIMessages.getString("AcceleoNotifications.UITitle"); //$NON-NLS-1$
-		} else if (AcceleoTraceabilityPlugin.PLUGIN_ID.equals(plugin)) {
-			title = AcceleoUIMessages.getString("AcceleoNotifications.TraceabilityTitle"); //$NON-NLS-1$
+		if (AcceleoPreferences.areNotificationsForcedDisabled()
+				|| !AcceleoPreferences.areNotificationsEnabled()) {
+			return;
 		}
-
-		NotificationType type = null;
-		boolean shouldNotity = true;
 		int severity = status.getSeverity();
 		switch (severity) {
 			case IStatus.CANCEL:
-				type = NotificationType.CANCEL;
-				shouldNotity = AcceleoPreferences.areCancelNotificationsEnabled();
+				if (AcceleoPreferences.areCancelNotificationsEnabled()) {
+					cancels++;
+				}
 				break;
 			case IStatus.WARNING:
-				type = NotificationType.WARNING;
-				shouldNotity = AcceleoPreferences.areWarningNotificationsEnabled();
+				if (AcceleoPreferences.areWarningNotificationsEnabled()) {
+					warnings++;
+				}
 				break;
 			case IStatus.ERROR:
-				type = NotificationType.ERROR;
-				shouldNotity = AcceleoPreferences.areErrorNotificationsEnabled();
+				if (AcceleoPreferences.areErrorNotificationsEnabled()) {
+					errors++;
+				}
 				break;
 			case IStatus.INFO:
-				type = NotificationType.INFO;
-				shouldNotity = AcceleoPreferences.areInfoNotificationsEnabled();
-				break;
-			case IStatus.OK:
-				type = NotificationType.OK;
-				shouldNotity = AcceleoPreferences.areOKNotificationsEnabled();
+				if (AcceleoPreferences.areInfoNotificationsEnabled()) {
+					infos++;
+				}
 				break;
 			default:
-				type = NotificationType.ERROR;
-				shouldNotity = AcceleoPreferences.areErrorNotificationsEnabled();
+				if (AcceleoPreferences.areErrorNotificationsEnabled()) {
+					errors++;
+				}
 				break;
-		}
-		if (shouldNotity) {
-			NotificationDialogUtil.notify(title, status.getMessage(), type);
 		}
 	}
 }

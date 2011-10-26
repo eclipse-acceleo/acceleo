@@ -17,6 +17,7 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.ui.notification.NotificationDialogUtil;
 import org.eclipse.acceleo.common.ui.notification.NotificationType;
+import org.eclipse.acceleo.common.ui.notification.NotificationUtils;
 import org.eclipse.acceleo.engine.event.AbstractAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.event.AcceleoTextGenerationEvent;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -26,7 +27,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * The Acceleo log listener.
@@ -48,6 +53,7 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 
 	@Override
 	public void generationStart(Monitor monitor, File targetFolder) {
+		AcceleoLogListener.resetCounters();
 		start = System.currentTimeMillis();
 	}
 
@@ -64,18 +70,33 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 				&& AcceleoPreferences.areSuccessNotificationsEnabled()) {
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
-					long time = System.currentTimeMillis() - start;
-					Double finalTime = Double.valueOf(Double.valueOf(time).doubleValue() / 1000d);
-
-					NotificationDialogUtil.notify(AcceleoUIMessages
-							.getString("AcceleoNotifications.FilesGeneratedTitle"), AcceleoUIMessages //$NON-NLS-1$
-							.getString("AcceleoNotifications.FilesGeneratedMessage", Integer //$NON-NLS-1$
-									.valueOf(filesGenerated.size()), finalTime), NotificationType.SUCCESS);
+					Double finalTime = Double.valueOf(Double.valueOf(System.currentTimeMillis() - start)
+							.doubleValue() / 1000d);
+					int errors = AcceleoLogListener.getErrors();
+					int warnings = AcceleoLogListener.getWarnings();
+					int infos = AcceleoLogListener.getInfos();
+					if (errors == 0 && warnings == 0 && infos == 0) {
+						NotificationDialogUtil.notify(
+								AcceleoUIMessages.getString("AcceleoNotifications.FilesGeneratedTitle"), //$NON-NLS-1$
+								AcceleoUIMessages.getString(
+										"AcceleoNotifications.FilesGeneratedMessage", Integer //$NON-NLS-1$
+												.valueOf(filesGenerated.size()), finalTime),
+								NotificationType.SUCCESS);
+					} else {
+						NotificationDialogUtil.notify(AcceleoUIMessages
+								.getString("AcceleoNotifications.FilesGeneratedTitle"), AcceleoUIMessages //$NON-NLS-1$
+								.getString("AcceleoNotifications.FilesGeneratedMessageWithErrors", Integer //$NON-NLS-1$
+										.valueOf(filesGenerated.size()), finalTime, Integer.valueOf(errors),
+										Integer.valueOf(warnings), Integer.valueOf(infos)),
+								NotificationType.SUCCESS, new AcceleoHyperLinkListener(), NotificationUtils
+										.getDefaultPreferences());
+					}
 				}
 			});
 		}
 
 		filesGenerated.clear();
+		AcceleoLogListener.resetCounters();
 	}
 
 	/**
@@ -125,4 +146,48 @@ public class AcceleoGenerationListener extends AbstractAcceleoTextGenerationList
 		}
 		return result;
 	}
+
+	/**
+	 * The hyperlink listener that listens to any click on <a>Error Log</a>.
+	 * 
+	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+	 */
+	public class AcceleoHyperLinkListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+		 */
+		public void widgetSelected(SelectionEvent e) {
+			this.openErrorLogView(e);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+		 */
+		public void widgetDefaultSelected(SelectionEvent e) {
+			this.openErrorLogView(e);
+		}
+
+		/**
+		 * Opens the error log view.
+		 * 
+		 * @param e
+		 *            The selection event
+		 */
+		private void openErrorLogView(SelectionEvent e) {
+			if ("Error Log".equals(e.text)) { //$NON-NLS-1$
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+							"org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
+				} catch (PartInitException e1) {
+					AcceleoUIActivator.log(e1, true);
+				}
+			}
+		}
+	}
+
 }
