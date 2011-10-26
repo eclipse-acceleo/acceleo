@@ -151,14 +151,16 @@ public final class NotificationDialogUtil {
 		initColor(preferences);
 
 		shell = new Shell(Display.getDefault().getActiveShell(), SWT.NO_FOCUS | SWT.NO_TRIM);
-		shell.setLayout(new FillLayout());
-		shell.setForeground(fgColor);
-		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		shell.addListener(SWT.Dispose, new Listener() {
-			public void handleEvent(Event event) {
-				activeShells.remove(shell);
-			}
-		});
+		if (!shell.isDisposed()) {			
+			shell.setLayout(new FillLayout());
+			shell.setForeground(fgColor);
+			shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+			shell.addListener(SWT.Dispose, new Listener() {
+				public void handleEvent(Event event) {
+					activeShells.remove(shell);
+				}
+			});
+		}
 
 		final Composite inner = new Composite(shell, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
@@ -168,12 +170,17 @@ public final class NotificationDialogUtil {
 		gl.marginBottom = 5;
 
 		inner.setLayout(gl);
-		shell.addListener(SWT.Resize, new Listener() {
-			public void handleEvent(Event e) {
-				NotificationDialogUtil.handleEventDelegate();
-			}
-		});
+		if (!shell.isDisposed()) {			
+			shell.addListener(SWT.Resize, new Listener() {
+				public void handleEvent(Event e) {
+					NotificationDialogUtil.handleEventDelegate();
+				}
+			});
+		}
 
+		if (shell.isDisposed()) {
+			return;
+		}
 		GC gc = new GC(shell);
 		String[] lines = message.split("\n");
 		Point longest = null;
@@ -190,13 +197,11 @@ public final class NotificationDialogUtil {
 			}
 		}
 		gc.dispose();
-
 		if (longest.y != typicalHeight) {
 			typicalHeight = longest.y;
 		}
 		final int titleSize = 60;
 		int minHeight = (typicalHeight * lines.length) + titleSize;
-
 		CLabel imgLabel = new CLabel(inner, SWT.NONE);
 		imgLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING
 				| GridData.HORIZONTAL_ALIGN_BEGINNING));
@@ -223,8 +228,20 @@ public final class NotificationDialogUtil {
 		text.setForeground(fgColor);
 		text.setText(message);
 
-		shell.setSize(NotificationUtils.getNotificationWidth(preferences), minHeight);
+		if (!shell.isDisposed()) {
+			shell.setSize(NotificationUtils.getNotificationWidth(preferences), minHeight);
+		}
 
+		fadeInAndOut(preferences, minHeight);
+	}
+	
+	/**
+	 * Fades in and out the notification.
+	 * 
+	 * @param preferences The preferences.
+	 * @param minHeight The minimal height of the notification.
+	 */
+	private static void fadeInAndOut(IEclipsePreferences preferences, int minHeight) {
 		if (Display.getDefault().getActiveShell() == null
 				|| Display.getDefault().getActiveShell().getMonitor() == null) {
 			return;
@@ -250,13 +267,15 @@ public final class NotificationDialogUtil {
 				}
 			}
 		}
-		shell.setLocation(startX, startY);
-		shell.setAlpha(0);
-		shell.setVisible(true);
+		if (!shell.isDisposed()) {
+			shell.setLocation(startX, startY);
+			shell.setAlpha(0);
+			shell.setVisible(true);
 
-		activeShells.add(shell);
+			activeShells.add(shell);
 
-		fadeIn(shell, preferences);
+			fadeIn(shell, preferences);
+		}
 	}
 
 	/**
