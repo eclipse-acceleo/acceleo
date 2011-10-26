@@ -96,7 +96,7 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 				"data/template/templateGuard.mtl", //$NON-NLS-1$
 				"main", "data/template/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
 		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
-		assertEquals(4, generatedFiles.size());
+		assertEquals(1, generatedFiles.size());
 
 		int cpt = 1;
 		for (GeneratedFile generatedFile : generatedFiles) {
@@ -119,8 +119,8 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof StringLiteralExp);
 			StringLiteralExp string = (StringLiteralExp)element;
 			assertEquals("templateGuard", string.getStringSymbol()); //$NON-NLS-1$
-			assertEquals(275, string.getStartPosition());
-			assertEquals(275 + "templateGuard".length(), string.getEndPosition()); //$NON-NLS-1$
+			assertEquals(332, string.getStartPosition());
+			assertEquals(332 + "templateGuard".length(), string.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();

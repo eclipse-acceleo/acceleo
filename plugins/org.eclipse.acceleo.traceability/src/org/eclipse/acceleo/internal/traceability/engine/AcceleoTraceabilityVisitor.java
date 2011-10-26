@@ -714,6 +714,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		OCLExpression<C> oldExpression = currentExpression;
 		currentExpression = expression;
 
+		// We are evaluating a main template's guard
+		boolean isEvaluatingMainTemplateGuard = scopeEObjects.isEmpty() && expression != null
+				&& expression.eContainer() instanceof Template
+				&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Guard();
+		if (isEvaluatingMainTemplateGuard) {
+			for (org.eclipse.ocl.ecore.Variable var : ((Template)expression.eContainer()).getParameter()) {
+				Object value = getEvaluationEnvironment().getValueOf(var.getName());
+				if (value instanceof EObject) {
+					scopeEObjects.add((EObject)value);
+					break;
+				}
+			}
+		}
+
 		// Very first call of a template comes from IAcceleoEngine#doEvaluate()
 		if (scopeEObjects.isEmpty() && expression instanceof Template) {
 			for (org.eclipse.ocl.ecore.Variable var : ((Template)expression).getParameter()) {
