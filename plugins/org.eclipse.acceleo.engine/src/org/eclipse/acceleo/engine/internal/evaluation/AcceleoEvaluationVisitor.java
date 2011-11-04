@@ -185,7 +185,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			AcceleoEvaluationContext<C> context) {
 		super(decoratedVisitor);
 		this.context = context;
-		// assumes I have no decorator if not set explicitely
+		// assumes I have no decorator if not set explicitly
 		visitor = this;
 	}
 
