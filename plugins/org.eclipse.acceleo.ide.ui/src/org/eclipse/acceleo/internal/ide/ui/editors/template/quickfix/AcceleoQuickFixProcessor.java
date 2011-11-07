@@ -88,7 +88,8 @@ public class AcceleoQuickFixProcessor implements IQuickAssistProcessor {
 				for (Iterator<?> it = annotationModel.getAnnotationIterator(); it.hasNext();) {
 					Annotation annotation = (Annotation)it.next();
 					Position position = annotationModel.getPosition(annotation);
-					if (offset >= position.offset && offset <= position.offset + position.length) {
+					if (position != null && offset >= position.offset
+							&& offset <= position.offset + position.length) {
 						annotations.add(annotation);
 					}
 				}
