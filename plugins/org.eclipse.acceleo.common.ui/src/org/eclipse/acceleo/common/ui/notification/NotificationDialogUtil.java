@@ -227,7 +227,9 @@ public final class NotificationDialogUtil {
 		text.setLayoutData(gd);
 		text.setForeground(fgColor);
 		text.setText(message);
-		text.addSelectionListener(hyperlinkListener);
+		if (hyperlinkListener != null) {
+			text.addSelectionListener(hyperlinkListener);
+		}
 
 		if (!shell.isDisposed()) {
 			shell.setSize(NotificationUtils.getNotificationWidth(preferences), minHeight);
