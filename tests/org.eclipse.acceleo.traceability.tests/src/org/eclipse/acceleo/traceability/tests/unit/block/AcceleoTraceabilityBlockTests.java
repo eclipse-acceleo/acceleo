@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.block;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
@@ -33,6 +30,9 @@ import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 
@@ -1503,6 +1503,90 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		for (GeneratedFile generatedFile : generatedFiles) {
 			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
 			assertEquals(4, generatedRegions.size());
+			assertEquals("start of user code protected\nend of user code".length(), generatedFile //$NON-NLS-1$
+					.getLength());
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+
+			GeneratedText generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals("start of user code ".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof ProtectedAreaBlock);
+			ProtectedAreaBlock protectedAreaBlock = (ProtectedAreaBlock)element;
+			assertTrue(protectedAreaBlock.getMarker() instanceof StringLiteralExp);
+			assertEquals("protected", ((StringLiteralExp)protectedAreaBlock.getMarker()).getStringSymbol()); //$NON-NLS-1$
+			assertEquals(180, protectedAreaBlock.getStartPosition());
+			assertEquals(180 + "[protected ('protected')]\n[/protected]".length(), protectedAreaBlock //$NON-NLS-1$
+					.getEndPosition());
+
+			generatedText = generatedRegions.get(1);
+			assertEquals("start of user code ".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("start of user code protected".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("protected", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(192, stringLiteralExp.getStartPosition());
+			assertEquals(192 + "'protected'".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals("start of user code protected".length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals("start of user code protected\n".length(), generatedText.getEndOffset()); //$NON-NLS-1$ 
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("\n", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(205, stringLiteralExp.getStartPosition());
+			assertEquals(205 + "\n".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals("start of user code protected\n".length(), generatedText.getStartOffset()); //$NON-NLS-1$ 
+			assertEquals("start of user code protected\nend of user code".length(), generatedText //$NON-NLS-1$ 
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof ProtectedAreaBlock);
+			protectedAreaBlock = (ProtectedAreaBlock)element;
+			assertTrue(protectedAreaBlock.getMarker() instanceof StringLiteralExp);
+			assertEquals("protected", ((StringLiteralExp)protectedAreaBlock.getMarker()).getStringSymbol()); //$NON-NLS-1$
+			assertEquals(180, protectedAreaBlock.getStartPosition());
+			assertEquals(180 + "[protected ('protected')]\n[/protected]".length(), protectedAreaBlock //$NON-NLS-1$
+					.getEndPosition());
+
+			InputElement sourceElement = generatedText.getSourceElement();
+			EObject modelElement = sourceElement.getModelElement();
+			assertTrue(modelElement instanceof EClass);
+			assertEquals("class" + cpt, ((EClass)modelElement).getName()); //$NON-NLS-1$
+			assertEquals("/plugin/org.eclipse.acceleo.traceability.tests/data/block/model.ecore", //$NON-NLS-1$
+					modelElement.eResource().getURI().path());
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockProtectedMultiple() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockProtectedMultiple.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(20, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(20, generatedRegions.size());
 			assertEquals("start of user code protected\nend of user code".length(), generatedFile //$NON-NLS-1$
 					.getLength());
 
