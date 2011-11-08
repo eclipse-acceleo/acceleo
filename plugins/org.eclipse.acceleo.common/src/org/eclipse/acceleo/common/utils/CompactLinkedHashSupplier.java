@@ -18,7 +18,7 @@ import com.google.common.base.Supplier;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <E>
  *            Type of the elements contained by this supplier's Sets.
- * @since 3.2
+ * @since 3.3
  */
 public class CompactLinkedHashSupplier<E> implements Supplier<CompactHashSet<E>> {
 	/**

@@ -52,6 +52,7 @@ public final class AcceleoCollections {
 	 * @param <V>
 	 *            Type of the new map's values.
 	 * @return A new Multimap using {@link CompactHashSet}s as its backing collection.
+	 * @since 3.3
 	 */
 	public static <K, V> SetMultimap<K, V> newCompactLinkedHashSetMultimap() {
 		return Multimaps.<K, V> newSetMultimap(Maps.<K, Collection<V>> newHashMap(),

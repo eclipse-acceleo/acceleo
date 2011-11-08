@@ -15,12 +15,12 @@
   <parent>
     <groupId>org.eclipse.modeling.m2t</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
-    <version>3.2.0.qualifier</version>
+    <version>3.3.0.qualifier</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.traceability.tests</artifactId>
-  <version>3.2.0.qualifier</version>
+  <version>3.3.0.qualifier</version>
   <packaging>eclipse-plugin</packaging>
 
   <name>Acceleo Traceability Tests</name>
