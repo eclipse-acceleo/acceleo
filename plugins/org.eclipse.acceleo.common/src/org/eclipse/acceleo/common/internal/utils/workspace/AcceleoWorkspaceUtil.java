@@ -968,6 +968,7 @@ public final class AcceleoWorkspaceUtil {
 
 			return clazz;
 		} catch (ClassNotFoundException e) {
+			e.fillInStackTrace();
 			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
@@ -1020,10 +1021,10 @@ public final class AcceleoWorkspaceUtil {
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
-				/*
-				 * Closing and deleting projects trigger the same actions : we must remove the model listener
-				 * and uninstall the bundle.
-				 */
+			/*
+			 * Closing and deleting projects trigger the same actions : we must remove the model listener and
+			 * uninstall the bundle.
+			 */
 				case IResourceChangeEvent.PRE_CLOSE:
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
