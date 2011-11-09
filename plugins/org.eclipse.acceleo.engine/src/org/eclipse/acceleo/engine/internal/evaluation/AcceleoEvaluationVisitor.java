@@ -296,7 +296,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	public String fitIndentationTo(String source, String indentation) {
 		// Do not alter the very first line (^)
-		// FIXME SBE Change the indentation mechanism
 		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
 		String replacement = "$0" + indentation; //$NON-NLS-1$
 
