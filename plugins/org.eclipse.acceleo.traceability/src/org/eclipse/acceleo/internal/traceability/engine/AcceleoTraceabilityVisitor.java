@@ -733,7 +733,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		evaluatingPostCall = evaluatingPostCall
 				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
 		final EReference containingFeature = (EReference)expression.eContainingFeature();
-		if (shouldRecordTrace(containingFeature) && !(expression.eContainer() instanceof ProtectedAreaBlock)
+		if (shouldRecordTrace(containingFeature) && !(isProtectedAreaContent(expression))
 				&& !evaluatingOperationCall) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
 			recordedTraces.add(trace);
@@ -2091,6 +2091,24 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	private boolean isOperationCallSource(OCLExpression<C> expression) {
 		return expression == operationCallSourceExpression;
+	}
+
+	/**
+	 * Returns <code>true</code> if the given expression is located directly under a protected area block.
+	 * 
+	 * @param expression
+	 *            The expression to consider.
+	 * @return <code>true</code> if <code>expression</code> is located in the content tree of a
+	 *         {@link ProtectedAreaBlock}, <code>false</code> otherwise.
+	 */
+	private boolean isProtectedAreaContent(OCLExpression<C> expression) {
+		boolean isProtectedAreaContent = false;
+		EObject container = expression.eContainer();
+		while (container != null && !isProtectedAreaContent) {
+			isProtectedAreaContent = container instanceof ProtectedAreaBlock;
+			container = container.eContainer();
+		}
+		return isProtectedAreaContent;
 	}
 
 	/**
