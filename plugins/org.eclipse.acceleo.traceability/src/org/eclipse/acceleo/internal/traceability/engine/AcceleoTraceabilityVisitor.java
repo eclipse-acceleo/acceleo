@@ -680,6 +680,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitEnumLiteralExp(EnumLiteralExp<C, EL> literalExp) {
 		final Object result = super.visitEnumLiteralExp(literalExp);
 
+		recordLiteralExp(literalExp, result);
+
 		if (isPropertyCallSource(literalExp)) {
 			propertyCallSource = (EObject)result;
 		} else if (isOperationCallSource(literalExp)) {
@@ -939,7 +941,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			evaluatingOperationCall = oldOperationEvaluationState;
 			ExpressionTrace<C> traces = recordedTraces.removeLast();
 			IterationTrace<C, PM> iterTrace = iterationTraces.removeLast();
-			if (iterationTraces.isEmpty()) {
+			if (!iterationTraces.isEmpty()) {
 				iterationTraces.getLast().addTraceCopy(traces);
 			} else {
 				recordedTraces.getLast().addTraceCopy(traces);
@@ -1197,25 +1199,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// Whether we'll record them or not, advance the iterator traces if needed
 		VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
 
-		if (referredVarTrace == null) {
-			final ListIterator<IterationTrace<C, PM>> iterator = iterationTraces.listIterator(iterationTraces
-					.size());
-			final boolean isSelf = "self".equals(variableExp.getReferredVariable().getName()); //$NON-NLS-1$
-			boolean tracesFound = false;
-			while (!tracesFound && iterator.hasPrevious()) {
-				final IterationTrace<C, PM> trace = iterator.previous();
-				if (isSelf || variableExp.getReferredVariable() == trace.getVariable()) {
-					tracesFound = true;
+		final ListIterator<IterationTrace<C, PM>> iterator = iterationTraces.listIterator(iterationTraces
+				.size());
+		final boolean isSelf = "self".equals(variableExp.getReferredVariable().getName()); //$NON-NLS-1$
+		boolean tracesFound = false;
+		while (!tracesFound && iterator.hasPrevious()) {
+			final IterationTrace<C, PM> trace = iterator.previous();
+			if (isSelf || variableExp.getReferredVariable() == trace.getVariable()) {
+				tracesFound = true;
 
-					if (trace.getLastIteration() != iterationCount.getLast().intValue()) {
-						trace.advanceIteration(result.toString());
-					}
+				if (trace.getLastIteration() != iterationCount.getLast().intValue()) {
+					trace.advanceIteration(result.toString());
+				}
 
-					referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
-					for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTracesForIteration()
-							.entrySet()) {
-						referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
-					}
+				referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
+				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTracesForIteration()
+						.entrySet()) {
+					referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
 				}
 			}
 		}
@@ -2181,7 +2181,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else if (isOperationCallSource(literalExp)) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (iterationTraces != null) {
+			} else if (!iterationTraces.isEmpty()) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
 				iterationTraces.getLast().addTrace(input, text, result);
 			}
