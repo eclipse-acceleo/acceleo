@@ -61,6 +61,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -548,8 +549,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		 */
 		if (!isInitializingVariable()) {
 			final AbstractTrace queryTrace = recordedTraces.removeLast();
-			ExpressionTrace<C> currentTrace = recordedTraces.getLast();
-			currentTrace.addTraceCopy(queryTrace);
+			if (!iterationTraces.isEmpty()
+					&& EcoreUtil.isAncestor(iterationTraces.getLast().getReferredExpression(), invocation)) {
+				iterationTraces.getLast().addTraceCopy(queryTrace);
+			} else {
+				ExpressionTrace<C> currentTrace = recordedTraces.getLast();
+				currentTrace.addTraceCopy(queryTrace);
+			}
 			queryTrace.dispose();
 		}
 
@@ -1079,7 +1085,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				} else if (record && !recordedTraces.isEmpty() && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					recordedTraces.getLast().addTrace(propertyCallInput, text, result);
-				} else if (iterationTraces != null && shouldRecordTrace(callExp)) {
+				} else if (!iterationTraces.isEmpty() && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
 					iterationTraces.getLast().addTrace(propertyCallInput, text, result);
 				}
@@ -2141,7 +2147,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else if (collectionType.eClass().isInstance(operationReceiverEType)) {
 				isImpacting = getTraceabilityImpactingCollectionOperationNames().contains(operationName);
 			} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING.equals(operationName)
-					&& !TraceabilityVisitorUtil.isPrimitive(operationReceiverEType)) {
+					&& !TraceabilityVisitorUtil.isPrimitive(operationReceiverEType)
+					&& !(operationReceiverEType instanceof EEnum)) {
 				// toString() applied on non-primitive will need to create its own traceability information.
 				isImpacting = true;
 			}
