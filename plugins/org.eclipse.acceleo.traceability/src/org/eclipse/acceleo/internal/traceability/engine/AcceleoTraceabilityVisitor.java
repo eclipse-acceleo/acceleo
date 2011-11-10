@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -91,7 +92,6 @@ import org.eclipse.ocl.expressions.StateExp;
 import org.eclipse.ocl.expressions.StringLiteralExp;
 import org.eclipse.ocl.expressions.Variable;
 import org.eclipse.ocl.expressions.VariableExp;
-import org.eclipse.ocl.types.PrimitiveType;
 import org.eclipse.ocl.util.OCLStandardLibraryUtil;
 import org.eclipse.ocl.utilities.PredefinedType;
 
@@ -177,20 +177,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private OCLExpression<C> iterationBody;
 
 	/**
-	 * Together with {@link #lastIterationTraceEnd}, this allows us to infer the current iteration trace
-	 * offsets.
+	 * This allows us to infer the current iteration trace offsets.
 	 */
-	private int iterationCount;
+	private Deque<Integer> iterationCount = new CircularArrayDeque<Integer>();
 
 	/** This will be used to record the trace information for the current iteration's source. */
-	private IterationTrace<C> iterationTraces;
-
-	/**
-	 * Keeps a reference to the current OCL iteratorExp's iteration variable. NOTE : we assume iterator
-	 * expressions will only have a single iterator. This isn't true for exists and forAll, but should handle
-	 * most cases.
-	 */
-	private Variable<C, PM> iterationVariable;
+	private Deque<IterationTrace<C, PM>> iterationTraces = new CircularArrayDeque<IterationTrace<C, PM>>();
 
 	/**
 	 * This will allow us to restore generated files' offsets in the case where traceability information is
@@ -478,26 +470,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			scopeEObjects.add(forBlock.getLoopVariable());
 		}
 
-		IterationTrace<C> oldIterationTraces = iterationTraces;
-		iterationTraces = new IterationTrace<C>((OCLExpression<C>)forBlock.getIterSet());
+		iterationTraces.add(new IterationTrace<C, PM>((Variable<C, PM>)forBlock.getLoopVariable(),
+				(OCLExpression<C>)forBlock.getIterSet()));
 		OCLExpression<C> oldIterationBody = iterationBody;
 		iterationBody = (OCLExpression<C>)forBlock.getBody().get(forBlock.getBody().size() - 1);
-		int oldIterationCount = iterationCount;
-		iterationCount = 0;
-		Variable<C, PM> oldIterationVariable = iterationVariable;
-		iterationVariable = (Variable<C, PM>)forBlock.getLoopVariable();
-		if (iterationVariable != null) {
-			variableTraces.put(iterationVariable, new VariableTrace<C, PM>(iterationVariable));
-		}
+		iterationCount.add(Integer.valueOf(0));
 
 		try {
 			super.visitAcceleoForBlock(forBlock);
 		} finally {
-			iterationTraces.dispose();
-			iterationTraces = oldIterationTraces;
+			iterationTraces.removeLast().dispose();
 			iterationBody = oldIterationBody;
-			iterationCount = oldIterationCount;
-			iterationVariable = oldIterationVariable;
+			iterationCount.removeLast();
 		}
 
 		if (forBlock.getLoopVariable() != null) {
@@ -763,12 +747,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			// Advance Acceleo iterator (for loops) iteration count
 			if (iterationBody == expression
 					&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
-				iterationCount++;
-			}
-			// Ensure we've properly recorded the iteration traces
-			if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getForBlock_IterSet()
-					&& iterationTraces.getTraces().isEmpty()) {
-				iterationTraces.addTraceCopy(recordedTraces.getLast());
+				final Integer current = iterationCount.removeLast();
+				iterationCount.add(Integer.valueOf(current.intValue() + 1));
 			}
 		}
 
@@ -878,9 +858,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					break;
 				case PredefinedType.SELECT:
 					if (result instanceof Boolean && ((Boolean)result).booleanValue()
-							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
+							&& !iterationTraces.isEmpty()
+							&& iterationTraces.getLast().getTracesForIteration() != null) {
 						ExpressionTrace<C> trace = recordedTraces.getLast();
-						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces.getLast()
 								.getTracesForIteration().entrySet()) {
 							trace.mergeTrace(entry.getKey(), entry.getValue());
 						}
@@ -888,9 +869,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					break;
 				case PredefinedType.REJECT:
 					if (result instanceof Boolean && !((Boolean)result).booleanValue()
-							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
+							&& !iterationTraces.isEmpty()
+							&& iterationTraces.getLast().getTracesForIteration() != null) {
 						ExpressionTrace<C> trace = recordedTraces.getLast();
-						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces.getLast()
 								.getTracesForIteration().entrySet()) {
 							trace.mergeTrace(entry.getKey(), entry.getValue());
 						}
@@ -898,9 +880,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					break;
 				case PredefinedType.ANY:
 					if (result instanceof Boolean && ((Boolean)result).booleanValue()
-							&& iterationTraces != null && iterationTraces.getTracesForIteration() != null) {
+							&& !iterationTraces.isEmpty()
+							&& iterationTraces.getLast().getTracesForIteration() != null) {
 						ExpressionTrace<C> trace = recordedTraces.getLast();
-						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
+						for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces.getLast()
 								.getTracesForIteration().entrySet()) {
 							trace.mergeTrace(entry.getKey(), entry.getValue());
 						}
@@ -910,7 +893,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				default:
 					break;
 			}
-			iterationCount++;
+			final Integer current = iterationCount.removeLast();
+			iterationCount.add(Integer.valueOf(current.intValue() + 1));
 		}
 
 		return result;
@@ -926,15 +910,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean oldOperationEvaluationState = evaluatingOperationCall;
 		evaluatingOperationCall = true;
 		scopeEObjects.add(callExp.getIterator().get(0));
-		IterationTrace<C> oldIterationTraces = iterationTraces;
-		iterationTraces = new IterationTrace<C>(callExp.getSource());
+		iterationTraces.add(new IterationTrace<C, PM>(callExp.getIterator().get(0), callExp.getSource()));
 		OCLExpression<C> oldIterationBody = iterationBody;
 		iterationBody = callExp.getBody();
-		int oldIterationCount = iterationCount;
-		iterationCount = 0;
-		Variable<C, PM> oldIterationVariable = iterationVariable;
-		// NOTE : assume we have a single iterator, see commment on iterationVariable
-		iterationVariable = callExp.getIterator().get(0);
+		iterationCount.add(Integer.valueOf(0));
 
 		// Iterator expressions should have their own traces in case they are themselves an iterator source
 		recordedTraces.add(new ExpressionTrace<C>(callExp));
@@ -945,17 +924,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} finally {
 			evaluatingOperationCall = oldOperationEvaluationState;
 			ExpressionTrace<C> traces = recordedTraces.removeLast();
-			if (oldIterationTraces != null) {
-				oldIterationTraces.addTraceCopy(traces);
+			IterationTrace<C, PM> iterTrace = iterationTraces.removeLast();
+			if (iterationTraces.isEmpty()) {
+				iterationTraces.getLast().addTraceCopy(traces);
 			} else {
 				recordedTraces.getLast().addTraceCopy(traces);
 			}
 			traces.dispose();
-			iterationTraces.dispose();
-			iterationTraces = oldIterationTraces;
+			iterTrace.dispose();
 			iterationBody = oldIterationBody;
-			iterationCount = oldIterationCount;
-			iterationVariable = oldIterationVariable;
+			iterationCount.removeLast();
 		}
 
 		scopeEObjects.removeLast();
@@ -1087,7 +1065,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					recordedTraces.getLast().addTrace(propertyCallInput, text, result);
 				} else if (iterationTraces != null && shouldRecordTrace(callExp)) {
 					GeneratedText text = createGeneratedTextFor(callExp);
-					iterationTraces.addTrace(propertyCallInput, text, result);
+					iterationTraces.getLast().addTrace(propertyCallInput, text, result);
 				}
 			}
 
@@ -1204,34 +1182,31 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		// Whether we'll record them or not, advance the iterator traces if needed
 		VariableTrace<C, PM> referredVarTrace = variableTraces.get(variableExp.getReferredVariable());
-		boolean isPrimitiveIteratorVariable = referredVarTrace != null
-				&& referredVarTrace.getReferredVariable() == iterationVariable
-				&& iterationVariable.getType() instanceof PrimitiveType<?>;
-		// Acceleo For block iteration variables are optional
-		isPrimitiveIteratorVariable = isPrimitiveIteratorVariable
-				|| (referredVarTrace == null && "self".equals(variableExp.getReferredVariable().getName()) //$NON-NLS-1$
-				&& iterationTraces != null);
-		if (isPrimitiveIteratorVariable) {
-			if (iterationTraces.getLastIteration() != iterationCount) {
-				iterationTraces.advanceIteration(result.toString());
+
+		if (referredVarTrace == null) {
+			final ListIterator<IterationTrace<C, PM>> iterator = iterationTraces.listIterator(iterationTraces
+					.size());
+			final boolean isSelf = "self".equals(variableExp.getReferredVariable().getName()); //$NON-NLS-1$
+			boolean tracesFound = false;
+			while (!tracesFound && iterator.hasPrevious()) {
+				final IterationTrace<C, PM> trace = iterator.previous();
+				if (isSelf || variableExp.getReferredVariable() == trace.getVariable()) {
+					tracesFound = true;
+
+					if (trace.getLastIteration() != iterationCount.getLast().intValue()) {
+						trace.advanceIteration(result.toString());
+					}
+
+					referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
+					for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTracesForIteration()
+							.entrySet()) {
+						referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
+					}
+				}
 			}
 		}
 
 		if (recordVariableInitialization || (record && recordTrace) || recordOperationArgument) {
-			// If this is an iteratorExp's iteration variable, we need to retrieve its correct trace manually
-			if (isPrimitiveIteratorVariable) {
-				if (referredVarTrace == null) {
-					referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
-				}
-				for (Map.Entry<InputElement, Set<GeneratedText>> entry : iterationTraces
-						.getTracesForIteration().entrySet()) {
-					referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
-				}
-			} else if (referredVarTrace != null
-					&& referredVarTrace.getReferredVariable() == iterationVariable) {
-				// Ignore these traces
-				referredVarTrace = null;
-			}
 			if (referredVarTrace != null) {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : referredVarTrace.getTraces()
 						.entrySet()) {
@@ -1525,9 +1500,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			trace.dispose();
 		}
 		variableTraces.clear();
-		if (iterationTraces != null) {
-			iterationTraces.dispose();
+		for (IterationTrace<C, PM> trace : iterationTraces) {
+			trace.dispose();
 		}
+		iterationTraces.clear();
+		iterationCount.clear();
 	}
 
 	/**
@@ -2060,7 +2037,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				isSource = isIteratorCallSource(collectionLiteralExp);
 			}
 		} else if (eContainer instanceof ForBlock) {
-			isSource = EcoreUtil.isAncestor(iterationTraces.getReferredExpression(), expression);
+			isSource = EcoreUtil.isAncestor(iterationTraces.getLast().getReferredExpression(), expression);
 		}
 		return isSource;
 	}
@@ -2192,7 +2169,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				recordedTraces.getLast().addTrace(input, text, result);
 			} else if (iterationTraces != null) {
 				GeneratedText text = createGeneratedTextFor(literalExp);
-				iterationTraces.addTrace(input, text, result);
+				iterationTraces.getLast().addTrace(input, text, result);
 			}
 		} else if (!record && operationArgumentTrace != null) {
 			GeneratedText text = createGeneratedTextFor(literalExp);

@@ -18,6 +18,7 @@ import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
 import org.eclipse.ocl.expressions.OCLExpression;
+import org.eclipse.ocl.expressions.Variable;
 
 /**
  * This specific implementation of an {@link ExpressionTrace} will allow us to recall the current iteration
@@ -26,8 +27,10 @@ import org.eclipse.ocl.expressions.OCLExpression;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  * @param <C>
  *            Will be either EClassifier for ecore or Classifier for UML.
+ * @param <PM>
+ *            Will be either EParameter for ecore or Parameter for UML.
  */
-public final class IterationTrace<C> extends ExpressionTrace<C> {
+public final class IterationTrace<C, PM> extends ExpressionTrace<C> {
 	/** Keeps track of the last iteration count. */
 	private int lastIteration = -1;
 
@@ -37,6 +40,9 @@ public final class IterationTrace<C> extends ExpressionTrace<C> {
 	/** Traces for the current iteration. */
 	private Map<InputElement, Set<GeneratedText>> currentIterationTraces;
 
+	/** Variable corresponding to these traces. */
+	private Variable<C, PM> variable;
+
 	/**
 	 * Default constructor, simply delegates to super.
 	 * 
@@ -44,7 +50,20 @@ public final class IterationTrace<C> extends ExpressionTrace<C> {
 	 *            Expression we wish to record traceability information for.
 	 */
 	public IterationTrace(OCLExpression<C> expression) {
+		this(null, expression);
+	}
+
+	/**
+	 * Default constructor, simply delegates to super.
+	 * 
+	 * @param var
+	 *            The corresponding loop variable, if any.
+	 * @param expression
+	 *            Expression we wish to record traceability information for.
+	 */
+	public IterationTrace(Variable<C, PM> var, OCLExpression<C> expression) {
 		super(expression);
+		this.variable = var;
 	}
 
 	/**
@@ -91,5 +110,14 @@ public final class IterationTrace<C> extends ExpressionTrace<C> {
 	 */
 	public Map<InputElement, Set<GeneratedText>> getTracesForIteration() {
 		return currentIterationTraces;
+	}
+
+	/**
+	 * Returns the corresponding Variable.
+	 * 
+	 * @return The corresponding Variable.
+	 */
+	public Variable<C, PM> getVariable() {
+		return variable;
 	}
 }
