@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,8 +128,23 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				monitor.worked(10);
 				IContainer target = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(
 						new Path(targetFolder.getAbsolutePath()));
-				String generationID = AcceleoLaunchingUtil.computeLaunchConfigID(project.getName(),
-						qualifiedName, model, target.getFullPath().toString(), args);
+				String generationID = ""; //$NON-NLS-1$
+				if (target == null) {
+					try {
+						IContainer[] iContainers = ResourcesPlugin.getWorkspace().getRoot()
+								.findContainersForLocationURI(new java.net.URI("file:/" //$NON-NLS-1$
+										+ targetFolder.getAbsolutePath().replace("\\", "/"))); //$NON-NLS-1$ //$NON-NLS-2$
+						if (iContainers.length > 0) {
+							generationID = AcceleoLaunchingUtil.computeLaunchConfigID(project.getName(),
+									qualifiedName, model, iContainers[0].getFullPath().toString(), args);
+						}
+					} catch (URISyntaxException e) {
+						AcceleoUIActivator.log(e, true);
+					}
+				} else {
+					generationID = AcceleoLaunchingUtil.computeLaunchConfigID(project.getName(),
+							qualifiedName, model, target.getFullPath().toString(), args);
+				}
 				generator.setGenerationID(generationID);
 				generator.doGenerate(BasicMonitor.toMonitor(monitor));
 			} else {
@@ -145,7 +161,7 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 				main.invoke(null, new Object[] {invocationArgs, });
 			}
 			final long end = System.currentTimeMillis();
-			System.out.println(((end - start) / 1000) + "s");
+			System.out.println(((end - start) / 1000) + "s"); //$NON-NLS-1$
 		} catch (NoSuchMethodException e) {
 			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
 			AcceleoUIActivator.getDefault().getLog().log(status);
