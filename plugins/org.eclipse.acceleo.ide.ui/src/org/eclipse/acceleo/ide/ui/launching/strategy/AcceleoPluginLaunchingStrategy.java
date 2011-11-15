@@ -58,6 +58,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 * @since 0.8
 	 */
+	@SuppressWarnings("deprecation")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		final IProject project = getProject(configuration);
@@ -122,12 +123,20 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 				}
 				if (container != null) {
 					final String qualifiedName = getMainType(configuration);
-					final File targetFolder = container.getLocation().toFile();
+					File targetFolder = null;
+					if (container.isVirtual()) {
+						AcceleoUIActivator.log(AcceleoUIMessages
+								.getString("AcceleoPluginLaunchStrategy.VirtualFolder"), true); //$NON-NLS-1$
+					} else {
+						targetFolder = container.getLocation().toFile();
+					}
 					final List<String> args = getArguments(configuration);
 
-					launch(project, qualifiedName, model, targetFolder, args, monitor);
+					if (targetFolder != null) {
+						launch(project, qualifiedName, model, targetFolder, args, monitor);
+						container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+					}
 
-					container.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 				}
 			}
 		} finally {
