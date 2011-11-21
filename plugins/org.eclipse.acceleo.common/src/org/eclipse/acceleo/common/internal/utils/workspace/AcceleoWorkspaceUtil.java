@@ -80,8 +80,14 @@ import org.osgi.service.packageadmin.PackageAdmin;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class AcceleoWorkspaceUtil {
+
 	/** Singleton instance of this utility. */
 	public static final AcceleoWorkspaceUtil INSTANCE = new AcceleoWorkspaceUtil();
+
+	/**
+	 * Time-out used when we are waiting for an OSGI operation done through package admin.
+	 */
+	private static final int OSGI_TIMEOUT = 3000;
 
 	/** Key of the error message that is to be used when we cannot uninstall workspace bundles. */
 	private static final String UNINSTALLATION_FAILURE_KEY = "WorkspaceUtil.UninstallationFailure"; //$NON-NLS-1$
@@ -793,7 +799,7 @@ public final class AcceleoWorkspaceUtil {
 			synchronized(flag) {
 				while (!flag[0]) {
 					try {
-						flag.wait();
+						flag.wait(OSGI_TIMEOUT);
 					} catch (InterruptedException e) {
 						// discard
 						break;
@@ -834,11 +840,13 @@ public final class AcceleoWorkspaceUtil {
 		}
 		for (ImportPackageSpecification importPackage : desc.getImportPackages()) {
 			for (IPluginModelBase workspaceModel : PluginRegistry.getWorkspaceModels()) {
-				for (ExportPackageDescription export : workspaceModel.getBundleDescription()
-						.getExportPackages()) {
-					if (importPackage.isSatisfiedBy(export)) {
-						installBundle(workspaceModel);
-						break;
+				if (workspaceModel != null && workspaceModel.getBundleDescription() != null) {
+					for (ExportPackageDescription export : workspaceModel.getBundleDescription()
+							.getExportPackages()) {
+						if (importPackage.isSatisfiedBy(export)) {
+							installBundle(workspaceModel);
+							break;
+						}
 					}
 				}
 			}
