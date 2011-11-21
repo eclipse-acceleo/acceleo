@@ -395,30 +395,32 @@ public final class NotificationDialogUtil {
 	 *            The preferences
 	 */
 	private static void fadeOut(final Shell aShell, final IEclipsePreferences preferences) {
-		final Runnable run = new Runnable() {
+		Runnable run = new Runnable() {
+
+			private int cur = aShell.getAlpha();
+
 			public void run() {
-				if (aShell == null || aShell.isDisposed()) {
+				if (shell == null || shell.isDisposed()) {
 					return;
 				}
-
-				int cur = aShell.getAlpha();
 				cur -= FADE_OUT_STEP;
 
 				if (cur <= 0) {
-					aShell.setAlpha(0);
+					shell.setAlpha(0);
 					if (oldImage != null) {
 						oldImage.dispose();
 					}
-					aShell.dispose();
-					activeShells.remove(aShell);
+					shell.dispose();
+					activeShells.remove(shell);
 					return;
 				}
-
-				aShell.setAlpha(cur);
+				shell.setAlpha(cur);
 				Display.getDefault().timerExec(NotificationUtils.getNotificationFadeOutTimer(preferences),
 						this);
+
 			}
 		};
 		Display.getDefault().timerExec(NotificationUtils.getNotificationFadeOutTimer(preferences), run);
 	}
+
 }
