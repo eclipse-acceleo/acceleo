@@ -32,4 +32,5 @@ Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.enviro
  org.eclipse.acceleo.parser.compiler,
  org.eclipse.acceleo.parser.cst,
  org.eclipse.acceleo.parser.cst.impl;x-friends:="org.eclipse.acceleo.parser.tests",
- org.eclipse.acceleo.parser.cst.util;x-friends:="org.eclipse.acceleo.parser.tests"
+ org.eclipse.acceleo.parser.cst.util;x-friends:="org.eclipse.acceleo.parser.tests",
+ org.eclipse.acceleo.parser.interpreter
