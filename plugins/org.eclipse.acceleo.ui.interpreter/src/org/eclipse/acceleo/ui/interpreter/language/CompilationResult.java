@@ -88,24 +88,4 @@ public class CompilationResult {
 	public IStatus getStatus() {
 		return status;
 	}
-
-	/**
-	 * Sets the compiled expression that resulted from this compilation.
-	 * 
-	 * @param compiledExpression
-	 *            The compiled expression that resulted from this compilation.
-	 */
-	public void setCompiledExpression(Object compiledExpression) {
-		this.compiledExpression = compiledExpression;
-	}
-
-	/**
-	 * Sets the status of the compilation to the given new status.
-	 * 
-	 * @param status
-	 *            The status of the compilation
-	 */
-	public void setStatus(IStatus status) {
-		this.status = status;
-	}
 }
