@@ -70,7 +70,7 @@ Contributors:
             id="org.eclipse.acceleo.ui.interpreter.debug.VariableViewActions"
             targetID="org.eclipse.debug.ui.VariableView">
          <action
-               class="org.eclipse.acceleo.ui.interpreter.internal.debug.AddVariablesDebugViewActionDelegate"
+               class="org.eclipse.acceleo.ui.interpreter.internal.optional.debug.AddVariablesDebugViewActionDelegate"
                icon="icons/add_variable_action.gif"
                id="org.eclipse.acceleo.ui.interpreter.debug.AddVariablesToInterpreterAction"
                label="%AddVariableToInterpreterAction.Label"
