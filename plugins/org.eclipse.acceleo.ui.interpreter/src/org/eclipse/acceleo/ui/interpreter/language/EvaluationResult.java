@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.language;
 
-import java.util.Collection;
-
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -19,7 +17,8 @@ import org.eclipse.core.runtime.IStatus;
  * <p>
  * The {@link #evaluationResult} Object will be displayed in the interpreter view's "result" viewer. It can be
  * <code>null</code> (nothing displayed in the result viewer), a single {@link Object} (displayed alone in the
- * result viewer) or a {@link Collection} of {@link Object}s (one line for each of them in the result viewer).
+ * result viewer) or a {@link java.util.Collection} of {@link Object}s (one line for each of them in the
+ * result viewer).
  * </p>
  * <p>
  * {@link #status} can be populated with either a simple {@link org.eclipse.core.runtime.Status} or a
@@ -94,25 +93,5 @@ public class EvaluationResult {
 	 */
 	public IStatus getStatus() {
 		return status;
-	}
-
-	/**
-	 * Sets the actual evaluation result.
-	 * 
-	 * @param evaluationResult
-	 *            The actual evaluation result.
-	 */
-	public void setEvaluationResult(Object evaluationResult) {
-		this.evaluationResult = evaluationResult;
-	}
-
-	/**
-	 * Sets the status of this evaluation to the given new status.
-	 * 
-	 * @param status
-	 *            The status of this evaluation.
-	 */
-	public void setStatus(IStatus status) {
-		this.status = status;
 	}
 }
