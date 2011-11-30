@@ -160,7 +160,7 @@
 		<fail message="saved.downloads.area property must be defined" unless="saved.downloads.area" />
 
 		<!-- defaults -->
-		<property name="version" value="3.2.0" />
+		<property name="version" value="3.2.1" />
 
 		<property name="packages.directory" location="${saved.build.root}/archive/${saved.packages.base}" />
 

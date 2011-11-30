@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Ecore To Python Module IDE Plug-in
 Bundle-SymbolicName: org.eclipse.acceleo.module.example.ecore2python.ui;singleton:=true
-Bundle-Version: 3.1.0.qualifier
+Bundle-Version: 3.2.1.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.example.ecore2python.ui.Activator
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.ui,
