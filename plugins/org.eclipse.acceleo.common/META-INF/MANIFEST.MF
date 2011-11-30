@@ -25,6 +25,7 @@ Export-Package: org.eclipse.acceleo.common,
    org.eclipse.acceleo.engine,
    org.eclipse.acceleo.traceability,
    org.eclipse.acceleo.model",
+ org.eclipse.acceleo.common.interpreter,
  org.eclipse.acceleo.common.library.connector,
  org.eclipse.acceleo.common.preference,
  org.eclipse.acceleo.common.utils

@@ -8,12 +8,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *****************************************************************************************/
-package org.eclipse.acceleo.parser.interpreter;
+package org.eclipse.acceleo.common.interpreter;
 
 import org.eclipse.core.runtime.IStatus;
 
 /**
- * This will be used as the result of our Compilation tasks. It will hold a reference to the actual compiled
+ * This will be used as the result of our compilation tasks. It will hold a reference to the actual compiled
  * element (Module, ModuleElement, OCLExpression ...) along with the status of the compilation.
  * <p>
  * {@link #status} can be either a simple IStatus (only a single error/warning/info has been encountered) or a
