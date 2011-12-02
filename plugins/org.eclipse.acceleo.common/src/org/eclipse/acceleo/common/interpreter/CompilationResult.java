@@ -80,6 +80,16 @@ public class CompilationResult {
 	}
 
 	/**
+	 * This can be used to change the module element to which this result points.
+	 * 
+	 * @param newCompiledExpression
+	 *            The new module element to reference.
+	 */
+	public void setCompiledExpression(Object newCompiledExpression) {
+		this.compiledExpression = newCompiledExpression;
+	}
+
+	/**
 	 * Returns the status of the compilation.
 	 * 
 	 * @return The status of the compilation
