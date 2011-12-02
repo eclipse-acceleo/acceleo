@@ -14,11 +14,15 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.interpreter.CompilationResult;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -62,6 +66,9 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	/** The name of the query the {@link CompilationResult}s should reference. */
 	private final String queryName;
 
+	/** The resource set in which to compile. */
+	private ResourceSet resourceSet;
+
 	/**
 	 * Instantiates our compilation task given the current interpreter context and the optional dependencies.
 	 * 
@@ -90,9 +97,36 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            <code>null</code>.
 	 */
 	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName) {
+		this(module, dependencies, queryName, null);
+	}
+
+	/**
+	 * Instantiates our compilation task given the current interpreter context and the optional dependencies.
+	 * <p>
+	 * This constructor should be called over {@link #AcceleoCompilationTask(String, Set)} when we need a
+	 * specific query as the result.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The String representation of the module we are to compile.
+	 * @param dependencies
+	 *            Dependencies required by the compiled module. Can be <code>null</code>.
+	 * @param queryName
+	 *            The name of the query the {@link CompilationResult}s should reference. Can be
+	 *            <code>null</code>.
+	 * @param resourceSet
+	 *            The resource set in which to compile. Can be <code>null</code>.
+	 */
+	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName,
+			ResourceSet resourceSet) {
 		this.module = module;
-		this.dependencies = dependencies;
+		if (dependencies != null) {
+			this.dependencies = dependencies;
+		} else {
+			this.dependencies = Collections.emptySet();
+		}
 		this.queryName = queryName;
+		this.resourceSet = resourceSet;
 	}
 
 	/**
@@ -138,13 +172,16 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public CompilationResult call() throws Exception {
-		final ResourceSet resourceSet = new ResourceSetImpl();
-		final Resource resource = ModelUtils.createResource(URI
-				.createURI("http://acceleo.eclipse.org/default.emtl"), resourceSet); //$NON-NLS-1$
+		if (resourceSet == null) {
+			resourceSet = new ResourceSetImpl();
+		}
+		final String moduleName = extractModuleName(module);
+		final Resource resource = ModelUtils.createResource(URI.createURI("http://acceleo.eclipse.org/" //$NON-NLS-1$
+				+ moduleName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION), resourceSet);
 
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(module));
 
-		loadImports(resourceSet);
+		loadImports();
 
 		AcceleoParser parser = new AcceleoParser();
 		parser.parse(source, resource, Lists.newArrayList(dependencies));
@@ -170,13 +207,26 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	}
 
 	/**
-	 * Load and resolve all dependencies in the given resource set.
+	 * Extract the name of a module from the given String representation.
 	 * 
-	 * @param resourceSet
-	 *            The resource set in which to load all dependencies. Should be the resource set in which the
-	 *            compilation will take place.
+	 * @param moduleString
+	 *            The String representation of an Acceleo module.
+	 * @return The name of the module represented by the given String. <code>null</code> if none.
 	 */
-	private void loadImports(ResourceSet resourceSet) {
+	private static String extractModuleName(String moduleString) {
+		final String modulePattern = "\\[module ([^(]+)\\("; //$NON-NLS-1$
+		final Pattern pattern = Pattern.compile(modulePattern);
+		final Matcher matcher = pattern.matcher(moduleString);
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+		return null;
+	}
+
+	/**
+	 * Load and resolve all dependencies in the current resource set.
+	 */
+	private void loadImports() {
 		for (URI dependency : dependencies) {
 			resourceSet.getResource(dependency, true);
 		}
