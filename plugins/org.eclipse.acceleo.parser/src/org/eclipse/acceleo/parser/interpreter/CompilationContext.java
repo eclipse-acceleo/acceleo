@@ -43,6 +43,9 @@ public class CompilationContext {
 	 */
 	private final Multimap<String, URI> dependencies;
 
+	/** This will contain the dependencies that need to be built before the current module, if any. */
+	private final Map<String, String> extendedDependencies;
+
 	/** The set of all metamodel URIs visible to the compiled expression. */
 	private final Set<String> nsURIs;
 
@@ -56,18 +59,21 @@ public class CompilationContext {
 	 * @param variables
 	 *            The map of variables that are to be taken into account to compile this expression. May be
 	 *            <code>null</code>.
-	 * @param dependencies
-	 *            Optional dependencies of this compilation.
 	 * @param nsURIs
 	 *            The set of all metamodel URIs visible to the compiled expression.
+	 * @param dependencies
+	 *            Optional dependencies of this compilation.
+	 * @param extendedDependencies
+	 *            This can be used to tell us that other modules need to be built before the current one.
 	 */
 	public CompilationContext(String expression, String targetType, Map<String, String> variables,
-			Multimap<String, URI> dependencies, Set<String> nsURIs) {
+			Set<String> nsURIs, Multimap<String, URI> dependencies, Map<String, String> extendedDependencies) {
 		this.expression = expression;
 		this.targetType = targetType;
 		this.variables = variables;
-		this.dependencies = dependencies;
 		this.nsURIs = nsURIs;
+		this.dependencies = dependencies;
+		this.extendedDependencies = extendedDependencies;
 	}
 
 	/**
@@ -113,5 +119,14 @@ public class CompilationContext {
 	 */
 	public Set<String> getNsURIs() {
 		return nsURIs;
+	}
+
+	/**
+	 * Returns the dependencies that need to be built before the current module.
+	 * 
+	 * @return The dependencies that need to be built before the current module.
+	 */
+	public Map<String, String> getExtendedDependencies() {
+		return extendedDependencies;
 	}
 }
