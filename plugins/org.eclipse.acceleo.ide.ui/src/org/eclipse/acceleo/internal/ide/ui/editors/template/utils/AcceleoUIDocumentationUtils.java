@@ -195,7 +195,8 @@ public final class AcceleoUIDocumentationUtils {
 		 */
 		Resource eResource = element.eResource();
 		Documentation documentation = null;
-		if (eResource != null) {
+		// No use trying to load http schemes
+		if (eResource != null && !"http".equals(eResource.getURI().scheme())) { //$NON-NLS-1$
 			try {
 				EObject eObject = AcceleoUIResourceSet.getResource(eResource.getURI());
 				if (eObject instanceof Module) {
