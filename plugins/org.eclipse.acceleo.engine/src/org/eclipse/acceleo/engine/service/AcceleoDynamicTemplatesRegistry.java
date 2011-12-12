@@ -13,11 +13,13 @@ package org.eclipse.acceleo.engine.service;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
+import org.eclipse.acceleo.engine.internal.utils.DynamicModuleContribution;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -121,7 +123,42 @@ public final class AcceleoDynamicTemplatesRegistry {
 	public Set<File> getRegisteredModules() {
 		final Set<File> compound = new CompactLinkedHashSet<File>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			compound.addAll(AcceleoDynamicTemplatesEclipseUtil.getRegisteredModules());
+			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
+					.getRegisteredModules();
+			for (DynamicModuleContribution dynamicModuleContribution : modules) {
+				compound.addAll(dynamicModuleContribution.getFiles());
+			}
+		}
+		compound.addAll(registeredModules);
+		return compound;
+	}
+
+	/**
+	 * Returns all registered modules that are contributing to the generation of the generator with the given
+	 * ID. The returned set is a copy of this instance's.
+	 * 
+	 * @param generatorID
+	 *            The generator ID.
+	 * @return A copy of the registered modules set.
+	 * @since 3.1
+	 */
+	public Set<File> getRegisteredModules(String generatorID) {
+		final Set<File> compound = new CompactLinkedHashSet<File>();
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
+					.getRegisteredModules();
+			for (DynamicModuleContribution dynamicModuleContribution : modules) {
+				List<String> generatorIDs = dynamicModuleContribution.getGeneratorIDs();
+				if (generatorIDs.size() > 0) {
+					for (String genID : generatorIDs) {
+						if (genID.equals(generatorID)) {
+							compound.addAll(dynamicModuleContribution.getFiles());
+						}
+					}
+				} else {
+					compound.addAll(dynamicModuleContribution.getFiles());
+				}
+			}
 		}
 		compound.addAll(registeredModules);
 		return compound;

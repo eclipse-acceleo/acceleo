@@ -37,6 +37,12 @@ public final class DynamicTemplatesRegistryListener implements IRegistryEventLis
 	/** Name of the extension point's "templates" tag. */
 	private static final String DYNAMIC_TEMPLATES_TAG_TEMPLATES = "templates"; //$NON-NLS-1$
 
+	/** Name of the extension point's "generator" tag. */
+	private static final String DYNAMIC_TEMPLATES_TAG_GENERATOR = "generator"; //$NON-NLS-1$
+
+	/** Name of the extension point's "generator ID" tag. */
+	private static final String DYNAMIC_MODULES_TAG_GENERATOR_ID = "generatorID"; //$NON-NLS-1$
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -101,11 +107,17 @@ public final class DynamicTemplatesRegistryListener implements IRegistryEventLis
 	private void parseExtension(IExtension extension) {
 		final IConfigurationElement[] configElements = extension.getConfigurationElements();
 		final List<String> paths = new ArrayList<String>(configElements.length);
+		final List<String> generators = new ArrayList<String>(configElements.length);
 		for (IConfigurationElement elem : configElements) {
 			if (DYNAMIC_TEMPLATES_TAG_TEMPLATES.equals(elem.getName())) {
 				String path = elem.getAttribute(DYNAMIC_TEMPLATES_ATTRIBUTE_PATH);
 				if (path != null) {
 					paths.add(path);
+				}
+			} else if (DYNAMIC_TEMPLATES_TAG_GENERATOR.equals(elem.getName())) {
+				String generator = elem.getAttribute(DYNAMIC_MODULES_TAG_GENERATOR_ID);
+				if (generator != null) {
+					generators.add(generator);
 				}
 			}
 		}
@@ -115,7 +127,9 @@ public final class DynamicTemplatesRegistryListener implements IRegistryEventLis
 			if (paths.size() == 0) {
 				paths.add("/"); //$NON-NLS-1$
 			}
-			AcceleoDynamicTemplatesEclipseUtil.addExtendingBundle(bundle, paths);
+			AcceleoDynamicModulesDescriptor acceleoDynamicModulesDescriptor = new AcceleoDynamicModulesDescriptor(
+					generators, paths);
+			AcceleoDynamicTemplatesEclipseUtil.addExtendingBundle(bundle, acceleoDynamicModulesDescriptor);
 		}
 	}
 }

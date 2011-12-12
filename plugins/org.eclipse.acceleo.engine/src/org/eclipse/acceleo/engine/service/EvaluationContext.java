@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * This represents the context of an evaluation as required by Acceleo.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public class EvaluationContext {
 	/** Target of this evaluation. */

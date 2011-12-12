@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.URI;
  * This represents the context of a compilation as required by Acceleo.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public class CompilationContext {
 	/** The actual expression as written by the user that we are trying to compile. */
