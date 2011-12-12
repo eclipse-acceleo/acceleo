@@ -6,19 +6,20 @@
          <meta.schema plugin="org.eclipse.acceleo.engine" id="org.eclipse.acceleo.engine.dynamic.templates" name="org.eclipse.acceleo.engine.dynamic.templates"/>
       </appInfo>
       <documentation>
-         This extension point allows a third-party plugin to indicate it defines dynamic overrides for a generation. This extension point is deprecated, please use org.eclipse.acceleo.engine.dynamic.modules instead.
+         This extension point allows a third-party plugin to indicate it defines dynamic overrides for a generation.
       </documentation>
    </annotation>
 
    <element name="extension">
       <annotation>
          <appInfo>
-            <meta.element deprecated="true" replacement="org.eclipse.acceleo.engine.dynamic.modules" />
+            <meta.element />
          </appInfo>
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
             <element ref="templates"/>
+            <element ref="generator" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -57,6 +58,18 @@
                <appInfo>
                   <meta.attribute kind="resource"/>
                </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="generator">
+      <complexType>
+         <attribute name="generatorID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

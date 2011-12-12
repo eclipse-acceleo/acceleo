@@ -34,7 +34,6 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
-import org.eclipse.acceleo.engine.service.AcceleoDynamicModulesRegistry;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
@@ -750,106 +749,66 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * @return The set of loaded modules.
 	 */
 	private Set<Module> loadDynamicModules() {
-		final Set<File> dynamicModuleFiles = AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules();
+		final Set<File> dynamicModuleFiles = new CompactLinkedHashSet<File>();
 		final Set<Module> dynamicModules = new CompactLinkedHashSet<Module>();
-
+		// shortcut
 		ResourceSet resourceSet = null;
-
-		// Let's look for dynamic modules with the new extension point.
 		for (Module module : currentModules) {
 			if (module.eResource() != null && module.eResource().getResourceSet() != null) {
 				resourceSet = module.eResource().getResourceSet();
 				break;
 			}
 		}
-
 		// If we couldn't find a resourceSet, break the loading loop and log an exception
 		if (resourceSet == null) {
 			// set as a blocker so that it is logged as an error
 			AcceleoEnginePlugin.log(AcceleoEngineMessages
 					.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
-		} else {
-			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
-				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
-						this));
-			}
-			// We have a resource set, let's find out where its module are coming from
-			List<Resource> resources = resourceSet.getResources();
-			for (Resource resource : resources) {
-				URI uri = resource.getURI();
-				String generatorID = uri.toString();
-
-				// Chicken sacrifice done right! /!\ Warning voodoo magic /!\
-				if (uri.isPlatformPlugin() && uri.segments().length > 2) {
-					generatorID = uri.segment(1);
-				} else if (uri.isPlatformResource() && uri.segments().length > 2) {
-					// Not supposed to happen since extension point works only when deployed in eclipse
-					generatorID = uri.segment(1);
-				} else if (uri.isPlatform() && uri.segments().length > 2) {
-					// Not supposed to happen since extension point works only when deployed in eclipse
-					generatorID = uri.segment(1);
-				} else if (uri.isFile()) {
-					BundleURLConverter converter = new BundleURLConverter(generatorID);
-					generatorID = converter.resolveAsPlatformPlugin();
-					// generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
-					if (generatorID != null
-							&& generatorID.startsWith("platform:/plugin/") && URI.createURI(generatorID).segments().length > 2) { //$NON-NLS-1$
-						URI tmpURI = URI.createURI(generatorID);
-						generatorID = tmpURI.segment(1);
-					}
-				}
-				final Set<File> dynamicAcceleoModulesFiles = AcceleoDynamicModulesRegistry.INSTANCE
-						.getRegisteredModules(generatorID);
-				dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
-			}
-
-			for (File moduleFile : dynamicModuleFiles) {
-				if (moduleFile.exists() && moduleFile.canRead()) {
-					try {
-						Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
-						for (EObject root : res.getContents()) {
-							if (root instanceof Module) {
-								dynamicModules.add((Module)root);
-							}
-						}
-					} catch (IOException e) {
-						AcceleoEnginePlugin.log(e, false);
-					}
-				}
-			}
+			return dynamicModules;
 		}
+		if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
+			resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(), this));
+		}
+		// We have a resource set, let's find out where its module are coming from
+		List<Resource> resources = resourceSet.getResources();
+		for (Resource resource : resources) {
+			URI uri = resource.getURI();
+			String generatorID = uri.toString();
 
-		// shortcut for the old extension point mechanism
-		if (dynamicModuleFiles.size() > 0) {
-			for (Module module : currentModules) {
-				if (module.eResource() != null && module.eResource().getResourceSet() != null) {
-					resourceSet = module.eResource().getResourceSet();
-					break;
+			// Chicken sacrifice done right! /!\ Warning voodoo magic /!\
+			if (uri.isPlatformPlugin() && uri.segments().length > 2) {
+				generatorID = uri.segment(1);
+			} else if (uri.isPlatformResource() && uri.segments().length > 2) {
+				// Not supposed to happen since extension point works only when deployed in eclipse
+				generatorID = uri.segment(1);
+			} else if (uri.isPlatform() && uri.segments().length > 2) {
+				// Not supposed to happen since extension point works only when deployed in eclipse
+				generatorID = uri.segment(1);
+			} else if (uri.isFile()) {
+				BundleURLConverter converter = new BundleURLConverter(generatorID);
+				generatorID = converter.resolveAsPlatformPlugin();
+				// generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
+				if (generatorID != null
+						&& generatorID.startsWith("platform:/plugin/") && URI.createURI(generatorID).segments().length > 2) { //$NON-NLS-1$
+					URI tmpURI = URI.createURI(generatorID);
+					generatorID = tmpURI.segment(1);
 				}
 			}
-			// If we couldn't find a resourceSet, break the loading loop and log an exception
-			if (resourceSet == null) {
-				// set as a blocker so that it is logged as an error
-				AcceleoEnginePlugin.log(AcceleoEngineMessages
-						.getString("AcceleoEvaluationEnvironment.DynamicModulesLoadingFailure"), true); //$NON-NLS-1$
-				return dynamicModules;
-			}
-			if (!(resourceSet.getURIConverter() instanceof DynamicModulesURIConverter)) {
-				resourceSet.setURIConverter(new DynamicModulesURIConverter(resourceSet.getURIConverter(),
-						this));
-			}
-			for (File moduleFile : dynamicModuleFiles) {
-				if (moduleFile.exists() && moduleFile.canRead()) {
-					try {
-						Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
-						for (EObject root : res.getContents()) {
-							if (root instanceof Module) {
-								dynamicModules.add((Module)root);
-							}
+			final Set<File> dynamicAcceleoModulesFiles = AcceleoDynamicTemplatesRegistry.INSTANCE
+					.getRegisteredModules(generatorID);
+			dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
+		}
+		for (File moduleFile : dynamicModuleFiles) {
+			if (moduleFile.exists() && moduleFile.canRead()) {
+				try {
+					Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
+					for (EObject root : res.getContents()) {
+						if (root instanceof Module) {
+							dynamicModules.add((Module)root);
 						}
-					} catch (IOException e) {
-						AcceleoEnginePlugin.log(e, false);
 					}
+				} catch (IOException e) {
+					AcceleoEnginePlugin.log(e, false);
 				}
 			}
 		}

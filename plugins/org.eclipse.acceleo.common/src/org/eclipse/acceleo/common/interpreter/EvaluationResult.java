@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IStatus;
  * </p>
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public class EvaluationResult {
 	/**

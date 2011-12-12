@@ -36,10 +36,10 @@ import org.osgi.framework.Bundle;
  */
 public final class AcceleoDynamicTemplatesEclipseUtil {
 	/** Keeps track of the bundles extending this extension point. */
-	protected static final Map<Bundle, List<String>> EXTENDING_BUNDLES = new HashMap<Bundle, List<String>>();
+	protected static final Map<Bundle, AcceleoDynamicModulesDescriptor> EXTENDING_BUNDLES = new HashMap<Bundle, AcceleoDynamicModulesDescriptor>();
 
 	/** This will contain the modules contained by this registry. */
-	private static final Set<File> REGISTERED_MODULES = new CompactLinkedHashSet<File>();
+	private static final Set<DynamicModuleContribution> REGISTERED_MODULES = new CompactLinkedHashSet<DynamicModuleContribution>();
 
 	/**
 	 * Utility classes don't need a default constructor.
@@ -57,12 +57,33 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	 *            Paths where dynamic modules are located.
 	 */
 	public static void addExtendingBundle(Bundle bundle, List<String> paths) {
-		List<String> currentPaths = EXTENDING_BUNDLES.get(bundle);
-		if (currentPaths == null) {
-			currentPaths = new ArrayList<String>();
+		AcceleoDynamicModulesDescriptor descriptor = EXTENDING_BUNDLES.get(bundle);
+		if (descriptor == null) {
+			descriptor = new AcceleoDynamicModulesDescriptor(new ArrayList<String>(), new ArrayList<String>());
 		}
-		currentPaths.addAll(paths);
-		EXTENDING_BUNDLES.put(bundle, currentPaths);
+		descriptor.getPaths().addAll(paths);
+		EXTENDING_BUNDLES.put(bundle, descriptor);
+	}
+
+	/**
+	 * Adds a bundle in the extending bundles map.
+	 * 
+	 * @param bundle
+	 *            The extending bundle.
+	 * @param acceleoDynamicModulesDescriptor
+	 *            The extension point descriptor
+	 */
+	public static void addExtendingBundle(Bundle bundle,
+			AcceleoDynamicModulesDescriptor acceleoDynamicModulesDescriptor) {
+		AcceleoDynamicModulesDescriptor descriptor = EXTENDING_BUNDLES.get(bundle);
+		if (descriptor == null) {
+			descriptor = new AcceleoDynamicModulesDescriptor(new ArrayList<String>(), new ArrayList<String>());
+		}
+
+		descriptor.getGeneratorIDs().addAll(acceleoDynamicModulesDescriptor.getGeneratorIDs());
+		descriptor.getPaths().addAll(acceleoDynamicModulesDescriptor.getPaths());
+
+		EXTENDING_BUNDLES.put(bundle, descriptor);
 	}
 
 	/**
@@ -78,9 +99,9 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	 * 
 	 * @return A copy of the registered modules set.
 	 */
-	public static Set<File> getRegisteredModules() {
+	public static Set<DynamicModuleContribution> getRegisteredModules() {
 		refreshModules();
-		return new CompactLinkedHashSet<File>(REGISTERED_MODULES);
+		return new CompactLinkedHashSet<DynamicModuleContribution>(REGISTERED_MODULES);
 	}
 
 	/**
@@ -92,14 +113,15 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 		REGISTERED_MODULES.clear();
 		final List<Bundle> uninstalledBundles = new ArrayList<Bundle>();
 		final String pathSeparator = "/"; //$NON-NLS-1$
-		for (java.util.Map.Entry<Bundle, List<String>> entry : new CompactLinkedHashSet<java.util.Map.Entry<Bundle, List<String>>>(
+		for (java.util.Map.Entry<Bundle, AcceleoDynamicModulesDescriptor> entry : new CompactLinkedHashSet<java.util.Map.Entry<Bundle, AcceleoDynamicModulesDescriptor>>(
 				EXTENDING_BUNDLES.entrySet())) {
 			Bundle bundle = entry.getKey();
 			if (bundle.getState() == Bundle.UNINSTALLED) {
 				uninstalledBundles.add(bundle);
 				continue;
 			}
-			for (String path : entry.getValue()) {
+			AcceleoDynamicModulesDescriptor descriptor = entry.getValue();
+			for (String path : descriptor.getPaths()) {
 				String actualPath = path;
 				if (actualPath.charAt(0) != '/') {
 					actualPath = '/' + actualPath;
@@ -126,23 +148,26 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 					return;
 				}
 				try {
+					List<File> modules = new ArrayList<File>();
 					while (emtlFiles.hasMoreElements()) {
 						final URL next = emtlFiles.nextElement();
 						if (actualPath == pathSeparator) {
 							final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
 							if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
-								REGISTERED_MODULES.add(moduleFile);
+								modules.add(moduleFile);
 							}
 						} else {
 							String emtlPath = next.getPath();
 							if (emtlPath.substring(0, emtlPath.lastIndexOf('/')).contains(actualPath)) {
 								final File moduleFile = new File(FileLocator.toFileURL(next).getFile());
 								if (!moduleFile.isDirectory() && moduleFile.exists() && moduleFile.canRead()) {
-									REGISTERED_MODULES.add(moduleFile);
+									modules.add(moduleFile);
 								}
 							}
 						}
 					}
+					REGISTERED_MODULES.add(new DynamicModuleContribution(descriptor.getGeneratorIDs(),
+							modules));
 				} catch (IOException e) {
 					AcceleoEnginePlugin.log(e, false);
 				}
