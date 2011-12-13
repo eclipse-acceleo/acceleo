@@ -33,8 +33,11 @@ import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
+import org.eclipse.acceleo.common.utils.IAcceleoCrossReferenceProvider;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -55,6 +58,7 @@ import org.eclipse.ocl.util.CollectionUtil;
  * The purpose of this Utility class is to allow execution of Standard and non standard Acceleo operations.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public final class AcceleoLibraryOperationVisitor {
 	/** This will be used as a place holder so that library operations call can return null. */
@@ -575,18 +579,26 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static Set<EObject> eInverse(EObject target, EClassifier filter) {
 		final Set<EObject> result = new CompactLinkedHashSet<EObject>();
-		if (referencer == null) {
-			createEInverseCrossreferencer(target);
-		}
-		Collection<EStructuralFeature.Setting> settings = referencer.get(target);
-		if (settings == null) {
-			return Collections.emptySet();
-		}
-		for (EStructuralFeature.Setting setting : settings) {
-			if (filter == null || filter.isInstance(setting.getEObject())) {
-				result.add(setting.getEObject());
+
+		final IAcceleoCrossReferenceProvider crossReferenceProvider = getCrossReferencerAdapter(target);
+		if (crossReferenceProvider != null) {
+			if (filter != null) {
+				result.addAll(crossReferenceProvider.getInverseReferences(target, filter));
+			} else {
+				result.addAll(crossReferenceProvider.getInverseReferences(target));
+			}
+		} else {
+			if (referencer == null) {
+				createEInverseCrossreferencer(target);
+			}
+			final Collection<EStructuralFeature.Setting> settings = referencer.get(target);
+			for (EStructuralFeature.Setting setting : settings) {
+				if (filter == null || filter.isInstance(setting.getEObject())) {
+					result.add(setting.getEObject());
+				}
 			}
 		}
+
 		return result;
 	}
 
@@ -760,6 +772,25 @@ public final class AcceleoLibraryOperationVisitor {
 		}
 
 		return soughtValue;
+	}
+
+	/**
+	 * Tries and find a cross reference provider for the given EObject.
+	 * 
+	 * @param eObject
+	 *            The EObject we need a cross reference provider for.
+	 * @return The first cross reference provider we found for the given EObject.
+	 */
+	private static IAcceleoCrossReferenceProvider getCrossReferencerAdapter(EObject eObject) {
+		IAcceleoCrossReferenceProvider provider = null;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			Object adapted = Platform.getAdapterManager().getAdapter(eObject,
+					IAcceleoCrossReferenceProvider.class);
+			if (adapted instanceof IAcceleoCrossReferenceProvider) {
+				provider = (IAcceleoCrossReferenceProvider)adapted;
+			}
+		}
+		return provider;
 	}
 
 	/**
