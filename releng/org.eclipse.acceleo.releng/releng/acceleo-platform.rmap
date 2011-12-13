@@ -4,10 +4,10 @@
   <rm:property key="eclipse.download" value="http://download.eclipse.org"/>
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
   
-  <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="staging"/>
-  <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="staging"/>
-  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="staging"/>
-  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="staging"/>
+  <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="indigo"/>
+  <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="indigo"/>
+  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="indigo"/>
+  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="indigo"/>
   
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
