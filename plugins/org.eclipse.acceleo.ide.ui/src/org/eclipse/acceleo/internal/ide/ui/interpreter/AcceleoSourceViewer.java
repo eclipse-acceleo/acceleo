@@ -669,14 +669,18 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	private Set<String> getMetamodelURIs(InterpreterContext context) {
 		Set<String> uris = new HashSet<String>();
 
+		final String targetNsURI = extractNsURI(context.getTargetEObjects().get(0));
+		if (targetNsURI != null) {
+			uris.add(targetNsURI);
+		}
 		EObject root = null;
 		if (!context.getTargetEObjects().isEmpty()) {
 			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
 		}
 		if (root != null) {
-			final String targetNsURI = extractNsURI(root);
-			if (targetNsURI != null) {
-				uris.add(targetNsURI);
+			final String modelNsURI = extractNsURI(root);
+			if (modelNsURI != null) {
+				uris.add(modelNsURI);
 			}
 		}
 		Iterator<Variable> variables = context.getVariables().iterator();
