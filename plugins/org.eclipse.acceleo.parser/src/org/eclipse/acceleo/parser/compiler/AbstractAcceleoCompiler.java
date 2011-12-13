@@ -307,6 +307,7 @@ public abstract class AbstractAcceleoCompiler {
 		List<URI> dependenciesURIs = new ArrayList<URI>();
 		Map<URI, URI> mapURIs = new HashMap<URI, URI>();
 		computeDependencies(dependenciesURIs, mapURIs);
+		computeJarDependencies(dependenciesURIs, mapURIs);
 		loadEcoreFiles();
 
 		createOutputFiles(emtlAbsoluteURIs);
