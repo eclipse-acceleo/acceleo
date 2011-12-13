@@ -18,7 +18,7 @@
 			<entry key="eclipse.home" value="${eclipse.home}" />
 			<entry key="build.id" value="${build.id}" />
 			<entry key="hudson.build.id" value="${hudson.build.id}" />
-			<entry key="build.root" value="/shared/jobs/m2t-acceleo-master/lastSuccessful" />
+			<entry key="build.root" value="/shared/jobs/m2t-acceleo-master/latest" />
 			<entry key="packages.base" value="Acceleo.downloads" />
 			<entry key="downloads.area" value="/home/data/httpd/download.eclipse.org/modeling/m2t/acceleo" />
 		</propertyfile>
@@ -86,10 +86,10 @@
 	</target>
 
 	<target name="publish.build">
-		<property file="${publisher.properties.file.name}" />
+		<property file="../${promoter.properties.file.name}" />
 		<fail message="build.root property must be defined" unless="build.root" />
 
-		<property name="property.file.location" location="${build.root}/archive/${promoter.properties.file.name}" />
+		<property name="property.file.location" location="${build.root}/${promoter.properties.file.name}" />
 		<property name="property.load.prefix" value="saved." />
 
 		<antcall target="publish.build.stage.2" inheritall="true" />
@@ -162,7 +162,7 @@
 		<!-- defaults -->
 		<property name="version" value="3.3.0" />
 
-		<property name="packages.directory" location="${saved.build.root}/archive/${saved.packages.base}" />
+		<property name="packages.directory" location="${saved.build.root}/${saved.packages.base}" />
 
 		<property name="build.drop.directory" location="${saved.downloads.area}/downloads/drops/${version}/${saved.build.id}" />
 
@@ -179,8 +179,6 @@
 		<checksum algorithm="MD5" fileext=".md5" format="MD5SUM">
 			<fileset dir="${build.drop.directory}" />
 		</checksum>
-		<!-- copy buildlog -->
-		<copy tofile="${build.drop.directory}/buildlog.txt" file="${saved.build.root}/log" />
 
 		<fileset id="drop.resources" dir="${build.drop.directory}">
 			<or>
