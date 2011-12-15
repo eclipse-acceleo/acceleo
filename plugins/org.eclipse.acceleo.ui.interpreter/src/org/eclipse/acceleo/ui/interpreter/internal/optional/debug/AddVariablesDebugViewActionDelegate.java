@@ -43,6 +43,11 @@ public class AddVariablesDebugViewActionDelegate implements IViewActionDelegate 
 	 */
 	private List<Object> currentVariablesValues = new ArrayList<Object>();
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
+	 */
 	public void init(IViewPart view) {
 		// do nothing
 	}

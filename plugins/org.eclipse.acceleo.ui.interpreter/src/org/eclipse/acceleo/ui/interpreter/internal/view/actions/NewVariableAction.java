@@ -99,7 +99,7 @@ public final class NewVariableAction extends Action {
 		 */
 		public String isValid(String newText) {
 			String errorMessage = null;
-			if (newText == null || newText.equals("")) { //$NON-NLS-1$
+			if (newText == null || "".equals(newText)) { //$NON-NLS-1$
 				errorMessage = InterpreterMessages
 						.getString("interpreter.action.createvariable.popup.error.noname"); //$NON-NLS-1$
 			} else if (!isJavaIdentifier(newText)) {

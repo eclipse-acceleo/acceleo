@@ -19,7 +19,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * Describes a language interpreter as contributed to the extension point.
  * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">laurent Goubet</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class LanguageInterpreterDescriptor {
 	/** Name of the extension point's languageInterpreter tag "class" attribute. */

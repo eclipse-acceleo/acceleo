@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class SWTUtil {
+public final class SWTUtil {
 	/** Utility classes don't need default constructors. */
 	private SWTUtil() {
 		// Hides default constructor.

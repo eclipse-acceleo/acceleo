@@ -20,7 +20,7 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
  * This will be used when no language interpreter has been provided to the interpreter view. It simply relies
  * on the default behavior, and copy/pastes the input expression as the evaluation result.
  * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">laurent Goubet</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class DefaultLanguageInterpreter extends AbstractLanguageInterpreter {
 	/**

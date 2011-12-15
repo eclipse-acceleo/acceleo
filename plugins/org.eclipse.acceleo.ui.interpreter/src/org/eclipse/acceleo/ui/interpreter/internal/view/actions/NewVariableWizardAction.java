@@ -40,7 +40,7 @@ public class NewVariableWizardAction extends Action {
 	/**
 	 * Instantiates the "new variable" action given the variable viewer and the currently selected variable.
 	 * 
-	 * @param viewer
+	 * @param variableViewer
 	 *            The variable viewer.
 	 * @param variable
 	 *            The currently selected variable.
