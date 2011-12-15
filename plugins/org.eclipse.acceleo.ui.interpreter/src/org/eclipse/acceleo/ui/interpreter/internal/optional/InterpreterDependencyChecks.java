@@ -15,9 +15,9 @@ package org.eclipse.acceleo.ui.interpreter.internal.optional;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class InterpreterDependencyChecks {
+public final class InterpreterDependencyChecks {
 	/** Set to <code>true</code> if the <i>org.eclipse.debug.ui</i> dependency is accessible in the classpath. */
-	private static final boolean debugDependency;
+	private static final boolean DEBUG_DEPENDENCY;
 
 	static {
 		boolean tempDebugDependency;
@@ -27,7 +27,7 @@ public class InterpreterDependencyChecks {
 		} catch (ClassNotFoundException e) {
 			tempDebugDependency = false;
 		}
-		debugDependency = tempDebugDependency;
+		DEBUG_DEPENDENCY = tempDebugDependency;
 	}
 
 	/** Does not need to be instantiated. */
@@ -42,6 +42,6 @@ public class InterpreterDependencyChecks {
 	 *         <code>false</code> otherwise.
 	 */
 	public static boolean isDebugAccessible() {
-		return debugDependency;
+		return DEBUG_DEPENDENCY;
 	}
 }

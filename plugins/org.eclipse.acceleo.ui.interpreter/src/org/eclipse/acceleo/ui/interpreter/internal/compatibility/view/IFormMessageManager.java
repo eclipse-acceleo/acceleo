@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.compatibility.view;
 
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.swt.widgets.Control;
 
 /**
@@ -28,9 +27,10 @@ public interface IFormMessageManager {
 	 * @param message
 	 *            The actual message to display.
 	 * @param type
-	 *            Type of the message. Either {@link IMessageProvider#NONE},
-	 *            {@link IMessageProvider#INFORMATION}, {@link IMessageProvider#WARNING} or
-	 *            {@link IMessageProvider#ERROR}.
+	 *            Type of the message. Either {@link org.eclipse.jface.dialogs.IMessageProvider#NONE},
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#INFORMATION},
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#WARNING} or
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#ERROR}.
 	 */
 	void addMessage(Object key, String message, int type);
 
@@ -42,9 +42,10 @@ public interface IFormMessageManager {
 	 * @param message
 	 *            The actual message to display.
 	 * @param type
-	 *            Type of the message. Either {@link IMessageProvider#NONE},
-	 *            {@link IMessageProvider#INFORMATION}, {@link IMessageProvider#WARNING} or
-	 *            {@link IMessageProvider#ERROR}.
+	 *            Type of the message. Either {@link org.eclipse.jface.dialogs.IMessageProvider#NONE},
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#INFORMATION},
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#WARNING} or
+	 *            {@link org.eclipse.jface.dialogs.IMessageProvider#ERROR}.
 	 * @param control
 	 *            The control that is to be decorated.
 	 */

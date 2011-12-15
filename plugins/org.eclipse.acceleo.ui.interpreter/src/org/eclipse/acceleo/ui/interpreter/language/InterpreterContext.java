@@ -57,6 +57,8 @@ public class InterpreterContext {
 	 *            The full expression currently written in the interpreter's source viewer.
 	 * @param selection
 	 *            The selected part of the source viewer's expression.
+	 * @param targetEObjects
+	 *            Currently selected EObjects.
 	 * @param variables
 	 *            The variables currently accessible by the interpreter.
 	 */

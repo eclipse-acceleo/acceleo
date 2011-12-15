@@ -16,7 +16,6 @@ import org.eclipse.acceleo.ui.interpreter.internal.InterpreterMessages;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * This action will be displayed on the interpreter view's toolbar. It will make it possible to show or hide
@@ -33,8 +32,7 @@ public class ToggleVariableVisibilityAction extends Action {
 	private InterpreterView view;
 
 	/**
-	 * Instantiates our action given the {@link Composite} that is to be hidden or shown, and the form
-	 * containing this Composite.
+	 * Instantiates our action given the interpreter view holding the composite to hide or show.
 	 * 
 	 * @param view
 	 *            The interpreter view.

@@ -15,7 +15,6 @@ import java.util.concurrent.Callable;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
@@ -80,7 +79,8 @@ public abstract class AbstractLanguageInterpreter {
 	 * @param parent
 	 *            The parent composite for this result viewer.
 	 * @return The viewer that is to be used to display the result of this language's evaluations. Can be
-	 *         <code>null</code>, in which case a default {@link TreeViewer} will be instantiated.
+	 *         <code>null</code>, in which case a default {@link org.eclipse.jface.viewers.TreeViewer} will be
+	 *         instantiated.
 	 */
 	public Viewer createResultViewer(Composite parent) {
 		return null;
@@ -170,8 +170,6 @@ public abstract class AbstractLanguageInterpreter {
 	 * @param editorPart
 	 *            The currently active editor if the link toggle was just activated, <code>null</code> if it
 	 *            was just disabled.
-	 * @return <code>true</code> if this interpreter accepted the link with the given editor,
-	 *         <code>false</code> otherwise.
 	 */
 	public void linkWithEditor(IEditorPart editorPart) {
 		// Do nothing

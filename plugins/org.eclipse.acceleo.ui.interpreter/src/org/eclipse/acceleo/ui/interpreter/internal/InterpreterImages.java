@@ -25,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public final class InterpreterImages {
 	/** Base URL for all "icon" images. This will be initialized to this bundle's "icons" folder. */
-	private static URL BASE_URL = null;
+	private static final URL BASE_URL;
 
 	/** The image registry containing <code>Image</code>s and the <code>ImageDescriptor</code>s. */
 	private static ImageRegistry imageRegistry;

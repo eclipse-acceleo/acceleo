@@ -102,7 +102,7 @@ public final class DeleteVariableOrValueAction extends Action {
 				if (item.getData().equals(variableValue)) {
 					((List<Variable>)input).remove(variable);
 				} else {
-					List<Object> value = ((List<Object>)variableValue);
+					List<Object> value = (List<Object>)variableValue;
 					value.remove(item.getData());
 					if (value.size() == 1) {
 						variable.setValue(value.get(0));

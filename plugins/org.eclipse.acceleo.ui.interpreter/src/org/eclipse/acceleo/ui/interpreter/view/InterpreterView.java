@@ -185,6 +185,9 @@ public class InterpreterView extends ViewPart {
 	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
 	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
+	/** We'll use this as the id of our viewers' menus. */
+	private static final String MENU_ID = "#PopupMenu"; //$NON-NLS-1$
+
 	/**
 	 * Id for command "Redo" in category "Edit". This should be directly referenced from
 	 * org.eclipse.ui.IWorkbenchCommandConstants.EDIT_REDO ... though that would break our Eclipse 3.4
@@ -302,7 +305,7 @@ public class InterpreterView extends ViewPart {
 	private TreeViewer variableViewer;
 
 	/** Indicates whether the variable viewer is visible. */
-	private boolean variableVisible = false;
+	private boolean variableVisible;
 
 	/**
 	 * Creates a tool bar for the given section.
@@ -461,6 +464,9 @@ public class InterpreterView extends ViewPart {
 		super.dispose();
 	}
 
+	/**
+	 * Evaluates the currently entered expression with the current context.
+	 */
 	public void evaluate() {
 		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
 			evaluationThread.interrupt();
@@ -603,8 +609,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
-					.isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
+					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
 
@@ -795,6 +801,7 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @param viewer
 	 *            The expression viewer.
+	 * @return The newly created listener.
 	 */
 	protected IMenuListener createExpressionMenuListener(SourceViewer viewer) {
 		return new ExpressionMenuListener(viewer);
@@ -933,6 +940,7 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @param viewer
 	 *            The result viewer.
+	 * @return The newly created listener.
 	 */
 	protected IMenuListener createResultMenuListener(Viewer viewer) {
 		return new ResultMenuListener(viewer);
@@ -1059,6 +1067,7 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @param viewer
 	 *            The variable viewer.
+	 * @return The newly created listener.
 	 */
 	protected IMenuListener createVariableMenuListener(TreeViewer viewer) {
 		return new VariableMenuListener(viewer);
@@ -1097,6 +1106,7 @@ public class InterpreterView extends ViewPart {
 	 *            Toolkit that can be used to create form parts.
 	 * @param sectionBody
 	 *            Parent composite of the TreeViewer.
+	 * @return The newly created viewer.
 	 */
 	protected TreeViewer createVariableViewer(FormToolkit toolkit, Composite sectionBody) {
 		Tree variableTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
@@ -1275,7 +1285,8 @@ public class InterpreterView extends ViewPart {
 
 			expressionViewer = createExpressionViewer(expressionSectionBody);
 			GridData gridData = new GridData(GridData.FILL_BOTH);
-			gridData.heightHint = 80;
+			final int expressionHeight = 80;
+			gridData.heightHint = expressionHeight;
 			expressionViewer.getControl().setLayoutData(gridData);
 
 			formToolkit.paintBordersFor(expressionSectionBody);
@@ -1477,7 +1488,7 @@ public class InterpreterView extends ViewPart {
 	 *            The expression viewer.
 	 */
 	private void createExpressionMenu(SourceViewer viewer) {
-		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		MenuManager menuManager = new MenuManager(MENU_ID);
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(createExpressionMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
@@ -1491,7 +1502,7 @@ public class InterpreterView extends ViewPart {
 	 *            The result viewer.
 	 */
 	private void createResultMenu(Viewer viewer) {
-		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		MenuManager menuManager = new MenuManager(MENU_ID);
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(createResultMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
@@ -1505,7 +1516,7 @@ public class InterpreterView extends ViewPart {
 	 *            The variable viewer.
 	 */
 	private void createVariableMenu(TreeViewer viewer) {
-		MenuManager menuManager = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+		MenuManager menuManager = new MenuManager(MENU_ID);
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(createVariableMenuListener(viewer));
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
@@ -1527,7 +1538,7 @@ public class InterpreterView extends ViewPart {
 	 * @param viewer
 	 *            The viewer on which to activate default text actions.
 	 */
-	private final void setUpDefaultTextAction(final SourceViewer viewer) {
+	private void setUpDefaultTextAction(final SourceViewer viewer) {
 		IAction redoAction = new Action() {
 			@Override
 			public void run() {
@@ -2176,7 +2187,7 @@ public class InterpreterView extends ViewPart {
 		private static final int DELAY = 500;
 
 		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
-		private boolean dirty = false;
+		private boolean dirty;
 
 		/** The lock we'll acquire for this thread's work. */
 		private final Object lock = new Object();

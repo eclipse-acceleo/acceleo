@@ -273,6 +273,7 @@ public class NewVariableWizardPage extends WizardPage {
 	 * Creates a separator label under the given parent.
 	 * 
 	 * @param parent
+	 *            Parent composite for the widgets.
 	 */
 	private void createSeparator(Composite parent) {
 		final Label label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -533,7 +534,7 @@ public class NewVariableWizardPage extends WizardPage {
 		 */
 		public String isValid(String newText) {
 			String errorMessage = null;
-			if (newText == null || newText.equals("")) { //$NON-NLS-1$
+			if (newText == null || "".equals(newText)) { //$NON-NLS-1$
 				errorMessage = InterpreterMessages.getString("interpreter.wizard.newvariable.error.noname"); //$NON-NLS-1$
 			} else if (!isJavaIdentifier(newText)) {
 				errorMessage = InterpreterMessages.getString(

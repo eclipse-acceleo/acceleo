@@ -49,6 +49,9 @@ public final class EvaluateAction extends Action {
 
 	/**
 	 * Instantiates the evaluate action.
+	 * 
+	 * @param interpreterView
+	 *            The view on which this action operates.
 	 */
 	public EvaluateAction(InterpreterView interpreterView) {
 		this();

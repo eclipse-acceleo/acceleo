@@ -17,7 +17,7 @@ import java.util.List;
  * This will contain and allow access to all of the language interpreter that have been parsed from the
  * extension point.
  * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">laurent Goubet</a>
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public final class LanguageInterpreterRegistry {
 	/** List of language interpreters created from the extension point contributions. */

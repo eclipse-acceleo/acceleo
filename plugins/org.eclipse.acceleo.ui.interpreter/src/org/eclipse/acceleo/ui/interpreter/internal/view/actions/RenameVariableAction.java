@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public final class RenameVariableAction extends Action {
 	/** Will be set to <code>true</code> whenever we start saving a Variable change. */
-	protected boolean saving = false;
+	protected boolean saving;
 
 	/** The actual text editor widget. */
 	protected Text textEditor;
@@ -143,7 +143,7 @@ public final class RenameVariableAction extends Action {
 	 *            The resource which name is to change.
 	 */
 	protected void saveChangesAndDispose(Variable variable) {
-		if (saving == true) {
+		if (saving) {
 			return;
 		}
 
@@ -245,6 +245,8 @@ public final class RenameVariableAction extends Action {
 						saveChangesAndDispose(variable);
 						event.doit = true;
 						event.detail = SWT.TRAVERSE_NONE;
+						break;
+					default:
 						break;
 				}
 			}

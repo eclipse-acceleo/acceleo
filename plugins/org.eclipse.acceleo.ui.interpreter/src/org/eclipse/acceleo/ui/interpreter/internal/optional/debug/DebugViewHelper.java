@@ -32,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class DebugViewHelper {
+public final class DebugViewHelper {
 	/** Does not need to be instantiated. */
 	private DebugViewHelper() {
 		// Hides default constructor
