@@ -53,6 +53,7 @@ import org.eclipse.ocl.util.Bag;
  * {@link org.eclipse.acceleo.model.mtl.Module} itself, or one of its queries if we fed its name to this task.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 	/** Context of this evaluation. */
