@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,11 +21,13 @@ import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
+import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParser;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -41,6 +37,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AcceleoParserTests {
 
@@ -116,7 +118,12 @@ public class AcceleoParserTests {
 		resources.add(createFileURI("/data/template/RecursiveModule3.emtl")); //$NON-NLS-1$
 		AcceleoParser parser = new AcceleoParser();
 		List<URI> dependencies = new ArrayList<URI>();
-		parser.parse(files, resources, dependencies);
+		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
+		for (File inputFile : files) {
+			acceleoFiles.add(new AcceleoFile(inputFile, AcceleoFile.simpleModuleName(inputFile)));
+		}
+		parser.parse(acceleoFiles, resources, dependencies, null, new BasicMonitor());
+
 		for (File file : files) {
 			List<AcceleoParserProblem> problems = parser.getProblems(file).getList();
 			if (file != problemFile) {
@@ -163,7 +170,11 @@ public class AcceleoParserTests {
 		List<URI> oURIs = new ArrayList<URI>();
 		oURIs.add(oURI);
 		assertNull(parser.getProblems(iFile));
-		parser.parse(iFiles, oURIs, new ArrayList<URI>());
+		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
+		for (File inputFile : iFiles) {
+			acceleoFiles.add(new AcceleoFile(inputFile, AcceleoFile.simpleModuleName(inputFile)));
+		}
+		parser.parse(acceleoFiles, oURIs, new ArrayList<URI>(), null, new BasicMonitor());
 		if (parser.getProblems(iFile).getList().size() != problemsCount) {
 			fail("You must have " + problemsCount + " syntax errors : " //$NON-NLS-1$ //$NON-NLS-2$
 					+ parser.getProblems(iFile).getMessage());

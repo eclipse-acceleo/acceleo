@@ -175,7 +175,7 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		} else {
 			parser = new AcceleoParser(true, settings.isTrimmedPositions());
 		}
-		parser.parse(iFiles, oURIs, dependenciesURIs, new BasicMonitor.EclipseSubProgress(monitor, 1));
+		parser.parse(iFiles, oURIs, dependenciesURIs, null, new BasicMonitor.EclipseSubProgress(monitor, 1));
 		for (URI uri : oURIs) {
 			try {
 				AcceleoUIResourceSet.removeResource(uri);

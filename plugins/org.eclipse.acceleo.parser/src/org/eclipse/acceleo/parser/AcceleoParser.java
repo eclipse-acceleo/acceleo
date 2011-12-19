@@ -426,13 +426,15 @@ public class AcceleoParser {
 	 *            are the URIs of the output files to create
 	 * @param dependenciesURIs
 	 *            URIs of the dependencies that need to be loaded before link resolution
+	 * @deprecated
 	 */
+	@Deprecated
 	public void parse(List<File> inputFiles, List<URI> outputURIs, List<URI> dependenciesURIs) {
 		List<AcceleoFile> acceleoFiles = new ArrayList<AcceleoFile>();
 		for (File inputFile : inputFiles) {
 			acceleoFiles.add(new AcceleoFile(inputFile, AcceleoFile.simpleModuleName(inputFile)));
 		}
-		parse(acceleoFiles, outputURIs, dependenciesURIs, new BasicMonitor());
+		parse(acceleoFiles, outputURIs, dependenciesURIs, null, new BasicMonitor());
 	}
 
 	/**
@@ -449,7 +451,9 @@ public class AcceleoParser {
 	 * @param monitor
 	 *            This will be used as the progress monitor for the parsing
 	 * @since 3.0
+	 * @deprecated
 	 */
+	@Deprecated
 	public void parse(List<AcceleoFile> acceleoFiles, List<URI> outputURIs, List<URI> dependenciesURIs,
 			Monitor monitor) {
 		parse(acceleoFiles, outputURIs, dependenciesURIs, null, monitor);
