@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * its queries if we fed its name to this task.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ * @since 3.2
  */
 public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	/** This constant holds the Acceleo parser's plugin id. */
