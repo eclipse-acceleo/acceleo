@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.resources;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,8 +27,6 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.model.mtl.MtlPackage;
-import org.eclipse.acceleo.parser.AcceleoParser;
-import org.eclipse.acceleo.parser.AcceleoParserProblems;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -37,7 +34,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
@@ -858,79 +854,6 @@ public class AcceleoProject {
 					}
 				}
 			}
-		} else if (entriesMTL != null && entriesMTL.hasMoreElements()) {
-			// Deactivate the compilation of the MTL files
-			boolean compile = false;
-			if (compile) {
-				compileMTL(bundle, entriesMTL, savedURIs);
-			}
-		}
-	}
-
-	/**
-	 * Compile the MTL files without any EMTL files.
-	 * 
-	 * @param bundle
-	 *            The bundle
-	 * @param entriesMTL
-	 *            The MTL entries
-	 * @param savedURIs
-	 *            The saved URIs
-	 */
-	private static void compileMTL(Bundle bundle, Enumeration<URL> entriesMTL, List<URI> savedURIs) {
-		final String testExtension = "acceleotest"; //$NON-NLS-1$
-		List<File> inputFiles = new ArrayList<File>();
-		List<URI> absoluteOutputURIs = new ArrayList<URI>();
-		List<URI> testAbsoluteOutputURIs = new ArrayList<URI>();
-		List<URI> pluginOutputURIs = new ArrayList<URI>();
-		while (entriesMTL.hasMoreElements()) {
-			URL entry = entriesMTL.nextElement();
-			if (entry != null) {
-				URL fileURL;
-				try {
-					fileURL = FileLocator.toFileURL(entry);
-				} catch (IOException e) {
-					fileURL = null;
-					// Remark : We don't log if there is a syntax error.
-				}
-				if (fileURL != null) {
-					IPath pathMTL = new Path(fileURL.getPath());
-					File fileMTL = pathMTL.toFile();
-					inputFiles.add(fileMTL);
-					absoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension().addFileExtension(
-							IAcceleoConstants.EMTL_FILE_EXTENSION).toString()));
-					testAbsoluteOutputURIs.add(URI.createFileURI(pathMTL.removeFileExtension()
-							.addFileExtension(testExtension).toString()));
-					pluginOutputURIs.add(URI.createPlatformPluginURI(new Path(bundle.getSymbolicName())
-							.append(new Path(entry.getPath())).removeFileExtension().addFileExtension(
-									IAcceleoConstants.EMTL_FILE_EXTENSION).toString(), false));
-				}
-			}
-		}
-		// The real EMTL files musn't be created when an issue occurs.
-		AcceleoParser parser = new AcceleoParser(true);
-		parser.parse(inputFiles, testAbsoluteOutputURIs, new ArrayList<URI>());
-		savedURIs.addAll(pluginOutputURIs);
-		boolean hasProblem = false;
-		for (File inputFile : inputFiles) {
-			AcceleoParserProblems problems = parser.getProblems(inputFile);
-			if (problems != null) {
-				String message = problems.getMessage();
-				if (message != null && message.length() > 0) {
-					hasProblem = true;
-					// Remark : We don't log if there is a syntax error.
-				}
-			}
-			for (File file : inputFile.getParentFile().listFiles()) {
-				if (file.getName() != null && file.getName().endsWith(testExtension)) {
-					file.delete();
-				}
-			}
-		}
-		if (!hasProblem) {
-			// We create the real EMTL files
-			parser = new AcceleoParser(true);
-			parser.parse(inputFiles, absoluteOutputURIs, new ArrayList<URI>());
 		}
 	}
 
