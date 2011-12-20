@@ -1133,7 +1133,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 
 			if (startNonWhiteSpace != -1 && endNonWhiteSpace != -1) {
-				this.logWarning(AcceleoParserMessages
+				this.logProblem(AcceleoParserMessages
 						.getString("CST2ASTConverterWithResolver.TextAfterProtectedAreaMarker"), //$NON-NLS-1$
 						startNonWhiteSpace, endNonWhiteSpace);
 			}
