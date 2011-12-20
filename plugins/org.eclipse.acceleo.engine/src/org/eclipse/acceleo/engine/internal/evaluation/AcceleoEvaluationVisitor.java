@@ -710,7 +710,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
-		// FIXME SBE add marker
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
 		final Object markerValue = getVisitor().visitExpression((OCLExpression<C>)protectedArea.getMarker());

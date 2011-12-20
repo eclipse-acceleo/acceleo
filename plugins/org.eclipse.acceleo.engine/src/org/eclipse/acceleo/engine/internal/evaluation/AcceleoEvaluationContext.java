@@ -13,7 +13,6 @@ package org.eclipse.acceleo.engine.internal.evaluation;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,6 +20,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -63,9 +63,6 @@ import org.eclipse.ocl.utilities.ASTNode;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEvaluationContext<C> {
-	/** This will hold the system specific line separator ("\n" for unix, "\r\n" for dos, "\r" for mac, ...). */
-	protected static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
-
 	/** Default size to be used for new buffers. */
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
 
@@ -805,7 +802,7 @@ public class AcceleoEvaluationContext<C> {
 	 * @throws IOException
 	 *             Thrown if we cannot read through the provided reader.
 	 */
-	private Map<String, String> internalSaveProtectedAreas(BufferedReader reader) throws IOException {
+	private Map<String, String> internalSaveProtectedAreas(LineReader reader) throws IOException {
 		final Map<String, String> protectedAreas = new HashMap<String, String>();
 		final String usercodeStart = AcceleoEngineMessages.getString("usercode.start"); //$NON-NLS-1$
 		final String usercodeEnd = AcceleoEngineMessages.getString("usercode.end"); //$NON-NLS-1$
@@ -818,16 +815,19 @@ public class AcceleoEvaluationContext<C> {
 				final String marker = line.substring(line.indexOf(usercodeStart) + usercodeStart.length())
 						.trim();
 				final StringBuffer areaContent = new StringBuffer(DEFAULT_BUFFER_SIZE);
+				final int start = line.indexOf(usercodeStart);
 				// Append a line separator before the protected area if need be
-				if (line.indexOf(usercodeStart) - LINE_SEPARATOR.length() > 0) {
-					final String previous = line.substring(line.indexOf(usercodeStart)
-							- LINE_SEPARATOR.length(), line.indexOf(usercodeStart));
-					if (LINE_SEPARATOR.equals(previous)) {
-						areaContent.append(LINE_SEPARATOR);
+				if (start > 1) {
+					String previous = String.valueOf(line.charAt(start - 1));
+					if (start > 2) {
+						previous += String.valueOf(line.charAt(start - 2));
+					}
+					if (!previous.contains(MAC_LINE_SEPARATOR) && !previous.contains(UNIX_LINE_SEPARATOR)) {
+						areaContent.append(reader.getLastEOLSequence());
 					}
 				}
 				// Everything preceding the start of user code doesn't need to be saved
-				areaContent.append(line.substring(line.indexOf(usercodeStart)));
+				areaContent.append(line.substring(start));
 
 				/*
 				 * TODO If there is no "end of user code", or if the protected content is too large, this will
@@ -835,7 +835,7 @@ public class AcceleoEvaluationContext<C> {
 				 */
 				line = reader.readLine();
 				while (line != null) {
-					areaContent.append(LINE_SEPARATOR);
+					areaContent.append(reader.getLastEOLSequence());
 					if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
 						hasJMergeTag = true;
 					}
@@ -844,10 +844,15 @@ public class AcceleoEvaluationContext<C> {
 						final int endOffset = line.indexOf(usercodeEnd) + usercodeEnd.length();
 						areaContent.append(line.substring(0, endOffset));
 						// Append a line separator after the protected area if need be
-						if (endOffset + LINE_SEPARATOR.length() <= line.length()
-								&& LINE_SEPARATOR.equals(line.substring(endOffset, endOffset
-										+ LINE_SEPARATOR.length()))) {
-							areaContent.append(LINE_SEPARATOR);
+						String previous = "";
+						if (endOffset + 1 <= line.length()) {
+							previous += String.valueOf(line.charAt(start + 1));
+						}
+						if (endOffset + 2 <= line.length()) {
+							previous += String.valueOf(line.charAt(start + 2));
+						}
+						if (!previous.contains(MAC_LINE_SEPARATOR) && !previous.contains(UNIX_LINE_SEPARATOR)) {
+							areaContent.append(reader.getLastEOLSequence());
 						}
 						break;
 					}
@@ -873,9 +878,9 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	private Map<String, String> saveProtectedAreas(File file) throws IOException {
 		Map<String, String> protectedAreas = new HashMap<String, String>();
-		BufferedReader reader = null;
+		LineReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(file));
+			reader = new LineReader(new FileReader(file));
 			protectedAreas = internalSaveProtectedAreas(reader);
 		} catch (final FileNotFoundException e) {
 			// cannot be thrown here, we were called after testing that the file indeed existed.
@@ -898,9 +903,9 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	private Map<String, String> saveProtectedAreas(String buffer) {
 		Map<String, String> protectedAreas = new HashMap<String, String>();
-		BufferedReader reader = null;
+		LineReader reader = null;
 		try {
-			reader = new BufferedReader(new StringReader(buffer));
+			reader = new LineReader(new StringReader(buffer));
 			protectedAreas = internalSaveProtectedAreas(reader);
 		} catch (IOException e) {
 			// Cannot happen here
@@ -949,6 +954,314 @@ public class AcceleoEvaluationContext<C> {
 			}
 			if (out != System.out) {
 				out.close();
+			}
+		}
+	}
+
+	/**
+	 * This implementation of a Reader will allow us to read lines while still giving us access to the eol
+	 * sequence.
+	 * <p>
+	 * Portions of this class have been copied from BufferedReader.
+	 * </p>
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private final class LineReader extends Reader {
+		/** Size of our read buffer. */
+		private static final int BUFFER_SIZE = 8192;
+
+		/** Character buffer in which we'll read. */
+		private char[] characterBuffer = new char[BUFFER_SIZE];
+
+		/** Our underlying stream. */
+		private Reader input;
+
+		/** Number of chars in the local buffer. */
+		private int nChars;
+
+		/** Next character to read from the local buffer. */
+		private int nextChar;
+
+		/** Last EOL sequence encountered by {@link #readLine(boolean)}. */
+		private String lastEOL;
+
+		/**
+		 * Constructs our buffered reader given its underlying reader.
+		 * 
+		 * @param in
+		 *            The reader from which to retrive input.
+		 */
+		public LineReader(Reader in) {
+			super(in);
+			this.input = in;
+			nChars = 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#markSupported()
+		 */
+		@Override
+		public boolean markSupported() {
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#read()
+		 */
+		@Override
+		public int read() throws IOException {
+			synchronized(lock) {
+				ensureOpen();
+				if (nextChar >= nChars) {
+					fill();
+					if (nextChar >= nChars) {
+						return -1;
+					}
+				}
+				return characterBuffer[nextChar++];
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#close()
+		 */
+		@Override
+		public void close() throws IOException {
+			synchronized(lock) {
+				if (input == null) {
+					return;
+				}
+				input.close();
+				input = null;
+				characterBuffer = null;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#read(char[], int, int)
+		 */
+		@Override
+		public int read(char[] cbuf, int off, int len) throws IOException {
+			synchronized(lock) {
+				ensureOpen();
+				if (off < 0 || len < 0 || (off + len) > cbuf.length || (off + len) < 0) {
+					throw new IndexOutOfBoundsException();
+				} else if (len == 0) {
+					return 0;
+				}
+
+				int n = internalRead(cbuf, off, len);
+				if (n > 0) {
+					while (n < len && input.ready()) {
+						int n1 = internalRead(cbuf, off + n, len - n);
+						if (n1 <= 0) {
+							break;
+						}
+						n += n1;
+					}
+				}
+				return n;
+			}
+		}
+
+		/**
+		 * Reads a line of text. A line is considered to be terminated by either a line feed ('\n'), a
+		 * carriage return ('\r') or a carriage return followed immediately by a line feed ("\r\n"). The line
+		 * termination sequence will be omitted.
+		 * 
+		 * @return A string containing the content of the line, or <code>null</code> if the end of the stream
+		 *         has been reached.
+		 * @throws IOException
+		 *             Thrown if the stream is closed or an I/O operation fails.
+		 */
+		public String readLine() throws IOException {
+			StringBuilder lineBuffer = null;
+			int startChar;
+
+			String line = null;
+			synchronized(lock) {
+				ensureOpen();
+
+				while (line == null) {
+					if (nextChar >= nChars) {
+						fill();
+					}
+					if (nextChar >= nChars) {
+						// Reached the end of the stream
+						if (lineBuffer != null && lineBuffer.length() > 0) {
+							line = lineBuffer.toString();
+						}
+						break;
+					}
+					boolean eol = false;
+					char c = 0;
+					int i;
+
+					for (i = nextChar; i < nChars; i++) {
+						c = characterBuffer[i];
+						if (c == '\n' || c == '\r') {
+							eol = true;
+							break;
+						}
+					}
+
+					startChar = nextChar;
+					nextChar = i;
+
+					if (eol) {
+						if (lineBuffer == null) {
+							line = new String(characterBuffer, startChar, i - startChar);
+						} else {
+							lineBuffer.append(characterBuffer, startChar, i - startChar);
+							line = lineBuffer.toString();
+						}
+						if (c == '\n') {
+							lastEOL = "\n"; //$NON-NLS-1$
+							nextChar++;
+						} else if (c == '\r') {
+							if (characterBuffer[nextChar + 1] == '\n') {
+								lastEOL = "\r\n"; //$NON-NLS-1$
+								nextChar += 2;
+							} else {
+								lastEOL = "\r"; //$NON-NLS-1$
+								nextChar++;
+							}
+						}
+					}
+
+					if (lineBuffer == null) {
+						lineBuffer = new StringBuilder();
+					}
+					lineBuffer.append(characterBuffer, startChar, i - startChar);
+				}
+			}
+			return line;
+		}
+
+		/**
+		 * Returns the last EOL sequence encountered by {@link #readLine()}.
+		 * 
+		 * @return The last EOL sequence encountered by {@link #readLine()}. May be <code>null</code>.
+		 */
+		public String getLastEOLSequence() {
+			return lastEOL;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#ready()
+		 */
+		@Override
+		public boolean ready() throws IOException {
+			synchronized(lock) {
+				ensureOpen();
+
+				return nextChar < nChars || input.ready();
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.io.Reader#skip(long)
+		 */
+		@Override
+		public long skip(long n) throws IOException {
+			if (n < 0L) {
+				throw new IllegalArgumentException(AcceleoEngineMessages
+						.getString("AcceleoEvaluationContext.NegativeSkip")); //$NON-NLS-1$
+			}
+			synchronized(lock) {
+				ensureOpen();
+				long r = n;
+				while (r > 0) {
+					if (nextChar >= nChars) {
+						fill();
+					}
+					if (nextChar >= nChars) {
+						break;
+					}
+					long d = nChars - nextChar;
+					if (r <= d) {
+						nextChar += r;
+						r = 0;
+						break;
+					}
+					r -= d;
+					nextChar = nChars;
+				}
+				return n - r;
+			}
+		}
+
+		/**
+		 * Reads characters into a portion of an array, reading from the underlying stream if necessary.
+		 * 
+		 * @param cbuf
+		 *            The character buffer into which we are to read.
+		 * @param off
+		 *            Starting offset.
+		 * @param len
+		 *            Number of chars to read.
+		 * @return The number of read characters.
+		 * @throws IOException
+		 *             Thrown if the stream is closed or an I/O operation fails.
+		 * @see #read(char[], int, int)
+		 */
+		private int internalRead(char[] cbuf, int off, int len) throws IOException {
+			if (nextChar >= nChars) {
+				if (len >= characterBuffer.length) {
+					return input.read(cbuf, off, len);
+				}
+				fill();
+			}
+			int readChars = -1;
+			if (nextChar < nChars) {
+				readChars = Math.min(len, nChars - nextChar);
+				System.arraycopy(characterBuffer, nextChar, cbuf, off, readChars);
+				nextChar += readChars;
+			}
+			return readChars;
+		}
+
+		/**
+		 * Make sure that the underlying stream hasn't been closed.
+		 * 
+		 * @throws IOException
+		 *             Thrown if the stream has been closed.
+		 */
+		private void ensureOpen() throws IOException {
+			if (input == null) {
+				throw new IOException(AcceleoEngineMessages
+						.getString("AcceleoEvaluationContext.ClosedStream")); //$NON-NLS-1$
+			}
+		}
+
+		/**
+		 * Fills the input buffer, taking the mark into account if it is valid.
+		 * 
+		 * @throws IOException
+		 *             Thrown if the stream is closed or an I/O operation fails.
+		 */
+		private void fill() throws IOException {
+			int n;
+			do {
+				n = input.read(characterBuffer, 0, characterBuffer.length);
+			} while (n == 0);
+
+			if (n > 0) {
+				nChars = n;
+				nextChar = 0;
 			}
 		}
 	}
