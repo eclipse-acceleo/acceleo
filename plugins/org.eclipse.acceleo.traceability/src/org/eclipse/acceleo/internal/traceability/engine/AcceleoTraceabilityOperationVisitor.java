@@ -1193,13 +1193,13 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 							if (text.getStartOffset() < actualStartIndex
 									&& text.getEndOffset() > actualEndIndex) {
 								text.setStartOffset(offsetGap);
-								text.setEndOffset(endIndex - startIndex);
+								text.setEndOffset(offsetGap + (endIndex - startIndex));
 							} else if (text.getStartOffset() < actualStartIndex) {
 								text.setStartOffset(offsetGap);
 								text.setEndOffset(text.getEndOffset() - startIndex);
 							} else if (text.getEndOffset() > actualEndIndex) {
 								text.setStartOffset(text.getStartOffset() - startIndex);
-								text.setEndOffset(endIndex - startIndex);
+								text.setEndOffset(offsetGap + (endIndex - startIndex));
 							} else {
 								text.setStartOffset(text.getStartOffset() - startIndex);
 								text.setEndOffset(text.getEndOffset() - startIndex);

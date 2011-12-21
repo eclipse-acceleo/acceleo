@@ -1263,7 +1263,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				if (recordOperationArgument) {
 					GeneratedText text = createGeneratedTextFor(variableExp);
 					operationArgumentTrace.addTrace(input, text, result);
-				} else if (recordTrace && !evaluatingPostCall) {
+				} else if (recordTrace && !isEvaluatingPostCall()) {
 					GeneratedText text = createGeneratedTextFor(variableExp);
 					recordedTraces.getLast().addTrace(input, text, result);
 				} else if (recordVariableInitialization) {
