@@ -99,11 +99,8 @@ import org.eclipse.ocl.utilities.PredefinedType;
  *            see {@link #org.eclipse.ocl.AbstractEvaluationVisitor}.
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
-	/** The marker of the lies generated inside of the protected area. */
+	/** The marker of the lines generated inside of the protected area. */
 	private static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
-
-	/** Keeps track of the System's line separator. */
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
 
 	/** This will be set by launch configs to debug AST evaluations. */
 	private static IDebugAST debug;
@@ -729,8 +726,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				delegateAppend(areaContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			} else {
 				// the content of the protected area has its own indentation. Do not touch it.
-				delegateAppend(areaContent.replaceAll("(\r\n|\n|\r)", PROTECTED_AREA_MARKER), protectedArea, //$NON-NLS-1$
-						lastEObjectSelfValue, fireGenerationEvent);
+				// Replace with different markers according to the current line separator
+				String actualContent = areaContent.replaceAll("\r\n", PROTECTED_AREA_MARKER + "{rn}"); //$NON-NLS-1$ //$NON-NLS-2$
+				actualContent = actualContent.replaceAll("\r", PROTECTED_AREA_MARKER + "{r}"); //$NON-NLS-1$ //$NON-NLS-2$
+				actualContent = actualContent.replaceAll("\n", PROTECTED_AREA_MARKER + "{n}"); //$NON-NLS-1$ //$NON-NLS-2$
+				delegateAppend(actualContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			}
 		} else {
 			context.openNested();
@@ -1212,7 +1212,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// Make sure that the protected marker never makes its way down to the generated file
 		String actualString = string;
 		if (shouldRemoveProtectedMarker(sourceBlock)) {
-			actualString = string.replaceAll(PROTECTED_AREA_MARKER, LINE_SEPARATOR);
+			actualString = removeProtectedMarkers(string);
 		}
 
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
@@ -1220,6 +1220,35 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		} else {
 			append(actualString, sourceBlock, source, fireEvent);
 		}
+	}
+
+	/**
+	 * This will be used to remove all protected area indentation markers and replace them with the line
+	 * terminator that was previously in their place.
+	 * 
+	 * @param string
+	 *            The content from which we are to remove all markers.
+	 * @return The protected content without any indentation marker.
+	 */
+	private String removeProtectedMarkers(String string) {
+		final Matcher matcher = Pattern.compile(PROTECTED_AREA_MARKER + "\\{(.)(.)?\\}").matcher(string); //$NON-NLS-1$
+		if (matcher.find()) {
+			final StringBuffer buffer = new StringBuffer();
+			do {
+				final String replacement;
+				if (matcher.group(2) != null) {
+					replacement = "\r\n"; //$NON-NLS-1$
+				} else if ("n".equals(matcher.group(1))) { //$NON-NLS-1$
+					replacement = "\n"; //$NON-NLS-1$
+				} else {
+					replacement = "\r"; //$NON-NLS-1$
+				}
+				matcher.appendReplacement(buffer, replacement);
+			} while (matcher.find());
+			matcher.appendTail(buffer);
+			return buffer.toString();
+		}
+		return string;
 	}
 
 	/**

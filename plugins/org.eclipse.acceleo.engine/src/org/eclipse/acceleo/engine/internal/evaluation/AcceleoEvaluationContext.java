@@ -816,16 +816,6 @@ public class AcceleoEvaluationContext<C> {
 						.trim();
 				final StringBuffer areaContent = new StringBuffer(DEFAULT_BUFFER_SIZE);
 				final int start = line.indexOf(usercodeStart);
-				// Append a line separator before the protected area if need be
-				if (start > 1) {
-					String previous = String.valueOf(line.charAt(start - 1));
-					if (start > 2) {
-						previous += String.valueOf(line.charAt(start - 2));
-					}
-					if (!previous.contains(MAC_LINE_SEPARATOR) && !previous.contains(UNIX_LINE_SEPARATOR)) {
-						areaContent.append(reader.getLastEOLSequence());
-					}
-				}
 				// Everything preceding the start of user code doesn't need to be saved
 				areaContent.append(line.substring(start));
 
@@ -843,17 +833,6 @@ public class AcceleoEvaluationContext<C> {
 					if (line.contains(usercodeEnd)) {
 						final int endOffset = line.indexOf(usercodeEnd) + usercodeEnd.length();
 						areaContent.append(line.substring(0, endOffset));
-						// Append a line separator after the protected area if need be
-						String previous = "";
-						if (endOffset + 1 <= line.length()) {
-							previous += String.valueOf(line.charAt(start + 1));
-						}
-						if (endOffset + 2 <= line.length()) {
-							previous += String.valueOf(line.charAt(start + 2));
-						}
-						if (!previous.contains(MAC_LINE_SEPARATOR) && !previous.contains(UNIX_LINE_SEPARATOR)) {
-							areaContent.append(reader.getLastEOLSequence());
-						}
 						break;
 					}
 					areaContent.append(line);
