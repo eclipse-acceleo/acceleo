@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.traceability.GeneratedFile;
@@ -185,11 +186,15 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			return null;
 		}
 
-		Iterator<T> valueIterator = source.iterator();
 		T result;
-		do {
-			result = valueIterator.next();
-		} while (valueIterator.hasNext());
+		if (source instanceof List<?>) {
+			result = ((List<T>)source).listIterator(source.size()).previous();
+		} else {
+			Iterator<T> valueIterator = source.iterator();
+			do {
+				result = valueIterator.next();
+			} while (valueIterator.hasNext());
+		}
 
 		if (TraceabilityVisitorUtil.isPrimitive(result)) {
 			AbstractTrace trace = visitor.getLastExpressionTrace();
@@ -1157,7 +1162,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		if (visitor.isEvaluatingPostCall()) {
 			// We need the starting index of these traces
 			int offsetGap = -1;
-			for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
+			final Deque<ExpressionTrace<C>> invocationTraces = visitor.getInvocationTraces();
+			for (ExpressionTrace<C> trace : invocationTraces) {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 					for (GeneratedText text : entry.getValue()) {
 						if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
@@ -1171,7 +1177,7 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			int actualStartIndex = startIndex + offsetGap;
 			int actualEndIndex = endIndex + offsetGap;
 
-			for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
+			for (ExpressionTrace<C> trace : invocationTraces) {
 				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
 					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 					while (textIterator.hasNext()) {

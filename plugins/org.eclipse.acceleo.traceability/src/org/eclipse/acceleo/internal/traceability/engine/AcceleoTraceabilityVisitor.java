@@ -84,7 +84,6 @@ import org.eclipse.ocl.expressions.IntegerLiteralExp;
 import org.eclipse.ocl.expressions.IterateExp;
 import org.eclipse.ocl.expressions.IteratorExp;
 import org.eclipse.ocl.expressions.LetExp;
-import org.eclipse.ocl.expressions.LiteralExp;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.expressions.OperationCallExp;
 import org.eclipse.ocl.expressions.PropertyCallExp;
@@ -292,8 +291,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				trace = recordedTraces.getLast();
 			}
 			if (protectedAreaSource != null) {
-				// Check that the trace is indeed what we need
-				if (trace.getReferredExpression() != sourceBlock) {
+				/*
+				 * We're appending a protected area's content to the file. Merge all traces of this area into
+				 * one.
+				 */
+				while (trace.getReferredExpression() != sourceBlock) {
 					ExpressionTrace<C> temp = trace;
 					trace = recordedTraces.removeLast();
 					trace.addTraceCopy(temp);
@@ -474,7 +476,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		iterationTraces.add(new IterationTrace<C, PM>((Variable<C, PM>)forBlock.getLoopVariable(),
 				(OCLExpression<C>)forBlock.getIterSet()));
 		OCLExpression<C> oldIterationBody = iterationBody;
-		iterationBody = (OCLExpression<C>)forBlock.getBody().get(forBlock.getBody().size() - 1);
+		if (!forBlock.getBody().isEmpty()) {
+			iterationBody = (OCLExpression<C>)forBlock.getBody().get(forBlock.getBody().size() - 1);
+		}
 		iterationCount.add(Integer.valueOf(0));
 
 		try {
@@ -607,7 +611,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 			if (oldTraces != null && invocationTraces != null) {
 				for (ExpressionTrace<C> trace : invocationTraces) {
-					oldTraces.add(trace);
+					if (!oldTraces.contains(trace)) {
+						oldTraces.add(trace);
+					}
 				}
 				// This was way too CPU intensive, we'll settle with sub-otptimal memory usage
 				// else if (!recordedTraces.contains(trace)) {
@@ -655,7 +661,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitBooleanLiteralExp(BooleanLiteralExp<C> literalExp) {
 		final Object result = super.visitBooleanLiteralExp(literalExp);
 
-		recordLiteralExp(literalExp, result);
+		recordLiteral(literalExp, result);
 
 		return result;
 	}
@@ -686,7 +692,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitEnumLiteralExp(EnumLiteralExp<C, EL> literalExp) {
 		final Object result = super.visitEnumLiteralExp(literalExp);
 
-		recordLiteralExp(literalExp, result);
+		recordLiteral(literalExp, result);
 
 		if (isPropertyCallSource(literalExp)) {
 			propertyCallSource = (EObject)result;
@@ -739,15 +745,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		evaluatingPostCall = evaluatingPostCall
 				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
 		final EReference containingFeature = (EReference)expression.eContainingFeature();
-		if (shouldRecordTrace(containingFeature) && !(isProtectedAreaContent(expression))
-				&& !evaluatingOperationCall) {
+		if (shouldRecordTrace(containingFeature) && !evaluatingOperationCall) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
 			recordedTraces.add(trace);
 			if (invocationTraces != null) {
 				invocationTraces.add(trace);
 			}
-		} else if (shouldRecordTrace(containingFeature)
-				&& !(expression.eContainer() instanceof ProtectedAreaBlock) && invocationTraces != null) {
+		} else if (shouldRecordTrace(containingFeature) && invocationTraces != null) {
 			invocationTraces.add(recordedTraces.getLast());
 		}
 		Object result = null;
@@ -821,7 +825,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitIntegerLiteralExp(IntegerLiteralExp<C> literalExp) {
 		final Object result = super.visitIntegerLiteralExp(literalExp);
 
-		recordLiteralExp(literalExp, result);
+		recordLiteral(literalExp, result);
 
 		return result;
 	}
@@ -1008,7 +1012,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		boolean isGuard = callExp.eContainingFeature().getFeatureID() == MtlPackage.TEMPLATE__GUARD;
 		isGuard = isGuard && callExp.eContainer() instanceof Template;
 		try {
-			if (record && isTraceabilityImpactingOperation(callExp) && !isGuard) {
+			if (record && !isGuard && isTraceabilityImpactingOperation(callExp)) {
 				// Boolean and Integer returning operations evaluation won't be intercepted
 				// But we'll alter their trace information
 				if (isBooleanReturningOperation(callExp)) {
@@ -1035,7 +1039,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 					result = internalVisitOperationCallExp(callExp);
 				}
 			} else {
+				// getProperty is special as it "creates" new traces, and the argument traces should be
+				// ignored.
+				boolean isGetProperty = AcceleoNonStandardLibrary.OPERATION_OCLANY_GETPROPERTY
+						.equals(((EOperation)callExp.getReferredOperation()).getName());
+				final boolean oldRecord = record;
+				if (isGetProperty) {
+					record = false;
+				}
 				result = super.visitOperationCallExp(callExp);
+				if (isGetProperty) {
+					record = oldRecord;
+				}
+				if (record && !isGuard && isGetProperty) {
+					recordLiteral(callExp, result);
+				}
 			}
 		} finally {
 			record = oldRecordingValue;
@@ -1113,7 +1131,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitRealLiteralExp(RealLiteralExp<C> literalExp) {
 		final Object result = super.visitRealLiteralExp(literalExp);
 
-		recordLiteralExp(literalExp, result);
+		recordLiteral(literalExp, result);
 
 		return result;
 	}
@@ -1144,7 +1162,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitStringLiteralExp(StringLiteralExp<C> literalExp) {
 		final Object result = super.visitStringLiteralExp(literalExp);
 
-		recordLiteralExp(literalExp, result);
+		recordLiteral(literalExp, result);
 
 		return result;
 	}
@@ -2158,42 +2176,44 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * Records information for the evaluation of literal expressions.
+	 * Records information for the evaluation of literal expressions. This will be used both for
+	 * {@link org.eclipse.ocl.expressions.LiteralExp} and calls to "getProperty".
 	 * 
-	 * @param literalExp
+	 * @param expression
 	 *            The expression literal we've evaluated.
 	 * @param result
 	 *            The result of the evaluation.
 	 */
-	private void recordLiteralExp(LiteralExp<C> literalExp, Object result) {
+	private void recordLiteral(OCLExpression<C> expression, Object result) {
 		InputElement input = getInputElement(retrieveScopeEObjectValue());
 		if (protectedAreaSource != null) {
 			input = protectedAreaSource;
 		}
+
 		// We do not create traceability information for the charset of the file block (ex: UTF-8)
-		boolean isFileBlockCharset = literalExp.eContainer() instanceof FileBlock
-				&& ((FileBlock)literalExp.eContainer()).getCharset() == literalExp;
+		boolean isFileBlockCharset = expression.eContainingFeature() == MtlPackage.eINSTANCE
+				.getFileBlock_Charset();
 
 		if (record && !isFileBlockCharset) {
 			if (operationArgumentTrace != null) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
+				GeneratedText text = createGeneratedTextFor(expression);
 				operationArgumentTrace.addTrace(input, text, result);
 			} else if (isInitializingVariable()) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
+				GeneratedText text = createGeneratedTextFor(expression);
 				variableTraces.get(initializingVariable).addTrace(input, text, result);
 			} else if (!recordedTraces.isEmpty() && result.toString().length() > 0
-					&& shouldRecordTrace(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
+					&& shouldRecordTrace(expression)) {
+				GeneratedText text = createGeneratedTextFor(expression);
 				recordedTraces.getLast().addTrace(input, text, result);
-			} else if (isOperationCallSource(literalExp)) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
+			} else if (isOperationCallSource(expression)) {
+				GeneratedText text = createGeneratedTextFor(expression);
 				recordedTraces.getLast().addTrace(input, text, result);
 			} else if (!iterationTraces.isEmpty()) {
-				GeneratedText text = createGeneratedTextFor(literalExp);
+				GeneratedText text = createGeneratedTextFor(expression);
 				iterationTraces.getLast().addTrace(input, text, result);
 			}
 		} else if (!record && operationArgumentTrace != null) {
-			GeneratedText text = createGeneratedTextFor(literalExp);
+			GeneratedText text = createGeneratedTextFor(expression);
 			operationArgumentTrace.addTrace(input, text, result);
 		}
 	}
