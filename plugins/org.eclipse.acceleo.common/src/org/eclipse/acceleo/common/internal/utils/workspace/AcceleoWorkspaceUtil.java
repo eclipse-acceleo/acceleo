@@ -730,7 +730,9 @@ public final class AcceleoWorkspaceUtil {
 			final Bundle bundle = entry.getValue();
 
 			try {
-				uninstallBundle(bundle);
+				if (bundle.getState() != Bundle.UNINSTALLED) {
+					uninstallBundle(bundle);
+				}
 			} catch (BundleException e) {
 				AcceleoCommonPlugin
 						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
@@ -1116,7 +1118,10 @@ public final class AcceleoWorkspaceUtil {
 					break;
 				case IncrementalProjectBuilder.CLEAN_BUILD:
 					// workspace has been cleaned. Unload every service until next they're built
-					for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
+					final Iterator<Map.Entry<IPluginModelBase, Bundle>> workspaceBundleIterator = workspaceInstalledBundles
+							.entrySet().iterator();
+					while (workspaceBundleIterator.hasNext()) {
+						Map.Entry<IPluginModelBase, Bundle> entry = workspaceBundleIterator.next();
 						final Bundle bundle = entry.getValue();
 
 						try {
@@ -1126,6 +1131,8 @@ public final class AcceleoWorkspaceUtil {
 									AcceleoCommonMessages.getString(UNINSTALLATION_FAILURE_KEY, bundle
 											.getSymbolicName()), e));
 						}
+
+						workspaceBundleIterator.remove();
 					}
 					for (WorkspaceClassInstance workspaceInstance : workspaceLoadedClasses.values()) {
 						workspaceInstance.setStale(true);
