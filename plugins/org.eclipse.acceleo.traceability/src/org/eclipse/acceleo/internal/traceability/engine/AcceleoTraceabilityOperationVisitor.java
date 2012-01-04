@@ -665,6 +665,16 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		final List<String> result = new ArrayList<String>();
 		final AbstractTrace trace = visitor.getLastExpressionTrace();
 
+		// We need the starting index of these traces
+		int offsetGap = -1;
+		for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+			for (GeneratedText text : entry.getValue()) {
+				if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
+					offsetGap = text.getStartOffset();
+				}
+			}
+		}
+
 		int[][] tokenRegions = new int[tokenizer.countTokens()][2];
 
 		int tokenCount = 0;
@@ -674,8 +684,8 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			int startIndex = tokenizer.getLastOffset();
 			int endIndex = tokenizer.getNextOffset();
 
-			tokenRegions[tokenCount][0] = startIndex;
-			tokenRegions[tokenCount][1] = endIndex;
+			tokenRegions[tokenCount][0] = startIndex + offsetGap;
+			tokenRegions[tokenCount][1] = endIndex + offsetGap;
 			tokenCount++;
 		}
 
