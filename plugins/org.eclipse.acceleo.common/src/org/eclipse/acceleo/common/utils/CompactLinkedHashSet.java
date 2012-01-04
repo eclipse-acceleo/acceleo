@@ -141,6 +141,9 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		 */
 		if (entry != header) {
 			previous.next = entry.next;
+			if (entry == header.last) {
+				header.last = previous;
+			}
 		}
 	}
 
@@ -257,13 +260,13 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		private Entry lastReturned;
 
 		/** Next element to be returned by this iterator. */
-		private Entry next;
+		private Entry nextElem;
 
 		/**
 		 * Default constructor.
 		 */
 		LinkedSetIterator() {
-			next = header.next;
+			nextElem = header.next;
 		}
 
 		/**
@@ -272,7 +275,7 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		 * @see java.util.Iterator#hasNext()
 		 */
 		public boolean hasNext() {
-			return next != header;
+			return nextElem != header;
 		}
 
 		/**
@@ -282,13 +285,13 @@ public final class CompactLinkedHashSet<E> extends CompactHashSet<E> {
 		 */
 		public E next() {
 			checkComodification();
-			if (next == header) {
+			if (nextElem == header) {
 				throw new NoSuchElementException();
 			}
 
-			E result = data[next.index];
-			lastReturned = next;
-			next = next.next;
+			E result = data[nextElem.index];
+			lastReturned = nextElem;
+			nextElem = nextElem.next;
 			return unmaskNull(result);
 		}
 
