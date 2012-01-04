@@ -1131,7 +1131,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			final Object source = getDelegate().visitExpression(callExp.getSource());
 			final Object[] args = new Object[callExp.getArgument().size()];
 			for (int i = 0; i < callExp.getArgument().size(); i++) {
-				args[i] = getDelegate().visitExpression(callExp.getArgument().get(i));
+				args[i] = getVisitor().visitExpression(callExp.getArgument().get(i));
 			}
 			if (isStandardOperation) {
 				result = AcceleoLibraryOperationVisitor.callStandardOperation(

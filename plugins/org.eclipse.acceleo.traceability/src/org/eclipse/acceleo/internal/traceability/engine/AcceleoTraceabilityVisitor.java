@@ -745,14 +745,19 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		evaluatingPostCall = evaluatingPostCall
 				|| expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Post();
 		final EReference containingFeature = (EReference)expression.eContainingFeature();
-		if (shouldRecordTrace(containingFeature) && !evaluatingOperationCall) {
+		boolean isOperationArgumentTrace = evaluatingOperationCall
+				&& shouldRecordOperationArgumentTrace(expression);
+		if (isOperationArgumentTrace || !evaluatingOperationCall && shouldRecordTrace(containingFeature)) {
 			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
 			recordedTraces.add(trace);
 			if (invocationTraces != null) {
 				invocationTraces.add(trace);
 			}
 		} else if (shouldRecordTrace(containingFeature) && invocationTraces != null) {
-			invocationTraces.add(recordedTraces.getLast());
+			final ExpressionTrace<C> trace = recordedTraces.getLast();
+			if (!invocationTraces.contains(trace)) {
+				invocationTraces.add(trace);
+			}
 		}
 		Object result = null;
 		try {
@@ -770,6 +775,15 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			record = oldRecordingValue;
 			evaluatingIterationSet = oldIterSet;
 			evaluatingPostCall = oldEvaluatingPostCall;
+			// move back the argument trace into its corresponding operation's
+			if (isOperationArgumentTrace) {
+				if (invocationTraces != null) {
+					invocationTraces.removeLast();
+				}
+				ExpressionTrace<C> argTrace = recordedTraces.removeLast();
+				recordedTraces.getLast().addTraceCopy(argTrace);
+				argTrace.dispose();
+			}
 			// Advance Acceleo iterator (for loops) iteration count
 			if (iterationBody == expression
 					&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getBlock_Body()) {
@@ -2254,6 +2268,34 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		return scopeValue;
+	}
+
+	/**
+	 * This check is specifically designed in order for us to separately record the traces of traceability
+	 * impacting operations when they are arguments of an operation that does not itself impact the
+	 * traceability.
+	 * <p>
+	 * For example, for the call <code>'string' + 'anotherString'.last(6)</code>, the traces for the "last"
+	 * operation call <b>must</b> be recorded separately (otherwise, the call itself would alter the
+	 * traceability information of the whole "+" operation).
+	 * </p>
+	 * 
+	 * @param expression
+	 *            The expression we are to check.
+	 * @return <code>true</code> if this specific expression matches the above, <code>false</code> otherwise.
+	 */
+	@SuppressWarnings("unchecked")
+	private boolean shouldRecordOperationArgumentTrace(OCLExpression<C> expression) {
+		boolean recordTrace = false;
+		if (expression instanceof OperationCallExp<?, ?>) {
+			final OperationCallExp<C, O> call = (OperationCallExp<C, O>)expression;
+			if (call.eContainingFeature() == ExpressionsPackage.eINSTANCE.getOperationCallExp_Argument()) {
+				final OperationCallExp<C, O> container = (OperationCallExp<C, O>)call.eContainer();
+				recordTrace = isTraceabilityImpactingOperation(call)
+						&& !isTraceabilityImpactingOperation(container);
+			}
+		}
+		return recordTrace;
 	}
 
 	/**
