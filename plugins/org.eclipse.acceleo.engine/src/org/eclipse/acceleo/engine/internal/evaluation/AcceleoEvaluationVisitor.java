@@ -877,7 +877,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public String visitAcceleoTemplate(Template template) {
 		context.openNested();
 		/*
-		 * Variables have been positionned by either the AcceleoEngine (first template) or this visitor
+		 * Variables have been positioned by either the AcceleoEngine (first template) or this visitor
 		 * (template invocation).
 		 */
 		List<org.eclipse.ocl.ecore.OCLExpression> nestedExpressions = template.getBody();
