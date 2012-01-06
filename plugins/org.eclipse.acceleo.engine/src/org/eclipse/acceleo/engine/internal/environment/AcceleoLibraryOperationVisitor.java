@@ -590,6 +590,9 @@ public final class AcceleoLibraryOperationVisitor {
 				createEInverseCrossreferencer(target);
 			}
 			final Collection<EStructuralFeature.Setting> settings = referencer.get(target);
+			if (settings == null) {
+				return Collections.emptySet();
+			}
 			for (EStructuralFeature.Setting setting : settings) {
 				if (filter == null || filter.isInstance(setting.getEObject())) {
 					result.add(setting.getEObject());
