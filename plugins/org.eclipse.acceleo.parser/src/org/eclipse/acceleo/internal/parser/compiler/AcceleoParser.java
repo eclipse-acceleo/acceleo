@@ -284,7 +284,7 @@ public class AcceleoParser {
 		boolean isImpactingBuild = false;
 		List<String> signature = Collections.emptyList();
 		File outputFile = this.acceleoProject.getOutputFile(file);
-		if (!outputFile.exists()) {
+		if (outputFile != null && !outputFile.exists()) {
 			isImpactingBuild = true;
 		} else {
 			ResourceSet resourceSetTMP = new AcceleoResourceSetImpl();
@@ -354,7 +354,7 @@ public class AcceleoParser {
 					File dependingModule = dependingAcceleoProject.getFileDependency(moduleDependency);
 					File output = dependingAcceleoProject.getOutputFile(dependingModule);
 					if (output != null && !output.exists()
-							&& this.dependenciesToBuild.contains(dependingModule)) {
+							&& !this.dependenciesToBuild.contains(dependingModule)) {
 						AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
 								this.usebinaryResources);
 						parser.addListeners(this.listeners
@@ -388,7 +388,7 @@ public class AcceleoParser {
 			}
 		}
 
-		if (!filesBuilt.contains(file)) {
+		if (outputFile != null && !filesBuilt.contains(file)) {
 			// Create the AST
 			URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
 			Resource oResource = createResource(fileURI, resourceSet);
