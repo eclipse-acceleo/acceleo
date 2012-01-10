@@ -996,6 +996,62 @@ public class AcceleoParserTests {
 	}
 	
 	@Test
+	public void testBuildFromMainSixthAfterFullBuildProject() {
+		String curDir = System.getProperty("user.dir");
+		File projectSevenRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.seventh");
+		File output = new File(projectSevenRoot, "bin");
+		File[] listFiles = output.listFiles();
+		if (listFiles.length > 0) {
+			for (File file : listFiles) {
+				if (file.isDirectory()) {
+					AcceleoParserUtils.removeDirectory(file);					
+				} else {
+					file.delete();
+				}
+			}
+		}
+
+		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot);
+		File inputDirectory = new File(projectSevenRoot, "src");
+		File outputDirectory = new File(projectSevenRoot, "bin");
+		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
+		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
+		entries.add(entry);
+		projectSeven.addClasspathEntries(entries);
+
+		File projectSixRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.sixth");
+		AcceleoProject projectSix = new AcceleoProject(projectSixRoot);
+		inputDirectory = new File(projectSixRoot, "src/main/acceleo");
+		outputDirectory = new File(projectSixRoot, "target/modules");
+		entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
+		entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
+		entries.add(entry);
+		projectSix.addClasspathEntries(entries);
+
+		projectSeven.addProjectDependencies(Sets.newHashSet(projectSix));
+
+		AcceleoParser parser = new AcceleoParser(projectSeven, false);
+		ParserListener parserListener = new ParserListener();		
+		parser.addListeners(parserListener);
+		parser.buildAll(new BasicMonitor());
+
+		File genClassifierSix = new File(projectSixRoot, "target/modules/org/eclipse/acceleo/project/sixth/file/genClassifier.emtl");
+		genClassifierSix.delete();
+
+		File genTraitSeven = new File(projectSevenRoot, "src/org/eclipse/acceleo/project/seventh/file/genTrait.mtl");
+		parser.buildFile(genTraitSeven, new BasicMonitor());
+
+		assertThat(parser.getProblems(genTraitSeven).toString(), is(Collections.emptyList().toString()));
+		assertThat(parser.getWarnings(genTraitSeven).toString(), is(Collections.emptyList().toString()));
+		assertThat(parser.getInfos(genTraitSeven).toString(), is("[AcceleoParser.Info.TemplateOverrideTemplate 'genName' overrides template 'genName'., AcceleoParser.Info.TemplateOverrideTemplate 'genName' overrides template 'genName'.]"));
+
+		assertTrue(genClassifierSix.exists());
+		assertThat(parser.getProblems(genClassifierSix).toString(), is(Collections.emptyList().toString()));
+		assertThat(parser.getWarnings(genClassifierSix).toString(), is(Collections.emptyList().toString()));
+		assertThat(parser.getInfos(genClassifierSix).toString(), is(Collections.emptyList().toString()));
+	}	
+	
+	@Test
 	public void testBuildAllEigthProject() {
 		String curDir = System.getProperty("user.dir");
 		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.eigth");
