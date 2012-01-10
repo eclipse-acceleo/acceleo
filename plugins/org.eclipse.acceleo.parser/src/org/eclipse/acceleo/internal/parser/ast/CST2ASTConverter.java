@@ -29,7 +29,6 @@ import org.eclipse.acceleo.parser.cst.CSTNode;
 import org.eclipse.acceleo.parser.cst.Comment;
 import org.eclipse.acceleo.parser.cst.CstPackage;
 import org.eclipse.acceleo.parser.cst.Documentation;
-import org.eclipse.acceleo.parser.cst.ForBlock;
 import org.eclipse.acceleo.parser.cst.ProtectedAreaBlock;
 import org.eclipse.acceleo.parser.cst.Template;
 import org.eclipse.acceleo.parser.cst.TemplateExpression;
@@ -698,7 +697,7 @@ public class CST2ASTConverter {
 			} else if (index == 0
 					|| (eBody.get(index - 1) instanceof Block
 							&& !(eBody.get(index - 1) instanceof ProtectedAreaBlock) && !isSingleLineExpression(eBody
-								.get(index - 1)))) {
+							.get(index - 1)))) {
 				/*
 				 * Ignore the carriage return directly following a block iff the latter isn't either a
 				 * Protected area or a single line block
@@ -717,9 +716,6 @@ public class CST2ASTConverter {
 			int shiftEnd;
 			if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof Template) {
 				boolean keepNewLine = shouldKeepLastNewLine(iTextExpression.getValue(), ioValue);
-				shiftEnd = shiftEnd(ioValue, keepNewLine);
-			} else if (index == eBody.size() - 1 && iTextExpression.eContainer() instanceof ForBlock) {
-				boolean keepNewLine = shouldKeepLastNewLineInFor(iTextExpression, ioValue);
 				shiftEnd = shiftEnd(ioValue, keepNewLine);
 			} else if (index == eBody.size() - 1
 					&& !isSingleLineExpression((CSTNode)iTextExpression.eContainer())) {
@@ -741,49 +737,6 @@ public class CST2ASTConverter {
 			}
 		}
 		oTextExpression.setStringSymbol(ioValue);
-	}
-
-	/**
-	 * This is only to be used with a "for" block. Specifically, it will check whether the text expression is
-	 * the latest expression of the for block and if this for block is the latest expression of the template.
-	 * If a template ends with [for]'\n'[/template] or [for][/template] we trim the
-	 * 
-	 * @param value
-	 * @param ioValue
-	 * @return
-	 */
-	private boolean shouldKeepLastNewLineInFor(TextExpression value, String ioValue) {
-		boolean result = true;
-
-		String end = "\n"; //$NON-NLS-1$
-
-		EObject eContainer = value.eContainer();
-		if (eContainer instanceof ForBlock && ioValue.endsWith(end)) {
-			ForBlock forBlock = (ForBlock)eContainer;
-			EList<TemplateExpression> forBlockBody = forBlock.getBody();
-
-			eContainer = forBlock.eContainer();
-			if (forBlockBody.get(forBlockBody.size() - 1) == value && eContainer instanceof Template) {
-				Template template = (Template)eContainer;
-				EList<TemplateExpression> body = template.getBody();
-
-				/*
-				 * If the template ends like this: \n[/for]'\n'[/template] or like this: \n[/for][/template]
-				 * we trim the latest '\n' of the for block.
-				 */
-				TemplateExpression templateExpression = body.get(body.size() - 1);
-				if (templateExpression instanceof TextExpression && body.size() > 2) {
-					TextExpression text = (TextExpression)templateExpression;
-					result = result && text.equals(end);
-					TemplateExpression expression = body.get(body.size() - 2);
-					result = result && expression == forBlock;
-				} else if (templateExpression == forBlock) {
-					result = false;
-				}
-			}
-		}
-
-		return result;
 	}
 
 	/**
