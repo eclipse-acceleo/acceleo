@@ -1,0 +1,5 @@
+[module genClassifier('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public genName(anEClass : EClass)]
+[anEClass.name/]
+[/template]

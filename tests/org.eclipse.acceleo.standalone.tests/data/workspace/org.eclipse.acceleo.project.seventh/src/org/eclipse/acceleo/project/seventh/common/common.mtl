@@ -1,0 +1,5 @@
+[module services('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public genCommon(anEClass : EClass)]
+common
+[/template]

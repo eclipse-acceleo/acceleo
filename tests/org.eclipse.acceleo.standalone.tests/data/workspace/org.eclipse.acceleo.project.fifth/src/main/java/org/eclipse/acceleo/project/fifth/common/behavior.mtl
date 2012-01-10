@@ -1,0 +1,5 @@
+[module behavior('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import org::eclipse::acceleo::project::fifth::common::common /]
+[import org::eclipse::acceleo::project::fifth::common::declaration /]
+[import org::eclipse::acceleo::project::fifth::common::type /]
