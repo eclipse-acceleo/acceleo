@@ -26,6 +26,7 @@ import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.traceability.GeneratedFile;
 import org.eclipse.acceleo.traceability.GeneratedText;
 import org.eclipse.acceleo.traceability.InputElement;
@@ -322,8 +323,12 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 		boolean hasMatch = sourceMatcher.find();
 		// Note : despite its name, this could be negative
 		int addedLength = 0;
+
+		// protected area indentation markers must be ignored
+		final boolean hasProtectedMarker = source.contains(AcceleoEvaluationVisitor.PROTECTED_AREA_MARKER);
+
 		// FIXME This loop does _not_ take group references into account except "$0 at the start"
-		boolean startsWithZeroGroupRef = replacement.startsWith("$0"); //$NON-NLS-1$
+		final boolean startsWithZeroGroupRef = replacement.startsWith("$0"); //$NON-NLS-1$
 		while (hasMatch) {
 			// If we've already changed the String size, take it into account
 			int startIndex = sourceMatcher.start() + addedLength;
@@ -352,6 +357,13 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				}
 				startIndex += offsetGap;
 				endIndex += offsetGap;
+
+				if (hasProtectedMarker) {
+					int additionalGap = computeAdditionalGap(source, sourceMatcher.start());
+					startIndex += additionalGap;
+					endIndex += additionalGap;
+				}
+
 				for (ExpressionTrace<C> trace : visitor.getInvocationTraces()) {
 					changeTraceabilityIndicesOfReplaceOperation(trace, startIndex, endIndex,
 							replacementLength);
@@ -1269,6 +1281,29 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Computes the additional gap induced by protected area markers in the given source string between the
+	 * given indices.
+	 * 
+	 * @param source
+	 *            The source String.
+	 * @param endIndex
+	 *            Index at which we need to end counting.
+	 * @return The additional gap induced by markers between the given indices.
+	 */
+	private int computeAdditionalGap(String source, int endIndex) {
+		final Matcher markerMatcher = Pattern
+				.compile(AcceleoEvaluationVisitor.PROTECTED_AREA_MARKER + "\\{((.)(.)?)\\}").matcher(source.substring(0, endIndex)); //$NON-NLS-1$
+
+		int additionalGap = 0;
+		boolean hasMatch = markerMatcher.find();
+		while (hasMatch) {
+			additionalGap -= AcceleoEvaluationVisitor.PROTECTED_AREA_MARKER.length() + 2;
+			hasMatch = markerMatcher.find();
+		}
+		return additionalGap;
 	}
 
 	/**
