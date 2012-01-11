@@ -24,11 +24,16 @@ import org.eclipse.acceleo.model.mtl.Query;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class QueryCache {
+	/*
+	 * we need this one public as the traceability will need to bypass the cache in some cases. For example,
+	 * we do not record traces for the evaluation of an "if" condition, yet we cache the result. We could then
+	 * have "empty" traces each time this query is evaluated thereafter.
+	 */
+	/** This instance will be used as a place holder when a query hasn't been run yet. */
+	public static final Object NO_CACHED_RESULT = new Object();
+
 	/** This instance will be used as the cached result of a query when it is undefined. */
 	private static final Object INVALID_QUERY_RESULT = new Object();
-
-	/** This instance will be used as a place holder when a query hasn't been run yet. */
-	private static final Object NO_CACHED_RESULT = new Object();
 
 	/** This instance will be used as the cached result of a query when it is null. */
 	private static final Object NULL_QUERY_RESULT = new Object();

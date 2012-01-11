@@ -240,7 +240,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 *            Tells us whether we should fire generation events.
 	 */
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent) {
-		context.append(string, sourceBlock, source, fireEvent);
+		getContext().append(string, sourceBlock, source, fireEvent);
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (generatedFile.getName().endsWith(File.separator) || generatedFile.isDirectory()) {
 			return;
 		}
-		context.openNested(generatedFile, fileBlock, source, appendMode, charset);
+		getContext().openNested(generatedFile, fileBlock, source, appendMode, charset);
 	}
 
 	/**
@@ -321,6 +321,15 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
+	 * Returns the current evaluation context.
+	 * 
+	 * @return The current evaluation context.
+	 */
+	public AcceleoEvaluationContext<C> getContext() {
+		return context;
+	}
+
+	/**
 	 * Handles the evaluation of an Acceleo {@link Block}.
 	 * 
 	 * @param block
@@ -348,22 +357,22 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		fireGenerationEvent = fireEvents;
 
 		if (isUndefined(fileURLResult)) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(fileBlock,
 					"AcceleoEvaluationVisitor.UndefinedFileURL", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
 		} else if (fileURLResult instanceof Collection<?>) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(fileBlock,
 					"AcceleoEvaluationVisitor.CollectionFileURL", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
 		} else if (!(fileURLResult instanceof String)) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(fileBlock,
 					"AcceleoEvaluationVisitor.NotStringFileURL", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
 		} else if ("".equals(fileURLResult)) { //$NON-NLS-1$
-			final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(fileBlock,
 					"AcceleoEvaluationVisitor.EmptyFileName", getEvaluationEnvironment() //$NON-NLS-1$
 							.getValueOf(SELF_VARIABLE_NAME));
 			throw exception;
@@ -374,7 +383,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (fileBlock.getCharset() != null) {
 			final Object fileCharsetResult = visitExpression((OCLExpression<C>)fileBlock.getCharset());
 			if (isUndefined(fileCharsetResult)) {
-				final AcceleoEvaluationException exception = context.createAcceleoException(fileBlock,
+				final AcceleoEvaluationException exception = getContext().createAcceleoException(fileBlock,
 						"AcceleoEvaluationVisitor.UndefinedFileCharset", getEvaluationEnvironment() //$NON-NLS-1$
 								.getValueOf(SELF_VARIABLE_NAME));
 				AcceleoEnginePlugin.log(exception, false);
@@ -384,7 +393,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		final boolean appendMode = fileBlock.getOpenMode().getValue() == OpenModeKind.APPEND_VALUE;
 		if (!appendMode) {
-			context.generateFile(filePath);
+			getContext().generateFile(filePath);
 		}
 
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
@@ -395,10 +404,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			source = lastEObjectSelfValue;
 		}
 
-		context.getProgressMonitor().subTask(
+		getContext().getProgressMonitor().subTask(
 				AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.Generatingfile", filePath)); //$NON-NLS-1$
 		if ("stdout".equals(filePath)) { //$NON-NLS-1$
-			context.openNested(System.out);
+			getContext().openNested(System.out);
 		} else {
 			delegateCreateFileWriter(filePath, fileBlock, source, appendMode, fileCharset);
 		}
@@ -408,8 +417,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			getVisitor().visitExpression((OCLExpression<C>)nested);
 			fireGenerationEvent = fireEvents;
 		}
-		context.closeContext(fileBlock, source);
-		context.getProgressMonitor().worked(1);
+		getContext().closeContext(fileBlock, source);
+		getContext().getProgressMonitor().worked(1);
 	}
 
 	/**
@@ -427,7 +436,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Variable loopVariable = forBlock.getLoopVariable();
 		final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (isUndefined(iteration)) {
-			throw context.createAcceleoException(forBlock,
+			throw getContext().createAcceleoException(forBlock,
 					"AcceleoEvaluationVisitor.InvalidForIteration", currentSelf); //$NON-NLS-1$
 		}
 		// There is a possibility for the for to have a single element in its iteration
@@ -475,7 +484,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 								((Module)EcoreUtil.getRootContainer(forBlock)).getName(),
 								forBlock.toString(), actualType, expectedType);
 						final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
-						exception.setStackTrace(context.createAcceleoStackTrace());
+						exception.setStackTrace(getContext().createAcceleoStackTrace());
 						AcceleoEnginePlugin.log(exception, false);
 						iterationCCE = true;
 					}
@@ -505,8 +514,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					fireGenerationEvent = fireEvents;
 				}
 				if (isInvalid(guardValue)) {
-					final AcceleoEvaluationException exception = context.createAcceleoException(forBlock,
-							(OCLExpression<C>)forBlock.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, o);
+					final AcceleoEvaluationException exception = getContext().createAcceleoException(
+							forBlock, (OCLExpression<C>)forBlock.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, o);
 					throw exception;
 				}
 				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
@@ -556,13 +565,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Object conditionValue = getVisitor().visitExpression(condition);
 		fireGenerationEvent = fireEvents;
 		if (isInvalid(conditionValue)) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(ifBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(ifBlock,
 					"AcceleoEvaluationVisitor.UndefinedCondition", currentSelf); //$NON-NLS-1$
 			throw exception;
 		}
 
 		if (conditionValue != null && !(conditionValue instanceof Boolean)) {
-			throw context.createAcceleoException(ifBlock, condition,
+			throw getContext().createAcceleoException(ifBlock, condition,
 					"AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
 		}
 
@@ -580,13 +589,14 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 							(OCLExpression<C>)elseif.getIfExpr());
 					fireGenerationEvent = fireEvents;
 					if (isInvalid(elseValue)) {
-						final AcceleoEvaluationException exception = context.createAcceleoException(elseif,
-								"AcceleoEvaluationVisitor.UndefinedElseCondition", currentSelf); //$NON-NLS-1$
+						final AcceleoEvaluationException exception = getContext().createAcceleoException(
+								elseif, "AcceleoEvaluationVisitor.UndefinedElseCondition", currentSelf); //$NON-NLS-1$
 						throw exception;
 					}
 
 					if (elseValue != null && !(elseValue instanceof Boolean)) {
-						throw context.createAcceleoException(ifBlock, (OCLExpression<C>)elseif.getIfExpr(),
+						throw getContext().createAcceleoException(ifBlock,
+								(OCLExpression<C>)elseif.getIfExpr(),
 								"AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
 					}
 
@@ -644,7 +654,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		Object value = getVisitor().visitExpression((OCLExpression<C>)var.getInitExpression());
 		fireGenerationEvent = fireEvents;
 		if (isInvalid(value)) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(letBlock,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(letBlock,
 					"AcceleoEvaluationVisitor.UndefinedLetValue", currentSelf); //$NON-NLS-1$
 			throw exception;
 		}
@@ -670,7 +680,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 						value = visitExpression((OCLExpression<C>)var.getInitExpression());
 						fireGenerationEvent = fireEvents;
 						if (isInvalid(value)) {
-							final AcceleoEvaluationException exception = context.createAcceleoException(
+							final AcceleoEvaluationException exception = getContext().createAcceleoException(
 									elseLet, "AcceleoEvaluationVisitor.UndefinedElseLetValue", currentSelf); //$NON-NLS-1$
 							throw exception;
 						}
@@ -713,13 +723,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		fireGenerationEvent = fireEvents;
 		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (isUndefined(markerValue)) {
-			final AcceleoEvaluationException exception = context.createAcceleoException(protectedArea,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(protectedArea,
 					"AcceleoEvaluationVisitor.UndefinedAreaMarker", source); //$NON-NLS-1$
 			throw exception;
 		}
 
 		final String marker = toString(markerValue).trim();
-		final String areaContent = context.getProtectedAreaContent(marker);
+		final String areaContent = getContext().getProtectedAreaContent(marker);
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
 		}
@@ -735,21 +745,22 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				delegateAppend(actualContent, protectedArea, lastEObjectSelfValue, fireGenerationEvent);
 			}
 		} else {
-			context.openNested();
-			fireGenerationEvent = false;
+			// Build the OCLExpressions we'll visit for the protected area surroundings
+			final StringLiteralExp userCodeStart = EcoreFactory.eINSTANCE.createStringLiteralExp();
+			userCodeStart.setStringSymbol(AcceleoEngineMessages.getString("usercode.start") + ' '); //$NON-NLS-1$
+
+			final StringLiteralExp userCodeEnd = EcoreFactory.eINSTANCE.createStringLiteralExp();
+			userCodeEnd.setStringSymbol(AcceleoEngineMessages.getString("usercode.end")); //$NON-NLS-1$
+
+			// add the two to a "dummy" protected area so that their containing feature is known
+			ProtectedAreaBlock dummy = MtlFactory.eINSTANCE.createProtectedAreaBlock();
+			dummy.getBody().add(userCodeStart);
+			dummy.getBody().add(userCodeEnd);
+
+			getVisitor().visitExpression((OCLExpression<C>)userCodeStart);
+			getVisitor().visitExpression((OCLExpression<C>)protectedArea.getMarker());
 			visitAcceleoBlock(protectedArea);
-			fireGenerationEvent = fireEvents;
-			String blockContent = context.closeContext();
-
-			// We'll make it so that we only have a single appending in the context
-			StringBuilder buffer = new StringBuilder();
-			buffer.append(AcceleoEngineMessages.getString("usercode.start")); //$NON-NLS-1$
-			buffer.append(' ');
-			buffer.append(marker);
-			buffer.append(blockContent);
-			buffer.append(AcceleoEngineMessages.getString("usercode.end")); //$NON-NLS-1$
-
-			delegateAppend(buffer.toString(), protectedArea, lastEObjectSelfValue, fireGenerationEvent);
+			getVisitor().visitExpression((OCLExpression<C>)userCodeEnd);
 		}
 	}
 
@@ -781,7 +792,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public Object visitAcceleoQueryInvocation(QueryInvocation invocation) {
-		if (context.getProgressMonitor().isCanceled()) {
+		if (getContext().getProgressMonitor().isCanceled()) {
 			cancel(new ASTFragment(invocation));
 		}
 		final Query query = invocation.getDefinition();
@@ -799,7 +810,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (isInvalid(argValue)) {
 				final OCLExpression<C> failingExpression = (OCLExpression<C>)invocation.getArgument().get(i);
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-				final AcceleoEvaluationException exception = context.createAcceleoException(invocation,
+				final AcceleoEvaluationException exception = getContext().createAcceleoException(invocation,
 						failingExpression, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
 				// Evaluation of this query failed. Remove all previously created variables
 				for (int j = 0; j <= i; j++) {
@@ -821,7 +832,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			if (QueryCache.isInvalid(cachedResult) && AcceleoPreferences.isDebugMessagesEnabled()) {
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-				final AcceleoEvaluationException exception = context.createAcceleoException(query,
+				final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
 						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
 						currentSelf);
 				throw exception;
@@ -858,7 +869,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		delegateCacheResult(query, arguments, result);
 		if (isInvalid(result) && AcceleoPreferences.isDebugMessagesEnabled()) {
 			final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-			final AcceleoEvaluationException exception = context.createAcceleoException(query,
+			final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
 					(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
 					currentSelf);
 			throw exception;
@@ -875,7 +886,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	@SuppressWarnings("unchecked")
 	public String visitAcceleoTemplate(Template template) {
-		context.openNested();
+		getContext().openNested();
 		/*
 		 * Variables have been positioned by either the AcceleoEngine (first template) or this visitor
 		 * (template invocation).
@@ -884,7 +895,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		for (int i = 0; i < nestedExpressions.size(); i++) {
 			getVisitor().visitExpression((OCLExpression<C>)nestedExpressions.get(i));
 		}
-		String result = context.closeContext();
+		String result = getContext().closeContext();
 		if (template.getPost() != null) {
 			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, result);
 			final Object postResult = getVisitor().visitExpression((OCLExpression<C>)template.getPost());
@@ -924,7 +935,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			implicitContextVariableName = addContextVariableFor(contextValue);
 		}
 
-		context.openNested();
+		getContext().openNested();
 		if (invocation.getBefore() != null) {
 			getVisitor().visitExpression((OCLExpression<C>)invocation.getBefore());
 		}
@@ -955,7 +966,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		// Close the invoked template's variable scope now
 		((AcceleoEvaluationEnvironment)getEvaluationEnvironment()).removeVariableScope();
-		String invocationResult = context.closeContext();
+		String invocationResult = getContext().closeContext();
 		if (evaluatingInitSection) {
 			return invocationResult;
 		}
@@ -974,7 +985,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		EObject debugInput = null;
 		ASTFragment astFragment = null;
 
-		context.addToStack(expression);
+		getContext().addToStack(expression);
 
 		if (debug != null && !(expression instanceof StringLiteralExp)) {
 			debugInput = lastEObjectSelfValue;
@@ -1020,10 +1031,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (shouldGenerateText((EReference)expression.eContainingFeature())) {
 				Object source = null;
 				// TODO get last structural feature
-				EObject generatedBlock = expression;
-				while (!(generatedBlock instanceof Block)) {
-					generatedBlock = generatedBlock.eContainer();
-				}
+				final Block generatedBlock = getContext().getLastVisitedBlock();
 				if (lastSourceExpressionResult == null) {
 					source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				} else {
@@ -1037,7 +1045,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					final boolean fireEvent = fireGenerationEvent
 							&& !(expression instanceof TemplateInvocation)
 							&& !(expression instanceof Template);
-					delegateAppend(toString(result), (Block)generatedBlock, lastEObjectSelfValue, fireEvent);
+					delegateAppend(toString(result), generatedBlock, lastEObjectSelfValue, fireEvent);
 				}
 			}
 		} catch (final AcceleoEvaluationCancelledException e) {
@@ -1060,9 +1068,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			 */
 		} catch (final RuntimeException e) {
 			// CHECKSTYLE:ON
-			AcceleoRuntimeException acceleoException = context.createAcceleoRuntimeException(e);
+			AcceleoRuntimeException acceleoException = getContext().createAcceleoRuntimeException(e);
 			try {
-				context.dispose();
+				getContext().dispose();
 			} catch (final AcceleoEvaluationException ee) {
 				// We're already in an exception handling phase. Propagate the former exception.
 			}
@@ -1079,7 +1087,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (hasInit) {
 				restoreInitVariables(((Block)expression).getInit());
 			}
-			context.removeFromStack();
+			getContext().removeFromStack();
 		}
 
 		return result;
@@ -1219,7 +1227,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			debug.endDebug(astFragment);
 			debug = null;
 		}
-		context.dispose();
+		getContext().dispose();
 		throw new AcceleoEvaluationCancelledException(AcceleoEngineMessages
 				.getString("AcceleoEvaluationVisitor.CancelException")); //$NON-NLS-1$
 	}
@@ -1347,10 +1355,10 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private void delegateCreateFileWriter(String filePath, Block fileBlock, EObject source,
 			boolean appendMode, String charset) throws AcceleoEvaluationException {
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
-			getAcceleoVisitor().createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode,
-					charset);
+			getAcceleoVisitor().createFileWriter(getContext().getFileFor(filePath), fileBlock, source,
+					appendMode, charset);
 		} else {
-			createFileWriter(context.getFileFor(filePath), fileBlock, source, appendMode, charset);
+			createFileWriter(getContext().getFileFor(filePath), fileBlock, source, appendMode, charset);
 		}
 	}
 
@@ -1363,7 +1371,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @return The source text after having changed all of its lines' indentation.
 	 */
 	private String delegateFitIndentation(String source) {
-		String currentIndent = context.getCurrentLineIndentation();
+		String currentIndent = getContext().getCurrentLineIndentation();
 		if (getVisitor() instanceof AcceleoEvaluationVisitorDecorator<?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?>) {
 			return getAcceleoVisitor().fitIndentationTo(source, currentIndent);
 		}
@@ -1448,8 +1456,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (isInvalid(guardValue)) {
 				if (exception == null) {
 					final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-					exception = context.createAcceleoException(candidate, (OCLExpression<C>)candidate
-							.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
+					exception = getContext().createAcceleoException(candidate,
+							(OCLExpression<C>)candidate.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
 				}
 				candidateIterator.remove();
 			} else if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
@@ -1594,8 +1602,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				final Object argValue = getEvaluationEnvironment().getValueOf(tempVar.getName());
 				if (isInvalid(argValue)) {
 					final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-					final AcceleoEvaluationException exception = context.createAcceleoException(invocation,
-							argument, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
+					final AcceleoEvaluationException exception = getContext().createAcceleoException(
+							invocation, argument, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
 					// Evaluation of this template failed. Remove all previously created variables
 					for (int j = 0; j <= i; j++) {
 						getEvaluationEnvironment().remove(invocation.getArgument().get(j).getName());
@@ -1712,6 +1720,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// Note : sort this by order of frequency to allow shot-circuit evaluation
 		boolean generate = reference == MtlPackage.eINSTANCE.getBlock_Body();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Each();
+		generate = generate
+				|| (fireGenerationEvent && reference == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker());
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Each();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_After();
@@ -1735,7 +1745,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
-			if (context.getProgressMonitor().isCanceled()) {
+			if (getContext().getProgressMonitor().isCanceled()) {
 				cancel(new ASTFragment(expression));
 			}
 			if (delegate != null) {
@@ -1749,7 +1759,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoIfBlock((IfBlock)expression);
 			}
-			result = context.getDefaultText();
+			result = getContext().getDefaultText();
 			if (result == null) {
 				result = ""; //$NON-NLS-1$
 			}
@@ -1759,12 +1769,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoForBlock((ForBlock)expression);
 			}
-			result = context.getDefaultText();
+			result = getContext().getDefaultText();
 			if (result == null) {
 				result = ""; //$NON-NLS-1$
 			}
 		} else if (expression instanceof FileBlock) {
-			if (context.getProgressMonitor().isCanceled()) {
+			if (getContext().getProgressMonitor().isCanceled()) {
 				cancel(new ASTFragment(expression));
 			}
 			if (delegate != null) {
@@ -1772,7 +1782,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoFileBlock((FileBlock)expression);
 			}
-			result = context.getDefaultText();
+			result = getContext().getDefaultText();
 			if (result == null) {
 				result = ""; //$NON-NLS-1$
 			}
@@ -1794,7 +1804,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoLetBlock((LetBlock)expression);
 			}
-			result = context.getDefaultText();
+			result = getContext().getDefaultText();
 			if (result == null) {
 				result = ""; //$NON-NLS-1$
 			}
@@ -1804,7 +1814,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			} else {
 				visitAcceleoProtectedArea((ProtectedAreaBlock)expression);
 			}
-			result = context.getDefaultText();
+			result = getContext().getDefaultText();
 			if (result == null) {
 				result = ""; //$NON-NLS-1$
 			}

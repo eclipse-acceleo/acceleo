@@ -58,7 +58,7 @@ public class QueryTraceCache<C> {
 	 *            Trace that is to be cached.
 	 */
 	public void cacheTrace(Query query, List<Object> parameters, ExpressionTrace<C> trace) {
-		if (!AcceleoPreferences.isQueryCacheEnabled()) {
+		if (!AcceleoPreferences.isQueryCacheEnabled() || trace.getTraces().isEmpty()) {
 			return;
 		}
 		Map<List<Object>, ExpressionTrace<C>> cache = queryTraceCache.get(query);

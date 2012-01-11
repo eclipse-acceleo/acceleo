@@ -1174,10 +1174,10 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 			int offsetGap = -1;
 			final Deque<ExpressionTrace<C>> invocationTraces = visitor.getInvocationTraces();
 			for (ExpressionTrace<C> trace : invocationTraces) {
-				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-					for (GeneratedText text : entry.getValue()) {
-						if (offsetGap == -1 || text.getStartOffset() < offsetGap) {
-							offsetGap = text.getStartOffset();
+				for (Set<GeneratedText> regions : trace.getTraces().values()) {
+					for (GeneratedText region : regions) {
+						if (offsetGap == -1 || region.getStartOffset() < offsetGap) {
+							offsetGap = region.getStartOffset();
 						}
 					}
 				}
@@ -1192,33 +1192,34 @@ public final class AcceleoTraceabilityOperationVisitor<C, PM> {
 					Iterator<GeneratedText> textIterator = entry.getValue().iterator();
 					while (textIterator.hasNext()) {
 						GeneratedText text = textIterator.next();
+						final int initialStart = text.getStartOffset();
+						final int initialEnd = text.getEndOffset();
+						final int initialLength = initialEnd - initialStart;
+
 						GeneratedFile output = text.getOutputFile();
 						int removedLength = 0;
-						if (text.getEndOffset() <= actualStartIndex
-								|| text.getStartOffset() >= actualEndIndex) {
+						if (initialEnd <= actualStartIndex || initialStart >= actualEndIndex) {
 							textIterator.remove();
 							EcoreUtil.remove(text);
-							removedLength = text.getEndOffset() - text.getStartOffset();
+							removedLength = initialLength;
 						} else {
 							/*
 							 * We have four cases : either 1) the region overlaps with the start index, 2) it
 							 * overlaps with the end index, 3) it overlaps with both or 4) it overlaps with
 							 * none.
 							 */
-							int initialLength = text.getEndOffset() - text.getStartOffset();
-							if (text.getStartOffset() < actualStartIndex
-									&& text.getEndOffset() > actualEndIndex) {
+							if (initialStart < actualStartIndex && initialEnd > actualEndIndex) {
 								text.setStartOffset(offsetGap);
 								text.setEndOffset(offsetGap + (endIndex - startIndex));
-							} else if (text.getStartOffset() < actualStartIndex) {
+							} else if (initialStart < actualStartIndex) {
 								text.setStartOffset(offsetGap);
-								text.setEndOffset(text.getEndOffset() - startIndex);
-							} else if (text.getEndOffset() > actualEndIndex) {
-								text.setStartOffset(text.getStartOffset() - startIndex);
+								text.setEndOffset(initialEnd - startIndex);
+							} else if (initialEnd > actualEndIndex) {
+								text.setStartOffset(initialStart - startIndex);
 								text.setEndOffset(offsetGap + (endIndex - startIndex));
 							} else {
-								text.setStartOffset(text.getStartOffset() - startIndex);
-								text.setEndOffset(text.getEndOffset() - startIndex);
+								text.setStartOffset(initialStart - startIndex);
+								text.setEndOffset(initialEnd - startIndex);
 							}
 							removedLength = initialLength - text.getEndOffset() + text.getStartOffset();
 						}
