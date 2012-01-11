@@ -1,0 +1,8 @@
+[module interfaceFile('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::project::fifth::files::commonFile]
+
+[import org::eclipse::acceleo::project::fifth::common::attributes /]
+[import org::eclipse::acceleo::project::fifth::common::common /]
+[import org::eclipse::acceleo::project::fifth::common::declaration /]
+[import org::eclipse::acceleo::project::fifth::common::imports /]
+[import org::eclipse::acceleo::project::fifth::common::operations /]
+[import org::eclipse::acceleo::project::fifth::common::type /]

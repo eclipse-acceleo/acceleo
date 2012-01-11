@@ -1,0 +1,6 @@
+[module declaration('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import org::eclipse::acceleo::project::fifth::common::common /]
+[import org::eclipse::acceleo::project::fifth::common::type /]
+[import org::eclipse::acceleo::project::fifth::request::request /]
+[import org::eclipse::acceleo::project::fifth::services::commonServices /]

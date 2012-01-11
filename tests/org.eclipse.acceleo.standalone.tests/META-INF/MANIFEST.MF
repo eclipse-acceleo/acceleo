@@ -6,7 +6,9 @@ Bundle-Version: 3.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.acceleo.parser,
  org.eclipse.acceleo.engine,
- org.junit4
+ org.junit4,
+ org.hamcrest,
+ com.google.collect
 Bundle-Vendor: %providerName
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
+import com.google.common.collect.Sets;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
@@ -24,10 +29,11 @@ import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
+import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -37,8 +43,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -77,30 +84,187 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected IProject[] build(int kind, Map arguments, IProgressMonitor monitor) throws CoreException {
-		if (getProject() == null || !getProject().isAccessible()) {
+		IProject project = getProject();
+		if (project == null || !project.isAccessible()) {
 			return new IProject[] {};
 		}
 
-		outputFolder = getOutputFolder(getProject());
-		try {
-			if (kind == FULL_BUILD) {
-				clean(monitor);
-				fullBuild(monitor);
-			} else {
-				IResourceDelta delta = getDelta(getProject());
-				if (delta == null) {
-					clean(monitor);
-					fullBuild(monitor);
-				} else {
-					incrementalBuild(delta, monitor);
+		File projectRoot = project.getLocation().toFile();
+		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
+				projectRoot);
+
+		IJavaProject javaProject = JavaCore.create(project);
+		acceleoProject = AcceleoBuilder.computeProjectClassPath(acceleoProject, javaProject);
+		acceleoProject = AcceleoBuilder.computeProjectDependencies(acceleoProject, javaProject);
+
+		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+		String resourceKind = settings.getResourceKind();
+		boolean useBinaryResources = !AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind);
+
+		if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
+				|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
+			List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+					acceleoProject, useBinaryResources);
+			for (IFile iFile : deltaMembers) {
+				File fileToBuild = iFile.getLocation().toFile();
+				acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+			}
+		} else if (kind == IncrementalProjectBuilder.FULL_BUILD) {
+			acceleoProject.clean();
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+					acceleoProject, useBinaryResources);
+			acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+		} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
+			acceleoProject.clean();
+		}
+
+		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
+				.newHashSet(acceleoProject);
+		projectsToRefresh.addAll(acceleoProject.getProjectDependencies());
+		projectsToRefresh.addAll(acceleoProject.getDependentProjects());
+		for (org.eclipse.acceleo.internal.parser.compiler.AcceleoProject projectToRefresh : projectsToRefresh) {
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			for (IProject iProject : projects) {
+				if (projectToRefresh.getProjectRoot().equals(iProject.getLocation().toFile())) {
+					iProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 				}
 			}
-		} catch (OperationCanceledException e) {
-			// We've only thrown this to cancel everything, stop propagation
-		} finally {
-			outputFolder = null;
 		}
+
 		return null;
+	}
+
+	/**
+	 * Computes the project dependencies of the given Acceleo project matching the given Java project.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo project.
+	 * @param javaProject
+	 *            The Java project.
+	 * @return The Acceleo project with its dependencies resolved.
+	 */
+	private static org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectDependencies(
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
+			IJavaProject javaProject) {
+		try {
+			// Required projects
+			String[] requiredProjectNames = javaProject.getRequiredProjectNames();
+			for (String requiredProjectName : requiredProjectNames) {
+				IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+						requiredProjectName);
+				try {
+					if (requiredProject.hasNature(JavaCore.NATURE_ID)
+							&& requiredProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						IJavaProject requiredJavaProject = JavaCore.create(requiredProject);
+						File projectRoot = requiredProject.getLocation().toFile();
+
+						org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiredAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
+								projectRoot);
+						requiredAcceleoProject = AcceleoBuilder.computeProjectClassPath(
+								requiredAcceleoProject, requiredJavaProject);
+						if (!acceleoProject.getProjectDependencies().contains(requiredAcceleoProject)) {
+							acceleoProject.addProjectDependencies(Sets.newHashSet(requiredAcceleoProject));
+							requiredAcceleoProject = AcceleoBuilder.computeProjectDependencies(
+									requiredAcceleoProject, requiredJavaProject);
+						}
+
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
+				}
+			}
+
+			// Requiring projects
+			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			for (IProject iProject : projects) {
+				try {
+					if (iProject.hasNature(JavaCore.NATURE_ID)
+							&& iProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						IJavaProject iJavaProject = JavaCore.create(iProject);
+						boolean requiring = false;
+
+						String[] projectNames = iJavaProject.getRequiredProjectNames();
+						for (String projectName : projectNames) {
+							IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+									projectName);
+							if (acceleoProject.getProjectRoot().equals(project.getLocation().toFile())) {
+								requiring = true;
+							}
+						}
+
+						if (requiring) {
+							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiringAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
+									iProject.getLocation().toFile());
+							requiringAcceleoProject = AcceleoBuilder.computeProjectClassPath(
+									requiringAcceleoProject, iJavaProject);
+							if (!acceleoProject.getDependentProjects().contains(requiringAcceleoProject)) {
+								acceleoProject.addDependentProjects(Sets.newHashSet(requiringAcceleoProject));
+								requiringAcceleoProject = AcceleoBuilder.computeProjectDependencies(
+										requiringAcceleoProject, iJavaProject);
+							}
+						}
+
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
+				}
+			}
+		} catch (JavaModelException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+		return acceleoProject;
+	}
+
+	/**
+	 * Computes the classpath for the given Acceleo project from the given java project.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo project
+	 * @param javaProject
+	 *            The Java project
+	 * @return The Acceleo project matching the given Java project with its classpath set.
+	 */
+	private static org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectClassPath(
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
+			IJavaProject javaProject) {
+		Set<AcceleoProjectClasspathEntry> classpathEntries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
+
+		// Compute the classpath of the acceleo project
+		IClasspathEntry[] rawClasspath;
+		try {
+			rawClasspath = javaProject.getRawClasspath();
+			for (IClasspathEntry iClasspathEntry : rawClasspath) {
+				int entryKind = iClasspathEntry.getEntryKind();
+				if (IClasspathEntry.CPE_SOURCE == entryKind) {
+					// We have the source folders of the project.
+					IPath inputFolderPath = iClasspathEntry.getPath();
+					IPath outputFolderPath = iClasspathEntry.getOutputLocation();
+
+					if (outputFolderPath == null) {
+						outputFolderPath = javaProject.getOutputLocation();
+					}
+
+					IContainer inputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
+							inputFolderPath);
+					IContainer outputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
+							outputFolderPath);
+
+					if (inputContainer != null && outputContainer != null) {
+						File inputDirectory = inputContainer.getLocation().toFile();
+						File outputDirectory = outputContainer.getLocation().toFile();
+						AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory,
+								outputDirectory);
+						classpathEntries.add(entry);
+					}
+				}
+			}
+
+			acceleoProject.addClasspathEntries(classpathEntries);
+		} catch (JavaModelException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+		return acceleoProject;
 	}
 
 	/**
@@ -201,8 +365,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *             contains a status object describing the cause of the exception
 	 */
 	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
-		List<IFile> deltaFilesOutput = new ArrayList<IFile>();
-		deltaMembers(deltaFilesOutput, delta, monitor);
+		List<IFile> deltaFilesOutput = deltaMembers(delta, monitor);
 		if (deltaFilesOutput.size() > 0) {
 			boolean containsManifest = false;
 			for (int i = 0; !containsManifest && i < deltaFilesOutput.size(); i++) {
@@ -339,17 +502,16 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	/**
 	 * Computes a list of all the modified files (Acceleo files only).
 	 * 
-	 * @param deltaFilesOutput
-	 *            an output parameter to get all the modified files
 	 * @param delta
 	 *            the resource delta represents changes in the state of a resource tree
 	 * @param monitor
 	 *            is the monitor
+	 * @return The list of files involved in the resource delta.
 	 * @throws CoreException
 	 *             contains a status object describing the cause of the exception
 	 */
-	private void deltaMembers(List<IFile> deltaFilesOutput, IResourceDelta delta, IProgressMonitor monitor)
-			throws CoreException {
+	private List<IFile> deltaMembers(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
+		List<IFile> deltaFilesOutput = new ArrayList<IFile>();
 		if (delta != null) {
 			IResource resource = delta.getResource();
 			if (resource instanceof IFile) {
@@ -366,11 +528,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				if (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath())) {
 					IResourceDelta[] children = delta.getAffectedChildren();
 					for (int i = 0; i < children.length; i++) {
-						deltaMembers(deltaFilesOutput, children[i], monitor);
+						deltaFilesOutput.addAll(deltaMembers(children[i], monitor));
 					}
 				}
 			}
 		}
+
+		return deltaFilesOutput;
 	}
 
 	/**
@@ -422,29 +586,4 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			outputFile.delete(true, monitor);
 		}
 	}
-
-	/**
-	 * Gets the output folder of the project. For example : '/MyProject/bin'.
-	 * 
-	 * @param aProject
-	 *            is a project of the workspace
-	 * @return the output folder of the project, or null if it doesn't exist
-	 */
-	private IPath getOutputFolder(IProject aProject) {
-		final IJavaProject javaProject = JavaCore.create(aProject);
-		try {
-			IPath output = javaProject.getOutputLocation();
-			if (output != null && output.segmentCount() > 1) {
-				IFolder folder = aProject.getWorkspace().getRoot().getFolder(output);
-				if (folder.isAccessible()) {
-					return folder.getFullPath();
-				}
-			}
-		} catch (JavaModelException e) {
-			// continue
-			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-		}
-		return null;
-	}
-
 }

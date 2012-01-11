@@ -1,0 +1,5 @@
+[module services('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public genService(anEClass : EClass)]
+my service
+[/template]
