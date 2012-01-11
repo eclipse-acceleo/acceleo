@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>acceleo</groupId>
-  <artifactId>org.eclipse.acceleo.maven</artifactId>
-  <version>3.1.0</version>
+  <groupId>org.eclipse.acceleo</groupId>
+  <artifactId>maven</artifactId>
+  <version>3.2.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
@@ -17,5 +17,16 @@
       <artifactId>maven-project</artifactId>
       <version>2.0.8</version>
     </dependency>
+    <dependency>
+    	<groupId>org.eclipse.acceleo</groupId>
+    	<artifactId>parser</artifactId>
+    	<version>3.2.1</version>
+    </dependency>
   </dependencies>
+  <repositories>
+    <repository>
+      <id>github</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
+    </repository>
+ </repositories>
 </project>

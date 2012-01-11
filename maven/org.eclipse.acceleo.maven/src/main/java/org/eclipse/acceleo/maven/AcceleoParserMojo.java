@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Obeo.
+ * Copyright (c) 2008, 2012 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.apache.maven.project.MavenProject;
  * @goal acceleo-compile
  * @phase compile
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.1
+ * @since 3.2
  */
 public class AcceleoParserMojo extends AbstractMojo {
 	
@@ -34,37 +34,28 @@ public class AcceleoParserMojo extends AbstractMojo {
      * @readonly
      */
     private MavenProject project;
-
-	/**
-	 * The source folder.
-	 * 
-	 * @parameter expression = "${acceleo-compile.sourceFolders}"
-	 * @required
-	 */
-	private String sourceFolders;
-	
-	/**
-	 * The dependencies used to build those mtl files.
-	 * 
-	 * @parameter expression = "${acceleo-compile.dependencies}"
-	 * @required
-	 */
-	private String dependencies;
 	
 	/**
 	 * Indicates if we are compiling the Acceleo modules as binary resources.
 	 * 
-	 * @parameter expression = "${acceleo-compile.binaryResource}"
+	 * @parameter expression = "${maven.binaryResource}"
 	 * @required
 	 */
-	private boolean binaryResource;
+	private boolean useBinaryResources;
 	
 	/**
 	 * The list of packages to register.
-	 * @parameter expression = "${acceleo-compile.packagesToRegister}"
+	 * @parameter expression = "${maven.packagesToRegister}"
 	 * @required
 	 */
 	private List<String> packagesToRegister;
+	
+	/**
+	 * The Acceleo project that should be built.
+	 * @parameter expression = "${maven.acceleoProject}"
+	 * @required
+	 */
+	private AcceleoProject acceleoProject;
 	
 	/**
 	 * {@inheritDoc}
@@ -73,10 +64,9 @@ public class AcceleoParserMojo extends AbstractMojo {
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Acceleo Parser !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		getLog().info("Source Folder: " + sourceFolders);
-		getLog().info("Dependencies: " + dependencies);
-		getLog().info("Binary Resources: " + binaryResource);
+		getLog().info("Binary Resources: " + useBinaryResources);
 		getLog().info("Maven Project: " + project);
+		getLog().info("Acceleo Project: " + acceleoProject);
 		getLog().info("Packages to register: " + packagesToRegister);
 	}
 
