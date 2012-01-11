@@ -103,7 +103,7 @@ import org.eclipse.ocl.utilities.PredefinedType;
  */
 public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> extends EvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> {
 	/** The marker of the lines generated inside of the protected area. */
-	private static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
+	public static final String PROTECTED_AREA_MARKER = "ACCELEO_PROTECTED_AREA_MARKER_FIT_INDENTATION"; //$NON-NLS-1$
 
 	/** This will be set by launch configs to debug AST evaluations. */
 	private static IDebugAST debug;
@@ -766,22 +766,32 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
-	 * This will be used in order to check whether the given protected area is directly contained within a
-	 * file block : such areas will not need to see their indentation restored.
+	 * This will be used to remove all protected area indentation markers and replace them with the line
+	 * terminator that was previously in their place.
 	 * 
-	 * @param protectedArea
-	 *            The area which containing hierarchy is to be checked.
-	 * @return <code>true</code> if we encounter a {@link FileBlock} before a {@link Template} in this area's
-	 *         containing hierarchy.
+	 * @param string
+	 *            The content from which we are to remove all markers.
+	 * @return The protected content without any indentation marker.
 	 */
-	private boolean isInFileBlock(ProtectedAreaBlock protectedArea) {
-		EObject container = protectedArea.eContainer();
-		boolean isInFileBlock = false;
-		while (container != null && !isInFileBlock && !(container instanceof Template)) {
-			isInFileBlock = container instanceof FileBlock;
-			container = container.eContainer();
+	public static String removeProtectedMarkers(String string) {
+		final Matcher matcher = Pattern.compile(PROTECTED_AREA_MARKER + "\\{(.)(.)?\\}").matcher(string); //$NON-NLS-1$
+		if (matcher.find()) {
+			final StringBuffer buffer = new StringBuffer();
+			do {
+				final String replacement;
+				if (matcher.group(2) != null) {
+					replacement = "\r\n"; //$NON-NLS-1$
+				} else if ("n".equals(matcher.group(1))) { //$NON-NLS-1$
+					replacement = "\n"; //$NON-NLS-1$
+				} else {
+					replacement = "\r"; //$NON-NLS-1$
+				}
+				matcher.appendReplacement(buffer, replacement);
+			} while (matcher.find());
+			matcher.appendTail(buffer);
+			return buffer.toString();
 		}
-		return isInFileBlock;
+		return string;
 	}
 
 	/**
@@ -1260,35 +1270,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	}
 
 	/**
-	 * This will be used to remove all protected area indentation markers and replace them with the line
-	 * terminator that was previously in their place.
-	 * 
-	 * @param string
-	 *            The content from which we are to remove all markers.
-	 * @return The protected content without any indentation marker.
-	 */
-	private String removeProtectedMarkers(String string) {
-		final Matcher matcher = Pattern.compile(PROTECTED_AREA_MARKER + "\\{(.)(.)?\\}").matcher(string); //$NON-NLS-1$
-		if (matcher.find()) {
-			final StringBuffer buffer = new StringBuffer();
-			do {
-				final String replacement;
-				if (matcher.group(2) != null) {
-					replacement = "\r\n"; //$NON-NLS-1$
-				} else if ("n".equals(matcher.group(1))) { //$NON-NLS-1$
-					replacement = "\n"; //$NON-NLS-1$
-				} else {
-					replacement = "\r"; //$NON-NLS-1$
-				}
-				matcher.appendReplacement(buffer, replacement);
-			} while (matcher.find());
-			matcher.appendTail(buffer);
-			return buffer.toString();
-		}
-		return string;
-	}
-
-	/**
 	 * Indicates if the source block qualifies for the removal of the protected area marker.
 	 * 
 	 * @param sourceBlock
@@ -1493,6 +1474,25 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			line = ((AcceleoASTNodeAdapter)adapter).getLine();
 		}
 		return line;
+	}
+
+	/**
+	 * This will be used in order to check whether the given protected area is directly contained within a
+	 * file block : such areas will not need to see their indentation restored.
+	 * 
+	 * @param protectedArea
+	 *            The area which containing hierarchy is to be checked.
+	 * @return <code>true</code> if we encounter a {@link FileBlock} before a {@link Template} in this area's
+	 *         containing hierarchy.
+	 */
+	private boolean isInFileBlock(ProtectedAreaBlock protectedArea) {
+		EObject container = protectedArea.eContainer();
+		boolean isInFileBlock = false;
+		while (container != null && !isInFileBlock && !(container instanceof Template)) {
+			isInFileBlock = container instanceof FileBlock;
+			container = container.eContainer();
+		}
+		return isInFileBlock;
 	}
 
 	/**

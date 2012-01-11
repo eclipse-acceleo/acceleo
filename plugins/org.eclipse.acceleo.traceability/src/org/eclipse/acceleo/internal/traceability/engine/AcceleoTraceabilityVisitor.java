@@ -31,7 +31,9 @@ import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
+import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -298,6 +300,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else {
 				trace = recordedTraces.getLast();
 			}
+			if (trace.getReferredExpression() instanceof ProtectedAreaBlock && trace.getTraces().isEmpty()) {
+				createProtectedAreaTrace(string, sourceBlock, trace);
+			}
 			final int fileLength = generatedFile.getLength();
 			int addedLength = 0;
 
@@ -320,18 +325,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 
 			int stringLength = string.length();
-			if (addedLength != stringLength && lastInvocationTracesLength != stringLength) {
+			if (addedLength != stringLength && lastInvocationTracesLength != stringLength
+					&& !(sourceBlock instanceof ProtectedAreaBlock)) {
 				/*
 				 * We might have had an error with traceability information on this expression. Force the
 				 * length of the file to grow the length of the String. Should we log anything? This
 				 * information would be interesting if a user encounters such a failure.
 				 */
 				generatedFile.setLength(fileLength + stringLength);
+				addedLength = stringLength;
 			} else {
 				generatedFile.setLength(fileLength + addedLength);
 			}
 			if (invocationTraces != null) {
-				lastInvocationTracesLength += stringLength;
+				lastInvocationTracesLength += addedLength;
 			} else {
 				lastInvocationTracesLength = 0;
 			}
@@ -1438,6 +1445,75 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	EObject retrieveScopeEObjectValue() {
 		return retrieveScopeEObjectValue(scopeEObjects.size() - 1);
+	}
+
+	/**
+	 * This will be used to create the evaluation trace for a given protected area's content.
+	 * 
+	 * @param content
+	 *            Full content of the protected area, starting/ending strings and marker included.
+	 * @param protectedArea
+	 *            The {@link ProtectedAreaBlock} from which we're generating <em>content</em>.
+	 * @param trace
+	 *            The execution trace for this area.
+	 */
+	private void createProtectedAreaTrace(String content, Block protectedArea, ExpressionTrace<C> trace) {
+		final String actualContent = AcceleoEvaluationVisitor.removeProtectedMarkers(content);
+
+		final String areaStart = AcceleoEngineMessages.getString("usercode.start") + ' '; //$NON-NLS-1$
+		final String areaEnd = AcceleoEngineMessages.getString("usercode.end"); //$NON-NLS-1$
+		final int markerIndex = actualContent.indexOf(areaStart) + areaStart.length();
+		final int areaEndIndex = actualContent.indexOf(areaEnd);
+
+		int markerEndIndex = actualContent.indexOf("\r\n", markerIndex); //$NON-NLS-1$
+		if (markerEndIndex == -1) {
+			markerEndIndex = actualContent.indexOf('\n', markerIndex);
+		}
+		if (markerEndIndex == -1) {
+			markerEndIndex = actualContent.indexOf('\r', markerIndex);
+		}
+
+		int endOffset = -1;
+
+		final GeneratedText markerRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
+		markerRegion.setStartOffset(markerIndex);
+		markerRegion.setEndOffset(markerEndIndex);
+		markerRegion.setModuleElement(getModuleElement(protectedArea));
+		markerRegion.setSourceElement(protectedAreaSource);
+
+		// Create a region containing all text preceding the marker
+		final GeneratedText startRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
+		startRegion.setEndOffset(markerIndex);
+		startRegion.setModuleElement(getModuleElement(protectedArea));
+		startRegion.setSourceElement(protectedAreaSource);
+
+		// Create traces for the content of the area
+		GeneratedText contentRegion = null;
+		if (endOffset != areaEndIndex) {
+			contentRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
+			contentRegion.setStartOffset(markerEndIndex);
+			contentRegion.setEndOffset(areaEndIndex);
+			contentRegion.setModuleElement(getModuleElement(protectedArea));
+			contentRegion.setSourceElement(protectedAreaSource);
+		}
+
+		// Then a region containing the "end of user code"
+		final GeneratedText endRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
+		endRegion.setStartOffset(areaEndIndex);
+		endRegion.setEndOffset(actualContent.length());
+		endRegion.setModuleElement(getModuleElement(protectedArea));
+		endRegion.setSourceElement(protectedAreaSource);
+
+		// Create the region set
+		Set<GeneratedText> set = new CompactLinkedHashSet<GeneratedText>();
+		trace.getTraces().put(protectedAreaSource, set);
+
+		set.add(startRegion);
+		set.add(markerRegion);
+		if (contentRegion != null) {
+			set.add(contentRegion);
+		}
+		set.add(endRegion);
 	}
 
 	/**
