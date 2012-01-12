@@ -37,7 +37,7 @@ public class ExpressionTrace<C> extends AbstractTrace {
 	 *            Expression we wish to record traceability information for.
 	 */
 	public ExpressionTrace(OCLExpression<C> expression) {
-		referredExpression = expression;
+		this.referredExpression = expression;
 	}
 
 	/**
@@ -92,5 +92,4 @@ public class ExpressionTrace<C> extends AbstractTrace {
 	public OCLExpression<C> getReferredExpression() {
 		return referredExpression;
 	}
-
 }

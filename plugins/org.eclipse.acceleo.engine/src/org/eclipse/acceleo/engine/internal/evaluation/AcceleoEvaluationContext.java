@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -474,6 +475,24 @@ public class AcceleoEvaluationContext<C> {
 			return ((AbstractAcceleoWriter)writer).getCurrentLineIndentation();
 		}
 		return ""; //$NON-NLS-1$
+	}
+
+	/**
+	 * Walks up the expression stack and returns the last visited Block.
+	 * 
+	 * @return The last visited Block.
+	 */
+	public Block getLastVisitedBlock() {
+		if (expressionStack.isEmpty()) {
+			return null;
+		}
+		final ListIterator<OCLExpression<C>> expressionIterator = expressionStack
+				.listIterator(expressionStack.size());
+		OCLExpression<C> previous;
+		do {
+			previous = expressionIterator.previous();
+		} while (!(previous instanceof Block) && expressionIterator.hasPrevious());
+		return (Block)previous;
 	}
 
 	/**

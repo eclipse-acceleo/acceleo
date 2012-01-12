@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,13 +31,13 @@ import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
-import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
-import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitorDecorator;
+import org.eclipse.acceleo.engine.internal.evaluation.QueryCache;
 import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityMessages;
 import org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin;
 import org.eclipse.acceleo.model.mtl.Block;
@@ -221,6 +222,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/**
 	 * This will be set as soon as we enter the evaluation of a protected area, and reset to <code>null</code>
+	 * as soon as we exit this area. it will be used as the source for the two hard-coded strings
+	 * "start of user code" and "end of user code".
+	 */
+	private ModuleElement protectedAreaModuleElement;
+
+	/**
+	 * This will be set as soon as we enter the evaluation of a protected area, and reset to <code>null</code>
 	 * as soon as we exit this area. It will be used to shortcut all input recorded inside of such an area.
 	 */
 	private InputElement protectedAreaSource;
@@ -268,7 +276,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// Check whether we should consider these traces
 		boolean considerTrace = true;
 		// If we don't need an event or if the generated String is empty, no need to carry on
-		considerTrace = considerTrace && fireEvent && string.length() > 0;
+		considerTrace = considerTrace && string.length() > 0;
 		// No need to go any further either if anything of our trace information is empty
 		considerTrace = considerTrace && currentFiles != null && !currentFiles.isEmpty();
 		considerTrace = considerTrace && recordedTraces != null && !recordedTraces.isEmpty();
@@ -281,7 +289,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		considerTrace = considerTrace && (!(rootSourceBlock instanceof Template) || !evaluatingOperationCall);
-		if (considerTrace) {
+		if (considerTrace && fireEvent) {
 			GeneratedFile generatedFile = currentFiles.getLast();
 			ExpressionTrace<C> trace;
 			boolean disposeTrace = !(sourceBlock instanceof IfBlock) && !(sourceBlock instanceof ForBlock);
@@ -289,19 +297,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				trace = recordedTraces.removeLast();
 			} else {
 				trace = recordedTraces.getLast();
-			}
-			if (protectedAreaSource != null) {
-				/*
-				 * We're appending a protected area's content to the file. Merge all traces of this area into
-				 * one.
-				 */
-				while (trace.getReferredExpression() != sourceBlock) {
-					ExpressionTrace<C> temp = trace;
-					trace = recordedTraces.removeLast();
-					trace.addTraceCopy(temp);
-					temp.dispose();
-				}
-				alterProtectedAreaTrace(string, sourceBlock, trace);
 			}
 			final int fileLength = generatedFile.getLength();
 			int addedLength = 0;
@@ -345,6 +340,32 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			} else {
 				trace.setOffset(0);
 			}
+		} else if (considerTrace && invocationTraces != null && !isProtectedAreaContent(sourceBlock)
+				&& invocationTraces.contains(recordedTraces.getLast())) {
+			/*
+			 * We are here to handle the cases of nested template invocations. If we have template1 that calls
+			 * template2 that calls template3... and there are multiple post(trim()) along the way, we might
+			 * end up trying to trim [[0,4], [0,7], [0,2]] with each of these three traces being results of a
+			 * different template. We would not be able to determine which is the first of the three, and how
+			 * they are related. We need to "advance" the region to reflect the actual positions, so that we
+			 * will end up with regions [[0,4], [4,11], [11,13]].
+			 */
+			final int fileLength = currentFiles.getLast().getLength();
+			final ExpressionTrace<C> trace = recordedTraces.removeLast();
+
+			invocationTraces.remove(trace);
+			invocationTraces.add(new ExpressionTrace<C>(trace));
+
+			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
+				Iterator<GeneratedText> textIterator = entry.getValue().iterator();
+				while (textIterator.hasNext()) {
+					GeneratedText text = textIterator.next();
+					text.setStartOffset(fileLength + text.getStartOffset());
+					text.setEndOffset(fileLength + text.getEndOffset());
+				}
+			}
+
+			trace.dispose();
 		}
 		super.append(string, sourceBlock, source, fireEvent);
 	}
@@ -436,9 +457,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			// The query was already in cache, replace all of its invocation traces by the cached ones
 			recordedTraces.removeLast();
 			recordedTraces.add(new ExpressionTrace<C>(cachedTraces));
+			return super.getCachedResult(query, arguments);
 		}
 
-		return super.getCachedResult(query, arguments);
+		// We don't have traces for this query, force its reevaluation (bypass cache once)
+		return QueryCache.NO_CACHED_RESULT;
 	}
 
 	/**
@@ -454,7 +477,23 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		super.visitAcceleoFileBlock(fileBlock);
 
 		invocationTraces = oldInvocationTraces;
-		currentFiles.removeLast();
+		GeneratedFile file = currentFiles.removeLast();
+		List<GeneratedText> regions = new ArrayList<GeneratedText>(file.getGeneratedRegions());
+		Collections.sort(regions);
+		int offset = 0;
+		boolean hasProblems = false;
+		for (GeneratedText region : regions) {
+			if (region.getStartOffset() != offset) {
+				hasProblems = true;
+			}
+			offset += region.getEndOffset() - region.getStartOffset();
+			if (hasProblems) {
+				break;
+			}
+		}
+		if (hasProblems) {
+			AcceleoEnginePlugin.log("problems with file " + file.getName(), false); //$NON-NLS-1$
+		}
 		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
 				&& recordedTraces.getLast().getTraces().isEmpty()) {
 			recordedTraces.removeLast().dispose();
@@ -521,9 +560,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@Override
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
 		protectedAreaSource = getInputElement(retrieveScopeEObjectValue());
+		protectedAreaModuleElement = getModuleElement(protectedArea);
 
 		super.visitAcceleoProtectedArea(protectedArea);
 
+		protectedAreaModuleElement = null;
 		protectedAreaSource = null;
 	}
 
@@ -615,10 +656,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 						oldTraces.add(trace);
 					}
 				}
-				// This was way too CPU intensive, we'll settle with sub-otptimal memory usage
-				// else if (!recordedTraces.contains(trace)) {
-				// trace.dispose();
-				// }
 			}
 			invocationTraces = oldTraces;
 			if (addedTemplateScope) {
@@ -764,7 +801,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (isOperationArgumentTrace) {
 				ExpressionTrace<C> argTrace = recordedTraces.removeLast();
 				recordedTraces.getLast().addTraceCopy(argTrace);
-				if (invocationTraces != null && invocationTraces.size() > 1) {
+				if (invocationTraces != null
+						&& (!(expression instanceof OperationCallExp<?, ?>) || invocationTraces.size() > 1)) {
 					invocationTraces.removeLast();
 					argTrace.dispose();
 				}
@@ -775,6 +813,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				final Integer current = iterationCount.removeLast();
 				iterationCount.add(Integer.valueOf(current.intValue() + 1));
 			}
+			// protected area markers will be evaluated twice. The first traces must be ignored
+			if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()) {
+				if (recordedTraces.get(recordedTraces.size() - 2).getReferredExpression() instanceof ProtectedAreaBlock) {
+					final ExpressionTrace<C> firstMarkerTrace = recordedTraces.removeLast();
+					if (invocationTraces != null) {
+						invocationTraces.remove(firstMarkerTrace);
+					}
+					firstMarkerTrace.dispose();
+				}
+			}
 		}
 
 		if (isPropertyCallSource(expression)) {
@@ -782,7 +830,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} else if (isOperationCallSource(expression)) {
 			operationCallSource = result;
 		}
-		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()) {
+		if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()
+				&& recordedTraces.getLast().getReferredExpression() == expression) {
 			ExpressionTrace<C> trace = recordedTraces.getLast();
 			int gap = -1;
 			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
@@ -1392,116 +1441,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	}
 
 	/**
-	 * This will be used to create the evaluation trace for a given protected area's content and alter the
-	 * trace for its marker; indeed traces aren't recorded anywhere else than for the marker evaluation as the
-	 * remainder are mainly hard-coded strings.
-	 * 
-	 * @param content
-	 *            Full content of the protected area, starting/ending strings and marker included.
-	 * @param protectedArea
-	 *            The {@link ProtectedAreaBlock} from which we're generating <em>content</em>.
-	 * @param trace
-	 *            The execution trace recorded for this area.
-	 */
-	private void alterProtectedAreaTrace(String content, Block protectedArea, ExpressionTrace<C> trace) {
-		final String areaStart = AcceleoEngineMessages.getString("usercode.start") + ' '; //$NON-NLS-1$
-		final String areaEnd = AcceleoEngineMessages.getString("usercode.end"); //$NON-NLS-1$
-		final int markerIndex = content.indexOf(areaStart) + areaStart.length();
-		final int areaEndIndex = content.indexOf(areaEnd);
-		final boolean isExistingArea = trace.getTraces().size() == 0;
-
-		int markerEndIndex = content.indexOf("\r\n", markerIndex); //$NON-NLS-1$
-		if (markerEndIndex == -1) {
-			markerEndIndex = content.indexOf('\n', markerIndex);
-		}
-		if (markerEndIndex == -1) {
-			markerEndIndex = content.indexOf('\r', markerIndex);
-		}
-
-		int contentStart = -1;
-		int endOffset = -1;
-
-		final List<GeneratedText> contentTraces = new ArrayList<GeneratedText>();
-		if (isExistingArea) {
-			final GeneratedText markerRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
-			markerRegion.setStartOffset(markerIndex);
-			markerRegion.setEndOffset(markerEndIndex);
-			markerRegion.setModuleElement(getModuleElement(protectedArea));
-			Set<GeneratedText> set = trace.getTraces().get(protectedAreaSource);
-			if (set == null) {
-				set = new CompactLinkedHashSet<GeneratedText>();
-				trace.getTraces().put(protectedAreaSource, set);
-			}
-			set.add(markerRegion);
-		} else {
-			// Alter indices So that they start and end after the "Start of user code"
-			for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTraces().entrySet()) {
-				for (GeneratedText text : entry.getValue()) {
-					text.setStartOffset(text.getStartOffset() + markerIndex);
-					text.setEndOffset(text.getEndOffset() + markerIndex);
-					if (text.getEndOffset() > markerEndIndex
-							&& (contentStart == -1 || text.getStartOffset() < contentStart)) {
-						contentStart = text.getStartOffset();
-						contentTraces.add(text);
-					}
-					if (endOffset == -1 || text.getEndOffset() > endOffset) {
-						endOffset = text.getEndOffset();
-					}
-				}
-			}
-		}
-
-		/*
-		 * If we have traces for the content, ensure whether their offsets are within the [markerEndIndex,
-		 * areaEndIndex] range.
-		 */
-		if (contentStart > markerEndIndex) {
-			int gap = contentStart - markerEndIndex;
-			endOffset -= gap;
-			for (GeneratedText text : contentTraces) {
-				text.setStartOffset(text.getStartOffset() - gap);
-				text.setEndOffset(text.getEndOffset() - gap);
-			}
-		}
-
-		// Create a region containing all text preceding the marker
-		final GeneratedText startRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
-		startRegion.setEndOffset(markerIndex);
-		startRegion.setModuleElement(getModuleElement(protectedArea));
-		startRegion.setSourceElement(protectedAreaSource);
-
-		// Then a region containing the "end of user code"
-		final GeneratedText endRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
-		endRegion.setStartOffset(areaEndIndex);
-		endRegion.setEndOffset(content.length());
-		endRegion.setModuleElement(getModuleElement(protectedArea));
-		endRegion.setSourceElement(protectedAreaSource);
-
-		// If we don't have the traces for the content of the area, we'll create them
-		GeneratedText contentRegion = null;
-		if (endOffset != areaEndIndex) {
-			contentRegion = TraceabilityFactory.eINSTANCE.createGeneratedText();
-			contentRegion.setStartOffset(markerEndIndex);
-			contentRegion.setEndOffset(areaEndIndex);
-			contentRegion.setModuleElement(getModuleElement(protectedArea));
-			contentRegion.setSourceElement(protectedAreaSource);
-		}
-
-		// We need to reorder the whole thing
-		CompactLinkedHashSet<GeneratedText> set = (CompactLinkedHashSet<GeneratedText>)trace.getTraces().get(
-				protectedAreaSource);
-		Set<GeneratedText> copy = new CompactLinkedHashSet<GeneratedText>(set);
-		set.clear();
-
-		set.add(startRegion);
-		set.addAll(copy);
-		if (contentRegion != null) {
-			set.add(contentRegion);
-		}
-		set.add(endRegion);
-	}
-
-	/**
 	 * This will be called when the evaluation has been cancelled somehow.
 	 */
 	private void cancel() {
@@ -1608,39 +1547,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 	/**
 	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
-	 * model element and operation. Note that it will be created if needed.
-	 * 
-	 * @param modelElement
-	 *            Model element we seek the corresponding InputElement of.
-	 * @param operation
-	 *            EOperation of this input element. Can be <code>null</code>.
-	 * @return {@link InputElement} contained in the {@link #evaluationTrace} model.
-	 */
-	private InputElement getInputElement(EObject modelElement, EOperation operation) {
-		ModelFile soughtModel = getModelFile(modelElement);
-
-		Set<InputElement> candidateInputs = cachedInputElements.get(modelElement);
-		if (candidateInputs == null) {
-			candidateInputs = new CompactHashSet<InputElement>();
-			cachedInputElements.put(modelElement, candidateInputs);
-		}
-		for (InputElement input : candidateInputs) {
-			if (input.getOperation() == operation) {
-				return input;
-			}
-		}
-
-		// If we're here, such an InputElement does not already exist
-		InputElement soughtElement = TraceabilityFactory.eINSTANCE.createInputElement();
-		soughtElement.setModelElement(modelElement);
-		soughtElement.setOperation(operation);
-		soughtModel.getInputElements().add(soughtElement);
-		candidateInputs.add(soughtElement);
-		return soughtElement;
-	}
-
-	/**
-	 * This will return an InputElement contained within {@link #evaluationTrace} corresponding to the given
 	 * model element and structural feature. Note that it will be created if needed.
 	 * 
 	 * @param modelElement
@@ -1729,19 +1635,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * @return {@link ModuleElement} contained in the {@link #evaluationTrace} model.
 	 */
 	private ModuleElement getModuleElement(EObject moduleElement) {
+		if (moduleElement instanceof StringLiteralExp<?> && moduleElement.eContainer().eContainer() == null) {
+			return protectedAreaModuleElement;
+		}
+
 		ModuleFile soughtModule = getModuleFile(moduleElement);
 
 		ModuleElement element = cachedModuleElements.get(moduleElement);
-		if (element != null) {
-			return element;
+		if (element == null) {
+			// If we're here, such a ModuleElement does not already exist
+			element = TraceabilityFactory.eINSTANCE.createModuleElement();
+			element.setModuleElement(moduleElement);
+			soughtModule.getModuleElements().add(element);
+			cachedModuleElements.put(moduleElement, element);
 		}
-
-		// If we're here, such a ModuleElement does not already exist
-		ModuleElement soughtElement = TraceabilityFactory.eINSTANCE.createModuleElement();
-		soughtElement.setModuleElement(moduleElement);
-		soughtModule.getModuleElements().add(soughtElement);
-		cachedModuleElements.put(moduleElement, soughtElement);
-		return soughtElement;
+		return element;
 	}
 
 	/**
@@ -2117,8 +2025,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * @return <code>true</code> if <code>expression</code> is located in the content tree of a
 	 *         {@link ProtectedAreaBlock}, <code>false</code> otherwise.
 	 */
-	private boolean isProtectedAreaContent(OCLExpression<C> expression) {
-		boolean isProtectedAreaContent = false;
+	private boolean isProtectedAreaContent(EObject expression) {
+		boolean isProtectedAreaContent = expression instanceof ProtectedAreaBlock;
 		EObject container = expression.eContainer();
 		while (container != null && !isProtectedAreaContent) {
 			isProtectedAreaContent = container instanceof ProtectedAreaBlock;
