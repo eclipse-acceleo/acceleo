@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.template;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +45,6 @@ import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 
@@ -301,7 +301,7 @@ public class AcceleoTraceabilityTemplateTests extends AbstractTraceabilityTest {
 					if (otherRegion.getOffset() <= region.getOffset()
 							&& region.getOffset() < (otherRegion.getOffset() + otherRegion.getLength())) {
 						collision = true;
-					} else if (otherRegion.getOffset() <= (region.getOffset() + region.getLength())
+					} else if (otherRegion.getOffset() < (region.getOffset() + region.getLength())
 							&& (region.getOffset() + region.getLength()) < (otherRegion.getOffset() + otherRegion
 									.getLength())) {
 						collision = true;

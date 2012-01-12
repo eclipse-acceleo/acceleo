@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.types.CollectionType;
@@ -111,6 +112,8 @@ public final class TraceabilityVisitorUtil {
 			result = isPrimitive((EClassifier)value);
 		} else if (value instanceof Collection<?>) {
 			result = isPrimitive((Collection<?>)value);
+		} else if (value instanceof Enumerator) {
+			result = true;
 		} else {
 			Class<?> valueClass = value.getClass();
 			if (valueClass.isPrimitive()) {

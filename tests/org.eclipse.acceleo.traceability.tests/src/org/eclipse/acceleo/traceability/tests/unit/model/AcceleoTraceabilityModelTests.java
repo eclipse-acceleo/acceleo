@@ -294,7 +294,7 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			assertTrue(element instanceof PropertyCallExp);
 			PropertyCallExp propertyCall = (PropertyCallExp)element;
 			EGenericType eGenericType = propertyCall.getEGenericType();
-			assertTrue(eGenericType.getERawType().getInstanceClass().equals(VisibilityKind.class));
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
 			assertEquals("operation.visibility", propertyCall.toString()); //$NON-NLS-1$
 			assertEquals(183, propertyCall.getStartPosition());
 			assertEquals(183 + "operation.visibility".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
