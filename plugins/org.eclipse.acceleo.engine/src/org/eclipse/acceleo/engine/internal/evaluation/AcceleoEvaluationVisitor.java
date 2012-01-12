@@ -31,6 +31,7 @@ import org.eclipse.acceleo.engine.internal.debug.ASTFragment;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEnvironment;
 import org.eclipse.acceleo.engine.internal.environment.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.engine.internal.environment.AcceleoLibraryOperationVisitor;
 import org.eclipse.acceleo.engine.internal.utils.AcceleoOverrideAdapter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.FileBlock;
@@ -51,8 +52,10 @@ import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -1097,19 +1100,51 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					|| callExp.getArgument().get(0).getType() == stringType) {
 				((EObject)callExp.getReferredOperation()).eAdapters().add(new AcceleoOverrideAdapter());
 			}
-		}
-		/*
-		 * OCL used "/" as operation name for the division ... Which means divisions will never be
-		 * serializable : its URI is invalid. We'll then try and "trick" OCL for these.
-		 */
-		if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
+		} else if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
+			/*
+			 * OCL used "/" as operation name for the division ... Which means divisions will never be
+			 * serializable : its URI is invalid. We'll then try and "trick" OCL for these.
+			 */
 			URI uri = ((InternalEObject)callExp.getReferredOperation()).eProxyURI();
 			if (uri.fragment() != null && uri.fragment().endsWith("%2F")) { //$NON-NLS-1$
 				callExp.setOperationCode(PredefinedType.DIVIDE);
 			}
 		}
+
+		// We know these are handled by us, no need to carry on with OCL.
+		final EOperation operation = (EOperation)callExp.getReferredOperation();
+		final Object result;
 		lastSourceExpression = callExp.getSource();
-		return getDelegate().visitOperationCallExp(callExp);
+		boolean isStandardOperation = false;
+		boolean isNonStandardOperation = false;
+		final List<EAnnotation> annotations = operation.getEAnnotations();
+		for (int i = 0; i < annotations.size(); i++) {
+			EAnnotation annotation = annotations.get(i);
+			if ("MTL non-standard".equals(annotation.getSource())) { //$NON-NLS-1$
+				isNonStandardOperation = true;
+				break;
+			} else if ("MTL".equals(annotation.getSource())) { //$NON-NLS-1$
+				isStandardOperation = true;
+				break;
+			}
+		}
+		if (isStandardOperation || isNonStandardOperation) {
+			final Object source = getDelegate().visitExpression(callExp.getSource());
+			final Object[] args = new Object[callExp.getArgument().size()];
+			for (int i = 0; i < callExp.getArgument().size(); i++) {
+				args[i] = getVisitor().visitExpression(callExp.getArgument().get(i));
+			}
+			if (isStandardOperation) {
+				result = AcceleoLibraryOperationVisitor.callStandardOperation(
+						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
+			} else {
+				result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
+			}
+		} else {
+			return getDelegate().visitOperationCallExp(callExp);
+		}
+		return result;
 	}
 
 	/**
