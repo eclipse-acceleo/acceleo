@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.traceability.tests.unit.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.eclipse.acceleo.traceability.GeneratedFile;
@@ -22,14 +25,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.VisibilityKind;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 
@@ -250,13 +250,13 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof OperationCallExp);
-			OperationCallExp operationCall = (OperationCallExp)element;
-			EGenericType eGenericType = operationCall.getEGenericType();
-			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
-			assertEquals("operation.visibility.toString()", operationCall.toString()); //$NON-NLS-1$
-			assertEquals(185, operationCall.getStartPosition());
-			assertEquals(185 + "operation.visibility.toString()".length(), operationCall.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCall = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCall.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(VisibilityKind.class));
+			assertEquals("operation.visibility", propertyCall.toString()); //$NON-NLS-1$
+			assertEquals(185, propertyCall.getStartPosition());
+			assertEquals(185 + "operation.visibility".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
@@ -291,13 +291,13 @@ public class AcceleoTraceabilityModelTests extends AbstractTraceabilityTest {
 			ModuleElement moduleElement = generatedText.getModuleElement();
 			EObject element = moduleElement.getModuleElement();
 			assertTrue(element instanceof ASTNode);
-			assertTrue(element instanceof OperationCallExp);
-			OperationCallExp operationCall = (OperationCallExp)element;
-			EGenericType eGenericType = operationCall.getEGenericType();
-			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
-			assertEquals("operation.visibility", operationCall.toString()); //$NON-NLS-1$
-			assertEquals(183, operationCall.getStartPosition());
-			assertEquals(183 + "operation.visibility".length(), operationCall.getEndPosition()); //$NON-NLS-1$
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCall = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCall.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(VisibilityKind.class));
+			assertEquals("operation.visibility", propertyCall.toString()); //$NON-NLS-1$
+			assertEquals(183, propertyCall.getStartPosition());
+			assertEquals(183 + "operation.visibility".length(), propertyCall.getEndPosition()); //$NON-NLS-1$
 
 			InputElement sourceElement = generatedText.getSourceElement();
 			EObject modelElement = sourceElement.getModelElement();
