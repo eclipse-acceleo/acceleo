@@ -352,28 +352,30 @@ public class AcceleoParser {
 				while (iterator.hasNext() && !found) {
 					AcceleoProject dependingAcceleoProject = iterator.next();
 					File dependingModule = dependingAcceleoProject.getFileDependency(moduleDependency);
-					File output = dependingAcceleoProject.getOutputFile(dependingModule);
-					if (output != null && !output.exists()
-							&& !this.dependenciesToBuild.contains(dependingModule)) {
-						AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
-								this.usebinaryResources);
-						parser.addListeners(this.listeners
-								.toArray(new IParserListener[this.listeners.size()]));
-						parser.setURIResolver(this.uriResolver);
-						parser.addDependencyToBuild(dependingModule);
-						filesBuilt.addAll(parser.build(dependingModule, file, monitor));
-						filesBuilt.add(dependingModule);
-						parser.removeBuiltDependency(dependingModule);
+					if (dependingModule != null) {
+						File output = dependingAcceleoProject.getOutputFile(dependingModule);
+						if (output != null && !output.exists()
+								&& !this.dependenciesToBuild.contains(dependingModule)) {
+							AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
+									this.usebinaryResources);
+							parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners
+									.size()]));
+							parser.setURIResolver(this.uriResolver);
+							parser.addDependencyToBuild(dependingModule);
+							filesBuilt.addAll(parser.build(dependingModule, file, monitor));
+							filesBuilt.add(dependingModule);
+							parser.removeBuiltDependency(dependingModule);
 
-						// Save the errors encountered
-						this.problems.putAll(dependingModule, parser.getProblems(dependingModule));
-						this.warnings.putAll(dependingModule, parser.getWarnings(dependingModule));
-						this.infos.putAll(dependingModule, parser.getInfos(dependingModule));
-					}
-					output = dependingAcceleoProject.getOutputFile(dependingModule);
-					if (output != null && output.exists()) {
-						dependingModulesFiles.add(output);
-						found = true;
+							// Save the errors encountered
+							this.problems.putAll(dependingModule, parser.getProblems(dependingModule));
+							this.warnings.putAll(dependingModule, parser.getWarnings(dependingModule));
+							this.infos.putAll(dependingModule, parser.getInfos(dependingModule));
+						}
+						output = dependingAcceleoProject.getOutputFile(dependingModule);
+						if (output != null && output.exists()) {
+							dependingModulesFiles.add(output);
+							found = true;
+						}
 					}
 				}
 			}
