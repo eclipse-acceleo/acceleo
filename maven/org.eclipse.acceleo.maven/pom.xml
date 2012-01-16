@@ -22,11 +22,65 @@
     	<artifactId>parser</artifactId>
     	<version>3.2.1</version>
     </dependency>
+    <dependency>
+    	<groupId>org.eclipse.acceleo</groupId>
+    	<artifactId>common</artifactId>
+    	<version>3.2.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>ecore</artifactId>
+    	<version>2.7.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>ecore.xmi</artifactId>
+    	<version>2.7.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>common</artifactId>
+    	<version>2.7.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.ocl</groupId>
+    	<artifactId>ecore</artifactId>
+    	<version>3.1.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.ocl</groupId>
+    	<artifactId>ocl</artifactId>
+    	<version>3.1.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.orbit</groupId>
+    	<artifactId>lpg.runtime</artifactId>
+    	<version>2.0.17</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.core</groupId>
+    	<artifactId>contenttype</artifactId>
+    	<version>3.4.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.equinox</groupId>
+    	<artifactId>common</artifactId>
+    	<version>3.6.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>11.0.1</version>
+	</dependency>
   </dependencies>
   <repositories>
     <repository>
-      <id>github</id>
+      <id>github snapshot</id>
       <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
+    </repository>
+    <repository>
+      <id>github release</id>
+      <url>https://github.com/sbegaudeau/maven-repository/raw/master/releases</url>
     </repository>
  </repositories>
 </project>
